@@ -152,7 +152,7 @@ $ bower install
 
 > Or Contributors/People
 
-[![@IrynaZavushchak](https://avatars.githubusercontent.com/u/45690640?v=4)](https://github.com/IrynaZavushchak)
+[![@IrynaZavushchak](https://avatars.githubusercontent.com/u/45690640?v=4?s=200)](https://github.com/IrynaZavushchak)
 
  
 
