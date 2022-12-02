@@ -153,7 +153,7 @@ $ bower install
 > Or Contributors/People
 
 [![@IrynaZavushchak](https://avatars.githubusercontent.com/u/45690640?s=100&v=4)](https://github.com/IrynaZavushchak)
-
+[![@LanchevychMaxym](https://avatars.githubusercontent.com/u/47561209?s=100&v=4)](https://github.com/LanchevychMaxym)
  
 
 - You can just grab their GitHub profile image URL
