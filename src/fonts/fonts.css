@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'Closer';
+    src: url('Closer-Light.eot');
+    src: local('Closer Light'), local('Closer-Light'),
+    url('Closer-Light.eot?#iefix') format('embedded-opentype'),
+    url('Closer-Light.woff2') format('woff2'),
+    url('Closer-Light.woff') format('woff'),
+    url('Closer-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Closer';
+    src: url('Closer-LightItalic.eot');
+    src: local('Closer Light Italic'), local('Closer-LightItalic'),
+    url('Closer-LightItalic.eot?#iefix') format('embedded-opentype'),
+    url('Closer-LightItalic.woff2') format('woff2'),
+    url('Closer-LightItalic.woff') format('woff'),
+    url('Closer-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
