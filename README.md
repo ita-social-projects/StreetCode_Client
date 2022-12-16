@@ -2,9 +2,6 @@
 <a href="https://softserve.academy/">
   <img src="https://raw.githubusercontent.com/ita-social-projects/StreetCode/master/StreerCodeLogo.jpg" 
   title="SoftServe IT Academy" 
-  height="350"
-  width="100%"
-  style="object-fit: none;" 
   alt="SoftServe IT Academy">
 </a>
 
@@ -20,20 +17,20 @@ Back-end part: https://github.com/ita-social-projects/StreetCode.git.
 ## Table of Contents
 
 - [Installation](#installation)
-  - [Required to install](#Required-to-install)
-  - [Clone](#Clone)
-  - [Setup](#Setup)
-  - [How to run local](#How-to-run-local)
-- [Usage](#Usage)
-  - [How to run tests](#How-to-run-tests)
-- [Documentation](#Documentation)
+  - [Required to install](#required-to-install)
+  - [Clone](#clone)
+  - [Setup](#setup)
+  - [How to run local](#how-to-run-local)
+- [Usage](#usage)
+  - [How to run tests](#how-to-run-tests)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
   - [Git flow](#git-flow)
   - [Issue flow](#git-flow)
-- [Team](##Team)
+- [Team](#team)
 - [FAQ](#faq)
 - [Support](#support)
-- [About Us](##About-Us)
+- [About Us](#about-us)
 - [License](#license)
 
 ---
@@ -109,21 +106,22 @@ Find issues to work on <a href="https://github.com/orgs/ita-social-projects/proj
 
 ## Team
 
-<div style="text-align: center;">
+<div align="center">
 
-**Project manager**
+***Project manager***
 
 [![@IrynaZavushchak](https://avatars.githubusercontent.com/u/45690640?s=100&v=4)](https://github.com/IrynaZavushchak) 
 
-**Tech expert**
+***Tech expert***
 
 [![@LanchevychMaxym](https://avatars.githubusercontent.com/u/47561209?s=100&v=4)](https://github.com/LanchevychMaxym) 
 
-**Dev team**
+***Dev team***
 
 [![@PingvinAustr](https://avatars.githubusercontent.com/u/94307620?size=100&v=4)](https://github.com/PingvinAustr) [![@EyR1oN](https://avatars.githubusercontent.com/u/91558615?s=100&v=4)](https://github.com/EyR1oN) [![@Tatiana2424](https://avatars.githubusercontent.com/u/92846322?s=100&v=4)](https://github.com/Tatiana2424) [![@AleXLaeR](https://avatars.githubusercontent.com/u/99609396?s=100&v=4)](https://github.com/AleXLaeR) [![@dimasster](https://avatars.githubusercontent.com/u/65833018?s=100&v=4)](https://github.com/dimasster) [![@grygorenkod](https://avatars.githubusercontent.com/u/113851742?s=100&v=4)](https://github.com/grygorenkod) [![@valllentine](https://avatars.githubusercontent.com/u/90246019?s=100&v=4)](https://github.com/valllentine)
 
 </div>
+
 ---
 
 ## FAQ
