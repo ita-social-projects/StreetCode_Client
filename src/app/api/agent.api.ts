@@ -45,10 +45,12 @@ axios.interceptors.response.use(
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 
-export const agent = {
+const Agent = {
     get: async <T> (url: string, params?: URLSearchParams) => axios.get<T>(url, {params}).then(responseBody),
     post: async <T> (url: string, body: {}, headers?: {}) => axios.post<T>(url, body, headers).then(responseBody),
     put: async <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
     //patch: async <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
     delete: async  <T>(url: string) => axios.delete<T>(url).then(responseBody),
 }
+
+export default Agent;

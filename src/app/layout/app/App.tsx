@@ -1,11 +1,13 @@
-import React from 'react';
 import './App.styles.css';
-import { Layout } from 'antd';
-import {ToastContainer} from "react-toastify";
-import {FactsApi} from "../../api/factsApi";
+import { ToastContainer } from "react-toastify";
+import {useAsync} from "../../common/hooks/useAsync.hook";
+import factsApi from "../../api/facts.api";
 
 const App = () => {
-    console.log(FactsApi.getAll());
+    const { getAll } = factsApi;
+    const { value: facts, error } = useAsync(getAll);
+
+    console.log(error);
 
     return (
         <div className="App">
@@ -14,4 +16,4 @@ const App = () => {
     );
 }
 
-export default App
+export default App;
