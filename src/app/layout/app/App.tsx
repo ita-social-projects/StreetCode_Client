@@ -1,18 +1,26 @@
 import './App.styles.css';
 import { ToastContainer } from "react-toastify";
-import {useAsync} from "../../common/hooks/useAsync.hook";
-import factsApi from "../../api/facts.api";
+import { useAsync } from "app/common/hooks/stateful/useAsync.hook";
+import FactsApi from "app/api/facts.api";
+import Header from "../header/Header.component";
+import { Outlet } from "react-router-dom";
 
 const App = () => {
-    const { getAll } = factsApi;
-    const { value: facts, error } = useAsync(getAll);
+    const { getAll } = FactsApi;
+    const { value: facts } = useAsync(getAll);
 
-    console.log(error);
+    console.log(facts);
 
     return (
-        <div className="App">
+        <>
             <ToastContainer position='bottom-right' />
-        </div>
+            {
+                <>
+                    <Header />
+                    <Outlet />
+                </>
+            }
+        </>
     );
 }
 
