@@ -11,10 +11,10 @@ export const API_ROUTES = {
     PARTNERS: {
         GET_ALL: 'partners/getPartners',
         GET_SPONSORS: 'partners/getSponsors',
-        GET_BY_ID: 'fact/getPartner',
-        CREATE: 'partners/createFact',
-        UPDATE: 'fact/updateFact',
-        DELETE: 'fact/deleteFact',
+        GET_BY_ID: 'partners/getPartner',
+        CREATE: 'partners/createPartner',
+        UPDATE: 'partners/updatePartner',
+        DELETE: 'partners/deletePartner',
     },
     STREETCODES: {
         GET_ALL: 'streetcodes/getStreetcodes',
@@ -75,11 +75,11 @@ export const API_ROUTES = {
         DELETE: 'fact/deleteFact',
     },
     MEDIA: {
-        GET_ALL: 'partners/getPartners',
-        GET_SPONSORS: 'partners/getSponsors',
-        GET_BY_ID: 'fact/getPartner',
-        CREATE: 'partners/createFact',
-        UPDATE: 'fact/updateFact',
-        DELETE: 'fact/deleteFact',
+        GET_VIDEO_BY_ID: 'media/getVideo',
+        CREATE_VIDEO:'media/uploadVideo',
+        DELETE_VIDEO:'media/deleteVideo',
+        GET_AUDIO_BY_ID:'media/getAudio',
+        CREATE_AUDIO:'media/uploadAudio',
+        DELETE_AUDIO:'media/deleteAudio'
     },
 }
