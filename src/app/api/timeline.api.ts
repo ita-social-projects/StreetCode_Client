@@ -3,17 +3,20 @@ import { API_ROUTES } from "app/common/contants/routes.constants";
 import { Timeline } from "models/timeline/timeline-item.model";
 
 const TimelineApi = {
+    getAll: () =>
+        Agent.get<Timeline[]>(`${API_ROUTES.TIMELINE.GET_ALL}`),
+
     getById: (id: number) =>
-        Agent.get<Partial<Timeline>>(`${API_ROUTES.TIMELINE.GET_BY_ID}/${id}`),
+        Agent.get<Timeline>(`${API_ROUTES.TIMELINE.GET}/${id}`),
 
     create: (timeline: Timeline) =>
-        Agent.post<Partial<Timeline>>(`${API_ROUTES.TIMELINE.CREATE}`, timeline),
+        Agent.post<Timeline>(`${API_ROUTES.TIMELINE.CREATE}`, timeline),
 
     update: (timeline: Timeline) =>
-        Agent.put<Partial<Timeline>>(`${API_ROUTES.TIMELINE.UPDATE}`, timeline),
+        Agent.put<Timeline>(`${API_ROUTES.TIMELINE.UPDATE}`, timeline),
 
     delete: (id: number) =>
-        Agent.delete<Partial<Timeline>>(`${API_ROUTES.TIMELINE.UPDATE}/${id}`),
+        Agent.delete(`${API_ROUTES.TIMELINE.DELETE}/${id}`),
 }
 
 export default TimelineApi;

@@ -16,7 +16,7 @@ const TermsApi = {
         Agent.put<Term>(`${API_ROUTES.TERMS.UPDATE}`, term),
 
     delete: (id: number) =>
-        Agent.delete(`${API_ROUTES.TERMS.UPDATE}/${id}`),
+        Agent.delete(`${API_ROUTES.TERMS.DELETE}/${id}`),
 }
 
 export default TermsApi;

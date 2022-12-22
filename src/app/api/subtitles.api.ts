@@ -4,7 +4,7 @@ import Subtitle from "models/additional-content/subtitles.model";
 
 const SubtitlesApi = {
     getById: (id: number) =>
-        Agent.get<Subtitle>(`${API_ROUTES.SUBTITLES.GET_BY_ID}/${id}`),
+        Agent.get<Subtitle>(`${API_ROUTES.SUBTITLES.GET}/${id}`),
 
     getAll: () =>
        Agent.get<Subtitle[]>(`${API_ROUTES.SUBTITLES.GET_ALL}`),
@@ -19,7 +19,7 @@ const SubtitlesApi = {
         Agent.put<Subtitle>(`${API_ROUTES.SUBTITLES.UPDATE}`, subtitle),
 
     delete: (id: number) =>
-        Agent.delete<Subtitle>(`${API_ROUTES.SUBTITLES.UPDATE}/${id}`),
+        Agent.delete(`${API_ROUTES.SUBTITLES.DELETE}/${id}`),
 }
 
 export default SubtitlesApi;

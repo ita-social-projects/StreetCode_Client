@@ -19,7 +19,7 @@ const FactsApi = {
         Agent.put<Fact>(`${API_ROUTES.FACTS.UPDATE}`, fact),
 
     delete: (id: number) =>
-        Agent.delete(`${API_ROUTES.FACTS.UPDATE}/${id}`),
+        Agent.delete(`${API_ROUTES.FACTS.DELETE}/${id}`),
 }
 
 export default FactsApi;

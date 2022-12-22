@@ -22,7 +22,7 @@ const TagsApi = {
         Agent.put<Tag>(`${API_ROUTES.TAGS.UPDATE}`, tag),
 
     delete: (id: number) =>
-        Agent.delete(`${API_ROUTES.TAGS.UPDATE}/${id}`),
+        Agent.delete(`${API_ROUTES.TAGS.DELETE}/${id}`),
 }
 
 export default TagsApi;

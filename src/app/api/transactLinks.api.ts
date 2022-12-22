@@ -2,18 +2,21 @@ import Agent from "./agent.api";
 import { API_ROUTES } from "app/common/contants/routes.constants";
 import { TransactionLink } from "models/transactions/transaction-link.model";
 
-const TransactionLinkApi = {
+const TransactionLinksApi = {
+    getAll: () =>
+        Agent.get<TransactionLink>(`${API_ROUTES.TRANSACTION_LINKS.GET_ALL}`),
+
     getById: (id: number) =>
-        Agent.get<Partial<TransactionLink>>(`${API_ROUTES.TRANSACTION_LINKS.GET_BY_ID}/${id}`),
+        Agent.get<TransactionLink>(`${API_ROUTES.TRANSACTION_LINKS.GET}/${id}`),
 
     create: (transactionLink: TransactionLink) =>
-        Agent.post<Partial<TransactionLink>>(`${API_ROUTES.TRANSACTION_LINKS.CREATE}`, transactionLink),
+        Agent.post<TransactionLink>(`${API_ROUTES.TRANSACTION_LINKS.CREATE}`, transactionLink),
 
     update: (transactionLink: TransactionLink) =>
-        Agent.put<Partial<TransactionLink>>(`${API_ROUTES.TRANSACTION_LINKS.UPDATE}`, transactionLink),
+        Agent.put<TransactionLink>(`${API_ROUTES.TRANSACTION_LINKS.UPDATE}`, transactionLink),
 
     delete: (id: number) =>
-        Agent.delete<Partial<TransactionLink>>(`${API_ROUTES.FACTS.UPDATE}/${id}`),
+        Agent.delete(`${API_ROUTES.TRANSACTION_LINKS.DELETE}/${id}`),
 }
 
-export default TransactionLinkApi;
+export default TransactionLinksApi;

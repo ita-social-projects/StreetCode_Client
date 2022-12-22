@@ -4,7 +4,7 @@ import Partner from "models/partners/partners.model";
 
 const PartnersApi = {
    getById: (id: number) =>
-       Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET_BY_ID}/${id}`),
+       Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`),
 
     getAll: () =>
         Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_ALL}`),
@@ -19,8 +19,7 @@ const PartnersApi = {
         Agent.put<Partner>(`${API_ROUTES.PARTNERS.UPDATE}`, partner),
 
     delete: (id: number) =>
-        Agent.delete<Partner>(`${API_ROUTES.PARTNERS.DELETE}/${id}`),
-
+        Agent.delete(`${API_ROUTES.PARTNERS.DELETE}/${id}`),
 }
 
 export default PartnersApi;
