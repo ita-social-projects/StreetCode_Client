@@ -13,11 +13,10 @@ const useRouter = <T extends {} | string = any> () => {
                 ...params,
             },
             location,
+            queryString: location.search
         }),
         [params, location]
     );
 }
-
-
 
 export default useRouter;
