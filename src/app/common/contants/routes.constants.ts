@@ -47,7 +47,7 @@ export const API_ROUTES = {
         DELETE: 'timeline/delete',
     },
     TOPONYMS: {
-        GET_ALL: 'toponym/get',
+        GET_ALL: 'toponym/getAll',
         CREATE: 'toponym/create',
         GET: 'toponym/getById',
         GET_BY_NAME: 'toponym/getByName',
