@@ -4,7 +4,7 @@ import Tag from "models/additional-content/tag.model";
 
 const TagsApi = {
     getById: (id: number) =>
-        Agent.get<Tag>(`${API_ROUTES.TAGS.GET_BY_ID}/${id}`),
+        Agent.get<Tag>(`${API_ROUTES.TAGS.GET}/${id}`),
 
     getByTitle: (title: string) =>
         Agent.get<Tag>(`${API_ROUTES.TAGS.GET_BY_TITLE}/${title}`),

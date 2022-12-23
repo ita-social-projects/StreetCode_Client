@@ -4,7 +4,7 @@ import { Fact } from "models/streetcode/text-contents.model";
 
 const FactsApi = {
     getById: (id: number) =>
-        Agent.get<Fact>(`${API_ROUTES.FACTS.GET_BY_ID}/${id}`),
+        Agent.get<Fact>(`${API_ROUTES.FACTS.GET}/${id}`),
 
     getAll: () =>
        Agent.get<Fact[]>(`${API_ROUTES.FACTS.GET_ALL}`),
