@@ -4,7 +4,7 @@ import { Term } from "models/streetcode/text-contents.model";
 
 const TermsApi = {
     getById: (id: number) =>
-        Agent.get<Term>(`${API_ROUTES.TERMS.GET_BY_ID}/${id}`),
+        Agent.get<Term>(`${API_ROUTES.TERMS.GET}/${id}`),
 
     getAll: () =>
         Agent.get<Term[]>(`${API_ROUTES.TERMS.GET_ALL}`),

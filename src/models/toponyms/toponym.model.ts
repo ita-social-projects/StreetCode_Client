@@ -1,7 +1,7 @@
 import { ToponymCoordinate } from "models/additional-content/coordinates.model";
 import Streetcode from "models/streetcode/streetcode-types.model";
 
-export interface Toponym {
+export default interface Toponym {
     id: number;
     title: string;
     description?: string | undefined;
