@@ -1,5 +1,5 @@
 import Agent from "./agent.api";
-import { API_ROUTES } from "app/common/contants/routes.constants";
+import { API_ROUTES } from "app/common/contants/api-routes.constants";
 import Toponym  from "models/toponyms/toponym.model";
 
 const ToponymsApi = {
