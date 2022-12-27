@@ -6,7 +6,9 @@ interface Props {
 
 const SourcesSlideItem = (props: Props) => {
     return (
-        <div className={"sourcesSliderItem"}>{props.text}</div>
+        <div className={"sourcesSliderItem"}>
+            <h1>{props.text}</h1>
+        </div>
     );
 }
 
