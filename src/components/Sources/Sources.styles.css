@@ -12,3 +12,8 @@
     height:400px;
     outline:1px solid red;
 }
+
+.slick-track{
+    height: 252px;
+    padding-top:1px;
+}
