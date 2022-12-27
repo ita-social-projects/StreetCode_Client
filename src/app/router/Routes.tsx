@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import {FRONTEND_ROUTES} from "../common/contants/frontend-routes.constants";
 import App from "app/layout/app/App";
-import Streetcode from "components/Streetcode.component";
+import Streetcode from "components/StreetcodeComponent/Streetcode.component";
 
 export const routes: RouteObject[] = [
     {

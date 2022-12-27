@@ -1,0 +1,12 @@
+.sourcesSliderItem{
+    height:250px;
+    width:380px;
+    border-radius: 30px;
+    outline: 1px solid red;
+}
+.slick-next{
+    background: red;
+}
+.slick-prev{
+    background: red;
+}
