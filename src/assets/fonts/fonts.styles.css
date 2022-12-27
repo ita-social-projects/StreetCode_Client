@@ -1,24 +1,216 @@
 @font-face {
-    font-family: 'Closer';
-    src: url('Closer-Light.eot');
-    src: local('Closer Light'), local('Closer-Light'),
-    url('Closer-Light.eot?#iefix') format('embedded-opentype'),
-    url('Closer-Light.woff2') format('woff2'),
-    url('Closer-Light.woff') format('woff'),
-    url('Closer-Light.ttf') format('truetype');
-    font-weight: 300;
+    font-family: 'Closer Text';
+    src: url('CloserText-Black.eot');
+    src: local('CloserText-Black'),
+    url('CloserText-Black.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-Black.woff2') format('woff2'),
+    url('CloserText-Black.woff') format('woff');
+    font-weight: 900;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Closer';
-    src: url('Closer-LightItalic.eot');
-    src: local('Closer Light Italic'), local('Closer-LightItalic'),
-    url('Closer-LightItalic.eot?#iefix') format('embedded-opentype'),
-    url('Closer-LightItalic.woff2') format('woff2'),
-    url('Closer-LightItalic.woff') format('woff'),
-    url('Closer-LightItalic.ttf') format('truetype');
+    font-family: 'Closer Text';
+    src: url('CloserText-BlackItalic.eot');
+    src: local('CloserText-BlackItalic'),
+    url('CloserText-BlackItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-BlackItalic.woff2') format('woff2'),
+    url('CloserText-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text ExtBd';
+    src: url('CloserText-ExtraBold.eot');
+    src: local('CloserText-ExtraBold'),
+    url('CloserText-ExtraBold.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-ExtraBold.woff2') format('woff2'),
+    url('CloserText-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-Bold.eot');
+    src: local('CloserText-Bold'),
+    url('CloserText-Bold.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-Bold.woff2') format('woff2'),
+    url('CloserText-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text ExtBd';
+    src: url('CloserText-ExtraBoldItalic.eot');
+    src: local('CloserText-ExtraBoldItalic'),
+    url('CloserText-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-ExtraBoldItalic.woff2') format('woff2'),
+    url('CloserText-ExtraBoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text ExtLt';
+    src: url('CloserText-ExtraLight.eot');
+    src: local('CloserText-ExtraLight'),
+    url('CloserText-ExtraLight.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-ExtraLight.woff2') format('woff2'),
+    url('CloserText-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-BoldItalic.eot');
+    src: local('CloserText-BoldItalic'),
+    url('CloserText-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-BoldItalic.woff2') format('woff2'),
+    url('CloserText-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-Light.eot');
+    src: local('CloserText-Light'),
+    url('CloserText-Light.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-Light.woff2') format('woff2'),
+    url('CloserText-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text ExtLt';
+    src: url('CloserText-ExtraLightItalic.eot');
+    src: local('CloserText-ExtraLightItalic'),
+    url('CloserText-ExtraLightItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-ExtraLightItalic.woff2') format('woff2'),
+    url('CloserText-ExtraLightItalic.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-Italic.eot');
+    src: local('CloserText-Italic'),
+    url('CloserText-Italic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-Italic.woff2') format('woff2'),
+    url('CloserText-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-LightItalic.eot');
+    src: local('CloserText-LightItalic'),
+    url('CloserText-LightItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-LightItalic.woff2') format('woff2'),
+    url('CloserText-LightItalic.woff') format('woff');
     font-weight: 300;
     font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text Med';
+    src: url('CloserText-MediumItalic.eot');
+    src: local('CloserText-MediumItalic'),
+    url('CloserText-MediumItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-MediumItalic.woff2') format('woff2'),
+    url('CloserText-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text SemBd';
+    src: url('CloserText-SemiBold.eot');
+    src: local('CloserText-SemiBold'),
+    url('CloserText-SemiBold.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-SemiBold.woff2') format('woff2'),
+    url('CloserText-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text SemBd';
+    src: url('CloserText-SemiBoldItalic.eot');
+    src: local('CloserText-SemiBoldItalic'),
+    url('CloserText-SemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-SemiBoldItalic.woff2') format('woff2'),
+    url('CloserText-SemiBoldItalic.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text Med';
+    src: url('CloserText-Medium.eot');
+    src: local('CloserText-Medium'),
+    url('CloserText-Medium.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-Medium.woff2') format('woff2'),
+    url('CloserText-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-Regular.eot');
+    src: local('CloserText-Regular'),
+    url('CloserText-Regular.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-Regular.woff2') format('woff2'),
+    url('CloserText-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-Thin.eot');
+    src: local('CloserText-Thin'),
+    url('CloserText-Thin.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-Thin.woff2') format('woff2'),
+    url('CloserText-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Closer Text';
+    src: url('CloserText-ThinItalic.eot');
+    src: local('CloserText-ThinItalic'),
+    url('CloserText-ThinItalic.eot?#iefix') format('embedded-opentype'),
+    url('CloserText-ThinItalic.woff2') format('woff2'),
+    url('CloserText-ThinItalic.woff') format('woff');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
 }
 

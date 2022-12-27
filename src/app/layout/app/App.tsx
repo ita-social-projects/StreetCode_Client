@@ -5,11 +5,10 @@ import FactsApi from "app/api/facts.api";
 import Header from "../header/Header.component";
 import { Outlet } from "react-router-dom";
 
-const App = () => {
-    const { getAll } = FactsApi;
-    const { value: facts } = useAsync(getAll);
+import Streetcode from "components/StreetcodeComponent/Streetcode.component";
 
-    console.log(facts);
+const App = () => {
+
 
     return (
         <>
