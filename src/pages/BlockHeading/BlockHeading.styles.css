@@ -5,14 +5,15 @@
     align-items: center;
     justify-content: center;
 }
+
 .blockHeadingContainer img{
     z-index: 0;
-    position: absolute;
-    margin-top:-12px;
     margin-left: -62px;
 }
 .blockHeadingContainer h1{
-    z-index: 1;
+    position: relative;
+    left: -62px;
+    top: 41px;
     font-weight:500;
     font-size: 40px;
 }
