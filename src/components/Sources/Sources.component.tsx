@@ -10,7 +10,7 @@ interface Props {
 
 const SourcesComponent = ({  }: Props) => {
     const settings = {
-        dots: false,
+        dots: true,
         arrows:true,
         infinite: true,
         speed: 500,
@@ -18,6 +18,7 @@ const SourcesComponent = ({  }: Props) => {
         slidesToScroll: 1,
 }
     return (
+        <div>
         <div className={"sourcesContainer"}>
             <BlockHeading headingText={"Для фанатів"}/>
             <div style={{height:"250px", display:"flex", alignItems:"center", justifyContent:"center"}}>
@@ -25,6 +26,7 @@ const SourcesComponent = ({  }: Props) => {
                     <SlickSliderTest {...settings}   slides={[<SourcesSlideItem text={"Книги"}/>,<SourcesSlideItem text={"Фільми"}/>,<SourcesSlideItem text={"Статті"}/>,<SourcesSlideItem text={"slide4"}/>]}/>
              </div>
          </div>
+        </div>
         </div>
     );
 }
