@@ -1,0 +1,35 @@
+.interestingFactsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:90%;
+    height:784px;
+    outline: 1px solid red;
+}
+.interestingFactsWrapper{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+
+.interestingFactsSliderContainer{
+    max-width:1200px;
+    height:634px;
+    outline: 1px solid red;
+}
+.heightContainer{
+    height:100%;
+}
+
+.slick-list, .slick-track{
+    height:100%;
+}
+.slick-list{
+    padding:0px 0px 0px 1px;
+}
+.slick-center{
+
+}
+.slick-center .interestingFactSlide{
+    transform: scale(1.52);
+}
