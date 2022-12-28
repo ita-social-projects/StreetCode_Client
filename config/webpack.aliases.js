@@ -10,4 +10,5 @@ module.exports = createWebpackAliases({
     '@layout': '../src/app/layout',
     '@common': '../src/app/common',
     '@stores': '../src/app/stores',
+    '@models': '../src/models',
 });
