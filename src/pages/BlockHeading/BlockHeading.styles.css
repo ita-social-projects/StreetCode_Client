@@ -7,11 +7,13 @@
 }
 .blockHeadingContainer img{
     z-index: 0;
-    position: absolute;
     margin-top:-12px;
     margin-left: -62px;
 }
 .blockHeadingContainer h1{
+    position: relative;
+    left: -62px;
+    top: 3px;
     z-index: 1;
     font-weight:500;
     font-size: 40px;
