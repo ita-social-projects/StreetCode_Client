@@ -1,5 +1,6 @@
 import "./BlockHeading.styles.css"
-const Rhombus = require("../../assets/images/rhombus.png")
+//const Rhombus = require("../../assets/images/rhombus.png")
+import Rhombus from "@assets/images/rhombus.svg";
 interface Props {
     headingText:string
 }
@@ -10,7 +11,7 @@ const BlockHeading = (props: Props) => {
         <div className={"blockHeadingWrapper"}>
 
             <div className={"blockHeadingContainer"}>
-                <img src={Rhombus}/>
+            <Rhombus className={"blockHeadingContainer_img"}/>
              <h1>{props.headingText}</h1>
              </div>
         </div>
