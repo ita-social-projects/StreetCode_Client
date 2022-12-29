@@ -1,0 +1,40 @@
+
+.slick-prev:before {
+    transition:.5s;
+    margin-left: -17px;
+    height: 58px;
+    width: 40px;
+    display: block;
+    content: url("../../assets/images/LeftDefaultSliderArrow.svg");
+}
+.slick-prev:hover:before {
+    filter: brightness(50%);
+}
+
+.slick-next:before {
+    transition:.5s;
+    margin-left: -5px;
+    height: 58px;
+    width: 40px;
+    display: block;
+    content: url("../../assets/images/RightDefaultSliderArrow.svg");
+}
+.slick-next:hover:before {
+    filter: brightness(50%);
+}
+
+.slick-dots li button:before{
+    content:"";
+    width:12px;
+    height:12px;
+    background: #D9D9D9;
+    transition: .5s;
+}
+li.slick-active button:before {
+    background: #8D1F16;
+}
+
+.baseSlider{
+
+    width:100%;
+}
