@@ -1,8 +1,8 @@
-import SlickSlider from "../../pages/SlickSlider/SlickSliderBase";
+import SlickSlider from "../../features/SlickSlider/SlickSliderBase";
 import InterestingFactSliderItem
-    from "../../pages/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem";
+    from "../../features/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem";
 import "./InterestingFacts.styles.css"
-import BlockHeading from "../../pages/BlockHeading/BlockHeading.component";
+import BlockHeading from "../../features/BlockHeading/BlockHeading.component";
 
 interface Props {
 
@@ -25,7 +25,7 @@ const InterestingFactsComponent = ({  }: Props) => {
             <BlockHeading headingText={"Wow-факти"}/>
             <div className={"interestingFactsSliderContainer"}>
                 <div style={{height:"100%"}}>
-                    <SlickSlider className={"heightContainer"} {...settings}   slides={[<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder} />,<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder}/>,<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder}/>,<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder}/>]}/>
+                    <SlickSlider className={"heightContainer"} {...settings}   slides={[<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder}/>,<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder}/>,<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder}/>,<InterestingFactSliderItem TextHeading={"Голова Центральної Ради"} MainText={textPlaceholder} ImageSrc={imagePlaceholder}/>]}/>
                 </div>
             </div>
         </div>
