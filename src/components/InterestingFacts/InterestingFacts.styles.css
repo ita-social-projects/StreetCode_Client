@@ -13,7 +13,7 @@
 }
 
 .interestingFactsSliderContainer{
-    max-width:1200px;
+    width:1200px;
     height:634px;
     outline: 1px solid red;
 }
@@ -27,9 +27,7 @@
 .slick-list{
     padding:0px 0px 0px 1px;
 }
-.slick-center{
 
-}
 .slick-center .interestingFactSlide{
     transform: scale(1.52);
 }
