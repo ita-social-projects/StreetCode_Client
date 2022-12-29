@@ -1,6 +1,4 @@
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
-import "./SlickSlider.styles.css"
+import "./SlickSlider.styles.scss"
 
 import { FC } from "react"
 import Slider, { Settings as SliderProps } from "react-slick"
@@ -13,7 +11,7 @@ const SimpleSlider: FC<Props> = (props) => {
     console.log(props)
 
     return (
-        <div className={"sliderClass"} style={{width: "100%"}}>
+        <div className={"sliderClass"}>
             <Slider {...props}>
                 {props.slides.map(slide => (
                     <div className={'sdg'}>{slide}</div>

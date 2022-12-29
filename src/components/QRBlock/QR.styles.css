@@ -1,9 +1,0 @@
-.QRBlockContainer{
-    height:779px;
-    width:100%;
-    border:1px solid red;
-
-    background-image: url("/src/assets/images/QRbackground.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}

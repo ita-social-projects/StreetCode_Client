@@ -1,6 +1,6 @@
 import "./Sources.styles.css"
 
-import SlickSlider from "@features/SlickSlider/SlickSliderBase";
+import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import SourcesSlideItem from "@features/SlickSlider/SliderItems/SourcesSliderItem/SourcesSliderItem";
 import BlockHeading from "@features/BlockHeading/BlockHeading.component";
 

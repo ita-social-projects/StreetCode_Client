@@ -1,0 +1,45 @@
+@use '@assets/sass/_utils.functions.scss' as *;
+@use '@assets/sass/variables/_variables.colors.scss' as c;
+
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
+@mixin slick-arrow-pseudo($direction) {
+    transition: .5s;
+    margin-left: pxToRem(-17px);
+    height: pxToRem(58px);
+    width: pxToRem(40px);
+    display: block;
+
+    $path: "@assets/images/#{$direction}DefaultSliderArrow.svg";
+    content: url($path);
+}
+
+.slick-prev:before {
+    @include slick-arrow-pseudo(left);
+}
+
+.slick-next:before {
+    @include slick-arrow-pseudo(right);
+}
+
+.slick-prev:hover:before,
+.slick-next:hover:before {
+    filter: brightness(50%);
+}
+
+.slick-dots li button:before {
+    content: '';
+    width: pxToRem(12px);
+    height: pxToRem(12px);
+    background: c.$slider-base-dot-color;
+    transition: .5s;
+}
+
+li.slick-active button:before {
+    background: c.$dark-red-color;
+}
+
+.sliderClass {
+    width: 100%;
+}

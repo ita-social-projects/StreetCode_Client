@@ -1,0 +1,34 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as *;
+
+.interestingFactsContainer {
+    width: 90%;
+    height: pxToRem(784px);
+
+    @include mut.outlined();
+    @include mut.flexed($flex-direction: column, $align-items: center);
+}
+.interestingFactsWrapper {
+    width: 100%;
+    @include mut.flex-centered();
+}
+
+.interestingFactsSliderContainer {
+    width: pxToRem(1200px);
+    height: pxToRem(634px);
+    @include mut.outlined();
+}
+
+.heightContainer,
+.slick-list,
+.slick-track {
+    height: 100%;
+}
+
+.slick-list {
+    @include mut.rem-padded($left: 1px);
+}
+
+.slick-center .interestingFactSlide {
+    transform: scale(1.52);
+}

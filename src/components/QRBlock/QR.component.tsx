@@ -1,4 +1,4 @@
-import "./QR.styles.css"
+import "./QR.styles.scss"
 const bg = require("assets/images/QRbackground.png")
 
 interface Props {

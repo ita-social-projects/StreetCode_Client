@@ -1,0 +1,136 @@
+@use '../variables/variables.fonts' as ft;
+@use '../utils.functions' as *;
+
+// --------------------------Positioning--------------------------
+@mixin flexed($flex-direction: row, $align-items: stretch,
+              $justify-content: stretch, $wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-wrap: $wrap;
+  gap: pxToRem($gap);
+}
+
+@mixin abolute-positioned($top, $right, $bottom, $left) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+// --------------------------Centering----------------------------
+@mixin flex-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin absolute-centered($axes) {
+  position: absolute;
+
+  @if $axes == 'vertical' or $axes == 'v' {
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  @else if $axes == 'horizontal' or $axes == 'h' {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translate(-50%);
+  }
+  @else if $axes == 'both' or $axes == 'b' {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+// --------------------------Bordering----------------------------
+@mixin full-rounded($b-rad) {
+  border-radius: $b-rad;
+  overflow: hidden !important;
+  -webkit-border-radius: $b-rad;
+  background-clip: padding-box;
+}
+
+@mixin rounded($top-left: 0, $top-right: 0, $bottom-right: 0, $bottom-left: 0) {
+
+  $rad: pxToRem($top-left) pxToRem($top-right)
+        pxToRem($bottom-right) pxToRem($bottom-left);
+
+  border-radius: $rad;
+  overflow: hidden !important;
+  -webkit-border-radius: $rad;
+  background-clip: padding-box;
+}
+
+@mixin circular($width : 50px, $height: 50px, $color: green) {
+  width: pxToRem($width);
+  height: $height;
+  border-radius: 50%;
+  background: $color;
+}
+
+// --------------------------Margins-----------------------------
+@mixin rem-margined($top: 0, $right: 0, $bottom: 0, $left: 0) {
+  margin: pxToRem($top) pxToRem($right)
+          pxToRem($bottom) pxToRem($left) !important;
+}
+
+@mixin rem-padded($top: 0, $right: 0, $bottom: 0, $left: 0) {
+  padding: pxToRem($top) pxToRem($right)
+          pxToRem($bottom) pxToRem($left) !important;
+}
+// --------------------------Appearance----------------------------
+@mixin outlined($b-size: 2px, $color: red) {
+  outline: $b-size solid $color !important;
+}
+
+@mixin hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+@mixin bg-image($file) {
+  background-image: url($file);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+// --------------------------Text----------------------------------
+@mixin truncated($line-num: 3) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @supports (-webkit-line-clamp: $line-num) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: $line-num;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// --------------------------Fonts---------------------------------
+@mixin font-faced($font-family: ft.$roboto-font, $font-style: normal,
+                  $font-weight: normal, $font-size: 16px) {
+  font-family: $font-family;
+  // px equivalent for browsers without rem support
+  font-size: $font-size;
+  font-size: pxToRem($font-size);
+  font-weight: $font-weight;
+  font-style: $font-style;
+}
+
+@mixin antialiased {
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
