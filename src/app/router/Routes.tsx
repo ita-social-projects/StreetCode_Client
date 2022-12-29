@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
-import {FRONTEND_ROUTES} from "../common/contants/frontend-routes.constants";
-import App from "app/layout/app/App";
-import Streetcode from "components/StreetcodeComponent/Streetcode.component";
+import { FRONTEND_ROUTES } from "@common/contants/frontend-routes.constants";
+
+import StreetcodeContent from "@/components/StreetcodeComponent/Streetcode.component";
+import App from "@layout/app/App";
 
 export const routes: RouteObject[] = [
     {
@@ -9,7 +10,7 @@ export const routes: RouteObject[] = [
         element: <App />,
         children: [
             //TODO fill paths
-            {path: FRONTEND_ROUTES.STREETCODE.BASE, element: <Streetcode/>}
+            {path: FRONTEND_ROUTES.STREETCODE.BASE, element: <StreetcodeContent/>}
             //{/*{path: '*', element: <NotFound />},*/}
         ]
     }
