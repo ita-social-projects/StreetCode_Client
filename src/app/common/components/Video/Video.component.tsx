@@ -8,9 +8,9 @@ const Video=(props: Props)=> {
     }
   
     const opts: YouTubeProps['opts'] = {
+      className:"YouTube",
       height: '674',
       width: '1200',
-      borderRadius: "50px",
       playerVars: {
         // https://developers.google.com/youtube/player_parameters
         autoplay:0,
@@ -19,7 +19,7 @@ const Video=(props: Props)=> {
   
     return (
       <div className='videoComponent'>
-          <div className='videoComponent1'{...props}>
+          <div {...props}>
               {props.video.map(video1=>
                 (
                   <YouTube className='videoComponent' videoId={video1}  opts={opts} />
