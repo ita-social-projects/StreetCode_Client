@@ -1,0 +1,20 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.sourcesSliderContainer {
+    width: pxToRem(1200px);
+    height: pxToRem(300px);
+    @include mut.outlined();
+    @include mut.flex-centered();
+}
+
+.sourcesContainer {
+    width: 100%;
+    height: pxToRem(400px);
+    @include mut.outlined();
+}
+
+.slick-track {
+    height: pxToRem(252px);
+    padding-top: pxToRem(1px);
+}

@@ -1,0 +1,40 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+p,
+span,
+div {
+  font-family: ft.$roboto-font;
+}
+
+@for $index from 1 through 6 {
+  h#{$index} {
+    font-family: ft.$closer-text-font;
+  }
+}
+
+.App {
+  min-height: 100vh;
+  @include mut.flexed(column);
+}
+
+/*
+.mainContent {
+  flex: 1 0 auto;
+  @include mut.flexed(column);
+  margin-top: 4rem;
+}
+*/
+
+::-webkit-scrollbar {
+  width: .625rem;
+}
+
+::-webkit-scrollbar-track {
+  background: c.$scrollbar-track-color;
+}
+
+::-webkit-scrollbar-thumb {
+  background:  c.$scrollbar-thumb-color;
+}

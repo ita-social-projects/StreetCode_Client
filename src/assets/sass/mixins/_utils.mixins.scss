@@ -1,4 +1,5 @@
 @use '../variables/variables.fonts' as ft;
+@use '../mixins/vendor.mixins' as vnd;
 @use '../utils.functions' as *;
 
 // --------------------------Positioning--------------------------
@@ -12,12 +13,21 @@
   gap: pxToRem($gap);
 }
 
-@mixin abolute-positioned($top, $right, $bottom, $left) {
-  position: absolute;
-  top: $top;
-  right: $right;
-  bottom: $bottom;
-  left: $left;
+@mixin set-positioning($top, $right, $bottom, $left) {
+  top: pxToRem($top);
+  right: pxToRem($right);
+  bottom: pxToRem($bottom);
+  left: pxToRem($left);
+}
+
+@mixin positioned-as($position: relative, $top: 0, $right: 0, $bottom: 0, $left: 0) {
+  position: $position;
+  @include set-positioning($top, $right, $bottom, $left);
+}
+
+@mixin parent-sized {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 // --------------------------Centering----------------------------
@@ -32,48 +42,38 @@
 
   @if $axes == 'vertical' or $axes == 'v' {
     top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    @include vnd.vendored(transform, translateY(-50%));
   }
   @else if $axes == 'horizontal' or $axes == 'h' {
     left: 50%;
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    transform: translate(-50%);
+    @include vnd.vendored(transform, translateX(-50%));
   }
   @else if $axes == 'both' or $axes == 'b' {
     top: 50%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    @include vnd.vendored(transform, translate(-50%, -50%));
   }
 }
 
 // --------------------------Bordering----------------------------
-@mixin full-rounded($b-rad) {
-  border-radius: $b-rad;
-  overflow: hidden !important;
-  -webkit-border-radius: $b-rad;
-  background-clip: padding-box;
-}
-
 @mixin rounded($top-left: 0, $top-right: 0, $bottom-right: 0, $bottom-left: 0) {
-
-  $rad: pxToRem($top-left) pxToRem($top-right)
-        pxToRem($bottom-right) pxToRem($bottom-left);
+  $rad: $top-left $top-right $bottom-right $bottom-left;
 
   border-radius: $rad;
-  overflow: hidden !important;
   -webkit-border-radius: $rad;
+
+  overflow: hidden !important;
   background-clip: padding-box;
 }
 
-@mixin circular($width : 50px, $height: 50px, $color: green) {
-  width: pxToRem($width);
-  height: $height;
-  border-radius: 50%;
+@mixin full-rounded($rad) {
+  @include rounded($rad, $rad, $rad, $rad);
+}
+
+@mixin circular($radius: 50px, $color: red) {
+  width: pxToRem($radius);
+  height: pxToRem($radius);
+  @include full-rounded(50%);
   background: $color;
 }
 
@@ -97,9 +97,9 @@
   visibility: hidden !important;
 }
 
-@mixin bg-image($file) {
+@mixin bg-image($file, $repeat: no-repeat) {
   background-image: url($file);
-  background-repeat: no-repeat;
+  background-repeat: $repeat;
   background-size: cover;
 }
 // --------------------------Text----------------------------------

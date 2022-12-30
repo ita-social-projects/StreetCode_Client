@@ -1,4 +1,4 @@
-import "./Sources.styles.css"
+import "./Sources.styles.scss"
 
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import SourcesSlideItem from "@features/SlickSlider/SliderItems/SourcesSliderItem/SourcesSliderItem";

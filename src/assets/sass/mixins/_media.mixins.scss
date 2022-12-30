@@ -8,10 +8,10 @@ $breakpoints: (
 ) !default;
 $media-direction: max !default;
 
-@mixin css_property($property, $value){
-  @if type_of($value) == string{
+@mixin css_property($property, $value) {
+  @if type_of($value) == string {
     #{$property}: unquote($value);
-  }@else{
+  } @else {
     #{$property}: $value;
   }
 }

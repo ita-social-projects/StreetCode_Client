@@ -1,0 +1,49 @@
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-submenu-active {
+  color: wheat;
+}
+
+.ant-form-inline .ant-form-item-with-help {
+  margin-bottom: 0;
+}
+
+.ant-layout-sider-zero-width-trigger {
+  margin-top: .625rem;
+}
+
+.ant-select-item.ant-select-item-option.ant-select-item-option-active,
+.ant-mentions-dropdown-menu-item-active
+{
+  background-color: c.$ant-menu-color;
+}
+
+.ant-layout-sider.ant-layout-sider-collapsed {
+  box-shadow: none;
+}
+
+.ant-menu-submenu-popup .ant-menu.ant-menu-sub {
+  color: white;
+  background-color: c.$ant-menu-color;
+  @include mut.rem-padded(5px, 5px, 10px, 15px);
+}
+
+.ant-menu-item-selected,
+.ant-menu-item-selected .anticon
+{
+  color: unset !important;
+}
+
+.anticon.anticon-bell {
+  margin: 0;
+}
+
+.ant-progress {
+  margin: auto;
+}
+
+.ant-drawer-title {
+  width: 90%;
+}
