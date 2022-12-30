@@ -48,10 +48,6 @@
   justify-content: center;
   align-items: center;
 }
-@mixin flex-centered-in-width {
-  display: flex;
-  justify-content: center;
-}
 @mixin absolute-centered($axes) {
   position: absolute;
 
