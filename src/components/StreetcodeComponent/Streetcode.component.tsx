@@ -11,8 +11,6 @@ interface Props {
 
 const StreetcodeContent = (props: Props) => (
     <div className='streetcodeContainer'>
-        <SourcesComponent />
-        <InterestingFactsComponent />
     </div>
     )
 
