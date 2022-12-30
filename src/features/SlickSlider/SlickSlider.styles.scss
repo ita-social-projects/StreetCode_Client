@@ -4,9 +4,9 @@
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 
-@mixin slick-arrow-pseudo($direction) {
+@mixin slick-arrow-pseudo($direction, $margin) {
     transition: .5s;
-    margin-left: pxToRem(-17px);
+    margin-left: pxToRem($margin);
     height: pxToRem(58px);
     width: pxToRem(40px);
     display: block;
@@ -16,11 +16,11 @@
 }
 
 .slick-prev:before {
-    @include slick-arrow-pseudo(left);
+    @include slick-arrow-pseudo(left, -17px);
 }
 
 .slick-next:before {
-    @include slick-arrow-pseudo(right);
+    @include slick-arrow-pseudo(right, -5px);
 }
 
 .slick-prev:hover:before,
