@@ -28,14 +28,14 @@
 
     .heading {
         @include mut.rem-padded(11px, 20px, 10px, 20px);
-        @include mut.font-faced($font-weight: 500, $font-size: 17px);
+        @include mut.with-font($font-weight: 500, $font-size: 17px);
         line-height: pxToRem(20px);
         color: c.$accented-red-color;
     }
 
     .mainText {
         @include mut.rem-padded(0, 20px, 35px, 20px);
-        @include mut.font-faced($font-weight: 300, $font-size: 13px);
+        @include mut.with-font($font-weight: 300, $font-size: 13px);
         line-height: pxToRem(15px);
         color: c.$lighter-black-color;
     }
