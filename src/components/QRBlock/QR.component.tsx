@@ -1,6 +1,7 @@
 import "./QR.styles.scss"
-let IPhone = require("../../assets/images/QR_Iphone.png");
-let QR = require("../../assets/images/QR.png");
+let IPhone = require("@assets/images/QR_Iphone.png");
+let QR = require("@assets/images/QR.png");
+
 interface Props {
 
 }
@@ -16,7 +17,7 @@ const QRComponent = ({  }: Props) => {
                     <div className={"QRBlockTextWrapper"}>
                     <h1>AR-історія в Інсті!</h1>
                     <p>Переходь за QR-кодом, фокусуй камеру <br/>на ілюстрації та вітай нову реальність.</p>
-                    <p className={"p_bold"}>Скануй, щоб завіртуалити історію!</p>
+                    <p className={"pBold"}>Скануй, щоб завіртуалити історію!</p>
                     <img src={QR}/>
                     </div>
                 </div>
