@@ -1,0 +1,13 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+
+.readMore
+{
+    color: c.$dark-red-color;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.readMore-block
+{
+    @include mut.rem-margined($top: 35px,$bottom: 50px);
+}

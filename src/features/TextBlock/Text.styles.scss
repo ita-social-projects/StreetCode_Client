@@ -1,0 +1,13 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.textComponentContainer{
+    @include mut.sized(100%, auto);
+}
+.TextContainer{
+    @include mut.rem-margined($top: 59px);
+    @include mut.with-font();
+    @include mut.sized(1200px, auto);
+}
+.text-all{
+    white-space:"pre-line" 
+}
