@@ -1,0 +1,9 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as *;
+
+.QRBlockContainer {
+    width: 100%;
+    height: pxToRem(779px);
+    @include mut.outlined();
+    @include mut.bg-image("/src/assets/images/QRbackground.png");
+}

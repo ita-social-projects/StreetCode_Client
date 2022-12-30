@@ -1,4 +1,4 @@
-import "./InterestingFactSliderItem.styles.css"
+import "./InterestingFactSliderItem.styles.scss";
 
 interface Props {
     MainText:string,

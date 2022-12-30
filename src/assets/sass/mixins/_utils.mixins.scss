@@ -1,0 +1,136 @@
+@use '../variables/variables.fonts' as ft;
+@use '../mixins/vendor.mixins' as vnd;
+@use '../utils.functions' as *;
+
+// --------------------------Positioning--------------------------
+@mixin flexed($flex-direction: row, $align-items: stretch,
+              $justify-content: stretch, $wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-wrap: $wrap;
+  gap: pxToRem($gap);
+}
+
+@mixin set-positioning($top, $right, $bottom, $left) {
+  top: pxToRem($top);
+  right: pxToRem($right);
+  bottom: pxToRem($bottom);
+  left: pxToRem($left);
+}
+
+@mixin positioned-as($position: relative, $top: 0, $right: 0, $bottom: 0, $left: 0) {
+  position: $position;
+  @include set-positioning($top, $right, $bottom, $left);
+}
+
+@mixin parent-sized {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+// --------------------------Centering----------------------------
+@mixin flex-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin absolute-centered($axes) {
+  position: absolute;
+
+  @if $axes == 'vertical' or $axes == 'v' {
+    top: 50%;
+    @include vnd.vendored(transform, translateY(-50%));
+  }
+  @else if $axes == 'horizontal' or $axes == 'h' {
+    left: 50%;
+    @include vnd.vendored(transform, translateX(-50%));
+  }
+  @else if $axes == 'both' or $axes == 'b' {
+    top: 50%;
+    left: 50%;
+    @include vnd.vendored(transform, translate(-50%, -50%));
+  }
+}
+
+// --------------------------Bordering----------------------------
+@mixin rounded($top-left: 0, $top-right: 0, $bottom-right: 0, $bottom-left: 0) {
+  $rad: $top-left $top-right $bottom-right $bottom-left;
+
+  border-radius: $rad;
+  -webkit-border-radius: $rad;
+
+  overflow: hidden !important;
+  background-clip: padding-box;
+}
+
+@mixin full-rounded($rad) {
+  @include rounded($rad, $rad, $rad, $rad);
+}
+
+@mixin circular($radius: 50px, $color: red) {
+  width: pxToRem($radius);
+  height: pxToRem($radius);
+  @include full-rounded(50%);
+  background: $color;
+}
+
+// --------------------------Margins-----------------------------
+@mixin rem-margined($top: 0, $right: 0, $bottom: 0, $left: 0) {
+  margin: pxToRem($top) pxToRem($right)
+          pxToRem($bottom) pxToRem($left) !important;
+}
+
+@mixin rem-padded($top: 0, $right: 0, $bottom: 0, $left: 0) {
+  padding: pxToRem($top) pxToRem($right)
+          pxToRem($bottom) pxToRem($left) !important;
+}
+// --------------------------Appearance----------------------------
+@mixin outlined($b-size: 2px, $color: red) {
+  outline: $b-size solid $color !important;
+}
+
+@mixin hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+@mixin bg-image($file, $repeat: no-repeat) {
+  background-image: url($file);
+  background-repeat: $repeat;
+  background-size: cover;
+}
+// --------------------------Text----------------------------------
+@mixin truncated($line-num: 3) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @supports (-webkit-line-clamp: $line-num) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: $line-num;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// --------------------------Fonts---------------------------------
+@mixin font-faced($font-family: ft.$roboto-font, $font-style: normal,
+                  $font-weight: normal, $font-size: 16px) {
+  font-family: $font-family;
+  // px equivalent for browsers without rem support
+  font-size: $font-size;
+  font-size: pxToRem($font-size);
+  font-weight: $font-weight;
+  font-style: $font-style;
+}
+
+@mixin antialiased {
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

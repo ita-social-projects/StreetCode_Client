@@ -1,15 +1,13 @@
-import "./SourcesSliderItem.styles.css"
+import "./SourcesSliderItem.styles.scss"
 
 interface Props {
-  text:string
+  text: string
 }
 
-const SourcesSlideItem = (props: Props) => {
-    return (
-        <div className={"sourcesSliderItem"}>
-            <h1>{props.text}</h1>
-        </div>
-    );
-}
+const SourcesSlideItem = (props: Props) => (
+    <div className='sourcesSliderItem'>
+        <h1>{props.text}</h1>
+    </div>
+)
 
-export default SourcesSlideItem;
+export default SourcesSlideItem

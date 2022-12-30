@@ -1,0 +1,16 @@
+@use '@assets/sass/mixins/_utils.mixins.scss' as mut;
+@use '@assets/sass/_utils.functions.scss' as ut;
+
+.sourcesSliderItem {
+    background-image: url("@assets/images/Articles.png");
+    height: ut.pxToRem(250px);
+    width: ut.pxToRem(380px);
+
+    @include mut.flex-centered;
+    @include mut.full-rounded(30);
+
+    h1 {
+        color: white;
+        font-weight: 500;
+    }
+}
