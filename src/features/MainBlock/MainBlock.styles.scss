@@ -1,5 +1,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as *;
 
 .header {
@@ -16,6 +17,55 @@
   @include mut.sized(1200px, 697px);
   background-color: c.$pure-white-color;
   @include mut.full-rounded(50px);
+  display: flex;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .25));
+}
+
+.leftSider {
+  @include mut.sized(45%, 697px);
+  @include mut.full-rounded(50px);
+  background-color: c.$pure-white-color;
+  justify-self: flex-start;
+}
+
+.leftSiderContentContainer {
+  padding: pxToRem(20px);
+  @include mut.parent-sized();
+}
+
+.leftSiderContent {
+  background-color: c.$accented-gray-color;
+  @include mut.full-rounded(30px);
+  @include mut.parent-sized();
+  @include mut.flex-centered();
+}
+
+.rightSider {
+  @include mut.sized(55%, 697px);
+  @include mut.flex-centered();
+  justify-self: flex-end;
+}
+
+.streetcodeIndex {
+  padding: pxToRem(10px);
+  color: c.$dark-red-color;
+  @include mut.with-font($font-weight: bolder);
+}
+
+.streetcodeIndex {
+  padding: 0 pxToRem(10px) pxToRem(10px);
+  color: c.$dark-red-color;
+  @include mut.with-font($font-weight: bolder);
+}
+
+.streetcodeTitle {
+  padding: pxToRem(4px) pxToRem(10px);
+  @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+}
+
+.streetcodeDate {
+  padding: pxToRem(10px);
+  font-size: pxToRem(20px);
 }
 
 .headerContainer {
@@ -24,8 +74,31 @@
   margin: pxToRem(50px);
 }
 
+.tagContainer {
+  @include mut.rem-padded(16px, 0, 16px, 10px);
+  @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+}
+
+.tagItem {
+  padding: pxToRem(9px) pxToRem(12px);
+  color: c.$accented-red-color;
+  border: 2px solid c.$accented-red-color;
+  @include mut.full-rounded(11px);
+  @include mut.flex-centered();
+  font-weight: bold;
+}
+
 .teaserBlock {
-  padding: pxToRem(10px);
+  width: pxToRem(569px);
+  margin: pxToRem(10px);
   color: c.$lighter-black-color;
-  @include mut.font-faced($font-weight: 300);
+  @include mut.flexed($align-items: flex-start, $gap: 26px);
+  @include mut.with-font($font-weight: 300);
+  line-height: 23.44px;
+}
+
+.footer {
+  margin-left: pxToRem(10px);
+  margin-top: pxToRem(26px);
+  @include mut.flexed($justify-content: flex-start, $gap: 20px);
 }

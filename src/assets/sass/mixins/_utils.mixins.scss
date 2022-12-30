@@ -25,14 +25,21 @@
   @include set-positioning($top, $right, $bottom, $left);
 }
 
-@mixin sized($width, $height) {
-  width: pxToRem($width) !important;
-  height: pxToRem($height) !important;
+@mixin sized($width: 100%, $height: 100%) {
+  @if ($width == 'auto' or unit($width) == '%') {
+    width: $width !important;
+  } @else {
+    width: pxToRem($width) !important;
+  }
+  @if ($height == 'auto' or unit($height) == '%') {
+    height: $height !important;
+  } @else {
+    height: pxToRem($height) !important;
+  }
 }
 
 @mixin parent-sized {
-  width: 100% !important;
-  height: 100% !important;
+  @include sized(100%, 100%);
 }
 
 // --------------------------Centering----------------------------
@@ -64,8 +71,8 @@
 @mixin rounded($top-left: 0, $top-right: 0, $bottom-right: 0, $bottom-left: 0) {
   $rad: $top-left $top-right $bottom-right $bottom-left;
 
-  border-radius: $rad;
-  -webkit-border-radius: $rad;
+  border-radius: $rad !important;
+  -webkit-border-radius: $rad !important;
 
   overflow: hidden !important;
   background-clip: padding-box;
@@ -124,7 +131,7 @@
 }
 
 // --------------------------Fonts---------------------------------
-@mixin font-faced($font-family: ft.$roboto-font, $font-style: normal,
+@mixin with-font($font-family: ft.$roboto-font, $font-style: normal,
                   $font-weight: normal, $font-size: 20px) {
   font-family: $font-family;
   // px equivalent for browsers without rem support
