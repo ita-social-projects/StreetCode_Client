@@ -1,0 +1,46 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as *;
+
+$closer-text-family: 'Closer Text';
+$roboto-family: 'Roboto';
+
+$closer-text-extra-light-family: 'Closer Text ExtLt';
+$closer-text-extra-bold-family: 'Closer Text ExtBd';
+$closer-text-semi-bold-family: 'Closer Text SemBd';
+$closer-text-medium-family: 'Closer Text Med';
+
+//----------------------------------------Closer Text-----------------------------------------------
+@include font-face($closer-text-family, 'CloserText-Regular');
+@include font-face($closer-text-family, 'CloserText-Black', 900);
+@include font-face($closer-text-family, 'CloserText-BlackItalic', 900, italic);
+@include font-face($closer-text-family, 'CloserText-Bold', bold);
+@include font-face($closer-text-family, 'CloserText-BoldItalic', bold, italic);
+@include font-face($closer-text-family, 'CloserText-Light', 300);
+@include font-face($closer-text-family, 'CloserText-Italic', $font-style: italic);
+@include font-face($closer-text-family, 'CloserText-LightItalic', 300, italic);
+@include font-face($closer-text-family, 'CloserText-Thin', 100);
+@include font-face($closer-text-family, 'CloserText-ThinItalic', 100, italic);
+
+@include font-face($closer-text-extra-bold-family, 'CloserText-ExtraBold', bold);
+@include font-face($closer-text-extra-bold-family, 'CloserText-ExtraBoldItalic', bold, italic);
+
+@include font-face($closer-text-extra-light-family, 'CloserText-ExtraLight', 200);
+@include font-face($closer-text-extra-light-family, 'CloserText-ExtraLightItalic', 200, italic);
+
+@include font-face($closer-text-medium-family, 'CloserText-Medium', 500);
+@include font-face($closer-text-medium-family, 'CloserText-MediumItalic', 500, italic);
+
+@include font-face($closer-text-semi-bold-family, 'CloserText-SemiBold', 600);
+@include font-face($closer-text-semi-bold-family, 'CloserText-SemiBoldItalic', 600, italic);
+
+//----------------------------------------Roboto---------------------------------------------------
+@include font-face($roboto-family, 'Roboto-Regular');
+@include font-face($roboto-family, 'Roboto-Black', 900);
+@include font-face($roboto-family, 'Roboto-BlackItalic', 900, italic);
+@include font-face($roboto-family, 'Roboto-Bold', bold);
+@include font-face($roboto-family, 'Roboto-Light', 300);
+@include font-face($roboto-family, 'Roboto-Italic', $font-style: italic);
+@include font-face($roboto-family, 'Roboto-BoldItalic', bold, italic);
+@include font-face($roboto-family, 'Roboto-LightItalic', 300, italic);
+@include font-face($roboto-family, 'Roboto-Medium', 500);
+@include font-face($roboto-family, 'Roboto-Thin', 100);
+@include font-face($roboto-family, 'Roboto-ThinItalic', 100, italic);

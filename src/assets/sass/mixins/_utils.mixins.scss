@@ -146,3 +146,38 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@mixin font-face(
+  $font-family,
+  $file-path,
+  $font-weight: normal,
+  $font-style: normal,
+  $fallback: sans-serif
+) {
+  $file-path: '@assets/fonts/#{$file-path}';
+
+  @font-face {
+    font-family: '#{$font-family}';
+
+    src: url($file-path + '.eot');
+    src: local($file-path),
+      url($file-path + '.eot?#iefix') format('embedded-opentype'),
+      url($file-path + '.woff2') format('woff2'),
+      url($file-path + '.woff') format('woff');
+
+    font-weight: $font-weight;
+    font-style: $font-style;
+    font-display: swap;
+  }
+
+  %#{$font-family} {
+    font: {
+      @if $fallback != '' {
+        family: '#{$font-family}', #{$fallback};
+      } @else {
+        family: '#{$font-family}';
+        weight: $font-weight;
+      }
+    }
+  }
+}
