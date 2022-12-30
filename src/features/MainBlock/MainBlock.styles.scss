@@ -22,7 +22,7 @@
 }
 
 .leftSider {
-  @include mut.sized(45%, 697px);
+  @include mut.sized(42.5%, 697px);
   @include mut.full-rounded(50px);
   background-color: c.$pure-white-color;
   justify-self: flex-start;
@@ -41,7 +41,7 @@
 }
 
 .rightSider {
-  @include mut.sized(55%, 697px);
+  @include mut.sized(57.5%, 697px);
   @include mut.flex-centered();
   justify-self: flex-end;
 }
