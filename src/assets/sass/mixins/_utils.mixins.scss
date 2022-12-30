@@ -25,6 +25,11 @@
   @include set-positioning($top, $right, $bottom, $left);
 }
 
+@mixin sized($width, $height) {
+  width: pxToRem($width) !important;
+  height: pxToRem($height) !important;
+}
+
 @mixin parent-sized {
   width: 100% !important;
   height: 100% !important;
@@ -120,7 +125,7 @@
 
 // --------------------------Fonts---------------------------------
 @mixin font-faced($font-family: ft.$roboto-font, $font-style: normal,
-                  $font-weight: normal, $font-size: 16px) {
+                  $font-weight: normal, $font-size: 20px) {
   font-family: $font-family;
   // px equivalent for browsers without rem support
   font-size: $font-size;

@@ -1,0 +1,31 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/_utils.functions.scss" as *;
+
+.header {
+  background-color: c.$pure-white-color;
+}
+
+.mainContent {
+  @include mut.sized(1300px, 800px);
+  @include mut.flex-centered();
+  background-color: c.$accented-gray-color;
+}
+
+.card {
+  @include mut.sized(1200px, 697px);
+  background-color: c.$pure-white-color;
+  @include mut.full-rounded(50px);
+}
+
+.headerContainer {
+  @include mut.sized(1016px, 697px);
+  @include mut.flex-centered();
+  margin: pxToRem(50px);
+}
+
+.teaserBlock {
+  padding: pxToRem(10px);
+  color: c.$lighter-black-color;
+  @include mut.font-faced($font-weight: 300);
+}
