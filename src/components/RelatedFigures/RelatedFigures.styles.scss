@@ -1,0 +1,43 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as *;
+
+.relatedFiguresContainer {
+    width: 90%;
+    height: 100%;
+
+    @include mut.outlined();
+    @include mut.flexed($flex-direction: column, $align-items: center);
+}
+.relatedFiguresWrapper {
+    width: 100%;
+    height: 609px;
+
+    @include mut.flex-centered();
+}
+
+.relatedFiguresSliderContainer {
+    width: pxToRem(1200px);
+    height: auto;
+
+    @include mut.outlined();
+
+    padding-top: 23px;
+
+    .heightContainer,
+    .slick-list,
+    .slick-track,
+    .sliderClass {
+        height: 100%;
+    }
+
+    .slick-track{
+        width: 1224px !important;
+    }
+    
+    .slick-list {
+        @include mut.rem-padded($left: 1px);
+        .slick-slide{
+            width: 306px !important;
+        }
+    }
+}
