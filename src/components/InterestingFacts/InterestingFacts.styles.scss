@@ -7,8 +7,8 @@
 
     @include mut.outlined();
     @include mut.flexed($flex-direction: column, $align-items: center);
-    .blockHeadingContainer{
-        margin-left:10px;
+    .blockHeadingContainer {
+        margin-left: pxToRem(10px);
     }
 }
 .interestingFactsWrapper {
@@ -41,7 +41,7 @@
 .slick-track {
     height: 100%;
 }
-.heightContainer{
+.heightContainer {
     padding-top:23px;
 }
 .slick-list {
