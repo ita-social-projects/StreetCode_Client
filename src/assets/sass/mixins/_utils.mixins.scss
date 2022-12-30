@@ -31,7 +31,8 @@
 }
 
 // --------------------------Centering----------------------------
-@mixin flex-centered {
+@mixin flex-centered($direction:row) {
+  flex-direction: $direction;
   display: flex;
   justify-content: center;
   align-items: center;
