@@ -16,6 +16,6 @@ const StreetcodeContent = (props: Props) => (
         <SourcesComponent />
         <InterestingFactsComponent />
     </div>
-    )
+)
 
 export default StreetcodeContent

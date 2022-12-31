@@ -7,15 +7,32 @@
 
     @include mut.outlined();
     @include mut.flexed($flex-direction: column, $align-items: center);
+    .blockHeadingContainer {
+        margin-left: pxToRem(10px);
+    }
 }
 .interestingFactsWrapper {
     width: 100%;
     @include mut.flex-centered();
+    .slick-dots{
+        bottom:pxToRem(-58px);
+        left:pxToRem(15px);
+    }
+    .slick-next:before, .slick-prev:before{
+        position: relative;
+        top:pxToRem(-17px);
+    }
+    .slick-prev:before{
+        left:pxToRem(-73px);
+    }
+    .slick-next:before{
+        right:pxToRem(-81px);
+    }
 }
 
 .interestingFactsSliderContainer {
     width: pxToRem(1200px);
-    height: pxToRem(634px);
+    height: pxToRem(660px);
     @include mut.outlined();
 }
 
@@ -24,7 +41,9 @@
 .slick-track {
     height: 100%;
 }
-
+.heightContainer {
+    padding-top:23px;
+}
 .slick-list {
     @include mut.rem-padded($left: 1px);
 }
