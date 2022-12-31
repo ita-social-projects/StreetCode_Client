@@ -1,0 +1,25 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+@mixin main-page-block-wrapper {
+  width: 100%;
+  @include mut.flex-centered();
+
+  .slick-dots {
+    @include mut.positioned-as($bottom: -58px, $left: 15px);
+  }
+
+  .slick-next:before,
+  .slick-prev:before {
+    position: relative;
+    top: pxToRem(-17px);
+  }
+
+  .slick-prev:before {
+    left: pxToRem(-73px);
+  }
+
+  .slick-next:before {
+    right: pxToRem(-81px);
+  }
+}

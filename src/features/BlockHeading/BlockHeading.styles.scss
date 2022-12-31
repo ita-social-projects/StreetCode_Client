@@ -3,8 +3,7 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
 .blockHeadingWrapper {
-    width: 100%;
-    height: pxToRem(124px);
+    @include mut.sized(100%, 124px);
     @include mut.flex-centered();
 
     svg {

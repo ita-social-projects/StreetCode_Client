@@ -7,19 +7,15 @@ interface Props extends SliderProps {
     slides: JSX.Element[]
 }
 
-const SimpleSlider: FC<Props> = (props) => {
-    console.log(props)
-
-    return (
-        <div className={"sliderClass"}>
-            <Slider {...props}>
-                {props.slides.map(slide => (
-                    <div className={'sdg'}>{slide}</div>
-                ))}
-            </Slider>
-        </div>
-    );
-}
+const SimpleSlider: FC<Props> = (props) => (
+    <div className={"sliderClass"}>
+        <Slider {...props}>
+            {props.slides.map(slide => (
+                <div>{slide}</div>
+            ))}
+        </Slider>
+    </div>
+)
 
 const defaultProps: SliderProps = {
     dots: true,
@@ -27,10 +23,7 @@ const defaultProps: SliderProps = {
     infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,
-    lazyLoad: 'ondemand',
     speed: 5e2,
-    autoplay: false,
-    autoplaySpeed: 4e3,
 }
 SimpleSlider.defaultProps = defaultProps
 
