@@ -14,8 +14,9 @@ const StreetcodeContent = (props: Props) => (
         <MainBlock />
         <TextComponent/>
         <SourcesComponent />
-        <InterestingFactsComponent />   
+        <InterestingFactsComponent />
+        <QRComponent/>
     </div>
-    )
+)
 
 export default StreetcodeContent

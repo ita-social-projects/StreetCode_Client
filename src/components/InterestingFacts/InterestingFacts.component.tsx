@@ -17,8 +17,7 @@ const textPlaceholder = `7 (20) березня члени Центральної
 
 
 const InterestingFactsComponent = (props: Props) => {
-    const sliderItems = ["Голова Центральної Ради", "Голова Центральної Ради",
-        "Голова Центральної Ради", "Голова Центральної Ради"].map(title => (
+    const sliderItems = ["Голова Центральної Ради","Голова Центральної Ради","Голова Центральної Ради","Голова Центральної Ради","Голова Центральної Ради","Голова Центральної Ради"].map(title => (
         <InterestingFactSliderItem
             TextHeading={title}
             MainText={textPlaceholder}
@@ -35,7 +34,7 @@ const InterestingFactsComponent = (props: Props) => {
                         <SlickSlider
                             className='heightContainer'
                             centerMode
-                            centerPadding='5px'
+                            centerPadding='-12px'
                             slides={sliderItems}
                         />
                     </div>
