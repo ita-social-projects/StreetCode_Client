@@ -15,7 +15,6 @@ $QRBgImg: "/src/assets/images/QRbackground.png";
 .QRBlockContent {
     @include mut.sized(855px, 608px);
     @include mut.flex-centered(row);
-    margin-left: pxToRem(-7px);
 }
 
 .QRBlockImg {
@@ -45,7 +44,7 @@ $QRBgImg: "/src/assets/images/QRbackground.png";
     }
 
     .pBold {
-        @include mut.with-font($font-weight: 500, $font-size: 24px);
+       @include mut.with-font($font-weight: 500, $font-size: 24px);
         color: colors.$lighter-black-color;
 
         padding-left: pxToRem(14px);
