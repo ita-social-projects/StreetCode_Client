@@ -27,6 +27,7 @@
 
         display: flex;
         align-items: center;
+        align-content: flex-start;
         flex-wrap: wrap;
 
         position: absolute;
@@ -50,33 +51,45 @@
             padding-right: 15.37px;
         }
 
-        .tag {
-            width: auto;
-            height: 38px;
-            border-radius: 11px;
-            padding: 9px 12px 9px 12px;
-
-
-            background-color: c.$dark-red-color;
-            border: 2px solid c.$pure-white-color;
+        .tag-list{
+            width: 100%;
+            visibility: hidden;
 
             display: flex;
-            justify-content: center;
             align-items: center;
+            padding-top: 10px;
+            padding-left: 32.06px;
+            padding-right: 15.37px;
+            gap: 5px;
 
-            z-index: 1;
-
-            p {
+            .tag {
                 width: auto;
-                height: 20px;
-
-                font-family: f.$roboto-font;
-                font-style: normal;
-                text-align: center;
-                color: c.$pure-white-color;
-                font-weight: 500;
-                font-size: 15px;
-                line-height: 135.69%;
+                height: 38px;
+                border-radius: 11px;
+                padding: 9px 12px 9px 12px;
+    
+    
+                background-color: c.$dark-red-color;
+                border: 2px solid c.$pure-white-color;
+    
+                display: flex;
+                justify-content: center;
+                align-items: center;
+    
+                z-index: 1;
+    
+                p {
+                    width: auto;
+                    height: 20px;
+    
+                    font-family: f.$roboto-font;
+                    font-style: normal;
+                    text-align: center;
+                    color: c.$pure-white-color;
+                    font-weight: 500;
+                    font-size: 15px;
+                    line-height: 135.69%;
+                }
             }
         }
     }
@@ -95,9 +108,13 @@
         position: inherit;
         top: 0;
         align-self: flex-end;
-    }
 
-    .heading{
-        padding-top: 6px;
+        .heading{
+            padding-top: 6px;
+        }
+
+        .tag-list{
+            visibility: visible;
+        }
     }
 }
