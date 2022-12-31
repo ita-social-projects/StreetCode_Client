@@ -14,7 +14,7 @@ const RelatedFigureSliderItem = (props: Props) => {
                 backgroundImage: "url("+props.ImageSrc+")"}}>
             <div className={"slideText"}>
                 <h3 className={"heading"}>{props.TextHeading}</h3>
-                <div className="tag-list">
+                <div className={"tagList"}>
                     {props.Tags.map(tag =>(<TagItem Tag={tag}></TagItem>))}
                 </div>
             </div>

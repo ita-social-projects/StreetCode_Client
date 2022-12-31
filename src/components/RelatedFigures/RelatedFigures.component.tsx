@@ -19,7 +19,9 @@ var relatedFigures: RelatedFigure[] = [
     {Title:"Володимир Антонович",Image:{id:1,url:{id:1,href:Antonovich}},Tags:[{id:1,title:"Наукова школа"}, {id:1,title:"tag"}]},
     {Title:"Леся Українка",Image:{id:1,url:{id:1,href:Ukrainka}},Tags:[{id:1,title:"tag"}]},
     {Title:"Іван Мазепа",Image:{id:1,url:{id:1,href:Mazepa}},Tags:[{id:1,title:"tag"}]},
-    {Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:[{id:1,title:"tag"}]}]
+    {Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:[{id:1,title:"tag"}]}
+    //,{Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:[{id:1,title:"tag"}]}
+    ]
 
 const RelatedFiguresComponent = (props: Props) => {
     const sliderItems = relatedFigures
@@ -44,6 +46,7 @@ const RelatedFiguresComponent = (props: Props) => {
                         />
                     </div>
                 </div>
+                <a className="moreInfo">Дивитися всіх</a>
             </div>
         </div>
     );

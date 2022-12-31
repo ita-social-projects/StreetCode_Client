@@ -1,5 +1,13 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+
+.relatedFiguresWrapper {
+    width: 100%;
+    height: 681px;
+
+    @include mut.flex-centered();
+}
 
 .relatedFiguresContainer {
     width: 90%;
@@ -7,12 +15,23 @@
 
     @include mut.outlined();
     @include mut.flexed($flex-direction: column, $align-items: center);
-}
-.relatedFiguresWrapper {
-    width: 100%;
-    height: 609px;
+    
+    .moreInfo{
+        position: absolute;
+        left: 200px;
+        top: 652px;
 
-    @include mut.flex-centered();
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 23px;
+        text-decoration-line: underline;
+
+        /* Alt_color2 */
+
+        color: c.$dark-red-color;
+    }
 }
 
 .relatedFiguresSliderContainer {
@@ -35,7 +54,10 @@
     }
     
     .slick-list {
+        height: 452px;
+
         @include mut.rem-padded($left: 1px);
+
         .slick-slide{
             width: 306px !important;
         }
