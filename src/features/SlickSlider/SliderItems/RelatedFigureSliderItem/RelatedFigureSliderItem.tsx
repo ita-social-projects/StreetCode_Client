@@ -7,10 +7,8 @@ interface Props {
 
 const RelatedFigureSliderItem = (props: Props) => {
     return (
-        <div className={"relatedFigureSlide"}>
-            <div className={"slideImage"}>
-                <img src={props.ImageSrc}/>
-            </div>
+        <div className={"relatedFigureSlide"} style={{
+                backgroundImage: "url("+props.ImageSrc+")"}}>
             <div className={"slideText"}>
                 <h3 className={"heading"}>{props.TextHeading}</h3>
             </div>
