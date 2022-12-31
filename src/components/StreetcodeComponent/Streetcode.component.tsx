@@ -15,6 +15,7 @@ const StreetcodeContent = (props: Props) => (
         <MainBlock />
         <SourcesComponent />
         <InterestingFactsComponent />
+        <QRComponent/>
     </div>
 )
 
