@@ -2,7 +2,8 @@ import "./RelatedFigureSliderItem.styles.scss";
 
 interface Props {
     TextHeading:string,
-    ImageSrc:string
+    ImageSrc:string,
+    Tags:string
 }
 
 const RelatedFigureSliderItem = (props: Props) => {
@@ -11,6 +12,9 @@ const RelatedFigureSliderItem = (props: Props) => {
                 backgroundImage: "url("+props.ImageSrc+")"}}>
             <div className={"slideText"}>
                 <h3 className={"heading"}>{props.TextHeading}</h3>
+                <div className="tag">
+                    <p>{props.Tags}</p>
+                </div>
             </div>
         </div>
     );

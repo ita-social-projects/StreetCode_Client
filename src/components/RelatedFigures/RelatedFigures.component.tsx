@@ -16,10 +16,10 @@ interface Props {
 }
 
 var relatedFigures: RelatedFigure[] = [
-    {Title:"Володимир Антонович",Image:{id:1,url:{id:1,href:Antonovich}}},
-    {Title:"Леся Українка",Image:{id:1,url:{id:1,href:Ukrainka}}},
-    {Title:"Іван Мазепа",Image:{id:1,url:{id:1,href:Mazepa}}},
-    {Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}}}]
+    {Title:"Володимир Антонович",Image:{id:1,url:{id:1,href:Antonovich}},Tags:"Наукова школа"},
+    {Title:"Леся Українка",Image:{id:1,url:{id:1,href:Ukrainka}},Tags:"tag"},
+    {Title:"Іван Мазепа",Image:{id:1,url:{id:1,href:Mazepa}},Tags:"tag"},
+    {Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:"tag"}]
 
 const RelatedFiguresComponent = (props: Props) => {
     const sliderItems = relatedFigures
@@ -27,6 +27,7 @@ const RelatedFiguresComponent = (props: Props) => {
         <RelatedFigureSliderItem
             TextHeading={figure.Title}
             ImageSrc={figure.Image.url.href}
+            Tags={figure.Tags}
         />
     ))
 
