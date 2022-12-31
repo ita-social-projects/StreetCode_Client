@@ -15,7 +15,6 @@
     width:pxToRem(855px);
     height:pxToRem(608px);
     @include mut.flex-centered(row);
-    @include mut.rem-margined($left:-7px);
 }
 
 .QRBlockImg {
@@ -29,19 +28,19 @@
     height:100%;
     @include mut.flexed(column, flex-end, center);
     h1 {
-        @include mut.font-faced(fonts.$closer-text-font, normal, 500, 30px);
+        @include mut.with-font(fonts.$closer-text-font, normal, 500, 30px);
         @include mut.rem-padded($left:14px);
         @include mut.rem-margined($top:2px);
         color: colors.$accented-red-color;
     }
     p {
-        @include mut.font-faced(fonts.$roboto-font, normal, 200, 20px);
+        @include mut.with-font(fonts.$roboto-font, normal, 200, 20px);
         @include mut.rem-padded($left:14px);
         @include mut.rem-margined($top:22px);
         color: colors.$lighter-black-color;
     }
     .pBold {
-        @include mut.font-faced(fonts.$roboto-font, normal, 500, 24px);
+        @include mut.with-font(fonts.$roboto-font, normal, 500, 24px);
         @include mut.rem-padded($left:14px);
         color: colors.$lighter-black-color;
         margin-top: pxToRem(33px) !important;
