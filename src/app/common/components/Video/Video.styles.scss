@@ -1,0 +1,10 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.videoComponent{
+    @include mut.rem-margined($bottom: 50px);
+    @include mut.full-rounded(50px);
+   
+}
+.videoComponent{
+    overflow: hidden;
+}
