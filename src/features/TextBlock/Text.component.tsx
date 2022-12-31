@@ -13,12 +13,12 @@ const TextComponent = ({ }: Props) => {
    return (
       <div className={"textComponentContainer"}>
         <BlockHeading headingText={"Професор історії, гіпстер чи політик?"}/>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <div className="textComponent">
             <div className={"TextContainer"}>
               <ReadMore children={text1}></ReadMore> 
             </div>   
           </div>
-          <div className="videoComponent" style={{ display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <div className="videoComponent">
             <Video video={["f55dHPEY-0U"]}/>
           </div>
       </div>

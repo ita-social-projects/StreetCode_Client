@@ -11,3 +11,9 @@
 .text-all{
     white-space:"pre-line" 
 }
+.videoComponent{
+    @include mut.flex-centered();
+}
+.textComponent{
+    @include mut.flex-centered();
+}
