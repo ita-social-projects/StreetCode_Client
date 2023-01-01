@@ -25,6 +25,7 @@ const SourcesComponent = (props: Props) => {
                             <SlickSlider
                                 dots={false}
                                 autoplay
+                                swipe={false}
                                 autoplaySpeed={5e3}
                                 slides={slides}
                             />
