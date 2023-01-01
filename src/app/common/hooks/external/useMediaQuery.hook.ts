@@ -1,10 +1,28 @@
 import { useEffect, useState } from "react";
 
-const useMediaQuery = (query: string) => {
+/*
+Ex.
+  export default function Component() {
+      const matches = useMediaQuery('max-width', '768px');
+
+      return (
+        <div>
+          {`The view port is ${matches ? 'at least' : 'less than'} 768 pixels wide`}
+        </div>
+      );
+  }
+*/
+type MediaDirection = 'min-width' | 'max-width';
+
+const useMediaQuery = (value: number | string, direction: MediaDirection = 'min-width', unit: string = 'px') => {
     const [matches, setMatches] = useState(false);
 
     useEffect(() => {
-        const mediaList = window.matchMedia(query);
+        if (typeof value === 'string') {
+            parseInt((value.endsWith(unit)) ? value.replace(unit, '') : value);
+        }
+        
+        const mediaList = window.matchMedia(`(${direction}: ${value})`);
 
         if (mediaList.matches !== matches) {
             setMatches(mediaList.matches);
@@ -14,7 +32,7 @@ const useMediaQuery = (query: string) => {
         window.addEventListener('resize', listener);
 
         return () => window.removeEventListener('resize', listener);
-    }, [matches, query]);
+    }, [matches, direction, unit, value]);
 
     return matches;
 }

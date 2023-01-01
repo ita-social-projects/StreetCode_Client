@@ -1,3 +1,5 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+
 /// Vendor prefixes.
 /// @var {list}
 $vendor-prefixes: (
@@ -41,37 +43,6 @@ $vendor-values: (
         'transform'
 );
 
-/// Replaces a substring within another string.
-/// @param {string} $string String.
-/// @param {string} $search Substring.
-/// @param {string} $replace Replacement.
-/// @return {string} Updated string.
-@function str-replace($string, $search, $replace: '') {
-
-  $index: str-index($string, $search);
-
-  @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
-  }
-
-  @return $string;
-}
-
-/// Replaces a substring within each string in a list.
-/// @param {list} $strings List of strings.
-/// @param {string} $search Substring.
-/// @param {string} $replace Replacement.
-/// @return {list} Updated list of strings.
-@function str-replace-all($strings, $search, $replace: '') {
-
-  @each $string in $strings {
-    $strings: set-nth($strings, index($strings, $string), str-replace($string, $search, $replace));
-  }
-
-  @return $strings;
-
-}
-
 /// Vendorizes a declaration's property and/or value(s).
 /// @param {string} $property Property.
 /// @param {mixed} $value String/list of value(s).
@@ -96,14 +67,14 @@ $vendor-values: (
   // Expand property?
   @if $expandProperty {
     @each $vendor in $vendor-prefixes {
-      #{$vendor}#{$property}: #{str-replace-all($value, '-prefix-', $vendor)};
+      #{$vendor}#{$property}: #{f.str-replace-all($value, '-prefix-', $vendor)};
     }
   }
 
     // Expand just the value?
   @else if $expandValue {
     @each $vendor in $vendor-prefixes {
-      #{$property}: #{str-replace-all($value, '-prefix-', $vendor)};
+      #{$property}: #{f.str-replace-all($value, '-prefix-', $vendor)};
     }
   }
 
