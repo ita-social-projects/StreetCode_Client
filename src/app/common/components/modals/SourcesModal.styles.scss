@@ -1,0 +1,51 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+$bookImg: "@assets/images/Books_stretched.png";
+
+.ant-modal-content {
+  padding: 0 !important;
+  @include mut.full-rounded(30px);
+}
+
+.ant-modal-close {
+  @include mut.hidden();
+}
+
+.sourceImgContainer {
+  @include mut.sized(100%, 160px);
+  @include mut.flex-centered();
+  @include mut.bg-image($bookImg);
+
+  h1 {
+    color: white;
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+  }
+}
+
+.sourcesContentContainer {
+  @include mut.flexed($direction: column, $gap: 15px);
+  margin: pxToRem(30px);
+
+  h1 {
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+    line-height: pxToRem(48px);
+  }
+}
+
+.volumeContainer {
+  @include mut.flexed($direction: column, $gap: 10px);
+
+  p {
+    font-weight: 300;
+    line-height: pxToRem(18px);
+
+    &:hover {
+      color: #4F4242;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

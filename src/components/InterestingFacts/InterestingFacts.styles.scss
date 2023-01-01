@@ -1,39 +1,22 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/mixins/_wrapper.mixins.scss" as wr;
 
 .interestingFactsContainer {
-    width: 90%;
-    height: pxToRem(784px);
+    @include mut.sized(90%, 784px);
+    @include mut.flex-centered($direction: column);
 
-    @include mut.outlined();
-    @include mut.flexed($flex-direction: column, $align-items: center);
     .blockHeadingContainer {
         margin-left: pxToRem(10px);
     }
 }
+
 .interestingFactsWrapper {
-    width: 100%;
-    @include mut.flex-centered();
-    .slick-dots{
-        bottom:pxToRem(-58px);
-        left:pxToRem(15px);
-    }
-    .slick-next:before, .slick-prev:before{
-        position: relative;
-        top:pxToRem(-17px);
-    }
-    .slick-prev:before{
-        left:pxToRem(-73px);
-    }
-    .slick-next:before{
-        right:pxToRem(-81px);
-    }
+    @include wr.main-page-block-wrapper();
 }
 
 .interestingFactsSliderContainer {
-    width: pxToRem(1200px);
-    height: pxToRem(660px);
-    @include mut.outlined();
+    @include mut.sized(1200px, 660px);
 }
 
 .heightContainer,
@@ -41,11 +24,9 @@
 .slick-track {
     height: 100%;
 }
+
 .heightContainer {
-    padding-top:23px;
-}
-.slick-list {
-    @include mut.rem-padded($left: 1px);
+    padding-top: pxToRem(23px);
 }
 
 .slick-center .interestingFactSlide {

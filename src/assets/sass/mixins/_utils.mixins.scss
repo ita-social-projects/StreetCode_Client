@@ -1,12 +1,13 @@
 @use '../variables/variables.fonts' as ft;
+@use '../variables/variables.colors' as c;
 @use '../mixins/vendor.mixins' as vnd;
 @use '../utils.functions' as *;
 
 // --------------------------Positioning--------------------------
-@mixin flexed($flex-direction: row, $align-items: stretch,
+@mixin flexed($direction: row, $align-items: stretch,
               $justify-content: stretch, $wrap: nowrap, $gap: 0) {
   display: flex;
-  flex-direction: $flex-direction;
+  flex-direction: $direction;
   justify-content: $justify-content;
   align-items: $align-items;
   flex-wrap: $wrap;
@@ -25,13 +26,13 @@
   @include set-positioning($top, $right, $bottom, $left);
 }
 
-@mixin sized($width: 100%, $height: 100%) {
-  @if ($width == 'auto' or unit($width) == '%') {
+@mixin sized($width: auto, $height: auto) {
+  @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
     width: $width !important;
   } @else {
     width: pxToRem($width) !important;
   }
-  @if ($height == 'auto' or unit($height) == '%') {
+  @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
     height: $height !important;
   } @else {
     height: pxToRem($height) !important;
@@ -43,9 +44,9 @@
 }
 
 // --------------------------Centering----------------------------
-@mixin flex-centered($direction:row) {
-  flex-direction: $direction;
+@mixin flex-centered($direction: row) {
   display: flex;
+  flex-direction: $direction;
   justify-content: center;
   align-items: center;
 }
@@ -131,8 +132,12 @@
 }
 
 // --------------------------Fonts---------------------------------
-@mixin with-font($font-family: ft.$roboto-font, $font-style: normal,
-                  $font-weight: normal, $font-size: 20px) {
+@mixin with-font(
+  $font-family: ft.$roboto-font,
+  $font-weight: normal,
+  $font-size: 20px,
+  $font-style: normal
+) {
   font-family: $font-family;
   // px equivalent for browsers without rem support
   font-size: $font-size;

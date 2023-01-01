@@ -1,4 +1,5 @@
 @use '@assets/sass/_utils.functions.scss' as *;
+@use '@assets/sass/mixins/_utils.mixins.scss' as mut;
 @use '@assets/sass/variables/_variables.colors.scss' as c;
 
 @import "slick-carousel/slick/slick.css";
@@ -7,12 +8,23 @@
 @mixin slick-arrow-pseudo($direction, $margin) {
     transition: .5s;
     margin-left: pxToRem($margin);
-    height: pxToRem(58px);
-    width: pxToRem(40px);
-    display: block;
+    @include mut.sized(40px, 58px);
 
     $path: "@assets/images/#{$direction}DefaultSliderArrow.svg";
     content: url($path);
+}
+
+.slick-next,
+.slick-prev {
+    pointer-events: none;
+
+    &:hover:before {
+        filter: brightness(50%);
+    }
+
+    &:before {
+        pointer-events: all;
+    }
 }
 
 .slick-prev:before {
@@ -23,15 +35,9 @@
     @include slick-arrow-pseudo(right, -5px);
 }
 
-.slick-prev:hover:before,
-.slick-next:hover:before {
-    filter: brightness(50%);
-}
-
 .slick-dots li button:before {
     content: '';
-    width: pxToRem(12px);
-    height: pxToRem(12px);
+    @include mut.sized(12px, 12px);
     background: c.$slider-base-dot-color;
     transition: .5s;
 }
