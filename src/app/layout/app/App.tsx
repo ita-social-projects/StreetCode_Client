@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import Header from "../header/Header.component";
 import { Outlet } from "react-router-dom";
 import SourcesModal from "@common/components/modals/SourcesModal.component";
+import Footer from '../footer/Footer.component';
 
 const App = () => (
     <>
@@ -13,6 +14,7 @@ const App = () => (
                 <SourcesModal />
                 <Header />
                 <Outlet />
+                <Footer/>   
             </>
         }
     </>
