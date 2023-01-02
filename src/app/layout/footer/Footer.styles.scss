@@ -48,6 +48,10 @@
 }
 .li-item{
     margin-bottom: pxToRem(8px);
+    cursor: pointer;
+}
+.li-item:hover{
+    color: c.$lighter-gray-color;
 }
 .social-icons{
     color: c.$pure-white-color;
@@ -57,7 +61,7 @@
     float: left;
     display:inline;
 }
-.fa-brands{
+.brands{
     display:inline;
     margin-right: pxToRem(14.62px);
 }

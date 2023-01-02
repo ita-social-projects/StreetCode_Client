@@ -20,31 +20,31 @@ const Footer = ({  }: Props) => {
                     <img className='footer-icon' src={StreetcodeFooter} />
                 </div>
                 <div className="useful-links">
-                    <div className="use-links">
+                    <ul className="use-links">
                           <li className="li-item">Головна</li>
                           <li className="li-item">Стрідкоди</li>
                           <li className="li-item">Маршрути</li>
                           <li className="li-item">Блог</li>
                           <li className="li-item">Про проект</li>
                           <li className="li-item">Контакти</li>        
-                    </div>
-                    <div className="use-links">  
+                    </ul>
+                    <ul className="use-links">  
                           <li className="li-item">Партнери</li>
                           <li className="li-item">Вакансії</li>
                           <li className="li-item">Донати</li>
-                    </div>
-                    <div className="use-links support-links">
+                    </ul>
+                    <ul className="use-links support-links">
                           <li className="li-item">Політика конфіденційності</li>
                           <li className="li-item">Зворотній з'язок</li>
                           <li className="li-item">Cookies</li>
-                    </div>
-                    <div className="social-icons">
-                          <li className="fa-brands"><a href=""><img src={FaceBook} /></a></li>
-                          <li className="fa-brands"><a href=""><img src={Instagram} /> </a></li>
-                          <li className="fa-brands"><a href=""><img src={TikTok} /></a></li>
-                          <li className="fa-brands"><a href=""><img src={Twitter}/></a></li>
-                    </div>
-                </div>
+                    </ul>
+                    <ul className="social-icons">
+                          <li className="brands"><a href=""><img src={FaceBook} /></a></li>
+                          <li className="brands"><a href=""><img src={Instagram} /> </a></li>
+                          <li className="brands"><a href=""><img src={TikTok} /></a></li>
+                          <li className="brands"><a href=""><img src={Twitter}/></a></li>
+                    </ul>
+                  </div>
               </div>
           </footer>
           <section>
