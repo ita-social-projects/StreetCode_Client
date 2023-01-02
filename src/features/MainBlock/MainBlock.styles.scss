@@ -3,9 +3,18 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as *;
 
+
+.margin-45px{
+  margin-top: pxToRem(45px);
+}
+
 .mainStreetcodeBlock {
   @include mut.flex-centered();
-  background: url('@assets/images/background.png');
+  @include mut.bg-image('@assets/images/background.png');
+}
+
+.font-weight-500 {
+  font-weight: 500;
 }
 
 .mainContainer {
@@ -20,11 +29,11 @@
   right: pxToRem(50px);
 }
 
-:where(.css-dev-only-do-not-override-26rdvq).ant-breadcrumb .ant-breadcrumb-separator {
+.ant-breadcrumb .ant-breadcrumb-separator {
   margin-inline: 5px !important;
 }
 
-:where(.css-dev-only-do-not-override-26rdvq).ant-breadcrumb a {
+.ant-breadcrumb a {
   color: c.$dark-red-color;
 }
 
@@ -32,7 +41,7 @@
   display: inline-block;
   @include mut.sized(4px, 4px);
   background-color: c.$dark-red-color;
-  margin-bottom: pxToRem(2px);;
+  margin-bottom: pxToRem(2px);
 }
 
 .breadcrumbItem {
@@ -111,12 +120,16 @@
 .tagItem {
   @include mut.rem-padded(8px, 10px, 8px, 10px);
   color: c.$accented-red-color;
-  height: 38px;
+  height: pxToRem(38px);
   border: 2px solid c.$accented-red-color;
-  border-color: c.$accented-red-color;
   @include mut.full-rounded(11px);
   @include mut.flex-centered();
   @include mut.with-font($font-weight: bold, $font-size: 15px);
+
+  &:hover {
+    color: c.$dark-red-color !important;
+    border-color: c.$dark-red-color !important;
+  }
 }
 
 .teaserBlock {
@@ -140,16 +153,26 @@
   border-color: c.$accented-red-color;
   @include mut.full-rounded(14px);
   background-color: c.$accented-red-color;
+
+  &:hover {
+    border-color: c.$dark-red-color !important;
+    background-color: c.$dark-red-color !important;
+  }
 }
 
 .animateFigureBtn {
   @include mut.sized(218px, 73px);
   @include mut.with-font($font-weight: 500);
   border-color: c.$accented-red-color;
-  border-width: pxToRem(3px);
+  border-width: 3px;
   @include mut.flex-centered();
   @include mut.full-rounded(14px);
   color: c.$accented-red-color;
+
+  &:hover {
+    color: c.$dark-red-color !important;
+    border-color: c.$dark-red-color !important;
+  }
 }
 
 .playCircle {
