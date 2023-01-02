@@ -14,7 +14,6 @@ const App = () => (
                 <SourcesModal />
                 <Header />
                 <Outlet />
-                <Footer/>   
             </>
         }
     </>
