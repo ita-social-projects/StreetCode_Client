@@ -36,7 +36,7 @@
 
 .useful-links{
     display: flex;
-    @include mut.sized($width: 52%, $height: 100%);
+    @include mut.sized($width: 60%, $height: 100%);
 }
 .use-links{
     color: c.$pure-white-color;
