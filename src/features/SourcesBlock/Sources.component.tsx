@@ -29,7 +29,7 @@ const SourcesComponent = (props: Props) => {
                                 autoplaySpeed={5e3}
                                 slides={slides}
                             />
-                            <p className={"seeMoreBtn"}>Дивитися всіх</p>
+                            <p className={"seeMoreBtn"}>Дивитися всі</p>
                         </div>
                     </div>
                 </div>
