@@ -3,6 +3,42 @@
 @use "@assets/sass/_utils.functions.scss" as *;
 @use "@assets/sass/variables/_variables.fonts.scss" as f;
 
+@keyframes increaseSlide {
+    from {
+        height: 380px;
+    }
+    to {
+        height: 452px;
+    }
+}
+
+@keyframes reduceSlide {
+    from {
+        height: 452px;
+    }
+    to {
+        height: 380px;
+    }
+}
+
+@keyframes increaseText {
+    from {
+        height: 68px;
+    }
+    to {
+        height: 169px;
+    }
+}
+
+@keyframes reduceText {
+    from {
+        height: 169px;
+    }
+    to {
+        height: 68px;
+    }
+}
+
 .relatedFigureSlide {
     width: pxToRem(278px);
     height: pxToRem(380px);
@@ -17,6 +53,7 @@
     display: flex;
     justify-content: center;
 
+    transition: height 0.5s ease;
     cursor: pointer;
 
     .slideText {
@@ -30,9 +67,12 @@
         align-content: flex-start;
         flex-wrap: wrap;
 
-        position: absolute;
+        position: inherit;
         top: pxToRem(286px);
-        z-index: 0;
+
+        transition-property: height, border-radius;
+        transition-duration: 0.5s;
+        transition-timing-function: ease;
 
         .heading {
             width: 100%;
@@ -74,8 +114,6 @@
                 justify-content: center;
                 align-items: center;
     
-                z-index: 1;
-    
                 p {
                     width: auto;
                     height: pxToRem(20px);
@@ -99,11 +137,10 @@
     .slideText{
         height: 169px;
 
-        border-radius: 0 0 30px 30px;
+        border-radius: 0 0 28px 28px;
 
         align-items: flex-start;
 
-        position: inherit;
         top: 0;
         align-self: flex-end;
 

@@ -20,7 +20,7 @@
     .moreInfo{
         width: pxToRem(1200px);
 
-        padding-top: pxToRem(49px);
+        padding-top: pxToRem(43px);
 
         a{
             font-family: 'Roboto';
@@ -47,7 +47,7 @@
     }
     
     .slick-list {
-        height: pxToRem(452px);
+        height: pxToRem(458px);
 
         @include mut.rem-padded($left: 1px);
     }
