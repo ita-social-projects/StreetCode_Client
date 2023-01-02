@@ -11,7 +11,7 @@ const MainBlock = () => {
     const tags = ["Історія", '"Україна-Русь"', "Наукова школа","Наука", "Політика", "Професор історії"];
 
     const sep = <div className={"separator"}></div>;
-    return (<div className='mainStreetcodeBlock margin-45px'>
+    return (<div className='mainStreetcodeBlock margin-82px'>
         <div className='mainContainer'>
             <Breadcrumb separator={sep} className={"breadcrumbContainer"}>
                 <Breadcrumb.Item href='' className={"breadcrumbItem font-weight-500"}>СТРІТКОДИ</Breadcrumb.Item>

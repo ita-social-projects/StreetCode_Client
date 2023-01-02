@@ -4,8 +4,8 @@
 @use "@assets/sass/_utils.functions.scss" as *;
 
 
-.margin-45px{
-  margin-top: pxToRem(45px);
+.margin-82px{
+  margin-top: pxToRem(82px);
 }
 
 .mainStreetcodeBlock {
@@ -25,7 +25,7 @@
 .breadcrumbContainer {
   @include mut.with-font($font-weight: 300, $font-size:12px);
   position: absolute;
-  top: pxToRem(12px);
+  top: pxToRem(34px);
   right: pxToRem(50px);
 }
 
@@ -55,7 +55,6 @@
 .mainContent {
   @include mut.sized(1300px, 800px);
   @include mut.flex-centered();
-  background-color: c.$accented-gray-color;
   margin-top: pxToRem(34px);
 }
 
