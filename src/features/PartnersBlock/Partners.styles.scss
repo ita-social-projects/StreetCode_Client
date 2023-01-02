@@ -1,9 +1,11 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
 .partnersWrapper {
-    @include mut.sized($width: 1600px, $height: 181px);
+    @include mut.sized($height: 181px);
 
     @include mut.rem-padded($top: 30px, $right: 200px, $bottom: 30px, $left: 200px);
+
+    @include mut.flex-centered();
 
     .partnersContainer {
         @include mut.sized($width: 100%, $height: 100%);
