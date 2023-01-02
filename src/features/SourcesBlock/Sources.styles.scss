@@ -38,6 +38,10 @@
     }
 }
 
+.sourceContentContainer {
+    margin-top: pxToRem(24px);
+}
+
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
 }
@@ -49,5 +53,9 @@
     .sourceContentContainer {
         height: pxToRem(320px);
         @include mut.flex-centered();
+    }
+
+    .blockHeadingWrapper {
+        margin-top: pxToRem(100px);
     }
 }

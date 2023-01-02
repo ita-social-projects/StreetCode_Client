@@ -15,10 +15,26 @@
 }
 
 @mixin set-positioning($top, $right, $bottom, $left) {
-  top: pxToRem($top);
-  right: pxToRem($right);
-  bottom: pxToRem($bottom);
-  left: pxToRem($left);
+  @if unit($top) == '%' {
+    top: $top;
+  } @else {
+    top: pxToRem($top);
+  }
+  @if unit($right) == '%' {
+    right: $right;
+  } @else {
+    right: pxToRem($right);
+  }
+  @if unit($bottom) == '%' {
+    bottom: $bottom;
+  } @else {
+    bottom: pxToRem($bottom);
+  }
+  @if unit($left) == '%' {
+    left: $left;
+  } @else {
+    left: pxToRem($left);
+  }
 }
 
 @mixin positioned-as($position: relative, $top: 0, $right: 0, $bottom: 0, $left: 0) {
@@ -83,7 +99,7 @@
   @include rounded($rad, $rad, $rad, $rad);
 }
 
-@mixin circular($radius: 50px, $color: red) {
+@mixin circular($radius: 50px, $color: c.$pure-white-color) {
   width: pxToRem($radius);
   height: pxToRem($radius);
   @include full-rounded(50%);
@@ -114,6 +130,11 @@
   background-image: url($file);
   background-repeat: $repeat;
   background-size: cover;
+}
+
+@mixin colored($color: c.$pure-black-color, $bg-color: c.$pure-white-color) {
+  color: $color !important;
+  background-color: $bg-color !important;
 }
 // --------------------------Text----------------------------------
 @mixin truncated($line-num: 3) {

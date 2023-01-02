@@ -1,0 +1,16 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as fonts;
+
+.tickerContainer {
+  background: #C4C4C4;
+  color:white;
+  @include mut.sized(200%, 44px);
+}
+
+.tickerItem {
+  width:auto;
+  @include mut.flex-centered(row);
+  @include mut.with-font(fonts.$closer-text-font, 400, 20px, normal);
+  @include mut.rem-padded($right:10px);
+}
