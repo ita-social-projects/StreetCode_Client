@@ -35,7 +35,7 @@ const RelatedFiguresComponent = (props: Props) => {
     ))
 
     return (
-        <div className='relatedFiguresWrapper'>
+        <div className='relatedFiguresWrapper' style={{height: relatedFigures.length>4?'pxToRem(681px)':'pxToRem(613px)'}}>
             <div className='relatedFiguresContainer'>
                 <BlockHeading headingText="Зв'язки історії" />
                 <div className='relatedFiguresSliderContainer'>
@@ -48,7 +48,7 @@ const RelatedFiguresComponent = (props: Props) => {
                         />
                     </div>
                 </div>
-                <div className="moreInfo">
+                <div className="moreInfo" style={{visibility: relatedFigures.length>4?'visible':'hidden'}}>
                     <a>Дивитися всіх</a>
                 </div>
             </div>
