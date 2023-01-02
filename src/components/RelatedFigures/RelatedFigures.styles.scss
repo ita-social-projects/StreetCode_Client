@@ -49,18 +49,10 @@
     .sliderClass {
         height: 100%;
     }
-
-    .slick-track{
-        //width: 1224px !important;
-    }
     
     .slick-list {
         height: 452px;
 
         @include mut.rem-padded($left: 1px);
-
-        .slick-slide{
-            width: 306px !important;
-        }
     }
 }
