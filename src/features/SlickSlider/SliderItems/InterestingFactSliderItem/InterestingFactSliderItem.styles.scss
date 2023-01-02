@@ -14,30 +14,31 @@
 
     box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-}
-.slideImage {
-    height: pxToRem(250px);
-    width: 100%;
-    @include mut.rounded(33px, 33px);
-}
 
-.slideText {
-    width: 100%;
-    height: pxToRem(167px);
-    @include mut.rounded($bottom-right: 33px, $bottom-left: 33px);
-
-    .heading {
-        @include mut.rem-padded(11px, 20px, 10px, 20px);
-        @include mut.with-font($font-weight: 500, $font-size: 17px);
-        line-height: pxToRem(20px);
-        color: c.$accented-red-color;
+    .slideImage {
+        height: pxToRem(250px);
+        width: 100%;
+        @include mut.rounded(33px, 33px);
     }
 
-    .mainText {
-        @include mut.rem-padded(0, 20px, 35px, 20px);
-        @include mut.with-font($font-weight: 300, $font-size: 13px);
-        line-height: pxToRem(15px);
-        color: c.$lighter-black-color;
+    .slideText {
+        width: 100%;
+        height: pxToRem(167px);
+        @include mut.rounded($bottom-right: 33px, $bottom-left: 33px);
+
+        .heading {
+            @include mut.rem-padded(11px, 20px, 10px, 20px);
+            @include mut.with-font($font-weight: 500, $font-size: 17px);
+            line-height: pxToRem(20px);
+            color: c.$accented-red-color;
+        }
+
+        .mainText {
+            @include mut.rem-padded(0, 20px, 35px, 20px);
+            @include mut.with-font($font-weight: 300, $font-size: 13px);
+            line-height: pxToRem(15px);
+            color: c.$lighter-black-color;
+        }
     }
 }
 
