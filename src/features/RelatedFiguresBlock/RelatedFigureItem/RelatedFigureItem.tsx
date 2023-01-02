@@ -1,5 +1,4 @@
 import Tag from "@/models/additional-content/tag.model";
-import { Console } from "console";
 import "./RelatedFigureItem.styles.scss";
 
 interface Props {

@@ -50,9 +50,9 @@ const RelatedFiguresComponent = (props: Props) => {
                         />
                     </div>
                 </div>
-                <div className="moreInfo" style={{visibility: relatedFigures.length>4?'visible':'hidden'}}>
-                    <a>Дивитися всіх</a>
-                </div>
+                <a style={{visibility: relatedFigures.length>4?'visible':'hidden'}} className={"seeMoreBtn"}>
+                    Дивитися всі
+                </a>
             </div>
         </div>
     );
