@@ -3,14 +3,49 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as *;
 
-.header {
-  background-color: c.$pure-white-color;
+.mainStreetcodeBlock {
+  @include mut.flex-centered();
+  background: url('@assets/images/background.png');
+}
+
+.mainContainer {
+  width: pxToRem(1300px);
+  position: relative;
+}
+
+.breadcrumbContainer {
+  @include mut.with-font($font-weight: 300, $font-size:12px);
+  position: absolute;
+  top: pxToRem(12px);
+  right: pxToRem(50px);
+}
+
+:where(.css-dev-only-do-not-override-26rdvq).ant-breadcrumb .ant-breadcrumb-separator {
+  margin-inline: 5px !important;
+}
+
+:where(.css-dev-only-do-not-override-26rdvq).ant-breadcrumb a {
+  color: c.$dark-red-color;
+}
+
+.separator {
+  display: inline-block;
+  @include mut.sized(4px, 4px);
+  background-color: c.$dark-red-color;
+  margin-bottom: pxToRem(2px);;
+}
+
+.breadcrumbItem {
+  color: c.$dark-red-color;
+}
+
+.streetcodeImg {
+  padding: pxToRem(25px);
 }
 
 .mainContent {
   @include mut.sized(1300px, 800px);
   @include mut.flex-centered();
-  background-color: c.$accented-gray-color;
 }
 
 .card {
@@ -47,24 +82,18 @@
 }
 
 .streetcodeIndex {
-  padding: pxToRem(10px);
-  color: c.$dark-red-color;
-  @include mut.with-font($font-weight: bolder);
-}
-
-.streetcodeIndex {
-  padding: 0 pxToRem(10px) pxToRem(10px);
+  @include mut.rem-padded(5px, 10px, 10px, 4px);
   color: c.$dark-red-color;
   @include mut.with-font($font-weight: bolder);
 }
 
 .streetcodeTitle {
-  padding: pxToRem(4px) pxToRem(10px);
-  @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+  @include mut.rem-padded(7px, 10px, 7px, 4px);
+  @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
 }
 
 .streetcodeDate {
-  padding: pxToRem(10px);
+  @include mut.rem-padded(7px, 10px, 13px, 4px);
   font-size: pxToRem(20px);
 }
 
@@ -75,30 +104,55 @@
 }
 
 .tagContainer {
-  @include mut.rem-padded(16px, 0, 16px, 10px);
+  @include mut.rem-padded(13px, 0, 13px, 3px);
   @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
 }
 
 .tagItem {
-  padding: pxToRem(9px) pxToRem(12px);
+  @include mut.rem-padded(8px, 10px, 8px, 10px);
   color: c.$accented-red-color;
+  height: 38px;
   border: 2px solid c.$accented-red-color;
+  border-color: c.$accented-red-color;
   @include mut.full-rounded(11px);
   @include mut.flex-centered();
-  font-weight: bold;
+  @include mut.with-font($font-weight: bold, $font-size: 15px);
 }
 
 .teaserBlock {
   width: pxToRem(569px);
-  margin: pxToRem(10px);
+  @include mut.rem-padded(13px, 0, 18px, 3px);
   color: c.$lighter-black-color;
   @include mut.flexed($align-items: flex-start, $gap: 26px);
   @include mut.with-font($font-weight: 300);
-  line-height: 23.44px;
+  line-height: 23px;
 }
 
-.footer {
-  margin-left: pxToRem(10px);
-  margin-top: pxToRem(26px);
+.bottomBtns {
+  @include mut.rem-padded(18px, 10px, 10px, 3px);
   @include mut.flexed($justify-content: flex-start, $gap: 20px);
+}
+
+.hearTextBtn {
+  @include mut.sized(271px, 73px);
+  @include mut.with-font($font-weight: 500);
+  @include mut.flex-centered();
+  border-color: c.$accented-red-color;
+  @include mut.full-rounded(14px);
+  background-color: c.$accented-red-color;
+}
+
+.animateFigureBtn {
+  @include mut.sized(218px, 73px);
+  @include mut.with-font($font-weight: 500);
+  border-color: c.$accented-red-color;
+  border-width: pxToRem(3px);
+  @include mut.flex-centered();
+  @include mut.full-rounded(14px);
+  color: c.$accented-red-color;
+}
+
+.playCircle {
+  font-size: pxToRem(37px);
+  margin-right: pxToRem(10px);
 }
