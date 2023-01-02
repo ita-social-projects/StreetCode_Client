@@ -77,6 +77,8 @@
 .relatedFigureSlide:hover {
     @include mut.sized($width: 278px, $height: 452px);
 
+    filter: contrast(150%);
+
     .slideText{
         @include mut.sized($width: 272px, $height: 169px);
 
