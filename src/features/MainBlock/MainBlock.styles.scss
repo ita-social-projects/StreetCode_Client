@@ -128,8 +128,8 @@
   @include mut.with-font($font-weight: bold, $font-size: 15px);
 
   &:hover {
-    color: c.$dark-red-color !important;
-    border-color: c.$dark-red-color !important;
+    color: c.$dark-red-color;
+    border-color: c.$dark-red-color;
   }
 }
 
@@ -156,8 +156,8 @@
   background-color: c.$accented-red-color;
 
   &:hover {
-    border-color: c.$dark-red-color !important;
-    background-color: c.$dark-red-color !important;
+    border-color: c.$dark-red-color;
+    background-color: c.$dark-red-color;
   }
 }
 
@@ -171,8 +171,8 @@
   color: c.$accented-red-color;
 
   &:hover {
-    color: c.$dark-red-color !important;
-    border-color: c.$dark-red-color !important;
+    color: c.$dark-red-color;
+    border-color: c.$dark-red-color;
   }
 }
 
