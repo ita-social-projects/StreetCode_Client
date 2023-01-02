@@ -17,20 +17,20 @@
     @include mut.flexed($flex-direction: column, $align-items: center);
     
     .moreInfo{
-        position: absolute;
-        left: 200px;
-        top: 652px;
+        width: 1200px;
 
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 23px;
-        text-decoration-line: underline;
+        padding-top: 49px;
 
-        /* Alt_color2 */
-
-        color: c.$dark-red-color;
+        a{
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 25px;
+            text-decoration-line: underline;
+    
+            color: c.$dark-red-color;
+        }
     }
 }
 
@@ -40,7 +40,8 @@
 
     @include mut.outlined();
 
-    margin-top: 23px;
+    margin-top: 22px;
+    margin-right: 5px;
 
     .heightContainer,
     .slick-list,
@@ -50,7 +51,7 @@
     }
 
     .slick-track{
-        width: 1224px !important;
+        //width: 1224px !important;
     }
     
     .slick-list {

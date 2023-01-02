@@ -1,4 +1,3 @@
-import TagItem from "@/features/TagItem/TagItem";
 import Tag from "@/models/additional-content/tag.model";
 import "./RelatedFigureSliderItem.styles.scss";
 
@@ -15,7 +14,10 @@ const RelatedFigureSliderItem = (props: Props) => {
             <div className={"slideText"}>
                 <h3 className={"heading"}>{props.TextHeading}</h3>
                 <div className={"tagList"}>
-                    {props.Tags.map(tag =>(<TagItem Tag={tag}></TagItem>))}
+                    {props.Tags.map(tag =>(
+                        <div className="tag">
+                            <p>{tag.title}</p>
+                        </div>))}
                 </div>
             </div>
         </div>
