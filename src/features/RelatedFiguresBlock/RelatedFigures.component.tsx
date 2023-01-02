@@ -6,7 +6,7 @@ import Ratushny from "@assets/images/Ratushny.png";
 
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import RelatedFigureSliderItem from
-        "@features/SlickSlider/SliderItems/RelatedFigureSliderItem/RelatedFigureSliderItem";
+        "@/features/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem";
 import BlockHeading from "@features/BlockHeading/BlockHeading.component";
 import RelatedFigure from "@/models/streetcode/related-figure.model";
 

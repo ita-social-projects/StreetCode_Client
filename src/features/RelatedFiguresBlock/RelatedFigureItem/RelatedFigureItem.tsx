@@ -1,5 +1,5 @@
 import Tag from "@/models/additional-content/tag.model";
-import "./RelatedFigureSliderItem.styles.scss";
+import "./RelatedFigureItem.styles.scss";
 
 interface Props {
     TextHeading:string,
