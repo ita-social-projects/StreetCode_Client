@@ -3,42 +3,6 @@
 @use "@assets/sass/_utils.functions.scss" as *;
 @use "@assets/sass/variables/_variables.fonts.scss" as f;
 
-@keyframes increaseSlide {
-    from {
-        height: 380px;
-    }
-    to {
-        height: 452px;
-    }
-}
-
-@keyframes reduceSlide {
-    from {
-        height: 452px;
-    }
-    to {
-        height: 380px;
-    }
-}
-
-@keyframes increaseText {
-    from {
-        height: 68px;
-    }
-    to {
-        height: 169px;
-    }
-}
-
-@keyframes reduceText {
-    from {
-        height: 169px;
-    }
-    to {
-        height: 68px;
-    }
-}
-
 .relatedFigureSlide {
     width: pxToRem(278px);
     height: pxToRem(380px);
@@ -90,43 +54,43 @@
             padding-left: pxToRem(32.06px);
             padding-right: pxToRem(15.37px);
         }
+    }
+}
 
-        .tagList{
-            width: 100%;
-            visibility: hidden;
+.relatedTagList{
+    width: 100%;
+    visibility: hidden;
 
-            display: flex;
-            align-items: center;
-            padding-top: pxToRem(10px);
-            padding-left: pxToRem(32.06px);
-            padding-right: pxToRem(15.37px);
-            gap: pxToRem(5px);
+    display: flex;
+    align-items: center;
+    padding-top: pxToRem(10px);
+    padding-left: pxToRem(32.06px);
+    padding-right: pxToRem(15.37px);
+    gap: pxToRem(5px);
 
-            .tag {
-                width: auto;
-                height: pxToRem(38px);
-                border-radius: pxToRem(11px);
-                padding: pxToRem(9px) pxToRem(12px) pxToRem(9px) pxToRem(12px);
-    
-                border: pxToRem(2px) solid c.$pure-white-color;
-    
-                display: flex;
-                justify-content: center;
-                align-items: center;
-    
-                p {
-                    width: auto;
-                    height: pxToRem(20px);
-    
-                    font-family: f.$roboto-font;
-                    font-style: normal;
-                    text-align: center;
-                    color: c.$pure-white-color;
-                    font-weight: 500;
-                    font-size: pxToRem(15px);
-                    line-height: 135.69%;
-                }
-            }
+    .tag {
+        width: auto;
+        height: pxToRem(38px);
+        border-radius: pxToRem(11px);
+        padding: pxToRem(9px) pxToRem(12px) pxToRem(9px) pxToRem(12px);
+
+        border: pxToRem(2px) solid c.$pure-white-color;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            width: auto;
+            height: pxToRem(20px);
+
+            font-family: f.$roboto-font;
+            font-style: normal;
+            text-align: center;
+            color: c.$pure-white-color;
+            font-weight: 500;
+            font-size: pxToRem(15px);
+            line-height: 135.69%;
         }
     }
 }
@@ -148,7 +112,7 @@
             padding-top: 6px;
         }
 
-        .tagList{
+        .relatedTagList{
             visibility: visible;
         }
     }
