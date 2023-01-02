@@ -3,6 +3,7 @@ import Antonovich from "@assets/images/Antonovich.png";
 import Ukrainka from "@assets/images/Ukrainka.png";
 import Mazepa from "@assets/images/Mazepa.png";
 import Ratushny from "@assets/images/Ratushny.png";
+import Khmelnytsky from "@assets/images/Khmelnytsky.png"
 
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import RelatedFigureSliderItem from
@@ -20,7 +21,7 @@ var relatedFigures: RelatedFigure[] = [
     ,{Title:"Леся Українка",Image:{id:1,url:{id:1,href:Ukrainka}},Tags:[{id:1,title:"tag"}]}
     ,{Title:"Іван Мазепа",Image:{id:1,url:{id:1,href:Mazepa}},Tags:[{id:1,title:"tag"}]}
     ,{Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:[{id:1,title:"tag"}]}
-    //,{Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:[{id:1,title:"tag"}]}
+    ,{Title:"Богдан хмельницький",Image:{id:1,url:{id:1,href:Khmelnytsky}},Tags:[{id:1,title:"tag"}]}
     ]
 
 const RelatedFiguresComponent = (props: Props) => {
@@ -41,7 +42,7 @@ const RelatedFiguresComponent = (props: Props) => {
                     <div style={{height: "100%"}}>
                         <SlickSlider
                             className='heightContainer'
-                            slidesToShow={4}
+                            slidesToShow={Math.min(relatedFigures.length,4)}
                             slides={sliderItems}
                             dots={false}
                         />

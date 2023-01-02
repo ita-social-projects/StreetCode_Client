@@ -4,7 +4,9 @@
 
 .relatedFiguresWrapper {
     width: 100%;
-    height: 681px;
+    height: pxToRem(681px);
+
+    margin-bottom: pxToRem(110px);
 
     @include mut.flex-centered();
 }
@@ -13,20 +15,19 @@
     width: 90%;
     height: 100%;
 
-    @include mut.outlined();
     @include mut.flexed($direction: column, $align-items: center);
     
     .moreInfo{
-        width: 1200px;
+        width: pxToRem(1200px);
 
-        padding-top: 49px;
+        padding-top: pxToRem(49px);
 
         a{
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 500;
-            font-size: 20px;
-            line-height: 25px;
+            font-size: pxToRem(20px);
+            line-height: pxToRem(25px);
             text-decoration-line: underline;
     
             color: c.$dark-red-color;
@@ -38,8 +39,6 @@
     width: pxToRem(1200px);
     height: auto;
 
-    @include mut.outlined();
-
     .heightContainer,
     .slick-list,
     .slick-track,
@@ -48,7 +47,7 @@
     }
     
     .slick-list {
-        height: 452px;
+        height: pxToRem(452px);
 
         @include mut.rem-padded($left: 1px);
     }
