@@ -14,7 +14,7 @@
     height: 100%;
 
     @include mut.outlined();
-    @include mut.flexed($flex-direction: column, $align-items: center);
+    @include mut.flexed($direction: column, $align-items: center);
     
     .moreInfo{
         width: 1200px;
@@ -39,9 +39,6 @@
     height: auto;
 
     @include mut.outlined();
-
-    margin-top: 22px;
-    margin-right: 5px;
 
     .heightContainer,
     .slick-list,
