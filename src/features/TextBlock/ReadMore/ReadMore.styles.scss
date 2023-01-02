@@ -11,3 +11,6 @@
 {
     @include mut.rem-margined($top: 35px,$bottom: 50px);
 }
+.text-all{
+    @include mut.rem-margined($bottom: 35px);
+}

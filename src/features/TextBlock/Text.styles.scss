@@ -4,7 +4,7 @@
     @include mut.sized(100%, auto);
 }
 .TextContainer{
-    @include mut.rem-margined($top: 59px);
+    @include mut.rem-margined($top: 27px);
     @include mut.with-font();
     @include mut.sized(1200px, auto);
 }
