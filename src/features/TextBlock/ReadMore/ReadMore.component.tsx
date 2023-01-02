@@ -22,7 +22,7 @@ const ReadMore = (props: Props) => {
           </div>
         </div> 
       :
-        <div className="text-all">
+        <div className="text-all" style={{whiteSpace:"pre-line"}}>
           <SearchTerms allText={text}/>   
         </div>
       }
