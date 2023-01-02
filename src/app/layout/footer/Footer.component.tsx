@@ -22,7 +22,7 @@ const Footer = ({  }: Props) => {
                 <div className="useful-links">
                     <ul className="use-links">
                           <li className="li-item">Головна</li>
-                          <li className="li-item">Стрідкоди</li>
+                          <li className="li-item">Стріткоди</li>
                           <li className="li-item">Маршрути</li>
                           <li className="li-item">Блог</li>
                           <li className="li-item">Про проект</li>
