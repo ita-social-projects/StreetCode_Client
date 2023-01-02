@@ -11,6 +11,7 @@
   @include mut.sized(1300px, 800px);
   @include mut.flex-centered();
   background-color: c.$accented-gray-color;
+  margin-top: pxToRem(34px);
 }
 
 .card {

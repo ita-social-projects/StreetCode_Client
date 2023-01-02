@@ -5,6 +5,9 @@
 
 
 .navBarContainer {
+  z-index: 10;
+  position: fixed;
+  border-bottom: 1px dashed c.$dark-gray-color;
   @include mut.sized(100%, 82px);
   @include mut.flexed($justify-content: space-between, $align-items: center);
   padding: f.pxToRem(21px) f.pxToRem(32px);
