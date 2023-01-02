@@ -1,27 +1,23 @@
 import './MainBlock.styles.scss';
 import Hrushevskyi from '@assets/images/Hrushevskyi.png'
-
 import {Layout, Button, Breadcrumb} from "antd"
-import Sider from 'antd/es/layout/Sider'
-
 import { PlayCircleFilled } from '@ant-design/icons'
 import SimpleSlider from "@features/SlickSlider/SlickSlider.component"
 
 
 const MainBlock = () => {
-    let slide = <img src={Hrushevskyi} style={{padding: "25px"}} />;
+    let slide = <img src={Hrushevskyi} className={"streetcodeImg"} />;
 
-    const tags = ["Наука", "Наукова школа", "Історія", "Історія", "Історія", "Історія"];
+    const tags = ["Історія", '"Україна-Русь"', "Наукова школа","Наука", "Політика", "Професор історії"];
 
-    return (
-        <>
-            <Breadcrumb separator=">">
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item href="">Application Center</Breadcrumb.Item>
-                <Breadcrumb.Item href="">Application List</Breadcrumb.Item>
-                <Breadcrumb.Item>An Application</Breadcrumb.Item>
+    const sep = <div className={"separator"}></div>;
+    return (<div className='mainStreetcodeBlock margin-45px'>
+        <div className='mainContainer'>
+            <Breadcrumb separator={sep} className={"breadcrumbContainer"}>
+                <Breadcrumb.Item href='' className={"breadcrumbItem font-weight-500"}>СТРІТКОДИ</Breadcrumb.Item>
+                <Breadcrumb.Item href='' className={"breadcrumbItem"}>МИХАЙЛО ГРУШЕВСЬКИЙ</Breadcrumb.Item>
             </Breadcrumb>
-            <Layout>
+            <Layout className='mainStreetcodeBlock'>
                 <Layout.Content className={"mainContent"}>
                     <div className={"card"}>
                         <div className={"leftSider"}>
@@ -49,7 +45,7 @@ const MainBlock = () => {
                                     </div>
                                     <div className={"tagContainer"}>
                                         {tags.map(tag => (
-                                            <Button danger size='large' className={"tagItem"}>
+                                            <Button className={"tagItem"} >
                                                 {tag}
                                             </Button>
                                         ))}
@@ -66,31 +62,12 @@ const MainBlock = () => {
                                         Свою політичну платформу Грушевський базував у той час
                                         на принципах конституційного парламентаризму й автономії
                                     </p>
-                                    <div className={"footer"}>
-                                        <Button type="primary" danger size='large' style={{
-                                            width: "271px",
-                                            fontSize: '20px',
-                                            height: "73px",
-                                            display: "flex",
-                                            fontWeight: "500",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            backgroundColor: "#DB3424",
-                                            borderRadius: "14px"
-                                        }}>
-                                            <PlayCircleFilled style={{fontSize: "37px", marginRight: "10px"}}/>
+                                    <div className={"bottomBtns"}>
+                                        <Button type="primary" className={"hearTextBtn"}>
+                                            <PlayCircleFilled className={"playCircle"}/>
                                             <span>Прослухати текст</span>
                                         </Button>
-                                        <Button danger size='large' style={{
-                                            width: "218px",
-                                            height: "73px",
-                                            fontSize: '20px',
-                                            color: "#DB3424",
-                                            fontWeight: "500",
-                                            borderWidth: "3px",
-                                            borderColor: "#DB3424",
-                                            borderRadius: "14px"
-                                        }}>Оживити постать</Button>
+                                        <Button className={"animateFigureBtn"}>Оживити постать</Button>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +75,8 @@ const MainBlock = () => {
                     </div>
                 </Layout.Content>
             </Layout>
-        </>
+        </div>
+        </div>
     );
 }
 
