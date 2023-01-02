@@ -1,8 +1,8 @@
-import Streetcode from "./streetcode-types.model";
+import Tag from "../additional-content/tag.model"
+import Image from "../media/image.model"
 
 export default interface RelatedFigure {
-    observer: Streetcode;
-    observerId: number;
-    target: Streetcode;
-    targetId: number;
+    Title: string;
+    Image: Image;
+    Tags: Tag[];
 }
