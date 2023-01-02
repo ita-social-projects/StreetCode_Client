@@ -1,52 +1,38 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@assets/sass/_utils.functions.scss" as *;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .relatedFiguresWrapper {
-    width: 100%;
+    @include wr.main-page-block-wrapper();
 
-    margin-bottom: pxToRem(110px);
-
-    @include mut.flex-centered();
+    @include mut.rem-margined($bottom: 110px);
 }
 
 .relatedFiguresContainer {
-    width: 90%;
-    height: 100%;
+    @include mut.sized($width: 90%, $height: 100%);
 
     @include mut.flexed($direction: column, $align-items: center);
     
     .moreInfo{
-        width: pxToRem(1200px);
+        @include mut.sized($width: 1200px);
 
-        padding-top: pxToRem(43px);
+        @include mut.rem-padded($top: 43px);
 
         a{
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 500;
-            font-size: pxToRem(20px);
-            line-height: pxToRem(25px);
+            @include mut.with-font($font-weight: 500, $font-size: 20px);
+            line-height: pxToRem(23px);
             text-decoration-line: underline;
-    
             color: c.$dark-red-color;
         }
     }
 }
 
 .relatedFiguresSliderContainer {
-    width: pxToRem(1200px);
-    height: auto;
-
-    .heightContainer,
-    .slick-list,
-    .slick-track,
-    .sliderClass {
-        height: 100%;
-    }
+    @include mut.sized($width: 1200px);
     
     .slick-list {
-        height: pxToRem(458px);
+        @include mut.sized($height: 458px);
 
         @include mut.rem-padded($left: 1px);
     }

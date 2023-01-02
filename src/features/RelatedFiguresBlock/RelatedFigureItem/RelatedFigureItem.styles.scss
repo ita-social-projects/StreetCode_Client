@@ -4,112 +4,91 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as f;
 
 .relatedFigureSlide {
-    width: pxToRem(278px);
-    height: pxToRem(380px);
+    @include mut.sized($width: 278px, $height: 380px);
 
     box-sizing: border-box;
     border: pxToRem(3px) solid c.$pure-white-color;
-    border-radius: pxToRem(30px);
+    @include mut.full-rounded($rad: 30px);
 
     box-shadow: 0px pxToRem(4px) pxToRem(4px) rgba(0, 0, 0, 0.25);
 
-    position: relative;
-    display: flex;
-    justify-content: center;
+    @include mut.positioned-as();
+    @include mut.flexed($justify-content: center);
 
     transition: height 0.5s ease;
     cursor: pointer;
 
     .slideText {
-        width: pxToRem(272px);
-        height: pxToRem(68px);
+        @include mut.sized($width: 272px, $height: 68px);
 
         background-color: c.$dark-red-color;
 
-        display: flex;
-        align-items: center;
+        @include mut.flexed($align-items: center, $wrap: wrap);
         align-content: flex-start;
-        flex-wrap: wrap;
 
-        position: inherit;
-        top: pxToRem(286px);
+        @include mut.positioned-as($position: inherit, $top: 286px);
 
         transition-property: height, border-radius;
         transition-duration: 0.5s;
         transition-timing-function: ease;
 
         .heading {
-            width: 100%;
-            height: pxToRem(64px);
+            @include mut.sized($width: 100%, $height: 64px);
 
+            @include mut.with-font($font-family: "Closer Text", $font-size: 24px, $font-weight: 500);
             text-align: left;
-            color: c.$pure-white-color;
-            font-size: pxToRem(24px);
-            font-style: normal;
-            font-weight: 500;
             line-height: pxToRem(32px);
+            color: c.$pure-white-color;
 
-            display: flex;
-            align-items: center;
-            padding-left: pxToRem(32.06px);
-            padding-right: pxToRem(15.37px);
+            @include mut.flexed($align-items: center);
+            @include mut.rem-padded($left: 32px, $right: 15px);
         }
     }
 }
 
 .relatedTagList{
-    width: 100%;
+    @include mut.sized($width: 100%);
     visibility: hidden;
 
-    display: flex;
-    align-items: center;
-    padding-top: pxToRem(10px);
-    padding-left: pxToRem(32.06px);
-    padding-right: pxToRem(15.37px);
-    gap: pxToRem(5px);
+    @include mut.flexed($align-items: center, $gap: 5px);
+    @include mut.rem-padded($top: 10px, $left: 32px, $right: 15px);
 
     .tag {
-        width: auto;
-        height: pxToRem(38px);
-        border-radius: pxToRem(11px);
-        padding: pxToRem(9px) pxToRem(12px) pxToRem(9px) pxToRem(12px);
+        @include mut.sized($height: 38px);
+
+        @include mut.full-rounded($rad: 11px);
+        @include mut.rem-padded($left: 12px, $top: 9px, $right: 12px, $bottom: 9px);
 
         border: pxToRem(2px) solid c.$pure-white-color;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include mut.flex-centered();
 
         p {
-            width: auto;
-            height: pxToRem(20px);
+            @include mut.sized($height: 20px);
 
-            font-family: f.$roboto-font;
-            font-style: normal;
-            text-align: center;
+            @include mut.with-font($font-size: 15px,$font-weight: 500);
             color: c.$pure-white-color;
-            font-weight: 500;
-            font-size: pxToRem(15px);
+            text-align: center;
             line-height: 135.69%;
         }
     }
 }
 
 .relatedFigureSlide:hover {
-    height: 452px;
+    @include mut.sized($width: 278px, $height: 452px);
 
     .slideText{
-        height: 169px;
+        @include mut.sized($width: 272px, $height: 169px);
 
-        border-radius: 0 0 28px 28px;
+        @include mut.rounded($bottom-right: 28px, $bottom-left: 28px);
 
-        align-items: flex-start;
+        @include mut.flexed($align-items: flex-start, $wrap: wrap);
 
-        top: 0;
+        @include mut.positioned-as($top: 0);
         align-self: flex-end;
 
         .heading{
-            padding-top: 6px;
+            @include mut.rem-padded($top: 6px, $left: 32px, $right: 15px);
         }
 
         .relatedTagList{

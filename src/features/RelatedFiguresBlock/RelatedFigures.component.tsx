@@ -45,6 +45,7 @@ const RelatedFiguresComponent = (props: Props) => {
                             className='heightContainer'
                             slidesToShow={Math.min(relatedFigures.length,4)}
                             slides={sliderItems}
+                            swipe={false}
                             dots={false}
                         />
                     </div>
