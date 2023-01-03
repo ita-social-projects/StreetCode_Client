@@ -3,7 +3,7 @@ import "./Sources.styles.scss"
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import SourcesSlideItem from "./SourceItem/SourceItem.component";
 import BlockHeading from "@features/BlockHeading/BlockHeading.component";
-import SourcesModal from "@common/components/modals/SourcesModal.component";
+import SourcesModal from "@common/components/modals/Sources/SourcesModal.component";
 
 interface Props {
 

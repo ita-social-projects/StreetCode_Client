@@ -1,4 +1,6 @@
 import "./InterestingFactSliderItem.styles.scss";
+import { useMobx } from "@stores/root-store";
+import { observer } from "mobx-react-lite";
 
 interface Props {
     MainText:string,
@@ -7,6 +9,9 @@ interface Props {
 }
 
 const InterestingFactSliderItem = (props: Props) => {
+    const { interestingFactsStore: { openModal } } = useMobx();
+    const toDisplayReadMore = props.MainText.length > 300 ? true : false;
+    const textPart = props.MainText.length > 300 ? props.MainText.substr(0,300) : props.MainText;
     return (
         <div className={"interestingFactSlide"}>
             <div className={"slideImage"}>
@@ -14,10 +19,11 @@ const InterestingFactSliderItem = (props: Props) => {
             </div>
             <div className={"slideText"}>
                 <p className={"heading"}>{props.TextHeading}</p>
-                <p className={"mainText"}>{props.MainText}</p>
+                {toDisplayReadMore ? <p className={"mainText"}>{textPart}</p> : <p className={"mainText"}>{props.MainText}</p>}
+                {toDisplayReadMore ? <p className={"readMoreParagraph"} onClick={openModal}>Трохи ще...</p> : null}
             </div>
         </div>
     );
 }
 
-export default InterestingFactSliderItem;
+export default observer(InterestingFactSliderItem);
