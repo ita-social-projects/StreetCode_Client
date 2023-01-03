@@ -1,5 +1,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.fonts.scss" as fonts;
 @use "@assets/sass/_utils.functions.scss" as *;
 
 .interestingFactSlide {
@@ -13,7 +14,6 @@
     background: white;
 
     box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
 
     .slideImage {
         height: pxToRem(250px);
@@ -34,7 +34,7 @@
         }
 
         .mainText {
-            @include mut.rem-padded(0, 20px, 35px, 20px);
+            @include mut.rem-padded(0, 20px, 0px, 20px);
             @include mut.with-font($font-weight: 300, $font-size: 13px);
             line-height: pxToRem(15px);
             color: c.$lighter-black-color;
@@ -52,4 +52,16 @@
 
 .interestingFactsSliderContainer .slick-list {
     @include mut.rem-padded(109px);
+}
+
+.readMoreParagraph {
+    cursor: pointer;
+    transition: .5s ease;
+    color: c.$dark-red-color;
+    @include mut.with-font(fonts.$roboto-font, 300, 13px, normal);
+    @include mut.rem-padded(5px, 20px, 0px, 20px);
+}
+
+.readMoreParagraph:hover {
+    color: c.$accented-red-color;
 }
