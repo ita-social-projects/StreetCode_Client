@@ -19,9 +19,9 @@ interface Props {
 var relatedFigures: RelatedFigure[] = [
     {Id:1,Title:"Володимир Антонович",Image:{id:1,url:{id:1,href:Antonovich}},Tags:[{id:1,title:"Наукова школа"}, {id:1,title:"tag"}]}
     ,{Id:2,Title:"Леся Українка",Image:{id:1,url:{id:1,href:Ukrainka}},Tags:[{id:1,title:"tag"}]}
-    //,{Id:3,Title:"Іван Мазепа",Image:{id:1,url:{id:1,href:Mazepa}},Tags:[{id:1,title:"tag"}]}
-    //,{Id:4,Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:[{id:1,title:"tag"}]}
-    //,{Id:5,Title:"Богдан хмельницький",Image:{id:1,url:{id:1,href:Khmelnytsky}},Tags:[{id:1,title:"tag"}]}
+    ,{Id:3,Title:"Іван Мазепа",Image:{id:1,url:{id:1,href:Mazepa}},Tags:[{id:1,title:"tag"}]}
+    ,{Id:4,Title:"Роман Ратушний",Image:{id:1,url:{id:1,href:Ratushny}},Tags:[{id:1,title:"tag"}]}
+    ,{Id:5,Title:"Богдан хмельницький",Image:{id:1,url:{id:1,href:Khmelnytsky}},Tags:[{id:1,title:"tag"}]}
     ]
 
 const RelatedFiguresComponent = (props: Props) => {

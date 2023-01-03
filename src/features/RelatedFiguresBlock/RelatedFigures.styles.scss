@@ -6,7 +6,7 @@
 .relatedFiguresWrapper {
     @include wr.main-page-block-wrapper();
 
-    @include mut.rem-margined($top: 110px);
+    @include mut.rem-margined($bottom: 80px, $top: 110px);
 }
 
 .bigWrapper {
