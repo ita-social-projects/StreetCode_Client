@@ -1,0 +1,22 @@
+import { makeAutoObservable } from "mobx";
+
+interface InterestingFacts {
+    isOpen: boolean;
+    body?: JSX.Element | undefined;
+}
+
+export default class InterestingFactsStore {
+    isOpen: boolean = false;
+
+    public constructor() {
+        makeAutoObservable(this);
+    }
+
+    public openModal = () => {
+        this.isOpen = true;
+    }
+
+    public closeModal = () => {
+        this.isOpen = false;
+    }
+}

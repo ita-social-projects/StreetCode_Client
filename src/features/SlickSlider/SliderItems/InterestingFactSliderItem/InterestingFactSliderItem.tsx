@@ -1,4 +1,6 @@
 import "./InterestingFactSliderItem.styles.scss";
+import { useMobx } from "@stores/root-store";
+import { observer } from "mobx-react-lite";
 
 interface Props {
     MainText:string,
@@ -7,8 +9,9 @@ interface Props {
 }
 
 const InterestingFactSliderItem = (props: Props) => {
+    const { interestingFactsStore: { openModal } } = useMobx();
     return (
-        <div className={"interestingFactSlide"}>
+        <div className={"interestingFactSlide"} onClick={openModal}>
             <div className={"slideImage"}>
                 <img src={props.ImageSrc}/>
             </div>
@@ -20,4 +23,4 @@ const InterestingFactSliderItem = (props: Props) => {
     );
 }
 
-export default InterestingFactSliderItem;
+export default observer(InterestingFactSliderItem);
