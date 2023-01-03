@@ -1,0 +1,23 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/_utils.functions.scss" as f;
+
+.tagContainer {
+  @include mut.rem-padded(13px, 0, 13px, 3px);
+  @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+
+  .tagItem {
+    @include mut.rem-padded(8px, 10px, 8px, 10px);
+    color: c.$accented-red-color;
+    height: f.pxToRem(38px);
+    border: 2px solid c.$accented-red-color;
+    @include mut.full-rounded(11px);
+    @include mut.flex-centered();
+    @include mut.with-font($font-weight: bold, $font-size: 15px);
+
+    &:hover {
+      color: c.$dark-red-color;
+      border-color: c.$dark-red-color;
+    }
+  }
+}

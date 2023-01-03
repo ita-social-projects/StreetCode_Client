@@ -9,7 +9,7 @@
     @include mut.sized(1200px, auto);
 }
 .text-all{
-    white-space:"pre-line" 
+    white-space:"pre-line"
 }
 .videoComponent{
     @include mut.flex-centered();

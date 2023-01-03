@@ -3,7 +3,6 @@
 @use "src/assets/sass/mixins/utils.mixins" as mut;
 @use "src/assets/sass/mixins/vendor.mixins" as vnd;
 
-
 .navBarContainer {
   z-index: 10;
   position: fixed;
@@ -48,8 +47,9 @@
       line-height: f.pxToRem(24px);
     }
   }
+
   @media screen and (max-width: 1850px) {
-    .ant-input-affix-wrapper{
+    .ant-input-affix-wrapper {
       @include mut.sized(815px, 39px);
     }
   }
@@ -83,32 +83,8 @@
 }
 
 .rightSectionContainer {
-  align-self: flex-end;
-  justify-self: flex-end;
-
   @include mut.flexed($align-items: center);
   margin-left: f.pxToRem(120px);
-
-  .burgerMenuContainer {
-    @include mut.sized(36px, 100%);
-    @include mut.flexed($direction: column, $justify-content: center, $gap: 6px);
-    margin-right: f.pxToRem(24px);
-
-    > * {
-      width: 100%;
-      height: f.pxToRem(5px);
-      background-color: #7F7F7F;
-      @include mut.full-rounded(12px);
-    }
-
-    &:hover {
-      cursor: pointer;
-
-      > * {
-        background-color: c.$dark-gray-color;
-      }
-    }
-  }
 
   .loginBtn {
     @include mut.sized(142px, 39px);
@@ -123,5 +99,51 @@
     &:hover {
       background-color: c.$dark-red-color;
     }
+  }
+}
+
+.headerPopupSkeleton {
+  width: f.pxToRem(1200px);
+  overflow-x: auto;
+  @include mut.flexed($justify-content: flex-start);
+  @include mut.rem-margined(16px, 0, 16px, 45px);
+
+  h2.textHeader {
+    line-height: f.pxToEm(12.89px);
+    @include mut.with-font($font-size: 14px);
+    color: #D1D1D1;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+      color: c.$darker-gray-color;
+    }
+  }
+
+  .leftSide,
+  .rightSide {
+    width: clamp(500px, 800px, 950px);
+  }
+
+  .leftSide {
+    margin-right: f.pxToRem(80px);
+
+    .tagContainer {
+      margin-top: f.pxToRem(16px);
+    }
+  }
+
+  .rightSide .recommendationContainer {
+    flex-wrap: wrap;
+    min-width: f.pxToRem(800px);
+
+    > * {
+      @include mut.sized(248px, 183px);
+      flex: 1 1 248px;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    height: .665rem;
   }
 }

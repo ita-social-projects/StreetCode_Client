@@ -16,24 +16,24 @@
 
 @mixin set-positioning($top, $right, $bottom, $left) {
   @if unit($top) == '%' {
-    top: $top;
+    top: $top !important;
   } @else {
-    top: pxToRem($top);
+    top: pxToRem($top) !important;
   }
   @if unit($right) == '%' {
-    right: $right;
+    right: $right !important;
   } @else {
-    right: pxToRem($right);
+    right: pxToRem($right) !important;
   }
   @if unit($bottom) == '%' {
-    bottom: $bottom;
+    bottom: $bottom !important;
   } @else {
-    bottom: pxToRem($bottom);
+    bottom: pxToRem($bottom) !important;
   }
   @if unit($left) == '%' {
-    left: $left;
+    left: $left !important;
   } @else {
-    left: pxToRem($left);
+    left: pxToRem($left) !important;
   }
 }
 

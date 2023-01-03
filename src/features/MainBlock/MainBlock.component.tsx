@@ -3,12 +3,11 @@ import Hrushevskyi from '@assets/images/Hrushevskyi.png'
 import {Layout, Button, Breadcrumb} from "antd"
 import { PlayCircleFilled } from '@ant-design/icons'
 import SimpleSlider from "@features/SlickSlider/SlickSlider.component"
+import TagList from "@common/components/TagList/TagList.component";
 
 
 const MainBlock = () => {
     let slide = <img src={Hrushevskyi} className={"streetcodeImg"} />;
-
-    const tags = ["Історія", '"Україна-Русь"', "Наукова школа","Наука", "Політика", "Професор історії"];
 
     const sep = <div className={"separator"}></div>;
     return (<div className='mainStreetcodeBlock margin-82px'>
@@ -43,13 +42,7 @@ const MainBlock = () => {
                                     <div className={"streetcodeDate"}>
                                         29 вересня 1866 року — 26 листопада 1934 року
                                     </div>
-                                    <div className={"tagContainer"}>
-                                        {tags.map(tag => (
-                                            <Button className={"tagItem"} >
-                                                {tag}
-                                            </Button>
-                                        ))}
-                                    </div>
+                                    <TagList />
                                     <p className={"teaserBlock"}>
                                         У вересні 1907 за участі Грушевського, що увійшов до його керівництва, було
                                         створене<br/>
@@ -64,7 +57,7 @@ const MainBlock = () => {
                                     </p>
                                     <div className={"bottomBtns"}>
                                         <Button type="primary" className={"hearTextBtn"}>
-                                            <PlayCircleFilled className={"playCircle"}/>
+                                            <PlayCircleFilled className={"playCircle"} />
                                             <span>Прослухати текст</span>
                                         </Button>
                                         <Button className={"animateFigureBtn"}>Оживити постать</Button>

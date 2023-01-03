@@ -3,7 +3,19 @@ import StreetcodeSvg from "@assets/images/header/Streetcode_title.svg";
 import MagnifyingGlass from "@assets/images/header/Magnifying_glass.svg";
 
 import useToggle from "@common/hooks/stateful/useToggle.hook";
-import {Button, Drawer, Dropdown, Input} from "antd";
+
+import {
+    Button,
+    Drawer,
+    Dropdown,
+    Input,
+    Popover,
+    Skeleton,
+} from "antd";
+import { EyeOutlined } from '@ant-design/icons';
+import TagList from "@common/components/TagList/TagList.component";
+import HeaderContentBlock from "@features/HeaderBlock/HeaderContentBlock/HeaderContentBlock.component";
+import BurgerMenu from "@common/components/BurgerMenu/BurgerMenu.component";
 
 const items = [
     {
@@ -38,13 +50,27 @@ interface Props {
 }
 
 const HeaderBlock = (props: Props) => {
-    const { toggleState, handlers: { toggle } } = useToggle();
+    const { toggleState: langSelectorState, handlers: { toggle: toggleLangSelector } } = useToggle();
+    const tags = ["Історія", '"Україна-Русь"', "Наукова школа","Наука", "Політика", "Професор історії"];
 
     return (
         <div className={"navBarContainer"}>
             <div className={"leftPartContainer"}>
                 <StreetcodeSvg />
-                <Input size="large" placeholder="Пошук..." prefix={<MagnifyingGlass />} />
+                <Popover placement="bottomLeft" trigger='focus' content={(
+                    <div className={"headerPopupSkeleton"}>
+                        <div className={"leftSide"}>
+                            <HeaderContentBlock title={"Рекомендації"} />
+                            <h2 className={"textHeader"}>Пошук по тегам</h2>
+                            <TagList />
+                        </div>
+                        <div className={"rightSide"}>
+                            <HeaderContentBlock title={"Новини"} numberOfEls={4} />
+                        </div>
+                    </div>
+                )}>
+                    <Input size="large" placeholder="Пошук..." prefix={<MagnifyingGlass />} />
+                </Popover>
                 <Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }}>
                     <Button className={"langSelector"}>
                         <span>UA</span>
@@ -53,18 +79,14 @@ const HeaderBlock = (props: Props) => {
             </div>
             <div className={"rightPartContainer"}>
                 <div className={"rightSectionContainer"}>
-                    <Drawer placement="right" closable onClose={toggle} open={toggleState}>
+                    <Drawer placement="right" closable onClose={toggleLangSelector} open={langSelectorState}>
                         <>
                             <p>Some contents...</p>
                             <p>Some contents...</p>
                             <p>Some contents...</p>
                         </>
                     </Drawer>
-                    <div className={"burgerMenuContainer"} onClick={toggle}>
-                        <span className={"burgerMenuItem"} />
-                        <span className={"burgerMenuItem"} />
-                        <span className={"burgerMenuItem"} />
-                    </div>
+                    <BurgerMenu onClick={toggleLangSelector} />
                     <Button className={"loginBtn"} type='primary'>Долучитися</Button>
                 </div>
             </div>
