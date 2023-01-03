@@ -1,6 +1,6 @@
 import Agent from "./agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import Subtitle from "models/additional-content/subtitles.model";
+import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import Subtitle from "@models/additional-content/subtitles.model";
 
 const SubtitlesApi = {
     getById: (id: number) =>
