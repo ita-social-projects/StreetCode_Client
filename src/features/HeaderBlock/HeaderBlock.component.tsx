@@ -13,6 +13,9 @@ import {
     Skeleton,
 } from "antd";
 import { EyeOutlined } from '@ant-design/icons';
+import TagList from "@common/components/TagList/TagList.component";
+import HeaderContentBlock from "@features/HeaderBlock/HeaderContentBlock/HeaderContentBlock.component";
+import BurgerMenu from "@common/components/BurgerMenu/BurgerMenu.component";
 
 const items = [
     {
@@ -57,44 +60,12 @@ const HeaderBlock = (props: Props) => {
                 <Popover placement="bottomLeft" trigger='focus' content={(
                     <div className={"headerPopupSkeleton"}>
                         <div className={"leftSide"}>
-                            <h2 className={"textHeader"}>Рекомендації</h2>
-                            <div className={"recommendationContainer"}>
-                                <Skeleton.Node active={true}>
-                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
-                                </Skeleton.Node>
-                                <Skeleton.Node active={true}>
-                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
-                                </Skeleton.Node>
-                                <Skeleton.Node active={true}>
-                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
-                                </Skeleton.Node>
-                            </div>
+                            <HeaderContentBlock title={"Рекомендації"} />
                             <h2 className={"textHeader"}>Пошук по тегам</h2>
-                            <div className={"tagContainer"}>
-                                {tags.map(tag => (
-                                    <Button className={"tagItem"}>
-                                        {tag}
-                                    </Button>
-                                ))}
-                            </div>
+                            <TagList />
                         </div>
                         <div className={"rightSide"}>
-                            <h2 className={"textHeader"}>Новини</h2>
-                            <div className={"recommendationContainer"}>
-                                <Skeleton.Node active={true}>
-                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
-                                </Skeleton.Node>
-                                <Skeleton.Node active={true}>
-                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
-                                </Skeleton.Node>
-                                <Skeleton.Node active={true}>
-                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
-                                </Skeleton.Node>
-                                <Skeleton.Node active={true}>
-                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
-                                </Skeleton.Node>
-
-                            </div>
+                            <HeaderContentBlock title={"Новини"} numberOfEls={4} />
                         </div>
                     </div>
                 )}>
@@ -115,11 +86,7 @@ const HeaderBlock = (props: Props) => {
                             <p>Some contents...</p>
                         </>
                     </Drawer>
-                    <div className={"burgerMenuContainer"} onClick={toggleLangSelector}>
-                        <span className={"burgerMenuItem"} />
-                        <span className={"burgerMenuItem"} />
-                        <span className={"burgerMenuItem"} />
-                    </div>
+                    <BurgerMenu onClick={toggleLangSelector} />
                     <Button className={"loginBtn"} type='primary'>Долучитися</Button>
                 </div>
             </div>
