@@ -125,3 +125,69 @@
     }
   }
 }
+
+.headerPopupSkeleton {
+  width: f.pxToRem(1200px);
+  overflow-x: auto;
+  @include mut.flexed($justify-content: flex-start);
+  @include mut.rem-margined(16px, 0, 16px, 45px);
+
+  h2.textHeader {
+    line-height: f.pxToEm(12.89px);
+    @include mut.with-font($font-size: 14px);
+    color: #D1D1D1;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+      color: c.$darker-gray-color;
+    }
+  }
+
+  .recommendationContainer {
+    @include mut.flexed($justify-content: flex-start, $gap: 10px);
+    @include mut.rem-margined(16px, 0, 36px, 0);
+
+    > * {
+      @include mut.sized(150px, 132px);
+      background-color: #D9D9D9;
+      @include mut.full-rounded(10px);
+
+      &:hover {
+        border: 2px dotted c.$normal-gray-color;
+        cursor: pointer;
+      }
+    }
+
+    .ant-skeleton-image {
+      @include mut.parent-sized();
+    }
+  }
+
+  .leftSide,
+  .rightSide {
+    width: clamp(500px, 800px, 950px);
+  }
+
+  .leftSide {
+    margin-right: f.pxToRem(80px);
+
+    .tagContainer {
+      margin-top: f.pxToRem(16px);
+    }
+  }
+
+  .rightSide .recommendationContainer {
+    flex-wrap: wrap;
+    min-width: f.pxToRem(800px);
+
+    > * {
+      @include mut.sized(248px, 183px);
+      flex: 1 1 248px;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    height: .665rem;
+  }
+}

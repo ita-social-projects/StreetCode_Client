@@ -3,7 +3,16 @@ import StreetcodeSvg from "@assets/images/header/Streetcode_title.svg";
 import MagnifyingGlass from "@assets/images/header/Magnifying_glass.svg";
 
 import useToggle from "@common/hooks/stateful/useToggle.hook";
-import {Button, Drawer, Dropdown, Input} from "antd";
+
+import {
+    Button,
+    Drawer,
+    Dropdown,
+    Input,
+    Popover,
+    Skeleton,
+} from "antd";
+import { EyeOutlined } from '@ant-design/icons';
 
 const items = [
     {
@@ -38,13 +47,59 @@ interface Props {
 }
 
 const HeaderBlock = (props: Props) => {
-    const { toggleState, handlers: { toggle } } = useToggle();
+    const { toggleState: langSelectorState, handlers: { toggle: toggleLangSelector } } = useToggle();
+    const tags = ["Історія", '"Україна-Русь"', "Наукова школа","Наука", "Політика", "Професор історії"];
 
     return (
         <div className={"navBarContainer"}>
             <div className={"leftPartContainer"}>
                 <StreetcodeSvg />
-                <Input size="large" placeholder="Пошук..." prefix={<MagnifyingGlass />} />
+                <Popover placement="bottomLeft" trigger='focus' content={(
+                    <div className={"headerPopupSkeleton"}>
+                        <div className={"leftSide"}>
+                            <h2 className={"textHeader"}>Рекомендації</h2>
+                            <div className={"recommendationContainer"}>
+                                <Skeleton.Node active={true}>
+                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                                <Skeleton.Node active={true}>
+                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                                <Skeleton.Node active={true}>
+                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                            </div>
+                            <h2 className={"textHeader"}>Пошук по тегам</h2>
+                            <div className={"tagContainer"}>
+                                {tags.map(tag => (
+                                    <Button className={"tagItem"}>
+                                        {tag}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className={"rightSide"}>
+                            <h2 className={"textHeader"}>Новини</h2>
+                            <div className={"recommendationContainer"}>
+                                <Skeleton.Node active={true}>
+                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                                <Skeleton.Node active={true}>
+                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                                <Skeleton.Node active={true}>
+                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                                <Skeleton.Node active={true}>
+                                    <EyeOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+
+                            </div>
+                        </div>
+                    </div>
+                )}>
+                    <Input size="large" placeholder="Пошук..." prefix={<MagnifyingGlass />} />
+                </Popover>
                 <Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }}>
                     <Button className={"langSelector"}>
                         <span>UA</span>
@@ -53,14 +108,14 @@ const HeaderBlock = (props: Props) => {
             </div>
             <div className={"rightPartContainer"}>
                 <div className={"rightSectionContainer"}>
-                    <Drawer placement="right" closable onClose={toggle} open={toggleState}>
+                    <Drawer placement="right" closable onClose={toggleLangSelector} open={langSelectorState}>
                         <>
                             <p>Some contents...</p>
                             <p>Some contents...</p>
                             <p>Some contents...</p>
                         </>
                     </Drawer>
-                    <div className={"burgerMenuContainer"} onClick={toggle}>
+                    <div className={"burgerMenuContainer"} onClick={toggleLangSelector}>
                         <span className={"burgerMenuItem"} />
                         <span className={"burgerMenuItem"} />
                         <span className={"burgerMenuItem"} />
