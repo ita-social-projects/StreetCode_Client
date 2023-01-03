@@ -22,19 +22,19 @@
             }
         }
     }
+}
 
-    .seeMoreBtn {
-        color: c.$dark-red-color;
-        margin-top: pxToRem(50px);
-        align-self: flex-start;
-        text-decoration-line: underline;
-        font-weight: 500;
-        line-height: pxToRem(23px);
+.seeMoreBtn {
+    color: c.$dark-red-color;
+    margin-top: pxToRem(50px);
+    align-self: flex-start;
+    text-decoration-line: underline;
+    @include mut.with-font($font-weight: 500, $font-size: 20px);
+    line-height: pxToRem(25px);
 
-        &:hover {
-            color: c.$accented-red-color;
-            cursor: pointer;
-        }
+    &:hover {
+        color: c.$accented-red-color;
+        cursor: pointer;
     }
 }
 
@@ -56,6 +56,6 @@
     }
 
     .blockHeadingWrapper {
-        margin-top: pxToRem(100px);
+        margin-top: pxToRem(30px);
     }
 }

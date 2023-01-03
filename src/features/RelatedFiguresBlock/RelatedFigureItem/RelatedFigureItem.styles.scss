@@ -10,7 +10,7 @@
     border: 3px solid c.$pure-white-color;
     @include mut.full-rounded($rad: 30px);
 
-    box-shadow: 0px pxToRem(4px) pxToRem(4px) rgba(0, 0, 0, 0.25);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
 
     @include mut.positioned-as();
     @include mut.flexed($justify-content: center);
@@ -77,23 +77,19 @@
 .relatedFigureSlide:hover {
     @include mut.sized($width: 278px, $height: 452px);
 
-    filter: contrast(150%);
-
     .slideText{
         @include mut.sized($width: 272px, $height: 169px);
-
-        @include mut.rounded($bottom-right: 28px, $bottom-left: 28px);
-
         @include mut.flexed($align-items: flex-start, $wrap: wrap);
 
+        @include mut.rounded($bottom-right: 28px, $bottom-left: 28px);
         @include mut.positioned-as($top: 0);
         align-self: flex-end;
 
-        .heading{
+        .heading {
             @include mut.rem-padded($top: 6px, $left: 32px, $right: 15px);
         }
 
-        .relatedTagList{
+        .relatedTagList {
             visibility: visible;
         }
     }

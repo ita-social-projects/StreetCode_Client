@@ -17,6 +17,9 @@
 
 .interestingFactsSliderContainer {
     @include mut.sized(1200px, 660px);
+    .slick-dots{
+        @include mut.rem-padded($top:35px);
+    }
 }
 
 .heightContainer,

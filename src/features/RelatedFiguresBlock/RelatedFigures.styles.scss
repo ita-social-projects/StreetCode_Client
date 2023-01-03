@@ -1,6 +1,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/mixins/_wrapper.mixins.scss" as wr;
-@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .relatedFiguresWrapper {
@@ -31,7 +31,6 @@
 
 .relatedFiguresContainer {
     @include mut.sized($width: 90%, $height: 100%);
-
     @include mut.flexed($direction: column, $align-items: center);
     
     .moreInfo {
@@ -56,10 +55,9 @@
 
 .relatedFiguresSliderContainer {
     @include mut.sized($width: 1200px);
-    
+
     .slick-list {
         @include mut.sized($height: 458px);
-
-        @include mut.rem-padded($left: 1px);
+        @include mut.rem-padded($left: 5px);
     }
 }
