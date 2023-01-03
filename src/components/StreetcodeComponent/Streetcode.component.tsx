@@ -9,6 +9,7 @@ import RelatedFiguresComponent from "@/features/RelatedFiguresBlock/RelatedFigur
 import HeaderBlock from "@features/HeaderBlock/HeaderBlock.component";
 import Footer from "@/app/layout/footer/Footer.component";
 import TickerComponent from "@features/TickerBlock/Ticker.component";
+import PartnersComponent from "@/features/PartnersBlock/Partners.component";
 
 interface Props {
 
@@ -23,7 +24,8 @@ const StreetcodeContent = (props: Props) => (
         <RelatedFiguresComponent />
         <SourcesComponent />
         <QRComponent />
-            <TickerComponent />
+        <PartnersComponent />
+        <TickerComponent />
         <Footer />
     </div>
 )
