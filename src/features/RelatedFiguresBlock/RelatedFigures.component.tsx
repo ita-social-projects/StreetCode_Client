@@ -36,23 +36,24 @@ const RelatedFiguresComponent = (props: Props) => {
     ))
 
     return (
-        <div className='relatedFiguresWrapper' style={{height: relatedFigures.length>4?'pxToRem(681px)':'pxToRem(613px)'}}>
+        <div 
+            className={'relatedFiguresWrapper ' + (relatedFigures.length>4?'bigWrapper':'smallWrapper')}>
             <div className='relatedFiguresContainer'>
                 <BlockHeading headingText="Зв'язки історії" />
-                <div className='relatedFiguresSliderContainer'>
+                <div className={'relatedFiguresSliderContainer'}>
                     <div style={{height: "100%"}}>
                         <SlickSlider
-                            className='heightContainer'
-                            slidesToShow={Math.min(relatedFigures.length,4)}
+                            className={'heightContainer'}
+                            slidesToShow={4}
                             slides={sliderItems}
                             swipe={false}
                             dots={false}
                         />
                     </div>
                 </div>
-                <a style={{visibility: relatedFigures.length>4?'visible':'hidden'}} className={"seeMoreBtn"}>
-                    Дивитися всі
-                </a>
+                <div className="moreInfo">
+                    <p>Дивитися всіх</p>
+                </div>
             </div>
         </div>
     );
