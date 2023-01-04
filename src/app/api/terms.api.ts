@@ -1,6 +1,6 @@
 import Agent from "./agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import { Term } from "models/streetcode/text-contents.model";
+import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import { Term } from "@models/streetcode/text-contents.model";
 
 const TermsApi = {
     getById: (id: number) =>

@@ -1,6 +1,8 @@
 import Agent from "./agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import Streetcode from "models/streetcode/streetcode-types.model";
+import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import Streetcode from "@models/streetcode/streetcode-types.model";
+import {EventStreetcode} from "@models/streetcode/streetcode-types.model";
+import {PersonStreetcode} from "@models/streetcode/streetcode-types.model";
 
 const StreetcodesApi = {
     getById: (id: number) =>
@@ -19,10 +21,10 @@ const StreetcodesApi = {
        Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL}`),
 
     getEvents: () =>
-       Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
+       Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
        
     getPersons: () =>
-       Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
+       Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
 
     create: (streetcode: Streetcode) =>
         Agent.post<Streetcode>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),

@@ -1,6 +1,6 @@
 import Agent from "./agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import Partner from "models/partners/partners.model";
+import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import Partner from "@models/partners/partners.model";
 
 const PartnersApi = {
    getById: (id: number) =>

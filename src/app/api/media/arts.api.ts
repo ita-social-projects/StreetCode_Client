@@ -1,6 +1,6 @@
 import Agent from "../agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import Art from "models/media/art.model";
+import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import Art from "@models/media/art.model";
 
 const ArtsApi = {
     getAll: () =>
