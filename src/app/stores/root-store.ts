@@ -2,14 +2,17 @@ import { createContext, useContext } from "react";
 
 import SubtitlesStore from "@stores/subtitles-store";
 import ModalStore from "@stores/modal-store";
+import FactsStore from "@stores/facts-store";
 
 interface Store {
     modalStore: ModalStore,
-    subtitlesStore: SubtitlesStore
+    factsStore: FactsStore,
+    subtitlesStore: SubtitlesStore,
 }
 
 export const store: Store = {
     modalStore: new ModalStore(),
+    factsStore: new FactsStore(),
     subtitlesStore: new SubtitlesStore(),
 }
 

@@ -1,7 +1,7 @@
 export const API_ROUTES = {
     BASE: '/',
     FACTS: {
-        GET_ALL: 'facts/getAll',
+        GET_ALL: 'fact/getAll',
         GET: 'facts/getById',
         GET_BY_STREETCODE_ID: 'facts/getByStreetcodeId',
         CREATE: 'facts/create',

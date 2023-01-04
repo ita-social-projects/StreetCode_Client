@@ -11,10 +11,10 @@ import useMobx from "@stores/root-store";
 import { useAsync } from "@common/hooks/stateful/useAsync.hook";
 
 const App = () => {
-    const { subtitlesStore: { getAll, getSubtitlesArray } } = useMobx();
-    const { value } = useAsync(getAll);
+    const { factsStore: { fetchFacts, getFactArray } } = useMobx();
+    useAsync(fetchFacts);
 
-    console.log(value);
+    console.log(getFactArray());
 
     return (
         <>
