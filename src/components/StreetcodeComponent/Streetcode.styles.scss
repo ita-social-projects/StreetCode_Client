@@ -1,6 +1,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
 .streetcodeContainer {
-    @include mut.parent-sized();
-    overflow-x: hidden;
+    width: calc(100% + 1.22rem);
+    overflow: hidden;
 }
