@@ -1,6 +1,6 @@
 import './InterestingFactsModal.styles.scss';
 import { Modal } from "antd";
-import { useMobx } from "@stores/root-store";
+import useMobx from "@stores/root-store";
 import { observer } from "mobx-react-lite";
 
 interface Props {
@@ -27,12 +27,12 @@ const cancelBtnSvg = <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
 </svg>
 
 const InterestingFactsModal = (props: Props) => {
-    const { interestingFactsStore: { closeModal, isOpen } } = useMobx();
+    const { modalStore: { setModal, modalsState: { facts } } } = useMobx();
 
     return (
         <Modal className={"interestingFactsModal"}
-            open={isOpen}
-            onCancel={closeModal}
+            open={facts}
+            onCancel={() => setModal('facts')}
             footer={null}
             maskClosable
             closeIcon={cancelBtnSvg}

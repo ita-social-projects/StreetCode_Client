@@ -2,7 +2,7 @@ import './SourcesModal.styles.scss';
 
 import { Modal } from "antd";
 
-import { useMobx } from "@stores/root-store";
+import useMobx from "@stores/root-store";
 import { observer } from "mobx-react-lite";
 
 interface Props {
@@ -58,12 +58,12 @@ const cancelBtnSvg = <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
 </svg>
 
 const SourcesModal = (props: Props) => {
-    const { sourcesStore: { closeModal, isOpen } } = useMobx();
+    const { modalStore: { setModal, modalsState: { sources } } } = useMobx();
 
     return (
         <Modal
-            open={isOpen}
-            onCancel={closeModal}
+            open={sources}
+            onCancel={() => setModal('sources')}
             centered
             width={'43%'}
             footer={null}

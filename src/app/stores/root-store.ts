@@ -1,20 +1,19 @@
 import { createContext, useContext } from "react";
-import SourcesStore from "@stores/sources-store";
-import InterestingFactsStore from "@stores/interesting-facts-store";
+
 import SubtitlesStore from "@stores/subtitles-store";
+import ModalStore from "@stores/modal-store";
 
 interface Store {
-    sourcesStore: SourcesStore,
-    interestingFactsStore: InterestingFactsStore,
+    modalStore: ModalStore,
     subtitlesStore: SubtitlesStore
 }
 
 export const store: Store = {
-    sourcesStore: new SourcesStore(),
-    interestingFactsStore: new InterestingFactsStore(),
-    subtitlesStore: new SubtitlesStore()
+    modalStore: new ModalStore(),
+    subtitlesStore: new SubtitlesStore(),
 }
 
-export const StoreContext = createContext(store);
+const StoreContext = createContext(store);
 
-export const useMobx = () => useContext(StoreContext);
+const useMobx = () => useContext(StoreContext);
+export default useMobx;

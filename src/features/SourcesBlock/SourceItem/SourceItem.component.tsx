@@ -1,6 +1,6 @@
 import "./SourceItem.styles.scss"
 
-import { useMobx } from "@stores/root-store";
+import useMobx from "@stores/root-store";
 import { observer } from "mobx-react-lite";
 
 interface Props {
@@ -8,10 +8,10 @@ interface Props {
 }
 
 const SourceItem = (props: Props) => {
-    const { sourcesStore: { openModal } } = useMobx();
+    const { modalStore: { setModal } } = useMobx();
 
     return (
-        <div className='sourcesSliderItem' onClick={openModal}>
+        <div className='sourcesSliderItem' onClick={() => setModal('sources')}>
             <h1>{props.text}</h1>
         </div>
     );
