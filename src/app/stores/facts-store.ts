@@ -17,24 +17,6 @@ export default class FactsStore {
         this.factMap.set(fact.id, fact);
     }
 
-    private get axiosQueryParams() {
-        /*
-        const params = new URLSearchParams();
-
-        params.append('pageNumber', this.pagingParams.pageNumber.toString());
-        params.append('pageSize', this.pagingParams.pageSize.toString());
-
-        this.filter.forEach((value, key) =>
-            params.append(key, (key === 'startDate') ?
-                (value as Date).toISOString() : value)
-        );
-        params.append('Filter', this.sorting);
-
-        return params;
-        */
-        return null;
-    }
-    
     public getFactArray = () => {
         return Array.from(this.factMap.values());
     }
