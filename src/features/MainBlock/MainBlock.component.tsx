@@ -1,12 +1,13 @@
 import './MainBlock.styles.scss';
 
+import { Breadcrumb, Button, Layout } from 'antd';
+
 import { PlayCircleFilled } from '@ant-design/icons';
 import Hrushevskyi from '@assets/images/Hrushevskyi.png';
 import TagList from '@common/components/TagList/TagList.component';
 import SimpleSlider from '@features/SlickSlider/SlickSlider.component';
-import { Breadcrumb, Button, Layout } from 'antd';
 
-function MainBlock() {
+const MainBlock = () => {
     const slide = <img src={Hrushevskyi} className="streetcodeImg" />;
 
     const sep = <div className="separator" />;
@@ -76,6 +77,6 @@ function MainBlock() {
         </div>
       </div>
     );
-}
+};
 
 export default MainBlock;

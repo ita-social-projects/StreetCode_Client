@@ -1,6 +1,6 @@
 import Image from 'models/media/image.model';
-
 import Streetcode from './streetcode-types.model';
+
 
 export interface Fact {
     id: number;

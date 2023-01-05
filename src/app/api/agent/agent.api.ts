@@ -1,12 +1,8 @@
 import { toast } from 'react-toastify';
-import axios, { AxiosError, AxiosResponse, Canceler } from 'axios';
+
+import AuthLocalStorage from '@stores/local-storages/AuthLocalStorage';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
-
-import AuthLocalStorage from '../stores/local-storages/AuthLocalStorage';
-
-// const CancelToken = axios.CancelToken;
-// const source = CancelToken.source();
-// let cancel: Canceler;
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 

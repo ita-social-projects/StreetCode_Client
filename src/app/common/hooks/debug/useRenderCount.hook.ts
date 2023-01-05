@@ -8,7 +8,7 @@ const useRenderCount = () => {
         if (isMounted.current) {
             isMounted.current = false;
         } else {
-            renderCount.current++;
+            renderCount.current += 1;
         }
     }, []);
 

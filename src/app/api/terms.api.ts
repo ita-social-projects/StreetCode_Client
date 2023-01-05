@@ -1,7 +1,6 @@
-import { API_ROUTES } from 'app/common/contants/api-routes.constants';
-import { Term } from 'models/streetcode/text-contents.model';
-
-import Agent from './agent.api';
+import Agent from '@api/agent/agent.api';
+import API_ROUTES from '@constants/api-routes.constants';
+import { Term } from '@models/streetcode/text-contents.model';
 
 const TermsApi = {
     getById: (id: number) => Agent.get<Term>(`${API_ROUTES.TERMS.GET}/${id}`),

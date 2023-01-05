@@ -1,5 +1,7 @@
 import './RelatedFigures.styles.scss';
 
+import RelatedFigure from '@/models/streetcode/related-figure.model';
+
 import Antonovich from '@assets/images/Antonovich.png';
 import Khmelnytsky from '@assets/images/Khmelnytsky.png';
 import Mazepa from '@assets/images/Mazepa.png';
@@ -7,10 +9,8 @@ import Ratushny from '@assets/images/Ratushny.png';
 import Ukrainka from '@assets/images/Ukrainka.png';
 import BlockHeading from '@features/BlockHeading/BlockHeading.component';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-
 import RelatedFigureSliderItem from
         '@/features/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem';
-import RelatedFigure from '@/models/streetcode/related-figure.model';
 
 interface Props {
 
@@ -34,7 +34,7 @@ const relatedFigures: RelatedFigure[] = [
 },
     ];
 
-function RelatedFiguresComponent(props: Props) {
+const RelatedFiguresComponent = (props: Props) => {
     const sliderItems = relatedFigures
     .map((figure) => (
       <RelatedFigureSliderItem
@@ -68,6 +68,6 @@ function RelatedFiguresComponent(props: Props) {
         </div>
       </div>
     );
-}
+};
 
 export default RelatedFiguresComponent;

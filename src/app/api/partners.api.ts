@@ -1,7 +1,6 @@
-import { API_ROUTES } from 'app/common/contants/api-routes.constants';
-import Partner from 'models/partners/partners.model';
-
-import Agent from './agent.api';
+import Agent from '@api/agent/agent.api';
+import API_ROUTES from '@constants/api-routes.constants';
+import Partner from '@models/partners/partners.model';
 
 const PartnersApi = {
    getById: (id: number) => Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`),

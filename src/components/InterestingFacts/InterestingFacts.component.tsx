@@ -5,7 +5,6 @@ import BlockHeading from '@features/BlockHeading/BlockHeading.component';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import InterestingFactSliderItem from
         '@features/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem';
-import { useMobx } from '@stores/root-store';
 
 interface Props {
 
@@ -16,13 +15,14 @@ const textPlaceholder = `7 (20) березня члени Центральної
     На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.
     longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText`;
 
-function InterestingFactsComponent(props: Props) {
-    const sliderItems = ['Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради'].map((title) => (
-      <InterestingFactSliderItem
-        TextHeading={title}
-        MainText={textPlaceholder}
-        ImageSrc={WowFactImg}
-      />
+const InterestingFactsComponent = (props: Props) => {
+    const sliderItems = ['Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради',
+        'Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради'].map((title) => (
+          <InterestingFactSliderItem
+            TextHeading={title}
+            MainText={textPlaceholder}
+            ImageSrc={WowFactImg}
+          />
     ));
 
     const centerMode = !(sliderItems.length < 4);
@@ -46,6 +46,6 @@ function InterestingFactsComponent(props: Props) {
         </div>
       </div>
     );
-}
+};
 
 export default InterestingFactsComponent;

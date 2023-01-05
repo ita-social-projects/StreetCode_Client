@@ -1,7 +1,6 @@
-import { API_ROUTES } from 'app/common/contants/api-routes.constants';
-import Streetcode from 'models/streetcode/streetcode-types.model';
-
-import Agent from './agent.api';
+import Agent from '@api/agent/agent.api';
+import API_ROUTES from '@constants/api-routes.constants';
+import Streetcode from '@models/streetcode/streetcode-types.model';
 
 const StreetcodesApi = {
     getById: (id: number) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET}/${id}`),
@@ -18,9 +17,15 @@ const StreetcodesApi = {
 
     getPersons: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
 
-    create: (streetcode: Streetcode) => Agent.post<Streetcode>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
+    create: (streetcode: Streetcode) => Agent.post<Streetcode>(
+        `${API_ROUTES.STREETCODES.CREATE}`,
+        streetcode,
+    ),
 
-    update: (streetcode: Streetcode) => Agent.put<Streetcode>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
+    update: (streetcode: Streetcode) => Agent.put<Streetcode>(
+        `${API_ROUTES.STREETCODES.UPDATE}`,
+        streetcode,
+    ),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 };

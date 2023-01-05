@@ -1,13 +1,11 @@
-import {
- DependencyList, useEffect, useLayoutEffect, useRef,
-} from 'react';
+import { DependencyList, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { ElementRefOrDefault, ScrollProps } from './useScrollPosition';
 import getScrollPosition, { isBrowser } from './useScrollPosition.utils';
 
 const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
 
-export const useScrollPosition = (
+const useScrollPosition = (
     effect: (props: ScrollProps) => void,
     deps?: DependencyList,
     element?: ElementRefOrDefault,
@@ -79,3 +77,5 @@ useScrollPosition.defaultProps = {
     wait: null,
     boundingElement: false,
 };
+
+export default useScrollPosition;

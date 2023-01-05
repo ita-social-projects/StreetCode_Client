@@ -1,7 +1,6 @@
-import { API_ROUTES } from 'app/common/contants/api-routes.constants';
-import Image from 'models/media/audio.model';
-
-import Agent from '../agent.api';
+import Agent from '@api/agent/agent.api';
+import { API_ROUTES } from '@constants/api-routes.constants';
+import Image from '@models/media/audio.model';
 
 const ImagesApi = {
     getAll: () => Agent.get<Image>(`${API_ROUTES.IMAGES.GET_ALL}`),

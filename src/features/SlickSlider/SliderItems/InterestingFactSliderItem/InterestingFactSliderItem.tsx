@@ -9,7 +9,7 @@ interface Props {
     ImageSrc:string
 }
 
-function InterestingFactSliderItem(props: Props) {
+const InterestingFactSliderItem = (props: Props) => {
     const { interestingFactsStore: { openModal } } = useMobx();
     const toDisplayReadMore = props.MainText.length > 300;
     const textPart = props.MainText.length > 300 ? props.MainText.substr(0, 300) : props.MainText;
@@ -25,6 +25,6 @@ function InterestingFactSliderItem(props: Props) {
         </div>
       </div>
     );
-}
+};
 
 export default observer(InterestingFactSliderItem);

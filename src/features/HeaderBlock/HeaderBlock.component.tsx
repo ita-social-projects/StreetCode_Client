@@ -1,12 +1,5 @@
 import './HeaderBlock.styles.scss';
 
-import { EyeOutlined } from '@ant-design/icons';
-import MagnifyingGlass from '@assets/images/header/Magnifying_glass.svg';
-import StreetcodeSvg from '@assets/images/header/Streetcode_title.svg';
-import BurgerMenu from '@common/components/BurgerMenu/BurgerMenu.component';
-import TagList from '@common/components/TagList/TagList.component';
-import useToggle from '@common/hooks/stateful/useToggle.hook';
-import HeaderContentBlock from '@features/HeaderBlock/HeaderContentBlock/HeaderContentBlock.component';
 import {
     Button,
     Drawer,
@@ -15,6 +8,14 @@ import {
     Popover,
     Skeleton,
 } from 'antd';
+
+import { EyeOutlined } from '@ant-design/icons';
+import MagnifyingGlass from '@assets/images/header/Magnifying_glass.svg';
+import StreetcodeSvg from '@assets/images/header/Streetcode_title.svg';
+import BurgerMenu from '@common/components/BurgerMenu/BurgerMenu.component';
+import TagList from '@common/components/TagList/TagList.component';
+import useToggle from '@common/hooks/stateful/useToggle.hook';
+import HeaderContentBlock from '@features/HeaderBlock/HeaderContentBlock/HeaderContentBlock.component';
 
 const items = [
     {
@@ -48,7 +49,7 @@ interface Props {
 
 }
 
-function HeaderBlock(props: Props) {
+const HeaderBlock = (props: Props) => {
     const { toggleState: langSelectorState, handlers: { toggle: toggleLangSelector } } = useToggle();
     const tags = ['Історія', '"Україна-Русь"', 'Наукова школа', 'Наука', 'Політика', 'Професор історії'];
 
@@ -95,6 +96,6 @@ function HeaderBlock(props: Props) {
         </div>
       </div>
     );
-}
+};
 
 export default HeaderBlock;

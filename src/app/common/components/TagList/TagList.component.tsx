@@ -2,7 +2,7 @@ import './TagList.styles.scss';
 
 import { Button } from 'antd';
 
-function TagList() {
+const TagList = () => {
     // fetching goes here
     const tags = ['Історія', 'Україна-Русь', 'Наукова школа', 'Наука', 'Політика', 'Професор історії'];
 
@@ -15,6 +15,6 @@ function TagList() {
             ))}
       </div>
     );
-}
+};
 
 export default TagList;

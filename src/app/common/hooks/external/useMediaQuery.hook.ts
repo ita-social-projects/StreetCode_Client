@@ -19,7 +19,7 @@ const useMediaQuery = (value: number | string, direction: MediaDirection = 'min-
 
     useEffect(() => {
         if (typeof value === 'string') {
-            parseInt((value.endsWith(unit)) ? value.replace(unit, '') : value);
+            parseInt((value.endsWith(unit)) ? value.replace(unit, '') : value, 10);
         }
 
         const mediaList = window.matchMedia(`(${direction}: ${value})`);
