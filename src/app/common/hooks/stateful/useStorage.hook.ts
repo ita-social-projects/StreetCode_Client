@@ -1,12 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-export const useLocalStorage = (key: string, defValue?: Function | any) => {
-    return useStorageInternal(key, defValue);
-}
+export const useLocalStorage = (key: string, defValue?: Function | any) => useStorageInternal(key, defValue);
 
-export const useSessionStorage = (key: string, defValue?: Function | any) => {
-    return useStorageInternal(key, defValue, window.sessionStorage);
-}
+export const useSessionStorage = (key: string, defValue?: Function | any) => useStorageInternal(key, defValue, window.sessionStorage);
 
 const useStorageInternal = (key: string, defValue?: Function | any, storage: Storage = window.localStorage) => {
     const [value, setValue] = useState(() => {
@@ -29,9 +25,8 @@ const useStorageInternal = (key: string, defValue?: Function | any, storage: Sto
 
     const removeValue = useCallback(
         () => setValue(undefined),
-        []
+        [],
     );
 
     return { value, setValue, removeValue };
-}
-
+};

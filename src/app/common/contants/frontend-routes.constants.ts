@@ -1,6 +1,6 @@
 export const FRONTEND_ROUTES = {
-    BASE: "/",
+    BASE: '/',
     STREETCODE: {
-        BASE: "/streetcode"
-    }
-}
+        BASE: '/streetcode',
+    },
+};

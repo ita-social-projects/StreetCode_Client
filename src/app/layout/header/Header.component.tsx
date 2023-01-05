@@ -1,11 +1,10 @@
-
 interface Props {
 
 }
 
-const Header = ({  }: Props) => {
+function Header({ }: Props) {
     return (
-        <div></div>
+      <div />
     );
 }
 

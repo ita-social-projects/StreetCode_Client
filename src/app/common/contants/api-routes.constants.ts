@@ -109,4 +109,4 @@ export const API_ROUTES = {
         UPDATE: 'subtitle/update',
         DELETE: 'subtitle/delete',
     },
-}
+};

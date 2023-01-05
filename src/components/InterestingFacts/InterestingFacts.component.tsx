@@ -1,12 +1,11 @@
-import "./InterestingFacts.styles.scss"
-import WowFactImg from "@assets/images/WowFacts1.png";
+import './InterestingFacts.styles.scss';
 
-import SlickSlider from "@features/SlickSlider/SlickSlider.component";
+import WowFactImg from '@assets/images/WowFacts1.png';
+import BlockHeading from '@features/BlockHeading/BlockHeading.component';
+import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import InterestingFactSliderItem from
-        "@features/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem"
-import BlockHeading from "@features/BlockHeading/BlockHeading.component"
-import {useMobx} from "@stores/root-store";
-
+        '@features/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem';
+import { useMobx } from '@stores/root-store';
 
 interface Props {
 
@@ -17,36 +16,35 @@ const textPlaceholder = `7 (20) березня члени Центральної
     На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.
     longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText`;
 
+function InterestingFactsComponent(props: Props) {
+    const sliderItems = ['Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради', 'Голова Центральної Ради'].map((title) => (
+      <InterestingFactSliderItem
+        TextHeading={title}
+        MainText={textPlaceholder}
+        ImageSrc={WowFactImg}
+      />
+    ));
 
-const InterestingFactsComponent = (props: Props) => {
-    const sliderItems = ["Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради"].map(title => (
-        <InterestingFactSliderItem
-            TextHeading={title}
-            MainText={textPlaceholder}
-            ImageSrc={WowFactImg}
-        />
-    ))
-
-    const centerMode = sliderItems.length < 4 ? false : true;
-    const centerPadding = sliderItems.length <4 ? "0" : "-12px";
+    const centerMode = !(sliderItems.length < 4);
+    const centerPadding = sliderItems.length < 4 ? '0' : '-12px';
 
     return (
-        <div className='interestingFactsWrapper'>
-            <div className='interestingFactsContainer'>
-                <BlockHeading headingText='Wow-факти' />
-                <div className='interestingFactsSliderContainer'>
-                    <div style={{height: "100%"}}>
-                        <SlickSlider
-                            className='heightContainer'
-                            slides={sliderItems}
-                            centerMode={centerMode}
-                            swipe={false}
-                            centerPadding={centerPadding}
-                        />
-                    </div>
-                </div>
+      <div className="interestingFactsWrapper">
+        <div className="interestingFactsContainer">
+          <BlockHeading headingText="Wow-факти" />
+          <div className="interestingFactsSliderContainer">
+            <div style={{ height: '100%' }}>
+              <SlickSlider
+                className="heightContainer"
+                slides={sliderItems}
+                centerMode={centerMode}
+                swipe={false}
+                centerPadding={centerPadding}
+              />
             </div>
+          </div>
         </div>
+      </div>
     );
 }
 

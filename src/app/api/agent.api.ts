@@ -1,17 +1,19 @@
-import axios, {AxiosError, AxiosResponse, Canceler} from "axios";
-import {StatusCodes, ReasonPhrases} from "http-status-codes";
-import {toast} from "react-toastify";
-import AuthLocalStorage from "../stores/local-storages/AuthLocalStorage";
+import { toast } from 'react-toastify';
+import axios, { AxiosError, AxiosResponse, Canceler } from 'axios';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
-//const CancelToken = axios.CancelToken;
-//const source = CancelToken.source();
-//let cancel: Canceler;
+import AuthLocalStorage from '../stores/local-storages/AuthLocalStorage';
+
+// const CancelToken = axios.CancelToken;
+// const source = CancelToken.source();
+// let cancel: Canceler;
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
-axios.interceptors.request.use(config => {
+axios.interceptors.request.use((config) => {
     const token = AuthLocalStorage.getToken();
-    if (token) {
+    if (token && config.headers) {
+        // eslint-disable-next-line no-param-reassign
         config.headers!.Authorization = `Bearer ${token}`;
     }
 
@@ -19,7 +21,7 @@ axios.interceptors.request.use(config => {
 });
 
 axios.interceptors.response.use(
-    res => res,
+    (res) => res,
     (error: AxiosError) => {
         const { status: statusCode, config: { data } } = error.response!;
 
@@ -39,18 +41,30 @@ axios.interceptors.response.use(
             case StatusCodes.FORBIDDEN:
                 toast.error(ReasonPhrases.FORBIDDEN);
                 break;
+            default:
+                toast.error('Unknown error occurred!');
+                break;
         }
-    }
+    },
 );
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 
 const Agent = {
-    get: async <T> (url: string, params?: URLSearchParams) => axios.get<T>(url, {params}).then(responseBody),
-    post: async <T> (url: string, body: {}, headers?: {}) => axios.post<T>(url, body, headers).then(responseBody),
-    put: async <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-    //patch: async <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-    delete: async  <T>(url: string) => axios.delete<T>(url).then(responseBody),
-}
+    get: async <T> (url: string, params?: URLSearchParams) => axios.get<T>(url, { params })
+        .then(responseBody),
+
+    post: async <T> (url: string, body: object, headers?: object) => axios.post<T>(url, body, headers)
+        .then(responseBody),
+
+    put: async <T> (url: string, body: object) => axios.put<T>(url, body)
+        .then(responseBody),
+
+    // patch: async <T> (url: string, body: {}) => axios.put<T>(url, body)
+    // .then(responseBody),
+
+    delete: async <T>(url: string) => axios.delete<T>(url)
+        .then(responseBody),
+};
 
 export default Agent;

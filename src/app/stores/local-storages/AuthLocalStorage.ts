@@ -1,5 +1,5 @@
 export default class AuthLocalStorage {
-    static STORAGE_KEY = "jwtToken";
+    static STORAGE_KEY = 'jwtToken';
 
     static getToken() {
         return window.localStorage.getItem(AuthLocalStorage.STORAGE_KEY);
