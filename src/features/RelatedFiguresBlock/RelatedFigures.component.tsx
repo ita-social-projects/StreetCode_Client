@@ -48,6 +48,7 @@ const RelatedFiguresComponent = (props: Props) => {
                             slides={sliderItems}
                             swipe={false}
                             dots={false}
+                            toChangeSlidesOnClick={false}
                         />
                     </div>
                 </div>

@@ -26,6 +26,7 @@ const MainBlock = () => {
                                         arrows={false}
                                         slidesToShow={1}
                                         slides={[slide, slide, slide, slide]}
+                                        toChangeSlidesOnClick={false}
                                     />
                                 </div>
                             </div>
