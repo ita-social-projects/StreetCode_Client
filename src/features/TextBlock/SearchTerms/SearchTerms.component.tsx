@@ -1,15 +1,14 @@
 import { message, Popover } from 'antd';
+
 import { cursorTo } from 'readline';
 
 type Props = { allText: string };
-function SearchTerms(props: Props) {
+const SearchTerms = (props: Props) => {
     const listOfObjects :any = {};
     const KeywordsTosearch = ['києва', 'заслання', 'україна', 'січових стрільців'];
 
     KeywordsTosearch.forEach((entry) => {
-        listOfObjects[entry] = {
-          color: '#8D1F16',
-        };
+        listOfObjects[entry] = { color: '#8D1F16' };
     });
 
     const getStyle = (text: any) => {
@@ -42,5 +41,5 @@ function SearchTerms(props: Props) {
     ));
 
     return <div>{tempKeyword}</div>;
-}
+};
  export default SearchTerms;

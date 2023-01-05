@@ -1,5 +1,3 @@
-const MEDIA_QUERIES = {
-
-};
+const MEDIA_QUERIES = {};
 
 export default MEDIA_QUERIES;

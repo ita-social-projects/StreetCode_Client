@@ -9,11 +9,17 @@
       "@/*": ["./src/*"],
       "@app/*": ["./src/app/*"],
       "@assets/*": ["./src/assets/*"],
+      "@images/*": ["./src/assets/images/*"],
+      "@sass/*": ["./src/assets/sass/*"],
       "@fonts/*": ["./src/assets/fonts/*"],
       "@features/*": ["./src/features/*"],
+      "@streetcode/*": ["./src/features/StreetcodePage/*"],
       "@api/*": ["./src/app/api/*"],
       "@layout/*": ["./src/app/layout/*"],
-      "@common/*": ["./src/app/common/*"],
+      "@components/*": ["./src/app/common/components/*"],
+      "@constants/*": ["./src/app/common/constants/*"],
+      "@hooks/*": ["./src/app/common/hooks/*"],
+      "@utils/*": ["./src/app/common/utils/*"],
       "@stores/*": ["./src/app/stores/*"],
       "@models/*": ["./src/models/*"]
     },
@@ -28,7 +34,7 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "noEmit": false
   },
   "files": [

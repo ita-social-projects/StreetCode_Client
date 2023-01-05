@@ -1,7 +1,6 @@
-import { API_ROUTES } from '@app/common/contants/api-routes.constants';
+import Agent from '@api/agent/agent.api';
+import API_ROUTES from '@constants/api-routes.constants';
 import { Text } from '@models/streetcode/text-contents.model';
-
-import Agent from './agent.api';
 
 const TextsApi = {
     getAll: () => Agent.get<Text[]>(`${API_ROUTES.TEXTS.GET_ALL}`),

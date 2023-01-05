@@ -5,7 +5,7 @@ import { useState } from 'react';
 import SearchTerms from '../SearchTerms/SearchTerms.component';
 
 type Props = { children: string };
-function ReadMore(props: Props) {
+const ReadMore = (props: Props) => {
       const text = props.children;
       const [isReadMore, setIsReadMore] = useState(true);
       const toggleReadMore = () => {
@@ -32,5 +32,5 @@ function ReadMore(props: Props) {
       )}
        </div>
      );
-    }
+    };
 export default ReadMore;

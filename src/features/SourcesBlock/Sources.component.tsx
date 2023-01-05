@@ -1,16 +1,16 @@
 import './Sources.styles.scss';
 
+
 import SourcesModal from '@common/components/modals/Sources/SourcesModal.component';
 import BlockHeading from '@features/BlockHeading/BlockHeading.component';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-
 import SourcesSlideItem from './SourceItem/SourceItem.component';
 
 interface Props {
 
 }
 
-function SourcesComponent(props: Props) {
+const SourcesComponent = (props: Props) => {
     const slides = ['Книги', 'Статті', 'Фільми', 'Постаті'].map((text) => (
       <SourcesSlideItem text={text} />
     ));
@@ -35,6 +35,6 @@ function SourcesComponent(props: Props) {
         </div>
       </div>
     );
-}
+};
 
 export default SourcesComponent;

@@ -2,10 +2,8 @@ interface Props {
 
 }
 
-function Header({ }: Props) {
-    return (
-      <div />
+const Header = ({ }: Props) => (
+  <div />
     );
-}
 
 export default Header;

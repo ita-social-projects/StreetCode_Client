@@ -3,7 +3,8 @@ import './Video.styles.scss';
 import YouTube, { YouTubeProps } from 'react-youtube';
 
 type Props = { video: string[] };
-function Video(props: Props) {
+
+const Video = (props: Props) => {
     const onPlayerReady: YouTubeProps['onReady'] = (event) => {
       event.target.pauseVideo();
     };
@@ -27,5 +28,5 @@ function Video(props: Props) {
         </div>
       </div>
     );
-  }
+  };
 export default Video;

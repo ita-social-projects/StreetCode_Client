@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 
 const useEventListener = (
 eventType: string,
-cb: Function,
-                          element: Element | typeof window = window,
+cb: (ev: Event) => void,
+element: Element | typeof window = window,
 ) => {
     const cbRef = useRef(cb);
 

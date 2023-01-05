@@ -7,7 +7,7 @@ interface Props {
     text: string;
 }
 
-function SourceItem(props: Props) {
+const SourceItem = (props: Props) => {
     const { sourcesStore: { openModal } } = useMobx();
 
     return (
@@ -15,6 +15,6 @@ function SourceItem(props: Props) {
         <h1>{props.text}</h1>
       </div>
     );
-}
+};
 
 export default observer(SourceItem);

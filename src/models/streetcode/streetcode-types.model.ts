@@ -1,3 +1,5 @@
+import { Fact } from './text-contents.model';
+
 import { StreetcodeCoordinate } from 'models/additional-content/coordinates.model';
 import Subtitle from 'models/additional-content/subtitles.model';
 import Tag from 'models/additional-content/tag.model';
@@ -10,9 +12,7 @@ import { SourceLink } from 'models/sources/source-links.model';
 import { TimelineItem } from 'models/timeline/timeline-item.model';
 import Toponym from 'models/toponyms/toponym.model';
 import TransactionLink from 'models/transactions/transaction-link.model';
-
 import RelatedFigure from './related-figure.model';
-import { Fact } from './text-contents.model';
 
 export default interface Streetcode {
     id: number;

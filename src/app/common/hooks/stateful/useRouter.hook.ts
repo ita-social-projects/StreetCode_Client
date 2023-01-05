@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+
 import * as queryString from 'querystring';
 
-const useRouter = <T extends {} | string = any> () => {
+const useRouter = <T extends Record<string, never> | string = any> () => {
     const params = useParams<T>();
     const location = useLocation();
 
