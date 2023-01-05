@@ -10,14 +10,14 @@ const MainBlock = () => {
     let slide = <img src={Hrushevskyi} className={"streetcodeImg"} />;
 
     const sep = <div className={"separator"}></div>;
-    return (<div className='mainStreetcodeBlock margin-82px'>
+    return (<div className='blockCentering margin-82px bgr'>
         <div className='mainContainer'>
             <Breadcrumb separator={sep} className={"breadcrumbContainer"}>
                 <Breadcrumb.Item href='' className={"breadcrumbItem font-weight-500"}>СТРІТКОДИ</Breadcrumb.Item>
                 <Breadcrumb.Item href='' className={"breadcrumbItem"}>МИХАЙЛО ГРУШЕВСЬКИЙ</Breadcrumb.Item>
             </Breadcrumb>
-            <Layout className='mainStreetcodeBlock'>
-                <Layout.Content className={"mainContent"}>
+            <div className='blockCentering'>
+                <div className={"mainContent"}>
                     <div className={"card"}>
                         <div className={"leftSider"}>
                             <div className={"leftSiderContentContainer"}>
@@ -67,8 +67,8 @@ const MainBlock = () => {
                             </div>
                         </div>
                     </div>
-                </Layout.Content>
-            </Layout>
+                </div>
+            </div>
         </div>
         </div>
     );
