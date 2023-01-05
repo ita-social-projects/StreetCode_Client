@@ -6,6 +6,7 @@ import InterestingFactSliderItem from
         "@features/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem"
 import BlockHeading from "@features/BlockHeading/BlockHeading.component"
 import {useMobx} from "@stores/root-store";
+import {useRef} from "react";
 
 
 interface Props {
@@ -19,13 +20,15 @@ const textPlaceholder = `7 (20) березня члени Центральної
 
 
 const InterestingFactsComponent = (props: Props) => {
-    const sliderItems = ["Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради"].map(title => (
+    const sliderItems = ["1Голова Центральної Ради"].map(title => (
         <InterestingFactSliderItem
             TextHeading={title}
             MainText={textPlaceholder}
             ImageSrc={WowFactImg}
         />
     ))
+
+
 
     const centerMode = sliderItems.length < 4 ? false : true;
     const centerPadding = sliderItems.length <4 ? "0" : "-12px";
@@ -37,9 +40,13 @@ const InterestingFactsComponent = (props: Props) => {
                 <div className='interestingFactsSliderContainer'>
                     <div style={{height: "100%"}}>
                         <SlickSlider
+                            toChangeSlidesOnClick={true}
                             className='heightContainer'
                             slides={sliderItems}
+                            //slidesToShow={Math.min(sliderItems.length, 3)}
+                            slidesToShow={3}
                             centerMode={centerMode}
+
                             swipe={false}
                             centerPadding={centerPadding}
                         />

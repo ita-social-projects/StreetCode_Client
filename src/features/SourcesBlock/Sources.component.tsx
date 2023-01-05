@@ -23,6 +23,7 @@ const SourcesComponent = (props: Props) => {
                     <div className={"sourceContentContainer"}>
                         <div className={"sourcesSliderContainer"}>
                             <SlickSlider
+                                toChangeSlidesOnClick={false}
                                 dots={false}
                                 autoplay
                                 swipe={false}
