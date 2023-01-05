@@ -14,3 +14,6 @@
 .text-all{
     @include mut.rem-margined($bottom: 35px);
 }
+.text-short{
+    @include mut.truncated($line-num: 25);
+}

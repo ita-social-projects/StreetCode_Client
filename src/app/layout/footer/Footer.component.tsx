@@ -39,10 +39,10 @@ const Footer = ({  }: Props) => {
                           <li className="li-item">Cookies</li>
                     </ul>
                     <ul className="social-icons">
-                          <li className="brands"><a href=""><img src={FaceBook} /></a></li>
-                          <li className="brands"><a href=""><img src={Instagram} /> </a></li>
-                          <li className="brands"><a href=""><img src={TikTok} /></a></li>
-                          <li className="brands"><a href=""><img src={Twitter}/></a></li>
+                          <li className="brands"><a href="https://www.facebook.com/streetcodeua" target="_blank"><img src={FaceBook} /></a></li>
+                          <li className="brands"><a href="https://www.instagram.com/streetcodeua" target="_blank"><img src={Instagram} /> </a></li>
+                          <li className="brands"><a href="https://www.tiktok.com/@streetcodeua" target="_blank"><img src={TikTok} /></a></li>
+                          <li className="brands"><a href="https://twitter.com/streetcodeua" target="_blank"><img src={Twitter}/></a></li>
                     </ul>
                   </div>
               </div>

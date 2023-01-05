@@ -14,10 +14,13 @@ const ReadMore = (props: Props) => {
       <div>
       {text.length > text.slice(0, 2000).length ?     
         <div className="text" style={{whiteSpace:"pre-line"}}>
-          {isReadMore ? <div><SearchTerms allText={text.slice(0, 2000)+"..."}/></div> : <div><SearchTerms allText={text}/></div>}
-          <div className="readMore-block" >
+          {isReadMore ? <div className="text-short" style={{whiteSpace:"pre-line"}}>
+                                 <SearchTerms allText={text}/>   
+                        </div> 
+        : <div><SearchTerms allText={text}/></div>}
+          <div className="readMore-block">
             <span className="readMore" onClick={toggleReadMore}>
-            {isReadMore ? "Трохи ще": "Приховати текст"}
+            {isReadMore ? "Трохи ще": "Дещо менше"}
             </span>
           </div>
         </div> 
