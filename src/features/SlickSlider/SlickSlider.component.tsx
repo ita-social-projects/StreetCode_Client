@@ -26,7 +26,6 @@ const SimpleSlider: React.FC<Props> = (props) => {
         }
     };
 
-
     // Code that removes all "slick-cloned" elements if there is only 1 slide
     useEffect(() => {
         if (props.slides.length === 1) {
@@ -35,25 +34,14 @@ const SimpleSlider: React.FC<Props> = (props) => {
         }
     }, [props.slides]);
 
-
-
-    const singleSlideStyle="transformScale";
-
     return (
         <div className="sliderClass">
-            {props.toChangeSlidesOnClick ?
-                <Slider {...props} ref={sliderRef}>
-                    {
-                        props.slides.map((slide, index) => (
-                        <div className={props.slides.length ===1 ? singleSlideStyle : ""} onClick={() => handleClick(index)}>{slide}</div>
+            <Slider {...props} ref={sliderRef}>
+                {
+                    props.slides.map((slide, index) => (
+                        <div onClick={props.toChangeSlidesOnClick ? () => handleClick(index) : ()=>{}}>{slide}</div>
                     ))}
-                </Slider>
-                : <Slider {...props}>
-                    {props.slides.map(slide => (
-                        <div>{slide}</div>
-                    ))}
-                </Slider>
-            }
+            </Slider>
         </div>
     );
 };
@@ -69,4 +57,3 @@ const defaultProps: SliderProps = {
 SimpleSlider.defaultProps = defaultProps;
 
 export default SimpleSlider;
-
