@@ -1,7 +1,6 @@
-import { createContext, useContext } from 'react';
-
-import InterestingFactsStore from '@stores/interesting-facts-store';
-import SourcesStore from '@stores/sources-store';
+import { createContext, useContext } from "react";
+import SourcesStore from "@stores/sources-store";
+import InterestingFactsStore from "@stores/interesting-facts-store";
 
 interface Store {
     sourcesStore: SourcesStore,
@@ -10,8 +9,8 @@ interface Store {
 
 export const store: Store = {
     sourcesStore: new SourcesStore(),
-    interestingFactsStore: new InterestingFactsStore(),
-};
+    interestingFactsStore: new InterestingFactsStore()
+}
 
 export const StoreContext = createContext(store);
 
