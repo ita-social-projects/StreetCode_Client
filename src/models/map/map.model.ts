@@ -1,6 +1,6 @@
-import Image from 'models/media/image.model';
-import Streetcode from 'models/streetcode/streetcode-types.model';
-import Toponym from 'models/toponyms/toponym.model';
+import Image from "models/media/image.model";
+import Toponym from "models/toponyms/toponym.model";
+import Streetcode from "models/streetcode/streetcode-types.model";
 
 export default interface Map {
     image: Image;

@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable } from "mobx";
 
 interface Sources {
     isOpen: boolean;
@@ -6,7 +6,7 @@ interface Sources {
 }
 
 export default class SourcesStore {
-    isOpen = false;
+    isOpen: boolean = false;
 
     public constructor() {
         makeAutoObservable(this);
@@ -14,9 +14,9 @@ export default class SourcesStore {
 
     public openModal = () => {
         this.isOpen = true;
-    };
+    }
 
     public closeModal = () => {
         this.isOpen = false;
-    };
+    }
 }

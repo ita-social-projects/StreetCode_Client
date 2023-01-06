@@ -1,10 +1,5 @@
-import Streetcode from '@models/streetcode/streetcode-types.model';
-
-export interface HistoricalContext {
-    id: number;
-    title: string;
-    timelineItems: TimelineItem[];
-}
+import Streetcode from "models/streetcode/streetcode-types.model";
+import HistoricalContext from "./historical-context.model";
 
 export interface TimelineItem {
     id: number;

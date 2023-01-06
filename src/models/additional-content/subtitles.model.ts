@@ -1,6 +1,5 @@
-import Streetcode from 'models/streetcode/streetcode-types.model';
-import Url from './url.model';
-
+import Url from "./url.model";
+import Streetcode from "models/streetcode/streetcode-types.model";
 
 export enum SubtitleStatus {
     Editor = 'editor',
