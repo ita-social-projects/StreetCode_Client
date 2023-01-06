@@ -92,11 +92,10 @@
   width: f.pxToRem(569px);
   @include mut.flexed($align-items: flex-start, $gap: 26px);
   @include mut.rem-padded(13px, 0, 18px, 3px);
-  line-height: f.pxToEm(23px);
+  line-height: 23px;
 
   color: c.$lighter-black-color;
   @include mut.with-font($font-weight: 300);
-
 }
 
 .cardFooter {

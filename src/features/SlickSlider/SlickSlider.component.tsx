@@ -1,22 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
+import "./SlickSlider.styles.scss";
+
+import React, { useEffect, useRef } from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';
-import "./SlickSlider.styles.scss"
 
 interface Props extends SliderProps {
     slides: JSX.Element[];
     onClick?: (index: number) => void;
-    toChangeSlidesOnClick: boolean
+    toChangeSlidesOnClick?: boolean;
 }
 
 const SimpleSlider: React.FC<Props> = (props) => {
-
     // Code that provides ability to change selected slide after clicking on it
     const sliderRef = useRef<any>(null);
-    const [currentSlide, setCurrentSlide] = useState(0);
 
     const handleClick = (index: number) => {
-        setCurrentSlide(index);
-
         if (sliderRef && sliderRef.current) {
             sliderRef.current.slickGoTo(index);
         }
@@ -37,10 +34,11 @@ const SimpleSlider: React.FC<Props> = (props) => {
     return (
         <div className="sliderClass">
             <Slider {...props} ref={sliderRef}>
-                {
-                    props.slides.map((slide, index) => (
-                        <div onClick={props.toChangeSlidesOnClick ? () => handleClick(index) : ()=>{}}>{slide}</div>
-                    ))}
+                {props.slides.map((slide, index) => (
+                        <div onClick={props.toChangeSlidesOnClick ? () => handleClick(index) : undefined}>
+                            {slide}
+                        </div>
+                ))}
             </Slider>
         </div>
     );
