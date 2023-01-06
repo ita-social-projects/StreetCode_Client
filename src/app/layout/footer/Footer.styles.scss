@@ -45,15 +45,12 @@
     margin-right: 10%;
     @include mut.with-font($font-weight: 300, $font-size: 15px);
 }
-.support-links{
-    text-decoration: underline;
-}
 .li-item{
     margin-bottom: pxToRem(8px);
     cursor: pointer;
 }
 .li-item:hover{
-    color: c.$lighter-gray-color;
+    text-decoration: underline;
 }
 .social-icons{
     color: c.$pure-white-color;
