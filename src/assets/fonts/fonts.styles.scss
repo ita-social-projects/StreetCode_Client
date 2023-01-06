@@ -8,7 +8,15 @@ $closer-text-extra-bold-family: 'Closer Text ExtBd';
 $closer-text-semi-bold-family: 'Closer Text SemBd';
 $closer-text-medium-family: 'Closer Text Med';
 
+$closer-family:'Closer';
+$closer-light-family:'Closer-Light';
+$closer-medium-family:'closer_medium';
+
 //----------------------------------------Closer Text-----------------------------------------------
+
+@include font-face($closer-family, 'Closer-Light', 300, normal);
+@include font-face($closer-medium-family, 'Closer-Medium', normal, normal);
+
 @include font-face($closer-text-family, 'CloserText-Regular');
 @include font-face($closer-text-family, 'CloserText-Black', 900);
 @include font-face($closer-text-family, 'CloserText-BlackItalic', 900, italic);
@@ -44,3 +52,4 @@ $closer-text-medium-family: 'Closer Text Med';
 @include font-face($roboto-family, 'Roboto-Medium', 500);
 @include font-face($roboto-family, 'Roboto-Thin', 100);
 @include font-face($roboto-family, 'Roboto-ThinItalic', 100, italic);
+
