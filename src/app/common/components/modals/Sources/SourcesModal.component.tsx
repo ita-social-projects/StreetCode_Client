@@ -41,16 +41,17 @@ const volumes = ["Том 1: Суспільно-політичні твори (18
 ];
 
 const SourcesModal = (props: Props) => {
-    const { modalStore: { setModal, modalsState: { sources } } } = useMobx();
+    const { modalStore } = useMobx();
+    const { setModal, modalsState: { sources } } = modalStore;
 
     return (
         <Modal
+            className={'sourcesModal'}
             open={sources}
-            onCancel={() => setModal('sources')}
-            centered
-            width={'43%'}
-            footer={null}
             maskClosable
+            centered
+            footer={null}
+            onCancel={() => setModal('sources')}
             closeIcon={<CancelBtn />}
         >
             <div className={"sourceImgContainer"}>

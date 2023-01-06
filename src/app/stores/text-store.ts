@@ -1,6 +1,6 @@
 import {Text} from "@models/streetcode/text-contents.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import textsApi from "@api/texts.api";
+import textsApi from "@api/streetcode/text-content/texts.api";
 
 export default class TextStore {
     public TextMap = new Map<number, Text>();

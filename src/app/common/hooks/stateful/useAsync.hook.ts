@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { DependencyList, useCallback, useEffect, useState } from 'react';
 
-export const useAsync = (func: Function, deps: any[] = [], cb?: Function) => {
+export const useAsync = (func: Function, deps: DependencyList = [], cb?: () => void) => {
     const { execute, ...state } = useAsyncInternal(func, deps);
 
     useEffect(() => {
@@ -10,11 +10,11 @@ export const useAsync = (func: Function, deps: any[] = [], cb?: Function) => {
     return state;
 }
 
-export const useAsyncFn = (func: Function, deps: any[] = []) => {
+export const useAsyncFn = (func: Function, deps: DependencyList = []) => {
     return useAsyncInternal(func, deps, false);
 }
 
-const useAsyncInternal = (func: Function, deps: any[] = [], initialLoading = true) => {
+const useAsyncInternal = (func: Function, deps: DependencyList = [], initialLoading = true) => {
     const [loading, setLoading] = useState(initialLoading);
     const [error, setError] = useState<any | undefined>();
     const [value, setValue] = useState<any | undefined>();

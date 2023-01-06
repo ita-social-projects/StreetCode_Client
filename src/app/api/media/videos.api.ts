@@ -1,5 +1,5 @@
-import Agent from "../agent.api";
-import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import Agent from "@api/agent.api";
+import { API_ROUTES } from "@constants/api-routes.constants";
 import Video from "@models/media/video.model";
 
 const VideosApi = {

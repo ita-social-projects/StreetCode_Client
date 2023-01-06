@@ -1,6 +1,6 @@
 import Partner from "@models/partners/partners.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import partnersApi from "@api/partners.api";
+import partnersApi from "@api/partners/partners.api";
 
 export default class PartnersStore {
     public PartnerMap = new Map<number, Partner>();

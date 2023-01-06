@@ -1,6 +1,6 @@
 import {TimelineItem} from "@models/timeline/timeline-item.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import timelineApi from "@api/timeline.api";
+import timelineApi from "@api/timeline/timeline.api";
 
 export default class TimelineitemStore {
     public TimelineItemMap = new Map<number, TimelineItem>();

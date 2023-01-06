@@ -25,14 +25,12 @@
 }
 
 .ant-menu-submenu-popup .ant-menu.ant-menu-sub {
-  color: white;
-  background-color: c.$ant-menu-color;
+  @include mut.colored(c.$pure-white-color, c.$ant-menu-color);
   @include mut.rem-padded(5px, 5px, 10px, 15px);
 }
 
 .ant-menu-item-selected,
-.ant-menu-item-selected .anticon
-{
+.ant-menu-item-selected .anticon {
   color: unset !important;
 }
 

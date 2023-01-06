@@ -1,6 +1,6 @@
-@use "src/assets/sass/utils.functions" as f;
-@use "src/assets/sass/variables/variables.colors" as c;
-@use "src/assets/sass/mixins/utils.mixins" as mut;
+@use "@sass/utils.functions" as f;
+@use "@sass/variables/variables.colors" as c;
+@use "@sass/mixins/utils.mixins" as mut;
 
 .burgerMenuContainer {
   @include mut.sized(36px, 100%);
@@ -9,8 +9,8 @@
 
   > * {
     @include mut.sized(100%, 5px);
-    background-color: #7F7F7F;
     @include mut.full-rounded(12px);
+    background-color: c.$normal-gray-color;
   }
 
   &:hover {

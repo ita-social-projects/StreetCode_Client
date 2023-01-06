@@ -1,6 +1,6 @@
 import TransactionLink from "@models/transactions/transaction-link.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import transactLinksApi from "@api/transactLinks.api";
+import transactLinksApi from "@api/transactions/transactLinks.api";
 
 export default class TransactionLinksStore {
     public TransactionLinkMap = new Map<number, TransactionLink>();
