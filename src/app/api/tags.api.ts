@@ -1,6 +1,6 @@
 import Agent from "./agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import Tag from "models/additional-content/tag.model";
+import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import Tag from "@models/additional-content/tag.model";
 
 const TagsApi = {
     getById: (id: number) =>
@@ -12,7 +12,7 @@ const TagsApi = {
     getAll: () =>
         Agent.get<Tag[]>(`${API_ROUTES.TAGS.GET_ALL}`),
 
-    getTagsByStreetcodeId: (streetcodeId: number) =>
+    getTagByStreetcodeId: (streetcodeId: number) =>
         Agent.get<Tag>(`${API_ROUTES.TAGS.GET_BY_STREETCODE_ID}/${streetcodeId}`),
 
     create: (tag: Tag) =>

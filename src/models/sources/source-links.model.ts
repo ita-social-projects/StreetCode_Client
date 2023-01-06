@@ -1,5 +1,5 @@
-import Url from "models/additional-content/url.model";
-import Image from "models/media/image.model";
+import Url from "@models/additional-content/url.model";
+import Image from "@models/media/image.model";
 
 export interface SourceLinkCategory {
     id: number;

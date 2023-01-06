@@ -1,14 +1,13 @@
 import axios, {AxiosError, AxiosResponse, Canceler} from "axios";
 import {StatusCodes, ReasonPhrases} from "http-status-codes";
 import {toast} from "react-toastify";
-import AuthLocalStorage from "../stores/local-storages/AuthLocalStorage";
 
 //const CancelToken = axios.CancelToken;
 //const source = CancelToken.source();
 //let cancel: Canceler;
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
-
+/*
 axios.interceptors.request.use(config => {
     const token = AuthLocalStorage.getToken();
     if (token) {
@@ -17,6 +16,7 @@ axios.interceptors.request.use(config => {
 
     return config;
 });
+ */
 
 axios.interceptors.response.use(
     res => res,

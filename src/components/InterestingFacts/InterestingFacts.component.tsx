@@ -4,8 +4,6 @@ import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import InterestingFactSliderItem from
         "@features/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem"
 import BlockHeading from "@features/BlockHeading/BlockHeading.component"
-import {useMobx} from "@stores/root-store";
-import {useRef} from "react";
 
 
 interface Props {

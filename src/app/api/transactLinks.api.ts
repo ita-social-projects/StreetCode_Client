@@ -1,6 +1,6 @@
 import Agent from "./agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import  TransactionLink  from "models/transactions/transaction-link.model";
+import { API_ROUTES } from "@app/common/contants/api-routes.constants";
+import  TransactionLink  from "@models/transactions/transaction-link.model";
 
 const TransactionLinksApi = {
     getAll: () =>
