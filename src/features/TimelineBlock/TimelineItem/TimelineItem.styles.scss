@@ -1,0 +1,45 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+
+$timelineItemImg: "@assets/images/TimelineItem.png";
+
+.timelineItem {
+  @include mut.sized(604px, 366px);
+  @include mut.bg-image($timelineItemImg);
+  @include mut.full-rounded(30px);
+  transition: filter .5s ease-in;
+  flex-shrink: 0;
+
+  &:hover {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+  }
+
+  &:nth-child(2) {
+    border: 2px solid c.$pure-white-color;
+  }
+}
+
+.timelineItemContent {
+  margin: f.pxToRem(26px);
+
+  .timelineItemDate {
+    margin-bottom: f.pxToRem(26px);
+    @include mut.with-font($font-weight: 600, $font-size: 20px);
+    color: c.$darker-gray-color;
+  }
+
+  .timelineItemTitle {
+    margin-bottom: f.pxToRem(22px);
+    @include mut.with-font($font-weight: 600, $font-size: 36px);
+    color: c.$dark-red-color;
+  }
+
+  .timelineItemDescription {
+    @include mut.with-font($font-weight: 500, $font-size: 20px);
+    color: c.$dark-gray-color;
+  }
+}

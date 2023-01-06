@@ -2,71 +2,15 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 $timelineItemImg: "@assets/images/TimelineItem.png";
 
-.timeSpanContainer {
-  @include mut.sized(100%, 8px);
-  background-color: c.$dark-red-color;
-  margin-top: f.pxToRem(100px);
-  overflow: visible;
-
-  .timelineYearTicksContainer {
-    @include mut.sized(100%, 30px);
-    @include mut.flex-centered();
-    gap: f.pxToRem(240px);
-    padding: 0 f.pxToRem(100px) f.pxToRem(20px);
-
-    .timelineYearTick {
-      @include mut.sized(21px, 21px);
-      background-color: c.$timeline-reel-color;
-      @include mut.flex-centered();
-
-
-
-      &:nth-child(4) {
-        margin: 0 f.pxToRem(30px);
-        @include mut.sized(42px, 42px);
-
-        > * {
-          bottom: f.pxToRem(50px);
-          font-size: f.pxToRem(40px);
-        }
-      }
-
-      > * {
-        position: relative;
-        bottom: f.pxToRem(30px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-      }
-    }
-  }
-}
-
 .timelineContainer {
   margin: f.pxToRem(50px) 0;
+  padding-right: f.pxToRem(10px);
   @include mut.sized(100%, 536px);
   background-color: c.$timeline-reel-color;
-}
-
-.timelineSquareContainer {
-  @include mut.flexed($justify-content: center, $gap: 36px);
-  margin-right: 10px;
-
-  &:first-child {
-    padding-top: 16px;
-  }
-
-  .bottom {
-    padding-bottom: 16px;
-  }
-
-  .timelineSquare {
-    @include mut.sized(44px, 40px);
-    background-color: c.$pure-white-color;
-    @include mut.full-rounded(11px);
-    flex: 0 0 auto;
-  }
 }
 
 .timelineItemContainer {
@@ -74,42 +18,4 @@ $timelineItemImg: "@assets/images/TimelineItem.png";
   @include mut.sized(100%, 336px);
   @include mut.flex-centered();
   gap: f.pxToRem(36px);
-  overflow: hidden;
-}
-
-.timelineItem {
-  @include mut.sized(604px, 100%);
-  @include mut.bg-image($timelineItemImg);
-  @include mut.full-rounded(30px);
-  transition: filter .5s ease-in;
-
-  &:hover {
-    filter: contrast(200%);
-    cursor: pointer;
-  }
-
-  &:nth-child(2) {
-    border: 2px solid c.$pure-white-color;
-  }
-}
-
-.timelineItemContent {
-  margin: f.pxToRem(26px);
-
-  .timelineItemDate {
-    margin-bottom: f.pxToRem(26px);
-    @include mut.with-font($font-weight: 600, $font-size: 20px);
-    color: c.$darker-gray-color;
-  }
-
-  .timelineItemTitle {
-    margin-bottom: f.pxToRem(22px);
-    @include mut.with-font($font-weight: 600, $font-size: 36px);
-    color: c.$dark-red-color;
-  }
-
-  .timelineItemDescription {
-    @include mut.with-font($font-weight: 500, $font-size: 20px);
-    color: c.$dark-gray-color;
-  }
 }
