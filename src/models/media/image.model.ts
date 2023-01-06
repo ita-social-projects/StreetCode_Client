@@ -1,4 +1,4 @@
-import Url from "@models/additional-content/url.model";
+import Url from '@models/additional-content/url.model';
 
 export default interface Image {
     id: number;

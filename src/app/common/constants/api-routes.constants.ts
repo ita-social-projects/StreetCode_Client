@@ -1,4 +1,4 @@
-export const API_ROUTES = {
+const API_ROUTES = {
     BASE: '/',
     FACTS: {
         GET_ALL: 'facts/getAll',
@@ -109,4 +109,6 @@ export const API_ROUTES = {
         UPDATE: 'subtitle/update',
         DELETE: 'subtitle/delete',
     },
-}
+};
+
+export default API_ROUTES;
