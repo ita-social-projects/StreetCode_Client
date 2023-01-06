@@ -4,6 +4,7 @@
 @use "@assets/sass/_utils.functions.scss" as *;
 
 .interestingFactSlide {
+    cursor: pointer;
     position: relative;
     width: pxToRem(387px);
     height: pxToRem(416px);

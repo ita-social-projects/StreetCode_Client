@@ -1,6 +1,5 @@
 import "./InterestingFacts.styles.scss"
 import WowFactImg from "@assets/images/WowFacts1.png";
-
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import InterestingFactSliderItem from
         "@features/SlickSlider/SliderItems/InterestingFactSliderItem/InterestingFactSliderItem"
@@ -18,7 +17,7 @@ const textPlaceholder = `7 (20) березня члени Центральної
 
 
 const InterestingFactsComponent = (props: Props) => {
-    const sliderItems = ["Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради", "Голова Центральної Ради"].map(title => (
+    const sliderItems = ["1Голова Центральної Ради", "2Голова Центральної Ради", "3Голова Центральної Ради", "4Голова Центральної Ради"].map(title => (
         <InterestingFactSliderItem
             TextHeading={title}
             MainText={textPlaceholder}
@@ -26,8 +25,14 @@ const InterestingFactsComponent = (props: Props) => {
         />
     ))
 
-    const centerMode = sliderItems.length < 4 ? false : true;
-    const centerPadding = sliderItems.length <4 ? "0" : "-12px";
+    const toShowDots = sliderItems.length <=3 ? false : true;
+    let updatedSlides = [...sliderItems];
+    if (sliderItems.length>=2) {
+        const maxSlidesToShow = 3;
+        while (updatedSlides.length <= maxSlidesToShow) {
+            updatedSlides = updatedSlides.concat(updatedSlides);
+        }
+    }
 
     return (
         <div className='interestingFactsWrapper'>
@@ -36,11 +41,14 @@ const InterestingFactsComponent = (props: Props) => {
                 <div className='interestingFactsSliderContainer'>
                     <div style={{height: "100%"}}>
                         <SlickSlider
+                            toChangeSlidesOnClick={true}
                             className='heightContainer'
-                            slides={sliderItems}
-                            centerMode={centerMode}
+                            slides={updatedSlides}
+                            slidesToShow={3}
+                            centerMode={true}
                             swipe={false}
-                            centerPadding={centerPadding}
+                            dots={toShowDots}
+                            centerPadding={"-12px"}
                         />
                     </div>
                 </div>
