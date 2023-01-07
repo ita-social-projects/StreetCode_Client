@@ -1,43 +1,48 @@
 @use '../variables/variables.fonts' as ft;
 @use '../variables/variables.colors' as c;
 @use '../mixins/vendor.mixins' as vnd;
-@use '../utils.functions' as *;
+@use '../utils.functions' as f;
 
 // --------------------------Positioning--------------------------
-@mixin flexed($direction: row, $align-items: stretch,
-              $justify-content: stretch, $wrap: nowrap, $gap: 0) {
+@mixin flexed(
+  $direction: row,
+  $align-items: stretch,
+  $justify-content: stretch,
+  $wrap: nowrap,
+  $gap: 0
+) {
   display: flex;
   flex-direction: $direction;
   justify-content: $justify-content;
   align-items: $align-items;
   flex-wrap: $wrap;
-  gap: pxToRem($gap);
+  gap: f.pxToRem($gap);
 }
 
 @mixin set-positioning($top, $right, $bottom, $left) {
-  @if unit($top) == '%' {
-    top: $top !important;
+  @if ($top == 'auto' or unit($top) == '%') {
+    top: $top;
   } @else {
-    top: pxToRem($top) !important;
+    top: f.pxToRem($top);
   }
-  @if unit($right) == '%' {
-    right: $right !important;
+  @if ($right == 'auto' or unit($right) == '%') {
+    right: $right;
   } @else {
-    right: pxToRem($right) !important;
+    right: f.pxToRem($right);
   }
-  @if unit($bottom) == '%' {
-    bottom: $bottom !important;
+  @if ($bottom == 'auto' or unit($bottom) == '%') {
+    bottom: $bottom;
   } @else {
-    bottom: pxToRem($bottom) !important;
+    bottom: f.pxToRem($bottom);
   }
-  @if unit($left) == '%' {
-    left: $left !important;
+  @if ($left == 'auto' or unit($left) == '%') {
+    left: $left;
   } @else {
-    left: pxToRem($left) !important;
+    left: f.pxToRem($left);
   }
 }
 
-@mixin positioned-as($position: relative, $top: 0, $right: 0, $bottom: 0, $left: 0) {
+@mixin positioned-as($position: relative, $top: auto, $right: auto, $bottom: auto, $left: auto) {
   position: $position;
   @include set-positioning($top, $right, $bottom, $left);
 }
@@ -46,12 +51,12 @@
   @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
     width: $width !important;
   } @else {
-    width: pxToRem($width) !important;
+    width: f.pxToRem($width) !important;
   }
   @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
     height: $height !important;
   } @else {
-    height: pxToRem($height) !important;
+    height: f.pxToRem($height) !important;
   }
 }
 
@@ -60,13 +65,11 @@
 }
 
 // --------------------------Centering----------------------------
-@mixin flex-centered($direction: row) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: center;
-  align-items: center;
+@mixin flex-centered($direction: row, $gap: 0) {
+  @include flexed($direction, center, center, nowrap, $gap);
 }
-@mixin absolute-centered($axes) {
+
+@mixin absolute-centered($axes: 'both') {
   position: absolute;
 
   @if $axes == 'vertical' or $axes == 'v' {
@@ -85,36 +88,41 @@
 }
 
 // --------------------------Bordering----------------------------
-@mixin rounded($top-left: 0, $top-right: 0, $bottom-right: 0, $bottom-left: 0) {
+@mixin rounded(
+  $top-left: 0,
+  $top-right: 0,
+  $bottom-right: 0,
+  $bottom-left: 0,
+  $overflow: hidden
+) {
   $rad: $top-left $top-right $bottom-right $bottom-left;
 
   border-radius: $rad !important;
   -webkit-border-radius: $rad !important;
 
-  overflow: hidden !important;
+  overflow: $overflow !important;
   background-clip: padding-box;
 }
 
-@mixin full-rounded($rad) {
-  @include rounded($rad, $rad, $rad, $rad);
+@mixin full-rounded($rad, $overflow: hidden) {
+  @include rounded($rad, $rad, $rad, $rad, $overflow);
 }
 
-@mixin circular($radius: 50px, $color: c.$pure-white-color) {
-  width: pxToRem($radius);
-  height: pxToRem($radius);
+@mixin circular($radius, $color: c.$pure-white-color) {
+  @include sized($radius, $radius);
   @include full-rounded(50%);
   background: $color;
 }
 
 // --------------------------Margins-----------------------------
 @mixin rem-margined($top: 0, $right: 0, $bottom: 0, $left: 0) {
-  margin: pxToRem($top) pxToRem($right)
-          pxToRem($bottom) pxToRem($left) !important;
+  margin: f.pxToRem($top) f.pxToRem($right)
+          f.pxToRem($bottom) f.pxToRem($left) !important;
 }
 
 @mixin rem-padded($top: 0, $right: 0, $bottom: 0, $left: 0) {
-  padding: pxToRem($top) pxToRem($right)
-          pxToRem($bottom) pxToRem($left) !important;
+  padding: f.pxToRem($top) f.pxToRem($right)
+          f.pxToRem($bottom) f.pxToRem($left) !important;
 }
 // --------------------------Appearance----------------------------
 @mixin outlined($b-size: 2px, $color: red) {
@@ -126,25 +134,30 @@
   visibility: hidden !important;
 }
 
-@mixin bg-image($file, $repeat: no-repeat) {
-  background-image: url($file);
-  background-repeat: $repeat;
-  background-size: cover;
+@mixin visible($display: block) {
+  display: $display !important;
+  visibility: visible !important;
+}
+
+@mixin bg-image($file-path, $bg-size: cover) {
+  background-image: url($file-path);
+  background-repeat: no-repeat;
+  background-size: $bg-size;
 }
 
 @mixin colored($color: c.$pure-black-color, $bg-color: c.$pure-white-color) {
-  color: $color !important;
-  background-color: $bg-color !important;
+  color: $color;
+  background-color: $bg-color;
 }
 // --------------------------Text----------------------------------
-@mixin truncated($line-num: 3) {
+@mixin truncated($line-num: 3, $text-overflow: ellipsis) {
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  text-overflow: $text-overflow;
 
   @supports (-webkit-line-clamp: $line-num) {
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: $text-overflow;
     white-space: initial;
     display: -webkit-box;
     -webkit-line-clamp: $line-num;
@@ -162,7 +175,7 @@
   font-family: $font-family;
   // px equivalent for browsers without rem support
   font-size: $font-size;
-  font-size: pxToRem($font-size);
+  font-size: f.pxToRem($font-size);
   font-weight: $font-weight;
   font-style: $font-style;
 }

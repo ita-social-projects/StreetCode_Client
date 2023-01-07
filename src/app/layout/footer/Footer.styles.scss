@@ -3,64 +3,60 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as *;
 
-.footer-component{
-     @include mut.sized(100%, 244px);
-}
-.footer-container{  
-    background-color: c.$dark-red-color;
-    @include mut.sized(100%, 206px);
-    display: flex;
-    justify-content: flex-start;
-}
-.copy-right-sec{   
-    @include mut.sized($height: 38px);
-    background-color: c.$pure-white-color;
-    @include mut.flex-centered();
-    color:  c.$copyright-section-color;
-    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 400, $font-size: 13.03px);
+.footerContainer {
+  @include mut.sized(100%, 206px);
+  @include mut.flexed($justify-content: flex-start);
+  background-color: c.$dark-red-color;
 }
 
-.block-footer-icon{
-    padding-top: 45px;
-    @include mut.sized($width: 26%, $height: 100%);
+.footerCopyright {
+  @include mut.sized($height: 38px);
+  @include mut.flex-centered();
+
+  @include mut.colored(c.$copyright-section-color, c.$pure-white-color);
+  @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 400, $font-size: 13.03px);
 }
-.footer-icon{
+
+.footerLogoContainer {
+  @include mut.sized($width: 26%, $height: 100%);
+  padding-top: pxToRem(45px);
+
+  > * {
     @include mut.sized(175px, 95.84px);
-    display: flex;
-    justify-content: center;
-    // margin-top: pxToRem(45px);
-    margin-left: auto;
-    margin-right: auto;
+    @include mut.flex-centered();
+    margin: 0 auto;
+  }
 }
 
+.usefulLinksColumnContainer {
+  @include mut.sized($width: 60%, $height: 100%);
+  display: flex;
 
-.useful-links{
-    display: flex;
-    @include mut.sized($width: 60%, $height: 100%);
-}
-.use-links{
-    color: c.$pure-white-color;
-    list-style-type: none;
+  > .usefulLinksColumn {
     margin-top: pxToRem(29px);
     margin-right: 10%;
-    @include mut.with-font($font-weight: 300, $font-size: 15px);
-}
-.li-item{
-    margin-bottom: pxToRem(8px);
-    cursor: pointer;
-}
-.li-item:hover{
-    text-decoration: underline;
-}
-.social-icons{
-    color: c.$pure-white-color;
-    list-style-type: none;
-    @include mut.with-font($font-weight: 300, $font-size: 15px);
-    margin-top: pxToRem(29px);
-    // display:inline;
 
-}
-.brands{
-    display:inline;
-    margin-right: pxToRem(14.62px);
+    color: c.$pure-white-color;
+    @include mut.with-font($font-weight: 300, $font-size: 15px);
+
+    > * {
+      margin-bottom: pxToRem(8px);
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .socialIconContainer {
+    margin-top: pxToRem(29px);
+    color: c.$pure-white-color;
+    @include mut.with-font($font-weight: 300, $font-size: 15px);
+
+    > * {
+      display: inline;
+      margin-right: pxToRem(14.62px);
+    }
+  }
 }

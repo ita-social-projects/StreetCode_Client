@@ -1,6 +1,6 @@
 import Tag from "@models/additional-content/tag.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import tagsApi from "@api/tags.api";
+import tagsApi from "@api/additional-content/tags.api";
 
 export default class TagsStore {
     public TagMap = new Map<number, Tag>();

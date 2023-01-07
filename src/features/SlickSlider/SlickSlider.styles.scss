@@ -10,7 +10,7 @@
     margin-left: pxToRem($margin);
     @include mut.sized(40px, 58px);
 
-    $path: "@assets/images/#{$direction}DefaultSliderArrow.svg";
+    $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
     content: url($path);
 }
 

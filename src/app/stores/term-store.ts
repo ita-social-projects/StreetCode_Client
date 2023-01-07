@@ -1,6 +1,6 @@
 import {Term} from "@models/streetcode/text-contents.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import termsApi from "@api/terms.api";
+import termsApi from "@api/streetcode/text-content/terms.api";
 
 export default class TermStore {
     public TermMap = new Map<number, Term>();

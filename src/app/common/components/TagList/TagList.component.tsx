@@ -7,8 +7,8 @@ const TagList = () => {
 
     return (
         <div className={"tagContainer"}>
-            {tags.map(tag => (
-                <Button className={"tagItem"}>
+            {tags.map((tag, idx) => (
+                <Button key={idx} className={"tagItem"}>
                     {tag}
                 </Button>
             ))}

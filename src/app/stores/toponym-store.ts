@@ -1,6 +1,6 @@
 import Toponym from "@models/toponyms/toponym.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import toponymsApi from "@api/toponyms.api";
+import toponymsApi from "@api/map/toponyms.api";
 
 export default class ToponymStore {
     public ToponymMap = new Map<number, Toponym>();
