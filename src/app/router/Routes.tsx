@@ -1,20 +1,18 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
-import { FRONTEND_ROUTES } from "@common/contants/frontend-routes.constants";
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { FRONTEND_ROUTES } from "@constants/frontend-routes.constants";
 
-import StreetcodeContent from "@/components/StreetcodeComponent/Streetcode.component";
 import App from "@layout/app/App";
+import StreetcodeContent from '@streetcode/Streetcode.component';
+import HeaderBlock from '@layout/header/HeaderBlock.component';
 
-export const routes: RouteObject[] = [
-    {
-        path: FRONTEND_ROUTES.BASE,
-        element: <App />,
-        children: [
-            //TODO fill paths
-            {path: FRONTEND_ROUTES.STREETCODE.BASE, element: <StreetcodeContent/>}
-            //{/*{path: '*', element: <NotFound />},*/}
-        ]
-    }
-]
+const router = createBrowserRouter(createRoutesFromElements(
+    <Route path={FRONTEND_ROUTES.BASE} element={<HeaderBlock />}>
+        <Route element={<App />}>
+            <Route index path={FRONTEND_ROUTES.STREETCODE.BASE} element={<StreetcodeContent />} />
+            <Route path={`${FRONTEND_ROUTES.STREETCODE.BASE}/:id`} element={<></>} />
+            {/*<Route path='*' element={<NotFound />} />*/}
+        </Route>
+    </Route>
+));
 
-const router = createBrowserRouter(routes);
 export default router;

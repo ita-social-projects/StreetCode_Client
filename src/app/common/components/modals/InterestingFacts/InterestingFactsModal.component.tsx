@@ -9,10 +9,14 @@ interface Props {
 
 }
 
-const text = "7 (20) березня члени Центральної Ради обрали Михайла Грушевського своїм головою.\n    Рішення було прийняте без відома самого Грушевського, що свідчить про його колосальний авторитет.\n    На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.\n    longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText";
+const text = `7 (20) березня члени Центральної Ради обрали Михайла Грушевського своїм головою.
+\nРішення було прийняте без відома самого Грушевського, що свідчить про його колосальний авторитет.
+\n    На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.
+\n    longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText`;
 
 const InterestingFactsModal = (props: Props) => {
-    const { modalStore: { setModal, modalsState: { facts } } } = useMobx();
+    const { modalStore } = useMobx();
+    const { setModal, modalsState: { facts } } = modalStore;
 
     return (
         <Modal className={"interestingFactsModal"}
@@ -20,6 +24,7 @@ const InterestingFactsModal = (props: Props) => {
             onCancel={() => setModal('facts')}
             footer={null}
             maskClosable
+            centered
             closeIcon={<CancelBtn />}
         >
             <div className={"factsImgContainer"}>

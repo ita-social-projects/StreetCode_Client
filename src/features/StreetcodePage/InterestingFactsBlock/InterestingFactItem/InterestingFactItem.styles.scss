@@ -1,0 +1,69 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+
+.interestingFactSlide {
+  @include mut.sized(387px, 416px);
+  @include mut.full-rounded(33px);
+
+  z-index: 0;
+  cursor: pointer;
+  position: relative;
+  @include vnd.vendored(transition, '.5s ease');
+
+  background-color: c.$pure-white-color;
+  box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, .25);
+
+  .slideImage {
+    @include mut.sized(100%, 250px);
+    @include mut.rounded(33px, 33px);
+  }
+
+  .slideText {
+    @include mut.sized(100%, 167px);
+    @include mut.rounded($bottom-right: 33px, $bottom-left: 33px);
+
+    .heading {
+      @include mut.rem-padded(11px, 20px, 10px, 20px);
+      color: c.$accented-red-color;
+
+      @include mut.with-font($font-weight: 500, $font-size: 17px);
+      line-height: f.pxToEm(20px);
+    }
+
+    .mainText {
+      @include mut.rem-padded(0, 20px, 0px, 20px);
+      color: c.$lighter-black-color;
+
+      @include mut.with-font($font-weight: 300, $font-size: 13px);
+      line-height: f.pxToEm(18px);
+    }
+  }
+}
+
+.slick-center .interestingFactSlide {
+  z-index: 1;
+}
+
+.interestingFactsSliderContainer .sliderClass {
+     height: 100%;
+}
+
+.interestingFactsSliderContainer .slick-list {
+  @include mut.rem-padded(109px);
+}
+
+.readMoreParagraph {
+  @include mut.rem-padded(5px, 20px, 0px, 20px);
+  @include vnd.vendored(transition, '.5s ease');
+  cursor: pointer;
+
+  color: c.$dark-red-color;
+  @include mut.with-font(ft.$roboto-font, 300, 13px, normal);
+
+  &:hover {
+    color: c.$accented-red-color;
+  }
+}

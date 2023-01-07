@@ -19,14 +19,6 @@ div {
   @include mut.flexed(column);
 }
 
-/*
-.mainContent {
-  flex: 1 0 auto;
-  @include mut.flexed(column);
-  margin-top: 4rem;
-}
-*/
-
 ::-webkit-scrollbar {
   width: .765rem;
 }

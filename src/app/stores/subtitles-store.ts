@@ -1,6 +1,6 @@
 import Subtitle from "@models/additional-content/subtitles.model";
 import {makeAutoObservable, runInAction} from "mobx";
-import subtitlesApi from "@api/subtitles.api";
+import subtitlesApi from "@api/additional-content/subtitles.api";
 
 export default class SubtitleStore {
     public subtitles = new Map<number, Subtitle>();

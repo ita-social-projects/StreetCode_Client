@@ -1,0 +1,21 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.readMore {
+    color: c.$dark-red-color;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.readMoreContainer {
+    @include mut.rem-margined($top: 35px,$bottom: 50px);
+}
+
+.mainTextContent {
+    white-space: pre-line;
+    @include mut.rem-margined($bottom: 35px);
+}
+
+.textShort {
+    @include mut.truncated($line-num: 25);
+}

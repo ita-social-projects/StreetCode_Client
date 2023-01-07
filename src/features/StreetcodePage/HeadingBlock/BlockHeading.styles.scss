@@ -1,0 +1,23 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.blockHeadingWrapper {
+    @include mut.sized(100%, 124px);
+    @include mut.flex-centered();
+
+    svg {
+        z-index: 0;
+        margin-left: f.pxToRem(-62px);
+    }
+}
+
+.blockHeadingContainer h1 {
+    @include mut.positioned-as(relative, $left: -62px, $top: 41px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+}
+
+.blockHeadingContainer {
+    width: f.pxToRem(1200px);
+    @include mut.flexed($justify-content: flex-start);
+}

@@ -1,0 +1,62 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.fonts.scss" as fonts;
+@use "@sass/variables/_variables.colors.scss" as colors;
+
+$QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
+
+.QRBlockContainer {
+    @include mut.sized(100%, 779px);
+
+    @include mut.flexed(column, center, flex-start);
+    @include mut.bg-image($QRBgImg);
+    padding-top: pxToRem(134px);
+
+    .QRBlockContent {
+        @include mut.sized(855px, 608px);
+        @include mut.flex-centered(row);
+    }
+
+    .QRBlockImg {
+        height: 100%;
+        @include mut.flex-centered(column);
+        padding-left: pxToRem(31px);
+    }
+}
+
+.QRBlockText {
+    @include mut.sized(61%, 100%);
+    @include mut.flexed(column, flex-end, center);
+
+    h1 {
+        @include mut.with-font(fonts.$closer-text-font, $font-weight: 500, $font-size: 30px);
+        color: colors.$accented-red-color;
+
+        padding-left: pxToRem(14px);
+        margin-top: pxToRem(2px);
+    }
+
+    p {
+        @include mut.with-font($font-weight: 200, $font-size: 20px);
+        color: colors.$lighter-black-color;
+
+        padding-left: pxToRem(14px);
+        margin-top: pxToRem(22px);
+    }
+
+    .appealPrg {
+       @include mut.with-font($font-weight: 500, $font-size: 24px);
+        color: colors.$lighter-black-color;
+
+        padding-left: pxToRem(14px);
+        margin-top: pxToRem(33px) !important;
+    }
+
+    img {
+        @include mut.rem-margined(36px, 0, 0, 14px);
+    }
+}
+
+.QRBlockTextContainer {
+    @include mut.sized(405px, 491px);
+}

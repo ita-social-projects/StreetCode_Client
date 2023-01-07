@@ -1,6 +1,6 @@
 import Streetcode from "@models/streetcode/streetcode-types.model";
 import { makeAutoObservable, runInAction } from "mobx";
-import streetcodesApi from "@api/streetcodes.api";
+import streetcodesApi from "@api/streetcode/streetcodes.api";
 import {EventStreetcode} from "@models/streetcode/streetcode-types.model";
 import {PersonStreetcode} from "@models/streetcode/streetcode-types.model";
 
