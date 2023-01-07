@@ -52,6 +52,7 @@ const relatedFigures: RelatedFigure[] = [
 const RelatedFiguresComponent = (props: Props) => {
     const sliderItems = relatedFigures.map(figure => (
         <RelatedFigureItem
+            key={figure.Id}
             id={figure.Id}
             textContent={figure.Title}
             imgSrc={figure.Image.url.href}
@@ -72,7 +73,7 @@ const RelatedFiguresComponent = (props: Props) => {
                             slides={sliderItems}
                             swipe={false}
                             dots={false}
-                            toChangeSlidesOnClick={false}
+                            swipeOnClick={false}
                         />
                     </div>
                 </div>

@@ -19,8 +19,8 @@ const partners: Partial<Partner>[] = [
 const PartnersComponent = (props: Props) => (
     <div className={'partnersWrapper'}>
         <div className={'partnerContainer'}>
-            {partners.map(partner => (
-                <img className={'partnerItem'} src={partner.url?.href} alt=""/>
+            {partners.map((partner, idx) => (
+                <img key={idx} className={'partnerItem'} src={partner.url?.href} alt=""/>
             ))}
         </div>
     </div>

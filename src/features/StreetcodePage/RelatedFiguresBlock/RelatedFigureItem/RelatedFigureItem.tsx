@@ -23,8 +23,8 @@ const RelatedFigureSliderItem = ({ id, imgSrc, tags, textContent }: Props) => (
                 {textContent}
             </h3>
             <div className={'relatedTagList'}>
-                {tags.map(tag => (
-                    <div className="tag">
+                {tags.map((tag, idx) => (
+                    <div key={idx} className="tag">
                         <p>{tag.title}</p>
                     </div>
                 ))}

@@ -2,11 +2,11 @@ export const API_ROUTES = {
     BASE: '/',
     FACTS: {
         GET_ALL: 'fact/getAll',
-        GET: 'facts/getById',
-        GET_BY_STREETCODE_ID: 'facts/getByStreetcodeId',
-        CREATE: 'facts/create',
-        UPDATE: 'facts/update',
-        DELETE: 'facts/delete',
+        GET: 'fact/getById',
+        GET_BY_STREETCODE_ID: 'fact/getByStreetcodeId',
+        CREATE: 'fact/create',
+        UPDATE: 'fact/update',
+        DELETE: 'fact/delete',
     },
     PARTNERS: {
         GET_ALL: 'partners/getAll',

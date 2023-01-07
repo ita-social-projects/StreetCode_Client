@@ -10,8 +10,8 @@ const tickerItems = [
 
 const TickerComponent = () => (
     <Ticker className={"tickerContainer"}>
-        {tickerItems.map(item=>(
-            <div className={"tickerItem"}>{item}</div>
+        {tickerItems.map((item, idx) => (
+            <div key={idx} className={"tickerItem"}>{item}</div>
         ))}
     </Ticker>
 )

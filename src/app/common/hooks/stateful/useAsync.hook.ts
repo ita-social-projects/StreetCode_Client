@@ -1,10 +1,10 @@
-import { DependencyList, useCallback, useEffect, useState } from 'react';
+import {useState, useEffect, useCallback, DependencyList} from 'react';
 
 export const useAsync = (func: Function, deps: DependencyList = [], cb?: () => void) => {
     const { execute, ...state } = useAsyncInternal(func, deps);
 
     useEffect(() => {
-        execute().then(data => cb ?? (() => console.log(data)));
+        execute().then(cb);
     }, [cb, execute]);
 
     return state;
@@ -40,7 +40,7 @@ const useAsyncInternal = (func: Function, deps: DependencyList = [], initialLoad
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...deps, func]);
+    }, deps);
 
     return { loading, error, value, execute };
 }

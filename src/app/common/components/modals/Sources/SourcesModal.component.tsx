@@ -60,8 +60,8 @@ const SourcesModal = (props: Props) => {
             <div className={"sourcesContentContainer"}>
                 <h1>Перелік книг</h1>
                 <div className={"volumeContainer"}>
-                    {volumes.map(title => (
-                        <p>{title}</p>
+                    {volumes.map((title, idx) => (
+                        <p key={idx}>{title}</p>
                     ))}
                 </div>
             </div>

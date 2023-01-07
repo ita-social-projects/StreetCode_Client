@@ -17,7 +17,7 @@ const StreetcodeCard = () => (
                         arrows={false}
                         slidesToShow={1}
                         slides={Array(4).fill(slide)}
-                        toChangeSlidesOnClick={false}
+                        swipeOnClick={false}
                     />
                 </div>
             </div>

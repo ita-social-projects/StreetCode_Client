@@ -41,7 +41,7 @@ const InterestingFactsComponent = (props: Props) => {
                 <div className='interestingFactsSliderContainer'>
                     <div style={{height: "100%"}}>
                         <SlickSlider
-                            toChangeSlidesOnClick={true}
+                            swipeOnClick={true}
                             className='heightContainer'
                             slides={sliderItems}
                             slidesToShow={3}
