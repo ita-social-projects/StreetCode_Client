@@ -1,5 +1,10 @@
 import './App.styles.scss';
 import './ant-styles.overrides.scss';
+
+import useMobx from "@stores/root-store";
+import { useAsync } from "@common/hooks/stateful/useAsync.hook";
+import { observer } from 'mobx-react-lite';
+
 import { ToastContainer } from "react-toastify";
 import Header from "../header/Header.component";
 import { Outlet } from "react-router-dom";
@@ -7,13 +12,10 @@ import { Outlet } from "react-router-dom";
 import SourcesModal from "@common/components/modals/Sources/SourcesModal.component";
 import InterestingFactsModal from "@common/components/modals/InterestingFacts/InterestingFactsModal.component";
 
-import useMobx from "@stores/root-store";
-import { useAsync } from "@common/hooks/stateful/useAsync.hook";
-
 const App = () => {
-    const { factsStore: { fetchFacts, getFactArray } } = useMobx();
-    useAsync(fetchFacts);
+    const { factsStore: { fetchFact, fetchFacts, getFactArray } } = useMobx();
 
+    useAsync(() => fetchFact(1));
     console.log(getFactArray());
 
     return (
@@ -31,4 +33,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default observer(App);
