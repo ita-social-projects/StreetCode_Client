@@ -1,34 +1,36 @@
 import "./Sources.styles.scss";
 
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
-import SourcesSlideItem from "./SourceItem/SourceItem.component";
+import SourceItem from "./SourceItem/SourceItem.component";
 import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
-import SourcesModal from "@components/modals/Sources/SourcesModal.component";
+import useMobx from '@stores/root-store';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { useParams } from 'react-router-dom';
 
-interface Props {
+const SourcesComponent = () => {
+    const { sourcesStore } = useMobx();
+    const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
 
-}
-
-const SourcesComponent = (props: Props) => {
-    const slides = ["Книги", "Статті", "Фільми", "Постаті"].map(text => (
-        <SourcesSlideItem text={text} />
-    ));
+    const { id: streetcodeId } = useParams<{ id: string }>();
+    useAsync(() => fetchSrcCategoriesByStreetcodeId(parseInt(streetcodeId ?? '1')));
 
     return (
         <>
             <div className={"sourcesWrapper"}>
-                <SourcesModal />
                 <div className={"sourcesContainer"}>
                     <BlockHeading headingText={"Для фанатів"} />
                     <div className={"sourceContentContainer"}>
                         <div className={"sourcesSliderContainer"}>
                             <SlickSlider
                                 swipeOnClick={false}
-                                dots={false}
-                                autoplay
                                 swipe={false}
-                                autoplaySpeed={5e3}
-                                slides={slides}
+                                dots={false}
+                                slides={getSrcCategoriesArray.flatMap(i => [i, i]).map(sc => (
+                                    <SourceItem
+                                        key={sc.id}
+                                        srcCategory={sc}
+                                    />
+                                ))}
                             />
                         </div>
                     </div>

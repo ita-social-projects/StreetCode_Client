@@ -6,7 +6,7 @@ import Tag from "@models/additional-content/tag.model";
 import Subtitle from "@models/additional-content/subtitles.model";
 import { Fact } from "./text-contents.model";
 import Video from "@models/media/video.model";
-import { SourceLink } from "@models/sources/source-links.model";
+import { SourceLink } from "@models/sources/sources.model";
 import { TimelineItem } from "@models/timeline/timeline-item.model";
 import RelatedFigure from "./related-figure.model";
 import { StreetcodePartner } from "@models/partners/partners.model";

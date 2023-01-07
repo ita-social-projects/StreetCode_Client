@@ -6,10 +6,6 @@ import { Modal } from "antd";
 import useMobx from "@stores/root-store";
 import { observer } from "mobx-react-lite";
 
-interface Props {
-
-}
-
 const volumes = ["Том 1: Суспільно-політичні твори (1894–1907).",
     "Том 2: Суспільно-політичні твори (1907–1914).",
     "Том 3: Суспільно-політичні твори (1907 — березень 1917).",
@@ -40,30 +36,36 @@ const volumes = ["Том 1: Суспільно-політичні твори (18
     "Том 20: Рецензії та огляди (1888–1897).",
 ];
 
-const SourcesModal = (props: Props) => {
-    const { modalStore } = useMobx();
+const SourcesModal = () => {
+    const { sourcesStore: { srcCategoriesMap }, modalStore } = useMobx();
     const { setModal, modalsState: { sources } } = modalStore;
+
+    const category = srcCategoriesMap.get(sources.fromCardId!);
 
     return (
         <Modal
             className={'sourcesModal'}
-            open={sources}
+            open={sources.isOpen}
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('sources')}
+            onCancel={() => setModal('sources', undefined)}
             closeIcon={<CancelBtn />}
         >
-            <div className={"sourceImgContainer"}>
-                <h1>Книги</h1>
+            <div className={"sourceImgContainer"} style={{backgroundImage: `url(${category?.image?.url.href})`}}>
+                <h1>{category?.title}</h1>
             </div>
             <div className={"sourcesContentContainer"}>
-                <h1>Перелік книг</h1>
-                <div className={"volumeContainer"}>
-                    {volumes.map((title, idx) => (
-                        <p key={idx}>{title}</p>
-                    ))}
-                </div>
+                {category?.subCategories.map(({ id, sourceLinks, title }) => (
+                    <div key={id}>
+                        <h1>{title}</h1>
+                        <div className={"volumeContainer"}>
+                            {sourceLinks.map(({ id, url }) => (
+                                <a key={id} href={url?.href}>{url?.title}</a>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </Modal>
     );

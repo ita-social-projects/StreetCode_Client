@@ -39,8 +39,8 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include vnd.vendored(border-top-left-radius, '70px');
   @include vnd.vendored(border-top-right-radius, '70px');
 
-  //@include mut.bg-image($bookImg);
-  @include mut.bg-image($articlesImg, $bg-size: 100% pxToRem(180px));
+  // @include mut.bg-image($bookImg);
+  // @include mut.bg-image($articlesImg, $bg-size: 100% pxToRem(180px));
 
   h1 {
     color: c.$pure-white-color;
@@ -59,7 +59,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
 }
 
 .volumeContainer {
-  height: pxToRem(565px);
+  // height: pxToRem(565px);
   @include mut.flexed($direction: column, $gap: 10px);
 
   overflow-y: scroll;
