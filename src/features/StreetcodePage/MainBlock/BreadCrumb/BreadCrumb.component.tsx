@@ -1,24 +1,22 @@
 import './BreadCrumb.styles.scss';
 import { Breadcrumb } from 'antd';
 import useMobx from '@/app/stores/root-store';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     separator?: JSX.Element | string;
-    streetcodeId: number;
+    streetcode?: Streetcode;
 }
 
-const BreadCrumb = ({ separator = '->', streetcodeId}: Props) => {
-    const { streetcodesStore: { StreetcodeMap } } = useMobx();
-
-    return(
+const BreadCrumb = ({ separator = '->', streetcode}: Props) => (
     <Breadcrumb className={"breadcrumbContainer"} separator={separator}>
         <Breadcrumb.Item className={"activeLink"} href='_blank'>
             стріткоди
         </Breadcrumb.Item>
         <Breadcrumb.Item href='_blank'>
-            {StreetcodeMap.get(streetcodeId)?.firstName} {StreetcodeMap.get(streetcodeId)?.lastName}
+            {streetcode?.firstName} {streetcode?.lastName}
         </Breadcrumb.Item>
     </Breadcrumb>
 );
-}
+
 export default BreadCrumb;

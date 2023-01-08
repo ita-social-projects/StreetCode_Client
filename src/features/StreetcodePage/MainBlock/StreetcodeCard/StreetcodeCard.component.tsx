@@ -6,19 +6,35 @@ import { PlayCircleFilled } from '@ant-design/icons';
 import Hrushevskyi from '@images/streetcode-card/Hrushevskyi.png';
 import useMobx from '@/app/stores/root-store';
 import Tag from '@/models/additional-content/tag.model';
-import { formatDates } from '@/app/common/utils/dateFormatter/dateFormatter.utils';
+import { dateFormatter } from '@/app/common/utils/formatters.utils';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 
 const slide = <img src={Hrushevskyi} className={'streetcodeImg'} alt="" />;
 
 interface Props {
-    streetcodeId: number;
+    streetcode?: Streetcode;
 }
 
-const StreetcodeCard = ({ streetcodeId }: Props) => {
-    const { streetcodesStore: { StreetcodeMap } } = useMobx();
+export const formatDate = (date?: Date): string => {
+    return dateFormatter.format(date).replace('р.', 'року')
+}
 
-    return (
+export const concatDates = (firstDate?: Date, secondDate?: Date): string => {
+    let dates: string = '';
+    
+    if (firstDate) {
+        dates += formatDate(new Date(firstDate));
+    }
+
+    if (secondDate) {
+        dates += ' — ' + formatDate(new Date(secondDate));
+    }
+
+    return dates;
+}
+
+const StreetcodeCard = ({ streetcode }: Props) => (
         <div className={'card'}>
             <div className={'leftSider'}>
                 <div className={'leftSiderContentContainer'}>
@@ -36,18 +52,18 @@ const StreetcodeCard = ({ streetcodeId }: Props) => {
                 <div className={'headerContainer'}>
                     <div>
                         <div className={'streetcodeIndex'}>
-                            Стріткод #{StreetcodeMap.get(streetcodeId)?.index}
+                            Стріткод #{streetcode?.index}
                         </div>
                         <h2 className={'streetcodeTitle'}>
-                            {StreetcodeMap.get(streetcodeId)?.firstName} {StreetcodeMap.get(streetcodeId)?.lastName}
+                            {streetcode?.firstName} {streetcode?.lastName}
                         </h2>
                         <div className={'streetcodeDate'}>
-                            {formatDates(StreetcodeMap.get(streetcodeId)?.eventStartOrPersonBirthDate, 
-                                StreetcodeMap.get(streetcodeId)?.eventEndOrPersonDeathDate)}
+                            {concatDates(streetcode?.eventStartOrPersonBirthDate, 
+                                streetcode?.eventEndOrPersonDeathDate)}
                         </div>
-                        <TagList tags={StreetcodeMap.get(streetcodeId)?.tags.map((tag: Tag) => tag.title)}/>
+                        <TagList tags={streetcode?.tags.map((tag: Tag) => tag.title)}/>
                         <p className={'teaserBlock'}>
-                            {StreetcodeMap.get(streetcodeId)?.teaser}
+                            {streetcode?.teaser}
                         </p>
                         <div className={'cardFooter'}>
                             <Button type="primary" className={'audioBtn'}>
@@ -61,5 +77,5 @@ const StreetcodeCard = ({ streetcodeId }: Props) => {
             </div>
         </div>
     );
-}
+
 export default StreetcodeCard;

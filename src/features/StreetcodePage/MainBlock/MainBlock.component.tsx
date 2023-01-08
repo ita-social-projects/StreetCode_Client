@@ -2,23 +2,26 @@ import './MainBlock.styles.scss';
 
 import BreadCrumb from '@streetcode/MainBlock/BreadCrumb/BreadCrumb.component';
 import StreetcodeCard from '@streetcode/MainBlock/StreetcodeCard/StreetcodeCard.component';
-import useMobx from '@/app/stores/root-store';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { useParams } from 'react-router-dom';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 const MainBlock = () => {
-    const { streetcodesStore: { fetchStreetcode } } = useMobx();
+    const streetcodeId = useParams<{id: string}>();
+    const id = parseInt(streetcodeId.id ?? "1");
 
-    useAsync(() => fetchStreetcode(1));
+    const { value } = useAsync(() => StreetcodesApi.getById(id), [id]);
 
-    const id: number = 1;
-    
+    const streetcode = value as Streetcode;
+
     return (
         <div className="blockCentering margin-82px bgr">
             <div className="mainContainer">
-                <BreadCrumb separator={<div className={'separator'}/>} streetcodeId={id}/>
+                <BreadCrumb separator={<div className={'separator'}/>} streetcode={streetcode}/>
                 <div className="blockCentering">
                     <div className={'mainContent'}>
-                        <StreetcodeCard streetcodeId={id}/>
+                        <StreetcodeCard streetcode={streetcode} />
                     </div>
                 </div>
             </div>
