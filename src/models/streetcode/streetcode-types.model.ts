@@ -13,7 +13,7 @@ import { StreetcodePartner } from "@models/partners/partners.model";
 import Toponym from "@models/toponyms/toponym.model";
 import TransactionLink from "@models/transactions/transaction-link.model";
 
-export default interface Streetcode {
+export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
     index: number;
     teaser: string;

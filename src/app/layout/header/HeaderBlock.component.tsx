@@ -55,7 +55,7 @@ const HeaderBlock = (props: Props) => {
                             <div className={"leftSide"}>
                                 <HeaderContentBlock title={"Рекомендації"} />
                                 <h2 className={"textHeader"}>Пошук по тегам</h2>
-                                <TagList />
+                                <TagList tags={["Історія", '"Україна-Русь"', "Наукова школа","Наука", "Політика", "Професор історії"]}/>
                             </div>
                             <div className={"rightSide"}>
                                 <HeaderContentBlock title={"Новини"} numberOfEls={4} />
