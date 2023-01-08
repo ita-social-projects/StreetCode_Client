@@ -10,7 +10,7 @@ export default class SourcesStore {
         makeAutoObservable(this);
     }
 
-    private setCategoryItem = (srcCategory: SourceCategory) => {
+   private setCategoryItem = (srcCategory: SourceCategory) => {
         this.srcCategoriesMap.set(srcCategory.id, srcCategory);
     }
 
@@ -18,12 +18,8 @@ export default class SourcesStore {
         this.srcSubCategoriesMap.set(srcSubCategory.id, srcSubCategory);
     }
 
-    private set setInternalCategoriesMap (srcCategories: SourceCategory[]) {
+    private set setInternalCategoriesMap(srcCategories: SourceCategory[]) {
         srcCategories.forEach(this.setCategoryItem);
-    }
-
-    private set setInternalSubCategoriesMap (srcSubCategories: SourceSubCategory[]) {
-        srcSubCategories.forEach(this.setSubCategoryItem);
     }
 
     public get getSrcCategoriesArray() {
@@ -70,9 +66,7 @@ export default class SourcesStore {
             const srcSubCategories =
                 await sourcesApi.getSubCategoriesByCategoryId(categoryId);
 
-            console.log(categoryId)
-
-            this.setInternalSubCategoriesMap = srcSubCategories ?? [];
+            srcSubCategories?.forEach(this.setSubCategoryItem);
             return srcSubCategories;
         }
         catch (error: any) {

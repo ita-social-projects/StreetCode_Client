@@ -5,7 +5,10 @@ interface ModalStateList {
         isOpen: boolean;
         fromCardId?: number;
     };
-    facts: boolean;
+    facts: {
+        isOpen: boolean;
+        fromCardId?: number;
+    };
 }
 
 type ModalType = 'sources' | 'facts';
@@ -16,7 +19,10 @@ export default class ModalStore {
             isOpen: false,
             fromCardId: undefined
         },
-        facts: false,
+        facts: {
+            isOpen: false,
+            fromCardId: undefined
+        }
     }
 
     public constructor() {
