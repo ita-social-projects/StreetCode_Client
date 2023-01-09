@@ -21,6 +21,17 @@ export default class VideosStore {
         return Array.from(this.VideoMap.values());
     }
 
+    public getVideoByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            const video = await videosApi.getByStreetcodeId(streetcodeId);
+            runInAction(() => {
+                this.VideoMap.set(streetcodeId, video)
+            });
+        } catch (err: any) {
+            console.log(err);
+        }
+    }
+
     public fetchVideo = async (id: number) => {
         try {
             const video = await videosApi.getById(id);
