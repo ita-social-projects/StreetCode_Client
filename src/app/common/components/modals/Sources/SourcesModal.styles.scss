@@ -39,8 +39,8 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include vnd.vendored(border-top-left-radius, '70px');
   @include vnd.vendored(border-top-right-radius, '70px');
 
-  //@include mut.bg-image($bookImg);
-  @include mut.bg-image($articlesImg, $bg-size: 100% pxToRem(180px));
+  // @include mut.bg-image($bookImg);
+  // @include mut.bg-image($articlesImg, $bg-size: 100% pxToRem(180px));
 
   h1 {
     color: c.$pure-white-color;
@@ -48,31 +48,35 @@ $articlesImg: "@assets/images/sources/Articles.png";
   }
 }
 
-.sourcesContentContainer {
-  @include mut.flexed($direction: column, $gap: 15px);
-  @include mut.rem-margined($top: 30px, $left: 30px);
-
-  h1 {
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
-    line-height: pxToRem(48px);
-  }
+.highlightedHeader {
+  font-size: pxToRem(36px) !important;
+  line-height: 47.52px;
 }
 
-.volumeContainer {
-  height: pxToRem(565px);
+.mainContentContainer {
+  height: pxToRem(610px);
   @include mut.flexed($direction: column, $gap: 10px);
 
   overflow-y: scroll;
-  margin-right: pxToRem(10px);
+  @include mut.rem-margined(30px, 10px, 30px, 30px);
   padding-right: pxToRem(10px);
 
-  p {
-    @include mut.with-font($font-weight: 300, $font-size: 15px);
-    line-height: pxToEm(18px);
+  > h1 {
+    @include mut.with-font($font-weight: 500, $font-size: 24px);
+  }
 
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
+  .sectionLinksContainer {
+    @include mut.flexed($direction: column, $gap: 10px);
+
+    > * {
+      @include mut.with-font($font-weight: 300, $font-size: 15px);
+      color: c.$pure-black-color;
+      line-height: pxToEm(18px);
+
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
   }
 

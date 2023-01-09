@@ -10,10 +10,12 @@ import { Outlet } from "react-router-dom";
 import ModalWrapper from '@layout/ModalWrapper.component';
 
 const App = () => {
+    /*
     const { factsStore: { fetchFact, fetchFacts, getFactArray } } = useMobx();
 
     useAsync(() => fetchFact(1));
     console.log(getFactArray());
+     */
 
     return (
         <>

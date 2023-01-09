@@ -5,22 +5,18 @@ import { Modal } from "antd";
 import useMobx from "@stores/root-store";
 import { observer } from "mobx-react-lite";
 
-interface Props {
-
-}
-
 const text = `7 (20) березня члени Центральної Ради обрали Михайла Грушевського своїм головою.
 \nРішення було прийняте без відома самого Грушевського, що свідчить про його колосальний авторитет.
 \n    На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.
 \n    longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText`;
 
-const InterestingFactsModal = (props: Props) => {
+const InterestingFactsModal = () => {
     const { modalStore } = useMobx();
     const { setModal, modalsState: { facts } } = modalStore;
 
     return (
         <Modal className={"interestingFactsModal"}
-            open={facts}
+            open={facts.isOpen}
             onCancel={() => setModal('facts')}
             footer={null}
             maskClosable

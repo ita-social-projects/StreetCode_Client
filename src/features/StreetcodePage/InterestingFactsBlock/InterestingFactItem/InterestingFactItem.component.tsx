@@ -27,7 +27,7 @@ const InterestingFactItem = ({ imgSrc, mainText, textHeading, maxTextLength = 30
                 <p className={"heading"}>{textHeading}</p>
                 <p className={"mainText"}>{mainText}</p>
                 {isReadMore && (
-                    <p className={"readMoreParagraph"} onClick={() => setModal('facts')}>
+                    <p className={"readMoreParagraph"} onClick={() => setModal('facts', undefined, true)}>
                         Трохи ще...
                     </p>
                 )}

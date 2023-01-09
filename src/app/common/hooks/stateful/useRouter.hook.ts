@@ -1,19 +1,24 @@
 import { useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import * as queryString from "querystring";
 
-const useRouter = <T extends {} | string = any> () => {
+export const useRouteId = () => {
+    const params = useParams<{ id: string }>();
+    return parseInt(params.id ?? '1');
+}
+
+const useRouter = <T extends Record<string, string | undefined> | string> () => {
     const params = useParams<T>();
     const location = useLocation();
 
     return useMemo(() => ({
-            // /?sort=popular&topic=react -> { topic: "react", sort: "popular" }
             query: {
-                ...queryString.parse(location.search),
                 ...params,
+                queryString: location.search,
+                parsedQueryString: new URLSearchParams(location.search),
             },
-            location,
-            queryString: location.search
+            location: {
+                ...location,
+            },
         }),
         [params, location]
     );

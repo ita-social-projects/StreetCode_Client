@@ -6,10 +6,21 @@
 
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
-}
 
-.sourceContentContainer {
-    margin-top: pxToRem(24px);
+    > .sourcesContainer {
+        @include mut.sized(100%, 400px);
+        margin-bottom: pxToRem(190px);
+
+        .sourceContentContainer {
+            height: pxToRem(320px);
+            @include mut.flex-centered();
+            margin-top: pxToRem(24px);
+        }
+
+        > .blockHeadingWrapper {
+            margin-top: pxToRem(30px);
+        }
+    }
 }
 
 .sourcesSliderContainer {
@@ -20,19 +31,27 @@
     .sliderClass > * {
         height: pxToRem(250px);
 
+        .slick-track {
+            @include mut.flex-centered($gap: 28px);
+        }
+
         .slick-slide.slick-active {
-            margin-right: pxToRem(9px);
             @include vnd.vendored(transition, "all .4s ease");
 
             &:hover {
-                filter: contrast(150%);
+                filter: contrast(135%);
                 cursor: pointer;
             }
+        }
+
+        .slick-slide,
+        .sourcesSliderItem {
+            @include mut.sized(380px, 250px);
         }
     }
 }
 
-.seeMoreBtn {
+/*.seeMoreBtn {
     color: c.$dark-red-color;
     margin-top: pxToRem(50px);
     align-self: flex-start;
@@ -45,17 +64,4 @@
         cursor: pointer;
     }
 }
-
-.sourcesContainer {
-    @include mut.sized(100%, 400px);
-    margin-bottom: pxToRem(190px);
-
-    .sourceContentContainer {
-        height: pxToRem(320px);
-        @include mut.flex-centered();
-    }
-
-    .blockHeadingWrapper {
-        margin-top: pxToRem(30px);
-    }
-}
+*/
