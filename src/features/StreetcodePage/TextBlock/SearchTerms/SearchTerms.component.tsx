@@ -6,48 +6,50 @@ import { Popover } from 'antd';
 interface Props {
     mainText: string;
 }
-
+interface style { color: string }
 const SearchTerms=(props: Props)=> {
-      const{termsStore: {fetchTerms, getTermArray}} = useMobx();
-      useAsync(()=>fetchTerms());
 
-      var listOfObjects :any= {};
-      var TermSearch=new Map<string, string|undefined>();
-      getTermArray().map((e: Term)=>{
-        TermSearch.set(e.title, e.description); 
-        listOfObjects[e.title] = { color: "#8D1F16" };
-      });
+  var setColor :style={color:"#8D1F16"};
+  const{termsStore: {fetchTerms, getTermArray}} = useMobx();
+  useAsync(fetchTerms);
 
-      const KeywordsToSearch = [...TermSearch.keys()];
+  var listOfObjects =new Map<string, style>();
+  var TermSearch=new Map<string, string|undefined>();
+
+  getTermArray().map((e: Term)=>{
+    TermSearch.set(e.title, e.description); 
+    listOfObjects.set(e.title, setColor);
+  });
   
-      const getStyle = (text: any) => {
-        const styleKey = text.toLowerCase();
-        return listOfObjects[styleKey] || {};
-      };
-      const getTerm = (text: any) => {
-        const styleKey = text.toLowerCase();
-        return listOfObjects[styleKey] ||  false;
-      };
+  const getStyle = (text: any) => {
+    const styleKey = text.toLowerCase();
+    return listOfObjects.get(styleKey) || {};
+  };
+
+  const getTerm = (text: any) => {
+    const styleKey = text.toLowerCase();
+    return listOfObjects.get(styleKey) ||  false;
+  };
      
-      var parts= props.mainText.split(
-        new RegExp(`(${KeywordsToSearch.join("|")})`, "gi")
-      );
+  var parts= props.mainText.split(
+    new RegExp(`(${[...TermSearch.keys()].join("|")})`, "gi")
+  );
       
-      var tempKeyword = [];
-      tempKeyword = parts.map((part, i) => (
-        <span key={i} style={getStyle(part)}>
-          {getTerm(part)==false?
-              <span>{part}</span>
-              :        
-              <Popover overlayStyle={{width: '300px'}} content={TermSearch.get(part.toLocaleLowerCase())}>
-                <span style={{cursor:"pointer"}}>
-                    { part }
-                </span>
-              </Popover>   
-          }
-        </span>
-      ));
+  var tempKeyword = [];
+  tempKeyword = parts.map((part, i) => (
+    <span key={i} style={getStyle(part)}>
+      {getTerm(part)==false?
+          <span>{part}</span>
+          :        
+          <Popover overlayStyle={{width: '300px'}} content={TermSearch.get(part.toLocaleLowerCase())}>
+            <span style={{cursor:"pointer"}}>
+                { part }
+            </span>
+          </Popover>   
+      }
+    </span>
+  ));
   
-      return <div>{tempKeyword}</div>;  
-    }
-   export default SearchTerms;
+  return <div>{tempKeyword}</div>;  
+}
+export default SearchTerms;

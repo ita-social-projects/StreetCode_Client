@@ -9,18 +9,18 @@ interface Props {
 
 const ReadMore = ({ children: text, maxTextLength = 2e3 }: Props) => {
  
-    const { toggleState: isReadMore, handlers: { toggle } } = useToggle();
+    const { toggleState: isReadMore, handlers: { toggle } } = useToggle(true);
 
     return (
         <>
             {text.length > text.slice(0, maxTextLength).length ? (
                 <div className="text" style={{ whiteSpace: 'pre-line' }}>
-                    <div className={isReadMore ? undefined:"textShort"} style={{ whiteSpace: 'pre-line' }}>
+                    <div className={isReadMore ? "textShort": undefined} style={{ whiteSpace: 'pre-line' }}>
                         <SearchTerms mainText={text} />
                     </div>
                     <div className="readMoreContainer">
                         <span className="readMore" onClick={toggle}>
-                            {isReadMore ? 'Дещо менше':'Трохи ще'}
+                            {isReadMore ? 'Трохи ще':'Дещо менше'}
                         </span>
                     </div>
                 </div>

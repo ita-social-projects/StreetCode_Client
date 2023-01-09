@@ -17,6 +17,10 @@ export default class VideosStore {
         this.VideoMap.set(video.id, video);
     }
 
+    private setItemByStreetcodeId = (video: Video) => {
+        this.VideoMap.set(video.streetcodeId, video);
+    }
+
     public getVideoArray = () => {
         return Array.from(this.VideoMap.values());
     }
@@ -24,10 +28,9 @@ export default class VideosStore {
     public getVideoByStreetcodeId = async (streetcodeId: number) => {
         try {
             const video = await videosApi.getByStreetcodeId(streetcodeId);
-            runInAction(() => {
-                this.VideoMap.set(streetcodeId, video)
-            });
-        } catch (err: any) {
+            this.setItemByStreetcodeId(video);
+        }
+        catch (err: any) {
             console.log(err);
         }
     }
