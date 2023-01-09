@@ -30,7 +30,7 @@ const SourcesModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('sources', undefined)}
+            onCancel={() => setModal('sources')}
             closeIcon={<CancelBtn />}
         >
             <div className={'sourceImgContainer'} style={{

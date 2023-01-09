@@ -8,13 +8,14 @@ interface Props {
     srcCategory: SourceCategory;
 }
 
-const SourceItem = ({ srcCategory: { id, image, title } }: Props) => {
+const SourceItem = ({ srcCategory }: Props) => {
     const { modalStore: { setModal } } = useMobx();
+    const { id, image, title } = srcCategory;
 
     return (
         <div
             className='sourcesSliderItem'
-            onClick={() => setModal('sources', id, true)}
+            onClick={() => setModal('sources', id)}
             style={{backgroundImage: `url(${image?.url.href})`}}
         >
             <h1>{title}</h1>

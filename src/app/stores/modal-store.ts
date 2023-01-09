@@ -1,43 +1,34 @@
 import { makeAutoObservable } from "mobx";
 
-interface ModalStateList {
-    sources: {
-        isOpen: boolean;
-        fromCardId?: number;
-    };
-    facts: {
-        isOpen: boolean;
-        fromCardId?: number;
-    };
+type ModalState = {
+    isOpen: boolean;
+    fromCardId?: number;
 }
 
-type ModalType = 'sources' | 'facts';
+const DefaultModalState: ModalState = {
+    isOpen: false,
+    fromCardId: undefined,
+}
+
+interface ModalList {
+    sources: ModalState;
+    facts: ModalState;
+}
 
 export default class ModalStore {
-    public modalsState: ModalStateList = {
-        sources: {
-            isOpen: false,
-            fromCardId: undefined
-        },
-        facts: {
-            isOpen: false,
-            fromCardId: undefined
-        }
+    public modalsState: ModalList = {
+        sources: DefaultModalState,
+        facts: DefaultModalState,
     }
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-    public setModal = (modalName: ModalType, fromId?: number, opened?: boolean) => {
-        this.modalsState = {
-            ...this.modalsState,
-            ...{
-                [modalName]: {
-                    isOpen: opened ?? !this.modalsState[modalName],
-                    fromCardId: fromId,
-                }
-            }
-        }
+    public setModal = (modalName: keyof ModalList, fromId?: number, opened?: boolean) => {
+        this.modalsState[modalName] = {
+            isOpen: opened ?? !this.modalsState[modalName].isOpen,
+            fromCardId: fromId,
+        };
     }
 }
