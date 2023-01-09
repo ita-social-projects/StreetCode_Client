@@ -1,23 +1,24 @@
 import './SourcesModal.styles.scss';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-
 import { Modal } from 'antd';
+
+import sourcesApi from '@api/sources/sources.api';
+import { SourceSubCategory } from '@models/sources/sources.model';
 
 import useMobx from '@stores/root-store';
 import { observer } from 'mobx-react-lite';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { SourceSubCategory } from '@models/sources/sources.model';
 
 const SourcesModal = () => {
-    const { sourcesStore, modalStore } = useMobx();
+    const { sourcesStore: { srcCategoriesMap }, modalStore } = useMobx();
     const { setModal, modalsState: { sources } } = modalStore;
-    const { srcCategoriesMap, fetchSrcSubCategoriesByCategoryId } = sourcesStore;
+    const { getSubCategoriesByCategoryId } = sourcesApi;
 
     const categoryId = sources.fromCardId!;
     const category = srcCategoriesMap.get(categoryId);
 
     const { value } = useAsync(
-        () => fetchSrcSubCategoriesByCategoryId(categoryId),
+        () => getSubCategoriesByCategoryId(categoryId),
         [categoryId]
     );
     const subCategories = value as SourceSubCategory[];
@@ -34,7 +35,7 @@ const SourcesModal = () => {
         >
             <div className={'sourceImgContainer'} style={{
                 backgroundImage: `url(${category?.image?.url.href})`,
-                backgroundSize: '100% 11.25rem',
+                backgroundSize: '100% 15.25rem',
             }}>
                 <h1>{category?.title}</h1>
             </div>
