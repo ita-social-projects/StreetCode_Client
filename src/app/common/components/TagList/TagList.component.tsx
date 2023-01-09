@@ -1,14 +1,15 @@
 import './TagList.styles.scss';
 import { Button } from "antd";
 
-const TagList = () => {
-    // fetching goes here
-    const tags = ["Історія", "Україна-Русь", "Наукова школа", "Наука", "Політика", "Професор історії"];
+interface Props {
+    tags: string[] | undefined;
+}
 
+const TagList = (props: Props) => {
     return (
         <div className={"tagContainer"}>
-            {tags.map(tag => (
-                <Button className={"tagItem"}>
+            {props.tags?.map((tag, i) => (
+                <Button className={"tagItem"} key={i}>
                     {tag}
                 </Button>
             ))}

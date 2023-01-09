@@ -1,46 +1,44 @@
-import React, {useEffect, useRef, useState} from 'react';
+import "./SlickSlider.styles.scss";
+
+import React, { useEffect, useRef } from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';
-import "./SlickSlider.styles.scss"
 
 interface Props extends SliderProps {
     slides: JSX.Element[];
     onClick?: (index: number) => void;
-    toChangeSlidesOnClick: boolean
+    swipeOnClick?: boolean;
 }
 
-const SimpleSlider: React.FC<Props> = (props) => {
-
+const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, ...sliderProps }) => {
     // Code that provides ability to change selected slide after clicking on it
     const sliderRef = useRef<any>(null);
-    const [currentSlide, setCurrentSlide] = useState(0);
 
     const handleClick = (index: number) => {
-        setCurrentSlide(index);
-
         if (sliderRef && sliderRef.current) {
             sliderRef.current.slickGoTo(index);
         }
 
-        if (props.onClick) {
-            props.onClick(index);
+        if (onClick) {
+            onClick(index);
         }
     };
 
     // Code that removes all "slick-cloned" elements if there is only 1 slide
     useEffect(() => {
-        if (props.slides.length === 1) {
+        if (slides.length === 1) {
             const clonedElements = document.querySelectorAll('.interestingFactsSliderContainer .slick-cloned');
             clonedElements.forEach((element) => element.remove());
         }
-    }, [props.slides]);
+    }, [slides]);
 
     return (
         <div className="sliderClass">
-            <Slider {...props} ref={sliderRef}>
-                {
-                    props.slides.map((slide, index) => (
-                        <div onClick={props.toChangeSlidesOnClick ? () => handleClick(index) : ()=>{}}>{slide}</div>
-                    ))}
+            <Slider {...sliderProps} ref={sliderRef}>
+                {slides.map((slide, idx) => (
+                    <div key={idx} onClick={swipeOnClick ? () => handleClick(idx) : undefined}>
+                        {slide}
+                    </div>
+                ))}
             </Slider>
         </div>
     );

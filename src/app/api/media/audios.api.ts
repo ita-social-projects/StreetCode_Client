@@ -1,10 +1,10 @@
-import Agent from "../agent.api";
-import { API_ROUTES } from "app/common/contants/api-routes.constants";
-import Audio from "models/media/audio.model";
+import Agent from "@api/agent.api";
+import { API_ROUTES } from "@constants/api-routes.constants";
+import Audio from "@models/media/audio.model";
 
 const AudiosApi = {
     getAll: () =>
-        Agent.get<Audio>(`${API_ROUTES.AUDIOS.GET_ALL}`),
+        Agent.get<Audio[]>(`${API_ROUTES.AUDIOS.GET_ALL}`),
 
     getById: (id: number) =>
         Agent.get<Audio>(`${API_ROUTES.AUDIOS.GET}/${id}`),

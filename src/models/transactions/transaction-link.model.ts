@@ -1,5 +1,5 @@
-import Url from "models/additional-content/url.model";
-import Streetcode from "models/streetcode/streetcode-types.model";
+import Url from "@models/additional-content/url.model";
+import Streetcode from "@models/streetcode/streetcode-types.model";
 
 export default interface TransactionLink {
     id: number;

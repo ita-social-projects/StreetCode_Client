@@ -1,14 +1,10 @@
-import axios, {AxiosError, AxiosResponse, Canceler} from "axios";
-import {StatusCodes, ReasonPhrases} from "http-status-codes";
-import {toast} from "react-toastify";
-import AuthLocalStorage from "../stores/local-storages/AuthLocalStorage";
-
-//const CancelToken = axios.CancelToken;
-//const source = CancelToken.source();
-//let cancel: Canceler;
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { StatusCodes, ReasonPhrases } from "http-status-codes";
+import { toast } from "react-toastify";
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
+/*
 axios.interceptors.request.use(config => {
     const token = AuthLocalStorage.getToken();
     if (token) {
@@ -17,6 +13,7 @@ axios.interceptors.request.use(config => {
 
     return config;
 });
+*/
 
 axios.interceptors.response.use(
     res => res,
@@ -46,11 +43,20 @@ axios.interceptors.response.use(
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 
 const Agent = {
-    get: async <T> (url: string, params?: URLSearchParams) => axios.get<T>(url, {params}).then(responseBody),
-    post: async <T> (url: string, body: {}, headers?: {}) => axios.post<T>(url, body, headers).then(responseBody),
-    put: async <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-    //patch: async <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-    delete: async  <T>(url: string) => axios.delete<T>(url).then(responseBody),
+    get: async <T> (url: string, params?: URLSearchParams) => axios.get<T>(url, {params})
+        .then(responseBody),
+
+    post: async <T> (url: string, body: {}, headers?: {}) => axios.post<T>(url, body, headers)
+        .then(responseBody),
+
+    put: async <T> (url: string, body: {}) => axios.put<T>(url, body)
+        .then(responseBody),
+
+    //patch: async <T> (url: string, body: {}) => axios.put<T>(url, body)
+    // .then(responseBody),
+
+    delete: async  <T>(url: string) => axios.delete<T>(url)
+        .then(responseBody),
 }
 
 export default Agent;

@@ -1,0 +1,22 @@
+@use "@sass/mixins/utils.mixins" as mut;
+@use "@sass/variables/variables.colors" as c;
+
+.recommendationContainer {
+  @include mut.flexed($justify-content: flex-start, $gap: 10px);
+  @include mut.rem-margined(16px, 0, 36px, 0);
+
+  > * {
+    @include mut.sized(150px, 132px);
+    @include mut.full-rounded(10px);
+    background-color: c.$slider-base-dot-color;
+
+    &:hover {
+      border: 2px dotted c.$normal-gray-color;
+      cursor: pointer;
+    }
+  }
+
+  .ant-skeleton-image {
+    @include mut.parent-sized();
+  }
+}

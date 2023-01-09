@@ -1,0 +1,31 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+$bgImg: '@assets/images/streetcode-card/background.png';
+
+.margin-82px {
+  margin-top: f.pxToRem(82px);
+}
+
+.blockCentering {
+  @include mut.flex-centered();
+}
+
+.bgr {
+  @include mut.bg-image($bgImg);
+}
+
+.mainContainer {
+  width: f.pxToRem(1300px);
+  position: relative;
+}
+
+.streetcodeImg {
+  padding: f.pxToRem(25px);
+}
+
+.mainContent {
+  @include mut.sized(1300px, 800px);
+  @include mut.flex-centered();
+  margin-top: f.pxToRem(34px);
+}
