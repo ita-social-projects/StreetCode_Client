@@ -2,8 +2,8 @@ import Url from "./url.model";
 import Streetcode from "@models/streetcode/streetcode-types.model";
 
 export enum SubtitleStatus {
-    Editor = 'editor',
-    Illustrator = 'illustrator',
+    Editor = 'Editor',
+    Illustrator = 'Illustrator',
 }
 
 export default interface Subtitle {
