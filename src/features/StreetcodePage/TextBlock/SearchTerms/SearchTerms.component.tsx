@@ -6,14 +6,18 @@ import { Popover } from 'antd';
 interface Props {
     mainText: string;
 }
-interface style { color: string }
+
+interface Style { 
+  color: string;
+}
+
 const SearchTerms=(props: Props)=> {
 
-  var setColor :style={color:"#8D1F16"};
+  var setColor :Style={color:"#8D1F16"};
   const{termsStore: {fetchTerms, getTermArray}} = useMobx();
   useAsync(fetchTerms);
 
-  var listOfObjects =new Map<string, style>();
+  var listOfObjects =new Map<string, Style>();
   var TermSearch=new Map<string, string|undefined>();
 
   getTermArray().map((e: Term)=>{
