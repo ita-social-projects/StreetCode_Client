@@ -15,7 +15,8 @@ export default class SubtitleStore {
             return map;
         }, new Map<number, Subtitle>());
     }
-    public getSubtitlesArray = () => {
+
+    get getSubtitlesArray(){
         return Array.from(this.subtitles.values());
     }
 
@@ -42,12 +43,10 @@ export default class SubtitleStore {
         }
     }
 
-    public getByStreetcodeId = async (streetcodeId: number) => {
+    public getSubtitlesByStreetcodeId = async (streetcodeId: number) => {
         try {
-            const subtitle = await subtitlesApi.getByStreetcodeId(streetcodeId);
-            runInAction(() => {
-                this.subtitles.set(streetcodeId, subtitle)
-            });
+            const subtitles = await subtitlesApi.getSubtitlesByStreetcodeId(streetcodeId);
+            this.setSubtitles(subtitles);
         } catch (err: any) {
             console.log(err);
         }
