@@ -8,14 +8,15 @@ interface Props {
     textHeading: string;
     imgSrc: string;
     maxTextLength?: number;
+    factId:number;
 }
 
-const InterestingFactItem = ({ imgSrc, mainText, textHeading, maxTextLength = 300 }: Props) => {
+const InterestingFactItem = ({ imgSrc, mainText, textHeading, maxTextLength = 300, factId }: Props) => {
     const { modalStore: { setModal } } = useMobx();
     const isReadMore = mainText.length > maxTextLength;
 
     if (isReadMore) {
-        mainText = mainText.substring(0, maxTextLength);
+        mainText = mainText.substring(0, maxTextLength) + "...";
     }
 
     return (
@@ -27,7 +28,7 @@ const InterestingFactItem = ({ imgSrc, mainText, textHeading, maxTextLength = 30
                 <p className={"heading"}>{textHeading}</p>
                 <p className={"mainText"}>{mainText}</p>
                 {isReadMore && (
-                    <p className={"readMoreParagraph"} onClick={() => setModal('facts', undefined, true)}>
+                    <p className={"readMoreParagraph"} onClick={() => setModal('facts', factId, true)}>
                         Трохи ще...
                     </p>
                 )}
