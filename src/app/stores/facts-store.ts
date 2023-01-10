@@ -41,11 +41,11 @@ export default class FactsStore {
         }
     }
 
-    public fetchFactByStreetcodeId = async (streetcodeId: number) => {
+    public fetchFactsByStreetcodeId = async (streetcodeId: number) => {
         try {
-            const fact = await factsApi.getByStreetcodeId(streetcodeId);
+            const facts = await factsApi.getByStreetcodeId(streetcodeId);
             runInAction(() => {
-                this.factMap.set(streetcodeId, fact);
+                this.setInternalMap(facts);
             });
         }
         catch (error: any) {
