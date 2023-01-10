@@ -5,7 +5,6 @@ import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 import useMobx from "@stores/root-store";
 import {useAsync} from "@hooks/stateful/useAsync.hook";
-import React from "react";
 import {useParams} from "react-router-dom";
 
 
