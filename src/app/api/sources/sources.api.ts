@@ -1,16 +1,25 @@
 import Agent from "@api/agent.api";
 import { API_ROUTES } from "@constants/api-routes.constants";
-import { SourceLink } from '@models/sources/source-links.model';
+import { SourceLink, SourceCategory, SourceSubCategory } from '@models/sources/sources.model';
 
 const SourcesApi = {
-    getAll: () =>
-        Agent.get<SourceLink[]>(`${API_ROUTES.SOURCES.GET_ALL}`),
+    getAllCategories: () =>
+        Agent.get<SourceCategory[]>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES}`),
 
     getById: (id: number) =>
-        Agent.get<SourceLink>(`${API_ROUTES.SOURCES.GET}/${id}`),
+        Agent.get<SourceCategory>(`${API_ROUTES.SOURCES.GET}/${id}`),
 
-    getByStreetcodeId: (id: number) =>
-        Agent.get<SourceLink>(`${API_ROUTES.SOURCES.GET_BY_STREETCODE_ID}/${id}`),
+    getCategoriesByStreetcodeId: (streetcodeId: number) =>
+        Agent.get<SourceCategory[]>(
+            `${API_ROUTES.SOURCES.GET_CATEGORIES_BY_STREETCODE_ID}/${streetcodeId}`
+        ),
+
+    getSubCategoriesByCategoryId: async (categoryId?: number) => (
+        (categoryId !== undefined) ?
+            Agent.get<SourceSubCategory[]>(
+                `${API_ROUTES.SOURCES.GET_SUBCATEGORIES_BY_CATEGORY_ID}/${categoryId}`
+            ) : undefined
+    ),
 
     create: (source: SourceLink) =>
         Agent.post<SourceLink>(`${API_ROUTES.SOURCES.CREATE}`, source),

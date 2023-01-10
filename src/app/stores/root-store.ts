@@ -15,6 +15,7 @@ import TimelineitemStore from "@stores/timelineitem-store";
 import ToponymStore from "@stores/toponym-store";
 import TransactionLinksStore from "@stores/transactions-store";
 import StreetcodeStore from "@stores/streetcode-store";
+import SourcesStore from '@stores/sources-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -31,7 +32,8 @@ interface Store {
     timelineItemStore: TimelineitemStore,
     toponymStore: ToponymStore,
     transactionsStore: TransactionLinksStore,
-    streetcodesStore: StreetcodeStore
+    streetcodesStore: StreetcodeStore,
+    sourcesStore: SourcesStore,
 }
 
 export const store: Store = {
@@ -49,7 +51,8 @@ export const store: Store = {
     timelineItemStore: new TimelineitemStore(),
     toponymStore: new ToponymStore(),
     transactionsStore: new TransactionLinksStore(),
-    streetcodesStore: new StreetcodeStore()
+    streetcodesStore: new StreetcodeStore(),
+    sourcesStore: new SourcesStore(),
 }
 
 const StoreContext = createContext(store);

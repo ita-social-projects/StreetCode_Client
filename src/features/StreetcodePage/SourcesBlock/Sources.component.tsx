@@ -1,41 +1,47 @@
-import "./Sources.styles.scss";
+import './Sources.styles.scss';
 
-import SlickSlider from "@features/SlickSlider/SlickSlider.component";
-import SourcesSlideItem from "./SourceItem/SourceItem.component";
-import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
-import SourcesModal from "@components/modals/Sources/SourcesModal.component";
+import useMobx from '@stores/root-store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { useRouteId } from '@hooks/stateful/useRouter.hook';
 
-}
+import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import SourceItem from './SourceItem/SourceItem.component';
+import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
-const SourcesComponent = (props: Props) => {
-    const slides = ["Книги", "Статті", "Фільми", "Постаті"].map(text => (
-        <SourcesSlideItem text={text} />
-    ));
+const SourcesComponent = () => {
+    const { sourcesStore } = useMobx();
+    const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
+
+    const streetcodeId = useRouteId();
+    useAsync(
+        () => fetchSrcCategoriesByStreetcodeId(streetcodeId),
+        [streetcodeId]
+    );
 
     return (
-        <>
-            <div className={"sourcesWrapper"}>
-                <SourcesModal />
-                <div className={"sourcesContainer"}>
-                    <BlockHeading headingText={"Для фанатів"} />
-                    <div className={"sourceContentContainer"}>
-                        <div className={"sourcesSliderContainer"}>
-                            <SlickSlider
-                                swipeOnClick={false}
-                                dots={false}
-                                autoplay
-                                swipe={false}
-                                autoplaySpeed={5e3}
-                                slides={slides}
-                            />
-                        </div>
+        <div className={'sourcesWrapper'}>
+            <div className={'sourcesContainer'}>
+                <BlockHeading headingText={'Для фанатів'} />
+                <div className={'sourceContentContainer'}>
+                    <div className={'sourcesSliderContainer'}>
+                        <SlickSlider
+                            swipeOnClick={false}
+                            swipe={false}
+                            dots={false}
+                            slides={getSrcCategoriesArray.map(sc => (
+                                <SourceItem
+                                    key={sc.id}
+                                    srcCategory={sc}
+                                />
+                            ))}
+                        />
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
-export default SourcesComponent;
+export default observer(SourcesComponent);
