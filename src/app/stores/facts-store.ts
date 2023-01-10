@@ -17,7 +17,7 @@ export default class FactsStore {
         this.factMap.set(fact.id, fact);
     }
 
-    public getFactArray = () => {
+    get getFactArray() {
         return Array.from(this.factMap.values());
     }
 
@@ -41,12 +41,10 @@ export default class FactsStore {
         }
     }
 
-    public fetchFactByStreetcodeId = async (streetcodeId: number) => {
+    public fetchFactsByStreetcodeId = async (streetcodeId: number) => {
         try {
-            const fact = await factsApi.getByStreetcodeId(streetcodeId);
-            runInAction(() => {
-                this.factMap.set(streetcodeId, fact);
-            });
+            const facts = await factsApi.getFactsByStreetcodeId(streetcodeId);
+            this.setInternalMap(facts);
         }
         catch (error: any) {
             console.log(error);

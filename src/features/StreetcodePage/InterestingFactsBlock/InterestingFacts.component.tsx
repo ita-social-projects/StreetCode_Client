@@ -1,28 +1,23 @@
 import "./InterestingFacts.styles.scss"
 import WowFactImg from "@images/interesting-facts/WowFacts1.png";
-
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
 import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
-
-interface Props {
-
-}
-
-const textPlaceholder = `7 (20) березня члени Центральної Ради обрали Михайла Грушевського своїм головою.
-    Рішення було прийняте без відома самого Грушевського, що свідчить про його колосальний авторитет.
-    На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.
-    longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText`;
+import useMobx from "@stores/root-store";
+import {useAsync} from "@hooks/stateful/useAsync.hook";
+import {useParams} from "react-router-dom";
 
 
-const InterestingFactsComponent = (props: Props) => {
-    let sliderItems = [...["1Голова Центральної Ради", "2Голова Центральної Ради",
-        "3Голова Центральної Ради", "4Голова Центральної Ради"].map(title => (
-        <InterestingFactItem
-            textHeading={title}
-            mainText={textPlaceholder}
-            imgSrc={WowFactImg}
-        />
+const InterestingFactsComponent = () => {
+    const streetcodeId = useParams<{id: string}>();
+    const id = parseInt(streetcodeId.id ?? "1");
+    const{factsStore:{fetchFactsByStreetcodeId, getFactArray}} = useMobx();
+    const { value } = useAsync(
+        () => fetchFactsByStreetcodeId(id)
+    );
+
+    let sliderItems = [...getFactArray.map(title => (
+        <InterestingFactItem textHeading={title.title}  mainText={title.factContent} imgSrc={WowFactImg} factId={title.id}/>
     ))];
 
     const showDots = sliderItems.length > 3;
@@ -40,16 +35,32 @@ const InterestingFactsComponent = (props: Props) => {
                 <BlockHeading headingText='Wow-факти' />
                 <div className='interestingFactsSliderContainer'>
                     <div style={{height: "100%"}}>
-                        <SlickSlider
-                            swipeOnClick={true}
-                            className='heightContainer'
-                            slides={sliderItems}
-                            slidesToShow={3}
-                            centerMode={true}
-                            swipe={false}
-                            dots={showDots}
-                            centerPadding={"-12px"}
-                        />
+                        { (sliderItems.length === 1)
+                            ? (
+                                <div className={"singleSlideContainer"}>
+                                    <InterestingFactItem
+                                        factId={sliderItems[0].props.factId}
+                                        imgSrc={sliderItems[0].props.imgSrc}
+                                        mainText={sliderItems[0].props.mainText}
+                                        maxTextLength={300}
+                                        textHeading={sliderItems[0].props.textHeading}
+                                    />
+                                </div>
+                            ) : (
+                                <SlickSlider
+                                    swipeOnClick={true}
+                                    className='heightContainer'
+                                    slides={sliderItems}
+                                    slidesToShow={3}
+                                    centerMode={true}
+                                    swipe={false}
+                                    dots={showDots}
+                                    centerPadding={"-12px"}
+                                />
+                            )
+                        }
+
+
                     </div>
                 </div>
             </div>
