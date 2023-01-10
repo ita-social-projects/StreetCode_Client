@@ -35,25 +35,31 @@ const InterestingFactsComponent = () => {
                 <BlockHeading headingText='Wow-факти' />
                 <div className='interestingFactsSliderContainer'>
                     <div style={{height: "100%"}}>
-                        { sliderItems.length === 1 ?
-                            <div className={"singleSlideContainer"}>
-                                <InterestingFactItem
-                                    factId={sliderItems[0].props.factId}
-                                    imgSrc={sliderItems[0].props.imgSrc}
-                                    mainText={sliderItems[0].props.mainText}
-                                    maxTextLength={300}
-                                    textHeading={sliderItems[0].props.textHeading}/>
-                            </div> :
-                            <SlickSlider
-                            swipeOnClick={true}
-                            className='heightContainer'
-                            slides={sliderItems}
-                            slidesToShow={3}
-                            centerMode={true}
-                            swipe={false}
-                            dots={showDots}
-                            centerPadding={"-12px"}
-                        />}
+                        { (sliderItems.length === 1)
+                            ? (
+                                <div className={"singleSlideContainer"}>
+                                    <InterestingFactItem
+                                        factId={sliderItems[0].props.factId}
+                                        imgSrc={sliderItems[0].props.imgSrc}
+                                        mainText={sliderItems[0].props.mainText}
+                                        maxTextLength={300}
+                                        textHeading={sliderItems[0].props.textHeading}
+                                    />
+                                </div>
+                            ) : (
+                                <SlickSlider
+                                    swipeOnClick={true}
+                                    className='heightContainer'
+                                    slides={sliderItems}
+                                    slidesToShow={3}
+                                    centerMode={true}
+                                    swipe={false}
+                                    dots={showDots}
+                                    centerPadding={"-12px"}
+                                />
+                            )
+                        }
+
 
                     </div>
                 </div>
