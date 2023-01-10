@@ -9,7 +9,7 @@ const FactsApi = {
     getAll: () =>
        Agent.get<Fact[]>(`${API_ROUTES.FACTS.GET_ALL}`),
 
-    getByStreetcodeId: (streetcodeId: number) =>
+    getFactsByStreetcodeId: (streetcodeId: number) =>
         Agent.get<Fact[]>(`${API_ROUTES.FACTS.GET_BY_STREETCODE_ID}/${streetcodeId}`),
 
     create: (fact: Fact) =>
