@@ -44,9 +44,7 @@ export default class FactsStore {
     public fetchFactsByStreetcodeId = async (streetcodeId: number) => {
         try {
             const facts = await factsApi.getFactsByStreetcodeId(streetcodeId);
-            runInAction(() => {
-                this.setInternalMap(facts);
-            });
+            this.setInternalMap(facts);
         }
         catch (error: any) {
             console.log(error);
