@@ -13,6 +13,8 @@
 
 .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
+    
+    margin-bottom: pxToRem(150px);
 }
 
 .interestingFactsSliderContainer {

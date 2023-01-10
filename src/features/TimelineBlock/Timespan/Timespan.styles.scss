@@ -21,7 +21,7 @@
       background-color: c.$timeline-reel-color;
       @include mut.flex-centered();
       @include vnd.vendored(transition, '.5s ease');
-
+      
       &:hover {
         background-color: c.$dark-gray-color;
         cursor: pointer;

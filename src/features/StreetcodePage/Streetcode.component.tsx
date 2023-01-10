@@ -10,6 +10,7 @@ import HeaderBlock from "@layout/header/HeaderBlock.component";
 import TickerComponent from "@features/StreetcodePage/TickerBlock/Ticker.component";
 import PartnersComponent from "@features/StreetcodePage/PartnersBlock/Partners.component";
 import Footer from "@layout/footer/Footer.component";
+import TimelineBlock from "@features/TimelineBlock/TimelineBlock.component";
 
 interface Props {
 
@@ -21,6 +22,7 @@ const StreetcodeContent = (props: Props) => (
         <MainBlock />
         <TextComponent />
         <InterestingFactsComponent />
+        <TimelineBlock />
         <RelatedFiguresComponent />
         <SourcesComponent />
         <QRComponent />
