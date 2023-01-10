@@ -56,7 +56,7 @@
 }
 
 .readMoreParagraph {
-  @include mut.rem-padded(5px, 20px, 0px, 20px);
+  @include mut.rem-padded(0px, 20px, 0px, 20px);
   @include vnd.vendored(transition, '.5s ease');
   cursor: pointer;
 
