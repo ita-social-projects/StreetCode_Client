@@ -16,7 +16,7 @@ const InterestingFactsComponent = () => {
         () => fetchFactsByStreetcodeId(id)
     );
 
-    let sliderItems = [...getFactArray().map(title => (
+    let sliderItems = [...getFactArray.map(title => (
         <InterestingFactItem textHeading={title.title}  mainText={title.factContent} imgSrc={WowFactImg} factId={title.id}/>
     ))];
 

@@ -17,7 +17,7 @@ export default class FactsStore {
         this.factMap.set(fact.id, fact);
     }
 
-    public getFactArray = () => {
+    get getFactArray() {
         return Array.from(this.factMap.values());
     }
 
