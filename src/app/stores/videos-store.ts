@@ -28,7 +28,7 @@ export default class VideosStore {
     public getVideoByStreetcodeId = async (streetcodeId: number) => {
         try {
             const video = await videosApi.getByStreetcodeId(streetcodeId);
-            this.setItemByStreetcodeId(video);
+            this.setItem(video);
         }
         catch (err: any) {
             console.log(err);

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-const useToggle = (value: boolean = false) => {
-  const [toggleState, setToggleState] = useState(value);
+const useToggle = (initialToggleState: boolean = false) => {
+  const [toggleState, setToggleState] = useState(initialToggleState);
 
   const handlers = useMemo(() => ({
       on: () => setToggleState(true),

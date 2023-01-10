@@ -19,3 +19,7 @@
 .textShort {
     @include mut.truncated($line-num: 25);
 }
+
+.text{
+    white-space: pre-line;
+}

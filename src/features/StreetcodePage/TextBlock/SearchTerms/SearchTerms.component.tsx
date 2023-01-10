@@ -1,59 +1,59 @@
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import useMobx from '@/app/stores/root-store';
-import { Term } from '@/models/streetcode/text-contents.model';
-import { Popover } from 'antd';
+import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
+import useMobx from "@/app/stores/root-store";
+import { Popover } from "antd";
 
 interface Props {
-    mainText: string;
+  mainText: string;
 }
 
-interface Style { 
-  color: string;
-}
+const keywordColoring = {
+  color: "#8D1F16",
+};
 
-const SearchTerms=(props: Props)=> {
-
-  var setColor :Style={color:"#8D1F16"};
-  const{termsStore: {fetchTerms, getTermArray}} = useMobx();
+const SearchTerms = (props: Props) => {
+  const {
+    termsStore: { fetchTerms, getTermArray },
+  } = useMobx();
   useAsync(fetchTerms);
 
-  var listOfObjects =new Map<string, Style>();
-  var TermSearch=new Map<string, string|undefined>();
+  const searchTerms: string[] = [];
+  var descriptiveSearchTerms = new Map<string, string | undefined>();
 
-  getTermArray().map((e: Term)=>{
-    TermSearch.set(e.title, e.description); 
-    listOfObjects.set(e.title, setColor);
+  getTermArray().forEach((term) => {
+    descriptiveSearchTerms.set(term.title, term.description);
+    searchTerms.push(term.title);
   });
-  
-  const getStyle = (text: any) => {
-    const styleKey = text.toLowerCase();
-    return listOfObjects.get(styleKey) || {};
-  };
 
-  const getTerm = (text: any) => {
-    const styleKey = text.toLowerCase();
-    return listOfObjects.get(styleKey) ||  false;
-  };
-     
-  var parts= props.mainText.split(
-    new RegExp(`(${[...TermSearch.keys()].join("|")})`, "gi")
+  var splittedKeywordText = props.mainText.split(
+    new RegExp(
+      `(${searchTerms.map((st) => st.toLocaleLowerCase()).join("|")})`,
+      "gi"
+    )
   );
-      
-  var tempKeyword = [];
-  tempKeyword = parts.map((part, i) => (
-    <span key={i} style={getStyle(part)}>
-      {getTerm(part)==false?
-          <span>{part}</span>
-          :        
-          <Popover overlayStyle={{width: '300px'}} content={TermSearch.get(part.toLocaleLowerCase())}>
-            <span style={{cursor:"pointer"}}>
-                { part }
-            </span>
-          </Popover>   
-      }
-    </span>
-  ));
-  
-  return <div>{tempKeyword}</div>;  
-}
+
+  return (
+    <div>
+      {splittedKeywordText.map((part, i) => (
+        <span
+          key={i}
+          style={searchTerms.includes(part) ? keywordColoring : undefined}
+        >
+          {searchTerms.includes(part) ? (
+            <Popover
+              overlayStyle={{ width: "300px" }}
+              content={descriptiveSearchTerms.get(part)}
+            >
+              <span style={{ cursor: "pointer" }}>{part}</span>
+            </Popover>
+          ) : (
+            <span>{part}</span>
+          )}
+        </span>
+      ))}
+    </div>
+  );
+};
 export default SearchTerms;
+
+
+
