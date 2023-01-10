@@ -1,6 +1,6 @@
 import './TimelineBlock.styles.scss';
 
-import BlockHeading from '@features/BlockHeading/BlockHeading.component';
+import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import TimelineTimespan from '@features/TimelineBlock/Timespan/Timespan.component';
 import TimelineItem from '@features/TimelineBlock/TimelineItem/TimelineItem.component';
 import TimelineReelOutline from '@features/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
