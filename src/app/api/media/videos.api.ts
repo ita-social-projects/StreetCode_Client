@@ -9,6 +9,9 @@ const VideosApi = {
     getById: (id: number) =>
         Agent.get<Video>(`${API_ROUTES.VIDEOS.GET}/${id}`),
 
+    getByStreetcodeId: (streetcodeId: number) =>
+        Agent.get<Video>(`${API_ROUTES.VIDEOS.GET_BY_STREETCODE_ID}/${streetcodeId}`),
+
     create: (video: Video) =>
         Agent.post<Video>(`${API_ROUTES.VIDEOS.CREATE}`, video),
 

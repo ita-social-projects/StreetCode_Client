@@ -21,6 +21,17 @@ export default class TextStore {
         return Array.from(this.TextMap.values());
     }
 
+    public fetchTextByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            const text = await textsApi.getByStreetcodeId(streetcodeId);
+            runInAction(() => {
+                this.TextMap.set(streetcodeId, text)
+            });
+        } catch (err: any) {
+            console.log(err);
+        }
+    }
+
     public fetchText = async (id: number) => {
         try {
             const text = await textsApi.getById(id);

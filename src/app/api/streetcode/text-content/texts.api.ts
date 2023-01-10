@@ -8,6 +8,9 @@ const TextsApi = {
 
     getById: (id: number) =>
         Agent.get<Text>(`${API_ROUTES.TEXTS.GET}/${id}`),
+        
+    getByStreetcodeId: (streetcodeId: number) =>
+        Agent.get<Text>(`${API_ROUTES.TEXTS.GET_BY_STREETCODE_ID}/${streetcodeId}`),
 
     create: (text: Text) =>
         Agent.post<Text>(`${API_ROUTES.TEXTS.CREATE}`, text),

@@ -1,48 +1,59 @@
-import { Popover } from 'antd';
+import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
+import useMobx from "@/app/stores/root-store";
+import { Popover } from "antd";
 
 interface Props {
-    mainText: string;
+  mainText: string;
 }
 
-const KeywordsToSearch = ["києва", "заслання", "україна", "січових стрільців"];
+const keywordColoring = {
+  color: "#8D1F16",
+};
 
 const SearchTerms = (props: Props) => {
-    let listOfObjects: any = { };
+  const {
+    termsStore: { fetchTerms, getTermArray },
+  } = useMobx();
+  useAsync(fetchTerms);
 
-    KeywordsToSearch.forEach(kw => {
-        listOfObjects[kw] = { color: "#8D1F16" };
-    });
+  const searchTerms: string[] = [];
+  var descriptiveSearchTerms = new Map<string, string | undefined>();
 
-    const getStyle = (text: string) => {
-      const styleKey = text.toLowerCase();
-      return listOfObjects[styleKey] || {};
-    };
+  getTermArray().forEach((term) => {
+    descriptiveSearchTerms.set(term.title, term.description);
+    searchTerms.push(term.title);
+  });
 
-    const getTerm = (text: string) => {
-      const styleKey = text.toLowerCase();
-      return listOfObjects[styleKey] || false;
-    };
+  var splittedKeywordText = props.mainText.split(
+    new RegExp(
+      `(${searchTerms.map((st) => st.toLocaleLowerCase()).join("|")})`,
+      "gi"
+    )
+  );
 
-    const parts = props.mainText.split(
-      new RegExp(`(${KeywordsToSearch.join("|")})`, "gi")
-    );
+  return (
+    <div>
+      {splittedKeywordText.map((part, i) => (
+        <span
+          key={i}
+          style={searchTerms.includes(part) ? keywordColoring : undefined}
+        >
+          {searchTerms.includes(part) ? (
+            <Popover
+              overlayStyle={{ width: "300px" }}
+              content={descriptiveSearchTerms.get(part)}
+            >
+              <span style={{ cursor: "pointer" }}>{part}</span>
+            </Popover>
+          ) : (
+            <span>{part}</span>
+          )}
+        </span>
+      ))}
+    </div>
+  );
+};
+export default SearchTerms;
 
-    return (
-        <div>
-            {parts.map((part, idx) => (
-                <span key={idx} style={getStyle(part)}>
-                {getTerm(part) === false ? (
-                    <span>{part}</span>
-                    ) : (
-                    <Popover content={'Description'} title={part}>
-                        <span style={{ cursor: 'pointer' }}>
-                            {part}
-                        </span>
-                    </Popover>
-                )}
-                </span>
-            ))}
-        </div>
-    );
-}
- export default SearchTerms;
+
+

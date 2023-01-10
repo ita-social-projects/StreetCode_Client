@@ -1,47 +1,43 @@
-import './Video.styles.scss';
-import YouTube, { YouTubeEvent } from 'react-youtube';
+import "./Video.styles.scss";
+import YouTube, { YouTubeProps } from "react-youtube";
+import ReactPlayer from "react-player";
 
 interface Props {
-    videoUrls: string[] | string;
+  videoUrls: string[] | string;
 }
 
 const options = {
-    className: 'YouTube',
-    height: '674',
-    width: '1200',
-    playerVars: {
-        // https://developers.google.com/youtube/player_parameters
-        autoplay: 0,
-    },
+  className: "YouTube",
+  height: "674",
+  width: "1200",
+  playerVars: {
+    autoplay: 0,
+  },
 };
 
-const Video = ({ videoUrls, ...props }: Props) => {
-    const onPlayerReady = (event: YouTubeEvent) => {
-        event.target.pauseVideo();
-    }
+const VideoPlayer = (props: Props) => {
+  const opts: YouTubeProps["opts"] = {
+    className: "YouTube",
+    height: "674",
+    width: "1200",
+    playerVars: {
+      autoplay: 0,
+    },
+  };
 
-    return (
-        <div className="videoComponent">
-            <div {...props}>
-                {typeof videoUrls === 'string' ? (
-                    <YouTube
-                        className="videoComponent"
-                        videoId={videoUrls}
-                        opts={options}
-                    />
-                ) : (
-                    videoUrls.map((video, idx) => (
-                            <YouTube
-                                key={idx}
-                                className="videoComponent"
-                                videoId={video}
-                                opts={options}
-                            />
-                        )
-                    ))}
-            </div>
-        </div>
-    );
-}
-
-export default Video;
+  return (
+    <div className="videoComponent">
+      <div {...props}>
+        {/* <YouTube className='videoComponent' videoId={props.videoUrls}  opts={opts} />       */}
+        <ReactPlayer
+          className="react-player"
+          height="674px"
+          width="1200px"
+          url={props.videoUrls}
+          controls
+        />
+      </div>
+    </div>
+  );
+};
+export default VideoPlayer;
