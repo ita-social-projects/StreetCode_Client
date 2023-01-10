@@ -34,6 +34,7 @@ const VideoPlayer = (props: Props) => {
           height="674px"
           width="1200px"
           url={props.videoUrls}
+          controls
         />
       </div>
     </div>
