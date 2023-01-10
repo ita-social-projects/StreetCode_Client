@@ -36,3 +36,9 @@
 .slick-center .interestingFactSlide {
     transform: scale(1.52);
 }
+
+.singleSlideContainer{
+    @include mut.flex-centered();
+    transform: scale(1.32);
+    padding-top:10%;
+}
