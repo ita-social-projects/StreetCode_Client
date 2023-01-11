@@ -7,6 +7,7 @@ import StreetcodeCard from '@streetcode/MainBlock/StreetcodeCard/StreetcodeCard.
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
 
 const MainBlock = () => {
     const id = useRouteId();
@@ -23,6 +24,7 @@ const MainBlock = () => {
                         <StreetcodeCard streetcode={streetcode} />
                     </div>
                 </div>
+                <ListenTextModal/>
             </div>
         </div>
     );
