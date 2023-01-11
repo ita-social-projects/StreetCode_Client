@@ -6,7 +6,7 @@
 .relatedFiguresWrapper {
     @include wr.main-page-block-wrapper();
 
-    @include mut.rem-margined($bottom: 80px, $top: 110px);
+    @include mut.rem-margined($bottom: 80px, $top: 170px);
 }
 
 .bigWrapper {
@@ -40,7 +40,7 @@
 
         p {
             @include mut.with-font($font-weight: 500, $font-size: 20px);
-            line-height: pxToRem(23px);
+            line-height: 25px;
             text-decoration-line: underline;
             color: c.$dark-red-color;
 
@@ -56,8 +56,16 @@
 .relatedFiguresSliderContainer {
     @include mut.sized($width: 1200px);
 
+    .slick-arrow {
+        top: 213px;
+    }
+
     .slick-list {
         @include mut.sized($height: 458px);
         @include mut.rem-padded($left: 5px);
+    }
+
+    .slick-track {
+        @include mut.flex-centered($gap: 28px);
     }
 }
