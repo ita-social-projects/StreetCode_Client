@@ -1,27 +1,28 @@
-import "./InterestingFacts.styles.scss"
-import WowFactImg from "@images/interesting-facts/WowFacts1.png";
+import './InterestingFacts.styles.scss';
 
-import SlickSlider from "@features/SlickSlider/SlickSlider.component";
-import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
+import WowFactImg from '@images/interesting-facts/WowFacts1.png';
+
+import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import useMobx from '@stores/root-store';
+import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
-interface Props {
+const InterestingFactsComponent = () => {
+    const streetcodeId = useRouteId();
+    const { factsStore: { fetchFactsByStreetcodeId, getFactArray } } = useMobx();
+    useAsync(
+        () => fetchFactsByStreetcodeId(streetcodeId),
+        [streetcodeId],
+    );
 
-}
-
-const textPlaceholder = `7 (20) березня члени Центральної Ради обрали Михайла Грушевського своїм головою.
-    Рішення було прийняте без відома самого Грушевського, що свідчить про його колосальний авторитет.
-    На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.
-    longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText`;
-
-
-const InterestingFactsComponent = (props: Props) => {
-    let sliderItems = [...["1Голова Центральної Ради", "2Голова Центральної Ради",
-        "3Голова Центральної Ради", "4Голова Центральної Ради"].map(title => (
+    let sliderItems = [...getFactArray.map((title) => (
         <InterestingFactItem
-            textHeading={title}
-            mainText={textPlaceholder}
+            textHeading={title.title}
+            mainText={title.factContent}
             imgSrc={WowFactImg}
+            factId={title.id}
         />
     ))];
 
@@ -35,26 +36,40 @@ const InterestingFactsComponent = (props: Props) => {
     }
 
     return (
-        <div className='interestingFactsWrapper'>
-            <div className='interestingFactsContainer'>
-                <BlockHeading headingText='Wow-факти' />
-                <div className='interestingFactsSliderContainer'>
-                    <div style={{height: "100%"}}>
-                        <SlickSlider
-                            swipeOnClick={true}
-                            className='heightContainer'
-                            slides={sliderItems}
-                            slidesToShow={3}
-                            centerMode={true}
-                            swipe={false}
-                            dots={showDots}
-                            centerPadding={"-12px"}
-                        />
+        <div className="interestingFactsWrapper">
+            <div className="interestingFactsContainer">
+                <BlockHeading headingText="Wow-факти" />
+                <div className="interestingFactsSliderContainer">
+                    <div style={{ height: '100%' }}>
+                        { (sliderItems.length === 1)
+                            ? (
+                                <div className="singleSlideContainer">
+                                    <InterestingFactItem
+                                        factId={sliderItems[0].props.factId}
+                                        imgSrc={sliderItems[0].props.imgSrc}
+                                        mainText={sliderItems[0].props.mainText}
+                                        maxTextLength={300}
+                                        textHeading={sliderItems[0].props.textHeading}
+                                    />
+                                </div>
+                            ) : (
+                                <SlickSlider
+                                    swipeOnClick
+                                    className="heightContainer"
+                                    slides={sliderItems}
+                                    slidesToShow={3}
+                                    centerMode
+                                    swipe={false}
+                                    dots={showDots}
+                                    centerPadding="-12px"
+                                />
+                            )}
+
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default InterestingFactsComponent;

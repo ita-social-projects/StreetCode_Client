@@ -1,6 +1,6 @@
-import {Text} from "@models/streetcode/text-contents.model";
-import { makeAutoObservable, runInAction } from "mobx";
-import textsApi from "@api/streetcode/text-content/texts.api";
+import { makeAutoObservable, runInAction } from 'mobx';
+import textsApi from '@api/streetcode/text-content/texts.api';
+import { Text } from '@models/streetcode/text-contents.model';
 
 export default class TextStore {
     public TextMap = new Map<number, Text>();
@@ -11,45 +11,51 @@ export default class TextStore {
 
     private setInternalMap = (texts: Text[]) => {
         texts.forEach(this.setItem);
-    }
+    };
 
     private setItem = (text: Text) => {
         this.TextMap.set(text.id, text);
-    }
+    };
 
-    public getTextArray = () => {
-        return Array.from(this.TextMap.values());
-    }
+    public getTextArray = () => Array.from(this.TextMap.values());
+
+    public fetchTextByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            const text = await textsApi.getByStreetcodeId(streetcodeId);
+            runInAction(() => {
+                this.TextMap.set(streetcodeId, text);
+            });
+        } catch (err: unknown) {
+            console.log(err);
+        }
+    };
 
     public fetchText = async (id: number) => {
         try {
             const text = await textsApi.getById(id);
             this.setItem(text);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchTexts = async () => {
         try {
             const texts = await textsApi.getAll();
             this.setInternalMap(texts);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public createText = async (text: Text) => {
         try {
             await textsApi.create(text);
             this.setItem(text);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public updateText = async (text: Text) => {
         try {
@@ -57,15 +63,14 @@ export default class TextStore {
             runInAction(() => {
                 const updatedText = {
                     ...this.TextMap.get(text.id),
-                    ...text
+                    ...text,
                 };
                 this.setItem(updatedText as Text);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public deleteText = async (textId: number) => {
         try {
@@ -73,9 +78,8 @@ export default class TextStore {
             runInAction(() => {
                 this.TextMap.delete(textId);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 }

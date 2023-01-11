@@ -1,20 +1,26 @@
-import "./SourceItem.styles.scss"
+import './SourceItem.styles.scss';
 
-import useMobx from "@stores/root-store";
-import { observer } from "mobx-react-lite";
+import { observer } from 'mobx-react-lite';
+import { SourceCategory } from '@models/sources/sources.model';
+import useMobx from '@stores/root-store';
 
 interface Props {
-    text: string;
+    srcCategory: SourceCategory;
 }
 
-const SourceItem = (props: Props) => {
+const SourceItem = ({ srcCategory }: Props) => {
     const { modalStore: { setModal } } = useMobx();
+    const { id, image, title } = srcCategory;
 
     return (
-        <div className='sourcesSliderItem' onClick={() => setModal('sources')}>
-            <h1>{props.text}</h1>
+        <div
+            className="sourcesSliderItem"
+            onClick={() => setModal('sources', id)}
+            style={{ backgroundImage: `url(${image?.url.href})` }}
+        >
+            <h1>{title}</h1>
         </div>
     );
-}
+};
 
 export default observer(SourceItem);

@@ -1,23 +1,10 @@
-import {useState, useEffect, useCallback, DependencyList} from 'react';
+import { DependencyList, useCallback, useEffect, useState } from 'react';
 
-export const useAsync = (func: Function, deps: DependencyList = [], cb?: () => void) => {
-    const { execute, ...state } = useAsyncInternal(func, deps);
-
-    useEffect(() => {
-        execute().then(cb);
-    }, [cb, execute]);
-
-    return state;
-}
-
-export const useAsyncFn = (func: Function, deps: DependencyList = []) => {
-    return useAsyncInternal(func, deps, false);
-}
-
+// eslint-disable-next-line @typescript-eslint/ban-types
 const useAsyncInternal = (func: Function, deps: DependencyList = [], initialLoading = true) => {
     const [loading, setLoading] = useState(initialLoading);
-    const [error, setError] = useState<any | undefined>();
-    const [value, setValue] = useState<any | undefined>();
+    const [error, setError] = useState<unknown | undefined>();
+    const [value, setValue] = useState<unknown | undefined>();
 
     const execute = useCallback(async (...params: any[]) => {
         setLoading(true);
@@ -29,13 +16,12 @@ const useAsyncInternal = (func: Function, deps: DependencyList = [], initialLoad
             setError(undefined);
 
             return data;
-        } catch (error: any) {
-            setError(error);
+        } catch (err: unknown) {
+            setError(err);
             setValue(undefined);
 
-            return Promise.reject(error);
-        }
-        finally {
+            return await Promise.reject(err);
+        } finally {
             setLoading(false);
         }
 
@@ -43,4 +29,22 @@ const useAsyncInternal = (func: Function, deps: DependencyList = [], initialLoad
     }, deps);
 
     return { loading, error, value, execute };
-}
+};
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const useAsync = (func: Function, deps: DependencyList = [], cb?: () => void) => {
+    const { execute, ...state } = useAsyncInternal(func, deps);
+
+    useEffect(() => {
+        execute().then(cb);
+    }, [cb, execute]);
+
+    return state;
+};
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const useAsyncFn = (func: Function, deps: DependencyList = []) => useAsyncInternal(
+    func,
+    deps,
+    false,
+);

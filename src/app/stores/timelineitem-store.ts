@@ -1,6 +1,6 @@
-import {TimelineItem} from "@models/timeline/timeline-item.model";
-import { makeAutoObservable, runInAction } from "mobx";
-import timelineApi from "@api/timeline/timeline.api";
+import { makeAutoObservable, runInAction } from 'mobx';
+import timelineApi from '@api/timeline/timeline.api';
+import TimelineItem from '@models/timeline/chronology.model';
 
 export default class TimelineitemStore {
     public TimelineItemMap = new Map<number, TimelineItem>();
@@ -11,45 +11,40 @@ export default class TimelineitemStore {
 
     private setInternalMap = (timelineItems: TimelineItem[]) => {
         timelineItems.forEach(this.setItem);
-    }
+    };
 
     private setItem = (timelineItem: TimelineItem) => {
         this.TimelineItemMap.set(timelineItem.id, timelineItem);
-    }
+    };
 
-    public getTimelineItemArray = () => {
-        return Array.from(this.TimelineItemMap.values());
-    }
+    public getTimelineItemArray = () => Array.from(this.TimelineItemMap.values());
 
     public fetchTimelineItem = async (id: number) => {
         try {
             const timelineItem = await timelineApi.getById(id);
             this.setItem(timelineItem);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchTimelineItems = async () => {
         try {
             const TimelineItems = await timelineApi.getAll();
             this.setInternalMap(TimelineItems);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public createTimelineItem = async (timelineItem: TimelineItem) => {
         try {
             await timelineApi.create(timelineItem);
             this.setItem(timelineItem);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public updateTimelineItem = async (timelineItem: TimelineItem) => {
         try {
@@ -57,15 +52,14 @@ export default class TimelineitemStore {
             runInAction(() => {
                 const updatedTimelineItem = {
                     ...this.TimelineItemMap.get(timelineItem.id),
-                    ...timelineItem
+                    ...timelineItem,
                 };
                 this.setItem(updatedTimelineItem as TimelineItem);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public deleteTimelineItem = async (timelineItemId: number) => {
         try {
@@ -73,9 +67,8 @@ export default class TimelineitemStore {
             runInAction(() => {
                 this.TimelineItemMap.delete(timelineItemId);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 }

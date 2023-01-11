@@ -1,6 +1,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .interestingFactsContainer {
     @include mut.sized(90%, 784px);
@@ -35,4 +36,10 @@
 
 .slick-center .interestingFactSlide {
     transform: scale(1.52);
+}
+
+.singleSlideContainer{
+    @include mut.flex-centered();
+    @include vnd.vendored(transform, scale(1.32));
+    padding-top:10%;
 }

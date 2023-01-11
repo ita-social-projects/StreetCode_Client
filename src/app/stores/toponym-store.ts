@@ -1,6 +1,6 @@
-import Toponym from "@models/toponyms/toponym.model";
-import { makeAutoObservable, runInAction } from "mobx";
-import toponymsApi from "@api/map/toponyms.api";
+import { makeAutoObservable, runInAction } from 'mobx';
+import toponymsApi from '@api/map/toponyms.api';
+import Toponym from '@models/toponyms/toponym.model';
 
 export default class ToponymStore {
     public ToponymMap = new Map<number, Toponym>();
@@ -11,45 +11,40 @@ export default class ToponymStore {
 
     private setInternalMap = (toponyms: Toponym[]) => {
         toponyms.forEach(this.setItem);
-    }
+    };
 
     private setItem = (toponym: Toponym) => {
         this.ToponymMap.set(toponym.id, toponym);
-    }
+    };
 
-    public getToponymArray = () => {
-        return Array.from(this.ToponymMap.values());
-    }
+    public getToponymArray = () => Array.from(this.ToponymMap.values());
 
     public fetchToponym = async (id: number) => {
         try {
             const toponym = await toponymsApi.getById(id);
             this.setItem(toponym);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchToponyms = async () => {
         try {
             const toponyms = await toponymsApi.getAll();
             this.setInternalMap(toponyms);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public createToponym = async (toponym: Toponym) => {
         try {
             await toponymsApi.create(toponym);
             this.setItem(toponym);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public updateToponym = async (toponym: Toponym) => {
         try {
@@ -57,15 +52,14 @@ export default class ToponymStore {
             runInAction(() => {
                 const updatedToponym = {
                     ...this.ToponymMap.get(toponym.id),
-                    ...toponym
+                    ...toponym,
                 };
                 this.setItem(updatedToponym as Toponym);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public deleteToponym = async (toponymId: number) => {
         try {
@@ -73,9 +67,8 @@ export default class ToponymStore {
             runInAction(() => {
                 this.ToponymMap.delete(toponymId);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 }
