@@ -56,8 +56,8 @@ const AudioPlayer = () => {
   }
 
   return (
-    <div className={"audioPlayer"}>
-      <audio ref={audioPlayer} src="https://cdn.simplecast.com/audio/cae8b0eb-d9a9-480d-a652-0defcbe047f4/episodes/af52a99b-88c0-4638-b120-d46e142d06d3/audio/500344fb-2e2b-48af-be86-af6ac341a6da/default_tc.mp3" preload="metadata"></audio>
+        <div className={"audioPlayer"}>
+            <audio ref={audioPlayer} src="https://cdn.simplecast.com/audio/cae8b0eb-d9a9-480d-a652-0defcbe047f4/episodes/af52a99b-88c0-4638-b120-d46e142d06d3/audio/500344fb-2e2b-48af-be86-af6ac341a6da/default_tc.mp3" preload="metadata"></audio>
         {isPlaying ? <div className="buttonContainer"><img src={PauseBtn} className='play' onClick={togglePlayPause}/></div> : <div className="buttonContainer"><img src={PlayBtn} className='play' onClick={togglePlayPause}/></div>}
       <div>
         <input type="range" className={"progressBar"} defaultValue="0" ref={progressBar} onChange={changeRange} />

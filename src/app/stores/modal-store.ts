@@ -13,12 +13,14 @@ const DefaultModalState: ModalState = {
 interface ModalList {
     sources: ModalState;
     facts: ModalState;
+    audio: ModalState;
 }
 
 export default class ModalStore {
     public modalsState: ModalList = {
         sources: DefaultModalState,
         facts: DefaultModalState,
+        audio: DefaultModalState,
     };
 
     public constructor() {

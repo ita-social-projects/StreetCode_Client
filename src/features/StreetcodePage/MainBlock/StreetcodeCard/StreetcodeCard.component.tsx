@@ -6,7 +6,7 @@ import { PlayCircleFilled } from '@ant-design/icons';
 import Hrushevskyi from '@images/streetcode-card/Hrushevskyi.png';
 import useMobx from '@/app/stores/root-store';
 import Tag from '@/models/additional-content/tag.model';
-import { dateFormatter } from '@/app/common/utils/formatters.utils';
+import  fullMonthNumericYearDateFmtr from '@/app/common/utils/formatters.utils';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const formatDate = (date?: Date): string => {
-    return dateFormatter.format(date).replace('р.', 'року')
+    return fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року')
 }
 
 const concatDates = (firstDate?: Date, secondDate?: Date): string => {

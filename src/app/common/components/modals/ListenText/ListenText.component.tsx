@@ -15,7 +15,7 @@ const ListenTextModal = (props: Props) => {
     
     return (
         <>
-        {audio && 
+        {audio.isOpen && 
             <div className="modal">
                 <AudioPlayer/> 
                 <img src={ExitBtn} className={"closeModal"} onClick={()=> setModal('audio')}/>
