@@ -3,7 +3,6 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-
 .modal {
     @include mut.sized(1200px, 46px); 
     @include mut.flex-centered();

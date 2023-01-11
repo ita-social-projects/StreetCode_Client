@@ -2,21 +2,26 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@assets/sass/_utils.functions.scss" as *;
 
+$thumb: #D9D9D9;
+$seek-before-color: #DB3424;
+
 .audioPlayer {
   @include mut.sized(1200px, 30px);
   @include mut.flex-centered();
 }
 
+.buttonContainer {
+  @include mut.sized(30px, 30px);
+  @include mut.flex-centered();
+  margin-right: pxToRem(25px);
+}
+
 .play {
-  margin-right: pxToRem(23px);
   cursor: pointer;
 }
-  
+
 .progressBar {
-  --bar-bg: #DFDFDF;
   --seek-before-width: 0;
-  --seek-before-color: #DB3424;
-  --knobby: #D9D9D9;
 
   @include mut.flex-centered();
   appearance: none;
@@ -35,29 +40,21 @@
   @include mut.sized(100%, 3px);
 }
 
-.progressBar::-moz-focus-outer {
-  border: 0;
-}
-
 /* progress bar - chrome and safari */
 .progressBar::before {
   content: '';
-  height: 3px;
+  height: pxToRem(3px);
   width: var(--seek-before-width);
-  background-color: var(--seek-before-color);
-  position: absolute;
-  top: 0;
-  left: 0;
+  background-color: $seek-before-color;
+  @include mut.positioned-as($position: absolute, $top: 0, $left: 0);
   z-index: 2;
   cursor: pointer;
 }
 
 /* progress bar - firefox */
 .progressBar::-moz-range-progress {
-  background-color: var(--seek-before-color);
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  height: 3px;
+  background-color: $seek-before-color;
+  height: pxToRem(3px);
 }
 
 /* knobby - chrome and safari */
@@ -66,22 +63,20 @@
   @include mut.sized(13px, 13px);
   border-radius: 50%;
   border: none;
-  background-color: var(--knobby);
+  background-color: $thumb;
   cursor: pointer;
   position: relative;
   z-index: 3;
-  margin-top: -5px;
+  margin-top: pxToRem(-5px);
 }
 
 /* knobby - firefox */
 .progressBar::-moz-range-thumb {
   @include mut.sized(13px, 13px);
   border-radius: 50%;
-  border: transparent;
-  background-color: var(--knobby);
+  background-color: $thumb;
   cursor: pointer;
   position: relative;
   z-index: 3;
-  box-sizing: border-box;
 }
 
