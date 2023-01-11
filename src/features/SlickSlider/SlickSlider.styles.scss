@@ -49,3 +49,9 @@ li.slick-active button:before {
 .sliderClass {
     width: 100%;
 }
+
+.nonLeftSwipable {
+    .slick-prev:before {
+        pointer-events: none;
+    }
+}

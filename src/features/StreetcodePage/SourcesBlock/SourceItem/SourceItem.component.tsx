@@ -1,10 +1,14 @@
 import './SourceItem.styles.scss';
 
-import useMobx from '@stores/root-store';
+import { HTMLAttributes } from 'react';
+
 import { observer } from 'mobx-react-lite';
+
+import useMobx from '@stores/root-store';
 import { SourceCategory } from '@models/sources/sources.model';
 
-interface Props {
+
+interface Props extends HTMLAttributes<HTMLDivElement> {
     srcCategory: SourceCategory;
 }
 

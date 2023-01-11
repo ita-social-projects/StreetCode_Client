@@ -1,6 +1,6 @@
 import "./SlickSlider.styles.scss";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';
 
 interface Props extends SliderProps {
@@ -13,7 +13,7 @@ const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, 
     // Code that provides ability to change selected slide after clicking on it
     const sliderRef = useRef<any>(null);
 
-    const handleClick = (index: number) => {
+    const handleClick = useCallback((index: number) => {
         if (sliderRef && sliderRef.current) {
             sliderRef.current.slickGoTo(index);
         }
@@ -21,7 +21,7 @@ const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, 
         if (onClick) {
             onClick(index);
         }
-    };
+    }, [onClick]);
 
     // Code that removes all "slick-cloned" elements if there is only 1 slide
     useEffect(() => {
@@ -54,4 +54,4 @@ const defaultProps: SliderProps = {
 };
 SimpleSlider.defaultProps = defaultProps;
 
-export default SimpleSlider;
+export default React.memo(SimpleSlider);

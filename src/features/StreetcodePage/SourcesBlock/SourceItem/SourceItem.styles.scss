@@ -5,10 +5,11 @@ $articlesImg: "@assets/images/sources/Articles.png";
 
 .sourcesSliderItem {
   @include mut.sized(380px, 250px);
-  @include mut.flex-centered();
-
-  @include mut.bg-image($articlesImg);
   @include mut.full-rounded(30px);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, .25);
+
+  @include mut.flex-centered();
+  @include mut.bg-image($articlesImg);
 
   h1 {
     color: white;
