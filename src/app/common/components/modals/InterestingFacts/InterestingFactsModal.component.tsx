@@ -1,22 +1,24 @@
 import './InterestingFactsModal.styles.scss';
-import CancelBtn from "@assets/images/utils/Cancel_btn.svg";
-import factsApi from "@api/streetcode/text-content/facts.api";
-import {Fact} from "@models/streetcode/text-contents.model";
-import { Modal } from "antd";
 
-import useMobx from "@stores/root-store";
-import { observer } from "mobx-react-lite";
+import { observer } from 'mobx-react-lite';
+import factsApi from '@api/streetcode/text-content/facts.api';
+import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import { Fact } from '@models/streetcode/text-contents.model';
+import useMobx from '@stores/root-store';
+
+import { Modal } from 'antd';
 
 const InterestingFactsModal = () => {
-    const { factsStore:{ factMap },modalStore } = useMobx();
+    const { factsStore: { factMap }, modalStore } = useMobx();
     const { setModal, modalsState: { facts } } = modalStore;
-    const { getByStreetcodeId } = factsApi;
+    const { getFactsByStreetcodeId } = factsApi;
 
     const factId = facts.fromCardId!;
     const fact = factMap.get(factId);
 
     return (
-        <Modal className={"interestingFactsModal"}
+        <Modal
+            className="interestingFactsModal"
             open={facts.isOpen}
             onCancel={() => setModal('facts')}
             footer={null}
@@ -24,17 +26,15 @@ const InterestingFactsModal = () => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <div className={"factsImgContainer"}>
-
-            </div>
-            <div className={"factsContentContainer"}>
+            <div className="factsImgContainer" />
+            <div className="factsContentContainer">
                 <h1>{fact?.title}</h1>
-                <div className={"factsTextContainer"}>
+                <div className="factsTextContainer">
                     {fact?.factContent}
                 </div>
             </div>
         </Modal>
     );
-}
+};
 
 export default observer(InterestingFactsModal);

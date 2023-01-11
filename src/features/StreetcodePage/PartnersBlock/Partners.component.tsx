@@ -17,13 +17,13 @@ const partners: Partial<Partner>[] = [
 ];
 
 const PartnersComponent = (props: Props) => (
-    <div className={'partnersWrapper'}>
-        <div className={'partnerContainer'}>
+    <div className="partnersWrapper">
+        <div className="partnerContainer">
             {partners.map((partner, idx) => (
-                <img key={idx} className={'partnerItem'} src={partner.url?.href} alt=""/>
+                <img key={idx} className="partnerItem" src={partner.url?.href} alt="" />
             ))}
         </div>
     </div>
-)
+);
 
 export default PartnersComponent;

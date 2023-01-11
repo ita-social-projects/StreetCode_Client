@@ -1,15 +1,16 @@
-import "./BlockHeading.styles.scss";
-import Rhombus from "@images/utils/rhombus.svg";
+import './BlockHeading.styles.scss';
+
+import Rhombus from '@images/utils/rhombus.svg';
 
 interface Props {
     headingText: string;
 }
 
-const BlockHeading = (props: Props) => (
-    <div className='blockHeadingWrapper'>
-        <div className='blockHeadingContainer'>
+const BlockHeading = ({ headingText }: Props) => (
+    <div className="blockHeadingWrapper">
+        <div className="blockHeadingContainer">
             <Rhombus />
-            <h1>{props.headingText}</h1>
+            <h1>{headingText}</h1>
         </div>
     </div>
 );

@@ -1,6 +1,8 @@
-export const FRONTEND_ROUTES = {
-    BASE: "/",
+const FRONTEND_ROUTES = {
+    BASE: '/',
     STREETCODE: {
-        BASE: "/streetcode"
-    }
-}
+        BASE: '/streetcode',
+    },
+};
+
+export default FRONTEND_ROUTES;

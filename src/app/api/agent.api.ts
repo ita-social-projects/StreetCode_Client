@@ -1,6 +1,6 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { StatusCodes, ReasonPhrases } from "http-status-codes";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -16,47 +16,49 @@ axios.interceptors.request.use(config => {
 */
 
 axios.interceptors.response.use(
-    res => res,
+    (res) => res,
     (error: AxiosError) => {
         const { status: statusCode, config: { data } } = error.response!;
 
         switch (statusCode) {
-            case StatusCodes.INTERNAL_SERVER_ERROR:
-                toast.error(ReasonPhrases.INTERNAL_SERVER_ERROR);
-                break;
-            case StatusCodes.UNAUTHORIZED:
-                toast.error(ReasonPhrases.UNAUTHORIZED);
-                break;
-            case StatusCodes.NOT_FOUND:
-                toast.error(ReasonPhrases.NOT_FOUND);
-                break;
-            case StatusCodes.BAD_REQUEST:
-                toast.error(ReasonPhrases.BAD_REQUEST);
-                break;
-            case StatusCodes.FORBIDDEN:
-                toast.error(ReasonPhrases.FORBIDDEN);
-                break;
+        case StatusCodes.INTERNAL_SERVER_ERROR:
+            toast.error(ReasonPhrases.INTERNAL_SERVER_ERROR);
+            break;
+        case StatusCodes.UNAUTHORIZED:
+            toast.error(ReasonPhrases.UNAUTHORIZED);
+            break;
+        case StatusCodes.NOT_FOUND:
+            toast.error(ReasonPhrases.NOT_FOUND);
+            break;
+        case StatusCodes.BAD_REQUEST:
+            toast.error(ReasonPhrases.BAD_REQUEST);
+            break;
+        case StatusCodes.FORBIDDEN:
+            toast.error(ReasonPhrases.FORBIDDEN);
+            break;
+        default:
+            break;
         }
-    }
+    },
 );
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 
 const Agent = {
-    get: async <T> (url: string, params?: URLSearchParams) => axios.get<T>(url, {params})
+    get: async <T> (url: string, params?: URLSearchParams) => axios.get<T>(url, { params })
         .then(responseBody),
 
-    post: async <T> (url: string, body: {}, headers?: {}) => axios.post<T>(url, body, headers)
+    post: async <T> (url: string, body: object, headers?: object) => axios.post<T>(url, body, headers)
         .then(responseBody),
 
-    put: async <T> (url: string, body: {}) => axios.put<T>(url, body)
+    put: async <T> (url: string, body: object) => axios.put<T>(url, body)
         .then(responseBody),
 
-    //patch: async <T> (url: string, body: {}) => axios.put<T>(url, body)
+    // patch: async <T> (url: string, body: {}) => axios.put<T>(url, body)
     // .then(responseBody),
 
-    delete: async  <T>(url: string) => axios.delete<T>(url)
+    delete: async <T>(url: string) => axios.delete<T>(url)
         .then(responseBody),
-}
+};
 
 export default Agent;

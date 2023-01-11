@@ -1,2 +1,7 @@
-export const dateFormatter: Intl.DateTimeFormat = 
-    new Intl.DateTimeFormat('uk-UA', { day:'numeric', month: 'long', year: 'numeric' });
+const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+});
+
+export default fullMonthNumericYearDateFmtr;

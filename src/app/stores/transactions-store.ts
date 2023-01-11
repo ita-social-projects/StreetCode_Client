@@ -1,6 +1,6 @@
-import TransactionLink from "@models/transactions/transaction-link.model";
-import { makeAutoObservable, runInAction } from "mobx";
-import transactLinksApi from "@api/transactions/transactLinks.api";
+import { makeAutoObservable, runInAction } from 'mobx';
+import transactLinksApi from '@api/transactions/transactLinks.api';
+import TransactionLink from '@models/transactions/transaction-link.model';
 
 export default class TransactionLinksStore {
     public TransactionLinkMap = new Map<number, TransactionLink>();
@@ -11,45 +11,40 @@ export default class TransactionLinksStore {
 
     private setInternalMap = (transactionLinks: TransactionLink[]) => {
         transactionLinks.forEach(this.setItem);
-    }
+    };
 
     private setItem = (transactionLink: TransactionLink) => {
         this.TransactionLinkMap.set(transactionLink.id, transactionLink);
-    }
+    };
 
-    public getTransactionLinkArray = () => {
-        return Array.from(this.TransactionLinkMap.values());
-    }
+    public getTransactionLinkArray = () => Array.from(this.TransactionLinkMap.values());
 
     public fetchTransactionLink = async (id: number) => {
         try {
             const transactionLink = await transactLinksApi.getById(id);
             this.setItem(transactionLink);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchTransactionLinks = async () => {
         try {
             const transactionLinks = await transactLinksApi.getAll();
             this.setInternalMap(transactionLinks);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public createTransactionLink = async (transactionLink: TransactionLink) => {
         try {
             await transactLinksApi.create(transactionLink);
             this.setItem(transactionLink);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public updateTransactionLink = async (transactionLink: TransactionLink) => {
         try {
@@ -57,15 +52,14 @@ export default class TransactionLinksStore {
             runInAction(() => {
                 const updatedTransactionLink = {
                     ...this.TransactionLinkMap.get(transactionLink.id),
-                    ...transactionLink
+                    ...transactionLink,
                 };
                 this.setItem(updatedTransactionLink as TransactionLink);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public deleteTransactionLink = async (transactionLinkId: number) => {
         try {
@@ -73,9 +67,8 @@ export default class TransactionLinksStore {
             runInAction(() => {
                 this.TransactionLinkMap.delete(transactionLinkId);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 }

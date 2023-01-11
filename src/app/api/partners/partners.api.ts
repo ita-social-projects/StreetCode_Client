@@ -1,25 +1,19 @@
-import Agent from "@api/agent.api";
-import { API_ROUTES } from "@constants/api-routes.constants";
-import Partner from "@models/partners/partners.model";
+import Agent from '@api/agent.api';
+import { API_ROUTES } from '@constants/api-routes.constants';
+import Partner from '@models/partners/partners.model';
 
 const PartnersApi = {
-   getById: (id: number) =>
-       Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`),
+    getById: (id: number) => Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`),
 
-    getAll: () =>
-        Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_ALL}`),
+    getAll: () => Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_ALL}`),
 
-    getSponsors: () =>
-        Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_SPONSORS}`),
+    getSponsors: () => Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_SPONSORS}`),
 
-    create: (partner: Partner) =>
-        Agent.post<Partner>(`${API_ROUTES.PARTNERS.CREATE}`, partner),
+    create: (partner: Partner) => Agent.post<Partner>(`${API_ROUTES.PARTNERS.CREATE}`, partner),
 
-    update: (partner: Partner) =>
-        Agent.put<Partner>(`${API_ROUTES.PARTNERS.UPDATE}`, partner),
+    update: (partner: Partner) => Agent.put<Partner>(`${API_ROUTES.PARTNERS.UPDATE}`, partner),
 
-    delete: (id: number) =>
-        Agent.delete(`${API_ROUTES.PARTNERS.DELETE}/${id}`),
-}
+    delete: (id: number) => Agent.delete(`${API_ROUTES.PARTNERS.DELETE}/${id}`),
+};
 
 export default PartnersApi;

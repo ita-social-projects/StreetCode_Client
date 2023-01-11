@@ -1,15 +1,15 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react';
 
-const useToggle = (initialToggleState: boolean = false) => {
-  const [toggleState, setToggleState] = useState(initialToggleState);
+const useToggle = (initialToggleState = false) => {
+    const [toggleState, setToggleState] = useState(initialToggleState);
 
-  const handlers = useMemo(() => ({
-      on: () => setToggleState(true),
-      off: () => setToggleState(false),
-      toggle: () => setToggleState(prev => !prev),
-  }), []);
+    const handlers = useMemo(() => ({
+        on: () => setToggleState(true),
+        off: () => setToggleState(false),
+        toggle: () => setToggleState((prev) => !prev),
+    }), []);
 
-  return { toggleState, handlers };
-}
+    return { toggleState, handlers };
+};
 
 export default useToggle;
