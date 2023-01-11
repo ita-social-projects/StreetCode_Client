@@ -1,29 +1,26 @@
-import Tag from '@models/additional-content/tag.model';
+import RelatedFigure from '@/models/streetcode/related-figure.model';
 import './RelatedFigureItem.styles.scss';
 
 interface Props {
-    id: number;
-    textContent: string;
-    imgSrc: string;
-    tags: Tag[];
+    relatedFigure: RelatedFigure;
 }
 
 const redirectOnStreetcode = (id: number) => {
     console.log('redirected to streetcode with id: ' + id);
 }
 
-const RelatedFigureSliderItem = ({ id, imgSrc, tags, textContent }: Props) => (
+const RelatedFigureSliderItem = ({ relatedFigure }: Props) => (
     <div
         className={'relatedFigureSlide'}
-        style={{ backgroundImage: 'url(' + imgSrc + ')' }}
-        onClick={() => {redirectOnStreetcode(id)}}
+        style={{ backgroundImage: 'url(' + relatedFigure.image?.url.href + ')' }}
+        onClick={() => {redirectOnStreetcode(relatedFigure.id)}}
     >
         <div className={'slideText'}>
             <h3 className={'heading'}>
-                {textContent}
+                {relatedFigure.title}
             </h3>
             <div className={'relatedTagList'}>
-                {tags.map((tag, idx) => (
+                {relatedFigure.tags.map((tag, idx) => (
                     <div key={idx} className="tag">
                         <p>{tag.title}</p>
                     </div>

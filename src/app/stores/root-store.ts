@@ -16,6 +16,7 @@ import ToponymStore from "@stores/toponym-store";
 import TransactionLinksStore from "@stores/transactions-store";
 import StreetcodeStore from "@stores/streetcode-store";
 import SourcesStore from '@stores/sources-store';
+import RelatedFiguresStore from "./related-figures-store";
 
 interface Store {
     modalStore: ModalStore,
@@ -33,6 +34,7 @@ interface Store {
     toponymStore: ToponymStore,
     transactionsStore: TransactionLinksStore,
     streetcodesStore: StreetcodeStore,
+    relatedFiguresStore: RelatedFiguresStore,
     sourcesStore: SourcesStore,
 }
 
@@ -52,6 +54,7 @@ export const store: Store = {
     toponymStore: new ToponymStore(),
     transactionsStore: new TransactionLinksStore(),
     streetcodesStore: new StreetcodeStore(),
+    relatedFiguresStore: new RelatedFiguresStore(),
     sourcesStore: new SourcesStore(),
 }
 

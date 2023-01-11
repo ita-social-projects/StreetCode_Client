@@ -9,6 +9,9 @@ const RelatedFigureApi = {
     getById: (id: number) =>
         Agent.get<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.GET}/${id}`),
 
+    getByStreetcodeId: (streetcodeId: number) =>
+        Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_BY_STREETCODE_ID}/${streetcodeId}`),
+
     create: (relatedFigure: RelatedFigure) =>
         Agent.post<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.CREATE}`, relatedFigure),
 
