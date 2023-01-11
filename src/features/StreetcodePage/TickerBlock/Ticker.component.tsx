@@ -1,19 +1,20 @@
 import "./Ticker.styles.scss";
 import Ticker from 'react-awesome-ticker';
-import {useParams} from "react-router-dom";
-import {useAsync} from "@hooks/stateful/useAsync.hook";
+import { useMemo } from 'react';
+import { useAsync } from "@hooks/stateful/useAsync.hook";
+import { useRouteId } from "@hooks/stateful/useRouter.hook";
 import subtitlesApi from "@api/additional-content/subtitles.api";
-import Subtitle, {SubtitleStatus} from "@models/additional-content/subtitles.model";
+import Subtitle, { SubtitleStatus } from "@models/additional-content/subtitles.model";
+
+const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
+    new Map(subtitles?.map(( { id, firstName, lastName, subtitleStatus } ) => [id, `${ Object.keys(SubtitleStatus)[subtitleStatus] } ${ firstName } ${ lastName }, `])));
 
 const TickerComponent = () => {
-    const streetcodeId = useParams<{id: string}>();
-    const id = parseInt(streetcodeId.id ?? "1");
-    const {value} = useAsync(() =>subtitlesApi.getSubtitlesByStreetcodeId(id));
-    let subtitles = value as Subtitle[];
-
-    const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
-        new Map(subtitles?.map(({ id, firstName, lastName, subtitleStatus }) => [id, `${Object.keys(SubtitleStatus)[subtitleStatus]} ${firstName} ${lastName}, `] )) );
-    const subtitleMap = createSubtitleString(subtitles);
+    const id = useRouteId();
+    const { getSubtitlesByStreetcodeId } = subtitlesApi;
+    const { value } = useAsync(() => getSubtitlesByStreetcodeId(id));
+    const subtitles = value as Subtitle[];
+    const subtitleMap = useMemo(() => createSubtitleString(subtitles), [subtitles]);
 
     return (
         <Ticker className={"tickerContainer"}>
