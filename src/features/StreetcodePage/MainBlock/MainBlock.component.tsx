@@ -6,6 +6,7 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useParams } from 'react-router-dom';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
 
 const MainBlock = () => {
     const streetcodeId = useParams<{id: string}>();
@@ -24,6 +25,7 @@ const MainBlock = () => {
                         <StreetcodeCard streetcode={streetcode} />
                     </div>
                 </div>
+                <ListenTextModal/>
             </div>
         </div>
     );

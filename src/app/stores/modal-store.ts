@@ -3,14 +3,16 @@ import { makeAutoObservable } from "mobx";
 interface ModalStateList {
     sources: boolean;
     facts: boolean;
+    audio: boolean;
 }
 
-type ModalType = 'sources' | 'facts';
+type ModalType = 'sources' | 'facts' | 'audio';
 
 export default class ModalStore {
     public modalsState: ModalStateList = {
         sources: false,
         facts: false,
+        audio: false,
     }
 
     public constructor() {
