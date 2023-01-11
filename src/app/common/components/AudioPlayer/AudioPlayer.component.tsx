@@ -1,22 +1,27 @@
-import { useState, useRef, useEffect } from 'react'
 import "./AudioPlayer.styles.scss";
+
+import { useState, useRef, useEffect } from 'react'
 import PlayBtn from '@images/audio-player/PlayBtn.png';
 import PauseBtn from '@images/audio-player/PauseBtn.png';
 
 const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  const audioPlayer = useRef<HTMLAudioElement>(null);   
+  const audioPlayer = useRef<HTMLMediaElement>(null);   
   const progressBar = useRef<HTMLInputElement | null>(null);  
   const animationRef = useRef<number>();
 
   useEffect(() => {
+    setMaxDuration();
+  }, [audioPlayer.current?.readyState]);
+
+  const setMaxDuration = (): void => {
     if(progressBar.current){
       progressBar.current.max = String(Math.floor(Number(audioPlayer.current?.duration)));
     }
-  }, [audioPlayer?.current?.onloadedmetadata, audioPlayer?.current?.readyState]);
+  }
 
-  const togglePlayPause = () => {
+  const togglePlayPause = (): void => {
     setIsPlaying(!isPlaying);
     if (!isPlaying) {
       audioPlayer.current?.play();
@@ -27,7 +32,7 @@ const AudioPlayer = () => {
     }
   }
 
-  const whilePlaying = () => {
+  const whilePlaying = (): void => {
     if (progressBar.current) {
       progressBar.current.value = String(audioPlayer.current?.currentTime);
     }
@@ -35,14 +40,15 @@ const AudioPlayer = () => {
     animationRef.current = requestAnimationFrame(whilePlaying);
   }
 
-  const changeRange = () => {
+  const changeRange = (): void => {
+    setMaxDuration();
     if(audioPlayer.current){
       audioPlayer.current.currentTime = Number(progressBar.current?.value);
     }
     changePlayerCurrentTime();
   }
 
-  const changePlayerCurrentTime = () => {
+  const changePlayerCurrentTime = (): void => {
     progressBar.current?.style.setProperty('--seek-before-width', `${Number(progressBar.current?.value) / Number(progressBar.current.max) * 100}%`);
     if (Number(progressBar.current?.value) / Number(progressBar.current?.max) >= 1){
       setIsPlaying(false);
