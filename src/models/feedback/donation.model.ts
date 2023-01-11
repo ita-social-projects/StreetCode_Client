@@ -1,4 +1,4 @@
 export default interface Donation {
     id: number;
-    //TODO fill all necessary fields
+    // TODO fill all necessary fields
 }

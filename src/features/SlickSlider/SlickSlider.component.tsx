@@ -1,4 +1,4 @@
-import "./SlickSlider.styles.scss";
+import './SlickSlider.styles.scss';
 
 import React, { useEffect, useRef } from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';

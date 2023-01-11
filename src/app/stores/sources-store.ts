@@ -1,22 +1,23 @@
-import { SourceCategory, SourceSubCategory } from '@models/sources/sources.model';
 import { makeAutoObservable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
+import { SourceCategory, SourceSubCategory } from '@models/sources/sources.model';
 
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();
+
     public srcSubCategoriesMap = new Map<number, SourceSubCategory>();
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-   private setCategoryItem = (srcCategory: SourceCategory) => {
+    private setCategoryItem = (srcCategory: SourceCategory) => {
         this.srcCategoriesMap.set(srcCategory.id, srcCategory);
-    }
+    };
 
     private setSubCategoryItem = (srcSubCategory: SourceSubCategory) => {
         this.srcSubCategoriesMap.set(srcSubCategory.id, srcSubCategory);
-    }
+    };
 
     private set setInternalCategoriesMap(srcCategories: SourceCategory[]) {
         srcCategories.forEach(this.setCategoryItem);
@@ -34,71 +35,62 @@ export default class SourcesStore {
         try {
             const srcCategory = await sourcesApi.getById(id);
             this.setCategoryItem(srcCategory);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchSrcCategories = async () => {
         try {
-            this.setInternalCategoriesMap =
-                await sourcesApi.getAllCategories();
-        }
-        catch (error: any) {
+            this.setInternalCategoriesMap = await sourcesApi.getAllCategories();
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
-            this.setInternalCategoriesMap =
-                await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
-        }
-        catch (error: any) {
+            this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchSrcSubCategoriesByCategoryId = async (categoryId: number)
         : Promise<SourceSubCategory[] | undefined> => {
         try {
-            const srcSubCategories =
-                await sourcesApi.getSubCategoriesByCategoryId(categoryId);
+            const srcSubCategories = await sourcesApi.getSubCategoriesByCategoryId(categoryId);
 
             srcSubCategories?.forEach(this.setSubCategoryItem);
             return srcSubCategories;
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
-    public createSourceCategory = async (SourceCategory: SourceCategory) => {
+    public createSourceCategory = async (srcCategory: SourceCategory) => {
         try {
-            await sourcesApi.create(SourceCategory);
-            this.setCategoryItem(SourceCategory);
-        }
-        catch (error: any) {
+            await sourcesApi.create(srcCategory);
+            this.setCategoryItem(srcCategory);
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
-    public updateSourceCategory = async (SourceCategory: SourceCategory) => {
+    public updateSourceCategory = async (srcCategory: SourceCategory) => {
         try {
-            await sourcesApi.update(SourceCategory);
+            await sourcesApi.update(srcCategory);
             runInAction(() => {
                 const updatedSourceCategory = {
-                    ...this.srcSubCategoriesMap.get(SourceCategory.id),
-                    ...SourceCategory
+                    ...this.srcSubCategoriesMap.get(srcCategory.id),
+                    ...srcCategory,
                 };
                 this.setCategoryItem(updatedSourceCategory as SourceCategory);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public deleteSourceCategory = async (SourceCategoryId: number) => {
         try {
@@ -106,9 +98,8 @@ export default class SourcesStore {
             runInAction(() => {
                 this.srcSubCategoriesMap.delete(SourceCategoryId);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 }

@@ -1,14 +1,14 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable } from 'mobx';
 
 type ModalState = {
     isOpen: boolean;
     fromCardId?: number;
-}
+};
 
 const DefaultModalState: ModalState = {
     isOpen: false,
     fromCardId: undefined,
-}
+};
 
 interface ModalList {
     sources: ModalState;
@@ -19,7 +19,7 @@ export default class ModalStore {
     public modalsState: ModalList = {
         sources: DefaultModalState,
         facts: DefaultModalState,
-    }
+    };
 
     public constructor() {
         makeAutoObservable(this);
@@ -30,5 +30,5 @@ export default class ModalStore {
             isOpen: opened ?? !this.modalsState[modalName].isOpen,
             fromCardId: fromId,
         };
-    }
+    };
 }

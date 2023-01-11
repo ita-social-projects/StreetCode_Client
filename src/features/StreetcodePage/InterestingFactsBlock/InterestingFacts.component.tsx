@@ -1,23 +1,29 @@
-import "./InterestingFacts.styles.scss"
-import WowFactImg from "@images/interesting-facts/WowFacts1.png";
-import SlickSlider from "@features/SlickSlider/SlickSlider.component";
-import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
-import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
-import useMobx from "@stores/root-store";
-import {useAsync} from "@hooks/stateful/useAsync.hook";
-import {useParams} from "react-router-dom";
+import './InterestingFacts.styles.scss';
 
+import WowFactImg from '@images/interesting-facts/WowFacts1.png';
+
+import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import useMobx from '@stores/root-store';
+import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
 const InterestingFactsComponent = () => {
-    const streetcodeId = useParams<{id: string}>();
-    const id = parseInt(streetcodeId.id ?? "1");
-    const{factsStore:{fetchFactsByStreetcodeId, getFactArray}} = useMobx();
-    const { value } = useAsync(
-        () => fetchFactsByStreetcodeId(id)
+    const streetcodeId = useRouteId();
+    const { factsStore: { fetchFactsByStreetcodeId, getFactArray } } = useMobx();
+    useAsync(
+        () => fetchFactsByStreetcodeId(streetcodeId),
+        [streetcodeId],
     );
 
-    let sliderItems = [...getFactArray.map(title => (
-        <InterestingFactItem textHeading={title.title}  mainText={title.factContent} imgSrc={WowFactImg} factId={title.id}/>
+    let sliderItems = [...getFactArray.map((title) => (
+        <InterestingFactItem
+            textHeading={title.title}
+            mainText={title.factContent}
+            imgSrc={WowFactImg}
+            factId={title.id}
+        />
     ))];
 
     const showDots = sliderItems.length > 3;
@@ -30,14 +36,14 @@ const InterestingFactsComponent = () => {
     }
 
     return (
-        <div className='interestingFactsWrapper'>
-            <div className='interestingFactsContainer'>
-                <BlockHeading headingText='Wow-факти' />
-                <div className='interestingFactsSliderContainer'>
-                    <div style={{height: "100%"}}>
+        <div className="interestingFactsWrapper">
+            <div className="interestingFactsContainer">
+                <BlockHeading headingText="Wow-факти" />
+                <div className="interestingFactsSliderContainer">
+                    <div style={{ height: '100%' }}>
                         { (sliderItems.length === 1)
                             ? (
-                                <div className={"singleSlideContainer"}>
+                                <div className="singleSlideContainer">
                                     <InterestingFactItem
                                         factId={sliderItems[0].props.factId}
                                         imgSrc={sliderItems[0].props.imgSrc}
@@ -48,24 +54,22 @@ const InterestingFactsComponent = () => {
                                 </div>
                             ) : (
                                 <SlickSlider
-                                    swipeOnClick={true}
-                                    className='heightContainer'
+                                    swipeOnClick
+                                    className="heightContainer"
                                     slides={sliderItems}
                                     slidesToShow={3}
-                                    centerMode={true}
+                                    centerMode
                                     swipe={false}
                                     dots={showDots}
-                                    centerPadding={"-12px"}
+                                    centerPadding="-12px"
                                 />
-                            )
-                        }
-
+                            )}
 
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default InterestingFactsComponent;

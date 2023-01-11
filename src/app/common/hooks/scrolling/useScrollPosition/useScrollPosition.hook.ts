@@ -1,10 +1,11 @@
-import { useRef, DependencyList, useLayoutEffect, useEffect } from 'react';
-import getScrollPosition, { isBrowser } from "./useScrollPosition.utils";
-import { ElementRefOrDefault, ScrollProps } from "./useScrollPosition";
+import { DependencyList, useEffect, useLayoutEffect, useRef } from 'react';
+
+import { ElementRefOrDefault, ScrollProps } from './useScrollPosition';
+import getScrollPosition, { isBrowser } from './useScrollPosition.utils';
 
 const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
 
-export const useScrollPosition = (
+const useScrollPosition = (
     effect: (props: ScrollProps) => void,
     deps?: DependencyList,
     element?: ElementRefOrDefault,
@@ -15,8 +16,9 @@ export const useScrollPosition = (
     const position = useRef(getScrollPosition(
         {
             useWindow,
-            boundingElement
-        }));
+            boundingElement,
+        },
+    ));
 
     let throttleTimeout: NodeJS.Timeout | null = null;
 
@@ -24,7 +26,7 @@ export const useScrollPosition = (
         const currentPos = getScrollPosition({
             element,
             useWindow,
-            boundingElement
+            boundingElement,
         });
 
         effect({ previousPos: position.current, currentPos });
@@ -75,3 +77,5 @@ useScrollPosition.defaultProps = {
     wait: null,
     boundingElement: false,
 };
+
+export default useScrollPosition;
