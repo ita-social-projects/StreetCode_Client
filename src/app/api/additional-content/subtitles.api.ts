@@ -7,7 +7,7 @@ const SubtitlesApi = {
 
     getAll: () => Agent.get<Subtitle[]>(`${API_ROUTES.SUBTITLES.GET_ALL}`),
 
-    getByStreetcodeId: (streetcodeId: number) => Agent.get<Subtitle>(
+    getSubtitleByStreetcodeId: (streetcodeId: number) => Agent.get<Subtitle>(
         `${API_ROUTES.SUBTITLES.GET_BY_STREETCODE_ID}/${streetcodeId}`,
     ),
 
