@@ -5,17 +5,14 @@ import PauseBtn from '@images/audio-player/PauseBtn.png';
 
 const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [duration, setDuration] = useState<number>(0);
 
   const audioPlayer = useRef<HTMLAudioElement>(null);   
   const progressBar = useRef<HTMLInputElement | null>(null);  
   const animationRef = useRef<number>();
 
   useEffect(() => {
-    const seconds = Math.floor(Number(audioPlayer.current?.duration));
-    setDuration(seconds);
     if(progressBar.current){
-      progressBar.current.max = String(seconds);
+      progressBar.current.max = String(Math.floor(Number(audioPlayer.current?.duration)));
     }
   }, [audioPlayer?.current?.onloadedmetadata, audioPlayer?.current?.readyState]);
 
@@ -46,8 +43,8 @@ const AudioPlayer = () => {
   }
 
   const changePlayerCurrentTime = () => {
-    progressBar.current?.style.setProperty('--seek-before-width', `${Number(progressBar.current?.value) / duration * 100}%`);
-    if (Number(progressBar.current?.value) / duration >= 1){
+    progressBar.current?.style.setProperty('--seek-before-width', `${Number(progressBar.current?.value) / Number(progressBar.current.max) * 100}%`);
+    if (Number(progressBar.current?.value) / Number(progressBar.current?.max) >= 1){
       setIsPlaying(false);
     }
   }
