@@ -12,7 +12,7 @@ const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
 const TickerComponent = () => {
     const id = useRouteId();
     const { getSubtitlesByStreetcodeId } = subtitlesApi;
-    const { value } = useAsync(() => getSubtitlesByStreetcodeId(id));
+    const { value } = useAsync(() => getSubtitlesByStreetcodeId(id), [id]);
     const subtitles = value as Subtitle[];
     const subtitleMap = useMemo(() => createSubtitleString(subtitles), [subtitles]);
 
