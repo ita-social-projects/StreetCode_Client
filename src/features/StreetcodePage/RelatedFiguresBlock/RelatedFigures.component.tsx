@@ -53,6 +53,7 @@ const relatedFigures: RelatedFigure[] = [
 ];
 
 const RelatedFiguresComponent = (props: Props) => {
+    const { modalStore: { setModal } } = useMobx();
     const { relatedFiguresStore } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
 
@@ -87,7 +88,7 @@ const RelatedFiguresComponent = (props: Props) => {
                     </div>
                 </div>
                 <div className="moreInfo">
-                    <p>Дивитися всіх</p>
+                    <p onClick={() => setModal('relatedFigures', undefined, true)}>Дивитися всіх</p>
                 </div>
             </div>
         </div>

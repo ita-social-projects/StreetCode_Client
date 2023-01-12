@@ -13,6 +13,7 @@ const redirectOnStreetcode = (id: number) => {
 
 const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
     const { id, image, title, tags} = relatedFigure;
+
     const { imagesStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
 
