@@ -41,12 +41,14 @@
         p {
             @include mut.with-font($font-weight: 500, $font-size: 20px);
             line-height: 25px;
-            text-decoration-line: underline;
+            text-decoration-line: none;
             color: c.$dark-red-color;
 
             cursor: pointer;
 
             &:hover {
+                text-decoration-line: underline;
+
                 filter: contrast(150%);
             }
         }

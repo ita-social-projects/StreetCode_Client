@@ -1,7 +1,6 @@
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import useMobx from '@/app/stores/root-store';
 import RelatedFigure from '@/models/streetcode/related-figure.model';
-import { Console } from 'console';
 import './RelatedFigureItem.styles.scss';
 
 interface Props {
@@ -13,6 +12,7 @@ const redirectOnStreetcode = (id: number) => {
 }
 
 const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
+    const { id, image, title, tags} = relatedFigure;
     const { imagesStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
 
@@ -25,14 +25,14 @@ const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
         <div
             className={'relatedFigureSlide'}
             style={{ backgroundImage: `url(${relatedFigure.image?.url.href})` }}
-            onClick={() => {redirectOnStreetcode(relatedFigure.id)}}
+            onClick={() => {redirectOnStreetcode(id)}}
         >
             <div className={'slideText'}>
                 <h3 className={'heading'}>
-                    {relatedFigure.title}
+                    {title}
                 </h3>
                 <div className={'relatedTagList'}>
-                    {relatedFigure.tags.map((tag, idx) => (
+                    {tags.map((tag, idx) => (
                         <div key={idx} className="tag">
                             <p>{tag.title}</p>
                         </div>
