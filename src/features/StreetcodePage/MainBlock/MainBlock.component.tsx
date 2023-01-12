@@ -24,8 +24,8 @@ const MainBlock = () => {
                         <StreetcodeCard streetcode={streetcode} />
                     </div>
                 </div>
-                <ListenTextModal/>
             </div>
+            <ListenTextModal/>
         </div>
     );
 };
