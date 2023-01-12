@@ -12,20 +12,20 @@ const redirectOnStreetcode = (id: number) => {
 }
 
 const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
-    const { id, image, title, tags} = relatedFigure;
+    const { id, imageId, title, tags} = relatedFigure;
 
     const { imagesStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
 
-    // useAsync(
-    //     () => fetchImage(relatedFigure.imageId),
-    //     [relatedFigure.imageId]
-    // );
+    useAsync(
+        () => fetchImage(relatedFigure.imageId),
+        [relatedFigure.imageId]
+    );
 
     return (
         <div
             className={'relatedFigureSlide'}
-            style={{ backgroundImage: `url(${relatedFigure.image?.url.href})` }}
+            style={{ backgroundImage: `url(${getImage(relatedFigure.imageId)?.url.href})` }}
             onClick={() => {redirectOnStreetcode(id)}}
         >
             <div className={'slideText'}>

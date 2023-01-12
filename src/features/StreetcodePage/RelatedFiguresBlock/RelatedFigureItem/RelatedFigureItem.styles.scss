@@ -10,6 +10,7 @@
 
     border: 3px solid c.$pure-white-color;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    background-size: 100%;
     background-repeat: no-repeat;
 
     @include mut.positioned-as();
