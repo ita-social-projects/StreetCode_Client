@@ -9,13 +9,14 @@ interface Props {
     imgSrc: string;
     maxTextLength?: number;
     factId:number;
+    numberOfSlides:number;
 }
 
 const InterestingFactItem = ({
-    imgSrc, mainText, textHeading, maxTextLength = 300, factId,
+    imgSrc, mainText, textHeading, maxTextLength = 300, factId, numberOfSlides
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
-    const isReadMore = mainText.length > maxTextLength;
+    const isReadMore = (mainText.length > maxTextLength) && (numberOfSlides!=1);
 
     if (isReadMore) {
         mainText = `${mainText.substring(0, maxTextLength)}...`;
