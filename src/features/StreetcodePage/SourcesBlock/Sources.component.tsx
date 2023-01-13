@@ -26,10 +26,10 @@ const SourcesComponent = () => {
                 <div className="sourceContentContainer">
                     <div className="sourcesSliderContainer">
                         <SlickSlider
-                            swipeOnClick={false}
+                            infinite={false}
                             swipe={false}
                             dots={false}
-                            slides={getSrcCategoriesArray.map((sc) => (
+                            slides={getSrcCategoriesArray.flatMap((i) => [i, i]).map((sc) => (
                                 <SourceItem
                                     key={sc.id}
                                     srcCategory={sc}

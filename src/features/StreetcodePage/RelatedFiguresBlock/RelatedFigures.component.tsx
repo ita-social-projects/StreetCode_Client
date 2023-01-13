@@ -7,61 +7,69 @@ import Ratushny from '@images/related-figures/Ratushny.png';
 import Ukrainka from '@images/related-figures/Ukrainka.png';
 
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import RelatedFigure from '@models/streetcode/related-figure.model';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
-import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem';
+import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
-interface Props {
-
-}
+import RelatedFigure from '@/models/streetcode/related-figure.model';
 
 const relatedFigures: RelatedFigure[] = [
     {
-        Id: 1,
-        Title: 'Володимир Антонович',
-        Image: { id: 1, url: { id: 1, href: Antonovich } },
-        Tags: [{ id: 1, title: 'Наукова школа' }, { id: 1, title: 'tag' }],
+        id: 1,
+        title: 'Володимир Антонович',
+        image: { id: 1, url: { id: 1, href: Antonovich } },
+        tags: [{ id: 1, title: 'Наукова школа' }, { id: 1, title: 'tag' }],
     },
     {
-        Id: 2,
-        Title: 'Леся Українка',
-        Image: { id: 1, url: { id: 1, href: Ukrainka } },
-        Tags: [{ id: 1, title: 'tag' }],
+        id: 2,
+        title: 'Леся Українка',
+        image: { id: 1, url: { id: 1, href: Ukrainka } },
+        tags: [{ id: 1, title: 'tag' }],
     },
     {
-        Id: 3,
-        Title: 'Іван Мазепа',
-        Image: { id: 1, url: { id: 1, href: Mazepa } },
-        Tags: [{ id: 1, title: 'tag' }],
+        id: 3,
+        title: 'Іван Мазепа',
+        image: { id: 1, url: { id: 1, href: Mazepa } },
+        tags: [{ id: 1, title: 'tag' }],
     },
     {
-        Id: 4,
-        Title: 'Роман Ратушний',
-        Image: { id: 1, url: { id: 1, href: Ratushny } },
-        Tags: [{ id: 1, title: 'tag' }],
+        id: 4,
+        title: 'Роман Ратушний',
+        image: { id: 1, url: { id: 1, href: Ratushny } },
+        tags: [{ id: 1, title: 'tag' }],
     },
     {
-        Id: 5,
-        Title: 'Богдан хмельницький',
-        Image: { id: 1, url: { id: 1, href: Khmelnytsky } },
-        Tags: [{ id: 1, title: 'tag' }],
+        id: 5,
+        title: 'Богдан хмельницький',
+        image: { id: 1, url: { id: 1, href: Khmelnytsky } },
+        tags: [{ id: 1, title: 'tag' }],
     },
 ];
 
-const RelatedFiguresComponent = (props: Props) => {
+const RelatedFiguresComponent = () => {
+    const { modalStore: { setModal } } = useMobx();
+    // const { relatedFiguresStore } = useMobx();
+    // const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
+
+    /* const streetcodeId = useRouteId();
+    useAsync(
+        () => fetchRelatedFiguresByStreetcodeId(streetcodeId),
+        [streetcodeId],
+    );
+     */
+
     const sliderItems = relatedFigures.map((figure) => (
         <RelatedFigureItem
-            key={figure.Id}
-            id={figure.Id}
-            textContent={figure.Title}
-            imgSrc={figure.Image.url.href}
-            tags={figure.Tags}
+            key={figure.id}
+            relatedFigure={figure}
         />
     ));
 
     return (
         <div
-            className={`relatedFiguresWrapper ${relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper'}`}
+            className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії" />
@@ -69,16 +77,18 @@ const RelatedFiguresComponent = (props: Props) => {
                     <div style={{ height: '100%' }}>
                         <SlickSlider
                             className="heightContainer"
+                            infinite={false}
                             slidesToShow={4}
                             slides={sliderItems}
                             swipe={false}
                             dots={false}
-                            swipeOnClick={false}
                         />
                     </div>
                 </div>
                 <div className="moreInfo">
-                    <p>Дивитися всіх</p>
+                    <p onClick={() => setModal('relatedFigures', undefined, true)}>
+                        Дивитися всіх
+                    </p>
                 </div>
             </div>
         </div>

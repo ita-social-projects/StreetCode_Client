@@ -5,9 +5,9 @@ import BreadCrumb from '@streetcode/MainBlock/BreadCrumb/BreadCrumb.component';
 import StreetcodeCard from '@streetcode/MainBlock/StreetcodeCard/StreetcodeCard.component';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
-import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
 
 const MainBlock = () => {
     const id = useRouteId();
@@ -25,7 +25,7 @@ const MainBlock = () => {
                     </div>
                 </div>
             </div>
-            <ListenTextModal/>
+            <ListenTextModal />
         </div>
     );
 };

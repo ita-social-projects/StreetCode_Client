@@ -5,6 +5,7 @@ import FactsStore from '@stores/facts-store';
 import ImageStore from '@stores/image-store';
 import ModalStore from '@stores/modal-store';
 import PartnersStore from '@stores/partners-store';
+import RelatedFiguresStore from '@stores/related-figures-store';
 import SourcesStore from '@stores/sources-store';
 import StreetcodeStore from '@stores/streetcode-store';
 import SubtitlesStore from '@stores/subtitles-store';
@@ -33,6 +34,7 @@ interface Store {
     transactionsStore: TransactionLinksStore,
     streetcodesStore: StreetcodeStore,
     sourcesStore: SourcesStore,
+    relatedFiguresStore: RelatedFiguresStore,
 }
 
 export const store: Store = {
@@ -52,6 +54,7 @@ export const store: Store = {
     transactionsStore: new TransactionLinksStore(),
     streetcodesStore: new StreetcodeStore(),
     sourcesStore: new SourcesStore(),
+    relatedFiguresStore: new RelatedFiguresStore(),
 };
 
 const StoreContext = createContext(store);
