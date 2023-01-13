@@ -1,8 +1,6 @@
 import './SourceItem.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-
-import useMobx from '@stores/root-store';
 import { SourceCategory } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 

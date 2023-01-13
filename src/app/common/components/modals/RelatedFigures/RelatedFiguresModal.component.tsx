@@ -1,16 +1,18 @@
 import './RelatedFiguresModal.styles.scss';
-import CancelBtn from "@assets/images/utils/Cancel_btn.svg";
 
-import { Modal } from "antd";
-import useMobx from "@stores/root-store";
-import { observer } from "mobx-react-lite";
+import { observer } from 'mobx-react-lite';
+import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import useMobx from '@stores/root-store';
+
+import { Modal } from 'antd';
 
 const RelatedFiguresModal = () => {
     const { modalStore } = useMobx();
     const { setModal, modalsState: { relatedFigures } } = modalStore;
 
     return (
-        <Modal className={"relatedFiguresModal"}
+        <Modal
+            className="relatedFiguresModal"
             open={relatedFigures.isOpen}
             onCancel={() => setModal('relatedFigures')}
             footer={null}
@@ -18,10 +20,9 @@ const RelatedFiguresModal = () => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <div className={"relatedFiguresModalContainer"}>
-            </div>
+            <div className="relatedFiguresModalContainer" />
         </Modal>
     );
-}
+};
 
 export default observer(RelatedFiguresModal);

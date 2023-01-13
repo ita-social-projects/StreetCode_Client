@@ -1,11 +1,13 @@
 import './SourcesModal.styles.scss';
-import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import { Modal } from 'antd';
+
+import { observer } from 'mobx-react-lite';
 import sourcesApi from '@api/sources/sources.api';
+import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { SourceSubCategory } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
-import { observer } from 'mobx-react-lite';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
+
+import { Modal } from 'antd';
 
 const SourcesModal = () => {
     const { sourcesStore: { srcCategoriesMap }, modalStore } = useMobx();
@@ -17,13 +19,13 @@ const SourcesModal = () => {
 
     const { value } = useAsync(
         () => getSubCategoriesByCategoryId(categoryId),
-        [categoryId]
+        [categoryId],
     );
     const subCategories = value as SourceSubCategory[];
 
     return (
         <Modal
-            className={'sourcesModal'}
+            className="sourcesModal"
             open={sources.isOpen}
             maskClosable
             centered
@@ -31,21 +33,24 @@ const SourcesModal = () => {
             onCancel={() => setModal('sources')}
             closeIcon={<CancelBtn />}
         >
-            <div className={'sourceImgContainer'} style={{
-                backgroundImage: `url(${category?.image?.url.href})`,
-                backgroundSize: '100% 15.25rem',
-            }}>
+            <div
+                className="sourceImgContainer"
+                style={{
+                    backgroundImage: `url(${category?.image?.url.href})`,
+                    backgroundSize: '100% 15.25rem',
+                }}
+            >
                 <h1>{category?.title}</h1>
             </div>
-            <div className={'mainContentContainer'}>
+            <div className="mainContentContainer">
                 {subCategories?.map(({ sourceLinks, title }) => (
                     <>
                         <h1 className={(subCategories?.length === 1) ? 'highlightedHeader' : undefined}>
                             {title}
                         </h1>
-                        <div className={'sectionLinksContainer'}>
+                        <div className="sectionLinksContainer">
                             {sourceLinks.map(({ id, url }) => (
-                                <a key={id} href={url?.href} target='_blank' rel='noreferrer'>
+                                <a key={id} href={url?.href} target="_blank" rel="noreferrer">
                                     {url?.title}
                                 </a>
                             ))}
@@ -55,6 +60,6 @@ const SourcesModal = () => {
             </div>
         </Modal>
     );
-}
+};
 
 export default observer(SourcesModal);

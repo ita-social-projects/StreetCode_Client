@@ -19,9 +19,7 @@ export default class ImageStore {
 
     public getImageArray = () => Array.from(this.ImageMap.values());
 
-    public getImage = (id: number) => {
-        return this.ImageMap.get(id);
-    }
+    public getImage = (id: number) => this.ImageMap.get(id);
 
     public fetchImage = async (id: number) => {
         try {
