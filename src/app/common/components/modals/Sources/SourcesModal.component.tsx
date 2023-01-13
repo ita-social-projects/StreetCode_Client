@@ -1,10 +1,8 @@
 import './SourcesModal.styles.scss';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { Modal } from 'antd';
-
 import sourcesApi from '@api/sources/sources.api';
 import { SourceSubCategory } from '@models/sources/sources.model';
-
 import useMobx from '@stores/root-store';
 import { observer } from 'mobx-react-lite';
 import { useAsync } from '@hooks/stateful/useAsync.hook';

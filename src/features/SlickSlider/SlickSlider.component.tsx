@@ -32,8 +32,12 @@ const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, 
     }, [slides]);
 
     return (
-        <div className="sliderClass">
-            <Slider {...sliderProps} ref={sliderRef}>
+        <div className={`sliderClass`}>
+            <Slider
+                {...sliderProps}
+                ref={sliderRef}
+                className={!sliderProps.infinite ? 'nonInfiniteSlider' : undefined}
+            >
                 {slides.map((slide, idx) => (
                     <div key={idx} onClick={swipeOnClick ? () => handleClick(idx) : undefined}>
                         {slide}

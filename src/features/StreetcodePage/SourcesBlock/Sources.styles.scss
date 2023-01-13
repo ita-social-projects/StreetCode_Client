@@ -23,26 +23,18 @@
     }
 
     .sourcesSliderContainer {
-        @include mut.sized(1230px, 300px);
+        @include mut.sized(1200px, 300px);
     }
 
     .sliderClass {
-        .slick-list {
-            padding-left: pxToRem(10px);
-        }
-
         .slick-slide {
-            @include vnd.vendored(transition, "all .5s ease");
+            @include vnd.vendored(transition, 'all .5s ease');
 
             &:hover {
                 scale: 101%;
-                filter: contrast(120%);
+                filter: contrast(135%);
                 cursor: pointer;
             }
-        }
-
-        .slick-next:before {
-            right: pxToRem(-50px);
         }
     }
 }

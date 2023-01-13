@@ -20,6 +20,11 @@ $copyright-section-color: #C4C4C4 !important;
 $selected-arrow-color: #C4C4C4 !important;
 $base-arrow-color: #F2F2F2 !important;
 
+$base-arrow-filter-color: invert(97%) sepia(66%) saturate(423%)
+  hue-rotate(212deg) brightness(113%) contrast(90%) !important;
+$selected-arrow-filter-color: invert(87%) sepia(0%) saturate(479%)
+  hue-rotate(143deg) brightness(95%) contrast(81%) !important;
+
 $card-scrollbar-track-color: #DEDCDC !important;
 $scrollbar-thumb-color: #891C1B !important;
 $scrollbar-track-color: #C9C5C2 !important;
