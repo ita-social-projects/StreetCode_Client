@@ -23,10 +23,14 @@
     }
 
     .sourcesSliderContainer {
-        @include mut.sized(1200px, 300px);
+        @include mut.sized(1230px, 300px);
     }
 
     .sliderClass {
+        .slick-track {
+            @include mut.flex-centered($gap: 30px);
+        }
+
         .slick-slide {
             @include vnd.vendored(transition, 'all .5s ease');
 

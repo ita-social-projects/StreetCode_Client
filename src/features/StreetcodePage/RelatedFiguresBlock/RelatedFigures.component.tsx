@@ -14,47 +14,41 @@ import useMobx from '@/app/stores/root-store';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import RelatedFigure from '@/models/streetcode/related-figure.model';
-import { $mobx } from 'mobx';
-import { Console } from 'console';
 
-interface Props {
+ const relatedFigures: RelatedFigure[] = [
+     {
+         id: 1,
+         title: 'Володимир Антонович',
+         image: { id: 1, url: { id: 1, href: Antonovich } },
+         tags: [{ id: 1, title: 'Наукова школа' }, { id: 1, title: 'tag' }]
+     },
+     {
+         id: 2,
+         title: 'Леся Українка',
+        image: { id: 1, url: { id: 1, href: Ukrainka } },
+         tags: [{ id: 1, title: 'tag' }]
+     },
+     {
+         id: 3,
+         title: 'Іван Мазепа',
+         image: { id: 1, url: { id: 1, href: Mazepa } },
+         tags: [{ id: 1, title: 'tag' }]
+     },
+     {
+         id: 4,
+         title: 'Роман Ратушний',
+         image: { id: 1, url: { id: 1, href: Ratushny } },
+         tags: [{ id: 1, title: 'tag' }]
+     },
+     {
+         id: 5,
+         title: 'Богдан хмельницький',
+         image: { id: 1, url: { id: 1, href: Khmelnytsky } },
+         tags: [{ id: 1, title: 'tag' }]
+     }
+ ];
 
-}
-
-// const relatedFigures: RelatedFigure[] = [
-//     {
-//         id: 1,
-//         title: 'Володимир Антонович',
-//         image: { id: 1, url: { id: 1, href: Antonovich } },
-//         tags: [{ id: 1, title: 'Наукова школа' }, { id: 1, title: 'tag' }]
-//     },
-//     {
-//         id: 2,
-//         title: 'Леся Українка',
-//         image: { id: 1, url: { id: 1, href: Ukrainka } },
-//         tags: [{ id: 1, title: 'tag' }]
-//     },
-//     {
-//         id: 3,
-//         title: 'Іван Мазепа',
-//         image: { id: 1, url: { id: 1, href: Mazepa } },
-//         tags: [{ id: 1, title: 'tag' }]
-//     },
-//     {
-//         id: 4,
-//         title: 'Роман Ратушний',
-//         image: { id: 1, url: { id: 1, href: Ratushny } },
-//         tags: [{ id: 1, title: 'tag' }]
-//     },
-//     {
-//         id: 5,
-//         title: 'Богдан хмельницький',
-//         image: { id: 1, url: { id: 1, href: Khmelnytsky } },
-//         tags: [{ id: 1, title: 'tag' }]
-//     }
-// ];
-
-const RelatedFiguresComponent = (props: Props) => {
+const RelatedFiguresComponent = () => {
     const { modalStore: { setModal } } = useMobx();
     const { relatedFiguresStore } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
@@ -65,7 +59,7 @@ const RelatedFiguresComponent = (props: Props) => {
         [streetcodeId]
     );
 
-    const sliderItems = getRelatedFiguresArray.map(figure => {
+    const sliderItems = relatedFigures.map(figure => {
         return (
             <RelatedFigureItem
                 key={figure.id}
@@ -75,9 +69,9 @@ const RelatedFiguresComponent = (props: Props) => {
 
     return (
         <div
-            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}>
+            className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}>
             <div className="relatedFiguresContainer">
-                <BlockHeading headingText="Зв'язки історії"/>
+                <BlockHeading headingText="Зв'язки історії" />
                 <div className={'relatedFiguresSliderContainer'}>
                     <div style={{ height: '100%' }}>
                         <SlickSlider
@@ -87,12 +81,13 @@ const RelatedFiguresComponent = (props: Props) => {
                             slides={sliderItems}
                             swipe={false}
                             dots={false}
-                            swipeOnClick={false}
                         />
                     </div>
                 </div>
                 <div className="moreInfo">
-                    <p onClick={() => setModal('relatedFigures', undefined, true)}>Дивитися всіх</p>
+                    <p onClick={() => setModal('relatedFigures', undefined, true)}>
+                        Дивитися всіх
+                    </p>
                 </div>
             </div>
         </div>

@@ -4,6 +4,6 @@ import Image from "../media/image.model"
 export default interface RelatedFigure {
     id: number;
     title: string;
-    imageId: number;
+    image: Image;
     tags: Tag[];
 }
