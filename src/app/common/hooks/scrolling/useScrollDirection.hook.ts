@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const useScrollDirection = (minDelta: number = 10) => {
+const useScrollDirection = (minDelta = 10) => {
     const [scrollDirection, setScrollDirection] = useState<string | undefined>();
 
     useEffect(() => {
@@ -10,8 +10,8 @@ const useScrollDirection = (minDelta: number = 10) => {
             const curScrollPosition = window.scrollY;
             const direction = curScrollPosition > latestScrollPosition ? 'down' : 'up';
 
-            if (direction !== scrollDirection &&
-                (curScrollPosition - latestScrollPosition > minDelta
+            if (direction !== scrollDirection
+                && (curScrollPosition - latestScrollPosition > minDelta
                     || curScrollPosition - latestScrollPosition < -minDelta)) {
                 setScrollDirection(direction);
             }
@@ -22,7 +22,7 @@ const useScrollDirection = (minDelta: number = 10) => {
 
         return () => {
             window.removeEventListener('scroll', updateScrollDirection);
-        }
+        };
     }, [scrollDirection, minDelta]);
 
     return scrollDirection;

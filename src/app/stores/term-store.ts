@@ -1,6 +1,6 @@
-import {Term} from "@models/streetcode/text-contents.model";
-import { makeAutoObservable, runInAction } from "mobx";
-import termsApi from "@api/streetcode/text-content/terms.api";
+import { makeAutoObservable, runInAction } from 'mobx';
+import termsApi from '@api/streetcode/text-content/terms.api';
+import { Term } from '@models/streetcode/text-contents.model';
 
 export default class TermStore {
     public TermMap = new Map<number, Term>();
@@ -11,45 +11,40 @@ export default class TermStore {
 
     private setInternalMap = (terms: Term[]) => {
         terms.forEach(this.setItem);
-    }
+    };
 
     private setItem = (term: Term) => {
         this.TermMap.set(term.id, term);
-    }
+    };
 
-    public getTermArray = () => {
-        return Array.from(this.TermMap.values());
-    }
+    public getTermArray = () => Array.from(this.TermMap.values());
 
     public fetchTerm = async (id: number) => {
         try {
             const term = await termsApi.getById(id);
             this.setItem(term);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public fetchTerms = async () => {
         try {
             const terms = await termsApi.getAll();
             this.setInternalMap(terms);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public createTerm = async (term: Term) => {
         try {
             await termsApi.create(term);
             this.setItem(term);
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public updateTerm = async (term: Term) => {
         try {
@@ -57,15 +52,14 @@ export default class TermStore {
             runInAction(() => {
                 const updatedTerm = {
                     ...this.TermMap.get(term.id),
-                    ...term
+                    ...term,
                 };
                 this.setItem(updatedTerm as Term);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 
     public deleteTerm = async (termId: number) => {
         try {
@@ -73,9 +67,8 @@ export default class TermStore {
             runInAction(() => {
                 this.TermMap.delete(termId);
             });
-        }
-        catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
         }
-    }
+    };
 }

@@ -1,0 +1,82 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use "@assets/sass/_utils.functions.scss" as *;
+
+$thumb: #D9D9D9;
+$seek-before-color: #DB3424;
+
+.audioPlayer {
+  @include mut.sized(1200px, 30px);
+  @include mut.flex-centered();
+}
+
+.buttonContainer {
+  @include mut.sized(30px, 30px);
+  @include mut.flex-centered();
+  margin-right: pxToRem(25px);
+}
+
+.play {
+  cursor: pointer;
+}
+
+.progressBar {
+  --seek-before-width: 0;
+
+  @include mut.flex-centered();
+  appearance: none;
+  position: relative;
+  @include mut.sized(1081px, 3px);
+}
+.progressBar::-webkit-slider-runnable-track {
+  background: rgba($color: #DFDFDF, $alpha: .43);
+  @include mut.sized(100%, 3px);
+}
+
+/* progress bar - firefox */
+.progressBar::-moz-range-track {
+  background: rgba($color: #DFDFDF, $alpha: .43);
+  position: relative;
+  @include mut.sized(100%, 3px);
+}
+
+/* progress bar - chrome and safari */
+.progressBar::before {
+  content: '';
+  height: pxToRem(3px);
+  width: var(--seek-before-width);
+  background-color: $seek-before-color;
+  @include mut.positioned-as($position: absolute, $top: 0, $left: 0);
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* progress bar - firefox */
+.progressBar::-moz-range-progress {
+  background-color: $seek-before-color;
+  height: pxToRem(3px);
+}
+
+/* knobby - chrome and safari */
+.progressBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  @include mut.sized(13px, 13px);
+  border-radius: 50%;
+  border: none;
+  background-color: $thumb;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+  margin-top: pxToRem(-5px);
+}
+
+/* knobby - firefox */
+.progressBar::-moz-range-thumb {
+  @include mut.sized(13px, 13px);
+  border-radius: 50%;
+  background-color: $thumb;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+}
+

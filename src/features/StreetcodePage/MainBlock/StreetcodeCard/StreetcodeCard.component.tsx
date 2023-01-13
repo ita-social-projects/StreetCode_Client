@@ -6,7 +6,7 @@ import { PlayCircleFilled } from '@ant-design/icons';
 import Hrushevskyi from '@images/streetcode-card/Hrushevskyi.png';
 import useMobx from '@/app/stores/root-store';
 import Tag from '@/models/additional-content/tag.model';
-import { dateFormatter } from '@/app/common/utils/formatters.utils';
+import  fullMonthNumericYearDateFmtr from '@/app/common/utils/formatters.utils';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 
@@ -16,11 +16,11 @@ interface Props {
     streetcode?: Streetcode;
 }
 
-export const formatDate = (date?: Date): string => {
-    return dateFormatter.format(date).replace('р.', 'року')
+const formatDate = (date?: Date): string => {
+    return fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року')
 }
 
-export const concatDates = (firstDate?: Date, secondDate?: Date): string => {
+const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     let dates: string = '';
     
     if (firstDate) {
@@ -34,7 +34,11 @@ export const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 }
 
-const StreetcodeCard = ({ streetcode }: Props) => (
+const StreetcodeCard = ({ streetcode }: Props) => {
+    const { modalStore } = useMobx();
+    const { setModal } = modalStore;
+
+    return(
         <div className={'card'}>
             <div className={'leftSider'}>
                 <div className={'leftSiderContentContainer'}>
@@ -66,7 +70,7 @@ const StreetcodeCard = ({ streetcode }: Props) => (
                             {streetcode?.teaser}
                         </p>
                         <div className={'cardFooter'}>
-                            <Button type="primary" className={'audioBtn'}>
+                            <Button type="primary" className={'audioBtn'} onClick={()=>setModal('audio')}>
                                 <PlayCircleFilled className={'playCircle'}/>
                                 <span>Прослухати текст</span>
                             </Button>
@@ -77,5 +81,5 @@ const StreetcodeCard = ({ streetcode }: Props) => (
             </div>
         </div>
     );
-
+}
 export default StreetcodeCard;

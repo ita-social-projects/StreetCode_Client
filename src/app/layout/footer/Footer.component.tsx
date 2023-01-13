@@ -1,8 +1,8 @@
 import './Footer.styles.scss';
 
-import StreetcodeFooter from '@images/footer/streetcode-footer.png';
 import FaceBook from '@images/footer/Facebook.png';
 import Instagram from '@images/footer/Instagram.png';
+import StreetcodeFooter from '@images/footer/streetcode-footer.png';
 import TikTok from '@images/footer/TikTok.png';
 import Twitter from '@images/footer/Twitter.png';
 
@@ -14,7 +14,7 @@ const Footer = (props: Props) => (
     <>
         <div className="footerContainer">
             <div className="footerLogoContainer">
-                <img src={StreetcodeFooter} alt=""/>
+                <img src={StreetcodeFooter} alt="" />
             </div>
             <div className="usefulLinksColumnContainer">
                 <ul className="usefulLinksColumn">
@@ -32,28 +32,28 @@ const Footer = (props: Props) => (
                 </ul>
                 <ul className="usefulLinksColumn supportLinks">
                     <li>Політика конфіденційності</li>
-                    <li>Зворотній з'язок</li>
+                    <li>Зворотній зв'язок</li>
                     <li>Cookies</li>
                 </ul>
                 <ul className="socialIconContainer">
                     <li>
                         <a href="https://www.facebook.com/streetcodeua" target="_blank" rel="noreferrer">
-                            <img src={FaceBook} alt=""/>
+                            <img src={FaceBook} alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="https://www.instagram.com/streetcodeua" target="_blank" rel="noreferrer">
-                            <img src={Instagram} alt=""/>
+                            <img src={Instagram} alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
-                            <img src={TikTok} alt=""/>
+                            <img src={TikTok} alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="https://twitter.com/streetcodeua" target="_blank" rel="noreferrer">
-                            <img src={Twitter} alt=""/>
+                            <img src={Twitter} alt="" />
                         </a>
                     </li>
                 </ul>
@@ -68,6 +68,6 @@ const Footer = (props: Props) => (
             </div>
         </section>
     </>
-)
+);
 
 export default Footer;

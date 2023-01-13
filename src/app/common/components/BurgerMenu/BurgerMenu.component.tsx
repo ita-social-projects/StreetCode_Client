@@ -5,10 +5,10 @@ interface Props {
 }
 
 const BurgerMenu = ({ onClick }: Props) => (
-    <div className={"burgerMenuContainer"} onClick={onClick}>
-        <span className={"burgerMenuItem"} />
-        <span className={"burgerMenuItem"} />
-        <span className={"burgerMenuItem"} />
+    <div className="burgerMenuContainer" onClick={onClick}>
+        <span className="burgerMenuItem" />
+        <span className="burgerMenuItem" />
+        <span className="burgerMenuItem" />
     </div>
 );
 

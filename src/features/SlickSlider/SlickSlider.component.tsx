@@ -1,6 +1,6 @@
 import "./SlickSlider.styles.scss";
 
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';
 
 interface Props extends SliderProps {
@@ -21,7 +21,7 @@ const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, 
         if (onClick) {
             onClick(index);
         }
-    }, [onClick]);
+    };
 
     // Code that removes all "slick-cloned" elements if there is only 1 slide
     useEffect(() => {
@@ -32,7 +32,7 @@ const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, 
     }, [slides]);
 
     return (
-        <div className={`sliderClass`}>
+        <div className="sliderClass">
             <Slider
                 {...sliderProps}
                 ref={sliderRef}

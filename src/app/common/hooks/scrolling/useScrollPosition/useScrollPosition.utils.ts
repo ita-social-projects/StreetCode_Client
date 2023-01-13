@@ -1,7 +1,7 @@
 import { ScrollOptions } from './useScrollPosition';
 
 const zeroPosition = { x: 0, y: 0 };
-export const isBrowser = typeof window !== `undefined`;
+export const isBrowser = typeof window !== 'undefined';
 
 export const getClientRect = (element?: HTMLElement) => element?.getBoundingClientRect();
 
@@ -27,6 +27,6 @@ const getScrollPosition = ({ element, useWindow, boundingElement }: ScrollOption
             y: (containerPosition.y || 0) - (targetPosition.y || 0),
         }
         : { x: targetPosition.left, y: targetPosition.top };
-}
+};
 
 export default getScrollPosition;

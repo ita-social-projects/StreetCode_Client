@@ -35,7 +35,7 @@ export const API_ROUTES = {
     TEXTS: {
         GET_ALL: 'text/getAll',
         CREATE: 'text/create',
-        GET_BY_STREETCODE_ID:'text/getByStreetcodeId',
+        GET_BY_STREETCODE_ID: 'text/getByStreetcodeId',
         GET: 'text/getById',
         UPDATE: 'text/update',
         DELETE: 'text/delete',
@@ -80,7 +80,7 @@ export const API_ROUTES = {
     },
     VIDEOS: {
         GET_ALL: 'video/getAll',
-        GET_BY_STREETCODE_ID:'video/getByStreetcodeId',
+        GET_BY_STREETCODE_ID: 'video/getByStreetcodeId',
         GET: 'video/getById',
         CREATE: 'video/create',
         UPDATE: 'video/update',
@@ -128,4 +128,4 @@ export const API_ROUTES = {
         UPDATE: 'subtitle/update',
         DELETE: 'subtitle/delete',
     },
-}
+};

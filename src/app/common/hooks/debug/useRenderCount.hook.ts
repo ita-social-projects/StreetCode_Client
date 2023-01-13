@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 const useRenderCount = () => {
     const isMounted = useRef(true);
@@ -8,11 +8,11 @@ const useRenderCount = () => {
         if (isMounted.current) {
             isMounted.current = false;
         } else {
-            renderCount.current++;
+            renderCount.current += 1;
         }
     }, []);
 
     return renderCount.current;
-}
+};
 
 export default useRenderCount;

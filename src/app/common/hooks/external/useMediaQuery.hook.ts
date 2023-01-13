@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 /*
 Ex.
@@ -14,14 +14,14 @@ Ex.
 */
 type MediaDirection = 'min-width' | 'max-width';
 
-const useMediaQuery = (value: number | string, direction: MediaDirection = 'min-width', unit: string = 'px') => {
+const useMediaQuery = (value: number | string, direction: MediaDirection = 'min-width', unit = 'px') => {
     const [matches, setMatches] = useState(false);
 
     useEffect(() => {
         if (typeof value === 'string') {
-            parseInt((value.endsWith(unit)) ? value.replace(unit, '') : value);
+            parseInt((value.endsWith(unit)) ? value.replace(unit, '') : value, 10);
         }
-        
+
         const mediaList = window.matchMedia(`(${direction}: ${value})`);
 
         if (mediaList.matches !== matches) {
@@ -35,6 +35,6 @@ const useMediaQuery = (value: number | string, direction: MediaDirection = 'min-
     }, [matches, direction, unit, value]);
 
     return matches;
-}
+};
 
 export default useMediaQuery;

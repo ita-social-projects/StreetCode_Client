@@ -1,6 +1,6 @@
-import Url from "@models/additional-content/url.model";
-import Image from "@models/media/image.model";
-import Streetcode from "@models/streetcode/streetcode-types.model";
+import Url from '@models/additional-content/url.model';
+import Image from '@models/media/image.model';
+import Streetcode from '@models/streetcode/streetcode-types.model';
 
 export default interface Partner {
     id: number;
