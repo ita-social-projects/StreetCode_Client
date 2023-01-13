@@ -58,8 +58,22 @@
 .relatedFiguresSliderContainer {
     @include mut.sized($width: 1200px);
 
-    .slick-arrow {
+    .slick-arrow{
         top: 213px;
+
+        filter: invert(79%) sepia(98%) saturate(1%) hue-rotate(356deg) brightness(101%) contrast(100%) !important;
+
+        &:hover:before {
+            filter: none !important;
+        }
+    }
+
+    .slick-disabled {
+        filter: none !important;
+        
+        &:before{
+            pointer-events: none !important;
+        }
     }
 
     .slick-list {

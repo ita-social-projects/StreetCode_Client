@@ -14,6 +14,8 @@ import useMobx from '@/app/stores/root-store';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import RelatedFigure from '@/models/streetcode/related-figure.model';
+import { $mobx } from 'mobx';
+import { Console } from 'console';
 
 interface Props {
 
@@ -73,13 +75,14 @@ const RelatedFiguresComponent = (props: Props) => {
 
     return (
         <div
-            className={'relatedFiguresWrapper ' + (getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}>
+            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}>
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії"/>
                 <div className={'relatedFiguresSliderContainer'}>
                     <div style={{ height: '100%' }}>
                         <SlickSlider
                             className={'heightContainer'}
+                            infinite={false}
                             slidesToShow={4}
                             slides={sliderItems}
                             swipe={false}
