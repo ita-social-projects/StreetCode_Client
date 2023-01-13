@@ -21,6 +21,10 @@ export default class ImageStore {
         return Array.from(this.ImageMap.values());
     }
 
+    public getImage = (id: number) => {
+        return this.ImageMap.get(id);
+    }
+
     public fetchImage = async (id: number) => {
         try {
             const image = await imagesApi.getById(id);

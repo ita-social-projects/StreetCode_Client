@@ -10,6 +10,8 @@
 
     border: 3px solid c.$pure-white-color;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    background-size: 100%;
+    background-repeat: no-repeat;
 
     @include mut.positioned-as();
     @include mut.flexed($justify-content: center);
@@ -25,6 +27,9 @@
         align-content: flex-start;
 
         background-color: c.$dark-red-color;
+        transition-property: height, border-radius; 
+        transition-duration: .5s;
+        transition-timing-function: ease;
 
         .heading {
             @include mut.sized($width: 100%, $height: 64px);
@@ -34,6 +39,8 @@
             @include mut.with-font($font-family: "Closer Text", $font-size: 24px, $font-weight: 500);
             line-height: pxToRem(32px);
             color: c.$pure-white-color;
+
+            @include vnd.vendored(transition, 'padding .5s ease');
         }
     }
 }
@@ -72,7 +79,6 @@
         @include mut.flexed($align-items: flex-start, $wrap: wrap);
 
         @include mut.rounded($bottom-right: 28px, $bottom-left: 28px);
-
 
         .heading {
             @include mut.rem-padded($top: 6px, $left: 32px, $right: 15px);

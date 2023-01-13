@@ -6,7 +6,7 @@
 .relatedFiguresWrapper {
     @include wr.main-page-block-wrapper();
 
-    @include mut.rem-margined($bottom: 80px, $top: 110px);
+    @include mut.rem-margined($bottom: 80px, $top: 170px);
 }
 
 .bigWrapper {
@@ -40,13 +40,15 @@
 
         p {
             @include mut.with-font($font-weight: 500, $font-size: 20px);
-            line-height: pxToRem(23px);
-            text-decoration-line: underline;
+            line-height: 25px;
+            text-decoration-line: none;
             color: c.$dark-red-color;
 
             cursor: pointer;
 
             &:hover {
+                text-decoration-line: underline;
+
                 filter: contrast(150%);
             }
         }
@@ -56,8 +58,30 @@
 .relatedFiguresSliderContainer {
     @include mut.sized($width: 1200px);
 
+    .slick-arrow{
+        top: 213px;
+
+        filter: invert(79%) sepia(98%) saturate(1%) hue-rotate(356deg) brightness(101%) contrast(100%) !important;
+
+        &:hover:before {
+            filter: none !important;
+        }
+    }
+
+    .slick-disabled {
+        filter: none !important;
+        
+        &:before{
+            pointer-events: none !important;
+        }
+    }
+
     .slick-list {
         @include mut.sized($height: 458px);
         @include mut.rem-padded($left: 5px);
+    }
+
+    .slick-track {
+        @include mut.flex-centered($gap: 28px);
     }
 }
