@@ -19,6 +19,7 @@ const InterestingFactsComponent = () => {
 
     let sliderItems = [...getFactArray.map((title) => (
         <InterestingFactItem
+            numberOfSlides={getFactArray.length}
             textHeading={title.title}
             mainText={title.factContent}
             imgSrc={WowFactImg}
@@ -45,6 +46,7 @@ const InterestingFactsComponent = () => {
                             ? (
                                 <div className="singleSlideContainer">
                                     <InterestingFactItem
+                                        numberOfSlides={1}
                                         factId={sliderItems[0].props.factId}
                                         imgSrc={sliderItems[0].props.imgSrc}
                                         mainText={sliderItems[0].props.mainText}

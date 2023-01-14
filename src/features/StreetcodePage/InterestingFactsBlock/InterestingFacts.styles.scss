@@ -41,5 +41,31 @@
 .singleSlideContainer{
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
-    padding-top:10%;
+    padding-top:5%;
+
+    .interestingFactSlide{
+        @include  mut.sized(650px, 600px);
+
+        .slideImage {
+            @include mut.sized($height: 60%);
+
+            img {
+                @include mut.sized($width: 100%);
+            }
+        }
+
+        .slideText{
+            @include mut.sized($height: 40%);
+
+            .heading{
+                font-size:26px;
+            }
+
+            .mainText{
+                font-size:15px;
+                line-height: pxToRem(20px);
+            }
+        }
+    }
 }
+
