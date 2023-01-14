@@ -1,5 +1,6 @@
 import './Streetcode.styles.scss';
 
+import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import Footer from '@layout/footer/Footer.component';
 import HeaderBlock from '@layout/header/HeaderBlock.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
@@ -13,6 +14,7 @@ import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
+        <ScrollToTopBtn />
         <HeaderBlock />
         <MainBlock />
         <TextComponent />
