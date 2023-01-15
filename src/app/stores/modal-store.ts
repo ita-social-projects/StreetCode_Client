@@ -15,6 +15,7 @@ interface ModalList {
     sources: ModalState;
     facts: ModalState;
     audio: ModalState;
+    donates: ModalState;
 }
 
 export default class ModalStore {
@@ -23,6 +24,7 @@ export default class ModalStore {
         sources: DefaultModalState,
         facts: DefaultModalState,
         audio: DefaultModalState,
+        donates: DefaultModalState,
     };
 
     public constructor() {
@@ -34,5 +36,6 @@ export default class ModalStore {
             isOpen: opened ?? !this.modalsState[modalName].isOpen,
             fromCardId: fromId,
         };
+        console.log(this.modalsState[modalName].isOpen);
     };
 }

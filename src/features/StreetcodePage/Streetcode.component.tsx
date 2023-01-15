@@ -2,6 +2,7 @@ import './Streetcode.styles.scss';
 
 import Footer from '@layout/footer/Footer.component';
 import HeaderBlock from '@layout/header/HeaderBlock.component';
+import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
@@ -13,6 +14,7 @@ import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
+        <DonateBtn />
         <HeaderBlock />
         <MainBlock />
         <TextComponent />

@@ -28,6 +28,7 @@ module.exports = {
         'no-console': 'off',
         'import/no-cycle': 'off',
         'react/jsx-indent': 'off',
+        'no-nested-ternary': 'off',
         '@typescript-eslint/indent': 'off',
         'consistent-return': 'off',
         'react/react-in-jsx-scope': 'off',
