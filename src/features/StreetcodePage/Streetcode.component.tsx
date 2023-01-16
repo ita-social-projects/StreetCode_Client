@@ -10,6 +10,7 @@ import RelatedFiguresComponent from '@streetcode/RelatedFiguresBlock/RelatedFigu
 import SourcesComponent from '@streetcode/SourcesBlock/Sources.component';
 import TextComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
+import ArtGallery from './ArtGallery/ArtGallery.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
@@ -17,6 +18,7 @@ const StreetcodeContent = () => (
         <MainBlock />
         <TextComponent />
         <InterestingFactsComponent />
+        <ArtGallery />
         <RelatedFiguresComponent />
         <SourcesComponent />
         <QRComponent />

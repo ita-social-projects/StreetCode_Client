@@ -1,0 +1,45 @@
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.artGalleryWrapper {
+    @include wr.main-page-block-wrapper();
+
+    .artGalleryContainer {
+        @include mut.rem-margined($top: 150px);
+        @include mut.sized(100%, 400px);
+        margin-bottom: pxToRem(190px);
+
+        .artGalleryContentContainer {
+            height: pxToRem(320px);
+            @include mut.flex-centered();
+            margin-top: pxToRem(24px);
+        }
+
+        > .blockHeadingWrapper {
+            margin-top: pxToRem(30px);
+        }
+    }
+
+    .artGallerySliderContainer {
+        @include mut.sized(1230px, 300px);
+    }
+
+    .sliderClass {
+        .slick-track {
+            @include mut.flex-centered($gap: 30px);
+        }
+
+        .slick-slide {
+            @include vnd.vendored(transition, 'all .5s ease');
+
+            &:hover {
+                scale: 101%;
+                filter: contrast(135%);
+                cursor: pointer;
+            }
+        }
+    }
+}
