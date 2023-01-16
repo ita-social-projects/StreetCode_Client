@@ -1,9 +1,12 @@
 import { useEffect, useRef } from 'react';
 
+type BindingElement = Element | typeof window;
+type EventType = keyof ElementEventMap | keyof WindowEventMap;
+
 const useEventListener = (
-    eventType: string,
+    eventType: EventType,
     cb: (event: Event) => void,
-    element: Element | typeof window = window,
+    element: BindingElement = window,
 ) => {
     const cbRef = useRef(cb);
 
