@@ -11,21 +11,28 @@ import RelatedFiguresComponent from '@streetcode/RelatedFiguresBlock/RelatedFigu
 import SourcesComponent from '@streetcode/SourcesBlock/Sources.component';
 import TextComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
+import StreetcodePageWrapper, {Block} from './StreetcodePageWrapper.component';
+import { useState } from 'react';
 
-const StreetcodeContent = () => (
-    <div className="streetcodeContainer">
-        <HeaderBlock />
-        <ProgressBar />
-        <MainBlock />
-        <TextComponent />
-        <InterestingFactsComponent />
-        <RelatedFiguresComponent />
-        <SourcesComponent />
-        <QRComponent />
-        <PartnersComponent />
-        <TickerComponent />
-        <Footer />
-    </div>
-);
+const StreetcodeContent = () => {
+    const [blocks, setBlocks] = useState<Block[]>([])
+    return (
+        <div className="streetcodeContainer">
+            <HeaderBlock />
+            <ProgressBar blocks={blocks}/>
+            <MainBlock />
+            <StreetcodePageWrapper setBlocks={setBlocks}>
+                <TextComponent />
+                <InterestingFactsComponent />
+                <RelatedFiguresComponent />
+                <SourcesComponent />
+            </StreetcodePageWrapper>
+            <QRComponent />
+            <PartnersComponent />
+            <TickerComponent />
+            <Footer />
+        </div>
+    )
+}
 
 export default StreetcodeContent;

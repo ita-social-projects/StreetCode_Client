@@ -14,6 +14,7 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 import RelatedFigure from '@/models/streetcode/related-figure.model';
+import { forwardRef } from 'react';
 
 const relatedFigures: RelatedFigure[] = [
     {
@@ -48,7 +49,7 @@ const relatedFigures: RelatedFigure[] = [
     },
 ];
 
-const RelatedFiguresComponent = () => {
+const RelatedFiguresComponent = forwardRef(( _, ref: any ) => {
     const { modalStore: { setModal } } = useMobx();
     // const { relatedFiguresStore } = useMobx();
     // const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
@@ -69,6 +70,8 @@ const RelatedFiguresComponent = () => {
 
     return (
         <div
+            id='relatedFigures'
+            ref={ref}
             className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
@@ -93,6 +96,6 @@ const RelatedFiguresComponent = () => {
             </div>
         </div>
     );
-};
+});
 
 export default RelatedFiguresComponent;

@@ -32,10 +32,11 @@
 
   .progressBarPopupContainer {
     position: absolute;
-    @include mut.sized(93px, 425px);
+    @include mut.sized(93px);
 
     @include mut.flex-centered();
     @include mut.full-rounded(20px, $overflow: visible);
+    @include mut.rem-padded($top:30px, $bottom:30px);
 
     background-color: c.$pure-white-color;
     box-shadow: 0 2px 15px 0 #B0B0B040;
@@ -49,7 +50,6 @@
 
   .progressBarPopupContent {
     @include mut.flex-centered($direction: column, $gap: 31px);
-    margin-bottom: f.pxToRem(30px);
 
     .progressBarDashedFill {
       height: 68%;
@@ -66,7 +66,7 @@
       border: 2px solid c.$lighter-gray-color;
       @include vnd.vendored(transform, 'rotate(45deg)');
 
-      &:first-child {
+      &.active {
         @include mut.sized(32px, 32px);
         border-width: 3px !important;
       }
@@ -76,7 +76,9 @@
         scale: 1.2;
       }
 
-      span {
+      a {
+        @include mut.flex-centered();
+        @include mut.parent-sized();
         @include mut.with-font($font-weight: 300, $font-size: 14px);
         @include vnd.vendored(transform, 'rotate(-45deg)');
       }

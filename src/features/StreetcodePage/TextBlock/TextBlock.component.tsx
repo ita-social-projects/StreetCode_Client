@@ -11,8 +11,9 @@ import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
 import ReadMore from './ReadMore/ReadMore.component';
+import { forwardRef } from 'react';
 
-const TextComponent = () => {
+const TextComponent = forwardRef(( _, ref: any ) => {
     const streetcodeId = useRouteId();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
@@ -24,7 +25,11 @@ const TextComponent = () => {
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
     return (
-        <div className="textComponentContainer">
+        <div
+            id='text'
+            ref={ref} 
+            className="textComponentContainer"
+        >
             <BlockHeading headingText={String(text?.title)} />
             <div className="textComponent">
                 <div className="TextContainer">
@@ -37,5 +42,6 @@ const TextComponent = () => {
             </div>
         </div>
     );
-};
+});
+
 export default TextComponent;

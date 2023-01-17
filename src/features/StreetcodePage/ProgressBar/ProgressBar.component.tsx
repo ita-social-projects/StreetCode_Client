@@ -2,18 +2,21 @@ import './ProgressBar.styles.scss';
 
 import ArrowUp from '@images/utils/ArrowUp.svg';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
+import { Block } from '../StreetcodePageWrapper.component';
 
 interface Props {
-    sections?: number;
+    blocks: Block[];
     waitMsOnRender?: number;
 }
 
-const ProgressBar = ({ sections = 7, waitMsOnRender = 30 }: Props) => {
+const ProgressBar = ({ waitMsOnRender = 30, blocks }: Props) => {
     const [scrollPosition, setScrollPosition] = useState(0);
+    const [scrollPositionPx, setScrollPositionPx] = useState(0);
+    const [activeBlockIdx, setActiveBlockIdx] = useState(-1);
     const { toggleState: isActive, handlers: { toggle, off } } = useToggle();
 
     useScrollPosition(
@@ -22,6 +25,7 @@ const ProgressBar = ({ sections = 7, waitMsOnRender = 30 }: Props) => {
             const pageScrollPercentage = (Math.abs(currentPos.y) / docHeight) * 100;
 
             setScrollPosition(pageScrollPercentage);
+            setScrollPositionPx(currentPos.y);
         },
         [setScrollPosition],
         waitMsOnRender,
@@ -33,11 +37,19 @@ const ProgressBar = ({ sections = 7, waitMsOnRender = 30 }: Props) => {
         <div className="progressBarContainer" onClick={toggle}>
             <div className={`progressBarPopupContainer ${isActive ? 'active' : ''}`}>
                 <div className="progressBarPopupContent">
-                    {Array.from(new Array(sections), (_, idx) => idx + 1).map((el) => (
-                        <div key={el} className="progressBarSection">
-                            <span>{el}</span>
-                        </div>
-                    ))}
+                    {blocks.map((block, idx) => {
+                        if(activeBlockIdx===-1&&){
+                            setActiveBlockIdx(idx);
+                        }
+                        if(blocks[activeBlockIdx].height>)
+                        return (
+                            <div key={idx} className={`progressBarSection ${activeBlockIdx===idx?'active':''}`}>
+                                <a href={`#${block.id}`}>
+                                    <span>{idx+1}</span>
+                                </a>
+                            </div>
+                        )
+                    })}
                     <span className="progressBarDashedFill" />
                     <div
                         className="progressBarProgressFill"

@@ -8,8 +8,9 @@ import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
+import { forwardRef } from 'react';
 
-const InterestingFactsComponent = () => {
+const InterestingFactsComponent = forwardRef(( _, ref: any ) => {
     const streetcodeId = useRouteId();
     const { factsStore: { fetchFactsByStreetcodeId, getFactArray } } = useMobx();
     useAsync(
@@ -37,7 +38,11 @@ const InterestingFactsComponent = () => {
     }
 
     return (
-        <div className="interestingFactsWrapper">
+        <div 
+            id='interestingFacts'
+            ref={ref} 
+            className="interestingFactsWrapper"
+        >
             <div className="interestingFactsContainer">
                 <BlockHeading headingText="Wow-факти" />
                 <div className="interestingFactsSliderContainer">
@@ -72,6 +77,6 @@ const InterestingFactsComponent = () => {
             </div>
         </div>
     );
-};
+});
 
 export default InterestingFactsComponent;
