@@ -12,7 +12,7 @@ const redirectOnStreetcode = (id: number) => {
     console.log(`redirected to streetcode with id: ${id}`);
 };
 
-const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
+const RelatedFigureItem = ({ relatedFigure }: Props) => {
     const { id, image: { id: imageId }, title, tags } = relatedFigure;
 
     const { imagesStore } = useMobx();
@@ -36,8 +36,8 @@ const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
                     {title}
                 </h3>
                 <div className="relatedTagList">
-                    {tags.map(({ id: tagId, title: tagTitle }) => (
-                        <div key={tagId} className="tag">
+                    {tags.map(({ id: tagId, title: tagTitle }, idx) => (
+                        <div key={idx} className="tag">
                             <p>{tagTitle}</p>
                         </div>
                     ))}
@@ -47,4 +47,4 @@ const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
     );
 };
 
-export default RelatedFigureSliderItem;
+export default RelatedFigureItem;

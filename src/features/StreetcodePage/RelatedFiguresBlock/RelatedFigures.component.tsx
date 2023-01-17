@@ -49,7 +49,7 @@ const relatedFigures: RelatedFigure[] = [
     },
 ];
 
-const RelatedFiguresComponent = forwardRef(( _, ref: any ) => {
+const RelatedFiguresComponent = () => {
     const { modalStore: { setModal } } = useMobx();
     // const { relatedFiguresStore } = useMobx();
     // const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
@@ -71,7 +71,6 @@ const RelatedFiguresComponent = forwardRef(( _, ref: any ) => {
     return (
         <div
             id='relatedFigures'
-            ref={ref}
             className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
@@ -96,6 +95,6 @@ const RelatedFiguresComponent = forwardRef(( _, ref: any ) => {
             </div>
         </div>
     );
-});
+};
 
 export default RelatedFiguresComponent;
