@@ -3,6 +3,7 @@ import './ProgressBar.styles.scss';
 import ArrowUp from '@images/utils/ArrowUp.svg';
 
 import { useState } from 'react';
+import useEventListener from '@hooks/external/useEventListener.hook';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 
@@ -13,7 +14,7 @@ interface Props {
 
 const ProgressBar = ({ sections = 7, waitMsOnRender = 30 }: Props) => {
     const [scrollPosition, setScrollPosition] = useState(0);
-    const { toggleState: isActive, handlers: { toggle } } = useToggle();
+    const { toggleState: isActive, handlers: { toggle, off } } = useToggle();
 
     useScrollPosition(
         ({ currentPos }) => {
@@ -26,7 +27,7 @@ const ProgressBar = ({ sections = 7, waitMsOnRender = 30 }: Props) => {
         waitMsOnRender,
     );
 
-    console.log(scrollPosition);
+    useEventListener('scroll', off, document);
 
     return (
         <div className="progressBarContainer" onClick={toggle}>

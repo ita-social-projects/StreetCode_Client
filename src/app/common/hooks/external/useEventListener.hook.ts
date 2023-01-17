@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 const useEventListener = (
     eventType: string,
     cb: (event: Event) => void,
-    element: Element | typeof window = window,
+    element: Element | typeof window | typeof document = window,
 ) => {
     const cbRef = useRef(cb);
 
