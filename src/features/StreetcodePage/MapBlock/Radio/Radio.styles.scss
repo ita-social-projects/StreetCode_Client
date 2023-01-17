@@ -1,0 +1,50 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use '@sass/variables/variables.fonts' as ft;
+@use '@sass/variables/variables.colors' as c;
+
+.radioContainer{
+  @include mut.sized(257px,148px);
+  @include mut.positioned-as(absolute, 0, 0, 0, 0);
+  @include mut.flexed(row, center, center);
+  z-index: 2;
+  background: white;
+  border: 3px solid #DB3424;
+  border-radius: 23px;
+}
+
+.selected-radio-text{
+  @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
+  line-height: 23px;
+  text-align: center;
+  color: c.$accented-red-color;
+}
+
+.radio-text{
+  @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
+  line-height: 23px;
+  text-align: center;
+  color: c.$normal-darker-gray-color;
+}
+.ant-radio{
+  width: 25px;
+  height: 25px;
+}
+
+.ant-radio-inner{
+  width: 25px !important;
+  height: 25px !important;
+  border: 3px solid #7E7E7E !important;
+}
+.ant-radio-checked{
+  .ant-radio-inner{
+    border: 3px solid #DB3424 !important;
+  }
+}
+
+:where(.css-dev-only-do-not-override-26rdvq).ant-radio-wrapper .ant-radio-checked .ant-radio-inner::after{
+  opacity: 0;
+}
+:where(.css-dev-only-do-not-override-26rdvq).ant-radio-wrapper .ant-radio-checked .ant-radio-inner{
+  background: radial-gradient(#DB3424 45%, white 55%) !important;
+}
