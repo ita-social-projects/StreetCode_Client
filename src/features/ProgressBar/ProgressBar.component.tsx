@@ -2,14 +2,15 @@ import './ProgressBar.styles.scss';
 
 import ArrowUp from '@images/utils/ArrowUp.svg';
 
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
-import { Block } from '../StreetcodePageWrapper.component';
+import { MeasuredBlock } from '@features/ProgressBar/block-wrappers/StreetcodePageWrapper.component';
+import { toast } from 'react-toastify';
 
 interface Props {
-    blocks: Block[];
+    blocks: MeasuredBlock[];
     waitMsOnRender?: number;
 }
 
@@ -37,18 +38,17 @@ const ProgressBar = ({ waitMsOnRender = 30, blocks }: Props) => {
         <div className="progressBarContainer" onClick={toggle}>
             <div className={`progressBarPopupContainer ${isActive ? 'active' : ''}`}>
                 <div className="progressBarPopupContent">
-                    {blocks.map((block, idx) => {
-                        if(activeBlockIdx===-1&&){
+                    {blocks.map(({ id, height }, idx) => {
+                        if (activeBlockIdx === -1) {
                             setActiveBlockIdx(idx);
                         }
-                        if(blocks[activeBlockIdx].height>)
                         return (
-                            <div key={idx} className={`progressBarSection ${activeBlockIdx===idx?'active':''}`}>
-                                <a href={`#${block.id}`}>
-                                    <span>{idx+1}</span>
+                            <div key={id} className={`progressBarSection ${activeBlockIdx === idx ? 'active' : ''}`}>
+                                <a href={`#${id}`}>
+                                    <span>{idx + 1}</span>
                                 </a>
                             </div>
-                        )
+                        );
                     })}
                     <span className="progressBarDashedFill" />
                     <div
