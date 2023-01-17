@@ -5,6 +5,7 @@ import HeaderBlock from '@layout/header/HeaderBlock.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
+import ProgressBar from '@streetcode/ProgressBar/ProgressBar.component';
 import QRComponent from '@streetcode/QRBlock/QR.component';
 import RelatedFiguresComponent from '@streetcode/RelatedFiguresBlock/RelatedFigures.component';
 import SourcesComponent from '@streetcode/SourcesBlock/Sources.component';
@@ -14,6 +15,7 @@ import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
         <HeaderBlock />
+        <ProgressBar />
         <MainBlock />
         <TextComponent />
         <InterestingFactsComponent />
