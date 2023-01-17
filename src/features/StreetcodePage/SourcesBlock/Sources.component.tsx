@@ -8,9 +8,8 @@ import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import SourceItem from './SourceItem/SourceItem.component';
-import { forwardRef } from 'react';
 
-const SourcesComponent = forwardRef(( _, ref: any ) => {
+const SourcesComponent = () => {
     const { sourcesStore } = useMobx();
     const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
 
@@ -22,8 +21,7 @@ const SourcesComponent = forwardRef(( _, ref: any ) => {
 
     return (
         <div
-            id='sources' 
-            ref={ref} 
+            id='sources'
             className="sourcesWrapper"
         >
             <div className="sourcesContainer">
@@ -46,6 +44,6 @@ const SourcesComponent = forwardRef(( _, ref: any ) => {
             </div>
         </div>
     );
-});
+};
 
 export default observer(SourcesComponent);

@@ -1,38 +1,38 @@
 import './Streetcode.styles.scss';
 
+import { useState } from 'react';
+import NavigableBlockWrapper, { MeasuredBlock }
+    from '@features/ProgressBar/block-wrappers/StreetcodePageWrapper.component';
+import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
-import HeaderBlock from '@layout/header/HeaderBlock.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
-import ProgressBar from '@streetcode/ProgressBar/ProgressBar.component';
 import QRComponent from '@streetcode/QRBlock/QR.component';
 import RelatedFiguresComponent from '@streetcode/RelatedFiguresBlock/RelatedFigures.component';
 import SourcesComponent from '@streetcode/SourcesBlock/Sources.component';
 import TextComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
-import StreetcodePageWrapper, {Block} from './StreetcodePageWrapper.component';
-import { useState } from 'react';
 
 const StreetcodeContent = () => {
-    const [blocks, setBlocks] = useState<Block[]>([])
+    const [blocks, setBlocks] = useState<MeasuredBlock[]>([]);
+
     return (
         <div className="streetcodeContainer">
-            <HeaderBlock />
-            <ProgressBar blocks={blocks}/>
+            <ProgressBar blocks={blocks} />
             <MainBlock />
-            <StreetcodePageWrapper setBlocks={setBlocks}>
+            <NavigableBlockWrapper setBlocks={setBlocks}>
                 <TextComponent />
                 <InterestingFactsComponent />
                 <RelatedFiguresComponent />
                 <SourcesComponent />
-            </StreetcodePageWrapper>
+            </NavigableBlockWrapper>
             <QRComponent />
             <PartnersComponent />
             <TickerComponent />
             <Footer />
         </div>
-    )
-}
+    );
+};
 
 export default StreetcodeContent;
