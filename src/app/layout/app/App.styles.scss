@@ -2,6 +2,8 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
+@import 'react-toastify/dist/ReactToastify.css';
+
 p,
 span,
 div {
