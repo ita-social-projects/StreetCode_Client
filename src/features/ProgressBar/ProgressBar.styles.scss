@@ -24,10 +24,6 @@
   &:hover {
     background-color: c.$lighter-gray-color;
     cursor: pointer;
-
-    svg {
-      rotate: x 360deg;
-    }
   }
 
   .progressBarPopupContainer {
@@ -43,7 +39,7 @@
 
     @include vnd.vendored(transform, 'translateY(300px)');
 
-    &.active {
+    &.visible {
       @include vnd.vendored(transform, 'translateY(-300px)');
     }
   }
@@ -52,7 +48,7 @@
     @include mut.flex-centered($direction: column, $gap: 31px);
 
     .progressBarDashedFill {
-      height: 68%;
+      height: 80%;
       position: absolute;
       border-left: 2px dashed #ADADAD;
     }
@@ -81,12 +77,13 @@
         @include mut.parent-sized();
         @include mut.with-font($font-weight: 300, $font-size: 14px);
         @include vnd.vendored(transform, 'rotate(-45deg)');
+        color: c.$pure-black-color;
       }
     }
   }
 
   .progressBarProgressFill {
-    @include mut.sized(2px, 75%);
+    @include mut.sized(2px, 80%);
     @include mut.positioned-as(absolute, $top: 10%);
     @include vnd.vendored(transform, 'rotate(0)');
   }

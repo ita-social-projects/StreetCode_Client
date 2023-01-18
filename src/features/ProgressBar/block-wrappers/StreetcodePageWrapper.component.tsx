@@ -20,7 +20,7 @@ const NavigableBlockWrapper = ({ children, setBlocks }: Props) => {
             const elementNode = node as Element;
             blocks.push({
                 id: elementNode?.getAttribute('id'),
-                height: elementNode?.clientHeight,
+                height: elementNode?.getBoundingClientRect().top,
             } as MeasuredBlock);
         });
 

@@ -26,6 +26,7 @@ const StreetcodeContent = () => {
                 <InterestingFactsComponent />
                 <RelatedFiguresComponent />
                 <SourcesComponent />
+                <InterestingFactsComponent />
             </NavigableBlockWrapper>
             <QRComponent />
             <PartnersComponent />
