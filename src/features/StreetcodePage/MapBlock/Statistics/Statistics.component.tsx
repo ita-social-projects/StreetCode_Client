@@ -1,27 +1,28 @@
 import './Statistics.styles.scss';
 
-import React, { useEffect, useState } from 'react';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import Toponym from '@/models/toponyms/toponym.model';
 
-interface Statistics {
-    toponymName:string,
-    toponymNumber:number
+interface Props {
+    streetcodeCoordinates: StreetcodeCoordinate[],
+    toponyms: Toponym[]
 }
 
-const StatisticsComponent = () => {
-    const statisticObjects : Statistics[] = [
+const StatisticsComponent = ({ toponyms }: Props) => {
+    const statisticObjects = [
         { toponymName: 'вулиця', toponymNumber: 9472 },
         { toponymName: 'провулок', toponymNumber: 1178 },
         { toponymName: 'площа', toponymNumber: 39 },
     ];
-
+    console.log(toponyms);
     return (
         <div className="statisticsContainer">
             <h1>В Україні іменем Михайла Грушевського названі:</h1>
             <div className="streetsBlock">
-                {statisticObjects.map((toponym) => (
+                {toponyms?.map((toponym) => (
                     <p>
-                        <span>{toponym.toponymNumber}</span>
-                        {toponym.toponymName}
+                        <span>{toponym.coordinates.length}</span>
+                        {toponym.title}
                     </p>
                 ))}
             </div>

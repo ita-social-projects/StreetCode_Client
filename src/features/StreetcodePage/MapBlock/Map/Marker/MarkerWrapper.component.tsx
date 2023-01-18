@@ -3,7 +3,14 @@ import L from 'leaflet';
 import MarkerCircle from "@streetcode/MapBlock/Map/Marker/MarkerCircle";
 import * as ReactDOMServer from 'react-dom/server';
 
-const CustomMarker = () => {
+interface Props {
+    latitude: number, 
+    longtitude: number,
+    description: string,
+    title: string
+}
+
+const CustomMarker = (props: Props) => {
     const myHtml = ReactDOMServer.renderToString(<MarkerCircle/>);
     const myIcon = L.divIcon({
         html: myHtml,
@@ -11,7 +18,7 @@ const CustomMarker = () => {
         className: 'my-custom-marker'
     });
     return (
-        <Marker position={[51.505, -0.09]} icon={myIcon} />
+        <Marker position={[props.latitude, props.longtitude]} icon={myIcon} />
     );
 };
 
