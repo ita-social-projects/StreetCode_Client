@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 export type MeasuredBlock = {
     id: string,
@@ -10,8 +10,9 @@ interface Props {
     setBlocks: (blocks: MeasuredBlock[]) => void,
 }
 
-const NavigableBlockWrapper = ({ children, setBlocks }: Props) => {
+const NavigableBlockWrapper = ({ children, setBlocks, }: Props) => {
     const parentRef = useRef<HTMLDivElement>(null);
+    //const [blockHeights, setBlockHeights] = useState<number[]>([]);
 
     useLayoutEffect(() => {
         const blocks: MeasuredBlock[] = [];
@@ -20,12 +21,13 @@ const NavigableBlockWrapper = ({ children, setBlocks }: Props) => {
             const elementNode = node as Element;
             blocks.push({
                 id: elementNode?.getAttribute('id'),
-                height: elementNode?.getBoundingClientRect().top,
+                height: (elementNode as HTMLElement)?.offsetTop,
             } as MeasuredBlock);
+            //setBlockHeights([ ...blockHeights , elementNode?.clientHeight ]);
         });
 
         setBlocks(blocks);
-    }, [setBlocks]);
+    }, [setBlocks, /*blockHeights*/]);
 
     return (
         <div ref={parentRef}>

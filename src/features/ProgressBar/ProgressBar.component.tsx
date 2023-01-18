@@ -13,15 +13,27 @@ interface Props {
     waitMsOnRender?: number;
 }
 
-const getYScrollPercentage = (curPos: number, ofValue?: number) => {
-    const elHeight = ofValue ?? document.documentElement.scrollHeight;
-    return (curPos / elHeight) * 100;
+const getYScrollPercentage = (curPos: number, ofValue?: number, minValue?: number, maxValue?: number) => {
+    const elMin = minValue ?? 0;
+    const elMax = maxValue ?? document.documentElement.scrollHeight;
+    const elHeight = ofValue ?? elMax - elMin;
+
+    if (ofValue)
+        return (curPos / elHeight) * 100;
+    else {
+        if (curPos < elMin)
+            return elMin;
+        if (curPos > elMax)
+            return elMax;
+        return (curPos - elMin) * 100 / elHeight;
+    }
 };
 
 const ProgressBar = ({ waitMsOnRender = 300, children }: Props) => {
     const [scrollPosition, setScrollPosition] = useState(0);
     const [blocks, setBlocks] = useState<MeasuredBlock[]>([]);
     const { toggleState: isVisible, handlers: { toggle, off } } = useToggle();
+    let scrollPercentage = 0;
 
     useScrollPosition(
         ({ currentPos }) => {
@@ -30,17 +42,13 @@ const ProgressBar = ({ waitMsOnRender = 300, children }: Props) => {
         [setScrollPosition],
         waitMsOnRender,
     );
+
     useEventListener('scroll', off, document);
 
     const totalHeight = blocks.reduce(
         (acc: number, cur, idx) => acc + ((idx === 0) ? cur.height * 2 : cur.height - blocks[idx - 1].height),
         0,
     );
-
-    const scrollPercentage = getYScrollPercentage(scrollPosition, totalHeight)
-        - getYScrollPercentage(blocks[0]?.height, totalHeight);
-
-    console.log(totalHeight, scrollPosition, scrollPercentage, blocks.map((bl) => bl.height));
 
     return (
         <>
@@ -51,12 +59,17 @@ const ProgressBar = ({ waitMsOnRender = 300, children }: Props) => {
                 <div className={`progressBarPopupContainer ${isVisible ? 'visible' : ''}`}>
                     <div className="progressBarPopupContent">
                         {blocks.map(({ id, height }, idx) => {
+                            const blockPercentage = 100 / Math.max( (blocks.length - 1), 1 );
                             let isBlockActive = height < scrollPosition;
+                            
                             if (idx + 1 !== blocks.length) {
                                 isBlockActive &&= scrollPosition < blocks[idx + 1].height;
                             }
 
-                            // console.log(idx, height, scrollPosition, blocks[idx + 1]?.height, isBlockActive);
+                            if(isBlockActive){
+                                scrollPercentage = getYScrollPercentage( scrollPosition, undefined, blocks[idx].height, (idx!==blocks.length-1) ? blocks[idx+1].height : undefined);
+                                scrollPercentage = ( idx * blockPercentage ) + ( scrollPercentage * blockPercentage / 100 );
+                            }
 
                             return (
                                 <div key={id} className={`progressBarSection ${isBlockActive ? 'active' : ''}`}>

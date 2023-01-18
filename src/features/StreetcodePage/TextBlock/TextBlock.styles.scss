@@ -1,4 +1,5 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 
 .textComponentContainer{
     @include mut.sized(100%, auto);
@@ -12,5 +13,6 @@
     @include mut.flex-centered();
 }
 .textComponent{
+    height: f.pxToRem(736px);
     @include mut.flex-centered();
 }
