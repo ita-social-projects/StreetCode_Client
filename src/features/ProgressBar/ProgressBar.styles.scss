@@ -83,7 +83,10 @@
   }
 
   .progressBarProgressFill {
-    @include mut.sized(2px, 80%);
+    overflow: hidden;
+    // @include mut.sized(2px);
+    width: 2px;
+    height: 80%;
     @include mut.positioned-as(absolute, $top: 10%);
     @include vnd.vendored(transform, 'rotate(0)');
   }
