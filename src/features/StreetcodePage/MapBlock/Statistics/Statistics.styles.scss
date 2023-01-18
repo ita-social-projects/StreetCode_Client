@@ -1,0 +1,35 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use '@sass/variables/variables.fonts' as ft;
+@use '@sass/variables/variables.colors' as c;
+
+.statisticsContainer{
+  @include mut.sized(451px, 220px);
+  @include mut.positioned-as(absolute, 15%, 0, 0, 0);
+  @include mut.rem-padded(5px, 5px, 5px, 5px);
+  background: white;
+  z-index: 2;
+  border:1px solid red;
+
+  h1{
+    @include mut.with-font(ft.$roboto-font, 500, 22px, normal);
+    line-height: 26px;
+    color: c.$accented-red-color;
+  }
+
+  .streetsBlock{
+    @include mut.rem-padded($top:10px);
+    width:100%;
+    height: calc(100% - 52px);
+    p{
+      @include mut.flexed($direction:row, $gap:5px);
+      @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+      line-height: 134.19%;
+      color: c.$lighter-black-color;
+    }
+    span{
+      @include mut.with-font($font-weight:500, $font-size:22px);
+      color: c.$accented-red-color;
+    }
+  }
+}
