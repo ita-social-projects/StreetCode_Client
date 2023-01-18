@@ -1,13 +1,6 @@
-import Rhombus from '@images/utils/Instagram.png';
-
 import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { Icon } from 'leaflet';
-
-export const icon = new Icon({
-    iconUrl: Rhombus,
-    iconSize: [25, 25],
-});
+import CustomMarker from "@streetcode/MapBlock/Map/Marker/MarkerWrapper.component";
 
 const MapOSM = () => {
     const [lat, setLat] = useState(50.4501);
@@ -31,7 +24,7 @@ const MapOSM = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
-            <Marker position={[50.4501, 30.5234]} icon={icon} />
+            <CustomMarker/>
         </MapContainer>
     );
 };
