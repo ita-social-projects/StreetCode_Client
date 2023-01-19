@@ -16,6 +16,7 @@ interface ModalList {
     facts: ModalState;
     audio: ModalState;
     donates: ModalState;
+    login: ModalState;
 }
 
 export default class ModalStore {
@@ -25,11 +26,18 @@ export default class ModalStore {
         facts: DefaultModalState,
         audio: DefaultModalState,
         donates: DefaultModalState,
+        login: DefaultModalState,
     };
+
+    public isPageDimmed = false;
 
     public constructor() {
         makeAutoObservable(this);
     }
+
+    public setIsPageDimmed = (dimmed?: boolean) => {
+        this.isPageDimmed = dimmed ?? !this.isPageDimmed;
+    };
 
     public setModal = (modalName: keyof ModalList, fromId?: number, opened?: boolean) => {
         this.modalsState[modalName] = {

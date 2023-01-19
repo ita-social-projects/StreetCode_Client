@@ -1,5 +1,6 @@
 import './Streetcode.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import Footer from '@layout/footer/Footer.component';
 import HeaderBlock from '@layout/header/HeaderBlock.component';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
@@ -28,4 +29,4 @@ const StreetcodeContent = () => (
     </div>
 );
 
-export default StreetcodeContent;
+export default observer(StreetcodeContent);
