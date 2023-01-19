@@ -13,12 +13,11 @@ import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
-        <MainBlock />
-        <ProgressBar waitMsOnRender={50}>
+        <ProgressBar waitMsOnRender={100}>
+            <MainBlock />
             <TextComponent />
             <InterestingFactsComponent />
             <RelatedFiguresComponent />
-            <SourcesComponent />
             <SourcesComponent />
         </ProgressBar>
         <QRComponent />
