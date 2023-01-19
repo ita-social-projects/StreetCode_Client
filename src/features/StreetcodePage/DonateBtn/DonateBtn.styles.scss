@@ -15,7 +15,7 @@
     border: 3px solid c.$accented-red-color;
 
     margin-bottom: f.pxToRem(5px);
-    z-index: 10;
+    z-index: 1000;
 
     &:hover {
       cursor: pointer;
