@@ -2,7 +2,7 @@ import './ProgressBar.styles.scss';
 
 import ArrowUp from '@images/utils/ArrowUp.svg';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NavigableBlockWrapper, { MeasuredBlock } from '@features/ProgressBar/NavigableBlockWrapper.component';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
@@ -22,9 +22,9 @@ const getYScrollPercentage = (curPos: number, ofValue?: number, minValue?: numbe
         return (curPos / elHeight) * 100;
     else {
         if (curPos < elMin)
-            return elMin;
+            return elMin * 100 / elHeight;
         if (curPos > elMax)
-            return elMax;
+            return elMax * 100 / elHeight;
         return (curPos - elMin) * 100 / elHeight;
     }
 };
@@ -33,7 +33,14 @@ const ProgressBar = ({ waitMsOnRender = 300, children }: Props) => {
     const [scrollPosition, setScrollPosition] = useState(0);
     const [blocks, setBlocks] = useState<MeasuredBlock[]>([]);
     const { toggleState: isVisible, handlers: { toggle, off } } = useToggle();
+    const [activeIdx, setActiveIdx] = useState(-1);
+    const progressFillRef = useRef<HTMLDivElement>(null);
     let scrollPercentage = 0;
+
+    useEffect(
+        ()=>console.log(progressFillRef.current)
+        ,[progressFillRef.current, progressFillRef]
+    )
 
     useScrollPosition(
         ({ currentPos }) => {
@@ -43,10 +50,10 @@ const ProgressBar = ({ waitMsOnRender = 300, children }: Props) => {
         waitMsOnRender,
     );
 
-    useEventListener('scroll', off, document);
+    //useEventListener('scroll', off, document);
 
     const totalHeight = blocks.reduce(
-        (acc: number, cur, idx) => acc + ((idx === 0) ? cur.height * 2 : cur.height - blocks[idx - 1].height),
+        (acc: number, cur, idx) => acc + ((idx === 0) ? 0 : cur.height - blocks[idx - 1].height),
         0,
     );
 
@@ -67,13 +74,13 @@ const ProgressBar = ({ waitMsOnRender = 300, children }: Props) => {
                             }
 
                             if(isBlockActive){
-                                scrollPercentage = getYScrollPercentage( scrollPosition, undefined, blocks[idx].height, (idx!==blocks.length-1) ? blocks[idx+1].height : undefined);
+                                scrollPercentage = getYScrollPercentage( scrollPosition, undefined, blocks[idx].height, blocks[idx+1]?.height);
                                 scrollPercentage = ( idx * blockPercentage ) + ( scrollPercentage * blockPercentage / 100 );
                             }
 
                             return (
-                                <div key={id} className={`progressBarSection ${isBlockActive ? 'active' : ''}`}>
-                                    <a href={`#${id}`}>
+                                <div key={id} ref={progressFillRef} className={`progressBarSection ${isBlockActive ? 'active' : ''}`}>
+                                    <a href={`#${id}`} onClick={() => {scrollPercentage = idx * blockPercentage}}>
                                         {idx + 1}
                                     </a>
                                 </div>

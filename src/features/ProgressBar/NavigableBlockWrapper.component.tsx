@@ -12,7 +12,6 @@ interface Props {
 
 const NavigableBlockWrapper = ({ children, setBlocks, }: Props) => {
     const parentRef = useRef<HTMLDivElement>(null);
-    //const [blockHeights, setBlockHeights] = useState<number[]>([]);
 
     useLayoutEffect(() => {
         const blocks: MeasuredBlock[] = [];
@@ -23,11 +22,10 @@ const NavigableBlockWrapper = ({ children, setBlocks, }: Props) => {
                 id: elementNode?.getAttribute('id'),
                 height: (elementNode as HTMLElement)?.offsetTop,
             } as MeasuredBlock);
-            //setBlockHeights([ ...blockHeights , elementNode?.clientHeight ]);
         });
 
         setBlocks(blocks);
-    }, [setBlocks, /*blockHeights*/]);
+    }, [setBlocks]);
 
     return (
         <div ref={parentRef}>
