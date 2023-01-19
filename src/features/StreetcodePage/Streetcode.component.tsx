@@ -1,5 +1,7 @@
 import './Streetcode.styles.scss';
 
+import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
+import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
@@ -23,6 +25,8 @@ const StreetcodeContent = () => (
         <QRComponent />
         <PartnersComponent />
         <TickerComponent />
+        <ScrollToTopBtn />
+        <DonateBtn />
         <Footer />
     </div>
 );

@@ -1,0 +1,23 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.langSelector {
+  @include mut.sized(55px, 39px);
+  @include mut.full-rounded(12px);
+  @include mut.flexed($justify-content: flex-start, $align-items: center);
+  padding: f.pxToRem(10px);
+
+  span {
+    line-height: f.pxToEm(21.09px);
+    @include mut.with-font($font-weight: 300, $font-size: 18px);
+    color: c.$lighter-black-color;
+
+    &:after {
+      content: "";
+      @include mut.sized(5px, 5px);
+      @include mut.positioned-as(absolute, $top: 42%, $right: 16%);
+      background-color: c.$accented-red-color;
+    }
+  }
+}

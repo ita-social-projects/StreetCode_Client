@@ -1,12 +1,12 @@
 import { MouseEvent, useEffect, useRef } from 'react';
 
-type ElementListener = Element | Window | Document;
+type BindingElement = Element | Window | Document;
 type EventType = keyof ElementEventMap | keyof WindowEventMap | keyof DocumentEventMap;
 
 const useEventListener = (
     eventType: EventType,
     cb: (event: Event | MouseEvent) => void,
-    element: ElementListener = window,
+    element: BindingElement = window,
 ) => {
     const cbRef = useRef(cb);
 
