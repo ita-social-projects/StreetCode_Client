@@ -21,7 +21,7 @@ const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => (
     <div className='mapCentered'>
         <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'}>
             <TileLayer
-                url="https://tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=ca1iLUQfXoVna4YdmXyHnKcBHsR1otiY3JchCZ6nzGg8sWvaQaWjTbneuWAZD4vC"
+                url="https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}.jpg?key=zAHwa6HifYRoNEDddsNn"
             />
             <MarkerClusterGroup>
                 {streetcodeCoordinates?.map(sc => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)}/>)}
