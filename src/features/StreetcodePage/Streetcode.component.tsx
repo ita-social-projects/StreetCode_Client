@@ -1,8 +1,10 @@
 import './Streetcode.styles.scss';
 
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
+import { observer } from 'mobx-react-lite';
 import Footer from '@layout/footer/Footer.component';
 import HeaderBlock from '@layout/header/HeaderBlock.component';
+import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
@@ -15,6 +17,7 @@ import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
         <ScrollToTopBtn />
+        <DonateBtn />
         <HeaderBlock />
         <MainBlock />
         <TextComponent />
@@ -28,4 +31,4 @@ const StreetcodeContent = () => (
     </div>
 );
 
-export default StreetcodeContent;
+export default observer(StreetcodeContent);

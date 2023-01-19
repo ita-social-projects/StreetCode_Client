@@ -1,6 +1,7 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 p,
 span,
@@ -17,6 +18,14 @@ div {
 .App {
   min-height: 100vh;
   @include mut.flexed(column);
+}
+
+.dimmed {
+  position: absolute;
+  background: rgba(0, 0, 0, .45);
+
+  @include vnd.vendored(transition, 'background .5s ease');
+  z-index: 1;
 }
 
 ::-webkit-scrollbar {
