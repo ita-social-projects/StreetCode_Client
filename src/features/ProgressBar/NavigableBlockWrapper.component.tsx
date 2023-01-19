@@ -1,31 +1,29 @@
-import { useLayoutEffect, useRef, useState } from 'react';
-
-export type MeasuredBlock = {
-    id: string,
-    height: number,
-};
+import { useRef } from 'react';
+import useResizeObserver from '@react-hook/resize-observer';
 
 interface Props {
-    children: JSX.Element[],
-    setBlocks: (blocks: MeasuredBlock[]) => void,
+    children: JSX.Element[];
+    setHeights: (heights: number[]) => void;
+    topDistance: number;
 }
 
-const NavigableBlockWrapper = ({ children, setBlocks, }: Props) => {
+const NavigableBlockWrapper = ({ children, setHeights, topDistance }: Props) => {
     const parentRef = useRef<HTMLDivElement>(null);
 
-    useLayoutEffect(() => {
-        const blocks: MeasuredBlock[] = [];
+    useResizeObserver(parentRef, (_) => {
+        if (!parentRef.current) {
+            return;
+        }
 
-        parentRef.current?.childNodes.forEach((node) => {
-            const elementNode = node as Element;
-            blocks.push({
-                id: elementNode?.getAttribute('id'),
-                height: (elementNode as HTMLElement)?.offsetTop,
-            } as MeasuredBlock);
+        const blocks: number[] = [];
+        Array.from(parentRef.current.children).forEach((child) => {
+            blocks.push(
+                (child as HTMLElement).offsetTop - topDistance,
+            );
         });
-
-        setBlocks(blocks);
-    }, [setBlocks]);
+        
+        setHeights(blocks);
+    });
 
     return (
         <div ref={parentRef}>

@@ -72,12 +72,11 @@
         scale: 1.2;
       }
 
-      a {
+      span {
         @include mut.flex-centered();
         @include mut.parent-sized();
         @include mut.with-font($font-weight: 300, $font-size: 14px);
         @include vnd.vendored(transform, 'rotate(-45deg)');
-        color: c.$pure-black-color;
       }
     }
   }
