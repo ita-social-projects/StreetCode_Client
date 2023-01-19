@@ -25,6 +25,7 @@ module.exports = {
         'jsx-a11y/no-noninteractive-element-interactions': 'off',
         'jsx-a11y/no-static-element-interactions': 'off',
 
+        'linebreak-style': 'off',
         'no-console': 'off',
         'import/no-cycle': 'off',
         'react/jsx-indent': 'off',

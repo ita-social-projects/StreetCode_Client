@@ -8,7 +8,10 @@ const DonateBtn = () => {
     const { modalStore: { setModal } } = useMobx();
 
     return (
-        <div className="donateBtnContainer" onClick={() => setModal('donates')}>
+        <div
+            className="donateBtnContainer"
+            onClick={() => setModal('donates')}
+        >
             <div className="donateBtnCircle">
                 <HandWithCoin />
             </div>
