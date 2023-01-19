@@ -5,7 +5,7 @@
   position: relative;
 
   .scrollToTopBt {
-    @include mut.positioned-as(fixed, $bottom: 120px, $right: 340px);
+    @include mut.positioned-as(fixed, $bottom: 120px, $right: 140px);
     @include mut.circular(50px, $color: none);
 
     @include vnd.vendored(animation, 'btnOpacity 1.5s ease-in-out');
