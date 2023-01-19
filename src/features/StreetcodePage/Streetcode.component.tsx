@@ -1,5 +1,6 @@
 import './Streetcode.styles.scss';
 
+import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import { observer } from 'mobx-react-lite';
 import Footer from '@layout/footer/Footer.component';
 import HeaderBlock from '@layout/header/HeaderBlock.component';
@@ -15,6 +16,7 @@ import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
+        <ScrollToTopBtn />
         <DonateBtn />
         <HeaderBlock />
         <MainBlock />
