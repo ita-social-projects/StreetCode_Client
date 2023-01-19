@@ -3,24 +3,18 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 
 .scrollToTopBtnContainer {
-  position: relative;
+  @include mut.circular(62px);
+  @include mut.positioned-as(fixed, $bottom: 140px, $right: 50px);
+
   @include mut.flex-centered();
+  border: 3px solid c.$accented-red-color;
 
-  .scrollToTopBt {
-    @include mut.positioned-as(fixed, $bottom: 120px, $right: 140px);
-    @include mut.circular(62px);
+  @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
+  @include vnd.vendored(transition, 'filter .5s ease');
 
-    @include vnd.vendored(animation, 'btnOpacity 1.5s ease-in-out');
-    @include vnd.vendored(transition, 'filter .5s ease');
-
-    border: 3px solid c.$accented-red-color;
-
-    z-index: 1000;
-
-    &:hover {
-      cursor: pointer;
-      @include vnd.vendored(filter, 'drop-shadow(0 2px 15px rgba(61, 0, 0, .25))');
-    }
+  &:hover {
+    cursor: pointer;
+    @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
   }
 }
 

@@ -29,15 +29,16 @@ const ScrollToTopBtn = ({ scrollDelay = 300, visibleAfterPx = 1400, btnStyle }: 
     }, [visibleAfterPx]);
 
     return (
-        <div className="scrollToTopBtnContainer">
+        <>
             {showTopBtn && (
-                <ScrollBtn
-                    style={btnStyle}
-                    className="scrollToTopBt"
+                <div
+                    className="scrollToTopBtnContainer"
                     onClick={() => setTimeout(goToTop, scrollDelay)}
-                />
+                >
+                    <ScrollBtn style={btnStyle} />
+                </div>
             )}
-        </div>
+        </>
     );
 };
 
