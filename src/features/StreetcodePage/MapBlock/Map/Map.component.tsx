@@ -4,7 +4,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import CustomMarker from "@streetcode/MapBlock/Map/Marker/MarkerWrapper.component";
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import Toponym from '@/models/toponyms/toponym.model';
-import MarkerClusterGroup from 'react-leaflet-cluster'
+import CustomMarkerCluster from './MarkerCluster/MarkerClusterWrapper.component';
 
 const defaultZoom: number = 6;
 const centerOfUkraine = {
@@ -17,19 +17,20 @@ interface Props {
     toponyms: Toponym[]
 }
 
+
 const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => (
     <div className='mapCentered'>
         <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'}>
             <TileLayer
                 url="https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}.jpg?key=zAHwa6HifYRoNEDddsNn"
             />
-            <MarkerClusterGroup>
+            <CustomMarkerCluster>
                 {streetcodeCoordinates?.map(sc => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)}/>)}
-            </MarkerClusterGroup>
-            <MarkerClusterGroup>
+            </CustomMarkerCluster>
+            <CustomMarkerCluster>
                 {toponyms?.map(t => t.coordinates.map(c =>
             <CustomMarker latitude={c.latitude} longtitude={c.longtitude} title={String(c.id)} description={String(c.toponymId)}/>))}
-            </MarkerClusterGroup>
+            </CustomMarkerCluster>
         </MapContainer>
     </div>
 );
