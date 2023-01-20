@@ -4,10 +4,10 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .progressBarProgressFill {
-  // @include mut.sized(2px);
+  overflow: hidden;
+  height: calc(100% - 100px);
   width: 2px;
-  height: 80%;
-  @include mut.positioned-as(absolute, $top: 10%);
+  @include mut.positioned-as(absolute, $top: 50px);
   @include vnd.vendored(transform, 'rotate(0)');
 }
 

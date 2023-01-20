@@ -3,8 +3,9 @@ import './ProgressBar.styles.scss';
 import ArrowUp from '@images/utils/ArrowUp.svg';
 
 import { useRef, useState } from 'react';
-import NavigableBlockWrapper from '@features/ProgressBar/NavigableBlockWrapper.component';
+import NavigableBlockWrapper, { NamedBlock } from '@features/ProgressBar/NavigableBlockWrapper.component';
 import ProgressBarFill from '@features/ProgressBar/ProgressBarFill/ProgressBarFill.component';
+import ProgressBarSection from '@features/ProgressBar/ProgressBarSection/ProgressBarSection.component';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 
@@ -12,6 +13,7 @@ interface Props {
     children: JSX.Element[];
     waitMsOnRender?: number;
     topDistance?: number;
+    alwaysVisibleBeforePx?: number;
 }
 
 const getPercentage = (value: number, ofValue: number) => (value * 1e2) / ofValue;
@@ -29,49 +31,72 @@ const getYScrollPercentage = (curPos: number, minValue?: number, maxValue?: numb
     );
 };
 
-const ProgressBar = ({ waitMsOnRender = 300, children, topDistance = 200 }: Props) => {
-    const scrollPercentage = useRef(0);
-    const [scrollPosition, setScrollPosition] = useState(0);
+const useForceUpdate = () => {
+    const [, setValue] = useState(0);
+    return () => setValue((prev) => prev + 1);
+};
 
-    const [heights, setHeights] = useState<number[]>([]);
-    const { toggleState: isVisible, handlers: { toggle } } = useToggle();
+const ProgressBar = ({ children, waitMsOnRender = 300, topDistance = 200, alwaysVisibleBeforePx = 1600 }: Props) => {
+    const scrollPercentage = useRef(0);
+    const isScrollInFirstTwoSections = useRef(true);
+
+    const forceUpdate = useForceUpdate();
+    const [blocks, setBlocks] = useState<NamedBlock[]>([]);
+    const [scrollPosition, setScrollPosition] = useState(0);
 
     useScrollPosition(
         ({ currentPos }) => {
-            setScrollPosition(Math.abs(currentPos.y));
+            const scrollY = Math.abs(currentPos.y);
+
+            setScrollPosition(scrollY);
+            isScrollInFirstTwoSections.current = scrollY <= alwaysVisibleBeforePx;
         },
         [setScrollPosition],
         waitMsOnRender,
     );
 
+    const { toggleState: isVisible, handlers: { toggle, off } } = useToggle();
+
     const onActiveBlockSelection = (activeIdx: number) => {
-        const blockPercentage = 100 / Math.max((heights.length - 1), 1);
+        const blockPercentage = 100 / Math.max((blocks.length - 1), 1);
 
         const blockDifPercentage = getYScrollPercentage(
             scrollPosition,
-            heights[activeIdx],
-            heights[activeIdx + 1],
+            blocks[activeIdx].height,
+            blocks[activeIdx + 1]?.height,
         );
 
         scrollPercentage.current = (activeIdx * blockPercentage)
             + (blockDifPercentage * (blockPercentage / 100));
     };
 
+    const onProgressBarCallerClick = () => {
+        if (isScrollInFirstTwoSections.current) {
+            off();
+            forceUpdate();
+        } else {
+            toggle();
+        }
+        isScrollInFirstTwoSections.current = false;
+    };
+
     return (
         <>
-            <NavigableBlockWrapper setHeights={setHeights} topDistance={topDistance}>
+            <NavigableBlockWrapper setBlocks={setBlocks} topDistance={topDistance}>
                 {children}
             </NavigableBlockWrapper>
-            <div className="progressBarContainer" onClick={toggle}>
-                <div className={`progressBarPopupContainer ${isVisible ? 'visible' : ''}`}>
+            <div className="progressBarContainer" onClick={onProgressBarCallerClick}>
+                <div className={`progressBarPopupContainer
+                    ${isScrollInFirstTwoSections.current || isVisible ? 'visible' : ''}`}
+                >
                     <div className="progressBarPopupContent">
-                        {heights.map((height, idx) => {
-                            let isBlockActive = height <= scrollPosition;
-                            
+                        {blocks.map((block, idx) => {
+                            let isBlockActive = block.height <= scrollPosition;
+
                             if (scrollPosition === 0 && idx === 0) {
                                 isBlockActive = true;
-                            } else if (idx + 1 !== heights.length) {
-                                isBlockActive &&= scrollPosition < heights[idx + 1];
+                            } else if (idx + 1 !== blocks.length) {
+                                isBlockActive &&= scrollPosition < blocks[idx + 1].height;
                             }
 
                             if (isBlockActive) {
@@ -79,23 +104,22 @@ const ProgressBar = ({ waitMsOnRender = 300, children, topDistance = 200 }: Prop
                             }
 
                             return (
-                                <div
-                                    key={idx}
-                                    className={`progressBarSection ${isBlockActive ? 'active' : ''}`}
-                                >
-                                    <span onClick={() => window.scrollTo(0, height)}>
-                                        {idx + 1}
-                                    </span>
-                                </div>
+                                <ProgressBarSection
+                                    idx={idx}
+                                    block={block}
+                                    isBlockActive={isBlockActive}
+                                />
                             );
                         })}
                         <ProgressBarFill
-                            blocksLength={heights.length}
+                            blocksLength={blocks.length}
                             fillPercentage={scrollPercentage.current}
                         />
                     </div>
                 </div>
-                <ArrowUp style={isVisible ? { rotate: 'x 180deg' } : undefined} />
+                <ArrowUp
+                    style={isScrollInFirstTwoSections.current || isVisible ? { rotate: 'x 180deg' } : undefined}
+                />
             </div>
         </>
     );
