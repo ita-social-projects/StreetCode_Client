@@ -8,9 +8,9 @@ const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
 const useScrollPosition = (
     effect: (props: ScrollProps) => void,
     deps?: DependencyList,
+    wait?: number,
     element?: ElementRefOrDefault,
     useWindow?: boolean,
-    wait?: number,
     boundingElement?: ElementRefOrDefault,
 ) => {
     const position = useRef(getScrollPosition(

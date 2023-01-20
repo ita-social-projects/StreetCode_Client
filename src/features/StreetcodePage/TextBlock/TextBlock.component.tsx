@@ -24,7 +24,10 @@ const TextComponent = () => {
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
     return (
-        <div className="textComponentContainer">
+        <div
+            id='text'
+            className="textComponentContainer"
+        >
             <BlockHeading headingText={String(text?.title)} />
             <div className="textComponent">
                 <div className="TextContainer">
@@ -38,4 +41,5 @@ const TextComponent = () => {
         </div>
     );
 };
+
 export default TextComponent;

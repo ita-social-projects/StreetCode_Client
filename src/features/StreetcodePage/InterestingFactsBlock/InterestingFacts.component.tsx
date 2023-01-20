@@ -37,7 +37,10 @@ const InterestingFactsComponent = () => {
     }
 
     return (
-        <div className="interestingFactsWrapper">
+        <div 
+            id='interestingFacts'
+            className="interestingFactsWrapper"
+        >
             <div className="interestingFactsContainer">
                 <BlockHeading headingText="Wow-факти" />
                 <div className="interestingFactsSliderContainer">

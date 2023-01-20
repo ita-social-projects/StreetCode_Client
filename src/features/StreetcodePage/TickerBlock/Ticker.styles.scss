@@ -6,6 +6,7 @@
 .tickerContainer {
   @include mut.colored(c.$pure-white-color, c.$selected-arrow-color);
   @include mut.sized(200%, 44px);
+  z-index: -100;
 }
 
 .tickerItem {

@@ -1,0 +1,18 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.progressBarProgressFill {
+  overflow: hidden;
+  height: calc(100% - 100px);
+  width: 2px;
+  @include mut.positioned-as(absolute, $top: 50px);
+  @include vnd.vendored(transform, 'rotate(0)');
+}
+
+.progressBarDashedFill {
+  height: 80%;
+  position: absolute;
+  border-left: 2px dashed #ADADAD;
+}

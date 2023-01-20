@@ -14,6 +14,7 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 import RelatedFigure from '@/models/streetcode/related-figure.model';
+import { forwardRef } from 'react';
 
 const relatedFigures: RelatedFigure[] = [
     {
@@ -69,6 +70,7 @@ const RelatedFiguresComponent = () => {
 
     return (
         <div
+            id='relatedFigures'
             className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
