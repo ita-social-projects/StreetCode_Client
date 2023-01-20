@@ -1,6 +1,6 @@
 import "./Marker.styles.scss"
 
-import { Marker } from "react-leaflet";
+import { Marker, Popup } from "react-leaflet";
 import L from 'leaflet';
 
 interface Props {
@@ -17,7 +17,11 @@ const CustomMarker = (props: Props) => {
         className: 'my-custom-marker'
     });
     return (
-        <Marker position={[props.latitude, props.longtitude]} icon={myIcon} />
+        <Marker position={[props.latitude, props.longtitude]} icon={myIcon} > 
+        <Popup>
+            {props.description}
+        </Popup>
+        </Marker>
     );
 };
 
