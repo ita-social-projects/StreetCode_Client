@@ -17,7 +17,7 @@ const DonateBtn = () => {
                 showModalOnScroll.current = false;
             }
         }
-    });
+    }, 500);
 
     return (
         <div
