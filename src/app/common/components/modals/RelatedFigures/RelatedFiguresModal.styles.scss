@@ -1,0 +1,33 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.relatedFiguresModal {
+  @include mut.sized(823px, 765px);
+
+  &.ant-modal {
+    .ant-modal-content {
+      height: pxToRem(765px);
+      @include mut.full-rounded(70px, $overflow: visible);
+
+      padding: 0 !important;
+      box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+        0 6px 20px 0 rgb(0 0 0 / 19%);
+    }
+
+    .ant-modal-close {
+      @include mut.positioned-as(absolute, $left: 93%, $top: -25px);
+      @include mut.circular(80px, c.$pure-white-color);
+
+      &:hover {
+        background-color: c.$modal-hover-color;
+      }
+    }
+  }
+}
+
+.relatedFiguresModalContainer {
+  @include mut.flexed($direction: column, $gap: 15px);
+  @include mut.rem-margined(29px, 42px, 24px, 42px);
+}

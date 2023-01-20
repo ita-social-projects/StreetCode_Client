@@ -1,21 +1,21 @@
-import { createContext, useContext } from "react";
-
-import SubtitlesStore from "@stores/subtitles-store";
-import ModalStore from "@stores/modal-store";
-import FactsStore from "@stores/facts-store";
-import TagsStore from "@stores/tags-store";
-import AudioStore from "@stores/audio-store";
-import VideoStore from "@stores/videos-store";
-import ArtStore from "@stores/art-store";
-import ImageStore from "@stores/image-store";
-import PartnersStore from "@stores/partners-store";
-import TermStore from "@stores/term-store";
-import TextStore from "@stores/text-store";
-import TimelineitemStore from "@stores/timelineitem-store";
-import ToponymStore from "@stores/toponym-store";
-import TransactionLinksStore from "@stores/transactions-store";
-import StreetcodeStore from "@stores/streetcode-store";
+import { createContext, useContext } from 'react';
+import ArtStore from '@stores/art-store';
+import AudioStore from '@stores/audio-store';
+import FactsStore from '@stores/facts-store';
+import ImageStore from '@stores/image-store';
+import ModalStore from '@stores/modal-store';
+import PartnersStore from '@stores/partners-store';
+import RelatedFiguresStore from '@stores/related-figures-store';
 import SourcesStore from '@stores/sources-store';
+import StreetcodeStore from '@stores/streetcode-store';
+import SubtitlesStore from '@stores/subtitles-store';
+import TagsStore from '@stores/tags-store';
+import TermStore from '@stores/term-store';
+import TextStore from '@stores/text-store';
+import TimelineitemStore from '@stores/timelineitem-store';
+import ToponymStore from '@stores/toponym-store';
+import TransactionLinksStore from '@stores/transactions-store';
+import VideoStore from '@stores/videos-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -34,6 +34,7 @@ interface Store {
     transactionsStore: TransactionLinksStore,
     streetcodesStore: StreetcodeStore,
     sourcesStore: SourcesStore,
+    relatedFiguresStore: RelatedFiguresStore,
 }
 
 export const store: Store = {
@@ -53,7 +54,8 @@ export const store: Store = {
     transactionsStore: new TransactionLinksStore(),
     streetcodesStore: new StreetcodeStore(),
     sourcesStore: new SourcesStore(),
-}
+    relatedFiguresStore: new RelatedFiguresStore(),
+};
 
 const StoreContext = createContext(store);
 

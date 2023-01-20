@@ -1,16 +1,16 @@
-@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 
-.textComponentWrapper {
+.textComponentContainer {
     @include mut.sized(100%, auto);
+}
 
-    .textContainer {
-        @include mut.sized(1200px, auto);
-        @include mut.rem-margined($top: 27px);
-        @include mut.with-font();
-    }
-
-    .videoComponent,
-    .textComponent {
-        @include mut.flex-centered();
-    }
+.TextContainer {
+    @include mut.sized(1200px, auto);
+    @include mut.rem-margined($top: 27px);
+    @include mut.with-font();
+}
+.videoComponent,
+.textComponent {
+    @include mut.flex-centered();
 }

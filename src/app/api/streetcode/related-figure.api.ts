@@ -1,22 +1,19 @@
-import Agent from "@api/agent.api";
-import { API_ROUTES } from "@constants/api-routes.constants";
+import Agent from '@api/agent.api';
+import { API_ROUTES } from '@constants/api-routes.constants';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
 const RelatedFigureApi = {
-    getAll: () =>
-        Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_ALL}`),
+    getAll: () => Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_ALL}`),
 
-    getById: (id: number) =>
-        Agent.get<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.GET}/${id}`),
+    getById: (id: number) => Agent.get<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.GET}/${id}`),
 
-    create: (relatedFigure: RelatedFigure) =>
-        Agent.post<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.CREATE}`, relatedFigure),
+    getByStreetcodeId: (streetcodeId: number) => Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_BY_STREETCODE_ID}/${streetcodeId}`),
 
-    update: (relatedFigure: RelatedFigure) =>
-        Agent.put<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.UPDATE}`, relatedFigure),
+    create: (relatedFigure: RelatedFigure) => Agent.post<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.CREATE}`, relatedFigure),
 
-    delete: (id: number) =>
-        Agent.delete(`${API_ROUTES.RELATED_FIGURES.DELETE}/${id}`),
-}
+    update: (relatedFigure: RelatedFigure) => Agent.put<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.UPDATE}`, relatedFigure),
+
+    delete: (id: number) => Agent.delete(`${API_ROUTES.RELATED_FIGURES.DELETE}/${id}`),
+};
 
 export default RelatedFigureApi;

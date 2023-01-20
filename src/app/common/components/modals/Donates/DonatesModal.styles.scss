@@ -1,0 +1,103 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+
+.donatesModal {
+  @include mut.sized(1012px, 621px);
+
+  &.ant-modal {
+    .ant-modal-content {
+      height: inherit;
+      @include mut.flex-centered($direction: column);
+      @include mut.full-rounded(70px, $overflow: visible);
+
+      padding: 0 !important;
+      box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    .ant-modal-close {
+      @include mut.positioned-as(absolute, $left: 94%, $top: -25px);
+      @include mut.circular(80px, c.$pure-white-color);
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+      &:hover {
+        background-color: c.$modal-hover-color;
+      }
+    }
+  }
+}
+
+.donatesModalContent {
+  @include mut.flex-centered($direction: column);
+
+  > h1 {
+    color: c.$accented-red-color;
+    @include mut.with-font(ft.$closer-text-font, $font-size: 40px, $font-weight: 500);
+  }
+
+  > h3 {
+    @include mut.with-font($font-weight: 300);
+  }
+
+  > span {
+    @include mut.rem-margined($top: 23px, $bottom: 35px);
+    @include mut.with-font(ft.$closer-text-font, $font-size: 64px, $font-weight: 500);
+    color: c.$darkish-gray-color;
+  }
+
+  .donatesBtnContainer {
+    @include mut.sized(679px, 64px);
+    @include mut.flexed($justify-content: space-between, $gap: 25px);
+
+    > * {
+      @include mut.sized(212px, inherit);
+      @include mut.full-rounded(11px);
+      @include mut.flex-centered();
+
+      border: 3px solid c.$dark-red-color;
+      @include vnd.vendored(transition, 'background-color .75s ease');
+      filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.19));
+
+      > span {
+        @include mut.with-font(ft.$closer-text-font, $font-size: 36px, $font-weight: 350);
+        color: c.$pure-black-color;
+      }
+
+      &:hover {
+        background-color: c.$lighter-gray-color;
+      }
+    }
+  }
+
+  .donatesInputContainer {
+    @include mut.sized(679px, 64px);
+    @include mut.flexed($justify-content: space-between, $gap: 25px);
+    margin: f.pxToRem(34px) 0;
+
+    > * {
+      @include mut.full-rounded(11px);
+      border: 2px solid #DCDCDC;
+      @include mut.with-font($font-weight: 300);
+    }
+  }
+
+
+  .donatesDonateBtn {
+    @include mut.sized(231px, 73px);
+    @include mut.full-rounded(11px);
+    background-color: c.$accented-red-color;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
+
+    > span {
+      text-transform: uppercase;
+      @include mut.with-font($font-size: 20px, /*$font-weight: 500*/);
+      color: c.$pure-white-color;
+    }
+
+    &:hover {
+      filter: brightness(110%);
+    }
+  }
+}

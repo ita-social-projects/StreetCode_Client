@@ -1,21 +1,24 @@
 import './InterestingFactsModal.styles.scss';
-import CancelBtn from "@assets/images/utils/Cancel_btn.svg";
 
-import { Modal } from "antd";
-import useMobx from "@stores/root-store";
-import { observer } from "mobx-react-lite";
+import { observer } from 'mobx-react-lite';
+import factsApi from '@api/streetcode/text-content/facts.api';
+import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import { Fact } from '@models/streetcode/text-contents.model';
+import useMobx from '@stores/root-store';
 
-const text = `7 (20) березня члени Центральної Ради обрали Михайла Грушевського своїм головою.
-\nРішення було прийняте без відома самого Грушевського, що свідчить про його колосальний авторитет.
-\n    На той час Грушевський навіть знаходився поза Україною, але повернувся, щоб обійняти посаду.
-\n    longTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongTextlongText`;
+import { Modal } from 'antd';
 
 const InterestingFactsModal = () => {
-    const { modalStore } = useMobx();
+    const { factsStore: { factMap }, modalStore } = useMobx();
     const { setModal, modalsState: { facts } } = modalStore;
+    const { getFactsByStreetcodeId } = factsApi;
+
+    const factId = facts.fromCardId!;
+    const fact = factMap.get(factId);
 
     return (
-        <Modal className={"interestingFactsModal"}
+        <Modal
+            className="interestingFactsModal"
             open={facts.isOpen}
             onCancel={() => setModal('facts')}
             footer={null}
@@ -23,17 +26,15 @@ const InterestingFactsModal = () => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <div className={"factsImgContainer"}>
-
-            </div>
-            <div className={"factsContentContainer"}>
-                <h1>Голова Центральної Ради</h1>
-                <div className={"factsTextContainer"}>
-                    {text}
+            <div className="factsImgContainer" />
+            <div className="factsContentContainer">
+                <h1>{fact?.title}</h1>
+                <div className="factsTextContainer">
+                    {fact?.factContent}
                 </div>
             </div>
         </Modal>
     );
-}
+};
 
 export default observer(InterestingFactsModal);

@@ -1,6 +1,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .interestingFactsContainer {
     @include mut.sized(90%, 784px);
@@ -36,3 +37,35 @@
 .slick-center .interestingFactSlide {
     transform: scale(1.52);
 }
+
+.singleSlideContainer{
+    @include mut.flex-centered();
+    @include vnd.vendored(transform, scale(1.32));
+    padding-top:5%;
+
+    .interestingFactSlide{
+        @include  mut.sized(650px, 600px);
+
+        .slideImage {
+            @include mut.sized($height: 60%);
+
+            img {
+                @include mut.sized($width: 100%);
+            }
+        }
+
+        .slideText{
+            @include mut.sized($height: 40%);
+
+            .heading{
+                font-size:26px;
+            }
+
+            .mainText{
+                font-size:15px;
+                line-height: pxToRem(20px);
+            }
+        }
+    }
+}
+

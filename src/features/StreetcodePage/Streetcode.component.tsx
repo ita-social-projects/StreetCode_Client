@@ -1,33 +1,32 @@
-import "./Streetcode.styles.scss";
+import './Streetcode.styles.scss';
 
-import SourcesComponent from "@features/StreetcodePage/SourcesBlock/Sources.component";
-import InterestingFactsComponent from "./InterestingFactsBlock/InterestingFacts.component";
-import QRComponent from "./QRBlock/QR.component";
-import MainBlock from "@features/StreetcodePage/MainBlock/MainBlock.component";
-import TextComponent from "@streetcode/TextBlock/TextBlock.component";
-import RelatedFiguresComponent from "@features/StreetcodePage/RelatedFiguresBlock/RelatedFigures.component";
-import HeaderBlock from "@layout/header/HeaderBlock.component";
-import TickerComponent from "@features/StreetcodePage/TickerBlock/Ticker.component";
-import PartnersComponent from "@features/StreetcodePage/PartnersBlock/Partners.component";
-import Footer from "@layout/footer/Footer.component";
-import TimelineBlock from '@features/TimelineBlock/TimelineBlock.component';
+import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
+import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
+import ProgressBar from '@features/ProgressBar/ProgressBar.component';
+import Footer from '@layout/footer/Footer.component';
+import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
+import MainBlock from '@streetcode/MainBlock/MainBlock.component';
+import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
+import QRComponent from '@streetcode/QRBlock/QR.component';
+import RelatedFiguresComponent from '@streetcode/RelatedFiguresBlock/RelatedFigures.component';
+import SourcesComponent from '@streetcode/SourcesBlock/Sources.component';
+import TextComponent from '@streetcode/TextBlock/TextBlock.component';
+import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
 
-interface Props {
-
-}
-
-const StreetcodeContent = (props: Props) => (
-    <div className='streetcodeContainer'>
-        <HeaderBlock />
-        <MainBlock />
-        <TextComponent />
-        <InterestingFactsComponent />
-        <RelatedFiguresComponent />
-            <TimelineBlock/>
-        <SourcesComponent />
+const StreetcodeContent = () => (
+    <div className="streetcodeContainer">
+        <ProgressBar waitMsOnRender={100}>
+            <MainBlock />
+            <TextComponent />
+            <InterestingFactsComponent />
+            <RelatedFiguresComponent />
+            <SourcesComponent />
+        </ProgressBar>
         <QRComponent />
         <PartnersComponent />
         <TickerComponent />
+        <ScrollToTopBtn />
+        <DonateBtn />
         <Footer />
     </div>
 );

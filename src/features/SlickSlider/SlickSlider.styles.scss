@@ -42,10 +42,29 @@
     transition: .5s;
 }
 
+.slick-disabled {
+    filter: c.$base-arrow-filter-color;
+
+    &:before {
+        pointer-events: none;
+    }
+}
+
 li.slick-active button:before {
     background: c.$dark-red-color;
 }
 
 .sliderClass {
     width: 100%;
+}
+
+.nonInfiniteSlider {
+    .slick-arrow {
+        opacity: .25;
+        filter: c.$selected-arrow-filter-color;
+
+        &:hover {
+            opacity: .25;
+        }
+    }
 }

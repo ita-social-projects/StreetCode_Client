@@ -5,8 +5,7 @@
 
 .relatedFiguresWrapper {
     @include wr.main-page-block-wrapper();
-
-    @include mut.rem-margined($bottom: 80px, $top: 110px);
+    @include mut.rem-margined($bottom: 80px, $top: 170px);
 }
 
 .bigWrapper {
@@ -16,14 +15,6 @@
 .smallWrapper {
     @include mut.sized($height: 605px);
 
-    .slick-track {
-        @include mut.rem-margined();
-
-        .slick-cloned {
-            display: none;
-        }
-    }
-    
     .moreInfo {
         display: none;
     }
@@ -32,21 +23,20 @@
 .relatedFiguresContainer {
     @include mut.sized($width: 90%, $height: 100%);
     @include mut.flexed($direction: column, $align-items: center);
-    
+
     .moreInfo {
         @include mut.sized($width: 1200px);
-
-        @include mut.rem-padded($top: 43px);
+        padding-top: f.pxToRem(43px);
 
         p {
             @include mut.with-font($font-weight: 500, $font-size: 20px);
-            line-height: pxToRem(23px);
-            text-decoration-line: underline;
-            color: c.$dark-red-color;
+            line-height: f.pxToEm(25px);
 
+            color: c.$dark-red-color;
             cursor: pointer;
 
             &:hover {
+                text-decoration-line: underline;
                 filter: contrast(150%);
             }
         }
@@ -56,8 +46,16 @@
 .relatedFiguresSliderContainer {
     @include mut.sized($width: 1200px);
 
+    .slick-arrow {
+        top: f.pxToRem(213px);
+    }
+
     .slick-list {
         @include mut.sized($height: 458px);
         @include mut.rem-padded($left: 5px);
+    }
+
+    .slick-track {
+        @include mut.flex-centered($gap: 28px);
     }
 }
