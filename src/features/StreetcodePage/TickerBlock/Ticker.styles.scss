@@ -7,7 +7,6 @@
   @include mut.colored(c.$pure-white-color, c.$selected-arrow-color);
   @include mut.sized(200%, 44px);
   z-index: -1;
-}
 
 .tickerItem {
   @include mut.flex-centered();

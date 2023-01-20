@@ -20,7 +20,10 @@ const SourcesComponent = () => {
     );
 
     return (
-        <div className="sourcesWrapper">
+        <div
+            id='sources'
+            className="sourcesWrapper"
+        >
             <div className="sourcesContainer">
                 <BlockHeading headingText="Для фанатів" />
                 <div className="sourceContentContainer">

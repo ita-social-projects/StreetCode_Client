@@ -9,6 +9,7 @@ const useScrollPosition = (
     effect: (props: ScrollProps) => void,
     wait?: number,
     deps?: DependencyList,
+    wait?: number,
     element?: ElementRefOrDefault,
     useWindow?: boolean,
     boundingElement?: ElementRefOrDefault,
