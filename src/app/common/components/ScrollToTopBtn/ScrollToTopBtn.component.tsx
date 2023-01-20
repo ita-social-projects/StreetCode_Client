@@ -16,7 +16,7 @@ const goToTop = () => {
     });
 };
 
-const ScrollToTopBtn = ({ scrollDelay = 300, visibleAfterPx = 800, btnStyle }: Props) => {
+const ScrollToTopBtn = ({ scrollDelay = 300, visibleAfterPx = 1400, btnStyle }: Props) => {
     const [showTopBtn, setShowTopBtn] = useState(false);
 
     useEffect(() => {
@@ -29,15 +29,16 @@ const ScrollToTopBtn = ({ scrollDelay = 300, visibleAfterPx = 800, btnStyle }: P
     }, [visibleAfterPx]);
 
     return (
-        <div className="scrollToTopBtnContainer">
+        <>
             {showTopBtn && (
-                <ScrollBtn
-                    style={btnStyle}
-                    className="scrollToTopBt"
+                <div
+                    className="scrollToTopBtnContainer"
                     onClick={() => setTimeout(goToTop, scrollDelay)}
-                />
+                >
+                    <ScrollBtn style={btnStyle} />
+                </div>
             )}
-        </div>
+        </>
     );
 };
 

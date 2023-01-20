@@ -29,16 +29,3 @@ div {
   @include vnd.vendored(transition, 'background .5s ease');
   z-index: 1;
 }
-
-::-webkit-scrollbar {
-  width: .765rem;
-}
-
-::-webkit-scrollbar-track {
-  background: c.$scrollbar-track-color;
-}
-
-::-webkit-scrollbar-thumb {
-  @include mut.full-rounded(4px);
-  background: c.$scrollbar-thumb-color;
-}

@@ -5,7 +5,7 @@
 
 .navBarContainer {
   @include mut.sized(100%, 82px);
-  max-width: f.pxToRem(1908px);
+  max-width: f.pxToRem(1902px);
 
   @include mut.flexed($justify-content: space-between, $align-items: center);
   padding: f.pxToRem(21px) f.pxToRem(32px);

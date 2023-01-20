@@ -12,7 +12,7 @@ $normal-gray-color: #7F7F7F !important;
 $normal-darker-gray-color: #7E7E7E !important;
 
 $dark-red-color: #8D1F16 !important;
-$accented-red-color: #DB3424 !important;
+$accented-red-color: #E04031 !important;
 
 $slider-base-dot-color: #D9D9D9 !important;
 $timeline-reel-color: #D9D9D9 !important;
@@ -25,11 +25,9 @@ $base-arrow-filter-color: invert(97%) sepia(66%) saturate(423%)
   hue-rotate(212deg) brightness(113%) contrast(90%) !important;
 $selected-arrow-filter-color: invert(87%) sepia(0%) saturate(479%)
   hue-rotate(143deg) brightness(95%) contrast(81%) !important;
+$hovered-btn-filter-color: drop-shadow(0 2px 15px rgba(61, 0, 0, .25)) !important;
 
 $card-scrollbar-track-color: #DEDCDC !important;
-$scrollbar-thumb-color: #891C1B !important;
-$scrollbar-track-color: #C9C5C2 !important;
-
 $modal-hover-color: #ECE9E9 !important;
 $burger-menu-color: #7F7F7F !important;
 $ant-menu-color: #E13F30 !important;
