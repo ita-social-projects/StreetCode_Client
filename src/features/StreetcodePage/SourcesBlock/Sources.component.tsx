@@ -18,7 +18,6 @@ const SourcesComponent = () => {
         () => fetchSrcCategoriesByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
-
     return (
         <div className="sourcesWrapper">
             <div className="sourcesContainer">

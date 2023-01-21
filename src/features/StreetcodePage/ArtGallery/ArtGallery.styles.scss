@@ -4,13 +4,29 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+.mygallery{
+    @include mut.flex-centered();
+}
+
+.style1{
+    display: 'grid';
+    grid-template-columns: '240px 240px 240px';
+    grid-template-rows: '114px 114px';
+    grid-gap: 12;
+ }
+
+.slideArt:hover{
+    // scale: 101%;
+    // filter: contrast(135%);
+    // cursor: pointer;
+}
 .artGalleryWrapper {
     @include wr.main-page-block-wrapper();
-
+    margin-bottom: pxToRem(390px);
     .artGalleryContainer {
         @include mut.rem-margined($top: 150px);
         @include mut.sized(100%, 400px);
-        margin-bottom: pxToRem(190px);
+        margin-bottom: pxToRem(290px);
 
         .artGalleryContentContainer {
             height: pxToRem(320px);
@@ -29,17 +45,17 @@
 
     .sliderClass {
         .slick-track {
-            @include mut.flex-centered($gap: 30px);
+            // @include mut.flex-centered($gap: 30px);
         }
 
         .slick-slide {
             @include vnd.vendored(transition, 'all .5s ease');
 
-            &:hover {
-                scale: 101%;
-                filter: contrast(135%);
-                cursor: pointer;
-            }
+            // &:hover {
+            //     scale: 101%;
+            //     filter: contrast(135%);
+            //     cursor: pointer;
+            // }
         }
     }
 }

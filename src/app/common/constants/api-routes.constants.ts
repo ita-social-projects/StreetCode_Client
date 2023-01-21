@@ -100,6 +100,10 @@ export const API_ROUTES = {
         UPDATE: 'arts/update',
         DELETE: 'arts/delete',
     },
+    STREETCODE_ARTS: {
+        GET_ALL: 'streetcodeArt/getAll',
+        GET_BY_STREETCODE_ID: 'streetcodeArt/getByStreetcodeId',
+    },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',
         GET: 'relatedFigure/getById',

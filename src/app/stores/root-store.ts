@@ -16,6 +16,7 @@ import TimelineitemStore from '@stores/timelineitem-store';
 import ToponymStore from '@stores/toponym-store';
 import TransactionLinksStore from '@stores/transactions-store';
 import VideoStore from '@stores/videos-store';
+import StreetcodeArtStore from './streetcode-art-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -34,6 +35,7 @@ interface Store {
     transactionsStore: TransactionLinksStore,
     streetcodesStore: StreetcodeStore,
     sourcesStore: SourcesStore,
+    streetcodeArtStore: StreetcodeArtStore
     relatedFiguresStore: RelatedFiguresStore,
 }
 
@@ -45,6 +47,7 @@ export const store: Store = {
     audiosStore: new AudioStore(),
     videosStore: new VideoStore(),
     artsStore: new ArtStore(),
+    streetcodeArtStore: new StreetcodeArtStore(),
     imagesStore: new ImageStore(),
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
