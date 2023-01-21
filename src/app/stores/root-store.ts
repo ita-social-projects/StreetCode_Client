@@ -35,7 +35,7 @@ interface Store {
     transactionsStore: TransactionLinksStore,
     streetcodesStore: StreetcodeStore,
     sourcesStore: SourcesStore,
-    streetcodeArtStore: StreetcodeArtStore
+    streetcodeArtStore: StreetcodeArtStore,
     relatedFiguresStore: RelatedFiguresStore,
 }
 

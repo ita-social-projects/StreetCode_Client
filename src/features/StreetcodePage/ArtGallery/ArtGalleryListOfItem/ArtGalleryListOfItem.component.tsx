@@ -10,10 +10,7 @@ const ArtGalleryListOfItem = (props: Props) => {
   
   const hh=props
   const images = props.images;
-  console.log("===========================image=================================")
-  images?.map((image)=>(
-    console.log(image)
-  ))
+  // console.log("===========================image=================================")
   
       return (
         <div className="slideArt"  
