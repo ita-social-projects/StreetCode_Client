@@ -13,7 +13,7 @@ const redirectOnStreetcode = (id: number) => {
 };
 
 const RelatedFigureItem = ({ relatedFigure }: Props) => {
-    const { id, image: { id: imageId }, title, tags } = relatedFigure;
+    const { id, imageId, title, tags } = relatedFigure;
 
     const { imagesStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
@@ -36,9 +36,9 @@ const RelatedFigureItem = ({ relatedFigure }: Props) => {
                     {title}
                 </h3>
                 <div className="relatedTagList">
-                    {tags.map(({ id: tagId, title: tagTitle }, idx) => (
+                    {tags.map((tag, idx) => (
                         <div key={idx} className="tag">
-                            <p>{tagTitle}</p>
+                            <p>{tag.title}</p>
                         </div>
                     ))}
                 </div>

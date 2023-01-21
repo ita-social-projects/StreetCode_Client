@@ -16,52 +16,51 @@ import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem
 import RelatedFigure from '@/models/streetcode/related-figure.model';
 import { forwardRef } from 'react';
 
-const relatedFigures: RelatedFigure[] = [
-    {
-        id: 1,
-        title: 'Володимир Антонович',
-        image: { id: 1, url: { id: 1, href: Antonovich } },
-        tags: [{ id: 1, title: 'Наукова школа' }, { id: 1, title: 'tag' }],
-    },
-    {
-        id: 2,
-        title: 'Леся Українка',
-        image: { id: 1, url: { id: 1, href: Ukrainka } },
-        tags: [{ id: 1, title: 'tag' }],
-    },
-    {
-        id: 3,
-        title: 'Іван Мазепа',
-        image: { id: 1, url: { id: 1, href: Mazepa } },
-        tags: [{ id: 1, title: 'tag' }],
-    },
-    {
-        id: 4,
-        title: 'Роман Ратушний',
-        image: { id: 1, url: { id: 1, href: Ratushny } },
-        tags: [{ id: 1, title: 'tag' }],
-    },
-    {
-        id: 5,
-        title: 'Богдан хмельницький',
-        image: { id: 1, url: { id: 1, href: Khmelnytsky } },
-        tags: [{ id: 1, title: 'tag' }],
-    },
-];
+// const relatedFigures: RelatedFigure[] = [
+//     {
+//         id: 1,
+//         title: 'Володимир Антонович',
+//         image: { id: 1, url: { id: 1, href: Antonovich } },
+//         tags: [{ id: 1, title: 'Наукова школа' }, { id: 1, title: 'tag' }],
+//     },
+//     {
+//         id: 2,
+//         title: 'Леся Українка',
+//         image: { id: 1, url: { id: 1, href: Ukrainka } },
+//         tags: [{ id: 1, title: 'tag' }],
+//     },
+//     {
+//         id: 3,
+//         title: 'Іван Мазепа',
+//         image: { id: 1, url: { id: 1, href: Mazepa } },
+//         tags: [{ id: 1, title: 'tag' }],
+//     },
+//     {
+//         id: 4,
+//         title: 'Роман Ратушний',
+//         image: { id: 1, url: { id: 1, href: Ratushny } },
+//         tags: [{ id: 1, title: 'tag' }],
+//     },
+//     {
+//         id: 5,
+//         title: 'Богдан хмельницький',
+//         image: { id: 1, url: { id: 1, href: Khmelnytsky } },
+//         tags: [{ id: 1, title: 'tag' }],
+//     },
+// ];
 
 const RelatedFiguresComponent = () => {
     const { modalStore: { setModal } } = useMobx();
-    // const { relatedFiguresStore } = useMobx();
-    // const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
+    const { relatedFiguresStore } = useMobx();
+    const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
 
-    /* const streetcodeId = useRouteId();
+    const streetcodeId = useRouteId();
     useAsync(
         () => fetchRelatedFiguresByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
-     */
 
-    const sliderItems = relatedFigures.map((figure) => (
+    const sliderItems = getRelatedFiguresArray.map((figure) => (
         <RelatedFigureItem
             key={figure.id}
             relatedFigure={figure}
@@ -71,7 +70,7 @@ const RelatedFiguresComponent = () => {
     return (
         <div
             id='relatedFigures'
-            className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
+            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії" />
@@ -84,6 +83,7 @@ const RelatedFiguresComponent = () => {
                             slides={sliderItems}
                             swipe={false}
                             dots={false}
+                            swipeOnClick={false}
                         />
                     </div>
                 </div>
