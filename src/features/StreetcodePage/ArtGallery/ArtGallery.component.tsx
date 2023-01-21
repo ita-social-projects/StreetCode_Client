@@ -11,6 +11,7 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
 import ArtGalleryListOfItem from './ArtGalleryListOfItem/ArtGalleryListOfItem.component';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 type IndexedArt = {
     index: number;
@@ -44,46 +45,57 @@ const ArtGallery = () => {
                     index,
                     description,
                     imageHref: image.url.href,
-                    offset: (width <= height) ? 1 : 2,
+                    offset: width <= height ? 2 : 1,
                 } as IndexedArt);
             } catch (error: unknown) {
                 console.log(`Error: cannot parse the image url: ${image.url.href}`);
             }
+            setIndexedArts(newMap);
         });
 
-        setIndexedArts(newMap);
+        
     }, [getStreetcodeArtArray]);
 
-    console.log(indexedArts);
+    //console.log(indexedArts);
 
     const sortedArtsMap = [...indexedArts].sort((a, b) => a.index - b.index);
 
+    console.log(sortedArtsMap);
     let j = 0;
     let jCount = 0;
 
     const slideOfArtList = [];
     let arts: IndexedArt[] = [];
 
-    const artGalleryListOfItem = (
+    const artGalleryListOfItem = 
         <ArtGalleryListOfItem images={arts.map((i) => i.imageHref)} />
-    );
-
+       
+    
+  
     sortedArtsMap.forEach(({ index, offset, imageHref }) => {
-        if (j !== SECTION_AMOUNT) {
+        if (j != SECTION_AMOUNT) {
             j += offset ?? 0;
             jCount += offset ?? 0;
+            console.log(offset)
             arts.push({ index, imageHref } as IndexedArt);
-        } else {
+            // console.log("arts")
+            // console.log(arts)
+          
+        } if(j==SECTION_AMOUNT) {
             j = 0;
-            slideOfArtList.push(artGalleryListOfItem);
+            slideOfArtList.push(<ArtGalleryListOfItem images={arts.map((i) => i.imageHref)} />);
             arts = [];
         }
     });
 
     if (!Number.isInteger(jCount / SECTION_AMOUNT)) {
-        slideOfArtList.push(artGalleryListOfItem);
+        console.log("arts")
+        console.log(arts)
+        slideOfArtList.push(<ArtGalleryListOfItem images={arts?.map((i) => {console.log(i); return i.imageHref})} />);
+        console.log("slideOfArtList")
+        console.log(slideOfArtList.length)
     }
-
+    console.log(slideOfArtList)
     const imgSrc = `https://uk.wikipedia.org/wiki/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_
     %D0%BA%D0%B0%D1%80%D1%82%D0%B8%D0%BD_%D1%96_%D0%BC%D0%B0%D0%BB%D1%8E%D0%BD%D0%BA%D1%96%D0%B2_
     %D0%A2%D0%B0%D1%80%D0%B0%D1%81%D0%B0_%D0%A8%D0%B5%D0%B2%D1%87%D0%B5%D0%BD%D0%BA%D0%B0#/
