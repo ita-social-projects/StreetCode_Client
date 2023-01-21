@@ -37,6 +37,7 @@ const RelatedFigureItem = ({ relatedFigure }: Props) => {
                 </h3>
                 <div className="relatedTagList">
                     {tags.map((tag, idx) => (
+                        // eslint-disable-next-line react/no-array-index-key
                         <div key={idx} className="tag">
                             <p>{tag.title}</p>
                         </div>
