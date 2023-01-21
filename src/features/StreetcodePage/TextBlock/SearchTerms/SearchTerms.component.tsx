@@ -2,7 +2,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import Rectangle110 from '@images/art-gallery/Rectangle110.png';
 import { Popover } from 'antd';
-import ArtGalleryItem from '../../ArtGallery/ArtGalleryListOfItem/ArtGalleryItem/ArtGalleryItem.component';
+import ArtGalleryItem from '../../ArtGallery/ArtGalleryItem/ArtGalleryItem.component';
 import BlockHeading from '../../HeadingBlock/BlockHeading.component';
 
 interface Props {
