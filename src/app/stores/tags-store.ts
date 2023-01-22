@@ -9,15 +9,17 @@ export default class TagsStore {
         makeAutoObservable(this);
     }
 
-    private setInternalMap = (tags: Tag[]) => {
+    private set setInternalMap(tags: Tag[]) {
         tags.forEach(this.setItem);
-    };
+    }
 
     private setItem = (tag: Tag) => {
         this.TagMap.set(tag.id, tag);
     };
 
-    public getTagArray = () => Array.from(this.TagMap.values());
+    public get getTagArray() {
+        return Array.from(this.TagMap.values());
+    }
 
     public fetchTag = async (id: number) => {
         try {
@@ -30,8 +32,7 @@ export default class TagsStore {
 
     public fetchTags = async () => {
         try {
-            const tags = await tagsApi.getAll();
-            this.setInternalMap(tags);
+            this.setInternalMap = await tagsApi.getAll();
         } catch (error: unknown) {
             console.log(error);
         }
@@ -39,10 +40,7 @@ export default class TagsStore {
 
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {
         try {
-            const tag = await tagsApi.getTagByStreetcodeId(streetcodeId);
-            runInAction(() => {
-                this.TagMap.set(streetcodeId, tag);
-            });
+            this.setInternalMap = await tagsApi.getTagsByStreetcodeId(streetcodeId);
         } catch (error: unknown) {
             console.log(error);
         }

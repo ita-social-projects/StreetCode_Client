@@ -6,16 +6,17 @@ import useMobx from '@stores/root-store';
 
 interface Props {
     relatedFigure: RelatedFigure;
+    filterTags?: boolean;
 }
 
 const redirectOnStreetcode = (id: number) => {
     console.log(`redirected to streetcode with id: ${id}`);
 };
 
-const RelatedFigureItem = ({ relatedFigure }: Props) => {
+const RelatedFigureItem = ({ relatedFigure, filterTags = false }: Props) => {
     const { id, imageId, title, tags } = relatedFigure;
 
-    const { imagesStore } = useMobx();
+    const { imagesStore, tagsStore: { getTagArray } } = useMobx();
     const { fetchImage, getImage } = imagesStore;
 
     useAsync(
@@ -36,12 +37,13 @@ const RelatedFigureItem = ({ relatedFigure }: Props) => {
                     {title}
                 </h3>
                 <div className="relatedTagList">
-                    {tags.map((tag, idx) => (
+                    {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
+                        .map((tag, idx) => (
                         // eslint-disable-next-line react/no-array-index-key
-                        <div key={idx} className="tag">
-                            <p>{tag.title}</p>
-                        </div>
-                    ))}
+                            <div key={idx} className="tag">
+                                <p>{tag.title}</p>
+                            </div>
+                        ))}
                 </div>
             </div>
         </div>

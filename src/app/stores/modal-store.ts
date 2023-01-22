@@ -44,6 +44,5 @@ export default class ModalStore {
             isOpen: opened ?? !this.modalsState[modalName].isOpen,
             fromCardId: fromId,
         };
-        console.log(this.modalsState[modalName].isOpen);
     };
 }

@@ -9,12 +9,17 @@ import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem
 
 const RelatedFiguresComponent = () => {
     const { modalStore: { setModal } } = useMobx();
-    const { relatedFiguresStore } = useMobx();
+    const { relatedFiguresStore, tagsStore } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
+    const { fetchTagByStreetcodeId } = tagsStore;
 
     const streetcodeId = useRouteId();
     useAsync(
         () => fetchRelatedFiguresByStreetcodeId(streetcodeId),
+        [streetcodeId],
+    );
+    useAsync(
+        () => fetchTagByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
 
@@ -22,6 +27,7 @@ const RelatedFiguresComponent = () => {
         <RelatedFigureItem
             key={figure.id}
             relatedFigure={figure}
+            filterTags
         />
     ));
 

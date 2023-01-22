@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/prefer-default-export
 export const API_ROUTES = {
     BASE: '/',
     FACTS: {
@@ -17,13 +18,13 @@ export const API_ROUTES = {
         DELETE: 'partners/delete',
     },
     TAGS: {
-        GET_ALL: 'tags/getAll',
-        GET: 'tags/getById',
-        GET_BY_TITLE: 'tags/getByTitle',
-        GET_BY_STREETCODE_ID: 'tags/getByStreetcodeId',
-        CREATE: 'tags/create',
-        UPDATE: 'tags/update',
-        DELETE: 'tags/delete',
+        GET_ALL: 'tag/getAll',
+        GET: 'tag/getById',
+        GET_BY_TITLE: 'tag/getByTitle',
+        GET_BY_STREETCODE_ID: 'tag/getByStreetcodeId',
+        CREATE: 'tag/create',
+        UPDATE: 'tag/update',
+        DELETE: 'tag/delete',
     },
     TERMS: {
         GET_ALL: 'term/getAll',
