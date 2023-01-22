@@ -47,22 +47,23 @@
     visibility: hidden;
 
     @include mut.flexed($align-items: center, $gap: 5px);
-    @include mut.rem-padded($top: 7px, $left: 32px, $right: 15px);
+    @include mut.rem-padded($top: 7px, $left: 23px, $right: 23px);
 
     .tag {
-        @include mut.sized($height: 38px);
+        @include mut.sized($height: 28px);
         @include mut.flex-centered();
 
         border: 2px solid c.$pure-white-color;
-        @include mut.full-rounded($rad: 11px);
-        @include mut.rem-padded($left: 12px, $top: 9px, $right: 12px, $bottom: 9px);
+        @include mut.full-rounded($rad: 7.86px);
+        @include mut.rem-padded($left: 11px, $top: 7px, $right: 11px, $bottom: 7px);
 
         p {
-            @include mut.sized($height: 20px);
+            @include mut.sized($height: 14px);
             text-align: center;
             line-height: 135.69%;
 
-            @include mut.with-font($font-size: 15px,$font-weight: 500);
+            @include mut.with-font($font-size: 10px,$font-weight: 500);
+            line-height: pxToRem(13.6px);
             color: c.$pure-white-color;
         }
     }

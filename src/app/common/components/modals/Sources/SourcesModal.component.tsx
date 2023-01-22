@@ -3,6 +3,7 @@ import './SourcesModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import sourcesApi from '@api/sources/sources.api';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import ModalBg from '@assets/images/utils/ModalBg.png';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { SourceSubCategory } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
@@ -36,8 +37,7 @@ const SourcesModal = () => {
             <div
                 className="sourceImgContainer"
                 style={{
-                    backgroundImage: `url(${category?.image?.url.href})`,
-                    backgroundSize: '100% 15.25rem',
+                    background: `url(${ModalBg})`,
                 }}
             >
                 <h1>{category?.title}</h1>

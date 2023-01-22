@@ -33,7 +33,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
 
 .sourceImgContainer {
   position: sticky;
-  @include mut.sized(100%, 161px);
+  @include mut.sized(100%, 97px);
   @include mut.flex-centered();
 
   @include vnd.vendored(border-top-left-radius, '70px');
