@@ -9,14 +9,16 @@ export default class AudioStore {
         makeAutoObservable(this);
     }
 
-    private setItem = (audio: Audio) => {
+    private setItem = (audio: Audio | undefined) => {
         this.Audio = audio;
     };
 
     public fetchAudio = async (id: number) => {
         try {
             const audio = await audiosApi.getById(id);
-            this.setItem(audio);
+            runInAction(() => {
+                this.setItem(audio as Audio);
+            });
         } catch (error: unknown) {
             console.log(error);
         }
@@ -25,7 +27,9 @@ export default class AudioStore {
     public fetchAudioByStreetcodeId = async (streetcodeId: number) => {
         try {
             const audio = await audiosApi.getByStreetcodeId(streetcodeId);
-            this.Audio = audio;
+            runInAction(() => {
+                this.setItem(audio as Audio);
+            });
         } catch (error: unknown) {
             console.log(error);
         }
@@ -34,7 +38,9 @@ export default class AudioStore {
     public createAudio = async (audio: Audio) => {
         try {
             await audiosApi.create(audio);
-            this.setItem(audio);
+            runInAction(() => {
+                this.setItem(audio as Audio);
+            });
         } catch (error: unknown) {
             console.log(error);
         }
@@ -54,7 +60,9 @@ export default class AudioStore {
     public deleteAudio = async (audioId: number) => {
         try {
             await audiosApi.delete(audioId);
-            this.Audio = undefined;
+            runInAction(() => {
+                this.setItem(undefined);
+            });
         } catch (error: unknown) {
             console.log(error);
         }

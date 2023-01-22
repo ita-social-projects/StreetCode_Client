@@ -11,7 +11,7 @@ import useMobx from '@stores/root-store';
 import fullMonthNumericYearDateFmtr from '@utils/formatters.utils';
 
 import { Button } from 'antd';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
 interface Props {

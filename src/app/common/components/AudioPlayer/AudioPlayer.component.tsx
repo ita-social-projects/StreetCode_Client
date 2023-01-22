@@ -4,7 +4,7 @@ import PauseBtn from '@images/audio-player/PauseBtn.png';
 import PlayBtn from '@images/audio-player/PlayBtn.png';
 
 import { useEffect, useRef, useState } from 'react';
-import useMobx from '@/app/stores/root-store';
+import useMobx from '@stores/root-store';
 
 const AudioPlayer = () => {
     const { audiosStore: { Audio } } = useMobx();
