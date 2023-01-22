@@ -18,7 +18,11 @@ const RelatedFiguresModal = () => {
 
     const streetcodeId = relatedFigures.fromCardId!;
     useAsync(
-        () => fetchRelatedFiguresByStreetcodeId(streetcodeId),
+        () => {
+            if (streetcodeId) {
+                fetchRelatedFiguresByStreetcodeId(streetcodeId);
+            }
+        },
         [streetcodeId],
     );
 
@@ -29,7 +33,7 @@ const RelatedFiguresModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('relatedFigures')}
+            onCancel={() => setModal('relatedFigures', streetcodeId, false)}
             closeIcon={<CancelBtn />}
         >
             <div

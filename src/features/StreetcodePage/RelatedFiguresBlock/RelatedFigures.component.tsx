@@ -14,6 +14,7 @@ const RelatedFiguresComponent = () => {
     const { fetchTagByStreetcodeId } = tagsStore;
 
     const streetcodeId = useRouteId();
+
     useAsync(
         () => fetchRelatedFiguresByStreetcodeId(streetcodeId),
         [streetcodeId],
@@ -34,7 +35,7 @@ const RelatedFiguresComponent = () => {
     return (
         <div
             id="relatedFigures"
-            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
+            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 1 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії" />
@@ -52,7 +53,7 @@ const RelatedFiguresComponent = () => {
                     </div>
                 </div>
                 <div className="moreInfo">
-                    <p onClick={() => setModal('relatedFigures', undefined, true)}>
+                    <p onClick={() => setModal('relatedFigures', streetcodeId, true)}>
                         Дивитися всіх
                     </p>
                 </div>
