@@ -1,9 +1,9 @@
 import './Streetcode.styles.scss';
 
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
-import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
+import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';

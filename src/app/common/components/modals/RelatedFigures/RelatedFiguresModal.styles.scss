@@ -2,18 +2,22 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+
+$bookImg: "@assets/images/sources/Books_stretched.png";
+$articlesImg: "@assets/images/sources/Articles.png";
 
 .relatedFiguresModal {
-  @include mut.sized(823px, 765px);
+  @include mut.sized(1000px, 698px);
 
   &.ant-modal {
     .ant-modal-content {
-      height: pxToRem(765px);
+      height: pxToRem(698px);
       @include mut.full-rounded(70px, $overflow: visible);
 
       padding: 0 !important;
       box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
-        0 6px 20px 0 rgb(0 0 0 / 19%);
+                  0 6px 20px 0 rgb(0 0 0 / 19%);
     }
 
     .ant-modal-close {
@@ -27,7 +31,54 @@
   }
 }
 
-.relatedFiguresModalContainer {
-  @include mut.flexed($direction: column, $gap: 15px);
-  @include mut.rem-margined(29px, 42px, 24px, 42px);
+.relatedFiguresImgContainer {
+  position: sticky;
+  @include mut.sized(100%, 97px);
+  @include mut.flex-centered();
+
+  @include mut.rounded($top-left: 70px, $top-right: 70px);
+
+  h1 {
+    color: c.$pure-white-color;
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+  }
+}
+
+.relatedFiguresContentContainer {
+  height: pxToRem(598px);
+  @include mut.flexed($direction: row, $gap: 30px, $wrap: wrap);
+
+  overflow-y: scroll;
+  @include mut.rem-margined(0, 21px, 0, 53px);
+  @include mut.rem-padded(30px, 0, 30px, 0);
+
+  .relatedFigureSlide{
+    @include mut.sized($width: 278px, $height: 452px);
+
+    .slideText{
+        @include mut.sized($width: 272px, $height: 169px);
+
+        .relatedTagList {
+            visibility: visible;
+        }
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: .765rem;
+  }
+
+  &::-webkit-scrollbar-thumb,
+  &::-webkit-scrollbar-track {
+    @include mut.full-rounded(15px);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: c.$card-scrollbar-track-color;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: c.$accented-gray-color;
+    @include mut.rem-margined($top: 37px, $bottom: 90px);
+  }
 }
