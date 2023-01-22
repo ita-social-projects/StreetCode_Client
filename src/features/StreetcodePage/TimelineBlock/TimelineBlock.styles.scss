@@ -1,0 +1,18 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+$timelineItemImg: "@assets/images/TimelineItem.png";
+
+.timelineContentContainer {
+  margin: f.pxToRem(50px) 0;
+  padding-right: f.pxToRem(10px);
+  @include mut.sized(100%, 536px);
+  background-color: c.$timeline-reel-color;
+
+  .sliderClass {
+    @include mut.rem-margined(30px, 0, 30px);
+  }
+}

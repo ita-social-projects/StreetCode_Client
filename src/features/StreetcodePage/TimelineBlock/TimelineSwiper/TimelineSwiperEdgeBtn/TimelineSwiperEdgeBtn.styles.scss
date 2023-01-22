@@ -1,0 +1,27 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.swiperEdgeBtn {
+  @include mut.sized(42px, 42px);
+  @include mut.flex-centered();
+
+  position: absolute;
+  z-index: 10;
+
+  background-color: c.$timeline-reel-color;
+  @include vnd.vendored(transition, '.5s ease');
+
+  &:hover {
+    background-color: c.$dark-gray-color;
+    cursor: pointer;
+  }
+
+  > * {
+    position: relative;
+    bottom: f.pxToRem(60px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 30px);
+  }
+}

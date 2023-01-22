@@ -1,9 +1,9 @@
 import './Streetcode.styles.scss';
 
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
-import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
+import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
@@ -12,6 +12,7 @@ import RelatedFiguresComponent from '@streetcode/RelatedFiguresBlock/RelatedFigu
 import SourcesComponent from '@streetcode/SourcesBlock/Sources.component';
 import TextComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
+import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
@@ -21,6 +22,7 @@ const StreetcodeContent = () => (
             <InterestingFactsComponent />
             <RelatedFiguresComponent />
             <SourcesComponent />
+            <TimelineBlock />
         </ProgressBar>
         <QRComponent />
         <PartnersComponent />
