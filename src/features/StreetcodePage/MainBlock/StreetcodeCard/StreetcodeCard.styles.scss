@@ -74,20 +74,27 @@
 .cardFooter {
   @include mut.rem-padded(18px, 10px, 10px, 3px);
   @include mut.flexed($justify-content: flex-start, $gap: 20px);
+
+  .ant-btn-primary:disabled{
+    background-color: c.$lighter-gray-color;
+    color: c.$pure-white-color;
+  }
 }
 
-.audioBtn {
-  @include mut.sized(271px, 73px);
-  @include mut.flex-centered();
-  @include mut.full-rounded(14px);
-
-  @include mut.with-font($font-weight: 500);
+.audioBtnActive {
   background-color: c.$accented-red-color;
   border-color: c.$accented-red-color;
 
   &:hover {
     box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
   }
+}
+
+.audioBtn {
+  @include mut.sized(271px, 73px);
+  @include mut.flex-centered();
+  @include mut.full-rounded(14px);
+  @include mut.with-font($font-weight: 500);
 }
 
 .animateFigureBtn {
