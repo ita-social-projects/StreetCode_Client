@@ -10,7 +10,6 @@ import {
     useRef,
     useState,
 } from 'react';
-import { Outlet } from 'react-router-dom';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
@@ -24,7 +23,7 @@ const HeaderBlock = () => {
     const [isInputActive, setIsInputActive] = useState(false);
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
-    const ref = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useMobx();
 
     const onDimCancel = useCallback((e?: Event) => {
@@ -35,54 +34,53 @@ const HeaderBlock = () => {
     }, [setIsPageDimmed]);
 
     useEventListener('scroll', () => {
-        setIsHeaderHidden(window.scrollY > 1600);
+        setIsHeaderHidden(window.scrollY > 100);
     });
 
     useEffect(onDimCancel, [isHeaderHidden, onDimCancel]);
-    useOnClickOutside(ref, onDimCancel);
+    useOnClickOutside(inputRef, onDimCancel);
 
     if (isInputActive && !isPageDimmed) {
         setIsPageDimmed(true);
     }
 
+    console.log(isPageDimmed);
+
     return (
-        <>
-            <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''}`}>
-                <div className="leftPartContainer">
-                    <StreetcodeSvg />
-                    <input
-                        ref={ref}
-                        className={`ant-input css-dev-only-do-not-override-26rdvq hiddenHeaderInput
+        <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
+            <div className="leftPartContainer">
+                <StreetcodeSvg />
+                <input
+                    ref={inputRef}
+                    className={`ant-input css-dev-only-do-not-override-26rdvq hiddenHeaderInput
                         ${((isInputActive && isHeaderHidden) ? 'active' : '')}`}
-                    />
-                    <HeaderSkeleton />
-                    <LanguageSelector />
-                </div>
-                <div className="rightPartContainer">
-                    <div className="rightSectionContainer">
-                        {isHeaderHidden && (
-                            <MagnifyingGlass
-                                viewBox="0 0 24 24"
-                                onClick={() => {
-                                    setIsInputActive((prev) => !prev);
-                                    setIsPageDimmed();
-                                }}
-                                style={isPageDimmed ? { zIndex: '-1' } : undefined}
-                            />
-                        )}
-                        <HeaderDrawer />
-                        <Button
-                            type="primary"
-                            className="loginBtn"
-                            onClick={() => setModal('login')}
-                        >
+                />
+                <HeaderSkeleton />
+                <LanguageSelector />
+            </div>
+            <div className="rightPartContainer">
+                <div className="rightSectionContainer">
+                    {isHeaderHidden && (
+                        <MagnifyingGlass
+                            viewBox="0 0 24 24"
+                            onClick={() => {
+                                setIsInputActive((prev) => !prev);
+                                setIsPageDimmed();
+                            }}
+                            style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                        />
+                    )}
+                    <HeaderDrawer />
+                    <Button
+                        type="primary"
+                        className="loginBtn"
+                        onClick={() => setModal('login')}
+                    >
                             Долучитися
-                        </Button>
-                    </div>
+                    </Button>
                 </div>
             </div>
-            <Outlet />
-        </>
+        </div>
     );
 };
 

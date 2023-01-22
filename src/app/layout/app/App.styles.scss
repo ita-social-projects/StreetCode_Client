@@ -19,12 +19,12 @@ div {
 
 .App {
   min-height: 100vh;
-  @include mut.flexed(column);
 }
 
 .dimmed {
-  position: absolute;
+  position: fixed;
   background: rgba(0, 0, 0, .45);
+  @include mut.parent-sized();
 
   @include vnd.vendored(transition, 'background .5s ease');
   z-index: 1;

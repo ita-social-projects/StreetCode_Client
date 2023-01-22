@@ -12,6 +12,7 @@ interface Props {
 
 const ProgressBarSection = ({ idx, block: { title, height }, isBlockActive }: Props) => (
     <Popover
+        overlayClassName="progressBarSectionPopover"
         align={{ offset: [0, 1] }}
         content={<h4>{title}</h4>}
     >

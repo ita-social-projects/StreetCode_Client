@@ -80,6 +80,10 @@ $articlesImg: "@assets/images/sources/Articles.png";
     }
   }
 
+  &::-webkit-scrollbar {
+    width: .765rem;
+  }
+
   &::-webkit-scrollbar-thumb,
   &::-webkit-scrollbar-track {
     @include mut.full-rounded(15px);
