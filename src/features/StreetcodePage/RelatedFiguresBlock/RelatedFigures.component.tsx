@@ -35,7 +35,7 @@ const RelatedFiguresComponent = () => {
     return (
         <div
             id="relatedFigures"
-            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 1 ? 'bigWrapper' : 'smallWrapper')}`}
+            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії" />
