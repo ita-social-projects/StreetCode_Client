@@ -4,14 +4,17 @@ import PauseBtn from '@images/audio-player/PauseBtn.png';
 import PlayBtn from '@images/audio-player/PlayBtn.png';
 
 import { useEffect, useRef, useState } from 'react';
+import useMobx from '@/app/stores/root-store';
 
 const AudioPlayer = () => {
+    const { audiosStore: { Audio } } = useMobx();
+
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
     const audioPlayer = useRef<HTMLMediaElement>(null);
     const progressBar = useRef<HTMLInputElement | null>(null);
     const animationRef = useRef<number>();
-
+    
     useEffect(() => {
         setMaxDuration();
     }, [audioPlayer.current?.readyState]);
@@ -58,8 +61,14 @@ const AudioPlayer = () => {
 
     return (
         <div className="audioPlayer">
-            <audio ref={audioPlayer} src="https://cdn.simplecast.com/audio/cae8b0eb-d9a9-480d-a652-0defcbe047f4/episodes/af52a99b-88c0-4638-b120-d46e142d06d3/audio/500344fb-2e2b-48af-be86-af6ac341a6da/default_tc.mp3" preload="metadata" />
-            {isPlaying ? <div className="buttonContainer"><img src={PauseBtn} className="play" onClick={togglePlayPause} /></div> : <div className="buttonContainer"><img src={PlayBtn} className="play" onClick={togglePlayPause} /></div>}
+            <audio ref={audioPlayer} src={Audio?.url?.href} preload="metadata" />
+            {isPlaying ? 
+                <div className="buttonContainer">
+                    <img src={PauseBtn} className="play" onClick={togglePlayPause} />
+                </div> : 
+                <div className="buttonContainer">
+                    <img src={PlayBtn} className="play" onClick={togglePlayPause} />
+                </div>}
             <div>
                 <input type="range" className="progressBar" defaultValue="0" ref={progressBar} onChange={changeRange} />
             </div>

@@ -74,6 +74,7 @@ export const API_ROUTES = {
     AUDIOS: {
         GET_ALL: 'audios/getAll',
         GET: 'audios/getById',
+        GET_BY_STREETCODE_ID: 'audio/getByStreetcodeId',
         CREATE: 'audios/create',
         UPDATE: 'audios/update',
         DELETE: 'audios/delete',

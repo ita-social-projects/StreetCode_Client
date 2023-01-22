@@ -3,21 +3,15 @@ import audiosApi from '@api/media/audios.api';
 import Audio from '@models/media/audio.model';
 
 export default class AudioStore {
-    public AudioMap = new Map<number, Audio>();
+    public Audio: Audio | undefined;
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-    private setInternalMap = (audios: Audio[]) => {
-        audios.forEach(this.setItem);
-    };
-
     private setItem = (audio: Audio) => {
-        this.AudioMap.set(audio.id, audio);
+        this.Audio = audio;
     };
-
-    public getAudioArray = () => Array.from(this.AudioMap.values());
 
     public fetchAudio = async (id: number) => {
         try {
@@ -28,10 +22,10 @@ export default class AudioStore {
         }
     };
 
-    public fetchAudios = async () => {
+    public fetchAudioByStreetcodeId = async (streetcodeId: number) => {
         try {
-            const audios = await audiosApi.getAll();
-            this.setInternalMap(audios);
+            const audio = await audiosApi.getByStreetcodeId(streetcodeId);
+            this.Audio = audio;
         } catch (error: unknown) {
             console.log(error);
         }
@@ -50,11 +44,7 @@ export default class AudioStore {
         try {
             await audiosApi.update(audio);
             runInAction(() => {
-                const updatedAudio = {
-                    ...this.AudioMap.get(audio.id),
-                    ...audio,
-                };
-                this.setItem(updatedAudio as Audio);
+                this.setItem(audio as Audio);
             });
         } catch (error: unknown) {
             console.log(error);
@@ -64,9 +54,7 @@ export default class AudioStore {
     public deleteAudio = async (audioId: number) => {
         try {
             await audiosApi.delete(audioId);
-            runInAction(() => {
-                this.AudioMap.delete(audioId);
-            });
+            this.Audio = undefined;
         } catch (error: unknown) {
             console.log(error);
         }
