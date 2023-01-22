@@ -21,7 +21,6 @@ const SourcesComponent = () => {
 
     return (
         <div
-            id='sources'
             className="sourcesWrapper"
         >
             <div className="sourcesContainer">
