@@ -90,7 +90,7 @@ const ProgressBar = ({ children, waitMsOnRender = 300, topDistance = 200, always
                     ${isScrollInFirstTwoSections.current || isVisible ? 'visible' : ''}`}
                 >
                     <div className="progressBarPopupContent">
-                        {blocks.map((block, idx) => {
+                        {blocks.flatMap((i)=>[i,i]).filter((_,idx)=>idx<7).map((block, idx) => {
                             let isBlockActive = block.height <= scrollPosition;
 
                             if (scrollPosition === 0 && idx === 0) {
