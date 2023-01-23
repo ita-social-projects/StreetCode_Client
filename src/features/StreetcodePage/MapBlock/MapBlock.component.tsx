@@ -24,9 +24,11 @@ const MapBlock = () => {
     return(
         <div className="mapBlockContainer">
             <BlockHeading headingText="Мапа історії" />
+            <div>
             <RadioComponent />
             <StaticticsComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
+            </div>
         </div>
     );
 }

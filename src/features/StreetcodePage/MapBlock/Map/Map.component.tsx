@@ -20,7 +20,7 @@ interface Props {
 
 const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => (
     <div className='mapCentered'>
-        <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'}>
+        <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'} scrollWheelZoom={false}>
             <TileLayer
                 url="https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}.jpg?key=zAHwa6HifYRoNEDddsNn"
             />
