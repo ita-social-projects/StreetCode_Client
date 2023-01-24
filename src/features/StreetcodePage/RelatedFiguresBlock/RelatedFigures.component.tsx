@@ -16,11 +16,10 @@ const RelatedFiguresComponent = () => {
     const streetcodeId = useRouteId();
 
     useAsync(
-        () => fetchRelatedFiguresByStreetcodeId(streetcodeId),
-        [streetcodeId],
-    );
-    useAsync(
-        () => fetchTagByStreetcodeId(streetcodeId),
+        () => Promise.all([
+            fetchRelatedFiguresByStreetcodeId(streetcodeId),
+            fetchTagByStreetcodeId(streetcodeId),
+        ]),
         [streetcodeId],
     );
 
