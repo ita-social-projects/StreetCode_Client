@@ -72,8 +72,8 @@ const ArtGallery = () => {
 
   const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
 
-  let j = 0;
-  let jCount = 0;
+  let offsetSumForSlide = 0;
+  let offsetSum = 0;
 
   const slideOfArtList = [];
   let artsData: IndexedArt[] = [];
@@ -155,9 +155,9 @@ const ArtGallery = () => {
   );
 
   sortedArtsList.forEach(({ index, offset, imageHref, description, title }) => {
-    if (j != SECTION_AMOUNT) {
-      j += offset ?? 0;
-      jCount += offset ?? 0;
+    if (offsetSumForSlide != SECTION_AMOUNT) {
+      offsetSumForSlide += offset ?? 0;
+      offsetSum += offset ?? 0;
       artsData.push({
         index,
         imageHref,
@@ -166,8 +166,8 @@ const ArtGallery = () => {
         title,
       } as IndexedArt);
     }
-    if (j == SECTION_AMOUNT) {
-      j = 0;
+    if (offsetSumForSlide == SECTION_AMOUNT) {
+      offsetSumForSlide = 0;
       slideOfArtList.push(
         <ArtGalleryListOfItem
           images={artsData.map((i) => i.imageHref)}
@@ -180,7 +180,7 @@ const ArtGallery = () => {
     }
   });
 
-  if (!Number.isInteger(jCount / SECTION_AMOUNT)) {
+  if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
     slideOfArtList.push(
       <ArtGalleryListOfItem
         images={artsData.map((i) => i.imageHref)}
