@@ -5,6 +5,8 @@ import CustomMarker from "@streetcode/MapBlock/Map/Marker/MarkerWrapper.componen
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import Toponym from '@/models/toponyms/toponym.model';
 import CustomMarkerCluster from './MarkerCluster/MarkerClusterWrapper.component';
+import useMobx from '@/app/stores/root-store';
+import { observer } from 'mobx-react-lite';
 
 const defaultZoom: number = 6;
 const centerOfUkraine = {
@@ -18,21 +20,27 @@ interface Props {
 }
 
 
-const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => (
-    <div className='mapCentered'>
-        <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'} scrollWheelZoom={false}>
-            <TileLayer
-                url="https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}.jpg?key=zAHwa6HifYRoNEDddsNn"
-            />
-            <CustomMarkerCluster>
-                {streetcodeCoordinates?.map(sc => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)}/>)}
-            </CustomMarkerCluster>
-            <CustomMarkerCluster>
-                {toponyms?.map(t => t.coordinates.map(c =>
-            <CustomMarker latitude={c.latitude} longtitude={c.longtitude} title={String(c.id)} description={String(c.toponymId)}/>))}
-            </CustomMarkerCluster>
-        </MapContainer>
-    </div>
-);
+const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => {
+    const { checkboxStore } = useMobx();
+    const { checkBoxesState: {streetcodes, streets} } = checkboxStore;
+    
+    return(
+        <div className='mapCentered'>
+            <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'} scrollWheelZoom={false}>
+                <TileLayer
+                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png"
+                    // url="https://maputnik.github.io/editor/{x}/{y}/{z}.pbf"
+                />
+                {streetcodes?.isActive && <CustomMarkerCluster>
+                    {streetcodeCoordinates?.map(sc => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)}/>)}
+                </CustomMarkerCluster>}
+                {streets?.isActive && <CustomMarkerCluster>
+                    {toponyms?.map(t => t.coordinates.map(c =>
+                <CustomMarker latitude={c.latitude} longtitude={c.longtitude} title={String(c.id)} description={String(c.toponymId)}/>))}
+                </CustomMarkerCluster>}
+            </MapContainer>
+        </div>
+    );
+}
 
-export default MapOSM;
+export default observer(MapOSM);

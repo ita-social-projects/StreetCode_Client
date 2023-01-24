@@ -18,7 +18,7 @@ const StreetcodeContent = () => (
         <MainBlock />
         <TextComponent />
         <InterestingFactsComponent />
-            <MapBlock/>
+        <MapBlock/>
         <RelatedFiguresComponent />
         <SourcesComponent />
         <QRComponent />

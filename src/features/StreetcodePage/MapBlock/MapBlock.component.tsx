@@ -1,7 +1,6 @@
 import './MapBlock.styles.scss';
 
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
-import RadioComponent from '@streetcode/MapBlock/Radio/Radio.component';
 import 'leaflet/dist/leaflet.css';
 
 import MapOSM from './Map/Map.component';
@@ -12,6 +11,7 @@ import ToponymsApi from '@/app/api/map/toponyms.api';
 import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-cooridnates.api';
 import Toponym from '@/models/toponyms/toponym.model';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import CheckBoxComponent from '@/features/StreetcodePage/MapBlock/CheckBox/CheckBox.component';
 
 const MapBlock = () => {
     const id = useRouteId();
@@ -24,11 +24,9 @@ const MapBlock = () => {
     return(
         <div className="mapBlockContainer">
             <BlockHeading headingText="Мапа історії" />
-            <div>
-            <RadioComponent />
+            <CheckBoxComponent />
             <StaticticsComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
-            </div>
         </div>
     );
 }

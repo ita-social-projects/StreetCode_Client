@@ -3,7 +3,7 @@
 @use '@sass/variables/variables.fonts' as ft;
 @use '@sass/variables/variables.colors' as c;
 
-.radioContainer{
+.checkBoxContainer{
   @include mut.sized(257px,148px);
   @include mut.positioned-as(absolute, 195px, 0, 0, 1143px);
   @include mut.flexed(row, center, center);
@@ -14,14 +14,14 @@
   border-radius: 23px;
 }
 
-.selected-radio-text{
+.selected-checkbox-text{
   @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
   line-height: 23px;
   text-align: center;
   color: c.$accented-red-color;
 }
 
-.radio-text{
+.checkbox-text{
   @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
   line-height: 23px;
   text-align: center;

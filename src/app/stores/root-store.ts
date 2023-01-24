@@ -16,6 +16,7 @@ import TimelineitemStore from '@stores/timelineitem-store';
 import ToponymStore from '@stores/toponym-store';
 import TransactionLinksStore from '@stores/transactions-store';
 import VideoStore from '@stores/videos-store';
+import CheckBoxStore from './checkbox-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -35,6 +36,7 @@ interface Store {
     streetcodesStore: StreetcodeStore,
     sourcesStore: SourcesStore,
     relatedFiguresStore: RelatedFiguresStore,
+    checkboxStore: CheckBoxStore,
 }
 
 export const store: Store = {
@@ -55,6 +57,7 @@ export const store: Store = {
     streetcodesStore: new StreetcodeStore(),
     sourcesStore: new SourcesStore(),
     relatedFiguresStore: new RelatedFiguresStore(),
+    checkboxStore: new CheckBoxStore(),
 };
 
 const StoreContext = createContext(store);
