@@ -37,8 +37,7 @@ const InterestingFactsComponent = () => {
     }
 
     return (
-        <div 
-            id='interestingFacts'
+        <div
             className="interestingFactsWrapper"
         >
             <div className="interestingFactsContainer">

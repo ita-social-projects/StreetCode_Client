@@ -13,13 +13,8 @@ $timelineItemImg: "@assets/images/TimelineItem.png";
   flex-shrink: 0;
 
   &:hover {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    outline: 4px solid c.$pure-white-color;
     cursor: pointer;
-  }
-
-  &:nth-child(2) {
-    border: 2px solid c.$pure-white-color;
   }
 }
 

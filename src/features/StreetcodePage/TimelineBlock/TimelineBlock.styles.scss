@@ -4,15 +4,23 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-$timelineItemImg: "@assets/images/TimelineItem.png";
-
 .timelineContentContainer {
   margin: f.pxToRem(50px) 0;
-  padding-right: f.pxToRem(10px);
-  @include mut.sized(100%, 536px);
+  @include mut.sized(100%, 546px);
   background-color: c.$timeline-reel-color;
 
   .sliderClass {
+    @include mut.sized($width: 100%, $height: 374px);
     @include mut.rem-margined(30px, 0, 30px);
+  }
+
+  .slick-track {
+    @include mut.sized($width: 609px, $height: 378px);
+    @include mut.flexed($gap: 30px);
+
+    .slick-slide {
+      @include mut.sized();
+      @include mut.flex-centered();
+    }
   }
 }

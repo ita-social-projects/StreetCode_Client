@@ -15,9 +15,12 @@ const TimelineBlock = () => (
         <div className="timelineContentContainer">
             <TimelineReelOutline />
             <SimpleSlider
+                infinite={false}
                 dots={false}
                 arrows={false}
+                swipeOnClick
                 swipe
+                slidesToShow={1}
                 slides={
                     Array(6).fill(0).map((_, idx) => (
                         <TimelineItem key={idx} />

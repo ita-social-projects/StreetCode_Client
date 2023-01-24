@@ -6,6 +6,7 @@ import Mazepa from '@images/related-figures/Mazepa.png';
 import Ratushny from '@images/related-figures/Ratushny.png';
 import Ukrainka from '@images/related-figures/Ukrainka.png';
 
+import { forwardRef } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
@@ -14,7 +15,6 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 import RelatedFigure from '@/models/streetcode/related-figure.model';
-import { forwardRef } from 'react';
 
 const relatedFigures: RelatedFigure[] = [
     {
@@ -70,7 +70,7 @@ const RelatedFiguresComponent = () => {
 
     return (
         <div
-            id='relatedFigures'
+            id="relatedFigures"
             className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
