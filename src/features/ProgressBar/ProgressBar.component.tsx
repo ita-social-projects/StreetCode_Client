@@ -2,17 +2,21 @@ import './ProgressBar.styles.scss';
 
 import ArrowUp from '@images/utils/ArrowUp.svg';
 
-import { useRef, useState } from 'react';
+import {
+    FC, useEffect, useMemo, useRef, useState,
+} from 'react';
 import NavigableBlockWrapper, { NamedBlock } from '@features/ProgressBar/NavigableBlockWrapper.component';
 import ProgressBarFill from '@features/ProgressBar/ProgressBarFill/ProgressBarFill.component';
 import ProgressBarSection from '@features/ProgressBar/ProgressBarSection/ProgressBarSection.component';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
+import useToggle from '@hooks/stateful/useToggle.hook';
 
 interface Props {
     children: JSX.Element[];
-    waitMsOnRender?: number;
-    topDistance?: number;
-    alwaysVisibleBeforePx?: number;
+    waitMsOnRender: number;
+    topDistance: number;
+    visibleBefore: number;
+    hidingDelay: number;
 }
 
 const getPercentage = (value: number, ofValue: number) => (value * 1e2) / ofValue;
@@ -30,46 +34,55 @@ const getYScrollPercentage = (curPos: number, minValue?: number, maxValue?: numb
     );
 };
 
-const useForceUpdate = () => {
-    const [, setValue] = useState(0);
-    return () => setValue((prev) => prev + 1);
-};
-
-const ProgressBar = ({ children, waitMsOnRender = 300, topDistance = 200, alwaysVisibleBeforePx = 1600 }: Props) => {
+const ProgressBar: FC<Props> = ({
+    children, waitMsOnRender, topDistance, visibleBefore, hidingDelay,
+}) => {
+    const wasScrolled = useRef(false);
     const scrollPercentage = useRef(0);
     const isScrollInFirstTwoSections = useRef(true);
 
-    const forceUpdate = useForceUpdate();
     const [blocks, setBlocks] = useState<NamedBlock[]>([]);
     const [scrollPosition, setScrollPosition] = useState(0);
+    const {
+        toggleState: isVisible,
+        handlers: { toggle, off: setInvisible },
+    } = useToggle();
 
+    const timeoutId = useRef<NodeJS.Timeout>();
     const [isOnTimeout, setIsOnTimeout] = useState(true);
-    const timer = 3000;
-    let timeout: NodeJS.Timeout | undefined;
-
-    function stopTimer(): void {
-        clearTimeout(timeout);
-    }
-
-    function closeProgressBar() {
-        setIsOnTimeout(false);
-    }
-
-    function renewTimer() {
-        setIsOnTimeout(true);
-        timeout = setTimeout(closeProgressBar, timer);
-    }
 
     useScrollPosition(
         ({ currentPos }) => {
-            const scrollY = Math.abs(currentPos.y);
+            const curScrollY = Math.abs(currentPos.y);
 
-            setScrollPosition(scrollY);
-            isScrollInFirstTwoSections.current = scrollY <= alwaysVisibleBeforePx;
+            setScrollPosition(curScrollY);
+            wasScrolled.current = curScrollY > visibleBefore;
         },
         waitMsOnRender,
         [setScrollPosition],
     );
+
+    useEffect(() => {
+        if (wasScrolled.current) {
+            setInvisible();
+            isScrollInFirstTwoSections.current = false;
+        }
+    }, [wasScrolled.current, setInvisible]);
+
+    useEffect(() => {
+        timeoutId.current = setTimeout(() => setIsOnTimeout(false), hidingDelay);
+        return () => clearTimeout(timeoutId.current);
+    }, []);
+
+    const cursorCaptureHandlers = useMemo(() => ({
+        onMouseOver: () => {
+            clearTimeout(timeoutId.current);
+            setIsOnTimeout(true);
+        },
+        onMouseLeave: () => {
+            timeoutId.current = setTimeout(() => setIsOnTimeout(false), hidingDelay);
+        },
+    }), [hidingDelay]);
 
     const onActiveBlockSelection = (activeIdx: number) => {
         const blockPercentage = 100 / Math.max((blocks.length - 1), 1);
@@ -85,31 +98,23 @@ const ProgressBar = ({ children, waitMsOnRender = 300, topDistance = 200, always
     };
 
     const onProgressBarCallerClick = () => {
-        if (isScrollInFirstTwoSections.current) {
-            forceUpdate();
-            setIsOnTimeout(false);
-        } else {
-            renewTimer();
-        }
+        toggle();
+        setIsOnTimeout(true);
         isScrollInFirstTwoSections.current = false;
     };
 
-    const checkToCloseProgressBar = isScrollInFirstTwoSections.current || isOnTimeout;
+    const isPBVisible = (isScrollInFirstTwoSections.current || isVisible) && isOnTimeout;
 
     return (
         <>
             <NavigableBlockWrapper setBlocks={setBlocks} topDistance={topDistance}>
                 {children}
             </NavigableBlockWrapper>
-            <div
-                className="progressBarContainer"
-                onClick={onProgressBarCallerClick}
-            >
+            <div className="progressBarContainer" onClick={onProgressBarCallerClick}>
                 <div
-                    className={`progressBarPopupContainer
-                    ${checkToCloseProgressBar ? 'visible' : ''}`}
-                    onMouseEnter={stopTimer}
-                    onMouseLeave={renewTimer}
+                    {...cursorCaptureHandlers}
+                    style={(!isOnTimeout) ? { pointerEvents: 'none' } : undefined}
+                    className={`progressBarPopupContainer ${isPBVisible ? 'visible' : ''}`}
                 >
                     <div className="progressBarPopupContent">
                         {blocks.map((block, idx) => {
@@ -139,12 +144,18 @@ const ProgressBar = ({ children, waitMsOnRender = 300, topDistance = 200, always
                         />
                     </div>
                 </div>
-                <ArrowUp
-                    style={checkToCloseProgressBar ? { rotate: 'x 180deg' } : undefined}
-                />
+                <ArrowUp style={isPBVisible ? { rotate: 'x 180deg' } : undefined} />
             </div>
         </>
     );
 };
+
+const defaultProps: Omit<Props, 'children'> = {
+    topDistance: 200,
+    waitMsOnRender: 300,
+    visibleBefore: 1600,
+    hidingDelay: 10e3,
+};
+ProgressBar.defaultProps = defaultProps;
 
 export default ProgressBar;
