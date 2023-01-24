@@ -4,12 +4,13 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-// .slick-slider {
-//     height: 536px !important;
-// }
+.artGallerySliderContainer .sliderClass .slick-slider {
+    height: 560px !important;
+}
 .artGalleryWrapper {
     @include wr.main-page-block-wrapper();
     margin-bottom: pxToRem(390px);
+
     .artGalleryContainer {
         @include mut.rem-margined($top: 150px);
         @include mut.sized(100%, 400px);

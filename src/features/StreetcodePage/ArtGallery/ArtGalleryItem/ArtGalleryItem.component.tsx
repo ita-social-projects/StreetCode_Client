@@ -8,8 +8,8 @@ interface Props {
 
 const ArtGalleryItem = ({ image, description, title }: Props) => {
   return (
-    <div className="slideArt ">
-      <div className={`img_wrap `}>
+    <div className="slideArt">
+      <div className={"img_wrap"}>
         <img className={"img_img"} src={image} alt="" />
         <div className={`img_data img_data-${description==undefined && title==undefined ? "empty" : "full"}`}>
           <p className="img_title">{title}</p>
