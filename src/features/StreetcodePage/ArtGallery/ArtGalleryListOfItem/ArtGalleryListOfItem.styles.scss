@@ -4,8 +4,18 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.slideArt {
-  @include mut.sized(1200px, 560px);
+.slideArtGallery {
   @include mut.flex-centered($direction: column);
   flex-wrap: wrap;
+  height: 560px;
+}
+.slideArtGalleryContainer{
+    @include mut.flex-centered;
+    margin-top: pxToRem(20px);
+}
+.width-1{
+    width: 810px
+}
+.width-2{
+    width: 1210px
 }

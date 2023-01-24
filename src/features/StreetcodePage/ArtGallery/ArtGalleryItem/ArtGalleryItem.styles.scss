@@ -1,3 +1,36 @@
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
 .slideArt {
-    flex: 1 1 80px;
+  flex: 1 1 80px;
+}
+.img_wrap {
+  position: relative;  
+} 
+.img_data {
+  height: 113px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  padding: 11px 21px;
+} 
+.img_wrap:hover .img_data {
+  visibility: visible;
+  opacity: 1;
+}
+.img_title{
+  font-size: 20px;
+  padding-bottom: 5px;
+}
+.img_description{
+  font-size: 15px;
 }

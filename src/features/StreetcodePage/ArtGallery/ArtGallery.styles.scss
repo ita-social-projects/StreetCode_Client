@@ -4,22 +4,9 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.mygallery{
-    @include mut.flex-centered();
-}
-
-.style1{
-    display: 'grid';
-    grid-template-columns: '240px 240px 240px';
-    grid-template-rows: '114px 114px';
-    grid-gap: 12;
- }
-
-.slideArt:hover{
-    // scale: 101%;
-    // filter: contrast(135%);
-    // cursor: pointer;
-}
+// .slick-slider {
+//     height: 536px !important;
+// }
 .artGalleryWrapper {
     @include wr.main-page-block-wrapper();
     margin-bottom: pxToRem(390px);
@@ -29,33 +16,10 @@
         margin-bottom: pxToRem(290px);
 
         .artGalleryContentContainer {
-            height: pxToRem(320px);
             @include mut.flex-centered();
-            margin-top: pxToRem(24px);
-        }
-
-        > .blockHeadingWrapper {
-            margin-top: pxToRem(30px);
-        }
+        }  
     }
-
     .artGallerySliderContainer {
-        @include mut.sized(1230px, 300px);
-    }
-
-    .sliderClass {
-        .slick-track {
-            // @include mut.flex-centered($gap: 30px);
-        }
-
-        .slick-slide {
-            @include vnd.vendored(transition, 'all .5s ease');
-
-            // &:hover {
-            //     scale: 101%;
-            //     filter: contrast(135%);
-            //     cursor: pointer;
-            // }
-        }
+        @include mut.sized(1230px, 560px);
     }
 }
