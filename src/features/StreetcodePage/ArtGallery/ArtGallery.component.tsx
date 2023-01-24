@@ -70,7 +70,7 @@ const ArtGallery = () => {
     );
   }, [getStreetcodeArtArray]);
 
-  const sortedArtsMap = [...indexedArts].sort((a, b) => a.index - b.index);
+  const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
 
   let j = 0;
   let jCount = 0;
@@ -154,7 +154,7 @@ const ArtGallery = () => {
     />
   );
 
-  sortedArtsMap.forEach(({ index, offset, imageHref, description, title }) => {
+  sortedArtsList.forEach(({ index, offset, imageHref, description, title }) => {
     if (j != SECTION_AMOUNT) {
       j += offset ?? 0;
       jCount += offset ?? 0;
