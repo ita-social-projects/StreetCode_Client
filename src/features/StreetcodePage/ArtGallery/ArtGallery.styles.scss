@@ -5,7 +5,7 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .artGallerySliderContainer .sliderClass .slick-slider {
-    height: 560px !important;
+    height: pxToRem(560px);
 }
 .artGalleryWrapper {
     @include wr.main-page-block-wrapper();

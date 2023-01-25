@@ -5,33 +5,36 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .slideArt {
-  flex: 1 1 80px;
+  flex: pxToRem(80px);
   height: pxToRem(560px);
 }
+
 .img_wrap {
   position: relative;  
-} 
+}
+
 .img_data {
-  height: 113px;
-  width: 100%;
+  @include mut.sized(100%, 113px);
   position: absolute;
-  bottom: 0;
+  @include mut.set-positioning($top: "auto", $right: "auto", $bottom: 0, $left: "auto");
   background: rgba(0, 0, 0, 0.5);
-  color: #fff;
+  color: c.$pure-white-color;
   visibility: hidden;
   opacity: 0;
-  border-bottom-right-radius: 30px;
-  border-bottom-left-radius: 30px;
-  padding: 11px 21px;
+  @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
+  padding: pxToRem(11px) pxToRem(21px);
 } 
+
 .img_wrap:hover .img_data-full {
   visibility: visible;
   opacity: 1;
 }
-.img_title{
-  font-size: 20px;
-  padding-bottom: 5px;
+
+.img_title {
+  @include mut.with-font;
+  @include mut.rem-padded($bottom: 5px);
 }
-.img_description{
-  font-size: 15px;
+
+.img_description {
+  @include mut.with-font($font-size: 15px);
 }

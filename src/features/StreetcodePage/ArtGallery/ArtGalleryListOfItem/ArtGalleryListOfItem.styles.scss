@@ -7,15 +7,18 @@
 .slideArtGallery {
   @include mut.flex-centered($direction: column);
   flex-wrap: wrap;
-  height: 560px;
+  height: pxToRem(560px);
 }
-.slideArtGalleryContainer{
-    @include mut.flex-centered;
-    margin-top: pxToRem(20px);
+
+.slideArtGalleryContainer {
+  @include mut.flex-centered;
+  margin-top: pxToRem(20px);
 }
-.width-1{
-    width: 810px
+
+.width-1 {
+  width: pxToRem(810px);
 }
-.width-2{
-    width: 1210px
+
+.width-2 {
+  width: pxToRem(1210px);
 }

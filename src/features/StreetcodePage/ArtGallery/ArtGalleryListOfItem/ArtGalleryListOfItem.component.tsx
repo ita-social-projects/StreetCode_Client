@@ -1,32 +1,23 @@
 import "./ArtGalleryListOfItem.styles.scss";
 
 import ArtGalleryItem from "@streetcode/ArtGallery/ArtGalleryItem/ArtGalleryItem.component";
+import { IndexedArt } from "@/models/media/art.model";
 
-interface ArtGallery {
-  images: string[];
-  descriptions: string[];
-  offset: number[];
-  titles: string[];
+interface ArtGalleryData {
+  artGalleryList: IndexedArt[];
 }
 
-const ArtGalleryListOfItem = (artGallery: ArtGallery) => {
-  let artGalleryImage = [];
+const ArtGalleryListOfItem = ({artGalleryList}:ArtGalleryData) => {
   let offsetSum = 0;
+  artGalleryList.map((item)=> offsetSum += item.offset);
 
-  for (let i: number = 0; i < artGallery.images.length; i++) {
-    offsetSum += artGallery.offset[i];
-    artGalleryImage.push(
-      <ArtGalleryItem
-        image={artGallery.images[i]}
-        description={artGallery.descriptions[i]}
-        title={artGallery.titles[i]}
-      />
-    );
-  }
   return (
     <div className="slideArtGalleryContainer">
       <div className={`slideArtGallery width-${offsetSum > 4 ? 2 : 1}`}>
-        {artGalleryImage.map((image) => image)}
+        {artGalleryList.map((item)=> 
+        { 
+          return (<ArtGalleryItem artGalleryItem={item} />)
+        })}
       </div>
     </div>
   );

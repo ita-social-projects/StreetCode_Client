@@ -1,22 +1,23 @@
+import { IndexedArt } from "@/models/media/art.model";
 import "./ArtGalleryItem.styles.scss";
 
 interface Props {
-  image: string;
-  description?: string;
-  title?: string;
+  artGalleryItem: IndexedArt;
 }
 
-const ArtGalleryItem = ({ image, description, title }: Props) => {
+const ArtGalleryItem = ({ artGalleryItem }: Props) => {
   return (
+    <>
     <div className="slideArt">
       <div className={"img_wrap"}>
-        <img className={"img_img"} src={image} alt="" />
-        <div className={`img_data img_data-${description==undefined && title==undefined ? "empty" : "full"}`}>
-          <p className="img_title">{title}</p>
-          <p className="img_description">{description}</p>
+        <img className={"img_img"} src={artGalleryItem.imageHref} alt="" />
+        <div className={`img_data img_data-${!artGalleryItem.description && !artGalleryItem.title ? "empty" : "full"}`}>
+          <p className="img_title">{artGalleryItem.title}</p>
+          <p className="img_description">{artGalleryItem.description}</p>
         </div>
       </div>
     </div>
+    </>
   );
 };
 
