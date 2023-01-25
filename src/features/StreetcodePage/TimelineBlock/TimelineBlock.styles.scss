@@ -4,7 +4,8 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-$timelineItemImg: "@assets/images/TimelineItem.png";
+$timelineLvivImg: "@assets/images/timeline/Lviv.png";
+$timelineSquareImg: "@assets/images/timeline/Square.png";
 
 .timelineContentContainer {
   margin: f.pxToRem(50px) 0;
@@ -34,7 +35,14 @@ $timelineItemImg: "@assets/images/TimelineItem.png";
     .slick-slide {
       @include mut.sized(604px, 366px);
       @include mut.full-rounded(30px);
-      @include mut.bg-image($timelineItemImg);
+
+      @include mut.bg-image($timelineSquareImg);
+      background-position-y: f.pxToRem(-100px);
+
+      &:nth-child(2n + 1) {
+        @include mut.bg-image($timelineLvivImg);
+        background-position-y: initial;
+      }
 
       border: transparent;
       // @include vnd.vendored(transition, 'border 1s ease');
