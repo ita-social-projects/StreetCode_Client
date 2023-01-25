@@ -15,6 +15,16 @@
     filter: drop-shadow(0px 2px 15px rgba(163, 163, 163, 0.25));
 }
 
+.fadeInAnimation {
+    animation: fadeIn 1s;
+}
+.fadeOutAnimation {
+    animation: fadeOut 1s;
+}
+
+@include mut.fadeKeyframes("fadeIn","fadeIn");
+@include mut.fadeKeyframes("fadeOut","fadeOut");
+
 .closeModal {
     position: absolute;
     top: -20px;
