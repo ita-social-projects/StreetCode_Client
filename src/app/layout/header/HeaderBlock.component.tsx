@@ -44,8 +44,6 @@ const HeaderBlock = () => {
         setIsPageDimmed(true);
     }
 
-    console.log(isPageDimmed);
-
     return (
         <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
             <div className="leftPartContainer">

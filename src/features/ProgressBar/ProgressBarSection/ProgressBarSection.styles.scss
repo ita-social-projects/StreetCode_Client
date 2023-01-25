@@ -31,8 +31,7 @@
 }
 
 .progressBarSectionPopover {
-  width: f.pxToRem(93px);
-  text-align: center;
+  @include mut.sized(115px);
 
   .ant-popover-arrow {
     @include mut.hidden();

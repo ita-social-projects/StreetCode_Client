@@ -33,9 +33,9 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = false }: Props) => {
             }}
         >
             <div className="slideText">
-                <h3 className="heading">
+                <p className="heading">
                     {title}
-                </h3>
+                </p>
                 <div className="relatedTagList">
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag, idx) => (

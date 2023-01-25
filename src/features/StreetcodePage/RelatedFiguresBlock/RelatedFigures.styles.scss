@@ -4,17 +4,12 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 
 .relatedFiguresWrapper {
+    @include mut.sized($height: 671px);
     @include wr.main-page-block-wrapper();
     @include mut.rem-margined($bottom: 80px, $top: 170px);
 }
 
-.bigWrapper {
-    @include mut.sized($height: 671px);
-}
-
 .smallWrapper {
-    @include mut.sized($height: 605px);
-
     .slick-track {
         @include mut.rem-margined();
 
@@ -54,18 +49,17 @@
 }
 
 .relatedFiguresSliderContainer {
-    @include mut.sized($width: 1200px);
+    @include mut.sized($width: 1216px);
 
     .slick-arrow {
         top: f.pxToRem(213px);
     }
 
     .slick-list {
-        @include mut.sized($height: 458px);
-        @include mut.rem-padded($left: 5px);
+        @include mut.rem-padded($bottom: 4px);
     }
 
     .slick-track {
-        @include mut.flex-centered($gap: 28px);
+        @include mut.flexed($justify-content: center, $align-items: flex-start, $gap: 28px);
     }
 }
