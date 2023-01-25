@@ -221,72 +221,17 @@
   }
 }
 // FadeIn FadeOut animations
-@mixin fadeKeyframes($name, $type) {
-  @if $type == "fadeIn" {
-    @-webkit-keyframes #{$name} {
-      from {
-        opacity: 0%;
-      }
-      to {
-        opacity: 100%;
-      }
-    }
-    @-moz-keyframes #{$name} {
-      from {
-        opacity: 0%;
-      }
-      to {
-        opacity: 100%;
-      }
-    }
-    @-ms-keyframes #{$name} {
-      from {
-        opacity: 0%;
-      }
-      to {
-        opacity: 100%;
-      }
-    }
-    @keyframes #{$name} {
-      from {
-        opacity: 0%;
-      }
-      to {
-        opacity: 100%;
-      }
-    }
-  } @else if $type == "fadeOut" {
-    @-webkit-keyframes #{$name} {
-      from {
-        opacity: 100%;
-      }
-      to {
-        opacity: 0%;
-      }
-    }
-    @-moz-keyframes #{$name} {
-      from {
-        opacity: 100%;
-      }
-      to {
-        opacity: 0%;
-      }
-    }
-    @-ms-keyframes #{$name} {
-      from {
-        opacity: 100%;
-      }
-      to {
-        opacity: 0%;
-      }
-    }
-    @keyframes #{$name} {
-      from {
-        opacity: 100%;
-      }
-      to {
-        opacity: 0%;
-      }
-    }
+@mixin fadeKeyframes($type: "fadeIn", $name: "fade") {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
   }
 }
