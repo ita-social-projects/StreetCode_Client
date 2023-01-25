@@ -12,9 +12,19 @@ import RelatedFiguresComponent from '@streetcode/RelatedFiguresBlock/RelatedFigu
 import SourcesComponent from '@streetcode/SourcesBlock/Sources.component';
 import TextComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
+import ArtGalleryBlockComponent from '@streetcode/ArtGalleryBlock/ArtGalleryBlock.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
+<<<<<<< feat/streetcode-art-gallery
+        <HeaderBlock />
+        <MainBlock />
+        <TextComponent />
+        <InterestingFactsComponent />
+        <ArtGalleryBlockComponent />
+        <RelatedFiguresComponent />
+        <SourcesComponent />
+=======
         <ProgressBar waitMsOnRender={100}>
             <MainBlock />
             <TextComponent />
@@ -22,6 +32,7 @@ const StreetcodeContent = () => (
             <RelatedFiguresComponent />
             <SourcesComponent />
         </ProgressBar>
+>>>>>>> master
         <QRComponent />
         <PartnersComponent />
         <TickerComponent />

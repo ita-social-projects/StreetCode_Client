@@ -1,0 +1,26 @@
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.artGallerySliderContainer .sliderClass .slick-slider {
+    height: pxToRem(560px);
+}
+.artGalleryWrapper {
+    @include wr.main-page-block-wrapper();
+    margin-bottom: pxToRem(390px);
+
+    .artGalleryContainer {
+        @include mut.rem-margined($top: 150px);
+        @include mut.sized(100%, 400px);
+        margin-bottom: pxToRem(290px);
+
+        .artGalleryContentContainer {
+            @include mut.flex-centered();
+        }  
+    }
+    .artGallerySliderContainer {
+        @include mut.sized(1230px, 560px);
+    }
+}
