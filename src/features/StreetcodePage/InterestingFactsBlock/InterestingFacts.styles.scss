@@ -22,6 +22,9 @@
     .slick-dots {
         @include mut.rem-padded($top:35px);
     }
+    .slick-slider{
+        height: 100%;
+    }
 }
 
 .heightContainer,
