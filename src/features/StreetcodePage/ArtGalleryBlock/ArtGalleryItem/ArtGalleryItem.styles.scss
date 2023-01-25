@@ -9,32 +9,33 @@
   height: pxToRem(560px);
 }
 
-.img_wrap {
+.imgWrap {
   position: relative;  
 }
 
-.img_data {
+.imgData {
   @include mut.sized(100%, 113px);
-  position: absolute;
-  @include mut.set-positioning($top: "auto", $right: "auto", $bottom: 0, $left: "auto");
-  background: rgba(0, 0, 0, 0.5);
-  color: c.$pure-white-color;
+  @include mut.positioned-as($position: absolute, $bottom: 0);
+  @include mut.colored($color: c.$pure-white-color, $bg-color: rgba(0, 0, 0, 0.5));
   visibility: hidden;
   opacity: 0;
+  transition:opacity 1s; 
   @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
   padding: pxToRem(11px) pxToRem(21px);
 } 
 
-.img_wrap:hover .img_data-full {
-  visibility: visible;
-  opacity: 1;
+.imgWrap:hover {
+  .imgDataFull {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
-.img_title {
-  @include mut.with-font;
+.imgTitle {
+  @include mut.with-font();
   @include mut.rem-padded($bottom: 5px);
 }
 
-.img_description {
+.imgDescription {
   @include mut.with-font($font-size: 15px);
 }

@@ -9,6 +9,7 @@ export default interface Art {
     imageId: number;
     image: Image;
 }
+
 export interface IndexedArt {
     index: number;
     description: string;

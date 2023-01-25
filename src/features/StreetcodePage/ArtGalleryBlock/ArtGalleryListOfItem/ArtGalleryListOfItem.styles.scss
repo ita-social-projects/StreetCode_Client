@@ -11,7 +11,7 @@
 }
 
 .slideArtGalleryContainer {
-  @include mut.flex-centered;
+  @include mut.flex-centered();
   margin-top: pxToRem(20px);
 }
 
