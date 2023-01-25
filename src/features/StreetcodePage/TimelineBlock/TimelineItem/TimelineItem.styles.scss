@@ -2,10 +2,13 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .timelineItem {
   @include mut.sized(604px, 366px);
   @include mut.full-rounded(30px);
+
+  @include vnd.vendored(transition, 'backdrop-filter 300ms ease-in');
   backdrop-filter: blur(2px);
 
   &:hover {
