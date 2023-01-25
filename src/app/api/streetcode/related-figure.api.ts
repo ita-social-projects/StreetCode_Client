@@ -7,11 +7,17 @@ const RelatedFigureApi = {
 
     getById: (id: number) => Agent.get<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.GET}/${id}`),
 
-    getByStreetcodeId: (streetcodeId: number) => Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_BY_STREETCODE_ID}/${streetcodeId}`),
+    getByStreetcodeId(streetcodeId: number) {
+        return Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_BY_STREETCODE_ID}/${streetcodeId}`);
+    },
 
-    create: (relatedFigure: RelatedFigure) => Agent.post<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.CREATE}`, relatedFigure),
+    create(relatedFigure: RelatedFigure) {
+        return Agent.post<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.CREATE}`, relatedFigure);
+    },
 
-    update: (relatedFigure: RelatedFigure) => Agent.put<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.UPDATE}`, relatedFigure),
+    update(relatedFigure: RelatedFigure) {
+        return Agent.put<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.UPDATE}`, relatedFigure);
+    },
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.RELATED_FIGURES.DELETE}/${id}`),
 };

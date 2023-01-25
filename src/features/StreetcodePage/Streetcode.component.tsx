@@ -1,7 +1,9 @@
 import './Streetcode.styles.scss';
 
+import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
+import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
-import HeaderBlock from '@layout/header/HeaderBlock.component';
+import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import InterestingFactsComponent from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
@@ -14,6 +16,7 @@ import ArtGalleryBlockComponent from '@streetcode/ArtGalleryBlock/ArtGalleryBloc
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
+<<<<<<< feat/streetcode-art-gallery
         <HeaderBlock />
         <MainBlock />
         <TextComponent />
@@ -21,9 +24,20 @@ const StreetcodeContent = () => (
         <ArtGalleryBlockComponent />
         <RelatedFiguresComponent />
         <SourcesComponent />
+=======
+        <ProgressBar waitMsOnRender={100}>
+            <MainBlock />
+            <TextComponent />
+            <InterestingFactsComponent />
+            <RelatedFiguresComponent />
+            <SourcesComponent />
+        </ProgressBar>
+>>>>>>> master
         <QRComponent />
         <PartnersComponent />
         <TickerComponent />
+        <ScrollToTopBtn />
+        <DonateBtn />
         <Footer />
     </div>
 );

@@ -19,7 +19,9 @@ const SourcesComponent = () => {
         [streetcodeId],
     );
     return (
-        <div className="sourcesWrapper">
+        <div
+            className="sourcesWrapper"
+        >
             <div className="sourcesContainer">
                 <BlockHeading headingText="Для фанатів" />
                 <div className="sourceContentContainer">

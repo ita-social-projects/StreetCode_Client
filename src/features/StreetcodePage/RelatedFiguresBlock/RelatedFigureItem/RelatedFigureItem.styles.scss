@@ -14,33 +14,30 @@
     background-repeat: no-repeat;
 
     @include mut.positioned-as();
-    @include mut.flexed($justify-content: center);
+    @include mut.flexed($justify-content: center, $align-items: flex-end);
 
-    @include vnd.vendored(transition, 'height .5s ease');
+    @include vnd.vendored(transition, 'all .5s ease');
     cursor: pointer;
 
     .slideText {
-        @include mut.sized($width: 272px, $height: 68px);
-        @include mut.flexed($align-items: center, $wrap: wrap);
+        @include mut.sized($width: 272px, $height: 97px);
+        @include mut.flexed($align-items: flex-start, $wrap: wrap);
 
-        @include mut.positioned-as($position: inherit, $top: 286px);
         align-content: flex-start;
 
         background-color: c.$dark-red-color;
-        transition-property: height, border-radius; 
-        transition-duration: .5s;
-        transition-timing-function: ease;
+
+        @include vnd.vendored(transition, 'all .5s ease');
 
         .heading {
-            @include mut.sized($width: 100%, $height: 64px);
+            @include mut.sized($width: 100%, $height: 79px);
             @include mut.flexed($align-items: center);
-            @include mut.rem-padded($left: 32px, $right: 15px);
+            @include mut.rem-padded($left: 13px, $right: 13px, $top: 10px);
 
-            @include mut.with-font($font-family: "Closer Text", $font-size: 24px, $font-weight: 500);
-            line-height: pxToRem(32px);
+            @include mut.with-font($font-family: "Closer Text", $font-size: 20px, $font-weight: 500);
+            line-height: pxToRem(26.4px);
+            text-align: center;
             color: c.$pure-white-color;
-
-            @include vnd.vendored(transition, 'padding .5s ease');
         }
     }
 }
@@ -50,22 +47,23 @@
     visibility: hidden;
 
     @include mut.flexed($align-items: center, $gap: 5px);
-    @include mut.rem-padded($top: 10px, $left: 32px, $right: 15px);
+    @include mut.rem-padded($top: 7px, $left: 23px, $right: 23px);
 
     .tag {
-        @include mut.sized($height: 38px);
+        @include mut.sized($height: 28px);
         @include mut.flex-centered();
 
         border: 2px solid c.$pure-white-color;
-        @include mut.full-rounded($rad: 11px);
-        @include mut.rem-padded($left: 12px, $top: 9px, $right: 12px, $bottom: 9px);
+        @include mut.full-rounded($rad: 7.86px);
+        @include mut.rem-padded($left: 11px, $top: 7px, $right: 11px, $bottom: 7px);
 
         p {
-            @include mut.sized($height: 20px);
+            @include mut.sized($height: 14px);
             text-align: center;
             line-height: 135.69%;
 
-            @include mut.with-font($font-size: 15px,$font-weight: 500);
+            @include mut.with-font($font-size: 10px,$font-weight: 500);
+            line-height: pxToRem(13.6px);
             color: c.$pure-white-color;
         }
     }
@@ -76,13 +74,6 @@
 
     .slideText{
         @include mut.sized($width: 272px, $height: 169px);
-        @include mut.flexed($align-items: flex-start, $wrap: wrap);
-
-        @include mut.rounded($bottom-right: 28px, $bottom-left: 28px);
-
-        .heading {
-            @include mut.rem-padded($top: 6px, $left: 32px, $right: 15px);
-        }
 
         .relatedTagList {
             visibility: visible;

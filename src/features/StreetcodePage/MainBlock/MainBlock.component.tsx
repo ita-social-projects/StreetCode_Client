@@ -16,7 +16,7 @@ const MainBlock = () => {
     const streetcode = value as Streetcode;
 
     return (
-        <div className="blockCentering margin-82px bgr">
+        <div id="mainBlock" className="blockCentering margin-82px bgr">
             <div className="mainContainer">
                 <BreadCrumb separator={<div className="separator" />} streetcode={streetcode} />
                 <div className="blockCentering">

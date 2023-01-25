@@ -15,6 +15,14 @@
 .smallWrapper {
     @include mut.sized($height: 605px);
 
+    .slick-track {
+        @include mut.rem-margined();
+
+        .slick-cloned {
+            display: none;
+        }
+    }
+
     .moreInfo {
         display: none;
     }
@@ -31,12 +39,14 @@
         p {
             @include mut.with-font($font-weight: 500, $font-size: 20px);
             line-height: f.pxToEm(25px);
-
+            text-decoration-line: none;
             color: c.$dark-red-color;
+
             cursor: pointer;
 
             &:hover {
                 text-decoration-line: underline;
+
                 filter: contrast(150%);
             }
         }

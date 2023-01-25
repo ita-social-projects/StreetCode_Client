@@ -1,0 +1,24 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.scrollToTopBtnContainer {
+  @include mut.circular(62px);
+  @include mut.positioned-as(fixed, $bottom: 140px, $right: 50px);
+
+  @include mut.flex-centered();
+  border: 3px solid c.$accented-red-color;
+
+  @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
+  @include vnd.vendored(transition, 'filter .5s ease');
+
+  &:hover {
+    cursor: pointer;
+    @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
+  }
+}
+
+@keyframes btnOpacity {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}

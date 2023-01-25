@@ -9,7 +9,7 @@ const TagsApi = {
 
     getAll: () => Agent.get<Tag[]>(`${API_ROUTES.TAGS.GET_ALL}`),
 
-    getTagByStreetcodeId: (streetcodeId: number) => Agent.get<Tag>(
+    getTagsByStreetcodeId: (streetcodeId: number) => Agent.get<Tag[]>(
         `${API_ROUTES.TAGS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
     ),
 
