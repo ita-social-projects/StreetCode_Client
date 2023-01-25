@@ -8,6 +8,15 @@
   @include mut.flex-centered($direction: column);
   flex-wrap: wrap;
   height: pxToRem(560px);
+  
+  &.width-1 {
+    width: pxToRem(810px);
+  }
+  
+  &.width-2 {
+    width: pxToRem(1210px);
+  }
+
 }
 
 .slideArtGalleryContainer {
@@ -15,10 +24,3 @@
   margin-top: pxToRem(20px);
 }
 
-.width-1 {
-  width: pxToRem(810px);
-}
-
-.width-2 {
-  width: pxToRem(1210px);
-}

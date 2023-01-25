@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import './ArtGalleryBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -9,8 +8,9 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
-import ArtGalleryListOfItem from '@streetcode/ArtGalleryBlock/ArtGalleryListOfItem/ArtGalleryListOfItem.component';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+
+import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 
 const SECTION_AMOUNT = 6;
 
@@ -72,7 +72,7 @@ const ArtGalleryBlock = () => {
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
             slideOfArtList.push(
-                <ArtGalleryListOfItem artGalleryList={artsData} />,
+                <ArtGallerySlide artGalleryList={artsData} />,
             );
             artsData = [];
         }
@@ -80,7 +80,7 @@ const ArtGalleryBlock = () => {
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
-            <ArtGalleryListOfItem artGalleryList={artsData} />,
+            <ArtGallerySlide artGalleryList={artsData} />,
         );
     }
 
