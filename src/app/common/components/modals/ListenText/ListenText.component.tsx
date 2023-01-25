@@ -3,7 +3,7 @@ import './ListenText.styles.scss';
 import ExitBtn from '@images/audio-player/ExitBtn.png';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AudioPlayer } from '@components/AudioPlayer/AudioPlayer.component';
 import useMobx from '@stores/root-store';
 
@@ -11,14 +11,19 @@ const ListenTextModal = () => {
     const { modalStore } = useMobx();
     const { setModal, modalsState: { audio } } = modalStore;
     const [closing, setClosing] = useState(false);
+    let timeoutId: NodeJS.Timeout;
 
     const handleClose = () => {
         setClosing(true);
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
             setModal('audio');
             setClosing(false);
-        }, 1000);
+        }, 500);
     };
+
+    useEffect(() => () => {
+        clearTimeout(timeoutId);
+    }, []);
 
     return (
         <>
@@ -29,7 +34,7 @@ const ListenTextModal = () => {
                     <AudioPlayer />
                     <img
                         src={ExitBtn}
-                        alt=""
+                        alt="Audio player close button"
                         className="closeModal"
                         onClick={handleClose}
                     />
