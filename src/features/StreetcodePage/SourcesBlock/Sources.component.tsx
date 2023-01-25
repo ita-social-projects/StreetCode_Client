@@ -1,7 +1,7 @@
 import './Sources.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
@@ -20,25 +20,20 @@ const SourcesComponent = () => {
     );
 
     return (
-        <div
-            id='sources'
-            className="sourcesWrapper"
-        >
+        <div className="sourcesWrapper">
             <div className="sourcesContainer">
                 <BlockHeading headingText="Для фанатів" />
                 <div className="sourceContentContainer">
                     <div className="sourcesSliderContainer">
-                        <SlickSlider
+                        <BlockSlider
                             infinite={false}
                             swipe={false}
                             dots={false}
-                            slides={getSrcCategoriesArray.flatMap((i) => [i, i]).map((sc) => (
-                                <SourceItem
-                                    key={sc.id}
-                                    srcCategory={sc}
-                                />
+                        >
+                            {getSrcCategoriesArray.flatMap((i) => [i, i]).map((sc) => (
+                                <SourceItem key={sc.id} srcCategory={sc} />
                             ))}
-                        />
+                        </BlockSlider>
                     </div>
                 </div>
             </div>

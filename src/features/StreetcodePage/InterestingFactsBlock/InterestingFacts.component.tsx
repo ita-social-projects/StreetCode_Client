@@ -2,7 +2,7 @@ import './InterestingFacts.styles.scss';
 
 import WowFactImg from '@images/interesting-facts/WowFacts1.png';
 
-import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
@@ -17,7 +17,7 @@ const InterestingFactsComponent = () => {
         [streetcodeId],
     );
 
-    let sliderItems = [...getFactArray.map((title) => (
+    let sliderItems = getFactArray.flatMap((i) => [i, i, i, i, i]).map((title) => (
         <InterestingFactItem
             numberOfSlides={getFactArray.length}
             textHeading={title.title}
@@ -25,7 +25,7 @@ const InterestingFactsComponent = () => {
             imgSrc={WowFactImg}
             factId={title.id}
         />
-    ))];
+    ));
 
     const showDots = sliderItems.length > 3;
 
@@ -37,9 +37,7 @@ const InterestingFactsComponent = () => {
     }
 
     return (
-        <div
-            className="interestingFactsWrapper"
-        >
+        <div className="interestingFactsWrapper">
             <div className="interestingFactsContainer">
                 <BlockHeading headingText="Wow-факти" />
                 <div className="interestingFactsSliderContainer">
@@ -57,16 +55,16 @@ const InterestingFactsComponent = () => {
                                     />
                                 </div>
                             ) : (
-                                <SlickSlider
-                                    swipeOnClick
-                                    className="heightContainer"
-                                    slides={sliderItems}
-                                    slidesToShow={3}
-                                    centerMode
-                                    swipe={false}
+                                <BlockSlider
                                     dots={showDots}
+                                    className="heightContainer"
+                                    swipeOnClick
+                                    swipe={false}
+                                    centerMode
                                     centerPadding="-12px"
-                                />
+                                >
+                                    {sliderItems}
+                                </BlockSlider>
                             )}
 
                     </div>

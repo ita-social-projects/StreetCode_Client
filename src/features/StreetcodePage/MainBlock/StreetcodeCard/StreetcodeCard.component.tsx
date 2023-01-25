@@ -4,7 +4,7 @@ import Hrushevskyi from '@images/streetcode-card/Hrushevskyi.png';
 
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
-import SimpleSlider from '@features/SlickSlider/SlickSlider.component';
+import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import Tag from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx from '@stores/root-store';
@@ -42,12 +42,9 @@ const StreetcodeCard = ({ streetcode }: Props) => {
             <div className="leftSider">
                 <div className="leftSiderContentContainer">
                     <div className="leftSiderContent">
-                        <SimpleSlider
-                            arrows={false}
-                            slidesToShow={1}
-                            slides={Array(4).fill(slide)}
-                            swipeOnClick={false}
-                        />
+                        <BlockSlider arrows={false} slidesToShow={1}>
+                            {Array(4).fill(slide)}
+                        </BlockSlider>
                     </div>
                 </div>
             </div>

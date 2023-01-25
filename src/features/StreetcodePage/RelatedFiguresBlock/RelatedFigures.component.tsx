@@ -6,10 +6,7 @@ import Mazepa from '@images/related-figures/Mazepa.png';
 import Ratushny from '@images/related-figures/Ratushny.png';
 import Ukrainka from '@images/related-figures/Ukrainka.png';
 
-import { forwardRef } from 'react';
-import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
@@ -61,30 +58,23 @@ const RelatedFiguresComponent = () => {
     );
      */
 
-    const sliderItems = relatedFigures.map((figure) => (
-        <RelatedFigureItem
-            key={figure.id}
-            relatedFigure={figure}
-        />
-    ));
-
     return (
-        <div
-            id="relatedFigures"
-            className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
-        >
+        <div className={`relatedFiguresWrapper ${(relatedFigures.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}>
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії" />
                 <div className="relatedFiguresSliderContainer">
                     <div style={{ height: '100%' }}>
-                        <SlickSlider
+                        <BlockSlider
                             className="heightContainer"
                             infinite={false}
                             slidesToShow={4}
-                            slides={sliderItems}
                             swipe={false}
                             dots={false}
-                        />
+                        >
+                            {relatedFigures.map((figure) => (
+                                <RelatedFigureItem key={figure.id} relatedFigure={figure} />
+                            ))}
+                        </BlockSlider>
                     </div>
                 </div>
                 <div className="moreInfo">

@@ -3,27 +3,23 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/_utils.functions.scss" as f;
 
-$timelineItemImg: "@assets/images/TimelineItem.png";
-
 .timelineItem {
   @include mut.sized(604px, 366px);
-  @include mut.bg-image($timelineItemImg);
   @include mut.full-rounded(30px);
-  transition: filter .5s ease-in;
-  flex-shrink: 0;
+  backdrop-filter: blur(2px);
 
   &:hover {
-    outline: 4px solid c.$pure-white-color;
     cursor: pointer;
+    backdrop-filter: blur(2px) brightness(110%);
   }
 }
 
 .timelineItemContent {
-  margin: f.pxToRem(26px);
+  margin: f.pxToRem(24px) f.pxToRem(26px);
 
   .timelineItemDate {
-    margin-bottom: f.pxToRem(26px);
-    @include mut.with-font($font-weight: 600, $font-size: 20px);
+    margin-bottom: f.pxToRem(27px);
+    @include mut.with-font($font-weight: 600);
     color: c.$darker-gray-color;
   }
 
@@ -34,7 +30,7 @@ $timelineItemImg: "@assets/images/TimelineItem.png";
   }
 
   .timelineItemDescription {
-    @include mut.with-font($font-weight: 500, $font-size: 20px);
+    @include mut.with-font($font-weight: 500);
     color: c.$dark-gray-color;
   }
 }

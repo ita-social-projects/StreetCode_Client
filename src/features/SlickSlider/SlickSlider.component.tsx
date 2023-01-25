@@ -1,43 +1,44 @@
 import './SlickSlider.styles.scss';
 
-import React, { useCallback, useEffect, useRef } from 'react';
+import { FC, memo, useCallback, useEffect, useRef } from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';
 
-interface Props extends SliderProps {
-    slides: JSX.Element[];
+type SliderWithoutChildren = Omit<SliderProps, 'children'>;
+
+interface Props extends SliderWithoutChildren {
     onClick?: (index: number) => void;
     swipeOnClick?: boolean;
+    children: JSX.Element[];
 }
 
-const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, ...sliderProps }) => {
+const BlockSlider: FC<Props> = ({ children, onClick, swipeOnClick = false, ...sliderProps }) => {
     const sliderRef = useRef<Slider>(null);
 
     const handleClick = useCallback((index: number) => {
         if (sliderRef && sliderRef.current) {
             sliderRef.current.slickGoTo(index);
         }
-
         if (onClick) {
             onClick(index);
         }
     }, [onClick]);
 
     useEffect(() => {
-        if (slides.length === 1) {
+        if (children.length === 1) {
             const clonedElements = document
                 .querySelectorAll('.interestingFactsSliderContainer .slick-cloned');
             clonedElements.forEach((element) => element.remove());
         }
-    }, [slides]);
+    }, [children]);
 
     return (
         <div className="sliderClass">
             <Slider
                 {...sliderProps}
                 ref={sliderRef}
-                className={!sliderProps.infinite ? 'nonInfiniteSlider' : undefined}
+                className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
-                {slides.map((slide, idx) => (
+                {children.map((slide, idx) => (
                     <div key={idx} onClick={swipeOnClick ? () => handleClick(idx) : undefined}>
                         {slide}
                     </div>
@@ -47,7 +48,7 @@ const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, 
     );
 };
 
-const defaultProps: SliderProps = {
+const defaultProps: SliderWithoutChildren = {
     dots: true,
     arrows: true,
     infinite: true,
@@ -55,6 +56,6 @@ const defaultProps: SliderProps = {
     slidesToScroll: 1,
     speed: 500,
 };
-SimpleSlider.defaultProps = defaultProps;
+BlockSlider.defaultProps = defaultProps;
 
-export default React.memo(SimpleSlider);
+export default memo(BlockSlider);

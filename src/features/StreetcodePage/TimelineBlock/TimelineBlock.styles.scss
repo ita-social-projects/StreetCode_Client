@@ -4,23 +4,49 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+$timelineItemImg: "@assets/images/TimelineItem.png";
+
 .timelineContentContainer {
   margin: f.pxToRem(50px) 0;
-  @include mut.sized(100%, 546px);
   background-color: c.$timeline-reel-color;
 
   .sliderClass {
-    @include mut.sized($width: 100%, $height: 374px);
-    @include mut.rem-margined(30px, 0, 30px);
+    height: f.pxToRem(380px);
+    @include mut.rem-margined($bottom: 25px, $top: 20px /*30px*/);
+  }
+
+  .slick-slider {
+    @include mut.parent-sized();
+
+    > .slick-dots {
+      margin-bottom: f.pxToRem(5px);
+
+      li:not(.slick-active) button:before {
+        background: c.$dark-red-color;
+      }
+    }
   }
 
   .slick-track {
-    @include mut.sized($width: 609px, $height: 378px);
-    @include mut.flexed($gap: 30px);
+    @include mut.flexed(/*$align-items: center,*/ $gap: 30px);
+    // @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
 
     .slick-slide {
-      @include mut.sized();
-      @include mut.flex-centered();
+      @include mut.sized(604px, 366px);
+      @include mut.full-rounded(30px);
+      @include mut.bg-image($timelineItemImg);
+
+      border: transparent;
+      // @include vnd.vendored(transition, 'border 1s ease');
+    }
+
+    .slick-center {
+      border: 4px solid c.$pure-white-color;
+
+      .timelineItemContent {
+        margin-top: calc(1.5rem - 4px);
+        margin-left: calc(1.5rem - 4px);
+      }
     }
   }
 }
