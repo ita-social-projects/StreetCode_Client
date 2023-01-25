@@ -13,10 +13,10 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 
 interface Props {
     children: JSX.Element[];
-    waitMsOnRender: number;
-    topDistance: number;
-    visibleBefore: number;
-    hidingDelay: number;
+    waitMsOnRender?: number;
+    topDistance?: number;
+    visibleBefore?: number;
+    hidingDelay?: number;
 }
 
 const getPercentage = (value: number, ofValue: number) => (value * 1e2) / ofValue;
@@ -35,7 +35,11 @@ const getYScrollPercentage = (curPos: number, minValue?: number, maxValue?: numb
 };
 
 const ProgressBar: FC<Props> = ({
-    children, waitMsOnRender, topDistance, visibleBefore, hidingDelay,
+    children,
+    waitMsOnRender = 300,
+    topDistance = 200,
+    visibleBefore = 1600,
+    hidingDelay = 10e3,
 }) => {
     const wasScrolled = useRef(false);
     const scrollPercentage = useRef(0);
@@ -149,13 +153,5 @@ const ProgressBar: FC<Props> = ({
         </>
     );
 };
-
-const defaultProps: Omit<Props, 'children'> = {
-    topDistance: 200,
-    waitMsOnRender: 300,
-    visibleBefore: 1600,
-    hidingDelay: 10e3,
-};
-ProgressBar.defaultProps = defaultProps;
 
 export default ProgressBar;
