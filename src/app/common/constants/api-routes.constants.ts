@@ -43,6 +43,7 @@ export const API_ROUTES = {
     TIMELINE: {
         GET_ALL: 'timeline/getAll',
         GET: 'timeline/getById',
+        GET_BY_STREETCODE_ID: 'timeline/getByStreetcodeId',
         CREATE: 'timeline/create',
         UPDATE: 'timeline/update',
         DELETE: 'timeline/delete',

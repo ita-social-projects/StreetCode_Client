@@ -1,9 +1,6 @@
-import Streetcode from '@models/streetcode/streetcode-types.model';
-
 export interface HistoricalContext {
     id: number;
     title: string;
-    timelineItems: TimelineItem[];
 }
 
 export default interface TimelineItem {
@@ -11,6 +8,5 @@ export default interface TimelineItem {
     date: Date;
     title: string;
     description?: string | undefined;
-    streetcodes: Streetcode[];
     historicalContexts: HistoricalContext[];
 }
