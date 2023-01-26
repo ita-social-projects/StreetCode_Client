@@ -11,13 +11,15 @@ export default class PartnersStore {
 
     private set setInternalMap(partners: Partner[]) {
         partners.forEach(this.setItem);
-    };
+    }
 
     private setItem = (partner: Partner) => {
         this.PartnerMap.set(partner.id, partner);
     };
 
-    public getPartnerArray = () => Array.from(this.PartnerMap.values());
+    public get getPartnerArray() {
+        return Array.from(this.PartnerMap.values());
+    }
 
     public fetchPartner = async (id: number) => {
         try {

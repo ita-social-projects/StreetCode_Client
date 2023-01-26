@@ -19,7 +19,7 @@ const PartnerContent = ({ partner }:Props) => (
             <p>{partner.title}</p>
         </div>
         <div className="links">
-            <div>
+            <div className="sourceLinks">
                 {partner.partnerSourceLinks.map((sl) => (
                     <a
                         className="sourceLink"
@@ -28,7 +28,7 @@ const PartnerContent = ({ partner }:Props) => (
                         <img
                             key={sl.id}
                             src={sl.logoUrl}
-                            alt={sl.title}
+                            alt=""
                         />
                     </a>
                 ))}

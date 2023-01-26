@@ -1,0 +1,16 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.partnerItem {
+    .partnerLogo {
+        @include mut.sized($height: 100%);
+        filter: grayscale(90%);
+        transition: all .5ms ease;
+
+        &:hover {
+            filter: none;
+        }
+    }
+}

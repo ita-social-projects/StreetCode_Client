@@ -1,0 +1,47 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.partnerContent {
+    @include mut.sized($width: 380px);
+    @include mut.rem-margined($top: 8px, $right: 8px, $bottom: 8px, $left: 8px);
+    @include mut.flexed($gap: 12px, $wrap: wrap);
+    flex-direction: column;
+}
+
+.header {
+    @include mut.flexed($align-items: center, $gap: 14px);
+}
+
+.partnerContentLogo{
+    @include mut.sized($width: 108px, $height: 30px);
+
+    @include mut.flex-centered();
+
+    img{
+        @include mut.sized($width: 104px);
+    }
+}
+
+.links {
+    @include mut.flexed($gap: 14px);
+}
+
+.sourceLinks {
+    @include mut.flexed($gap: 7px);
+}
+
+.sourceLink {
+    img {
+        @include mut.sized($width: 20px, $height: 20px);
+    }
+}
+
+.description {
+    p {
+        @include mut.with-font($font-size: 15px, $font-weight: 300);
+
+        color: c.$lighter-black-color;
+    }
+}
