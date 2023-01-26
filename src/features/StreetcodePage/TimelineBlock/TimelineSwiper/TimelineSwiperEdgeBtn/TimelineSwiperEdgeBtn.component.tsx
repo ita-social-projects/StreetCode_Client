@@ -6,27 +6,29 @@ import { useSwiper } from 'swiper/react';
 
 interface Props {
     side: 'left' | 'right';
-    lastSlideIdx: number;
+    lastTickIdx: number;
     swipeSpeed?: number;
     sideMargin?: number;
 }
 
-const TimelineSwiperEdgeBtn = ({ swipeSpeed = 1500, sideMargin = 60, lastSlideIdx, side }: Props) => {
-    const swiper = useSwiper();
+const TimelineSwiperEdgeBtn = ({ swipeSpeed = 900, sideMargin = 60, lastTickIdx, side }: Props) => {
     const { timelineItemStore: { setActiveYear, getTimelineItemArray } } = useMobx();
+    const swiper = useSwiper();
 
     const isLeftEdge = side === 'left';
+
+    const handleClick = () => {
+        const slideToCardIdx = isLeftEdge ? 0 : getTimelineItemArray.length - 1;
+
+        swiper.slideTo((isLeftEdge ? 0 : lastTickIdx), swipeSpeed);
+        setActiveYear(getTimelineItemArray[slideToCardIdx].date.getFullYear());
+    };
 
     return (
         <div
             className="swiperEdgeBtn"
+            onClick={handleClick}
             style={isLeftEdge ? { left: -sideMargin } : { right: -sideMargin }}
-            onClick={() => {
-                swiper.slideTo((isLeftEdge ? 0 : lastSlideIdx), swipeSpeed);
-                const year = new Date(getTimelineItemArray[isLeftEdge ? 0 : getTimelineItemArray.length - 1].date)
-                    .getFullYear();
-                setActiveYear(year);
-            }}
         >
             <span>
                 {isLeftEdge ? 'First' : 'Last'}

@@ -25,7 +25,6 @@ const TimelineSlideCard = ({ timelineItem: { date, description, historicalContex
                         {`${ctxTitle} ${(idx !== historicalContexts.length - 1) ? '& ' : ''}`}
                     </span>
                 ))}
-                {/* {historicalContexts.map((ctx) => ctx.title).join(' | ')} */}
             </div>
             <p className="timelineItemTitle">
                 {title}

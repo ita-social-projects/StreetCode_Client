@@ -3,7 +3,7 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .timelineSquareContainer {
-  @include mut.flexed($justify-content: center, $gap: 36px);
+  @include mut.flex-centered($gap: 36px);
 
   &:first-child {
     padding-top: f.pxToRem(16px);

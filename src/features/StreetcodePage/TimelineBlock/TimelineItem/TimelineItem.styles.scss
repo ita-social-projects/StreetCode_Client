@@ -21,27 +21,25 @@
   margin: f.pxToRem(24px) f.pxToRem(26px);
 
   .timelineItemDate {
-    margin-bottom: 5px;
     @include mut.with-font($font-weight: 600);
     color: c.$darker-gray-color;
-  }
-
-  .timelineItemHistoricalContexts {
-    .historicalContext {
-      @include mut.with-font($font-weight: 600);
-      color: c.$darker-gray-color;
-    }
   }
 
   .timelineItemTitle {
     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
     margin: f.pxToRem(14px) 0;
+
     color: c.$dark-red-color;
-    @include mut.truncated(1);
+    @include mut.truncated($line-num: 1);
   }
 
   .timelineItemDescription {
     @include mut.with-font($font-weight: 500);
     color: c.$dark-gray-color;
   }
+}
+
+.historicalContext {
+  @include mut.with-font($font-weight: 600);
+  color: c.$darker-gray-color;
 }

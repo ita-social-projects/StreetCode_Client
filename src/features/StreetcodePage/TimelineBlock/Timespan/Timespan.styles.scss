@@ -5,30 +5,30 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .timeSpanContainer {
-  @include mut.sized(100%, 8px);
-  background-color: c.$dark-red-color;
+  height: f.pxToRem(8px);
   margin-top: f.pxToRem(100px);
+  background-color: c.$dark-red-color;
 
   .timelineYearTicksContainer {
-    @include mut.sized(100%, 30px);
-    @include mut.flex-centered($gap: 240px);
+    @include mut.sized(100%, 26px);
     @include mut.rem-padded(0, 100px, 20px, 100px);
 
     .timelineYearTick {
-      @include mut.sized(100%, 100%);
-      background-color: c.$timeline-reel-color;
+      @include mut.parent-sized();
       @include mut.flex-centered();
-      // @include vnd.vendored(transition, 'font .5s ease');
+
+      background-color: c.$timeline-reel-color;
+      @include vnd.vendored(transition, 'background .5s ease');
 
       &:hover {
-        background-color: c.$dark-gray-color;
+        background-color: c.$darkish-gray-color;
         cursor: pointer;
       }
 
       > * {
         position: relative;
         bottom: f.pxToRem(30px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500);
       }
     }
   }

@@ -22,6 +22,10 @@
 .tickContainer {
   position: relative;
 
+  span {
+    @include vnd.vendored(transition, 'all .5s ease-in-out');
+  }
+
   &.active {
     @include mut.sized(42px, 42px);
     bottom: f.pxToRem(10px);
@@ -30,9 +34,5 @@
       bottom: f.pxToRem(60px) !important;
       font-size: f.pxToRem(40px) !important;
     }
-  }
-
-  span {
-    @include vnd.vendored(transition, 'all .5s ease-in-out');
   }
 }

@@ -18,7 +18,10 @@ export default class TimelineStore {
     };
 
     private setItem = (timelineItem: TimelineItem) => {
-        this.timelineItemMap.set(timelineItem.id, timelineItem);
+        this.timelineItemMap.set(timelineItem.id, {
+            ...timelineItem,
+            date: new Date(timelineItem.date),
+        } as TimelineItem);
     };
 
     public setActiveYear = (year: number | null) => {
@@ -32,13 +35,13 @@ export default class TimelineStore {
     public get getTimelineItemArray() {
         return Array.from(this.timelineItemMap.values())
             .flatMap((i) => [i, i, i])
-            .sort((prev, cur) => new Date(prev.date).getFullYear() - new Date(cur.date).getFullYear());
+            .sort((prev, cur) => prev.date.getFullYear() - cur.date.getFullYear());
     }
 
     public get getYearsArray() {
         return [...new Set(
             Array.from(this.timelineItemMap.values())
-                .map((timelineItem) => new Date(timelineItem.date).getFullYear()),
+                .map((timelineItem) => timelineItem.date.getFullYear()),
         )].sort();
     }
 

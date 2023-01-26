@@ -13,7 +13,6 @@ interface Props extends SliderWithoutChildren {
     onClick?: (index: number) => void;
     swipeOnClick?: boolean;
     children: JSX.Element[];
-    enableExternalClick?: boolean;
 }
 
 const BlockSlider: FC<Props> = ({
@@ -22,58 +21,45 @@ const BlockSlider: FC<Props> = ({
     swipeOnClick = false,
     ...sliderProps
 }) => {
-    const { timelineItemStore: { activeYear, getTimelineItemArray, setActiveSlideIdx, getYearsArray } } = useMobx();
+    const { timelineItemStore } = useMobx();
     const sliderRef = useRef<Slider>(null);
-
-    const handleClick = useCallback((index: number) => {
-        if (sliderRef && sliderRef.current) {
-            sliderRef.current.slickGoTo(index);
-        }
-        if (onClick) {
-            onClick(index);
-        }
-    }, [onClick]);
+    const { getTimelineItemArray, activeYear, setActiveSlideIdx } = timelineItemStore;
 
     useEffect(() => {
         if (sliderRef && sliderRef.current) {
             const sectionIdx = getTimelineItemArray
-                .findIndex((ti) => new Date(ti.date).getFullYear() === activeYear);
-            // console.log(activeYear, sectionIdx);
+                .findIndex(({ date }) => date.getFullYear() === activeYear);
 
             if (sectionIdx !== -1) {
                 sliderRef.current.slickGoTo(sectionIdx);
             }
         }
-    }, [activeYear, getTimelineItemArray]);
+    }, [activeYear]);
 
-    useEffect(() => {
-        if (children.length === 1) {
-            const clonedElements = document
-                .querySelectorAll('.interestingFactsSliderContainer .slick-cloned');
-            clonedElements.forEach((element) => element.remove());
+    const handleClick = useCallback((index: number) => {
+        if (sliderRef && sliderRef.current && swipeOnClick) {
+            sliderRef.current.slickGoTo(index);
         }
-    }, [children]);
+        if (onClick) {
+            onClick(index);
+        }
+    }, [onClick, swipeOnClick]);
+
+    const onBeforeChange = (curIdx: number, nextIdx: number) => {
+        const year = getTimelineItemArray[nextIdx].date.getFullYear();
+        setActiveSlideIdx(getTimelineItemArray.findIndex(({ date }) => date.getFullYear() === year));
+    };
 
     return (
         <div className="sliderClass">
             <Slider
-                {...sliderProps}
                 ref={sliderRef}
+                {...sliderProps}
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
-                beforeChange={(_, idx) => {
-                    const year = new Date(getTimelineItemArray[idx].date).getFullYear();
-                    setActiveSlideIdx(getYearsArray.findIndex((y) => y === year));
-                }}
+                beforeChange={onBeforeChange}
             >
                 {children.map((slide, idx) => (
-                    <div
-                        key={idx}
-                        onClick={() => {
-                            if (swipeOnClick) {
-                                handleClick(idx);
-                            }
-                        }}
-                    >
+                    <div key={idx} onClick={() => handleClick(idx)}>
                         {slide}
                     </div>
                 ))}

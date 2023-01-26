@@ -31,7 +31,6 @@ const TimelineBlock = () => {
                     swipeOnClick
                     swipeToSlide
                     centerMode
-                    // initialSlide={1}
                     centerPadding="-6px"
                 >
                     {getTimelineItemArray.map((timelineItem) => (

@@ -2,9 +2,7 @@ import 'swiper/scss';
 import './TimelineSwiper.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import {
-    FC, useEffect, useMemo, useRef, useState,
-} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useMobx from '@stores/root-store';
 import TimelineSwiperEdgeBtn
     from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiperEdgeBtn/TimelineSwiperEdgeBtn.component';
@@ -17,10 +15,15 @@ interface Props extends SwiperWithoutChildren {
     edgeSwipe?: boolean;
 }
 
-const TimelineSwiper: FC<Props> = ({ children, initialSlide, edgeSwipe = false, ...swiperProps }) => {
-    const { timelineItemStore: { activeSlideIdx } } = useMobx();
-    const [activeYear, setActiveYear] = useState(initialSlide);
+const TimelineSwiper: React.FC<Props> = ({
+    children,
+    initialSlide,
+    edgeSwipe = false,
+    ...swiperProps
+}) => {
     const swiperRef = useRef<SwiperRef>(null);
+    const [activeSlide, setActiveSlide] = useState(0);
+    const { timelineItemStore: { activeSlideIdx } } = useMobx();
 
     useEffect(() => {
         if (swiperRef && swiperRef.current && activeSlideIdx !== null) {
@@ -29,9 +32,9 @@ const TimelineSwiper: FC<Props> = ({ children, initialSlide, edgeSwipe = false, 
     }, [activeSlideIdx]);
 
     const onNextSwipeProps = useMemo(() => ({
-        allowSlidePrev: activeYear !== 0,
-        allowSlideNext: activeYear !== children.length - 1,
-    }), [activeYear, children.length]);
+        allowSlidePrev: activeSlide !== 0,
+        allowSlideNext: activeSlide !== children.length - 1,
+    }), [activeSlide, children.length]);
 
     return (
         <Swiper
@@ -39,21 +42,21 @@ const TimelineSwiper: FC<Props> = ({ children, initialSlide, edgeSwipe = false, 
             {...swiperProps}
             {...(!edgeSwipe ? onNextSwipeProps : undefined)}
             initialSlide={initialSlide}
-            onSlideChange={({ activeIndex }) => setActiveYear(activeIndex)}
+            onSlideChange={({ activeIndex }) => setActiveSlide(activeIndex)}
         >
             <TimelineSwiperEdgeBtn
-                lastSlideIdx={children.length - 1}
+                lastTickIdx={children.length - 1}
                 side="left"
             />
             {children.map((child, idx) => (
                 <SwiperSlide key={idx}>
-                    <div className={`tickContainer ${(idx === activeYear) ? 'active' : ''}`}>
+                    <div className={`tickContainer ${(idx === activeSlide) ? 'active' : ''}`}>
                         {child}
                     </div>
                 </SwiperSlide>
             ))}
             <TimelineSwiperEdgeBtn
-                lastSlideIdx={children.length - 1}
+                lastTickIdx={children.length - 1}
                 side="right"
             />
         </Swiper>
@@ -64,7 +67,7 @@ const defaultProps: SwiperWithoutChildren = {
     loop: false,
     slidesPerView: 3,
     direction: 'horizontal',
-    speed: 1500,
+    speed: 900,
     centeredSlides: true,
     autoHeight: true,
     slideToClickedSlide: false,

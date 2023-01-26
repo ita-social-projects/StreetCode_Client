@@ -9,7 +9,7 @@ const TimelineTimespan = () => {
     const { timelineItemStore } = useMobx();
     const { getYearsArray, setActiveYear } = timelineItemStore;
 
-    useEffect(() => setActiveYear(null), [setActiveYear]);
+    useEffect(() => () => setActiveYear(null), [setActiveYear]);
 
     const middleIdx = Math.round((getYearsArray.length - 1) / 2);
 

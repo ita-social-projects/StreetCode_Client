@@ -30,7 +30,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
   .slick-track {
     @include mut.flexed(/*$align-items: center,*/ $gap: 30px);
-    // @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
+    @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
 
     .slick-slide {
       @include mut.sized(604px, 366px);
@@ -46,7 +46,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       }
 
       border: transparent;
-      // @include vnd.vendored(transition, 'border 1s ease');
+      @include vnd.vendored(transition, 'border 500ms ease');
     }
 
     .slick-center {

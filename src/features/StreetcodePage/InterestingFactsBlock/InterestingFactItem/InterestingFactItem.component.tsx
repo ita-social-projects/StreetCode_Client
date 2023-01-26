@@ -1,37 +1,44 @@
 import './InterestingFactItem.styles.scss';
 
+import WowFactImg from '@images/interesting-facts/WowFacts1.png';
+
 import { observer } from 'mobx-react-lite';
+import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
 
 interface Props {
-    mainText: string;
-    textHeading: string;
-    imgSrc: string;
+    fact: Fact;
     maxTextLength?: number;
-    factId:number;
-    numberOfSlides:number;
+    numberOfSlides: number;
 }
 
 const InterestingFactItem = ({
-    imgSrc, mainText, textHeading, maxTextLength = 300, factId, numberOfSlides
+    fact: { factContent, title, id },
+    maxTextLength = 300,
+    numberOfSlides,
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
-    const isReadMore = (mainText.length > maxTextLength) && (numberOfSlides!=1);
+    const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
 
+    let mainContent = factContent;
     if (isReadMore) {
-        mainText = `${mainText.substring(0, maxTextLength)}...`;
+        mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
 
     return (
         <div className="interestingFactSlide">
             <div className="slideImage">
-                <img src={imgSrc} alt="" />
+                <img src={WowFactImg} alt="" />
             </div>
             <div className="slideText">
-                <p className="heading">{textHeading}</p>
-                <p className="mainText">{mainText}</p>
+                <p className="heading">
+                    {title}
+                </p>
+                <p className="mainText">
+                    {mainContent}
+                </p>
                 {isReadMore && (
-                    <p className="readMoreParagraph" onClick={() => setModal('facts', factId, true)}>
+                    <p className="readMoreParagraph" onClick={() => setModal('facts', id, true)}>
                         Трохи ще...
                     </p>
                 )}
