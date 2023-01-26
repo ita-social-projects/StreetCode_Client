@@ -1,14 +1,13 @@
 import './Timespan.styles.scss';
 
-import React from 'react';
+import useMobx from '@stores/root-store';
 import TimelineSwiper from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiper.component';
 
-interface Props {
-    yearTicks: Array<number | string>;
-}
+const TimelineTimespan = () => {
+    const { timelineItemStore } = useMobx();
+    const { getYearsArray } = timelineItemStore;
 
-const TimelineTimespan = ({ yearTicks }: Props) => {
-    const middleIdx = Math.round((yearTicks.length - 1) / 2);
+    const middleIdx = Math.round((getYearsArray.length - 1) / 2);
 
     return (
         <div className="timeSpanContainer">
@@ -18,7 +17,7 @@ const TimelineTimespan = ({ yearTicks }: Props) => {
                     initialSlide={middleIdx}
                     slideToClickedSlide
                 >
-                    {yearTicks.map((year, idx) => (
+                    {getYearsArray.map((year, idx) => (
                         <div key={idx} className="timelineYearTick">
                             <span>{year}</span>
                         </div>

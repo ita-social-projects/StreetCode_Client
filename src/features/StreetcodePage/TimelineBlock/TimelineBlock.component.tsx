@@ -12,7 +12,7 @@ import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.compon
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
-    const { fetchTimelineItemsByStreetcodeId, getYearsArray, getTimelineItemArray } = timelineItemStore;
+    const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
 
     const streetcodeId = useRouteId();
     useAsync(
@@ -23,7 +23,7 @@ const TimelineBlock = () => {
     return (
         <div className="timelineContainer">
             <BlockHeading headingText="Хронологія" />
-            <TimelineTimespan yearTicks={getYearsArray} />
+            <TimelineTimespan />
             <div className="timelineContentContainer">
                 <TimelineReelOutline />
                 <BlockSlider

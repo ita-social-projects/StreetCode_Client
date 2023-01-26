@@ -14,27 +14,29 @@ interface Props extends SwiperWithoutChildren {
 }
 
 const TimelineSwiper: FC<Props> = ({ children, initialSlide, edgeSwipe = false, ...swiperProps }) => {
-    const [activeSlide, setActiveSlide] = useState(initialSlide);
+    const [activeYear, setActiveYear] = useState(initialSlide);
 
     const onNextSwipeProps = useMemo(() => ({
-        allowSlidePrev: activeSlide !== 0,
-        allowSlideNext: activeSlide !== children.length - 1,
-    }), [activeSlide, children.length]);
+        allowSlidePrev: activeYear !== 0,
+        allowSlideNext: activeYear !== children.length - 1,
+    }), [activeYear, children.length]);
 
     return (
         <Swiper
             {...swiperProps}
             {...(!edgeSwipe ? onNextSwipeProps : undefined)}
             initialSlide={initialSlide}
-            onSlideChange={({ activeIndex }) => setActiveSlide(activeIndex)}
+            onSlideChange={({ activeIndex }) => setActiveYear(activeIndex)}
         >
             <TimelineSwiperEdgeBtn
                 lastSlideIdx={(children.length * 3) - 1}
                 side="left"
             />
-            {children.flatMap((i) => [i, i, i]).map((child, idx) => (
+            {children.map((child, idx) => (
                 <SwiperSlide key={idx}>
-                    <div className={`tickContainer ${(idx === activeSlide) ? 'active' : ''}`}>
+                    <div
+                        className={`tickContainer ${(idx === activeYear) ? 'active' : ''}`}
+                    >
                         {child}
                     </div>
                 </SwiperSlide>
