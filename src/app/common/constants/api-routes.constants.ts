@@ -13,6 +13,7 @@ export const API_ROUTES = {
         GET_ALL: 'partners/getAll',
         GET_SPONSORS: 'partners/getSponsors',
         GET: 'partners/getById',
+        GET_BY_STREETCODE_ID: 'partners/getByStreetcodeId',
         CREATE: 'partners/create',
         UPDATE: 'partners/update',
         DELETE: 'partners/delete',
