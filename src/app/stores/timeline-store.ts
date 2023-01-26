@@ -34,7 +34,6 @@ export default class TimelineStore {
 
     public get getTimelineItemArray() {
         return Array.from(this.timelineItemMap.values())
-            .flatMap((i) => [i, i, i])
             .sort((prev, cur) => prev.date.getFullYear() - cur.date.getFullYear());
     }
 
