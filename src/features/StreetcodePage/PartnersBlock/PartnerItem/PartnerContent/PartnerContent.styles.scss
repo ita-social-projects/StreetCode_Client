@@ -26,6 +26,10 @@
 
 .links {
     @include mut.flexed($gap: 14px);
+
+    .mainLink {
+        @include mut.truncated($line-num: 1);
+    }
 }
 
 .sourceLinks {

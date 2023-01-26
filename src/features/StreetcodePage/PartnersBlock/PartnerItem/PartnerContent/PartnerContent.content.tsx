@@ -19,7 +19,10 @@ const PartnerContent = ({ partner }:Props) => (
             <p>{partner.title}</p>
         </div>
         <div className="links">
-            <div className="sourceLinks">
+            <div
+                className="sourceLinks"
+                style={{ display: partner.partnerSourceLinks.length < 1 ? 'none' : '' }}
+            >
                 {partner.partnerSourceLinks.map((sl) => (
                     <a
                         className="sourceLink"
@@ -40,7 +43,10 @@ const PartnerContent = ({ partner }:Props) => (
                 {partner.targetUrl}
             </a>
         </div>
-        <div className="description">
+        <div
+            className="description"
+            style={{ display: partner.description ? '' : 'none' }}
+        >
             <p>{partner.description}</p>
         </div>
     </div>
