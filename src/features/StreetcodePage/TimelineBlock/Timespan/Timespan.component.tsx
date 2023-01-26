@@ -1,12 +1,12 @@
 import './Timespan.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import TimelineSwiper from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiper.component';
 
 const TimelineTimespan = () => {
     const { timelineItemStore } = useMobx();
     const { getYearsArray } = timelineItemStore;
-
     const middleIdx = Math.round((getYearsArray.length - 1) / 2);
 
     return (
@@ -28,4 +28,4 @@ const TimelineTimespan = () => {
     );
 };
 
-export default TimelineTimespan;
+export default observer(TimelineTimespan);

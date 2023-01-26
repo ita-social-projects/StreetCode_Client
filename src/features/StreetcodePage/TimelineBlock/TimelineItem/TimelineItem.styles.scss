@@ -35,8 +35,9 @@
 
   .timelineItemTitle {
     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
-    line-height: 48px;
+    margin: f.pxToRem(14px) 0;
     color: c.$dark-red-color;
+    @include mut.truncated(1);
   }
 
   .timelineItemDescription {

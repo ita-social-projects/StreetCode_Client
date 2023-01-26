@@ -1,36 +1,40 @@
 import './TimelineItem.styles.scss';
 
-import TimelineI from '@/models/timeline/chronology.model';
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
 
-const truncateAfter = (str: string, symbolCount = 400) => ((str.length) <= 400
-    ? str : `${str.substring(0, symbolCount - 3)}...`);
+import TimelineItem from '@/models/timeline/chronology.model';
+
+const truncateCharString = (str?: string, symbolCount = 350): string | undefined => str && (
+    str.length <= symbolCount ? str : `${str.substring(0, symbolCount - 3)}...`
+);
 
 interface Props {
-    timelineItem: TimelineI;
+    timelineItem: TimelineItem;
 }
 
-const getLocalString = (date: Date) => new Date(date)
-    .toLocaleDateString('uk-Uk', { year: 'numeric', month: 'long', day: '2-digit' });
-
-const TimelineItem = ({ timelineItem } : Props) => (
+const TimelineSlideCard = ({ timelineItem: { date, description, historicalContexts, title } } : Props) => (
     <div className="timelineItem">
         <div className="timelineItemContent">
-            <p className="timelineItemDate">{getLocalString(timelineItem.date)}</p>
+            <p className="timelineItemDate">
+                {format(new Date(date), 'yyyy, d MMMM', { locale: uk })}
+            </p>
             <div className="timelineItemHistoricalContexts">
-                {timelineItem.historicalContexts.map((hc) => (
-                    <p className="historicalContext">{hc.title}</p>
+                {historicalContexts.map(({ id, title: ctxTitle }, idx) => (
+                    <span key={id} className="historicalContext">
+                        {`${ctxTitle} ${(idx !== historicalContexts.length - 1) ? '& ' : ''}`}
+                    </span>
                 ))}
+                {/* {historicalContexts.map((ctx) => ctx.title).join(' | ')} */}
             </div>
             <p className="timelineItemTitle">
-                {timelineItem.title}
+                {title}
             </p>
             <p className="timelineItemDescription">
-                {truncateAfter(
-                    timelineItem.description ? timelineItem.description : '',
-                )}
+                {truncateCharString(description)}
             </p>
         </div>
     </div>
 );
 
-export default TimelineItem;
+export default TimelineSlideCard;

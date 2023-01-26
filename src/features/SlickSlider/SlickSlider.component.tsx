@@ -1,6 +1,8 @@
 import './SlickSlider.styles.scss';
 
-import { FC, memo, useCallback, useEffect, useRef } from 'react';
+import {
+    FC, memo, useCallback, useEffect, useRef,
+} from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';
 
 type SliderWithoutChildren = Omit<SliderProps, 'children'>;
@@ -9,9 +11,15 @@ interface Props extends SliderWithoutChildren {
     onClick?: (index: number) => void;
     swipeOnClick?: boolean;
     children: JSX.Element[];
+    enableExternalClick?: boolean;
 }
 
-const BlockSlider: FC<Props> = ({ children, onClick, swipeOnClick = false, ...sliderProps }) => {
+const BlockSlider: FC<Props> = ({
+    children,
+    onClick,
+    swipeOnClick = false,
+    ...sliderProps
+}) => {
     const sliderRef = useRef<Slider>(null);
 
     const handleClick = useCallback((index: number) => {

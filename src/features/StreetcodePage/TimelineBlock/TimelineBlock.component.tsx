@@ -6,7 +6,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
-import TimelineItem from '@streetcode/TimelineBlock/TimelineItem/TimelineItem.component';
+import TimelineSlideCard from '@streetcode/TimelineBlock/TimelineItem/TimelineItem.component';
 import TimelineReelOutline from '@streetcode/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
 import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.component';
 
@@ -20,6 +20,10 @@ const TimelineBlock = () => {
         [streetcodeId],
     );
 
+    const timelineItems = getTimelineItemArray
+        .flatMap((i) => [i, i, i])
+        .sort((prev, cur) => new Date(prev.date).getFullYear() - new Date(cur.date).getFullYear());
+
     return (
         <div className="timelineContainer">
             <BlockHeading headingText="Хронологія" />
@@ -28,13 +32,17 @@ const TimelineBlock = () => {
                 <TimelineReelOutline />
                 <BlockSlider
                     arrows={false}
-                    swipeToSlide
                     swipeOnClick
+                    swipeToSlide
                     centerMode
+                    initialSlide={1}
                     centerPadding="-6px"
                 >
-                    {getTimelineItemArray?.map((ti) => (
-                        <TimelineItem key={ti.id} timelineItem={ti} />
+                    {timelineItems.map((timelineItem) => (
+                        <TimelineSlideCard
+                            key={timelineItem.id}
+                            timelineItem={timelineItem}
+                        />
                     ))}
                 </BlockSlider>
                 <TimelineReelOutline />

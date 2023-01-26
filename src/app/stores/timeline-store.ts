@@ -2,8 +2,8 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import timelineApi from '@api/timeline/timeline.api';
 import TimelineItem from '@models/timeline/chronology.model';
 
-export default class TimelineitemStore {
-    public TimelineItemMap = new Map<number, TimelineItem>();
+export default class TimelineStore {
+    public timelineItemMap = new Map<number, TimelineItem>();
 
     public constructor() {
         makeAutoObservable(this);
@@ -14,18 +14,16 @@ export default class TimelineitemStore {
     };
 
     private setItem = (timelineItem: TimelineItem) => {
-        this.TimelineItemMap.set(timelineItem.id, timelineItem);
+        this.timelineItemMap.set(timelineItem.id, timelineItem);
     };
 
     public get getTimelineItemArray() {
-        return Array.from(this.TimelineItemMap.values());
-        // .map((timelineItem) => new Date(timelineItem.date)
-        //     .toLocaleDateString('uk-Uk', { year: 'numeric', month: 'long', day: '2-digit' }));
+        return Array.from(this.timelineItemMap.values());
     }
 
     public get getYearsArray() {
         return [...new Set(
-            Array.from(this.TimelineItemMap.values())
+            Array.from(this.timelineItemMap.values())
                 .map((timelineItem) => new Date(timelineItem.date).getFullYear()),
         )].sort();
     }
@@ -71,7 +69,7 @@ export default class TimelineitemStore {
             await timelineApi.update(timelineItem);
             runInAction(() => {
                 const updatedTimelineItem = {
-                    ...this.TimelineItemMap.get(timelineItem.id),
+                    ...this.timelineItemMap.get(timelineItem.id),
                     ...timelineItem,
                 };
                 this.setItem(updatedTimelineItem as TimelineItem);
@@ -85,7 +83,7 @@ export default class TimelineitemStore {
         try {
             await timelineApi.delete(timelineItemId);
             runInAction(() => {
-                this.TimelineItemMap.delete(timelineItemId);
+                this.timelineItemMap.delete(timelineItemId);
             });
         } catch (error: unknown) {
             console.log(error);
