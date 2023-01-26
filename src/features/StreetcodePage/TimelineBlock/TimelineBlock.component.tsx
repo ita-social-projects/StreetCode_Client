@@ -20,10 +20,6 @@ const TimelineBlock = () => {
         [streetcodeId],
     );
 
-    const timelineItems = getTimelineItemArray
-        .flatMap((i) => [i, i, i])
-        .sort((prev, cur) => new Date(prev.date).getFullYear() - new Date(cur.date).getFullYear());
-
     return (
         <div className="timelineContainer">
             <BlockHeading headingText="Хронологія" />
@@ -35,10 +31,10 @@ const TimelineBlock = () => {
                     swipeOnClick
                     swipeToSlide
                     centerMode
-                    initialSlide={1}
+                    // initialSlide={1}
                     centerPadding="-6px"
                 >
-                    {timelineItems.map((timelineItem) => (
+                    {getTimelineItemArray.map((timelineItem) => (
                         <TimelineSlideCard
                             key={timelineItem.id}
                             timelineItem={timelineItem}

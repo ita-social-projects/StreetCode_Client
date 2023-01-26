@@ -5,6 +5,10 @@ import TimelineItem from '@models/timeline/chronology.model';
 export default class TimelineStore {
     public timelineItemMap = new Map<number, TimelineItem>();
 
+    public activeYear: number | null = null;
+
+    public activeSlideIdx: number | null = null;
+
     public constructor() {
         makeAutoObservable(this);
     }
@@ -17,8 +21,18 @@ export default class TimelineStore {
         this.timelineItemMap.set(timelineItem.id, timelineItem);
     };
 
+    public setActiveYear = (year: number | null) => {
+        this.activeYear = year;
+    };
+
+    public setActiveSlideIdx = (idx: number | null) => {
+        this.activeSlideIdx = idx;
+    };
+
     public get getTimelineItemArray() {
-        return Array.from(this.timelineItemMap.values());
+        return Array.from(this.timelineItemMap.values())
+            .flatMap((i) => [i, i, i])
+            .sort((prev, cur) => new Date(prev.date).getFullYear() - new Date(cur.date).getFullYear());
     }
 
     public get getYearsArray() {

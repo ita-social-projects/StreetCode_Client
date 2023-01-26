@@ -1,9 +1,11 @@
 import './SlickSlider.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import {
     FC, memo, useCallback, useEffect, useRef,
 } from 'react';
 import Slider, { Settings as SliderProps } from 'react-slick';
+import useMobx from '@stores/root-store';
 
 type SliderWithoutChildren = Omit<SliderProps, 'children'>;
 
@@ -20,6 +22,7 @@ const BlockSlider: FC<Props> = ({
     swipeOnClick = false,
     ...sliderProps
 }) => {
+    const { timelineItemStore: { activeYear, getTimelineItemArray, setActiveSlideIdx, getYearsArray } } = useMobx();
     const sliderRef = useRef<Slider>(null);
 
     const handleClick = useCallback((index: number) => {
@@ -30,6 +33,18 @@ const BlockSlider: FC<Props> = ({
             onClick(index);
         }
     }, [onClick]);
+
+    useEffect(() => {
+        if (sliderRef && sliderRef.current) {
+            const sectionIdx = getTimelineItemArray
+                .findIndex((ti) => new Date(ti.date).getFullYear() === activeYear);
+            // console.log(activeYear, sectionIdx);
+
+            if (sectionIdx !== -1) {
+                sliderRef.current.slickGoTo(sectionIdx);
+            }
+        }
+    }, [activeYear, getTimelineItemArray]);
 
     useEffect(() => {
         if (children.length === 1) {
@@ -45,9 +60,20 @@ const BlockSlider: FC<Props> = ({
                 {...sliderProps}
                 ref={sliderRef}
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
+                beforeChange={(_, idx) => {
+                    const year = new Date(getTimelineItemArray[idx].date).getFullYear();
+                    setActiveSlideIdx(getYearsArray.findIndex((y) => y === year));
+                }}
             >
                 {children.map((slide, idx) => (
-                    <div key={idx} onClick={swipeOnClick ? () => handleClick(idx) : undefined}>
+                    <div
+                        key={idx}
+                        onClick={() => {
+                            if (swipeOnClick) {
+                                handleClick(idx);
+                            }
+                        }}
+                    >
                         {slide}
                     </div>
                 ))}
@@ -66,4 +92,4 @@ const defaultProps: SliderWithoutChildren = {
 };
 BlockSlider.defaultProps = defaultProps;
 
-export default memo(BlockSlider);
+export default memo(observer(BlockSlider));
