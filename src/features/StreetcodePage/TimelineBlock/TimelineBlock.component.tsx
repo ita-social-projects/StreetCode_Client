@@ -12,16 +12,13 @@ import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.compon
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
-    const { fetchTimelineItemsByCategoryId, getYearsArray, getTimelineItemArray } = timelineItemStore;
+    const { fetchTimelineItemsByStreetcodeId, getYearsArray, getTimelineItemArray } = timelineItemStore;
 
     const streetcodeId = useRouteId();
     useAsync(
-        () => fetchTimelineItemsByCategoryId(streetcodeId),
+        () => fetchTimelineItemsByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
-
-    console.log(getTimelineItemArray);
-    console.log(getYearsArray);
 
     return (
         <div className="timelineContainer">
@@ -37,7 +34,7 @@ const TimelineBlock = () => {
                     centerPadding="-6px"
                 >
                     {getTimelineItemArray?.map((ti) => (
-                        <TimelineItem key={ti.id} />
+                        <TimelineItem key={ti.id} timelineItem={ti} />
                     ))}
                 </BlockSlider>
                 <TimelineReelOutline />

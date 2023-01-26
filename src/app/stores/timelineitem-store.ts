@@ -19,10 +19,15 @@ export default class TimelineitemStore {
 
     public get getTimelineItemArray() {
         return Array.from(this.TimelineItemMap.values());
+        // .map((timelineItem) => new Date(timelineItem.date)
+        //     .toLocaleDateString('uk-Uk', { year: 'numeric', month: 'long', day: '2-digit' }));
     }
 
     public get getYearsArray() {
-        return [...new Set(this.getTimelineItemArray.map((timelineItem) => timelineItem.date.getFullYear()))].sort();
+        return [...new Set(
+            Array.from(this.TimelineItemMap.values())
+                .map((timelineItem) => new Date(timelineItem.date).getFullYear()),
+        )].sort();
     }
 
     public fetchTimelineItem = async (id: number) => {
@@ -43,9 +48,9 @@ export default class TimelineitemStore {
         }
     };
 
-    public fetchTimelineItemsByCategoryId = async (categoryId: number) => {
+    public fetchTimelineItemsByStreetcodeId = async (streetcodeId: number) => {
         try {
-            const timelineItems = await timelineApi.getByStreetcodeId(categoryId);
+            const timelineItems = await timelineApi.getByStreetcodeId(streetcodeId);
             this.setInternalMap(timelineItems);
         } catch (error: unknown) {
             console.log(error);
