@@ -1,5 +1,8 @@
 import './PartnerItem.styles.scss';
 
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import useMobx from '@stores/root-store';
+
 import { Popover } from 'antd';
 
 import Partner from '@/models/partners/partners.model';
@@ -10,19 +13,29 @@ interface Props {
     partner: Partner
 }
 
-const PartnerItem = ({ partner }: Props) => (
-    <div
-        className="partnerItem"
-    >
-        <Popover content={<PartnerContent partner={partner} />} trigger="click">
-            <img
-                key={partner.id}
-                className="partnerLogo"
-                src={partner.logoUrl}
-                alt={partner.title}
-            />
-        </Popover>
-    </div>
-);
+const PartnerItem = ({ partner }: Props) => {
+    const { imagesStore } = useMobx();
+    const { fetchImage, getImage } = imagesStore;
+
+    useAsync(
+        () => fetchImage(partner.logoId),
+        [partner.logoId],
+    );
+
+    return (
+        <div
+            className="partnerItem"
+        >
+            <Popover content={<PartnerContent partner={partner} />} trigger="click">
+                <img
+                    key={partner.id}
+                    className="partnerLogo"
+                    src={getImage(partner.logoId)?.url.href}
+                    alt={partner.title}
+                />
+            </Popover>
+        </div>
+    );
+};
 
 export default PartnerItem;

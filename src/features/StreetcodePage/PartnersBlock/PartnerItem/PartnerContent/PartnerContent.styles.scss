@@ -1,6 +1,6 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
-@use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.fonts.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 
 .partnerContent {
@@ -12,6 +12,12 @@
 
 .header {
     @include mut.flexed($align-items: center, $gap: 14px);
+
+    p {
+        @include mut.with-font($font-family: f.$closer-text-font, $font-size: 20px, $font-weight: 500);
+        line-height: pxToRem(26.4px);
+        color: c.$lighter-black-color;
+    }
 }
 
 .partnerContentLogo{
@@ -29,11 +35,17 @@
 
     .mainLink {
         @include mut.truncated($line-num: 1);
+        @include mut.with-font($font-size: 20px, $font-weight: 300);
+        color: c.$dark-red-color;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 
 .sourceLinks {
-    @include mut.flexed($gap: 7px);
+    @include mut.flexed($align-items: flex-end, $gap: 7px);
 }
 
 .sourceLink {

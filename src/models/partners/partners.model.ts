@@ -1,7 +1,7 @@
 export default interface Partner {
     id: number;
     title: string;
-    logoUrl: string;
+    logoId: number;
     targetUrl: string;
     description?: string | undefined;
     partnerSourceLinks: PartnerSourceLink[];
