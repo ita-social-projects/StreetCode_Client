@@ -16,8 +16,12 @@ import CheckBoxComponent from '@/features/StreetcodePage/MapBlock/CheckBox/Check
 const MapBlock = () => {
     const id = useRouteId();
 
+    // const toponyms = useAsync(() => ToponymsApi
+    //     .getByStreetcodeId(id), [id]).value as Toponym[];
+
     const toponyms = useAsync(() => ToponymsApi
-        .getByStreetcodeId(id), [id]).value as Toponym[];
+        .getAll(), []).value as Toponym[];
+
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
         .getByStreetcodeId(id), [id]).value as StreetcodeCoordinate[];
 

@@ -24,6 +24,7 @@ const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => {
     const { checkboxStore } = useMobx();
     const { checkBoxesState: {streetcodes, streets} } = checkboxStore;
     
+    console.log(toponyms);
     return(
         <div className='mapCentered'>
             <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'} scrollWheelZoom={false}>
@@ -35,8 +36,7 @@ const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => {
                     {streetcodeCoordinates?.map(sc => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)}/>)}
                 </CustomMarkerCluster>}
                 {streets?.isActive && <CustomMarkerCluster>
-                    {toponyms?.map(t => t.coordinates.map(c =>
-                <CustomMarker latitude={c.latitude} longtitude={c.longtitude} title={String(c.id)} description={String(c.toponymId)}/>))}
+                    {toponyms?.map(t => <CustomMarker latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={String(`${t.streetType} ${t.streetName}`)}/>)}
                 </CustomMarkerCluster>}
             </MapContainer>
         </div>

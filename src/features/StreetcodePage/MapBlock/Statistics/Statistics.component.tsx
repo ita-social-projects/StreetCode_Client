@@ -19,12 +19,12 @@ const StatisticsComponent = ({ toponyms }: Props) => {
         <div className="statisticsContainer">
             <h1>В Україні іменем Михайла Грушевського названі:</h1>
             <div className="streetsBlock">
-                {toponyms?.map((toponym) => (
+                {/* {toponyms?.map((toponym) => (
                     <p>
-                        <span>{toponym.coordinates.length}</span>
-                        {toponym.title}
+                        <span>{toponym.gromada}</span>
+                        {toponym.community}
                     </p>
-                ))}
+                ))} */}
             </div>
         </div>
     );

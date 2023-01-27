@@ -17,11 +17,14 @@ const CustomMarker = (props: Props) => {
         className: 'my-custom-marker'
     });
     return (
-        <Marker position={[props.latitude, props.longtitude]} icon={myIcon} > 
-        <Popup>
-            {props.description}
-        </Popup>
-        </Marker>
+        <>
+            {props.latitude !== undefined && props.longtitude !== undefined ? 
+                <Marker position={[props.latitude, props.longtitude]} icon={myIcon} > 
+                    <Popup>
+                        {props?.description}
+                    </Popup>
+                </Marker> : null}
+        </>
     );
 };
 
