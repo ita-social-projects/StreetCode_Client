@@ -49,8 +49,14 @@
 }
 
 .sourceLink {
+    filter: opacity(50%) grayscale(100%);
+
     img {
         @include mut.sized($width: 20px, $height: 20px);
+    }
+
+    &:hover {
+        filter: none;
     }
 }
 

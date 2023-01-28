@@ -6,7 +6,7 @@
 .partnerItem {
     .partnerLogo {
         @include mut.sized($height: 100%);
-        filter: grayscale(90%);
+        filter: opacity(50%) grayscale(100%);
         transition: all .5ms ease;
 
         &:hover {

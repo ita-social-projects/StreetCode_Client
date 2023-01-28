@@ -2,13 +2,15 @@ import './PartnerContent.styles.scss';
 
 import useMobx from '@stores/root-store';
 
+import { Popover } from 'antd';
+
 import Partner from '@/models/partners/partners.model';
 
 interface Props {
     partner: Partner
 }
 
-const PartnerContent = ({ partner }:Props) => {
+const PartnerContent = ({ partner }: Props) => {
     const { imagesStore } = useMobx();
     const { getImage } = imagesStore;
 
@@ -30,16 +32,18 @@ const PartnerContent = ({ partner }:Props) => {
                     style={{ display: partner.partnerSourceLinks.length < 1 ? 'none' : '' }}
                 >
                     {partner.partnerSourceLinks.map((sl) => (
-                        <a
-                            className="sourceLink"
-                            href={sl.targetUrl}
-                        >
-                            <img
-                                key={sl.id}
-                                src={sl.logoUrl}
-                                alt={sl.title}
-                            />
-                        </a>
+                        <Popover content={<p>{sl.title}</p>} trigger="hover">
+                            <a
+                                className="sourceLink"
+                                href={sl.targetUrl}
+                            >
+                                <img
+                                    key={sl.id}
+                                    src={sl.logoUrl}
+                                    alt={sl.title}
+                                />
+                            </a>
+                        </Popover>
                     ))}
                 </div>
                 <a
