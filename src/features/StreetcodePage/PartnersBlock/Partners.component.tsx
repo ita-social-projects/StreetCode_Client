@@ -5,7 +5,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 
-import PartnerItem from './PartnerItem/PartnerItem.content';
+import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
     const { partnersStore } = useMobx();

@@ -14,8 +14,8 @@
     @include mut.flexed($align-items: center, $gap: 14px);
 
     p {
-        @include mut.with-font($font-family: f.$closer-text-font, $font-size: 20px, $font-weight: 500);
-        line-height: pxToRem(26.4px);
+        @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
+        line-height: 26.4px;
         color: c.$lighter-black-color;
     }
 }
@@ -35,7 +35,7 @@
 
     .mainLink {
         @include mut.truncated($line-num: 1);
-        @include mut.with-font($font-size: 20px, $font-weight: 300);
+        @include mut.with-font($font-weight: 300);
         color: c.$dark-red-color;
 
         &:hover {

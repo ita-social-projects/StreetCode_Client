@@ -1,16 +1,15 @@
 import './PartnerItem.styles.scss';
 
 import { useAsync } from '@hooks/stateful/useAsync.hook';
+import Partner from '@models/partners/partners.model';
 import useMobx from '@stores/root-store';
 
 import { Popover } from 'antd';
 
-import Partner from '@/models/partners/partners.model';
-
-import PartnerContent from './PartnerContent/PartnerContent.content';
+import PartnerContent from './PartnerContent/PartnerContent.component';
 
 interface Props {
-    partner: Partner
+    partner: Partner;
 }
 
 const PartnerItem = ({ partner }: Props) => {

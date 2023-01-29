@@ -7,7 +7,7 @@
     .partnerLogo {
         @include mut.sized($height: 100%);
         filter: opacity(50%) grayscale(100%);
-        transition: all .5ms ease;
+        @include vnd.vendored(transition, 'all .5s ease');
 
         &:hover {
             filter: none;

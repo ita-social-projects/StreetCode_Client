@@ -11,27 +11,29 @@ interface Props {
 }
 
 const PartnerContent = ({ partner }: Props) => {
-    const { imagesStore } = useMobx();
-    const { getImage } = imagesStore;
+    const {
+        id, title, logoId, targetUrl, partnerSourceLinks, description,
+    } = partner;
+    const { imagesStore: { getImage } } = useMobx();
 
     return (
         <div className="partnerContent">
             <div className="header">
                 <div className="partnerContentLogo">
                     <img
-                        key={partner.id}
-                        src={getImage(partner.logoId)?.url.href}
-                        alt={partner.title}
+                        key={id}
+                        src={getImage(logoId)?.url.href}
+                        alt={title}
                     />
                 </div>
-                <p>{partner.title}</p>
+                <p>{title}</p>
             </div>
             <div className="links">
                 <div
                     className="sourceLinks"
-                    style={{ display: partner.partnerSourceLinks.length < 1 ? 'none' : '' }}
+                    style={{ display: partnerSourceLinks.length < 1 ? 'none' : ' ' }}
                 >
-                    {partner.partnerSourceLinks.map((sl) => (
+                    {partnerSourceLinks.map((sl) => (
                         <Popover content={<p>{sl.title}</p>} trigger="hover">
                             <a
                                 className="sourceLink"
@@ -48,16 +50,16 @@ const PartnerContent = ({ partner }: Props) => {
                 </div>
                 <a
                     className="mainLink"
-                    href={partner.targetUrl}
+                    href={targetUrl}
                 >
-                    {`go to ${partner.title} page`}
+                    {`go to ${title} page`}
                 </a>
             </div>
             <div
                 className="description"
-                style={{ display: partner.description ? '' : 'none' }}
+                style={{ display: description ? '' : 'none' }}
             >
-                <p>{partner.description}</p>
+                <p>{description}</p>
             </div>
         </div>
     );
