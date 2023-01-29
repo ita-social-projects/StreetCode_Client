@@ -4,11 +4,26 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+@mixin slick-arrow-lightbox($direction) {
+    width: pxToRem(40px)!important;
+    height:  pxToRem(58px)!important;
+    $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
+    background-image: url($path);
+    background-size:cover;
+    position:absolute;
+    .yarl__icon{
+        background-color: c.$transparent-color;
+        color: c.$transparent-color;
+    }
+    &:hover{
+        filter: brightness(60%);
+    }
+}
+
 .yarl__slide_image {
     max-width: min(100%)!important;
     max-height: min(100%)!important;
     height: 100%!important;
-    @include mut.sized($height: 100%)
 }
 
 .yarl__slide_title {
@@ -28,41 +43,18 @@
 }
 
 .yarl__icon {
-    background-color: rgba(251, 253, 253, 0)!important;
+    background-color: c.$transparent-color;
     width: pxToRem(50px)!important;
     height:  pxToRem(50px)!important;
 }
 .yarl__navigation_prev {
+    @include slick-arrow-lightbox(left);
     left: pxToRem(10px)!important;
-    width: pxToRem(40px)!important;
-    height:  pxToRem(58px)!important;
-    background-image: url('@images/utils/leftDefaultSliderArrow.svg')!important;
-    content: '';
-    background-size:cover;
-    position:absolute;
-    .yarl__icon{
-        background-color: rgba(251, 253, 253, 0)!important;
-        color: rgba(251, 253, 253, 0)!important;
-    }
-    &:hover{
-        filter: brightness(60%);
-    }
 }
+
 .yarl__navigation_next {
+    @include slick-arrow-lightbox(right);
     right: 10px!important;
-    width: 40px!important;
-    height:  58px!important;
-    background-image: url('@images/utils/rightDefaultSliderArrow.svg')!important;
-    content: '';
-    background-size:cover;
-    position:absolute;
-    .yarl__icon{
-        background-color: rgba(251, 253, 253, 0)!important;
-        color: rgba(251, 253, 253, 0)!important;
-    }
-    &:hover{
-        filter: brightness(60%);
-    }
 }
 
 .yarl__container {
