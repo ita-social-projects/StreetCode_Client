@@ -2,6 +2,7 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .partnerItem {
     .partnerLogo {
