@@ -1,25 +1,48 @@
 import './Partners.styles.scss';
 
-import logo1 from '@images/partners/logo1.png';
-import logo2 from '@images/partners/logo2.png';
-import logo3 from '@images/partners/logo3.png';
+import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import useMobx from '@stores/root-store';
 
-import Partner from '@models/partners/partners.model';
+import PartnerItem from './PartnerItem/PartnerItem.component';
 
-const partners: Partial<Partner>[] = [
-    { id: 1, url: { id: 1, href: logo1 } },
-    { id: 2, url: { id: 2, href: logo2 } },
-    { id: 3, url: { id: 3, href: logo3 } },
-];
+const PartnersComponent = () => {
+    const { partnersStore } = useMobx();
+    const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
 
-const PartnersComponent = () => (
-    <div className="partnersWrapper">
-        <div className="partnerContainer">
-            {partners.map(({ id, url }) => (
-                <img key={id} className="partnerItem" src={url?.href} alt="" />
-            ))}
+    const streetcodeId = useRouteId();
+
+    useAsync(
+        () => Promise.all([
+            fetchPartnersByStreetcodeId(streetcodeId),
+        ]),
+        [streetcodeId],
+    );
+
+    const sliderItems = getPartnerArray.map((p) => (
+        <PartnerItem
+            partner={p}
+        />
+    ));
+
+    return (
+        <div className="partnersWrapper">
+            <div className="partnerContainer">
+                <SlickSlider
+                    className="heightContainer"
+                    slidesToShow={3}
+                    slides={sliderItems}
+                    autoplay
+                    autoplaySpeed={3000}
+                    arrows={false}
+                    swipe={false}
+                    dots={false}
+                    swipeOnClick={false}
+                />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default PartnersComponent;

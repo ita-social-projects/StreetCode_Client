@@ -1,0 +1,10 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.markerCircle{
+  @include mut.sized(28px, 28px);
+  background: c.$pure-white-color;
+  border: 4px solid c.$accented-red-color;
+  border-radius: 50%;
+}

@@ -1,5 +1,6 @@
 import './RelatedFigureItem.styles.scss';
 
+import { Link } from 'react-router-dom';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
@@ -7,13 +8,10 @@ import useMobx from '@stores/root-store';
 interface Props {
     relatedFigure: RelatedFigure;
     filterTags?: boolean;
+    hoverable?: boolean;
 }
 
-const redirectOnStreetcode = (id: number) => {
-    console.log(`redirected to streetcode with id: ${id}`);
-};
-
-const RelatedFigureItem = ({ relatedFigure, filterTags = false }: Props) => {
+const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
     const { id, imageId, title, tags } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray } } = useMobx();
@@ -25,28 +23,28 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = false }: Props) => {
     );
 
     return (
-        <div
-            className="relatedFigureSlide"
+        <Link
+            className={`relatedFigureSlide ${hoverable ? 'hoverable' : ''}`}
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
-            onClick={() => {
-                redirectOnStreetcode(id);
-            }}
+            to={`../streetcode/${id}`}
         >
-            <div className="slideText">
-                <p className="heading">
-                    {title}
-                </p>
+            <div className="figureSlideText">
+                <div className="heading">
+                    <p>
+                        {title}
+                    </p>
+                </div>
                 <div className="relatedTagList">
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
-                        .map((tag, idx) => (
+                        .map((tag) => (
                         // eslint-disable-next-line react/no-array-index-key
-                            <div key={idx} className="tag">
+                            <div key={tag.id} className="tag">
                                 <p>{tag.title}</p>
                             </div>
                         ))}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

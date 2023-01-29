@@ -1,0 +1,23 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.partnerItem {
+    .partnerLogo {
+        @include mut.sized($height: 100%);
+        filter: opacity(50%) grayscale(100%);
+        @include vnd.vendored(transition, 'all .5s ease');
+
+        &:hover {
+            filter: none;
+        }
+    }
+}
+
+.partnerPopover {
+    .ant-popover-inner {
+        border-radius: 30px;
+    }
+}
