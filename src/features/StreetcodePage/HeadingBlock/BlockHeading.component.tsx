@@ -10,7 +10,9 @@ const BlockHeading = ({ headingText }: Props) => (
     <div className="blockHeadingWrapper">
         <div className="blockHeadingContainer">
             <Rhombus />
-            <h1>{headingText}</h1>
+            <h1 className="blockHeadingText">
+                {headingText}
+            </h1>
         </div>
     </div>
 );

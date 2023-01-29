@@ -1,0 +1,64 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.headerPopupSkeleton {
+  width: f.pxToRem(1150px);
+  @include mut.flexed($justify-content: flex-start);
+
+  overflow-x: auto;
+  @include mut.rem-margined(16px, 0, 16px, 45px);
+
+  position: relative;
+  z-index: 1;
+
+  h2.textHeader {
+    line-height: f.pxToEm(13px);
+    @include mut.with-font($font-size: 14px);
+    color: #D1D1D1;
+
+    &:hover {
+      color: c.$darker-gray-color;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  .leftSide,
+  .rightSide {
+    width: clamp(500px, 800px, 950px);
+  }
+
+  .leftSide {
+    margin-right: f.pxToRem(80px);
+
+    .tagContainer {
+      margin-top: f.pxToRem(16px);
+    }
+  }
+
+  .rightSide .recommendationContainer {
+    flex-wrap: wrap;
+    min-width: f.pxToRem(800px);
+
+    > * {
+      @include mut.sized(248px, 183px);
+      flex: 1 1 248px;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: .765rem;
+    height: .665rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    @include mut.full-rounded(4px);
+    background: c.$lighter-gray-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @include mut.full-rounded(4px);
+    background: c.$dark-red-color;
+  }
+}

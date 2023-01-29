@@ -1,6 +1,9 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+
+@import 'react-toastify/dist/ReactToastify.css';
 
 p,
 span,
@@ -16,18 +19,13 @@ div {
 
 .App {
   min-height: 100vh;
-  @include mut.flexed(column);
 }
 
-::-webkit-scrollbar {
-  width: .765rem;
-}
+.dimmed {
+  position: fixed;
+  background: rgba(0, 0, 0, .45);
+  @include mut.parent-sized();
 
-::-webkit-scrollbar-track {
-  background: c.$scrollbar-track-color;
-}
-
-::-webkit-scrollbar-thumb {
-  @include mut.full-rounded(4px);
-  background: c.$scrollbar-thumb-color;
+  @include vnd.vendored(transition, 'background .5s ease');
+  z-index: 1;
 }

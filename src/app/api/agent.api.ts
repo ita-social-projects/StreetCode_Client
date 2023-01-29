@@ -4,23 +4,22 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
+axios.interceptors.request.use((config) => config);
 /*
-axios.interceptors.request.use(config => {
-    const token = AuthLocalStorage.getToken();
-    if (token) {
-        config.headers!.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-});
+const token = AuthLocalStorage.getToken();
+if (token) {
+    config.headers!.Authorization = `Bearer ${token}`;
+}
 */
 
 axios.interceptors.response.use(
-    (res) => res,
-    (error: AxiosError) => {
-        const { status: statusCode, config: { data } } = error.response!;
+    async (response) => response,
+    ({ response, message, status }: AxiosError) => {
+        if (message === 'Network Error') {
+            toast.error(message);
+        }
 
-        switch (statusCode) {
+        switch (response?.status) {
         case StatusCodes.INTERNAL_SERVER_ERROR:
             toast.error(ReasonPhrases.INTERNAL_SERVER_ERROR);
             break;
@@ -39,6 +38,8 @@ axios.interceptors.response.use(
         default:
             break;
         }
+
+        return Promise.reject(message);
     },
 );
 

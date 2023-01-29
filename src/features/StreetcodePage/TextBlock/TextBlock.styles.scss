@@ -1,16 +1,16 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 
-.textComponentContainer{
+.textComponentContainer {
     @include mut.sized(100%, auto);
 }
-.TextContainer{
+
+.TextContainer {
+    @include mut.sized(1200px, auto);
     @include mut.rem-margined($top: 27px);
     @include mut.with-font();
-    @include mut.sized(1200px, auto);
 }
-.videoComponent{
-    @include mut.flex-centered();
-}
-.textComponent{
+.videoComponent,
+.textComponent {
     @include mut.flex-centered();
 }

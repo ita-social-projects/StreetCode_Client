@@ -9,3 +9,11 @@ export default interface Art {
     imageId: number;
     image: Image;
 }
+
+export interface IndexedArt {
+    index: number;
+    description: string;
+    imageHref: string;
+    offset: number;
+    title: string;
+  };

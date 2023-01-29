@@ -1,0 +1,64 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.ant-drawer-header-title {
+  justify-content: flex-end;
+}
+
+.ant-drawer-close {
+  padding: 0;
+}
+
+.ant-drawer-content-wrapper {
+  width: f.pxToRem(262px) !important;
+}
+
+.headerDrawerContainer {
+  @include mut.flexed(column, $align-items: flex-start, $gap: 39px);
+
+  margin-left: f.pxToRem(44px);
+  padding-left: f.pxToRem(23px);
+  border-left: 2px solid c.$normal-gray-color;
+
+  &:before {
+    content: "";
+    @include mut.sized(11px, 11px);
+    @include mut.positioned-as(absolute, $left: 24%, $top: 24.5%);
+    background-color: c.$dark-red-color;
+  }
+
+  > * {
+    @include mut.with-font(ft.$closer-text-font);
+    line-height: f.pxToEm(26.4px);
+    @include vnd.vendored(transition, 'scale .3s ease');
+
+    &:nth-child(3) {
+      color: c.$dark-red-color;
+    }
+
+    &:hover {
+      scale: 1.1;
+      cursor: pointer;
+
+      &:after {
+        transform-origin: bottom left;
+        transform: scaleX(1);
+      }
+    }
+
+    &:after {
+      content: '';
+      background-color: c.$dark-red-color;
+
+      @include mut.sized(100%, 2px);
+      @include mut.positioned-as(absolute, $bottom: 0, $left: 0);
+
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      @include vnd.vendored(transition, 'transform .2s ease');
+    }
+  }
+}

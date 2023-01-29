@@ -4,16 +4,19 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 
 .relatedFiguresWrapper {
+    @include mut.sized($height: 656px);
     @include wr.main-page-block-wrapper();
-    @include mut.rem-margined($bottom: 80px, $top: 170px);
-}
-
-.bigWrapper {
-    @include mut.sized($height: 671px);
+    @include mut.rem-margined($bottom: 50px, $top: 170px);
 }
 
 .smallWrapper {
-    @include mut.sized($height: 605px);
+    .slick-track {
+        @include mut.rem-margined();
+
+        .slick-cloned {
+            display: none;
+        }
+    }
 
     .moreInfo {
         display: none;
@@ -31,12 +34,14 @@
         p {
             @include mut.with-font($font-weight: 500, $font-size: 20px);
             line-height: f.pxToEm(25px);
-
+            text-decoration-line: none;
             color: c.$dark-red-color;
+
             cursor: pointer;
 
             &:hover {
                 text-decoration-line: underline;
+
                 filter: contrast(150%);
             }
         }
@@ -44,18 +49,17 @@
 }
 
 .relatedFiguresSliderContainer {
-    @include mut.sized($width: 1200px);
+    @include mut.sized($width: 1216px);
 
     .slick-arrow {
         top: f.pxToRem(213px);
     }
 
     .slick-list {
-        @include mut.sized($height: 458px);
-        @include mut.rem-padded($left: 5px);
+        @include mut.rem-padded($bottom: 4px);
     }
 
     .slick-track {
-        @include mut.flex-centered($gap: 28px);
+        @include mut.flexed($justify-content: center, $align-items: flex-start, $gap: 28px);
     }
 }

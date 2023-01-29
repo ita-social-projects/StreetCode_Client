@@ -1,21 +1,20 @@
 import './RelatedFigureItem.styles.scss';
 
+import { Link } from 'react-router-dom';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
 
 interface Props {
     relatedFigure: RelatedFigure;
+    filterTags?: boolean;
+    hoverable?: boolean;
 }
 
-const redirectOnStreetcode = (id: number) => {
-    console.log(`redirected to streetcode with id: ${id}`);
-};
+const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
+    const { id, imageId, title, tags } = relatedFigure;
 
-const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
-    const { id, image: { id: imageId }, title, tags } = relatedFigure;
-
-    const { imagesStore } = useMobx();
+    const { imagesStore, tagsStore: { getTagArray } } = useMobx();
     const { fetchImage, getImage } = imagesStore;
 
     useAsync(
@@ -24,27 +23,29 @@ const RelatedFigureSliderItem = ({ relatedFigure }: Props) => {
     );
 
     return (
-        <div
-            className="relatedFigureSlide"
+        <Link
+            className={`relatedFigureSlide ${hoverable ? 'hoverable' : ''}`}
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
-            onClick={() => {
-                redirectOnStreetcode(id);
-            }}
+            to={`../streetcode/${id}`}
         >
-            <div className="slideText">
-                <h3 className="heading">
-                    {title}
-                </h3>
+            <div className="figureSlideText">
+                <div className="heading">
+                    <p>
+                        {title}
+                    </p>
+                </div>
                 <div className="relatedTagList">
-                    {tags.map(({ id: tagId, title: tagTitle }) => (
-                        <div key={tagId} className="tag">
-                            <p>{tagTitle}</p>
-                        </div>
-                    ))}
+                    {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
+                        .map((tag) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                            <div key={tag.id} className="tag">
+                                <p>{tag.title}</p>
+                            </div>
+                        ))}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 
-export default RelatedFigureSliderItem;
+export default RelatedFigureItem;

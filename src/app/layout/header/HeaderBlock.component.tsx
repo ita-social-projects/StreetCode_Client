@@ -3,99 +3,83 @@ import './HeaderBlock.styles.scss';
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import StreetcodeSvg from '@images/header/Streetcode_title.svg';
 
-import { Outlet } from 'react-router-dom';
-import BurgerMenu from '@components/BurgerMenu/BurgerMenu.component';
-import TagList from '@components/TagList/TagList.component';
-import useToggle from '@hooks/stateful/useToggle.hook';
-import HeaderContentBlock from '@layout/header/HeaderContentBlock/HeaderContentBlock.component';
-
+import { observer } from 'mobx-react-lite';
 import {
-    Button, Drawer, Dropdown, Input, Popover,
-} from 'antd';
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
+import useEventListener from '@hooks/external/useEventListener.hook';
+import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
+import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
+import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
+import LanguageSelector from '@layout/header/LanguageSelector/LanguageSelector.component';
+import useMobx from '@stores/root-store';
 
-const items = [
-    {
-        key: '1',
-        disabled: true,
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                UA (Ukrainian)
-            </a>
-        ),
-    },
-    {
-        key: '2',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                RU (Russian)
-            </a>
-        ),
-    },
-    {
-        key: '3',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                EN (English GB)
-            </a>
-        ),
-    },
-];
+import { Button } from 'antd';
 
-interface Props {
+const HeaderBlock = () => {
+    const [isInputActive, setIsInputActive] = useState(false);
+    const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
-}
+    const inputRef = useRef<HTMLInputElement>(null);
+    const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useMobx();
 
-const HeaderBlock = (props: Props) => {
-    const { toggleState: langSelectorState, handlers: { toggle: toggleLangSelector } } = useToggle();
+    const onDimCancel = useCallback((e?: Event) => {
+        e?.stopPropagation();
 
-    const tags = ['Історія', '"Україна-Русь"', 'Наукова школа', 'Наука', 'Політика', 'Професор історії'];
+        setIsInputActive(false);
+        setIsPageDimmed(false);
+    }, [setIsPageDimmed]);
+
+    useEventListener('scroll', () => {
+        setIsHeaderHidden(window.scrollY > 100);
+    });
+
+    useEffect(onDimCancel, [isHeaderHidden, onDimCancel]);
+    useOnClickOutside(inputRef, onDimCancel);
+
+    if (isInputActive && !isPageDimmed) {
+        setIsPageDimmed(true);
+    }
 
     return (
-        <>
-            <div className="navBarContainer">
-                <div className="leftPartContainer">
-                    <StreetcodeSvg />
-                    <Popover
-                        placement="bottomLeft"
-                        trigger="focus"
-                        content={(
-                            <div className="headerPopupSkeleton">
-                                <div className="leftSide">
-                                    <HeaderContentBlock title="Рекомендації" />
-                                    <h2 className="textHeader">Пошук по тегам</h2>
-                                    <TagList tags={tags} />
-                                </div>
-                                <div className="rightSide">
-                                    <HeaderContentBlock title="Новини" numberOfEls={4} />
-                                </div>
-                            </div>
-                        )}
+        <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
+            <div className="leftPartContainer">
+                <StreetcodeSvg />
+                <input
+                    ref={inputRef}
+                    className={`ant-input css-dev-only-do-not-override-26rdvq hiddenHeaderInput
+                        ${((isInputActive && isHeaderHidden) ? 'active' : '')}`}
+                />
+                <HeaderSkeleton />
+                <LanguageSelector />
+            </div>
+            <div className="rightPartContainer">
+                <div className="rightSectionContainer">
+                    {isHeaderHidden && (
+                        <MagnifyingGlass
+                            viewBox="0 0 24 24"
+                            onClick={() => {
+                                setIsInputActive((prev) => !prev);
+                                setIsPageDimmed();
+                            }}
+                            style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                        />
+                    )}
+                    <HeaderDrawer />
+                    <Button
+                        type="primary"
+                        className="loginBtn"
+                        onClick={() => setModal('login')}
                     >
-                        <Input size="large" placeholder="Пошук..." prefix={<MagnifyingGlass />} />
-                    </Popover>
-                    <Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }}>
-                        <Button className="langSelector">
-                            <span>UA</span>
-                        </Button>
-                    </Dropdown>
-                </div>
-                <div className="rightPartContainer">
-                    <div className="rightSectionContainer">
-                        <Drawer placement="right" closable onClose={toggleLangSelector} open={langSelectorState}>
-                            <>
-                                <p>Some contents...</p>
-                                <p>Some contents...</p>
-                                <p>Some contents...</p>
-                            </>
-                        </Drawer>
-                        <BurgerMenu onClick={toggleLangSelector} />
-                        <Button className="loginBtn" type="primary">Долучитися</Button>
-                    </div>
+                            Долучитися
+                    </Button>
                 </div>
             </div>
-            <Outlet />
-        </>
+        </div>
     );
 };
 
-export default HeaderBlock;
+export default observer(HeaderBlock);

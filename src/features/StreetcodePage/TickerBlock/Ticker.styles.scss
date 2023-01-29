@@ -1,15 +1,16 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
-@use "@sass/variables/_variables.fonts.scss" as fonts;
+@use "@sass/variables/_variables.fonts.scss" as ft;
 
 .tickerContainer {
   @include mut.colored(c.$pure-white-color, c.$selected-arrow-color);
   @include mut.sized(200%, 44px);
+  z-index: -1;
 }
 
 .tickerItem {
   @include mut.flex-centered();
-  @include mut.with-font(fonts.$closer-text-font, 400, 20px);
+  @include mut.with-font(ft.$closer-text-font, 400, 20px);
   padding-right: f.pxToRem(10px);
 }

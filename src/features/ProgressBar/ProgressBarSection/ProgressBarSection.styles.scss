@@ -1,0 +1,39 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/_utils.functions.scss" as f;
+
+.progressBarSection {
+  @include mut.sized(18px, 18px);
+  @include mut.flex-centered();
+  z-index: 10;
+
+  background-color: c.$pure-white-color;
+  border: 2px solid c.$lighter-gray-color;
+  @include vnd.vendored(transform, 'rotate(45deg)');
+
+  &.active {
+    @include mut.sized(32px, 32px);
+    border-width: 3px !important;
+  }
+
+  &:hover {
+    background-color: c.$accented-gray-color;
+    scale: 1.2;
+  }
+
+  span {
+    @include mut.flex-centered();
+    @include mut.parent-sized();
+    @include mut.with-font($font-weight: 300, $font-size: 14px);
+    @include vnd.vendored(transform, 'rotate(-45deg)');
+  }
+}
+
+.progressBarSectionPopover {
+  @include mut.sized(115px);
+
+  .ant-popover-arrow {
+    @include mut.hidden();
+  }
+}

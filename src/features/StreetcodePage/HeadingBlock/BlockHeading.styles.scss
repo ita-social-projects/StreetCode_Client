@@ -12,12 +12,12 @@
     }
 }
 
-.blockHeadingContainer h1 {
-    @include mut.positioned-as(relative, $left: -62px, $top: 41px);
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
-}
-
 .blockHeadingContainer {
     width: f.pxToRem(1200px);
     @include mut.flexed($justify-content: flex-start);
+}
+
+.blockHeadingText {
+    @include mut.positioned-as(relative, $left: -62px, $top: 41px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
 }

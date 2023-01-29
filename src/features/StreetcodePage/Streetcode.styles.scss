@@ -4,3 +4,7 @@
     width: 100%;
     overflow: hidden;
 }
+
+.dimmed {
+    @include mut.sized(100%, 5875px);
+}
