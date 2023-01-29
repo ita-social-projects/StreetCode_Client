@@ -17,8 +17,6 @@ const CustomMarker = ({ description, latitude, longtitude }: Props) => {
         className: 'my-custom-marker'
     });
 
-    console.log(latitude, longtitude);
-
     return (
         <>
             {latitude && longtitude &&
