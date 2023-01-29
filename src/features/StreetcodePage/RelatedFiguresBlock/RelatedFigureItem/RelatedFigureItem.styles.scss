@@ -38,7 +38,7 @@
             @include mut.truncated($line-num: 3);
             @include mut.rem-padded($left: 12px, $right: 12px, $top: 10px);
 
-            @include mut.with-font($font-family: f.$closer-text-font, $font-size: 20px, $font-weight: 500);
+            @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
             line-height: pxToRem(26.4px);
             text-align: center;
             color: c.$pure-white-color;
