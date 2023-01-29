@@ -48,9 +48,9 @@ const ArtGalleryBlock = () => {
     }, [getStreetcodeArtArray]);
 
     const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
-
     let offsetSumForSlide = 0;
     let offsetSum = 0;
+    let sequenceNumber = -1;
 
     const slideOfArtList = [];
     let artsData: IndexedArt[] = [];
@@ -61,12 +61,14 @@ const ArtGalleryBlock = () => {
         if (offsetSumForSlide !== SECTION_AMOUNT) {
             offsetSumForSlide += offset ?? 0;
             offsetSum += offset ?? 0;
+            sequenceNumber += 1;
             artsData.push({
                 index,
                 imageHref,
                 description,
                 offset,
                 title,
+                sequenceNumber,
             } as IndexedArt);
         }
         if (offsetSumForSlide === SECTION_AMOUNT) {

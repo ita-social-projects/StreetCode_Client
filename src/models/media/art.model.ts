@@ -16,4 +16,5 @@ export interface IndexedArt {
     imageHref: string;
     offset: number;
     title: string;
-  };
+    sequenceNumber: number;
+}

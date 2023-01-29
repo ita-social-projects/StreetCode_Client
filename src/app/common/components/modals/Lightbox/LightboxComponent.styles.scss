@@ -1,0 +1,90 @@
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+@mixin slick-arrow-lightbox($direction) {
+    width: pxToRem(40px)!important;
+    height:  pxToRem(58px)!important;
+    $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
+    background-image: url($path);
+    background-size:cover;
+    position:absolute;
+    .yarl__icon{
+        background-color: c.$transparent-color;
+        color: c.$transparent-color;
+    }
+    &:hover{
+        filter: brightness(60%);
+    }
+}
+
+.yarl__slide_image {
+    max-width: min(100%)!important;
+    max-height: min(100%)!important;
+    height: 100%!important;
+}
+
+.yarl__slide_title {
+    @include mut.rem-margined($top: 23px, $left: 35px);
+    @include mut.with-font($font-weight: 500);
+    color: #4E4E4E!important;
+}
+
+.yarl__slide_description_container {
+    @include mut.sized($height: 159px);
+}
+
+.yarl__slide_description {
+    @include mut.with-font();
+    @include mut.sized($height: 129px);
+    -webkit-line-clamp: inherit!important;
+}
+
+.yarl__icon {
+    background-color: c.$transparent-color;
+    width: pxToRem(50px)!important;
+    height:  pxToRem(50px)!important;
+}
+.yarl__navigation_prev {
+    @include slick-arrow-lightbox(left);
+    left: pxToRem(30px)!important;
+}
+
+.yarl__navigation_next {
+    @include slick-arrow-lightbox(right);
+    right: pxToRem(30px)!important;
+}
+
+.yarl__container {
+    &:hover {
+        .yarl__slide_captions_container {
+            visibility: visible;
+            opacity: 1;
+        }
+        .yarl__toolbar {
+            visibility: visible;
+            opacity: 1;
+        }
+        .yarl__button {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+    .yarl__slide_captions_container {
+        @include vnd.vendored(transition, 'all .5s ease');
+        visibility: hidden;
+        opacity: 0;
+    }
+    .yarl__toolbar {
+        @include vnd.vendored(transition, 'all .5s ease');
+        visibility: hidden;
+        opacity: 0;
+    }
+    .yarl__button {
+        @include vnd.vendored(transition, 'all .5s ease');
+        visibility: hidden;
+        opacity: 0;
+    }
+}

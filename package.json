@@ -41,7 +41,8 @@
     "slick-carousel": "^1.8.1",
     "svg-react-loader": "^0.4.6",
     "svg-url-loader": "^8.0.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "yet-another-react-lightbox": "^2.2.7"
   },
   "scripts": {
     "start": "webpack serve --mode development --config config/webpack.dev.js",
