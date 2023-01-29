@@ -8,23 +8,27 @@ interface Props {
     toponyms: Toponym[]
 }
 
+const countByStreetType = (toponyms: Toponym[]): Map<string, number> => {
+    return toponyms?.reduce((acc, toponym) => {
+      const streetType = toponym.streetType;
+      if (streetType) {
+        acc.set(streetType, (acc.get(streetType) || 0) + 1);
+      }
+      return acc;
+    }, new Map());
+  };
+
 const StatisticsComponent = ({ toponyms }: Props) => {
-    const statisticObjects = [
-        { toponymName: 'вулиця', toponymNumber: 9472 },
-        { toponymName: 'провулок', toponymNumber: 1178 },
-        { toponymName: 'площа', toponymNumber: 39 },
-    ];
-    console.log(toponyms);
+    const countByStreetTypeMap = countByStreetType(toponyms);
     return (
         <div className="statisticsContainer">
             <h1>В Україні іменем Михайла Грушевського названі:</h1>
-            <div className="streetsBlock">
-                {/* {toponyms?.map((toponym) => (
-                    <p>
-                        <span>{toponym.gromada}</span>
-                        {toponym.community}
+            <div className="streetsBlock" style={{ display: 'flex', flexWrap: 'wrap'}}>
+                {countByStreetTypeMap && [...countByStreetTypeMap.entries()].map(([streetType, count]) => (
+                    <p style={{ flexBasis: '50%', width: '45%' }}>
+                        {streetType}: <span>{count}</span> 
                     </p>
-                ))} */}
+                ))}
             </div>
         </div>
     );

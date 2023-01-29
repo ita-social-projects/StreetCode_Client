@@ -23,20 +23,18 @@ interface Props {
 const MapOSM = ({streetcodeCoordinates, toponyms}: Props) => {
     const { checkboxStore } = useMobx();
     const { checkBoxesState: {streetcodes, streets} } = checkboxStore;
-    
-    console.log(toponyms);
+
     return(
         <div className='mapCentered'>
             <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className={'mapContainer'} scrollWheelZoom={false}>
                 <TileLayer
                     url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png"
-                    // url="https://maputnik.github.io/editor/{x}/{y}/{z}.pbf"
                 />
                 {streetcodes?.isActive && <CustomMarkerCluster>
                     {streetcodeCoordinates?.map(sc => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)}/>)}
                 </CustomMarkerCluster>}
                 {streets?.isActive && <CustomMarkerCluster>
-                    {toponyms?.map(t => <CustomMarker latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={String(`${t.streetType} ${t.streetName}`)}/>)}
+                    {toponyms?.map(t => <CustomMarker latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`}/>)}
                 </CustomMarkerCluster>}
             </MapContainer>
         </div>

@@ -23,7 +23,6 @@
   .streetsBlock{
     @include mut.rem-padded($top:10px);
     width:100%;
-    height: calc(100% - 52px);
     p{
       @include mut.flexed($direction:row, $gap:5px);
       @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
