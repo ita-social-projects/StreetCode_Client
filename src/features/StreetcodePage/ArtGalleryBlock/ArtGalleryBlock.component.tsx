@@ -1,5 +1,12 @@
 import './ArtGalleryBlock.styles.scss';
 
+import Rectangle106 from '@images/art-gallery/Rectangle106.png';
+import Rectangle107 from '@images/art-gallery/Rectangle107.png';
+import Rectangle108 from '@images/art-gallery/Rectangle108.png';
+import Rectangle109 from '@images/art-gallery/Rectangle109.png';
+import Rectangle110 from '@images/art-gallery/Rectangle110.png';
+import Rectangle111 from '@images/art-gallery/Rectangle111.png';
+
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
@@ -25,6 +32,8 @@ const ArtGalleryBlock = () => {
         () => fetchStreetcodeArtsByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
+
+    const images: string[] = [Rectangle106, Rectangle107, Rectangle108, Rectangle109, Rectangle110, Rectangle111];
 
     useEffect(() => {
         const newMap: IndexedArt[] = [];
