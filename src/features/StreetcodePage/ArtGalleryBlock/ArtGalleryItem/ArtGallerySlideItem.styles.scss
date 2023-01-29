@@ -12,6 +12,7 @@
 .artImageWrapper {
   position: relative;  
   &:hover {
+    cursor: pointer;
     .imgDataFull {
       visibility: visible;
       opacity: 1;

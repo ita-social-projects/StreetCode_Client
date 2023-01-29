@@ -2,16 +2,25 @@ import './ArtGallerySlideItem.styles.scss';
 
 import { IndexedArt } from '@models/media/art.model';
 
+import useMobx from '@/app/stores/root-store';
+
 interface Props {
   artGalleryItem: IndexedArt;
 }
 
 const ArtGallerySlideItem = ({ artGalleryItem }: Props) => {
-    const { imageHref, description, title } = artGalleryItem;
+    const { imageHref, description, title, sequenceNumber } = artGalleryItem;
+    const { modalStore: { setModal } } = useMobx();
+
     return (
         <div className="slideArt">
             <div className="artImageWrapper">
-                <img className="imgImg" src={imageHref} alt="" />
+                <img
+                    className="imgImg"
+                    src={imageHref}
+                    onClick={() => setModal('artGallery', sequenceNumber)}
+                    alt=""
+                />
                 <div
                     className={`imgData imgData${
                         description || title ? 'Full' : 'Empty'
