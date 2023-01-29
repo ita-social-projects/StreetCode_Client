@@ -55,7 +55,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
   .relatedFigureSlide {
     @include mut.sized($width: 278px, $height: 380px);
 
-    .slideText {
+    .figureSlideText {
         @include mut.sized($width: 272px, $height: 97px);
     }
   }
@@ -63,7 +63,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
   .relatedFigureSlide:hover {
     @include mut.sized($width: 278px, $height: 380px);
 
-    .slideText{
+    .figureSlideText{
         @include mut.sized($width: 272px, $height: 97px);
 
         .relatedTagList {

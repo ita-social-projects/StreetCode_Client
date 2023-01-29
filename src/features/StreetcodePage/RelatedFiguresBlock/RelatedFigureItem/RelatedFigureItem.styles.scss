@@ -18,21 +18,24 @@
 
     @include vnd.vendored(transition, 'all .5s ease');
     cursor: pointer;
+}
 
-    .slideText {
-        @include mut.sized($width: 272px, $height: 97px);
-        @include mut.flexed($align-items: flex-start, $wrap: wrap);
+.figureSlideText {
+    @include mut.sized($width: 272px, $height: 97px);
+    @include mut.flexed($align-items: flex-start, $wrap: wrap);
 
-        align-content: flex-start;
+    align-content: flex-start;
 
-        background-color: c.$dark-red-color;
+    background-color: c.$dark-red-color;
 
-        @include vnd.vendored(transition, 'all .5s ease');
+    @include vnd.vendored(transition, 'all .5s ease');
 
-        .heading {
-            @include mut.sized($width: 100%, $height: 88px);
+    .heading {
+        @include mut.sized($width: 100%, $height: 88px);
+        @include mut.flex-centered();
 
-            @include mut.flex-centered();
+        p {
+            @include mut.truncated($line-num: 3);
             @include mut.rem-padded($left: 12px, $right: 12px, $top: 10px);
 
             @include mut.with-font($font-family: f.$closer-text-font, $font-size: 20px, $font-weight: 500);
@@ -70,10 +73,10 @@
     }
 }
 
-.relatedFigureSlide:hover {
+.relatedFigureSlide.hoverable:hover{
     @include mut.sized($width: 278px, $height: 452px);
 
-    .slideText{
+    .figureSlideText{
         @include mut.sized($width: 272px, $height: 169px);
 
         .relatedTagList {
