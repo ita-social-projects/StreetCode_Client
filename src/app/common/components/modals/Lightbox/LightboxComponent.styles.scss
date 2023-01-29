@@ -49,12 +49,12 @@
 }
 .yarl__navigation_prev {
     @include slick-arrow-lightbox(left);
-    left: pxToRem(10px)!important;
+    left: pxToRem(30px)!important;
 }
 
 .yarl__navigation_next {
     @include slick-arrow-lightbox(right);
-    right: 10px!important;
+    right: pxToRem(30px)!important;
 }
 
 .yarl__container {
