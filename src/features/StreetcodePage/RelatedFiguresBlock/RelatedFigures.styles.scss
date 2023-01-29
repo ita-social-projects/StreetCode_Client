@@ -4,9 +4,9 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 
 .relatedFiguresWrapper {
-    @include mut.sized($height: 671px);
+    @include mut.sized($height: 656px);
     @include wr.main-page-block-wrapper();
-    @include mut.rem-margined($bottom: 80px, $top: 170px);
+    @include mut.rem-margined($bottom: 50px, $top: 170px);
 }
 
 .smallWrapper {

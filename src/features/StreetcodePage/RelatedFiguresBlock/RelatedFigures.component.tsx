@@ -28,6 +28,7 @@ const RelatedFiguresComponent = () => {
             key={figure.id}
             relatedFigure={figure}
             filterTags
+            hoverable
         />
     ));
 

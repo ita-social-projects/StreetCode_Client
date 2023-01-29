@@ -18,7 +18,7 @@ export default class RelatedFiguresStore {
     }
 
     public get getRelatedFiguresArray() {
-        return Array.from(this.relatedFiguresMap.values()).flatMap((i) => [i, i, i]);
+        return Array.from(this.relatedFiguresMap.values());
     }
 
     public fetchRelatedFigure = async (id: number) => {
