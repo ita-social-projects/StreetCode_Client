@@ -1,0 +1,20 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.customMarkerCluster {
+    @include mut.sized(35px, 35px);
+    @include mut.flex-centered();
+    background: c.$pure-white-color;
+    border: 4px solid c.$accented-red-color;
+    border-radius: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+  
+.customMarkerCluster span {
+    @include mut.flex-centered();
+    display: block;
+    color: c.$pure-black-color;
+}

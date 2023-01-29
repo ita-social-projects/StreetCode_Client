@@ -52,6 +52,7 @@ export const API_ROUTES = {
         GET_ALL: 'toponym/getAll',
         CREATE: 'toponym/create',
         GET: 'toponym/getById',
+        GET_BY_STREETCODE_ID: 'toponym/getByStreetcodeId',
         GET_BY_NAME: 'toponym/getByName',
         UPDATE: 'toponym/update',
         DELETE: 'toponym/delete',
@@ -133,5 +134,13 @@ export const API_ROUTES = {
         CREATE: 'subtitle/create',
         UPDATE: 'subtitle/update',
         DELETE: 'subtitle/delete',
+    },
+    STREETCODE_COORDINATES: {
+        GET_ALL: 'coordinate/getAll',
+        GET: 'coordinate/getById',
+        GET_BY_STREETCODE_ID: 'coordinate/getByStreetcodeId',
+        CREATE: 'coordinate/create',
+        UPDATE: 'coordinate/update',
+        DELETE: 'coordinate/delete',
     },
 };
