@@ -1,0 +1,69 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.fonts.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.partnerContent {
+    @include mut.sized($width: 380px);
+    @include mut.rem-margined($top: 8px, $right: 8px, $bottom: 8px, $left: 8px);
+    @include mut.flexed($gap: 12px, $wrap: wrap);
+    flex-direction: column;
+}
+
+.header {
+    @include mut.flexed($align-items: center, $gap: 14px);
+
+    p {
+        @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
+        line-height: 26.4px;
+        color: c.$lighter-black-color;
+    }
+}
+
+.partnerContentLogo{
+    @include mut.sized($width: 108px, $height: 30px);
+
+    @include mut.flex-centered();
+
+    img{
+        @include mut.sized($width: 104px);
+    }
+}
+
+.links {
+    @include mut.flexed($gap: 14px);
+
+    .mainLink {
+        @include mut.truncated($line-num: 1);
+        @include mut.with-font($font-weight: 300);
+        color: c.$dark-red-color;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.sourceLinks {
+    @include mut.flexed($align-items: flex-end, $gap: 7px);
+}
+
+.sourceLink {
+    filter: opacity(50%) grayscale(100%);
+
+    img {
+        @include mut.sized($width: 20px, $height: 20px);
+    }
+
+    &:hover {
+        filter: none;
+    }
+}
+
+.description {
+    p {
+        @include mut.with-font($font-size: 15px, $font-weight: 300);
+
+        color: c.$lighter-black-color;
+    }
+}

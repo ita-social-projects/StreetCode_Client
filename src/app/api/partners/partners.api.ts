@@ -9,6 +9,10 @@ const PartnersApi = {
 
     getSponsors: () => Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_SPONSORS}`),
 
+    getByStreetcodeId(streetcodeId: number) {
+        return Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_BY_STREETCODE_ID}/${streetcodeId}`);
+    },
+
     create: (partner: Partner) => Agent.post<Partner>(`${API_ROUTES.PARTNERS.CREATE}`, partner),
 
     update: (partner: Partner) => Agent.put<Partner>(`${API_ROUTES.PARTNERS.UPDATE}`, partner),

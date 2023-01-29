@@ -9,15 +9,17 @@ export default class PartnersStore {
         makeAutoObservable(this);
     }
 
-    private setInternalMap = (partners: Partner[]) => {
+    private set setInternalMap(partners: Partner[]) {
         partners.forEach(this.setItem);
-    };
+    }
 
     private setItem = (partner: Partner) => {
         this.PartnerMap.set(partner.id, partner);
     };
 
-    public getPartnerArray = () => Array.from(this.PartnerMap.values());
+    public get getPartnerArray() {
+        return Array.from(this.PartnerMap.values());
+    }
 
     public fetchPartner = async (id: number) => {
         try {
@@ -31,7 +33,15 @@ export default class PartnersStore {
     public fetchPartners = async () => {
         try {
             const partners = await partnersApi.getAll();
-            this.setInternalMap(partners);
+            this.setInternalMap = partners;
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
+    public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            this.setInternalMap = await partnersApi.getByStreetcodeId(streetcodeId);
         } catch (error: unknown) {
             console.log(error);
         }
