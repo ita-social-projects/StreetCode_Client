@@ -13,7 +13,7 @@ import RelatedFiguresBlock from '@streetcode/RelatedFiguresBlock/RelatedFigures.
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlock from '@streetcode/TextBlock/TextBlock.component';
 import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
-import MapBlock from "@streetcode/MapBlock/MapBlock.component";
+import MapBlock from '@streetcode/MapBlock/MapBlock.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
@@ -21,6 +21,7 @@ const StreetcodeContent = () => (
             <MainBlock />
             <TextBlock />
             <InterestingFactsBlock />
+            <MapBlock />
             <ArtGalleryBlock />
             <RelatedFiguresBlock />
             <SourcesBlock />

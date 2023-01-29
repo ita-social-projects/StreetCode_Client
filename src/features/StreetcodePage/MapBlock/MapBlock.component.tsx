@@ -22,6 +22,8 @@ const MapBlock = () => {
     const toponyms = useAsync(() => ToponymsApi
         .getAll(), []).value as Toponym[];
 
+    // console.log(toponyms);
+
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
         .getByStreetcodeId(id), [id]).value as StreetcodeCoordinate[];
 

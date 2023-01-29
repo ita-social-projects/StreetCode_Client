@@ -10,18 +10,21 @@ interface Props {
     title: string
 }
 
-const CustomMarker = (props: Props) => {
+const CustomMarker = ({ description, latitude, longtitude }: Props) => {
     const myIcon = L.divIcon({
         html: "<div class='markerCircle'></div>",
         iconAnchor: [0,0],
         className: 'my-custom-marker'
     });
+
+    console.log(latitude, longtitude);
+
     return (
         <>
-            {props.latitude && props.longtitude &&
-                <Marker position={[props.latitude, props.longtitude]} icon={myIcon} > 
+            {latitude && longtitude &&
+                <Marker position={[latitude, longtitude]} icon={myIcon} >
                     <Popup>
-                        {props?.description}
+                        {description}
                     </Popup>
                 </Marker>}
         </>
