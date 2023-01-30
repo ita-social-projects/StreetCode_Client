@@ -11,7 +11,7 @@
   padding: f.pxToRem(21px) f.pxToRem(32px);
 
   position: fixed;
-  z-index: 2;
+  z-index: 6;
 
   background-color: white;
   border-bottom: 1px dashed c.$dark-gray-color;
@@ -130,10 +130,10 @@
 
 .hiddenHeaderInput {
   @include mut.sized(1200px, 39px);
-  @include mut.positioned-as(absolute, $left: 17%);
+  @include mut.positioned-as(fixed, $left: 17%);
   @include mut.full-rounded(12px);
 
-  @include vnd.vendored(transition, 'all 1s ease');
+  @include vnd.vendored(transition, 'transform 1s ease');
   transform: translateY(f.pxToRem(-200px));
 
   &.active {

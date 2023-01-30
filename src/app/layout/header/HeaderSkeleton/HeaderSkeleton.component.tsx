@@ -2,28 +2,29 @@ import './HeaderSkeleton.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 
-import { useMemo } from 'react';
 import TagList from '@components/TagList/TagList.component';
 import HeaderContentBlock from '@layout/header/HeaderContentBlock/HeaderContentBlock.component';
-import useMobx from '@stores/root-store';
 
 import { Input, Popover } from 'antd';
+
+// import { useMemo } from 'react';
+// import useMobx from '@stores/root-store';
 
 const tags = ['Історія', '"Україна-Русь"', 'Наукова школа', 'Наука', 'Політика', 'Професор історії'];
 
 const HeaderSkeleton = () => {
-    const { modalStore: { setIsPageDimmed } } = useMobx();
+    /* const { modalStore: { setIsPageDimmed } } = useMobx();
 
     const onFocusEvents = useMemo(() => ({
         onFocus: () => setIsPageDimmed(true),
         onBlur: () => setIsPageDimmed(false),
     }), [setIsPageDimmed]);
+     */
 
     return (
         <Popover
-            overlayClassName="a"
-            placement="bottomLeft"
             trigger="click"
+            placement="bottomLeft"
             content={(
                 <div className="headerPopupSkeleton">
                     <div className="leftSide">
@@ -38,10 +39,10 @@ const HeaderSkeleton = () => {
             )}
         >
             <Input
-                size="large"
+                // size="large"
                 placeholder="Пошук..."
                 prefix={<MagnifyingGlass />}
-                {...onFocusEvents}
+                // {...onFocusEvents}
             />
         </Popover>
     );
