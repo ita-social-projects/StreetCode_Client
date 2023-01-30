@@ -16,6 +16,8 @@ const InterestingFactsComponent = () => {
         [streetcodeId],
     );
 
+    const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
+    getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
     return (
         <div className="interestingFactsWrapper">
             <div className="interestingFactsContainer">

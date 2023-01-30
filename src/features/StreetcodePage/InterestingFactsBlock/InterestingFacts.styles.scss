@@ -44,7 +44,7 @@
 .singleSlideContainer{
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
-    padding-top:5%;
+    padding-top:7.5%;
 
     .interestingFactSlide{
         @include  mut.sized(650px, 600px);
