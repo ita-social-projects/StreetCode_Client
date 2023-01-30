@@ -1,6 +1,6 @@
 import './RelatedFigures.styles.scss';
 
-import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
@@ -33,23 +33,23 @@ const RelatedFiguresComponent = () => {
     ));
 
     return (
-        <div
-            id="relatedFigures"
-            className={`relatedFiguresWrapper ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
+        <div className={`relatedFiguresWrapper
+            ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії" />
                 <div className="relatedFiguresSliderContainer">
                     <div style={{ height: '100%' }}>
-                        <SlickSlider
+                        <BlockSlider
                             className="heightContainer"
                             infinite={false}
                             slidesToShow={4}
-                            slides={sliderItems}
                             swipe={false}
                             dots={false}
                             swipeOnClick={false}
-                        />
+                        >
+                            {sliderItems}
+                        </BlockSlider>
                     </div>
                 </div>
                 <div className="moreInfo">

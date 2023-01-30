@@ -7,13 +7,14 @@ import ArtGalleryBlock from '@streetcode/ArtGalleryBlock/ArtGalleryBlock.compone
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import InterestingFactsBlock from '@streetcode/InterestingFactsBlock/InterestingFacts.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
-import PartnersComponent from '@streetcode/PartnersBlock/Partners.component';
-import QRComponent from '@streetcode/QRBlock/QR.component';
+import MapBlock from '@streetcode/MapBlock/MapBlock.component';
+import PartnersBlock from '@streetcode/PartnersBlock/Partners.component';
+import QRBlock from '@streetcode/QRBlock/QR.component';
 import RelatedFiguresBlock from '@streetcode/RelatedFiguresBlock/RelatedFigures.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlock from '@streetcode/TextBlock/TextBlock.component';
-import TickerComponent from '@streetcode/TickerBlock/Ticker.component';
-import MapBlock from '@streetcode/MapBlock/MapBlock.component';
+import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
+import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => (
     <div className="streetcodeContainer">
@@ -21,14 +22,15 @@ const StreetcodeContent = () => (
             <MainBlock />
             <TextBlock />
             <InterestingFactsBlock />
+            <TimelineBlock />
             <MapBlock />
             <ArtGalleryBlock />
             <RelatedFiguresBlock />
             <SourcesBlock />
         </ProgressBar>
-        <QRComponent />
-        <PartnersComponent />
-        <TickerComponent />
+        <QRBlock />
+        <PartnersBlock />
+        <TickerBlock />
         <ScrollToTopBtn />
         <DonateBtn />
         <Footer />
