@@ -1,0 +1,57 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+$timelineLvivImg: "@assets/images/timeline/Lviv.png";
+$timelineSquareImg: "@assets/images/timeline/Square.png";
+
+.timelineContentContainer {
+  margin: f.pxToRem(50px) 0;
+  background-color: c.$timeline-reel-color;
+
+  .sliderClass {
+    @include mut.sized(100%, 380px);
+    @include mut.rem-margined($bottom: 25px, $top: 30px /*30px*/);
+  }
+
+  .slick-slider {
+    @include mut.parent-sized();
+  }
+
+  .slick-list {
+    margin-left: f.pxToRem(-4px);
+  }
+
+  .slick-track {
+    @include mut.flexed($align-items: center, $gap: 30px);
+    @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
+
+    .slick-slide {
+      @include mut.sized(605px, 366px);
+      @include mut.full-rounded(30px);
+      flex-shrink: 0;
+
+      @include mut.bg-image($timelineSquareImg);
+      background-position-y: f.pxToRem(-100px);
+
+      &:nth-child(2n + 1) {
+        @include mut.bg-image($timelineLvivImg);
+        background-position-y: initial;
+      }
+
+      border: transparent;
+      @include vnd.vendored(transition, 'border 500ms ease');
+    }
+
+    // .slick-current + .slick-slide {
+    .slick-center {
+      border: 4px inset c.$pure-white-color;
+
+      .timelineItemContent {
+        margin-top: calc(1.5rem - 4px);
+      }
+    }
+  }
+}

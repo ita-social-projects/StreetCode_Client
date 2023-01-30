@@ -4,14 +4,15 @@ import Hrushevskyi from '@images/streetcode-card/Hrushevskyi.png';
 
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
-import SimpleSlider from '@features/SlickSlider/SlickSlider.component';
+import BlockSlider from '@features/SlickSlider/SlickSlider.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Tag from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx from '@stores/root-store';
 import fullMonthNumericYearDateFmtr from '@utils/formatters.utils';
 
 import { Button } from 'antd';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
+
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
 interface Props {
@@ -40,7 +41,7 @@ const StreetcodeCard = ({ streetcode }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, Audio } } = useMobx();
-    
+
     useAsync(() => fetchAudioByStreetcodeId(id), [id]);
 
     return (
@@ -48,12 +49,13 @@ const StreetcodeCard = ({ streetcode }: Props) => {
             <div className="leftSider">
                 <div className="leftSiderContentContainer">
                     <div className="leftSiderContent">
-                        <SimpleSlider
+                        <BlockSlider
                             arrows={false}
                             slidesToShow={1}
-                            slides={Array(2).fill(slide)}
                             swipeOnClick={false}
-                        />
+                        >
+                            {Array(2).fill(slide)}
+                        </BlockSlider>
                     </div>
                 </div>
             </div>
@@ -80,15 +82,27 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                             {streetcode?.teaser}
                         </p>
                         <div className="cardFooter">
-                           {Audio?.url?.href ? 
-                                <Button type="primary" className="audioBtn audioBtnActive" onClick={() => setModal('audio')}>
-                                    <PlayCircleFilled className="playCircle" />
-                                    <span>Прослухати текст</span>
-                                </Button> :
-                                <Button disabled type="primary" className="audioBtn" onClick={() => setModal('audio')}>
-                                    <span>Аудіо на підході</span>
-                                </Button>
-                            }
+                            {Audio?.url?.href
+                                ? (
+                                    <Button
+                                        type="primary"
+                                        className="audioBtn audioBtnActive"
+                                        onClick={() => setModal('audio')}
+                                    >
+                                        <PlayCircleFilled className="playCircle" />
+                                        <span>Прослухати текст</span>
+                                    </Button>
+                                )
+                                : (
+                                    <Button
+                                        disabled
+                                        type="primary"
+                                        className="audioBtn"
+                                        onClick={() => setModal('audio')}
+                                    >
+                                        <span>Аудіо на підході</span>
+                                    </Button>
+                                )}
                             <Button className="animateFigureBtn">Оживити картинку</Button>
                         </div>
                     </div>

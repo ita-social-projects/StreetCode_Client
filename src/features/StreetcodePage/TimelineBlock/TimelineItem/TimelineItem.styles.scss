@@ -1,0 +1,46 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.timelineItem {
+  @include mut.sized(604px, 366px);
+  @include mut.full-rounded(30px);
+
+  @include vnd.vendored(transition, 'backdrop-filter 300ms ease-in');
+  backdrop-filter: blur(2px);
+
+  &:hover {
+    cursor: pointer;
+    backdrop-filter: blur(2px) brightness(110%);
+  }
+}
+
+.timelineItemContent {
+  margin: f.pxToRem(24px) f.pxToRem(26px);
+
+  .timelineItemMetadata {
+    @include mut.truncated($line-num: 1);
+    @include mut.with-font($font-weight: 600);
+    color: c.$darker-gray-color;
+  }
+
+  .timelineItemTitle {
+    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
+    margin: f.pxToRem(20px) 0;
+
+    color: c.$dark-red-color;
+    @include mut.truncated($line-num: 1);
+  }
+
+  .timelineItemDescription {
+    @include mut.with-font($font-weight: 500);
+    color: c.$dark-gray-color;
+  }
+}
+
+.historicalContext {
+  @include mut.with-font($font-weight: 600);
+  color: c.$darker-gray-color;
+}

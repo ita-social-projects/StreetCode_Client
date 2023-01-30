@@ -2,8 +2,12 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import timelineApi from '@api/timeline/timeline.api';
 import TimelineItem from '@models/timeline/chronology.model';
 
-export default class TimelineitemStore {
-    public TimelineItemMap = new Map<number, TimelineItem>();
+export default class TimelineStore {
+    public timelineItemMap = new Map<number, TimelineItem>();
+
+    public activeYear: number | null = null;
+
+    public activeSlideIdx: number | null = null;
 
     public constructor() {
         makeAutoObservable(this);
@@ -14,10 +18,31 @@ export default class TimelineitemStore {
     };
 
     private setItem = (timelineItem: TimelineItem) => {
-        this.TimelineItemMap.set(timelineItem.id, timelineItem);
+        this.timelineItemMap.set(timelineItem.id, {
+            ...timelineItem,
+            date: new Date(timelineItem.date),
+        } as TimelineItem);
     };
 
-    public getTimelineItemArray = () => Array.from(this.TimelineItemMap.values());
+    public setActiveYear = (year: number | null) => {
+        this.activeYear = year;
+    };
+
+    public setActiveSlideIdx = (idx: number | null) => {
+        this.activeSlideIdx = idx;
+    };
+
+    public get getTimelineItemArray() {
+        return Array.from(this.timelineItemMap.values())
+            .sort((prev, cur) => prev.date.getFullYear() - cur.date.getFullYear());
+    }
+
+    public get getYearsArray() {
+        return [...new Set(
+            Array.from(this.timelineItemMap.values())
+                .map((timelineItem) => timelineItem.date.getFullYear()),
+        )].sort();
+    }
 
     public fetchTimelineItem = async (id: number) => {
         try {
@@ -30,8 +55,17 @@ export default class TimelineitemStore {
 
     public fetchTimelineItems = async () => {
         try {
-            const TimelineItems = await timelineApi.getAll();
-            this.setInternalMap(TimelineItems);
+            const timelineItems = await timelineApi.getAll();
+            this.setInternalMap(timelineItems);
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
+    public fetchTimelineItemsByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            const timelineItems = await timelineApi.getByStreetcodeId(streetcodeId);
+            this.setInternalMap(timelineItems);
         } catch (error: unknown) {
             console.log(error);
         }
@@ -51,7 +85,7 @@ export default class TimelineitemStore {
             await timelineApi.update(timelineItem);
             runInAction(() => {
                 const updatedTimelineItem = {
-                    ...this.TimelineItemMap.get(timelineItem.id),
+                    ...this.timelineItemMap.get(timelineItem.id),
                     ...timelineItem,
                 };
                 this.setItem(updatedTimelineItem as TimelineItem);
@@ -65,7 +99,7 @@ export default class TimelineitemStore {
         try {
             await timelineApi.delete(timelineItemId);
             runInAction(() => {
-                this.TimelineItemMap.delete(timelineItemId);
+                this.timelineItemMap.delete(timelineItemId);
             });
         } catch (error: unknown) {
             console.log(error);

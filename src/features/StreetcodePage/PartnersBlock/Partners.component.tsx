@@ -31,15 +31,13 @@ const PartnersComponent = () => {
             <div className="partnerContainer">
                 <SlickSlider
                     className="heightContainer"
-                    slidesToShow={3}
-                    slides={sliderItems}
                     autoplay
                     autoplaySpeed={3000}
                     arrows={false}
-                    swipe={false}
                     dots={false}
-                    swipeOnClick={false}
-                />
+                >
+                    {sliderItems}
+                </SlickSlider>
             </div>
         </div>
     );

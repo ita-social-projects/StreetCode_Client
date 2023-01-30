@@ -1,0 +1,35 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.timeSpanContainer {
+  height: f.pxToRem(8px);
+  margin-top: f.pxToRem(100px);
+  background-color: c.$dark-red-color;
+
+  .timelineYearTicksContainer {
+    @include mut.sized(100%, 26px);
+    @include mut.rem-padded(0, 100px, 20px, 100px);
+
+    .timelineYearTick {
+      @include mut.parent-sized();
+      @include mut.flex-centered();
+
+      background-color: c.$timeline-reel-color;
+      @include vnd.vendored(transition, 'background .5s ease');
+
+      &:hover {
+        background-color: c.$darkish-gray-color;
+        cursor: pointer;
+      }
+
+      > * {
+        position: relative;
+        bottom: f.pxToRem(30px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500);
+      }
+    }
+  }
+}

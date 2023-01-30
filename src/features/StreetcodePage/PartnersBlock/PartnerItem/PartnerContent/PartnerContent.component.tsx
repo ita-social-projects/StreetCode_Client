@@ -36,6 +36,8 @@ const PartnerContent = ({ partner }: Props) => {
                     {partnerSourceLinks.map((sl) => (
                         <Popover content={<p>{sl.title}</p>} trigger="hover">
                             <a
+                                rel="noreferrer"
+                                target="blank"
                                 className="sourceLink"
                                 href={sl.targetUrl}
                             >
@@ -49,6 +51,8 @@ const PartnerContent = ({ partner }: Props) => {
                     ))}
                 </div>
                 <a
+                    rel="noreferrer"
+                    target="blank"
                     className="mainLink"
                     href={targetUrl}
                 >

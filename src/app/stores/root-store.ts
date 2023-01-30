@@ -12,7 +12,7 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TextStore from '@stores/text-store';
-import TimelineitemStore from '@stores/timelineitem-store';
+import TimelineStore from '@stores/timeline-store';
 import ToponymStore from '@stores/toponym-store';
 import TransactionLinksStore from '@stores/transactions-store';
 import VideoStore from '@stores/videos-store';
@@ -31,7 +31,7 @@ interface Store {
     partnersStore: PartnersStore,
     termsStore: TermStore,
     textStore: TextStore,
-    timelineItemStore: TimelineitemStore,
+    timelineItemStore: TimelineStore,
     toponymStore: ToponymStore,
     transactionsStore: TransactionLinksStore,
     streetcodesStore: StreetcodeStore,
@@ -54,7 +54,7 @@ export const store: Store = {
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
     textStore: new TextStore(),
-    timelineItemStore: new TimelineitemStore(),
+    timelineItemStore: new TimelineStore(),
     toponymStore: new ToponymStore(),
     transactionsStore: new TransactionLinksStore(),
     streetcodesStore: new StreetcodeStore(),

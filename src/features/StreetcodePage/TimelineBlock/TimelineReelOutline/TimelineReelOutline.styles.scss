@@ -1,0 +1,23 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.timelineSquareContainer {
+  margin-left: f.pxToRem(4px);
+  @include mut.flex-centered($gap: 36px);
+
+  &:first-child {
+    padding-top: f.pxToRem(16px);
+  }
+
+  &:last-child {
+    padding-bottom: f.pxToRem(16px);
+  }
+
+  .timelineSquare {
+    @include mut.sized(44px, 40px);
+    background-color: c.$pure-white-color;
+    @include mut.full-rounded(11px);
+    flex-shrink: 0;
+  }
+}

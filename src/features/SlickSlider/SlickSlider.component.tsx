@@ -1,44 +1,36 @@
 import './SlickSlider.styles.scss';
 
-import React, { useCallback, useEffect, useRef } from 'react';
-import Slider, { Settings as SliderProps } from 'react-slick';
+import { FC, memo, useCallback, useRef } from 'react';
+import Slider from 'react-slick';
 
-interface Props extends SliderProps {
-    slides: JSX.Element[];
-    onClick?: (index: number) => void;
-    swipeOnClick?: boolean;
-}
+import SliderProps, { defaultSliderProps } from './index';
 
-const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, ...sliderProps }) => {
+const GenericSlider: FC<SliderProps> = ({
+    children,
+    onClick,
+    swipeOnClick = false,
+    ...sliderProps
+}) => {
     const sliderRef = useRef<Slider>(null);
 
     const handleClick = useCallback((index: number) => {
-        if (sliderRef && sliderRef.current) {
+        if (sliderRef && sliderRef.current && swipeOnClick) {
             sliderRef.current.slickGoTo(index);
         }
-
         if (onClick) {
             onClick(index);
         }
-    }, [onClick]);
-
-    useEffect(() => {
-        if (slides.length === 1) {
-            const clonedElements = document
-                .querySelectorAll('.interestingFactsSliderContainer .slick-cloned');
-            clonedElements.forEach((element) => element.remove());
-        }
-    }, [slides]);
+    }, [onClick, swipeOnClick]);
 
     return (
         <div className="sliderClass">
             <Slider
-                {...sliderProps}
                 ref={sliderRef}
-                className={!sliderProps.infinite ? 'nonInfiniteSlider' : undefined}
+                {...sliderProps}
+                className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
-                {slides.map((slide, idx) => (
-                    <div key={idx} onClick={swipeOnClick ? () => handleClick(idx) : undefined}>
+                {children?.map((slide, idx) => (
+                    <div key={idx} onClick={() => handleClick(idx)}>
                         {slide}
                     </div>
                 ))}
@@ -47,14 +39,6 @@ const SimpleSlider: React.FC<Props> = ({ slides, onClick, swipeOnClick = false, 
     );
 };
 
-const defaultProps: SliderProps = {
-    dots: true,
-    arrows: true,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    speed: 500,
-};
-SimpleSlider.defaultProps = defaultProps;
+GenericSlider.defaultProps = defaultSliderProps;
 
-export default React.memo(SimpleSlider);
+export default memo(GenericSlider);

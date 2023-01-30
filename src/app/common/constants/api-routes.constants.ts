@@ -43,11 +43,12 @@ export const API_ROUTES = {
         DELETE: 'text/delete',
     },
     TIMELINE: {
-        GET_ALL: 'timeline/getAll',
-        GET: 'timeline/getById',
-        CREATE: 'timeline/create',
-        UPDATE: 'timeline/update',
-        DELETE: 'timeline/delete',
+        GET_ALL: 'timelineItem/getAll',
+        GET: 'timelineItem/getById',
+        GET_BY_STREETCODE_ID: 'timelineItem/getByStreetcodeId',
+        CREATE: 'timelineItem/create',
+        UPDATE: 'timelineItem/update',
+        DELETE: 'timelineItem/delete',
     },
     TOPONYMS: {
         GET_ALL: 'toponym/getAll',

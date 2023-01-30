@@ -1,0 +1,37 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.swiper-horizontal {
+  overflow: visible;
+  @include mut.parent-sized();
+  @include mut.flex-centered();
+
+  .swiper-slide:not(.swiper-slide-active) {
+    bottom: f.pxToRem(-12px);
+  }
+
+  .swiper-slide .timelineYearTick {
+    @include mut.sized(21px, 21px);
+  }
+}
+
+.tickContainer {
+  position: relative;
+
+  span {
+    @include vnd.vendored(transition, 'all .5s ease-in-out');
+  }
+
+  &.active .timelineYearTick {
+    @include mut.sized(42px, 42px);
+    bottom: f.pxToRem(10px);
+
+    span {
+      bottom: f.pxToRem(60px) !important;
+      font-size: f.pxToRem(40px) !important;
+    }
+  }
+}
