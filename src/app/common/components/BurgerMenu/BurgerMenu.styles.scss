@@ -1,6 +1,6 @@
-@use "@sass/utils.functions" as f;
-@use "@sass/variables/variables.colors" as c;
-@use "@sass/mixins/utils.mixins" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .burgerMenuContainer {
   @include mut.sized(36px, 100%);
