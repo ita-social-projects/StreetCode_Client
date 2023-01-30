@@ -14,7 +14,7 @@
   @include mut.positioned-as(fixed, $bottom: 0, $left: 57px);
   // @include mut.positioned-as(fixed, $bottom: 0, $left: 120px);
 
-  z-index: 100;
+  z-index: 4;
   @include mut.flex-centered();
 
   border-top-left-radius: 20px;
