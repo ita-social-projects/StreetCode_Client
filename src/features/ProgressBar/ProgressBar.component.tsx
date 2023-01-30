@@ -50,14 +50,14 @@ const ProgressBar: FC<Props> = ({
     const {
         toggleState: isVisible,
         handlers: { toggle, off: setInvisible },
-    } = useToggle();
+    } = useToggle(true);
 
     const timeoutId = useRef<NodeJS.Timeout>();
     const [isOnTimeout, setIsOnTimeout] = useState(true);
 
     useScrollPosition(
-        ({ currentPos }) => {
-            const curScrollY = Math.abs(currentPos.y);
+        ({ currentPos: { y } }) => {
+            const curScrollY = Math.abs(y);
 
             setScrollPosition(curScrollY);
             wasScrolled.current = curScrollY > visibleBefore;
