@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "target": "es6",
+    "target": "es2017",
     "module": "esnext",
     "baseUrl": ".",
     "paths": {

@@ -16,6 +16,8 @@ import TimelineStore from '@stores/timeline-store';
 import ToponymStore from '@stores/toponym-store';
 import TransactionLinksStore from '@stores/transactions-store';
 import VideoStore from '@stores/videos-store';
+import CheckBoxStore from './checkbox-store';
+import StreetcodeArtStore from './streetcode-art-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -34,7 +36,9 @@ interface Store {
     transactionsStore: TransactionLinksStore,
     streetcodesStore: StreetcodeStore,
     sourcesStore: SourcesStore,
+    streetcodeArtStore: StreetcodeArtStore,
     relatedFiguresStore: RelatedFiguresStore,
+    checkboxStore: CheckBoxStore,
 }
 
 export const store: Store = {
@@ -45,6 +49,7 @@ export const store: Store = {
     audiosStore: new AudioStore(),
     videosStore: new VideoStore(),
     artsStore: new ArtStore(),
+    streetcodeArtStore: new StreetcodeArtStore(),
     imagesStore: new ImageStore(),
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
@@ -55,6 +60,7 @@ export const store: Store = {
     streetcodesStore: new StreetcodeStore(),
     sourcesStore: new SourcesStore(),
     relatedFiguresStore: new RelatedFiguresStore(),
+    checkboxStore: new CheckBoxStore(),
 };
 
 const StoreContext = createContext(store);

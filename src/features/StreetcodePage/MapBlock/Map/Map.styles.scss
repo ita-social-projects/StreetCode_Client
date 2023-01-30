@@ -1,0 +1,10 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+.mapContainer {
+    @include mut.sized(1600px, 872px);
+}
+
+.mapCentered {
+    @include mut.flex-centered();
+}

@@ -27,6 +27,10 @@
     }
 
     .sliderClass {
+        .slick-list {
+            @include mut.rem-padded($bottom: 4px);
+        }
+        
         .slick-track {
             @include mut.flex-centered($gap: 30px);
         }

@@ -30,9 +30,8 @@
   }
 }
 
-.ant-popover {
-  width: f.pxToRem(93px);
-  text-align: center;
+.progressBarSectionPopover {
+  @include mut.sized(115px);
 
   .ant-popover-arrow {
     @include mut.hidden();

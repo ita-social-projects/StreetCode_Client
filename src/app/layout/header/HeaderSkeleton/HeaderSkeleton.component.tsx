@@ -21,8 +21,9 @@ const HeaderSkeleton = () => {
 
     return (
         <Popover
+            overlayClassName="a"
             placement="bottomLeft"
-            trigger="focus"
+            trigger="click"
             content={(
                 <div className="headerPopupSkeleton">
                     <div className="leftSide">

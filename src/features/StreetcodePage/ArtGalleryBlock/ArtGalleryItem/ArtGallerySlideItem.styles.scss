@@ -1,0 +1,43 @@
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.slideArt {
+  flex: pxToRem(80px);
+  height: pxToRem(560px);
+}
+
+.artImageWrapper {
+  position: relative;  
+  &:hover {
+    cursor: pointer;
+    .imgDataFull {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  
+  .imgData {
+    @include mut.sized(100%, 113px);
+    @include mut.positioned-as($position: absolute, $bottom: 0);
+    @include mut.colored($color: c.$pure-white-color, $bg-color: rgba(0, 0, 0, 0.5));
+    visibility: hidden;
+    opacity: 0;
+    @include vnd.vendored(transition, 'all .5s ease'); 
+    @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
+    padding: pxToRem(11px) pxToRem(21px);
+  } 
+  
+  .imgTitle {
+    @include mut.with-font();
+    @include mut.rem-padded($bottom: 5px);
+  }
+  
+  .imgDescription {
+    @include mut.with-font($font-size: 15px);
+  }
+}
+
+

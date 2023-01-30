@@ -11,7 +11,8 @@ const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
     new Map(subtitles?.map(({ id, firstName, lastName, subtitleStatus }) => [
         id,
         `${Object.keys(SubtitleStatus)[subtitleStatus]} ${firstName} ${lastName}, `,
-    ])));
+    ]))
+);
 
 const TickerComponent = () => {
     const id = useRouteId();

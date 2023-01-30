@@ -42,7 +42,9 @@
     }
   }
 }
-
+.interestingFactSlide:first-child{
+  @include mut.rem-margined($left:1px);
+}
 .slick-center .interestingFactSlide {
   z-index: 1;
 }
@@ -52,7 +54,7 @@
 }
 
 .interestingFactsSliderContainer .slick-list {
-  @include mut.rem-padded(109px);
+  @include mut.rem-padded(130px);
 }
 
 .readMoreParagraph {

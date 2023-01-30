@@ -2,13 +2,14 @@ import './DonateBtn.styles.scss';
 
 import HandWithCoin from '@images/donates/HandWithCoin.svg';
 
+import { observer } from 'mobx-react-lite';
 import { useRef } from 'react';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
 import useMobx from '@stores/root-store';
 
 const DonateBtn = () => {
     const showModalOnScroll = useRef(true);
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal, modalsState: { donates } } } = useMobx();
 
     useScrollPosition(({ currentPos: { y } }) => {
         if (showModalOnScroll.current) {
@@ -19,7 +20,7 @@ const DonateBtn = () => {
         }
     }, 500);
 
-    return (
+    return !donates.isOpen ? (
         <div
             className="donateBtnContainer"
             onClick={() => {
@@ -34,7 +35,7 @@ const DonateBtn = () => {
                 задонатити
             </h2>
         </div>
-    );
+    ) : null;
 };
 
-export default DonateBtn;
+export default observer(DonateBtn);

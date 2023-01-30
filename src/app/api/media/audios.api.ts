@@ -7,6 +7,10 @@ const AudiosApi = {
 
     getById: (id: number) => Agent.get<Audio>(`${API_ROUTES.AUDIOS.GET}/${id}`),
 
+    getByStreetcodeId: (streetcodeId: number) => Agent.get<Audio>(
+        `${API_ROUTES.AUDIOS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
+    ),
+
     create: (audio: Audio) => Agent.post<Audio>(`${API_ROUTES.AUDIOS.CREATE}`, audio),
 
     update: (audio: Audio) => Agent.post<Audio>(`${API_ROUTES.AUDIOS.UPDATE}`, audio),

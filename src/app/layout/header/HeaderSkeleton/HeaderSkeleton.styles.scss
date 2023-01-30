@@ -9,6 +9,9 @@
   overflow-x: auto;
   @include mut.rem-margined(16px, 0, 16px, 45px);
 
+  position: relative;
+  z-index: 1;
+
   h2.textHeader {
     line-height: f.pxToEm(13px);
     @include mut.with-font($font-size: 14px);
@@ -45,6 +48,17 @@
   }
 
   &::-webkit-scrollbar {
+    width: .765rem;
     height: .665rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    @include mut.full-rounded(4px);
+    background: c.$lighter-gray-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @include mut.full-rounded(4px);
+    background: c.$dark-red-color;
   }
 }

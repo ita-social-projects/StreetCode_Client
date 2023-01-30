@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/prefer-default-export
 export const API_ROUTES = {
     BASE: '/',
     FACTS: {
@@ -12,18 +13,19 @@ export const API_ROUTES = {
         GET_ALL: 'partners/getAll',
         GET_SPONSORS: 'partners/getSponsors',
         GET: 'partners/getById',
+        GET_BY_STREETCODE_ID: 'partners/getByStreetcodeId',
         CREATE: 'partners/create',
         UPDATE: 'partners/update',
         DELETE: 'partners/delete',
     },
     TAGS: {
-        GET_ALL: 'tags/getAll',
-        GET: 'tags/getById',
-        GET_BY_TITLE: 'tags/getByTitle',
-        GET_BY_STREETCODE_ID: 'tags/getByStreetcodeId',
-        CREATE: 'tags/create',
-        UPDATE: 'tags/update',
-        DELETE: 'tags/delete',
+        GET_ALL: 'tag/getAll',
+        GET: 'tag/getById',
+        GET_BY_TITLE: 'tag/getByTitle',
+        GET_BY_STREETCODE_ID: 'tag/getByStreetcodeId',
+        CREATE: 'tag/create',
+        UPDATE: 'tag/update',
+        DELETE: 'tag/delete',
     },
     TERMS: {
         GET_ALL: 'term/getAll',
@@ -52,6 +54,7 @@ export const API_ROUTES = {
         GET_ALL: 'toponym/getAll',
         CREATE: 'toponym/create',
         GET: 'toponym/getById',
+        GET_BY_STREETCODE_ID: 'toponym/getByStreetcodeId',
         GET_BY_NAME: 'toponym/getByName',
         UPDATE: 'toponym/update',
         DELETE: 'toponym/delete',
@@ -75,6 +78,7 @@ export const API_ROUTES = {
     AUDIOS: {
         GET_ALL: 'audios/getAll',
         GET: 'audios/getById',
+        GET_BY_STREETCODE_ID: 'audio/getByStreetcodeId',
         CREATE: 'audios/create',
         UPDATE: 'audios/update',
         DELETE: 'audios/delete',
@@ -100,6 +104,10 @@ export const API_ROUTES = {
         CREATE: 'arts/create',
         UPDATE: 'arts/update',
         DELETE: 'arts/delete',
+    },
+    STREETCODE_ARTS: {
+        GET_ALL: 'streetcodeArt/getAll',
+        GET_BY_STREETCODE_ID: 'streetcodeArt/getByStreetcodeId',
     },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',
@@ -128,5 +136,13 @@ export const API_ROUTES = {
         CREATE: 'subtitle/create',
         UPDATE: 'subtitle/update',
         DELETE: 'subtitle/delete',
+    },
+    STREETCODE_COORDINATES: {
+        GET_ALL: 'coordinate/getAll',
+        GET: 'coordinate/getById',
+        GET_BY_STREETCODE_ID: 'coordinate/getByStreetcodeId',
+        CREATE: 'coordinate/create',
+        UPDATE: 'coordinate/update',
+        DELETE: 'coordinate/delete',
     },
 };

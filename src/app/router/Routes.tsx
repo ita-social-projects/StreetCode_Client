@@ -5,8 +5,8 @@ import StreetcodeContent from '@streetcode/Streetcode.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
-        <Route index path={FRONTEND_ROUTES.STREETCODE.BASE} element={<StreetcodeContent />} />
-        <Route path={`${FRONTEND_ROUTES.STREETCODE.BASE}/:id`} element={<></>} />
+        <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/:id`} element={<StreetcodeContent />} />
+        {/* <Route index path={FRONTEND_ROUTES.STREETCODE.BASE} element={<StreetcodeContent />} /> */}
         {/* <Route path='*' element={<NotFound />} /> */}
     </Route>,
 ));
