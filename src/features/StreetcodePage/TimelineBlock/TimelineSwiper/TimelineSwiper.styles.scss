@@ -9,12 +9,11 @@
   @include mut.parent-sized();
   @include mut.flex-centered();
 
-  .swiper-wrapper {
-    @include mut.flexed($gap: 240px);
-    margin-left: f.pxToRem(100px);
+  .swiper-slide:not(.swiper-slide-active) {
+    bottom: f.pxToRem(-12px);
   }
 
-  .swiper-slide {
+  .swiper-slide .timelineYearTick {
     @include mut.sized(21px, 21px);
   }
 }
@@ -26,7 +25,7 @@
     @include vnd.vendored(transition, 'all .5s ease-in-out');
   }
 
-  &.active {
+  &.active .timelineYearTick {
     @include mut.sized(42px, 42px);
     bottom: f.pxToRem(10px);
 

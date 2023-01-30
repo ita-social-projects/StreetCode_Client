@@ -16,6 +16,7 @@ const TimelineTimespan = () => {
                 <TimelineSwiper
                     slidesPerView={7}
                     initialSlide={middleIdx}
+                    spaceBetween={240}
                     slideToClickedSlide
                 >
                     {getYearsArray.map((year, idx) => (

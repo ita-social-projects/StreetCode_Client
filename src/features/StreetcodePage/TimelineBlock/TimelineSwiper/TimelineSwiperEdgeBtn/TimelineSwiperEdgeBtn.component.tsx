@@ -1,12 +1,10 @@
 import './TimelineSwiperEdgeBtn.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { CSSProperties } from 'react';
 import useMobx from '@stores/root-store';
 import { useSwiper } from 'swiper/react';
 
 interface Props {
-    style?: CSSProperties;
     side: 'left' | 'right';
     lastTickIdx: number;
     swipeSpeed?: number;
@@ -14,14 +12,14 @@ interface Props {
 }
 
 const TimelineSwiperEdgeBtn = ({
-    style,
     swipeSpeed = 900,
     sideMargin = 60,
     lastTickIdx,
     side,
 }: Props) => {
-    const { timelineItemStore: { setActiveYear, getTimelineItemArray } } = useMobx();
     const swiper = useSwiper();
+    const { timelineItemStore } = useMobx();
+    const { setActiveYear, getTimelineItemArray } = timelineItemStore;
 
     const isLeftEdge = side === 'left';
 
@@ -37,8 +35,8 @@ const TimelineSwiperEdgeBtn = ({
     return (
         <div
             className="swiperEdgeBtn"
+            style={positionStyles}
             onClick={handleClick}
-            style={{ ...positionStyles, ...style }}
         >
             <span>
                 {isLeftEdge ? 'First' : 'Last'}

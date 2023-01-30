@@ -13,27 +13,23 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
   .sliderClass {
     @include mut.sized(100%, 380px);
-    @include mut.rem-margined($bottom: 25px, $top: 20px /*30px*/);
+    @include mut.rem-margined($bottom: 25px, $top: 30px /*30px*/);
   }
 
   .slick-slider {
     @include mut.parent-sized();
+  }
 
-    > .slick-dots {
-      margin-bottom: f.pxToRem(5px);
-
-      li:not(.slick-active) button:before {
-        background: c.$dark-red-color;
-      }
-    }
+  .slick-list {
+    margin-left: f.pxToRem(-4px);
   }
 
   .slick-track {
-    @include mut.flexed(/*$align-items: center,*/ $gap: 30px);
+    @include mut.flexed($align-items: center, $gap: 30px);
     @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
 
     .slick-slide {
-      @include mut.sized(604px, 366px);
+      @include mut.sized(605px, 366px);
       @include mut.full-rounded(30px);
       flex-shrink: 0;
 
@@ -49,12 +45,12 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       @include vnd.vendored(transition, 'border 500ms ease');
     }
 
+    // .slick-current + .slick-slide {
     .slick-center {
       border: 4px inset c.$pure-white-color;
 
       .timelineItemContent {
         margin-top: calc(1.5rem - 4px);
-        // margin-left: calc(1.5rem - 4px);
       }
     }
   }

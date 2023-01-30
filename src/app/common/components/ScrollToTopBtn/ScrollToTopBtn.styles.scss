@@ -6,6 +6,7 @@
   @include mut.circular(62px);
   @include mut.positioned-as(fixed, $bottom: 140px, $right: 50px);
 
+  z-index: 100;
   @include mut.flex-centered();
   border: 3px solid c.$accented-red-color;
 

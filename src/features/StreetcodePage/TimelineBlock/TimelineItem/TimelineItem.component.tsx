@@ -5,7 +5,7 @@ import { uk } from 'date-fns/locale';
 
 import TimelineItem from '@/models/timeline/chronology.model';
 
-const truncateCharString = (str?: string, symbolCount = 350): string | undefined => str && (
+const truncateCharString = (str?: string, symbolCount = 400): string | undefined => str && (
     str.length <= symbolCount ? str : `${str.substring(0, symbolCount - 3)}...`
 );
 
@@ -16,16 +16,14 @@ interface Props {
 const TimelineSlideCard = ({ timelineItem: { date, description, historicalContexts, title } } : Props) => (
     <div className="timelineItem">
         <div className="timelineItemContent">
-            <p className="timelineItemDate">
+            <p className="timelineItemMetadata">
                 {format(new Date(date), 'yyyy, d MMMM', { locale: uk })}
-            </p>
-            <div className="timelineItemHistoricalContexts">
-                {historicalContexts.map(({ id, title: ctxTitle }, idx) => (
+                {historicalContexts.map(({ id, title: ctxTitle }) => (
                     <span key={id} className="historicalContext">
-                        {`${ctxTitle} ${(idx !== historicalContexts.length - 1) ? '& ' : ''}`}
+                        {`, ${ctxTitle}`}
                     </span>
                 ))}
-            </div>
+            </p>
             <p className="timelineItemTitle">
                 {title}
             </p>

@@ -4,6 +4,7 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .donateBtnContainer {
+  z-index: 100;
   @include mut.positioned-as(fixed, $bottom: 28px, $right: 41px);
   @include mut.flex-centered($direction: column);
 

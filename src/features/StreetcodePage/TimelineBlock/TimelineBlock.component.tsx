@@ -1,13 +1,13 @@
 import './TimelineBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import TimelineSlideCard from '@streetcode/TimelineBlock/TimelineItem/TimelineItem.component';
 import TimelineReelOutline from '@streetcode/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
+import TimelineSlider from '@streetcode/TimelineBlock/TimelineSlider.component';
 import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.component';
 
 const TimelineBlock = () => {
@@ -26,12 +26,13 @@ const TimelineBlock = () => {
             <TimelineTimespan />
             <div className="timelineContentContainer">
                 <TimelineReelOutline />
-                <BlockSlider
+                <TimelineSlider
+                    dots={false}
                     arrows={false}
                     swipeOnClick
                     swipeToSlide
                     centerMode
-                    centerPadding="-6px"
+                    centerPadding="0"
                 >
                     {getTimelineItemArray.map((timelineItem) => (
                         <TimelineSlideCard
@@ -39,7 +40,7 @@ const TimelineBlock = () => {
                             timelineItem={timelineItem}
                         />
                     ))}
-                </BlockSlider>
+                </TimelineSlider>
                 <TimelineReelOutline />
             </div>
         </div>

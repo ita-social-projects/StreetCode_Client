@@ -20,14 +20,15 @@
 .timelineItemContent {
   margin: f.pxToRem(24px) f.pxToRem(26px);
 
-  .timelineItemDate {
+  .timelineItemMetadata {
+    @include mut.truncated($line-num: 1);
     @include mut.with-font($font-weight: 600);
     color: c.$darker-gray-color;
   }
 
   .timelineItemTitle {
     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
-    margin: f.pxToRem(14px) 0;
+    margin: f.pxToRem(20px) 0;
 
     color: c.$dark-red-color;
     @include mut.truncated($line-num: 1);
