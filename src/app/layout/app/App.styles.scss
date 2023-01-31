@@ -27,5 +27,5 @@ div {
   @include mut.parent-sized();
 
   @include vnd.vendored(transition, 'background .5s ease');
-  z-index: 1;
+  z-index: 5;
 }

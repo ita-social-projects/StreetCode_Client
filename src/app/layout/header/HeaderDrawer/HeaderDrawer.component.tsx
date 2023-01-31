@@ -6,14 +6,15 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 import { Drawer } from 'antd';
 
 const HeaderDrawer = () => {
-    const { toggleState: drawerState, handlers: { toggle: toggleDrawer } } = useToggle();
+    const { toggleState: drawerState, handlers: { toggle } } = useToggle();
 
     return (
         <>
             <Drawer
                 placement="right"
                 closable
-                onClose={toggleDrawer}
+                style={{ zIndex: 0 }}
+                onClose={toggle}
                 open={drawerState}
             >
                 <div className="headerDrawerContainer">
@@ -26,7 +27,7 @@ const HeaderDrawer = () => {
                     <span>Контакти</span>
                 </div>
             </Drawer>
-            <BurgerMenu onClick={toggleDrawer} />
+            <BurgerMenu onClick={toggle} />
         </>
     );
 };

@@ -14,7 +14,7 @@ const App = () => {
     const { modalStore: { isPageDimmed } } = useMobx();
 
     return (
-        <>
+        <div style={{ position: 'relative' }}>
             <ToastContainer position="bottom-right" limit={5} />
             <ModalWrapper />
             <HeaderBlock />
@@ -22,7 +22,7 @@ const App = () => {
             {(pathname !== FRONTEND_ROUTES.BASE) && (
                 <Outlet />
             )}
-        </>
+        </div>
     );
 };
 export default observer(App);
