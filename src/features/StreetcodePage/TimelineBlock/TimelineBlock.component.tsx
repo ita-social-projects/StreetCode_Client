@@ -29,7 +29,6 @@ const TimelineBlock = () => {
                 <TimelineSlider
                     dots={false}
                     arrows={false}
-                    swipeOnClick
                     swipeToSlide
                     centerMode
                     centerPadding="0"
