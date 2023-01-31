@@ -18,6 +18,7 @@ const TimelineSwiperEdgeBtn = ({
     side,
 }: Props) => {
     const swiper = useSwiper();
+
     const { timelineItemStore } = useMobx();
     const { setActiveYear, getTimelineItemArray } = timelineItemStore;
 
