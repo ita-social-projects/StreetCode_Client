@@ -23,13 +23,19 @@ const TimelineSwiper: React.FC<Props> = ({
 }) => {
     const swiperRef = useRef<SwiperRef>(null);
     const [activeSlide, setActiveSlide] = useState(0);
-    const { timelineItemStore: { activeSlideIdx, setActiveYear, getYearsArray } } = useMobx();
+
+    const { timelineItemStore } = useMobx();
+    const { activeYear, setActiveYear, getYearsArray } = timelineItemStore;
 
     useEffect(() => {
-        if (swiperRef && swiperRef.current && activeSlideIdx !== null) {
-            swiperRef.current.swiper.slideTo(activeSlideIdx);
+        if (swiperRef && swiperRef.current && activeYear !== null) {
+            const activeYearIdx = getYearsArray.findIndex((y) => y === activeYear);
+
+            if (swiperRef.current.swiper.activeIndex !== activeYearIdx) {
+                swiperRef.current.swiper.slideTo(activeYearIdx);
+            }
         }
-    }, [activeSlideIdx]);
+    }, [activeYear]);
 
     const onNextSwipeProps = useMemo(() => ({
         allowSlidePrev: activeSlide !== 0,

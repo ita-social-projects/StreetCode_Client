@@ -7,8 +7,6 @@ export default class TimelineStore {
 
     public activeYear: number | null = null;
 
-    public activeSlideIdx: number | null = null;
-
     public constructor() {
         makeAutoObservable(this);
     }
@@ -26,10 +24,6 @@ export default class TimelineStore {
 
     public setActiveYear = (year: number | null) => {
         this.activeYear = year;
-    };
-
-    public setActiveSlideIdx = (idx: number | null) => {
-        this.activeSlideIdx = idx;
     };
 
     public get getTimelineItemArray() {

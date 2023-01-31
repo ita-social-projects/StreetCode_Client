@@ -5,9 +5,10 @@ import SliderProps, { defaultSliderProps } from '@features/SlickSlider';
 import useMobx from '@stores/root-store';
 
 const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sliderProps }) => {
-    const { timelineItemStore } = useMobx();
     const sliderRef = useRef<Slider>(null);
-    const { getTimelineItemArray, activeYear, setActiveSlideIdx } = timelineItemStore;
+
+    const { timelineItemStore } = useMobx();
+    const { getTimelineItemArray, activeYear, setActiveYear } = timelineItemStore;
 
     useEffect(() => {
         if (sliderRef && sliderRef.current) {
@@ -28,7 +29,8 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
 
     const onBeforeChange = (curIdx: number, nextIdx: number) => {
         const year = getTimelineItemArray[nextIdx].date.getFullYear();
-        setActiveSlideIdx(getTimelineItemArray.findIndex(({ date }) => date.getFullYear() === year));
+        setActiveYear(year);
+        // setActiveSlideIdx(getTimelineItemArray.findIndex(({ date }) => date.getFullYear() === year));
     };
 
     return (
