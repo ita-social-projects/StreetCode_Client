@@ -67,9 +67,10 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                             {streetcode?.index}
                         </div>
                         <h2 className="streetcodeTitle">
-                            {streetcode?.firstName}
-                            {' '}
+                            {streetcode?.rank ? `${streetcode?.rank} ` : ''}
+                            {streetcode?.firstName ? `${streetcode?.firstName} ` : ''}
                             {streetcode?.lastName}
+                            {streetcode?.title}
                         </h2>
                         <div className="streetcodeDate">
                             {concatDates(
@@ -103,7 +104,7 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                                         <span>Аудіо на підході</span>
                                     </Button>
                                 )}
-                            <Button className="animateFigureBtn">Оживити картинку</Button>
+                            <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
                         </div>
                     </div>
                 </div>

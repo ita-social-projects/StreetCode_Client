@@ -79,6 +79,10 @@
     background-color: c.$lighter-gray-color;
     color: c.$pure-white-color;
   }
+  .ant-btn-default {
+    border-width: 3px;
+    border-color: c.$accented-red-color;
+  }
 }
 
 .audioBtnActive {
@@ -98,16 +102,15 @@
 }
 
 .animateFigureBtn {
-  @include mut.sized(218px, 73px);
+  @include mut.sized(229px, 73px);
   @include mut.flex-centered();
   @include mut.full-rounded(14px);
-
-  @include mut.with-font($font-weight: 500);
-  border-width: 3px;
-
-  border-color: c.$accented-red-color;
-  color: c.$accented-red-color;
-
+  a {
+    @include mut.with-font($font-weight: 500);
+    border-width: 3px;
+    border-color: c.$accented-red-color;
+    color: c.$accented-red-color;
+  }
   &:hover {
     filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
   }

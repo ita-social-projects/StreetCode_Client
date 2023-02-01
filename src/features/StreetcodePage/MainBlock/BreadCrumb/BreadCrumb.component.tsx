@@ -15,7 +15,7 @@ const BreadCrumb = ({ separator = '->', streetcode }: Props) => (
             стріткоди
         </Breadcrumb.Item>
         <Breadcrumb.Item href="_blank">
-            {streetcode?.firstName}
+            {streetcode?.firstName ?? streetcode?.title}
             {' '}
             {streetcode?.lastName}
         </Breadcrumb.Item>

@@ -8,7 +8,7 @@ interface Props {
 }
 
 const QRComponent = (props: Props) => (
-    <div className="QRBlockContainer">
+    <div id="QRBlock" className="QRBlockContainer">
         <div className="QRBlockContent">
             <div className="QRBlockImg">
                 <img src={IPhoneImg} alt="" />
