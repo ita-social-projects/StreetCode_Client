@@ -30,6 +30,7 @@ const TimelineBlock = () => {
                     dots={false}
                     arrows={false}
                     swipeToSlide
+                    swipeOnClick
                     centerMode
                     centerPadding="0"
                 >
