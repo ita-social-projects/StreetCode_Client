@@ -9,8 +9,8 @@
     height:  pxToRem(58px)!important;
     $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
     background-image: url($path);
-    background-size:cover;
-    position:absolute;
+    background-size: cover;
+    position: absolute;
     .yarl__icon{
         background-color: c.$transparent-color;
         color: c.$transparent-color;
@@ -27,7 +27,7 @@
 }
 
 .yarl__slide_title {
-    @include mut.rem-margined($top: 23px, $left: 35px);
+    @include mut.rem-margined($top: 15px, $left: 35px);
     @include mut.with-font($font-weight: 500);
     color: #4E4E4E!important;
 }
@@ -36,17 +36,32 @@
     @include mut.sized($height: 159px);
 }
 
+.yarl__slide_title_container {
+    @include mut.sized($height: 68px);
+}
+
 .yarl__slide_description {
+    @include mut.rem-margined($top: 25px);
     @include mut.with-font();
     @include mut.sized($height: 129px);
     -webkit-line-clamp: inherit!important;
 }
 
-.yarl__icon {
-    background-color: c.$transparent-color;
-    width: pxToRem(50px)!important;
-    height:  pxToRem(50px)!important;
+.yarl__slide{
+    padding: 0!important;
 }
+
+.yarl__icon {
+    @include mut.rem-margined($top: 10px, $right: 25px);
+    background-color: c.$transparent-color;
+    width: pxToRem(30px)!important;
+    height:  pxToRem(30px)!important;
+    color: #4E4E4E!important;
+    &:hover{
+        color: #918f8f!important;
+    }
+}
+
 .yarl__navigation_prev {
     @include slick-arrow-lightbox(left);
     left: pxToRem(30px)!important;
@@ -57,8 +72,7 @@
     right: pxToRem(30px)!important;
 }
 
-.yarl__container {
-    &:hover {
+.lightboxWithCaptions {
         .yarl__slide_captions_container {
             visibility: visible;
             opacity: 1;
@@ -71,7 +85,9 @@
             visibility: visible;
             opacity: 1;
         }
-    }
+
+}
+.lightboxWithoutCaptions{
     .yarl__slide_captions_container {
         @include vnd.vendored(transition, 'all .5s ease');
         visibility: hidden;

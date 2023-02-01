@@ -33,10 +33,16 @@
   .imgTitle {
     @include mut.with-font();
     @include mut.rem-padded($bottom: 5px);
+    @include mut.truncated();
   }
   
   .imgDescription {
     @include mut.with-font($font-size: 15px);
+    @include mut.truncated();
+  }
+
+  .imgImg{
+    border-radius: pxToRem(30px);
   }
 }
 
