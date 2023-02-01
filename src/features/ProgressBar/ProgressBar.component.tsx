@@ -37,7 +37,7 @@ const getYScrollPercentage = (curPos: number, minValue?: number, maxValue?: numb
 const ProgressBar: FC<Props> = ({
     children,
     waitMsOnRender = 300,
-    topDistance = 200,
+    topDistance = 82,
     visibleBefore = 1600,
     hidingDelay = 10e3,
 }) => {
