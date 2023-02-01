@@ -21,3 +21,7 @@
     @include mut.positioned-as(relative, $left: -62px, $top: 41px);
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
 }
+
+.blockHeadingText::first-letter {
+    text-transform: uppercase;
+}
