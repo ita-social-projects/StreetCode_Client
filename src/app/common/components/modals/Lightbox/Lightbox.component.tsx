@@ -19,7 +19,7 @@ const LightboxComponent = () => {
 
     const slides = getStreetcodeArtArray.map((item) => ({
         src: item.art.image.url.href,
-        title: `${item.index} / ${getStreetcodeArtArray.length}`,
+        title: `${item.index}/${getStreetcodeArtArray.length}`,
         description: `${
             item.art.image.url.title ? item.art.image.url.title : ''
         }. ${item.art.description ? item.art.description : ''}`,

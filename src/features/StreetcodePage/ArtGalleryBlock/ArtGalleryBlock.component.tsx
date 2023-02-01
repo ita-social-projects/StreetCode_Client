@@ -33,12 +33,14 @@ const ArtGalleryBlock = () => {
         [streetcodeId],
     );
 
-    console.log(Rectangle106_2);
-    console.log(Rectangle107_2);
-    console.log(Rectangle108_2);
-    console.log(Rectangle109_2);
-    console.log(Rectangle110_2);
-    console.log(Rectangle111_2);
+    const images: string[] = [
+        Rectangle106_2,
+        Rectangle107_2,
+        Rectangle109_2,
+        Rectangle110_2,
+        Rectangle111_2,
+        Rectangle108_2,
+    ];
 
     useEffect(() => {
         const newMap: IndexedArt[] = [];
