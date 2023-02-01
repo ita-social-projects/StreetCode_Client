@@ -3,8 +3,10 @@
 
 .readMore {
     color: c.$dark-red-color;
-    text-decoration: underline;
     cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
 }
 
 .readMoreContainer {
