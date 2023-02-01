@@ -1,14 +1,18 @@
 import './PartnerContent.styles.scss';
 
+import facebook from '@assets/images/partners/facebook.png';
+import instagram from '@assets/images/partners/instagram.png';
+import twitter from '@assets/images/partners/twitter.png';
+import youtube from '@assets/images/partners/youtube.png';
 import useMobx from '@stores/root-store';
-
-import { Popover } from 'antd';
 
 import Partner from '@/models/partners/partners.model';
 
 interface Props {
     partner: Partner
 }
+
+const LogoType = [twitter, instagram, facebook, youtube];
 
 const PartnerContent = ({ partner }: Props) => {
     const {
@@ -34,29 +38,27 @@ const PartnerContent = ({ partner }: Props) => {
                     style={{ display: partnerSourceLinks.length < 1 ? 'none' : ' ' }}
                 >
                     {partnerSourceLinks.map((sl) => (
-                        <Popover content={<p>{sl.title}</p>} trigger="hover">
-                            <a
-                                rel="noreferrer"
-                                target="blank"
-                                className="sourceLink"
-                                href={sl.targetUrl}
-                            >
-                                <img
-                                    key={sl.id}
-                                    src={sl.logoUrl}
-                                    alt={sl.title}
-                                />
-                            </a>
-                        </Popover>
+                        <a
+                            rel="noreferrer"
+                            target="_blank"
+                            className="sourceLink"
+                            href={sl.targetUrl.href}
+                        >
+                            <img
+                                key={sl.id}
+                                src={LogoType[sl.logoType]}
+                                alt={sl.targetUrl.title}
+                            />
+                        </a>
                     ))}
                 </div>
                 <a
                     rel="noreferrer"
-                    target="blank"
+                    target="_blank"
                     className="mainLink"
-                    href={targetUrl}
+                    href={targetUrl.href}
                 >
-                    {`go to ${title} page`}
+                    {targetUrl.title ?? 'go to partner page'}
                 </a>
             </div>
             <div
