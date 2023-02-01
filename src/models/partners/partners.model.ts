@@ -10,13 +10,6 @@ export default interface Partner {
     partnerSourceLinks: PartnerSourceLink[];
 }
 
-export enum LogoType {
-    Facebook = '@assets/images/partners/facebook.png',
-    Instagram = '@assets/images/partners/instagram.png',
-    Twitter = '@assets/images/partners/twitter.png',
-    YouTube = '@assets/images/partners/youtube.png',
-}
-
 export interface PartnerSourceLink {
     id: number;
     targetUrl: Url;
