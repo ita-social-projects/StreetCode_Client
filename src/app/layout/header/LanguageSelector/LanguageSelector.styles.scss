@@ -9,7 +9,7 @@
   padding: f.pxToRem(10px);
 
   span {
-    line-height: f.pxToEm(21.09px);
+    line-height: f.pxToEm(21px);
     @include mut.with-font($font-weight: 300, $font-size: 18px);
     color: c.$lighter-black-color;
 

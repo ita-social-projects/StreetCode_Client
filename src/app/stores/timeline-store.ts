@@ -26,35 +26,17 @@ export default class TimelineStore {
         this.activeYear = year;
     };
 
-    public get getTimelineItemArray() {
+    get getTimelineItemArray() {
         return Array.from(this.timelineItemMap.values())
             .sort((prev, cur) => prev.date.getFullYear() - cur.date.getFullYear());
     }
 
-    public get getYearsArray() {
+    get getYearsArray() {
         return [...new Set(
             Array.from(this.timelineItemMap.values())
                 .map((timelineItem) => timelineItem.date.getFullYear()),
         )].sort();
     }
-
-    public fetchTimelineItem = async (id: number) => {
-        try {
-            const timelineItem = await timelineApi.getById(id);
-            this.setItem(timelineItem);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchTimelineItems = async () => {
-        try {
-            const timelineItems = await timelineApi.getAll();
-            this.setInternalMap(timelineItems);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
 
     public fetchTimelineItemsByStreetcodeId = async (streetcodeId: number) => {
         try {

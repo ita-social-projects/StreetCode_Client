@@ -3,25 +3,14 @@ import audiosApi from '@api/media/audios.api';
 import Audio from '@models/media/audio.model';
 
 export default class AudioStore {
-    public Audio: Audio | undefined;
+    public audio: Audio | undefined;
 
     public constructor() {
         makeAutoObservable(this);
     }
 
     private setItem = (audio: Audio | undefined) => {
-        this.Audio = audio;
-    };
-
-    public fetchAudio = async (id: number) => {
-        try {
-            const audio = await audiosApi.getById(id);
-            runInAction(() => {
-                this.setItem(audio as Audio);
-            });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        this.audio = audio;
     };
 
     public fetchAudioByStreetcodeId = async (streetcodeId: number) => {

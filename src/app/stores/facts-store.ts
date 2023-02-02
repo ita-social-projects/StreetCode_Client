@@ -21,24 +21,6 @@ export default class FactsStore {
         return Array.from(this.factMap.values());
     }
 
-    public fetchFact = async (id: number) => {
-        try {
-            const fact = await factsApi.getById(id);
-            this.setItem(fact);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchFacts = async () => {
-        try {
-            const facts = await factsApi.getAll();
-            this.setInternalMap(facts);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
     public fetchFactsByStreetcodeId = async (streetcodeId: number) => {
         try {
             const facts = await factsApi.getFactsByStreetcodeId(streetcodeId);

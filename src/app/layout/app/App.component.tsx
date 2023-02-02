@@ -15,7 +15,7 @@ const App = () => {
 
     return (
         <div style={{ position: 'relative' }}>
-            <ToastContainer position="bottom-right" limit={5} />
+            <ToastContainer position="bottom-right" limit={3} />
             <ModalWrapper />
             <HeaderBlock />
             <div className={`${isPageDimmed ? 'dimmed' : ''}`} />

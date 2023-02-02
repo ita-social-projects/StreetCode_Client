@@ -2,19 +2,11 @@ import { toast } from 'react-toastify';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
-
-axios.interceptors.request.use((config) => config);
-/*
-const token = AuthLocalStorage.getToken();
-if (token) {
-    config.headers!.Authorization = `Bearer ${token}`;
-}
-*/
+axios.defaults.baseURL = 'https://localhost:5001/api';
 
 axios.interceptors.response.use(
     async (response) => response,
-    ({ response, message, status }: AxiosError) => {
+    ({ response, message }: AxiosError) => {
         if (message === 'Network Error') {
             toast.error(message);
         }
@@ -54,9 +46,6 @@ const Agent = {
 
     put: async <T> (url: string, body: object) => axios.put<T>(url, body)
         .then(responseBody),
-
-    // patch: async <T> (url: string, body: {}) => axios.put<T>(url, body)
-    // .then(responseBody),
 
     delete: async <T>(url: string) => axios.delete<T>(url)
         .then(responseBody),

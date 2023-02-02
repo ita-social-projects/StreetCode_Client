@@ -17,26 +17,9 @@ export default class RelatedFiguresStore {
         relatedFigures.forEach(this.setRelatedFigureItem);
     }
 
-    public get getRelatedFiguresArray() {
+    get getRelatedFiguresArray() {
         return Array.from(this.relatedFiguresMap.values());
     }
-
-    public fetchRelatedFigure = async (id: number) => {
-        try {
-            const relatedFigure = await relatedFiguresApi.getById(id);
-            this.setRelatedFigureItem(relatedFigure);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchRelatedFigures = async () => {
-        try {
-            this.setInternalRelatedFiguresMap = await relatedFiguresApi.getAll();
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
 
     public fetchRelatedFiguresByStreetcodeId = async (streetcodeId: number) => {
         try {
@@ -46,7 +29,7 @@ export default class RelatedFiguresStore {
         }
     };
 
-    public createRelatedFigures = async (relatedFigure: RelatedFigure) => {
+    public createRelatedFigure = async (relatedFigure: RelatedFigure) => {
         try {
             await relatedFiguresApi.create(relatedFigure);
             this.setRelatedFigureItem(relatedFigure);
@@ -55,7 +38,7 @@ export default class RelatedFiguresStore {
         }
     };
 
-    public updateRelatedFigures = async (relatedFigure: RelatedFigure) => {
+    public updateRelatedFigure = async (relatedFigure: RelatedFigure) => {
         try {
             await relatedFiguresApi.update(relatedFigure);
             runInAction(() => {

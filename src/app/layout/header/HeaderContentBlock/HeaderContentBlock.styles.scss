@@ -1,5 +1,5 @@
-@use "@sass/mixins/utils.mixins" as mut;
-@use "@sass/variables/variables.colors" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
 
 .recommendationContainer {
   @include mut.flexed($justify-content: flex-start, $gap: 10px);

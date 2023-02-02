@@ -1,7 +1,7 @@
 import './LightboxComponent.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 import useMobx from '@stores/root-store';
 import Lightbox from 'yet-another-react-lightbox';
@@ -12,50 +12,35 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
 
 const LightboxComponent = () => {
-    const { streetcodeArtStore, modalStore } = useMobx();
-    const { setModal, modalsState: { artGallery } } = modalStore;
-    const index = artGallery.fromCardId!;
-    const { getStreetcodeArtArray } = streetcodeArtStore;
+    const { streetcodeArtStore: { getStreetcodeArtArray }, modalStore } = useMobx();
+    const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
 
-    const slides = getStreetcodeArtArray.map((item) => ({
-        src: item.art.image.url.href,
-        title: `${item.index}/${getStreetcodeArtArray.length}`,
-        description: `${
-            item.art.image.url.title ? item.art.image.url.title : ''
-        }. ${item.art.description ? item.art.description : ''}`,
-    }));
-    const [state, setState] = useState<boolean>(true);
-    const [remaining, setRemaining] = useState<number>(0);
+    const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
-    const onIdle = () => {
-        setState(false);
-    };
+    const slides = useMemo(() => getStreetcodeArtArray.map(
+        ({ art: { image: { url }, description }, index }) => ({
+            src: url.href,
+            title: `${index}/${getStreetcodeArtArray.length}`,
+            description: `${url.title ?? ''}. ${description ?? ''}`,
+        }),
+    ), [getStreetcodeArtArray]);
 
-    const onActive = () => {
-        setState(true);
-    };
+    const onIdleTimerHandlers = useMemo(() => ({
+        onIdle: () => setIsCaptionEnabled(false),
+        onActive: () => setIsCaptionEnabled(true),
+    }), []);
 
-    const { getRemainingTime } = useIdleTimer({
-        onIdle,
-        onActive,
+    useIdleTimer({
+        ...onIdleTimerHandlers,
         timeout: 3_000,
     });
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setRemaining(Math.ceil(getRemainingTime() / 1000));
-        }, 500);
-
-        return () => {
-            clearInterval(interval);
-        };
-    });
     return (
         <Lightbox
-            open={artGallery.isOpen}
+            open={isOpen}
             close={() => setModal('artGallery')}
-            index={index}
-            className={state ? 'lightboxWithCaptions' : 'lightboxWithoutCaptions'}
+            index={fromCardId}
+            className={`lightbox ${!isCaptionEnabled ? 'disabled' : ''}`}
             slides={slides}
             plugins={[Captions]}
         />

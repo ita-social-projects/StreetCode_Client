@@ -23,46 +23,17 @@ export default class SourcesStore {
         srcCategories.forEach(this.setCategoryItem);
     }
 
-    public get getSrcCategoriesArray() {
+    get getSrcCategoriesArray() {
         return Array.from(this.srcCategoriesMap.values());
     }
 
-    public get getSrcSubCategoriesArray() {
+    get getSrcSubCategoriesArray() {
         return Array.from(this.srcSubCategoriesMap.values());
     }
-
-    public fetchSrcCategory = async (id: number) => {
-        try {
-            const srcCategory = await sourcesApi.getById(id);
-            this.setCategoryItem(srcCategory);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchSrcCategories = async () => {
-        try {
-            this.setInternalCategoriesMap = await sourcesApi.getAllCategories();
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
 
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchSrcSubCategoriesByCategoryId = async (categoryId: number)
-        : Promise<SourceSubCategory[] | undefined> => {
-        try {
-            const srcSubCategories = await sourcesApi.getSubCategoriesByCategoryId(categoryId);
-
-            srcSubCategories?.forEach(this.setSubCategoryItem);
-            return srcSubCategories;
         } catch (error: unknown) {
             console.log(error);
         }

@@ -14,7 +14,7 @@
   @include mut.flex-centered();
 
   @include mut.colored(c.$copyright-section-color, c.$pure-white-color);
-  @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 400, $font-size: 13.03px);
+  @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 400, $font-size: 13px);
 }
 
 .footerLogoContainer {
@@ -22,7 +22,7 @@
   padding-top: pxToRem(45px);
 
   > * {
-    @include mut.sized(175px, 95.84px);
+    @include mut.sized(175px, 96px);
     @include mut.flex-centered();
     margin: 0 auto;
   }

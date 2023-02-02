@@ -5,11 +5,9 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
+import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 import { Modal } from 'antd';
-
-import RelatedFigureItem
-    from '@/features/StreetcodePage/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 const RelatedFiguresModal = () => {
     const { relatedFiguresStore, modalStore } = useMobx();
@@ -38,9 +36,7 @@ const RelatedFiguresModal = () => {
         >
             <div
                 className="relatedFiguresImgContainer"
-                style={{
-                    background: `url(${ModalBg})`,
-                }}
+                style={{ background: `url(${ModalBg})` }}
             >
                 <h1>Зв’язки історії</h1>
             </div>

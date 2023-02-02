@@ -7,25 +7,44 @@ import { useEffect, useRef, useState } from 'react';
 import useMobx from '@stores/root-store';
 
 const AudioPlayer = () => {
-    const { audiosStore: { Audio } } = useMobx();
-
+    const { audiosStore: { audio } } = useMobx();
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
     const audioPlayer = useRef<HTMLMediaElement>(null);
     const progressBar = useRef<HTMLInputElement | null>(null);
     const animationRef = useRef<number>();
-    
-    useEffect(() => {
-        setMaxDuration();
-    }, [audioPlayer.current?.readyState]);
 
-    const setMaxDuration = (): void => {
+    const setMaxDuration = () => {
         if (progressBar.current) {
-            progressBar.current.max = String(Math.floor(Number(audioPlayer.current?.duration)));
+            progressBar.current.max = Math.floor(Number(audioPlayer.current?.duration)).toString();
         }
     };
 
-    const togglePlayPause = (): void => {
+    const changePlayerCurrentTime = () => {
+        progressBar.current?.style.setProperty(
+            '--seek-before-width',
+            `${Number(progressBar.current?.value) / (Number(progressBar.current.max) * 100)}%`,
+        );
+        if (Number(progressBar.current?.value) / Number(progressBar.current?.max) >= 1) {
+            setIsPlaying(false);
+        }
+    };
+
+    useEffect(
+        () => setMaxDuration(),
+        [audioPlayer.current?.readyState],
+    );
+
+    const whilePlaying = (): void => {
+        if (progressBar.current) {
+            progressBar.current.value = String(audioPlayer.current?.currentTime);
+        }
+
+        changePlayerCurrentTime();
+        animationRef.current = requestAnimationFrame(whilePlaying);
+    };
+
+    const togglePlayPause = () => {
         setIsPlaying(!isPlaying);
         if (!isPlaying) {
             audioPlayer.current?.play();
@@ -36,15 +55,7 @@ const AudioPlayer = () => {
         }
     };
 
-    const whilePlaying = (): void => {
-        if (progressBar.current) {
-            progressBar.current.value = String(audioPlayer.current?.currentTime);
-        }
-        changePlayerCurrentTime();
-        animationRef.current = requestAnimationFrame(whilePlaying);
-    };
-
-    const changeRange = (): void => {
+    const changeRange = () => {
         setMaxDuration();
         if (audioPlayer.current) {
             audioPlayer.current.currentTime = Number(progressBar.current?.value);
@@ -52,25 +63,28 @@ const AudioPlayer = () => {
         changePlayerCurrentTime();
     };
 
-    const changePlayerCurrentTime = (): void => {
-        progressBar.current?.style.setProperty('--seek-before-width', `${Number(progressBar.current?.value) / Number(progressBar.current.max) * 100}%`);
-        if (Number(progressBar.current?.value) / Number(progressBar.current?.max) >= 1) {
-            setIsPlaying(false);
-        }
-    };
-
     return (
         <div className="audioPlayer">
-            <audio ref={audioPlayer} src={Audio?.url?.href} preload="metadata" />
-            {isPlaying ? 
-                <div className="buttonContainer">
-                    <img src={PauseBtn} className="play" onClick={togglePlayPause} />
-                </div> : 
-                <div className="buttonContainer">
-                    <img src={PlayBtn} className="play" onClick={togglePlayPause} />
-                </div>}
+            <audio ref={audioPlayer} src={audio?.url?.href} preload="metadata" />
+            {isPlaying
+                ? (
+                    <div className="buttonContainer">
+                        <img src={PauseBtn} alt="Пауза" className="play" onClick={togglePlayPause} />
+                    </div>
+                )
+                : (
+                    <div className="buttonContainer">
+                        <img src={PlayBtn} alt="Програти" className="play" onClick={togglePlayPause} />
+                    </div>
+                )}
             <div>
-                <input type="range" className="progressBar" defaultValue="0" ref={progressBar} onChange={changeRange} />
+                <input
+                    ref={progressBar}
+                    type="range"
+                    className="progressBar"
+                    defaultValue="0"
+                    onChange={changeRange}
+                />
             </div>
         </div>
     );

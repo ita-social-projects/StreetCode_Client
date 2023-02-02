@@ -17,26 +17,9 @@ export default class TagsStore {
         this.TagMap.set(tag.id, tag);
     };
 
-    public get getTagArray() {
+    get getTagArray() {
         return Array.from(this.TagMap.values());
     }
-
-    public fetchTag = async (id: number) => {
-        try {
-            const tag = await tagsApi.getById(id);
-            this.setItem(tag);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchTags = async () => {
-        try {
-            this.setInternalMap = await tagsApi.getAll();
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
 
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {
         try {

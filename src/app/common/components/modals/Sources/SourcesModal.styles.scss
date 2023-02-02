@@ -11,6 +11,8 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include mut.sized(823px, 765px);
 
   &.ant-modal {
+    height: 100%;
+
     .ant-modal-content {
       height: pxToRem(830px);
       @include mut.full-rounded(70px, $overflow: visible);
@@ -39,9 +41,6 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include vnd.vendored(border-top-left-radius, '70px');
   @include vnd.vendored(border-top-right-radius, '70px');
 
-  // @include mut.bg-image($bookImg);
-  // @include mut.bg-image($articlesImg, $bg-size: 100% pxToRem(180px));
-
   h1 {
     color: c.$pure-white-color;
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
@@ -54,7 +53,6 @@ $articlesImg: "@assets/images/sources/Articles.png";
 }
 
 .mainContentContainer {
-  height: pxToRem(610px);
   @include mut.flexed($direction: column, $gap: 10px);
 
   overflow-y: scroll;

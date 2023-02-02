@@ -9,11 +9,16 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Tag from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx from '@stores/root-store';
-import fullMonthNumericYearDateFmtr from '@utils/formatters.utils';
 
 import { Button } from 'antd';
 
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+
+const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+});
 
 interface Props {
     streetcode?: Streetcode;
@@ -40,7 +45,7 @@ const slide = <img src={Hrushevskyi} className="streetcodeImg" alt="" />;
 const StreetcodeCard = ({ streetcode }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
-    const { audiosStore: { fetchAudioByStreetcodeId, Audio } } = useMobx();
+    const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
 
     useAsync(() => fetchAudioByStreetcodeId(id), [id]);
 
@@ -83,7 +88,7 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                             {streetcode?.teaser}
                         </p>
                         <div className="cardFooter">
-                            {Audio?.url?.href
+                            {audio?.url?.href
                                 ? (
                                     <Button
                                         type="primary"

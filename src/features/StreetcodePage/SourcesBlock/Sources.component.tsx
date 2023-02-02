@@ -12,16 +12,15 @@ import SourceItem from './SourceItem/SourceItem.component';
 const SourcesComponent = () => {
     const { sourcesStore } = useMobx();
     const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
-
     const streetcodeId = useRouteId();
+
     useAsync(
         () => fetchSrcCategoriesByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
+
     return (
-        <div
-            className="sourcesWrapper"
-        >
+        <div className="sourcesWrapper">
             <div className="sourcesContainer">
                 <BlockHeading headingText="Для фанатів" />
                 <div className="sourceContentContainer">

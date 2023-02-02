@@ -18,7 +18,7 @@ const SearchTerms = ({ mainText }: Props) => {
     const searchTerms: string[] = [];
     const descriptiveSearchTerms = new Map<string, string | undefined>();
 
-    getTermArray().forEach((term) => {
+    getTermArray.forEach((term) => {
         descriptiveSearchTerms.set(term.title, term.description);
         searchTerms.push(term.title);
     });

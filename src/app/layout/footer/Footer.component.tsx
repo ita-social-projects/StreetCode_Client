@@ -6,11 +6,7 @@ import StreetcodeFooter from '@images/footer/streetcode-footer.png';
 import TikTok from '@images/footer/TikTok.png';
 import Twitter from '@images/footer/Twitter.png';
 
-interface Props {
-
-}
-
-const Footer = (props: Props) => (
+const Footer = () => (
     <>
         <div className="footerContainer">
             <div className="footerLogoContainer">

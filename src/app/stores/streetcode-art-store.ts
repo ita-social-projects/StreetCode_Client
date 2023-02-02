@@ -18,7 +18,7 @@ export default class StreetcodeArtStore {
         streetcodeArt.forEach(this.setItem);
     }
 
-    public get getStreetcodeArtArray() {
+    get getStreetcodeArtArray() {
         return Array.from(this.streetcodeArtMap.values());
     }
 
@@ -26,14 +26,6 @@ export default class StreetcodeArtStore {
         try {
             this.setInternalStreetcodeArtMap = await StreetcodeArtApi
                 .getStreetcodeArtsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchArts = async () => {
-        try {
-            this.setInternalStreetcodeArtMap = await StreetcodeArtApi.getAll();
         } catch (error: unknown) {
             console.log(error);
         }

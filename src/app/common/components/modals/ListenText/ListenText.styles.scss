@@ -2,17 +2,20 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .modal {
-    @include mut.sized(1200px, 46px); 
+    @include mut.sized(1200px, 46px);
     @include mut.flex-centered();
-    position: fixed;
+
+    @include mut.positioned-as(fixed, $bottom: 4%);
+    @include mut.full-rounded(11px, $overflow: visible);
+
     background-color: c.$pure-white-color;
     border: 2px solid #DB3424;
-    border-radius: 11px;
-    bottom: 4%;
+
     z-index: 1000;
-    filter: drop-shadow(0 2px 15px rgba(163, 163, 163, 0.25));
+    @include vnd.vendored(filter, 'drop-shadow(0 2px 15px rgba(163, 163, 163, 0.25))');
 }
 
 .fadeInAnimation {
@@ -23,23 +26,16 @@
 }
 
 @include mut.fadeKeyframes("fadeIn", "fadeIn") {
-    from {
-        opacity: 0%;
-    }
-    to {
-        opacity: 100%;
-    }
+    from { opacity: 0 }
+    to { opacity: 100% }
 }
 
 @include mut.fadeKeyframes("fadeOut", "fadeOut") {
-    from {
-        opacity: 100%;
-    }
-    to {
-        opacity: 0%;
-    }
+    from { opacity: 100% }
+    to { opacity: 0 }
 }
+
 .closeModal {
-    @include mut.positioned-as($position:absolute, $top:-20px, $right:-24px);
+    @include mut.positioned-as($position: absolute, $top: -20px, $right: -24px);
     cursor: pointer;
 }

@@ -48,10 +48,11 @@
     }
   }
 
-  &.dim {
+  /*&.dim {
     background-color: rgba(0, 0, 0, .01);
-    // z-index: -10000;
+    z-index: -10000;
   }
+   */
 
   @media screen and (max-width: 1850px) {
     .ant-input-affix-wrapper {

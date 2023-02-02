@@ -17,27 +17,9 @@ export default class PartnersStore {
         this.PartnerMap.set(partner.id, partner);
     };
 
-    public get getPartnerArray() {
+    get getPartnerArray() {
         return Array.from(this.PartnerMap.values());
     }
-
-    public fetchPartner = async (id: number) => {
-        try {
-            const partner = await partnersApi.getById(id);
-            this.setItem(partner);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchPartners = async () => {
-        try {
-            const partners = await partnersApi.getAll();
-            this.setInternalMap = partners;
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {

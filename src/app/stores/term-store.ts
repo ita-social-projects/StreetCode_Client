@@ -17,16 +17,9 @@ export default class TermStore {
         this.TermMap.set(term.id, term);
     };
 
-    public getTermArray = () => Array.from(this.TermMap.values());
-
-    public fetchTerm = async (id: number) => {
-        try {
-            const term = await termsApi.getById(id);
-            this.setItem(term);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
+    get getTermArray() {
+        return Array.from(this.TermMap.values());
+    }
 
     public fetchTerms = async () => {
         try {

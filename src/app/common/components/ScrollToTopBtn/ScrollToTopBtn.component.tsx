@@ -2,6 +2,7 @@ import './ScrollToTopBtn.styles.scss';
 
 import { CSSProperties, useEffect, useState } from 'react';
 import ScrollBtn from '@assets/images/utils/ScrollToTopBtn.svg';
+import useEventListener from '@hooks/external/useEventListener.hook';
 
 interface Props {
     scrollDelay?: number;
@@ -19,14 +20,10 @@ const goToTop = () => {
 const ScrollToTopBtn = ({ scrollDelay = 300, visibleAfterPx = 1400, btnStyle }: Props) => {
     const [showTopBtn, setShowTopBtn] = useState(false);
 
-    useEffect(() => {
-        const onScroll = () => {
-            setShowTopBtn(window.scrollY > visibleAfterPx);
-        };
-        window.addEventListener('scroll', onScroll);
-
-        return () => window.removeEventListener('scroll', onScroll);
-    }, [visibleAfterPx]);
+    useEventListener(
+        'scroll',
+        () => setShowTopBtn(window.scrollY > visibleAfterPx),
+    );
 
     return (
         <>

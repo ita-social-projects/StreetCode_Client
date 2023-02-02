@@ -7,8 +7,6 @@ const ToponymsApi = {
 
     getById: (id: number) => Agent.get<Toponym>(`${API_ROUTES.TOPONYMS.GET}/${id}`),
 
-    getByName: (name: string) => Agent.get<Toponym>(`${API_ROUTES.TOPONYMS.GET_BY_NAME}/${name}`),
-
     getByStreetcodeId: (streetcodeId: number) => Agent.get<Toponym[]>(
         `${API_ROUTES.TOPONYMS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
     ),

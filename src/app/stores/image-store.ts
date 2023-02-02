@@ -17,23 +17,12 @@ export default class ImageStore {
         this.ImageMap.set(image.id, image);
     };
 
-    public getImageArray = () => Array.from(this.ImageMap.values());
-
     public getImage = (id: number) => this.ImageMap.get(id);
 
     public fetchImage = async (id: number) => {
         try {
             const image = await imagesApi.getById(id);
             this.setItem(image);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchImages = async () => {
-        try {
-            const images = await imagesApi.getAll();
-            this.setInternalMap(images);
         } catch (error: unknown) {
             console.log(error);
         }

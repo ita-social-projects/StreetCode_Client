@@ -22,7 +22,7 @@ export default class CheckBoxStore {
     public checkBoxesState: CheckBoxList = {
         streets: DisabledCheckBoxState,
         streetcodes: ActiveCheckBoxState,
-        routes: DisabledCheckBoxState
+        routes: DisabledCheckBoxState,
     };
 
     public constructor() {
@@ -31,7 +31,7 @@ export default class CheckBoxStore {
 
     public setCheckBox = (checkBoxName: keyof CheckBoxList, activated?: boolean) => {
         this.checkBoxesState[checkBoxName] = {
-            isActive: activated ?? !this.checkBoxesState[checkBoxName].isActive
+            isActive: activated ?? !this.checkBoxesState[checkBoxName].isActive,
         };
     };
 }
