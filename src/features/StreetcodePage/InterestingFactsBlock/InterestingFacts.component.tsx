@@ -6,6 +6,7 @@ import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
+import {useEffect} from "react";
 
 const InterestingFactsComponent = () => {
     const streetcodeId = useRouteId();
@@ -15,7 +16,7 @@ const InterestingFactsComponent = () => {
         () => fetchFactsByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
-
+    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
     const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
     getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
     return (
@@ -40,11 +41,11 @@ const InterestingFactsComponent = () => {
                                 centerMode
                                 centerPadding="-12px"
                             >
-                                {getFactArray.map((fact) => (
+                                {sliderArray.map((fact) => (
                                     <InterestingFactItem
                                         key={fact.id}
                                         fact={fact}
-                                        numberOfSlides={getFactArray.length}
+                                        numberOfSlides={sliderArray.length}
                                     />
                                 ))}
                             </BlockSlider>
