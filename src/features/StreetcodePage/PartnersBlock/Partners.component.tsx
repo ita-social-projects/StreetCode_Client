@@ -31,6 +31,7 @@ const PartnersComponent = () => {
             <div className="partnerContainer">
                 <SlickSlider
                     className="heightContainer"
+                    slidesToShow={getPartnerArray.length >= 3 ? 3 : getPartnerArray.length}
                     autoplay
                     autoplaySpeed={3000}
                     arrows={false}
