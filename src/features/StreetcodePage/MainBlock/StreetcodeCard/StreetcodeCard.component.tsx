@@ -43,6 +43,7 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
+/* delete this when started using db images */
 const cSlides = [
     <img
         src={Grushevskiy}
@@ -76,6 +77,7 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                             slidesToShow={1}
                             swipeOnClick={false}
                         >
+                            {/* uncomment this to get images brom db, but make sure there are correct urls */}
                             {/* {images?.map(({ url: { href }, alt }) => (
                                 <img
                                     src={href}
