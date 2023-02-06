@@ -7,6 +7,9 @@ const ImagesApi = {
 
     getById: (id: number) => Agent.get<Image>(`${API_ROUTES.IMAGES.GET}/${id}`),
 
+    getByStreetcodeId: (streetcodeId: number) => Agent
+        .get<Image[]>(`${API_ROUTES.IMAGES.GET_BY_STREETCODE_ID}/${streetcodeId}`),
+
     create: (image: Image) => Agent.post<Image>(`${API_ROUTES.IMAGES.CREATE}`, image),
 
     update: (image: Image) => Agent.post<Image>(`${API_ROUTES.IMAGES.UPDATE}`, image),

@@ -94,6 +94,7 @@ export const API_ROUTES = {
     IMAGES: {
         GET_ALL: 'images/getAll',
         GET: 'image/getById',
+        GET_BY_STREETCODE_ID: 'image/getByStreetcodeId',
         CREATE: 'images/create',
         UPDATE: 'images/update',
         DELETE: 'images/delete',

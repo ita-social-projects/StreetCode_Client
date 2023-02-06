@@ -1,6 +1,7 @@
 import './StreetcodeCard.styles.scss';
 
-import Hrushevskyi from '@images/streetcode-card/Hrushevskyi.png';
+import Grushevskiy from '@images/streetcode-card/Grushevskiy.gif';
+import Hrushevskiy from '@images/streetcode-card/Hrushevskyi.png';
 
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
@@ -12,7 +13,9 @@ import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
 
+import ImagesApi from '@/app/api/media/images.api';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import Image from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -40,12 +43,26 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-const slide = <img src={Hrushevskyi} className="streetcodeImg" alt="" />;
+const cSlides = [
+    <img
+        src={Grushevskiy}
+        className="streetcodeImg"
+        alt="Hrushevskiy"
+    />,
+    <img
+        src={Hrushevskiy}
+        className="streetcodeImg"
+        alt="Hrushevskiy"
+    />,
+];
 
 const StreetcodeCard = ({ streetcode }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
+
+    const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
+    const images = value as Image[];
 
     useAsync(() => fetchAudioByStreetcodeId(id), [id]);
 
@@ -59,7 +76,14 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                             slidesToShow={1}
                             swipeOnClick={false}
                         >
-                            {Array(2).fill(slide)}
+                            {/* {images?.map(({ url: { href }, alt }) => (
+                                <img
+                                    src={href}
+                                    className="streetcodeImg"
+                                    alt={alt}
+                                />
+                            ))} */}
+                            {cSlides}
                         </BlockSlider>
                     </div>
                 </div>

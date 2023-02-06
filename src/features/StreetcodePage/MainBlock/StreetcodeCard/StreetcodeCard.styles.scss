@@ -116,6 +116,11 @@
   }
 }
 
+.streetcodeImg {
+  margin-left: f.pxToRem(25px);
+  @include mut.sized(415px, 542px);
+}
+
 .playCircle {
   font-size: f.pxToRem(37px);
   margin-right: f.pxToRem(10px);

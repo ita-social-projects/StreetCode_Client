@@ -28,6 +28,15 @@ export default class ImageStore {
         }
     };
 
+    public fetchImageByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            const image = await imagesApi.getByStreetcodeId(streetcodeId);
+            this.setItem(image);
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
     public createImage = async (image: Image) => {
         try {
             await imagesApi.create(image);

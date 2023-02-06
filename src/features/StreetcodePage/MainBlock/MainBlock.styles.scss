@@ -20,10 +20,6 @@ $bgImg: '@assets/images/streetcode-card/background.png';
   position: relative;
 }
 
-.streetcodeImg {
-  padding: f.pxToRem(25px);
-}
-
 .mainContent {
   @include mut.sized(1300px, 800px);
   @include mut.flex-centered();
