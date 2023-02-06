@@ -34,7 +34,7 @@
     }
 
     .yarl__slide_title {
-        @include mut.rem-margined($top: 15px, $left: 35px);
+        @include mut.rem-margined($top: 8px, $left: 20px);
         @include mut.with-font($font-weight: 500);
         color: #4E4E4E !important;
     }
@@ -49,7 +49,7 @@
 
     .yarl__slide_description {
         @include mut.sized($height: 129px);
-        @include mut.rem-margined($top: 25px);
+        @include mut.rem-margined($top: 25px, $left: 50px);
 
         @include mut.with-font();
         -webkit-line-clamp: inherit !important;
@@ -61,7 +61,7 @@
 
     .yarl__icon {
         @include mut.sized(30px, 30px);
-        @include mut.rem-margined($top: 10px, $right: 25px);
+        @include mut.rem-margined($top: 8px, $right: 25px);
         @include mut.colored(#4E4E4E !important, c.$transparent-color);
 
         &:hover {
