@@ -65,6 +65,7 @@ const StreetcodeCard = ({ streetcode }: Props) => {
     const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
     const images = value as Image[];
 
+
     useAsync(() => fetchAudioByStreetcodeId(id), [id]);
 
     return (
@@ -75,7 +76,9 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                         <BlockSlider
                             arrows={false}
                             slidesToShow={1}
-                            swipeOnClick={false}
+                            swipeOnClick
+                            infinite
+                            draggable={false}
                         >
                             {/* uncomment this to get images brom db, but make sure there are correct urls */}
                             {/* {images?.map(({ url: { href }, alt }) => (
@@ -130,7 +133,6 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                                         disabled
                                         type="primary"
                                         className="audioBtn"
-                                        onClick={() => setModal('audio')}
                                     >
                                         <span>Аудіо на підході</span>
                                     </Button>
