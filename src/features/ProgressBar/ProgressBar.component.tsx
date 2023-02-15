@@ -84,7 +84,9 @@ const ProgressBar: FC<Props> = ({
             setIsOnTimeout(true);
         },
         onMouseLeave: () => {
-            timeoutId.current = setTimeout(() => setIsOnTimeout(false), hidingDelay);
+            timeoutId.current = setTimeout(() => {setIsOnTimeout(false)
+            toggle()
+            }, hidingDelay);
         },
     }), [hidingDelay]);
 
@@ -102,9 +104,10 @@ const ProgressBar: FC<Props> = ({
     };
 
     const onProgressBarCallerClick = () => {
-        toggle();
-        setIsOnTimeout(true);
-        isScrollInFirstTwoSections.current = false;
+            toggle();
+            setIsOnTimeout(true);
+            isScrollInFirstTwoSections.current = false;
+            console.log("Appeared!");
     };
 
     const isPBVisible = (isScrollInFirstTwoSections.current || isVisible) && isOnTimeout;
@@ -148,7 +151,7 @@ const ProgressBar: FC<Props> = ({
                         />
                     </div>
                 </div>
-                <ArrowUp style={isPBVisible ? { rotate: 'x 180deg' } : undefined} />
+                <ArrowUp style={isPBVisible ? { rotate: 'x 180deg' } : undefined}/>
             </div>
         </>
     );
