@@ -44,6 +44,7 @@ const ProgressBar: FC<Props> = ({
     const wasScrolled = useRef(false);
     const scrollPercentage = useRef(0);
     const isScrollInFirstTwoSections = useRef(true);
+    const [isProgressBarInUse, setProgressBarUse] = useState(false);
 
     const [blocks, setBlocks] = useState<NamedBlock[]>([]);
     const [scrollPosition, setScrollPosition] = useState(0);
@@ -60,14 +61,16 @@ const ProgressBar: FC<Props> = ({
             const curScrollY = Math.abs(y);
 
             setScrollPosition(curScrollY);
+            
             wasScrolled.current = curScrollY > visibleBefore;
+            console.log(curScrollY);
         },
         waitMsOnRender,
         [setScrollPosition],
     );
 
     useEffect(() => {
-        if (wasScrolled.current) {
+        if (wasScrolled.current && !isProgressBarInUse) {
             setInvisible();
             isScrollInFirstTwoSections.current = false;
         }
@@ -82,8 +85,10 @@ const ProgressBar: FC<Props> = ({
         onMouseOver: () => {
             clearTimeout(timeoutId.current);
             setIsOnTimeout(true);
+            setProgressBarUse(true);
         },
         onMouseLeave: () => {
+            setProgressBarUse(false);
             timeoutId.current = setTimeout(() => {setIsOnTimeout(false)
             toggle()
             }, hidingDelay);
@@ -107,7 +112,6 @@ const ProgressBar: FC<Props> = ({
             toggle();
             setIsOnTimeout(true);
             isScrollInFirstTwoSections.current = false;
-            console.log("Appeared!");
     };
 
     const isPBVisible = (isScrollInFirstTwoSections.current || isVisible) && isOnTimeout;
