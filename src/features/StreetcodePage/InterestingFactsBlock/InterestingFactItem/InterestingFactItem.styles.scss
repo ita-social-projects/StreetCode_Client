@@ -26,7 +26,7 @@
     @include mut.rounded($bottom-right: 33px, $bottom-left: 33px);
 
     .heading {
-      @include mut.rem-padded(5px, 20px, 5px, 20px);
+      @include mut.rem-padded(7px, 20px, 5px, 20px);
       color: c.$accented-red-color;
 
       @include mut.with-font($font-weight: 500, $font-size: 17px);
