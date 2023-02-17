@@ -63,7 +63,6 @@ const ProgressBar: FC<Props> = ({
             setScrollPosition(curScrollY);
             
             wasScrolled.current = curScrollY > visibleBefore;
-            console.log(curScrollY);
         },
         waitMsOnRender,
         [setScrollPosition],
