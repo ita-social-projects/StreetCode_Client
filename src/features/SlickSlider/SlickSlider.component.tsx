@@ -15,22 +15,23 @@ const GenericSlider: FC<SliderProps> = ({
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lastClick, setLastClick] = useState(Date.now());
 
-    const moveNext = useCallback((idx:number) => {
+    const moveNext = useCallback((slideToIndex:number) => {
         if (Date.now() - lastClick >= sliderProps.speed + 50) {
             sliderRef.current?.slickNext();
-            setCurrentIndex(idx);
+            setCurrentIndex(slideToIndex);
             setLastClick(Date.now());
         }
     });
-    const movePrev = useCallback((idx:number) => {
+    const movePrev = useCallback((slideToIndex:number) => {
         if (Date.now() - lastClick >= sliderProps.speed + 50) {
             sliderRef.current?.slickPrev();
-            setCurrentIndex(idx);
+            setCurrentIndex(slideToIndex);
             setLastClick(Date.now());
         }
     });
-    const isOnLeftEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === children.length - 1 && slideToIndex === 0);
-    const isOnRightEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === 0 && slideToIndex === children.length - 1);
+    const isOnRightEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === children.length - 1 && slideToIndex === 0);
+    const isOnLeftEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === 0 && slideToIndex === children.length - 1);
+    
 
     return (
         <div className="sliderClass">
@@ -40,23 +41,23 @@ const GenericSlider: FC<SliderProps> = ({
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
                 {
-                    children?.map((slide, idx) => {
-                        if (!isOnLeftEdge(currentIndex, idx)
-                            && (idx < currentIndex || isOnRightEdge(currentIndex, idx))) {
+                    children?.map((slide, slideToIndex) => {
+                        if (!isOnRightEdge(currentIndex, slideToIndex)
+                            && (slideToIndex < currentIndex || isOnLeftEdge(currentIndex, slideToIndex))) {
                             return (
                                 <div
-                                    key={idx}
-                                    onClick={() => movePrev(idx)}
+                                    key={slideToIndex}
+                                    onClick={() => movePrev(slideToIndex)}
                                 >
                                     {slide}
                                 </div>
                             );
                         }
-                        if (idx >= currentIndex || isOnLeftEdge(currentIndex, idx)) {
+                        if (slideToIndex >= currentIndex || isOnRightEdge(currentIndex, slideToIndex)) {
                             return (
                                 <div
-                                    key={idx}
-                                    onClick={() => moveNext(idx)}
+                                    key={slideToIndex}
+                                    onClick={() => moveNext(slideToIndex)}
                                 >
                                     {slide}
                                 </div>
