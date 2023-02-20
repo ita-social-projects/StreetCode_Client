@@ -1,6 +1,6 @@
 import './InterestingFacts.styles.scss';
 
-import BlockSlider from '@features/SlickSlider/SlickSlider.component';
+import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
