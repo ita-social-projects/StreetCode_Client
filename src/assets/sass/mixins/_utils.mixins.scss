@@ -170,7 +170,7 @@
   $font-family: ft.$roboto-font,
   $font-weight: normal,
   $font-size: 20px,
-  $font-style: normal
+  $font-style: ft.$roboto-font-style
 ) {
   font-family: $font-family;
   // px equivalent for browsers without rem support
