@@ -20,6 +20,24 @@ const TimelineBlock = () => {
         [streetcodeId],
     );
 
+    function getSlidesToShowNumber(): number {
+        let windowWidth: number = window.outerWidth;
+        console.log(windowWidth);
+
+        if (windowWidth > 1600) {
+            windowWidth = 1600;
+        }
+        if (windowWidth > 1400) {
+            return windowWidth / 658.0;
+        }
+        if (windowWidth > 1200) {
+            return windowWidth / 665.0;
+        }
+        if (windowWidth > 800) {
+            return windowWidth / 630.0;
+        }
+        return 1;
+    }
     return (
         <div className="timelineContainer">
             <BlockHeading headingText="Хронологія" />
@@ -32,7 +50,8 @@ const TimelineBlock = () => {
                     swipeToSlide
                     swipeOnClick
                     centerMode
-                    centerPadding="0"
+                    slidesToShow={getSlidesToShowNumber()}
+                    infinite
                 >
                     {getTimelineItemArray.map((timelineItem) => (
                         <TimelineSlideCard
