@@ -1,6 +1,6 @@
 import './SlickSlider.styles.scss';
 
-import { FC, memo, useCallback, useRef, useState } from 'react';
+import { FC, memo, useCallback, useRef } from 'react';
 import Slider from 'react-slick';
 
 import SliderProps, { defaultSliderProps } from './index';
@@ -8,30 +8,19 @@ import SliderProps, { defaultSliderProps } from './index';
 const GenericSlider: FC<SliderProps> = ({
     children,
     onClick,
-    swipeOnClick = false,
+    swipeOnClick,
     ...sliderProps
 }) => {
     const sliderRef = useRef<Slider>(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [lastClick, setLastClick] = useState(Date.now());
 
-    const moveNext = useCallback((slideToIndex:number) => {
-        if (Date.now() - lastClick >= sliderProps.speed + 50) {
-            sliderRef.current?.slickNext();
-            setCurrentIndex(slideToIndex);
-            setLastClick(Date.now());
+    const handleClick = useCallback((index: number) => {
+        if (sliderRef && sliderRef.current && swipeOnClick) {
+            sliderRef.current.slickGoTo(index + 1);
         }
-    });
-    const movePrev = useCallback((slideToIndex:number) => {
-        if (Date.now() - lastClick >= sliderProps.speed + 50) {
-            sliderRef.current?.slickPrev();
-            setCurrentIndex(slideToIndex);
-            setLastClick(Date.now());
+        if (onClick) {
+            onClick(index);
         }
-    });
-    const isOnRightEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === children.length - 1 && slideToIndex === 0);
-    const isOnLeftEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === 0 && slideToIndex === children.length - 1);
-    
+    }, [onClick, swipeOnClick]);
 
     return (
         <div className="sliderClass">
@@ -40,32 +29,11 @@ const GenericSlider: FC<SliderProps> = ({
                 {...sliderProps}
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
-                {
-                    children?.map((slide, slideToIndex) => {
-                        if (!isOnRightEdge(currentIndex, slideToIndex)
-                            && (slideToIndex < currentIndex || isOnLeftEdge(currentIndex, slideToIndex))) {
-                            return (
-                                <div
-                                    key={slideToIndex}
-                                    onClick={() => movePrev(slideToIndex)}
-                                >
-                                    {slide}
-                                </div>
-                            );
-                        }
-                        if (slideToIndex >= currentIndex || isOnRightEdge(currentIndex, slideToIndex)) {
-                            return (
-                                <div
-                                    key={slideToIndex}
-                                    onClick={() => moveNext(slideToIndex)}
-                                >
-                                    {slide}
-                                </div>
-                            );
-                        }
-                        return (<div />);
-                    })
-                }
+                {children?.map((slide, idx) => (
+                    <div key={idx} onClick={() => handleClick(idx)}>
+                        {slide}
+                    </div>
+                ))}
             </Slider>
         </div>
     );
