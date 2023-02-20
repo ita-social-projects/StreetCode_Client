@@ -25,15 +25,15 @@
 
 .customSlider {
   position: absolute;
-  top: f.pxToRem(18px);
-  left: 90%;
-  height: f.pxToRem(368px);
+  left: 12%;
+  bottom: 62%;
+  height: f.pxToRem(380px);
   width: 25%;
 }
 
 .customSlider-track {
   top: f.pxToRem(8px);
-  width: f.pxToRem(1.8px);
+  width: f.pxToRem(1.5px);
   background: c.$normal-gray-color;
   position: relative;
 }
@@ -56,34 +56,9 @@
     color: c.$dark-red-color;
   }
   @include mut.flexed(column, $align-items: flex-start, $gap: 39px);
-
-  margin-left: f.pxToRem(44px);
-  
-  > * {
+  margin-left: f.pxToRem(50px);
+  * {
     @include mut.with-font(ft.$closer-text-font);
-    line-height: f.pxToEm(26.4px);
-    @include vnd.vendored(transition, 'scale .3s ease');
-
-    &:hover {
-      transform: scale(1.1);
-      cursor: pointer;
-
-      &:after {
-        transform-origin: bottom left;
-        transform: scaleX(1);
-      }
-    }
-
-    &:after {
-      content: '';
-      background-color: c.$dark-red-color;
-
-      @include mut.sized(100%, 2px);
-      @include mut.positioned-as(absolute, $bottom: 0, $left: 0);
-
-      transform: scaleX(0);
-      transform-origin: bottom right;
-      @include vnd.vendored(transition, 'transform .2s ease');
-    }
+    line-height: f.pxToEm(26px);
   }
 }
