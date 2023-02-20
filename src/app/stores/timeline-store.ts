@@ -7,6 +7,8 @@ export default class TimelineStore {
 
     public activeYear: number | null = null;
 
+    public changedByYear = false;
+
     public constructor() {
         makeAutoObservable(this);
     }
@@ -24,6 +26,10 @@ export default class TimelineStore {
 
     public setActiveYear = (year: number | null) => {
         this.activeYear = year;
+    };
+
+    public setChangedByYear = (changed:boolean) => {
+        this.changedByYear = changed;
     };
 
     get getTimelineItemArray() {

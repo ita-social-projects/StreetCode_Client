@@ -8,14 +8,14 @@ import SliderProps, { defaultSliderProps } from './index';
 const GenericSlider: FC<SliderProps> = ({
     children,
     onClick,
-    swipeOnClick = false,
+    swipeOnClick,
     ...sliderProps
 }) => {
     const sliderRef = useRef<Slider>(null);
 
     const handleClick = useCallback((index: number) => {
         if (sliderRef && sliderRef.current && swipeOnClick) {
-            sliderRef.current.slickGoTo(index);
+            sliderRef.current.slickGoTo(index + 1);
         }
         if (onClick) {
             onClick(index);
