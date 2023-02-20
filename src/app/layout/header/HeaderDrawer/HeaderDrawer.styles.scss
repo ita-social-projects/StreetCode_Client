@@ -65,7 +65,7 @@
     @include vnd.vendored(transition, 'scale .3s ease');
 
     &:hover {
-      scale: 1.1;
+      transform: scale(1.1);
       cursor: pointer;
 
       &:after {
