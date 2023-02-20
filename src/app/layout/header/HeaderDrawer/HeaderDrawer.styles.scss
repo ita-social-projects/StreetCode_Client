@@ -21,12 +21,12 @@
   grid-template-columns: 2% 98%;
   position: absolute;
   left: 20%;
+  height: 100vh;
 }
 
 .customSlider {
   position: absolute;
-  left: 12%;
-  bottom: 62%;
+  top: f.pxToRem(13px);
   height: f.pxToRem(380px);
   width: 25%;
 }
@@ -50,6 +50,9 @@
   transition-duration: 0.5s;
 }
 
+.drawer{
+  height: fit-content;
+}
 
 .headerDrawerContainer {
   #active{
