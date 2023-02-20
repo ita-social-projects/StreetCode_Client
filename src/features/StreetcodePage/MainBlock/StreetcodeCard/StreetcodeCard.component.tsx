@@ -112,7 +112,7 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                                 streetcode?.eventEndOrPersonDeathDate,
                             )}
                         </div>
-                        <TagList tagsTitles={streetcode?.tags.map((tag: Tag) => tag.title)} />
+                        <TagList tags={streetcode?.tags.map((tag: Tag) => tag.title)} />
                         <p className="teaserBlock">
                             {streetcode?.teaser}
                         </p>
