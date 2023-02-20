@@ -38,6 +38,7 @@
 
     background-color: c.$pure-white-color;
     box-shadow: 0 2px 15px 0 #B0B0B040;
+    //border: solid 2em rgba(#ffff, .1);
 
     @include vnd.vendored(transform, 'translateY(300px)');
 
