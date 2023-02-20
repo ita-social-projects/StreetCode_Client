@@ -32,7 +32,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
 }
 
 .relatedFiguresImgContainer {
-  position: sticky;
+  //position: sticky;
   @include mut.sized(100%, 97px);
   @include mut.flex-centered();
 

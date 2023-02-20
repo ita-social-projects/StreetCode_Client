@@ -42,7 +42,7 @@ const RelatedFiguresComponent = () => {
                     <div style={{ height: '100%' }}>
                         <BlockSlider
                             className="heightContainer"
-                            infinite={false}
+                            infinite={true}
                             slidesToShow={4}
                             swipe={false}
                             dots={false}
