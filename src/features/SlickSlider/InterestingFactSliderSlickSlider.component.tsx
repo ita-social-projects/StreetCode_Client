@@ -16,14 +16,14 @@ const GenericSlider: FC<SliderProps> = ({
     const [lastClick, setLastClick] = useState(Date.now());
 
     const moveNext = useCallback((slideToIndex:number) => {
-        if (Date.now() - lastClick >= sliderProps.speed + 50) {
+        if (Date.now() - lastClick >= sliderProps.speed + 100) {
             sliderRef.current?.slickNext();
             setCurrentIndex(slideToIndex);
             setLastClick(Date.now());
         }
     });
     const movePrev = useCallback((slideToIndex:number) => {
-        if (Date.now() - lastClick >= sliderProps.speed + 50) {
+        if (Date.now() - lastClick >= sliderProps.speed + 100) {
             sliderRef.current?.slickPrev();
             setCurrentIndex(slideToIndex);
             setLastClick(Date.now());
