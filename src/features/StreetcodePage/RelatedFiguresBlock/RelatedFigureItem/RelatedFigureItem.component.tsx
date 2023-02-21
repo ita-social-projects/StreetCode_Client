@@ -21,6 +21,7 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
         () => fetchImage(imageId),
         [imageId],
     );
+    
     const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
 
     return (
@@ -41,7 +42,6 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                 <div className={`relatedTagList`}>
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag) => (
-                        // eslint-disable-next-line react/no-array-index-key
                             <div key={tag.id} className="tag">
                                 <p>{tag.title}</p>
                             </div>
