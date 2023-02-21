@@ -4,8 +4,10 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .StreetcodeTableWrapper {
-    @include mut.sized(70%,872px);
+    @include mut.sized(80%);
     margin-top: f.pxToRem(82px);
+    margin-right: f.pxToRem(50px);
+    float: right;
 }
 
 .ant-table table { 

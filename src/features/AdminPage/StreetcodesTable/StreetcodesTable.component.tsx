@@ -1,9 +1,9 @@
+import './StreetcodesTable.styles.scss';
 import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
 import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
 import Streetcode from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
-import './StreetcodesTable.styles.scss';
 
 // interface Props {
 //     streetcodes: Streetcode[]
@@ -23,7 +23,7 @@ const StreetcodesTable = () => {
         {
             title: 'Номер стріткоду',
             dataIndex: 'index',
-            key: 'index'
+            key: 'index',
         },
         {
             title: 'Статус',

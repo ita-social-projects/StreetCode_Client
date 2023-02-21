@@ -1,0 +1,17 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.PageBarContainer {
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
+    @include mut.sized(15%);
+    margin-top: f.pxToRem(82px);
+    float: left;
+}
+
+.BarContainer {
+    @include mut.flexed(column, $align-items: flex-start, $gap: 10px);
+    margin-top: 20px;  
+    margin-left: 30%; 
+}
