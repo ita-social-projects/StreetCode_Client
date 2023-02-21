@@ -5,19 +5,9 @@
 .burgerMenuContainer {
   @include mut.sized(36px, 28px);
   @include mut.flexed($direction: column, $justify-content: center, $gap: 6px);
-  margin-right: f.pxToRem(24px);
+  margin-right: f.pxToRem(20px);
 
-  .burgerMenuItem {
-    @include mut.sized(36px, 4px);
-    @include mut.full-rounded(15px);
-    background-color: c.$normal-gray-color;
-  }
-іі
   &:hover {
     cursor: pointer;
-
-    > * {
-      background-color: c.$dark-gray-color;
-    }
   }
 }

@@ -28,8 +28,7 @@
     @include mut.flexed($direction: column, $align-items: center);
 
     .moreInfo {
-        @include mut.sized($width: 1200px);
-        padding-top: f.pxToRem(43px);
+        //@include mut.sized($width: 1200px);
 
         p {
             @include mut.with-font($font-weight: 500, $font-size: 20px);

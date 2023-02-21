@@ -21,7 +21,7 @@
 }
 
 .figureSlideText {
-    @include mut.sized($width: 272px, $height: 97px);
+    @include mut.sized($width: 278px, $height: 97px);
     @include mut.flexed($align-items: flex-start, $wrap: wrap);
 
     align-content: flex-start;
@@ -74,10 +74,10 @@
 }
 
 .relatedFigureSlide.hoverable.single_row:hover {
-    @include mut.sized($width: 278px, $height: 425px); //422-139 = 283px
+    @include mut.sized($width: 278px, $height: 425px); 
 
     .figureSlideText{
-        @include mut.sized($width: 272px, $height: 142px);//should not be fixed value
+        @include mut.sized($width: 278px, $height: 142px);
 
         .relatedTagList {
             visibility: visible;
@@ -85,11 +85,11 @@
     }
 }
 
-.relatedFigureSlide.hoverable:hover { //problem is here
-    @include mut.sized($width: 278px, $height: 459px); //422-139 = 283px
-
+.relatedFigureSlide.hoverable:hover { 
+    @include mut.sized($width: 278px, $height: 459px); 
+ 
     .figureSlideText{
-        @include mut.sized($width: 272px, $height: 176px); //should not be fixed value
+        @include mut.sized($width: 278px, $height: 176px); //!
 
         .relatedTagList {
             visibility: visible;
