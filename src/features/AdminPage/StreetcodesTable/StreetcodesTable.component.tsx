@@ -5,6 +5,9 @@ import Streetcode from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
 import { Button } from 'antd';
+import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
+import { Navigate, useNavigate } from "react-router-dom";
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
 // interface Props {
 //     streetcodes: Streetcode[]
@@ -15,6 +18,7 @@ const StreetcodesTable = () => {
     const { value } = useAsync(() => StreetcodesApi.getAll(), []);
     const streetcodes = value as Streetcode[];
 
+    const navigate = useNavigate();
     const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
         day: 'numeric',
         month: 'long',
@@ -27,7 +31,7 @@ const StreetcodesTable = () => {
         {
             title: 'Назва стріткоду',
             dataIndex: 'name',
-            key: 'name',
+            key: 'name'
         },
         {
             title: 'Номер стріткоду',
@@ -48,6 +52,10 @@ const StreetcodesTable = () => {
             title: 'Дії',
             dataIndex: 'action',
             key: 'action',
+            render: () => <>
+                <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
+                <DeleteOutlined className='actionButton'onClick={(event) => event.stopPropagation()}/>
+            </>
         }
     ]
 
@@ -69,35 +77,31 @@ const StreetcodesTable = () => {
 
             let mapedStreetCode = {
                 key: streetcode.id,
-                index: `000${streetcode.index}`,
+                index: `${streetcode.index}`,
                 stage: streetcode.stage == 0 ? "Чернетка" : "Опублікований",
                 date: formatDate(new Date(streetcode.updatedAt)),
                 name: "Григорович Тарас Шевченко"
             }
-            
-            // let mapedStreetCode2 = {
-            //     key: streetcode.id,
-            //     index: `000${streetcode.index}`,
-            //     stage: streetcode.stage == 0 ? "Чернетка" : "Опублікований",
-            //     name: "Григорович Тарас Шевченко"
-            // }
 
             mapedStreetCodes.push(mapedStreetCode);
-            // mapedStreetCodes.push(mapedStreetCode2);
-            // console.log(formatDate(new Date(streetcode.updatedAt)))
         });
         
         setMapedStreetCodes(mapedStreetCodes)
-    }, streetcodes);
+    }, streetcodes); 
 
     return(
     <>
         <div className="StreetcodeTableWrapper">
             <Button className='addButton'>Новий стріткод</Button>
-            <Table columns={columnsNames}
-             dataSource={mapedStreetCodes}
-             pagination={{className: "pagination", pageSize: 8}}
-            />
+                <Table columns={columnsNames}
+                dataSource={mapedStreetCodes}
+                pagination={{className: "paginationButton", pageSize: 8}}
+                onRow={(record) => {
+                    return {
+                      onClick: () => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.index}`,'_blank')
+                    }
+                  }}
+                />
         </div>
     </>);
 }

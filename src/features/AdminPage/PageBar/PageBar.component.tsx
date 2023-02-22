@@ -6,7 +6,7 @@ const PageBar = () => {
             <div className='BarContainer'>
                 <span>Стрідкоди</span>
                 <span>Словник</span>
-                <span>Користувач</span>
+                <span>Користувачі</span>
             </div>
         </div>
     );

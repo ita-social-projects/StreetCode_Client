@@ -28,10 +28,28 @@
         background-color: c.$accented-red-color;
         border-color: c.$accented-red-color;
         color: c.$pure-white-color;
-    
+
         &:hover {
             background-color: c.$dark-red-color;
         }
+    }
+}
+
+.actionButton {
+    margin-right: 10px;
+
+    &:hover {
+        color: c.$dark-red-color;
+        cursor: pointer;
+        scale: 1.2;
+    }
+}
+
+.paginationButton > li {
+    border-color: c.$accented-red-color;
+
+    a {
+        color: c.$accented-red-color;
     }
 }
 
