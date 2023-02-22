@@ -13,7 +13,3 @@
 .ant-table table { 
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
 }
-
-.ant-select-selection {
-    background-color: c.$dark-red-color;
-}

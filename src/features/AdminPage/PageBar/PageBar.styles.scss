@@ -8,10 +8,12 @@
     @include mut.sized(15%);
     margin-top: f.pxToRem(82px);
     float: left;
+    min-width: 100px;
 }
 
 .BarContainer {
     @include mut.flexed(column, $align-items: flex-start, $gap: 10px);
     margin-top: 20px;  
-    margin-left: 30%; 
+    margin-left: 30%;
+    min-width: 100px;
 }

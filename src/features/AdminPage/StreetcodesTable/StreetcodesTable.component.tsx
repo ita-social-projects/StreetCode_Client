@@ -1,7 +1,7 @@
 import './StreetcodesTable.styles.scss';
 import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
 import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
-import Streetcode from "@/models/streetcode/streetcode-types.model";
+import Streetcode, { Stage } from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
 
@@ -27,8 +27,8 @@ const StreetcodesTable = () => {
         },
         {
             title: 'Статус',
-            dataIndex: 'status',
-            key: 'status',
+            dataIndex: 'stage',
+            key: 'stage',
         },
         {
             title: 'Дії',
@@ -40,7 +40,7 @@ const StreetcodesTable = () => {
     interface MapedStreetCode {
         key: number,
         index: string,
-        status: string,
+        stage: Stage,
         name: string
     }
 
@@ -55,11 +55,15 @@ const StreetcodesTable = () => {
             let mapedStreetCode = {
                 key: streetcode.id,
                 index: `000${streetcode.index}`,
-                status: "Чернетка",
+                stage: streetcode.stage,
                 name: "Title"
             }
             
             mapedStreetCodes.push(mapedStreetCode);
+
+            if(streetcode.stage == 0) {
+                console.log("Got it!");
+            }
 
             console.log(streetcode)
         });
