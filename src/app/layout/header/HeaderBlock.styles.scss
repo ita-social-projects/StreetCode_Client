@@ -5,7 +5,7 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 $navbar-innerwidth: 500px; 
-$navbar-hidden-innerwidth: 370px;
+$navbar-hidden-innerwidth: 400px;
 
 .navBarContainer {
   @include mut.sized(100%, 82px);
@@ -107,7 +107,7 @@ $navbar-hidden-innerwidth: 370px;
   width: calc(100vw - #{$navbar-hidden-innerwidth});
   height: 39px;
 
-  @include mut.positioned-as(fixed, $left: 17%);
+  @include mut.positioned-as(fixed, $left: 220px);
   @include mut.full-rounded(12px);
 
   @include vnd.vendored(transition, 'transform 0.7s ease');
