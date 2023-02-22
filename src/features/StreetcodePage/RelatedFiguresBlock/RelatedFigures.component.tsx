@@ -37,25 +37,25 @@ const RelatedFiguresComponent = () => {
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
-                <BlockHeading headingText="Зв'язки історії" />
-                <div className="relatedFiguresSliderContainer">
-                    <div style={{ height: '100%' }}>
-                        <BlockSlider
-                            className="heightContainer"
-                            infinite={false}
-                            slidesToShow={4}
-                            swipe={false}
-                            dots={false}
-                            swipeOnClick={false}
-                        >
-                            {sliderItems}
-                        </BlockSlider>
+                <div className="headingWrapper">
+                    <BlockHeading headingText="Зв'язки історії" />
+                    <div className="moreInfo">
+                        <p onClick={() => setModal('relatedFigures', streetcodeId, true)}>
+                            Дивитися всіх
+                        </p>
                     </div>
                 </div>
-                <div className="moreInfo">
-                    <p onClick={() => setModal('relatedFigures', streetcodeId, true)}>
-                        Дивитися всіх
-                    </p>
+                <div className="relatedFiguresSliderContainer">
+                    <BlockSlider
+                        className="heightContainer"
+                        infinite={true}
+                        slidesToShow={4}
+                        swipe={false}
+                        dots={false}
+                        swipeOnClick={false}
+                    >
+                        {sliderItems}
+                    </BlockSlider>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 $navbar-innerwidth: 500px; 
+$navbar-hidden-innerwidth: 400px;
 
 .navBarContainer {
   @include mut.sized(100%, 82px);
@@ -37,7 +38,8 @@ $navbar-innerwidth: 500px;
 
   .ant-input-affix-wrapper {
     position: relative;
-    
+    border: none;
+    height: 39px;
     width: calc(100vw - #{$navbar-innerwidth});
 
     @media screen and (max-width: 1815px) {
@@ -102,11 +104,13 @@ $navbar-innerwidth: 500px;
 }
 
 .hiddenHeaderInput {
-  @include mut.sized(1200px, 39px);
-  @include mut.positioned-as(fixed, $left: 17%);
+  width: calc(100vw - #{$navbar-hidden-innerwidth});
+  height: 39px;
+
+  @include mut.positioned-as(fixed, $left: 220px);
   @include mut.full-rounded(12px);
 
-  @include vnd.vendored(transition, 'transform 1s ease');
+  @include vnd.vendored(transition, 'transform 0.7s ease');
   transform: translateY(f.pxToRem(-200px));
 
   &.active {
