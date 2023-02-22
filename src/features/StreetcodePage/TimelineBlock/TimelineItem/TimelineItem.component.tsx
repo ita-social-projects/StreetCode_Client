@@ -1,8 +1,8 @@
 import './TimelineItem.styles.scss';
 
 import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
 
+// import { uk } from 'date-fns/locale';
 import TimelineItem from '@/models/timeline/chronology.model';
 
 const truncateCharString = (str?: string, symbolCount = 400): string | undefined => str && (
@@ -17,7 +17,7 @@ const TimelineSlideCard = ({ timelineItem: { date, description, historicalContex
     <div className="timelineItem">
         <div className="timelineItemContent">
             <p className="timelineItemMetadata">
-                {format(new Date(date), 'yyyy, d MMMM', { locale: uk })}
+                {format(new Date(date), 'yyyy, d MMMM')}
                 {historicalContexts.map(({ id, title: ctxTitle }) => (
                     <span key={id} className="historicalContext">
                         {`, ${ctxTitle}`}

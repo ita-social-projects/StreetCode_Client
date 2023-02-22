@@ -1,0 +1,56 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/_utils.functions.scss" as f;
+
+$bookImg: "@assets/images/sources/Books_stretched.png";
+$articlesImg: "@assets/images/sources/Articles.png";
+
+.tagsModal {
+  @include mut.sized(1000px, 690px);
+
+  &.ant-modal {
+    .ant-modal-content {
+      height: pxToRem(698px);
+      padding: 0 !important;
+      @include mut.full-rounded(70px, $overflow: visible);
+    }
+  }
+}
+
+.headerTagContainer {
+    @include mut.sized(100%, 97px);
+    position: sticky;
+    @include mut.flex-centered();
+    height: pxToRem(97px);
+}
+
+.figuresByTags{
+    @include mut.sized(100%, 600px);
+}
+
+.relatedFiguresByTagsContentContainer{
+  @include mut.sized($width: 90%, $height: 100%);
+  @include mut.flexed($direction: column, $align-items: center);
+
+  .moreInfo {
+      @include mut.sized($width: 1200px);
+      padding-top: f.pxToRem(43px);
+
+      p {
+          @include mut.with-font($font-weight: 500, $font-size: 20px);
+          line-height: f.pxToEm(25px);
+          text-decoration-line: none;
+          color: c.$dark-red-color;
+
+          cursor: pointer;
+
+          &:hover {
+              text-decoration-line: underline;
+
+              filter: contrast(150%);
+          }
+      }
+  }
+}
