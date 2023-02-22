@@ -14,7 +14,7 @@ interface Props {
 
 const InterestingFactItem = ({
     fact: { factContent, title, id },
-    maxTextLength = 300,
+    maxTextLength = 250,
     numberOfSlides,
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
