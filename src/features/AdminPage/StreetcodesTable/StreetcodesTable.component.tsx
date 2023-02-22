@@ -1,9 +1,10 @@
 import './StreetcodesTable.styles.scss';
 import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
 import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
-import Streetcode, { Stage } from "@/models/streetcode/streetcode-types.model";
+import Streetcode from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
+import { Button } from 'antd';
 
 // interface Props {
 //     streetcodes: Streetcode[]
@@ -13,6 +14,14 @@ const StreetcodesTable = () => {
 
     const { value } = useAsync(() => StreetcodesApi.getAll(), []);
     const streetcodes = value as Streetcode[];
+
+    const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+
+    const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
 
     const columnsNames = [
         {
@@ -31,6 +40,11 @@ const StreetcodesTable = () => {
             key: 'stage',
         },
         {
+            title: 'Останні зміни',
+            dataIndex: 'date',
+            key: 'date',
+        },
+        {
             title: 'Дії',
             dataIndex: 'action',
             key: 'action',
@@ -40,7 +54,8 @@ const StreetcodesTable = () => {
     interface MapedStreetCode {
         key: number,
         index: string,
-        stage: Stage,
+        stage: string,
+        date: string,
         name: string
     }
 
@@ -55,17 +70,21 @@ const StreetcodesTable = () => {
             let mapedStreetCode = {
                 key: streetcode.id,
                 index: `000${streetcode.index}`,
-                stage: streetcode.stage,
-                name: "Title"
+                stage: streetcode.stage == 0 ? "Чернетка" : "Опублікований",
+                date: formatDate(new Date(streetcode.updatedAt)),
+                name: "Григорович Тарас Шевченко"
             }
             
+            // let mapedStreetCode2 = {
+            //     key: streetcode.id,
+            //     index: `000${streetcode.index}`,
+            //     stage: streetcode.stage == 0 ? "Чернетка" : "Опублікований",
+            //     name: "Григорович Тарас Шевченко"
+            // }
+
             mapedStreetCodes.push(mapedStreetCode);
-
-            if(streetcode.stage == 0) {
-                console.log("Got it!");
-            }
-
-            console.log(streetcode)
+            // mapedStreetCodes.push(mapedStreetCode2);
+            // console.log(formatDate(new Date(streetcode.updatedAt)))
         });
         
         setMapedStreetCodes(mapedStreetCodes)
@@ -74,9 +93,11 @@ const StreetcodesTable = () => {
     return(
     <>
         <div className="StreetcodeTableWrapper">
+            <Button className='addButton'>Новий стріткод</Button>
             <Table columns={columnsNames}
              dataSource={mapedStreetCodes}
-             pagination={false}/>
+             pagination={{className: "pagination", pageSize: 8}}
+            />
         </div>
     </>);
 }

@@ -1,7 +1,8 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .adminPageContainer {
-    width: 100%;
+    @include mut.sized(100%);
+    min-height: 400px;
     overflow: hidden;
 }
 

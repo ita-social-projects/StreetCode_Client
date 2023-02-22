@@ -8,8 +8,33 @@
     margin-top: f.pxToRem(82px);
     margin-right: f.pxToRem(50px);
     float: right;
+
+    .ant-btn-primary:disabled {
+        background-color: c.$lighter-gray-color;
+        color: c.$pure-white-color;
+      }
+      .ant-btn-default {
+        border-color: c.$accented-red-color;
+    }
+    
+    .addButton {
+        @include mut.sized(142px, 39px);
+        @include mut.flex-centered();
+        @include mut.full-rounded(12px);
+        @include mut.with-font($font-weight: 500, $font-size: 16px);
+    
+        margin: 10px;
+
+        background-color: c.$accented-red-color;
+        border-color: c.$accented-red-color;
+        color: c.$pure-white-color;
+    
+        &:hover {
+            background-color: c.$dark-red-color;
+        }
+    }
 }
 
 .ant-table table { 
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 18px);
 }

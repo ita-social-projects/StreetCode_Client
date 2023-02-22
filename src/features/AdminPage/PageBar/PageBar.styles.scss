@@ -2,6 +2,7 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .PageBarContainer {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
@@ -16,4 +17,13 @@
     margin-top: 20px;  
     margin-left: 30%;
     min-width: 100px;
+
+    span {
+        &:hover {
+            scale: 1.1;
+            cursor: pointer;
+        }
+
+        @include vnd.vendored(transition, 'scale .3s ease');
+    }
 }
