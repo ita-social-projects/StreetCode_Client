@@ -4,6 +4,7 @@ import InterestingFactsModal from '@components/modals/InterestingFacts/Interesti
 import LightboxModal from '@components/modals/Lightbox/Lightbox.component';
 import RelatedFiguresModal from '@components/modals/RelatedFigures/RelatedFiguresModal.component';
 import SourcesModal from '@components/modals/Sources/SourcesModal.component';
+import TagsModal from '@components/modals/Tags/TagsModal.component';
 
 const ModalWrapper = () => (
     <>
@@ -13,6 +14,7 @@ const ModalWrapper = () => (
         <DonatesModal />
         <HeaderLoginModal />
         <LightboxModal />
+        <TagsModal />
     </>
 );
 
