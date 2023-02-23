@@ -52,7 +52,8 @@
     visibility: hidden;
 
     @include mut.flexed($align-items: center, $gap: 5px, $wrap: wrap);
-    @include mut.rem-padded($top: 7px, $left: 23px, $right: 23px);
+    //@include mut.rem-padded($top: 7px, $left: 23px, $right: 23px);
+    padding: 7px 23px 0px;
 
     .tag {
         @include mut.sized($height: 28px);

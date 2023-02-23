@@ -54,24 +54,24 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include mut.rem-padded(30px, 0, 30px, 3px);
 
    .relatedFigureSlide:hover {
-      @include mut.sized($width: 278px, $height: 380px);
+      //@include mut.sized($width: 278px, $height: 380px);
       overflow: visible !important;
-     
-
 
       .figureSlideText{
           @include mut.sized($width: 272px, $height: 97px);
-          @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
+          //@include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
         }
         .relatedTagList {
           animation: fadeIn 1s;
-          box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);    z-index: 10 !important;
+          box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);    
+          z-index: 10 !important;
           position: absolute;
-          width: 54% !important;
-          left: 145px;
+          //width: max-content !important;
+          width: 130px !important;
+          //display: inline-block;
+          left: 175px;
           top: 58px;
-          justify-content: center;
-          @include mut.rem-padded($left: 2.5px, $top: 5.5px, $right: 2.5px, $bottom: 6.5px);
+          padding: 15px;
         
           background-color: c.$pure-white-color;
           border-radius: 20px;
@@ -83,8 +83,9 @@ $articlesImg: "@assets/images/sources/Articles.png";
               gap: 0 !important;
               border: 2px solid c.$dark-red-color;
               @include mut.full-rounded($rad: 7.86px);
-              @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
-            //  @include mut.rem-margined($left: 1.5px, $top: 1.5px, $right: 1.5px, $bottom: 5.5px);
+              padding: 5.5px 9.5px !important;
+              //@include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
+              @include mut.rem-margined($left: 1.5px, $top: 1.5px, $right: 1.5px, $bottom: 2px);
       
       
               p {
