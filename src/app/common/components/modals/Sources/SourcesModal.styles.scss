@@ -29,6 +29,11 @@ $articlesImg: "@assets/images/sources/Articles.png";
       &:hover {
         background-color: c.$modal-hover-color;
       }
+      .ant-modal-close-x {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 }

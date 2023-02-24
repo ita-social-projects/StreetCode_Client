@@ -12,6 +12,7 @@ import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-co
 import Toponym from '@/models/toponyms/toponym.model';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import CheckBoxComponent from '@/features/StreetcodePage/MapBlock/CheckBox/CheckBox.component';
+import InfoComponent from './Statistics/Info.component';
 
 const MapBlock = () => {
     const id = useRouteId();
@@ -29,9 +30,10 @@ const MapBlock = () => {
 
     return(
         <div className="mapBlockContainer">
+            
             <BlockHeading headingText="Мапа історії" />
             <CheckBoxComponent />
-            <StaticticsComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
+            <InfoComponent/>       
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
         </div>
     );

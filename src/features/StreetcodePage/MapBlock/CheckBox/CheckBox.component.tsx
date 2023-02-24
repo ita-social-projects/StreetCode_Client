@@ -11,10 +11,10 @@ const CheckBoxComponent = () => {
     return (
         <div className="checkBoxContainer">
             <Radio.Group >
-                <Space direction="vertical">
+                <Space direction="horizontal">
                     <Checkbox className={"checkbox-text"} onChange={() => setCheckBox('streets')} checked={streets.isActive}>Вулиці</Checkbox >
                     <Checkbox className={"checkbox-text"} onChange={() => setCheckBox('streetcodes')} checked={streetcodes.isActive}>Стріткоди</Checkbox >
-                    <Checkbox className={"checkbox-text"} onChange={() => setCheckBox('routes')} checked={routes.isActive}>Маршрути</Checkbox >
+                    <Checkbox defaultChecked={false} disabled className={"checkbox-text"} onChange={() => setCheckBox('routes')} checked={routes.isActive}>Маршрути</Checkbox >
                 </Space>
             </Radio.Group>
         </div>
