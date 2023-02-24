@@ -37,7 +37,7 @@ const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
                 {getTagArray?.map((tag) => (
                     <div>
                         <Button
-                            className={tag.id === activeTagId ? 'tagModalItem active' : 'tagModalItem'}
+                            className={`tagModalItem ${tag.id === activeTagId ? 'active' : ''}`}
                             onClick={() => {
                                 setActiveTagId(tag.id);
                             }}
