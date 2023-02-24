@@ -1,0 +1,18 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+ @use "@sass/_utils.functions.scss" as f;
+
+ .StreetcodeTableWrapper {
+     @include mut.sized(80%);
+     margin-top: f.pxToRem(82px);
+     margin-right: f.pxToRem(50px);
+     float: right;
+ }
+
+ .ant-table table { 
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+}
+.ant-select-selection {
+    background-color: c.$dark-red-color;
+}
