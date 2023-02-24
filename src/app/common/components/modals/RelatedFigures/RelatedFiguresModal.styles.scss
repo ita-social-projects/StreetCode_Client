@@ -2,6 +2,7 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as fnc;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 $bookImg: "@assets/images/sources/Books_stretched.png";
@@ -32,7 +33,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
 }
 
 .relatedFiguresImgContainer {
-  position: sticky;
+  //position: sticky;
   @include mut.sized(100%, 97px);
   @include mut.flex-centered();
 
@@ -52,13 +53,56 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include mut.rem-margined(0, 21px, 0, 53px);
   @include mut.rem-padded(30px, 0, 30px, 3px);
 
-  .relatedFigureSlide {
-    @include mut.sized($width: 278px, $height: 380px);
+   .relatedFigureSlide:hover {
+      //@include mut.sized($width: 278px, $height: 380px);
+      overflow: visible !important;
 
-    .figureSlideText {
-        @include mut.sized($width: 272px, $height: 97px);
-    }
-  }
+      .figureSlideText{
+          @include mut.sized($width: 272px, $height: 97px);
+          //@include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
+        }
+        .relatedTagList {
+          animation: fadeIn 1s;
+          box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);    
+          z-index: 10 !important;
+          position: absolute;
+          //width: max-content !important;
+          width: 130px !important;
+          //display: inline-block;
+          left: 175px;
+          top: 58px;
+          padding: 15px;
+        
+          background-color: c.$pure-white-color;
+          border-radius: 20px;
+
+          visibility: visible;
+            .tag {
+              @include mut.sized($height: 28px);
+              @include mut.flex-centered();
+              gap: 0 !important;
+              border: 2px solid c.$dark-red-color;
+              @include mut.full-rounded($rad: 7.86px);
+              padding: 5.5px 9.5px !important;
+              //@include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
+              @include mut.rem-margined($left: 1.5px, $top: 1.5px, $right: 1.5px, $bottom: 2px);
+      
+      
+              p {
+                @include mut.sized($height: 14px);
+                text-align: center;
+                line-height: 135.69%;
+      
+                @include mut.with-font($font-size: 10px,$font-weight: 500);
+                line-height: pxToRem(13.6px);
+                color: c.$dark-red-color;
+              }
+            }
+        
+      } 
+   }
+
+ 
 
   &::-webkit-scrollbar {
     width: .765rem;
@@ -77,4 +121,5 @@ $articlesImg: "@assets/images/sources/Articles.png";
     background: c.$accented-gray-color;
     @include mut.rem-margined($top: 37px, $bottom: 90px);
   }
+  
 }

@@ -15,4 +15,5 @@ export const defaultSliderProps: SliderWithoutChildren = {
     slidesToShow: 3,
     slidesToScroll: 1,
     speed: 500,
+    waitForAnimate: true,
 };

@@ -1,12 +1,12 @@
 import './InterestingFacts.styles.scss';
 
-import BlockSlider from '@features/SlickSlider/SlickSlider.component';
+import { useEffect } from 'react';
+import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
-import {useEffect} from "react";
 
 const InterestingFactsComponent = () => {
     const streetcodeId = useRouteId();

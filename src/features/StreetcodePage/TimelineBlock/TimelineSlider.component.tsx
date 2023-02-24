@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import SliderProps, { defaultSliderProps } from '@features/SlickSlider';
 import useMobx from '@stores/root-store';
@@ -8,13 +8,16 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
     const sliderRef = useRef<Slider>(null);
 
     const { timelineItemStore } = useMobx();
-    const { getTimelineItemArray, activeYear, setActiveYear } = timelineItemStore;
+    const {
+        getTimelineItemArray, activeYear, setActiveYear,
+        setChangedByYear, changedByYear,
+    } = timelineItemStore;
 
     useEffect(() => {
         if (sliderRef && sliderRef.current) {
             const sectionIdx = getTimelineItemArray
                 .findIndex(({ date }) => date.getFullYear() === activeYear);
-
+            console.log(sectionIdx);
             if (sectionIdx !== -1) {
                 sliderRef.current.slickGoTo(sectionIdx);
             }
@@ -23,14 +26,21 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
 
     const handleClick = (index: number) => {
         if (sliderRef && sliderRef.current && swipeOnClick) {
+            console.log(index);
+            setActiveYear(getTimelineItemArray[index].date.getFullYear());
             sliderRef.current.slickGoTo(index);
         }
+        if (sliderRef && sliderRef.current) { sliderRef.current.slickGoTo(index); }
     };
 
-    const onBeforeChange = (curIdx: number, nextIdx: number) => {
-        const year = getTimelineItemArray[nextIdx].date.getFullYear();
-        setActiveYear(year);
-        // setActiveSlideIdx(getTimelineItemArray.findIndex(({ date }) => date.getFullYear() === year));
+    const onAfterChange = (curIdx: number) => {
+        const timelineArr = getTimelineItemArray;
+        const year = timelineArr[Number(curIdx.toFixed(0)) % timelineArr.length].date.getFullYear();
+        if (changedByYear) {
+            setChangedByYear(false);
+        } else {
+            setActiveYear(year);
+        }
     };
 
     return (
@@ -38,7 +48,7 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
-                beforeChange={onBeforeChange}
+                afterChange={onAfterChange}
             >
                 {children.map((slide, idx) => (
                     <div key={idx} onClick={() => handleClick(idx)}>

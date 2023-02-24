@@ -44,6 +44,7 @@ const ProgressBar: FC<Props> = ({
     const wasScrolled = useRef(false);
     const scrollPercentage = useRef(0);
     const isScrollInFirstTwoSections = useRef(true);
+    const [isProgressBarInUse, setProgressBarUse] = useState(false);
 
     const [blocks, setBlocks] = useState<NamedBlock[]>([]);
     const [scrollPosition, setScrollPosition] = useState(0);
@@ -60,6 +61,7 @@ const ProgressBar: FC<Props> = ({
             const curScrollY = Math.abs(y);
 
             setScrollPosition(curScrollY);
+            
             wasScrolled.current = curScrollY > visibleBefore;
         },
         waitMsOnRender,
@@ -67,7 +69,7 @@ const ProgressBar: FC<Props> = ({
     );
 
     useEffect(() => {
-        if (wasScrolled.current) {
+        if (wasScrolled.current && !isProgressBarInUse) {
             setInvisible();
             isScrollInFirstTwoSections.current = false;
         }
@@ -82,9 +84,13 @@ const ProgressBar: FC<Props> = ({
         onMouseOver: () => {
             clearTimeout(timeoutId.current);
             setIsOnTimeout(true);
+            setProgressBarUse(true);
         },
         onMouseLeave: () => {
-            timeoutId.current = setTimeout(() => setIsOnTimeout(false), hidingDelay);
+            setProgressBarUse(false);
+            timeoutId.current = setTimeout(() => {setIsOnTimeout(false)
+            toggle()
+            }, hidingDelay);
         },
     }), [hidingDelay]);
 
@@ -102,9 +108,9 @@ const ProgressBar: FC<Props> = ({
     };
 
     const onProgressBarCallerClick = () => {
-        toggle();
-        setIsOnTimeout(true);
-        isScrollInFirstTwoSections.current = false;
+            toggle();
+            setIsOnTimeout(true);
+            isScrollInFirstTwoSections.current = false;
     };
 
     const isPBVisible = (isScrollInFirstTwoSections.current || isVisible) && isOnTimeout;
@@ -148,7 +154,7 @@ const ProgressBar: FC<Props> = ({
                         />
                     </div>
                 </div>
-                <ArrowUp style={isPBVisible ? { rotate: 'x 180deg' } : undefined} />
+                <ArrowUp style={isPBVisible ? { rotate: 'x 180deg' } : undefined}/>
             </div>
         </>
     );

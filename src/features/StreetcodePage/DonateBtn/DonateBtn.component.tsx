@@ -2,7 +2,7 @@ import './DonateBtn.styles.scss';
 
 import HandWithCoin from '@images/donates/HandWithCoin.svg';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
 import useMobx from '@stores/root-store';
 
@@ -23,7 +23,6 @@ const DonateBtn = () => {
         setModal('donates');
         showModalOnScroll.current = false;
     };
-
     return (
         <div className="donateBtnContainer" onClick={onBtnClick}>
             <div className="donateBtnCircle">
