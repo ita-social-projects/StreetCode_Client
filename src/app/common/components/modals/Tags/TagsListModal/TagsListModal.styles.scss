@@ -3,9 +3,23 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 
 .tagModalContainer {
-  @include mut.rem-padded(13px, 0, 13px, 3px);
-  @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+  @include mut.rem-padded(0, 0, 0, 3px);
+  padding: 20%;
+  //@include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+  width: 70%;
 
+     &.slick-list {
+       //@include mut.flexed($justify-content: space-evenly);
+       //margin-left: 15%;
+       position: relative;
+        width: 100%;
+        padding: 0px 100px;
+     }
+     &.slick-initialized{
+      position: relative;
+        width: 100%;
+        padding: 0px 100px;
+     }
   .tagModalItem {
     height: f.pxToRem(38px);
     @include mut.flex-centered();
@@ -28,10 +42,11 @@
       color: c.$dark-red-color;
       border-color: c.$dark-red-color;
     }
-    #active{
+    &.active{
       transform: scale(1.2);
       color: c.$dark-red-color;
       border-color: c.$dark-red-color;
     }
   }
 }
+

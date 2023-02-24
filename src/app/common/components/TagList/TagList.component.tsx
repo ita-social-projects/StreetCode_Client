@@ -4,26 +4,28 @@ import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
 
+import Tag from '@/models/additional-content/tag.model';
+
 interface Props {
-    tags: string[] | undefined;
+    tags: Tag[] | undefined;
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const TagList = ({ tags }: Props) => {
+const TagList = ({ tags, setActiveTagId }: Props) => {
     const { modalStore } = useMobx();
-    const { setModal, modalsState: { tagsList } } = modalStore;
+    const { setModal } = modalStore;
     return (
         <div className="tagContainer">
-            {tags?.map((tag, idx) => (
+            {tags?.map((tag) => (
                 <Button
                     className="tagItem"
                     onClick={() => {
-                        if (!tagsList.isOpen) {
-                            setModal('tagsList');
-                        }
+                        setActiveTagId(tag.id);
+                        setModal('tagsList');
                     }}
-                    key={idx}
+                    key={tag.id}
                 >
-                    {tag}
+                    {tag.title}
                 </Button>
             ))}
         </div>
