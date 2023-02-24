@@ -32,7 +32,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
 }
 
 .relatedFiguresImgContainer {
-  position: sticky;
+  //position: sticky;
   @include mut.sized(100%, 97px);
   @include mut.flex-centered();
 
@@ -53,11 +53,14 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include mut.rem-padded(30px, 0, 30px, 3px);
 
   .relatedFigureSlide {
-    @include mut.sized($width: 278px, $height: 380px);
+    @include mut.sized($width: 278px, $height: 459px);
 
     .figureSlideText {
-        @include mut.sized($width: 272px, $height: 97px);
+        @include mut.sized($width: 272px, $height: 176px);
     }
+    .relatedTagList {
+      visibility: visible;
+  }
   }
 
   &::-webkit-scrollbar {

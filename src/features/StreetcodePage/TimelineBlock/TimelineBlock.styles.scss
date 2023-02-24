@@ -6,28 +6,40 @@
 
 $timelineLvivImg: "@assets/images/timeline/Lviv.png";
 $timelineSquareImg: "@assets/images/timeline/Square.png";
+.timelineContainer{
+  width: 100vw;
+  max-width: f.pxToRem(1600px);
+  //width: f.pxToRem(1600px);
+  align-self: center;
+  align-items: center;
+  margin: f.pxToRem(50px) auto;
 
-.timelineContentContainer {
-  margin: f.pxToRem(50px) 0;
+  .timelineContentContainer {
+ // margin: f.pxToRem(50px) 0;
+  margin: f.pxToRem(50px) auto;
   background-color: c.$timeline-reel-color;
 
-  .sliderClass {
+   .sliderClass {
     @include mut.sized(100%, 380px);
     @include mut.rem-margined($bottom: 25px, $top: 30px /*30px*/);
-  }
+  } 
 
   .slick-slider {
+    
     @include mut.parent-sized();
   }
 
   .slick-list {
-    margin-left: f.pxToRem(-4px);
+    padding: 0;
   }
 
   .slick-track {
     @include mut.flexed($align-items: center, $gap: 30px);
     @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
 
+    .slick-slide >div{
+      place-items: center;
+    }
     .slick-slide {
       @include mut.sized(605px, 366px);
       @include mut.full-rounded(30px);
@@ -47,11 +59,12 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
     // .slick-current + .slick-slide {
     .slick-center {
-      border: 4px inset c.$pure-white-color;
+      border: 4px solid c.$pure-white-color;
 
       .timelineItemContent {
         margin-top: calc(1.5rem - 4px);
       }
     }
   }
+}
 }

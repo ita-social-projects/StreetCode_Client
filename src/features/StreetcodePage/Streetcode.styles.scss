@@ -1,4 +1,5 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 
 .streetcodeContainer {
     width: 100%;
@@ -7,4 +8,9 @@
 
 .dimmed {
     @include mut.sized(100%, 5875px);
+}
+
+.stickies{
+    @include mut.positioned-as(absolute, $bottom: 290px, $right: 42px);
+    margin-bottom: f.pxToRem(8px);
 }

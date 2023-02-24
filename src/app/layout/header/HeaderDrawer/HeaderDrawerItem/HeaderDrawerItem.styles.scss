@@ -1,0 +1,32 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.headerItem{
+    background-color: transparent;
+    border: none;
+}
+
+.headerItem:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+
+    &:after {
+      transform-origin: bottom left;
+      transform: scaleX(1);
+    }
+}
+
+.headerItem:after {
+    content: '';
+    background-color: c.$dark-red-color;
+
+    @include mut.sized(100%, 2px);
+    @include mut.positioned-as(absolute, $bottom: 0, $left: 0);
+
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    @include vnd.vendored(transition, 'transform .2s ease');
+}
