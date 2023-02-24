@@ -21,6 +21,7 @@ const TagsModal = () => {
     const { fetchRelatedFiguresByTagId, getRelatedFiguresArray } = relatedFiguresStore;
 
     const tagId = 1;
+    
     useAsync(
         () => {
             if (tagId) {
