@@ -119,7 +119,9 @@ const ProgressBar: FC<Props> = ({
                     {...cursorCaptureHandlers}
                     style={(!isOnTimeout) ? { pointerEvents: 'none' } : undefined}
                     className={`progressBarPopupContainer ${isPBVisible ? 'visible' : ''}`}
+                    
                 >
+                    
                     <div className="progressBarPopupContent">
                         {blocks.map((block, idx) => {
                             let isBlockActive = block.height <= scrollPosition;

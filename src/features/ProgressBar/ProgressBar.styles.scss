@@ -7,6 +7,7 @@
 .progressBarContainer svg,
 .progressBarPopupContainer {
   @include vnd.vendored(transition, 'all .6s ease-out');
+  
 }
 
 .progressBarContainer {
@@ -35,17 +36,27 @@
     @include mut.flex-centered();
     @include mut.full-rounded(20px, $overflow: visible);
     @include mut.rem-padded($top: 30px, $bottom: 30px);
-
+    box-shadow: 0 2px 15px 0 #B0B0B040; 
     background-color: c.$pure-white-color;
-    box-shadow: 0 2px 15px 0 #B0B0B040;
-
     @include vnd.vendored(transform, 'translateY(300px)');
 
     &.visible {
       @include vnd.vendored(transform, 'translateY(calc(-50vh + 21.5px))');
     }
   }
-
+  .progressBarPopupContainer::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    z-index: -1;
+    @include mut.full-rounded(20px, $overflow: visible);
+    backdrop-filter: blur(3px);
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
   .progressBarPopupContent {
     @include mut.flex-centered($direction: column, $gap: 31px);
   }
