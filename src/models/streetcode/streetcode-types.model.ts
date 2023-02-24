@@ -22,6 +22,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     updatedAt: Date;
     eventStartOrPersonBirthDate: Date;
     eventEndOrPersonDeathDate: Date;
+    streetcodeType: string;
     stage: Stage;
     text: string;
     audio?: Audio | undefined;

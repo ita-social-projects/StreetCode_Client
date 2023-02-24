@@ -6,7 +6,7 @@ import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
 import { Button } from 'antd';
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Navigate, useNavigate } from "react-router-dom";
+
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
 // interface Props {
@@ -18,7 +18,6 @@ const StreetcodesTable = () => {
     const { value } = useAsync(() => StreetcodesApi.getAll(), []);
     const streetcodes = value as Streetcode[];
 
-    const navigate = useNavigate();
     const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
         day: 'numeric',
         month: 'long',
@@ -36,6 +35,7 @@ const StreetcodesTable = () => {
         {
             title: 'Номер стріткоду',
             dataIndex: 'index',
+            width: 150,
             key: 'index',
         },
         {
@@ -80,14 +80,16 @@ const StreetcodesTable = () => {
                 index: `${streetcode.index}`,
                 stage: streetcode.stage == 0 ? "Чернетка" : "Опублікований",
                 date: formatDate(new Date(streetcode.updatedAt)),
-                name: "Григорович Тарас Шевченко"
+                name: streetcode.streetcodeType == 'streetcode-event' ? `${streetcode.title}` 
+                : `${streetcode.firstName} ${streetcode.lastName}`
             }
 
             mapedStreetCodes.push(mapedStreetCode);
         });
         
         setMapedStreetCodes(mapedStreetCodes)
-    }, streetcodes); 
+        
+    }, [streetcodes]); 
 
     return(
     <>
