@@ -8,6 +8,7 @@ import { Button } from 'antd';
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import Modal from 'antd/es/modal/Modal';
 
 const StreetcodesTable = () => {
 
@@ -23,6 +24,28 @@ const StreetcodesTable = () => {
     });
 
     const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
+
+    // const [open, setOpen] = useState(false);
+    // const [confirmLoading, setConfirmLoading] = useState(false);
+    // const [modalText, setModalText] = useState('Content of the modal');
+
+    // const showModal = () => {
+    //     setOpen(true);
+    // };
+
+    // const handleOk = () => {
+    //     setModalText('The modal will be closed after two seconds');
+    //     setConfirmLoading(true);
+    //     setTimeout(() => {
+    //     setOpen(false);
+    //     setConfirmLoading(false);
+    //     }, 2000);
+    // };
+
+    // const handleCancel = () => {
+    //     console.log('Clicked cancel button');
+    //     setOpen(false);
+    // };
 
     const columnsNames = [
         {
@@ -52,8 +75,9 @@ const StreetcodesTable = () => {
             key: 'action',
             render: (value: any, record: any, index: any) => <>
                 <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
-                <DeleteOutlined className='actionButton'onClick={(event) => {
+                <DeleteOutlined className='actionButton' onClick={(event) => {
                     event.stopPropagation()
+                    // showModal()
                     console.log(record.index)
                     StreetcodesApi.delete(record.index)
                     setMapedStreetCodes(mapedStreetCodes.filter(sc => sc.index != record.index))
@@ -81,7 +105,7 @@ const StreetcodesTable = () => {
                 index: `${streetcode.index}`,
                 stage: streetcode.stage == 0 ? "Чернетка" : "Опублікований",
                 date: formatDate(new Date(streetcode.updatedAt)),
-                name: streetcode.streetcodeType == 'streetcode-event' ? `${streetcode.title}` 
+                name: streetcode.type == 0 ? `${streetcode.title}` 
                 : `${streetcode.firstName} ${streetcode.lastName}`
             }
 
@@ -95,6 +119,15 @@ const StreetcodesTable = () => {
     return(
     <>
         <div className="StreetcodeTableWrapper">
+            {/* <Modal
+            title="Delete streetcode"
+            open={open}
+            onOk={handleOk}
+            confirmLoading={confirmLoading}
+            onCancel={handleCancel}
+            >
+                Hello
+            </Modal> */}
             <Button className='addButton' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
