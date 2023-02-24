@@ -15,9 +15,11 @@ const options: Option[] = []
   };
 
  const ForFans = () => (
+    <div className='MainForFansContainer'>
+    <PageBar/>  
      <div className="ForFansContainer">
-       <PageBar/>  
        <h3>Категорія</h3>
+     </div>
      </div>
  );
 
