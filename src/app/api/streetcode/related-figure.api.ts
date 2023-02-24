@@ -11,6 +11,10 @@ const RelatedFigureApi = {
         return Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_BY_STREETCODE_ID}/${streetcodeId}`);
     },
 
+    getByTagId(tagId: number) {
+        return Agent.get<RelatedFigure[]>(`${API_ROUTES.RELATED_FIGURES.GET_BY_TAG_ID}/${tagId}`);
+    },
+
     create(relatedFigure: RelatedFigure) {
         return Agent.post<RelatedFigure>(`${API_ROUTES.RELATED_FIGURES.CREATE}`, relatedFigure);
     },

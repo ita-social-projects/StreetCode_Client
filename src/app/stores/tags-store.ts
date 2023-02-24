@@ -10,6 +10,7 @@ export default class TagsStore {
     }
 
     private set setInternalMap(tags: Tag[]) {
+        this.TagMap.clear();
         tags.forEach(this.setItem);
     }
 

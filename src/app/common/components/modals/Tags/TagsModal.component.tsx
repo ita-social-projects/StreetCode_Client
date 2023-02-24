@@ -1,10 +1,10 @@
 import './TagsModal.styles.scss';
 
+import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import useMobx from '@stores/root-store';
-import { id } from 'date-fns/locale';
 
 import { Modal } from 'antd';
 
@@ -15,13 +15,17 @@ import RelatedFigureItem from '@/features/StreetcodePage/RelatedFiguresBlock/Rel
 
 import TagListModal from './TagsListModal/TagsListModal.component';
 
-const TagsModal = () => {
+interface Props {
+    activeTagId: number,
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
+}
+
+const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
     const { relatedFiguresStore, modalStore } = useMobx();
     const { setModal, modalsState: { tagsList } } = modalStore;
     const { fetchRelatedFiguresByTagId, getRelatedFiguresArray } = relatedFiguresStore;
 
-    const tagId = 1;
-    
+    const tagId = activeTagId;
     useAsync(
         () => {
             if (tagId) {
@@ -34,15 +38,17 @@ const TagsModal = () => {
         <Modal
             className="tagsModal"
             open={tagsList.isOpen}
+            destroyOnClose
             maskClosable
             centered
             footer={null}
+            closeIcon={<CancelBtn />}
             onCancel={() => {
                 setModal('tagsList');
             }}
         >
             <div className="headerTagContainer" style={{ background: `url(${ModalBg})` }}>
-                <TagListModal streetCodeid={useRouteId()} />
+                <TagListModal streetCodeid={useRouteId()} activeTagId={activeTagId} setActiveTagId={setActiveTagId} />
             </div>
             <div className="relatedFiguresContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (

@@ -14,6 +14,7 @@ export default class RelatedFiguresStore {
     };
 
     private set setInternalRelatedFiguresMap(relatedFigures: RelatedFigure[]) {
+        this.relatedFiguresMap.clear();
         relatedFigures.forEach(this.setRelatedFigureItem);
     }
 
@@ -24,6 +25,14 @@ export default class RelatedFiguresStore {
     public fetchRelatedFiguresByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalRelatedFiguresMap = await relatedFiguresApi.getByStreetcodeId(streetcodeId);
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
+    public fetchRelatedFiguresByTagId = async (tagId: number) => {
+        try {
+            this.setInternalRelatedFiguresMap = await relatedFiguresApi.getByTagId(tagId);
         } catch (error: unknown) {
             console.log(error);
         }
