@@ -14,12 +14,10 @@ interface Props {
 const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
     const { id, imageId, title, tags } = relatedFigure;
 
-    const { modalStore } = useMobx();
-    const { setModal, modalsState: { tagsList } } = modalStore;
-
-    const { imagesStore, tagsStore: { getTagArray } } = useMobx();
+    const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    
+    const { setModal } = modalStore;
+
     useAsync(
         () => fetchImage(imageId),
         [imageId],
@@ -35,6 +33,9 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
 
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
+            onClick={() => {
+                setModal('tagsList');
+            }}
         >
             <div className="figureSlideText">
                 <div className="heading">
