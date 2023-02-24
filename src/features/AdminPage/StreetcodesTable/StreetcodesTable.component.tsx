@@ -9,14 +9,12 @@ import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
-// interface Props {
-//     streetcodes: Streetcode[]
-// }
-
 const StreetcodesTable = () => {
 
     const { value } = useAsync(() => StreetcodesApi.getAll(), []);
     const streetcodes = value as Streetcode[];
+
+    const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 
     const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
         day: 'numeric',
@@ -52,9 +50,14 @@ const StreetcodesTable = () => {
             title: 'Дії',
             dataIndex: 'action',
             key: 'action',
-            render: () => <>
+            render: (value: any, record: any, index: any) => <>
                 <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
-                <DeleteOutlined className='actionButton'onClick={(event) => event.stopPropagation()}/>
+                <DeleteOutlined className='actionButton'onClick={(event) => {
+                    event.stopPropagation()
+                    console.log(record.index)
+                    StreetcodesApi.delete(record.index)
+                    setMapedStreetCodes(mapedStreetCodes.filter(sc => sc.index != record.index))
+                    }}/>
             </>
         }
     ]
@@ -66,8 +69,6 @@ const StreetcodesTable = () => {
         date: string,
         name: string
     }
-
-    const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 
     useEffect(() => {
 
@@ -94,7 +95,7 @@ const StreetcodesTable = () => {
     return(
     <>
         <div className="StreetcodeTableWrapper">
-            <Button className='addButton'>Новий стріткод</Button>
+            <Button className='addButton' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
                 pagination={{className: "paginationButton", pageSize: 8}}
