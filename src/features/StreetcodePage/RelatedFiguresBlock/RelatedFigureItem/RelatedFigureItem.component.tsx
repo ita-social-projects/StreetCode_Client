@@ -21,14 +21,14 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
         () => fetchImage(imageId),
         [imageId],
     );
-    
+
     const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
 
     return (
         <Link
             className={`relatedFigureSlide 
                 ${hoverable && tags.length > 1 ? 'hoverable' : ''}
-                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} 
+                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`}
 
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
@@ -39,7 +39,7 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                         {title}
                     </p>
                 </div>
-                <div className={`relatedTagList`}>
+                <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag) => (
                             <div key={tag.id} className="tag">
