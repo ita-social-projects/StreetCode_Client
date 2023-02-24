@@ -1,0 +1,24 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+.draggable-tag-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    max-width: 200px;
+    flex-wrap: wrap;
+
+    .draggable-tag{
+        display: flex;
+        margin: 5px;
+    }
+    .close-dragable-tag-button{
+        max-width: 5px;
+        height: 5px;
+        @include mut.circular(50px)
+    }
+}
+.item-blured{
+.tagItem{
+    @include mut.backdrop-filtering-blur(100px);
+background-color: #C4C4C4;
+}
+}

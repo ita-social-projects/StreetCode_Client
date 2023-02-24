@@ -1,0 +1,16 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+.mainblock-add-form{
+   .ant-form-item-label>label{
+        @include mut.with-font();
+
+    }
+    .ant-input{
+        @include mut.with-font();
+    }
+    .ant-select, .ant-select-selector,.ant-select-selection-search-input,.ant-select-selection-search-input{
+        @include mut.with-font();
+    }
+    
+}
+
