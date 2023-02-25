@@ -55,7 +55,7 @@ const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
                 />
             </div>
             <div className="relatedFiguresByTagsContentContainer">
-                {getRelatedByActiveTag?.map((figure) => (
+                {getRelatedFiguresArray?.map((figure) => (
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}
