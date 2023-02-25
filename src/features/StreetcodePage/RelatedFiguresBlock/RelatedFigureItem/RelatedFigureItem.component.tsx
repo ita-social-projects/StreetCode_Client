@@ -20,7 +20,7 @@ const RelatedFigureItem = ({
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal } = modalStore;
+    const { setModal, modalsState: { tagsList } } = modalStore;
 
     useAsync(
         () => {
