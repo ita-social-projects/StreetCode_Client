@@ -27,8 +27,6 @@ const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
 
 interface Props {
     streetcode?: Streetcode;
-    activeTagId: number;
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -61,13 +59,16 @@ const cSlides = [
     />,
 ];
 
-const StreetcodeCard = ({ streetcode, activeTagId, setActiveTagId }: Props) => {
+const StreetcodeCard = ({ streetcode }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
+    const [activeTagId, setActiveTagId] = useState(0);
 
     const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
     const images = value as Image[];
+
+
     useAsync(() => fetchAudioByStreetcodeId(id), [id]);
 
     return (
@@ -144,6 +145,7 @@ const StreetcodeCard = ({ streetcode, activeTagId, setActiveTagId }: Props) => {
                     </div>
                 </div>
             </div>
+            <TagsModal setActiveTagId={setActiveTagId} activeTagId={activeTagId} />
         </div>
     );
 };

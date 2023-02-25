@@ -17,8 +17,6 @@ import TextBlock from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
-import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
-
 const StreetcodeContent = () => {
     const isSticky = () => {
         const buttonDonate = document.querySelector('.donateBtnContainer');
@@ -34,7 +32,6 @@ const StreetcodeContent = () => {
             }
         }
     };
-    const [activeTagId, setActiveTagId] = useState(0);
     useEffect(() => {
         window.addEventListener('scroll', isSticky);
         return () => {
@@ -45,19 +42,13 @@ const StreetcodeContent = () => {
     return (
         <div className="streetcodeContainer">
             <ProgressBar>
-                <MainBlock
-                    setActiveTagId={setActiveTagId}
-                    activeTagId={activeTagId}
-                />
+                <MainBlock />
                 <TextBlock />
                 <InterestingFactsBlock />
                 <TimelineBlock />
                 <MapBlock />
                 <ArtGalleryBlock />
-                <RelatedFiguresBlock
-                    activeTagId={activeTagId}
-                    setActiveTagId={setActiveTagId}
-                />
+                <RelatedFiguresBlock />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
@@ -68,10 +59,6 @@ const StreetcodeContent = () => {
                 <DonateBtn />
             </div>
             <Footer />
-            <TagsModalComponent
-                activeTagId={activeTagId}
-                setActiveTagId={setActiveTagId}
-            />
         </div>
     );
 };
