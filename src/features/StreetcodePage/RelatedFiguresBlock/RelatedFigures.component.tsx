@@ -7,7 +7,12 @@ import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
-const RelatedFiguresComponent = () => {
+interface Props {
+    activeTagId: number,
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
+}
+
+const RelatedFiguresComponent = ({ activeTagId, setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useMobx();
     const { relatedFiguresStore, tagsStore } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
@@ -27,6 +32,8 @@ const RelatedFiguresComponent = () => {
         <RelatedFigureItem
             key={figure.id}
             relatedFigure={figure}
+            activeTagId={activeTagId}
+            setActiveTagId={setActiveTagId}
             filterTags
             hoverable
         />
@@ -48,7 +55,7 @@ const RelatedFiguresComponent = () => {
                 <div className="relatedFiguresSliderContainer">
                     <BlockSlider
                         className="heightContainer"
-                        infinite={true}
+                        infinite
                         slidesToShow={4}
                         swipe={false}
                         dots={false}

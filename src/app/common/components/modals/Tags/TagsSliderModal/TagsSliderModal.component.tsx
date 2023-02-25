@@ -1,4 +1,4 @@
-import './TagsListModal.styles.scss';
+import './TagsSliderModal.styles.scss';
 
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx from '@stores/root-store';
@@ -24,15 +24,18 @@ const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
     return (
         <div className="tagModalContainer">
             <BlockSlider
+                className="tagSliderClass"
                 infinite={false}
-                slidesToShow={3}
+                slidesToShow={1}
                 swipe={false}
                 dots={false}
-                swipeOnClick
                 variableWidth
+                arrows={false}
+                focusOnSelect
                 centerMode
-                initialSlide={getTagArray.length}
+                centerPadding="0"
                 slidesToScroll={1}
+                initialSlide={5}
             >
                 {getTagArray?.map((tag) => (
                     <div>
