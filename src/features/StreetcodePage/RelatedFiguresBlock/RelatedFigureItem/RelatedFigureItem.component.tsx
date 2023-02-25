@@ -55,8 +55,6 @@ const RelatedFigureItem = ({
                                 onClick={(event) => {
                                     event.preventDefault();
                                     setModal('tagsList');
-                                    console.log(`Tag id: ${tag.id}`);
-                                    console.log(`Tag Active id: ${activeTagId}`);
                                     if (setActiveTagId !== undefined) {
                                         setActiveTagId(tag.id);
                                     }
