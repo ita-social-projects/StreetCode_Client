@@ -45,7 +45,6 @@ const RelatedFiguresModal = () => {
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}
-                        activeTagId={0}
                         setActiveTagId={undefined}
                     />
                 ))}

@@ -3,7 +3,6 @@ import './StreetcodeCard.styles.scss';
 import Grushevskiy from '@images/streetcode-card/Grushevskiy.gif';
 import Hrushevskiy from '@images/streetcode-card/Hrushevskyi.png';
 
-import { useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -15,7 +14,6 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import TagsModal from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 import Image from '@/models/media/image.model';
 
@@ -27,7 +25,6 @@ const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
 
 interface Props {
     streetcode?: Streetcode;
-    activeTagId: number;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -61,7 +58,7 @@ const cSlides = [
     />,
 ];
 
-const StreetcodeCard = ({ streetcode, activeTagId, setActiveTagId }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();

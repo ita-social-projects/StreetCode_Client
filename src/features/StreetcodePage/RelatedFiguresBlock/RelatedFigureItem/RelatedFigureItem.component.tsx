@@ -7,20 +7,17 @@ import useMobx from '@stores/root-store';
 
 interface Props {
     relatedFigure: RelatedFigure;
-    activeTagId: number;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>> | undefined;
     filterTags?: boolean;
     hoverable?: boolean;
 }
 
-const RelatedFigureItem = ({
-    relatedFigure, activeTagId, setActiveTagId, filterTags = true, hoverable = false,
-}: Props) => {
+const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const { id, imageId, title, tags } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal, modalsState: { tagsList } } = modalStore;
+    const { setModal } = modalStore;
 
     useAsync(
         () => {
@@ -38,6 +35,11 @@ const RelatedFigureItem = ({
             ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
+            onClick={
+                () => {
+                    setModal('tagsList');
+                }
+            }
         >
             <div className="figureSlideText">
                 <div className="heading">
@@ -52,9 +54,7 @@ const RelatedFigureItem = ({
                                 key={tag.id}
                                 className="tag"
                                 type="button"
-                                onClick={(event) => {
-                                    event.preventDefault();
-                                    setModal('tagsList');
+                                onClick={() => {
                                     if (setActiveTagId !== undefined) {
                                         setActiveTagId(tag.id);
                                     }

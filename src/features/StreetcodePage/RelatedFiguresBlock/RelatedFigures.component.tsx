@@ -8,11 +8,10 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 interface Props {
-    activeTagId: number,
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const RelatedFiguresComponent = ({ activeTagId, setActiveTagId } : Props) => {
+const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useMobx();
     const { relatedFiguresStore, tagsStore } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
@@ -32,7 +31,6 @@ const RelatedFiguresComponent = ({ activeTagId, setActiveTagId } : Props) => {
         <RelatedFigureItem
             key={figure.id}
             relatedFigure={figure}
-            activeTagId={activeTagId}
             setActiveTagId={setActiveTagId}
             filterTags
             hoverable

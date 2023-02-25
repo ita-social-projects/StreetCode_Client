@@ -10,11 +10,10 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
-    activeTagId: number,
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const MainBlock = ({ activeTagId, setActiveTagId } : Props) => {
+const MainBlock = ({ setActiveTagId } : Props) => {
     const id = useRouteId();
 
     const { value } = useAsync(() => StreetcodesApi.getById(id), [id]);
@@ -28,7 +27,6 @@ const MainBlock = ({ activeTagId, setActiveTagId } : Props) => {
                     <div className="mainContent">
                         <StreetcodeCard
                             streetcode={streetcode}
-                            activeTagId={activeTagId}
                             setActiveTagId={setActiveTagId}
                         />
                     </div>

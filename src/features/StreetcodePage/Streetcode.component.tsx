@@ -47,7 +47,6 @@ const StreetcodeContent = () => {
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}
-                    activeTagId={activeTagId}
                 />
                 <TextBlock />
                 <InterestingFactsBlock />
@@ -55,7 +54,6 @@ const StreetcodeContent = () => {
                 <MapBlock />
                 <ArtGalleryBlock />
                 <RelatedFiguresBlock
-                    activeTagId={activeTagId}
                     setActiveTagId={setActiveTagId}
                 />
                 <SourcesBlock />
