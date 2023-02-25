@@ -35,11 +35,11 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
-            onClick={
-                () => {
-                    setModal('tagsList');
-                }
-            }
+            // onClick={
+            //     () => {
+            //         setModal('tagsList');
+            //     }
+            // }
         >
             <div className="figureSlideText">
                 <div className="heading">
@@ -54,7 +54,9 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 key={tag.id}
                                 className="tag"
                                 type="button"
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setModal('tagsList');
                                     if (setActiveTagId !== undefined) {
                                         setActiveTagId(tag.id);
                                     }
