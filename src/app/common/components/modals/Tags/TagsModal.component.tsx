@@ -13,7 +13,7 @@ import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 // eslint-disable-next-line max-len
 import RelatedFigureItem from '@/features/StreetcodePage/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
-import TagListModal from './TagsListModal/TagsListModal.component';
+import TagsSliderModal from './TagsSliderModal/TagsSliderModal.component';
 
 interface Props {
     activeTagId: number,
@@ -23,7 +23,7 @@ interface Props {
 const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
     const { relatedFiguresStore, modalStore } = useMobx();
     const { setModal, modalsState: { tagsList } } = modalStore;
-    const { fetchRelatedFiguresByTagId, getRelatedFiguresArray } = relatedFiguresStore;
+    const { fetchRelatedFiguresByTagId, getRelatedByActiveTag } = relatedFiguresStore;
 
     const tagId = activeTagId;
     useAsync(
@@ -48,13 +48,19 @@ const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
             }}
         >
             <div className="headerTagContainer" style={{ background: `url(${ModalBg})` }}>
-                <TagListModal streetCodeid={useRouteId()} activeTagId={activeTagId} setActiveTagId={setActiveTagId} />
+                <TagsSliderModal
+                    streetCodeid={useRouteId()}
+                    activeTagId={activeTagId}
+                    setActiveTagId={setActiveTagId}
+                />
             </div>
             <div className="relatedFiguresByTagsContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}
+                        activeTagId={0}
+                        setActiveTagId={undefined}
                     />
                 ))}
             </div>

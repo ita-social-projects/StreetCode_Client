@@ -3,23 +3,23 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 
 .tagModalContainer {
-  @include mut.rem-padded(0, 0, 0, 3px);
-  padding: 20%;
-  //@include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+  @include mut.rem-padded(13px, 13px, 13px, 20px);
+  @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
   width: 70%;
-
-     &.slick-list {
-       //@include mut.flexed($justify-content: space-evenly);
-       //margin-left: 15%;
-       position: relative;
-        width: 100%;
-        padding: 0px 100px;
-     }
-     &.slick-initialized{
+    &.tagSliderClass{
+    &.sliderClass{
+      width: 100% !important;
+      background-color: #fff;
+    }
+    &.slick-track {
+      @include mut.rem-margined();
+    }
+    &.slick-initialized{
       position: relative;
         width: 100%;
         padding: 0px 100px;
-     }
+      }
+  }
   .tagModalItem {
     height: f.pxToRem(38px);
     @include mut.flex-centered();
@@ -49,4 +49,6 @@
     }
   }
 }
+
+
 

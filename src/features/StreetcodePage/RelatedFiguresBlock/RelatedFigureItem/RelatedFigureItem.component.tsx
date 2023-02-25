@@ -7,11 +7,15 @@ import useMobx from '@stores/root-store';
 
 interface Props {
     relatedFigure: RelatedFigure;
+    activeTagId: number;
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>> | undefined;
     filterTags?: boolean;
     hoverable?: boolean;
 }
 
-const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
+const RelatedFigureItem = ({
+    relatedFigure, activeTagId, setActiveTagId, filterTags = true, hoverable = false,
+}: Props) => {
     const { id, imageId, title, tags } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
@@ -19,7 +23,9 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
     const { setModal, modalsState: { tagsList } } = modalStore;
 
     useAsync(
-        () => fetchImage(imageId),
+        () => {
+            fetchImage(imageId);
+        },
         [imageId],
     );
 
@@ -30,7 +36,6 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
             className={`relatedFigureSlide 
             ${hoverable && tags.length > 1 ? 'hoverable' : ''} 
             ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
-
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
         >
@@ -41,16 +46,17 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                     </p>
                 </div>
                 <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
-
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag) => (
                             <button
                                 key={tag.id}
                                 className="tag"
+                                type="button"
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    if (!tagsList.isOpen) {
-                                        setModal('tagsList');
+                                    setModal('tagsList');
+                                    if (setActiveTagId !== undefined) {
+                                        setActiveTagId(tag.id);
                                     }
                                 }}
                             >
