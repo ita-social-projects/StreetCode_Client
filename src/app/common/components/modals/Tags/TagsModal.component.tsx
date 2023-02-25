@@ -50,7 +50,7 @@ const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
             <div className="headerTagContainer" style={{ background: `url(${ModalBg})` }}>
                 <TagListModal streetCodeid={useRouteId()} activeTagId={activeTagId} setActiveTagId={setActiveTagId} />
             </div>
-            <div className="relatedFiguresContentContainer">
+            <div className="relatedFiguresByTagsContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (
                     <RelatedFigureItem
                         key={figure.id}

@@ -16,7 +16,7 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal } = modalStore;
+    const { setModal, modalsState: { tagsList } } = modalStore;
 
     useAsync(
         () => fetchImage(imageId),
@@ -33,9 +33,6 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
 
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
-            onClick={() => {
-                setModal('tagsList');
-            }}
         >
             <div className="figureSlideText">
                 <div className="heading">

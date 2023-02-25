@@ -1,68 +1,77 @@
+@use "@assets/sass/_utils.functions.scss" as *;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as fnc;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@sass/_utils.functions.scss" as f;
+
 
 $bookImg: "@assets/images/sources/Books_stretched.png";
 $articlesImg: "@assets/images/sources/Articles.png";
 
 .tagsModal {
-  @include mut.sized(1000px, 690px);
+  @include mut.sized(1000px, 698px);
 
   &.ant-modal {
     .ant-modal-content {
       height: pxToRem(698px);
-      padding: 0 !important;
       @include mut.full-rounded(70px, $overflow: visible);
+      padding: 0 !important;
+      box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+                  0 6px 20px 0 rgb(0 0 0 / 19%);
     }
+
     .ant-modal-close {
-      @include mut.positioned-as(absolute, $left: 94%, $top: -10px);
+      @include mut.positioned-as(absolute, $left: 93%, $top: -25px);
       @include mut.circular(80px, c.$pure-white-color);
-      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-      @include mut.sized(83px, 80px);
+      display: inline;
       &:hover {
         background-color: c.$modal-hover-color;
       }
-    }
-    span.ant-modal-close-x{
-      max-height: f.pxToRem(28px);
-    }
-  }
-}
-
-.headerTagContainer {
-    @include mut.sized(100%, 97px);
-    position: sticky;
-    @include mut.flex-centered();
-    height: pxToRem(97px);
-}
-
-.figuresByTags{
-    @include mut.sized(100%, 600px);
-}
-
-.relatedFiguresByTagsContentContainer{
-  @include mut.sized($width: 90%, $height: 100%);
-  @include mut.flexed($direction: column, $align-items: center);
-
-  .moreInfo {
-      @include mut.sized($width: 1200px);
-      padding-top: f.pxToRem(43px);
-
-      p {
-          @include mut.with-font($font-weight: 500, $font-size: 20px);
-          line-height: f.pxToEm(25px);
-          text-decoration-line: none;
-          color: c.$dark-red-color;
-
-          cursor: pointer;
-
-          &:hover {
-              text-decoration-line: underline;
-
-              filter: contrast(150%);
-          }
+      span.ant-modal-close-x{
+        max-height: f.pxToRem(28px);
       }
+    }
+  }
+
+
+  .headerTagContainer {
+      @include mut.sized(100%, 97px);
+      position: sticky;
+      @include mut.flex-centered();
+      height: pxToRem(97px);
+  }
+
+  .figuresByTags{
+      @include mut.sized(100%, 600px);
+  }
+
+  .relatedFiguresByTagsContentContainer{
+    height: pxToRem(598px);
+    @include mut.flexed($direction: row, $gap: 30px, $wrap: wrap);
+
+    overflow-y: scroll;
+    @include mut.rem-margined(0, 21px, 0, 53px);
+    @include mut.rem-padded(30px, 0, 30px, 3px);
+    &::-webkit-scrollbar {
+      width: .765rem;
+    }
+
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+      @include mut.full-rounded(15px);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: c.$card-scrollbar-track-color;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: c.$accented-gray-color;
+      @include mut.rem-margined($top: 37px, $bottom: 90px);
+    }
+
   }
 }
+  
