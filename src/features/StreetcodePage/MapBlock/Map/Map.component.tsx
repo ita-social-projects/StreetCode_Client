@@ -2,7 +2,6 @@ import './Map.styles.scss';
 import Image from '@assets/images/utils/Instagram.png';
 import { observer } from 'mobx-react-lite';
 import { MapContainer, TileLayer,ZoomControl  } from 'react-leaflet';
-import { MapContainer, TileLayer } from 'react-leaflet';
 import * as L from "leaflet";
 import { GestureHandling } from "leaflet-gesture-handling";
 import CustomMarker from '@streetcode/MapBlock/Map/Marker/MarkerWrapper.component';
@@ -13,8 +12,6 @@ import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import Toponym from '@/models/toponyms/toponym.model';
 import CustomMarkerCluster from './MarkerCluster/MarkerClusterWrapper.component';
 import VectorTileLayer from 'react-leaflet-vector-tile-layer';  
-import * as L from "leaflet";
-import { GestureHandling } from "leaflet-gesture-handling";
 const defaultZoom = 6.4;
 
 const centerOfUkraine = {
@@ -35,7 +32,7 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
       }
 
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
-
+    //if you need to use the previous second map
     // return (
     //     <div className="mapCentered">
     //         <MapContainer {...mapOptions} center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]}

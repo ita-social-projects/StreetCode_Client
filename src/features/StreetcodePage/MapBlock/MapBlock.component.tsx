@@ -16,24 +16,15 @@ import InfoComponent from './Statistics/Info.component';
 
 const MapBlock = () => {
     const id = useRouteId();
-
-    // const toponyms = useAsync(() => ToponymsApi
-    //     .getByStreetcodeId(id), [id]).value as Toponym[];
-
     const toponyms = useAsync(() => ToponymsApi
         .getAll(), []).value as Toponym[];
-
-    // console.log(toponyms);
-
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
         .getByStreetcodeId(id), [id]).value as StreetcodeCoordinate[];
 
     return(
-        <div className="mapBlockContainer">
-            
+        <div className="mapBlockContainer">      
             <BlockHeading headingText="Мапа історії" />
             <CheckBoxComponent />
-            <InfoComponent/>       
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
         </div>
     );

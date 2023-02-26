@@ -29,7 +29,7 @@ const NavigableBlockWrapper = ({ children, setBlocks, topDistance }: Props) => {
             
  
             blocks.push({
-                title: headerBlock?.textContent ??`Секціяя №${idx + 1}`,
+                title: headerBlock?.textContent ??`Секція №${idx + 1}`,
                 height: (child as HTMLElement).offsetTop - topDistance,
             } as NamedBlock);
         });

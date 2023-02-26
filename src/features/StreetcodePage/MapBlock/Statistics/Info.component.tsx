@@ -20,11 +20,6 @@ const InfoComponent = () => {
     const [clicked, setClicked] = useState(false);
     const [hovered, setHovered] = useState(false);
   
-    const hide = () => {
-      setClicked(false);
-      setHovered(false);
-    };
-  
     const handleHoverChange = (open: boolean) => {
       setHovered(open);
       setClicked(false);
@@ -34,6 +29,7 @@ const InfoComponent = () => {
       setHovered(false);
       setClicked(open);
     }; 
+
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
     .getByStreetcodeId(id), [id]).value as StreetcodeCoordinate[];
 
@@ -43,28 +39,27 @@ const InfoComponent = () => {
     
 
     return ( 
-        <Popover
-      className="infoContainer" placement="bottomLeft"
-      content={content}
+     <Popover
+      overlayClassName="transparent-popover"
+      className="infoContainer" 
+      placement="bottomLeft" 
+      content={content}     
       trigger="hover"      
       open={hovered}
       onOpenChange={handleHoverChange}
     >
-      <Popover
-      
-       className="infoContainer" placement="bottomLeft"
-        content={content}
-        trigger="click"      
-        open={clicked}
-        onOpenChange={handleClickChange}
-      >
+    <Popover
+       overlayClassName="transparent-popover"
+       className="infoContainer" 
+       placement="bottomLeft"
+       content={content}
+       trigger="click"      
+       open={clicked}
+       onOpenChange={handleClickChange}
+    >
         <Button  className="infoButton" icon={<InfoCircleOutlined className="infoIcon" style={{ fontSize: '325%'}}/> }> </Button>
       </Popover>
-    </Popover>  
-            // <Popover className="infoContainer" placement="bottomLeft"  content={content}  >
-            // <Button  className="infoButton" icon={<InfoCircleOutlined className="infoIcon" style={{ fontSize: '325%'}}/> }> </Button>
-            // </Popover>
-       
+    </Popover>               
     );
 };
 export default observer(InfoComponent);
