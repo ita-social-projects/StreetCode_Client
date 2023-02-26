@@ -30,10 +30,11 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
             setActiveYear(getTimelineItemArray[index].date.getFullYear());
             sliderRef.current.slickGoTo(index);
         }
-        if (sliderRef && sliderRef.current) { sliderRef.current.slickGoTo(index); }
     };
 
     const onAfterChange = (curIdx: number) => {
+        console.log("afterchange");
+        console.log(`curidx${curIdx}`);
         const timelineArr = getTimelineItemArray;
         const year = timelineArr[Number(curIdx.toFixed(0)) % timelineArr.length].date.getFullYear();
         if (changedByYear) {
@@ -44,7 +45,7 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
     };
 
     return (
-        <div className="sliderClass">
+        <div>
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
