@@ -19,7 +19,7 @@
       @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
       line-height: 134.19%;
       color: c.$lighter-black-color;
-      padding-left: f.pxToRem(20px);
+      padding-left: f.pxToRem(10px);
     }
     span{
       @include mut.with-font($font-weight:500, $font-size:22px);
