@@ -1,12 +1,12 @@
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
-@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
 .adminPageContainer {
     width: 100vh;
     max-width: pxToRem(1600px);
     @include mut.with-font();
     font-size: 20px;
-
+}
 
 .MainBlockContainer {
     margin-top: pxToRem(82px);
@@ -19,4 +19,14 @@
         margin: 0 5px;
     }
 }
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.adminPageContainer {
+    @include mut.sized(100%);
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.dimmed {
+    @include mut.sized(100%);
 }
