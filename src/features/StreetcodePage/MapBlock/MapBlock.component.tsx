@@ -12,26 +12,19 @@ import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-co
 import Toponym from '@/models/toponyms/toponym.model';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import CheckBoxComponent from '@/features/StreetcodePage/MapBlock/CheckBox/CheckBox.component';
+import InfoComponent from './Statistics/Info.component';
 
 const MapBlock = () => {
     const id = useRouteId();
-
-    // const toponyms = useAsync(() => ToponymsApi
-    //     .getByStreetcodeId(id), [id]).value as Toponym[];
-
     const toponyms = useAsync(() => ToponymsApi
         .getAll(), []).value as Toponym[];
-
-    // console.log(toponyms);
-
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
         .getByStreetcodeId(id), [id]).value as StreetcodeCoordinate[];
 
     return(
-        <div className="mapBlockContainer">
+        <div className="mapBlockContainer">      
             <BlockHeading headingText="Мапа історії" />
             <CheckBoxComponent />
-            <StaticticsComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
         </div>
     );
