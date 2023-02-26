@@ -1,9 +1,10 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 .draggable-tag-list{
     display: flex;
     flex-direction: row;
     justify-content: left;
-    max-width: 200px;
+    max-width: f.pxToRem(400px) ;
     flex-wrap: wrap;
 
     .draggable-tag{

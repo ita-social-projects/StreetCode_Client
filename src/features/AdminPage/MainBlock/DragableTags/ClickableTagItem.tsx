@@ -8,7 +8,6 @@ import { TagVisible } from '@/models/additional-content/tag.model';
 const ClickableTagItem: React.FC<{ tag: TagVisible }> = ({ tag }) => {
     const [curTag, setTag] = useState<TagVisible>(tag);
     const onClick = (e) => {
-        console.log(curTag);
         setTag({ ...curTag, visible: !curTag.visible });
     };
     return (

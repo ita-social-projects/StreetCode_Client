@@ -58,18 +58,15 @@ const DragableTags: React.FC<{ tags: TagVisible[], setTags }> = ({ tags, setTags
                                         {...provided.dragHandleProps}
                                         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                     >
-
                                         <ClickableTagItem
                                             tag={tag}
                                         />
-
                                     </div>
                                 )}
 
                             </Draggable>
                         ))}
                         {prov.placeholder}
-
                     </div>
                 )}
             </StrictModeDroppable>

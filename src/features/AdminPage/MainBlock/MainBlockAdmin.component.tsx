@@ -61,7 +61,7 @@ const MainBlockAdmin: React.FC<{ streetcodeType: 'people' | 'event' }> = ({ stre
                     )}
 
                 <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                <Select style={{ width: '100%' }} mode="tags" onSelect={onSelectTag} onDeselect={onDeselectTag}>
+                <Select className='tags-select-input' mode="tags" onSelect={onSelectTag} onDeselect={onDeselectTag}>
                     {tags.map((t) => <Select.Option key={t.id} value={t.title} label={t.title} />)}
                 </Select>
             </>
