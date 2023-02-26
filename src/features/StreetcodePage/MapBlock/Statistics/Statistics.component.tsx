@@ -25,7 +25,7 @@ const StatisticsComponent = ({ toponyms }: Props) => {
             <h1>В Україні іменем Михайла Грушевського названі:</h1>
             <div className="streetsBlock" style={{ display: 'flex', flexWrap: 'wrap'}}>
                 {countByStreetTypeMap && [...countByStreetTypeMap.entries()].map(([streetType, count]) => (
-                    <p style={{ flexBasis: '50%', width: '45%' }}>
+                    <p style={{ flexBasis: '100%', width: '45%' }}>
                         {streetType}: <span>{count}</span> 
                     </p>
                 ))}
