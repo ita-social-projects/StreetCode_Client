@@ -6,7 +6,7 @@ interface Props {
     onClick?: () => void;
 }
 
-const BurgerMenu = ({ onClick}:Props)=>(
+const BurgerMenu = ({ onClick} : Props) => (
     <div className="burgerMenuContainer" onClick={onClick}>
         <img src={burgerIcon} alt="burger"/>
     </div>

@@ -2,7 +2,10 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as fnc;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/_utils.functions.scss" as f;
+
 
 $bookImg: "@assets/images/sources/Books_stretched.png";
 $articlesImg: "@assets/images/sources/Articles.png";
@@ -15,6 +18,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
       height: pxToRem(698px);
       @include mut.full-rounded(70px, $overflow: visible);
 
+
       padding: 0 !important;
       box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
                   0 6px 20px 0 rgb(0 0 0 / 19%);
@@ -24,8 +28,12 @@ $articlesImg: "@assets/images/sources/Articles.png";
       @include mut.positioned-as(absolute, $left: 93%, $top: -25px);
       @include mut.circular(80px, c.$pure-white-color);
 
+      display: inline;
       &:hover {
         background-color: c.$modal-hover-color;
+      }
+      span.ant-modal-close-x{
+        max-height: f.pxToRem(28px);
       }
     }
   }
@@ -44,7 +52,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
   }
 }
 
-.relatedFiguresContentContainer {
+.relatedFiguresReadMoreContentContainer {
   height: pxToRem(598px);
   @include mut.flexed($direction: row, $gap: 30px, $wrap: wrap);
 
@@ -52,16 +60,78 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include mut.rem-margined(0, 21px, 0, 53px);
   @include mut.rem-padded(30px, 0, 30px, 3px);
 
-  .relatedFigureSlide {
-    @include mut.sized($width: 278px, $height: 459px);
+   .relatedFigureSlide:hover {
+      @include mut.sized($width: 278px, $height: 380px);
+      @include mut.full-rounded($rad: 30px);
+      border: 3px solid c.$pure-white-color;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      background-size: 100%;
+      background-repeat: no-repeat;
 
-    .figureSlideText {
-        @include mut.sized($width: 272px, $height: 176px);
-    }
-    .relatedTagList {
-      visibility: visible;
-  }
-  }
+      @include mut.positioned-as();
+      @include mut.flexed($justify-content: center, $align-items: flex-end);
+
+      @include vnd.vendored(transition, 'all .5s ease');
+      cursor: pointer;
+
+      overflow: visible !important;
+      .figureSlideText{
+        @include mut.sized($width: 278px, $height: 97px);
+        @include mut.flexed($align-items: flex-start, $wrap: wrap);
+        @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
+        align-content: flex-start;
+        background-color: c.$dark-red-color;
+        @include vnd.vendored(transition, 'all .5s ease');
+      }
+      .relatedTagList {
+        animation: fadeIn 1s;
+        box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);    
+        z-index: 1  !important;
+        position: absolute;
+        box-sizing: border-box;
+        width: 130px !important;
+        left: 160px;
+        top: 58px;
+        padding: 15px;
+        background-color: c.$pure-white-color;
+        border-radius: 20px;
+        visibility: visible;
+        .tag {
+          @include mut.sized($height: 28px);
+          @include mut.flex-centered();
+          gap: 0 !important;
+          border: 2px solid c.$dark-red-color;
+          @include mut.full-rounded($rad: 7.86px);
+          padding: 5.5px 9.5px !important;
+          @include mut.rem-margined($left: 1.5px, $top: 1.5px, $right: 1.5px, $bottom: 2px);
+          p{
+            @include mut.sized($height: 14px);
+            text-align: center;
+            line-height: 135.69%;
+            @include mut.with-font($font-size: 10px,$font-weight: 500);
+            line-height: pxToRem(13.6px);
+            color: c.$dark-red-color;
+          }
+         }
+        &::after {    
+
+          content: "";
+          position: absolute;
+          width: 0;
+          height: 0;
+          margin-left: -3em;
+          bottom: -25px;
+          left: 50%;
+          box-sizing: border-box;
+          z-index: -1 !important;
+          border: 1em solid black;
+          border-color: transparent transparent #FFFFFF #FFFFFF;       
+          transform-origin: 0 0;
+          transform: rotate(-45deg);
+          box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.25);
+        }  
+      } 
+   }
 
   &::-webkit-scrollbar {
     width: .765rem;
@@ -80,4 +150,5 @@ $articlesImg: "@assets/images/sources/Articles.png";
     background: c.$accented-gray-color;
     @include mut.rem-margined($top: 37px, $bottom: 90px);
   }
+  
 }

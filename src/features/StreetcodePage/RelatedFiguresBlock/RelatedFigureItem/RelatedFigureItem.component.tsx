@@ -14,21 +14,22 @@ interface Props {
 const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
     const { id, imageId, title, tags } = relatedFigure;
 
-    const { imagesStore, tagsStore: { getTagArray } } = useMobx();
+    const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
+    const { setModal, modalsState: { tagsList } } = modalStore;
 
     useAsync(
         () => fetchImage(imageId),
         [imageId],
     );
-    
+
     const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
 
     return (
         <Link
             className={`relatedFigureSlide 
-                ${hoverable && tags.length > 1 ? 'hoverable' : ''}
-                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} 
+            ${hoverable && tags.length > 1 ? 'hoverable' : ''} 
+            ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
 
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
@@ -39,12 +40,22 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                         {title}
                     </p>
                 </div>
-                <div className={`relatedTagList`}>
+                <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
+
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag) => (
-                            <div key={tag.id} className="tag">
+                            <button
+                                key={tag.id}
+                                className="tag"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    if (!tagsList.isOpen) {
+                                        setModal('tagsList');
+                                    }
+                                }}
+                            >
                                 <p>{tag.title}</p>
-                            </div>
+                            </button>
                         ))}
                 </div>
             </div>
