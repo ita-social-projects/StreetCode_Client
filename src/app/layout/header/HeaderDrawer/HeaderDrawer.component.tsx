@@ -21,28 +21,30 @@ const HeaderDrawer = () => {
                 style={{ zIndex: 0 }}
                 onClose={toggle}
                 open={drawerState}
+                className="drawer"
             >
-                <div className="headerDrawerContainer">
-                    <HeaderDrawerItem id={1} parentActive={active} setParentActive={setActive} text="Головна" />
-                    <HeaderDrawerItem id={2} parentActive={active} setParentActive={setActive} text="Стріткоди" />
-                    <HeaderDrawerItem id={3} parentActive={active} setParentActive={setActive} text="Про нас" />
-                    <HeaderDrawerItem id={4} parentActive={active} setParentActive={setActive} text="Партнери" />
-                    <HeaderDrawerItem id={5} parentActive={active} setParentActive={setActive} text="Донати" />
-                    <HeaderDrawerItem id={6} parentActive={active} setParentActive={setActive} text="Контакти" />
+                <div className="grid-container">
+                    <ReactSlider
+                        className="customSlider"
+                        trackClassName="customSlider-track"
+                        thumbClassName="thumb"
+                        onSliderClick={() => {}}
+                        onChange={() => {}}
+                        min={1}
+                        max={6}
+                        value={active}
+                        renderTrack={(props) => <div {...props} />}
+                        orientation="vertical"
+                    />
+                    <div className="headerDrawerContainer">
+                        <HeaderDrawerItem id={1} parentActive={active} setParentActive={setActive} text="Головна" />
+                        <HeaderDrawerItem id={2} parentActive={active} setParentActive={setActive} text="Стріткоди" />
+                        <HeaderDrawerItem id={3} parentActive={active} setParentActive={setActive} text="Про нас" />
+                        <HeaderDrawerItem id={4} parentActive={active} setParentActive={setActive} text="Партнери" />
+                        <HeaderDrawerItem id={5} parentActive={active} setParentActive={setActive} text="Донати" />
+                        <HeaderDrawerItem id={6} parentActive={active} setParentActive={setActive} text="Контакти" />
+                    </div>
                 </div>
-                <ReactSlider
-                    className="customSlider"
-                    trackClassName="customSlider-track"
-                    thumbClassName="thumb"
-                    onSliderClick={() => {}}
-                    onChange={() => {}}
-                    min={1}
-                    max={6}
-                    value={active}
-                    renderTrack={(props) => <div {...props} />}
-                    orientation="vertical"
-                />
-
             </Drawer>
             <BurgerMenu onClick={toggle} />
         </>
