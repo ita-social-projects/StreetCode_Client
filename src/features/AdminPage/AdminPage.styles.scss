@@ -1,9 +1,34 @@
-@use "@sass/mixins/_utils.mixins.scss" as mut;
-.adminPageContainer {
-    width: 100%;
-    overflow: hidden;
- }
 
- .dimmed {
-     @include mut.sized(100%);
- }
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.adminPageContainer {
+    width: 100vh;
+    max-width: pxToRem(1600px);
+    @include mut.with-font();
+    font-size: 20px;
+}
+
+.MainBlockContainer {
+    margin-top: pxToRem(82px);
+
+    .ant-switch-checked {
+        background-color: c.$dark-red-color;
+    }
+
+    .person-event-switch {
+        margin: 0 5px;
+    }
+}
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.adminPageContainer {
+    @include mut.sized(100%);
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.dimmed {
+    @include mut.sized(100%);
+}
+

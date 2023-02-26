@@ -1,5 +1,4 @@
 import './PageBar.styles.scss';
-
  const PageBar = () => {
      return(
          <div className='PageBarContainer'>
@@ -13,3 +12,4 @@ import './PageBar.styles.scss';
  }
 
  export default PageBar;
+
