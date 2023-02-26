@@ -1,3 +1,4 @@
+
 import './AdminPage.styles.scss';
 
 import { useState } from 'react';
@@ -15,3 +16,4 @@ const AdminPage = () => (
 );
 
 export default AdminPage;
+

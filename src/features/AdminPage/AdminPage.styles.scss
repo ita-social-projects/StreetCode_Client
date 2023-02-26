@@ -1,3 +1,4 @@
+
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
 
@@ -30,3 +31,4 @@
 .dimmed {
     @include mut.sized(100%);
 }
+

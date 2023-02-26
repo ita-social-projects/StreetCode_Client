@@ -1,3 +1,4 @@
+
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/variables/_variables.colors.scss" as c;
@@ -27,3 +28,4 @@
         @include vnd.vendored(transition, 'scale .3s ease');
     }
 }
+
