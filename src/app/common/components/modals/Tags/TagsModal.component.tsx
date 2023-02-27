@@ -3,6 +3,7 @@ import './TagsModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import useMobx from '@stores/root-store';
 
@@ -17,10 +18,11 @@ import TagsSliderModal from './TagsSliderModal/TagsSliderModal.component';
 
 interface Props {
     activeTagId: number,
+    activeTagBlock: number,
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
+const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
     const { relatedFiguresStore, modalStore } = useMobx();
     const { setModal, modalsState: { tagsList } } = modalStore;
     const { fetchRelatedFiguresByTagId, getRelatedByActiveTag } = relatedFiguresStore;
@@ -52,6 +54,7 @@ const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
                     streetCodeid={useRouteId()}
                     activeTagId={activeTagId}
                     setActiveTagId={setActiveTagId}
+                    activeTagBlock={activeTagBlock}
                 />
             </div>
             <div className="relatedFiguresByTagsContentContainer">
@@ -59,7 +62,7 @@ const TagsModal = ({ activeTagId, setActiveTagId } : Props) => {
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}
-                        setActiveTagId={undefined}
+                        setActiveTagId={setActiveTagId}
                     />
                 ))}
             </div>

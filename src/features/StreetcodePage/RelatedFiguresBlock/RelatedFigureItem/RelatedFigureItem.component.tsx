@@ -17,12 +17,10 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal } = modalStore;
+    const { setModal, modalsState: { tagsList } } = modalStore;
 
     useAsync(
-        () => {
-            fetchImage(imageId);
-        },
+        () => fetchImage(imageId),
         [imageId],
     );
 
@@ -33,13 +31,9 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             className={`relatedFigureSlide 
             ${hoverable && tags.length > 1 ? 'hoverable' : ''} 
             ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
+
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
-            // onClick={
-            //     () => {
-            //         setModal('tagsList');
-            //     }
-            // }
         >
             <div className="figureSlideText">
                 <div className="heading">
@@ -48,18 +42,18 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     </p>
                 </div>
                 <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
+
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag) => (
                             <button
                                 key={tag.id}
                                 className="tag"
-                                type="button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setModal('tagsList');
-                                    if (setActiveTagId !== undefined) {
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    //if (!tagsList.isOpen) {
+                                        setModal('tagsList');
                                         setActiveTagId(tag.id);
-                                    }
+                                    //}
                                 }}
                             >
                                 <p>{tag.title}</p>

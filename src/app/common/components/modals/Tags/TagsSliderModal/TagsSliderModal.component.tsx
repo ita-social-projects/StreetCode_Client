@@ -10,10 +10,11 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 interface Props {
     streetCodeid: number,
     activeTagId: number,
+    activeTagBlock: number,
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
+const TagListModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagId }: Props) => {
     const { tagsStore } = useMobx();
     const { fetchTagByStreetcodeId, getTagArray } = tagsStore;
 
@@ -25,8 +26,8 @@ const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
         <div className="tagModalContainer">
             <BlockSlider
                 className="tagSliderClass"
-                infinite={false}
-                slidesToShow={1}
+                infinite
+                slidesToShow={3}
                 swipe={false}
                 dots={false}
                 variableWidth
@@ -35,7 +36,7 @@ const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
                 centerMode
                 centerPadding="0"
                 slidesToScroll={1}
-                initialSlide={5}
+                initialSlide={activeTagBlock}
             >
                 {getTagArray?.map((tag) => (
                     <div>

@@ -3,6 +3,7 @@ import './StreetcodeCard.styles.scss';
 import Grushevskiy from '@images/streetcode-card/Grushevskiy.gif';
 import Hrushevskiy from '@images/streetcode-card/Hrushevskyi.png';
 
+import { SetStateAction, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -25,7 +26,8 @@ const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
 
 interface Props {
     streetcode?: Streetcode;
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
+    setActiveBlock: React.Dispatch<React.SetStateAction<number>>
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -58,7 +60,7 @@ const cSlides = [
     />,
 ];
 
-const StreetcodeCard = ({ streetcode, setActiveTagId }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
@@ -111,7 +113,11 @@ const StreetcodeCard = ({ streetcode, setActiveTagId }: Props) => {
                                 streetcode?.eventEndOrPersonDeathDate,
                             )}
                         </div>
-                        <TagList tags={streetcode?.tags.map((tag: Tag) => tag)} setActiveTagId={setActiveTagId} />
+                        <TagList
+                            tags={streetcode?.tags.map((tag: Tag) => tag)}
+                            setActiveTagId={setActiveTagId}
+                            setActiveTagBlock={setActiveBlock}
+                        />
                         <p className="teaserBlock">
                             {streetcode?.teaser}
                         </p>

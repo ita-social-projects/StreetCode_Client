@@ -1,5 +1,6 @@
 import './RelatedFigures.styles.scss';
 
+import React from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
@@ -31,9 +32,9 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         <RelatedFigureItem
             key={figure.id}
             relatedFigure={figure}
-            setActiveTagId={setActiveTagId}
             filterTags
             hoverable
+            setActiveTagId={setActiveTagId}
         />
     ));
 
@@ -53,7 +54,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 <div className="relatedFiguresSliderContainer">
                     <BlockSlider
                         className="heightContainer"
-                        infinite
+                        infinite={true}
                         slidesToShow={4}
                         swipe={false}
                         dots={false}

@@ -20,6 +20,8 @@ import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 
 const StreetcodeContent = () => {
+    const [activeTagId, setActiveTagId] = useState(0);
+    const [activeBlock, setActiveBlock] = useState(0);
     const isSticky = () => {
         const buttonDonate = document.querySelector('.donateBtnContainer');
         const buttonUp = document.querySelector('.scrollToTopBtnContainer');
@@ -34,7 +36,6 @@ const StreetcodeContent = () => {
             }
         }
     };
-    const [activeTagId, setActiveTagId] = useState(0);
     useEffect(() => {
         window.addEventListener('scroll', isSticky);
         return () => {
@@ -47,6 +48,7 @@ const StreetcodeContent = () => {
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}
+                    setActiveBlock={setActiveBlock}
                 />
                 <TextBlock />
                 <InterestingFactsBlock />
@@ -69,6 +71,7 @@ const StreetcodeContent = () => {
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}
+                activeTagBlock={activeBlock}
             />
         </div>
     );
