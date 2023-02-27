@@ -1,6 +1,6 @@
-
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .adminPageContainer {
     width: 100vh;
@@ -20,7 +20,6 @@
         margin: 0 5px;
     }
 }
-@use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .adminPageContainer {
     @include mut.sized(100%);
