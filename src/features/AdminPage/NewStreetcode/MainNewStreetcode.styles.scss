@@ -1,0 +1,14 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+$articlesImg: "@assets/images/sources/Articles.png";
+
+.NewStreetcodeContainer {
+    @include mut.sized(80%);
+   
+     margin-top: f.pxToRem(85px);
+     margin-right: f.pxToRem(50px);
+     padding: 20px 40px;
+     float: right;
+}
