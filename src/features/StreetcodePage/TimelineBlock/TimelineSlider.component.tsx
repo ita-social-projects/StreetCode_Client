@@ -6,7 +6,9 @@ import useMobx from '@stores/root-store';
 
 const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sliderProps }) => {
     const sliderRef = useRef<Slider>(null);
-
+    const [centerMode, setCenterMode] = useState<boolean>(false);
+    const [slideToShow, setSlideToShow] = useState<number>(1);
+    const swiped = useRef<boolean>(false);
     const { timelineItemStore } = useMobx();
     const {
         getTimelineItemArray, activeYear, setActiveYear,
@@ -17,10 +19,18 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
         if (sliderRef && sliderRef.current) {
             const sectionIdx = getTimelineItemArray
                 .findIndex(({ date }) => date.getFullYear() === activeYear);
+            if (sectionIdx === 0) {
+                setCenterMode(false);
+                setSlideToShow(2);
+            } else if (!centerMode) {
+                setCenterMode(true);
+                setSlideToShow(1);
+            }
             console.log(sectionIdx);
             if (sectionIdx !== -1) {
                 sliderRef.current.slickGoTo(sectionIdx);
             }
+            swiped.current = false;
         }
     }, [activeYear]);
 
@@ -33,15 +43,26 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
     };
 
     const onAfterChange = (curIdx: number) => {
-        console.log("afterchange");
-        console.log(`curidx${curIdx}`);
-        const timelineArr = getTimelineItemArray;
-        const year = timelineArr[Number(curIdx.toFixed(0)) % timelineArr.length].date.getFullYear();
+          console.log('afterchange');
+          console.log(`curidx${curIdx}`);
+        /*
         if (changedByYear) {
             setChangedByYear(false);
         } else {
+            const timelineArr = getTimelineItemArray;
+            const year = timelineArr[Number(curIdx.toFixed(0)) % timelineArr.length].date.getFullYear();
+            setActiveYear(year);
+        } */
+        if (swiped.current) {
+            const timelineArr = getTimelineItemArray;
+            console.log(Number(curIdx.toFixed(0)) % timelineArr.length);
+            const year = timelineArr[Number(curIdx.toFixed(0)) % timelineArr.length].date.getFullYear();
+            console.log(year);
             setActiveYear(year);
         }
+    };
+    const onSwipe = () => {
+        swiped.current = true;
     };
 
     return (
@@ -49,7 +70,10 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
+                centerMode={centerMode}
                 afterChange={onAfterChange}
+                onSwipe={onSwipe}
+                slidesToShow={slideToShow}
             >
                 {children.map((slide, idx) => (
                     <div key={idx} onClick={() => handleClick(idx)}>

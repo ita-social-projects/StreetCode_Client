@@ -31,7 +31,7 @@ const TimelineBlock = () => {
                     arrows={false}
                     centerMode
                     swipeOnClick
-                    infinite
+                    infinite={false}
                     variableWidth
                     swipeToSlide
                     slidesToScroll={1}
