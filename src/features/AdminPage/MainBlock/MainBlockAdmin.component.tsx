@@ -5,7 +5,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
-    DatePicker, Form, Input, InputNumber, Select, Space, Switch, Upload, UploadFile,
+    Form, Input, InputNumber, InputRef, Select, Switch, Upload, UploadFile,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import Dragger from 'antd/es/upload/Dragger';
@@ -15,22 +15,30 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
+import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 import DatePickerPart from './DatePickerPart.component';
 
 const { Option } = Select;
 const MainBlockAdmin: React.FC = () => {
-    const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const allTags = useAsync(() => TagsApi.getAll()).value;
+    const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [tags, setTags] = useState< Tag[]>([]);
     const [leftCharForInput, setLeftCharForInput] = useState<number>(450);
     const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
 
-    const firstDate = useRef<Dayjs>();
-    const secondDate = useRef<Dayjs>();
-    const [fileList, setFileList] = useState<UploadFile[]>();
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
 
-    const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList);
+    const name = useRef<InputRef>(null);
+    const surname = useRef<InputRef>(null);
+    const [stretcodeTitle, setStreetcodeTitle] = useState<string>();
+    const firstDate = useRef<Dayjs>(null);
+    const secondDate = useRef<Dayjs>(null);
 
+    const onNameSurnameChange = () => {
+        const curname = name.current?.input?.value;
+        setStreetcodeTitle(`${surname.current?.input?.value}${curname ? ` ${curname}` : ''}`);
+    };
     const onSwitchChange = (value:boolean) => {
         if (value) {
             setStreetcodeType('event');
@@ -38,7 +46,7 @@ const MainBlockAdmin: React.FC = () => {
             setStreetcodeType('people');
         }
     };
-    const onTextAreaTeaserChange = (e) => {
+    const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
         setLeftCharForInput(450 - text.length - (text.match(/(\n|\r)/gm) || []).length * 49);
     };
@@ -76,6 +84,11 @@ const MainBlockAdmin: React.FC = () => {
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
+    const handlePreview = async (file: UploadFile) => {
+        setFilePreview(file);
+        setPreviewOpen(true);
+    };
+
     dayjs.locale('uk');
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
@@ -86,25 +99,37 @@ const MainBlockAdmin: React.FC = () => {
                 Постать
                 <Switch className="person-event-switch" onChange={onSwitchChange} />
                 Подія
+
                 <Form.Item label="Номер стріткоду">
                     <InputNumber min={0} />
                 </Form.Item>
+
                 {streetcodeType === 'people' ? (
                     <Input.Group compact className="maincard-input people-title-group">
                         <Form.Item label="Прізвище" className="people-title-input">
-                            <Input />
+                            <Input
+                                ref={surname}
+                                onChange={onNameSurnameChange}
+                            />
                         </Form.Item>
                         <Form.Item label="Ім'я" className="people-title-input">
-                            <Input />
+                            <Input ref={name} onChange={onNameSurnameChange} />
                         </Form.Item>
-
                     </Input.Group>
                 )
                     : ('')}
-                <Form.Item label="Назва події" className="maincard-input event-title-input">
-                    <Input />
+
+                <Form.Item label="Назва стріткоду" className="maincard-input stretcode-title-input">
+                    <Input
+                        value={stretcodeTitle}
+                        onChange={(e) => {
+                            setStreetcodeTitle(e.target.value);
+                        }}
+                    />
                 </Form.Item>
-                <DatePickerPart />
+
+                <DatePickerPart firstDate={firstDate} secondDate={secondDate} />
+
                 <p>Теги:</p>
                 <DragableTags setTags={setSelectedTags} tags={selectedTags} />
                 <Select
@@ -115,6 +140,7 @@ const MainBlockAdmin: React.FC = () => {
                 >
                     {tags.map((t) => <Option key={t.id} value={t.title} label={t.title} />)}
                 </Select>
+
                 <Form.Item
                     className="maincard-input teaser-input"
                     label="Тизер"
@@ -131,6 +157,8 @@ const MainBlockAdmin: React.FC = () => {
                     <Upload
                         listType="picture-card"
                         multiple={false}
+                        maxCount={1}
+                        onPreview={handlePreview}
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     >
                         <InboxOutlined />
@@ -142,7 +170,11 @@ const MainBlockAdmin: React.FC = () => {
                     className="maincard-input"
                     label="Зображення"
                 >
-                    <Upload multiple listType="picture-card">
+                    <Upload
+                        multiple
+                        listType="picture-card"
+                        onPreview={handlePreview}
+                    >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
                     </Upload>
@@ -154,9 +186,11 @@ const MainBlockAdmin: React.FC = () => {
                 >
                     <Dragger>
                         <InboxOutlined />
+
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
                     </Dragger>
                 </Form.Item>
+                <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
             </>
         </Form>
     );

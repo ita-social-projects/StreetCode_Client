@@ -1,3 +1,5 @@
+import './PreviewFileModal.styles.scss';
+
 import React, { useEffect, useState } from 'react';
 
 import { Modal, UploadFile } from 'antd';
@@ -11,27 +13,31 @@ const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, rejec
 });
 
 const PreviewFileModal:React.FC<{
-     opened:boolean, setOpened, file: UploadFile
+     opened:boolean, setOpened:React.Dispatch<React.SetStateAction<boolean>>, file: UploadFile | null
     }> = ({ opened, setOpened, file }) => {
-        const [fileProps, setFileProps] = useState<{ previewImage:string, previewTitile:string }>({ previewImage: '', previewTitile: '' });
-
+        const [fileProps, setFileProps] = useState<{
+             previewImage:string, previewTitle:string }>({ previewImage: '', previewTitle: '' });
         const handleCancel = () => {
             setOpened(false);
         };
         useEffect(() => {
             async function uploadImageToModal() {
-                if (!file.url && !file.preview) {
-                    file.preview = await getBase64(file.originFileObj as RcFile);
+                if (file) {
+                    if (!file.url && !file.preview) {
+                        // eslint-disable-next-line no-param-reassign
+                        file.preview = await getBase64(file.originFileObj as RcFile);
+                    }
+                    setFileProps({ previewImage: file.url || (file.preview as string),
+                                   previewTitle: file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1) });
                 }
-                setFileProps({ previewImage: file.url || (file.preview as string),
-                               previewTitile: file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1) });
-                setOpened(true);
             }
             uploadImageToModal();
-        }, [opened]);
+        }, [opened, file]);
         return (
-            <Modal open={opened} title={previewTitle} footer={null} onCancel={handleCancel}>
-                <img alt="example" style={{ width: '100%' }} src={previewImage} />
+            <Modal open={opened} title={fileProps.previewTitle} footer={null} onCancel={handleCancel}>
+                <div className="modal-item-image">
+                    <img alt="uploaded" src={fileProps.previewImage} />
+                </div>
             </Modal>
         );
     };

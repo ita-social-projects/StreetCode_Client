@@ -15,7 +15,10 @@
         align-self:center;
         @include mut.with-font();
     }
-    .ant-select, .ant-select-selector,.ant-select-selection-search-input,.ant-select-selection-search-input{
+    .ant-select,
+    .ant-select-selector,
+    .ant-select-selection-search-input,
+    .ant-picker{
         @include mut.with-font();
     }
     
@@ -24,7 +27,7 @@
         flex-direction: row;
         justify-content: space-between;
     }
-    .event-title-people{ 
+    .stretcode-title-people{ 
         width:f.pxToRem(200px) ;
     }
     .textarea-teaser{
@@ -33,28 +36,42 @@
     .ant-input-textarea>textarea{
         resize: none;
     }
-    .ant-picker .ant-picker-input> input{
-        width: f.pxToRem(100px) ;
-        @include mut.with-font();
-    }
-    .date-picker-qroup-item .ant-select{
-        width: f.pxToRem(140px) ;
-        margin-bottom: 10px;
+    .ant-picker {
+
+        .ant-picker-input> input{
+            @include mut.with-font();
+        }
+        width: 100%;
+        box-sizing: border-box;
+       
     }
     .date-picker-qroup{
         margin:f.pxToRem(20px) 0;
-        width: f.pxToRem(650px);
+        width: f.pxToRem(750px);
         display: flex;
-        align-items: top;
+        align-items: bottom;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: left;
+        .date-picker-type-input{
+            width: 100%;
+        }
+        .date-picker-qroup-item{
+            width: f.pxToRem(200px);
+          
+        }
+        p{
+            margin-left: f.pxToRem(10px);
+            display: block;
+            align-self:flex-end;
+        }
+        .date-string-input{
+            width: f.pxToRem(360px);
+        }
     }
     .teaser-input{
-        width: f.pxToRem(650px);
+        width: f.pxToRem(750px);
     }
-    .date-string-input{
-        width: f.pxToRem(360px);
-    }
+    
     
 }
 
