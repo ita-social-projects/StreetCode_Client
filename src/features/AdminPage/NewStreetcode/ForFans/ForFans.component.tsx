@@ -8,9 +8,7 @@ const cardStyle: React.CSSProperties = {
     textAlign: 'center',
   };
 
- const ForFansBlock = () => (
-     <div className="NewStreetcodeContainer">
-       <PageBar/>  
+ const ForFansBlock = () => ( 
        <div className='ForFansContainer'>
           <h3>Для фанатів</h3>
           <h4>Стріткоди</h4>
@@ -43,7 +41,6 @@ const cardStyle: React.CSSProperties = {
            </Col>
     </Row>
        </div>
-     </div>
  );
 
  export default ForFansBlock;
