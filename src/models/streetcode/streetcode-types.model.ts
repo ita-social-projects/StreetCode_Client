@@ -56,7 +56,8 @@ export interface PersonStreetcode {
 
 export enum Stage {
     Draft,
-    Published
+    Published,
+    Deleted
 }
 
 export enum StreetcodeType {

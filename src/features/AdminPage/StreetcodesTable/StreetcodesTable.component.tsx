@@ -1,7 +1,7 @@
 import './StreetcodesTable.styles.scss';
 import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
 import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
-import Streetcode from "@/models/streetcode/streetcode-types.model";
+import Streetcode, { Stage } from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
 import { Button } from 'antd';
@@ -14,7 +14,7 @@ const StreetcodesTable = () => {
 
     const { value } = useAsync(() => StreetcodesApi.getAll(), []);
     const streetcodes = value as Streetcode[];
-
+    
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 
     const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
@@ -47,6 +47,21 @@ const StreetcodesTable = () => {
     //     setOpen(false);
     // };
 
+    const DeleteAction = (record: MapedStreetCode) => {
+        StreetcodesApi.delete(record.key)
+                let updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
+                    if (item.index === record.index) {
+                        return {
+                            ...item,
+                            stage: "Видалений"
+                        };
+                    }
+                    return item;
+                });
+                
+        setMapedStreetCodes(updatedMapedStreetCodes);
+    }
+
     const columnsNames = [
         {
             title: 'Назва стріткоду',
@@ -73,22 +88,20 @@ const StreetcodesTable = () => {
             title: 'Дії',
             dataIndex: 'action',
             key: 'action',
-            render: (value: any, record: any, index: any) => <>
+            render: (value: any, record: MapedStreetCode, index: any) => 
+            <>
                 <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
                 <DeleteOutlined className='actionButton' onClick={(event) => {
-                    event.stopPropagation()
-                    // showModal()
-                    console.log(record.index)
-                    StreetcodesApi.delete(record.index)
-                    setMapedStreetCodes(mapedStreetCodes.filter(sc => sc.index != record.index))
-                    }}/>
+                event.stopPropagation()
+                DeleteAction(record)
+                }}/>
             </>
         }
     ]
 
     interface MapedStreetCode {
         key: number,
-        index: string,
+        index: number,
         stage: string,
         date: string,
         name: string
@@ -100,10 +113,18 @@ const StreetcodesTable = () => {
 
         streetcodes?.map((streetcode) => {
 
+            let currentStage: string = "";
+            
+            switch(streetcode.stage){
+                case 0: {currentStage = "Чернетка"; break;}
+                case 1: {currentStage = "Опублікований"; break;}
+                case 2: {currentStage = "Видалений"; break;}
+            }
+
             let mapedStreetCode = {
                 key: streetcode.id,
-                index: `${streetcode.index}`,
-                stage: streetcode.stage == 0 ? "Чернетка" : "Опублікований",
+                index: streetcode.index,
+                stage: currentStage,
                 date: formatDate(new Date(streetcode.updatedAt)),
                 name: streetcode.type == 0 ? `${streetcode.title}` 
                 : `${streetcode.firstName} ${streetcode.lastName}`
@@ -132,7 +153,7 @@ const StreetcodesTable = () => {
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
                 pagination={{className: "paginationButton", pageSize: 8}}
-                onRow={(record) => {
+                onRow={(record: MapedStreetCode) => {
                     return {
                       onClick: () => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.index}`,'_blank')
                     }
