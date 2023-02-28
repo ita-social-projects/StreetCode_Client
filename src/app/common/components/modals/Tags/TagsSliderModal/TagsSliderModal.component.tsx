@@ -41,7 +41,7 @@ const TagListModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagI
                 {getTagArray?.map((tag) => (
                     <div>
                         <Button
-                            className={`tagModalItem ${tag.id === activeTagId ? 'active' : ''}`}
+                            className="tagModalItem"
                             onClick={() => {
                                 setActiveTagId(tag.id);
                             }}

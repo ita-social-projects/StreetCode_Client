@@ -3,7 +3,6 @@ import './TagsModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import useMobx from '@stores/root-store';
 
@@ -34,7 +33,7 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
                 fetchRelatedFiguresByTagId(tagId);
             }
         },
-        [tagId, tagsList],
+        [tagId],
     );
     return (
         <Modal
@@ -63,6 +62,7 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
                         key={figure.id}
                         relatedFigure={figure}
                         setActiveTagId={setActiveTagId}
+                        setPersonId={setPersonId}
                     />
                 ))}
             </div>

@@ -3,27 +3,20 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 
 .tagModalContainer {
-  @include mut.rem-padded(13px, 13px, 13px, 20px);
-  @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
   width: 70%;
   .sliderClass{
-    width: 100% !important;
-    height: 100px;
-    vertical-align: middle;
+    height: f.pxToRem(80px);
   }
   .slick-list {
-    padding: 20px; 
+    padding: f.pxToRem(20px);
   }
   .slick-track {
-    padding-top: 3px;
-  }
-  .slick-initialized{
     position: relative;
-    top: 30%;
+    padding: f.pxToRem(22px) 0;
   }
-  div.slick-current{
-    height: 100px;
-    vertical-align: middle;
+
+  div.slick-center{
+    transform: scale(1.2);
   }
   
   .tagModalItem {
@@ -40,16 +33,6 @@
     @include mut.with-font($font-weight: bold, $font-size: 15px);
 
     &:hover {
-      color: c.$dark-red-color;
-      border-color: c.$dark-red-color;
-    }
-    &:focus{
-      transform: scale(1.2);
-      color: c.$dark-red-color;
-      border-color: c.$dark-red-color;
-    }
-    &.active{
-      transform: scale(1.2);
       color: c.$dark-red-color;
       border-color: c.$dark-red-color;
     }

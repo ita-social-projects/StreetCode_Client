@@ -54,7 +54,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 <div className="relatedFiguresSliderContainer">
                     <BlockSlider
                         className="heightContainer"
-                        infinite={true}
+                        infinite
                         slidesToShow={4}
                         swipe={false}
                         dots={false}
