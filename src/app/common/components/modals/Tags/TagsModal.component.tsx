@@ -62,7 +62,6 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
                         key={figure.id}
                         relatedFigure={figure}
                         setActiveTagId={setActiveTagId}
-                        setPersonId={setPersonId}
                     />
                 ))}
             </div>

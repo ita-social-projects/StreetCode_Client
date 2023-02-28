@@ -7,7 +7,7 @@ import useMobx from '@stores/root-store';
 
 interface Props {
     relatedFigure: RelatedFigure;
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>> | undefined;
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>;
     filterTags?: boolean;
     hoverable?: boolean;
 }
@@ -45,6 +45,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag) => (
                             <button
+                                type="button"
                                 key={tag.id}
                                 className="tag"
                                 onClick={(event) => {
