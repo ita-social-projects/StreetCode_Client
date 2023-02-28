@@ -1,9 +1,6 @@
 {
   "name": "streetcode",
-  "author": {
-    "name": "SoftServe IT Academy",
-    "url": "https://career.softserveinc.com/uk-ua/"
-  },
+  "author": "SoftServe IT Academy (https://career.softserveinc.com/uk-ua/)",
   "license": "MIT",
   "version": "0.1.0",
   "private": true,
@@ -20,6 +17,7 @@
     "antd": "^5.2.2",
     "axios": "^1.2.1",
     "date-fns": "^2.29.3",
+    "dayjs": "^1.11.7",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "http-status-codes": "^2.2.0",
@@ -101,5 +99,16 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
-  }
+  },
+  "description": "<a href=\"https://softserve.academy/\">   <img src=\"https://raw.githubusercontent.com/ita-social-projects/StreetCode/master/StreerCodeLogo.jpg\"    title=\"SoftServe IT Academy\"    alt=\"SoftServe IT Academy\"> </a>",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ita-social-projects/StreetCode_Client.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/ita-social-projects/StreetCode_Client/issues"
+  },
+  "homepage": "https://github.com/ita-social-projects/StreetCode_Client#readme"
 }

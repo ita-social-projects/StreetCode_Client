@@ -1,4 +1,4 @@
-
+@use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
 
@@ -6,7 +6,6 @@
     width: 100vh;
     max-width: pxToRem(1600px);
     @include mut.with-font();
-    font-size: 20px;
 }
 
 .MainBlockContainer {
@@ -20,7 +19,7 @@
         margin: 0 5px;
     }
 }
-@use "@sass/mixins/_utils.mixins.scss" as mut;
+
 
 .adminPageContainer {
     @include mut.sized(100%);

@@ -1,25 +1,25 @@
-import { Switch } from "antd";
-import { useState } from "react";
-import StreetcodesTable from "../StreetcodesTable/StreetcodesTable.component";
-import MainBlockAdmin from "./MainBlockAdmin.component";
+import '../AdminPage.styles.scss';
+
+import { ConfigProvider } from 'antd';
+import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
+import LocaleProvider from 'antd/lib/locale';
+import ukUA from 'antd/locale/uk_UA';
+
+import MainBlockAdmin from './MainBlockAdmin.component';
 
 const Addnewmainblock = () => {
-    const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
-    const onSwitchChange = (value:boolean) => {
-        if (value) {
-            setStreetcodeType('event');
-        } else {
-            setStreetcodeType('people');
-        }
-    };
+    ukUA.DatePicker.lang.locale = 'uk';
     return (
-        <div className="adminPageContainer">
-            <div className="MainBlockContainer">
-                Персона
-                <Switch className="person-event-switch" onChange={onSwitchChange} />
-                Подія
-               <MainBlockAdmin streetcodeType={streetcodeType} />
-            </div>
-        </div>
+        <LocaleProvider locale={ukUA}>
+            <ConfigProvider locale={ukUA}>
+                <div className="adminPageContainer">
+                    <div className="MainBlockContainer">
+                        <MainBlockAdmin />
+                    </div>
+                </div>
+            </ConfigProvider>
+        </LocaleProvider>
     );
 };
+
+export default Addnewmainblock;

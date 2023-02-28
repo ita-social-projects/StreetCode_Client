@@ -2,18 +2,54 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 .mainblock-add-form{
+    @include mut.with-font();
    .ant-form-item-label>label{
         @include mut.with-font();
 
     }
+    .maincard-input{
+        width:f.pxToRem(450px) ;
+        margin: 10px 0;
+    }
     .ant-input{
+        align-self:center;
         @include mut.with-font();
     }
     .ant-select, .ant-select-selector,.ant-select-selection-search-input,.ant-select-selection-search-input{
         @include mut.with-font();
     }
-    .tags-select-input{
+    
+    .people-title-group{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .event-title-people{ 
         width:f.pxToRem(200px) ;
+    }
+    .textarea-teaser{
+        height:f.pxToRem(80px);
+    }
+    .ant-input-textarea>textarea{
+        resize: none;
+    }
+    .ant-picker .ant-picker-input> input{
+        width: f.pxToRem(100px);
+        @include mut.with-font();
+    }
+    .date-picker-qroup{
+        margin-top: f.pxToRem(20px);
+        width: f.pxToRem(650px);
+        display: flex;
+        align-items: top;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .teaser-input{
+        width: f.pxToRem(650px);
+    }
+    .date-string-input{
+        width: f.pxToRem(360px);
     }
     
 }
