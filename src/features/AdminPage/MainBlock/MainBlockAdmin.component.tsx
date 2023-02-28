@@ -87,8 +87,10 @@ const MainBlockAdmin: React.FC = () => {
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
-    const dateToString = (typeDate:'date' | 'month' | 'year', date: Dayjs):string => {
-        dayjs.locale('ua');
+    const dateToString = (typeDate:'date' | 'month' | 'year', date: Dayjs | undefined):string => {
+        if (!date) {
+            return '';
+        }
         if (typeDate === 'date') {
             return date.format('D MMMM YYYY');
         }
@@ -102,6 +104,7 @@ const MainBlockAdmin: React.FC = () => {
     };
 
     const onChangeFirstDate = (date) => {
+
         const index = dateString.indexOf(' - ');
         if (index < 0) {
             setDateString(dateToString(dateTimePickerType, date));
@@ -110,24 +113,23 @@ const MainBlockAdmin: React.FC = () => {
             setDateString(newString.concat(dateString.substring(index, dateString.length)));
         }
     };
+    const onDeselectFirstDate = ():boolean => {
+        onChangeFirstDate(undefined);
+        return true;
+    };
 
     const onChangeSecondDate = (date) => {
         const index = dateString.indexOf(' - ');
         if (index < 0) {
             setDateString(dateString.concat(` - ${dateToString(dateTimePickerType, date)}`));
         } else {
-            setDateString(dateString.substring(0, index).concat(` - ${dateToString(dateTimePickerType, date)}`));
+            setDateString(dateString.substring(0, index)
+                .concat(` ${date ? ' - ' : ''} ${dateToString(dateTimePickerType, date)}`));
         }
     };
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-          file.preview = await getBase64(file.originFileObj as RcFile);
-        }
-    
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-      };
+    const onDeselectSecondDate = ():boolean => {
+        onChangeSecondDate(undefined);
+    };
     dayjs.locale('uk');
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
@@ -170,6 +172,7 @@ const MainBlockAdmin: React.FC = () => {
                             name="firstDate"
                             onChange={onChangeFirstDate}
                             picker={dateTimePickerType}
+                            onSelect={onDeselectFirstDate}
                         />
                     </Form.Item>
                     <Space direction="horizontal" />
@@ -178,6 +181,7 @@ const MainBlockAdmin: React.FC = () => {
                             name="secondDate"
                             onChange={onChangeSecondDate}
                             picker={dateTimePickerType}
+                            onSelect={onDeselectSecondDate}
                         />
                     </Form.Item>
                     <div className="date-string-input">
@@ -209,7 +213,6 @@ const MainBlockAdmin: React.FC = () => {
                     label="Анімація"
                 >
                     <Upload
-                        onPreview={handlePreview}
                         listType="picture-card"
                         multiple={false}
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
