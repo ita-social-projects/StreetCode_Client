@@ -34,11 +34,15 @@
         resize: none;
     }
     .ant-picker .ant-picker-input> input{
-        width: f.pxToRem(100px);
+        width: f.pxToRem(100px) ;
         @include mut.with-font();
     }
+    .date-picker-qroup-item .ant-select{
+        width: f.pxToRem(140px) ;
+        margin-bottom: 10px;
+    }
     .date-picker-qroup{
-        margin-top: f.pxToRem(20px);
+        margin:f.pxToRem(20px) 0;
         width: f.pxToRem(650px);
         display: flex;
         align-items: top;

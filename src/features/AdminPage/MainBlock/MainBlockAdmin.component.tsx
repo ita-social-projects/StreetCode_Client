@@ -1,6 +1,6 @@
 import './MainBlockAdmin.style.scss';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -15,16 +15,18 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
+import DatePickerPart from './DatePickerPart.component';
 
 const { Option } = Select;
 const MainBlockAdmin: React.FC = () => {
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const allTags = useAsync(() => TagsApi.getAll()).value;
     const [tags, setTags] = useState< Tag[]>([]);
-    const [dateTimePickerType, setDateTimePickerType] = useState<'date' | 'month' | 'year'>('date');
-    const [dateString, setDateString] = useState<string>('');
     const [leftCharForInput, setLeftCharForInput] = useState<number>(450);
     const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
+
+    const firstDate = useRef<Dayjs>();
+    const secondDate = useRef<Dayjs>();
     const [fileList, setFileList] = useState<UploadFile[]>();
 
     const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList);
@@ -40,19 +42,6 @@ const MainBlockAdmin: React.FC = () => {
         const text = e.target.value;
         setLeftCharForInput(450 - text.length - (text.match(/(\n|\r)/gm) || []).length * 49);
     };
-    const selectDateOptions = [{
-        value: 'date',
-        label: 'День/місяць/рік',
-    },
-    {
-        value: 'month',
-        label: 'Місяць/рік',
-    },
-    {
-        value: 'year',
-        label: 'Рік',
-    },
-    ];
 
     useEffect(() => {
         if (allTags) {
@@ -87,49 +76,6 @@ const MainBlockAdmin: React.FC = () => {
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
-    const dateToString = (typeDate:'date' | 'month' | 'year', date: Dayjs | undefined):string => {
-        if (!date) {
-            return '';
-        }
-        if (typeDate === 'date') {
-            return date.format('D MMMM YYYY');
-        }
-        if (typeDate === 'month') {
-            return date.format('MMMM YYYY');
-        }
-        if (typeDate === 'year') {
-            return date.format('YYYY');
-        }
-        return '';
-    };
-
-    const onChangeFirstDate = (date) => {
-
-        const index = dateString.indexOf(' - ');
-        if (index < 0) {
-            setDateString(dateToString(dateTimePickerType, date));
-        } else {
-            const newString = dateToString(dateTimePickerType, date);
-            setDateString(newString.concat(dateString.substring(index, dateString.length)));
-        }
-    };
-    const onDeselectFirstDate = ():boolean => {
-        onChangeFirstDate(undefined);
-        return true;
-    };
-
-    const onChangeSecondDate = (date) => {
-        const index = dateString.indexOf(' - ');
-        if (index < 0) {
-            setDateString(dateString.concat(` - ${dateToString(dateTimePickerType, date)}`));
-        } else {
-            setDateString(dateString.substring(0, index)
-                .concat(` ${date ? ' - ' : ''} ${dateToString(dateTimePickerType, date)}`));
-        }
-    };
-    const onDeselectSecondDate = ():boolean => {
-        onChangeSecondDate(undefined);
-    };
     dayjs.locale('uk');
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
@@ -158,37 +104,7 @@ const MainBlockAdmin: React.FC = () => {
                 <Form.Item label="Назва події" className="maincard-input event-title-input">
                     <Input />
                 </Form.Item>
-                <p>Роки життя/Дата або період події</p>
-                <Select
-                    className="maincard-input"
-                    options={selectDateOptions}
-                    onChange={(val) => {
-                        setDateTimePickerType(val);
-                    }}
-                />
-                <div className="date-picker-qroup">
-                    <Form.Item>
-                        <DatePicker
-                            name="firstDate"
-                            onChange={onChangeFirstDate}
-                            picker={dateTimePickerType}
-                            onSelect={onDeselectFirstDate}
-                        />
-                    </Form.Item>
-                    <Space direction="horizontal" />
-                    <Form.Item>
-                        <DatePicker
-                            name="secondDate"
-                            onChange={onChangeSecondDate}
-                            picker={dateTimePickerType}
-                            onSelect={onDeselectSecondDate}
-                        />
-                    </Form.Item>
-                    <div className="date-string-input">
-                        <p>{dateString}</p>
-                    </div>
-                </div>
-
+                <DatePickerPart />
                 <p>Теги:</p>
                 <DragableTags setTags={setSelectedTags} tags={selectedTags} />
                 <Select
