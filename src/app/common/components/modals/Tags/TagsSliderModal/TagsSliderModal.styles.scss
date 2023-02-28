@@ -3,7 +3,7 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 
 .tagModalContainer {
-  width: 70%;
+  width: 60%;
   .sliderClass{
     height: f.pxToRem(80px);
   }
@@ -17,6 +17,7 @@
 
   div.slick-center{
     transform: scale(1.2);
+    padding: 0 f.pxToRem(4px);
   }
   
   .tagModalItem {

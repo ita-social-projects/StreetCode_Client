@@ -17,7 +17,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal } = modalStore;
+    const { setModal, modalsState: {tagsList} } = modalStore;
 
     useAsync(
         () => fetchImage(imageId),
@@ -33,6 +33,11 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
+            onClick={() => {
+                if (!tagsList) {
+                    setModal('tagsList');
+                }
+            }}
         >
             <div className="figureSlideText">
                 <div className="heading">

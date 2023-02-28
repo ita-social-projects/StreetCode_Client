@@ -27,7 +27,7 @@ const TagListModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagI
             <BlockSlider
                 className="tagSliderClass"
                 infinite
-                slidesToShow={3}
+                slidesToShow={1}
                 swipe={false}
                 dots={false}
                 variableWidth
