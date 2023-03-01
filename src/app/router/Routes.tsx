@@ -5,7 +5,6 @@ import StreetcodeContent from '@streetcode/Streetcode.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import NewStreetcode from '@features/AdminPage/NewStreetcode/NewStreetcode.component';
 import ForFans from '@features/AdminPage/ForFans/ForFans.component';
-import InterestingFactsBlock from '@/features/AdminPage/NewStreetcode/InterestingFactsBlock/InterestingFactsBlock.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
@@ -15,8 +14,6 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/new-streetcode`} element={<NewStreetcode />} />
         <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/for-fans`} element={<ForFans />} />
 
-
-        <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/wow-facts`} element={<InterestingFactsBlock />} />
         {/* <Route index path={FRONTEND_ROUTES.STREETCODE.BASE} element={<StreetcodeContent />} /> */}
         {/* <Route path='*' element={<NotFound />} /> */}
     </Route>,

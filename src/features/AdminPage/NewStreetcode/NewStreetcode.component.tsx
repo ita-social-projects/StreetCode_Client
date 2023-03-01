@@ -1,4 +1,5 @@
 import PageBar from '../PageBar/PageBar.component';
+import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import './NewStreetcode.styles.scss';
 import { Card, Col, Row } from 'antd';
 import {DeleteOutlined, FormOutlined, PlusOutlined} from '@ant-design/icons';
@@ -11,6 +12,7 @@ const cardStyle: React.CSSProperties = {
  const NewStreetcode = () => (
      <div className="NewStreetcodeContainer">
        <PageBar/>  
+       <InterestingFactsBlock/>
        <div className='ForFansContainer'>
           <h3>Для фанатів</h3>
           <h4>Стріткоди</h4>

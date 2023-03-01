@@ -4,99 +4,32 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
-.interestingFactBlock {
-  // @include mut.sized($width: 100%);
-  // position: flex;
-  // @include mut.flexed($align-items: center, $gap: 5px, $wrap: wrap);
-  // @include mut.rem-padded($top: 7px, $left: 23px, $right: 23px);
-  .item{
-
-
-    @include mut.sized($width: 100%);
-    position: flex;
-    @include mut.flexed($align-items: center, $gap: 5px, $wrap: wrap);
-    @include mut.rem-padded($top: 7px, $left: 23px, $right: 23px);
-
-
-
-
-    @include mut.sized($height: 28px);
+.interestingFactItem {
+  @include mut.sized($width: 25%);
+  
+  .item {
+    @include mut.sized($height: 95%);
     @include mut.flex-centered();  
     border: 1.5px solid c.$dark-red-color;
     @include mut.full-rounded($rad: 7.86px);
     @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
-  
+    
     p {
-        @include mut.sized($height: 14px);
-        text-align: center;
-        line-height: 135.69%;
-  
-        @include mut.with-font($font-size: 10px,$font-weight: 500);
-        line-height: pxToRem(13.6px);
-        color: c.$dark-red-color;
+      text-align: center;
+      line-height: 135.69%;
+      @include mut.with-font($font-size: 15px,$font-weight: 500);
+      line-height: pxToRem(13.6px);
+      color: c.$dark-red-color;
     }
+
+    .faIcon {
+      cursor: pointer;
+      display: block;
+      text-align: right;
+      margin: 0 0 0 100%;
+      color: black;
+    }
+
   }
 
 }
-
-
-//  // @include mut.sized(100px, 20px);
-//  @include mut.full-rounded(3px);
-// display: flex;
-// //   z-index: 2 ;
-//   cursor: pointer;
-//   position: absolute;
-//   @include vnd.vendored(transition, '.5s ease');
-
-//   background-color: c.$pure-white-color;
-//   box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, .25);
-
-    // .heading {
-    //  @include mut.rem-padded(11px, 20px, 10px, 20px);
-    //  color: c.$accented-red-color;
-
-    //  @include mut.with-font($font-weight: 500, $font-size: 17px);
-    //   line-height: f.pxToEm(20px);
-    // }
-
-    // .mainText {
-    //   @include mut.rem-padded(0, 20px, 0px, 20px);
-    //   color: c.$lighter-black-color;
-
-    //   @include mut.with-font($font-weight: 300, $font-size: 13px);
-    //   line-height: f.pxToEm(18px);
-    // }
-    // .item{
-    //      // @include mut.sized(120px, 90px);
-    //   @include mut.full-rounded(3px);
-    //   display: flex;
-    // }
-  //}
- 
-// .interestingFactSlide:first-child{
-//   @include mut.rem-margined($left:1px);
-// }
-// .slick-center .interestingFactSlide {
-//   z-index: 1;
-// }
-
-// .interestingFactsSliderContainer .sliderClass {
-//      height: 100%;
-// }
-
-// .interestingFactsSliderContainer .slick-list {
-//   @include mut.rem-padded(130px);
-// }
-
-// .readMoreParagraph {
-//   @include mut.rem-padded(0, 20px, 0px, 20px);
-//   @include vnd.vendored(transition, '.5s ease');
-//   cursor: pointer;
-
-//   color: c.$dark-red-color;
-//   @include mut.with-font(ft.$roboto-font, 300, 13px, normal);
-
-//   &:hover {
-//     color: c.$accented-red-color;
-//   }
-// }

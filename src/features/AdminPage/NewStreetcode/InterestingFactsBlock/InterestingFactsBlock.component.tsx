@@ -5,8 +5,7 @@ import useMobx from '@stores/root-store';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
-// import PageBar from '../../PageBar/PageBar.component';
-import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component'; //InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
+import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component'; // InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
 const InterestingFactsBlock = () => {
     const streetcodeId = 2;// useRouteId();
@@ -19,7 +18,7 @@ const InterestingFactsBlock = () => {
 
     return (
         <div className="interestingFactsBlock">
-            <div className="heading">
+            <div className="factsHeader">
                 <h2>
                    Wow-факти
                 </h2>
@@ -30,6 +29,7 @@ const InterestingFactsBlock = () => {
                         fact={fact}
                     />
                 ))}
+                <button className="addWowFact">+</button>
             </div>
         </div>
     );
