@@ -6,5 +6,5 @@ export default interface Tag {
 export interface TagVisible {
     id: number;
     title: string;
-    visible:boolean;
+    visible: boolean;
 }

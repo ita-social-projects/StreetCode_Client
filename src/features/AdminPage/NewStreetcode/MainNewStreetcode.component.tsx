@@ -5,10 +5,14 @@ import './MainNewStreetcode.styles.scss';
 import PageBar from '../PageBar/PageBar.component';
 
 const NewStreetcode = () => (
-    <div className="NewStreetcodeContainer">
-        <RelatedFiguresBlock/>
-        <ForFansBlock />
+    <div>
+        <PageBar/>
+        <div className="NewStreetcodeContainer">
+            <RelatedFiguresBlock/>
+            <ForFansBlock />
+        </div>
     </div>
-);
+    
+); 
 
 export default NewStreetcode;

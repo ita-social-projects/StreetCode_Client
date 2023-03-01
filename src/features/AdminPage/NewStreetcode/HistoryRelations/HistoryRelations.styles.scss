@@ -1,0 +1,19 @@
+.container {
+    width: 60%;
+    max-height: 150px; 
+    margin: 15px 10px;
+    overflow-y: auto;
+}  
+  
+#list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+  
+#list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+
+}
