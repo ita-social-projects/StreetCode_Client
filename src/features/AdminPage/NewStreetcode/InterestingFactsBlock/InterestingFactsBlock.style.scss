@@ -1,0 +1,85 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+
+
+.navBarContainer{
+    position: sticky !important;
+}
+.interestingFactsBlock {
+     @include mut.sized(30%, 100px);
+    @include mut.flex-centered($direction: column);
+    position: absolute;
+
+    .heading{
+        font-size: large;
+        padding: 15px;
+        align-items: left;
+    }
+
+    // .blockHeadingContainer {
+    //     margin-left: pxToRem(10px);
+    // }
+}
+
+// .interestingFactsWrapper {
+//     @include wr.main-page-block-wrapper();
+// }
+
+// .interestingFactsSliderContainer {
+//     @include mut.sized(1220px, 660px);
+
+//     .slick-dots {
+//         @include mut.rem-margined($top:-23px, $left:-30px);
+//     }
+//     .slick-slider{
+//         height: 100%;
+//     }
+// }
+
+// .heightContainer,
+// .slick-list,
+// .slick-track {
+//     height: 100%;
+// }
+
+// .heightContainer {
+//     padding-top: pxToRem(23px);
+// }
+
+// .slick-center .interestingFactSlide {
+//     transform: scale(1.52);
+// }
+
+// .singleSlideContainer{
+//     @include mut.flex-centered();
+//     @include vnd.vendored(transform, scale(1.32));
+//     padding-top:7.5%;
+
+//     .interestingFactSlide{
+//         @include  mut.sized(650px, 600px);
+
+//         .slideImage {
+//             @include mut.sized($height: 60%);
+
+//             img {
+//                 @include mut.sized($width: 100%);
+//             }
+//         }
+
+//         .slideText{
+//             @include mut.sized($height: 40%);
+
+//             .heading{
+//                 font-size:26px;
+//             }
+
+//             .mainText{
+//                 font-size:15px;
+//                 line-height: pxToRem(20px);
+//             }
+//         }
+//     }
+// }
+
