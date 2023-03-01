@@ -1,0 +1,42 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+
+.text-form{
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+
+    p{
+        color: black;
+        text-align: right;
+        font-size: small;
+        font-family: ft.$roboto-font;
+    }
+
+    textarea {
+        font-family: ft.$roboto-font;
+        height: f.pxToRem(200px);
+        border-radius: f.pxToRem(5px);
+        border-width: f.pxToRem(2px);
+        padding: f.pxToRem(10px);
+        resize: none;
+    }
+
+    input{
+        border-radius: f.pxToRem(3px);
+        padding: f.pxToRem(10px);
+        font-family: ft.$roboto-font;
+
+        &::placeholder {
+            font-size: small;
+            color: c.$dark-red-color;
+            opacity: 50%;
+        }
+    }
+
+    .smaller-input{
+        width: 65%;
+    }
+
+}
