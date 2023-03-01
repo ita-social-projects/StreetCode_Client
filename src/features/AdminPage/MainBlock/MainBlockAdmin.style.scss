@@ -7,7 +7,7 @@
         @include mut.with-font();
 
     }
-    .maincard-input{
+    .maincard-item{
         width:f.pxToRem(450px) ;
         margin: 10px 0;
     }
@@ -54,6 +54,7 @@
         justify-content: left;
         .date-picker-type-input{
             width: 100%;
+            margin-bottom: f.pxToRem(10px);
         }
         .date-picker-qroup-item{
             width: f.pxToRem(200px);
@@ -67,9 +68,24 @@
         .date-string-input{
             width: f.pxToRem(360px);
         }
+        
     }
-    .teaser-input{
+    .photo-form-item{
         width: f.pxToRem(750px);
+    }
+    .teaser-form-item{
+        width: f.pxToRem(750px);
+        .textarea-teaser{
+            resize: none;
+        }
+        .amount-left-char-textarea-teaser{
+            display: flex;
+            justify-content: flex-end;
+            padding-right: f.pxToRem(10px);
+            .warning{
+                color:c.$accented-red-color ;
+            }
+        }
     }
     
     

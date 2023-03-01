@@ -10,15 +10,13 @@ import MainBlockAdmin from './MainBlockAdmin.component';
 const Addnewmainblock = () => {
     ukUA.DatePicker.lang.locale = 'uk';
     return (
-        <LocaleProvider locale={ukUA}>
-            <ConfigProvider locale={ukUA}>
-                <div className="adminPageContainer">
-                    <div className="MainBlockContainer">
-                        <MainBlockAdmin />
-                    </div>
+        <ConfigProvider locale={ukUA}>
+            <div className="adminPageContainer">
+                <div className="MainBlockContainer">
+                    <MainBlockAdmin />
                 </div>
-            </ConfigProvider>
-        </LocaleProvider>
+            </div>
+        </ConfigProvider>
     );
 };
 

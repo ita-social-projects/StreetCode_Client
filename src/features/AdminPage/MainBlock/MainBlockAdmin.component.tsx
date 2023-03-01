@@ -25,16 +25,22 @@ const MainBlockAdmin: React.FC = () => {
     const [tags, setTags] = useState< Tag[]>([]);
     const [leftCharForInput, setLeftCharForInput] = useState<number>(450);
     const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
+    const [maxCharCount, setMaxCharCount] = useState<number>(450);
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
 
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
-    const [stretcodeTitle, setStreetcodeTitle] = useState<string>();
-    const firstDate = useRef<Dayjs>(null);
-    const secondDate = useRef<Dayjs>(null);
+    const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
+    const [streetcodeTeaser, setStreetcodeTeaser] = useState<string>('');
+    const firstDate = useRef<Dayjs | null>(null);
+    const secondDate = useRef<Dayjs | null>(null);
+    const [form] = Form.useForm();
 
+    useEffect(() => {
+        form.setFieldValue('title', streetcodeTitle);
+    }, [streetcodeTitle]);
     const onNameSurnameChange = () => {
         const curname = name.current?.input?.value;
         setStreetcodeTitle(`${surname.current?.input?.value}${curname ? ` ${curname}` : ''}`);
@@ -48,7 +54,17 @@ const MainBlockAdmin: React.FC = () => {
     };
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
-        setLeftCharForInput(450 - text.length - (text.match(/(\n|\r)/gm) || []).length * 49);
+        const newLinesCharCount = (text.match(/(\n|\r)/gm) || []).length;
+        const newLeftCharForInput = 450 - text.length - newLinesCharCount * 49;
+        if (newLeftCharForInput < 0) {
+            return;
+        }
+        setStreetcodeTeaser(text);
+
+        if (maxCharCount !== 450 - newLinesCharCount * 49) {
+            setMaxCharCount(450 - newLinesCharCount * 49);
+        }
+        setLeftCharForInput(newLeftCharForInput);
     };
 
     useEffect(() => {
@@ -94,46 +110,64 @@ const MainBlockAdmin: React.FC = () => {
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
     return (
-        <Form layout="vertical" className="mainblock-add-form">
+        <Form form={form} layout="vertical" className="mainblock-add-form">
             <>
                 Постать
                 <Switch className="person-event-switch" onChange={onSwitchChange} />
                 Подія
 
-                <Form.Item label="Номер стріткоду">
+                <Form.Item
+                    label="Номер стріткоду"
+                    rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                    name="streetcodeNumber"
+                >
                     <InputNumber min={0} />
                 </Form.Item>
 
                 {streetcodeType === 'people' ? (
-                    <Input.Group compact className="maincard-input people-title-group">
-                        <Form.Item label="Прізвище" className="people-title-input">
+                    <Input.Group
+                        compact
+                        className="maincard-item people-title-group"
+                    >
+                        <Form.Item name="surname" label="Прізвище" className="people-title-input">
                             <Input
                                 ref={surname}
                                 onChange={onNameSurnameChange}
                             />
                         </Form.Item>
-                        <Form.Item label="Ім'я" className="people-title-input">
+                        <Form.Item label="Ім'я" name="name" className="people-title-input">
                             <Input ref={name} onChange={onNameSurnameChange} />
                         </Form.Item>
                     </Input.Group>
                 )
                     : ('')}
 
-                <Form.Item label="Назва стріткоду" className="maincard-input stretcode-title-input">
-                    <Input
-                        value={stretcodeTitle}
-                        onChange={(e) => {
-                            setStreetcodeTitle(e.target.value);
-                        }}
-                    />
+                <Form.Item
+                    name="title"
+                    label="Назва стріткоду"
+                    className="maincard-item"
+                >
+                    <Input />
                 </Form.Item>
 
-                <DatePickerPart firstDate={firstDate} secondDate={secondDate} />
+                <Form.Item label="Короткий опис" className="maincard-item">
+                    <Input />
+                </Form.Item>
+
+                <DatePickerPart
+                    isFirstDateRequired
+                    setFirstDate={(newDate:Dayjs | null) => {
+                        firstDate.current = newDate;
+                    }}
+                    setSecondDate={(newDate:Dayjs | null) => {
+                        secondDate.current = newDate;
+                    }}
+                />
 
                 <p>Теги:</p>
                 <DragableTags setTags={setSelectedTags} tags={selectedTags} />
                 <Select
-                    className="tags-select-input maincard-input"
+                    className="tags-select-input maincard-item"
                     mode="tags"
                     onSelect={onSelectTag}
                     onDeselect={onDeselectTag}
@@ -142,19 +176,29 @@ const MainBlockAdmin: React.FC = () => {
                 </Select>
 
                 <Form.Item
-                    className="maincard-input teaser-input"
+                    className="maincard-item teaser-form-item"
                     label="Тизер"
-                    rules={[{ required: true, message: 'Введіть тизер...' }]}
+                    rules={[{ required: true, message: 'Введіть тизер' }]}
                 >
-                    <Input.TextArea onChange={onTextAreaTeaserChange} className="textarea-teaser" maxLength={450} />
-                    <p className="amount-left-char-textarea-teaser">{leftCharForInput}</p>
+                    <Input.TextArea
+                        onChange={onTextAreaTeaserChange}
+                        className="textarea-teaser"
+                        maxLength={maxCharCount}
+                        value={streetcodeTeaser}
+                    />
+                    <div className="amount-left-char-textarea-teaser">
+                        <p className={leftCharForInput < 50 ? 'warning' : ''}>{leftCharForInput}</p>
+                    </div>
                 </Form.Item>
 
                 <Form.Item
-                    className="maincard-input"
+                    name="animations"
+                    className="maincard-item"
                     label="Анімація"
+                    rules={[{ required: true, message: 'Завантажте анімацію' }]}
                 >
                     <Upload
+                        accept=".gif"
                         listType="picture-card"
                         multiple={false}
                         maxCount={1}
@@ -167,11 +211,14 @@ const MainBlockAdmin: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item
-                    className="maincard-input"
+                    name="pictures"
+                    className="maincard-item photo-form-item"
                     label="Зображення"
+                    rules={[{ required: true, message: 'Завантажте зображення' }]}
                 >
                     <Upload
                         multiple
+                        accept=".jpeg,.png"
                         listType="picture-card"
                         onPreview={handlePreview}
                     >
@@ -181,10 +228,13 @@ const MainBlockAdmin: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item
-                    className="maincard-input"
+                    name="audio"
+                    className="maincard-item"
                     label="Аудіо"
                 >
-                    <Dragger>
+                    <Dragger
+                        accept=".mp3"
+                    >
                         <InboxOutlined />
 
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
