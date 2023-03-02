@@ -58,6 +58,10 @@ const DragableTags: React.FC<{ tags: TagVisible[],
                                          >
                                              <ClickableTagItem
                                                  tag={tag}
+                                                 setVisibility={(visibility) => {
+                                                     // eslint-disable-next-line no-param-reassign
+                                                     tags[index].visible = visibility;
+                                                 }}
                                              />
                                          </div>
                                      )}

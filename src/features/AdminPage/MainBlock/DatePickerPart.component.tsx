@@ -1,6 +1,7 @@
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { te } from 'date-fns/locale';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -17,30 +18,59 @@ const DatePickerPart:React.FC<{
 }> = ({
     setFirstDate, setSecondDate, isFirstDateRequired, isSecondDateRequired, form,
 }) => {
-    const [dateFirstTimePickerType, setFirstDateTimePickerType] = useState<'date' | 'month' | 'year'>('date');
-    const [dateSecondTimePickerType, setSecondDateTimePickerType] = useState<'date' | 'month' | 'year'>('date');
+    const [dateFirstTimePickerType, setFirstDateTimePickerType] = useState<
+    'date' | 'month' | 'year' | 'season-year'>('date');
+    const [dateSecondTimePickerType, setSecondDateTimePickerType] = useState<
+    'date' | 'month' | 'year' | 'season-year'>('date');
 
     const [seasonFirstVisible, setSeasonFirstVisible] = useState<boolean>(false);
     const [seasonSecondVisible, setSeasonSecondisible] = useState<boolean>(false);
     const selectDateOptions = [{
         value: 'date',
         label: 'День/місяць/рік',
-    },
-    {
+    }, {
         value: 'month',
         label: 'Місяць/рік',
-    },
-    {
+    }, {
         value: 'year',
         label: 'Рік',
-    },
-    {
-        value: 'year',
+    }, {
+        value: 'season-year',
         label: 'Пора/рік',
-    },
-    ];
+    }];
 
-    const dateToString = (typeDate:'date' | 'month' | 'year', date: Dayjs | null):string => {
+    const selectSeasonOptions = [{
+        value: 'зима',
+        label: 'Зима',
+    }, {
+        value: 'весна',
+        label: 'Весна',
+    }, {
+        value: 'літо',
+        label: 'Літо',
+    }, {
+        value: 'осінь',
+        label: 'Осінь',
+    }];
+
+    const getSeason = (date: Dayjs | null): string => {
+        if (!date) {
+            return '';
+        }
+        const month = date.month();
+        if (month < 2 || month === 11) {
+            return 'зима';
+        }
+        if (month >= 2 && month < 5) {
+            return 'весна';
+        }
+        if (month >= 5 && month < 8) {
+            return 'літо';
+        }
+        return 'осінь';
+    };
+
+    const dateToString = (typeDate:'date' | 'month' | 'year' | 'season-year', date: Dayjs | null):string => {
         if (!date) {
             return '';
         }
@@ -50,10 +80,17 @@ const DatePickerPart:React.FC<{
         if (typeDate === 'month') {
             return date.format('MMMM YYYY');
         }
+        const year = date.format('YYYY');
         if (typeDate === 'year') {
-            return date.format('YYYY');
+            return year;
         }
-        return '';
+        return `${getSeason(date)} ${year}`;
+    };
+    const capitalize = (text:string):string => {
+        if (!text) {
+            return text;
+        }
+        return text[0].toLocaleUpperCase() + text.substring(1, text.length);
     };
 
     const onChangeFirstDate = (date:Dayjs | null) => {
@@ -61,10 +98,13 @@ const DatePickerPart:React.FC<{
         const dateString = form.getFieldValue('dateString') ?? '';
         const index = dateString.indexOf(' - ');
         if (index < 0) {
-            form.setFieldValue('dateString', dateToString(dateFirstTimePickerType, date));
+            form.setFieldValue('dateString', capitalize(dateToString(dateFirstTimePickerType, date)));
         } else {
             const newString = dateToString(dateFirstTimePickerType, date);
-            form.setFieldValue('dateString', newString.concat(dateString.substring(index, dateString.length)));
+            form.setFieldValue(
+                'dateString',
+                capitalize(newString.concat(dateString.substring(index, dateString.length))),
+            );
         }
     };
 
@@ -80,6 +120,7 @@ const DatePickerPart:React.FC<{
                 .concat(`${date ? ' - ' : ''} ${dateToString(dateSecondTimePickerType, date)}`));
         }
     };
+
     return (
         <>
             <p>Роки життя/Дата або період події</p>
@@ -92,17 +133,25 @@ const DatePickerPart:React.FC<{
                         defaultValue={dateFirstTimePickerType}
                         onChange={(val) => {
                             setFirstDateTimePickerType(val);
+                            onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
                         }}
                     />
-                    <FormItem
-                        rules={[{ required: true, message: 'Введіть дату' }]}
-                        name="streetcodeFirstDate"
-                    >
-                        <DatePicker
-                            onChange={onChangeFirstDate}
-                            picker={dateFirstTimePickerType}
-                        />
-                    </FormItem>
+                    <div>
+                        {/*  <Select
+                            className="date-picker-type-input"
+                            options={selectSeasonOptions}
+                        /> */}
+                        <FormItem
+                            rules={[{ required: true, message: 'Введіть дату' }]}
+                            name="streetcodeFirstDate"
+                        >
+                            <DatePicker
+                                onChange={onChangeFirstDate}
+                                picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
+                            />
+                        </FormItem>
+                    </div>
+
                 </div>
 
                 <div className="date-picker-qroup-item">
@@ -112,12 +161,14 @@ const DatePickerPart:React.FC<{
                         defaultValue={dateSecondTimePickerType}
                         onChange={(val) => {
                             setSecondDateTimePickerType(val);
+                            onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
                         }}
                     />
+
                     <FormItem required={isSecondDateRequired} name="streetcodeSecondDate">
                         <DatePicker
                             onChange={onChangeSecondDate}
-                            picker={dateSecondTimePickerType}
+                            picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
                         />
                     </FormItem>
                 </div>
@@ -125,7 +176,7 @@ const DatePickerPart:React.FC<{
                 <div className="date-string-input">
 
                     <FormItem name="dateString">
-                        <Input />
+                        <Input disabled />
                     </FormItem>
                 </div>
 

@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import {
     Button,
-    Form, Input, InputNumber, InputRef, Select, Switch, Upload, UploadFile,
+    Form, Input, InputNumber, InputRef, Popover, Select, Switch, Upload, UploadFile,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import Dragger from 'antd/es/upload/Dragger';
@@ -16,6 +16,7 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
+import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 import DatePickerPart from './DatePickerPart.component';
 
@@ -30,6 +31,8 @@ const MainBlockAdmin: React.FC = () => {
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+    const [popoverProps, setPopoverProps] = useState<{
+        width:number, screenWidth:number }>({ width: 360, screenWidth: 360 });
 
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
@@ -181,15 +184,47 @@ const MainBlockAdmin: React.FC = () => {
                 />
 
                 <p>Теги:</p>
-                <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                <Select
-                    className="tags-select-input maincard-item"
-                    mode="tags"
-                    onSelect={onSelectTag}
-                    onDeselect={onDeselectTag}
-                >
-                    {tags.map((t) => <Option key={t.id} value={t.title} label={t.title} />)}
-                </Select>
+                <div className="tags-block">
+                    <div className="tags-block-tagitems">
+                        <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+
+                        <Select
+                            className="tags-select-input"
+                            mode="tags"
+                            onSelect={onSelectTag}
+                            onDeselect={onDeselectTag}
+                        >
+                            {tags.map((t) => <Option key={t.id} value={t.title} label={t.title} />)}
+                        </Select>
+                    </div>
+                    <div className="device-sizes-list">
+                        <Popover
+                            content={(
+                                <PopoverForTagContent
+                                    screenWidth={popoverProps.screenWidth}
+                                    tags={selectedTags}
+                                />
+                            )}
+                            title="Title"
+                            trigger="hover"
+                            overlayStyle={{ width: popoverProps.width }}
+                        >
+                            <p
+                                className="device-size"
+                                onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
+                            >
+                                360
+                            </p>
+                            <p
+                                className="device-size"
+                                onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
+                            >
+                                1600
+                            </p>
+                        </Popover>
+                    </div>
+
+                </div>
 
                 <Form.Item
                     className="maincard-item teaser-form-item"

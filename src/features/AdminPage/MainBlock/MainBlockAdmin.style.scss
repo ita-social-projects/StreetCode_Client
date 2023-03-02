@@ -67,6 +67,16 @@
         }
         .date-string-input{
             width: f.pxToRem(360px);
+            display: flex;
+            align-items: end;
+            input{
+                width: f.pxToRem(360px);
+            }
+        }
+        .date-string-input input:disabled{
+            background-color: #fff;
+            color: #000;
+            cursor: default;
         }
         
     }
@@ -85,6 +95,23 @@
             .warning{
                 color:c.$accented-red-color ;
             }
+        }
+    }
+    .tags-block{
+      
+        display: flex;
+        flex-direction: row;
+        width: f.pxToRem(750px);
+        .tags-block-tagitems{
+            width: 80%;
+            .tags-select-input{
+                width: 100%;
+            }
+
+        }
+        .device-sizes-list{
+            width: 20%;
+            text-align: center;
         }
     }
     
