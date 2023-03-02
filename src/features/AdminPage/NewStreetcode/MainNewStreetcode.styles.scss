@@ -4,11 +4,15 @@
 @use "@sass/_utils.functions.scss" as f;
 $articlesImg: "@assets/images/sources/Articles.png";
 
-.NewStreetcodeContainer {
-    @include mut.sized(80%);
-   
-     margin-top: f.pxToRem(85px);
-     margin-right: f.pxToRem(50px);
-     padding: 20px 40px;
-     float: right;
-}
+ .MainNewStreetcodeContainer {
+     @include mut.sized(80%);
+
+      margin-top: f.pxToRem(100px);
+      margin-right: f.pxToRem(50px);
+      float: right;
+      h1 {
+         color: white;
+         font-weight: 500;
+       }
+ }
+
