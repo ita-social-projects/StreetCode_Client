@@ -5,6 +5,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
+    Button,
     Form, Input, InputNumber, InputRef, Select, Switch, Upload, UploadFile,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
@@ -109,8 +110,22 @@ const MainBlockAdmin: React.FC = () => {
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
+
+    const onFinish = (values: any) => {
+        console.log('Success:', values);
+    };
+
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    };
     return (
-        <Form form={form} layout="vertical" className="mainblock-add-form">
+        <Form
+            form={form}
+            layout="vertical"
+            className="mainblock-add-form"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+        >
             <>
                 Постать
                 <Switch className="person-event-switch" onChange={onSwitchChange} />
@@ -146,6 +161,7 @@ const MainBlockAdmin: React.FC = () => {
                     name="title"
                     label="Назва стріткоду"
                     className="maincard-item"
+                    rules={[{ required: true, message: 'Введіть назву стріткоду' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -155,7 +171,7 @@ const MainBlockAdmin: React.FC = () => {
                 </Form.Item>
 
                 <DatePickerPart
-                    isFirstDateRequired
+                    form={form}
                     setFirstDate={(newDate:Dayjs | null) => {
                         firstDate.current = newDate;
                     }}
@@ -242,6 +258,11 @@ const MainBlockAdmin: React.FC = () => {
                 </Form.Item>
                 <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
             </>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit">
+                    Submit
+                </Button>
+            </Form.Item>
         </Form>
     );
 };

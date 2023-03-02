@@ -1,21 +1,27 @@
 import './MainBlockAdmin.style.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
-import { DatePicker, Select } from 'antd';
+import {
+    DatePicker, FormInstance, Input, InputRef, Select,
+} from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 const DatePickerPart:React.FC<{
     setFirstDate:(newDate: Dayjs | null) => void,
     setSecondDate:(newDate: Dayjs | null) => void,
     isFirstDateRequired?:boolean,
-    isSecondDateRequired?:boolean
-}> = ({ setFirstDate, setSecondDate, isFirstDateRequired, isSecondDateRequired }) => {
+    isSecondDateRequired?:boolean,
+    form:FormInstance<any>
+}> = ({
+    setFirstDate, setSecondDate, isFirstDateRequired, isSecondDateRequired, form,
+}) => {
     const [dateFirstTimePickerType, setFirstDateTimePickerType] = useState<'date' | 'month' | 'year'>('date');
     const [dateSecondTimePickerType, setSecondDateTimePickerType] = useState<'date' | 'month' | 'year'>('date');
-    const [dateString, setDateString] = useState<string>('');
 
+    const [seasonFirstVisible, setSeasonFirstVisible] = useState<boolean>(false);
+    const [seasonSecondVisible, setSeasonSecondisible] = useState<boolean>(false);
     const selectDateOptions = [{
         value: 'date',
         label: 'День/місяць/рік',
@@ -27,6 +33,10 @@ const DatePickerPart:React.FC<{
     {
         value: 'year',
         label: 'Рік',
+    },
+    {
+        value: 'year',
+        label: 'Пора/рік',
     },
     ];
 
@@ -48,22 +58,25 @@ const DatePickerPart:React.FC<{
 
     const onChangeFirstDate = (date:Dayjs | null) => {
         setFirstDate(date);
+        const dateString = form.getFieldValue('dateString') ?? '';
         const index = dateString.indexOf(' - ');
         if (index < 0) {
-            setDateString(dateToString(dateFirstTimePickerType, date));
+            form.setFieldValue('dateString', dateToString(dateFirstTimePickerType, date));
         } else {
             const newString = dateToString(dateFirstTimePickerType, date);
-            setDateString(newString.concat(dateString.substring(index, dateString.length)));
+            form.setFieldValue('dateString', newString.concat(dateString.substring(index, dateString.length)));
         }
     };
+
     const onChangeSecondDate = (date:Dayjs | null) => {
         setSecondDate(date);
+        const dateString = form.getFieldValue('dateString') ?? '';
         const index = dateString.indexOf(' - ');
         if (index < 0) {
-            setDateString(dateString
+            form.setFieldValue('dateString', dateString
                 .concat(`${date ? ' - ' : ''} ${dateToString(dateSecondTimePickerType, date)}`));
         } else {
-            setDateString(dateString.substring(0, index)
+            form.setFieldValue('dateString', dateString.substring(0, index)
                 .concat(`${date ? ' - ' : ''} ${dateToString(dateSecondTimePickerType, date)}`));
         }
     };
@@ -82,11 +95,10 @@ const DatePickerPart:React.FC<{
                         }}
                     />
                     <FormItem
-                        rules={[{ required: true, message: 'Завантажте зображення' }]}
+                        rules={[{ required: true, message: 'Введіть дату' }]}
                         name="streetcodeFirstDate"
                     >
                         <DatePicker
-                            name="firstDate"
                             onChange={onChangeFirstDate}
                             picker={dateFirstTimePickerType}
                         />
@@ -104,7 +116,6 @@ const DatePickerPart:React.FC<{
                     />
                     <FormItem required={isSecondDateRequired} name="streetcodeSecondDate">
                         <DatePicker
-                            name="secondDate"
                             onChange={onChangeSecondDate}
                             picker={dateSecondTimePickerType}
                         />
@@ -112,7 +123,10 @@ const DatePickerPart:React.FC<{
                 </div>
 
                 <div className="date-string-input">
-                    <p>{dateString}</p>
+
+                    <FormItem name="dateString">
+                        <Input />
+                    </FormItem>
                 </div>
 
             </div>
