@@ -8,10 +8,11 @@ import { Button } from 'antd';
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import Modal from 'antd/es/modal/Modal';
+import useMobx from '@/app/stores/root-store';
 
 const StreetcodesTable = () => {
 
+    const { modalStore: { setModal } } = useMobx(); 
     const { value } = useAsync(() => StreetcodesApi.getAll(), []);
     const streetcodes = value as Streetcode[];
     
@@ -25,41 +26,21 @@ const StreetcodesTable = () => {
 
     const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
 
-    // const [open, setOpen] = useState(false);
-    // const [confirmLoading, setConfirmLoading] = useState(false);
-    // const [modalText, setModalText] = useState('Content of the modal');
-
-    // const showModal = () => {
-    //     setOpen(true);
-    // };
-
-    // const handleOk = () => {
-    //     setModalText('The modal will be closed after two seconds');
-    //     setConfirmLoading(true);
-    //     setTimeout(() => {
-    //     setOpen(false);
-    //     setConfirmLoading(false);
-    //     }, 2000);
-    // };
-
-    // const handleCancel = () => {
-    //     console.log('Clicked cancel button');
-    //     setOpen(false);
-    // };
-
     const DeleteAction = (record: MapedStreetCode) => {
-        StreetcodesApi.delete(record.key)
-                let updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
-                    if (item.index === record.index) {
-                        return {
-                            ...item,
-                            stage: "Видалений"
-                        };
-                    }
-                    return item;
-                });
-                
-        setMapedStreetCodes(updatedMapedStreetCodes);
+        console.log("OK!")
+        setModal('deleteStreetcode', record.key);
+        // StreetcodesApi.delete(record.key)
+        //         let updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
+        //             if (item.index === record.index) {
+        //                 return {
+        //                     ...item,
+        //                     stage: "Видалений"
+        //                 };
+        //             }
+        //             return item;
+        //         });
+        
+        // setMapedStreetCodes(updatedMapedStreetCodes);
     }
 
     const columnsNames = [
@@ -140,15 +121,6 @@ const StreetcodesTable = () => {
     return(
     <>
         <div className="StreetcodeTableWrapper">
-            {/* <Modal
-            title="Delete streetcode"
-            open={open}
-            onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
-            >
-                Hello
-            </Modal> */}
             <Button className='addButton' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
