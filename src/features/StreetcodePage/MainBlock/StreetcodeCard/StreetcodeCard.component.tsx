@@ -98,9 +98,6 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                             {streetcode?.index}
                         </div>
                         <h2 className="streetcodeTitle">
-                            {streetcode?.rank ? `${streetcode?.rank} ` : ''}
-                            {streetcode?.firstName ? `${streetcode?.firstName} ` : ''}
-                            {streetcode?.lastName}
                             {streetcode?.title}
                         </h2>
                         <div className="streetcodeDate">
