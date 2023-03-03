@@ -5,7 +5,7 @@ import Streetcode, { Stage } from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
 import { Button } from 'antd';
-import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
+import { DeleteOutlined, FormOutlined, RollbackOutlined } from '@ant-design/icons';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
@@ -29,18 +29,18 @@ const StreetcodesTable = () => {
     const DeleteAction = (record: MapedStreetCode) => {
         console.log("OK!")
         setModal('deleteStreetcode', record.key);
-        // StreetcodesApi.delete(record.key)
-        //         let updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
-        //             if (item.index === record.index) {
-        //                 return {
-        //                     ...item,
-        //                     stage: "Видалений"
-        //                 };
-        //             }
-        //             return item;
-        //         });
+        StreetcodesApi.delete(record.key)
+                let updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
+                    if (item.index === record.index) {
+                        return {
+                            ...item,
+                            stage: "Видалений"
+                        };
+                    }
+                    return item;
+                });
         
-        // setMapedStreetCodes(updatedMapedStreetCodes);
+        setMapedStreetCodes(updatedMapedStreetCodes);
     }
 
     const columnsNames = [
@@ -71,11 +71,16 @@ const StreetcodesTable = () => {
             key: 'action',
             render: (value: any, record: MapedStreetCode, index: any) => 
             <>
-                <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
-                <DeleteOutlined className='actionButton' onClick={(event) => {
-                event.stopPropagation()
-                DeleteAction(record)
+                {record.stage != "Видалений" ? 
+                <>
+                    <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
+                    <DeleteOutlined className='actionButton' onClick={(event) => {
+                    event.stopPropagation()
+                    DeleteAction(record)
                 }}/>
+                </>
+                : <RollbackOutlined className='actionButton'/>
+                }
             </>
         }
     ]

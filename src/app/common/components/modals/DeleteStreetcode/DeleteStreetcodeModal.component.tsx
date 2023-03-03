@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
-
+import './DeleteStreetcodeModal.styles.scss';
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
 
@@ -8,33 +8,19 @@ const DeleteStreetcodeModal = () => {
 
     const { modalStore: { setModal, modalsState: { deleteStreetcode } } } = useMobx();
 
-    // const [open, setOpen] = useState(false);
-    // const [confirmLoading, setConfirmLoading] = useState(false);
-    // const [modalText, setModalText] = useState('Content of the modal');
-
-    // const showModal = () => {
-    //     setOpen(true);
-    // };
-
-    // const handleOk = () => {
-    //     setModalText('The modal will be closed after two seconds');
-    //     setConfirmLoading(true);
-    //     setTimeout(() => {
-    //     setOpen(false);
-    //     setConfirmLoading(false);
-    //     }, 2000);
-    // };
-
-    // const handleCancel = () => {
-    //     console.log('Clicked cancel button');
-    //     setOpen(false);
-    // };
+    const confirmHandler = () => {
+        setTimeout(() => {
+            setModal('deleteStreetcode')
+        }, 500);
+    };
 
     return (
         <Modal
             title="Delete streetcode"
             open={deleteStreetcode.isOpen}
+            onOk = {() => confirmHandler()}
             onCancel={() => setModal('deleteStreetcode')}
+            className="deleteModal"
             >
                 {deleteStreetcode.fromCardId}
         </Modal>
