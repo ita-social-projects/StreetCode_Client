@@ -6,6 +6,14 @@
     display: flex;
     justify-content: center;
     flex-flow: column;
+    
+    h3{
+        margin: f.pxToRem(7px) 0;
+    }
+
+    h4{
+        margin: f.pxToRem(5px) 0;
+    }
 
     p{
         color: black;
@@ -17,14 +25,11 @@
     textarea {
         font-family: ft.$roboto-font;
         height: f.pxToRem(200px);
-        border-radius: f.pxToRem(5px);
-        border-width: f.pxToRem(2px);
         padding: f.pxToRem(10px);
         resize: none;
     }
 
     input{
-        border-radius: f.pxToRem(3px);
         padding: f.pxToRem(10px);
         font-family: ft.$roboto-font;
 
@@ -37,6 +42,20 @@
 
     .smaller-input{
         width: 65%;
+    }
+
+    .preview {
+        height: f.pxToRem(180px);
+        width: f.pxToRem(320px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: f.pxToRem(10px);
+        border: 2px solid c.$dark-red-color;
+        
+        p{
+            color: black;
+        }
     }
 
 }
