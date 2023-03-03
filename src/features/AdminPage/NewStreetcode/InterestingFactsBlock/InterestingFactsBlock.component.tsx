@@ -24,12 +24,12 @@ const InterestingFactsBlock = () => {
                 </h2>
             </div>
             <div className="factsContainer">
+                <button className="addWowFact">+</button>
                 {getFactArray.map((fact) => (
-                    <InterestingFactAdminItem
+                    <InterestingFactAdminItem className='bi'
                         fact={fact}
                     />
                 ))}
-                <button className="addWowFact">+</button>
             </div>
         </div>
     );
