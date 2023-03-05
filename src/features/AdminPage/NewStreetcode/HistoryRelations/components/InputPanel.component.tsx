@@ -37,7 +37,7 @@ const InputPanel = ({ options, handleAdd }: Props) => {
     <form className="input-container" onSubmit={handleAddItem}>
       <AutoComplete
         placeholder='Знайти стріткод...'
-        style={{ width: 300 }}
+        style={{ width: 400 }}
         options={filteredOptions.map(option => ({ value: option.title, label: option.title }))}
         onSearch={handleSearch}
         onChange={(value) => setRelation(value)}

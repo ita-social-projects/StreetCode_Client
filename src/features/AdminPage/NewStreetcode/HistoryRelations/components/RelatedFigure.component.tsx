@@ -21,10 +21,6 @@ const RelatedItem = ({relation, relations, setRelations} : Props) => {
         } 
     }
 
-    const addPictureHandle = async (id: number) => {
-
-    }
-
     return(
         <div className="relationItem">
             <span className='text'>{relation.title}</span>
