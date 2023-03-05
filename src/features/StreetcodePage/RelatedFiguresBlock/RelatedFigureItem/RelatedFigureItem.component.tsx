@@ -12,7 +12,7 @@ interface Props {
 }
 
 const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
-    const { id, imageId, title, tags } = relatedFigure;
+    const { id, imageId, title, tags, alias } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray } } = useMobx();
     const { fetchImage, getImage } = imagesStore;
@@ -29,7 +29,8 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
             to={`../streetcode/${id}`}
         >
             <div className="figureSlideText">
-                <div className="heading">
+                <div className="heading" // add alias
+                > 
                     <p>
                         {title}
                     </p>
