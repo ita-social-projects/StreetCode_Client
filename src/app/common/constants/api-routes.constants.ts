@@ -114,6 +114,7 @@ export const API_ROUTES = {
         GET_ALL: 'relatedFigure/getAll',
         GET: 'relatedFigure/getById',
         GET_BY_STREETCODE_ID: 'relatedFigure/getByStreetcodeId',
+        GET_BY_TAG_ID: 'relatedFigure/getByTagId',
         CREATE: 'relatedFigure/create',
         UPDATE: 'relatedFigure/update',
         DELETE: 'relatedFigure/delete',

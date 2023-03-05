@@ -23,7 +23,7 @@ const AudioPlayer = () => {
     const changePlayerCurrentTime = () => {
         progressBar.current?.style.setProperty(
             '--seek-before-width',
-            `${Number(progressBar.current?.value) / (Number(progressBar.current.max) * 100)}%`,
+            `${Number(Number(progressBar.current?.value) / (Number(progressBar.current.max))) * 100.0}%`,
         );
         if (Number(progressBar.current?.value) / Number(progressBar.current?.max) >= 1) {
             setIsPlaying(false);
@@ -65,7 +65,8 @@ const AudioPlayer = () => {
 
     return (
         <div className="audioPlayer">
-            <audio ref={audioPlayer} src={audio?.url?.href} preload="metadata" />
+           {/*  <audio ref={audioPlayer} src={audio?.url?.href} preload="metadata" /> */}
+           <audio ref={audioPlayer} src={"https://www.kozco.com/tech/piano2-Audacity1.2.5.mp3"} preload="metadata" />
             {isPlaying
                 ? (
                     <div className="buttonContainer">

@@ -1,14 +1,14 @@
+import { url } from 'inspector';
 import './BurgerMenu.styles.scss';
+import  burgerIcon  from '../../../../assets/images/header/burger.png';
 
 interface Props {
     onClick?: () => void;
 }
 
-const BurgerMenu = ({ onClick }: Props) => (
+const BurgerMenu = ({ onClick} : Props) => (
     <div className="burgerMenuContainer" onClick={onClick}>
-        <span className="burgerMenuItem" />
-        <span className="burgerMenuItem" />
-        <span className="burgerMenuItem" />
+        <img src={burgerIcon} alt="burger"/>
     </div>
 );
 

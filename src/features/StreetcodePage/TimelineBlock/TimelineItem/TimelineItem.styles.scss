@@ -5,6 +5,8 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .timelineItem {
+  border-radius: 30px;
+  align-self: center;
   @include mut.sized(604px, 366px);
   @include mut.full-rounded(30px);
 
