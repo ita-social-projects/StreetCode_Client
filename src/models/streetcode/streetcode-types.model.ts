@@ -17,13 +17,14 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
     index: number;
     teaser: string;
+    alias?: string;
     viewCount: number;
     createdAt: Date;
     updatedAt: Date;
     eventStartOrPersonBirthDate: Date;
     eventEndOrPersonDeathDate: Date;
     type: StreetcodeType;
-    stage: Stage;
+    status: Status;
     text: string;
     audio?: Audio | undefined;
     // coordinate?: StreetcodeCoordinate | undefined;
@@ -48,13 +49,14 @@ export interface EventStreetcode {
 }
 
 export interface PersonStreetcode {
+    title: string;
     firstName: string;
     lastName: string;
     rank: string;
     streetcode: Streetcode;
 }
 
-export enum Stage {
+export enum Status {
     Draft,
     Published
 }
