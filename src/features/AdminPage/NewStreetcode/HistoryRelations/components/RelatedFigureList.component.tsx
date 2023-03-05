@@ -9,21 +9,22 @@ interface Props {
 
 const RelationsList = ({relations, setRelations} : Props) => {
     return (
-        <div className="list-container">
-            <ul id='list'>
-            {
-                relations.map((rel)=>
-                <li>
-                    <RelatedItem 
-                        relation={rel}
-                        relations={relations}
-                        setRelations={setRelations}
-                    />
-                </li>)
-            }
-            </ul>
-        </div>
+      <div className="list-container">
+        <ul id='list' className='related-figures-list'>
+          {
+            relations.map((rel)=>
+              <li key={rel.title}>
+                <RelatedItem 
+                  relation={rel}
+                  relations={relations}
+                  setRelations={setRelations}
+                />
+              </li>
+            )
+          }
+        </ul>
+      </div>
     )
-}
+  }
 
 export default RelationsList;

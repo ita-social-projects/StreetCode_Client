@@ -4,11 +4,10 @@
 @use "@sass/_utils.functions.scss" as f;
 
 $list-width: 40%;
-$button-width: 30px;
 
 .list-container {
     @include mut.sized($list-width);
-    max-height: 150px; 
+    max-height: 160px; 
     margin: 10px;
     overflow-y: auto;
 
@@ -24,38 +23,36 @@ $button-width: 30px;
         }
     }
 }  
-
 .input-container {
+    display: flex;
+    align-items: center;
     vertical-align: center;
-
+  
     .relation-title-input {
-        @include mut.sized($list-width);
-        margin-left: 10px;
-        padding: 5px;
-        border-radius: 7px;
+      @include mut.sized($list-width);
+      margin-left: 10px;
+      padding: 5px;
+      border-radius: 7px;
     }
-
-    .create-relation-button {  
-        padding: 10px;
-        margin-left: 10px;
-        border: none;
-        border-radius: 12px;
-
-        font-weight: 500px;
-        color: #eeeeee;
-
-        background-color: c.$accented-red-color;
-
-        span {
-            vertical-align: center;
-            font-size: 14px;
-        }
-
-        &:hover {
-            background-color: c.$dark-red-color;
-        }
+  }
+  
+  .create-relation-button {  
+    padding: 10px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500px;
+    color: white;
+    background-color: c.$accented-red-color;
+    display: flex;
+    align-items: center;
+    line-height: 1; /* reset the line-height to its default value */
+  
+    &:hover {
+      background-color: c.$dark-red-color;
     }
-}
+  }
+  
 
 .relationItem {
     display: flex;

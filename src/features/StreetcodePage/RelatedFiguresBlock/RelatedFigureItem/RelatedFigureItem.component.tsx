@@ -13,6 +13,7 @@ interface Props {
 
 const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
     const { id, imageId, title, tags, alias } = relatedFigure;
+    console.log(alias);
 
     const { imagesStore, tagsStore: { getTagArray } } = useMobx();
     const { fetchImage, getImage } = imagesStore;
@@ -34,6 +35,13 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                     <p>
                         {title}
                     </p>
+                    {
+                        alias !== undefined ? 
+                        <p>
+                            {alias}
+                        </p>
+                        : ''
+                    }
                 </div>
                 <div className="relatedTagList">
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))

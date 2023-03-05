@@ -8,12 +8,14 @@ interface Props {
   options: RelatedFigure[];
   handleAdd: (relation: RelatedFigure) => void;
 }
+
 const InputPanel = ({ options, handleAdd }: Props) => {
   const [relation, setRelation] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<RelatedFigure[]>(options);
 
   useEffect(() => {
     setFilteredOptions(options);
+    console.log(options);
   }, [options]);  
 
   const handleSearch = (value: string) => {
@@ -22,14 +24,12 @@ const InputPanel = ({ options, handleAdd }: Props) => {
   };
 
   const handleAddItem = (event: React.FormEvent<HTMLFormElement>) => {
-    //console.log('handleAddItem is called...');
     event.preventDefault();
     const found = filteredOptions.find(rel => rel.title === relation);
     if(found !== undefined) {
       handleAdd(found);
       setRelation('');
       setFilteredOptions(options);
-      //console.log(found);
     }
   };  
 
@@ -44,7 +44,7 @@ const InputPanel = ({ options, handleAdd }: Props) => {
         value={relation}
       />
       <Button htmlType="submit" className='create-relation-button' type="primary">
-        <span>Додати</span>
+        Додати
       </Button>
     </form>
   );
