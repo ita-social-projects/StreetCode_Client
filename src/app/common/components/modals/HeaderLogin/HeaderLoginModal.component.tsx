@@ -23,7 +23,13 @@ const HeaderLoginModal = () => {
             <div className="loginModalContent">
                 <Button>Стати партнером</Button>
                 <Button>Долучитися до команди</Button>
-                <Button>Задонатити</Button>
+                <Button onClick={() => {
+                    setModal('donates');
+                    setModal('login');
+                }}
+                >
+                    Задонатити
+                </Button>
             </div>
         </Modal>
     );

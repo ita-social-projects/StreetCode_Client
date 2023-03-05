@@ -10,7 +10,7 @@ import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
-import LanguageSelector from '@layout/header/LanguageSelector/LanguageSelector.component';
+//import LanguageSelector from '@layout/header/LanguageSelector/LanguageSelector.component';
 import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
@@ -49,13 +49,12 @@ const HeaderBlock = () => {
         <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
             <div className="leftPartContainer">
                 <StreetcodeSvg />
-                <input
+                <input placeholder='Пошук...'
                     ref={inputRef}
                     className={`ant-input css-dev-only-do-not-override-26rdvq
                         hiddenHeaderInput ${((isInputActive && isHeaderHidden) ? 'active' : '')}`}
                 />
                 <HeaderSkeleton />
-                <LanguageSelector />
             </div>
             <div className="rightPartContainer">
                 <div className="rightSectionContainer">

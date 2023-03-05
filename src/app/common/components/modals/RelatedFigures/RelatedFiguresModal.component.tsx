@@ -40,7 +40,7 @@ const RelatedFiguresModal = () => {
             >
                 <h1>Зв’язки історії</h1>
             </div>
-            <div className="relatedFiguresContentContainer">
+            <div className="relatedFiguresReadMoreContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (
                     <RelatedFigureItem
                         key={figure.id}

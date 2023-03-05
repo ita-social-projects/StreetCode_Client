@@ -2,6 +2,8 @@ import './Map.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { MapContainer, TileLayer } from 'react-leaflet';
+import * as L from "leaflet";
+import { GestureHandling } from "leaflet-gesture-handling";
 import CustomMarker from '@streetcode/MapBlock/Map/Marker/MarkerWrapper.component';
 
 import useMobx from '@/app/stores/root-store';
@@ -25,9 +27,17 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
     const { checkboxStore } = useMobx();
     const { checkBoxesState: { streetcodes, streets } } = checkboxStore;
 
+    var mapOptions = {
+        gestureHandling: true
+      }
+
+    L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
+
     return (
         <div className="mapCentered">
-            <MapContainer center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]} zoom={defaultZoom} className="mapContainer" scrollWheelZoom={false}>
+            <MapContainer {...mapOptions} center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]}
+             zoom={defaultZoom} className="mapContainer"
+              scrollWheelZoom={true}>
                 <TileLayer
                     url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png"
                 />

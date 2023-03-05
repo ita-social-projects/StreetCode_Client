@@ -1,11 +1,14 @@
+
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+$navbar-innerwidth: 500px; 
+$navbar-hidden-innerwidth: 400px;
+
 .navBarContainer {
   @include mut.sized(100%, 82px);
-  max-width: f.pxToRem(1902px);
 
   @include mut.flexed($justify-content: space-between, $align-items: center);
   padding: f.pxToRem(21px) f.pxToRem(32px);
@@ -14,7 +17,6 @@
   z-index: 6;
 
   background-color: white;
-  border-bottom: 1px dashed c.$dark-gray-color;
 
   svg {
     margin-right: f.pxToRem(34px);
@@ -25,8 +27,7 @@
   }
 
   .ant-input,
-  .ant-input-affix-wrapper,
-  .langSelector {
+  .ant-input-affix-wrapper {
     background-color: c.$accented-gray-color;
   }
 
@@ -37,7 +38,13 @@
 
   .ant-input-affix-wrapper {
     position: relative;
-    @include mut.sized(1215px, 39px);
+    border: none;
+    height: 39px;
+    width: calc(100vw - #{$navbar-innerwidth});
+
+    @media screen and (max-width: 1815px) {
+    max-width: 100%;
+  }
 
     @include mut.full-rounded(12px);
     margin-right: f.pxToRem(10px);
@@ -47,47 +54,16 @@
       margin-right: f.pxToRem(11px);
     }
   }
-
-  /*&.dim {
-    background-color: rgba(0, 0, 0, .01);
-    z-index: -10000;
-  }
-   */
-
-  @media screen and (max-width: 1850px) {
-    .ant-input-affix-wrapper {
-      @include mut.sized(815px, 39px);
-    }
-  }
 }
 
 .leftPartContainer,
-.rightPartContainer,
-.langSelector {
-  @include mut.flexed($justify-content: flex-start, $align-items: center);
-}
-
-.langSelector {
-  @include mut.sized(55px, 39px);
-  @include mut.full-rounded(12px);
-  padding: f.pxToRem(10px);
-
-  span {
-    @include mut.with-font($font-weight: 300, $font-size: 18px);
-    color: c.$lighter-black-color;
-
-    &:after {
-      content: "";
-      @include mut.sized(5px, 5px);
-      @include mut.positioned-as(absolute, $top: 42%, $right: 16%);
-      background-color: c.$accented-red-color;
-    }
-  }
+.rightPartContainer {
+  @include mut.flexed($justify-content: space-between, $align-items: center);
 }
 
 .rightSectionContainer {
   @include mut.flexed($align-items: center);
-  margin-left: f.pxToRem(120px);
+  margin-left: f.pxToRem(20px);
 
   .loginBtn {
     @include mut.sized(142px, 39px);
@@ -115,11 +91,9 @@
 }
 
 .hiddenNavBar {
-  background: transparent none;
-  border-bottom: none !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%);
 
   .ant-input-affix-wrapper,
-  .langSelector,
   .loginBtn {
     @include mut.hidden();
   }
@@ -130,11 +104,13 @@
 }
 
 .hiddenHeaderInput {
-  @include mut.sized(1200px, 39px);
-  @include mut.positioned-as(fixed, $left: 17%);
+  width: calc(100vw - #{$navbar-hidden-innerwidth});
+  height: 39px;
+
+  @include mut.positioned-as(fixed, $left: 220px);
   @include mut.full-rounded(12px);
 
-  @include vnd.vendored(transition, 'transform 1s ease');
+  @include vnd.vendored(transition, 'transform 0.7s ease');
   transform: translateY(f.pxToRem(-200px));
 
   &.active {

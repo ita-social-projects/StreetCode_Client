@@ -19,12 +19,12 @@ const goToTop = () => {
 
 const ScrollToTopBtn = ({ scrollDelay = 300, visibleAfterPx = 1400, btnStyle }: Props) => {
     const [showTopBtn, setShowTopBtn] = useState(false);
-
     useEventListener(
         'scroll',
-        () => setShowTopBtn(window.scrollY > visibleAfterPx),
+        () => {
+            setShowTopBtn(window.scrollY > visibleAfterPx);
+        },
     );
-
     return (
         <>
             {showTopBtn && (

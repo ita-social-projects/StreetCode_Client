@@ -5,7 +5,7 @@
 
 .donateBtnContainer {
   z-index: 4;
-  @include mut.positioned-as(fixed, $bottom: 28px, $right: 41px);
+  @include mut.positioned-as(fixed, $bottom: 60px, $right: 40px);
   @include mut.flex-centered($direction: column);
 
   .donateBtnCircle {
@@ -28,4 +28,8 @@
     color: c.$accented-red-color;
     @include mut.with-font($font-size: 15px, $font-weight: 500);
   }
+}
+
+.stickyDonate {
+  @include mut.positioned-as(sticky, $bottom: 0px, $right: 0px);
 }

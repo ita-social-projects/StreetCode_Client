@@ -4,6 +4,11 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+.swiper-wrapper, .swiperClass{
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1600px;
+}
 .swiper-horizontal {
   overflow: visible;
   @include mut.parent-sized();
@@ -14,7 +19,19 @@
   }
 
   .swiper-slide .timelineYearTick {
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    margin: auto;
     @include mut.sized(21px, 21px);
+    
+  }
+  .swiper-slide{
+    visibility: hidden;
+
+  }
+  .swiper-slide-visible{
+    visibility: visible;
   }
 }
 
