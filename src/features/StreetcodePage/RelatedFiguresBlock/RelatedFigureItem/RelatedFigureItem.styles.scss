@@ -35,7 +35,7 @@
         justify-content: center;
         
         .aliasText{
-            @include mut.rem-padded($left: 5px, $right: 5px, $top: 5px);
+            @include mut.rem-padded($left: 5px, $right: 5px, $top: 5px, $bottom: 5px);
             line-height: pxToRem(16.4px);
             font-size: 12px;
         }
