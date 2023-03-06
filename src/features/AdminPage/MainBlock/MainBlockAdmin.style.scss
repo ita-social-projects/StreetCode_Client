@@ -112,6 +112,12 @@
         .device-sizes-list{
             width: 20%;
             text-align: center;
+            transition: font-weight 1s, color 0.7s;
+            .device-size:hover{
+                color: c.$dark-red-color;
+                font-weight: 600;
+                transition: font-weight 1s, color 0.7s;
+            }
         }
     }
     

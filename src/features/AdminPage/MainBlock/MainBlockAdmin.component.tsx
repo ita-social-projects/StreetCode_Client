@@ -205,7 +205,7 @@ const MainBlockAdmin: React.FC = () => {
                                     tags={selectedTags}
                                 />
                             )}
-                            title="Title"
+                            title=""
                             trigger="hover"
                             overlayStyle={{ width: popoverProps.width }}
                         >
