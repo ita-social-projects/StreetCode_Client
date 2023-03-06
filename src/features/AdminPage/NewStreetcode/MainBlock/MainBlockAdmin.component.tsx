@@ -164,7 +164,7 @@ const MainBlockAdmin: React.FC = () => {
                     name="title"
                     label="Назва стріткоду"
                     className="maincard-item"
-                    rules={[{ required: true, message: 'Введіть назву стріткоду' }]}
+                    rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
                 >
                     <Input />
                 </Form.Item>
@@ -269,8 +269,9 @@ const MainBlockAdmin: React.FC = () => {
                 >
                     <Upload
                         multiple
-                        accept=".jpeg,.png"
+                        accept=".jpeg,.png,.jpg"
                         listType="picture-card"
+                        maxCount={10}
                         onPreview={handlePreview}
                     >
                         <InboxOutlined />

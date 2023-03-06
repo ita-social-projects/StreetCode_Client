@@ -1,4 +1,4 @@
-import '../AdminPage.styles.scss';
+import '../../AdminPage.styles.scss';
 
 import { ConfigProvider } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
