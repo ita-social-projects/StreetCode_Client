@@ -10,10 +10,7 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
     const [slideToShow, setSlideToShow] = useState<number>(1);
     const swiped = useRef<boolean>(false);
     const { timelineItemStore } = useMobx();
-    const {
-        getTimelineItemArray, activeYear, setActiveYear,
-        setChangedByYear, changedByYear,
-    } = timelineItemStore;
+    const { getTimelineItemArray, activeYear, setActiveYear } = timelineItemStore;
 
     useEffect(() => {
         if (sliderRef && sliderRef.current) {
@@ -43,16 +40,6 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
     };
 
     const onAfterChange = (curIdx: number) => {
-          console.log('afterchange');
-          console.log(`curidx${curIdx}`);
-        /*
-        if (changedByYear) {
-            setChangedByYear(false);
-        } else {
-            const timelineArr = getTimelineItemArray;
-            const year = timelineArr[Number(curIdx.toFixed(0)) % timelineArr.length].date.getFullYear();
-            setActiveYear(year);
-        } */
         if (swiped.current) {
             const timelineArr = getTimelineItemArray;
             console.log(Number(curIdx.toFixed(0)) % timelineArr.length);
