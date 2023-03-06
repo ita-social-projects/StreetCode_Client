@@ -37,4 +37,10 @@
         position: relative;
     }
 
+    .ant-form-item-required:before {
+        content: "*";
+        color: red;
+        margin-right: 4px;
+      }
+
 }

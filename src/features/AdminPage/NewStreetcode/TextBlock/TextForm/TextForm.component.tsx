@@ -2,10 +2,10 @@ import './TextForm.styles.scss';
 
 import { useState } from 'react';
 import useMobx from '@stores/root-store';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 
 import { Button, Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import TextArea from 'antd/es/input/TextArea';
 
 import { Term } from '@/models/streetcode/text-contents.model';
 
@@ -17,6 +17,7 @@ interface InputInfoTextBlock {
 
 const TextForm: React.FC = () => {
     const [inputInfo, setInputInfo] = useState<Partial<InputInfoTextBlock>>();
+    const [showPreview, setShowPreview] = useState(false);
     const { termsStore } = useMobx();
     const [term, setTerm] = useState<Partial<Term>>();
 
@@ -26,16 +27,29 @@ const TextForm: React.FC = () => {
         setInputInfo({ ...inputInfo, title: e.target.value });
     };
 
-    const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setInputInfo({ ...inputInfo, text: e.target.value });
-    };
+    // const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    //     setInputInfo({ ...inputInfo, text: e.target.value });
+    //     console.log(inputInfo?.text);
+    // };
+
+    // const handleChangeText = (editor: TinyMCEEditor) => {
+    //     setInputInfo({ ...inputInfo, text: editor.});
+    //     console.log(inputInfo?.text);
+    // };
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
-        setTerm({ ...term, title: `${window.getSelection()?.toString()}` });
     };
 
-    const handleSelected = () => {
+    const handleAddTerm = () => {
+        if (term !== null && term?.title !== null) {
+            const newTerm : Term = {
+                id: 0,
+                title: term?.title as string,
+                description: term?.description,
+            };
+            termsStore.createTerm(newTerm);
+        }
     };
 
     return (
@@ -53,21 +67,31 @@ const TextForm: React.FC = () => {
             </Form.Item>
             <Form.Item>
                 <h3>Основний текст</h3>
-                <TextArea
-                    value={inputInfo?.text}
-                    showCount
-                    name="main-text"
-                    id="main-text-selection-area"
-                    defaultValue="Example Text"
-                    required
-                    onChange={handleChangeText}
+                <TinyMCEEditor
+                    init={{
+                        height: 300,
+                        menubar: false,
+                        plugins: [
+                            'autolink', 'checklist', 'export',
+                            'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                            'powerpaste', 'formatpainter',
+                            'insertdatetime', 'wordcount',
+                        ],
+                        toolbar: 'undo redo | bold italic | '
+                        + 'alignleft aligncenter alignright alignjustify | '
+                        + 'bullist numlist | removeformat ',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                    }}
+                    onChange={(e, editor) => setInputInfo({ ...inputInfo, text: editor.getContent() })}
+                    onSelectionChange={(e, editor) => setTerm({ ...term, title: editor.selection.getContent() })}
                 />
-                <Button onClick={handleSelected}>Додати новий термін</Button>
+                <Button onClick={handleAddTerm}>Додати новий термін</Button>
             </Form.Item>
-            <Form.Item>
+            <Form.Item name="video" rules={[{ required: true, message: 'Please enter a value' }]}>
                 <div className="youtube-block">
                     <h3>Відео</h3>
                     <Input
+                        title="video"
                         value={inputInfo?.link}
                         className="smaller-input"
                         placeholder="https://www.youtube.com"
@@ -76,8 +100,9 @@ const TextForm: React.FC = () => {
                         required
                         onChange={handleLinkChange}
                     />
+                    <Button onClick={() => setShowPreview(!showPreview)}>Попередній перегляд</Button>
                     {
-                        inputInfo?.link?.includes('watch') ? (
+                        inputInfo?.link?.includes('watch') && showPreview ? (
                             <div>
                                 <h4>Попередній перегляд</h4>
                                 <iframe
