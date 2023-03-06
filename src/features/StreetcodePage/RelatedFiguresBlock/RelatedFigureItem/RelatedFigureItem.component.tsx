@@ -31,6 +31,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             className={`relatedFigureSlide 
             ${hoverable && tags.length > 1 ? 'hoverable' : ''} 
             ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
+
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
             onClick={() => {

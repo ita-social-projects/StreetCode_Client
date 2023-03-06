@@ -17,8 +17,6 @@ import TextBlock from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
-import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
-
 const StreetcodeContent = () => {
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
