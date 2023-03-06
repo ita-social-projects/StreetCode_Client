@@ -100,7 +100,9 @@
   @include mut.full-rounded(14px);
   @include mut.with-font($font-weight: 500);
 }
-
+.audioBtn:disabled{
+  cursor: default;
+}
 .animateFigureBtn {
   @include mut.sized(229px, 73px);
   @include mut.flex-centered();
