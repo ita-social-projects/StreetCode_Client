@@ -36,6 +36,8 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveT
                 centerMode
                 slidesToScroll={1}
                 initialSlide={activeTagBlock}
+                focusOnSelect
+                centerPadding="0"
             >
                 {getTagArray?.map((tag) => (
                     <div>

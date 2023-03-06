@@ -46,10 +46,7 @@ const RelatedFiguresModal = () => {
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}
-                        setActiveTagId={() => {
-                            throw new Error('Function not implemented.');
-                        }
-                        }/>
+                    />
                 ))}
             </div>
         </Modal>
