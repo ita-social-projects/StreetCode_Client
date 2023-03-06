@@ -44,10 +44,7 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                         <p className='aliasText'>
                             ({alias})
                         </p>
-                        : 
-                        <p className='aliasText'>
-                            (псевдонім)
-                        </p>
+                        : ""
                     }
                 </div>
                 <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
