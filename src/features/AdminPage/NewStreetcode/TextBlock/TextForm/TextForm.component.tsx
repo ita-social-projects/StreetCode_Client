@@ -1,8 +1,9 @@
 import './TextForm.styles.scss';
 
 import { useState } from 'react';
+import useMobx from '@stores/root-store';
 
-import { Button, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -16,6 +17,7 @@ interface InputInfoTextBlock {
 
 const TextForm: React.FC = () => {
     const [inputInfo, setInputInfo] = useState<Partial<InputInfoTextBlock>>();
+    const { termsStore } = useMobx();
     const [term, setTerm] = useState<Partial<Term>>();
 
     const maxTitleLenght = 50;
@@ -30,70 +32,70 @@ const TextForm: React.FC = () => {
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
+        setTerm({ ...term, title: `${window.getSelection()?.toString()}` });
     };
 
     const handleSelected = () => {
-        setTerm({ ...term, title: `${window.getSelection()?.toString()}` });
     };
 
     return (
         <FormItem className="text-form">
-            <h3>Заголовок</h3>
-            <Input
-                className="smaller-input"
-                value={inputInfo?.title}
-                name="title"
-                type="text"
-                maxLength={maxTitleLenght}
-                onChange={handleChangeTitle}
-            />
-            <p className="smaller-input">
-                {inputInfo?.title?.length ?? 0}
-                /
-                {maxTitleLenght}
-            </p>
-            <h3>Основний текст</h3>
-            <TextArea
-                value={inputInfo?.text}
-                name="main-text"
-                id="main-text-selection-area"
-                defaultValue="Example Text"
-                onChange={handleChangeText}
-            />
-            <p>
-                {inputInfo?.text?.length ?? 0}
-            </p>
-            <Button onClick={handleSelected}>Додати новий термін</Button>
-            <div className="youtube-block">
-                <h3>Відео</h3>
+            <Form.Item>
+                <h3>Заголовок</h3>
                 <Input
-                    value={inputInfo?.link}
-                    className="smaller-input"
-                    placeholder="https://www.youtube.com"
-                    pattern="https?://www.youtube.com/watch.+"
-                    name="link"
-                    onChange={handleLinkChange}
+                    showCount
+                    value={inputInfo?.title}
+                    name="title"
+                    type="text"
+                    maxLength={maxTitleLenght}
+                    onChange={handleChangeTitle}
                 />
-                {
-                    inputInfo?.link?.includes('watch') ? (
-                        <div>
-                            <h4>Попередній перегляд</h4>
-                            <iframe
-                                title="video-preview"
-                                src={
-                                    inputInfo?.link?.includes('/watch?v=')
-                                        ? inputInfo?.link?.replace('/watch?v=', '/embed/')
-                                        : inputInfo?.link
-                                }
-                                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                            />
-                        </div>
-                    ) : (
-                        <div />
-                    )
-                }
-
-            </div>
+            </Form.Item>
+            <Form.Item>
+                <h3>Основний текст</h3>
+                <TextArea
+                    value={inputInfo?.text}
+                    showCount
+                    name="main-text"
+                    id="main-text-selection-area"
+                    defaultValue="Example Text"
+                    required
+                    onChange={handleChangeText}
+                />
+                <Button onClick={handleSelected}>Додати новий термін</Button>
+            </Form.Item>
+            <Form.Item>
+                <div className="youtube-block">
+                    <h3>Відео</h3>
+                    <Input
+                        value={inputInfo?.link}
+                        className="smaller-input"
+                        placeholder="https://www.youtube.com"
+                        pattern="https?://www.youtube.com/watch.+"
+                        name="link"
+                        required
+                        onChange={handleLinkChange}
+                    />
+                    {
+                        inputInfo?.link?.includes('watch') ? (
+                            <div>
+                                <h4>Попередній перегляд</h4>
+                                <iframe
+                                    title="video-preview"
+                                    src={
+                                        inputInfo?.link?.includes('/watch?v=')
+                                            ? inputInfo?.link?.replace('/watch?v=', '/embed/')
+                                            : inputInfo?.link
+                                    }
+                                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                                />
+                            </div>
+                        ) : (
+                            <div />
+                        )
+                    }
+                </div>
+            </Form.Item>
         </FormItem>
     );
 };
