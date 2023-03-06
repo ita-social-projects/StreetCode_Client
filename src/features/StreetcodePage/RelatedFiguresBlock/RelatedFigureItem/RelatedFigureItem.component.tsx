@@ -40,7 +40,7 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                         {title}
                     </p>
                     {
-                        alias !== undefined ?
+                        alias !== null ?
                         <p className='aliasText'>
                             ({alias})
                         </p>
