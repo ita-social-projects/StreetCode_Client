@@ -4,7 +4,7 @@ import Art from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import Video from '@models/media/video.model';
-import { StreetcodePartner } from '@models/partners/partners.model';
+import StreetcodePartner  from '@models/partners/partners.model';
 import { SourceLink } from '@models/sources/sources.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import TimelineItem from '@models/timeline/chronology.model';
@@ -46,6 +46,7 @@ export interface EventStreetcode {
 }
 
 export interface PersonStreetcode {
+    title: string;
     firstName: string;
     lastName: string;
     rank: string;
