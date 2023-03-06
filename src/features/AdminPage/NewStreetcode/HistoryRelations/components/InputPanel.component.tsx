@@ -5,11 +5,12 @@ import RelatedFigure from '@/models/streetcode/related-figure.model';
 import { useEffect, useState } from 'react';
 
 interface Props {
+  relations: RelatedFigure[];
   options: RelatedFigure[];
   handleAdd: (relation: RelatedFigure) => void;
 }
 
-const InputPanel = ({ options, handleAdd }: Props) => {
+const InputPanel = ({relations, options, handleAdd }: Props) => {
   const [relation, setRelation] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<RelatedFigure[]>(options);
 
@@ -29,7 +30,7 @@ const InputPanel = ({ options, handleAdd }: Props) => {
     if(found !== undefined) {
       handleAdd(found);
       setRelation('');
-      setFilteredOptions(options);
+      setFilteredOptions(options.filter((rel) => !relations.includes(rel) && rel.title != found.title));
     }
   };  
 
