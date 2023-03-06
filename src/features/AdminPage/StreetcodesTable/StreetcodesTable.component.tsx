@@ -127,7 +127,10 @@ const StreetcodesTable = () => {
     return(
     <>
         <div className="StreetcodeTableWrapper">
-            <Button className='addButton' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
+            <div>
+                <Button className='addButton' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
+            
+            </div> 
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
                 pagination={{className: "paginationButton", pageSize: 8}}
