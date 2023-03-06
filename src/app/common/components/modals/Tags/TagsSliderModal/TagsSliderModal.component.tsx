@@ -14,7 +14,7 @@ interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const TagListModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagId }: Props) => {
+const TagsSliderModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagId }: Props) => {
     const { tagsStore } = useMobx();
     const { fetchTagByStreetcodeId, getTagArray } = tagsStore;
 
@@ -27,16 +27,17 @@ const TagListModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagI
             <BlockSlider
                 className="tagSliderClass"
                 infinite
-                slidesToShow={1}
+                slidesToShow={3}
+                arrows={false}
                 swipe={false}
                 dots={false}
+                swipeOnClick
                 variableWidth
-                arrows={false}
-                focusOnSelect
                 centerMode
-                centerPadding="0"
                 slidesToScroll={1}
                 initialSlide={activeTagBlock}
+                focusOnSelect
+                centerPadding="0"
             >
                 {getTagArray?.map((tag) => (
                     <div>
@@ -56,4 +57,4 @@ const TagListModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagI
     );
 };
 
-export default TagListModal;
+export default TagsSliderModal;

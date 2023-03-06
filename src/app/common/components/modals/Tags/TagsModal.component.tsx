@@ -24,7 +24,7 @@ interface Props {
 const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
     const { relatedFiguresStore, modalStore } = useMobx();
     const { setModal, modalsState: { tagsList } } = modalStore;
-    const { fetchRelatedFiguresByTagId, getRelatedByActiveTag } = relatedFiguresStore;
+    const { fetchRelatedFiguresByTagId, getRelatedFiguresArray } = relatedFiguresStore;
 
     const tagId = activeTagId;
     useAsync(
@@ -57,7 +57,7 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
                 />
             </div>
             <div className="relatedFiguresByTagsContentContainer">
-                {getRelatedByActiveTag?.map((figure) => (
+                {getRelatedFiguresArray?.map((figure) => (
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}

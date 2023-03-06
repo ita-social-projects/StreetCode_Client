@@ -72,7 +72,7 @@ const DonatesModal = () => {
                     <Input placeholder="Ваше ім’я (необов’язково)" />
                     <Input placeholder="Коментар (необов’язково)" />
                 </div>
-                <Button className="donatesDonateBtn">підтримай</Button>
+                <Button className="donatesDonateBtn">підтримати</Button>
             </div>
         </Modal>
     );
