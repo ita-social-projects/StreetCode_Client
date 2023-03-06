@@ -4,7 +4,8 @@ import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
 import Streetcode, { Status } from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
-import { Button } from 'antd';
+import { Button, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import { DeleteOutlined, FormOutlined, RollbackOutlined } from '@ant-design/icons';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -18,13 +19,20 @@ const StreetcodesTable = () => {
     
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 
-    const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-    });
+    const formatDate = (date?: Date): string => {
 
-    const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
+        if(!date) {
+            return "Could not to convert time!"
+        }
+
+        let day = date.getDate().toString().padStart(2, '0');
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let year = date.getFullYear().toString();
+        let hours = date.getHours().toString().padStart(2, '0');
+        let minutes = date.getMinutes().toString().padStart(2, '0');
+
+        return `${day}.${month}.${year} ${hours}:${minutes}`;
+    }
 
     const DeleteAction = (record: MapedStreetCode) => {
         console.log("OK!")
@@ -34,7 +42,8 @@ const StreetcodesTable = () => {
                     if (item.index === record.index) {
                         return {
                             ...item,
-                            status: "Видалений"
+                            status: "Видалений",
+                            date: formatDate(new Date())
                         };
                     }
                     return item;
@@ -129,7 +138,6 @@ const StreetcodesTable = () => {
         <div className="StreetcodeTableWrapper">
             <div>
                 <Button className='addButton' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
-            
             </div> 
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
