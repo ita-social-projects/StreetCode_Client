@@ -1,7 +1,7 @@
 import './StreetcodesTable.styles.scss';
 import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
 import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
-import Streetcode, { Stage } from "@/models/streetcode/streetcode-types.model";
+import Streetcode, { Status } from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
 import { Button } from 'antd';
@@ -34,7 +34,7 @@ const StreetcodesTable = () => {
                     if (item.index === record.index) {
                         return {
                             ...item,
-                            stage: "Видалений"
+                            status: "Видалений"
                         };
                     }
                     return item;
@@ -57,8 +57,8 @@ const StreetcodesTable = () => {
         },
         {
             title: 'Статус',
-            dataIndex: 'stage',
-            key: 'stage',
+            dataIndex: 'status',
+            key: 'status',
         },
         {
             title: 'Останні зміни',
@@ -71,7 +71,7 @@ const StreetcodesTable = () => {
             key: 'action',
             render: (value: any, record: MapedStreetCode, index: any) => 
             <>
-                {record.stage != "Видалений" ? 
+                {record.status != "Видалений" ? 
                 <>
                     <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
                     <DeleteOutlined className='actionButton' onClick={(event) => {
@@ -88,7 +88,7 @@ const StreetcodesTable = () => {
     interface MapedStreetCode {
         key: number,
         index: number,
-        stage: string,
+        status: string,
         date: string,
         name: string
     }
@@ -99,21 +99,22 @@ const StreetcodesTable = () => {
 
         streetcodes?.map((streetcode) => {
 
-            let currentStage: string = "";
+            console.log(streetcode)
+
+            let currentStatus: string = "";
             
-            switch(streetcode.stage){
-                case 0: {currentStage = "Чернетка"; break;}
-                case 1: {currentStage = "Опублікований"; break;}
-                case 2: {currentStage = "Видалений"; break;}
+            switch(streetcode.status){
+                case 0: {currentStatus = "Чернетка"; break;}
+                case 1: {currentStatus = "Опублікований"; break;}
+                case 2: {currentStatus = "Видалений"; break;}
             }
 
             let mapedStreetCode = {
                 key: streetcode.id,
                 index: streetcode.index,
-                stage: currentStage,
+                status: currentStatus,
                 date: formatDate(new Date(streetcode.updatedAt)),
-                name: streetcode.type == 0 ? `${streetcode.title}` 
-                : `${streetcode.firstName} ${streetcode.lastName}`
+                name: streetcode.title,
             }
 
             mapedStreetCodes.push(mapedStreetCode);

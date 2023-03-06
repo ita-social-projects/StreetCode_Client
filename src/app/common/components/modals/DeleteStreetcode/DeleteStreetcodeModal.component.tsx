@@ -9,9 +9,7 @@ const DeleteStreetcodeModal = () => {
     const { modalStore: { setModal, modalsState: { deleteStreetcode } } } = useMobx();
 
     const confirmHandler = () => {
-        setTimeout(() => {
-            setModal('deleteStreetcode')
-        }, 500);
+        setModal('deleteStreetcode')
     };
 
     return (
