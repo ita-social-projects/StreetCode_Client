@@ -6,48 +6,67 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import {
     Button,
-    Form, Input, InputNumber, InputRef, Popover, Select, Switch, Upload, UploadFile,
+    Form, Input, InputNumber, InputRef, message, Popover, Select, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
-import Dragger from 'antd/es/upload/Dragger';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
-import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 import DatePickerPart from './DatePickerPart.component';
+import FileInputsPart from './FileInputsPart.component';
 
 const { Option } = Select;
 const MainBlockAdmin: React.FC = () => {
+    const teaserMaxCharCount = 450;
     const allTags = useAsync(() => TagsApi.getAll()).value;
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [tags, setTags] = useState< Tag[]>([]);
-    const [leftCharForInput, setLeftCharForInput] = useState<number>(450);
+    const [leftCharForInput, setLeftCharForInput] = useState<number>(teaserMaxCharCount);
     const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
-    const [maxCharCount, setMaxCharCount] = useState<number>(450);
-
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+    const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
     const [popoverProps, setPopoverProps] = useState<{
         width:number, screenWidth:number }>({ width: 360, screenWidth: 360 });
-
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
     const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
     const [streetcodeTeaser, setStreetcodeTeaser] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
+    const [messageApi, contextHolder] = message.useMessage();
+
     const [form] = Form.useForm();
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
     }, [streetcodeTitle]);
     const onNameSurnameChange = () => {
-        const curname = name.current?.input?.value;
-        setStreetcodeTitle(`${surname.current?.input?.value}${curname ? ` ${curname}` : ''}`);
+        const curSurname = surname.current?.input?.value;
+        setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
+    };
+    const onCheckIndexClick = () => {
+        const number = form.getFieldValue('streetcodeNumber') as number;
+        if (number) {
+            StreetcodesApi.existWithIndex(number)
+                .then((exist) => {
+                    if (exist) {
+                        message.error('Даний номер уже використовується стріткодом. Використайте інший, будь ласка.');
+                    } else {
+                        message.success(
+                            'Ще жодний стріткоду не має такого номеру. Можете з впевненістю його використовувати',
+                        );
+                    }
+                })
+                .catch((e) => {
+                    message.error('Сервер не відповідає');
+                });
+        } else {
+            message.error('Поле порожнє');
+        }
     };
     const onSwitchChange = (value:boolean) => {
         if (value) {
@@ -59,14 +78,14 @@ const MainBlockAdmin: React.FC = () => {
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
         const newLinesCharCount = (text.match(/(\n|\r)/gm) || []).length;
-        const newLeftCharForInput = 450 - text.length - newLinesCharCount * 49;
-        if (newLeftCharForInput < 0) {
+        const newLeftCharForInput = teaserMaxCharCount - text.length - newLinesCharCount * 49;
+        if (newLeftCharForInput < 0 || newLinesCharCount > 1) {
             return;
         }
         setStreetcodeTeaser(text);
 
-        if (maxCharCount !== 450 - newLinesCharCount * 49) {
-            setMaxCharCount(450 - newLinesCharCount * 49);
+        if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * 49) {
+            setMaxCharCount(teaserMaxCharCount - newLinesCharCount * 49);
         }
         setLeftCharForInput(newLeftCharForInput);
     };
@@ -74,14 +93,6 @@ const MainBlockAdmin: React.FC = () => {
     useEffect(() => {
         if (allTags) {
             const returnedTags = allTags as Tag[];
-            /*  returnedTags.push(
-                { id: 101, title: 'first' },
-                { id: 20, title: 'second' },
-                { id: 31, title: 'third' },
-                { id: 121, title: 'first2' },
-                { id: 23, title: 'seco3nd' },
-                { id: 34, title: 'thi4rd' },
-            ); */
             setTags(returnedTags);
         }
     }, [allTags]);
@@ -90,23 +101,17 @@ const MainBlockAdmin: React.FC = () => {
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
         if (selectedIndex < 0) {
-            const newId = Math.max(...selectedTags.map((t) => t.id));
-            selected = { id: newId, title: selectedValue };
-            setTags([...tags, selected]);
+            TagsApi.create({ title: selectedValue }).then((newTag) => {
+                setSelectedTags([...selectedTags, { ...newTag, visible: false }]);
+            }).catch((e) => console.log(e));
         } else {
             selected = tags[selectedIndex];
+            setSelectedTags([...selectedTags, { ...selected, visible: false }]);
         }
-
-        setSelectedTags([...selectedTags, { ...selected, visible: false }]);
     };
 
     const onDeselectTag = (deselectedValue:string) => {
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
-    };
-
-    const handlePreview = async (file: UploadFile) => {
-        setFilePreview(file);
-        setPreviewOpen(true);
     };
 
     dayjs.locale('uk');
@@ -134,13 +139,16 @@ const MainBlockAdmin: React.FC = () => {
                 <Switch className="person-event-switch" onChange={onSwitchChange} />
                 Подія
 
-                <Form.Item
-                    label="Номер стріткоду"
-                    rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
-                    name="streetcodeNumber"
-                >
-                    <InputNumber min={0} />
-                </Form.Item>
+                <div className="streetcode-number-container">
+                    <Form.Item
+                        label="Номер стріткоду"
+                        rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                        name="streetcodeNumber"
+                    >
+                        <InputNumber min={0} max={1000} />
+                    </Form.Item>
+                    <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+                </div>
 
                 {streetcodeType === 'people' ? (
                     <Input.Group
@@ -169,7 +177,15 @@ const MainBlockAdmin: React.FC = () => {
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="Короткий опис" className="maincard-item">
+                <Form.Item name="alias" label="Короткий опис" className="maincard-item">
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="URL"
+                    name="streetcodeUrlName"
+                    className="maincard-item"
+                    rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
+                >
                     <Input />
                 </Form.Item>
 
@@ -198,6 +214,7 @@ const MainBlockAdmin: React.FC = () => {
                         </Select>
                     </div>
                     <div className="device-sizes-list">
+                        <p>Розширення</p>
                         <Popover
                             content={(
                                 <PopoverForTagContent
@@ -242,57 +259,7 @@ const MainBlockAdmin: React.FC = () => {
                     </div>
                 </Form.Item>
 
-                <Form.Item
-                    name="animations"
-                    className="maincard-item"
-                    label="Анімація"
-                    rules={[{ required: true, message: 'Завантажте анімацію' }]}
-                >
-                    <Upload
-                        accept=".gif"
-                        listType="picture-card"
-                        multiple={false}
-                        maxCount={1}
-                        onPreview={handlePreview}
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    >
-                        <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                    </Upload>
-                </Form.Item>
-
-                <Form.Item
-                    name="pictures"
-                    className="maincard-item photo-form-item"
-                    label="Зображення"
-                    rules={[{ required: true, message: 'Завантажте зображення' }]}
-                >
-                    <Upload
-                        multiple
-                        accept=".jpeg,.png,.jpg"
-                        listType="picture-card"
-                        maxCount={10}
-                        onPreview={handlePreview}
-                    >
-                        <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                    </Upload>
-                </Form.Item>
-
-                <Form.Item
-                    name="audio"
-                    className="maincard-item"
-                    label="Аудіо"
-                >
-                    <Dragger
-                        accept=".mp3"
-                    >
-                        <InboxOutlined />
-
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                    </Dragger>
-                </Form.Item>
-                <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
+                <FileInputsPart />
             </>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">

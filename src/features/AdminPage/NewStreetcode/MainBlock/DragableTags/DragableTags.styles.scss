@@ -20,6 +20,6 @@
 .item-blured{
 .tagItem{
     @include mut.backdrop-filtering-blur(100px);
-background-color: #C4C4C4;
+    background-color: #C4C4C4;
 }
 }

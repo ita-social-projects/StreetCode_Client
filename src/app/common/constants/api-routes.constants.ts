@@ -129,6 +129,7 @@ export const API_ROUTES = {
         CREATE: 'streetcode/create',
         UPDATE: 'streetcode/update',
         DELETE: 'streetcode/delete',
+        EXIST_WITH_INDEX: 'streetcode/existWithIndex',
     },
     SUBTITLES: {
         GET_ALL: 'subtitle/getAll',

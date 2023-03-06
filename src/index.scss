@@ -1,6 +1,6 @@
 @use '@assets/sass/variables/_variables.fonts.scss' as ft;
 @use '@assets/sass/mixins/_utils.mixins.scss' as ut;
-
+@use "@sass/variables/_variables.colors.scss" as c;
 *,
 *:before,
 *:after {
@@ -37,4 +37,34 @@ ul, ol {
   margin-inline-start: 0;
   margin-inline-end: 0;
   padding-inline-start: 0;
+}
+
+.streetcode-custom-button{
+  @include ut.flex-centered();
+  @include ut.full-rounded(14px);
+  @include ut.with-font($font-weight: 500);
+  background-color: c.$accented-red-color;
+  border-color: c.$accented-red-color;
+  color:#fff;
+  .ant-btn-default:hover{
+    color:#fff !important;
+  }
+  .ant-btn{
+    color:#fff;
+    &:hover{
+      color:c.$pure-white-color ;
+    }
+  }
+  button{
+    color:#fff;
+    &:hover{
+      color:#fff;
+    }
+  }
+  
+  &:hover{
+    color:c.$pure-white-color ;
+    background-color: c.$accented-red-color;
+    border-color: c.$accented-red-color;
+  }
 }
