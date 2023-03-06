@@ -23,7 +23,6 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
                 setCenterMode(true);
                 setSlideToShow(1);
             }
-            console.log(sectionIdx);
             if (sectionIdx !== -1) {
                 sliderRef.current.slickGoTo(sectionIdx);
             }
@@ -33,7 +32,6 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
 
     const handleClick = (index: number) => {
         if (sliderRef && sliderRef.current && swipeOnClick) {
-            console.log(index);
             setActiveYear(getTimelineItemArray[index].date.getFullYear());
             sliderRef.current.slickGoTo(index);
         }
@@ -42,9 +40,7 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
     const onAfterChange = (curIdx: number) => {
         if (swiped.current) {
             const timelineArr = getTimelineItemArray;
-            console.log(Number(curIdx.toFixed(0)) % timelineArr.length);
             const year = timelineArr[Number(curIdx.toFixed(0)) % timelineArr.length].date.getFullYear();
-            console.log(year);
             setActiveYear(year);
         }
     };
