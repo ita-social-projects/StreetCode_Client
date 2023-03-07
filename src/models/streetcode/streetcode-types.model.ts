@@ -23,7 +23,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     eventStartOrPersonBirthDate: Date;
     eventEndOrPersonDeathDate: Date;
     type: StreetcodeType;
-    stage: Stage;
+    status: Status;
     text: string;
     audio?: Audio | undefined;
     // coordinate?: StreetcodeCoordinate | undefined;
@@ -54,9 +54,10 @@ export interface PersonStreetcode {
     streetcode: Streetcode;
 }
 
-export enum Stage {
+export enum Status {
     Draft,
-    Published
+    Published,
+    Deleted
 }
 
 export enum StreetcodeType {
