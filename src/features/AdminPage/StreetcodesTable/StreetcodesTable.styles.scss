@@ -16,14 +16,21 @@
       .ant-btn-default {
         border-color: c.$accented-red-color;
     }
-    
-    .addButton {
+}
+
+.searchMenu {
+    margin: 10px;
+
+    .searchMenuElement {
+        display: inline-block;
+        margin-left: 10px
+    }
+
+    .Button {
         @include mut.sized(142px, 39px);
         @include mut.flex-centered();
         @include mut.full-rounded(12px);
         @include mut.with-font($font-weight: 500, $font-size: 16px);
-    
-        margin: 10px;
 
         background-color: c.$accented-red-color;
         border-color: c.$accented-red-color;

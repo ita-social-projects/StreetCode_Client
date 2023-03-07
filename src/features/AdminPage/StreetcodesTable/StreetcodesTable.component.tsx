@@ -136,8 +136,9 @@ const StreetcodesTable = () => {
     return(
     <>
         <div className="StreetcodeTableWrapper">
-            <div>
-                <Button className='addButton' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
+            <div className='searchMenu'>
+                <div className='searchMenuElement'><Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button></div>
+                <div className='searchMenuElement'><Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button></div>
             </div> 
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
