@@ -1,0 +1,100 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+$factImg: "@assets/images/interesting-facts/WowFacts1.png";
+
+.interestingFactsAdminModal {
+ // @include mut.sized(823px, 765px);
+
+  &.ant-modal {
+    .ant-modal-content {
+     // height: pxToRem(765px);
+      @include mut.full-rounded(60px, $overflow: visible);
+
+      padding: 0 !important;
+      box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+        0 6px 20px 0 rgb(0 0 0 / 19%);
+    }
+
+    .ant-modal-close {
+      @include mut.positioned-as(absolute, $left: 90%, $top: -25px);
+      @include mut.circular(80px, c.$pure-white-color);
+
+      &:hover {
+        background-color: c.$modal-hover-color;
+      }
+    }
+  }
+}
+.factForm{
+    padding: 25px;
+    position: relative;
+    left: 5%;
+
+    .inputText{
+        @include mut.with-font(ft.$roboto-font, 100, 18px, normal);
+        width: 350px;
+        .textarea{
+            height: 180px;
+        }
+       
+
+
+    }
+    
+    justify-content: center;
+    justify-items: center;
+
+      @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+        color: c.$dark-red-color;
+
+    
+
+}
+
+// .factsImgContainer {
+//   position: sticky;
+//   @include mut.sized(100%, 435px);
+//   @include mut.flex-centered();
+//   @include mut.bg-image($factImg);
+// }
+
+// .factsContentContainer {
+//   @include mut.flexed($direction: column, $gap: 15px);
+//   @include mut.rem-margined(29px, 42px, 24px, 42px);
+
+//   h1 {
+//     @include mut.with-font(ft.$roboto-font, 500, 26px, normal);
+//     line-height: pxToEm(30px);
+//     color: c.$accented-red-color;
+//   }
+// }
+
+// .factsTextContainer {
+//   height: pxToRem(223px);
+//   @include mut.flexed($direction: column, $gap: 10px);
+
+//   @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+//   color: c.$lighter-black-color;
+//   line-height: pxToEm(23px);
+
+//   overflow-y: auto;
+//   padding-right: pxToRem(10px);
+//   margin-right: pxToRem(10px);
+
+//   &::-webkit-scrollbar-thumb,
+//   &::-webkit-scrollbar-track {
+//     @include mut.full-rounded(15px);
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background: c.$card-scrollbar-track-color;
+//   }
+
+//   &::-webkit-scrollbar-track {
+//     background: c.$accented-gray-color;
+//     @include mut.rem-margined($top: -15px, $bottom: 90px);
+//   }
+// }

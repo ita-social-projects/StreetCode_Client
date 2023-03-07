@@ -15,6 +15,7 @@ const InterestingFactsBlock = () => {
         () => fetchFactsByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
+    const { modalStore: { setModal } } = useMobx();
 
     return (
         <div className="interestingFactsBlock">
@@ -24,9 +25,9 @@ const InterestingFactsBlock = () => {
                 </h2>
             </div>
             <div className="factsContainer">
-                <button className="addWowFact">+</button>
+                <button className="addWowFact" onClick={() => setModal('adminFacts')}>+</button>
                 {getFactArray.map((fact) => (
-                    <InterestingFactAdminItem className='bi'
+                    <InterestingFactAdminItem
                         fact={fact}
                     />
                 ))}

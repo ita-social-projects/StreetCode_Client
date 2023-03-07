@@ -1,26 +1,36 @@
-import './InterestingFactsAdminItem.style.scss';
-
+// import './InterestingFactsAdminItem.style.scss';
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
 import { Fact } from '@models/streetcode/text-contents.model';
+import useMobx from '@stores/root-store';
 
 interface Props {
     fact: Fact;
 }
+//  const { modalStore: { setModal } } = useMobx();
 
-const InterestingFactsItem = ({ fact: { title } } : Props) => (
-    <div className="interestingFactItem">
-        <div className="item">
-            <div className="faIcon">
-                <FaPencilAlt />
-            </div>
-            <p>
-                {title}
-            </p>
-            <div className="faIcon">
-                <FaRegTrashAlt />
+//  const InterestingFactItem = ({
+//     fact: { factContent, title, id },
+// }: Props) => {
+//     const { modalStore: { setModal } } = useMobx();
+// )
+
+const InterestingFactsItem = ({ fact: { title, id } } : Props) => {
+    const { modalStore: { setModal } } = useMobx();
+    return (
+        <div className="interestingFactItem">
+            <div className="item">
+                <div className="faIcon">
+                    <FaPencilAlt onClick={() => setModal('adminFacts', id, true)} />
+                </div>
+                <p>
+                    {title}
+                </p>
+                <div className="faIcon">
+                    <FaRegTrashAlt />
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default InterestingFactsItem;
