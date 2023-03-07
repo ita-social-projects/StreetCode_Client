@@ -5,6 +5,7 @@ import LightboxModal from '@components/modals/Lightbox/Lightbox.component';
 import RelatedFiguresModal from '@components/modals/RelatedFigures/RelatedFiguresModal.component';
 import SourcesModal from '@components/modals/Sources/SourcesModal.component';
 import TagsModal from '@components/modals/Tags/TagsModal.component';
+import DeleteStreetcodeModal from '../common/components/modals/DeleteStreetcode/DeleteStreetcodeModal.component';
 
 const ModalWrapper = () => (
     <>
@@ -15,6 +16,7 @@ const ModalWrapper = () => (
         <HeaderLoginModal />
         <LightboxModal />
         <TagsModal />
+        <DeleteStreetcodeModal />
     </>
 );
 

@@ -58,7 +58,8 @@ export interface PersonStreetcode {
 
 export enum Status {
     Draft,
-    Published
+    Published,
+    Deleted
 }
 
 export enum StreetcodeType {

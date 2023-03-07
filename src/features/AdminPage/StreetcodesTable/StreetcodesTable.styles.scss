@@ -30,6 +30,7 @@
         color: c.$pure-white-color;
 
         &:hover {
+            border-color: c.$dark-red-color;
             background-color: c.$dark-red-color;
         }
     }
