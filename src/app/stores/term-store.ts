@@ -39,9 +39,13 @@ export default class TermStore {
         }
     };
 
-    public updateTerm = async (term: Term) => {
+    public updateTerm = async (id: number, term: Term) => {
         try {
-            await termsApi.update(term);
+            console.log('API CALL');
+            console.log(term);
+            console.log(id);
+            await termsApi.update(id, term);
+            console.log('API CALL');
             runInAction(() => {
                 const updatedTerm = {
                     ...this.TermMap.get(term.id),

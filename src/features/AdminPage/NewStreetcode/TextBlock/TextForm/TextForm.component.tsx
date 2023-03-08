@@ -18,7 +18,7 @@ interface InputInfoTextBlock {
 const TextForm: React.FC = () => {
     const [inputInfo, setInputInfo] = useState<Partial<InputInfoTextBlock>>();
     const [showPreview, setShowPreview] = useState(false);
-    const { termsStore } = useMobx();
+    const { modalStore: { setTermModal, modalsState: { addTerm } } } = useMobx();
     const [term, setTerm] = useState<Partial<Term>>();
 
     const maxTitleLenght = 50;
@@ -48,7 +48,9 @@ const TextForm: React.FC = () => {
                 title: term?.title as string,
                 description: term?.description,
             };
-            termsStore.createTerm(newTerm);
+            setTermModal('addTerm', newTerm, true);
+            console.log('OPEN MODAL');
+            console.log('addTerm');
         }
     };
 
@@ -82,7 +84,10 @@ const TextForm: React.FC = () => {
                         + 'bullist numlist | removeformat ',
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                     }}
-                    onChange={(e, editor) => setInputInfo({ ...inputInfo, text: editor.getContent() })}
+                    onChange={(e, editor) => {
+                        setInputInfo({ ...inputInfo, text: editor.getContent() });
+                        console.log(inputInfo);
+                    }}
                     onSelectionChange={(e, editor) => setTerm({ ...term, title: editor.selection.getContent() })}
                 />
                 <Button onClick={handleAddTerm}>Додати новий термін</Button>
