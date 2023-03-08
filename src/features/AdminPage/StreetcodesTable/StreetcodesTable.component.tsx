@@ -4,10 +4,9 @@ import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
 import Streetcode, { Status } from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
-import { Button, Dropdown, Select } from 'antd';
-import type { MenuProps } from 'antd';
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import { Button, Input, Select, SelectProps } from 'antd';
 import { DeleteOutlined, FormOutlined, RollbackOutlined } from '@ant-design/icons';
-import type { SelectProps } from 'antd';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 
@@ -147,7 +146,16 @@ const StreetcodesTable = () => {
     <>
         <div className="StreetcodeTableWrapper">
             <div className='searchMenu'>
-                <div className='searchMenuElement'><Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button></div>
+            <div className='searchMenuElement'>
+                <Button className='Button'>Пошук стріткодів</Button>
+            </div>
+            <div className='searchMenuElement'>
+                <Input
+                    className='searchMenuElementInput'
+                    prefix={<MagnifyingGlass />}
+                    placeholder="Назва або індекс"
+                />
+            </div>
                 <div className='searchMenuElement'>
                     <Select
                         mode="multiple"
@@ -157,6 +165,9 @@ const StreetcodesTable = () => {
                         onChange={handleChange}
                         options={options}
                     />
+                </div>
+                <div className='searchMenuElement'>
+                    <Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
                 </div>
             </div> 
                 <Table columns={columnsNames}
