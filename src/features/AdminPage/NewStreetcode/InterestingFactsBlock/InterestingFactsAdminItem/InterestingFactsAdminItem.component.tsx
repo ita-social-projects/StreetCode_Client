@@ -20,7 +20,7 @@ const InterestingFactsItem = ({ fact: { title, id } } : Props) => {
         <div className="interestingFactItem">
             <div className="item">
                 <div className="faIcon">
-                    <FaPencilAlt onClick={() => setModal('adminFacts', id, true)} />
+                    <FaPencilAlt onClick={() => setModal('adminFacts')} />
                 </div>
                 <p>
                     {title}

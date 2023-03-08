@@ -32,23 +32,57 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     padding: 25px;
     position: relative;
     left: 5%;
-
-    .inputText{
-        @include mut.with-font(ft.$roboto-font, 100, 18px, normal);
-        width: 350px;
-        .textarea{
-            height: 180px;
-        }
-       
-
-
+    @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+    color: c.$dark-red-color;
+    p{
+        padding: 5px;
     }
-    
-    justify-content: center;
-    justify-items: center;
-
-      @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+    .submit{
+        width: 30%;   
+        justify-content: center;
+        left: 30%;
+        @include mut.with-font(ft.$roboto-font, 300, 15px, normal);
+        border-color: c.$dark-red-color;
         color: c.$dark-red-color;
+        &:hover{
+            color: c.$pure-white-color;
+            background-color: c.$dark-red-color;
+        }
+    }
+
+    .inputBlock{
+        width: 400px;
+        height: 280px;
+         input, textarea{
+            @include mut.with-font(ft.$roboto-font, 300, 20px, normal) ;
+        }
+        .characterCounter{
+            color: c.$lighter-black-color;
+            text-align: right;
+            padding: 0;
+            @include mut.with-font(ft.$roboto-font, 300, 14px, normal) ;
+        }
+
+        input{
+            width: 60%;
+        }
+        textarea{
+            height: 70%;
+            width: 100%;
+            resize: none;
+     
+        }
+    }
+
+    // .inputBlock input,
+    // .inputBlock textarea{
+    //     @include mut.with-font(ft.$roboto-font, 300, 20px, normal) ;
+
+    // }
+    
+    // justify-content: center;
+    // justify-items: center;
+
 
     
 

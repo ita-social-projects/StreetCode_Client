@@ -2,24 +2,30 @@ import './InterestingFactsAdminModal.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
+import { InboxOutlined } from '@ant-design/icons';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
-import { Modal } from 'antd';
+import { Button, Modal, Upload, UploadFile } from 'antd';
+import FormItem from 'antd/es/form/FormItem';
 
 const InterestingFactsModal = () => {
     const { factsStore: { factMap }, modalStore } = useMobx();
     const { setModal, modalsState: { adminFacts } } = modalStore;
 
-    // const factId = facts.fromCardId!;
-    // const fact = factMap.get(factId);
-
+    const factId = adminFacts.fromCardId!;
+    const fact = factMap.get(2);
+    const [title, setTitle] = useState(fact?.title);
+    // const [date, setDate] = useState(task.date)
+    // const [status, setStatus] = useState<string>(task.status)
+    // const [urgently, setUrgently] = useState(task.urgently)
     const [message, setMessage] = useState('');
     const handleChange = (event:any) => {
         setMessage(event.target.value);
     };
     const characterCount = message.length | 0;
 
+    console.log(factId);
     return (
         <Modal
             // title= " Додати Wow-fact"
@@ -34,15 +40,35 @@ const InterestingFactsModal = () => {
             <form className="factForm">
                 <h2>Wow-Fact</h2>
                 <p>Заголовок</p>
-                <input className="inputText" />
-                <p>Основний текст</p>
-                <textarea className="inputText" value={message} maxLength="600" onChange={handleChange} />
-                <p>
-                    {characterCount}
-                      /600
-                </p>
-                <p>Зображення</p>
-                <input type="file" accept="image/png, image/jpeg" />
+                <div className="inputBlock">
+                    <input value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <p>Основний текст</p>
+                    <textarea value={message} maxLength="600" onChange={handleChange} />
+                    <p className="characterCounter">
+                        {characterCount}
+                        /600
+                    </p>
+                </div>
+                <p>Зображення:</p>
+                <FormItem
+                    name="picture"
+                    className=""
+                    rules={[{ required: true, message: 'Завантажте зображення' }]}
+                >
+                    <Upload
+                        multiple={false}
+                        accept=".jpeg,.png,.jpg"
+                        listType="picture-card"
+                        maxCount={1}
+                        //  onPreview={handlePreview}
+                    >
+                        <div className="upload">
+                            <InboxOutlined />
+                            <p>Виберіть чи перетягніть файл</p>
+                        </div>
+                    </Upload>
+                </FormItem>
+                <Button className="submit"> Додати </Button>
             </form>
         </Modal>
     );
