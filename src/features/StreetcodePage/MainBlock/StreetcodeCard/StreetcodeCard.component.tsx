@@ -102,9 +102,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             {streetcode?.index}
                         </div>
                         <h2 className="streetcodeTitle">
-                            {streetcode?.lastName}
-                            {streetcode?.firstName ? ` ${streetcode?.firstName} ` : ''}
-                            {streetcode?.rank ? `${streetcode?.rank} ` : ''}
                             {streetcode?.title}
                         </h2>
                         <div className="streetcodeDate">

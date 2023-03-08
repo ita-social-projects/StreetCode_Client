@@ -21,11 +21,7 @@
 
 .figureSlideText {
     @include mut.sized($width: 278px, $height: 97px);
-    @include mut.flexed($align-items: flex-start, $wrap: wrap);
     @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
-
-
-    align-content: flex-start;
 
     background-color: c.$dark-red-color;
 
@@ -33,10 +29,19 @@
 
     .heading {
         @include mut.sized($width: 100%, $height: 88px);
-        @include mut.flex-centered();
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+        .aliasText{
+            @include mut.rem-padded($left: 5px, $right: 5px, $top: 5px, $bottom: 5px);
+            line-height: pxToRem(16.4px);
+            font-size: 12px;
+        }
 
         p {
-            @include mut.truncated($line-num: 3);
+            @include mut.truncated($line-num: 2);
             @include mut.rem-padded($left: 12px, $right: 12px, $top: 10px);
 
             @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
