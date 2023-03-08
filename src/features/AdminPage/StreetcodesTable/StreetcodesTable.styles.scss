@@ -20,10 +20,24 @@
 
 .searchMenu {
     margin: 10px;
+    @include mut.sized(80%);
 
     .searchMenuElement {
         display: inline-block;
         margin-left: 10px
+    }
+
+    .searchMenuStatusSelected {
+        @include mut.sized(360px);
+    }
+
+    .ant-select-selector {
+        &:hover {
+            border-color: c.$accented-red-color;
+        }
+        &:focus-within {
+            border-color: c.$accented-red-color;
+        }
     }
 
     .Button {

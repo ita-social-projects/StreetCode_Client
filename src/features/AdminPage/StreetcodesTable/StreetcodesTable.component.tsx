@@ -4,10 +4,10 @@ import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
 import Streetcode, { Status } from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown, Select } from 'antd';
 import type { MenuProps } from 'antd';
 import { DeleteOutlined, FormOutlined, RollbackOutlined } from '@ant-design/icons';
-
+import type { SelectProps } from 'antd';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 
@@ -133,12 +133,31 @@ const StreetcodesTable = () => {
         
     }, [streetcodes]); 
 
+    const options: SelectProps['options'] = [
+        { value: 'published', label: 'опублікований' },
+        { value: 'draft', label: 'чернетка' },
+        { value : 'deleted', label: 'видалений' }
+      ];
+
+    const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+    };
+
     return(
     <>
         <div className="StreetcodeTableWrapper">
             <div className='searchMenu'>
                 <div className='searchMenuElement'><Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button></div>
-                <div className='searchMenuElement'><Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button></div>
+                <div className='searchMenuElement'>
+                    <Select
+                        mode="multiple"
+                        allowClear
+                        className='searchMenuStatusSelected'
+                        placeholder="Статус стріткодів"
+                        onChange={handleChange}
+                        options={options}
+                    />
+                </div>
             </div> 
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
