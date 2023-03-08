@@ -19,7 +19,7 @@ const Footer = () => (
                     <li>Стріткоди</li>
                     <li>Маршрути</li>
                     <li>Блог</li>
-                    <li>Про проект</li>
+                    <li>Про проєкт</li>
                     <li>Контакти</li>
                 </ul>
                 <ul className="usefulLinksColumn">
@@ -29,7 +29,7 @@ const Footer = () => (
                 </ul>
                 <ul className="usefulLinksColumn supportLinks">
                     <li>Політика конфіденційності</li>
-                    <li>Зворотній зв'язок</li>
+                    <li>Зворотний зв'язок</li>
                 </ul>
                 <ul className="socialIconContainer">
                     <li>

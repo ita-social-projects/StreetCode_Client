@@ -3,7 +3,7 @@ import './StreetcodeCard.styles.scss';
 import Grushevskiy from '@images/streetcode-card/Grushevskiy.gif';
 import Hrushevskiy from '@images/streetcode-card/Hrushevskyi.png';
 
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -15,7 +15,6 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import TagsModal from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 import Image from '@/models/media/image.model';
 
@@ -27,6 +26,8 @@ const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
 
 interface Props {
     streetcode?: Streetcode;
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
+    setActiveBlock: React.Dispatch<React.SetStateAction<number>>
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -59,16 +60,13 @@ const cSlides = [
     />,
 ];
 
-const StreetcodeCard = ({ streetcode }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-    const [activeTagId, setActiveTagId] = useState(0);
 
     const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
     const images = value as Image[];
-
-
     useAsync(() => fetchAudioByStreetcodeId(id), [id]);
 
     return (
@@ -112,7 +110,11 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                                 streetcode?.eventEndOrPersonDeathDate,
                             )}
                         </div>
-                        <TagList tags={streetcode?.tags.map((tag: Tag) => tag)} setActiveTagId={setActiveTagId} />
+                        <TagList
+                            tags={streetcode?.tags.map((tag: Tag) => tag)}
+                            setActiveTagId={setActiveTagId}
+                            setActiveTagBlock={setActiveBlock}
+                        />
                         <p className="teaserBlock">
                             {streetcode?.teaser}
                         </p>
@@ -142,7 +144,6 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                     </div>
                 </div>
             </div>
-            <TagsModal setActiveTagId={setActiveTagId} activeTagId={activeTagId} />
         </div>
     );
 };

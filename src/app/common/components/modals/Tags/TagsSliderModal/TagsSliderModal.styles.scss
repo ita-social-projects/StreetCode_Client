@@ -1,0 +1,42 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/_utils.functions.scss" as f;
+
+.tagModalContainer {
+  width: 60%;
+  .sliderClass{
+    height: f.pxToRem(80px);
+  }
+  .slick-list {
+    padding: f.pxToRem(20px);
+  }
+  .slick-track {
+    position: relative;
+    padding: f.pxToRem(22px) 0;
+  }
+
+  div.slick-center{
+    transform: scale(1.2);
+    padding: 0 f.pxToRem(4px);
+  }
+  
+  .tagModalItem {
+    height: f.pxToRem(38px);
+    @include mut.flex-centered();
+
+    @include mut.full-rounded(11px);
+    @include mut.rem-padded(8px, 10px, 8px, 10px);
+    margin-left: f.pxToRem(8px);
+    margin-right: f.pxToRem(8px);
+
+    color: c.$dark-red-color;
+    border: 2px solid c.$dark-red-color;
+    @include mut.with-font($font-weight: bold, $font-size: 15px);
+
+    &:hover {
+      color: c.$dark-red-color;
+      border-color: c.$dark-red-color;
+    }
+  }
+}
+

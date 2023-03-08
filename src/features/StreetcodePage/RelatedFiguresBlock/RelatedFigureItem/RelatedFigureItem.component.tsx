@@ -7,16 +7,17 @@ import useMobx from '@stores/root-store';
 
 interface Props {
     relatedFigure: RelatedFigure;
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>;
     filterTags?: boolean;
     hoverable?: boolean;
 }
 
-const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false }: Props) => {
+const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const { id, imageId, title, tags, alias } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal, modalsState: { tagsList } } = modalStore;
+    const { setModal, modalsState: {tagsList} } = modalStore;
 
     useAsync(
         () => fetchImage(imageId),
@@ -33,6 +34,11 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
 
             style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
             to={`../streetcode/${id}`}
+            onClick={() => {
+                if (!tagsList) {
+                    setModal('tagsList');
+                }
+            }}
         >
             <div className="figureSlideText">
                 <div className="heading"> 
@@ -52,13 +58,13 @@ const RelatedFigureItem = ({ relatedFigure, filterTags = true, hoverable = false
                     {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
                         .map((tag) => (
                             <button
+                                type="button"
                                 key={tag.id}
                                 className="tag"
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    if (!tagsList.isOpen) {
-                                        setModal('tagsList');
-                                    }
+                                    setModal('tagsList');
+                                    setActiveTagId(tag.id);
                                 }}
                             >
                                 <p>{tag.title}</p>

@@ -1,6 +1,7 @@
 import './RelatedFiguresModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { SetStateAction } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import { useAsync } from '@hooks/stateful/useAsync.hook';

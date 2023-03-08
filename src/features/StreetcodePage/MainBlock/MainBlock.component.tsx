@@ -9,7 +9,12 @@ import ListenTextModal from '@/app/common/components/modals/ListenText/ListenTex
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
-const MainBlock = () => {
+interface Props {
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
+    setActiveBlock: React.Dispatch<React.SetStateAction<number>>
+}
+
+const MainBlock = ({ setActiveTagId, setActiveBlock } : Props) => {
     const id = useRouteId();
 
     const { value } = useAsync(() => StreetcodesApi.getById(id), [id]);
@@ -21,7 +26,11 @@ const MainBlock = () => {
                 <BreadCrumb separator={<div className="separator" />} streetcode={streetcode} />
                 <div className="blockCentering">
                     <div className="mainContent">
-                        <StreetcodeCard streetcode={streetcode} />
+                        <StreetcodeCard
+                            streetcode={streetcode}
+                            setActiveTagId={setActiveTagId}
+                            setActiveBlock={setActiveBlock}
+                        />
                     </div>
                 </div>
             </div>

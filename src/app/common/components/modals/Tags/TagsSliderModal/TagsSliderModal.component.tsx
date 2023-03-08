@@ -1,4 +1,4 @@
-import './TagsListModal.styles.scss';
+import './TagsSliderModal.styles.scss';
 
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx from '@stores/root-store';
@@ -10,10 +10,11 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 interface Props {
     streetCodeid: number,
     activeTagId: number,
+    activeTagBlock: number,
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
+const TagsSliderModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveTagId }: Props) => {
     const { tagsStore } = useMobx();
     const { fetchTagByStreetcodeId, getTagArray } = tagsStore;
 
@@ -24,20 +25,24 @@ const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
     return (
         <div className="tagModalContainer">
             <BlockSlider
-                infinite={false}
+                className="tagSliderClass"
+                infinite
                 slidesToShow={3}
+                arrows={false}
                 swipe={false}
                 dots={false}
                 swipeOnClick
                 variableWidth
                 centerMode
-                initialSlide={getTagArray.length}
                 slidesToScroll={1}
+                initialSlide={activeTagBlock}
+                focusOnSelect
+                centerPadding="0"
             >
                 {getTagArray?.map((tag) => (
                     <div>
                         <Button
-                            className={`tagModalItem ${tag.id === activeTagId ? 'active' : ''}`}
+                            className="tagModalItem"
                             onClick={() => {
                                 setActiveTagId(tag.id);
                             }}
@@ -52,4 +57,4 @@ const TagListModal = ({ streetCodeid, activeTagId, setActiveTagId }: Props) => {
     );
 };
 
-export default TagListModal;
+export default TagsSliderModal;
