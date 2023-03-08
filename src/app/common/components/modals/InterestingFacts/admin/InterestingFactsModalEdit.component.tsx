@@ -6,32 +6,37 @@ import { InboxOutlined } from '@ant-design/icons';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
-import { Button, Modal, Upload, UploadFile } from 'antd';
+import { Button, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 const InterestingFactsModal = () => {
     const { factsStore: { factMap }, modalStore } = useMobx();
-    const { setModal, modalsState: { adminFacts } } = modalStore;
+    const { setModal, modalsState: { editFacts } } = modalStore;
 
-    const factId = adminFacts.fromCardId!;
-    const fact = factMap.get(2);
-    const [title, setTitle] = useState(fact?.title);
-    // const [date, setDate] = useState(task.date)
-    // const [status, setStatus] = useState<string>(task.status)
-    // const [urgently, setUrgently] = useState(task.urgently)
+
+   // const { setModal, modalsState: { facts } } = modalStore;
+
+    // const factId = facts.fromCardId!;
+    // const fact = factMap.get(factId);
+
+
+    // const factId = 3;
+    // const fact = factMap.get(factId);
+   // const [title, setTitle] = useState(fact?.title);
+
     const [message, setMessage] = useState('');
     const handleChange = (event:any) => {
         setMessage(event.target.value);
     };
     const characterCount = message.length | 0;
 
-    console.log(factId);
+  //  console.log(factId);
     return (
         <Modal
             // title= " Додати Wow-fact"
             className="interestingFactsAdminModal"
-            open={adminFacts.isOpen}
-            onCancel={() => setModal('adminFacts')}
+            open={editFacts.isOpen}
+            onCancel={() => setModal('editFacts')}
             footer={null}
             maskClosable
             centered
@@ -41,7 +46,9 @@ const InterestingFactsModal = () => {
                 <h2>Wow-Fact</h2>
                 <p>Заголовок</p>
                 <div className="inputBlock">
-                    <input value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input />
+                    {/* value={fact?.title}
+                     //onChange={(e) => setTitle(e.target.value)} */}
                     <p>Основний текст</p>
                     <textarea value={message} maxLength="600" onChange={handleChange} />
                     <p className="characterCounter">
@@ -68,7 +75,7 @@ const InterestingFactsModal = () => {
                         </div>
                     </Upload>
                 </FormItem>
-                <Button className="submit"> Додати </Button>
+                <Button className="submit"> Змінити </Button>
             </form>
         </Modal>
     );

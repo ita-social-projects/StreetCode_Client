@@ -25,7 +25,7 @@ const InterestingFactsBlock = () => {
                 </h2>
             </div>
             <div className="factsContainer">
-                <button className="addWowFact" onClick={() => setModal('adminFacts')}>+</button>
+                <button className="addWowFact" onClick={() => setModal('addFacts')}>+</button>
                 {getFactArray.map((fact) => (
                     <InterestingFactAdminItem
                         fact={fact}
