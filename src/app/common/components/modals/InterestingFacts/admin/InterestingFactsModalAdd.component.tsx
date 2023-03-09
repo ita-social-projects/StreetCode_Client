@@ -6,31 +6,40 @@ import { InboxOutlined } from '@ant-design/icons';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
-import { Button, Modal, Upload } from 'antd';
+import { Button, Form, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
+import FactsApi from '@/app/api/streetcode/text-content/facts.api';
+import { Fact } from '@/models/streetcode/text-contents.model';
+
 const InterestingFactsModal = () => {
-    const { factsStore: { factMap }, modalStore } = useMobx();
-    const { setModal, modalsState: { addFacts, facts } } = modalStore;
+    const [facts, setFacts] = useState<Fact[]>([]);
+    const { modalStore } = useMobx();
+    const { setModal, modalsState: { addFacts } } = modalStore;
+    const [factTitle, setFactTitle] = useState('');
+    const [factContent, setFactContent] = useState('');
 
-
-   // const { setModal, modalsState: { facts } } = modalStore;
-
-    // const factId = facts.fromCardId!;
-    // const fact = factMap.get(factId);
-
-
-    // const factId = 3;
-    // const fact = factMap.get(factId);
-   // const [title, setTitle] = useState(fact?.title);
-
-    const [message, setMessage] = useState('');
-    const handleChange = (event:any) => {
-        setMessage(event.target.value);
+    // const handleChange = (event:any) => {
+    //     setfactContent(event.target.value);
+    // };
+    const createFact = (titleValue : string, factContentValue : string) => {
+        FactsApi.create({ title: titleValue, factContent: factContentValue }).then((newFact) => {
+            setFacts([...facts, newFact]);
+        }).catch((e) => console.log(e));
     };
-    const characterCount = message.length | 0;
 
-  //  console.log(factId);
+    const onSubmit = (e : any) => {
+        e.preventDefault();
+
+        createFact(factTitle, factContent);
+
+        setFactTitle('');
+        setFactContent('');
+    };
+    const characterCount = factContent.length | 0;
+
+      console.log(factTitle);
+      console.log(factContent);
     return (
         <Modal
             // title= " Додати Wow-fact"
@@ -46,11 +55,9 @@ const InterestingFactsModal = () => {
                 <h2>Wow-Fact</h2>
                 <p>Заголовок</p>
                 <div className="inputBlock">
-                    <input />
-                    {/* value={fact?.title}
-                     //onChange={(e) => setTitle(e.target.value)} */}
+                    <input value={factTitle} onChange={(e) => setFactTitle(e.target.value)} />
                     <p>Основний текст</p>
-                    <textarea value={message} maxLength="600" onChange={handleChange} />
+                    <textarea value={factContent} maxLength="600" onChange={(e) => setFactContent(e.target.value)} />
                     <p className="characterCounter">
                         {characterCount}
                         /600
@@ -75,7 +82,7 @@ const InterestingFactsModal = () => {
                         </div>
                     </Upload>
                 </FormItem>
-                <Button className="submit"> Додати </Button>
+                <Button className="submit" onSubmit={onSubmit}> Додати </Button>
             </form>
         </Modal>
     );
