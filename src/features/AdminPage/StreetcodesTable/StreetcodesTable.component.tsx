@@ -10,6 +10,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 import SearchMenu from './SearchMenu.component';
 import { formatDate } from './FormatDateAlgorithm';
+import { InputNumber, Pagination } from 'antd';
 
 const StreetcodesTable = () => {
 
@@ -17,10 +18,10 @@ const StreetcodesTable = () => {
     const [statusRequest, setStatusRequest] = useState<string|null>(null);
 
     const requestDefault: GetAllStreetcodes = {
-        Page: 1,
-        Amount: 10,
+        Page: null,
+        Amount: null,
         Title: null,
-        Sort: "Title",
+        Sort: null,
         Filter: null
     }
 
@@ -30,17 +31,13 @@ const StreetcodesTable = () => {
         setRequestGetAll({
             Page: 1,
             Amount: 10,
-            Title: null,
-            Sort: "UpdatedAt",
+            Title: titleRequest == "" ? null : titleRequest,
+            Sort: null,
             Filter: `Status:${statusRequest}`
-        })
-
-        console.log(StreetcodesApi.getAll(requestGetAll))
+        });
     }
 
     const { modalStore: { setModal } } = useMobx(); 
-    const { value } = useAsync(() => StreetcodesApi.getAll(requestGetAll), []);
-    const streetcodes = value as Streetcode[];
     
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 
@@ -66,6 +63,7 @@ const StreetcodesTable = () => {
         {
             title: 'Назва стріткоду',
             dataIndex: 'name',
+            width: 500,
             key: 'name'
         },
         {
@@ -87,6 +85,7 @@ const StreetcodesTable = () => {
         {
             title: 'Дії',
             dataIndex: 'action',
+            width: 100,
             key: 'action',
             render: (value: any, record: MapedStreetCode, index: any) => 
             <>
@@ -114,48 +113,61 @@ const StreetcodesTable = () => {
 
     useEffect(() => {
 
+        let streets = StreetcodesApi.getAll(requestGetAll);
+
         let mapedStreetCodes: MapedStreetCode[] = [];
 
-        streetcodes?.map((streetcode) => {
-
-            console.log(streetcode)
-
-            let currentStatus: string = "";
-            
-            switch(streetcode.status){
-                case 0: {currentStatus = "Чернетка"; break;}
-                case 1: {currentStatus = "Опублікований"; break;}
-                case 2: {currentStatus = "Видалений"; break;}
-            }
-
-            let mapedStreetCode = {
-                key: streetcode.id,
-                index: streetcode.index,
-                status: currentStatus,
-                date: formatDate(new Date(streetcode.updatedAt)),
-                name: streetcode.title,
-            }
-
-            mapedStreetCodes.push(mapedStreetCode);
-        });
+        streets.then(streets => {
+            streets?.map((streetcode) => {
+                    let currentStatus: string = "";
+                    
+                    switch(streetcode.status){
+                        case 0: {currentStatus = "Чернетка"; break;}
+                        case 1: {currentStatus = "Опублікований"; break;}
+                        case 2: {currentStatus = "Видалений"; break;}
+                    }
         
-        setMapedStreetCodes(mapedStreetCodes)
+                    let mapedStreetCode = {
+                        key: streetcode.id,
+                        index: streetcode.index,
+                        status: currentStatus,
+                        date: formatDate(new Date(streetcode.updatedAt)),
+                        name: streetcode.title,
+                    }
         
-    }, [streetcodes]); 
+                    mapedStreetCodes.push(mapedStreetCode);
+                });
+                
+                setMapedStreetCodes(mapedStreetCodes)
+        })
+    }, [requestGetAll]); 
 
     return(
     <>
         <div className="StreetcodeTableWrapper">
             <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest}/> 
+            <div>
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
-                pagination={{className: "paginationButton", pageSize: 8}}
+                scroll={{ y: 440 }}
+                pagination={false}
                 onRow={(record: MapedStreetCode) => {
                     return {
                       onClick: () => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.index}`,'_blank')
                     }
                   }}
                 />
+            </div>
+            <div>
+                <div className='underTableZone'>
+                    <div className='underTableElement'>
+                        <InputNumber className='pageAmountElement' min={1} max={10} defaultValue={3}/>
+                    </div>
+                    <div className='underTableElement'>
+                        <Pagination className='pagenationElement' simple defaultCurrent={2} total={50} />
+                    </div>
+                </div>
+            </div>
         </div>
     </>);
 }

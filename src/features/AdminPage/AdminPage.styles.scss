@@ -4,7 +4,7 @@
 
 .adminPageContainer {
     width: 100vh;
-    max-width: pxToRem(1600px);
+    max-width: pxToRem(1800px);
     @include mut.with-font();
     font-size: 20px;
 }

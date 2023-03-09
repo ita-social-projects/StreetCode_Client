@@ -1,24 +1,30 @@
 import FRONTEND_ROUTES from "@/app/common/constants/frontend-routes.constants";
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
-import { Button, Input, Select, SelectProps } from "antd";
+import { Button, Input, Select, SelectProps, InputNumber} from "antd";
 import './StreetcodesTable.styles.scss';
 
 interface IProps {
     setStatus: any
+    setTitle: any
     setRequest: () => void
 }
 
-const SearchMenu = ({setStatus, setRequest}: IProps) => {
+const SearchMenu = ({setStatus, setTitle, setRequest}: IProps) => {
 
     const options: SelectProps['options'] = [
-        { value: 'published', label: 'опублікований' },
-        { value: 'draft', label: 'чернетка' },
-        { value : 'deleted', label: 'видалений' }
+        { value: 'Published', label: 'опублікований' },
+        { value: 'Draft', label: 'чернетка' },
+        { value : 'Deleted', label: 'видалений' }
       ];
 
     const handleChangeStatus = (value: string) => {
-    console.log(`selected ${value}`);
-    setStatus(value);
+        console.log(`selected ${value}`);
+        setStatus(value);
+    };
+
+    const handleChangeTitle = (event: any) => {
+        console.log(`selected ${event.target.value}`);
+        setTitle(event.target.value);
     };
 
     return(
@@ -31,6 +37,7 @@ const SearchMenu = ({setStatus, setRequest}: IProps) => {
                 <Input
                     className='searchMenuElementInput'
                     prefix={<MagnifyingGlass />}
+                    onChange={handleChangeTitle}
                     placeholder="Назва або індекс"
                 />
             </div>
