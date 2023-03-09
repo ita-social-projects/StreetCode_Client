@@ -18,61 +18,6 @@
     }
 }
 
-.searchMenu {
-    margin: 10px;
-    @include mut.sized(90%);
-
-    .searchMenuElement {
-        display: inline-block;
-        margin-left: 10px
-    }
-
-    .searchMenuStatusSelected {
-        @include mut.sized(400px, 100%);
-    }
-
-    .searchMenuElementInput {
-        @include mut.sized(300px, 100%);
-    }
-
-    .ant-select-selector, .ant-input-affix-wrapper {
-        @include mut.with-font($font-size: 16px);
-        
-        &:hover {
-            border-color: c.$accented-red-color;
-        }
-        &:focus-within {
-            border-color: c.$accented-red-color;
-        }
-    }
-
-    .Button {
-        @include mut.sized(142px, 40px);
-        @include mut.flex-centered();
-        @include mut.full-rounded(12px);
-        @include mut.with-font($font-weight: 500, $font-size: 16px);
-
-        background-color: c.$accented-red-color;
-        border-color: c.$accented-red-color;
-        color: c.$pure-white-color;
-
-        &:hover {
-            border-color: c.$dark-red-color;
-            background-color: c.$dark-red-color;
-        }
-    }
-}
-
-.actionButton {
-    margin-right: 10px;
-
-    &:hover {
-        color: c.$dark-red-color;
-        cursor: pointer;
-        scale: 1.2;
-    }
-}
-
 .paginationButton > li {
     border-color: c.$accented-red-color;
 
