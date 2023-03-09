@@ -31,7 +31,7 @@ export default class ImageStore {
     public fetchImageByStreetcodeId = async (streetcodeId: number) => {
         try {
             const image = await imagesApi.getByStreetcodeId(streetcodeId);
-            this.setItem(image);
+            this.setInternalMap(image);
         } catch (error: unknown) {
             console.log(error);
         }

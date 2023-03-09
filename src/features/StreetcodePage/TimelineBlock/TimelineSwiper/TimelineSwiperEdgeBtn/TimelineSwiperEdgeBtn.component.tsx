@@ -9,13 +9,14 @@ interface Props {
     lastTickIdx: number;
     swipeSpeed?: number;
     sideMargin?: number;
+    year: number;
 }
 
 const TimelineSwiperEdgeBtn = ({
     swipeSpeed = 900,
     sideMargin = 60,
     lastTickIdx,
-    side,
+    side, year,
 }: Props) => {
     const swiper = useSwiper();
 
@@ -40,7 +41,7 @@ const TimelineSwiperEdgeBtn = ({
             onClick={handleClick}
         >
             <span>
-                {isLeftEdge ? 'First' : 'Last'}
+                {year}
             </span>
         </div>
     );

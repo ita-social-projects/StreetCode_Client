@@ -9,5 +9,5 @@ export interface TagCreate {
 export interface TagVisible {
     id: number;
     title: string;
-    visible:boolean;
+    visible: boolean;
 }

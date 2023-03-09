@@ -4,7 +4,6 @@ import ForFans from '@features/AdminPage/ForFans/ForFans.component';
 import NewStreetcode from '@features/AdminPage/NewStreetcode/NewStreetcode.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
-
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import Addnewmainblock from '@/features/AdminPage/NewStreetcode/MainBlock/AddNewMainblock';
 

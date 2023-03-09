@@ -29,10 +29,12 @@ const TimelineBlock = () => {
                 <TimelineSlider
                     dots={false}
                     arrows={false}
-                    swipeToSlide
-                    swipeOnClick
                     centerMode
-                    centerPadding="0"
+                    swipeOnClick
+                    infinite
+                    variableWidth
+                    swipeToSlide
+                    slidesToScroll={1}
                 >
                     {getTimelineItemArray.map((timelineItem) => (
                         <TimelineSlideCard

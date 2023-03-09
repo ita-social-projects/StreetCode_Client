@@ -1,5 +1,5 @@
-import PageBar from '../PageBar/PageBar.component';
-import './NewStreetcode.styles.scss';
+import PageBar from '../../PageBar/PageBar.component';
+import './ForFans.styles.scss';
 import { Card, Col, Row } from 'antd';
 import {DeleteOutlined, FormOutlined, PlusOutlined} from '@ant-design/icons';
 import React from 'react';
@@ -8,9 +8,7 @@ const cardStyle: React.CSSProperties = {
     textAlign: 'center',
   };
 
- const NewStreetcode = () => (
-     <div className="NewStreetcodeContainer">
-       <PageBar/>  
+ const ForFansBlock = () => ( 
        <div className='ForFansContainer'>
           <h3>Для фанатів</h3>
           <h4>Стріткоди</h4>
@@ -43,7 +41,6 @@ const cardStyle: React.CSSProperties = {
            </Col>
     </Row>
        </div>
-     </div>
  );
 
- export default NewStreetcode;
+ export default ForFansBlock;

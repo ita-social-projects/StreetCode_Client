@@ -4,7 +4,7 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .interestingFactsContainer {
-    @include mut.sized(90%, 784px);
+    @include mut.sized(90%, 848px);
     @include mut.flex-centered($direction: column);
 
     .blockHeadingContainer {

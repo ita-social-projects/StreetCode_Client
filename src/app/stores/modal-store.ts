@@ -18,6 +18,8 @@ interface ModalList {
     donates: ModalState;
     login: ModalState;
     artGallery: ModalState;
+    tagsList: ModalState;
+    deleteStreetcode: ModalState;
 }
 
 export default class ModalStore {
@@ -29,6 +31,8 @@ export default class ModalStore {
         donates: DefaultModalState,
         login: DefaultModalState,
         artGallery: DefaultModalState,
+        tagsList: DefaultModalState,
+        deleteStreetcode: DefaultModalState
     };
 
     public isPageDimmed = false;

@@ -7,7 +7,7 @@ const StreetcodesApi = {
 
     getByName: (name: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_NAME}/${name}`),
 
-    getByTagId: (id: number) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_TAG_ID}/${id}`),
+    getByTagId: (id: number) => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_BY_TAG_ID}/${id}`),
 
     getByIndex: (index: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_INDEX}/${index}`),
 

@@ -25,6 +25,11 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
       &:hover {
         background-color: c.$modal-hover-color;
       }
+      .ant-modal-close-x {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 }

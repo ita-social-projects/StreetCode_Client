@@ -19,6 +19,7 @@
   gap: f.pxToRem($gap);
 }
 
+
 @mixin set-positioning($top, $right, $bottom, $left) {
   @if ($top == 'auto' or unit($top) == '%') {
     top: $top;
@@ -101,7 +102,7 @@
   -webkit-border-radius: $rad !important;
 
   overflow: $overflow !important;
-  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
 }
 
 @mixin full-rounded($rad, $overflow: hidden) {
@@ -178,7 +179,7 @@
   $font-family: ft.$roboto-font,
   $font-weight: normal,
   $font-size: 20px,
-  $font-style: normal
+  $font-style: ft.$roboto-font-style
 ) {
   font-family: $font-family;
   // px equivalent for browsers without rem support
@@ -217,7 +218,7 @@
     font-display: swap;
   }
 
-  %#{$font-family} {
+  /*%#{$font-family} {
     font: {
       @if $fallback != '' {
         family: '#{$font-family}', #{$fallback};
@@ -226,7 +227,7 @@
         weight: $font-weight;
       }
     }
-  }
+  }*/
 }
 // FadeIn FadeOut animations
 @mixin fadeKeyframes($type: "fadeIn", $name: "fade") {
