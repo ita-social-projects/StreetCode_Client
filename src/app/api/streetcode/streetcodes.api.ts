@@ -12,7 +12,7 @@ const StreetcodesApi = {
 
     getByIndex: (index: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_INDEX}/${index}`),
 
-    getAll: (getAllStreetcodes: GetAllStreetcodes|null) => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
+    getAll: (getAllStreetcodes: GetAllStreetcodes|undefined) => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
 
     getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
 
