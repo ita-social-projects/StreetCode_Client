@@ -4,9 +4,12 @@ import { useState } from 'react';
 import useMobx from '@stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 
-import { Button, Form, Input } from 'antd';
+import {
+    AutoComplete, Button, Form, Input, Select, Tooltip,
+} from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term } from '@/models/streetcode/text-contents.model';
 
 interface InputInfoTextBlock {
@@ -18,40 +21,26 @@ interface InputInfoTextBlock {
 const TextForm: React.FC = () => {
     const [inputInfo, setInputInfo] = useState<Partial<InputInfoTextBlock>>();
     const [showPreview, setShowPreview] = useState(false);
-    const { modalStore: { setTermModal, modalsState: { addTerm } } } = useMobx();
+    const { termsStore } = useMobx();
+    const { fetchTerms, getTermArray } = termsStore;
     const [term, setTerm] = useState<Partial<Term>>();
+    const [selected, setSelected] = useState('');
+
+    useAsync(fetchTerms, []);
 
     const maxTitleLenght = 50;
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, title: e.target.value });
     };
-
-    // const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    //     setInputInfo({ ...inputInfo, text: e.target.value });
-    //     console.log(inputInfo?.text);
-    // };
-
-    // const handleChangeText = (editor: TinyMCEEditor) => {
-    //     setInputInfo({ ...inputInfo, text: editor.});
-    //     console.log(inputInfo?.text);
-    // };
-
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
     };
 
-    const handleAddTerm = () => {
-        if (term !== null && term?.title !== null) {
-            const newTerm : Term = {
-                id: 0,
-                title: term?.title as string,
-                description: term?.description,
-            };
-            setTermModal('addTerm', newTerm, true);
-            console.log('OPEN MODAL');
-            console.log('addTerm');
-        }
+    const handleAddRelatedWord = () => {
+        console.log(term?.id);
+        console.log(term?.title);
+        console.log(selected);
     };
 
     return (
@@ -86,11 +75,43 @@ const TextForm: React.FC = () => {
                     }}
                     onChange={(e, editor) => {
                         setInputInfo({ ...inputInfo, text: editor.getContent() });
-                        console.log(inputInfo);
                     }}
-                    onSelectionChange={(e, editor) => setTerm({ ...term, title: editor.selection.getContent() })}
+                    onSelectionChange={(e, editor) => {
+                        setSelected(editor.selection.getContent());
+                    }}
                 />
-                <Button onClick={handleAddTerm}>Додати новий термін</Button>
+                <Form.Item label="Оберіть пов'язаний термін">
+                    <Tooltip
+                        title={selected !== '' ? '' : 'Спочатку виділіть слово у тексті'}
+                        color="#8D1F16"
+                    >
+                        <AutoComplete
+                            filterOption
+                            onSelect={(value, option) => {
+                                setTerm({ id: option.key, title: value });
+                            }}
+                            disabled={selected === ''}
+                        >
+                            {getTermArray.map(
+                                (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
+                            )}
+                        </AutoComplete>
+                    </Tooltip>
+                </Form.Item>
+                <Tooltip
+                    title={
+                        selected !== '' && term !== undefined
+                            ? `${selected} з ${term?.title}` : 'Виділіть слово та термін!'
+                    }
+                    color="#8D1F16"
+                >
+                    <Button
+                        onClick={handleAddRelatedWord}
+                        disabled={selected === '' || term === undefined}
+                    >
+                        Пов&#39;язати
+                    </Button>
+                </Tooltip>
             </Form.Item>
             <Form.Item name="video" rules={[{ required: true, message: 'Please enter a value' }]}>
                 <div className="youtube-block">
@@ -105,7 +126,20 @@ const TextForm: React.FC = () => {
                         required
                         onChange={handleLinkChange}
                     />
-                    <Button onClick={() => setShowPreview(!showPreview)}>Попередній перегляд</Button>
+                    <Tooltip
+                        title={
+                            inputInfo?.link?.includes('watch')
+                                ? '' : 'Вкажіть посилання на youtube.com/watch!'
+                        }
+                        color="#8D1F16"
+                    >
+                        <Button
+                            disabled={!inputInfo?.link?.includes('watch')}
+                            onClick={() => setShowPreview(!showPreview)}
+                        >
+                            Попередній перегляд
+                        </Button>
+                    </Tooltip>
                     {
                         inputInfo?.link?.includes('watch') && showPreview ? (
                             <div>

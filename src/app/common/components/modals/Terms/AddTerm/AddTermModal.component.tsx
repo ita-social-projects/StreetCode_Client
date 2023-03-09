@@ -20,11 +20,9 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
     const { modalStore: { setModal, modalsState: { addTerm } } } = useMobx();
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTerm({ ...term, title: e.target.value });
-        console.log(term);
     };
     const handleChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTerm({ ...term, description: e.target.value });
-        console.log(term);
     };
 
     return (
@@ -47,7 +45,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                     <Input value={term?.title} onChange={handleChangeTitle} />
                 </FormItem>
                 <FormItem label="Визначення">
-                    <TextArea onChange={handleChangeDesc} />
+                    <TextArea value={term?.description} onChange={handleChangeDesc} />
                 </FormItem>
             </Form>
         </Modal>

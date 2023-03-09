@@ -30,10 +30,10 @@ export default class TermStore {
         }
     };
 
-    public createTerm = async (term: Term) => {
+    // eslint-disable-next-line class-methods-use-this
+    public createTerm = async (id: number, term: Term) => {
         try {
             await termsApi.create(term);
-            this.setItem(term);
         } catch (error: unknown) {
             console.log(error);
         }
@@ -41,18 +41,16 @@ export default class TermStore {
 
     public updateTerm = async (id: number, term: Term) => {
         try {
-            console.log('API CALL');
-            console.log(term);
-            console.log(id);
             await termsApi.update(id, term);
-            console.log('API CALL');
-            runInAction(() => {
-                const updatedTerm = {
-                    ...this.TermMap.get(term.id),
-                    ...term,
-                };
-                this.setItem(updatedTerm as Term);
-            });
+            if (id !== 0) {
+                runInAction(() => {
+                    const updatedTerm = {
+                        ...this.TermMap.get(term.id),
+                        ...term,
+                    };
+                    this.setItem(updatedTerm as Term);
+                });
+            }
         } catch (error: unknown) {
             console.log(error);
         }
@@ -60,6 +58,7 @@ export default class TermStore {
 
     public deleteTerm = async (termId: number) => {
         try {
+            console.log(termId);
             await termsApi.delete(termId);
             runInAction(() => {
                 this.TermMap.delete(termId);

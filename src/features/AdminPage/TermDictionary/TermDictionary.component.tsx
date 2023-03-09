@@ -1,6 +1,6 @@
 import './TermDictionary.component.scss';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useMobx from '@stores/root-store';
 
 import { Button, Space, Table } from 'antd';
@@ -17,15 +17,11 @@ import PageBar from '../PageBar/PageBar.component';
 const TermDictionary = () => {
     const { termsStore, modalStore } = useMobx();
     const { fetchTerms, getTermArray } = termsStore;
-    const { setTermModal, modalsState: { addTerm, editTerm, deleteTerm } } = modalStore;
+    const { setTermModal } = modalStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [data, setData] = useState<Term[]>();
 
-    useAsync(fetchTerms, [getTermArray.length]);
-
-    useEffect(() => {
-        setData(getTermArray);
-    }, [getTermArray.length]);
+    useAsync(fetchTerms, [JSON.stringify(getTermArray), getTermArray, termsStore]);
 
     const handleAdd = () => {
         const newTerm : Term = {
@@ -33,10 +29,8 @@ const TermDictionary = () => {
             title: term?.title as string,
             description: term?.description,
         };
-        termsStore.createTerm(newTerm);
-        const uiTerm : Term = { ...newTerm, id: data?.at(getTermArray.length - 1)?.id as number };
+        termsStore.createTerm(getTermArray?.at(getTermArray.length)?.id as number, newTerm);
         setTerm({ id: 0, title: '', description: '' });
-        //setData([...(data || []), ...([uiTerm] || [])]);
     };
 
     const handleDelete = (id: number) => {
@@ -61,7 +55,6 @@ const TermDictionary = () => {
         ));
         setTerm({ id: 0, title: '', description: '' });
     };
-
     const columns = [
         {
             title: 'Назва',
@@ -108,7 +101,12 @@ const TermDictionary = () => {
                     <h1>Словник термінів</h1>
                 </div>
                 <div className="term-table">
-                    <Table columns={columns} dataSource={data} rowKey={({ id }) => id} />
+                    <Table
+                        columns={columns}
+                        dataSource={getTermArray}
+                        rowKey={({ id }) => id}
+                        pagination={{ defaultPageSize: 5 }}
+                    />
                 </div>
             </div>
             <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
