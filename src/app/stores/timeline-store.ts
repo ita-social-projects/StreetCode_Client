@@ -11,6 +11,10 @@ export default class TimelineStore {
         makeAutoObservable(this);
     }
 
+    public addTimeline = (timelineItem: TimelineItem) => {
+        this.setItem(timelineItem);
+    };
+
     private setInternalMap = (timelineItems: TimelineItem[]) => {
         timelineItems.forEach(this.setItem);
     };

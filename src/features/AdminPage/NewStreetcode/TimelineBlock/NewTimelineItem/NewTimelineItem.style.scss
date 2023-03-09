@@ -1,0 +1,8 @@
+@use "@sass/mixins/_utils.mixins.scss" as ut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.new-timeline-item-component{
+    @include ut.flexed(row,center, nowrap,0)
+}

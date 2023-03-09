@@ -1,7 +1,6 @@
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { InboxOutlined } from '@ant-design/icons';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -9,6 +8,7 @@ import {
     Form, Input, InputNumber, InputRef, message, Popover, Select, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
+import { Option } from 'antd/es/mentions';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
@@ -20,7 +20,6 @@ import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.co
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 
-const { Option } = Select;
 const MainBlockAdmin: React.FC = () => {
     const teaserMaxCharCount = 450;
     const allTags = useAsync(() => TagsApi.getAll()).value;
@@ -210,7 +209,7 @@ const MainBlockAdmin: React.FC = () => {
                             onSelect={onSelectTag}
                             onDeselect={onDeselectTag}
                         >
-                            {tags.map((t) => <Option key={t.id} value={t.title} label={t.title} />)}
+                            {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
                         </Select>
                     </div>
                     <div className="device-sizes-list">
