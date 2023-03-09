@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import './TimelineBlockAdmin.style.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -13,7 +14,7 @@ const TimelineBlockAdmin:React.FC = observer(() => {
     const { timelineItemStore } = useMobx();
     const [isModalCreateOpen, setIsModalCreateOpen] = useState<boolean>(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState<boolean>(false);
-    const [editedTimeline, setEditedTimeline] = useState<TimelineItem>(null);
+    const [editedTimeline, setEditedTimeline] = useState<TimelineItem>();
     const showModal = () => {
         setIsModalCreateOpen(true);
     };
@@ -30,10 +31,13 @@ const TimelineBlockAdmin:React.FC = observer(() => {
                 </div>
                 {timelineItemStore
                     .getTimelineItemArray
-                    .map((ti, index) => (
-                        <div onClick={() => setEditedTimeline(ti)} key={`${ti.title}${index}`}>
-                            <NewTimelineItem timelineTitle={ti.title} />
-                        </div>
+                    .map((ti) => (
+                        <NewTimelineItem
+                            key={`${ti.id}${ti.date.getFullYear}`}
+                            timelineItem={ti}
+                            setModalOpened={setIsModalEditOpen}
+                            setEditTimelineItem={setEditedTimeline}
+                        />
                     ))}
             </div>
             <NewTimelineModal
@@ -41,8 +45,10 @@ const TimelineBlockAdmin:React.FC = observer(() => {
                 open={isModalCreateOpen}
             />
             <NewTimelineModal
-                setIsModalOpen={setIsModalCreateOpen}
-                open={isModalCreateOpen}
+                setIsModalOpen={setIsModalEditOpen}
+                open={isModalEditOpen}
+                timelineItem={editedTimeline}
+
             />
         </div>
     );

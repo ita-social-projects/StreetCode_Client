@@ -2,8 +2,6 @@ import { makeAutoObservable } from 'mobx';
 import HistoricalContextApi from '@api/timeline/historicalcontext.api';
 import { HistoricalContext } from '@models/timeline/chronology.model';
 
-import { useAsync } from '../common/hooks/stateful/useAsync.hook';
-
 export class HistoricalContextStore {
     public historicalContextArray = new Array<HistoricalContext>();
 
@@ -18,6 +16,10 @@ export class HistoricalContextStore {
             }).catch((error) => {
                 console.log(error);
             });
+    };
+
+    public addItemToArray = (item: HistoricalContext) => {
+        this.historicalContextArray.push(item);
     };
 }
 export default new HistoricalContextStore();

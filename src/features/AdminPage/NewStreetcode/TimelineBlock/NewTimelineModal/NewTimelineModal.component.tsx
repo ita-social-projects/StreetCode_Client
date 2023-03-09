@@ -1,5 +1,7 @@
+/* eslint-disable import/extensions */
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import dayjs from 'dayjs';
 
 import {
     Button,
@@ -10,31 +12,64 @@ import { Option } from 'antd/es/mentions';
 
 import HistoricalContextStore from '@/app/stores/historicalcontext-store';
 import useMobx from '@/app/stores/root-store';
-import TimelineStore from '@/app/stores/timeline-store';
 import TimelineItem, { HistoricalContext } from '@/models/timeline/chronology.model';
 
-const NewTimelineModal:React.FC<{ indexChange?:number, open:boolean,
+const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}> = observer(({ indexChange, open, setIsModalOpen }) => {
+}> = observer(({ timelineItem, open, setIsModalOpen }) => {
     const { timelineItemStore } = useMobx();
     const [form] = Form.useForm();
+    const selectedContext = useRef<HistoricalContext[]>([]);
     const historicalContextStore = HistoricalContextStore;
+    useEffect(() => {
+        if (timelineItem && open) {
+            form.setFieldsValue({
+                title: timelineItem.title,
+                description: timelineItem.description,
+                date: dayjs(timelineItem.date),
+                historicalContexts: timelineItem.historicalContexts.map((c) => c.title),
+            });
+            selectedContext.current = timelineItem.historicalContexts;
+        }
+        console.log(selectedContext.current);
+    }, [form, timelineItem, open]);
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
     const onSuccesfulSubmit = (formValues: any) => {
-        if (indexChange) {
-            timelineItemStore.timelineItemMap.delete(indexChange);
+        if (timelineItem) {
+            const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
+            if (item) {
+                item.date = new Date(formValues.date);
+                item.title = formValues.title;
+                item.description = formValues.description;
+                item.historicalContexts = selectedContext.current;
+            }
         } else {
             const newTimeline:TimelineItem = { date: formValues.date,
                                                id: timelineItemStore.timelineItemMap.size,
                                                title: formValues.title,
                                                description: formValues.description,
-                                               historicalContexts: formValues.historicalContext };
+                                               historicalContexts: selectedContext.current };
             timelineItemStore.addTimeline(newTimeline);
         }
+
         setIsModalOpen(false);
-        console.log(formValues);
+        form.resetFields();
+    };
+    const onContextSelect = (value:string) => {
+        const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
+        if (index < 0) {
+            const maxId = Math.max(...historicalContextStore.historicalContextArray.map((i) => i.id));
+            const newItem = { id: maxId, title: value };
+            historicalContextStore.addItemToArray(newItem);
+            selectedContext.current.push(newItem);
+        } else {
+            selectedContext.current.push(historicalContextStore.historicalContextArray[index]);
+        }
+    };
+    const onContextDeselect = (value:string) => {
+        selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
     };
     return (
         <Modal
@@ -64,12 +99,16 @@ const NewTimelineModal:React.FC<{ indexChange?:number, open:boolean,
                 >
                     <DatePicker />
                 </Form.Item>
-                <Form.Item name="historicalContext" label="Контекст: ">
-                    <Select mode="tags">
+                <Form.Item name="historicalContexts" label="Контекст: ">
+                    <Select
+                        mode="tags"
+                        onSelect={onContextSelect}
+                        onDeselect={onContextDeselect}
+                    >
                         {historicalContextStore.historicalContextArray
                             .map((cntx, index) => (
                                 <Option
-                                    key={`${index}`}
+                                    key={`${cntx.id + index}`}
                                     value={cntx.title}
                                 />
                             ))}
@@ -84,7 +123,7 @@ const NewTimelineModal:React.FC<{ indexChange?:number, open:boolean,
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        Додати
+                        Зберегти
                     </Button>
                 </Form.Item>
             </Form>

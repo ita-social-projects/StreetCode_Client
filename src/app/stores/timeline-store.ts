@@ -15,6 +15,10 @@ export default class TimelineStore {
         this.setItem(timelineItem);
     };
 
+    public deleteTimelineFromMap = (timelineItemId: number) => {
+        this.timelineItemMap.delete(timelineItemId);
+    };
+
     private setInternalMap = (timelineItems: TimelineItem[]) => {
         timelineItems.forEach(this.setItem);
     };
