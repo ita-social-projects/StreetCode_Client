@@ -3,7 +3,12 @@ import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import { Button, Input, Select, SelectProps } from "antd";
 import './StreetcodesTable.styles.scss';
 
-const SearchMenu = () => {
+interface IProps {
+    setStatus: any
+    setRequest: () => void
+}
+
+const SearchMenu = ({setStatus, setRequest}: IProps) => {
 
     const options: SelectProps['options'] = [
         { value: 'published', label: 'опублікований' },
@@ -11,15 +16,16 @@ const SearchMenu = () => {
         { value : 'deleted', label: 'видалений' }
       ];
 
-    const handleChange = (value: string) => {
+    const handleChangeStatus = (value: string) => {
     console.log(`selected ${value}`);
+    setStatus(value);
     };
 
     return(
     <>
     <div className='searchMenu'>
             <div className='searchMenuElement'>
-                <Button className='Button'>Пошук стріткодів</Button>
+                <Button className='Button' onClick={() => setRequest()}>Пошук стріткодів</Button>
             </div>
             <div className='searchMenuElement'>
                 <Input
@@ -34,7 +40,7 @@ const SearchMenu = () => {
                         allowClear
                         className='searchMenuStatusSelected'
                         placeholder="Статус стріткодів"
-                        onChange={handleChange}
+                        onChange={handleChangeStatus}
                         options={options}
                     />
                 </div>

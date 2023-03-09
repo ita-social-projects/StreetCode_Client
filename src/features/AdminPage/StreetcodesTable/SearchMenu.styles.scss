@@ -5,19 +5,19 @@
 
 .searchMenu {
     margin: 10px;
-    @include mut.sized(90%);
+    @include mut.sized(100%);
 
     .searchMenuElement {
         display: inline-block;
         margin-left: 10px
     }
 
-    .searchMenuStatusSelected {
-        @include mut.sized(400px, 100%);
+    .ant-select-selector {
+        @include mut.sized(400px, 35px);
     }
 
-    .searchMenuElementInput {
-        @include mut.sized(300px, 100%);
+    .ant-input-affix-wrapper {
+        @include mut.sized(300px, 35px);
     }
 
     .ant-select-selector, .ant-input-affix-wrapper {
@@ -32,10 +32,10 @@
     }
 
     .Button {
-        @include mut.sized(142px, 40px);
+        @include mut.sized(142px, 35px);
         @include mut.flex-centered();
         @include mut.full-rounded(12px);
-        @include mut.with-font($font-weight: 500, $font-size: 16px);
+        @include mut.with-font($font-weight: 400, $font-size: 16px);
 
         background-color: c.$accented-red-color;
         border-color: c.$accented-red-color;

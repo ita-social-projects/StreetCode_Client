@@ -1,37 +1,48 @@
 import './SearchMenu.styles.scss';
 import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
 import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
-import Streetcode, { Status } from "@/models/streetcode/streetcode-types.model";
+import Streetcode from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
-import { Button, Input, Select, SelectProps } from 'antd';
+import GetAllStreetcodes from '@/models/streetcode/getAllStreetcodes.request';
 import { DeleteOutlined, FormOutlined, RollbackOutlined } from '@ant-design/icons';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 import SearchMenu from './SearchMenu.component';
+import { formatDate } from './FormatDateAlgorithm';
 
 const StreetcodesTable = () => {
 
+    const [titleRequest, setTitleRequest] = useState<string|null>(null);
+    const [statusRequest, setStatusRequest] = useState<string|null>(null);
+
+    const requestDefault: GetAllStreetcodes = {
+        Page: 1,
+        Amount: 10,
+        Title: null,
+        Sort: "Title",
+        Filter: null
+    }
+
+    const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodes>(requestDefault);
+
+    const setRequest = () => {
+        setRequestGetAll({
+            Page: 1,
+            Amount: 10,
+            Title: null,
+            Sort: "UpdatedAt",
+            Filter: `Status:${statusRequest}`
+        })
+
+        console.log(StreetcodesApi.getAll(requestGetAll))
+    }
+
     const { modalStore: { setModal } } = useMobx(); 
-    const { value } = useAsync(() => StreetcodesApi.getAll(), []);
+    const { value } = useAsync(() => StreetcodesApi.getAll(requestGetAll), []);
     const streetcodes = value as Streetcode[];
     
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
-
-    const formatDate = (date?: Date): string => {
-
-        if(!date) {
-            return "Could not to convert time!"
-        }
-
-        let day = date.getDate().toString().padStart(2, '0');
-        let month = (date.getMonth() + 1).toString().padStart(2, '0');
-        let year = date.getFullYear().toString();
-        let hours = date.getHours().toString().padStart(2, '0');
-        let minutes = date.getMinutes().toString().padStart(2, '0');
-
-        return `${day}.${month}.${year} ${hours}:${minutes}`;
-    }
 
     const DeleteAction = (record: MapedStreetCode) => {
         console.log("OK!")
@@ -135,7 +146,7 @@ const StreetcodesTable = () => {
     return(
     <>
         <div className="StreetcodeTableWrapper">
-            <SearchMenu/> 
+            <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest}/> 
                 <Table columns={columnsNames}
                 dataSource={mapedStreetCodes}
                 pagination={{className: "paginationButton", pageSize: 8}}
