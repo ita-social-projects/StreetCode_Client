@@ -1,5 +1,7 @@
 import './AddTermModal.styles.scss';
 
+import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 
@@ -27,17 +29,21 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
 
     return (
         <Modal
+            className="addModal"
             open={addTerm.isOpen}
             onCancel={() => setModal('addTerm')}
             footer={[
-                <Button onClick={() => {
-                    handleAdd();
-                    setModal('addTerm');
-                }}
+                <Button
+                    className="submit"
+                    onClick={() => {
+                        handleAdd();
+                        setModal('addTerm');
+                    }}
                 >
                     Зберегти
                 </Button>,
             ]}
+            closeIcon={<CancelBtn />}
         >
             <h2>Створення нового визначення</h2>
             <Form id="myForm" onFinish={() => handleAdd}>

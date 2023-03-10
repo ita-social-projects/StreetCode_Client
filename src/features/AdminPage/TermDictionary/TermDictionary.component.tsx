@@ -1,10 +1,12 @@
 import './TermDictionary.component.scss';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import useMobx from '@stores/root-store';
 
 import { Button, Space, Table } from 'antd';
 
+import termsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import DeleteTermModal from '@/app/common/components/modals/Terms/DeleteTerm/DeleteTermModal.component';
 import EditTermModal from '@/app/common/components/modals/Terms/EditTerm/EditTermModal.component';
@@ -21,7 +23,16 @@ const TermDictionary = () => {
     const [term, setTerm] = useState<Partial<Term>>();
     const [data, setData] = useState<Term[]>();
 
-    useAsync(fetchTerms, [JSON.stringify(getTermArray), getTermArray, termsStore]);
+    const setTableState = async () => {
+        await termsApi.getAll().then((responce) => {
+            setData(responce);
+        });
+    };
+
+    useEffect(() => {
+        fetchTerms();
+        setTableState();
+    }, []);
 
     const handleAdd = () => {
         const newTerm : Term = {
@@ -29,7 +40,9 @@ const TermDictionary = () => {
             title: term?.title as string,
             description: term?.description,
         };
-        termsStore.createTerm(getTermArray?.at(getTermArray.length)?.id as number, newTerm);
+        termsStore.createTerm(newTerm);
+        console.log(newTerm);
+        setData([...data || [], newTerm]);
         setTerm({ id: 0, title: '', description: '' });
     };
 
@@ -45,7 +58,6 @@ const TermDictionary = () => {
             title,
             description,
         };
-        console.log(id);
         termsStore.updateTerm(id, updatedTerm);
         setData(data?.map(
             (t) => (t.id === term?.id
@@ -71,39 +83,46 @@ const TermDictionary = () => {
             key: 'action',
             render: (t: Term) => (
                 <Space size="middle">
-                    <Button onClick={() => {
-                        setTerm(t);
-                        setTermModal('editTerm');
-                    }}
+                    <Button
+                        className="action-button"
+                        onClick={() => {
+                            setTerm(t);
+                            setTermModal('editTerm');
+                        }}
                     >
-                        Edit
+                        <EditFilled className="action-icon" />
                     </Button>
-                    <Button onClick={() => {
-                        setTerm(t);
-                        setTermModal('deleteTerm');
-                    }}
+                    <Button
+                        className="action-button"
+                        onClick={() => {
+                            setTerm(t);
+                            setTermModal('deleteTerm');
+                        }}
                     >
-                        Delete
+                        <DeleteFilled className="action-icon" />
                     </Button>
                 </Space>
             ),
         },
     ];
+    if (getTermArray === undefined) {
+        return null;
+    }
 
     return (
-        <div>
+        <div className="wrapper">
             <PageBar />
             <div className="termDictionaryContainer">
-                <div className="controls">
-                    <Button onClick={() => setTermModal('addTerm')}>+</Button>
-                </div>
                 <div className="dictionary-header">
                     <h1>Словник термінів</h1>
+                    <div className="controls">
+                        <Button onClick={() => setTermModal('addTerm')}>Новий термін</Button>
+                    </div>
                 </div>
                 <div className="term-table">
                     <Table
                         columns={columns}
-                        dataSource={getTermArray}
+                        dataSource={data}
                         rowKey={({ id }) => id}
                         pagination={{ defaultPageSize: 5 }}
                     />

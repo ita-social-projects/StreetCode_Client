@@ -9,7 +9,7 @@ export default class TermStore {
         makeAutoObservable(this);
     }
 
-    private setInternalMap = (terms: Term[]) => {
+    public setInternalMap = (terms: Term[]) => {
         terms.forEach(this.setItem);
     };
 
@@ -30,10 +30,10 @@ export default class TermStore {
         }
     };
 
-    // eslint-disable-next-line class-methods-use-this
-    public createTerm = async (id: number, term: Term) => {
+    public createTerm = async (term: Term) => {
         try {
             await termsApi.create(term);
+            this.setItem(term);
         } catch (error: unknown) {
             console.log(error);
         }
@@ -41,8 +41,8 @@ export default class TermStore {
 
     public updateTerm = async (id: number, term: Term) => {
         try {
-            await termsApi.update(id, term);
             if (id !== 0) {
+                await termsApi.update(id, term);
                 runInAction(() => {
                     const updatedTerm = {
                         ...this.TermMap.get(term.id),
@@ -58,11 +58,12 @@ export default class TermStore {
 
     public deleteTerm = async (termId: number) => {
         try {
-            console.log(termId);
-            await termsApi.delete(termId);
-            runInAction(() => {
-                this.TermMap.delete(termId);
-            });
+            if (termId !== 0) {
+                await termsApi.delete(termId);
+                runInAction(() => {
+                    this.TermMap.delete(termId);
+                });
+            }
         } catch (error: unknown) {
             console.log(error);
         }

@@ -1,5 +1,7 @@
 import './EditTermModal.styles.scss';
 
+import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 
@@ -30,22 +32,26 @@ const EditTermModal = ({ handleEdit, term, setTerm } : Props) => {
 
     return (
         <Modal
+            className="editModal"
             open={editTerm.isOpen}
             onCancel={() => setModal('editTerm')}
             footer={[
-                <Button onClick={() => {
-                    if (term !== null || undefined) {
-                        handleEdit(term?.id as number, term?.title as string, term?.description);
-                        setModal('editTerm');
-                    }
-                }}
-                >
-                    Зберегти
-                </Button>,
                 <Button onClick={() => setModal('editTerm')}>
                     Відмінити
                 </Button>,
+                <Button
+                    className="submit"
+                    onClick={() => {
+                        if (term !== null || undefined) {
+                            handleEdit(term?.id as number, term?.title as string, term?.description);
+                            setModal('editTerm');
+                        }
+                    }}
+                >
+                    Зберегти
+                </Button>,
             ]}
+            closeIcon={<CancelBtn />}
         >
             <h2>Редагування визначення</h2>
             <Form>

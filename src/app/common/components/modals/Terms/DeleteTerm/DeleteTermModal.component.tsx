@@ -1,5 +1,7 @@
 import './DeleteTermModal.styles.scss';
 
+import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 
@@ -17,11 +19,14 @@ const DeleteTermModal = ({ handleDelete, term } : Props) => {
 
     return (
         <Modal
+            className="deleteModal"
+            closeIcon={<CancelBtn />}
             open={deleteTerm.isOpen}
             onCancel={() => setModal('deleteTerm')}
             footer={[
+                <Button onClick={() => setModal('deleteTerm')}>Відміна</Button>,
                 <Button
-                    danger
+                    className="submit"
                     onClick={() => {
                         handleDelete(term?.id as number);
                         setModal('deleteTerm');
@@ -29,13 +34,10 @@ const DeleteTermModal = ({ handleDelete, term } : Props) => {
                 >
                     Видалити
                 </Button>,
-                <Button onClick={() => setModal('deleteTerm')}>Відміна</Button>,
             ]}
         >
-            <h3>Ви впевнені, що бажаєте видалити визначення?</h3>
+            <h2>Ви впевнені, що бажаєте видалити визначення?</h2>
             <p>
-                {term?.title}
-                {' - '}
                 {term?.description}
             </p>
         </Modal>

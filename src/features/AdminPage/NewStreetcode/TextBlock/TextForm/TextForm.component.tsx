@@ -113,7 +113,7 @@ const TextForm: React.FC = () => {
                     </Button>
                 </Tooltip>
             </Form.Item>
-            <Form.Item name="video" rules={[{ required: true, message: 'Please enter a value' }]}>
+            <Form.Item name="video" rules={[{ required: true, message: 'Будь ласка, введіть посилання!' }]}>
                 <div className="youtube-block">
                     <h3>Відео</h3>
                     <Input
