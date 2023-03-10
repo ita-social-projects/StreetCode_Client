@@ -1,4 +1,6 @@
 /* eslint-disable import/extensions */
+import './NewTimelineModal.style.scss';
+
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef } from 'react';
 import dayjs from 'dayjs';
@@ -73,6 +75,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     };
     return (
         <Modal
+            className='timeline-modal'
             open={open}
             onCancel={() => {
                 setIsModalOpen(false);

@@ -36,13 +36,12 @@ const MainBlockAdmin: React.FC = () => {
     const [streetcodeTeaser, setStreetcodeTeaser] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
-    const [messageApi, contextHolder] = message.useMessage();
 
     const [form] = Form.useForm();
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
-    }, [streetcodeTitle]);
+    }, [form, streetcodeTitle]);
     const onNameSurnameChange = () => {
         const curSurname = surname.current?.input?.value;
         setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
@@ -260,11 +259,6 @@ const MainBlockAdmin: React.FC = () => {
 
                 <FileInputsPart />
             </>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
         </Form>
     );
 };

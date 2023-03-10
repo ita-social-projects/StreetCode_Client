@@ -21,7 +21,7 @@ const TimelineBlockAdmin:React.FC = observer(() => {
 
     return (
         <div className="timeline-admin-container">
-            <p>Хронологія</p>
+            <p className="block-header">Хронологія</p>
             <div className="timeline-admin-new-items-container">
                 <div
                     className="timeline-admin-item timeline-admin-add-new"

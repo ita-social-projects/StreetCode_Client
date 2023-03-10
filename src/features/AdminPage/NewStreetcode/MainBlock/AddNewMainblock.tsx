@@ -1,16 +1,22 @@
+// eslint-disable-next-line no-restricted-imports
 import '../../AdminPage.styles.scss';
 
+import { useEffect } from 'react';
+
 import { ConfigProvider } from 'antd';
-import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
-import LocaleProvider from 'antd/lib/locale';
 import ukUA from 'antd/locale/uk_UA';
 
+// eslint-disable-next-line no-restricted-imports
 import TimelineBlockAdmin from '../TimelineBlock/TimelineBlockAdmin.component';
 
 import MainBlockAdmin from './MainBlockAdmin.component';
 
 const Addnewmainblock = () => {
-    ukUA.DatePicker.lang.locale = 'uk';
+    useEffect(() => {
+        if (ukUA.DatePicker) {
+            ukUA.DatePicker.lang.locale = 'uk';
+        }
+    }, []);
     return (
         <ConfigProvider locale={ukUA}>
             <div className="adminPageContainer">
