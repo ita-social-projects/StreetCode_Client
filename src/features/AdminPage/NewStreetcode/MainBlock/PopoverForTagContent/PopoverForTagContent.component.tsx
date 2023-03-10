@@ -1,8 +1,10 @@
+import './PopoverForTagContent.styles.scss';
+
 import React from 'react';
 
 import TagList from '@/app/common/components/TagList/TagList.component';
 import { TagVisible } from '@/models/additional-content/tag.model';
-import './PopoverForTagContent.styles.scss';
+
 const PopoverForTagContent:React.FC<{ screenWidth:number, tags:TagVisible[] }> = ({ screenWidth, tags }) => {
     console.log(screenWidth);
     return (

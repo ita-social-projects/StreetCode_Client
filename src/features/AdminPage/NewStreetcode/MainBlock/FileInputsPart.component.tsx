@@ -18,36 +18,17 @@ const FileInputsPart:React.FC = () => {
     };
     return (
         <div className="file-upload-container">
-
-            <FormItem
-                name="animations"
-                className="maincard-item"
-                label="Анімація"
-                rules={[{ required: true, message: 'Завантажте анімацію' }]}
-            >
-
-                <Upload
-                    accept=".gif"
-                    listType="picture-card"
-                    multiple={false}
-                    maxCount={1}
-                    onPreview={handlePreview}
-                >
-                    <InboxOutlined />
-                    <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                </Upload>
-            </FormItem>
             <div className="photo-uploader-container">
                 <FormItem
-                    name="pictureBlackWhite"
+                    name="animations"
                     className="maincard-item photo-form-item"
-                    label="Чорнобіле"
-                    rules={[{ required: true, message: 'Завантажте зображення' }]}
+                    label="Анімація"
+                    rules={[{ required: true, message: 'Завантажте анімацію' }]}
                 >
                     <Upload
-                        multiple={false}
-                        accept=".jpeg,.png,.jpg"
+                        accept=".gif"
                         listType="picture-card"
+                        multiple={false}
                         maxCount={1}
                         onPreview={handlePreview}
                     >
@@ -57,9 +38,9 @@ const FileInputsPart:React.FC = () => {
                 </FormItem>
 
                 <FormItem
-                    name="pictureColor"
+                    name="pictureBlackWhite"
                     className="maincard-item photo-form-item"
-                    label="Кольорове"
+                    label="Чорнобіле"
                     rules={[{ required: true, message: 'Завантажте зображення' }]}
                 >
                     <Upload

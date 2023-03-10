@@ -5,6 +5,7 @@ import {
     DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult,
 } from 'react-beautiful-dnd';
 
+// eslint-disable-next-line import/extensions
 import StrictModeDroppable from '@/app/common/components/StrictModeDroppable';
 import { TagVisible } from '@/models/additional-content/tag.model';
 
@@ -29,6 +30,7 @@ const DragableTags: React.FC<{ tags: TagVisible[],
              );
              setTags(items);
          };
+         // eslint-disable-next-line @typescript-eslint/no-explicit-any
          const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
              ...draggableStyle,
              background: isDragging ? '#8D1F16' : 'white',

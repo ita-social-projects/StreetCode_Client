@@ -32,13 +32,15 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 historicalContexts: timelineItem.historicalContexts.map((c) => c.title),
             });
             selectedContext.current = timelineItem.historicalContexts;
+        } else {
+            selectedContext.current = [];
         }
-        console.log(selectedContext.current);
-    }, [form, timelineItem, open]);
+    }, [timelineItem, open, form]);
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
-    }, []);
-    const onSuccesfulSubmit = (formValues: any) => {
+    }, [historicalContextStore]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const onSuccesfulSubmit = (formValues:any) => {
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
@@ -63,7 +65,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
             const maxId = Math.max(...historicalContextStore.historicalContextArray.map((i) => i.id));
-            const newItem = { id: maxId, title: value };
+            const newItem = { id: maxId + 1, title: value };
             historicalContextStore.addItemToArray(newItem);
             selectedContext.current.push(newItem);
         } else {
@@ -75,7 +77,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     };
     return (
         <Modal
-            className='timeline-modal'
+            className="timeline-modal"
             open={open}
             onCancel={() => {
                 setIsModalOpen(false);
