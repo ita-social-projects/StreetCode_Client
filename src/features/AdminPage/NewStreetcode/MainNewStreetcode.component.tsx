@@ -1,4 +1,3 @@
-import React from 'react';
 import ForFansBlock from './ForFans/ForFans.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import './MainNewStreetcode.styles.scss';
