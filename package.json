@@ -16,6 +16,7 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "antd": "^5.2.2",
+    "antd-img-crop": "^4.9.0",
     "axios": "^1.2.1",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",

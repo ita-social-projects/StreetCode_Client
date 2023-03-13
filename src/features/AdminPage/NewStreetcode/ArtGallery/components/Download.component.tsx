@@ -1,9 +1,10 @@
-import DownloadedImage from "./Image.component";
 
+import Img from "./Image.component";
 
 const DownloadBlock = () => {
     return(
         <>
+        <Img/>
         </>
     );
 }
