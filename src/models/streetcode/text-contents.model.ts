@@ -11,11 +11,6 @@ export interface Fact {
     streetcodes: Streetcode[];
 }
 
-export interface FactAdmin {
-    title: string;
-    factContent: string;
-}
-
 export interface Term {
     id: number;
     title: string;

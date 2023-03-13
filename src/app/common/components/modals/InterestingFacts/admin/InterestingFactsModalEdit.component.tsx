@@ -14,6 +14,15 @@ const InterestingFactsModal = () => {
     const { setModal, modalsState: { editFacts } } = modalStore;
 
 
+   // const { setModal, modalsState: { facts } } = modalStore;
+
+    // const factId = facts.fromCardId!;
+    // const fact = factMap.get(factId);
+
+
+    // const factId = 3;
+    // const fact = factMap.get(factId);
+   // const [title, setTitle] = useState(fact?.title);
 
     const [message, setMessage] = useState('');
     const handleChange = (event:any) => {
@@ -38,6 +47,8 @@ const InterestingFactsModal = () => {
                 <p>Заголовок</p>
                 <div className="inputBlock">
                     <input />
+                    {/* value={fact?.title}
+                     //onChange={(e) => setTitle(e.target.value)} */}
                     <p>Основний текст</p>
                     <textarea value={message} maxLength="600" onChange={handleChange} />
                     <p className="characterCounter">

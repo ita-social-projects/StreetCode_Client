@@ -1,6 +1,6 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import { Fact, FactAdmin } from '@models/streetcode/text-contents.model';
+import { Fact } from '@models/streetcode/text-contents.model';
 
 const FactsApi = {
     getById: (id: number) => Agent.get<Fact>(`${API_ROUTES.FACTS.GET}/${id}`),
@@ -11,9 +11,7 @@ const FactsApi = {
         `${API_ROUTES.FACTS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
     ),
 
-   // create: (fact: Fact) => Agent.post<Fact>(`${API_ROUTES.FACTS.CREATE}`, fact),
-
-    create: (fact: FactAdmin) => Agent.post<Fact>(`${API_ROUTES.FACTS.CREATE}`, fact),
+    create: (fact: Fact) => Agent.post<Fact>(`${API_ROUTES.FACTS.CREATE}`, fact),
 
     update: (fact: Fact) => Agent.put<Fact>(`${API_ROUTES.FACTS.UPDATE}`, fact),
 
