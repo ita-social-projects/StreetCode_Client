@@ -4,7 +4,6 @@ import RelationsList from './components/RelatedFigureList.component';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import InputPanel from './components/InputPanel.component'
 import axios from 'axios';
-import { Button } from 'antd';
 
 const RelatedFiguresBlock = () => {
     const [relations, setRelations] = useState<RelatedFigure[]>([]);
@@ -20,7 +19,7 @@ const RelatedFiguresBlock = () => {
     const getOptions = async() => {
         try {
             const response = await axios.get<RelatedFigure[]>(
-                `https://localhost:5001/api/Streetcode/GetAll`); //fix this
+                `https://localhost:5001/api/Streetcode/GetAll`);
             setOptions(response.data);
         } catch (error) {
             console.error(error);
