@@ -27,17 +27,6 @@ const RelatedFiguresBlock = () => {
         }
     }
 
-    const saveChanges = async() => {
-        /*try {
-            const response = await axios.get<RelatedFigure[]>(
-                `https://localhost:5001/api/Streetcode/Create/params`); //fix this
-            setOptions(response.data);
-        } catch (error) {
-            console.error(error);
-        }*/
-    }
-
-
     useEffect(() => {
         getOptions();
     }, []);
@@ -50,12 +39,6 @@ const RelatedFiguresBlock = () => {
             </div>
             <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
             <RelationsList relations={relations} setRelations={setRelations}/>
-            <Button 
-                type="text" danger onSubmit={saveChanges}
-                className={`submitButton ${relations.length === 0 ? 'invisible':''}`}
-            >
-                Зберегти зміни
-            </Button>
         </div>
     );
 }
