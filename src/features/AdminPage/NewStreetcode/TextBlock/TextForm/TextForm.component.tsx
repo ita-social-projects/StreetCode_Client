@@ -9,6 +9,7 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
+import AddTermModalComponent from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term } from '@/models/streetcode/text-contents.model';
 
@@ -21,7 +22,7 @@ interface InputInfoTextBlock {
 const TextForm: React.FC = () => {
     const [inputInfo, setInputInfo] = useState<Partial<InputInfoTextBlock>>();
     const [showPreview, setShowPreview] = useState(false);
-    const { termsStore } = useMobx();
+    const { termsStore, modalStore: { setTermModal } } = useMobx();
     const { fetchTerms, getTermArray } = termsStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
@@ -35,6 +36,15 @@ const TextForm: React.FC = () => {
     };
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
+    };
+
+    const handleAddSimple = () => {
+        const newTerm : Term = {
+            id: 0,
+            title: term?.title as string,
+            description: term?.description,
+        };
+        termsStore.createTerm(newTerm);
     };
 
     const handleAddRelatedWord = () => {
@@ -58,6 +68,11 @@ const TextForm: React.FC = () => {
             </Form.Item>
             <Form.Item>
                 <h3>Основний текст</h3>
+                <Button
+                    onClick={() => setTermModal('addTerm')}
+                >
+                        Додати новий термін
+                </Button>
                 <TinyMCEEditor
                     init={{
                         height: 300,
@@ -71,7 +86,7 @@ const TextForm: React.FC = () => {
                         toolbar: 'undo redo | bold italic | '
                         + 'alignleft aligncenter alignright alignjustify | '
                         + 'bullist numlist | removeformat ',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                        content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                     }}
                     onChange={(e, editor) => {
                         setInputInfo({ ...inputInfo, text: editor.getContent() });
@@ -160,6 +175,7 @@ const TextForm: React.FC = () => {
                     }
                 </div>
             </Form.Item>
+            <AddTermModalComponent handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>
     );
 };

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import useMobx from '@stores/root-store';
 
-import { Button, Space, Table } from 'antd';
+import { Button, Space, Table, Tooltip } from 'antd';
 
 import termsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
@@ -83,15 +83,29 @@ const TermDictionary = () => {
             key: 'action',
             render: (t: Term) => (
                 <Space size="middle">
-                    <Button
-                        className="action-button"
-                        onClick={() => {
-                            setTerm(t);
-                            setTermModal('editTerm');
-                        }}
-                    >
-                        <EditFilled className="action-icon" />
-                    </Button>
+                    {t.id === 0 ? (
+                        <Button
+                            className="action-button"
+                            disabled
+                            onClick={() => {
+                                setTerm(t);
+                                setTermModal('editTerm');
+                            }}
+                        >
+                            <EditFilled className="disable-icon" />
+                        </Button>
+                    ) : (
+                        <Button
+                            className="action-button"
+                            onClick={() => {
+                                setTerm(t);
+                                setTermModal('editTerm');
+                            }}
+                        >
+                            <EditFilled className="action-icon" />
+                        </Button>
+                    )}
+
                     <Button
                         className="action-button"
                         onClick={() => {
