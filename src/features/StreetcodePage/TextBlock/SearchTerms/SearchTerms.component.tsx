@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
+import parse from 'html-react-parser';
 
 import { Popover } from 'antd';
 
@@ -11,6 +12,34 @@ interface Props {
 const keywordColoring = {
     color: '#8D1F16',
 };
+const parser = (input: string) => parse(input, {
+    replace: () => {
+        const newInput = input.split('<p>').pop();
+        const inputWithoutP = newInput?.replace('</p>', '');
+        if (input.includes('<strong>')) {
+            const newBoldInput = inputWithoutP?.split('<strong>').pop();
+            const oldInput = inputWithoutP?.split('</strong>');
+            console.log(oldInput);
+            return (
+                <>
+                    {oldInput[1]}
+                    <strong>{newBoldInput?.replace('</strong>', '')}</strong>
+                </>
+            );
+        }
+        if (input.includes('<em>')) {
+            const newBoldInput = inputWithoutP?.split('<em>').pop();
+            const oldInput = inputWithoutP?.split('</em>');
+            return (
+                <>
+                    {oldInput[1]}
+                    <em>{newBoldInput?.replace('</em>', '')}</em>
+                </>
+            );
+        }
+        return <>{inputWithoutP}</>;
+    },
+});
 
 const SearchTerms = ({ mainText }: Props) => {
     const { termsStore, relatedTermStore } = useMobx();
@@ -58,10 +87,12 @@ const SearchTerms = ({ mainText }: Props) => {
                             overlayStyle={{ width: '300px' }}
                             content={descriptiveSearchTerms.get(part)}
                         >
-                            <span style={{ cursor: 'pointer' }}>{part}</span>
+                            <span style={{ cursor: 'pointer' }}>{parse(`${part}`)}</span>
                         </Popover>
                     ) : (
-                        <span>{part}</span>
+                        <span>
+                            {parser(`${part}`)}
+                        </span>
                     )}
                 </span>
             ))}
