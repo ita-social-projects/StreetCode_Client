@@ -8,7 +8,10 @@ const RelatedTermApi = {
 
     create: (relatedTerm: RelatedTerm) => Agent.post<RelatedTerm>(`${API_ROUTES.RELATED_TERMS.CREATE}`, relatedTerm),
 
-    update: (relatedTerm: RelatedTerm) => Agent.put<RelatedTerm>(`${API_ROUTES.RELATED_TERMS.UPDATE}`, relatedTerm),
+    update: (id: number, relatedTerm: RelatedTerm) => Agent.put<RelatedTerm>(
+        `${API_ROUTES.RELATED_TERMS.UPDATE}/${id}`,
+        relatedTerm,
+    ),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.RELATED_TERMS.DELETE}/${id}`),
 };

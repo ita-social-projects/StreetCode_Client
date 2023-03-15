@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import useMobx from '@stores/root-store';
 
-import { Button, Space, Table, Tooltip } from 'antd';
+import { Button, Space, Table } from 'antd';
 
 import termsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import DeleteTermModal from '@/app/common/components/modals/Terms/DeleteTerm/DeleteTermModal.component';
 import EditTermModal from '@/app/common/components/modals/Terms/EditTerm/EditTermModal.component';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term } from '@/models/streetcode/text-contents.model';
 
 // eslint-disable-next-line no-restricted-imports

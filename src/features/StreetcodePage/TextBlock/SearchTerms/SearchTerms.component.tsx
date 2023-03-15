@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
@@ -12,14 +13,30 @@ const keywordColoring = {
 };
 
 const SearchTerms = ({ mainText }: Props) => {
-    const { termsStore: { fetchTerms, getTermArray } } = useMobx();
+    const { termsStore, relatedTermStore } = useMobx();
+    const { fetchTerms, getTermArray } = termsStore;
+    const { fetchRelatedTermsByTermId, getRelatedTermsArray } = relatedTermStore;
+    const [currentTermId, setCurrentTermId] = useState(0);
     useAsync(fetchTerms);
+
+    useEffect(() => {
+        getTermArray.forEach((term) => {
+            setCurrentTermId(term.id);
+            fetchRelatedTermsByTermId(term.id);
+        });
+    }, [currentTermId, fetchRelatedTermsByTermId, getTermArray]);
 
     const searchTerms: string[] = [];
     const descriptiveSearchTerms = new Map<string, string | undefined>();
 
     getTermArray.forEach((term) => {
         descriptiveSearchTerms.set(term.title, term.description);
+        getRelatedTermsArray
+            .filter((relatedTerm) => relatedTerm.termId === term.id)
+            .forEach((relatedTerm) => {
+                descriptiveSearchTerms.set(relatedTerm.word, term.description);
+                searchTerms.push(relatedTerm.word);
+            });
         searchTerms.push(term.title);
     });
 
@@ -29,7 +46,6 @@ const SearchTerms = ({ mainText }: Props) => {
             'gi',
         ),
     );
-
     return (
         <div>
             {splittedKeywordText.map((part, idx) => (
