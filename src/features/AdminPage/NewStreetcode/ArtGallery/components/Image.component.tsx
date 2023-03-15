@@ -29,7 +29,7 @@ const Img: React.FC = () => {
         <Upload
             accept=".jpeg,.png,.jpg"
             listType="picture-card"
-            fileList={fileList}
+              // fileList={fileList}
             onChange={onChange}
             onPreview={onPreview}
         >

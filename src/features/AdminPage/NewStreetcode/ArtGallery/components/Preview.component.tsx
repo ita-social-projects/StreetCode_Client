@@ -1,7 +1,9 @@
+import ArtGalleryAdminBlock from "./ArtGalleryAdminBlock.component";
 
 const PreviewBlock = () => {
     return(
         <>
+        <ArtGalleryAdminBlock/>
         </>
     );
 }
