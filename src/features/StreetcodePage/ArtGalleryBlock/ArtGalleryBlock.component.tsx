@@ -56,8 +56,6 @@ const ArtGalleryBlock = () => {
                     title: image.url.title,
                     offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                 } as IndexedArt);
-                console.log('w: ', width);
-                console.log('h: ', height);
             } catch (error: unknown) {
                 console.log(`Error: cannot parse the image url: ${image.url.href}`);
             }

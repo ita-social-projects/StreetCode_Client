@@ -34,7 +34,7 @@ const PreviewFileModal:React.FC<{
             uploadImageToModal();
         }, [opened, file]);
         return (
-            <Modal open={opened} title="Додаткові дані" footer={null} onCancel={handleCancel}>
+            <Modal open={opened} title="Додаткові дані" style={{ top: 50 }} footer={null} onCancel={handleCancel}>
                 <div className="artPreviewModal">
                     <img alt="uploaded" src={fileProps.previewImage} />
                     <p>Title</p>

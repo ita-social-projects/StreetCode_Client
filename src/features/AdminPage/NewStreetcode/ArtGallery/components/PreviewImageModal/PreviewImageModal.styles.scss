@@ -1,16 +1,28 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .artPreviewModal{
     max-width: f.pxToRem(400px);
-    
+    @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+    color: c.$dark-red-color;
     align-items: center;
     margin: auto;
+    p{
+        @include mut.rem-padded($top: 5px, $bottom: 5px);
+    }
     img{
         @include mut.sized(50%,50%);
-        // width: f.pxToRem(400px);
-        // max-width: f.pxToRem(400px);
         display: block;
         margin: auto;
+    }
+    input, textarea{
+        @include mut.with-font(ft.$roboto-font, 300, 20px, normal) ;
+    }
+    textarea{
+        width: f.pxToRem(400px);
+        height: f.pxToRem(200px);
+        resize: none;
     }
 }
