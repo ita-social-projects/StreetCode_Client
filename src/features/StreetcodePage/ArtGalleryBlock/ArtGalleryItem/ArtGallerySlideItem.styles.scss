@@ -42,6 +42,8 @@
   }
 
   .imgImg{
+      //  @include mut.sized(100%, 11px);
+
     border-radius: pxToRem(30px);
   }
 }
