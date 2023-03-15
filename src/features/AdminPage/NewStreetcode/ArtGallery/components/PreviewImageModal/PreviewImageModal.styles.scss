@@ -1,0 +1,16 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.artPreviewModal{
+    max-width: f.pxToRem(400px);
+    
+    align-items: center;
+    margin: auto;
+    img{
+        @include mut.sized(50%,50%);
+        // width: f.pxToRem(400px);
+        // max-width: f.pxToRem(400px);
+        display: block;
+        margin: auto;
+    }
+}

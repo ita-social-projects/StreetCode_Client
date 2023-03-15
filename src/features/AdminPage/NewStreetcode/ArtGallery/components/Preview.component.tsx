@@ -1,4 +1,4 @@
-import ArtGalleryAdminBlock from "./ArtGalleryAdminBlock.component";
+import ArtGalleryAdminBlock from "./ArtGallery/ArtGalleryAdminBlock.component";
 
 const PreviewBlock = () => {
     return(

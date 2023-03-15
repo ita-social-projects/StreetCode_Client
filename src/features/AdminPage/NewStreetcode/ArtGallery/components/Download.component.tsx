@@ -1,9 +1,13 @@
 import { Upload } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
+import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
 const DownloadBlock: React.FC = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
 
   const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -18,10 +22,12 @@ const DownloadBlock: React.FC = () => {
         reader.onload = () => resolve(reader.result as string);
       });
     }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
+    // const image = new Image();
+    // image.src = src;
+    // const imgWindow = window.open(src);
+    // imgWindow?.document.write(image.outerHTML);
+    setFilePreview(file);
+    setIsOpen(true);
   };
 
   return (
@@ -35,6 +41,8 @@ const DownloadBlock: React.FC = () => {
         >
             {fileList.length < 15 && '+ Додати'}
         </Upload>
+        <PreviewImageModal file={filePreview} opened={isOpen} setOpened={setIsOpen} /> 
+
     </>
   );
 };
