@@ -2,6 +2,7 @@ import './HeaderBlock.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import StreetcodeSvg from '@images/header/Streetcode_title.svg';
+import MobileBurger from '@images/header/burger_mobile.svg';
 
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -10,7 +11,6 @@ import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
-//import LanguageSelector from '@layout/header/LanguageSelector/LanguageSelector.component';
 import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
@@ -21,6 +21,20 @@ const HeaderBlock = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useMobx();
+
+    const [windowSize, setWindowSize] = useState(window.innerWidth);
+    
+    useEffect(() => {
+    const handleWindowResize = () => {
+        setWindowSize(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+        window.removeEventListener('resize', handleWindowResize);
+        };
+    });
 
     const onDimCancel = useCallback((e?: Event) => {
         e?.stopPropagation();
@@ -48,7 +62,7 @@ const HeaderBlock = () => {
     return (
         <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
             <div className="leftPartContainer">
-                <StreetcodeSvg />
+                <StreetcodeSvg/>
                 <input placeholder='Пошук...'
                     ref={inputRef}
                     className={`ant-input css-dev-only-do-not-override-26rdvq
@@ -58,14 +72,16 @@ const HeaderBlock = () => {
             </div>
             <div className="rightPartContainer">
                 <div className="rightSectionContainer">
-                    {isHeaderHidden && (
+                    {(isHeaderHidden || windowSize < 1024) && (
                         <MagnifyingGlass
-                            viewBox="0 0 24 24"
+                            transform='scale(1.2)'
                             onClick={onMagnifyingGlassClick}
                             style={isPageDimmed ? { zIndex: '-1' } : undefined}
                         />
                     )}
-                    <HeaderDrawer />
+                    {
+                        windowSize < 1024 ? <MobileBurger/> : <HeaderDrawer/>
+                    }
                     <Button
                         type="primary"
                         className="loginBtn"

@@ -18,6 +18,10 @@ $navbar-hidden-innerwidth: 400px;
 
   background-color: white;
 
+  @media screen and (max-width: 1024px) {
+    @include mut.sized(100%, 64px);
+  }
+
   svg {
     margin-right: f.pxToRem(34px);
 
@@ -80,8 +84,7 @@ $navbar-hidden-innerwidth: 400px;
   }
 
   svg {
-    @include mut.sized(30px, 30px);
-    @include mut.rem-margined($right: 8px, $top: 5px);
+    @include mut.rem-margined($right: 8px);
     filter: invert(51%) sepia(0%) saturate(0%) hue-rotate(140deg) brightness(97%) contrast(93%);
 
     &:hover {
@@ -97,10 +100,6 @@ $navbar-hidden-innerwidth: 400px;
   .loginBtn {
     @include mut.hidden();
   }
-
-  .burgerMenuContainer {
-    margin: 0;
-  }
 }
 
 .hiddenHeaderInput {
@@ -115,5 +114,20 @@ $navbar-hidden-innerwidth: 400px;
 
   &.active {
     transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .navBarContainer {
+    .ant-input-affix-wrapper,
+    .loginBtn {
+      @include mut.hidden();
+    }
+    
+    .leftPartContainer {
+      svg {
+        transform: scale(0.75);
+      }
+    }
   }
 }
