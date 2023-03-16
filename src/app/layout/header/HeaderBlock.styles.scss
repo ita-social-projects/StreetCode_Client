@@ -45,11 +45,7 @@ $navbar-hidden-innerwidth: 400px;
     border: none;
     height: 39px;
     width: calc(100vw - #{$navbar-innerwidth});
-
-    @media screen and (max-width: 1815px) {
-    max-width: 100%;
-  }
-
+    
     @include mut.full-rounded(12px);
     margin-right: f.pxToRem(10px);
 

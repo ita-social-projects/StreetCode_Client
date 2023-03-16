@@ -74,14 +74,12 @@ const HeaderBlock = () => {
                 <div className="rightSectionContainer">
                     {(isHeaderHidden || windowSize < 1024) && (
                         <MagnifyingGlass
-                            transform='scale(1.2)'
+                            transform='scale(1.5)'
                             onClick={onMagnifyingGlassClick}
                             style={isPageDimmed ? { zIndex: '-1' } : undefined}
                         />
                     )}
-                    {
-                        windowSize < 1024 ? <MobileBurger/> : <HeaderDrawer/>
-                    }
+                    <HeaderDrawer/>
                     <Button
                         type="primary"
                         className="loginBtn"
