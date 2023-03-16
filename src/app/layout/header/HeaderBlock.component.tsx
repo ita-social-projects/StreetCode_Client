@@ -1,8 +1,8 @@
 import './HeaderBlock.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import MagnifyingGlassMobile from '@images/header/Magnifying_glass_mobile.svg';
 import StreetcodeSvg from '@images/header/Streetcode_title.svg';
-import MobileBurger from '@images/header/burger_mobile.svg';
 
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -12,6 +12,7 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
 import useMobx from '@stores/root-store';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import { Button } from 'antd';
 
@@ -22,20 +23,8 @@ const HeaderBlock = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useMobx();
 
-    const [windowSize, setWindowSize] = useState(window.innerWidth);
+    const windowSize = useWindowSize();
     
-    useEffect(() => {
-    const handleWindowResize = () => {
-        setWindowSize(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleWindowResize);
-
-    return () => {
-        window.removeEventListener('resize', handleWindowResize);
-        };
-    });
-
     const onDimCancel = useCallback((e?: Event) => {
         e?.stopPropagation();
 
@@ -72,11 +61,17 @@ const HeaderBlock = () => {
             </div>
             <div className="rightPartContainer">
                 <div className="rightSectionContainer">
-                    {(isHeaderHidden || windowSize < 1024) && (
+                    {isHeaderHidden && windowSize.width > 1024 && (
                         <MagnifyingGlass
-                            transform='scale(1.5)'
+                            viewBox="0 -2 24 24"
+                            transform='scale(1.2)'
                             onClick={onMagnifyingGlassClick}
                             style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                        />
+                    )}
+                    {windowSize.width < 1024 && (
+                        <MagnifyingGlassMobile
+                            viewBox="0 -1 25 25"
                         />
                     )}
                     <HeaderDrawer/>

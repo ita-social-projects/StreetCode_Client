@@ -80,6 +80,7 @@ $navbar-hidden-innerwidth: 400px;
   }
 
   svg {
+    @include mut.sized(30px, 30px);
     @include mut.rem-margined($right: 8px);
     filter: invert(51%) sepia(0%) saturate(0%) hue-rotate(140deg) brightness(97%) contrast(93%);
 
@@ -113,17 +114,24 @@ $navbar-hidden-innerwidth: 400px;
   }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px) { // header height, smaller padding, other svgs
   .navBarContainer {
+    padding: f.pxToRem(15px) f.pxToRem(0px);
     .ant-input-affix-wrapper,
     .loginBtn {
-      @include mut.hidden();
+      @include mut.hidden(); //hidden elements
     }
     
     .leftPartContainer {
       svg {
-        transform: scale(0.75);
+        transform: scale(0.8); //logo
       }
+    }
+    .rightPartContainer {
+
+      //svg {
+      //  @include mut.sized(25px, 25px);
+      //}
     }
   }
 }
