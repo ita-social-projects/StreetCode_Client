@@ -80,7 +80,7 @@ $navbar-hidden-innerwidth: 400px;
   }
 
   svg {
-    @include mut.sized(30px, 30px);
+    @include mut.sized(35px, 35px);
     @include mut.rem-margined($right: 8px, $top: 5px);
     filter: invert(51%) sepia(0%) saturate(0%) hue-rotate(140deg) brightness(97%) contrast(93%);
 
