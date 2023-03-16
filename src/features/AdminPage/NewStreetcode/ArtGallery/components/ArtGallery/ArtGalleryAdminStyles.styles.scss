@@ -7,10 +7,12 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .artGallerySliderContainer .sliderClass .slick-slider {
-    height: pxToRem(560px);
+    height: pxToRem(460px);
 }
 .artGalleryWrapper {
+  // Dont touch
     @include mut.sized(100%, 300px);
+  //-----------  
 
     @include wr.main-page-block-wrapper();
     margin-bottom: pxToRem(390px);
@@ -56,11 +58,15 @@
 
 .slideArt {
   flex: pxToRem(80px);
-  height: pxToRem(560px);
+  // max-width: 536px ;
+
+  // width: 40%;
+  // height: pxToRem(560px);
+
 }
 
 .artImageWrapper {
-        // @include mut.sized(50%, 113px);
+// @include mut.sized(100%, 113px);
 
   position: relative;  
   &:hover {
@@ -94,8 +100,25 @@
   }
 
   .imgImg{
-    @include mut.sized(80%, 30%);
+    // @include mut.sized(80%, 30%);
+    // max-height: 536px ;
+    // max-height: 800px;
 
+    // .one{
+    //   // width: 380px;
+    //   max-width: 180px !important;
+    //   height: 250px;
+  
+    // }
+    // .two{
+    //     width : 200px;
+    //     height: 535px;
+  
+    // }
+    // .four{
+    //    width: 806px;
+    //    height: 536px;
+    // }
     border-radius: pxToRem(30px);
   }
 }

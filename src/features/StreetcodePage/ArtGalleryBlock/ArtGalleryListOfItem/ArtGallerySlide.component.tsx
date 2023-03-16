@@ -9,12 +9,11 @@ interface Props {
 
 const ArtGallerySlide = ({ artGalleryList }: Props) => {
     const offsetSum = artGalleryList.reduce((accumulator, currentValue) => accumulator + currentValue.offset, 0);
-
     return (
         <div className="slideArtGalleryContainer">
             <div className={`slideArtGallery width-${offsetSum > 4 ? 2 : 1}`}>
                 {artGalleryList.map((item) => (
-                    <ArtGallerySlideItem artGalleryItem={item} />
+                    <ArtGallerySlideItem artGalleryItem={item} offset={item.offset} />
                 ))}
             </div>
         </div>

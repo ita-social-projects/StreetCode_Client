@@ -6,17 +6,18 @@ import useMobx from '@/app/stores/root-store';
 
 interface Props {
   artGalleryItem: IndexedArt;
+  offset: number;
 }
-
-const ArtGallerySlideItem = ({ artGalleryItem }: Props) => {
+const ArtGallerySlideItem = ({ artGalleryItem, offset }: Props) => {
+    console.log(offset);
     const { imageHref, description, title, sequenceNumber } = artGalleryItem;
     const { modalStore: { setModal } } = useMobx();
 
     return (
-        <div className="slideArt">
+        <div className={`slideArt ${offset === 2 ? 'medium' : offset === 4 ? 'large' : 'small'}`}>
             <div className="artImageWrapper">
                 <img
-                    className="imgImg"
+                    className={`imgImg ${offset === 2 ? 'two' : offset === 4 ? 'four' : 'one'}`}
                     src={imageHref}
                     onClick={() => setModal('artGallery', sequenceNumber)}
                     alt=""
