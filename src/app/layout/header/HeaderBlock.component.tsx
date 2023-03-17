@@ -49,42 +49,57 @@ const HeaderBlock = () => {
     };
 
     return (
-        <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
-            <div className="leftPartContainer">
-                <StreetcodeSvg/>
-                <input placeholder='Пошук...'
-                    ref={inputRef}
-                    className={`ant-input css-dev-only-do-not-override-26rdvq
-                        hiddenHeaderInput ${((isInputActive && isHeaderHidden) ? 'active' : '')}`}
-                />
-                <HeaderSkeleton />
-            </div>
-            <div className="rightPartContainer">
-                <div className="rightSectionContainer">
-                    {isHeaderHidden && windowSize.width > 1024 && (
-                        <MagnifyingGlass
-                            viewBox="0 -2 24 24"
-                            transform='scale(1.2)'
-                            onClick={onMagnifyingGlassClick}
+        <div className='HeaderBlock'>
+            <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
+                <div className="leftPartContainer">
+                    <StreetcodeSvg/>
+                    <input placeholder='Пошук...'
+                        ref={inputRef}
+                        className={`ant-input css-dev-only-do-not-override-26rdvq
+                            hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                    />
+                    <HeaderSkeleton/>
+                </div>
+                <div className="rightPartContainer">
+                    <div className="rightSectionContainer">
+                        {isHeaderHidden && windowSize.width > 1024 && (
+                            <MagnifyingGlass
+                                viewBox="0 -2 24 24"
+                                transform='scale(1.2)'
+                                onClick={onMagnifyingGlassClick}
+                                style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                            />
+                        )}
+                        {windowSize.width < 1024 && (
+                            <MagnifyingGlassMobile
+                                viewBox="0 -1 25 25"
+                                onClick={onMagnifyingGlassClick}
+                                style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                            />
+                        )}
+                        <HeaderDrawer/>
+                        <Button
+                            type="primary"
+                            className="loginBtn"
+                            onClick={() => setModal('login')}
                             style={isPageDimmed ? { zIndex: '-1' } : undefined}
-                        />
-                    )}
-                    {windowSize.width < 1024 && (
-                        <MagnifyingGlassMobile
-                            viewBox="0 -1 25 25"
-                        />
-                    )}
-                    <HeaderDrawer/>
-                    <Button
-                        type="primary"
-                        className="loginBtn"
-                        onClick={() => setModal('login')}
-                        style={isPageDimmed ? { zIndex: '-1' } : undefined}
-                    >
-                        Долучитися
-                    </Button>
+                        >
+                            Долучитися
+                        </Button>
+                    </div>
                 </div>
             </div>
+            {windowSize.width <= 1024 && (
+            <div className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
+                <input className='ant-input css-dev-only-do-not-override-26rdvq' 
+                    placeholder='Що ти шукаєш?'
+                    ref={inputRef}
+                />
+                <Button type='primary' className='searchButton'>
+                    Пошук
+                </Button>
+            </div>
+            )}
         </div>
     );
 };
