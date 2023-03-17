@@ -11,6 +11,7 @@ interface Props {
 }
 
 const toolTipColor = '#8D1F16';
+const videoPattern = 'https?://www.youtube.com/watch.+';
 
 const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
@@ -26,8 +27,8 @@ const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
                     title="video"
                     value={inputInfo?.link}
                     className="smallerInput"
-                    placeholder="https://www.youtube.com"
-                    pattern="https?://www.youtube.com/watch.+"
+                    placeholder="ex. https://www.youtube.com"
+                    pattern={videoPattern}
                     name="link"
                     required
                     onChange={handleLinkChange}
