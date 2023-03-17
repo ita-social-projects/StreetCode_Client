@@ -16,6 +16,8 @@ const StreetcodesTable = () => {
 
     const [titleRequest, setTitleRequest] = useState<string|null>(null);
     const [statusRequest, setStatusRequest] = useState<string|null>(null);
+    const [pageRequest, setPageRequest] = useState<number|null>(null);
+    const [amountRequest, setAmountRequest] = useState<number|null>(null);
 
     const requestDefault: GetAllStreetcodes = {
         Page: null,
@@ -28,9 +30,10 @@ const StreetcodesTable = () => {
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodes>(requestDefault);
 
     const setRequest = () => {
+        console.log(`Page:${pageRequest}\nAmount:${amountRequest}\nTitle:${titleRequest}\nSort:${null}\nFilter:Status:${statusRequest}\n`);
         setRequestGetAll({
-            Page: 1,
-            Amount: 10,
+            Page: pageRequest,
+            Amount: amountRequest,
             Title: titleRequest == "" ? null : titleRequest,
             Sort: null,
             Filter: `Status:${statusRequest}`
@@ -161,10 +164,16 @@ const StreetcodesTable = () => {
             <div>
                 <div className='underTableZone'>
                     <div className='underTableElement'>
-                        <InputNumber className='pageAmountElement' min={1} max={10} defaultValue={3}/>
+                        <InputNumber className='pageAmountElement' min={1} max={20} defaultValue={1} onChange={(value: any) => {
+                            console.log(value);
+                            setAmountRequest(value)
+                            }}/>
                     </div>
                     <div className='underTableElement'>
-                        <Pagination className='pagenationElement' simple defaultCurrent={2} total={50} />
+                        <Pagination className='pagenationElement' simple defaultCurrent={1} total={50} onChange={(value: any) => {
+                            setPageRequest(value);
+                            setRequest();
+                        }}/>
                     </div>
                 </div>
             </div>
