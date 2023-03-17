@@ -21,6 +21,7 @@ interface ModalList {
     addTerm: ModalState;
     editTerm: ModalState;
     deleteTerm: ModalState;
+    deleteStreetcode: ModalState;
 }
 
 export default class ModalStore {
@@ -35,6 +36,7 @@ export default class ModalStore {
         addTerm: DefaultModalState,
         editTerm: DefaultModalState,
         deleteTerm: DefaultModalState,
+        deleteStreetcode: DefaultModalState,
     };
 
     public isPageDimmed = false;
