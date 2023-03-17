@@ -10,16 +10,13 @@ import termsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import DeleteTermModal from '@/app/common/components/modals/Terms/DeleteTerm/DeleteTermModal.component';
 import EditTermModal from '@/app/common/components/modals/Terms/EditTerm/EditTermModal.component';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
 import { Term } from '@/models/streetcode/text-contents.model';
-
-// eslint-disable-next-line no-restricted-imports
-import PageBar from '../PageBar/PageBar.component';
 
 const TermDictionary = () => {
     const { termsStore, modalStore } = useMobx();
-    const { fetchTerms, getTermArray } = termsStore;
-    const { setTermModal } = modalStore;
+    const { fetchTerms } = termsStore;
+    const { setModal } = modalStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [data, setData] = useState<Term[]>();
 
@@ -43,13 +40,11 @@ const TermDictionary = () => {
         termsStore.createTerm(newTerm);
         console.log(newTerm);
         setData([...data || [], newTerm]);
-        setTerm({ id: 0, title: '', description: '' });
     };
 
     const handleDelete = (id: number) => {
         termsStore.deleteTerm(id);
         setData((data?.filter((termId) => termId.id !== id)) || []);
-        setTerm({ id: 0, title: '', description: '' });
     };
 
     const handleEdit = (id: number, title: string, description: string | undefined) => {
@@ -65,7 +60,6 @@ const TermDictionary = () => {
                     title: term?.title as string,
                     description: term.description === undefined ? '' : term.description as string } : t),
         ));
-        setTerm({ id: 0, title: '', description: '' });
     };
     const columns = [
         {
@@ -83,20 +77,34 @@ const TermDictionary = () => {
             key: 'action',
             render: (t: Term) => (
                 <Space size="middle">
+                    {t.id === 0 ? (
+                        <Button
+                            className="action-button"
+                            disabled
+                            onClick={() => {
+                                setTerm(t);
+                                setModal('editTerm');
+                            }}
+                        >
+                            <EditFilled className="disable-icon" />
+                        </Button>
+                    ) : (
+                        <Button
+                            className="action-button"
+                            onClick={() => {
+                                setTerm(t);
+                                setModal('editTerm');
+                            }}
+                        >
+                            <EditFilled className="action-icon" />
+                        </Button>
+                    )}
+
                     <Button
                         className="action-button"
                         onClick={() => {
                             setTerm(t);
-                            setTermModal('editTerm');
-                        }}
-                    >
-                        <EditFilled className="action-icon" />
-                    </Button>
-                    <Button
-                        className="action-button"
-                        onClick={() => {
-                            setTerm(t);
-                            setTermModal('deleteTerm');
+                            setModal('deleteTerm');
                         }}
                     >
                         <DeleteFilled className="action-icon" />
@@ -105,10 +113,6 @@ const TermDictionary = () => {
             ),
         },
     ];
-    if (getTermArray === undefined) {
-        return null;
-    }
-
     return (
         <div className="wrapper">
             <PageBar />
@@ -116,7 +120,7 @@ const TermDictionary = () => {
                 <div className="dictionary-header">
                     <h1>Словник термінів</h1>
                     <div className="controls">
-                        <Button onClick={() => setTermModal('addTerm')}>Новий термін</Button>
+                        <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
                     </div>
                 </div>
                 <div className="term-table">

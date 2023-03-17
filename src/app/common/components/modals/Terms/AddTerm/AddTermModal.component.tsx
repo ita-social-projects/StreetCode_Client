@@ -48,10 +48,10 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
             <h2>Створення нового визначення</h2>
             <Form id="myForm" onFinish={() => handleAdd}>
                 <FormItem label="Назва">
-                    <Input value={term?.title} onChange={handleChangeTitle} />
+                    <Input onChange={handleChangeTitle} />
                 </FormItem>
                 <FormItem label="Визначення">
-                    <TextArea value={term?.description} onChange={handleChangeDesc} />
+                    <TextArea onChange={handleChangeDesc} />
                 </FormItem>
             </Form>
         </Modal>

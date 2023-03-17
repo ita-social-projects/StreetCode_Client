@@ -23,6 +23,7 @@
     "date-fns": "^2.29.3",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-simple-import-sort": "^8.0.0",
+    "html-react-parser": "^3.0.12",
     "http-status-codes": "^2.2.0",
     "leaflet": "^1.9.3",
     "leaflet-boundary-canvas": "^1.0.0",
