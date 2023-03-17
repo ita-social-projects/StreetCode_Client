@@ -16,28 +16,8 @@ const parser = (input: string) => parse(input, {
     replace: () => {
         const newInput = input.split('<p>').pop();
         const inputWithoutP = newInput?.replace('</p>', '');
-        if (input.includes('<strong>')) {
-            const newBoldInput = inputWithoutP?.split('<strong>').pop();
-            const oldInput = inputWithoutP?.split('</strong>');
-            console.log(oldInput);
-            return (
-                <>
-                    {oldInput[1]}
-                    <strong>{newBoldInput?.replace('</strong>', '')}</strong>
-                </>
-            );
-        }
-        if (input.includes('<em>')) {
-            const newBoldInput = inputWithoutP?.split('<em>').pop();
-            const oldInput = inputWithoutP?.split('</em>');
-            return (
-                <>
-                    {oldInput[1]}
-                    <em>{newBoldInput?.replace('</em>', '')}</em>
-                </>
-            );
-        }
-        return <>{inputWithoutP}</>;
+
+        return <>{parse(String(inputWithoutP))}</>;
     },
 });
 
@@ -71,16 +51,26 @@ const SearchTerms = ({ mainText }: Props) => {
 
     const splittedKeywordText = mainText.split(
         new RegExp(
-            `(${searchTerms.map((st) => st.toLocaleLowerCase()).join('|')})`,
+            `(${searchTerms.map((st) => st.toLocaleLowerCase()).join('|')}|<[^p>]*>[^>]*</[^p>]*>)`,
             'gi',
         ),
     );
+
+    const checkMapping = (part: string) => {
+        if (searchTerms.includes(part)) {
+            const index = searchTerms.indexOf(part);
+            searchTerms.splice(index, 1);
+            return true;
+        }
+        return false;
+    };
+
     return (
         <div>
             {splittedKeywordText.map((part, idx) => (
                 <span
                     key={idx}
-                    style={searchTerms.includes(part) ? keywordColoring : undefined}
+                    style={checkMapping(part) ? keywordColoring : undefined}
                 >
                     {searchTerms.includes(part) ? (
                         <Popover
@@ -90,9 +80,9 @@ const SearchTerms = ({ mainText }: Props) => {
                             <span style={{ cursor: 'pointer' }}>{parse(`${part}`)}</span>
                         </Popover>
                     ) : (
-                        <span>
+                        <>
                             {parser(`${part}`)}
-                        </span>
+                        </>
                     )}
                 </span>
             ))}

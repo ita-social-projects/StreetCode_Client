@@ -2,9 +2,8 @@ import { useState } from 'react';
 
 import { Button } from 'antd';
 
+import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import ReadMore from '@/features/StreetcodePage/TextBlock/ReadMore/ReadMore.component';
-
-import TextInputInfo from '../TextInputInfo';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
@@ -16,7 +15,7 @@ const TextPreview = ({ inputInfo } : Props) => {
     return (
         <div>
             <Button
-                disabled={inputInfo === undefined}
+                disabled={inputInfo === undefined || inputInfo.text?.length === 0}
                 onClick={() => setDisabled(!disabled)}
             >
                 Попередній перегляд тексту

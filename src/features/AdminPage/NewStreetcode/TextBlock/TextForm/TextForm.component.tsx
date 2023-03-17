@@ -1,6 +1,7 @@
 import './TextForm.styles.scss';
 
 import { useState } from 'react';
+import TextInputInfo from '@features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -8,7 +9,6 @@ import FormItem from 'antd/es/form/FormItem';
 import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
-import TextInputInfo from './TextInputInfo';
 
 const TextForm: React.FC = () => {
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();

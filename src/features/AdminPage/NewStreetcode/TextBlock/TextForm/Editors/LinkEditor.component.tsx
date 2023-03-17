@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Input, Tooltip } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
-import TextInputInfo from '../TextInputInfo';
+import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
