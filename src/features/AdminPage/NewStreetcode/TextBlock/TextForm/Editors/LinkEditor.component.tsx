@@ -13,6 +13,10 @@ interface Props {
 const toolTipColor = '#8D1F16';
 const videoPattern = 'https?://www.youtube.com/watch.+';
 
+const linkConverter = (link: string) => (link.includes('/watch?v=')
+    ? link.replace('/watch?v=', '/embed/')
+    : link);
+
 const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
 
@@ -54,9 +58,7 @@ const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
                             <iframe
                                 title="video-preview"
                                 src={
-                                    inputInfo?.link?.includes('/watch?v=')
-                                        ? inputInfo?.link?.replace('/watch?v=', '/embed/')
-                                        : inputInfo?.link
+                                    linkConverter(inputInfo.link)
                                 }
                                 allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
                             />
