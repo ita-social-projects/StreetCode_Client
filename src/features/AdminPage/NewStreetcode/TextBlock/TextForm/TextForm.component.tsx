@@ -13,14 +13,14 @@ import TextPreview from './TextPreview/TextPreview.component';
 const TextForm: React.FC = () => {
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
 
-    const maxTitleLenght = 50;
+    const maxTitleLength = 50;
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, title: e.target.value });
     };
 
     return (
-        <FormItem className="text-form">
+        <FormItem className="textForm">
             <Form.Item>
                 <h3>Заголовок</h3>
                 <Input
@@ -28,7 +28,7 @@ const TextForm: React.FC = () => {
                     value={inputInfo?.title}
                     name="title"
                     type="text"
-                    maxLength={maxTitleLenght}
+                    maxLength={maxTitleLength}
                     onChange={handleChangeTitle}
                 />
             </Form.Item>

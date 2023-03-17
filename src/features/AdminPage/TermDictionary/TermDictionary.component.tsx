@@ -38,7 +38,6 @@ const TermDictionary = () => {
             description: term?.description,
         };
         termsStore.createTerm(newTerm);
-        console.log(newTerm);
         setData([...data || [], newTerm]);
     };
 
@@ -79,35 +78,35 @@ const TermDictionary = () => {
                 <Space size="middle">
                     {t.id === 0 ? (
                         <Button
-                            className="action-button"
+                            className="actionButton"
                             disabled
                             onClick={() => {
                                 setTerm(t);
                                 setModal('editTerm');
                             }}
                         >
-                            <EditFilled className="disable-icon" />
+                            <EditFilled className="disableIcon" />
                         </Button>
                     ) : (
                         <Button
-                            className="action-button"
+                            className="actionButton"
                             onClick={() => {
                                 setTerm(t);
                                 setModal('editTerm');
                             }}
                         >
-                            <EditFilled className="action-icon" />
+                            <EditFilled className="actionIcon" />
                         </Button>
                     )}
 
                     <Button
-                        className="action-button"
+                        className="actionButton"
                         onClick={() => {
                             setTerm(t);
                             setModal('deleteTerm');
                         }}
                     >
-                        <DeleteFilled className="action-icon" />
+                        <DeleteFilled className="actionIcon" />
                     </Button>
                 </Space>
             ),
@@ -117,13 +116,13 @@ const TermDictionary = () => {
         <div className="wrapper">
             <PageBar />
             <div className="termDictionaryContainer">
-                <div className="dictionary-header">
+                <div className="dictionaryHeader">
                     <h1>Словник термінів</h1>
                     <div className="controls">
                         <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
                     </div>
                 </div>
-                <div className="term-table">
+                <div className="termTable">
                     <Table
                         columns={columns}
                         dataSource={data}

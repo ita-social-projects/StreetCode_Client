@@ -14,13 +14,13 @@
     width: 100%;
     margin: auto;
 
-    .dictionary-header{
+    .dictionaryHeader{
         display: grid;
         grid-template-columns: 85% 15%;
         margin-bottom: f.pxToRem(40px);
         padding: 0 f.pxToRem(170px);
     }
-    .term-table{
+    .termTable{
         padding: 0 f.pxToRem(170px);
     }
 }
@@ -41,11 +41,11 @@
     }
 }
 
-.action-button{
+.actionButton{
     border: none;
     background: transparent;
 
-    .action-icon{
+    .actionIcon{
         color: c.$dark-red-color;
 
         &:hover{
@@ -53,7 +53,7 @@
             transition: all 0.125s;
         }
     }
-    .disable-icon{
+    .disableIcon{
         color: lightgray;
     }
 }

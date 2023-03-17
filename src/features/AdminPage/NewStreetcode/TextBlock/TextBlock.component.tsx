@@ -1,21 +1,11 @@
 import './TextBlock.styles.scss';
 
-import { useState } from 'react';
-import useMobx from '@stores/root-store';
-
-import { Term } from '@/models/streetcode/text-contents.model';
-
 import TextForm from './TextForm/TextForm.component';
 
-const TextBlock = () => {
-    const { termsStore } = useMobx();
-    const [term, setTerm] = useState<Partial<Term>>();
-
-    return (
-        <div className="text-block-container">
-            <TextForm />
-        </div>
-    );
-};
+const TextBlock = () => (
+    <div className="textBlockContainer">
+        <TextForm />
+    </div>
+);
 
 export default TextBlock;

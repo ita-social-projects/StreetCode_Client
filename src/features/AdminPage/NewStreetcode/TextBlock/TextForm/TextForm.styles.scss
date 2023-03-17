@@ -2,7 +2,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/variables/_variables.fonts.scss" as ft;
 
-.text-form{
+.textForm{
     display: flex;
     justify-content: center;
     flex-flow: column;
@@ -22,25 +22,12 @@
         font-family: ft.$roboto-font;
     }
 
-    #main-text-selection-area{
-        font-family: ft.$roboto-font;
-        height: f.pxToRem(200px);
-        padding: f.pxToRem(10px);
-        resize: none;
-    }
-
-    .smaller-input{
+    .smallerInput{
         width: 65%;
     }
 
     .ant-input-show-count-suffix{
         position: relative;
     }
-
-    .ant-form-item-required:before {
-        content: "*";
-        color: red;
-        margin-right: 4px;
-      }
 
 }

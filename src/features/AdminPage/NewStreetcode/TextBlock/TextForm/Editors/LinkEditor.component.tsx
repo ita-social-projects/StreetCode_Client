@@ -10,6 +10,8 @@ interface Props {
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
 }
 
+const toolTipColor = '#8D1F16';
+
 const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
 
@@ -23,7 +25,7 @@ const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
                 <Input
                     title="video"
                     value={inputInfo?.link}
-                    className="smaller-input"
+                    className="smallerInput"
                     placeholder="https://www.youtube.com"
                     pattern="https?://www.youtube.com/watch.+"
                     name="link"
@@ -35,7 +37,7 @@ const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
                         inputInfo?.link?.includes('watch')
                             ? '' : 'Вкажіть посилання на youtube.com/watch!'
                     }
-                    color="#8D1F16"
+                    color={toolTipColor}
                 >
                     <Button
                         disabled={!inputInfo?.link?.includes('watch')}

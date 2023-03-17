@@ -17,6 +17,8 @@ interface Props {
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
 }
 
+const toolTipColor = '#8D1F16';
+
 const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     const { relatedTermStore, termsStore, modalStore: { setModal } } = useMobx();
     const { fetchTerms, getTermArray } = termsStore;
@@ -87,7 +89,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             <Form.Item label="Оберіть пов'язаний термін">
                 <Tooltip
                     title={selected !== '' ? '' : 'Спочатку виділіть слово у тексті'}
-                    color="#8D1F16"
+                    color={toolTipColor}
                 >
                     <AutoComplete
                         filterOption
@@ -105,7 +107,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             <Tooltip
                 title={selected !== '' && term !== undefined
                     ? `${selected} з ${term?.title}` : 'Виділіть слово та термін!'}
-                color="#8D1F16"
+                color={toolTipColor}
             >
                 <Button
                     onClick={handleAddRelatedWord}
@@ -117,7 +119,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             <Tooltip
                 title={selected !== '' && term !== undefined
                     ? `${selected} з ${term?.title}` : 'Виділіть слово для видалення!'}
-                color="#8D1F16"
+                color={toolTipColor}
             >
                 <Button
                     onClick={handleDeleteRelatedWord}
