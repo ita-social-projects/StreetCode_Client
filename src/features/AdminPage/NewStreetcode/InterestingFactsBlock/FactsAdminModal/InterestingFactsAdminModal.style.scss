@@ -14,6 +14,18 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
       padding: 0 !important;
       box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
         0 6px 20px 0 rgb(0 0 0 / 19%);
+        .saveButton{
+          width: 30%;   
+          justify-content: center;
+          left: 28%;
+          @include mut.with-font(ft.$roboto-font, 300, 15px, normal);
+          border-color: c.$dark-red-color;
+          color: c.$dark-red-color;
+          &:hover{
+              color: c.$pure-white-color;
+              background-color: c.$dark-red-color;
+          }
+        }
     }
 
     .ant-modal-close {
@@ -56,7 +68,8 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
             height: 70%;
             width: 100%;
             resize: none;
-     
+
+        
         }
     }
 }

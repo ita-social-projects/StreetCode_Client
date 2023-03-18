@@ -2,25 +2,20 @@
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
+import { useState } from 'react';
+import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
 
 interface Props {
     fact: Fact;
 }
-//  const { modalStore: { setModal } } = useMobx();
 
-//  const InterestingFactItem = ({
-//     fact: { factContent, title, id },
-// }: Props) => {
-//     const { modalStore: { setModal } } = useMobx();
-// )
-
-const InterestingFactsItem = ({ fact: { title, id } } : Props) => {
-    const { modalStore: { setModal } } = useMobx();
+const InterestingFactAdminItem = ({ fact: { title, id } } : Props) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div className="interestingFactItem">
             <div className="item">
                 <div className="faIcon">
-                    <FaPencilAlt onClick={() => setModal('editFacts')} />
+                    <FaPencilAlt onClick={() => setIsModalOpen(true)} />
                 </div>
                 <p>
                     {title}
@@ -29,8 +24,10 @@ const InterestingFactsItem = ({ fact: { title, id } } : Props) => {
                     <FaRegTrashAlt />
                 </div>
             </div>
+            {/* NOTE: Add fact here */}
+            <InterestingFactsAdminModal fact={} open={isModalOpen} setOpen={setIsModalOpen} />
         </div>
     );
 };
 
-export default InterestingFactsItem;
+export default InterestingFactAdminItem;

@@ -18,8 +18,6 @@ interface ModalList {
     donates: ModalState;
     login: ModalState;
     artGallery: ModalState;
-    addFacts: ModalState;
-    editFacts: ModalState;
 }
 
 export default class ModalStore {
@@ -31,8 +29,6 @@ export default class ModalStore {
         donates: DefaultModalState,
         login: DefaultModalState,
         artGallery: DefaultModalState,
-        addFacts: DefaultModalState,
-        editFacts: DefaultModalState,
     };
 
     public isPageDimmed = false;
