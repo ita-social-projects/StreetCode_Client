@@ -16,7 +16,7 @@
         color: #891F16;
         line-height: 170px;
 
-        @media (max-width: 480px){
+        @media (max-width: 1024px){
             @include mut.with-font($font-weight: 500, $font-size: 165px);
             line-height: 140px;
         }
@@ -30,7 +30,7 @@
 
         margin: f.pxToRem(110px) 0 f.pxToRem(40px) 0;
         
-        @media (max-width: 480px){
+        @media (max-width: 1024px){
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             line-height: 26px;
             letter-spacing: 0.005em;
@@ -38,7 +38,7 @@
     }
 
     .redirect{
-        @media (max-width: 480px){
+        @media (max-width: 1024px){
             max-width: 340px;
             width: 100%;
         }     
@@ -54,12 +54,12 @@
         text-align: center;
        
         background: #E04031;     
-        border-radius: 10px;
+        @include mut.full-rounded(10px);
         
         padding: f.pxToRem(25px) f.pxToRem(26px);
         box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
         
-        @media (max-width: 480px){
+        @media (max-width: 1024px){
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
             line-height: 16px;      
             padding: f.pxToRem(15px) 0;

@@ -9,7 +9,7 @@
     background: #F5F5F5;
     width: 100vw;
     height: 100%;
-    padding-top: f.pxToRem(30px);
+    padding: f.pxToRem(30px) f.pxToRem(10px) f.pxToRem(10px) f.pxToRem(10px);
     
     .wrapper{
         max-width: f.pxToRem(1200px);
@@ -17,6 +17,13 @@
         margin: 0 auto;
     }
     
+    .link{
+        color: #891F16;
+        @media screen and (max-width: 1024px) {
+            text-decoration: underline !important;
+        } 
+    }
+
     section{
         margin-bottom: f.pxToRem(48px);
     
@@ -32,10 +39,12 @@
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             line-height: 27px;
             color: #1D1F23;
-        }
 
-        .content a{
-            color: #891F16;
+            @media screen and (max-width: 1024px) {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                line-height: 16px;
+                line-height: 134.19%;
+            } 
         }
 
         ul {
@@ -44,8 +53,8 @@
             li::before{
                 content: "";
                 display: inline-block;       
-                background-color: black;
-                border-radius: 50%;
+                background-color: black;        
+                @include mut.full-rounded(50%);
                 width: 4px;
                 height: 4px;
                 position: relative;
@@ -57,8 +66,7 @@
     
     .disclaimer{
         background-color: white;
-        border-radius: 20px;
-        
+        @include mut.full-rounded(20px);    
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
         line-height: 27px;
     
@@ -67,6 +75,12 @@
     
         padding: f.pxToRem(24px);
         margin: f.pxToRem(16px) 0 f.pxToRem(24px) 0;
+
+        @media screen and (max-width: 1024px) {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+            line-height: 16px;
+            line-height: 134.19%;
+        }        
     }
 }
 

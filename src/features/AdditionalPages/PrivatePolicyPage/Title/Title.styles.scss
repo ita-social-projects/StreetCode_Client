@@ -18,6 +18,11 @@
         line-height: 53px;
         color: #1D1F23;
         margin-top: f.pxToRem(24px);  
+
+        @media screen and (max-width: 1024px) {
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+            line-height: 42px;
+        }
     }
 
     .subTitle{
@@ -25,6 +30,11 @@
         line-height: 26px;
         color: #891F16;
 
-        margin-top: f.pxToRem(16px);                
+        margin-top: f.pxToRem(16px);    
+        
+        @media screen and (max-width: 1024px) {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+            line-height: 16px;
+        }
     }
 }

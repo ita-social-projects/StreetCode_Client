@@ -146,4 +146,7 @@ export const API_ROUTES = {
         UPDATE: 'coordinate/update',
         DELETE: 'coordinate/delete',
     },
+    EMAIL: {
+        SEND: 'email/send',
+    },
 };

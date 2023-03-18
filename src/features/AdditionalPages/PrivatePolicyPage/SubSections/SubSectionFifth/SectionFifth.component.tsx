@@ -103,7 +103,7 @@ const SectionFifth = () => (
             </ul>
                 Щоб звернутися до Організації з приводу використання файлів cookie, відправте повідомлення
                 електронною поштою на адресу&nbsp;
-            <a href="streetcodeua@gmail.com">streetcodeua@gmail.com</a>
+            <a className="link" href="streetcodeua@gmail.com">streetcodeua@gmail.com</a>
                 .
             <br />
                 Якщо користувач не включає використання файлів cookie або навмисно видаляє всі файли cookie
