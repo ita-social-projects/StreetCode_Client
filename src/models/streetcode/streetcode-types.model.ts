@@ -7,6 +7,7 @@ import Video from '@models/media/video.model';
 import StreetcodePartner from '@models/partners/partners.model';
 import { SourceLink } from '@models/sources/sources.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
+import { Streetcode } from '@models/streetcode/streetcode-types.model';
 import TimelineItem from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
@@ -56,10 +57,15 @@ export interface PersonStreetcode {
 
 export enum Stage {
     Draft,
-    Published
+    Published,
 }
 
 export enum StreetcodeType {
     Event,
-    Person
+    Person,
+}
+export interface StreetcodeShort {
+    id: number;
+    index: number;
+    title: string;
 }

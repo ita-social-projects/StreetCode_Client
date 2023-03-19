@@ -25,7 +25,7 @@ const MainBlockAdmin: React.FC = () => {
     const allTags = useAsync(() => TagsApi.getAll()).value;
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [tags, setTags] = useState< Tag[]>([]);
-    const [leftCharForInput, setLeftCharForInput] = useState<number>(teaserMaxCharCount);
+    const [inputedChar, setInputedChar] = useState<number>(0);
     const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
     const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
     const [popoverProps, setPopoverProps] = useState<{
@@ -76,8 +76,8 @@ const MainBlockAdmin: React.FC = () => {
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
         const newLinesCharCount = (text.match(/(\n|\r)/gm) || []).length;
-        const newLeftCharForInput = teaserMaxCharCount - text.length - newLinesCharCount * 49;
-        if (newLeftCharForInput < 0 || newLinesCharCount > 1) {
+        const newInputedChar = text.length + newLinesCharCount * 49;
+        if (newInputedChar > teaserMaxCharCount || newLinesCharCount > 1) {
             return;
         }
         setStreetcodeTeaser(text);
@@ -85,7 +85,7 @@ const MainBlockAdmin: React.FC = () => {
         if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * 49) {
             setMaxCharCount(teaserMaxCharCount - newLinesCharCount * 49);
         }
-        setLeftCharForInput(newLeftCharForInput);
+        setInputedChar(newInputedChar);
     };
 
     useEffect(() => {
@@ -253,7 +253,10 @@ const MainBlockAdmin: React.FC = () => {
                         value={streetcodeTeaser}
                     />
                     <div className="amount-left-char-textarea-teaser">
-                        <p className={leftCharForInput < 50 ? 'warning' : ''}>{leftCharForInput}</p>
+                        <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
+                            {inputedChar}
+/450
+                        </p>
                     </div>
                 </Form.Item>
 

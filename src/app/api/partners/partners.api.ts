@@ -2,6 +2,9 @@ import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Partner from '@models/partners/partners.model';
 
+// eslint-disable-next-line no-restricted-imports
+import { PartnerCreateUpdate } from '../../../models/partners/partners.model';
+
 const PartnersApi = {
     getById: (id: number) => Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`),
 
@@ -11,9 +14,9 @@ const PartnersApi = {
         return Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_BY_STREETCODE_ID}/${streetcodeId}`);
     },
 
-    create: (partner: Partner) => Agent.post<Partner>(`${API_ROUTES.PARTNERS.CREATE}`, partner),
+    create: (partner: PartnerCreateUpdate) => Agent.post<Partner>(`${API_ROUTES.PARTNERS.CREATE}`, partner),
 
-    update: (partner: Partner) => Agent.put<Partner>(`${API_ROUTES.PARTNERS.UPDATE}`, partner),
+    update: (partner: PartnerCreateUpdate) => Agent.put<Partner>(`${API_ROUTES.PARTNERS.UPDATE}`, partner),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.PARTNERS.DELETE}/${id}`),
 };
