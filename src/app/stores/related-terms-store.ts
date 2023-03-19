@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
+import { toast } from 'react-toastify';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 
 import { RelatedTerm } from '@/models/streetcode/text-contents.model';
@@ -44,7 +45,7 @@ export default class RelatedTermsStore {
             await relatedTermApi.create(newRelatedTerm);
             this.setRelatedTermItem(newRelatedTerm);
         } catch (error: unknown) {
-            console.log(error);
+            toast("Таке слово вже пов'язано!");
         }
     };
 
@@ -55,7 +56,7 @@ export default class RelatedTermsStore {
                 this.storage.delete(id);
             });
         } catch (error) {
-            console.log(error);
+            toast("Таке слово ні з чим не пов'язано. Його неможливо видалити");
         }
     };
 

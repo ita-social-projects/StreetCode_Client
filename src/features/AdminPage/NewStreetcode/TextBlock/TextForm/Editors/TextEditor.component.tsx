@@ -27,23 +27,16 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     const [selected, setSelected] = useState('');
 
     const handleAddRelatedWord = () => {
-        if (relatedTermStore.getRelatedTermsArray.some((rt) => rt.word === selected)) {
-            alert("Таке слово уже пов'язано!");
-            return;
-        }
         if (term !== null) {
             createRelatedTerm(selected, term?.id as number);
         }
     };
 
     const handleDeleteRelatedWord = () => {
-        if (!relatedTermStore.getRelatedTermsArray.some((rt) => rt.word === selected)) {
-            alert("Таке слово ні з чим не пов'язано. Його неможливо видалити");
-            return;
-        }
         if (selected !== null) {
             const index = relatedTermStore.getRelatedTermsArray.findIndex((rt) => rt.word === selected);
-            deleteRelatedTerm(index);
+            const element = relatedTermStore.getRelatedTermsArray.at(index);
+            deleteRelatedTerm(element?.id as number);
         }
     };
 
@@ -118,7 +111,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             </Tooltip>
             <Tooltip
                 title={selected !== '' && term !== undefined
-                    ? `${selected} з ${term?.title}` : 'Виділіть слово для видалення!'}
+                    ? `Видалити ${selected}` : 'Виділіть слово для видалення!'}
                 color={toolTipColor}
             >
                 <Button
