@@ -7,6 +7,7 @@ import SourcesModal from '@components/modals/Sources/SourcesModal.component';
 import AddTermModal from '@components/modals/Terms/AddTerm/AddTermModal.component';
 import DeleteTermModal from '@components/modals/Terms/DeleteTerm/DeleteTermModal.component';
 import EditTermModal from '@components/modals/Terms/EditTerm/EditTermModal.component';
+import DeleteStreetcodeModal from '../common/components/modals/DeleteStreetcode/DeleteStreetcodeModal.component';
 
 const ModalWrapper = () => (
     <>
@@ -19,6 +20,7 @@ const ModalWrapper = () => (
         <AddTermModal />
         <EditTermModal />
         <DeleteTermModal />
+        <DeleteStreetcodeModal />
     </>
 );
 
