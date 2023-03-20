@@ -26,3 +26,14 @@
 .blockHeadingText::first-letter {
     text-transform: uppercase;
 }
+
+@media screen and (max-width: 1024px) { 
+    .blockHeadingWrapper{
+        svg{
+            margin-left: -23px;
+        }
+    }
+    .blockHeadingText{
+        left: -95px;
+    }
+}

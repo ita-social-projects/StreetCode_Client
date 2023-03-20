@@ -36,3 +36,23 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .timeSpanContainer{
+    height: f.pxToRem(3px);
+  }
+
+  .timeSpanContainer .timelineYearTicksContainer 
+  .timelineYearTick > * {
+    bottom: f.pxToRem(20px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 12px);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .timeSpanContainer .timelineYearTicksContainer{
+    @include mut.rem-padded(0, 0px, 20px, 0px);
+  } 
+}
+
+

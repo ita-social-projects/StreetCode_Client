@@ -24,15 +24,13 @@
     justify-content: center;
     margin: auto;
     @include mut.sized(21px, 21px);
-    
   }
-  .swiper-slide{
-    visibility: hidden;
-
-  }
-  .swiper-slide-visible{
-    visibility: visible;
-  }
+  // .swiper-slide{
+  //   visibility: hidden;
+  // }
+  // .swiper-slide-visible{
+  //   visibility: visible;
+  // }
 }
 
 .tickContainer {
@@ -50,5 +48,33 @@
       bottom: f.pxToRem(60px) !important;
       font-size: f.pxToRem(40px) !important;
     }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .swiper-horizontal{
+    .swiper-slide{
+      .timelineYearTick{
+        @include mut.sized(10px, 10px);
+      }
+    }
+
+    .swiper-slide:not(.swiper-slide-active){
+      bottom: f.pxToRem(-3px);
+    }
+  }
+
+  .tickContainer.active .timelineYearTick{
+    @include mut.sized(20px, 20px);
+  }
+
+  .tickContainer.active .timelineYearTick span{
+    bottom: f.pxToRem(30px) !important;
+    font-size: f.pxToRem(20px) !important;
+    line-height: 26px;
+  }
+
+  .swiper-wrapper, .swiperClass{
+    height: 20px !important;
   }
 }
