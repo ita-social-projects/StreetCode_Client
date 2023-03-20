@@ -1,0 +1,12 @@
+@use "@sass/_utils.functions.scss" as f;
+.modal-item-image{
+    max-width: f.pxToRem(400px);
+    align-items: center;
+    margin: auto;
+    img{
+        width: f.pxToRem(400px);
+        max-width: f.pxToRem(400px);
+        display: block;
+        margin: auto;
+    }
+}

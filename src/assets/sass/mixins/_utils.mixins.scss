@@ -126,6 +126,14 @@
           f.pxToRem($bottom) f.pxToRem($left) !important;
 }
 // --------------------------Appearance----------------------------
+@mixin backdrop-filtering-blur($f-size){
+  -webkit-backdrop-filter: blur($f-size);
+  -o-backdrop-filter: blur($f-size);
+  -moz-backdrop-filter: blur($f-size);
+
+  backdrop-filter: blur($f-size);
+}
+
 @mixin outlined($b-size: 2px, $color: red) {
   outline: $b-size solid $color !important;
 }

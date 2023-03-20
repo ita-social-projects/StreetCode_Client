@@ -1,19 +1,28 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import partnersApi from '@api/partners/partners.api';
-import Partner from '@models/partners/partners.model';
+import Partner, { PartnerCreateUpdate } from '@models/partners/partners.model';
 
 export default class PartnersStore {
     public PartnerMap = new Map<number, Partner>();
 
     public constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {
+            PartnerMap: observable,
+            fetchPartnersByStreetcodeId: action,
+            fetchPartnersAll: action,
+            createPartner: action,
+            updatePartner: action,
+            deletePartner: action,
+            setInternalMap: action,
+            setItem: action,
+        });
     }
 
-    private set setInternalMap(partners: Partner[]) {
+    public setInternalMap(partners: Partner[]) {
         partners.forEach(this.setItem);
     }
 
-    private setItem = (partner: Partner) => {
+    public setItem = (partner: Partner) => {
         this.PartnerMap.set(partner.id, partner);
     };
 
@@ -23,31 +32,33 @@ export default class PartnersStore {
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {
-            this.setInternalMap = await partnersApi.getByStreetcodeId(streetcodeId);
+            this.setInternalMap(await partnersApi.getByStreetcodeId(streetcodeId));
         } catch (error: unknown) {
             console.log(error);
         }
     };
 
-    public createPartner = async (partner: Partner) => {
+    public fetchPartnersAll = async () => {
         try {
-            await partnersApi.create(partner);
-            this.setItem(partner);
+            this.setInternalMap(await partnersApi.getAll());
         } catch (error: unknown) {
             console.log(error);
         }
     };
 
-    public updatePartner = async (partner: Partner) => {
+    public createPartner = async (partner: PartnerCreateUpdate) => {
         try {
-            await partnersApi.update(partner);
-            runInAction(() => {
-                const updatedPartner = {
-                    ...this.PartnerMap.get(partner.id),
-                    ...partner,
-                };
-                this.setItem(updatedPartner as Partner);
-            });
+            const newPartner = await partnersApi.create(partner);
+            this.setItem(newPartner);
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
+    public updatePartner = async (partner: PartnerCreateUpdate) => {
+        try {
+            const updated = await partnersApi.update(partner);
+            this.setItem(updated);
         } catch (error: unknown) {
             console.log(error);
         }

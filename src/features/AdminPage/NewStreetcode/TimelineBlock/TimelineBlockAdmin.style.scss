@@ -1,0 +1,43 @@
+@use "@sass/mixins/_utils.mixins.scss" as ut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+.timeline-admin-container{
+    margin-bottom: 100px;
+    width:80% ;
+    .timeline-admin-item{
+        width: f.pxToRem(150px);
+        height: f.pxToRem(50px);
+        @include ut.flex-centered();
+
+        @include ut.full-rounded(11px);
+        @include ut.rem-padded(8px, 10px, 8px, 10px);
+
+        border: 2px solid c.$accented-red-color;
+        @include ut.with-font($font-weight: bold, $font-size: 15px);
+    }
+    .timeline-admin-item-short-timeline{
+        color: c.$accented-red-color;
+        &:hover {
+            color: c.$dark-red-color;
+            border-color: c.$dark-red-color;
+        }
+    }
+    .timeline-admin-add-new{
+        color: #FFF;
+        background-color: c.$accented-red-color;
+        border: 2px solid c.$dark-red-color;
+        &:hover{
+            background-color: c.$dark-red-color;
+        }
+    }
+    .timeline-admin-new-items-container{
+        margin-top: 10px;
+        width: f.pxToRem(750px);
+        @include ut.flexed(row,start,left, wrap,5px);
+        align-content: start;
+        height:f.pxToRem(150px) ;
+        max-height:f.pxToRem(150px) ;
+        overflow: auto;
+    }
+}

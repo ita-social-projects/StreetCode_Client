@@ -1,6 +1,9 @@
 // eslint-disable-next-line import/prefer-default-export
 export const API_ROUTES = {
     BASE: '/',
+    HISTORICAL_CONTEXT: {
+        GET_ALL: 'historicalContext/getAll',
+    },
     FACTS: {
         GET_ALL: 'fact/getAll',
         GET: 'fact/getById',
@@ -130,6 +133,7 @@ export const API_ROUTES = {
         CREATE: 'streetcode/create',
         UPDATE: 'streetcode/update',
         DELETE: 'streetcode/delete',
+        EXIST_WITH_INDEX: 'streetcode/existWithIndex',
     },
     SUBTITLES: {
         GET_ALL: 'subtitle/getAll',
