@@ -7,118 +7,87 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .artGallerySliderContainer .sliderClass .slick-slider {
-    height: pxToRem(460px);
+    height: pxToRem(400px);
 }
-.artGalleryWrapper {
-  // Dont touch
-    @include mut.sized(100%, 300px);
-  //-----------  
+.artGalleryWrapperAdmin {
+     @include mut.sized(100%, 230px);
 
     @include wr.main-page-block-wrapper();
     margin-bottom: pxToRem(390px);
 
-    .artGalleryContainer {
-        @include mut.rem-margined($top: 150px);
-        @include mut.sized(100%, 400px);
-        margin-bottom: pxToRem(290px);
+    .artGalleryContainerAdmin {
+        @include mut.rem-margined($top: 100px);
+        @include mut.sized(100%, 264px);
+        margin-bottom: pxToRem(191px);
 
-        .artGalleryContentContainer {
+        .artGalleryContentContainerAdmin {
             @include mut.flex-centered();
         }  
     }
-    .artGallerySliderContainer {
-        @include mut.sized(1230px, 560px);
+    .artGallerySliderContainerAdmin {
+        @include mut.sized(812px, 370px);
     }
 }
 
 // -------------------- ArtGallerySlide -------------------- 
 
-.slideArtGallery {
-  @include mut.flex-centered($direction: column);
-  flex-wrap: wrap;
-  height: pxToRem(560px);
-  
-  &.width-1 {
-    width: pxToRem(810px);
-  }
-  
-  &.width-2 {
-    width: pxToRem(1210px);
-  }
-
-}
-
-.slideArtGalleryContainer {
+.slideArtGalleryContainerAdmin {
   @include mut.flex-centered();
   margin-top: pxToRem(20px);
+  
+  .slideArtGallery {
+    @include mut.flex-centered($direction: column);
+    flex-wrap: wrap;
+    height: pxToRem(370px); //560
+    
+    &.width-1 {
+      width: pxToRem(535px); //810
+    }
+    
+    &.width-2 {
+      width: pxToRem(800px);//1210
+    }
+    
+  }
 }
 
 // -------------------- ArtGallerySlideItem -------------------- 
 
 
-.slideArt {
+.slideArtAdmin {
   flex: pxToRem(80px);
-  // max-width: 536px ;
 
-  // width: 40%;
-  // height: pxToRem(560px);
+  .small{ 
+    width: 250px; //380
+    height: 165px;//250
+
+  }
+  .medium{
+    width : 250px; //380
+    height: 353px;//535
+
+  }
+  .large{
+    width: 531px;//805
+    height: 353px;//535
+  }
 
 }
 
-.artImageWrapper {
-// @include mut.sized(100%, 113px);
-
+.artImageWrapperAdmin {
+  
   position: relative;  
   &:hover {
     cursor: pointer;
-    .imgDataFull {
-      visibility: visible;
-      opacity: 1;
-    }
   }
-  
-  .imgData {
-    @include mut.sized(100%, 113px);
-    @include mut.positioned-as($position: absolute, $bottom: 0);
-    @include mut.colored($color: c.$pure-white-color, $bg-color: rgba(0, 0, 0, 0.5));
+  .imgDataFull {
+    display: none;
     visibility: hidden;
     opacity: 0;
-    @include vnd.vendored(transition, 'all .5s ease'); 
-    @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
-    padding: pxToRem(11px) pxToRem(21px);
-  } 
-  
-  .imgTitle {
-    @include mut.with-font();
-    @include mut.rem-padded($bottom: 5px);
-    @include mut.truncated();
   }
   
-  .imgDescription {
-    @include mut.with-font($font-size: 15px);
-    @include mut.truncated();
-  }
 
   .imgImg{
-    // @include mut.sized(80%, 30%);
-    // max-height: 536px ;
-    // max-height: 800px;
-
-    // .one{
-    //   // width: 380px;
-    //   max-width: 180px !important;
-    //   height: 250px;
-  
-    // }
-    // .two{
-    //     width : 200px;
-    //     height: 535px;
-  
-    // }
-    // .four{
-    //    width: 806px;
-    //    height: 536px;
-    // }
     border-radius: pxToRem(30px);
   }
 }

@@ -1,4 +1,3 @@
-// import './ArtGalleryAdminBlock.styles.scss';
 import './ArtGalleryAdminStyles.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -20,12 +19,22 @@ const ArtGalleryAdminBlock = () => {
 
     const streetcodeId = useRouteId();
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
+    const isAdminPage = true;
 
     useAsync(
         () => fetchStreetcodeArtsByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
 
+    function setOffset(width : number, height : number) : number {
+        if (width <= height) {
+            return 2;
+        } 
+        else if (width > height && height <= 300) {
+            return 1;
+        }
+        return 4;
+    }
     useEffect(() => {
         const newMap: IndexedArt[] = [];
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
@@ -37,7 +46,7 @@ const ArtGalleryAdminBlock = () => {
                     description,
                     imageHref: image.url.href,
                     title: image.url.title,
-                    offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
+                    offset: setOffset(width, height),
                 } as IndexedArt);
             } catch (error: unknown) {
                 console.log(`Error: cannot parse the image url: ${image.url.href}`);
@@ -73,7 +82,7 @@ const ArtGalleryAdminBlock = () => {
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} />,
+                <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
             );
             artsData = [];
         }
@@ -81,15 +90,15 @@ const ArtGalleryAdminBlock = () => {
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
-            <ArtGallerySlide artGalleryList={artsData} />,
+            <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
         );
     }
 
     return (
-        <div className="artGalleryWrapper">
-            <div className="artGalleryContainer">
-                <div className="artGalleryContentContainer">
-                    <div className="artGallerySliderContainer">
+        <div className="artGalleryWrapperAdmin">
+            <div className="artGalleryContainerAdmin">
+                <div className="artGalleryContentContainerAdmin">
+                    <div className="artGallerySliderContainerAdmin">
                         <SlickSlider
                             infinite={false}
                             swipe={false}

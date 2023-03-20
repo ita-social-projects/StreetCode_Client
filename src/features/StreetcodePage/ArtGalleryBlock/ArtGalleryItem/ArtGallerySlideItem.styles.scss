@@ -6,19 +6,18 @@
 
 .slideArt {
   flex: pxToRem(80px);
-  // height: pxToRem(560px);
 
-  .one{ 
+  .small{ 
     width: 380px;
     height: 250px;
 
   }
-  .two{
+  .medium{
     width : 380px;
     height: 535px;
 
   }
-  .four{
+  .large{
     width: 806px;
     height: 536px;
   }

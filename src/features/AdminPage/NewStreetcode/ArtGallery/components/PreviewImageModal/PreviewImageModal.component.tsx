@@ -2,7 +2,7 @@ import './PreviewImageModal.styles.scss';
 
 import React, { useEffect, useState } from 'react';
 
-import { Modal, UploadFile } from 'antd';
+import { Modal, UploadFile, Button } from 'antd';
 import { RcFile } from 'antd/es/upload';
 
 const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
@@ -41,7 +41,7 @@ const PreviewFileModal:React.FC<{
                     <input />
                     <p>Description</p>
                     <textarea />
-
+                    <button className="saveButton">Зберегти</button>
                 </div>
             </Modal>
         );
