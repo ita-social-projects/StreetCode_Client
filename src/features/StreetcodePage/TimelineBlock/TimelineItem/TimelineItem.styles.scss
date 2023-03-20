@@ -44,3 +44,32 @@
   @include mut.with-font($font-weight: 600);
   color: c.$darker-gray-color;
 }
+
+@media screen and (max-width: 1024px) {
+  .timelineItem{
+    @include mut.sized(300px, 190px);
+
+    .timelineItemContent{
+      margin: f.pxToRem(13px);
+
+      .timelineItemMetadata{
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
+      }
+      .timelineItemTitle{
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+        line-height: 16px;
+        margin: f.pxToRem(5px) 0;
+      }
+
+      .timelineItemDescription{
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
+        line-height: 14px;
+      }
+    }
+
+    .historicalContext{
+      @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
+      line-height: 16px;
+    }
+  }
+}

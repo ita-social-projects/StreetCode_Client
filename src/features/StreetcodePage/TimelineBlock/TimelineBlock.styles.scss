@@ -13,7 +13,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
   .sliderClass {
     @include mut.sized(100%, 380px);
-    @include mut.rem-margined($bottom: 25px, $top: 30px /*30px*/);
+    @include mut.rem-margined($bottom: 30px, $top: 30px /*30px*/);
   }
 
   .slick-slider {
@@ -34,7 +34,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       flex-shrink: 0;
 
       @include mut.bg-image($timelineSquareImg);
-      background-position-y: f.pxToRem(-100px);
+      
 
       &:nth-child(2n + 1) {
         @include mut.bg-image($timelineLvivImg);
@@ -51,6 +51,23 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
       .timelineItemContent {
         margin-top: calc(1.5rem - 4px);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .timelineContentContainer {
+
+    .sliderClass{
+      @include mut.sized(100%);
+      @include mut.rem-margined($bottom: 10px, $top: 10px /*10px*/);
+    }
+
+    .slick-track {
+      @include mut.flexed($align-items: center, $gap: 14px);
+      .slick-slide{
+        @include mut.sized(300px, 190px)
       }
     }
   }
