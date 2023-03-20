@@ -9,7 +9,7 @@ const TermsApi = {
 
     create: (term: Term) => Agent.post<Term>(`${API_ROUTES.TERMS.CREATE}`, term),
 
-    update: (term: Term) => Agent.put<Term>(`${API_ROUTES.TERMS.UPDATE}`, term),
+    update: (id: number, term: Term) => Agent.put<Term>(`${API_ROUTES.TERMS.UPDATE}/${id}`, term),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.TERMS.DELETE}/${id}`),
 };

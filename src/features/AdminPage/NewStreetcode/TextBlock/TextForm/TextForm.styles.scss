@@ -1,0 +1,33 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+
+.textForm{
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    
+    h3{
+        margin: f.pxToRem(7px) 0;
+    }
+
+    h4{
+        margin: f.pxToRem(5px) 0;
+    }
+
+    p{
+        color: black;
+        text-align: right;
+        font-size: small;
+        font-family: ft.$roboto-font;
+    }
+
+    .smallerInput{
+        width: 65%;
+    }
+
+    .ant-input-show-count-suffix{
+        position: relative;
+    }
+
+}

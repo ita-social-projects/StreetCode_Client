@@ -18,6 +18,9 @@ interface ModalList {
     donates: ModalState;
     login: ModalState;
     artGallery: ModalState;
+    addTerm: ModalState;
+    editTerm: ModalState;
+    deleteTerm: ModalState;
     deleteStreetcode: ModalState;
 }
 
@@ -30,6 +33,9 @@ export default class ModalStore {
         donates: DefaultModalState,
         login: DefaultModalState,
         artGallery: DefaultModalState,
+        addTerm: DefaultModalState,
+        editTerm: DefaultModalState,
+        deleteTerm: DefaultModalState,
         deleteStreetcode: DefaultModalState,
     };
 
