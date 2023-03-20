@@ -19,6 +19,10 @@ interface ModalList {
     login: ModalState;
     artGallery: ModalState;
     tagsList: ModalState;
+    addTerm: ModalState;
+    editTerm: ModalState;
+    deleteTerm: ModalState;
+    deleteStreetcode: ModalState;
 }
 
 export default class ModalStore {
@@ -31,6 +35,10 @@ export default class ModalStore {
         login: DefaultModalState,
         artGallery: DefaultModalState,
         tagsList: DefaultModalState,
+        addTerm: DefaultModalState,
+        editTerm: DefaultModalState,
+        deleteTerm: DefaultModalState,
+        deleteStreetcode: DefaultModalState,
     };
 
     public isPageDimmed = false;

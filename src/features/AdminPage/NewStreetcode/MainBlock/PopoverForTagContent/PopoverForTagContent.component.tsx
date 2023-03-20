@@ -9,7 +9,7 @@ const PopoverForTagContent:React.FC<{ screenWidth:number, tags:TagVisible[] }> =
     console.log(screenWidth);
     return (
         <div className={screenWidth < 700 ? 'mobile-version' : 'laptop-version'}>
-            <TagList tags={tags.filter((t) => t.visible).map((t) => t.title)} />
+            <TagList tags={tags.filter((t) => t.visible)} />
         </div>
 
     );

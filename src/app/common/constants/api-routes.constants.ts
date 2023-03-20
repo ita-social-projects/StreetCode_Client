@@ -37,6 +37,13 @@ export const API_ROUTES = {
         UPDATE: 'term/update',
         DELETE: 'term/delete',
     },
+    RELATED_TERMS: {
+        GET_ALL_BY_TERM_ID: 'relatedTerm/getByTermId',
+        CREATE: 'relatedTerm/create',
+        DELETE: 'relatedTerm/delete',
+        UPDATE: 'relatedTerm/update',
+        GET_ALL: 'relatedTerm/getAll',
+    },
     TEXTS: {
         GET_ALL: 'text/getAll',
         CREATE: 'text/create',

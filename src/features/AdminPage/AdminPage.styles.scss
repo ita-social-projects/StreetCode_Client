@@ -1,15 +1,14 @@
-@use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
-
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 .adminPageContainer {
     width: 100vh;
-    max-width: pxToRem(1600px);
+    max-width: pxToRem(1800px);
     @include mut.with-font();
 }
 
 .MainBlockContainer {
-    margin-top: pxToRem(82px);
 
     .ant-switch-checked {
         background-color: c.$dark-red-color;
@@ -19,7 +18,6 @@
         margin: 0 5px;
     }
 }
-
 
 .adminPageContainer {
     @include mut.sized(100%);

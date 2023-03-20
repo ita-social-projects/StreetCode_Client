@@ -5,7 +5,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import {
     Button,
-    Form, Input, InputNumber, InputRef, message, Popover, Select, Switch,
+    Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
@@ -20,7 +20,7 @@ import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.co
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 
-const MainBlockAdmin: React.FC = () => {
+const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
     const teaserMaxCharCount = 450;
     const allTags = useAsync(() => TagsApi.getAll()).value;
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
@@ -36,8 +36,6 @@ const MainBlockAdmin: React.FC = () => {
     const [streetcodeTeaser, setStreetcodeTeaser] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
-
-    const [form] = Form.useForm();
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
@@ -117,152 +115,137 @@ const MainBlockAdmin: React.FC = () => {
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
     return (
-        <Form
-            form={form}
-            layout="vertical"
-            className="mainblock-add-form"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <>
+        <div className="mainblock-add-form">
                 Постать
-                <Switch className="person-event-switch" onChange={onSwitchChange} />
+            <Switch className="person-event-switch" onChange={onSwitchChange} />
                 Подія
 
-                <div className="streetcode-number-container">
-                    <Form.Item
-                        label="Номер стріткоду"
-                        rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
-                        name="streetcodeNumber"
-                    >
-                        <InputNumber min={0} max={1000} />
+            <div className="streetcode-number-container">
+                <Form.Item
+                    label="Номер стріткоду"
+                    rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                    name="streetcodeNumber"
+                >
+                    <InputNumber min={0} max={1000} />
+                </Form.Item>
+                <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+            </div>
+
+            {streetcodeType === 'people' ? (
+                <Input.Group
+                    compact
+                    className="maincard-item people-title-group"
+                >
+                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
+                        <Input
+                            ref={surname}
+                            onChange={onNameSurnameChange}
+                        />
                     </Form.Item>
-                    <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
-                </div>
+                    <Form.Item label="Ім'я" name="name" className="people-title-input">
+                        <Input ref={name} onChange={onNameSurnameChange} />
+                    </Form.Item>
+                </Input.Group>
+            )
+                : ('')}
 
-                {streetcodeType === 'people' ? (
-                    <Input.Group
-                        compact
-                        className="maincard-item people-title-group"
+            <Form.Item
+                name="title"
+                label="Назва стріткоду"
+                className="maincard-item"
+                rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item name="alias" label="Короткий опис" className="maincard-item">
+                <Input />
+            </Form.Item>
+            <Form.Item
+                label="URL"
+                name="streetcodeUrlName"
+                className="maincard-item"
+                rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
+            >
+                <Input />
+            </Form.Item>
+
+            <DatePickerPart
+                form={form}
+                setFirstDate={(newDate:Dayjs | null) => {
+                    firstDate.current = newDate;
+                }}
+                setSecondDate={(newDate:Dayjs | null) => {
+                    secondDate.current = newDate;
+                }}
+            />
+
+            <p>Теги:</p>
+            <div className="tags-block">
+                <div className="tags-block-tagitems">
+                    <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+
+                    <Select
+                        className="tags-select-input"
+                        mode="tags"
+                        onSelect={onSelectTag}
+                        onDeselect={onDeselectTag}
                     >
-                        <Form.Item name="surname" label="Прізвище" className="people-title-input">
-                            <Input
-                                ref={surname}
-                                onChange={onNameSurnameChange}
+                        {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
+                    </Select>
+                </div>
+                <div className="device-sizes-list">
+                    <p>Розширення</p>
+                    <Popover
+                        content={(
+                            <PopoverForTagContent
+                                screenWidth={popoverProps.screenWidth}
+                                tags={selectedTags}
                             />
-                        </Form.Item>
-                        <Form.Item label="Ім'я" name="name" className="people-title-input">
-                            <Input ref={name} onChange={onNameSurnameChange} />
-                        </Form.Item>
-                    </Input.Group>
-                )
-                    : ('')}
-
-                <Form.Item
-                    name="title"
-                    label="Назва стріткоду"
-                    className="maincard-item"
-                    rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item name="alias" label="Короткий опис" className="maincard-item">
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    label="URL"
-                    name="streetcodeUrlName"
-                    className="maincard-item"
-                    rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
-                >
-                    <Input />
-                </Form.Item>
-
-                <DatePickerPart
-                    form={form}
-                    setFirstDate={(newDate:Dayjs | null) => {
-                        firstDate.current = newDate;
-                    }}
-                    setSecondDate={(newDate:Dayjs | null) => {
-                        secondDate.current = newDate;
-                    }}
-                />
-
-                <p>Теги:</p>
-                <div className="tags-block">
-                    <div className="tags-block-tagitems">
-                        <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-
-                        <Select
-                            className="tags-select-input"
-                            mode="tags"
-                            onSelect={onSelectTag}
-                            onDeselect={onDeselectTag}
+                        )}
+                        title=""
+                        trigger="hover"
+                        overlayStyle={{ width: popoverProps.width }}
+                    >
+                        <p
+                            className="device-size"
+                            onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
                         >
-                            {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
-                        </Select>
-                    </div>
-                    <div className="device-sizes-list">
-                        <p>Розширення</p>
-                        <Popover
-                            content={(
-                                <PopoverForTagContent
-                                    screenWidth={popoverProps.screenWidth}
-                                    tags={selectedTags}
-                                />
-                            )}
-                            title=""
-                            trigger="hover"
-                            overlayStyle={{ width: popoverProps.width }}
-                        >
-                            <p
-                                className="device-size"
-                                onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
-                            >
                                 360
-                            </p>
-                            <p
-                                className="device-size"
-                                onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
-                            >
+                        </p>
+                        <p
+                            className="device-size"
+                            onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
+                        >
                                 1600
-                            </p>
-                        </Popover>
-                    </div>
-
+                        </p>
+                    </Popover>
                 </div>
 
-                <Form.Item
-                    className="maincard-item teaser-form-item"
-                    label="Тизер"
-                    rules={[{ required: true, message: 'Введіть тизер' }]}
-                >
-                    <Input.TextArea
-                        onChange={onTextAreaTeaserChange}
-                        className="textarea-teaser"
-                        maxLength={maxCharCount}
-                        value={streetcodeTeaser}
-                    />
-                    <div className="amount-left-char-textarea-teaser">
-                        <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
-                            {inputedChar}
-/450
-                        </p>
-                    </div>
-                </Form.Item>
+            </div>
 
-                <FileInputsPart />
-            </>
-        </Form>
+            <Form.Item
+                className="maincard-item teaser-form-item"
+                label="Тизер"
+                rules={[{ required: true, message: 'Введіть тизер' }]}
+            >
+                <Input.TextArea
+                    onChange={onTextAreaTeaserChange}
+                    className="textarea-teaser"
+                    maxLength={maxCharCount}
+                    value={streetcodeTeaser}
+                />
+                <div className="amount-left-char-textarea-teaser">
+                    <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
+                        {inputedChar}
+/450
+                    </p>
+                </div>
+            </Form.Item>
+
+            <FileInputsPart />
+        </div>
     );
 };
 export default MainBlockAdmin;
