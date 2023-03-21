@@ -23,6 +23,12 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
 
     const windowsize = useWindowSize();
 
+    const handleClick = () => {
+        if (windowsize.width > 1024) {
+            setModal('relatedFigures', streetcodeId, true)
+        }
+    }
+
     useAsync(
         () => Promise.all([
             fetchRelatedFiguresByStreetcodeId(streetcodeId),
@@ -41,6 +47,27 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         />
     ));
 
+    const sliderPropsDesktop = {
+        className: "heightContainer",
+        infinite: true,
+        swipe: false,
+        dots: false,
+        slidesToShow: 4,
+        swipeOnClick: false
+    }; 
+    const sliderPropsTablet = {
+        className: "heightContainer",
+        infinite: false,
+        swipe: true,
+        dots: true,
+        swipeOnClick: false,
+        variableWidth: true
+    };
+    const sliderPropsMobile = {
+        sliderPropsTablet,
+        rows: 2
+    };
+
     return (
         <div className={`relatedFiguresWrapper
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
@@ -49,34 +76,25 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 <div className="headingWrapper">
                     <BlockHeading headingText="Зв'язки історії" />
                     <div className="moreInfo">
-                        <p onClick={() => setModal('relatedFigures', streetcodeId, true)}>
+                        <p onClick={handleClick}>
                             Дивитися всіх
                         </p>
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
                 {windowsize.width > 1024 ? 
-                    <BlockSlider
-                        className="heightContainer"
-                        infinite={true}
-                        slidesToShow={4}
-                        swipe={false}
-                        dots={false}
-                        swipeOnClick={false}
-                    >   
+                    <BlockSlider {...sliderPropsDesktop}>   
+                        {sliderItems}
+                    </BlockSlider>
+                    : windowsize.width > 480 ?
+                    <BlockSlider {...sliderPropsTablet}>
                         {sliderItems}
                     </BlockSlider>
                     :
-                    <BlockSlider
-                        className="heightContainer"
-                        infinite={false}
-                        swipe={true}
-                        dots={true}
-                        swipeOnClick={false}
-                        variableWidth={true}
-                    >
+                    <BlockSlider {...sliderPropsMobile}>
                         {sliderItems}
-                    </BlockSlider>}
+                    </BlockSlider>
+                    }
                 </div>
             </div>
         </div>
