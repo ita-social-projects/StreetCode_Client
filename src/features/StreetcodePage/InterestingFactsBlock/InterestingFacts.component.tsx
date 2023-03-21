@@ -37,7 +37,7 @@ const InterestingFactsComponent = () => {
                                 dots={getFactArray.length > 3}
                                 className="heightContainer"
                                 swipeOnClick
-                                swipe={false}
+                                swipe
                                 centerMode
                                 centerPadding="-12px"
                             >
