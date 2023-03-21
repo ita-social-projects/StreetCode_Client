@@ -17,10 +17,10 @@ const InterestingFactsComponent = () => {
         [streetcodeId],
     );
     const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
-    const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
-    getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
+    // const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
+    // getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
     return (
-        <div className="interestingFactsWrapper">
+        <div className={`interestingFactsWrapper ${getFactArray.length === 1 ? 'single' : ''}`}>
             <div className="interestingFactsContainer">
                 <BlockHeading headingText="Wow-факти" />
                 <div className="interestingFactsSliderContainer">

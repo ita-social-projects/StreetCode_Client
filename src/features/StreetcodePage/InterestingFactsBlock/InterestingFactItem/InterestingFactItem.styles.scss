@@ -74,7 +74,6 @@
 @media screen and (max-width: 480px) { 
 
   .interestingFactSlide {
-
     @include mut.sized(290px, 312px);
     @include mut.full-rounded(20px);
 
