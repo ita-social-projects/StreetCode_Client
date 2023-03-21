@@ -33,8 +33,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
         <>
             <Link
                 className={`relatedFigureSlide 
-                ${hoverable && tags.length > 1 ? 'hoverable' : ''} 
-                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`} // 1 => 0
+                ${hoverable && tags.length > 1 && windowsize.width > 1024 ? 'hoverable' : ''} 
+                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`}
 
                 style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
                 to={`../streetcode/${id}`}

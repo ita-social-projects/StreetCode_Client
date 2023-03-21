@@ -6,7 +6,7 @@
 $moreInfo-width: 150px;
 
 .relatedFiguresWrapper {
-    @include mut.sized($height: 575px); //needs refactoring
+    @include mut.sized($height: 700px); 
     @include wr.main-page-block-wrapper();
     @include mut.rem-margined($bottom: 50px, $top: 170px);
 }
@@ -21,7 +21,7 @@ $moreInfo-width: 150px;
     }
 
     .moreInfo {
-        display: none;
+        color: c.$pure-white-color;
     }
 }
 
@@ -38,6 +38,11 @@ $moreInfo-width: 150px;
 .relatedFiguresContainer {
     @include mut.sized($width: 90%, $height: 100%);
     @include mut.flexed($direction: column, $align-items: center);
+
+    @media screen and (max-width: 1024px) {
+        @include mut.sized($width: 90%, $height: 100%);
+        @include mut.flexed($direction: column, $align-items: center);
+    }
 }
 
 .moreInfo {
@@ -72,5 +77,33 @@ $moreInfo-width: 150px;
 
     .slick-track {
         @include mut.flexed($justify-content: center, $align-items: flex-start, $gap: 28px);
+    }
+}
+
+/*@media screen and (max-width: 480px) {
+    .relatedFiguresSliderContainer {
+        //@include mut.sized($width: 390px);
+        width: 90vw !important;
+    }
+}*/
+
+@media screen and (max-width: 1024px) {
+    .relatedFiguresWrapper {
+        @include mut.sized($height: 400px); 
+    }
+
+    .relatedFiguresSliderContainer {
+        width: 95vw !important;
+
+        .slick-track {
+            @include mut.flexed($align-items: flex-start, $gap: 10px);
+        }
+        .slick-list {
+            @include mut.rem-padded($left: 3px);
+        }
+        .slick-arrow {
+            display: none;
+            visibility: hidden;
+        }
     }
 }

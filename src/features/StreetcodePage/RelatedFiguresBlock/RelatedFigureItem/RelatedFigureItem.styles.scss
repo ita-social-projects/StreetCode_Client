@@ -87,8 +87,7 @@
         p {
             @include mut.sized($height: 14px);
             text-align: center;
-            //line-height: 135.69%;
-            //line-height: pxToRem(18px);
+            line-height: 135.69%;
 
             @include mut.with-font($font-size: 10px,$font-weight: 500);
             line-height: pxToRem(13.6px);
@@ -126,11 +125,8 @@
     display: none !important;
 }
 
-
-
 @media screen and (max-width: 1024px) {
     .relatedFigureSlide {
         @include mut.sized($width: 165px, $height: 165px);
     }
-    
 }

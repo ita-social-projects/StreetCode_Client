@@ -7,6 +7,7 @@ import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
@@ -19,6 +20,8 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { fetchTagByStreetcodeId } = tagsStore;
 
     const streetcodeId = useRouteId();
+
+    const windowsize = useWindowSize();
 
     useAsync(
         () => Promise.all([
@@ -52,6 +55,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
+                {windowsize.width > 1024 ? 
                     <BlockSlider
                         className="heightContainer"
                         infinite={true}
@@ -59,9 +63,20 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                         swipe={false}
                         dots={false}
                         swipeOnClick={false}
-                    >
+                    >   
                         {sliderItems}
                     </BlockSlider>
+                    :
+                    <BlockSlider
+                        className="heightContainer"
+                        infinite={false}
+                        swipe={true}
+                        dots={true}
+                        swipeOnClick={false}
+                        variableWidth={true}
+                    >
+                        {sliderItems}
+                    </BlockSlider>}
                 </div>
             </div>
         </div>
