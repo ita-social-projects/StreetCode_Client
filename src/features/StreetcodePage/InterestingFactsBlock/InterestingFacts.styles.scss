@@ -72,3 +72,18 @@
     }
 }
 
+@media screen and (max-width: 480px){
+    .interestingFactsSliderContainer {
+        @include mut.sized(915px, 660px);
+    
+
+    }
+    .interestingFactSlide{
+        .slideImage {
+            @include mut.sized($height: 45%);
+            img {
+                @include mut.sized($width: 100%);
+            }
+        }
+    }
+}
