@@ -72,27 +72,26 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     return (
         <div className="card">
             <div className="leftSider">
-                <div className="leftSiderContentContainer">
-                    <div className="leftSiderContent">
-                        <BlockSlider
-                            arrows={false}
-                            slidesToShow={1}
-                            swipeOnClick
-                            infinite
-                            draggable={false}
-                        >
-                            {/* uncomment this to get images brom db, but make sure there are correct urls */}
-                            {/* {images?.map(({ url: { href }, alt }) => (
+                <div className="leftSiderContent">
+                    <BlockSlider
+                        arrows={false}
+                        slidesToShow={1}
+                        swipeOnClick
+                        infinite
+                        draggable={false}
+                    >
+                        {/* uncomment this to get images brom db, but make sure there are correct urls */}
+                        {/* {images?.map(({ url: { href }, alt }) => (
                                 <img
                                     src={href}
                                     className="streetcodeImg"
                                     alt={alt}
                                 />
                             ))} */}
-                            {cSlides}
-                        </BlockSlider>
-                    </div>
+                        {cSlides}
+                    </BlockSlider>
                 </div>
+
             </div>
             <div className="rightSider">
                 <div className="headerContainer">
@@ -115,9 +114,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
-                        <p className="teaserBlock">
-                            {streetcode?.teaser}
-                        </p>
+                        <div className="teaserBlockContainer">
+                            <p className="teaserBlock">
+                                {/*  {streetcode?.teaser} */}
+                           Батько української історії та найпалкіший її дослідник. Автор понад 2000 праць, серед яких монументальні 10 томів «Історії України-Руси», писані 38 років. Політик, творець живої історії як Голова Української Центральної Ради з її чотирма Універсалами. Громадський діяч та академік з неабиякою працездатністю. Видатний організатор української науки, видавець. Натхненник українського національного, захисник та поборник ідеї самостійної та незалежної, для якого «іншої України» не було.
+                           Тара́с Григо́рович Шевче́нко (25 лютого (9 березня) 1814, с. Моринці, Київська губернія, Російська імперія (нині Звенигородський район, Черкаська область, Україна) — 26 лютого (10 березня) 1861, Санкт-Петербург, Російська імперія) — український поет, прозаїк, мислитель, живописець, гравер, етнограф, громадський діяч. Національний герой і символ України. Діяч українського національного руху, член Кирило-Мефодіївського братства. Академік Імператорської академії мистецтв
+                            </p>
+                        </div>
+
                         <div className="cardFooter">
                             {audio?.url?.href
                                 ? (

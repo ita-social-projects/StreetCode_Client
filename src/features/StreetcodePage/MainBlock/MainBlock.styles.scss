@@ -21,7 +21,28 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 }
 
 .mainContent {
-  @include mut.sized(1300px, 800px);
+  width: f.pxToRem(1300px);
   @include mut.flex-centered();
   margin-top: f.pxToRem(34px);
+  padding-top: f.pxToRem(37px);
+}
+
+@media screen and  (max-width: 1300px) {
+  .mainContainer{
+    width: 100%
+  }
+  .mainContent {
+   width: 100%;;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mainContainer{
+    height: unset;
+    .mainContent {
+      height: unset;
+      margin-top: f.pxToRem(34px);
+      padding-top: f.pxToRem(22px);
+    }
+  }
 }
