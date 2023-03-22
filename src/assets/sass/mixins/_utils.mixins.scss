@@ -104,6 +104,9 @@
   overflow: $overflow !important;
   -webkit-background-clip: padding-box;
 }
+@mixin border($color:"#000", $border-width:1px, $type:solid ){
+  border:  f.pxToRem($border-width) $type $color;
+}
 
 @mixin full-rounded($rad, $overflow: hidden) {
   @include rounded($rad, $rad, $rad, $rad, $overflow);

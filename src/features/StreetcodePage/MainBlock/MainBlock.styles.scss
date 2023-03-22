@@ -35,17 +35,6 @@ $bgImg: '@assets/images/streetcode-card/background.png';
    width: 100%;;
   }
 }
-@media screen and  (max-width: 1300px) {
-  .mainContainer{
-    width: 100%
-  }
-  .mainContent {
-   width: 100%;
-   margin-top: f.pxToRem(10px);
-   padding-top: f.pxToRem(37px);
-  }
-}
-
 
 @media screen and (max-width: 768px) {
   .mainContainer{

@@ -20,13 +20,10 @@
   justify-self: flex-start;
 }
 
-.leftSiderContentContainer {
-  padding: f.pxToRem(20px);
-  @include mut.parent-sized();
-}
 
 .leftSiderContent {
   background-color: c.$accented-gray-color;
+  @include mut.border(c.$pure-white-color,22px,solid);
   @include mut.full-rounded(50px);
   @include mut.parent-sized();
   @include mut.flex-centered();
@@ -69,10 +66,27 @@
   @include mut.rem-margined(13px, 3px, 0px, 0px);
   @include mut.rem-padded(0px, 5px, 0px, 0px);
   line-height: 23px;
-  max-height: 234px;
+  max-height: 254px;
   overflow: auto;
   color: c.$lighter-black-color;
+ 
+ 
 }
+.teaserBlockContainer{
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 5px;
+    height: 6em; // adjust the height to match your line-height
+    background:linear-gradient(0deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.75) 3%, rgba(255,255,255,0.1) 20%,  rgba(255,255,255,0) 25%);
+    background-clip: text; // this is the key property that clips the background to the text
+    -webkit-text-fill-color: transparent;
+  }
+}
+
 
 .cardFooter {
   @include mut.rem-padded(18px, 10px, 10px, 3px);
@@ -193,10 +207,10 @@
       .leftSider {
         @include mut.sized(360px, 489px);
         flex: 0 0 f.pxToRem(360px);
-      }
-
-      .leftSiderContentContainer {
-        padding: f.pxToRem(10px);
+        .leftSiderContent {
+          background-color: c.$accented-gray-color;
+          @include mut.border(c.$pure-white-color,10px,solid);
+        }
       }
 
       .streetcodeIndex {
