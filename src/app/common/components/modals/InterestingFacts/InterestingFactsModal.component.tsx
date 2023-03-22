@@ -23,11 +23,13 @@ const InterestingFactsModal = () => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <div className="factsImgContainer" />
-            <div className="factsContentContainer">
-                <h1>{fact?.title}</h1>
-                <div className="factsTextContainer">
-                    {fact?.factContent}
+            <div className="factsModalContainer">
+                <div className="factsImgContainer" />
+                <div className="factsContentContainer">
+                    <h1>{fact?.title}</h1>
+                    <div className="factsTextContainer">
+                        {fact?.factContent}
+                    </div>
                 </div>
             </div>
         </Modal>
