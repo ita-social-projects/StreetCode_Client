@@ -1,4 +1,5 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 
 .partnersWrapper {
     @include mut.sized($height: 181px);
@@ -19,4 +20,20 @@
             @include mut.flex-centered();
         }
     }
+}
+
+@media screen and (max-width: 1320px){
+    .partnersWrapper{
+        padding: 0 !important;  
+    }
+}
+@media screen and (max-width: 1024px) {
+    .partnerItem{
+        transform: scale(0.65);
+    }      
+}
+@media screen and (max-width: 480px) {
+    .partnerItem{
+        padding: 10px;
+    }      
 }
