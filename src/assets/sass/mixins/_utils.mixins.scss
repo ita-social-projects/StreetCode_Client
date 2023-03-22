@@ -50,14 +50,14 @@
 
 @mixin sized($width: auto, $height: auto) {
   @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
-    width: $width !important;
+    width: $width ;
   } @else {
-    width: f.pxToRem($width) !important;
+    width: f.pxToRem($width) ;
   }
   @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
-    height: $height !important;
+    height: $height ;
   } @else {
-    height: f.pxToRem($height) !important;
+    height: f.pxToRem($height);
   }
 }
 
@@ -159,6 +159,9 @@
   background-color: $bg-color;
 }
 // --------------------------Text----------------------------------
+@mixin withLineHeight($line-height){
+  line-height:f.pxToRem($line-height);
+}
 @mixin truncated($line-num: 3, $text-overflow: ellipsis) {
   overflow: hidden;
   white-space: nowrap;
