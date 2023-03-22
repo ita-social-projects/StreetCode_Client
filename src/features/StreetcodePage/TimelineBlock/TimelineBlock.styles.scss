@@ -75,9 +75,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 }
 
 @media screen and (max-width: 1024px) {
-  .timelineContentContainer {
-    .slick-list {
+  .timelineContentContainer .slick-list {
       margin:f.pxToRem(0) !important;
-    }
   }
 }

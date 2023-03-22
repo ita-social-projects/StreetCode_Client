@@ -12,6 +12,8 @@
   background-color: c.$dark-red-color;
 
   .timelineYearTicksContainer {
+    position: relative;
+    
     @include mut.sized(100%, 26px);
     @include mut.rem-padded(0, 100px, 20px, 100px);
 
