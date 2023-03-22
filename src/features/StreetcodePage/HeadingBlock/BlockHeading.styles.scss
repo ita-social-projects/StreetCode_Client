@@ -26,3 +26,34 @@
 .blockHeadingText::first-letter {
     text-transform: uppercase;
 }
+
+@media screen and (max-width: 768px){
+    .blockHeadingText{
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+        margin-left: -35px;
+    }
+    .blockHeadingWrapper {
+        margin-bottom: f.pxToRem(0px);
+        svg {
+            margin-left: f.pxToRem(-15px);
+        }
+    }
+    .blockHeadingContainer{
+        @include mut.flexed($justify-content: flex-start);
+    }
+}
+@media screen and (max-width: 360px){
+    .blockHeadingText{
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+        margin-left: 0px;
+
+    }
+    .blockHeadingContainer {
+        margin-bottom: f.pxToRem(0px);
+        svg {
+            //position: absolute;
+            margin-left: f.pxToRem(-20px);
+            display: block;
+        }
+    }
+}

@@ -25,4 +25,29 @@
 
 .text{
     white-space: pre-line;
+    margin: 0 10px 0 10px;
+}
+
+@media screen and (max-width: 768px){
+    .text{
+        font-size: 16px;
+        margin: 10px;
+        line-height: 21px;
+    }
+    .readMore{
+        font-size: 16px;
+    }
+
+}
+
+@media screen and (max-width: 360px){
+    .text{
+        font-size: 16px;
+        margin: 10px;
+    }
+    .readMore{
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+    }
 }
