@@ -107,7 +107,6 @@
     }
   }
 
-
   .donatesDonateBtn {
     @include mut.sized(231px, 73px);
     @include mut.full-rounded(11px);
@@ -124,4 +123,36 @@
       filter: brightness(110%);
     }
   }
+}
+
+@media screen and (max-width: 1024px) {
+  .donatesModal.ant-modal .ant-modal-content{
+    max-width: f.pxToRem(748px);
+    @include mut.sized(100%, 272px);
+    margin: 0 auto;
+    padding: f.pxToRem(16px);
+  }
+  .donatesModalContent > h1{
+    @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+  }
+  .donatesModalContent > h3{
+    @include mut.with-font($font-size: 14px, $font-weight: 300);
+  }
+  .donatesModalContent > .amountInput{
+    @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
+  }
+
+  .donatesModalContent .donatesBtnContainer > * > span {
+    @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 350);
+  }
+  .donatesModalContent .donatesBtnContainer > *{
+    @include mut.sized(120px, 37px);
+  }
+  .donatesModalContent .donatesInputContainer{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+   
 }
