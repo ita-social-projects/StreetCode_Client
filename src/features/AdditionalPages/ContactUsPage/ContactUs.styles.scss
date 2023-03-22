@@ -13,20 +13,22 @@
 
     .wrapper{
         max-width: f.pxToRem(1200px);
-        width: 100%;
-        height: 100%;
+        @include mut.sized(100%, 100%);
         margin: 0 auto;
     }
 
     .contactUsCover{
         padding-bottom: 100px;
     }
-    
-    @media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1024px) {
+    .contactUsContainer{
         padding: f.pxToRem(102px) f.pxToRem(10px) 0 f.pxToRem(10px);   
 
         .titleBlock{
             margin-bottom: 80px;    
         }
-    }
+    } 
 }
+

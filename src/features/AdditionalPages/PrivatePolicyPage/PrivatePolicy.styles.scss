@@ -20,9 +20,6 @@
     
     .link{
         color: #891F16;
-        @media screen and (max-width: 1024px) {
-            text-decoration: underline !important;
-        } 
     }
 
     section{
@@ -39,13 +36,7 @@
         .content{
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             line-height: 27px;
-            color: #1D1F23;
-
-            @media screen and (max-width: 1024px) {
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
-                line-height: 16px;
-                line-height: 134.19%;
-            } 
+            color: #1D1F23;      
         }
 
         ul {
@@ -56,10 +47,9 @@
                 display: inline-block;       
                 background-color: black;        
                 @include mut.full-rounded(50%);
-                width: 4px;
-                height: 4px;
+                @include mut.sized(4px, 4px);
                 position: relative;
-                top: f.pxToRem(-6px);
+                top: f.pxToRem(-3px);
                 left: f.pxToRem(-15px);
             }
         }
@@ -75,13 +65,23 @@
         box-shadow: 0px 5.57966px 5.57966px rgba(0, 0, 0, 0.25);
     
         padding: f.pxToRem(24px);
-        margin: f.pxToRem(16px) 0 f.pxToRem(24px) 0;
-
-        @media screen and (max-width: 1024px) {
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
-            line-height: 16px;
-            line-height: 134.19%;
-        }        
+        margin: f.pxToRem(16px) 0 f.pxToRem(24px) 0;      
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .privatePolicyContainer{
+        .disclaimer{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+            line-height: 21px;
+            padding: f.pxToRem(16px);
+        }
+        .link{
+            text-decoration: underline !important;
+        }
+        section .content{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+            line-height: 21px;
+        }
+    }    
+} 

@@ -75,9 +75,6 @@
             position: absolute;
             top: f.pxToRem(134px);
             right: f.pxToRem(10px);
-            @media screen and (max-width: 1024px){
-                top: f.pxToRem(110px);
-            }
         }
         .ant-btn-primary:not(:disabled):hover{
             background-color: #E04031;
@@ -115,26 +112,15 @@
           
         .captchaBlock{
             @include mut.flexed($direction: column, $justify-content: center, $align-items: center);     
-        }
-
-        @media screen and (max-width: 1024px){
-            button{
-                width: 100%;
-                padding: f.pxToRem(15px) 0;
-            }
-    
-            textarea, input{
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
-                line-height: 21px;
-            }
-        }     
+        } 
     }
+}
 
-    @media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px){
+    .formContainer{
         width: 100%;
         margin-top:  f.pxToRem(60px);
-        @include mut.flexed($direction: column);
-
+        
         .formTitle{
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
             text-align: left;
@@ -144,11 +130,27 @@
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 14px);
             line-height: 16px;
         }
-    } 
 
-    @media screen and (max-width: 480px) {
-        .formTitle{
-            text-align: center; 
-        }             
-    } 
-}
+        .contactForm{
+            button{
+                width: 100%;
+                padding: f.pxToRem(15px) 0;
+            }
+    
+            textarea, input{
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                line-height: 21px;
+            }
+
+            .ant-input-textarea-show-count::after{
+                top: f.pxToRem(110px);
+            }
+        }
+    }
+}  
+
+@media screen and (max-width: 480px) {
+    .formTitle{
+        text-align: center; 
+    }      
+} 

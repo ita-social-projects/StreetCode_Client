@@ -22,17 +22,15 @@
 
         position: absolute;
         top: 0;
-        left: 0;
-
-        @media screen and (max-width: 1024px) {
-            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
-            line-height: 31px;    
-            top: f.pxToRem(20px);   
-            left: f.pxToRem(10px);   
-        }      
+        left: 0;   
     }
-
-    @media screen and (max-width: 1024px) {
-        
-    } 
 }
+
+@media screen and (max-width: 1024px) {
+    .titleBlock .contactsLogoBig{
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
+        line-height: 31px;    
+        top: f.pxToRem(20px);   
+        left: f.pxToRem(10px);      
+    }
+} 

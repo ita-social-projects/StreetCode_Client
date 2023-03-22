@@ -4,9 +4,11 @@
 .mainBlock{
     @include mut.flexed($justify-content: space-between, $align-items: center);
     max-width: f.pxToRem(1200px);
-    width: 100%;
+    width: 100%; 
+}
 
-    @media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
+    .mainBlock{
         @include mut.flexed($direction: column);
-    } 
+    }
 }
