@@ -39,21 +39,21 @@
         margin-left: f.pxToRem(28px);
     }
     .blockHeadingText {
-        @include mut.positioned-as(relative, $left: -83px, $top: 43px);
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
     }
 }
 
 @media (max-width: 480px) {
     .blockHeadingText {
-        @include mut.positioned-as(relative, $left: -83px, $top: 41px);
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
     }
 }
 
 @media (max-width: 280px) {
     .blockHeadingText {
-        @include mut.positioned-as(relative, $left: -83px, $top: 50px);
+        @include mut.positioned-as(relative, $left: -71px, $top: 50px);
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 22px);
     }
 }

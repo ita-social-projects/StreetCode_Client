@@ -6,31 +6,30 @@
 .QRMobileContainer{
     width: 100%;
     display: inline-flex;
-    border:1px solid red;
     vertical-align: middle;
 }
 
 .QRMobileGif{
-    padding-left: 10px;
+    padding-left: pxToRem(10px);
     iframe {
-        border-radius: 20px;
+        border-radius: pxToRem(20px);
     }
 }
 
 .QRMobileContent{
-    margin: 50px 25px;
     display: flex;
     flex-direction: column;
-    border:1px solid red;
     align-items: center;
     justify-content: center;
+
+    margin: pxToRem(50px) pxToRem(39px);
     p{
-        padding-bottom: 20px;
+        padding-bottom: pxToRem(20px);
     }
     button{
-        margin-top: 20px;
-        width: 340px;
-        height: 46px;
+        margin-top: pxToRem(20px);
+        width: pxToRem(340px);
+        height: pxToRem(46px);
     }
 }
 
@@ -55,15 +54,14 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 18px 26px;
-    gap: 15px;
-    background: c.$accented-red-color;
-    box-shadow: 0px 4px 4px  c.$transparent-redish-gray-color; 
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 14px;
+
+    @include mut.with-font(f.$roboto-font, 500, 14px);
     line-height: 16px;
 
+    background: c.$accented-red-color;
+    box-shadow: 0px 4px 4px c.$transparent-redish-gray-color; 
+    border-radius: pxToRem(10px);
+    
     color: c.$pure-white-color;
 }
 
@@ -75,14 +73,14 @@
     .QRMobileGif{
         display: flex;
         justify-content: center;
-        padding-top: 35px;
+        padding-top: pxToRem(35px);
     }
     .QRMobileContent{
         button{
-            margin-top: 30px;
+            margin-top: pxToRem(20px);
         }
     }
     .pressButtonText{
-        width: 300px;
+        width: pxToRem(300px);
     }
 }
