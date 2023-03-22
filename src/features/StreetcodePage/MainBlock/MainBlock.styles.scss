@@ -39,8 +39,10 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 @media screen and (max-width: 768px) {
   .mainContainer{
     height: unset;
-  }
-  .mainContent {
-    height: unset;
+    .mainContent {
+      height: unset;
+      margin-top: f.pxToRem(34px);
+      padding-top: f.pxToRem(22px);
+    }
   }
 }

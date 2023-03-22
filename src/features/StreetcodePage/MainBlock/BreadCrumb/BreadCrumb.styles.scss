@@ -40,3 +40,9 @@
     right: f.pxToRem(10px);
   }
 }
+@media (max-width: 660px) {
+  .breadcrumbContainer{
+    top: f.pxToRem(20px);
+    right: f.pxToRem(10px);
+  }
+}

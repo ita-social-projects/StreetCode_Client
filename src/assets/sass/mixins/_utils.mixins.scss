@@ -60,6 +60,18 @@
     height: f.pxToRem($height);
   }
 }
+@mixin sizedImportant($width: auto, $height: auto) {
+  @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
+    width: $width !important ;
+  } @else {
+    width: f.pxToRem($width) !important ;
+  }
+  @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
+    height: $height !important ;
+  } @else {
+    height: f.pxToRem($height) !important;
+  }
+}
 
 @mixin parent-sized {
   @include sized(100%, 100%);
