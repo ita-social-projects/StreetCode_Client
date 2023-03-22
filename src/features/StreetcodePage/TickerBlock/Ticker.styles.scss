@@ -13,11 +13,5 @@
   @include mut.flex-centered();
   @include mut.with-font(ft.$closer-text-font, 400, 20px);
   padding-right: f.pxToRem(10px);
-}
-
-@media screen and (max-width: 480px) {
-  .tickerItem{
-    @include mut.with-font(ft.$closer-text-font, 400, 20px);
-    @include mut.sized(900px, 100%);
-  }
+  white-space: nowrap;
 }
