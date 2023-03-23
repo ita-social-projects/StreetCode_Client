@@ -13,7 +13,9 @@ interface Props {
 }
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
-    const { id, imageId, title, tags, alias } = relatedFigure;
+    const {
+        id, imageId, title, tags, alias,
+    } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
@@ -46,11 +48,11 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                         {title}
                     </p>
                     {
-                        alias !== null ?
-                        <p className='aliasText'>
-                            ({alias})
-                        </p>
-                        : ""
+                        alias !== null ? (
+                            <p className="aliasText">
+                                {alias}
+                            </p>
+                        ) : undefined
                     }
                 </div>
                 <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
