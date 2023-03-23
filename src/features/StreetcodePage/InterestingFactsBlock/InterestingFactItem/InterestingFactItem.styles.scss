@@ -70,7 +70,7 @@
   }
   
 }
-
+// FIX ME !
 @media screen
    and (max-width: 768px){
   //  and (max-width: 1024px){
@@ -118,6 +118,52 @@
   } 
  }
 
+ @media screen
+   and (max-width: 1024px){
+  //  and (max-width: 1024px){
+
+    .interestingFactsSliderContainer .slick-list {
+      @include mut.rem-padded(120px);
+    }
+ .interestingFactSlide {
+   @include mut.sized(312px, 320px);//250px
+   @include mut.full-rounded(20px);
+
+     .slideImage {
+       @include mut.sized(100%, 200px);//200px
+       @include mut.rounded(20px, 20px);
+      img{
+        @include mut.sized(100%, 100%)
+      }
+     }
+     .slideText {
+       @include mut.sized(100%, 144px);
+      //  @include mut.rem-padded(1px, 2px, 5px, 0px);
+      // @include mut.rem-margined(1px, 16px, 24px, 16px);
+
+       .heading {
+        @include mut.rem-padded(5px, 20px, 4px, 16px);
+         @include mut.with-font($font-weight: 500, $font-size: 14px);
+         line-height: f.pxToEm(15px);
+       }
+       .mainText {
+        //  @include mut.rem-padded(0, 20px, 0px, 20px);
+        @include mut.rem-padded(1px, 20px, 0px, 16px);
+
+         @include mut.with-font($font-weight: 300, $font-size: 12px);
+         line-height: f.pxToEm(15px);
+       }
+     } 
+  
+    
+     .readMoreParagraph {
+      //  @include mut.rem-padded(10px, 20px, 0px, 20px);
+      @include mut.rem-padded(5px, 20px, 0px, 16px);
+
+      @include mut.with-font(ft.$roboto-font, 300, 12px, normal);        
+     }
+  } 
+ }
  
 @media screen and (max-width: 480px) { 
 

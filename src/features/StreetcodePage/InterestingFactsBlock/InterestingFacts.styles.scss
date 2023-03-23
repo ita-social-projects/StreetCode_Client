@@ -74,12 +74,56 @@
         }
     }
 }
+@media screen
+and (max-width: 1024px){
+    .interestingFactsContainer {
+        @include mut.sized(90%, 680px); //умовно
+        @include mut.flex-centered($direction: column);
+    
+        .blockHeadingContainer {
+            margin-left: pxToRem(10px);
+        }
+    }
+    .interestingFactsSliderContainer {
+        // @include mut.sized(700px, 660px);
+        @include mut.sized(990px, 660px);
+    }
 
+    .singleSlideContainer{
+    
+        padding-top:7.5%;
+    
+        .interestingFactSlide{
+            @include mut.sized(600px, 550px);
+            @include mut.full-rounded(20px);
+    
+            .slideImage {
+                @include mut.sized($height: 65%);
+    
+                img {
+                    @include mut.sized($width: 100%, $height: 100%);
+                }
+            }
+            .slideText{
+                @include mut.sized($height: 40%);
+    
+                .heading{
+                    font-size:22px;
+                }
+    
+                .mainText{
+                    font-size: 16px;
+                    line-height: pxToRem(17px);
+                }
+            }
+        }
+    }
+}
 @media screen
 and (max-width: 768px){
 
     .interestingFactsContainer {
-        @include mut.sized(90%, 660px); //умовно
+        @include mut.sized(90%, 680px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
