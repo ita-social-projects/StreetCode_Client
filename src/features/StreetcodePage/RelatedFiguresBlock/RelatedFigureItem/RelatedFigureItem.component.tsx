@@ -77,7 +77,9 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 </div>)}
             </Link>
             { windowsize.width <= 1024 &&
-            <div className="figureSlideText mobile">
+            <div className="figureSlideText mobile"
+                //onClick={}
+            >
                 <div className="heading"> 
                     <p>{title}</p>
                     {

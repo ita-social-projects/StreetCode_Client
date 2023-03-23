@@ -31,7 +31,7 @@ $moreInfo-width: 150px;
     align-items: center;
 
     .blockHeadingContainer {
-        width: 72vw;
+        width: 1200px - $moreInfo-width;
     }
   }
 
