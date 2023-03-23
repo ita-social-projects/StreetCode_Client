@@ -13,6 +13,7 @@ import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -30,7 +31,7 @@ const NewStreetcode = () => {
                         <MainBlockAdmin form={form} />
                         <TextBlock />
                     </Form>
-
+                    <ArtGalleryBlock />
                     <RelatedFiguresBlock />
                     <TimelineBlockAdmin />
                     <ForFansBlock />
