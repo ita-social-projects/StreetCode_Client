@@ -12,6 +12,7 @@ const DefaultModalState: ModalState = {
 
 interface ModalList {
     relatedFigures: ModalState;
+    relatedFiguresItem: ModalState;
     sources: ModalState;
     facts: ModalState;
     audio: ModalState;
@@ -24,6 +25,7 @@ interface ModalList {
 export default class ModalStore {
     public modalsState: ModalList = {
         relatedFigures: DefaultModalState,
+        relatedFiguresItem: DefaultModalState,
         sources: DefaultModalState,
         facts: DefaultModalState,
         audio: DefaultModalState,

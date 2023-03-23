@@ -89,7 +89,7 @@
             text-align: center;
             line-height: 135.69%;
 
-            @include mut.with-font($font-size: 10px,$font-weight: 500);
+            @include mut.with-font($font-size: 10px, $font-weight: 500);
             line-height: pxToRem(13.6px);
             color: c.$pure-white-color;
         }
@@ -112,7 +112,7 @@
     @include mut.sized($width: 278px, $height: 459px); 
  
     .figureSlideText{
-        @include mut.sized($width: 278px, $height: 176px); //!
+        @include mut.sized($width: 278px, $height: 176px); 
 
         .relatedTagList {
             visibility: visible;

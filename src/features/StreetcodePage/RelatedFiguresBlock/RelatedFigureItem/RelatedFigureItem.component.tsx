@@ -5,6 +5,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
 interface Props {
     relatedFigure: RelatedFigure;
@@ -25,12 +26,21 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
         [imageId],
     );
 
+    const streetcodeId = useRouteId();
+
+    const handleClick = () => {
+        if (windowsize.width <= 480) {
+            setModal('relatedFiguresItem', streetcodeId, true)
+        }
+    }
+
     const windowsize = useWindowSize(); 
 
     const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
 
     return (
         <>
+          { windowsize.width > 1024 && (
             <Link
                 className={`relatedFigureSlide 
                 ${hoverable && tags.length > 1 && windowsize.width > 1024 ? 'hoverable' : ''} 
@@ -44,18 +54,17 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     }
                 }}
             >
-                { windowsize.width > 1024 && (
-                    <div className="figureSlideText">
-                        <div className="heading"> 
-                            <p>{title}</p>
-                            {
-                                alias !== null ?
-                                <p className='aliasText'>
-                                    ({alias})
-                                </p>
-                                : undefined
-                            }
-                        </div>
+                <div className="figureSlideText">
+                    <div className="heading"> 
+                        <p>{title}</p>
+                        {
+                            alias !== null ?
+                            <p className='aliasText'>
+                                ({alias})
+                            </p>
+                            : undefined
+                        }
+                    </div>
                     <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
                         {tags.filter((tag) => getTagArray.find((ti) => 
                             ti.id === tag.id || !filterTags))
@@ -74,12 +83,15 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                             </button>
                         ))}
                     </div>
-                </div>)}
-            </Link>
-            { windowsize.width <= 1024 &&
-            <div className="figureSlideText mobile"
-                //onClick={}
+                </div>
+            </Link>)}
+            { windowsize.width <= 1024 && (<>
+            <div className='relatedFigureSlide'
+                style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
+                onClick={handleClick}
             >
+            </div>
+            <div className="figureSlideText mobile">
                 <div className="heading"> 
                     <p>{title}</p>
                     {
@@ -90,7 +102,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                         : undefined
                     }
                 </div>
-            </div>}
+            </div>
+            </>)}
         </>
     );
 };
