@@ -75,6 +75,42 @@
     }
 }
 
+@media screen
+and (max-width: 768px){
+
+    .interestingFactsContainer {
+        @include mut.sized(90%, 660px); //умовно
+        @include mut.flex-centered($direction: column);
+    
+        .blockHeadingContainer {
+            margin-left: pxToRem(10px);
+        }
+    }
+    
+    .interestingFactsSliderContainer {
+        // @include mut.sized(700px, 660px);
+        @include mut.sized(760px, 660px);
+        
+    }
+    .heightContainer,
+.slick-list,
+.slick-track {
+    height: 100%;
+    // right: 5px;
+}
+.slick-slide {
+    // margin: 0 -3px;
+  }
+
+.heightContainer {
+    padding-top: pxToRem(23px);
+}
+
+.slick-center .interestingFactSlide {
+    transform: scale(1.5);
+}
+}
+
 @media screen and (max-width: 480px){
 
     
@@ -136,68 +172,89 @@
       }
 }
 
-@media screen
-    and (min-width: 768px)
-    and (max-width: 1024px){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// @media screen
+//     and (min-width: 768px)
+//     and (max-width: 1024px){
 
     
-    .interestingFactsContainer {
-        @include mut.sized(90%, 720px);
+//     .interestingFactsContainer {
+//         @include mut.sized(90%, 720px);
     
-        .single{
-            margin-bottom: pxToRem(120px) ;
-       }
-    }
+//         .single{
+//             margin-bottom: pxToRem(120px) ;
+//        }
+//     }
     
-    .interestingFactsWrapper {
-        @include wr.main-page-block-wrapper();
-        margin: 0;
-    }
-        // .interestingFactsSliderContainer {
-        //     // @include mut.sized(770px, 410px);
-        // }
+//     .interestingFactsWrapper {
+//         @include wr.main-page-block-wrapper();
+//         margin: 0;
+//     }
+//         // .interestingFactsSliderContainer {
+//         //     // @include mut.sized(770px, 410px);
+//         // }
         
 
-        .interestingFactSlide{
-            .slideImage {
-                @include mut.sized($height: 45%);
-                img {
-                    @include mut.sized($width: 100%);
-                }
-            }
-        }
-        .singleSlideContainer{
+//         .interestingFactSlide{
+//             .slideImage {
+//                 @include mut.sized($height: 45%);
+//                 img {
+//                     @include mut.sized($width: 100%);
+//                 }
+//             }
+//         }
+//         .singleSlideContainer{
             
-            padding-top:7.5%;
+//             padding-top:7.5%;
     
-            .interestingFactSlide{
+//             .interestingFactSlide{
 
-                // @include  mut.sized(400px, 430px);
-                @include  mut.sized(40%);
-                @include mut.full-rounded(20px);
+//                 // @include  mut.sized(400px, 430px);
+//                 @include  mut.sized(40%);
+//                 @include mut.full-rounded(20px);
         
-                .slideImage {
-                    @include mut.sized($height: 40%);
+//                 .slideImage {
+//                     @include mut.sized($height: 40%);
         
-                    img {
-                        @include mut.sized($width: 100%, $height: 100%);
-                    }
-                }
-                .slideText{
-                    @include mut.sized($height: 10%);
+//                     img {
+//                         @include mut.sized($width: 100%, $height: 100%);
+//                     }
+//                 }
+//                 .slideText{
+//                     @include mut.sized($height: 10%);
         
-                    .heading{
-                        font-size:15px;
-                    }
+//                     .heading{
+//                         font-size:15px;
+//                     }
         
-                    .mainText{
-                        font-size: 12px;
-                        line-height: pxToRem(15px);
-                    }
-                }
-            }
+//                     .mainText{
+//                         font-size: 12px;
+//                         line-height: pxToRem(15px);
+//                     }
+//                 }
+//             }
           
            
     
-          }
-    }
+//           }
+//     }
