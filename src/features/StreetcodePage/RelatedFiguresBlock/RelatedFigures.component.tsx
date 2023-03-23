@@ -47,34 +47,17 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         />
     ));
 
-    const sliderPropsDesktop = {
+    const sliderProps = {
         className: "heightContainer",
-        infinite: true,
-        swipe: false,
-        dots: false,
-        slidesToShow: 4,
-        swipeOnClick: false
+        infinite: windowsize.width > 1024,
+        swipe: windowsize.width <= 1024,
+        dots: windowsize.width <= 1024,
+        variableWidth: windowsize.width <= 1024,
+        swipeOnClick: false,
+        slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width < 480 ? 2 : undefined,
+        slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width < 480 ? 1 : 3,
+        rows: windowsize.width < 480 ? 2 : 1
     }; 
-    const sliderPropsTablet = {
-        className: "heightContainer",
-        infinite: false,
-        swipe: true,
-        dots: true,
-        swipeOnClick: false,
-        variableWidth: true,
-        slidesToScroll: 3
-    };
-    const sliderPropsMobile = {
-        className: "heightContainer",
-        infinite: false,
-        swipe: true,
-        dots: true,
-        swipeOnClick: false,
-        variableWidth: true,
-        slidesToScroll: 1,
-        slidesToShow: 2,
-        rows: 2
-    };
 
     return (
         <div className={`relatedFiguresWrapper
@@ -90,19 +73,9 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
-                {windowsize.width > 1024 ? 
-                    <BlockSlider {...sliderPropsDesktop}>   
-                        {sliderItems}
-                    </BlockSlider>
-                    : windowsize.width > 480 ?
-                    <BlockSlider {...sliderPropsTablet}>
-                        {sliderItems}
-                    </BlockSlider>
-                    :
-                    <BlockSlider {...sliderPropsMobile}>
-                        {sliderItems}
-                    </BlockSlider>
-                    }
+                <BlockSlider {...sliderProps}>   
+                    {sliderItems}
+                </BlockSlider>
                 </div>
             </div>
         </div>
