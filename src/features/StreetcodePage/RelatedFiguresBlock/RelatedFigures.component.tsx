@@ -61,10 +61,18 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         swipe: true,
         dots: true,
         swipeOnClick: false,
-        variableWidth: true
+        variableWidth: true,
+        slidesToScroll: 3
     };
     const sliderPropsMobile = {
-        sliderPropsTablet,
+        className: "heightContainer",
+        infinite: false,
+        swipe: true,
+        dots: true,
+        swipeOnClick: false,
+        variableWidth: true,
+        slidesToScroll: 1,
+        slidesToShow: 2,
         rows: 2
     };
 
