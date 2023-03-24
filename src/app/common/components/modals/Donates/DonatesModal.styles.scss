@@ -21,7 +21,7 @@
       @include mut.positioned-as(absolute, $left: 94%, $top: -27px);
       @include mut.circular(90px, c.$pure-white-color);
       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
+      
       &:hover {
         background-color: c.$modal-hover-color;
       }
@@ -45,7 +45,9 @@
   > h3 {
     @include mut.with-font($font-weight: 300);
   }
-
+  .enterSum{
+    display: block;
+  }
   > .amountInput {
     @include mut.rem-margined($top: 23px, $bottom: 35px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 64px, $font-weight: 500);
@@ -126,33 +128,82 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .donatesModal.ant-modal .ant-modal-content{
-    max-width: f.pxToRem(748px);
-    @include mut.sized(100%, 272px);
-    margin: 0 auto;
-    padding: f.pxToRem(16px);
-  }
-  .donatesModalContent > h1{
-    @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-  }
-  .donatesModalContent > h3{
-    @include mut.with-font($font-size: 14px, $font-weight: 300);
-  }
-  .donatesModalContent > .amountInput{
-    @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
-  }
+  .donatesModal {
+    @include mut.sized(748px, 272px);
 
-  .donatesModalContent .donatesBtnContainer > * > span {
-    @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 350);
-  }
-  .donatesModalContent .donatesBtnContainer > *{
-    @include mut.sized(120px, 37px);
-  }
-  .donatesModalContent .donatesInputContainer{
-    display: none;
+    &.ant-modal {
+      .ant-modal-content {
+        @include mut.full-rounded(16px, $overflow: visible);
+         .ant-modal-body{
+            width: 100%;
+            padding: f.pxToRem(16px);
+          }
+      }
+
+      .ant-modal-close{
+        display: none;
+      }
+    }
+
+    .donatesModalContent {
+      > h1{
+        @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+        line-height: 26px;
+        text-align: center;
+        letter-spacing: 0.005em;
+      }
+      > h3{
+        @include mut.with-font($font-size: 14px, $font-weight: 300);
+        @include mut.rem-margined($top: 10px, $bottom: 16px);
+      }
+      .enterSum{
+        @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
+        line-height: 13px;
+        color: #A3A3A3;
+      }
+      .amountInput{
+        @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
+        @include mut.rem-margined($top: 2px, $bottom: 16px);
+        border-bottom: 2px solid #A3A3A3;
+        max-width: 100%;
+      }
+  
+      .donatesBtnContainer{
+        @include mut.sized(408px, 100%);
+        margin-bottom: f.pxToRem(16px);
+  
+        > * {
+          width: 120px !important;
+          height: 37px !important;
+          
+          > span{
+            @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 350);
+          }
+        }
+      } 
+      .donatesDonateBtn {
+        @include mut.sized(100%, 46px);
+        > span{
+          @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
+          line-height: 16px;
+          color: #FFFFFF;
+          text-transform: none;
+        }
+      }
+      .donatesInputContainer{
+        display: none;
+      }
+    }
   }
 }
 
 @media screen and (max-width: 480px) {
-   
+   .donatesModal .donatesModalContent .donatesBtnContainer {
+        @include mut.sized(308px, 100%);
+        @include mut.flexed($direction: row-reverse, $justify-content: space-between, $gap: 4px);
+        
+        > * {
+          width: 100px !important;
+        }
+    }
 }
