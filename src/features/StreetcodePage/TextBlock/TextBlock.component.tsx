@@ -1,10 +1,11 @@
 import './TextBlock.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import Video from '@/models/media/video.model';
@@ -13,19 +14,19 @@ import { Text } from '@/models/streetcode/text-contents.model';
 import ReadMore from './ReadMore/ReadMore.component';
 
 const TextComponent = () => {
-    const streetcodeId = useRouteId();
+    const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
 
     const { value } = useAsync(
-        () => Promise.all([getText(streetcodeId), getVideo(streetcodeId)]),
-        [streetcodeId],
+        () => Promise.all([getText(getStreetCodeId ?? 1), getVideo(getStreetCodeId ?? 1)]),
+        [getStreetCodeId],
     );
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
     return (
         <div
-            id='text'
+            id="text"
             className="textComponentContainer"
         >
             <BlockHeading headingText={String(text?.title)} />
@@ -42,4 +43,4 @@ const TextComponent = () => {
     );
 };
 
-export default TextComponent;
+export default observer(TextComponent);

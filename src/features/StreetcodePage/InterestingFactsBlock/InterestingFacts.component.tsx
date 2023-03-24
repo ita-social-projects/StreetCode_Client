@@ -1,22 +1,24 @@
 import './InterestingFacts.styles.scss';
 
-import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
-const InterestingFactsComponent = () => {
-    const streetcodeId = useRouteId();
-    const { factsStore: { fetchFactsByStreetcodeId, getFactArray } } = useMobx();
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
-    useAsync(
-        () => fetchFactsByStreetcodeId(streetcodeId),
-        [streetcodeId],
-    );
-    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+const InterestingFactsComponent = () => {
+    const { streetcodeStore, factsStore } = useMobx();
+    const { getStreetCodeId } = streetcodeStore;
+    const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
+
+    useAsync(async () => {
+        fetchFactsByStreetcodeId(getStreetCodeId ?? 1);
+    }, [getStreetCodeId, streetcodeStore]);
+
+    const sliderArray = getFactArray.length === 3
+    || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
     const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
     getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
     return (
@@ -58,4 +60,4 @@ const InterestingFactsComponent = () => {
     );
 };
 
-export default InterestingFactsComponent;
+export default observer(InterestingFactsComponent);

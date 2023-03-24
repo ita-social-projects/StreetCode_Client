@@ -1,5 +1,6 @@
 import './RelatedFigures.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -14,7 +15,7 @@ interface Props {
 
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useMobx();
-    const { relatedFiguresStore, tagsStore } = useMobx();
+    const { relatedFiguresStore, tagsStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
     const { fetchTagByStreetcodeId } = tagsStore;
 
@@ -22,8 +23,8 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
 
     useAsync(
         () => Promise.all([
-            fetchRelatedFiguresByStreetcodeId(streetcodeId),
-            fetchTagByStreetcodeId(streetcodeId),
+            fetchRelatedFiguresByStreetcodeId(getStreetCodeId ?? 1),
+            fetchTagByStreetcodeId(getStreetCodeId ?? 1),
         ]),
         [streetcodeId],
     );
@@ -46,7 +47,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 <div className="headingWrapper">
                     <BlockHeading headingText="Зв'язки історії" />
                     <div className="moreInfo">
-                        <p onClick={() => setModal('relatedFigures', streetcodeId, true)}>
+                        <p onClick={() => setModal('relatedFigures', getStreetCodeId, true)}>
                             Дивитися всіх
                         </p>
                     </div>
@@ -68,4 +69,4 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     );
 };
 
-export default RelatedFiguresComponent;
+export default observer(RelatedFiguresComponent);

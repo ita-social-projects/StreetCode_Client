@@ -8,14 +8,14 @@ import useMobx from '@stores/root-store';
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
-    const { partnersStore } = useMobx();
+    const { partnersStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
 
     const streetcodeId = useRouteId();
 
     useAsync(
         () => Promise.all([
-            fetchPartnersByStreetcodeId(streetcodeId),
+            fetchPartnersByStreetcodeId(getStreetCodeId ?? 1),
         ]),
         [streetcodeId],
     );

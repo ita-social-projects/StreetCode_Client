@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import Ticker from 'react-awesome-ticker';
 import subtitlesApi from '@api/additional-content/subtitles.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import Subtitle, { SubtitleStatus } from '@models/additional-content/subtitles.model';
+import useMobx from '@stores/root-store';
 
 const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
     new Map(subtitles?.map(({ id, firstName, lastName, subtitleStatus }) => [
@@ -15,10 +15,10 @@ const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
 );
 
 const TickerComponent = () => {
-    const id = useRouteId();
     const { getSubtitlesByStreetcodeId } = subtitlesApi;
+    const { streetcodeStore: { getStreetCodeId } } = useMobx();
 
-    const { value } = useAsync(() => getSubtitlesByStreetcodeId(id), [id]);
+    const { value } = useAsync(() => getSubtitlesByStreetcodeId(getStreetCodeId ?? 1), [getStreetCodeId]);
     const subtitles = value as Subtitle[];
 
     const subtitleMap = useMemo(() => createSubtitleString(subtitles), [subtitles]);

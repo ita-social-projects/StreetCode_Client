@@ -9,6 +9,7 @@ import RelatedFiguresStore from '@stores/related-figures-store';
 import RelatedTermsStore from '@stores/related-terms-store';
 import SourcesStore from '@stores/sources-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
+import StreetcodeStore from '@stores/streetcode-current-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
@@ -26,6 +27,7 @@ interface Store {
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
     streetcodeArtStore: StreetcodeArtStore,
+    streetcodeStore: StreetcodeStore,
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
@@ -46,6 +48,7 @@ export const store: Store = {
     relatedFiguresStore: new RelatedFiguresStore(),
     checkboxStore: new CheckBoxStore(),
     relatedTermStore: new RelatedTermsStore(),
+    streetcodeStore: new StreetcodeStore(),
 };
 
 const StoreContext = createContext(store);

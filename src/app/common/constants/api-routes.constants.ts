@@ -137,6 +137,7 @@ export const API_ROUTES = {
         GET_BY_NAME: 'streetcode/getByName',
         GET_BY_TAG_ID: 'streetcode/getByTagId',
         GET_BY_INDEX: 'streetcode/getByIndex',
+        GET_BY_URL: 'streetcode/getByTransliterationUrl',
         CREATE: 'streetcode/create',
         UPDATE: 'streetcode/update',
         DELETE: 'streetcode/delete',

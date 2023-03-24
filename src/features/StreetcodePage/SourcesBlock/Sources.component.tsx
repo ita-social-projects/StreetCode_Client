@@ -10,12 +10,12 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import SourceItem from './SourceItem/SourceItem.component';
 
 const SourcesComponent = () => {
-    const { sourcesStore } = useMobx();
+    const { sourcesStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
     const streetcodeId = useRouteId();
 
     useAsync(
-        () => fetchSrcCategoriesByStreetcodeId(streetcodeId),
+        () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId ?? 1),
         [streetcodeId],
     );
 
