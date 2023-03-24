@@ -12,10 +12,7 @@ export default class StreetcodeStore {
 
     public set setStreetCode(streetcode: Streetcode) {
         this.currentStreetcode.clear();
-        console.log('SETTTING');
-        console.log(streetcode);
         this.currentStreetcode.set(streetcode.id, streetcode);
-        console.log(this.getStreetCodeId);
     }
 
     public setCurrentStreetcodeId = async (url: string) => {
