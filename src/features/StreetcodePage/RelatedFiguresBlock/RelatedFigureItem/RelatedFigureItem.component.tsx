@@ -26,11 +26,11 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
         [imageId],
     );
 
-    const streetcodeId = useRouteId();
-
     const handleClick = () => {
         if (windowsize.width <= 480) {
-            setModal('relatedFiguresItem', streetcodeId, true)
+            console.log('Tried to open modal');
+            console.log(title, id);
+            setModal('relatedFigureItem', id, true);
         }
     }
 
@@ -43,8 +43,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
           { windowsize.width > 1024 && (
             <Link
                 className={`relatedFigureSlide 
-                ${hoverable && tags.length > 1 && windowsize.width > 1024 ? 'hoverable' : ''} 
-                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : ''}`}
+                ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
+                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
                 style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
                 to={`../streetcode/${id}`}
@@ -65,7 +65,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                             : undefined
                         }
                     </div>
-                    <div className={`relatedTagList ${tags.length > 1 ? '' : 'noneTags'}`}>
+                    <div className={`relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}`}>
                         {tags.filter((tag) => getTagArray.find((ti) => 
                             ti.id === tag.id || !filterTags))
                             .map((tag) => (

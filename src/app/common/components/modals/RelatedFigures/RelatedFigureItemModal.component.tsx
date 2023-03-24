@@ -8,43 +8,48 @@ import { Modal } from 'antd';
 import { observer } from 'mobx-react-lite';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 
-interface Props {
-    relatedFigure: RelatedFigure;
-}
-
-const RelatedFiguresItemModal = ({ relatedFigure }: Props) => {
-    const { id, imageId, title, alias } = relatedFigure;
-
+const RelatedFiguresItemModal = () => {
     const { imagesStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { relatedFiguresStore, modalStore } = useMobx();
-    const { setModal, modalsState: { relatedFiguresItem } } = modalStore;
+    const { relatedFiguresStore: { relatedFiguresMap }, modalStore } = useMobx();
+    const { setModal, modalsState: { relatedFigureItem } } = modalStore;
+
+    const relationId = relatedFigureItem.fromCardId!;
+    const relation = relatedFiguresMap.get(relationId);
+    
+    const BgImg = getImage(relation?.imageId ?? 0)?.url.href;
+
+    console.log('worked!');
+    console.log(relation?.title);
 
     useAsync(
-        () => fetchImage(imageId),
-        [imageId],
+        () => {
+        if (relation)
+            fetchImage(relation?.imageId)
+        },
+        [relation?.imageId],
     );
     
     return (
         <Modal className='mobileModal'
-            open={relatedFigure !== undefined}
+            open={relatedFigureItem.isOpen}
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('relatedFigures', relatedFigure.id, false)}
+            onCancel={() => setModal('relatedFigureItem')}
             closeIcon={<CancelBtn />}
         >
             <div
                 className='relatedFigureSlide'
-                style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
+                style={{ backgroundImage: `url(${BgImg})` }}
             >
                 <div className="figureSlideText">
                     <div className="heading"> 
-                        <p>{title}</p>
+                        <p>{relation?.title}</p>
                         {
-                            alias !== null ?
+                            relation?.alias !== null ?
                             <p className='aliasText'>
-                                ({alias})
+                                ({relation?.alias})
                             </p>
                             : undefined
                         }
@@ -53,8 +58,9 @@ const RelatedFiguresItemModal = ({ relatedFigure }: Props) => {
             </div>
             <Link 
                 className='redirectionButton'
-                to={`../streetcode/${id}`}            
+                to={`../streetcode/${relation?.id}`}            
             >
+                Перейти на сторінку
             </Link>
         </Modal>
     );
