@@ -16,11 +16,6 @@ const RelatedFiguresItemModal = () => {
 
     const relationId = relatedFigureItem.fromCardId!;
     const relation = relatedFiguresMap.get(relationId);
-    
-    const BgImg = getImage(relation?.imageId ?? 0)?.url.href;
-
-    console.log('worked!');
-    console.log(relation?.title);
 
     useAsync(
         () => {
@@ -39,10 +34,10 @@ const RelatedFiguresItemModal = () => {
             onCancel={() => setModal('relatedFigureItem')}
             closeIcon={<CancelBtn />}
         >
-            <div
-                className='relatedFigureSlide'
-                style={{ backgroundImage: `url(${BgImg})` }}
-            >
+            <div className='relatedFigureSlide'>
+                <div className='figureSlideImage'
+                    style={{ backgroundImage: `url(${getImage(relation?.imageId ?? 0)?.url.href})` }}
+                ></div>
                 <div className="figureSlideText">
                     <div className="heading"> 
                         <p>{relation?.title}</p>
@@ -58,9 +53,10 @@ const RelatedFiguresItemModal = () => {
             </div>
             <Link 
                 className='redirectionButton'
-                to={`../streetcode/${relation?.id}`}            
+                to={`../streetcode/${relation?.id}`} 
+                onClick={() => setModal('relatedFigureItem', relation?.id, false)}           
             >
-                Перейти на сторінку
+                <p>Перейти на сторінку постаті</p>
             </Link>
         </Modal>
     );

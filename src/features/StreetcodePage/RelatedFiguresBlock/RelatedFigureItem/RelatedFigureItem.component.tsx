@@ -28,8 +28,6 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
 
     const handleClick = () => {
         if (windowsize.width <= 480) {
-            console.log('Tried to open modal');
-            console.log(title, id);
             setModal('relatedFigureItem', id, true);
         }
     }
