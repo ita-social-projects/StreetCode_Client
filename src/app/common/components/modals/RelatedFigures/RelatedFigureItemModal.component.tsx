@@ -2,11 +2,10 @@ import './RelatedFigureItemModal.styles.scss';
 
 import { Link } from 'react-router-dom';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
 import { Modal } from 'antd';
 import { observer } from 'mobx-react-lite';
-import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import CancelBtn from '@assets/images/utils/Cancel_btn_mobile.svg';
 
 const RelatedFiguresItemModal = () => {
     const { imagesStore } = useMobx();
