@@ -11,51 +11,13 @@ import { Button, Form, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 interface Props {
-    fact? : Fact
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-const InterestingFactsModal = ({ fact, open, setOpen } : Props) => {
+const InterestingFactsModal = ({ open, setOpen } : Props) => {
     const [factContent, setFactContent] = useState('');
-    const [form] = Form.useForm();
-    const { factsStore } = useMobx();
 
-    useEffect(() => {
-        if (fact && open) {
-            form.setFieldsValue({
-                title: fact.title,
-                factContent: fact.factContent,
-                imageId: fact.imageId,
-            });
-        }
-    }, [fact, open, form]);
-
-    // NOTE: somehow add fetching for new streetcode
-    // useEffect(() => {
-    //   factsStore.fetchAllStreetcode();
-    // }, [some object]);
-
-    const onSuccesfulSubmit = (formValues:any) => {
-        if (fact) {
-            const item = factsStore.factMap.get(fact.id); // timelineItemStore.timelineItemMap.get(timelineItem.id);
-            if (item) {
-                item.title = formValues.title;
-                item.factContent = formValues.factContent;
-                item.imageId = formValues.imageId;
-            }
-        } else {
-            // FIX: figure out how to add streetcode here!
-            const newFact: Fact = { id: factsStore.factMap.size,
-                                    title: formValues.title,
-                                    factContent: formValues.factContent,
-                                    imageId: formValues.imageId };
-            factsStore.addFactAdmin(newFact);
-
-            setOpen(false);
-            form.resetFields();
-        }
-    };
     const characterCount = factContent.length | 0;
 
     return (
@@ -68,7 +30,7 @@ const InterestingFactsModal = ({ fact, open, setOpen } : Props) => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <Form className="factForm" onFinish={onSuccesfulSubmit}>
+            <Form className="factForm">
                 <h2>Wow-Факт</h2>
                 <p>Заголовок</p>
                 <div className="inputBlock">
@@ -84,7 +46,6 @@ const InterestingFactsModal = ({ fact, open, setOpen } : Props) => {
                 <FormItem
                     name="picture"
                     className=""
-                    // rules={[{ required: true, message: 'Завантажте зображення' }]}
                 >
                     <Upload
                         multiple={false}
