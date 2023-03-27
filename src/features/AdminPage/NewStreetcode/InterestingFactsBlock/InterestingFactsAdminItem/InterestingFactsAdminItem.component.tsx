@@ -9,7 +9,7 @@ interface Props {
     fact: Fact;
 }
 
-const InterestingFactAdminItem = ({ fact: { title, id } } : Props) => {
+const InterestingFactAdminItem = ({ fact: { title } } : Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div className="interestingFactItem">
@@ -24,8 +24,7 @@ const InterestingFactAdminItem = ({ fact: { title, id } } : Props) => {
                     <FaRegTrashAlt />
                 </div>
             </div>
-            {/* NOTE: Add fact here */}
-            <InterestingFactsAdminModal fact={} open={isModalOpen} setOpen={setIsModalOpen} />
+            <InterestingFactsAdminModal open={isModalOpen} setOpen={setIsModalOpen} />
         </div>
     );
 };
