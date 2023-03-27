@@ -74,8 +74,8 @@ const DonatesModal = () => {
             closeIcon={<CancelBtn />}
         >
             <div className="donatesModalContent">
-                <h1>Підтримай проєкт “Стріткод”</h1>
-                <h3>Скажи дякую нашій організації</h3>
+                <h1>Підтримай проєкт</h1>
+                <h3>Скажи «Дякую» історії</h3>
                 <div className="enterSum">Ввести суму</div>
                 <input
                     onChange={handleInputChange}
