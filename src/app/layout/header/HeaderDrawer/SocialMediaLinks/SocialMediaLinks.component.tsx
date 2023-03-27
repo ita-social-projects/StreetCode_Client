@@ -7,7 +7,7 @@ import Twitter from '@images/header-drawer/Twitter.png';
 import Youtube from '@images/header-drawer/Youtube.png';
 
 const SocialMediaLinks = () => (
-    <ul className="socialIconContainer">
+    <ul className="socialIconHeaderContainer">
         <li>
             <a href="https://www.facebook.com/streetcodeua" target="_blank" rel="noreferrer">
                 <img src={FaceBook} alt="" />
