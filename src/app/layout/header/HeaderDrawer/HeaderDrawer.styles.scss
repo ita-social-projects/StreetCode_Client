@@ -82,7 +82,7 @@
     left: 15%;
     max-height: 100vh;
   }
-  .socialIconContainer {
+  .socialIconHeaderContainer {
     position: absolute;
     top: 25rem;
     @include mut.with-font($font-weight: 300, $font-size: 16px);
