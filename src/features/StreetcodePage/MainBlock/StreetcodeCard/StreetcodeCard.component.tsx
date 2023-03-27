@@ -124,7 +124,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         </div>
 
                         <div className="cardFooter">
-                            {createUrlSrc(audio?.base64, audio?.mimeType)
+                            {audio?.base64
                                 ? (
                                     <Button
                                         type="primary"

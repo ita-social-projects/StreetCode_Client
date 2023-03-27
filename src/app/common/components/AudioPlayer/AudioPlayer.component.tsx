@@ -14,17 +14,6 @@ const createURLotheraaproach = (base64Data: string|undefined, mimeType: string|u
         return audio.src;
     }
 }
-
-const createUrlSrc = (imageData: string|undefined, mimeType: string|undefined): string|undefined => {
-
-    if(imageData && mimeType) {
-        const blob = base64ToBlob(imageData, mimeType);
-        const url = URL.createObjectURL(blob);
-        console.log("AAAAAAAAAAAAAAa");
-        console.log(mimeType);
-        return url;
-    }
-  }
   
 const base64ToBlob = (base64: string, mimeType: string): Blob => {
     const binary = atob(base64);
