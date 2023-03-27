@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable, observable } from 'mobx';
 import HistoricalContextApi from '@api/timeline/historicalcontext.api';
 import { HistoricalContext } from '@models/timeline/chronology.model';
 
@@ -6,7 +6,12 @@ export class HistoricalContextStore {
     public historicalContextArray = new Array<HistoricalContext>();
 
     public constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {
+            historicalContextArray: observable,
+            fetchHistoricalContextAll: action,
+            addItemToArray: action,
+
+        });
     }
 
     public fetchHistoricalContextAll = async () => {
@@ -22,4 +27,4 @@ export class HistoricalContextStore {
         this.historicalContextArray.push(item);
     };
 }
-export default new HistoricalContextStore();
+export default HistoricalContextStore;

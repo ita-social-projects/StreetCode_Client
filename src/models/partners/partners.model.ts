@@ -7,6 +7,7 @@ import { StreetcodeShort } from '../streetcode/streetcode-types.model';
 export default interface Partner {
     id: number;
     isKeyPartner: boolean;
+    isVisibleEverywhere: boolean;
     title: string;
     description?: string | undefined;
     logoId: number;
@@ -15,9 +16,14 @@ export default interface Partner {
     partnerSourceLinks: PartnerSourceLink[];
     streetcodes:StreetcodeShort[];
 }
+export interface PartnerShort {
+    id: number;
+    title: string;
+}
 export interface PartnerCreateUpdate {
     id: number;
     isKeyPartner: boolean;
+    isVisibleEverywhere: boolean;
     title: string;
     description?: string | undefined;
     logoId: number;

@@ -25,21 +25,28 @@ $bgImg: '@assets/images/streetcode-card/background.png';
   @include mut.flex-centered();
   margin-top: f.pxToRem(34px);
   padding-top: f.pxToRem(37px);
+  ::-webkit-scrollbar {
+    width: f.pxToRem(5px);
+  }
 }
 
 @media screen and  (max-width: 1300px) {
   .mainContainer{
-    width: 100%
+    width: 100%;
   }
   .mainContent {
    width: 100%;;
   }
+ 
 }
 
 @media screen and (max-width: 768px) {
   .mainContainer{
     height: unset;
     .mainContent {
+      ::-webkit-scrollbar {
+        width: f.pxToRem(2px);
+      }
       height: unset;
       margin-top: f.pxToRem(34px);
       padding-top: f.pxToRem(22px);
