@@ -24,9 +24,9 @@ import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 import useMobx from '@/app/stores/root-store';
 
 const StreetcodeContent = () => {
+    const streetcodeUrl = useRouteId();
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const streetcodeUrl = useRouteId();
     const { streetcodeStore } = useMobx();
     const { getStreetCodeId, setCurrentStreetcodeId } = streetcodeStore;
     const isSticky = () => {
@@ -50,9 +50,10 @@ const StreetcodeContent = () => {
         };
     }, []);
 
-    useAsync(() => {
+    useEffect(() => {
+        console.log(streetcodeUrl);
         setCurrentStreetcodeId(streetcodeUrl);
-    }, [streetcodeUrl, getStreetCodeId]);
+    }, [useRouteId]);
 
     return (
         <div className="streetcodeContainer">

@@ -175,7 +175,11 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
             >
-                <Input maxLength={100} showCount />
+                <Input
+                    maxLength={100}
+                    showCount
+                    pattern="/^[a-z-]+$/gm"
+                />
             </Form.Item>
 
             <DatePickerPart

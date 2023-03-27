@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 export const useRouteId = () => {
-    const params = useParams<{ url: string }>();
-    return params.url ?? 'taras-shevchenko';
+    const params = useParams<{ id: string }>();
+    return params.id ?? '404';
 };
 
 const useRouter = <T extends Record<string, string | undefined> | string> () => {
