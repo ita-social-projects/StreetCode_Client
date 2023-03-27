@@ -64,8 +64,8 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
+                <BlockHeading headingText="Зв'язки історії" />
                 <div className="headingWrapper">
-                    <BlockHeading headingText="Зв'язки історії" />
                     <div className="moreInfo">
                         <p onClick={handleClick}>
                             Дивитися всіх

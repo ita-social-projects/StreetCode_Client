@@ -26,7 +26,6 @@ export default class RelatedTermsStore {
     }
 
     public fetchRelatedTermsByTermId = async (id: number) => {
-        console.log(`CURRENT ID: ${id}`);
         try {
             this.setRelatedTermMap = await relatedTermApi.getAllByTermId(id);
             // console.log(this.storage.values());

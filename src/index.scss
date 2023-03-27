@@ -1,6 +1,7 @@
 @use '@assets/sass/variables/_variables.fonts.scss' as ft;
 @use '@assets/sass/mixins/_utils.mixins.scss' as ut;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
 *,
 *:before,
 *:after {
@@ -67,4 +68,20 @@ ul, ol {
     background-color: c.$dark-red-color;
     border-color: c.$dark-red-color;
   }
+}
+::-webkit-scrollbar {
+  width: f.pxToRem(15px);
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  @include ut.full-rounded(15px);
+}
+
+::-webkit-scrollbar-thumb {
+  background: c.$card-scrollbar-track-color;
+}
+
+::-webkit-scrollbar-track {
+  background: c.$accented-gray-color;
 }

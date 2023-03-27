@@ -14,7 +14,6 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import { Option } from 'antd/es/mentions';
 
 // eslint-disable-next-line import/extensions
 import useMobx from '@/app/stores/root-store';
@@ -29,9 +28,11 @@ import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 // eslint-disable-next-line no-restricted-imports
 import PartnerLink from '../PartnerLink.component';
 
-const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
- }> = observer(({ partnerItem, open, setIsModalOpen }) => {
+const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVisible?:boolean,
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?:(partner:PartnerCreateUpdate)=>void
+ }> = (({
+     partnerItem, open, setIsModalOpen, isStreetcodeVisible = true, afterSubmit,
+ }) => {
      const [form] = Form.useForm();
      const { partnersStore } = useMobx();
      const [partnerLinksForm] = Form.useForm();
@@ -40,21 +41,23 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
      const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
      const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
      const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
-     const streetcodeStore = StreetcodeShortStore;
+     const streetcodeStore = useRef<StreetcodeShortStore>(new StreetcodeShortStore());
      const handlePreview = async (file: UploadFile) => {
          setFilePreview(file);
          setPreviewOpen(true);
      };
      const onStreetcodeSelect = (value:string) => {
-         const index = streetcodeStore.streetcodes.findIndex((c) => c.title === value);
-         selectedStreetcodes.current.push(streetcodeStore.streetcodes[index]);
+         const index = streetcodeStore.current.streetcodes.findIndex((c) => c.title === value);
+         selectedStreetcodes.current.push(streetcodeStore.current.streetcodes[index]);
      };
      const onStreetcodeDeselect = (value:string) => {
          selectedStreetcodes.current = selectedStreetcodes.current.filter((c) => c.title !== value);
      };
      useEffect(() => {
-         streetcodeStore.fetchStreetcodesAll();
-     }, [streetcodeStore]);
+         if (isStreetcodeVisible) {
+             streetcodeStore.current.fetchStreetcodesAll();
+         }
+     }, []);
      useEffect(() => {
          if (partnerItem && open) {
              console.log(partnerItem);
@@ -76,13 +79,14 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
                  title: l.title,
 
              })));
+             console.log(partnerItem);
          }
      }, [partnerItem, open, form]);
 
      const closeAndCleanData = () => {
          form.resetFields();
          partnerLinksForm.resetFields();
-         selectedStreetcodes.current.splice(0);
+         selectedStreetcodes.current = [];
          partnerSourceLinks.splice(0);
          setIsModalOpen(false);
      };
@@ -107,32 +111,49 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
          }
      };
      const onSuccesfulSubmitPartner = async (formValues:any) => {
-         console.log(formValues);
          partnerSourceLinks.forEach((el, index) => {
              if (el.id < 0) {
                  partnerSourceLinks[index].id = 0;
              }
              partnerSourceLinks[index].title = 'title';
          });
-         const partner: PartnerCreateUpdate = { id: 0,
-                                                isKeyPartner: formValues.isKeyPartner,
-                                                logoBase64: 'base5',
-                                                logoId: 0,
-                                                partnerSourceLinks,
-                                                streetcodes: selectedStreetcodes.current,
-                                                targetUrl: formValues.url,
-                                                title: formValues.title,
-                                                description: formValues.description,
-                                                urlTitle: formValues.urlTitle };
+         const partner: PartnerCreateUpdate = {
+             id: 0,
+             isKeyPartner: formValues.isKeyPartner,
+             logoBase64: 'base5',
+             logoId: 0,
+             partnerSourceLinks,
+             streetcodes: selectedStreetcodes.current,
+             targetUrl: formValues.url,
+             title: formValues.title,
+             description: formValues.description,
+             urlTitle: formValues.urlTitle,
+             isVisibleEverywhere: false,
+         };
+         let success = true;
          if (partnerItem) {
              partner.id = partnerItem.id;
              partner.logoId = partnerItem.logoId;
-             partnersStore.updatePartner(partner).catch((e) => console.log(e));
+             Promise.all([
+                 partnersStore.updatePartner(partner)
+                     .catch((e) => {
+                         console.log(e); success = false;
+                     }),
+             ]);
          } else {
-             console.log(partner);
-             partnersStore.createPartner(partner).catch((e) => console.log(e));
+             Promise.all([
+                 partnersStore.createPartner(partner)
+                     .catch((e) => {
+                         console.log(e); success = false;
+                     }),
+             ]);
          }
          closeAndCleanData();
+         console.log(success);
+         console.log(afterSubmit);
+         if (success && afterSubmit) {
+             afterSubmit(partner);
+         }
      };
 
      const selectSocialMediaOptions = [{
@@ -166,20 +187,35 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
                  className="partner-form"
                  onFinish={onSuccesfulSubmitPartner}
              >
-                 <Form.Item
-                     name="isKeyPartner"
-                     label="Ключовий партнер: "
-                     valuePropName="checked"
-                 >
-                     <Checkbox />
-                 </Form.Item>
+                 <div className="form-input-line-group">
+
+                     <Form.Item
+                         labelCol={{ span: 20 }}
+                         wrapperCol={{ span: 27 }}
+                         name="isKeyPartner"
+                         label="Ключовий партнер: "
+                         valuePropName="checked"
+                     >
+                         <Checkbox />
+                     </Form.Item>
+
+                     <Form.Item
+                         labelCol={{ span: 20 }}
+                         wrapperCol={{ span: 27 }}
+                         name="isVisibleEverywhere"
+                         label="Видимий для всіх: "
+                         valuePropName="checked"
+                     >
+                         <Checkbox />
+                     </Form.Item>
+                 </div>
 
                  <Form.Item
                      name="title"
                      label="Назва: "
-                     rules={[{ required: true, message: 'Введіть назву' }]}
+                     rules={[{ required: true, message: 'Введіть назву'}]}
                  >
-                     <Input />
+                     <Input maxLength={100} showCount />
                  </Form.Item>
 
                  <Form.Item
@@ -187,7 +223,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
                      label="Посилання: "
                      rules={[{ required: true, message: 'Введіть назву' }]}
                  >
-                     <Input />
+                     <Input maxLength={200} showCount />
                  </Form.Item>
 
                  <Form.Item
@@ -196,7 +232,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
                      className="url-title"
                      rules={[{ required: true, message: 'Введіть назву посилання' }]}
                  >
-                     <Input />
+                     <Input maxLength={100} showCount />
                  </Form.Item>
 
                  <Form.Item
@@ -245,15 +281,19 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
                  </Form.Item>
                  <PreviewFileModal opened={previewOpen} setOpened={setPreviewOpen} file={filePreview} />
 
-                 <Form.Item name="partnersStreetcodes" label="Стріткоди: ">
-                     <Select
-                         mode="multiple"
-                         onSelect={onStreetcodeSelect}
-                         onDeselect={onStreetcodeDeselect}
-                     >
-                         {streetcodeStore.streetcodes.map((s) => <Option key={`${s.id}`} value={s.title} />)}
-                     </Select>
-                 </Form.Item>
+                 {isStreetcodeVisible ? (
+                     <Form.Item name="partnersStreetcodes" label="Стріткоди: ">
+                         <Select
+                             mode="multiple"
+                             onSelect={onStreetcodeSelect}
+                             onDeselect={onStreetcodeDeselect}
+                         >
+                             {streetcodeStore.current.streetcodes
+                                 .map((s) => <Select.Option key={`${s.id}`} value={s.title}>{s.title}</Select.Option>)}
+                         </Select>
+                     </Form.Item>
+                 ) : ''}
+
              </Form>
 
              <Form
@@ -292,7 +332,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean,
                          name="url"
                          rules={[{ required: true, message: 'Введіть посилання' }]}
                      >
-                         <Input min={1} max={300} />
+                         <Input min={1} max={255} showCount />
                      </Form.Item>
 
                      <Form.Item>
