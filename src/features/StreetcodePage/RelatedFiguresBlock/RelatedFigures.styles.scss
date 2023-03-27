@@ -92,9 +92,10 @@ $moreInfo-width: 150px;
 @media screen and (max-width: 1024px) and (min-width: 481px) {
     .relatedFiguresWrapper {
         @include mut.sized($height: 400px); 
-    }
-    .slick-track {
-        @include mut.rem-margined($left: 13px);
+
+        .slick-track {
+            @include mut.rem-margined($left: 13px);
+        }
     }
 }
 
