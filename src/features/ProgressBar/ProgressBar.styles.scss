@@ -28,7 +28,9 @@
     background-color: c.$lighter-gray-color;
     cursor: pointer;
   }
-
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
   .progressBarPopupContainer {
     position: absolute;
     @include mut.sized(93px);
