@@ -6,7 +6,7 @@
 
 $modal-width: 278px;
 
-.ant-modal.mobileModal{
+.ant-modal.mobileModal {
     .ant-modal-content {
         @include mut.sized($width: $modal-width, $height: 406px);
         @include mut.rem-padded($top: 0, $left: 0);

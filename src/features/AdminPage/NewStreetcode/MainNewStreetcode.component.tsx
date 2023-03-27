@@ -11,6 +11,7 @@ import PageBar from '../PageBar/PageBar.component';
 import ForFansBlock from './ForFans/ForFans.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
+import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
@@ -35,6 +36,7 @@ const NewStreetcode = () => {
                     <RelatedFiguresBlock />
                     <TimelineBlockAdmin />
                     <ForFansBlock />
+                    <PartnerBlockAdmin />
                 </div>
             </ConfigProvider>
 

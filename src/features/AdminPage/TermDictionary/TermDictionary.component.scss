@@ -61,16 +61,13 @@
 .ant-table{
     .ant-table-thead .ant-table-cell {
         background-color: transparent;
-        border-bottom: 0.125rem solid c.$dark-red-color;
+        //border-bottom: 0.125rem solid c.$dark-red-color;
         #text{
             color: white;
         }
     }
     .ant-table-tbody > tr.ant-table-row:hover > td {
         transform: none !important;
-    }
-    .ant-table-cell{
-        border-bottom: 0.125rem solid c.$dark-red-color;
     }
 }
 
