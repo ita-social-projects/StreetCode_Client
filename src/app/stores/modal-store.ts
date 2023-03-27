@@ -3,11 +3,13 @@ import { makeAutoObservable } from 'mobx';
 type ModalState = {
     isOpen: boolean;
     fromCardId?: number;
+    onSubmit?:()=>void;
 };
 
 const DefaultModalState: ModalState = {
     isOpen: false,
     fromCardId: undefined,
+    onSubmit: undefined,
 };
 
 interface ModalList {
@@ -23,6 +25,7 @@ interface ModalList {
     editTerm: ModalState;
     deleteTerm: ModalState;
     deleteStreetcode: ModalState;
+    deleteItem: ModalState;
 }
 
 export default class ModalStore {
@@ -39,6 +42,7 @@ export default class ModalStore {
         editTerm: DefaultModalState,
         deleteTerm: DefaultModalState,
         deleteStreetcode: DefaultModalState,
+        deleteItem: DefaultModalState,
     };
 
     public isPageDimmed = false;
@@ -51,10 +55,11 @@ export default class ModalStore {
         this.isPageDimmed = dimmed ?? !this.isPageDimmed;
     };
 
-    public setModal = (modalName: keyof ModalList, fromId?: number, opened?: boolean) => {
+    public setModal = (modalName: keyof ModalList, fromId?: number, opened?: boolean, onSubmit?:()=>void) => {
         this.modalsState[modalName] = {
             isOpen: opened ?? !this.modalsState[modalName].isOpen,
             fromCardId: fromId,
+            onSubmit,
         };
     };
 }
