@@ -12,17 +12,15 @@ import {
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
-import HistoricalContextStore from '@/app/stores/historicalcontext-store';
 import useMobx from '@/app/stores/root-store';
 import TimelineItem, { HistoricalContext } from '@/models/timeline/chronology.model';
 
 const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }> = observer(({ timelineItem, open, setIsModalOpen }) => {
-    const { timelineItemStore } = useMobx();
+    const { timelineItemStore, historicalContextStore } = useMobx();
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
-    const historicalContextStore = HistoricalContextStore;
     useEffect(() => {
         if (timelineItem && open) {
             form.setFieldsValue({
@@ -38,7 +36,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     }, [timelineItem, open, form]);
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
-    }, [historicalContextStore]);
+    }, []);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onSuccesfulSubmit = (formValues:any) => {
         if (timelineItem) {
@@ -64,6 +62,11 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     const onContextSelect = (value:string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
+            console.log(value.length);
+            if (value.length > 50) {
+                form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
+                return;
+            }
             const maxId = Math.max(...historicalContextStore.historicalContextArray.map((i) => i.id));
             const newItem = { id: maxId + 1, title: value };
             historicalContextStore.addItemToArray(newItem);
@@ -93,9 +96,9 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 <Form.Item
                     name="title"
                     label="Назва: "
-                    rules={[{ required: true, message: 'Введіть назву' }]}
+                    rules={[{ required: true, message: 'Введіть назву', max: 50 }]}
                 >
-                    <Input />
+                    <Input maxLength={50} showCount />
                 </Form.Item>
                 <Form.Item
                     name="date"
@@ -104,11 +107,15 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 >
                     <DatePicker />
                 </Form.Item>
-                <Form.Item name="historicalContexts" label="Контекст: ">
+                <Form.Item
+                    name="historicalContexts"
+                    label="Контекст: "
+                >
                     <Select
                         mode="tags"
                         onSelect={onContextSelect}
                         onDeselect={onContextDeselect}
+                        maxLength={20}
                     >
                         {historicalContextStore.historicalContextArray
                             .map((cntx, index) => (

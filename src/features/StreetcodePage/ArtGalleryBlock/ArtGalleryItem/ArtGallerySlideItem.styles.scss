@@ -6,7 +6,22 @@
 
 .slideArt {
   flex: pxToRem(80px);
-  height: pxToRem(560px);
+
+  .small{ 
+    width: 380px;
+    height: 250px;
+
+  }
+  .medium{
+    width : 380px;
+    height: 535px;
+
+  }
+  .large{
+    width: 806px;
+    height: 536px;
+  }
+
 }
 
 .artImageWrapper {
@@ -42,6 +57,7 @@
   }
 
   .imgImg{
+
     border-radius: pxToRem(30px);
   }
 }

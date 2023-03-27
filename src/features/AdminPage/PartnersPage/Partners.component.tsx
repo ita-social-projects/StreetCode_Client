@@ -49,7 +49,7 @@ const Partners:React.FC = observer(() => {
     useEffect(() => {
         updatedPartners();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [partnersStore]);
+    }, []);
     const columns: ColumnsType<Partner> = [
         {
             title: 'Назва',
@@ -143,6 +143,7 @@ const Partners:React.FC = observer(() => {
                       className="actionButton"
                       onClick={() => {
                           setPartnerToedit(partner);
+                          console.log(partner);
                           setModalEditOpened(true);
                       }}
                   />

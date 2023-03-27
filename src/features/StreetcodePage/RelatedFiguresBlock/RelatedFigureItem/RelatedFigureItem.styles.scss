@@ -45,9 +45,24 @@
             @include mut.rem-padded($left: 12px, $right: 12px, $top: 10px);
 
             @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
-            line-height: pxToRem(26.4px);
             text-align: center;
             color: c.$pure-white-color;
+        }
+    }
+
+    &.mobile{
+        @include mut.sized($width: 165px, $height: 65px);
+        background-color: c.$pure-white-color;
+
+        .heading {
+            @include mut.sized($width: 100%);
+            max-height: 65px;
+        }
+
+        p {
+            font-size: 14px;
+            color: c.$pure-black-color; 
+            line-height: pxToRem(16px);
         }
     }
 }
@@ -57,7 +72,6 @@
     visibility: hidden;
 
     @include mut.flexed($align-items: center, $gap: 5px, $wrap: wrap);
-    //@include mut.rem-padded($top: 7px, $left: 23px, $right: 23px);
     padding: 7px 23px 0px;
 
     .tag {
@@ -74,7 +88,7 @@
             text-align: center;
             line-height: 135.69%;
 
-            @include mut.with-font($font-size: 10px,$font-weight: 500);
+            @include mut.with-font($font-size: 10px, $font-weight: 500);
             line-height: pxToRem(13.6px);
             color: c.$pure-white-color;
         }
@@ -97,7 +111,7 @@
     @include mut.sized($width: 278px, $height: 459px); 
  
     .figureSlideText{
-        @include mut.sized($width: 278px, $height: 176px); //!
+        @include mut.sized($width: 278px, $height: 176px); 
 
         .relatedTagList {
             visibility: visible;
@@ -108,4 +122,10 @@
 .relatedTagList.noneTags{
     visibility: hidden !important;
     display: none !important;
+}
+
+@media screen and (max-width: 1024px) {
+    .relatedFigureSlide {
+        @include mut.sized($width: 165px, $height: 165px);
+    }
 }

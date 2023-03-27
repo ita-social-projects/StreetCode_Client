@@ -1,0 +1,61 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+$list-width: 40%;
+
+.list-container {
+    @include mut.sized($list-width);
+    max-height: 160px; 
+    margin: 10px;
+    overflow-y: auto;
+
+    #list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+    }
+}  
+.input-container {
+    display: flex;
+    align-items: center;
+    vertical-align: center;
+  
+    .relation-title-input {
+      @include mut.sized($list-width);
+      margin-left: 10px;
+      padding: 5px;
+      border-radius: 7px;
+    }
+  }
+  
+  .create-relation-button {  
+    padding: 10px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500px;
+    color: white;
+    background-color: c.$accented-red-color;
+    display: flex;
+    align-items: center;
+    line-height: 1; /* reset the line-height to its default value */
+  
+    &:hover {
+      background-color: c.$dark-red-color;
+    }
+  }
+  
+
+.relationItem {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+}

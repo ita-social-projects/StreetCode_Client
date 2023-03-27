@@ -17,6 +17,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
     index: number;
     teaser: string;
+    alias?: string;
     viewCount: number;
     createdAt: Date;
     updatedAt: Date;

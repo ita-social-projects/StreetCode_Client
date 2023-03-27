@@ -34,3 +34,15 @@
   background-color: c.$dark-red-color;
   margin-bottom: f.pxToRem(2px);
 }
+@media (max-width: 1024px) {
+  .breadcrumbContainer{
+    top: f.pxToRem(10px);
+    right: f.pxToRem(10px);
+  }
+}
+@media (max-width: 660px) {
+  .breadcrumbContainer{
+    top: f.pxToRem(20px);
+    right: f.pxToRem(10px);
+  }
+}
