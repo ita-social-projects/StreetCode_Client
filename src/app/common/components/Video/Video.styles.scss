@@ -7,6 +7,14 @@
 }
 .player-wrapper{
   @include mut.flex-centered();
-  margin-left: f.pxToRem(10px);
-  margin-right: f.pxToRem(10px);
+}
+@media screen and (max-width: 1024px){
+  .react-player{
+    @include mut.full-rounded(44px);
+  }
+}
+@media screen and (max-width: 768px){
+  .react-player{
+    @include mut.full-rounded(20px);
+  }
 }

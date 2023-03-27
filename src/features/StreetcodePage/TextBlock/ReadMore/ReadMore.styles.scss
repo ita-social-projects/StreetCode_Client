@@ -28,7 +28,7 @@
     margin: 0 10px 0 10px;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1024px){
     .text{
         font-size: 16px;
         margin: 10px;
@@ -36,18 +36,18 @@
     }
     .readMore{
         font-size: 16px;
+        line-height: 18.75px;
     }
-
+    .readMoreContainer {
+        @include mut.rem-margined($top: 20px,$bottom: 20px);
+        @include mut.with-font($font-weight: 600)
+    }
 }
 
-@media screen and (max-width: 360px){
-    .text{
-        font-size: 16px;
-        margin: 10px;
-    }
+@media screen and (max-width: 480px){
     .readMore{
-        font-size: 16px;
         display: flex;
         justify-content: center;
     }
+
 }
