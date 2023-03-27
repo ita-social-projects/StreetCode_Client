@@ -16,6 +16,7 @@ const RelatedFiguresModal = () => {
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
 
     const streetcodeId = relatedFigures.fromCardId!;
+
     useAsync(
         () => {
             if (streetcodeId) {
@@ -46,6 +47,8 @@ const RelatedFiguresModal = () => {
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}
+                        filterTags={false}
+                        setActiveTagId={()=>{}}
                     />
                 ))}
             </div>
