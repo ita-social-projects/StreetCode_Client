@@ -17,7 +17,7 @@ import { Button } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 import Image from '@/models/media/image.model';
-
+  
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
     month: 'long',
@@ -64,6 +64,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
+
+
 
     const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
     const images = value as Image[];
@@ -122,7 +124,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         </div>
 
                         <div className="cardFooter">
-                            {audio?.url?.href
+                            {createUrlSrc(audio?.base64, audio?.mimeType)
                                 ? (
                                     <Button
                                         type="primary"

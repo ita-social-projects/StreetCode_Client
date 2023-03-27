@@ -6,6 +6,35 @@ import PlayBtn from '@images/audio-player/PlayBtn.png';
 import { useEffect, useRef, useState } from 'react';
 import useMobx from '@stores/root-store';
 
+const createURLotheraaproach = (base64Data: string|undefined, mimeType: string|undefined): string|undefined => {
+
+    if(base64Data && mimeType) {
+        var audio = new Audio();
+        audio.src = `data:${mimeType};base64,${base64Data}`;
+        return audio.src;
+    }
+}
+
+const createUrlSrc = (imageData: string|undefined, mimeType: string|undefined): string|undefined => {
+
+    if(imageData && mimeType) {
+        const blob = base64ToBlob(imageData, mimeType);
+        const url = URL.createObjectURL(blob);
+        console.log("AAAAAAAAAAAAAAa");
+        console.log(mimeType);
+        return url;
+    }
+  }
+  
+const base64ToBlob = (base64: string, mimeType: string): Blob => {
+    const binary = atob(base64);
+    const array = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      array[i] = binary.charCodeAt(i);
+    }
+    return new Blob([array], { type: mimeType });
+  }
+
 const AudioPlayer = () => {
     const { audiosStore: { audio } } = useMobx();
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -65,8 +94,7 @@ const AudioPlayer = () => {
 
     return (
         <div className="audioPlayer">
-           {/*  <audio ref={audioPlayer} src={audio?.url?.href} preload="metadata" /> */}
-           <audio ref={audioPlayer} src={"https://www.kozco.com/tech/piano2-Audacity1.2.5.mp3"} preload="metadata" />
+           <audio ref={audioPlayer} src={createURLotheraaproach(audio?.base64, audio?.mimeType)} preload="metadata" />
             {isPlaying
                 ? (
                     <div className="buttonContainer">
