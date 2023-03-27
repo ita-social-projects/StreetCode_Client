@@ -1,0 +1,38 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+.partner-modal{
+    .partner-form{
+        textarea{
+            resize: none;
+        }
+    }
+    .red-text{
+        color: c.$accented-red-color;
+    }
+    .partner-source-list{
+        .partner-source-list-item{
+            @include mut.flexed(row, start,space-between, wrap, 4px);
+            .link-item{
+                width: 70%;
+            }
+        }
+    }
+    .url-title, label{
+        word-wrap: break-word;
+        word-break: break-all;
+        line-break: anywhere;
+    }
+    .partner-source-inputs-container{
+        @include mut.rem-margined(20px);
+        @include mut.flexed(row, end,space-between, wrap, 4px);
+        .url-input{
+            flex-grow: 2;
+        }
+    }
+    .ant-modal-footer{
+        display: flex;
+        @include mut.flexed(row,start, flex-end);
+    }
+}

@@ -6,7 +6,7 @@
 $factImg: "@assets/images/interesting-facts/WowFacts1.png";
 
 .interestingFactsModal {
-  @include mut.sized(823px, 765px);
+  @include mut.sizedImportant(823px, 765px);
 
   &.ant-modal {
     .ant-modal-content {
@@ -36,7 +36,7 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
 
 .factsImgContainer {
   position: sticky;
-  @include mut.sized(100%, 435px);
+  @include mut.sizedImportant(100%, 435px);
   @include mut.flex-centered();
   @include mut.bg-image($factImg);
 }

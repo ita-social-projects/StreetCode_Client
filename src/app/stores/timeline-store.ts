@@ -11,6 +11,14 @@ export default class TimelineStore {
         makeAutoObservable(this);
     }
 
+    public addTimeline = (timelineItem: TimelineItem) => {
+        this.setItem(timelineItem);
+    };
+
+    public deleteTimelineFromMap = (timelineItemId: number) => {
+        this.timelineItemMap.delete(timelineItemId);
+    };
+
     private setInternalMap = (timelineItems: TimelineItem[]) => {
         timelineItems.forEach(this.setItem);
     };
@@ -28,7 +36,7 @@ export default class TimelineStore {
 
     get getTimelineItemArray() {
         return Array.from(this.timelineItemMap.values())
-            .sort((prev, cur) => prev.date.getFullYear() - cur.date.getFullYear());
+            .sort((prev, cur) => Number(prev.date) - Number(cur.date));
     }
 
     get getYearsArray() {

@@ -17,6 +17,12 @@ export interface Term {
     description?: string | undefined;
 }
 
+export interface RelatedTerm {
+    id: number;
+    word: string;
+    termId: number;
+}
+
 export interface Text {
     id: number;
     title: string;

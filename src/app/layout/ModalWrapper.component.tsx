@@ -5,7 +5,8 @@ import LightboxModal from '@components/modals/Lightbox/Lightbox.component';
 import RelatedFiguresModal from '@components/modals/RelatedFigures/RelatedFiguresModal.component';
 import RelatedFigureItemModal from '@components/modals/RelatedFigures/RelatedFigureItemModal.component';
 import SourcesModal from '@components/modals/Sources/SourcesModal.component';
-import TagsModal from '@components/modals/Tags/TagsModal.component';
+
+import DeleteStreetcodeModal from '../common/components/modals/DeleteStreetcode/DeleteStreetcodeModal.component';
 
 const ModalWrapper = () => (
     <>

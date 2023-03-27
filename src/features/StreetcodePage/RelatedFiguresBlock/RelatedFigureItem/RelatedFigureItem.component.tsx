@@ -15,7 +15,9 @@ interface Props {
 }
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
-    const { id, imageId, title, tags, alias } = relatedFigure;
+    const {
+        id, imageId, title, tags, alias,
+    } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
