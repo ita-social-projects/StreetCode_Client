@@ -3,7 +3,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 .timeline-admin-container{
-    margin-bottom: 100px;
+    margin-top: 10px;
     width:80% ;
     .timeline-admin-item{
         width: f.pxToRem(150px);
@@ -36,7 +36,6 @@
         width: f.pxToRem(750px);
         @include ut.flexed(row,start,left, wrap,5px);
         align-content: start;
-        height:f.pxToRem(150px) ;
         max-height:f.pxToRem(150px) ;
         overflow: auto;
     }

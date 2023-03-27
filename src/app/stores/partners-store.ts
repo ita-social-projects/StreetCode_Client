@@ -1,6 +1,6 @@
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import partnersApi from '@api/partners/partners.api';
-import Partner, { PartnerCreateUpdate } from '@models/partners/partners.model';
+import Partner, { PartnerCreateUpdate, PartnerShort } from '@models/partners/partners.model';
 
 export default class PartnersStore {
     public PartnerMap = new Map<number, Partner>();
@@ -25,6 +25,15 @@ export default class PartnersStore {
     public setItem = (partner: Partner) => {
         this.PartnerMap.set(partner.id, partner);
     };
+
+    public static async getAllPartnerShort():Promise<PartnerShort[]> {
+        try {
+            return await partnersApi.getAllShort();
+        } catch (error: unknown) {
+            console.log(error);
+        }
+        return [];
+    }
 
     get getPartnerArray() {
         return Array.from(this.PartnerMap.values());

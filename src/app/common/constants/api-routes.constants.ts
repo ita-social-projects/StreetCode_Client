@@ -14,6 +14,7 @@ export const API_ROUTES = {
     },
     PARTNERS: {
         GET_ALL: 'partners/getAll',
+        GET_ALL_SHORT: 'partners/getAllShort',
         GET_SPONSORS: 'partners/getSponsors',
         GET: 'partners/getById',
         GET_BY_STREETCODE_ID: 'partners/getByStreetcodeId',

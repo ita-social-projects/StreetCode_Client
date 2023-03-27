@@ -79,9 +79,10 @@
     position: absolute;
     bottom: -5px;
     left: 0;
-    right: 5px;
+    right: 20px;
     height: 6em; // adjust the height to match your line-height
-    background:linear-gradient(0deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.75) 3%, rgba(255,255,255,0.1) 20%,  rgba(255,255,255,0) 25%);
+    background:linear-gradient(0deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.55) 3%,rgba(255,255,255,0.7) 12%,
+     rgba(255,255,255,0.1) 20%,  rgba(255,255,255,0) 25%);
     background-clip: text; // this is the key property that clips the background to the text
     -webkit-text-fill-color: transparent;
   }
@@ -162,6 +163,7 @@
     }
   }
 }
+
 @media screen and (max-width: 1110px) {
   .blockCentering {
     width: 100%;

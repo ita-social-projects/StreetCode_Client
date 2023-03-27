@@ -9,6 +9,8 @@ import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
@@ -20,6 +22,14 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { fetchTagByStreetcodeId } = tagsStore;
 
     const streetcodeId = useRouteId();
+
+    const windowsize = useWindowSize();
+
+    const handleClick = () => {
+        if (windowsize.width > 1024) {
+            setModal('relatedFigures');
+        }
+    };
 
     useAsync(
         () => Promise.all([
@@ -39,28 +49,33 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         />
     ));
 
+    const sliderProps = {
+        className: 'heightContainer',
+        infinite: windowsize.width > 1024,
+        swipe: windowsize.width <= 1024,
+        dots: windowsize.width <= 1024,
+        variableWidth: windowsize.width <= 1024,
+        swipeOnClick: false,
+        slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width < 480 ? 2 : undefined,
+        slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width < 480 ? 1 : 3,
+        rows: windowsize.width <= 480 ? 2 : 1,
+    };
+
     return (
         <div className={`relatedFiguresWrapper
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
+                <BlockHeading headingText="Зв'язки історії" />
                 <div className="headingWrapper">
-                    <BlockHeading headingText="Зв'язки історії" />
                     <div className="moreInfo">
-                        <p onClick={() => setModal('relatedFigures', getStreetCodeId, true)}>
+                        <p onClick={handleClick}>
                             Дивитися всіх
                         </p>
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
-                    <BlockSlider
-                        className="heightContainer"
-                        infinite={true}
-                        slidesToShow={4}
-                        swipe={false}
-                        dots={false}
-                        swipeOnClick={false}
-                    >
+                    <BlockSlider {...sliderProps}>
                         {sliderItems}
                     </BlockSlider>
                 </div>
