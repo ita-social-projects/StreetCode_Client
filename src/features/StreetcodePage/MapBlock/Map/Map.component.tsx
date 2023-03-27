@@ -12,7 +12,7 @@ import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import Toponym from '@/models/toponyms/toponym.model';
 import CustomMarkerCluster from './MarkerCluster/MarkerClusterWrapper.component';
 import VectorTileLayer from 'react-leaflet-vector-tile-layer';  
-const defaultZoom = 6.4;
+
 
 const centerOfUkraine = {
     latitude: 48.4501,
@@ -24,13 +24,29 @@ interface Props {
     toponyms: Toponym[]
 }
 
+
 const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
     const { checkboxStore } = useMobx();
     const { checkBoxesState: { streetcodes, streets } } = checkboxStore;
+    const [defaultZoom, setDefaultZoom] = useState(6.4);
      var mapOptions = {
         gestureHandling: true
       }
-
+      useEffect(() => {
+        function handleResize() {
+          if (window.innerWidth <= 480) {
+            setDefaultZoom(4.95);
+          } 
+          else if (window.innerWidth <= 1024) {
+            setDefaultZoom(5.5);
+          } else {
+            setDefaultZoom(6.4);
+          }
+        }
+    
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
     //if you need to use the previous second map
     // return (
@@ -58,9 +74,9 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
     return (
         <div className="mapCentered">
            
-            <MapContainer {...mapOptions} center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]}
-             zoom={defaultZoom} maxZoom={20} minZoom={1} zoomControl={false} className="mapContainer"
-              scrollWheelZoom={true} style={{ height: '100vh', width: '100vw' }}>
+           <MapContainer {...mapOptions} center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]}
+  zoom={defaultZoom} maxZoom={20} minZoom={1} zoomControl={false} className="mapContainer"
+  scrollWheelZoom={true}  key={defaultZoom}>
                 <VectorTileLayer                
                     styleUrl="https://api.maptiler.com/maps/8ea6d995-4375-4873-a720-86be88576488/style.json?key=gEzGMwfl1Uo3TJWS0xcQ"              
                 />
