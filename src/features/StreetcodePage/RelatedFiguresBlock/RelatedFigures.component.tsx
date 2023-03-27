@@ -56,7 +56,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         swipeOnClick: false,
         slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width < 480 ? 2 : undefined,
         slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width < 480 ? 1 : 3,
-        rows: windowsize.width < 480 ? 2 : 1
+        rows: windowsize.width <= 480 ? 2 : 1
     }; 
 
     return (
