@@ -85,8 +85,9 @@ $moreInfo-width: 150px;
         }
         .slick-slide {
             width: 165px !important;
-            &.slick-active {
-                width: 165px !important;
+            
+            &.slick-active.slick-current {
+                transform: translateX(0px) !important;
             }
         }
         
