@@ -5,24 +5,7 @@ import PlayBtn from '@images/audio-player/PlayBtn.png';
 
 import { useEffect, useRef, useState } from 'react';
 import useMobx from '@stores/root-store';
-
-const createURLotheraaproach = (base64Data: string|undefined, mimeType: string|undefined): string|undefined => {
-
-    if(base64Data && mimeType) {
-        var audio = new Audio();
-        audio.src = `data:${mimeType};base64,${base64Data}`;
-        return audio.src;
-    }
-}
-  
-const base64ToBlob = (base64: string, mimeType: string): Blob => {
-    const binary = atob(base64);
-    const array = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) {
-      array[i] = binary.charCodeAt(i);
-    }
-    return new Blob([array], { type: mimeType });
-  }
+import base64ToUrl from '../../utils/base64ToUrl.utility';
 
 const AudioPlayer = () => {
     const { audiosStore: { audio } } = useMobx();
@@ -83,7 +66,7 @@ const AudioPlayer = () => {
 
     return (
         <div className="audioPlayer">
-           <audio ref={audioPlayer} src={createURLotheraaproach(audio?.base64, audio?.mimeType)} preload="metadata" />
+           <audio ref={audioPlayer} src={base64ToUrl(audio?.base64, audio?.mimeType)} preload="metadata" />
             {isPlaying
                 ? (
                     <div className="buttonContainer">
