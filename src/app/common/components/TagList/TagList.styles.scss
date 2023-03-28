@@ -3,8 +3,10 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 
 .tagContainer {
-  @include mut.rem-padded(13px, 0, 13px, 3px);
+  @include mut.rem-margined(13px, 0, 0px, 0px);
   @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+  overflow: hidden;
+  max-height: f.pxToRem(100px);
 
   .tagItem {
     height: f.pxToRem(38px);
@@ -22,4 +24,12 @@
       border-color: c.$dark-red-color;
     }
   }
+}
+@media (max-width: 1024px) {
+.tagContainer {
+  .tagItem {
+    @include mut.with-font($font-weight: bold, $font-size: 14px);
+    line-height: f.pxToRem(16px);
+  }
+}
 }

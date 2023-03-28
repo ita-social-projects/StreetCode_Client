@@ -4,7 +4,7 @@ import Art from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import Video from '@models/media/video.model';
-import StreetcodePartner  from '@models/partners/partners.model';
+import StreetcodePartner from '@models/partners/partners.model';
 import { SourceLink } from '@models/sources/sources.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import TimelineItem from '@models/timeline/chronology.model';
@@ -17,11 +17,14 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
     index: number;
     teaser: string;
+    alias?: string;
     viewCount: number;
     createdAt: Date;
     updatedAt: Date;
     eventStartOrPersonBirthDate: Date;
     eventEndOrPersonDeathDate: Date;
+    type: StreetcodeType;
+    status: Status;
     text: string;
     audio?: Audio | undefined;
     // coordinate?: StreetcodeCoordinate | undefined;
@@ -51,4 +54,20 @@ export interface PersonStreetcode {
     lastName: string;
     rank: string;
     streetcode: Streetcode;
+}
+
+export enum Status {
+    Draft,
+    Published,
+    Deleted,
+}
+
+export enum StreetcodeType {
+    Event,
+    Person,
+}
+export interface StreetcodeShort {
+    id: number;
+    index: number;
+    title: string;
 }

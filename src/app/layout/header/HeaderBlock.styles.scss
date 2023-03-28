@@ -8,18 +8,16 @@ $navbar-innerwidth: 500px;
 $navbar-hidden-innerwidth: 400px;
 
 .navBarContainer {
-  @include mut.sized(100%, 82px);
-
   @include mut.flexed($justify-content: space-between, $align-items: center);
-  padding: f.pxToRem(21px) f.pxToRem(32px);
+  @include mut.sized(100%, 82px);
+  @include mut.rem-padded(21px, 32px, 21px, 32px);
 
   position: fixed;
-  z-index: 6;
-
+  z-index: 7;
   background-color: white;
 
   svg {
-    margin-right: f.pxToRem(34px);
+    @include mut.rem-margined($right: 34px);
 
     &:hover {
       cursor: pointer;
@@ -39,19 +37,15 @@ $navbar-hidden-innerwidth: 400px;
   .ant-input-affix-wrapper {
     position: relative;
     border: none;
-    height: 39px;
+    height: f.pxToRem(39px);
     width: calc(100vw - #{$navbar-innerwidth});
-
-    @media screen and (max-width: 1815px) {
-    max-width: 100%;
-  }
-
+    
     @include mut.full-rounded(12px);
-    margin-right: f.pxToRem(10px);
+    @include mut.rem-margined($right: 10px);
 
     svg {
       color: c.$selected-arrow-color;
-      margin-right: f.pxToRem(11px);
+      @include mut.rem-margined($right: 11px);
     }
   }
 }
@@ -63,7 +57,7 @@ $navbar-hidden-innerwidth: 400px;
 
 .rightSectionContainer {
   @include mut.flexed($align-items: center);
-  margin-left: f.pxToRem(20px);
+  @include mut.rem-margined($left: 20px);
 
   .loginBtn {
     @include mut.sized(142px, 39px);
@@ -81,7 +75,7 @@ $navbar-hidden-innerwidth: 400px;
 
   svg {
     @include mut.sized(30px, 30px);
-    @include mut.rem-margined($right: 8px, $top: 5px);
+    @include mut.rem-margined($right: 8px);
     filter: invert(51%) sepia(0%) saturate(0%) hue-rotate(140deg) brightness(97%) contrast(93%);
 
     &:hover {
@@ -97,15 +91,15 @@ $navbar-hidden-innerwidth: 400px;
   .loginBtn {
     @include mut.hidden();
   }
-
+  
   .burgerMenuContainer {
-    margin: 0;
+    @include mut.rem-margined(0);
   }
 }
 
 .hiddenHeaderInput {
   width: calc(100vw - #{$navbar-hidden-innerwidth});
-  height: 39px;
+  height: f.pxToRem(39px);
 
   @include mut.positioned-as(fixed, $left: 220px);
   @include mut.full-rounded(12px);
@@ -115,5 +109,73 @@ $navbar-hidden-innerwidth: 400px;
 
   &.active {
     transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 1024px) { 
+  .navBarContainer {
+    @include mut.rem-padded(15px, 0, 15px, 0);
+
+    .ant-input-affix-wrapper,
+    .loginBtn {
+      @include mut.hidden(); 
+    }
+    
+    .leftPartContainer {
+      svg {
+        transform: scale(0.8);
+      }
+    }
+
+    .rightPartContainer {
+      svg {
+        @include mut.rem-margined($right: 15px);
+
+        &:hover {
+          filter: invert(27%) sepia(26%) saturate(0%) hue-rotate(201deg) brightness(96%) contrast(86%);
+        }
+      }
+
+      .burgerMenuContainer {
+        @include mut.rem-margined($right: 15px);
+      }
+    }
+  }
+
+  .hiddenNavBar {
+    background: white;
+  }
+
+  .searchContainerMobile { 
+    @include mut.sized(100%, 70px);
+    @include mut.flexed($justify-content: space-between, $align-items: center);
+    @include mut.rem-padded(0, 15px, 15px, 15px);
+
+    position: fixed;
+    z-index: 6;
+    background-color: white;
+    transform: translateY(f.pxToRem(-200px));
+
+    &.active {
+      @include vnd.vendored(transition, 'transform 0.5s ease');
+      transform: translateY(f.pxToRem(78px));
+    }
+  
+    input {
+      @include mut.full-rounded(12px);
+      padding: 12px;
+      width: calc(100vw - f.pxToRem(100px));
+      height: f.pxToRem(45px);
+      margin-right: f.pxToRem(10px);
+      border: none;
+      background-color: c.$accented-gray-color;
+      color: c.$text-light-gray-color;
+    }
+
+    .searchButton {
+      @include mut.full-rounded(12px);
+      @include mut.sized(90px, 45px);
+      background-color: c.$accented-red-color;
+    }
   }
 }

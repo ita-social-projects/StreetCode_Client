@@ -78,7 +78,7 @@ const AudioPlayer = () => {
                         <img src={PlayBtn} alt="Програти" className="play" onClick={togglePlayPause} />
                     </div>
                 )}
-            <div>
+            <div className='progressBarWrapper'>
                 <input
                     ref={progressBar}
                     type="range"

@@ -8,7 +8,7 @@
     @include wr.main-page-block-wrapper();
 
     .sourcesContainer {
-        @include mut.sized(100%, 400px);
+        @include mut.sizedImportant(100%, 400px);
         margin-bottom: pxToRem(190px);
 
         .sourceContentContainer {
@@ -23,7 +23,7 @@
     }
 
     .sourcesSliderContainer {
-        @include mut.sized(1230px, 300px);
+        @include mut.sizedImportant(1230px, 300px);
     }
 
     .sliderClass {

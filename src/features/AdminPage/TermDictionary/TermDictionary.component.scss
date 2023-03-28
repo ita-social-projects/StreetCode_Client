@@ -1,0 +1,80 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 10% 90%;
+}
+
+.termDictionaryContainer {
+    padding-top: f.pxToRem(100px);
+    height: 100vh;
+    width: 100%;
+    margin: auto;
+
+    .dictionaryHeader{
+        display: grid;
+        grid-template-columns: 85% 15%;
+        margin-bottom: f.pxToRem(40px);
+        padding: 0 f.pxToRem(170px);
+    }
+    .termTable{
+        padding: 0 f.pxToRem(170px);
+    }
+}
+    
+.controls{
+    position: relative;
+    button{
+        border-radius: f.pxToRem(5px);
+        font-size: 12pt;
+        text-align: center;
+        height: max-content;
+        border: 0.025rem solid c.$dark-red-color;
+        color: c.$dark-red-color;
+        &:hover{
+            box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem c.$dark-red-color;
+            color: rgb(255, 255, 255);
+        }
+    }
+}
+
+.actionButton{
+    border: none;
+    background: transparent;
+
+    .actionIcon{
+        color: c.$dark-red-color;
+
+        &:hover{
+            scale: 1.35;
+            transition: all 0.125s;
+        }
+    }
+    .disableIcon{
+        color: lightgray;
+    }
+}
+
+.ant-table{
+    .ant-table-thead .ant-table-cell {
+        background-color: transparent;
+        //border-bottom: 0.125rem solid c.$dark-red-color;
+        #text{
+            color: white;
+        }
+    }
+    .ant-table-tbody > tr.ant-table-row:hover > td {
+        transform: none !important;
+    }
+}
+
+.ant-pagination-item{
+    border: 0.02rem solid c.$dark-red-color;
+    color: c.$dark-red-color;
+    a{
+        color: c.$dark-red-color;
+    }
+}

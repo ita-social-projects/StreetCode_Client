@@ -72,27 +72,26 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     return (
         <div className="card">
             <div className="leftSider">
-                <div className="leftSiderContentContainer">
-                    <div className="leftSiderContent">
-                        <BlockSlider
-                            arrows={false}
-                            slidesToShow={1}
-                            swipeOnClick
-                            infinite
-                            draggable={false}
-                        >
-                            {/* uncomment this to get images brom db, but make sure there are correct urls */}
-                            {/* {images?.map(({ url: { href }, alt }) => (
+                <div className="leftSiderContent">
+                    <BlockSlider
+                        arrows={false}
+                        slidesToShow={1}
+                        swipeOnClick
+                        infinite
+                        draggable={false}
+                    >
+                        {/* uncomment this to get images brom db, but make sure there are correct urls */}
+                        {/* {images?.map(({ url: { href }, alt }) => (
                                 <img
                                     src={href}
                                     className="streetcodeImg"
                                     alt={alt}
                                 />
                             ))} */}
-                            {cSlides}
-                        </BlockSlider>
-                    </div>
+                        {cSlides}
+                    </BlockSlider>
                 </div>
+
             </div>
             <div className="rightSider">
                 <div className="headerContainer">
@@ -115,9 +114,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
-                        <p className="teaserBlock">
-                            {streetcode?.teaser}
-                        </p>
+                        <div className="teaserBlockContainer">
+                            <p className="teaserBlock">
+                                 {streetcode?.teaser}
+                            </p>
+                          
+                        </div>
+
                         <div className="cardFooter">
                             {audio?.url?.href
                                 ? (

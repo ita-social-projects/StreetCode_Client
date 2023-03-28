@@ -6,6 +6,7 @@
     @include mut.sized(100%, 124px);
     @include mut.flex-centered();
     margin-bottom: f.pxToRem(26px);
+    // margin-left: f.pxToRem(139px);
 
     svg {
         z-index: 0;
@@ -27,13 +28,32 @@
     text-transform: uppercase;
 }
 
-@media screen and (max-width: 1024px) { 
+@media (max-width: 1350px) {
     .blockHeadingWrapper{
-        svg{
-            margin-left: f.pxToRem(-23px);
-        }
+        margin-left: f.pxToRem(28px);
     }
-    .blockHeadingText{
-        left: f.pxToRem(-95px);
+}
+
+@media (max-width: 768px) {
+    .blockHeadingWrapper{
+        margin-left: f.pxToRem(28px);
+    }
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+    }
+}
+
+@media (max-width: 480px) {
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+    }
+}
+
+@media (max-width: 280px) {
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 50px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 22px);
     }
 }

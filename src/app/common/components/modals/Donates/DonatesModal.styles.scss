@@ -5,7 +5,7 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .donatesModal {
-  @include mut.sized(1012px, 621px);
+  @include mut.sizedImportant(1012px, 621px);
 
   &.ant-modal {
     .ant-modal-content {
