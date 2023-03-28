@@ -29,7 +29,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     }
 
     .slick-list {
-      margin:f.pxToRem(15px) 0;
+      margin:f.pxToRem(0) !important;
     }
 
   .slick-track {
@@ -72,10 +72,4 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     }
   }
 }
-}
-
-@media screen and (max-width: 1024px) {
-  .timelineContentContainer .slick-list {
-      margin:f.pxToRem(0) !important;
-  }
 }

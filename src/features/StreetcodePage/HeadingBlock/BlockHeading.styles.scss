@@ -30,10 +30,10 @@
 @media screen and (max-width: 1024px) { 
     .blockHeadingWrapper{
         svg{
-            margin-left: -23px;
+            margin-left: f.pxToRem(-23px);
         }
     }
     .blockHeadingText{
-        left: -95px;
+        left: f.pxToRem(-95px);
     }
 }
