@@ -2,6 +2,8 @@
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+
 
 .interestingFactsContainer {
     @include mut.sized(90%, 848px);
@@ -76,54 +78,46 @@
 }
 @media screen
 and (max-width: 1024px){
-    .interestingFactsContainer {
-        @include mut.sized(90%, 680px); //умовно
-        @include mut.flex-centered($direction: column);
-    
-        .blockHeadingContainer {
-            margin-left: pxToRem(10px);
-        }
-    }
-    .interestingFactsSliderContainer {
-        // @include mut.sized(700px, 660px);
-        @include mut.sized(990px, 660px);
-    }
 
     .singleSlideContainer{
     
         padding-top:7.5%;
     
         .interestingFactSlide{
-            @include mut.sized(600px, 550px);
+            // @include mut.sized(600px, 550px);
+            @include mut.sized(45%);
             @include mut.full-rounded(20px);
     
             .slideImage {
-                @include mut.sized($height: 65%);
+                 @include mut.sized($height: 15%);
     
                 img {
-                    @include mut.sized($width: 100%, $height: 100%);
+                    @include mut.sized($width: 100%);
                 }
             }
             .slideText{
                 @include mut.sized($height: 40%);
     
                 .heading{
-                    font-size:22px;
+                    font-size: 22px;
                 }
     
                 .mainText{
+                    overflow: auto;
+                    height: 175px;
                     font-size: 16px;
-                    line-height: pxToRem(17px);
+                    line-height: pxToRem(21px);
                 }
             }
         }
     }
 }
+// FIX ME!
 @media screen
 and (max-width: 768px){
 
     .interestingFactsContainer {
-        @include mut.sized(90%, 680px); 
+        @include mut.sized(100%, 680px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
@@ -132,13 +126,13 @@ and (max-width: 768px){
     }
     
     .interestingFactsSliderContainer {
-        // @include mut.sized(700px, 660px);
-        @include mut.sized(760px, 660px);
+       // @include mut.sized(760px, 660px);
+        @include mut.sized(100%);
         
     }
     .heightContainer,
-.slick-list,
-.slick-track {
+    .slick-list,
+    .slick-track {
     height: 100%;
     // right: 5px;
 }
@@ -165,7 +159,8 @@ and (max-width: 768px){
     padding-top:7.5%;
 
     .interestingFactSlide{
-        @include mut.sized(500px, 450px);
+        // @include mut.sized(500px, 450px);
+        @include mut.sized(60%);
         @include mut.full-rounded(20px);
 
         .slideImage {
@@ -177,14 +172,30 @@ and (max-width: 768px){
         }
         .slideText{
             @include mut.sized($height: 40%);
-
             .heading{
                 font-size:20px;
+                @include mut.rem-padded(7px, 0px, 8px, 15px);
             }
 
             .mainText{
-                font-size: 12px;
-                line-height: pxToRem(17px);
+                overflow: auto;
+                height: 150px;
+                font-size: 15px;
+                line-height: pxToRem(21px);
+                margin-bottom: pxToEm(10px);
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    bottom: 0;
+                    left: 0;
+                    pointer-events: none;
+                    background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                    width: 100%;
+                    height: 1.7em;
+                  }
+
             }
         }
     }
@@ -223,7 +234,8 @@ and (max-width: 768px){
         padding-top:7.5%;
 
         .interestingFactSlide{
-            @include mut.sized(345px, 430px);
+            // @include mut.sized(345px, 430px);
+            @include mut.sized(30%);
             @include mut.full-rounded(20px);
     
             .slideImage {
@@ -234,22 +246,37 @@ and (max-width: 768px){
                 }
             }
             .slideText{
-                @include mut.sized($height: 40%);
-    
+                @include mut.sized($height: 20%);
+                @include mut.full-rounded(0px);
+
                 .heading{
-                    font-size:20px;
+                    font-size: 20px;
+                    @include mut.rem-padded(7px, 0px, 8px, 15px);
+
                 }
     
                 .mainText{
-                    font-size: 12px;
-                    line-height: pxToRem(17px);
+                    overflow: auto;
+                    height: 190px;
+                    font-size: 15px;
+                    line-height: pxToRem(21px);
+                    margin-bottom: pxToEm(10px);
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        z-index: 1;
+                        bottom: 0;
+                        left: 0;
+                        pointer-events: none;
+                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                        width: 100%;
+                        height: 1.7em;
+                    }
                 }
             }
         }
       
-       
-
-      }
+    }
 }
 
 
