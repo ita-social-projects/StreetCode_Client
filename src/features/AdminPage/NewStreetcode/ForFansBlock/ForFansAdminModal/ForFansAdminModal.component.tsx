@@ -1,4 +1,4 @@
-import './ForFansAdminModal.styles.scss';
+'./ForFansAdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
@@ -79,6 +79,7 @@ const ForFansModal = ({ sourceCategory, open, setOpen } : Props) => {
             <Form className="forFansForm" onFinish={onSuccesfulSubmit}>
                 <h2>Для фанатів</h2>
                     <p>Основний текст</p>
+                    <button id="sectionButton">Розділ</button>
                     <Editor
                         initialValue={forFansContent}
                         init={{
