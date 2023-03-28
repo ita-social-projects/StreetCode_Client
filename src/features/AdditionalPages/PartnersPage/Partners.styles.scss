@@ -1,0 +1,18 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.partnersContainer{
+    position: relative;
+    top: f.pxToRem(82px);
+    background: #fffcfc;
+    width: 100vw;
+    height: 100vh;
+    padding: f.pxToRem(30px) f.pxToRem(10px) f.pxToRem(10px) f.pxToRem(10px);
+    
+    .wrapper{
+        max-width: f.pxToRem(1200px);
+        width: 100%;
+        margin: 0 auto;
+    }
+}

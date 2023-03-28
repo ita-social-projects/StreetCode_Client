@@ -1,8 +1,8 @@
 import './ContactForm.styles.scss';
 
 import { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 
+// import ReCAPTCHA from 'react-google-recaptcha';
 import { Button, Form, Input } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
@@ -72,11 +72,11 @@ const ContactForm = () => {
                     />
                 </Form.Item>
                 <div className="captchaBlock ">
-                    <ReCAPTCHA
+                    {/* <ReCAPTCHA
                         className="required-input"
                         sitekey="6Le9bQ4lAAAAALGKSwNtxSvBz2SN33ciAOI3Anqp"
                         onChange={handleVerify}
-                    />
+                    /> */}
                 </div>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">

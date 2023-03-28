@@ -1,0 +1,47 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.partnersContainer{
+    .titleContainer{
+        margin-bottom: f.pxToRem(60px);
+    
+        .titleSmall{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
+            line-height: 14px;
+            color: #891F16;
+            text-align: right;
+            text-transform: uppercase;      
+        }
+    
+        .titleBig{
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
+            line-height: 127px;
+            color: #F4F4F4;
+        }
+        
+        .content{
+            position: relative;
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size:20px);
+            line-height: 23px;
+            color: #1D1F23;
+            margin: f.pxToRem(40px) 0 f.pxToRem(16px) 0; 
+            z-index: 1;
+
+            .logo{
+                position: absolute;
+                top: -150px;
+                right: 70px;
+                z-index: -1;
+            }
+        }
+
+        .subTitle{
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            line-height: 26px;
+            color:  #1D1F23; 
+        }
+    }
+}
+
+
