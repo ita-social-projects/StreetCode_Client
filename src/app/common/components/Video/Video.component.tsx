@@ -7,26 +7,6 @@ interface Props {
 }
 
 const VideoPlayer = ({ videoUrls, ...rest }: Props) => {
-    // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    //
-    // useEffect(() => {
-    //     function handleResize() {
-    //         setWindowWidth(window.innerWidth);
-    //     }
-    //
-    //     window.addEventListener('resize', handleResize);
-    //
-    //     return () => {
-    //         window.removeEventListener('resize', handleResize);
-    //     };
-    // }, []);
-    //
-    // let videoHeight = windowWidth > 768 ? 700 : 417; // Вычисляем высоту видео в зависимости от ширины окна
-    // if (windowWidth < 768 && windowWidth > 360) {
-    //     videoHeight = 417;
-    // } else if (windowWidth < 360) {
-    //     videoHeight = 190;
-    // }
     return (
         <div className="videoComponent">
             <div className="player-wrapper">
