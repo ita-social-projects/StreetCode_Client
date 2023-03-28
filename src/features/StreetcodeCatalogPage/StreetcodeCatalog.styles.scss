@@ -1,0 +1,34 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+$bgImg: '@assets/images/streetcode-card/background.png';
+
+.streetcodeCatalogWrapper{
+    // background-image: $bgImg;
+    padding: 100px 200px;
+    @include mut.bg-image($bgImg);
+    .streetcodeCatalogHeading{
+        font-family: 'Closer Text';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 96px;
+        line-height: 127px;
+        display: flex;
+        align-items: center;
+        color: #DDDDDD;
+    }
+    .steetcodeCatalogContainer{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: minmax(165px, 380px);
+        column-gap: 28px;
+        row-gap: 60px;
+    }
+}
+
+.testingDiv{
+    max-width: 278px;
+    max-height: 380px;
+    border-radius: 30px;
+    background-color: red;
+}
