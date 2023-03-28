@@ -24,6 +24,10 @@ $navbar-hidden-innerwidth: 400px;
     }
   }
 
+  input:focus {
+    border-color: whitesmoke !important;
+  }
+
   .ant-input,
   .ant-input-affix-wrapper {
     background-color: c.$accented-gray-color;
@@ -101,7 +105,7 @@ $navbar-hidden-innerwidth: 400px;
   width: calc(100vw - #{$navbar-hidden-innerwidth});
   height: f.pxToRem(39px);
 
-  @include mut.positioned-as(fixed, $left: 220px);
+  @include mut.positioned-as(fixed, $left: 240px);
   @include mut.full-rounded(12px);
 
   @include vnd.vendored(transition, 'transform 0.7s ease');
@@ -143,7 +147,7 @@ $navbar-hidden-innerwidth: 400px;
   }
 
   .hiddenNavBar {
-    background: white;
+    background: c.$pure-white-color;
   }
 
   .searchContainerMobile { 
@@ -153,7 +157,7 @@ $navbar-hidden-innerwidth: 400px;
 
     position: fixed;
     z-index: 6;
-    background-color: white;
+    background-color: c.$pure-white-color;
     transform: translateY(f.pxToRem(-200px));
 
     &.active {
@@ -167,9 +171,15 @@ $navbar-hidden-innerwidth: 400px;
       width: calc(100vw - f.pxToRem(100px));
       height: f.pxToRem(45px);
       margin-right: f.pxToRem(10px);
-      border: none;
       background-color: c.$accented-gray-color;
       color: c.$text-light-gray-color;
+
+      border: none;
+
+      .ant-input:focus {
+        border: none !important;
+        outline: none !important;
+      }
     }
 
     .searchButton {
