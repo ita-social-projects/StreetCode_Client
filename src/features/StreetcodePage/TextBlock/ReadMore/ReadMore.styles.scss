@@ -1,5 +1,6 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
 
 .readMore {
     color: c.$dark-red-color;
@@ -25,18 +26,19 @@
 
 .text{
     white-space: pre-line;
-    margin: 0 10px 0 10px;
+    margin-right: f.pxToRem(10px);
+    margin-left: f.pxToRem(10px);
 }
 
 @media screen and (max-width: 1024px){
     .text{
-        font-size: 16px;
-        margin: 10px;
-        line-height: 21px;
+        font-size: f.pxToRem(16px);
+        margin: f.pxToRem(10px);
+        line-height: f.pxToRem(21px);
     }
     .readMore{
-        font-size: 16px;
-        line-height: 18.75px;
+        font-size: f.pxToRem(16px);
+        line-height: f.pxToRem(18.75px);
     }
     .readMoreContainer {
         @include mut.rem-margined($top: 20px,$bottom: 20px);

@@ -2,7 +2,7 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 
 .react-player{
-  max-width: 1200px;
+  max-width: f.pxToRem(1200px);
   @include mut.full-rounded(50px);
 }
 .player-wrapper{
