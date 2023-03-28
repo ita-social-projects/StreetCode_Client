@@ -1,26 +1,22 @@
-// import './InterestingFactsAdminItem.style.scss';
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
-import { Fact } from '@models/streetcode/text-contents.model';
+import './ForFansAdminItem.style.scss';
+import { SourceCategory } from '@/models/sources/sources.model';
 import useMobx from '@stores/root-store';
+import { useState } from 'react';
+import ForFansAdminModal from '../ForFansAdminModal/ForFansAdminModal.component';
 
 interface Props {
-    fact: Fact;
+    SourceCategory: SourceCategory;
 }
-//  const { modalStore: { setModal } } = useMobx();
 
-//  const InterestingFactItem = ({
-//     fact: { factContent, title, id },
-// }: Props) => {
-//     const { modalStore: { setModal } } = useMobx();
-// )
+const ForFansAdminItem = ({ SourceCategory: { title, id } } : Props) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-const ForFansItem = ({ fact: { title, id } } : Props) => {
-    const { modalStore: { setModal } } = useMobx();
     return (
         <div className="forFansItem">
             <div className="item">
                 <div className="faIcon">
-                    <FaPencilAlt onClick={() => setModal('editForFans')} />
+                    <FaPencilAlt onClick={() => setIsModalOpen(true)} />
                 </div>
                 <p>
                     {title}
@@ -29,8 +25,10 @@ const ForFansItem = ({ fact: { title, id } } : Props) => {
                     <FaRegTrashAlt />
                 </div>
             </div>
+            {/* NOTE: Add for fans here */}
+            <ForFansAdminModal SourceCategory={} open={isModalOpen} setOpen={setIsModalOpen} />
         </div>
     );
 };
 
-export default ForFansItem;
+export default ForFansAdminItem;

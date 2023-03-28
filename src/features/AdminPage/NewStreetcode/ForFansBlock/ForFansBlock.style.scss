@@ -4,49 +4,35 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@features/AdminPage/NewStreetcode/ForFansBlock/ForFansAdminItem/ForFansAdminItem.style.scss" as item;
+
 .navBarContainer{
     position: sticky !important;
 }
 .forFansBlock {
   overflow: auto;  
   @include mut.sized(61%, 215px);
-// @include mut.sized(60%, 104px);
   @include mut.flex-centered($direction: column);
   position: block;
 
-    .factsHeader{
-        @include mut.sized($width: 100%, $height: 60px);
-        font-size: large;
-        padding: 10px;
-        align-items: left;
-    }
+  .forFansHeader{
+    @include mut.sized($width: 100%, $height: 60px);
+    font-size: large;
+    padding: 10px;
+    align-items: left;
+}
 
-    .factsContainer{
-     //   border: 1px solid black;
-    //    justify-content: center ;
-        //left: 100px;
-        // @include mut.sized($width: 85%, $height: 60%);
+    .forFansContainer{
         @include mut.sized($width: 100%, $height: 100%);
         display: flex;
         gap: 5px;
-
         overflow: scroll;
         flex-wrap: wrap;
-
         flex-basis: auto;
-
-        
         justify-content: flex-start;
-        // &:nth-child(2n) {
-        //   //      display: block;
-        //      clear: both;
-        // }
-
         overflow-x: hidden;
 
  &::-webkit-scrollbar {
     width: .765rem;
-  //  height: 4rem;
   }
 
   &::-webkit-scrollbar-thumb,
@@ -62,7 +48,7 @@
     background: c.$accented-gray-color;
   }
 
-        .addForFans{
+        .addNewCategory{
             justify-content: center;
             justify-items: center;
             display: block;
