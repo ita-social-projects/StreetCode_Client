@@ -17,6 +17,7 @@ import { Button } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 import Image from '@/models/media/image.model';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
   
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -46,26 +47,10 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-/* delete this when started using db images */
-const cSlides = [
-    <img
-        src={Grushevskiy}
-        className="streetcodeImg"
-        alt="Hrushevskiy"
-    />,
-    <img
-        src={Hrushevskiy}
-        className="streetcodeImg"
-        alt="Hrushevskiy"
-    />,
-];
-
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = useRouteId();
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-
-
 
     const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
     const images = value as Image[];
@@ -82,15 +67,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         infinite
                         draggable={false}
                     >
-                        {/* uncomment this to get images brom db, but make sure there are correct urls */}
-                        {/* {images?.map(({ url: { href }, alt }) => (
+                        {images?.map(({ base64, mimeType, alt }) => (
                                 <img
-                                    src={href}
+                                    src={base64ToUrl(base64, mimeType)}
                                     className="streetcodeImg"
                                     alt={alt}
                                 />
-                            ))} */}
-                        {cSlides}
+                            ))}
                     </BlockSlider>
                 </div>
 
