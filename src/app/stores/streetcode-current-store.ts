@@ -4,15 +4,14 @@ import StreetcodesApi from '@api/streetcode/streetcodes.api';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 export default class StreetcodeStore {
-    public currentStreetcode = observable(new Map<number, Streetcode>());
+    public currentStreetcode = 0;
 
     constructor() {
         makeAutoObservable(this);
     }
 
     public set setStreetCode(streetcode: Streetcode) {
-        this.currentStreetcode.clear();
-        this.currentStreetcode.set(streetcode.id, streetcode);
+        this.currentStreetcode = streetcode.id;
     }
 
     public setCurrentStreetcodeId = async (url: string) => {
@@ -28,6 +27,6 @@ export default class StreetcodeStore {
     };
 
     public get getStreetCodeId() {
-        return Array.from(this.currentStreetcode.values()).at(0)?.id;
+        return this.currentStreetcode;
     }
 }
