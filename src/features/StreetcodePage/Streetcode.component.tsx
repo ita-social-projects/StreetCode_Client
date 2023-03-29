@@ -61,7 +61,7 @@ const StreetcodeContent = () => {
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            {/* <PartnersBlock /> */}
+            <PartnersBlock />
             <TickerBlock />
             <div className="stickies">
                 <ScrollToTopBtn />
