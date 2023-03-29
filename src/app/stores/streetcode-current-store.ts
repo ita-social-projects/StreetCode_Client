@@ -4,7 +4,7 @@ import StreetcodesApi from '@api/streetcode/streetcodes.api';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 export default class StreetcodeStore {
-    public currentStreetcode = 0;
+    public currentStreetcode = -1;
 
     constructor() {
         makeAutoObservable(this);

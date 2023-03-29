@@ -19,7 +19,7 @@ const TextComponent = () => {
     const { getByStreetcodeId: getText } = textsApi;
 
     const { value } = useAsync(
-        () => Promise.all([getText(getStreetCodeId ?? 1), getVideo(getStreetCodeId ?? 1)]),
+        () => Promise.all([getText(getStreetCodeId), getVideo(getStreetCodeId)]),
         [getStreetCodeId],
     );
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];

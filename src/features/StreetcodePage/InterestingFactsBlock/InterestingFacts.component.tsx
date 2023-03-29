@@ -14,7 +14,7 @@ const InterestingFactsComponent = () => {
     const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
 
     useAsync(async () => {
-        fetchFactsByStreetcodeId(getStreetCodeId ?? 1);
+        fetchFactsByStreetcodeId(getStreetCodeId);
     }, [getStreetCodeId, streetcodeStore]);
 
     const sliderArray = getFactArray.length === 3

@@ -14,7 +14,7 @@ const TimelineBlock = () => {
     const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
 
     useAsync(
-        () => fetchTimelineItemsByStreetcodeId(getStreetCodeId ?? 1),
+        () => fetchTimelineItemsByStreetcodeId(getStreetCodeId),
         [getStreetCodeId],
     );
 

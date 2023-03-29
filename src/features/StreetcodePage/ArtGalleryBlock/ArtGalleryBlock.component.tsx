@@ -28,7 +28,7 @@ const ArtGalleryBlock = () => {
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
 
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId ?? 1),
+        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
         [getStreetCodeId],
     );
 

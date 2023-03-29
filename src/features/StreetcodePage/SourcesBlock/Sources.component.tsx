@@ -13,7 +13,7 @@ const SourcesComponent = () => {
     const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
 
     useAsync(
-        () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId ?? 1),
+        () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId),
         [getStreetCodeId],
     );
 

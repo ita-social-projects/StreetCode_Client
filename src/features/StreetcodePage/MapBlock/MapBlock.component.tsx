@@ -19,7 +19,7 @@ const MapBlock = () => {
     const toponyms = useAsync(() => ToponymsApi
         .getAll(), []).value as Toponym[];
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
-        .getByStreetcodeId(getStreetCodeId ?? 1), [getStreetCodeId]).value as StreetcodeCoordinate[];
+        .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as StreetcodeCoordinate[];
 
     return (
         <div className="mapBlockContainer">

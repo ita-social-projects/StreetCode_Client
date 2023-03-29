@@ -12,7 +12,6 @@ const PartnersComponent = () => {
 
     useAsync(
         () => Promise.all([
-            console.log(getStreetCodeId),
             fetchPartnersByStreetcodeId(getStreetCodeId),
         ]),
         [getStreetCodeId],

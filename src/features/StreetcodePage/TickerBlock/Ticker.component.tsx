@@ -18,7 +18,7 @@ const TickerComponent = () => {
     const { getSubtitlesByStreetcodeId } = subtitlesApi;
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
 
-    const { value } = useAsync(() => getSubtitlesByStreetcodeId(getStreetCodeId ?? 1), [getStreetCodeId]);
+    const { value } = useAsync(() => getSubtitlesByStreetcodeId(getStreetCodeId), [getStreetCodeId]);
     const subtitles = value as Subtitle[];
 
     const subtitleMap = useMemo(() => createSubtitleString(subtitles), [subtitles]);
