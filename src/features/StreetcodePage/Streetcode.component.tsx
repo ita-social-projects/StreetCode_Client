@@ -51,7 +51,7 @@ const StreetcodeContent = () => {
                     setActiveBlock={setActiveBlock}
                 />
                 <TextBlock />
-                {/* <InterestingFactsBlock /> */}
+                <InterestingFactsBlock />
                 <TimelineBlock />
                 <MapBlock />
                 {/* <ArtGalleryBlock /> */}
