@@ -11,7 +11,6 @@ const AdminPage = () => (
     // <RemoveScroll>
         <div className="adminPageContainer">
             <StreetcodesTable/>
-            <InterestingFactsBlock />
             <PageBar/>
         </div>
     // </RemoveScroll> 
