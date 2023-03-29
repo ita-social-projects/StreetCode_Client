@@ -1,12 +1,13 @@
 import './RelatedFigures.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import BlockSlider from '@features/SlickSlider/RelatedFiguresSlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
+
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 interface Props {
@@ -15,26 +16,24 @@ interface Props {
 
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useMobx();
-    const { relatedFiguresStore, tagsStore } = useMobx();
+    const { relatedFiguresStore, tagsStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
     const { fetchTagByStreetcodeId } = tagsStore;
-
-    const streetcodeId = useRouteId();
 
     const windowsize = useWindowSize();
 
     const handleClick = () => {
         if (windowsize.width > 1024) {
-            setModal('relatedFigures', streetcodeId, true)
+            setModal('relatedFigures');
         }
-    }
+    };
 
     useAsync(
         () => Promise.all([
-            fetchRelatedFiguresByStreetcodeId(streetcodeId),
-            fetchTagByStreetcodeId(streetcodeId),
+            fetchRelatedFiguresByStreetcodeId(getStreetCodeId),
+            fetchTagByStreetcodeId(getStreetCodeId),
         ]),
-        [streetcodeId],
+        [getStreetCodeId],
     );
 
     const sliderItems = getRelatedFiguresArray.map((figure) => (
@@ -48,14 +47,14 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     ));
 
     const sliderProps = {
-        className: "heightContainer",
+        className: 'heightContainer',
         infinite: windowsize.width > 1024,
         swipe: windowsize.width <= 1024,
         dots: windowsize.width <= 1024,
         variableWidth: windowsize.width <= 1024,
         swipeOnClick: false,
-        slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width <= 480 ? 2 : undefined,
-        slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width <= 480 ? 1 : 3,
+        slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width < 480 ? 2 : undefined,
+        slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width < 480 ? 1 : 3,
         rows: windowsize.width <= 480 ? 2 : 1
     }; 
 
@@ -73,13 +72,13 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
-                <BlockSlider {...sliderProps}>   
-                    {sliderItems}
-                </BlockSlider>
+                    <BlockSlider {...sliderProps}>
+                        {sliderItems}
+                    </BlockSlider>
                 </div>
             </div>
         </div>
     );
 };
 
-export default RelatedFiguresComponent;
+export default observer(RelatedFiguresComponent);

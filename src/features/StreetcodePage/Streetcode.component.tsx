@@ -18,10 +18,17 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+// eslint-disable-next-line import/extensions
+import useMobx from '@/app/stores/root-store';
 
 const StreetcodeContent = () => {
+    const streetcodeUrl = useRouteUrl();
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
+    const { streetcodeStore } = useMobx();
+    const { getStreetCodeId, setCurrentStreetcodeId } = streetcodeStore;
     const isSticky = () => {
         const buttonDonate = document.querySelector('.donateBtnContainer');
         const buttonUp = document.querySelector('.scrollToTopBtnContainer');
@@ -42,6 +49,10 @@ const StreetcodeContent = () => {
             window.removeEventListener('scroll', isSticky);
         };
     }, []);
+
+    useEffect(() => {
+        setCurrentStreetcodeId(streetcodeUrl);
+    }, [streetcodeUrl]);
 
     return (
         <div className="streetcodeContainer">

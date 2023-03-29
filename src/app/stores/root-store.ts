@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { HistoricalContext } from '@models/timeline/chronology.model';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
@@ -10,6 +11,7 @@ import RelatedFiguresStore from '@stores/related-figures-store';
 import RelatedTermsStore from '@stores/related-terms-store';
 import SourcesStore from '@stores/sources-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
+import StreetcodeStore from '@stores/streetcode-current-store';
 import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
@@ -28,6 +30,7 @@ interface Store {
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
     streetcodeArtStore: StreetcodeArtStore,
+    streetcodeStore: StreetcodeStore,
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
@@ -50,6 +53,7 @@ export const store: Store = {
     relatedFiguresStore: new RelatedFiguresStore(),
     checkboxStore: new CheckBoxStore(),
     relatedTermStore: new RelatedTermsStore(),
+    streetcodeStore: new StreetcodeStore(),
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
 };
