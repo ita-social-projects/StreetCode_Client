@@ -51,17 +51,17 @@ const StreetcodeContent = () => {
                     setActiveBlock={setActiveBlock}
                 />
                 <TextBlock />
-                <InterestingFactsBlock />
+                {/* <InterestingFactsBlock /> */}
                 <TimelineBlock />
                 <MapBlock />
-                <ArtGalleryBlock />
+                {/* <ArtGalleryBlock /> */}
                 <RelatedFiguresBlock
                     setActiveTagId={setActiveTagId}
                 />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersBlock />
+            {/* <PartnersBlock /> */}
             <TickerBlock />
             <div className="stickies">
                 <ScrollToTopBtn />
