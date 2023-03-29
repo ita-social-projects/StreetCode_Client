@@ -6,10 +6,10 @@ import useMobx from '@stores/root-store';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
-// const testArray = [1, 2, 3, 4, 5, 6, 7, 8];
+import StreetcodeCatalogItem from './StreetcodeCatalogItem/StreetcodeCatalogItem.component';
 
 const StreetcodeCatalog = () => {
-    const { streetcodeCatalogStore, imagesStore } = useMobx();
+    const { streetcodeCatalogStore } = useMobx();
     const { fetchStreetcodes, getCatalogStreetcodesArray } = streetcodeCatalogStore;
 
     useAsync(() => fetchStreetcodes, []);
@@ -21,7 +21,8 @@ const StreetcodeCatalog = () => {
                 <div className="steetcodeCatalogContainer">
                     {
                         getCatalogStreetcodesArray.map(
-                            (streetcode) => <div className="testingDiv">{streetcode.id}</div>)
+                            (streetcode) => <StreetcodeCatalogItem streetcode={streetcode} />,
+                        )
                     }
                 </div>
             </div>

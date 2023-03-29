@@ -1,10 +1,11 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodesApi from '@api/streetcode/streetcodes.api';
 
-import Streetcode, { StreetcodeCatalogItem } from '@/models/streetcode/streetcode-types.model';
+import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
+import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
 
 export default class StreetcodesCatalogStore {
-    public streetcodes = new Array<StreetcodeCatalogItem>();
+    public streetcodes = new Array<StreetcodeCatalogRecord>();
 
     constructor() {
         makeAutoObservable(this);
@@ -12,16 +13,18 @@ export default class StreetcodesCatalogStore {
 
     public fetchStreetcodes = async () => {
         try {
-            const array = await StreetcodesApi.getAll(undefined);
+            const array = await StreetcodesApi.getAll(
+                { Page: null, Amount: null, Sort: null, Title: null, Filter: null } as GetAllStreetcodesRequest,
+            );
             console.log(array);
-            this.streetcodes = array.map((streetcode) => (
+            this.streetcodes = array.streetcodes.map((streetcode) => (
                 {
-                    id: streetcode,
+                    id: streetcode.id,
                     alias: streetcode.alias,
                     title: streetcode.title,
                     imgUrl: undefined,
-                    url: streetcode.url,
-                } as StreetcodeCatalogItem));
+                    url: streetcode.transliterationUrl,
+                } as StreetcodeCatalogRecord));
         } catch (error) {
             console.log(error);
         }

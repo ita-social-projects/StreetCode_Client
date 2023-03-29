@@ -27,7 +27,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     status: Status;
     text: string;
     audio?: Audio | undefined;
-    url: string;
+    transliterationUrl: string;
     // coordinate?: StreetcodeCoordinate | undefined;
     transactionLink?: TransactionLink | undefined;
     toponyms: Toponym[];
@@ -73,7 +73,7 @@ export interface StreetcodeShort {
     title: string;
 }
 
-export interface StreetcodeCatalogItem {
+export interface StreetcodeCatalogRecord {
     id: number,
     title: string,
     url: string,

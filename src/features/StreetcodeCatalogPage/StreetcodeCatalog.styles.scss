@@ -4,8 +4,7 @@
 $bgImg: '@assets/images/streetcode-card/background.png';
 
 .streetcodeCatalogWrapper{
-    // background-image: $bgImg;
-    padding: 100px 200px;
+    padding: 100px 10%;
     @include mut.bg-image($bgImg);
     .streetcodeCatalogHeading{
         font-family: 'Closer Text';
@@ -24,11 +23,4 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         column-gap: 28px;
         row-gap: 60px;
     }
-}
-
-.testingDiv{
-    max-width: 278px;
-    max-height: 380px;
-    border-radius: 30px;
-    background-color: red;
 }
