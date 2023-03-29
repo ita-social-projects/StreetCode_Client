@@ -1,21 +1,17 @@
 import './InterestingFactsAdminModal.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
 
 import { Button, Form, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
-interface Props {
-    open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-}
-
-const InterestingFactsModal = ({ open, setOpen } : Props) => {
+const InterestingFactsModal = () => {
+    const { modalStore } = useMobx();
+    const { setModal, modalsState: { adminFacts } } = modalStore;
     const [factContent, setFactContent] = useState('');
 
     const characterCount = factContent.length | 0;
@@ -23,8 +19,8 @@ const InterestingFactsModal = ({ open, setOpen } : Props) => {
     return (
         <Modal
             className="interestingFactsAdminModal"
-            open={open}
-            onCancel={() => setOpen(false)}
+            open={adminFacts.isOpen}
+            onCancel={() => setModal('adminFacts')}
             footer={null}
             maskClosable
             centered

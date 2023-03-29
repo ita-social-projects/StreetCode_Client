@@ -5,14 +5,12 @@ import useMobx from '@stores/root-store';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
-     import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component'; // InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
-     import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
-import { useState } from 'react';
+import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
 const InterestingFactsBlock = () => {
+    // Nata
     const streetcodeId = 2;// useRouteId();
-    const { factsStore: { fetchFactsByStreetcodeId, getFactArray } } = useMobx();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { factsStore: { fetchFactsByStreetcodeId, getFactArray }, modalStore: { setModal } } = useMobx();
 
     useAsync(
         () => fetchFactsByStreetcodeId(streetcodeId),
@@ -26,15 +24,13 @@ const InterestingFactsBlock = () => {
                 </h2>
             </div>
             <div className="factsContainer">
-                <button className="addWowFact" onClick={() => setIsModalOpen(true)}>+</button>
+                <button className="addWowFact" onClick={() => setModal('adminFacts')}>+</button>
                 {getFactArray.map((fact) => (
                     <InterestingFactAdminItem
                         fact={fact}
                     />
                 ))}
             </div>
-            <InterestingFactsAdminModal open={isModalOpen} setOpen={setIsModalOpen} />
-
         </div>
     );
 };
