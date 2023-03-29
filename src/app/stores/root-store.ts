@@ -1,3 +1,5 @@
+import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
+import { HistoricalContext } from '@models/timeline/chronology.model';
 import { createContext, useContext } from 'react';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
@@ -29,6 +31,7 @@ interface Store {
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
+    historicalContextStore: HistoricalContextStore
 }
 
 export const store: Store = {
@@ -46,6 +49,7 @@ export const store: Store = {
     relatedFiguresStore: new RelatedFiguresStore(),
     checkboxStore: new CheckBoxStore(),
     relatedTermStore: new RelatedTermsStore(),
+    historicalContextStore: new HistoricalContextStore(),
 };
 
 const StoreContext = createContext(store);

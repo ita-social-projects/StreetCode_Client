@@ -7,16 +7,18 @@
 .headerItem{
     background-color: transparent;
     border: none;
+    text-align: left;
 }
 
-.headerItem:hover {
-    transform: scale(1.1);
+.headerItem:hover {    
     cursor: pointer;
+    // transform: scale(1.1); // uncomment if PO decides to return the animation
 
-    &:after {
-      transform-origin: bottom left;
-      transform: scaleX(1);
-    }
+    // &:after {
+    //   transform-origin: bottom left;
+    //   transform: scaleX(1);
+    // }
+    color: c.$dark-red-color;
 }
 
 .headerItem:after {
@@ -26,8 +28,8 @@
     @include mut.sized(100%, 2px);
     @include mut.positioned-as(absolute, $bottom: 0, $left: 0);
 
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    @include vnd.vendored(transition, 'transform .2s ease');
+    // transform: scaleX(0);
+    // transform-origin: bottom right;
+    // @include vnd.vendored(transition, 'transform .2s ease');
 }
 

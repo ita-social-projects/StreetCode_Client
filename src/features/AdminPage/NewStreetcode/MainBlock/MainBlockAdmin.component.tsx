@@ -127,7 +127,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                     rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
                     name="streetcodeNumber"
                 >
-                    <InputNumber min={0} max={1000} />
+                    <InputNumber min={0} max={10000} />
                 </Form.Item>
                 <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
             </div>
@@ -141,10 +141,17 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                         <Input
                             ref={surname}
                             onChange={onNameSurnameChange}
+                            maxLength={50}
+                            showCount
                         />
                     </Form.Item>
                     <Form.Item label="Ім'я" name="name" className="people-title-input">
-                        <Input ref={name} onChange={onNameSurnameChange} />
+                        <Input
+                            ref={name}
+                            onChange={onNameSurnameChange}
+                            maxLength={50}
+                            showCount
+                        />
                     </Form.Item>
                 </Input.Group>
             )
@@ -156,11 +163,11 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
             >
-                <Input />
+                <Input maxLength={100} showCount pattern="/^[a-z-]+$/gm" />
             </Form.Item>
 
             <Form.Item name="alias" label="Короткий опис" className="maincard-item">
-                <Input />
+                <Input maxLength={30} showCount />
             </Form.Item>
             <Form.Item
                 label="URL"
@@ -168,7 +175,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
             >
-                <Input />
+                <Input maxLength={100} showCount />
             </Form.Item>
 
             <DatePickerPart
@@ -239,7 +246,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-/450
+                        /450
                     </p>
                 </div>
             </Form.Item>

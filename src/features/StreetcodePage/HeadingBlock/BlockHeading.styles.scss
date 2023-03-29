@@ -6,6 +6,7 @@
     @include mut.sized(100%, 124px);
     @include mut.flex-centered();
     margin-bottom: f.pxToRem(26px);
+    // margin-left: f.pxToRem(139px);
 
     svg {
         z-index: 0;
@@ -27,31 +28,32 @@
     text-transform: uppercase;
 }
 
-@media screen and (max-width: 768px){
-    .blockHeadingText{
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
-        margin-left: f.pxToRem(-35px);
-    }
-    .blockHeadingWrapper {
-        margin-bottom: f.pxToRem(0px);
-        svg {
-            margin-left: f.pxToRem(-15px);
-        }
-    }
-    .blockHeadingContainer{
-        @include mut.flexed($justify-content: flex-start);
+@media (max-width: 1350px) {
+    .blockHeadingWrapper{
+        margin-left: f.pxToRem(28px);
     }
 }
-@media screen and (max-width: 360px){
-    .blockHeadingText{
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
-        margin-left: f.pxToRem(0px);
+
+@media (max-width: 768px) {
+    .blockHeadingWrapper{
+        margin-left: f.pxToRem(28px);
     }
-    .blockHeadingContainer {
-        margin-bottom: f.pxToRem(0px);
-        svg {
-            margin-left: f.pxToRem(-20px);
-            display: block;
-        }
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+    }
+}
+
+@media (max-width: 480px) {
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+    }
+}
+
+@media (max-width: 280px) {
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 50px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 22px);
     }
 }

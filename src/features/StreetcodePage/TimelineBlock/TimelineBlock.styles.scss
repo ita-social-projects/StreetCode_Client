@@ -47,7 +47,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       border-style: solid ;
       border-color: c.$timeline-reel-color;
       @include mut.bg-image($timelineSquareImg);
-      background-size:f.pxToRem(604px) f.pxToRem(365px) ;
+      background-size:f.pxToRem(605px) f.pxToRem(365px) ;
       background-position: center;
       
 
@@ -63,7 +63,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     // .slick-current + .slick-slide {
     .slick-current {
       border-radius: 40px;
-      box-shadow: inset  0px 0px 2px 6px c.$pure-white-color;
+      box-shadow: inset  0px 0px 0px 6px c.$pure-white-color;
 
       .timelineItemContent {
         margin-top: calc(1.5rem - 4px);
