@@ -19,7 +19,8 @@ const RelatedFiguresItemModal = () => {
     useAsync(
         () => {
         if (relation)
-            fetchImage(relation?.imageId)
+            fetchImage(relation?.imageId);
+            console.log('Opened modal');
         },
         [relation?.imageId],
     );

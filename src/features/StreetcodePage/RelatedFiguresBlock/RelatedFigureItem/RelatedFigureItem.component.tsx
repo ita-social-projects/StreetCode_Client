@@ -5,7 +5,6 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
 interface Props {
     relatedFigure: RelatedFigure;
@@ -15,9 +14,7 @@ interface Props {
 }
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
-    const {
-        id, imageId, title, tags, alias,
-    } = relatedFigure;
+    const { id, imageId, title, tags, alias } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
@@ -29,8 +26,9 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
     );
 
     const handleClick = () => {
-        if (windowsize.width <= 480) {
+        if (windowsize.width <= 1024) {
             setModal('relatedFigureItem', id, true);
+            console.log('Tried to open modal');
         }
     }
 
