@@ -21,6 +21,14 @@ export default class PartnersStore {
         return Array.from(this.PartnerMap.values());
     }
 
+    public getAll = async () => {
+        try {
+            return await partnersApi.getAll();
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap = await partnersApi.getByStreetcodeId(streetcodeId);

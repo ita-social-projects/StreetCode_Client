@@ -4,7 +4,7 @@
 
 .partnersContainer{
     .titleContainer{
-        margin-bottom: f.pxToRem(60px);
+        margin-bottom: f.pxToRem(24px);
     
         .titleSmall{
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
@@ -34,12 +34,6 @@
                 right: 70px;
                 z-index: -1;
             }
-        }
-
-        .subTitle{
-            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-            line-height: 26px;
-            color:  #1D1F23; 
         }
     }
 }
