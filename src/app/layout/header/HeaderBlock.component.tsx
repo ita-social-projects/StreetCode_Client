@@ -70,7 +70,7 @@ const HeaderBlock = () => {
                                 style={isPageDimmed ? { zIndex: '-1' } : undefined}
                             />
                         )}
-                        {windowSize.width < 1024 && (
+                        {windowSize.width <= 1024 && (
                             <MagnifyingGlassMobile
                                 viewBox="0 -1 25 25"
                                 onClick={onMagnifyingGlassClick}
