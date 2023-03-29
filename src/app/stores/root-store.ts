@@ -1,9 +1,8 @@
-import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
-import { HistoricalContext } from '@models/timeline/chronology.model';
 import { createContext, useContext } from 'react';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
+import { HistoricalContextStore } from '@stores/historicalcontext-store';
 import ImageStore from '@stores/image-store';
 import ModalStore from '@stores/modal-store';
 import PartnersStore from '@stores/partners-store';
@@ -11,6 +10,7 @@ import RelatedFiguresStore from '@stores/related-figures-store';
 import RelatedTermsStore from '@stores/related-terms-store';
 import SourcesStore from '@stores/sources-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
+import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
@@ -31,7 +31,8 @@ interface Store {
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
-    historicalContextStore: HistoricalContextStore
+    historicalContextStore: HistoricalContextStore,
+    streetcodeCatalogStore: StreetcodesCatalogStore,
 }
 
 export const store: Store = {
@@ -50,6 +51,7 @@ export const store: Store = {
     checkboxStore: new CheckBoxStore(),
     relatedTermStore: new RelatedTermsStore(),
     historicalContextStore: new HistoricalContextStore(),
+    streetcodeCatalogStore: new StreetcodesCatalogStore(),
 };
 
 const StoreContext = createContext(store);

@@ -1,33 +1,28 @@
 import './StreetcodeCatalog.styles.scss';
 
-import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import Footer from '@layout/footer/Footer.component';
-import useMobx from '@/app/stores/root-store';
+import useMobx from '@stores/root-store';
 
-interface MapType {
-    id: number,
-    url: string,
-    title: string,
-    alter: string,
-    imgUrl: string,
-}
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+
+// const testArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const StreetcodeCatalog = () => {
-    const [active, setActive] = useState();
-    const {} = useMobx();
+    const { streetcodeCatalogStore, imagesStore } = useMobx();
+    const { fetchStreetcodes, getCatalogStreetcodesArray } = streetcodeCatalogStore;
+
+    useAsync(() => fetchStreetcodes, []);
+
     return (
         <div>
             <div className="streetcodeCatalogWrapper">
                 <h1 className="streetcodeCatalogHeading">Каталог</h1>
                 <div className="steetcodeCatalogContainer">
-                    <div className="testingDiv" />
-                    <div className="testingDiv" />
-                    <div className="testingDiv" />
-                    <div className="testingDiv" />
-                    <div className="testingDiv" />
-                    <div className="testingDiv" />
-                    <div className="testingDiv" />
-                    <div className="testingDiv" />
+                    {
+                        getCatalogStreetcodesArray.map(
+                            (streetcode) => <div className="testingDiv">{streetcode.id}</div>)
+                    }
                 </div>
             </div>
             <Footer />
@@ -35,4 +30,4 @@ const StreetcodeCatalog = () => {
     );
 };
 
-export default StreetcodeCatalog;
+export default observer(StreetcodeCatalog);
