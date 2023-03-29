@@ -4,22 +4,25 @@ import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
 import Streetcode from "@/models/streetcode/streetcode-types.model";
 import Table from "antd/es/table/Table";
 import { useEffect, useState } from "react";
-import GetAllStreetcodes from '@/models/streetcode/getAllStreetcodes.request';
+import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
 import { DeleteOutlined, FormOutlined, RollbackOutlined } from '@ant-design/icons';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 import SearchMenu from './SearchMenu.component';
 import { formatDate } from './FormatDateAlgorithm';
 import { InputNumber, Pagination } from 'antd';
+import GetAllStreetcodesResponse from '@/models/streetcode/getAllStreetcodes.response';
 
 const StreetcodesTable = () => {
+
+    const [currentPagesAmount, setCurrentPagesAmount] = useState<number>(1);
 
     const [titleRequest, setTitleRequest] = useState<string|null>(null);
     const [statusRequest, setStatusRequest] = useState<string|null>(null);
     const [pageRequest, setPageRequest] = useState<number|null>(null);
     const [amountRequest, setAmountRequest] = useState<number|null>(null);
 
-    const requestDefault: GetAllStreetcodes = {
+    const requestDefault: GetAllStreetcodesRequest = {
         Page: null,
         Amount: null,
         Title: null,
@@ -27,7 +30,7 @@ const StreetcodesTable = () => {
         Filter: null
     }
 
-    const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodes>(requestDefault);
+    const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
 
     const setRequest = () => {
         console.log(`Page:${pageRequest}\nAmount:${amountRequest}\nTitle:${titleRequest}\nSort:${null}\nFilter:Status:${statusRequest}\n`);
@@ -116,14 +119,14 @@ const StreetcodesTable = () => {
 
     useEffect(() => {
 
-        let streets = StreetcodesApi.getAll(requestGetAll);
+        let getAllStreetcodesResponse = StreetcodesApi.getAll(requestGetAll);
 
         let mapedStreetCodes: MapedStreetCode[] = [];
 
-        streets.then(streets => {
-            streets?.map((streetcode) => {
+        Promise.all([getAllStreetcodesResponse]).then(response => {
+            response[0].streetcodes?.map((streetcode) => {
                     let currentStatus: string = "";
-                    
+
                     switch(streetcode.status){
                         case 0: {currentStatus = "Чернетка"; break;}
                         case 1: {currentStatus = "Опублікований"; break;}
@@ -142,6 +145,7 @@ const StreetcodesTable = () => {
                 });
                 
                 setMapedStreetCodes(mapedStreetCodes)
+                setCurrentPagesAmount(response[0].pages)
         })
     }, [requestGetAll]); 
 
@@ -170,7 +174,7 @@ const StreetcodesTable = () => {
                             }}/>
                     </div>
                     <div className='underTableElement'>
-                        <Pagination className='pagenationElement' simple defaultCurrent={1} total={50} onChange={(value: any) => {
+                        <Pagination className='pagenationElement' simple defaultCurrent={1} total={currentPagesAmount*10} onChange={(value: any) => {
                             setPageRequest(value);
                             setRequest();
                         }}/>
