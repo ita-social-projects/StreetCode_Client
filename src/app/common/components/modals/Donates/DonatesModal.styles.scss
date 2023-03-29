@@ -5,7 +5,7 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .donatesModal {
-  @include mut.sizedImportant(1012px, 621px);
+  @include mut.sized(1012px, 621px);
 
   &.ant-modal {
     .ant-modal-content {
@@ -132,8 +132,8 @@
 
 @media screen and (max-width: 1024px) {
   .donatesModal {
-    @include mut.sized(748px, 272px);
-
+    @include mut.sizedImportant(748px, 272px);
+    
     &.ant-modal {
       .ant-modal-content {
         @include mut.full-rounded(16px, $overflow: visible);
@@ -176,8 +176,8 @@
         margin-bottom: f.pxToRem(16px);
   
         > * {
-          width: 120px !important;
-          height: 37px !important;
+          width: f.pxToRem(120px) !important;
+          height: f.pxToRem(37px) !important;
           
           > span{
             @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 350);
@@ -206,7 +206,7 @@
         @include mut.flexed($direction: row-reverse, $justify-content: space-between, $gap: 4px);
         
         > * {
-          width: 100px !important;
+          width: f.pxToRem(100px) !important;
         }
     }
 }

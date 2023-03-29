@@ -34,6 +34,6 @@
 }
 @media screen and (max-width: 480px) {
     .partnerItem{
-        padding: 10px;
+        padding: f.pxToRem(10px);
     }      
 }
