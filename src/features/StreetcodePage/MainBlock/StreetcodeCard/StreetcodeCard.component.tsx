@@ -1,8 +1,5 @@
 import './StreetcodeCard.styles.scss';
 
-import Grushevskiy from '@images/streetcode-card/Grushevskiy.gif';
-import Hrushevskiy from '@images/streetcode-card/Hrushevskyi.png';
-
 import { SetStateAction, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
