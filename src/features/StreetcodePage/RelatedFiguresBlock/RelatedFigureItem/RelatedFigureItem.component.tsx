@@ -16,7 +16,7 @@ interface Props {
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const {
-        id, imageId, title, tags, alias,
+        id, imageId, title, tags, alias, url
     } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
@@ -47,7 +47,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
                 style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
-                to={`../streetcode/${id}`}
+                to={`../streetcode/${url}`}
                 onClick={() => {
                     if (!tagsList) {
                         setModal('tagsList');

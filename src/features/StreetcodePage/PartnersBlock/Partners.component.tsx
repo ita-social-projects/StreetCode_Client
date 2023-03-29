@@ -2,7 +2,6 @@ import './Partners.styles.scss';
 
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 
 import PartnerItem from './PartnerItem/PartnerItem.component';
@@ -11,13 +10,12 @@ const PartnersComponent = () => {
     const { partnersStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
 
-    const streetcodeId = useRouteId();
-
     useAsync(
         () => Promise.all([
-            fetchPartnersByStreetcodeId(getStreetCodeId ?? 1),
+            console.log(getStreetCodeId),
+            fetchPartnersByStreetcodeId(getStreetCodeId),
         ]),
-        [streetcodeId],
+        [getStreetCodeId],
     );
 
     const sliderItems = getPartnerArray.map((p) => (

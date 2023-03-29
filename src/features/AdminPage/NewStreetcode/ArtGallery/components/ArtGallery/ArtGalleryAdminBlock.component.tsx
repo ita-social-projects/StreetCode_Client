@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 
@@ -14,16 +13,14 @@ import ArtGallerySlide from '@/features/StreetcodePage/ArtGalleryBlock/ArtGaller
 const SECTION_AMOUNT = 6;
 
 const ArtGalleryAdminBlock = () => {
-    const { streetcodeArtStore } = useMobx();
+    const { streetcodeArtStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
-
-    const streetcodeId = useRouteId();
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
 
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(streetcodeId),
-        [streetcodeId],
+        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
+        [getStreetCodeId],
     );
 
     function setOffset(width : number, height : number) : number {

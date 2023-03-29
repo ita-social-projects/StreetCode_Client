@@ -19,12 +19,12 @@ import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 // eslint-disable-next-line import/extensions
 import useMobx from '@/app/stores/root-store';
 
 const StreetcodeContent = () => {
-    const streetcodeUrl = useRouteId();
+    const streetcodeUrl = useRouteUrl();
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
     const { streetcodeStore } = useMobx();
@@ -51,9 +51,8 @@ const StreetcodeContent = () => {
     }, []);
 
     useEffect(() => {
-        console.log(streetcodeUrl);
         setCurrentStreetcodeId(streetcodeUrl);
-    }, [useRouteId]);
+    }, [streetcodeUrl]);
 
     return (
         <div className="streetcodeContainer">

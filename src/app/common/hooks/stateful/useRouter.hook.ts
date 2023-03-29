@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-export const useRouteId = () => {
+export const useRouteUrl = () => {
     const params = useParams<{ id: string }>();
     return params.id ?? '404';
 };

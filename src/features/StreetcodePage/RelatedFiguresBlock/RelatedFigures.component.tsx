@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
@@ -21,8 +20,6 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
     const { fetchTagByStreetcodeId } = tagsStore;
 
-    const streetcodeId = useRouteId();
-
     const windowsize = useWindowSize();
 
     const handleClick = () => {
@@ -33,10 +30,10 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
 
     useAsync(
         () => Promise.all([
-            fetchRelatedFiguresByStreetcodeId(getStreetCodeId ?? 1),
-            fetchTagByStreetcodeId(getStreetCodeId ?? 1),
+            fetchRelatedFiguresByStreetcodeId(getStreetCodeId),
+            fetchTagByStreetcodeId(getStreetCodeId),
         ]),
-        [streetcodeId],
+        [getStreetCodeId],
     );
 
     const sliderItems = getRelatedFiguresArray.map((figure) => (

@@ -3,7 +3,6 @@ import './Sources.styles.scss';
 import { observer } from 'mobx-react-lite';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
@@ -12,11 +11,10 @@ import SourceItem from './SourceItem/SourceItem.component';
 const SourcesComponent = () => {
     const { sourcesStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
-    const streetcodeId = useRouteId();
 
     useAsync(
         () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId ?? 1),
-        [streetcodeId],
+        [getStreetCodeId],
     );
 
     return (
