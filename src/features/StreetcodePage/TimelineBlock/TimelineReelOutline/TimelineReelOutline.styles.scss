@@ -21,3 +21,14 @@
     flex-shrink: 0;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .timelineSquareContainer{
+    @include mut.flex-centered($gap: 18px);
+
+    .timelineSquare{
+      @include mut.sized(22px, 20px);
+      @include mut.full-rounded(6px);
+    }
+  }
+}
