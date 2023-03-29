@@ -14,8 +14,6 @@
 
     @include mut.positioned-as();
     @include mut.flexed($justify-content: center, $align-items: flex-end);
-
-    @include vnd.vendored(transition, 'all .5s ease');
     cursor: pointer;
 }
 
