@@ -1,6 +1,4 @@
 import './InterestingFactItem.styles.scss';
-
-import WowFactImg from '@images/interesting-facts/WowFacts1.png';
 import Image from '@models/media/image.model';
 import { observer } from 'mobx-react-lite';
 import { Fact } from '@models/streetcode/text-contents.model';
@@ -28,10 +26,17 @@ const InterestingFactItem = ({
         mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
 
+    var imgId = imageId as number
+
+    const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
+    const image = value as Image;
+
+    var url = base64ToUrl(image?.base64, image?.mimeType);
+
     return (
         <div className="interestingFactSlide">
             <div className="slideImage">
-                <img src={"https://i.ibb.co/f85t1Vs/Antonovich.png"} alt="" />
+                <img src={url} alt="" />
             </div>
             <div className="slideText">
                 <p className="heading">
