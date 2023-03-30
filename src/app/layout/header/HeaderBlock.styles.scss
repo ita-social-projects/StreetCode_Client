@@ -12,9 +12,9 @@ $navbar-hidden-innerwidth: 400px;
   @include mut.sized(100%, 82px);
   @include mut.rem-padded(21px, 32px, 21px, 32px);
 
+  background-color: c.$pure-white-color;
   position: fixed;
   z-index: 7;
-  background-color: white;
 
   svg {
     @include mut.rem-margined($right: 34px);
@@ -27,6 +27,11 @@ $navbar-hidden-innerwidth: 400px;
   .ant-input,
   .ant-input-affix-wrapper {
     background-color: c.$accented-gray-color;
+    border: none !important;
+  }
+
+  .ant-input:focus {
+    outline: 1px none c.$input-outline-color;
   }
 
   .ant-input-prefix {
@@ -36,7 +41,6 @@ $navbar-hidden-innerwidth: 400px;
 
   .ant-input-affix-wrapper {
     position: relative;
-    border: none;
     height: f.pxToRem(39px);
     width: calc(100vw - #{$navbar-innerwidth});
     
@@ -85,7 +89,7 @@ $navbar-hidden-innerwidth: 400px;
 }
 
 .hiddenNavBar {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%) !important;
 
   .ant-input-affix-wrapper,
   .loginBtn {
@@ -101,7 +105,8 @@ $navbar-hidden-innerwidth: 400px;
   width: calc(100vw - #{$navbar-hidden-innerwidth});
   height: f.pxToRem(39px);
 
-  @include mut.positioned-as(fixed, $left: 220px);
+  @include mut.positioned-as(fixed, $left: 240px);
+  @include mut.rem-padded($left: 10px);
   @include mut.full-rounded(12px);
 
   @include vnd.vendored(transition, 'transform 0.7s ease');
@@ -143,7 +148,7 @@ $navbar-hidden-innerwidth: 400px;
   }
 
   .hiddenNavBar {
-    background: white;
+    background: c.$pure-white-color;
   }
 
   .searchContainerMobile { 
@@ -153,23 +158,31 @@ $navbar-hidden-innerwidth: 400px;
 
     position: fixed;
     z-index: 6;
-    background-color: white;
+    background-color: c.$pure-white-color;
     transform: translateY(f.pxToRem(-200px));
+    @include vnd.vendored(transition, 'transform 0.7s ease');
 
     &.active {
-      @include vnd.vendored(transition, 'transform 0.5s ease');
       transform: translateY(f.pxToRem(78px));
     }
   
-    input {
+    .ant-input {
       @include mut.full-rounded(12px);
       padding: 12px;
       width: calc(100vw - f.pxToRem(100px));
       height: f.pxToRem(45px);
       margin-right: f.pxToRem(10px);
-      border: none;
       background-color: c.$accented-gray-color;
-      color: c.$text-light-gray-color;
+      border: none;
+      outline: none !important;
+
+      &:focus {
+        outline: 1px none c.$input-outline-color;
+      }
+
+      &::placeholder {
+        color: c.$text-light-gray-color;
+      }
     }
 
     .searchButton {
