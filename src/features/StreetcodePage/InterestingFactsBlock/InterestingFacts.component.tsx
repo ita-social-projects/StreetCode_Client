@@ -19,6 +19,34 @@ const InterestingFactsComponent = () => {
     const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
     // const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
     // getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
+    
+    const setings = {
+        dots: getFactArray.length > 3,
+        swipeOnClick: true,
+        centerMode: true,
+        swipe: false,
+        centerPadding: '-12px',
+        responsive: [
+            {
+                breakpoint: 480,
+                settings: {
+                    centerPadding: '-32px',
+                    swipe: true,
+                    dots: true,
+                },
+            },
+            {
+                breakpoint: 780,
+                settings: {
+                    // centerPadding: '-12px',
+                    swipe: true,
+                    dots: true,
+                },
+            },
+        ],
+
+    }
+
     return (
         <div className={`interestingFactsWrapper ${getFactArray.length === 1 ? 'single' : ''}`}>
             <div className="interestingFactsContainer">
@@ -34,12 +62,13 @@ const InterestingFactsComponent = () => {
                             </div>
                         ) : (
                             <BlockSlider
-                                dots={getFactArray.length > 3}
                                 className="heightContainer"
-                                swipeOnClick
-                                swipe
-                                centerMode
-                                centerPadding="-12px"
+                                // dots={getFactArray.length > 3}
+                                // swipeOnClick
+                                // swipe
+                                // centerMode
+                                // centerPadding="-12px"
+                                {...setings}
                             >
                                 {sliderArray.map((fact) => (
                                     <InterestingFactItem
