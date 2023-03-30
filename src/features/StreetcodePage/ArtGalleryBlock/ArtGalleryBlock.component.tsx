@@ -10,6 +10,7 @@ import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const SECTION_AMOUNT = 6;
 
@@ -30,17 +31,23 @@ const ArtGalleryBlock = () => {
 
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
-                const { width, height } = await getImageSize(image.url.href);
 
-                newMap.push({
-                    index,
-                    description,
-                    imageHref: image.url.href,
-                    title: image.url.title,
-                    offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
-                } as IndexedArt);
+                var url = base64ToUrl(image.base64, image.mimeType);
+
+                if(url) {
+
+                    const { width, height } = await getImageSize(url);
+
+                    newMap.push({
+                        index,
+                        description,
+                        imageHref: url,
+                        title: image.alt,
+                        offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
+                    } as IndexedArt);
+                }
             } catch (error: unknown) {
-                console.log(`Error: cannot parse the image url: ${image.url.href}`);
+                console.log(`Error: cannot parse the image url: ${url}`);
             }
             setIndexedArts(newMap);
         });

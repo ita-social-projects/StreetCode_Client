@@ -54,7 +54,7 @@ const StreetcodeContent = () => {
                 <InterestingFactsBlock />
                 <TimelineBlock />
                 <MapBlock />
-                {/* <ArtGalleryBlock /> */}
+                <ArtGalleryBlock />
                 <RelatedFiguresBlock
                     setActiveTagId={setActiveTagId}
                 />
