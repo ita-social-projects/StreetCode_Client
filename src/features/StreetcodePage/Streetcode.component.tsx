@@ -1,6 +1,6 @@
 import './Streetcode.styles.scss';
 
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -23,12 +23,14 @@ import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 // eslint-disable-next-line import/extensions
 import useMobx from '@/app/stores/root-store';
 
+const TextLazyComponent = lazy(() => import('@streetcode/TextBlock/TextBlock.component'));
+
 const StreetcodeContent = () => {
     const streetcodeUrl = useRouteUrl();
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
     const { streetcodeStore } = useMobx();
-    const { getStreetCodeId, setCurrentStreetcodeId } = streetcodeStore;
+    const { setCurrentStreetcodeId } = streetcodeStore;
     const isSticky = () => {
         const buttonDonate = document.querySelector('.donateBtnContainer');
         const buttonUp = document.querySelector('.scrollToTopBtnContainer');
@@ -52,7 +54,7 @@ const StreetcodeContent = () => {
 
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl);
-    }, [streetcodeUrl]);
+    }, [setCurrentStreetcodeId, streetcodeUrl]);
 
     return (
         <div className="streetcodeContainer">
@@ -61,7 +63,9 @@ const StreetcodeContent = () => {
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
                 />
-                <TextBlock />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <TextLazyComponent />
+                </Suspense>
                 <InterestingFactsBlock />
                 <TimelineBlock />
                 <MapBlock />
