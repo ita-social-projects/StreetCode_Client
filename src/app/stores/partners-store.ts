@@ -23,7 +23,7 @@ export default class PartnersStore {
 
     public getAll = async () => {
         try {
-            return await partnersApi.getAll();
+            this.setInternalMap = await partnersApi.getAll();
         } catch (error: unknown) {
             console.log(error);
         }

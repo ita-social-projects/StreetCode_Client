@@ -9,8 +9,6 @@ const PartnersApi = {
 
     getAll: () => Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_ALL}`),
 
-    getBothPartnerArrays: () => Agent.get<PartnerResponse>(`${API_ROUTES.PARTNERS.GET_ALL}`),
-
     getByStreetcodeId(streetcodeId: number) {
         return Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_BY_STREETCODE_ID}/${streetcodeId}`);
     },

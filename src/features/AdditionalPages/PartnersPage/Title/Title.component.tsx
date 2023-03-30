@@ -1,6 +1,6 @@
 import './Title.styles.scss';
 
-import Logo from '@images/partnersPage/logo_white.png';
+import Logo from '@images/partners/logo_white.png';
 
 const Title = () => (
     <div className="titleContainer">

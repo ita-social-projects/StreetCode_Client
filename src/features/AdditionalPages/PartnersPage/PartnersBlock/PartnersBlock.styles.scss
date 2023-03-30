@@ -1,0 +1,33 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.partnersContainer{
+    .partnersBlock{
+        .keyPartnersBlock{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 80px 30px;
+        
+            margin-bottom: f.pxToRem(80px);
+        
+            .partnersItem{
+                @include mut.sized(380px, 110px);
+            }
+        }
+        
+        .otherPartnersBlock{
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 80px 10px; 
+            
+            margin-bottom: f.pxToRem(60px);
+
+            .partnersItem{
+                @include mut.sized(232px, 68px);
+            }
+        }
+    }
+}
+
+

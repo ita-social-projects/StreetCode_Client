@@ -8,7 +8,7 @@
 
     width: 100vw;
     height: 100vh;
-    padding: 10px;
+    padding: f.pxToRem(10px);
     @include mut.bg-image('../../../assets/images/streetcode-card/background.png');
       
     .notFoundNumber{
@@ -56,7 +56,7 @@
             letter-spacing: 0.005em;
         }
         .redirect{
-            max-width: 340px;
+            max-width: f.pxToRem(340px);
             width: 100%;  
         } 
         .redirectToMain{

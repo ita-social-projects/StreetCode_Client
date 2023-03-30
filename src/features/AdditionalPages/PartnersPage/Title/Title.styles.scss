@@ -30,8 +30,8 @@
 
             .logo{
                 position: absolute;
-                top: -150px;
-                right: 70px;
+                top:  f.pxToRem(-150px);
+                right:  f.pxToRem(70px);
                 z-index: -1;
             }
         }

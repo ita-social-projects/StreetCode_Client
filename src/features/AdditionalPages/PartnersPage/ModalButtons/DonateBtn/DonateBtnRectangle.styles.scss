@@ -1,0 +1,20 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.donateBtnRectangleContainer{
+    .donateBtn{
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+        @include mut.full-rounded(14px);
+
+        line-height: 23px;
+        color: #E04031;
+        cursor: pointer;
+
+        border: 3px solid #E04031;
+        background-color: #FFFFFF; 
+        padding: f.pxToRem(25px) f.pxToRem(26px);    
+
+        box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);    
+    }
+}

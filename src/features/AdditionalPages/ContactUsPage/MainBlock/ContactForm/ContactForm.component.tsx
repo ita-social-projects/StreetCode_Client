@@ -8,9 +8,9 @@ import { Button, Form, Input } from 'antd';
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
 
-const ContactForm = () => {
-    const MAX_SYMBOLS = 500;
+const MAX_SYMBOLS = 500;
 
+const ContactForm = () => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
 

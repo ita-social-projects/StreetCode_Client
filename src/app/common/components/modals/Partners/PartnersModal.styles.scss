@@ -1,36 +1,49 @@
-@use "@sass/_utils.functions.scss" as f;
-@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
-.contactUsContainer{
-    .formContainer{
-        width: f.pxToRem(568px);
-        padding: f.pxToRem(24px);
+.partnersModal {
+    @include mut.sized(1200px, 460px);
     
-        background-color: #FFFFFF;
-        box-shadow: 0px 5.57966px 5.57966px rgba(0, 0, 0, 0.25);
-    
-        @include mut.full-rounded(20px);
-        text-align: center;
-    
-        .formTitleContainer{
-            @include mut.flexed($direction: column, $gap: 24px);
-            margin-bottom: 24px;
-            .formTitle{
-                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-                line-height: 26px;
-                color: #891F16;
-            }
-            .formSubTitle{
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-                line-height: 23px;
-                color: #1D1F23;
-                text-align: left;               
-            }
+    &.ant-modal {
+      .ant-modal-content {
+        @include mut.full-rounded(20px, $overflow: visible);
+
+        padding: f.pxToRem(24px)  f.pxToRem(40px) !important;
+        box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
+      }
+  
+      .ant-modal-close {
+        @include mut.positioned-as(absolute, $left: 94%, $top: -25px);
+        @include mut.circular(80px, c.$pure-white-color);
+        
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        .ant-modal-close-x{
+          font-size: 24px;
         }
-    
+        &:hover {
+          background-color: c.$modal-hover-color;
+        }
+      }
+    }
+
+    .partnersModalContent{
+      .formContainer{    
+        text-align: center;
+
+        .formTitle{
+          @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+          line-height: 26px;
+          color: #1D1F23;
+          text-align: left;
+
+          margin-bottom: f.pxToRem(32px);
+        }
+         
         .contactForm{
-            @include mut.flexed($direction: column, $gap: 24px);
+            @include mut.flexed($direction: column, $gap: 32px);
        
             textarea{
                 resize: none;
@@ -116,43 +129,9 @@
             } 
         }
     }
-    
-    @media screen and (max-width: 1024px){
-        .formContainer{
-            width: 100%;
-            margin-top:  f.pxToRem(60px);
-            
-            .formTitle{
-                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
-                text-align: left;
-                line-height: 18px;
-            }
-            .formSubTitle{
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 14px);
-                line-height: 16px;
-            }
-    
-            .contactForm{
-                button{
-                    width: 100%;
-                    padding: f.pxToRem(15px) 0;
-                }
-        
-                textarea, input{
-                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
-                    line-height: 21px;
-                }
-    
-                .ant-input-textarea-show-count::after{
-                    top: f.pxToRem(110px);
-                }
-            }
-        }
-    }  
-    
-    @media screen and (max-width: 480px) {
-        .formTitle{
-            text-align: center; 
-        }      
-    } 
+
+
+
+    }
 }
+  
