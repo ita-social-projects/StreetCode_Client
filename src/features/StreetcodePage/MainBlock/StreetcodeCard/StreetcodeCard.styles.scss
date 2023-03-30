@@ -282,6 +282,7 @@
     .card{
       width: 100%;
       height: unset ;
+      @include mut.full-rounded(0px);
       .rightSider {
         width: 100%;
         height: unset ;
@@ -296,7 +297,9 @@
         
       }
       .headerContainer{
-        @include mut.rem-padded($top: 40px, $right: 10px, $bottom: 0px, $left: 10px);
+        @include mut.rem-padded($top: 40px, $right: 0px, $bottom: 0px, $left: 0px);
+        @include mut.full-rounded(0px);
+
       }
     }
   }
