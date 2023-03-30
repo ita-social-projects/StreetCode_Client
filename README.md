@@ -25,8 +25,8 @@ Back-end part: https://github.com/ita-social-projects/StreetCode.git.
   - [How to run tests](#how-to-run-tests)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
-  - [Git flow](#git-flow)
-  - [Issue flow](#git-flow)
+  - [GitHub flow](#github-flow)
+  - [Issue flow](#github-flow)
 - [Team](#team)
 - [FAQ](#faq)
 - [Support](#support)
@@ -111,7 +111,7 @@ For example, `fix typo` or `increase rate limit`.
 
 #### Step 5
 
-- :raising_hand: Assign reviewers! Reviewers should leave questions, comments, and suggestions. After recieving comments, improve the code. Get Approved status on the request and be satisfied with it! 
+- :raising_hand: Assign reviewers! Reviewers should leave questions, comments, and suggestions. After receiving comments, improve the code. Get Approved status on the request and be satisfied with it! 
 
 #### Step 6
 
@@ -120,6 +120,20 @@ For example, `fix typo` or `increase rate limit`.
 #### Step 7
 
 - :scissors: Delete redundant branch. Done!
+
+### Hotfixes
+
+Oops, some fixed needs to be done immediately? Use this guide for Hotfixes!
+
+Some fixes will be needed due to the nature of GitHub flow. You would have to do a 'hotfix' or something outside of the normal process, but it's simply part of our normal process. 
+
+#### Step 1 
+
+- :fire: To implement an urgent change, a Hotfix branch is created off the Main branch to test and implement the fix.
+
+#### Step 2
+
+- :dancer: Once it’s complete, the Hotfix is merged with the Main branch. Plus, to keep the development branch up to date, the Hotfix is also merged with the Develop branch.
 
 More usefull information about GitHub Flow can be found <a href="https://docs.github.com/en/get-started/quickstart/github-flow" target="_blank">*here*</a>.
 
