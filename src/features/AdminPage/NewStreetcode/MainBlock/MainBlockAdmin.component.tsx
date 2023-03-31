@@ -163,7 +163,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
             >
-                <Input maxLength={100} showCount />
+                <Input maxLength={100} showCount pattern="/^[a-z-]+$/gm" />
             </Form.Item>
 
             <Form.Item name="alias" label="Короткий опис" className="maincard-item">

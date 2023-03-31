@@ -75,7 +75,6 @@ $moreInfo-width: 150px;
 @media screen and (max-width: 480px) {
     .relatedFiguresWrapper {
         @include mut.sized($height: 600px); 
-        @include mut.rem-margined($bottom: 100px, $top: 150px);
 
         .slick-dots {
             bottom: 0;
@@ -86,15 +85,21 @@ $moreInfo-width: 150px;
         }
         .slick-slide {
             width: 165px !important;
+            
+            &.slick-active.slick-current {
+                transform: translateX(0px) !important;
+            }
         }
+        
     }
 }
 @media screen and (max-width: 1024px) and (min-width: 481px) {
     .relatedFiguresWrapper {
         @include mut.sized($height: 400px); 
-    }
-    .slick-track {
-        @include mut.rem-margined($left: 13px);
+
+        .slick-track {
+            @include mut.rem-margined($left: 13px);
+        }
     }
 }
 

@@ -24,6 +24,7 @@ import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useMobx from '@/app/stores/root-store';
 
 const TextLazyComponent = lazy(() => import('@streetcode/TextBlock/TextBlock.component'));
+import useSticky from '@/app/common/hooks/scrolling/useSticky.hook';
 
 const StreetcodeContent = () => {
     const streetcodeUrl = useRouteUrl();
@@ -31,26 +32,8 @@ const StreetcodeContent = () => {
     const [activeBlock, setActiveBlock] = useState(0);
     const { streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const isSticky = () => {
-        const buttonDonate = document.querySelector('.donateBtnContainer');
-        const buttonUp = document.querySelector('.scrollToTopBtnContainer');
-        if (buttonDonate !== null && buttonUp !== null) {
-            const scrollTop = window.scrollY;
-            if (scrollTop >= 8050) {
-                buttonDonate.classList.add('stickyDonate');
-                buttonUp.classList.add('stickyToTop');
-            } else {
-                buttonDonate.classList.remove('stickyDonate');
-                buttonUp.classList.remove('stickyToTop');
-            }
-        }
-    };
-    useEffect(() => {
-        window.addEventListener('scroll', isSticky);
-        return () => {
-            window.removeEventListener('scroll', isSticky);
-        };
-    }, []);
+    
+    useSticky();
 
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl);

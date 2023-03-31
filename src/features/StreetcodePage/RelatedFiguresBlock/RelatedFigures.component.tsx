@@ -2,7 +2,7 @@ import './RelatedFigures.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import BlockSlider from '@features/SlickSlider/SlickSlider.component';
+import BlockSlider from '@features/SlickSlider/RelatedFiguresSlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -53,9 +53,9 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         dots: windowsize.width <= 1024,
         variableWidth: windowsize.width <= 1024,
         swipeOnClick: false,
-        slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width < 480 ? 2 : undefined,
-        slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width < 480 ? 1 : 3,
-        rows: windowsize.width <= 480 ? 2 : 1,
+        slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width <= 480 ? 2 : undefined,
+        slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width <= 480 ? 1 : 3,
+        rows: windowsize.width <= 480 ? 2 : 1
     };
 
     return (

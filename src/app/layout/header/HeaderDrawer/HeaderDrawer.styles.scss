@@ -85,13 +85,14 @@
   .socialIconHeaderContainer {
     position: absolute;
     top: 25rem;
+    padding-left: f.pxToRem(7px);
     @include mut.with-font($font-weight: 300, $font-size: 16px);
   
     > * {
       display: inline;
       margin-top: pxToRem(40px);
       margin-right: pxToRem(14.62px);
-      padding-right: 10px;
+      padding-right: 0.7rem;
     }
   }
   .customSlider {
@@ -100,9 +101,11 @@
   }
   .ant-drawer-content-wrapper{
     border-radius: 0 0 0 f.pxToRem(50px);
+    height: f.pxToRem(559px);
   }
   
   .ant-drawer-content {
     border-radius: 0 0 0 f.pxToRem(50px);
+    height: f.pxToRem(559px);
   }  
 }
