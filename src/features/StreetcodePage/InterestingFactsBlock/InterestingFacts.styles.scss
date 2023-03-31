@@ -139,8 +139,14 @@ and (max-width: 768px){
     // }
     .interestingFactsSliderContainer {
         @include mut.sized(100%, 100%); //660px
+      
+        // .slick-slide {
+        //     margin: 0 -2px;
+        //   }
     
     }
+
+
 
 // .heightContainer {
 //     padding-top: pxToRem(23px);

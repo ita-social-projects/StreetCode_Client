@@ -107,13 +107,13 @@ and (max-width: 768px){
       // @include mut.rem-margined(1px, 16px, 24px, 16px);
 
        .heading {
-        @include mut.rem-padded(6px, 20px, 4px, 15px);
+        @include mut.rem-padded(6px, 20px, 4px, 12px);
          @include mut.with-font($font-weight: 500, $font-size: 14px);
          line-height: f.pxToEm(17px);
        }
        .mainText {
         //  @include mut.rem-padded(0, 20px, 0px, 20px);
-        @include mut.rem-padded(1px, 12px, 0px, 15px);
+        @include mut.rem-padded(0, 12px, 0px, 12px);
         max-width: 316px;
         max-height: 144px;
 
@@ -127,7 +127,7 @@ and (max-width: 768px){
 
      .readMoreParagraph {
       //  @include mut.rem-padded(10px, 20px, 0px, 20px);
-      @include mut.rem-padded(5px, 20px, 0px, 15px);
+      @include mut.rem-padded(4px, 20px, 0px, 12px);
 
       @include mut.with-font(ft.$roboto-font, 300, 12px, normal);        
      }
@@ -186,27 +186,37 @@ and (max-width: 768px){
   
   .interestingFactSlide {
     // @include mut.sized(290px, 312px);
-    @include mut.sized(85%);
-    @include mut.full-rounded(20px);
+    @include mut.sized(63%);// 344px
+    @include mut.full-rounded(15px);
 
       .slideImage {
         // @include mut.sized(100%, 188px);
-        @include mut.sized(100%, 165px);
+        @include mut.sized(100%);//
         @include mut.rounded(20px, 20px);
 
       }
       .slideText {
-        @include mut.sized(100%, 155px);
-        .heading {
-          @include mut.with-font($font-weight: 500, $font-size: 14px);
-          line-height: f.pxToEm(15px);
+        @include mut.full-rounded(0px);
+         @include mut.sized(100%, 95px);//, 155px
+         //  @include mut.rem-padded(4px, 20px, 0px, 20px);
+         .heading {
+          //  @include mut.rem-padded(0,0,0, 15px);
+          @include mut.with-font($font-weight: 500, $font-size: 12px);
+          line-height: f.pxToEm(12px);
+//           font-family: 'Roboto';
+// font-style: normal;
+// font-weight: 500;
+// font-size: 12px;
+// line-height: 16px;
         }
         .mainText {
-          
-          @include mut.with-font($font-weight: 300, $font-size: 12px);
-          @include mut.full-rounded(0px);
-          // line-height: f.pxToEm(21px);
-          line-height: f.pxToEm(18px);
+//           font-family: 'Roboto';
+// font-style: normal;
+// font-weight: 300;
+// font-size: 12px;
+// line-height: 14px;
+          @include mut.with-font($font-weight: 300, $font-size: 9px);
+          line-height: f.pxToEm(17px);
 
           // &::-webkit-scrollbar-thumb,
           // &::-webkit-scrollbar-track {
@@ -223,10 +233,9 @@ and (max-width: 768px){
           // }
         }
       } 
-
       .readMoreParagraph {
-        // @include mut.rem-padded(4px, 20px, 0px, 20px);
-        @include mut.with-font(ft.$roboto-font, 300, 12px, normal);        
+        //  @include mut.rem-padded(4px, 20px, 0px, 20px);
+        @include mut.with-font(ft.$roboto-font, 300, 9px, normal);        
       }
   }
  }
