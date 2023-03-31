@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -15,15 +14,15 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 const SECTION_AMOUNT = 6;
 
 const ArtGalleryBlock = () => {
-    const { streetcodeArtStore } = useMobx();
+    const { streetcodeArtStore, streetcodeStore } = useMobx();
+    const { getStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
 
-    const streetcodeId = useRouteId();
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
 
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(streetcodeId),
-        [streetcodeId],
+        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
+        [getStreetCodeId],
     );
 
     useEffect(() => {

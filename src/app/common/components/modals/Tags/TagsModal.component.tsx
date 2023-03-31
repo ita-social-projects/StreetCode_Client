@@ -9,9 +9,8 @@ import useMobx from '@stores/root-store';
 import { Modal } from 'antd';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
-// eslint-disable-next-line max-len
-import RelatedFigureItem from '@/features/StreetcodePage/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
+import RelatedFigureItem
+    from '@/features/StreetcodePage/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 import TagsSliderModal from './TagsSliderModal/TagsSliderModal.component';
 
@@ -22,7 +21,7 @@ interface Props {
 }
 
 const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
-    const { relatedFiguresStore, modalStore } = useMobx();
+    const { relatedFiguresStore, modalStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { setModal, modalsState: { tagsList } } = modalStore;
     const { fetchRelatedFiguresByTagId, getRelatedFiguresArray } = relatedFiguresStore;
 
@@ -50,7 +49,7 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
         >
             <div className="headerTagContainer" style={{ background: `url(${ModalBg})` }}>
                 <TagsSliderModal
-                    streetCodeid={useRouteId()}
+                    streetCodeid={getStreetCodeId}
                     activeTagId={activeTagId}
                     setActiveTagId={setActiveTagId}
                     activeTagBlock={activeTagBlock}

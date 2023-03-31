@@ -11,7 +11,7 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import Image from '@/models/media/image.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 
@@ -44,13 +44,13 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
 };
 
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
-    const id = useRouteId();
+    const id = streetcode?.id;
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
 
-    const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
+    const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id ?? 1), [id]);
     const images = value as Image[];
-    useAsync(() => fetchAudioByStreetcodeId(id), [id]);
+    useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
 
     return (
         <div className="card">
