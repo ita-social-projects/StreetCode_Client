@@ -1,7 +1,7 @@
 import './RelatedFigures.styles.scss';
 
 import React from 'react';
-import BlockSlider from '@features/SlickSlider/RelatedFiguresSlickSlider.component';
+import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
@@ -47,6 +47,39 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         />
     ));
 
+    const sliderItemsMobile = [];
+
+    for (let i = 0; i < getRelatedFiguresArray.length; i += 2) {
+    const figureOnTopRow = getRelatedFiguresArray[i];
+    const figureOnBottomRow = getRelatedFiguresArray[i + 1];
+
+    // Check if there is a valid next element to render in the bottom row
+    const hasBottomRow = figureOnBottomRow !== undefined;
+
+    // Render a pair of RelatedFigureItem components for each pair of elements
+    const sliderItem = (
+        <div className='TwoRowSlide' key={i}>
+        <RelatedFigureItem
+            relatedFigure={figureOnTopRow}
+            filterTags
+            hoverable
+            setActiveTagId={setActiveTagId}
+        />
+        {hasBottomRow && (
+            <RelatedFigureItem
+            relatedFigure={figureOnBottomRow}
+            filterTags
+            hoverable
+            setActiveTagId={setActiveTagId}
+            />
+        )}
+        </div>
+    );
+
+    sliderItemsMobile.push(sliderItem);
+    }
+
+
     const sliderProps = {
         className: "heightContainer",
         infinite: windowsize.width > 1024,
@@ -56,7 +89,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         swipeOnClick: false,
         slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width <= 480 ? 2 : undefined,
         slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width <= 480 ? 1 : 3,
-        rows: windowsize.width <= 480 ? 2 : 1
+        rows: windowsize.width <= 480 ? 1 : 1
     }; 
 
     return (
@@ -73,9 +106,9 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
-                <BlockSlider {...sliderProps}>   
-                    {sliderItems}
-                </BlockSlider>
+                    <BlockSlider {...sliderProps}>   
+                        {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
+                    </BlockSlider> 
                 </div>
             </div>
         </div>

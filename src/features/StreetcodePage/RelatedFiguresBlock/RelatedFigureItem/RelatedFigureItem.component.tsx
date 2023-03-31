@@ -16,9 +16,7 @@ interface Props {
 }
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
-    const {
-        id, imageId, title, tags, alias,
-    } = relatedFigure;
+    const { id, imageId, title, tags, alias } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
@@ -30,7 +28,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
     );
 
     const handleClick = () => {
-        if (windowsize.width <= 480) {
+        if (windowsize.width <= 1024) {
             setModal('relatedFigureItem', id, true);
         }
     }

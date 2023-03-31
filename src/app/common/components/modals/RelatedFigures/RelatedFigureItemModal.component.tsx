@@ -19,7 +19,7 @@ const RelatedFiguresItemModal = () => {
     useAsync(
         () => {
         if (relation)
-            fetchImage(relation?.imageId)
+            fetchImage(relation?.imageId);
         },
         [relation?.imageId],
     );

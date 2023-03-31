@@ -96,10 +96,6 @@ $moreInfo-width: 150px;
 @media screen and (max-width: 1024px) and (min-width: 481px) {
     .relatedFiguresWrapper {
         @include mut.sized($height: 400px); 
-
-        .slick-track {
-            @include mut.rem-margined($left: 13px);
-        }
     }
 }
 
@@ -109,6 +105,7 @@ $moreInfo-width: 150px;
 
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 10px);
+            @include mut.rem-margined($left: 10px);
         }
         .slick-arrow {
             display: none;
