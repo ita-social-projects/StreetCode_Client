@@ -169,11 +169,12 @@ const Partners:React.FC = observer(() => {
                     rowKey="id"
                 />
             </div>
-            <PartnerModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
+            <PartnerModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} isStreetcodeVisible />
             <PartnerModal
                 open={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}
                 partnerItem={partnerToEdit}
+                isStreetcodeVisible
             />
         </>
 

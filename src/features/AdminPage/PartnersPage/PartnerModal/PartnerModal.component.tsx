@@ -30,32 +30,32 @@ import PartnerLink from '../PartnerLink.component';
 
 const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVisible?:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?:(partner:PartnerCreateUpdate)=>void
- }> = (({
+ }> = observer(({
      partnerItem, open, setIsModalOpen, isStreetcodeVisible = true, afterSubmit,
  }) => {
      const [form] = Form.useForm();
-     const { partnersStore } = useMobx();
+     const { partnersStore, streetcodeShortStore } = useMobx();
      const [partnerLinksForm] = Form.useForm();
      const [previewOpen, setPreviewOpen] = useState(false);
      const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
      const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
      const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
      const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
-     const streetcodeStore = useRef<StreetcodeShortStore>(new StreetcodeShortStore());
      const handlePreview = async (file: UploadFile) => {
          setFilePreview(file);
          setPreviewOpen(true);
      };
      const onStreetcodeSelect = (value:string) => {
-         const index = streetcodeStore.current.streetcodes.findIndex((c) => c.title === value);
-         selectedStreetcodes.current.push(streetcodeStore.current.streetcodes[index]);
+         const index = streetcodeShortStore.streetcodes.findIndex((c) => c.title === value);
+         selectedStreetcodes.current.push(streetcodeShortStore.streetcodes[index]);
      };
      const onStreetcodeDeselect = (value:string) => {
          selectedStreetcodes.current = selectedStreetcodes.current.filter((c) => c.title !== value);
      };
      useEffect(() => {
          if (isStreetcodeVisible) {
-             streetcodeStore.current.fetchStreetcodesAll();
+             streetcodeShortStore.fetchStreetcodesAll();
+             console.log(streetcodeShortStore.streetcodes);
          }
      }, []);
      useEffect(() => {
@@ -79,7 +79,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  title: l.title,
 
              })));
-             console.log(partnerItem);
          }
      }, [partnerItem, open, form]);
 
@@ -149,8 +148,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
              ]);
          }
          closeAndCleanData();
-         console.log(success);
-         console.log(afterSubmit);
          if (success && afterSubmit) {
              afterSubmit(partner);
          }
@@ -213,7 +210,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="title"
                      label="Назва: "
-                     rules={[{ required: true, message: 'Введіть назву'}]}
+                     rules={[{ required: true, message: 'Введіть назву' }]}
                  >
                      <Input maxLength={100} showCount />
                  </Form.Item>
@@ -288,7 +285,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                              onSelect={onStreetcodeSelect}
                              onDeselect={onStreetcodeDeselect}
                          >
-                             {streetcodeStore.current.streetcodes
+                             {streetcodeShortStore.streetcodes
                                  .map((s) => <Select.Option key={`${s.id}`} value={s.title}>{s.title}</Select.Option>)}
                          </Select>
                      </Form.Item>

@@ -19,7 +19,7 @@ export class StreetcodeShortStore {
         }
 
     public fetchStreetcodesAll = async () => {
-        StreetcodesApi.getAll()
+        StreetcodesApi.getAllShort()
             .then((value) => {
                 this.streetcodes = value.map((s) => ({ id: s.id, title: s.title, index: s.index }));
             }).catch((error) => {
