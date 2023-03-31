@@ -20,7 +20,6 @@ const RelatedFiguresItemModal = () => {
         () => {
         if (relation)
             fetchImage(relation?.imageId);
-            console.log('Opened modal');
         },
         [relation?.imageId],
     );
