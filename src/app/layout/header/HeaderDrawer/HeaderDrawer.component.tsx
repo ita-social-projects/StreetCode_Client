@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import ReactSlider from 'react-slider';
 import BurgerMenu from '@components/BurgerMenu/BurgerMenu.component';
-// import useMediaQuery from '@hooks/external/useMediaQuery.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 
 import { Drawer } from 'antd';
@@ -18,16 +17,17 @@ const HeaderDrawer = () => {
     const { toggleState: drawerState, handlers: { toggle } } = useToggle();
     const [active, setActive] = useState(1);
     const [options, setOptions] = useState(6);
+    const [scalingCooficient, setScalingCooficient] = useState(1);
     const isSmall = useMediaQuery({
         query: '(max-width: 768px)',
     });
 
-    // const isSmall = useMediaQuery(768, 'max-width');
-
     useEffect(() => {
         if (isSmall) {
+            setScalingCooficient(4);
             setOptions(8);
         } else {
+            setScalingCooficient(1);
             setOptions(6);
         }
     }, [isSmall]);
@@ -49,8 +49,8 @@ const HeaderDrawer = () => {
                         thumbClassName="thumb"
                         onSliderClick={() => {}}
                         onChange={() => {}}
-                        min={1}
-                        max={options}
+                        min={scalingCooficient}
+                        max={options * scalingCooficient}
                         value={active}
                         renderTrack={(props) => <div {...props} />}
                         orientation="vertical"
@@ -58,23 +58,31 @@ const HeaderDrawer = () => {
                     {!isSmall
                         && (
                             <div>
-                                <MainDrawerList active={active} setActive={setActive} />
+                                <MainDrawerList
+                                    active={active}
+                                    setActive={setActive}
+                                    scalingCooficient={scalingCooficient}
+                                />
                             </div>
                         )}
                     {isSmall
                         && (
                             <div>
-                                <MainDrawerList active={active} setActive={setActive} />
+                                <MainDrawerList
+                                    active={active}
+                                    setActive={setActive}
+                                    scalingCooficient={scalingCooficient}
+                                />
                                 <br />
                                 <div className="headerDrawerContainer">
                                     <HeaderDrawerItem
-                                        id={7}
+                                        id={7 * scalingCooficient}
                                         parentActive={active}
                                         setParentActive={setActive}
                                         text="Політика конфіденційності"
                                     />
                                     <HeaderDrawerItem
-                                        id={8}
+                                        id={8 * scalingCooficient}
                                         parentActive={active}
                                         setParentActive={setActive}
                                         text="Зворотній зв'язок"

@@ -10,6 +10,7 @@ import Captions from 'yet-another-react-lightbox/plugins/captions';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const LightboxComponent = () => {
     const { streetcodeArtStore: { getStreetcodeArtArray }, modalStore } = useMobx();
@@ -18,10 +19,10 @@ const LightboxComponent = () => {
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
     const slides = useMemo(() => getStreetcodeArtArray.map(
-        ({ art: { image: { url }, description }, index }) => ({
-            src: url.href,
+        ({ art: { image: { base64, mimeType, alt }, description }, index }) => ({
+            src: base64ToUrl(base64, mimeType),
             title: `${index}/${getStreetcodeArtArray.length}`,
-            description: `${url.title ?? ''}. ${description ?? ''}`,
+            description: `${alt ?? ''}. ${description ?? ''}`,
         }),
     ), [getStreetcodeArtArray]);
 
