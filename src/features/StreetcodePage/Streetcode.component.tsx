@@ -24,6 +24,7 @@ import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useMobx from '@/app/stores/root-store';
 
 const TextLazyComponent = lazy(() => import('@streetcode/TextBlock/TextBlock.component'));
+const PartnersLazyComponent = lazy(() => import('@streetcode/PartnersBlock/Partners.component'));
 
 const StreetcodeContent = () => {
     const streetcodeUrl = useRouteUrl();
@@ -76,7 +77,9 @@ const StreetcodeContent = () => {
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersBlock />
+            <Suspense fallback={<div>Loading...</div>}>
+                <PartnersLazyComponent />
+            </Suspense>
             <TickerBlock />
             <div className="stickies">
                 <ScrollToTopBtn />
