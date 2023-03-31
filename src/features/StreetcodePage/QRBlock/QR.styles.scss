@@ -60,3 +60,11 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
 .QRBlockTextContainer {
     @include mut.sized(405px, 491px);
 }
+
+@media (max-width: 786px) {
+    .QRBlockContainer{
+        background-image: none;
+        @include mut.sized(100%, 100%);
+        padding-top: pxToRem(20px);
+    }
+}

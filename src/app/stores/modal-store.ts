@@ -18,6 +18,7 @@ const DefaultModalState: ModalState = {
 
 interface ModalList {
     relatedFigures: ModalState;
+    relatedFigureItem: ModalState;
     sources: ModalState;
     facts: ModalState;
     audio: ModalState;
@@ -30,11 +31,13 @@ interface ModalList {
     deleteTerm: ModalState;
     deleteStreetcode: ModalState;
     confirmation: ModalState;
+    adminFacts: ModalState;
 }
 
 export default class ModalStore {
     public modalsState: ModalList = {
         relatedFigures: DefaultModalState,
+        relatedFigureItem: DefaultModalState,
         sources: DefaultModalState,
         facts: DefaultModalState,
         audio: DefaultModalState,
@@ -47,6 +50,7 @@ export default class ModalStore {
         deleteTerm: DefaultModalState,
         deleteStreetcode: DefaultModalState,
         confirmation: DefaultModalState,
+        adminFacts: DefaultModalState,
     };
 
     public isPageDimmed = false;

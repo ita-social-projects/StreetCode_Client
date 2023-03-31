@@ -1,0 +1,95 @@
+
+// -------------------- ArtGalleryBlock -------------------- 
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/mixins/_wrapper.mixins.scss" as wr;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.artGallerySliderContainer .sliderClass .slick-slider {
+    height: pxToRem(400px);
+}
+.artGalleryWrapperAdmin {
+     @include mut.sized(100%, 230px);
+
+    @include wr.main-page-block-wrapper();
+    margin-bottom: pxToRem(390px);
+
+    .artGalleryContainerAdmin {
+        @include mut.rem-margined($top: 100px);
+        @include mut.sized(100%, 264px);
+        margin-bottom: pxToRem(191px);
+
+        .artGalleryContentContainerAdmin {
+            @include mut.flex-centered();
+        }  
+    }
+    .artGallerySliderContainerAdmin {
+        @include mut.sized(812px, 370px);
+    }
+}
+
+// -------------------- ArtGallerySlide -------------------- 
+
+.slideArtGalleryContainerAdmin {
+  @include mut.flex-centered();
+  margin-top: pxToRem(20px);
+  
+  .slideArtGallery {
+    @include mut.flex-centered($direction: column);
+    flex-wrap: wrap;
+    height: pxToRem(370px); //560
+    
+    &.width-1 {
+      width: pxToRem(535px); //810
+    }
+    
+    &.width-2 {
+      width: pxToRem(800px);//1210
+    }
+    
+  }
+}
+
+// -------------------- ArtGallerySlideItem -------------------- 
+
+
+.slideArtAdmin {
+  flex: pxToRem(80px);
+
+  .small{ 
+    width: 250px; //380
+    height: 165px;//250
+
+  }
+  .medium{
+    width : 250px; //380
+    height: 353px;//535
+
+  }
+  .large{
+    width: 531px;//805
+    height: 353px;//535
+  }
+
+}
+
+.artImageWrapperAdmin {
+  
+  position: relative;  
+  &:hover {
+    cursor: pointer;
+  }
+  .imgDataFull {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+  
+
+  .imgImg{
+    border-radius: pxToRem(30px);
+  }
+}
+
+

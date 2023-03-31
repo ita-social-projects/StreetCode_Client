@@ -1,0 +1,86 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.fonts.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.QRMobileContainer{
+    width: 100%;
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.QRMobileGif{
+    padding-left: pxToRem(10px);
+    iframe {
+        border-radius: pxToRem(20px);
+    }
+}
+
+.QRMobileContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin: pxToRem(50px) pxToRem(39px);
+    p{
+        padding-bottom: pxToRem(20px);
+    }
+    button{
+        margin-top: pxToRem(20px);
+        width: pxToRem(340px);
+        height: pxToRem(46px);
+    }
+}
+
+.arInstagram{
+    @include mut.with-font(f.$closer-text-font, 500, 32px, normal);
+    line-height: pxToRem(42px);
+    text-align: center;
+    color: c.$accented-red-color;
+}
+
+.pressButtonText{
+    width: pxToRem(340px);
+    height: pxToRem(46px);
+    @include mut.with-font(f.$roboto-font, 500, 20px);
+    color: c.$lighter-black-color;
+    line-height: 23px;
+    text-align: center;
+}
+
+.goToInstaButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    @include mut.with-font(f.$roboto-font, 500, 14px);
+    line-height: 16px;
+
+    background: c.$accented-red-color;
+    box-shadow: 0px 4px 4px c.$transparent-redish-gray-color; 
+    border-radius: pxToRem(10px);
+    
+    color: c.$pure-white-color;
+}
+
+@media (max-width: 675px){
+    .QRMobileContainer{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .QRMobileGif{
+        display: flex;
+        justify-content: center;
+        padding-top: pxToRem(35px);
+    }
+    .QRMobileContent{
+        button{
+            margin-top: pxToRem(20px);
+        }
+    }
+    .pressButtonText{
+        width: pxToRem(300px);
+    }
+}

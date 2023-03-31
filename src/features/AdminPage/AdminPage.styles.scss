@@ -2,10 +2,15 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
+
 .adminPageContainer {
     width: 100vh;
     max-width: pxToRem(1800px);
     @include mut.with-font();
+    
+    .dimmed {
+        @include mut.sized(100%);
+    }
 }
 
 .MainBlockContainer {
@@ -24,8 +29,3 @@
     min-height: 400px;
     overflow: hidden;
 }
-
-.dimmed {
-    @include mut.sized(100%);
-}
-
