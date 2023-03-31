@@ -24,3 +24,9 @@
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 30px);
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .swiperEdgeBtn{
+    display: none;
+  }
+}

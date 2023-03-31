@@ -13,11 +13,11 @@ interface Props {
 const StreetcodeCatalogItem = ({ streetcode }: Props) => {
     const { imagesStore: { fetchImageByStreetcodeId, getImage } } = useMobx();
     useAsync(() => fetchImageByStreetcodeId(streetcode.id));
-
     return (
         <Link
             className="catalogItem"
-            style={{ backgroundImage: `url(${getImage(streetcode.id)?.url.href})` }}
+            style={{ backgroundImage: `url(${getImage(6)?.url.href})` }}
+            // change 5 to streetcode.id when all images will be downloaded
             to={`../streetcode/${streetcode.url}`}
         >
             <div className="catalogItemText">

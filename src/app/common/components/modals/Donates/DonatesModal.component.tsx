@@ -3,7 +3,10 @@ import './DonatesModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import { ChangeEvent, SyntheticEvent, useState } from 'react';
+import {
+    ChangeEvent, SyntheticEvent, useCallback,
+    useEffect, useRef, useState,
+} from 'react';
 import useMobx from '@stores/root-store';
 
 import { Button, Input, Modal } from 'antd';
@@ -16,8 +19,9 @@ const DonatesModal = () => {
 
     const [donateAmount, setDonateAmount] = useState(0);
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
+    const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
-    const handleAmountBtnClick = (event: SyntheticEvent, btnIdx: number) => {
+    const handleAmountBtnClick = ({ target }: ChangeEvent<HTMLInputElement>, btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
         setActiveBtnIndex(btnIdx);
     };
@@ -37,6 +41,28 @@ const DonatesModal = () => {
         }
     };
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 1020) {
+                setInputStyle({
+                    width: `${donateAmount === 0 ? 50 : donateAmount.toString().length * 30}px`,
+                });
+            } else {
+                setInputStyle({
+                    width: '100%',
+                });
+            }
+        };
+
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [donateAmount]);
+
     return (
         <Modal
             className="donatesModal"
@@ -48,10 +74,12 @@ const DonatesModal = () => {
             closeIcon={<CancelBtn />}
         >
             <div className="donatesModalContent">
-                <h1>Підтримай проєкт “Стріткод”</h1>
-                <h3>Скажи дякую нашій організації</h3>
+                <h1>Підтримай проєкт</h1>
+                <h3>Скажи «Дякую» історії</h3>
+                <div className="enterSum">Ввести суму</div>
                 <input
                     onChange={handleInputChange}
+                    style={inputStyle}
                     value={`${donateAmount.toString()}₴`}
                     className={`amountInput ${(donateAmount !== 0) ? 'active' : ''}`}
                 />
@@ -72,7 +100,7 @@ const DonatesModal = () => {
                     <Input placeholder="Ваше ім’я (необов’язково)" />
                     <Input placeholder="Коментар (необов’язково)" />
                 </div>
-                <Button className="donatesDonateBtn">підтримати</Button>
+                <Button className="donatesDonateBtn">Підтримати</Button>
             </div>
         </Modal>
     );
