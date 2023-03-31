@@ -24,6 +24,7 @@ import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useMobx from '@/app/stores/root-store';
 
 const TextLazyComponent = lazy(() => import('@streetcode/TextBlock/TextBlock.component'));
+const PartnersLazyComponent = lazy(() => import('@streetcode/PartnersBlock/Partners.component'));
 import useSticky from '@/app/common/hooks/scrolling/useSticky.hook';
 
 const StreetcodeContent = () => {
@@ -32,7 +33,7 @@ const StreetcodeContent = () => {
     const [activeBlock, setActiveBlock] = useState(0);
     const { streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    
+
     useSticky();
 
     useEffect(() => {
@@ -59,7 +60,9 @@ const StreetcodeContent = () => {
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersBlock />
+            <Suspense fallback={<div>Loading...</div>}>
+                <PartnersLazyComponent />
+            </Suspense>
             <TickerBlock />
             <div className="stickies">
                 <ScrollToTopBtn />

@@ -12,6 +12,7 @@ import RelatedTermsStore from '@stores/related-terms-store';
 import SourcesStore from '@stores/sources-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
 import StreetcodeStore from '@stores/streetcode-current-store';
+import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
@@ -38,6 +39,7 @@ interface Store {
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
     historicalContextStore: HistoricalContextStore,
+    streetcodeCatalogStore: StreetcodesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
 }
 
@@ -58,6 +60,7 @@ export const store: Store = {
     relatedTermStore: new RelatedTermsStore(),
     streetcodeStore: new StreetcodeStore(),
     historicalContextStore: new HistoricalContextStore(),
+    streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
 };
 
