@@ -1,3 +1,4 @@
+import ConfirmationModal from '@components/modals/ConfirmationModal/ConfirmationModal.component';
 import DonatesModal from '@components/modals/Donates/DonatesModal.component';
 import HeaderLoginModal from '@components/modals/HeaderLogin/HeaderLoginModal.component';
 import InterestingFactsModal from '@components/modals/InterestingFacts/InterestingFactsModal.component';
@@ -16,6 +17,7 @@ const ModalWrapper = () => (
         <HeaderLoginModal />
         <LightboxModal />
         <DeleteStreetcodeModal />
+        <ConfirmationModal />
     </>
 );
 

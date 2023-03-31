@@ -17,8 +17,6 @@ import TextArea from 'antd/es/input/TextArea';
 
 // eslint-disable-next-line import/extensions
 import useMobx from '@/app/stores/root-store';
-// eslint-disable-next-line import/extensions
-import StreetcodeShortStore from '@/app/stores/streetcodeshort-store';
 import Partner, {
     LogoType,
     PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,

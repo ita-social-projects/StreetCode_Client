@@ -25,7 +25,7 @@ import PartnerModal from './PartnerModal/PartnerModal.component';
 const LogoType = [twitter, instagram, facebook, youtube];
 
 const Partners:React.FC = observer(() => {
-    const { partnersStore } = useMobx();
+    const { partnersStore, modalStore } = useMobx();
 
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
@@ -131,11 +131,15 @@ const Partners:React.FC = observer(() => {
                       key={`${partner.id}${index}111`}
                       className="actionButton"
                       onClick={() => {
-                          partnersStore.deletePartner(partner.id).then(() => {
-                              partnersStore.PartnerMap.delete(partner.id);
-                          }).catch((e) => {
-                              console.log(e);
-                          });
+                          console.log(modalStore);
+                          modalStore.setConfirmationModal('confirmation', () => {
+                              partnersStore.deletePartner(partner.id).then(() => {
+                                  partnersStore.PartnerMap.delete(partner.id);
+                              }).catch((e) => {
+                                  console.log(e);
+                              });
+                              modalStore.setConfirmationModal('confirmation');
+                          }, 'Ви впевнені, що хочете видалити цього партнера?');
                       }}
                   />
                   <EditOutlined

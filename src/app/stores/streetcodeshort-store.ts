@@ -16,7 +16,7 @@ export class StreetcodeShortStore {
                 streetcodes: observable,
             },
         );
-        }
+    }
 
     public fetchStreetcodesAll = async () => {
         StreetcodesApi.getAllShort()

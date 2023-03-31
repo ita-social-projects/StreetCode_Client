@@ -3,13 +3,17 @@ import { makeAutoObservable } from 'mobx';
 type ModalState = {
     isOpen: boolean;
     fromCardId?: number;
-    onSubmit?:()=>void;
+    confirmationProps?:ConfirmationProps;
 };
+interface ConfirmationProps {
+ onSubmit?:()=>void,
+ text?:string
+}
 
 const DefaultModalState: ModalState = {
     isOpen: false,
     fromCardId: undefined,
-    onSubmit: undefined,
+    confirmationProps: undefined,
 };
 
 interface ModalList {
@@ -25,7 +29,7 @@ interface ModalList {
     editTerm: ModalState;
     deleteTerm: ModalState;
     deleteStreetcode: ModalState;
-    deleteItem: ModalState;
+    confirmation: ModalState;
 }
 
 export default class ModalStore {
@@ -42,7 +46,7 @@ export default class ModalStore {
         editTerm: DefaultModalState,
         deleteTerm: DefaultModalState,
         deleteStreetcode: DefaultModalState,
-        deleteItem: DefaultModalState,
+        confirmation: DefaultModalState,
     };
 
     public isPageDimmed = false;
@@ -55,11 +59,17 @@ export default class ModalStore {
         this.isPageDimmed = dimmed ?? !this.isPageDimmed;
     };
 
-    public setModal = (modalName: keyof ModalList, fromId?: number, opened?: boolean, onSubmit?:()=>void) => {
+    public setModal = (modalName: keyof ModalList, fromId?: number, opened?: boolean) => {
         this.modalsState[modalName] = {
             isOpen: opened ?? !this.modalsState[modalName].isOpen,
             fromCardId: fromId,
-            onSubmit,
+        };
+    };
+
+    public setConfirmationModal = (modalName: keyof ModalList, onSubmit?:()=>void, text?:string, opened?: boolean) => {
+        this.modalsState[modalName] = {
+            isOpen: opened ?? !this.modalsState[modalName].isOpen,
+            confirmationProps: { onSubmit, text },
         };
     };
 }
