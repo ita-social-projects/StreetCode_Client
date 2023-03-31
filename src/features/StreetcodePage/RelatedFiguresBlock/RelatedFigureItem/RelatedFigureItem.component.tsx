@@ -5,6 +5,8 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     relatedFigure: RelatedFigure;
@@ -44,7 +46,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
                 ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
-                style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
                 to={`../streetcode/${id}`}
                 onClick={() => {
                     if (!tagsList) {
@@ -85,7 +87,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             </Link>)}
             { windowsize.width <= 1024 && (<>
             <div className='relatedFigureSlide'
-                style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
                 onClick={handleClick}
             >
             </div>

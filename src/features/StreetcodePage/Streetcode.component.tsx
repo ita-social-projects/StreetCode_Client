@@ -1,6 +1,6 @@
 import './Streetcode.styles.scss';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -18,30 +18,12 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
+import useSticky from '@/app/common/hooks/scrolling/useSticky.hook';
 
 const StreetcodeContent = () => {
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const isSticky = () => {
-        const buttonDonate = document.querySelector('.donateBtnContainer');
-        const buttonUp = document.querySelector('.scrollToTopBtnContainer');
-        if (buttonDonate !== null && buttonUp !== null) {
-            const scrollTop = window.scrollY;
-            if (scrollTop >= 8050) {
-                buttonDonate.classList.add('stickyDonate');
-                buttonUp.classList.add('stickyToTop');
-            } else {
-                buttonDonate.classList.remove('stickyDonate');
-                buttonUp.classList.remove('stickyToTop');
-            }
-        }
-    };
-    useEffect(() => {
-        window.addEventListener('scroll', isSticky);
-        return () => {
-            window.removeEventListener('scroll', isSticky);
-        };
-    }, []);
+    useSticky();
 
     return (
         <div className="streetcodeContainer">
