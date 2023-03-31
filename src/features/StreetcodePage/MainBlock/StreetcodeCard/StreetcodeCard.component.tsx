@@ -1,9 +1,5 @@
 import './StreetcodeCard.styles.scss';
 
-import Grushevskiy from '@images/streetcode-card/Grushevskiy.gif';
-import Hrushevskiy from '@images/streetcode-card/Hrushevskyi.png';
-
-import { SetStateAction, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -15,6 +11,8 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
+import Image from '@/models/media/image.model';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
@@ -45,20 +43,6 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-/* delete this when started using db images */
-const cSlides = [
-    <img
-        src={Grushevskiy}
-        className="streetcodeImg"
-        alt="Hrushevskiy"
-    />,
-    <img
-        src={Hrushevskiy}
-        className="streetcodeImg"
-        alt="Hrushevskiy"
-    />,
-];
-
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useMobx();
@@ -79,15 +63,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         infinite
                         draggable={false}
                     >
-                        {/* uncomment this to get images brom db, but make sure there are correct urls */}
-                        {/* {images?.map(({ url: { href }, alt }) => (
-                                <img
-                                    src={href}
-                                    className="streetcodeImg"
-                                    alt={alt}
-                                />
-                            ))} */}
-                        {cSlides}
+                        {images?.map(({ base64, mimeType, alt }) => (
+                            <img
+                                src={base64ToUrl(base64, mimeType)}
+                                className="streetcodeImg"
+                                alt={alt}
+                            />
+                        ))}
                     </BlockSlider>
                 </div>
 
@@ -115,13 +97,12 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         />
                         <div className="teaserBlockContainer">
                             <p className="teaserBlock">
-                                 {streetcode?.teaser}
+                                {streetcode?.teaser}
                             </p>
-                          
                         </div>
 
                         <div className="cardFooter">
-                            {audio?.url?.href
+                            {audio?.base64
                                 ? (
                                     <Button
                                         type="primary"
@@ -143,7 +124,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 )}
                             <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>

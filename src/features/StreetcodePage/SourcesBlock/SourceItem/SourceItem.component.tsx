@@ -3,6 +3,7 @@ import './SourceItem.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { SourceCategory } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     srcCategory: SourceCategory;
@@ -16,7 +17,7 @@ const SourceItem = ({ srcCategory }: Props) => {
         <div
             className="sourcesSliderItem"
             onClick={() => setModal('sources', id)}
-            style={{ backgroundImage: `url(${image?.url.href})` }}
+            style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})` }}
         >
             <h1>{title}</h1>
         </div>

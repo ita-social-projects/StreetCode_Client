@@ -7,6 +7,7 @@ import useMobx from '@stores/root-store';
 import { Popover } from 'antd';
 
 import PartnerContent from './PartnerContent/PartnerContent.component';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     partner: Partner;
@@ -33,7 +34,7 @@ const PartnerItem = ({ partner }: Props) => {
                 <img
                     key={partner.id}
                     className="partnerLogo"
-                    src={getImage(partner.logoId)?.url.href}
+                    src={base64ToUrl(getImage(partner.logoId)?.base64, getImage(partner.logoId)?.mimeType)}
                     alt={partner.title}
                 />
             </Popover>

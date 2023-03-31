@@ -36,6 +36,8 @@
     "react-awesome-ticker": "^1.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
+    "react-icons": "^4.7.1",
     "react-idle-timer": "^4.6.4",
     "react-image-size": "^2.0.0",
     "react-leaflet": "^4.2.0",

@@ -4,7 +4,9 @@ import Streetcode from '@models/streetcode/streetcode-types.model';
 export default interface Audio {
     id: number;
     description?: string | undefined;
-    url: Url;
+    blobName: string;
+    base64: string;
+    mimeType: string;
     streetcode?: Streetcode | undefined;
     streetcodeId: number;
 }
