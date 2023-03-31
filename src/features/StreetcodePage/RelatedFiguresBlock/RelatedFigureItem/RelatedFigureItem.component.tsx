@@ -30,7 +30,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
     );
 
     const handleClick = () => {
-        if (windowsize.width <= 480) {
+        if (windowsize.width <= 1024) {
             setModal('relatedFigureItem', id, true);
         }
     }

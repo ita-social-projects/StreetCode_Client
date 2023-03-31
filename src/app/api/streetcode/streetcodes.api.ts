@@ -15,7 +15,10 @@ const StreetcodesApi = {
 
     getByUrl: (url: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_URL}/${url}`),
 
-    getAll: (getAllStreetcodes: GetAllStreetcodes|undefined) => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
+    getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => Agent
+        .get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
+
+    getAllShort: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`),
 
     getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
 

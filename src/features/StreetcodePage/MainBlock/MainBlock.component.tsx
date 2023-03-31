@@ -20,7 +20,7 @@ const MainBlock = ({ setActiveTagId, setActiveBlock } : Props) => {
     const streetcode = value as Streetcode;
 
     return (
-        <div id="mainBlock" className="blockCentering margin-82px bgr">
+        <div id="mainBlock" className="mainBlock">
             <div className="mainContainer">
                 <BreadCrumb separator={<div className="separator" />} streetcode={streetcode} />
                 <div className="blockCentering">

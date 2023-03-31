@@ -1,6 +1,5 @@
 import './StreetcodeCard.styles.scss';
 
-import { SetStateAction, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -14,7 +13,8 @@ import { Button } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import Image from '@/models/media/image.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-  
+import Image from '@/models/media/image.model';
+
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
     month: 'long',
@@ -64,12 +64,12 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         draggable={false}
                     >
                         {images?.map(({ base64, mimeType, alt }) => (
-                                <img
-                                    src={base64ToUrl(base64, mimeType)}
-                                    className="streetcodeImg"
-                                    alt={alt}
-                                />
-                            ))}
+                            <img
+                                src={base64ToUrl(base64, mimeType)}
+                                className="streetcodeImg"
+                                alt={alt}
+                            />
+                        ))}
                     </BlockSlider>
                 </div>
 
@@ -97,9 +97,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         />
                         <div className="teaserBlockContainer">
                             <p className="teaserBlock">
-                                 {streetcode?.teaser}
+                                {streetcode?.teaser}
                             </p>
-                          
                         </div>
 
                         <div className="cardFooter">
@@ -125,7 +124,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 )}
                             <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
