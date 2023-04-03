@@ -3,11 +3,17 @@ import { makeAutoObservable } from 'mobx';
 type ModalState = {
     isOpen: boolean;
     fromCardId?: number;
+    confirmationProps?:ConfirmationProps;
 };
+interface ConfirmationProps {
+ onSubmit?:()=>void,
+ text?:string
+}
 
 const DefaultModalState: ModalState = {
     isOpen: false,
     fromCardId: undefined,
+    confirmationProps: undefined,
 };
 
 interface ModalList {
@@ -24,6 +30,8 @@ interface ModalList {
     editTerm: ModalState;
     deleteTerm: ModalState;
     deleteStreetcode: ModalState;
+    confirmation: ModalState;
+    adminFacts: ModalState;
 }
 
 export default class ModalStore {
@@ -41,6 +49,8 @@ export default class ModalStore {
         editTerm: DefaultModalState,
         deleteTerm: DefaultModalState,
         deleteStreetcode: DefaultModalState,
+        confirmation: DefaultModalState,
+        adminFacts: DefaultModalState,
     };
 
     public isPageDimmed = false;
@@ -57,6 +67,13 @@ export default class ModalStore {
         this.modalsState[modalName] = {
             isOpen: opened ?? !this.modalsState[modalName].isOpen,
             fromCardId: fromId,
+        };
+    };
+
+    public setConfirmationModal = (modalName: keyof ModalList, onSubmit?:()=>void, text?:string, opened?: boolean) => {
+        this.modalsState[modalName] = {
+            isOpen: opened ?? !this.modalsState[modalName].isOpen,
+            confirmationProps: { onSubmit, text },
         };
     };
 }

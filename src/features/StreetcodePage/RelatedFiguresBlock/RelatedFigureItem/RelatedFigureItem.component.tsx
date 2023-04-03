@@ -6,6 +6,7 @@ import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     relatedFigure: RelatedFigure;
@@ -16,7 +17,7 @@ interface Props {
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const {
-        id, imageId, title, tags, alias,
+        id, imageId, title, tags, alias, url
     } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
@@ -29,7 +30,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
     );
 
     const handleClick = () => {
-        if (windowsize.width <= 480) {
+        if (windowsize.width <= 1024) {
             setModal('relatedFigureItem', id, true);
         }
     }
@@ -47,7 +48,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
                 style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
-                to={`../streetcode/${id}`}
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
+                to={`../streetcode/${url}`}
                 onClick={() => {
                     if (!tagsList) {
                         setModal('tagsList');
@@ -87,7 +89,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             </Link>)}
             { windowsize.width <= 1024 && (<>
             <div className='relatedFigureSlide'
-                style={{ backgroundImage: `url(${getImage(imageId)?.url.href})` }}
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
                 onClick={handleClick}
             >
             </div>

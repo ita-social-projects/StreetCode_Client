@@ -15,6 +15,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
+import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -32,6 +33,7 @@ const NewStreetcode = () => {
                         <MainBlockAdmin form={form} />
                         <TextBlock />
                     </Form>
+                    <InterestingFactsBlock />
                     <ArtGalleryBlock />
                     <RelatedFiguresBlock />
                     <TimelineBlockAdmin />

@@ -6,6 +6,9 @@ const FRONTEND_ROUTES = {
     ADMIN: {
         BASE: '/admin-panel',
     },
+    CATALOG: {
+        BASE: '/catalog',
+    },
 };
 
 export default FRONTEND_ROUTES;

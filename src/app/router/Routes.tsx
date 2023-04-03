@@ -8,6 +8,7 @@ import AdminPage from '@/features/AdminPage/AdminPage.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
+import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
@@ -17,6 +18,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/for-fans`} element={<ForFans />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/partners`} element={<Partners />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/dictionary`} element={<TermDictionary />} />
+        <Route index path={`${FRONTEND_ROUTES.CATALOG.BASE}`} element={<StreetcodeCatalog />} />
         {/* <Route index path={FRONTEND_ROUTES.STREETCODE.BASE} element={<StreetcodeContent />} /> */}
         {/* <Route path='*' element={<NotFound />} /> */}
     </Route>,

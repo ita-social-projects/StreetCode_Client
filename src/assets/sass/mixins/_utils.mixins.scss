@@ -163,9 +163,9 @@
   visibility: visible !important;
 }
 
-@mixin bg-image($file-path, $bg-size: cover) {
+@mixin bg-image($file-path, $bg-size: cover, $bg-repeat: no-repeat) {
   background-image: url($file-path);
-  background-repeat: no-repeat;
+  background-repeat: $bg-repeat;
   background-size: $bg-size;
 }
 

@@ -1,19 +1,16 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
-
+@use "@sass/variables/_variables.colors.scss" as c;
 $bgImg: '@assets/images/streetcode-card/background.png';
 
 .margin-82px {
   margin-top: f.pxToRem(82px);
 }
 
-.blockCentering {
+.mainBlock,.blockCentering {
   @include mut.flex-centered();
 }
 
-.bgr {
-  @include mut.bg-image($bgImg);
-}
 
 .mainContainer {
   width: f.pxToRem(1300px);
@@ -40,7 +37,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
  
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 680px) {
+  
   .mainContainer{
     height: unset;
     .mainContent {
@@ -51,5 +49,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
       margin-top: f.pxToRem(34px);
       padding-top: f.pxToRem(22px);
     }
+  }
+  .mainBlock.bgr{
+    background-image: none;
   }
 }

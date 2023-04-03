@@ -48,7 +48,6 @@ const RelatedFiguresBlock = () => {
                 <h3>Зв'язки історії</h3>
                 <h4>Стріткоди</h4>
             </div>
-            <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
             <RelationsList relations={relations} setRelations={setRelations}/>
             <Button 
                 type="text" danger onSubmit={saveChanges}
