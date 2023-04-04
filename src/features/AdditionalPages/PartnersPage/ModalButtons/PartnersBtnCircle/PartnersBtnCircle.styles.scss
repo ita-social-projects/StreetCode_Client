@@ -5,7 +5,8 @@
 
 .partnersBtnCircleContainer {
   z-index: 4;
-  @include mut.positioned-as(fixed, $top: 50%, $right: 41px);
+
+  @include mut.positioned-as(fixed, $bottom: 28px, $right: 41px);
   @include mut.flex-centered($direction: column);
 
   .partnersBtnCircle {
@@ -16,11 +17,12 @@
     margin-bottom: f.pxToRem(5px);
 
     cursor: pointer;
-
+    border: 3px solid c.$accented-red-color;
+    
     &:hover {
         @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
         color: c.$dark-red-color;
-        filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.612));
+        filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.18));
       }
   }
 
@@ -28,5 +30,19 @@
     text-transform: capitalize;
     color: c.$accented-red-color;
     @include mut.with-font($font-size: 15px, $font-weight: 500);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .partnersContainer{
+      .partnersBtnCircleContainer{
+        .partnersBtnCircle{
+          @include mut.circular(56px);
+          filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.18));
+        }
+        .partnersBtnText{
+            display: none;
+        }
+      }       
   }
 }

@@ -5,22 +5,26 @@
 .partnersContainer{
     .partnersBlock{
         .keyPartnersBlock{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 80px 30px;
-        
+            display: flex;
+            column-gap: 30px;
+            row-gap: 80px;
+            flex-wrap: wrap;
+            justify-content: center;
+
             margin-bottom: f.pxToRem(80px);
-        
+
             .partnersItem{
                 @include mut.sized(380px, 110px);
             }
         }
         
         .otherPartnersBlock{
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-gap: 80px 10px; 
-            
+            display: flex;
+            column-gap: 10px;
+            row-gap: 80px;
+            flex-wrap: wrap;
+            justify-content: center;
+
             margin-bottom: f.pxToRem(60px);
 
             .partnersItem{
@@ -30,4 +34,32 @@
     }
 }
 
+@media screen and (max-width: 1020px) {
+    .partnersContainer .partnersBlock{
+        .keyPartnersBlock{
+            column-gap: 30px;
+            row-gap: 40px;
 
+            .partnersItem{
+                @include mut.sized(340px, 110px);
+            }
+        }
+
+        .otherPartnersBlock{
+            column-gap: 30px;
+            row-gap: 20px;
+
+            .partnersItem{
+                @include mut.sized(160px, 46px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .partnersContainer .partnersBlock{
+        .keyPartnersBlock{
+            column-gap: 0px;
+        }
+    }
+}

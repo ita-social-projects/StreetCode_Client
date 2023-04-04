@@ -21,8 +21,8 @@
 }
 
 .partnerContentLogo{
-    @include mut.sized($width: 108px, $height: 30px);
-
+    @include mut.sized($width: 108px, $height: 100%);
+    
     @include mut.flex-centered();
 
     img{

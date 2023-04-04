@@ -116,8 +116,10 @@
             } 
         }
     }
-    
-    @media screen and (max-width: 1024px){
+}
+
+@media screen and (max-width: 1024px){
+    .contactUsContainer{
         .formContainer{
             width: 100%;
             margin-top:  f.pxToRem(60px);
@@ -148,11 +150,12 @@
                 }
             }
         }
-    }  
-    
-    @media screen and (max-width: 480px) {
-        .formTitle{
-            text-align: center; 
-        }      
-    } 
-}
+    }
+}  
+
+@media screen and (max-width: 480px) {
+    .contactUsContainer .formContainer 
+    .formTitleContainer .formTitle{
+        text-align: center; 
+    }      
+} 

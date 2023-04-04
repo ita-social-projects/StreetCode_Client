@@ -10,7 +10,7 @@ const SectionSeventh = () => (
             <br />
             З питань щодо політики конфіденційності (в т.ч. видалення персональних даних), Користувач може
             зв&apos;язатися з нами, використовуючи e-mail:
-            <a href="streetcodeua@gmail.com"> streetcodeua@gmail.com</a>
+            <a className="link" href="streetcodeua@gmail.com"> streetcodeua@gmail.com</a>
             .
         </div>
     </section>

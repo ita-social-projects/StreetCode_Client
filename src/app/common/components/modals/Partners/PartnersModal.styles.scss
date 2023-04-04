@@ -30,108 +30,161 @@
     }
 
     .partnersModalContent{
-      .formContainer{    
-        text-align: center;
+        .formContainer{    
+            text-align: center;
 
-        .formTitle{
-          @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-          line-height: 26px;
-          color: #1D1F23;
-          text-align: left;
+            .formTitle{
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            line-height: 26px;
+            color: #1D1F23;
+            text-align: left;
 
-          margin-bottom: f.pxToRem(32px);
-        }
-         
-        .contactForm{
-            @include mut.flexed($direction: column, $gap: 32px);
-       
-            textarea{
-                resize: none;
-                outline: none;     
-                height: f.pxToRem(140px);     
+            margin-bottom: f.pxToRem(32px);
             }
-            textarea, input:focus{
-                outline: none;
-            }
-            textarea, input{
-                width: 100%;
-                padding: f.pxToRem(12px) f.pxToRem(24px);
-                border: 1px solid #D3CDCA;
-                @include mut.full-rounded(14px); 
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-                line-height: 27px;
-                 
-                overflow: auto !important;
-                // color: #C4C4C4;
-            }
+            
+            .contactForm{
+                @include mut.flexed($direction: column, $gap: 32px);
         
-            .textareaBlock{
-                position: relative;
-                .amountSymbols{
-                    position: absolute;
-                    bottom: f.pxToRem(10px);
-                    right: f.pxToRem(10px);
-                    color: #C4C4C4;
+                textarea{
+                    resize: none;
+                    outline: none;     
+                    height: f.pxToRem(140px);     
                 }
-            }
+                textarea, input:focus{
+                    outline: none;
+                }
+                textarea, input{
+                    width: 100%;
+                    padding: f.pxToRem(12px) f.pxToRem(24px);
+                    border: 1px solid #D3CDCA;
+                    @include mut.full-rounded(14px); 
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                    line-height: 27px;
+                    
+                    overflow: auto !important;
+                    // color: #C4C4C4;
+                }
+            
+                .textareaBlock{
+                    position: relative;
+                    .amountSymbols{
+                        position: absolute;
+                        bottom: f.pxToRem(10px);
+                        right: f.pxToRem(10px);
+                        color: #C4C4C4;
+                    }
+                }
+            
+                .ant-input:hover, .ant-input:focus{
+                    border: 1px solid #D3CDCA;
+                    box-shadow: none;
+                }
+                .ant-form-item{
+                    margin-bottom: 0;
+                }
+                .ant-form-item:focus{
+                    outline: none;
+                }
+                .ant-input-textarea-show-count::after{
+                    position: absolute;
+                    top: f.pxToRem(134px);
+                    right: f.pxToRem(10px);
+                }
+                .ant-btn-primary:not(:disabled):hover{
+                    background-color: #E04031;
+                }
+                .ant-form-item .ant-form-item-explain-error {
+                    display: none;
+                }
         
-            .ant-input:hover, .ant-input:focus{
-                border: 1px solid #D3CDCA;
-                box-shadow: none;
-            }
-            .ant-form-item{
-                margin-bottom: 0;
-            }
-            .ant-form-item:focus{
-                outline: none;
-            }
-            .ant-input-textarea-show-count::after{
-                position: absolute;
-                top: f.pxToRem(134px);
-                right: f.pxToRem(10px);
-            }
-            .ant-btn-primary:not(:disabled):hover{
-                background-color: #E04031;
-            }
-            .ant-form-item .ant-form-item-explain-error {
-                display: none;
-            }
-    
-            button{
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-                line-height: 23px;
-                color: #FFFFFF; 
+                button{
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+                    line-height: 23px;
+                    color: #FFFFFF; 
+            
+                    padding: f.pxToRem(25px) f.pxToRem(56px);
+                    height: 100%;
+                    background-color: #E04031;
+                    box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
+                    @include mut.full-rounded(14px);
+                    border: none; 
+                    cursor: pointer;      
+                }
         
-                padding: f.pxToRem(25px) f.pxToRem(56px);
-                height: 100%;
-                background-color: #E04031;
-                box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
-                @include mut.full-rounded(14px);
-                border: none; 
-                cursor: pointer;      
+                .required-input {
+                    position: relative;
+                }         
+                .required-input::before {
+                    content: '*';
+                    position: absolute;
+                    top: f.pxToRem(0);
+                    left:  f.pxToRem(-8px);
+                    transform: translate(-50%, -50%);
+                    color: red;
+                    font-size: 20px;
+                }
+                
+                .captchaBlock{
+                    @include mut.flexed($direction: column, $justify-content: center, $align-items: center);     
+                } 
             }
-    
-            .required-input {
-                position: relative;
-            }         
-            .required-input::before {
-                content: '*';
-                position: absolute;
-                top: 0;
-                left:  f.pxToRem(-8px);
-                transform: translate(-50%, -50%);
-                color: red;
-                font-size: 20px;
-            }
-              
-            .captchaBlock{
-                @include mut.flexed($direction: column, $justify-content: center, $align-items: center);     
-            } 
         }
-    }
-
-
-
     }
 }
+
+@media screen and (max-width: 1024px){
+
+    .partnersModal {       
+        &.ant-modal {
+            .ant-modal-content {
+                @include mut.full-rounded(24px, $overflow: visible);
+                padding: f.pxToRem(16px) !important;
+            }
+
+            .ant-modal-close{
+                display: none;
+            }
+        }
+    }
+
+    .partnersModalContent{
+        .formContainer{
+            width: 100%;
+            
+            .formTitle{
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
+                text-align: left;
+                line-height: 18px;
+            }
+            .formSubTitle{
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 14px);
+                line-height: 16px;
+            }
+
+            .contactForm{
+                gap: 24px !important;
+
+                button{
+                    width: 100%;
+                    padding: f.pxToRem(15px) 0 !important;
+                }
+        
+                textarea, input{
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                    line-height: 21px;
+                }
+
+                .ant-input-textarea-show-count::after{
+                    top: f.pxToRem(110px);
+                }
+            }
+        }  
+    } 
+}  
+
+@media screen and (max-width: 480px) {
+    .formTitle{
+        text-align: center; 
+    }      
+} 
   

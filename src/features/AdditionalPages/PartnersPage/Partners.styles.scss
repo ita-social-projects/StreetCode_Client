@@ -32,3 +32,34 @@
         @include mut.flexed($justify-content: center, $gap: 20px);
     }
 }
+
+@media screen and (max-width: 1200px) {
+    .partnersContainer{
+        .subTitle.titleBottom{
+            white-space: normal;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .partnersContainer{
+        background-color: #fffcfc;
+        background-image: none;
+
+        .buttonsBlock{
+            @include mut.flexed($justify-content: center, $gap: 12px);
+        }
+
+        .subTitle{
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .partnersContainer{
+        .buttonsBlock{
+            @include mut.flexed($justify-content: center, $direction: column, $gap: 12px);
+        }
+    }
+}

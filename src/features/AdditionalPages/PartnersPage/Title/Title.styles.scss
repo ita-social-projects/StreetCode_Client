@@ -22,7 +22,7 @@
         
         .content{
             position: relative;
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size:20px);
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             line-height: 23px;
             color: #1D1F23;
             margin: f.pxToRem(40px) 0 f.pxToRem(16px) 0; 
@@ -38,4 +38,33 @@
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .partnersContainer{
+        .titleContainer{
+            .titleBig{
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
+                line-height: 71px;
+            }
 
+            .content{
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                line-height: 21px;
+                
+                .logo{
+                    transform: scale(0.5);
+                }
+            } 
+        }       
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .partnersContainer{
+        .titleContainer{
+            .content .logo{
+                top:  f.pxToRem(-50px);
+                right:  f.pxToRem(-80px);
+            }
+        }       
+    }
+}
