@@ -32,7 +32,8 @@ const InterestingFactsComponent = () => {
                 settings: {
                     centerPadding: '-32px',
                     swipe: true,
-                    dots: true,
+                    // dots: true,
+                    dots: getFactArray.length > 1,
                 },
             },
             {
@@ -45,7 +46,7 @@ const InterestingFactsComponent = () => {
             },
         ],
 
-    }
+    };
 
     return (
         <div className={`interestingFactsWrapper ${getFactArray.length === 1 ? 'single' : ''}`}>

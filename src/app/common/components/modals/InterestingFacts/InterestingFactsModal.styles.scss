@@ -88,7 +88,8 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     // @include mut.sized(618px, 574px);
     // w 340px
     // @include mut.sized(470px, 580px);
-    @include mut.sized(340px, 434px);
+    // @include mut.sized(340px, 434px);
+    @include mut.sized(71%, 62%);
     
     &.ant-modal {
       .ant-modal-content {
@@ -106,11 +107,11 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
         @include mut.circular(65px, c.$pure-white-color);
     }
     .factsModalContainer{
-
-      @include mut.sized($width: 100%, $height: 216px );
+//216px
+      @include mut.sized($width: 100%, $height: 216px);
       
       .factsImgContainer {   
-          @include mut.sized($width: 100%, $height: 100% );
+          @include mut.sized($width: 100%, $height: 100%);
           
           //  @include mut.sized($width: 100%, $height: 285px );
           //pxToEm(285px)
@@ -119,29 +120,35 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
           //  min-width: 285px;
           // width: 100%;
           // height: 285px ;
-      
+          
         }
-    }
-  }
+        .factsContentContainer {
+          @include mut.sized($width: 90%, $height: 100% );
 
-  
-    .factsContentContainer {
-      @include mut.flexed($direction: column, $gap: 8px);
-      @include mut.rem-margined(11px, 16px, 24px, 16px);
-    
-      h1 {
-        @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
-        line-height: pxToEm(15px);
+          // @include mut.flexed($direction: column, $gap: 8px);
+          display: inline-block;
+          @include mut.rem-margined(11px, 16px, 24px, 16px);
+        
+          h1 {
+            @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
+            line-height: pxToEm(15px);
+            @include mut.rem-margined(0px, 16px, 8px, 0px);
+          }
+        }
+        .factsTextContainer {
+          height: pxToRem(210px);
+      
+          @include mut.flexed($direction: column, $gap: 10px);
+          @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
+          line-height: pxToEm(20px);
+          padding-right: 0;
+          margin-right: 0;
+        }
       }
     }
-    .factsTextContainer {
-      height: pxToRem(165px);
-      @include mut.flexed($direction: column, $gap: 10px);
-      @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
-      line-height: pxToEm(20px);
-      padding-right: 0;
-      margin-right: 0;
-    }
+    
+
+  
   }
 }
 

@@ -48,6 +48,7 @@
 }
 
 .singleSlideContainer{
+    margin-bottom: pxToRem(200px);
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
     padding-top:7.5%;
@@ -122,6 +123,7 @@ and (max-width: 768px){
     .slick-dots{
        bottom: 1.375rem;
     }
+  
 }
     .interestingFactsContainer {
         @include mut.sized(100%, 680px); 
@@ -169,6 +171,7 @@ and (max-width: 768px){
     
     padding-top:7.5%;
 
+   
     .interestingFactSlide{
         // @include mut.sized(500px, 450px);
         @include mut.sized(60%);
@@ -215,7 +218,7 @@ and (max-width: 768px){
 
 @media screen and (max-width: 480px){
 
-    
+   
 .interestingFactsContainer {
     @include mut.sized(90%, 720px);
 
@@ -228,8 +231,12 @@ and (max-width: 768px){
     @include wr.main-page-block-wrapper();
     margin: 0;
     .slick-dots{
-       bottom: 1.375rem;
+       bottom: 5.375rem;
     }
+   
+    // .slick-track {
+    //     padding-right: 10px; /* adjust this value to your desired gap */
+    //   }
 }
     .interestingFactsSliderContainer {
         @include mut.sized(915px, 100%); //660px
