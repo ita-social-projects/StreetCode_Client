@@ -126,7 +126,7 @@ and (max-width: 768px){
   
 }
     .interestingFactsContainer {
-        @include mut.sized(100%, 680px); 
+        @include mut.sized(100%, 720px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
@@ -149,24 +149,6 @@ and (max-width: 768px){
     }
 
 
-
-// .heightContainer {
-//     padding-top: pxToRem(23px);
-// }
-
-// .slick-center .interestingFactSlide {
-//     transform: scale(1.52);
-// }
-// .heightContainer {
-//     padding-top: pxToRem(23px);
-// }
-
-// .slick-center .interestingFactSlide {
-//     transform: scale(1.5);
-// }
-// .slick-dots{
-//     margin-bottom: 20px;
-// }
 .singleSlideContainer{
     
     padding-top:7.5%;
@@ -231,8 +213,8 @@ and (max-width: 768px){
     @include wr.main-page-block-wrapper();
     margin: 0;
     .slick-dots{
-       bottom: 5.375rem;
-    }
+        bottom: 5.375rem;
+     }
    
     // .slick-track {
     //     padding-right: 10px; /* adjust this value to your desired gap */

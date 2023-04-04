@@ -39,7 +39,7 @@ const InterestingFactsComponent = () => {
             {
                 breakpoint: 780,
                 settings: {
-                    // centerPadding: '-12px',
+                     centerPadding: '-34px',
                     swipe: true,
                     dots: true,
                 },
