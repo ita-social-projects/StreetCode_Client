@@ -5,22 +5,31 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .slideArtGallery {
-  @include mut.flex-centered($direction: column);
-  flex-wrap: wrap;
-  height: pxToRem(560px);
-  
-  &.width-1 {
-    width: pxToRem(810px);
-  }
-  
-  &.width-2 {
-    width: pxToRem(1210px);
-  }
+    @include mut.flex-centered($direction: column);
+    flex-wrap: wrap;
+    height: pxToRem(560px);
 
+    &.width-1 {
+        width: pxToRem(810px);
+    }
+
+    &.width-2 {
+        width: pxToRem(1300px);
+    }
 }
 
 .slideArtGalleryContainer {
-  @include mut.flex-centered();
-  margin-top: pxToRem(20px);
+    @include mut.flex-centered();
+    margin-top: pxToRem(20px);
+    width: 100%;
 }
 
+@media screen and (max-width:1024px) {
+    .slideArtGallery {
+        //width: pxToRem(768px);
+        //width: 100%;
+        padding-right: 10px;
+        height: 21.5rem;
+        align-content: center;
+    }
+}

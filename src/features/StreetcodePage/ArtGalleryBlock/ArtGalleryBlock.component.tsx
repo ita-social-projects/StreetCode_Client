@@ -3,15 +3,19 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
+import SlickSliderSmall from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
-
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import ArtGallerySlideSmall from './ArtGalleryListOfItem/ArtGallerySlide.component';
 
 const SECTION_AMOUNT = 6;
+const SECTION_AMOUNT_SMALL = 2;
+
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore, streetcodeStore } = useMobx();
@@ -19,6 +23,7 @@ const ArtGalleryBlock = () => {
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
 
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
+    const windowsize = useWindowSize();
 
     useAsync(
         () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
@@ -85,25 +90,107 @@ const ArtGalleryBlock = () => {
         }
     });
 
+
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
             <ArtGallerySlide artGalleryList={artsData} />,
         );
     }
 
+    const sortedArtsListSmall = [...indexedArts].sort((a, b) => a.index - b.index);
+    const slideOfArtListSmall = [];
+    let offsetSumForSlideSmall = 0;
+    let offsetSumSmall = 0;
+    let sequenceNumberSmall = -1;
+    let artsDataSmall: IndexedArt[] = [];
+
+
+    sortedArtsListSmall.forEach(({
+        index, offset, imageHref, description, title,
+    }) => {
+        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL) {
+            offsetSumForSlideSmall += offset ?? 0;
+            offsetSumSmall += offset ?? 0;
+            sequenceNumberSmall += 1;
+            artsDataSmall.push({
+                index,
+                imageHref,
+                description,
+                offset,
+                title,
+                sequenceNumber,
+            } as IndexedArt);
+        }
+        if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL) {
+            offsetSumForSlideSmall = 0;
+            slideOfArtListSmall.push(
+                <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
+            );
+            artsDataSmall = [];
+        }
+        if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL + 2) {
+            offsetSumForSlideSmall = 0;
+            slideOfArtListSmall.push(
+                <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
+            );
+            artsDataSmall = [];
+        }
+    });
+
+
+    if (!Number.isInteger(offsetSumSmall / SECTION_AMOUNT_SMALL)) {
+        slideOfArtListSmall.push(
+            <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
+        );
+    }
+
+
+
+    const sliderProps = {
+        className: "artGallerySliderContainer",
+
+        swipe: windowsize.width <= 1024,
+        swipeOnClick: false,
+        slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
+        slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
+    };
+
+    const sliderPropsSmall = {
+        className: "artGallarySliderContainerSmall",
+        infinite: true,
+        swipe: windowsize.width <= 1024,
+        swipeOnClick: false,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+    };
+    const isSmall = windowsize.width < 768 ? 'small' : '';
     return (
         <div className="artGalleryWrapper">
             <div className="artGalleryContainer">
                 <BlockHeading headingText="Арт-галерея" />
                 <div className="artGalleryContentContainer">
                     <div className="artGallerySliderContainer">
-                        <SlickSlider
-                            infinite={false}
-                            swipe={false}
-                            slidesToShow={1}
-                        >
-                            {slideOfArtList}
-                        </SlickSlider>
+                        {windowsize.width >= 768 && (
+                            <SlickSlider
+                                //infinite={false}
+                                //swipe={true}
+                                //slidesToShow={1}
+                                //slidesToScroll={1}
+                                {...sliderProps}
+                            >
+                                {slideOfArtList}
+                            </SlickSlider>)}
+                        {windowsize.width < 768 && (
+                            <SlickSliderSmall
+                                infinite={false}
+                                //swipe={true}
+                                //slidesToShow={1}
+                                //slidesToScroll={1}
+                                {...sliderPropsSmall}
+                            >
+                                {slideOfArtListSmall}
+                            </SlickSliderSmall>
+                        )}
                     </div>
                 </div>
             </div>
@@ -112,3 +199,4 @@ const ArtGalleryBlock = () => {
 };
 
 export default observer(ArtGalleryBlock);
+

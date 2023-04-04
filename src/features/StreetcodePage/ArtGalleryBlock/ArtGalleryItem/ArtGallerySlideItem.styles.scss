@@ -5,61 +5,85 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .slideArt {
-  flex: pxToRem(80px);
+    flex: pxToRem(80px);
 
-  .small{ 
-    width: 380px;
-    height: 250px;
+    .small {
+        width: 380px;
+        height: 250px;
+    }
 
-  }
-  .medium{
-    width : 380px;
-    height: 535px;
+    .medium {
+        width: 380px;
+        height: 535px;
+    }
 
-  }
-  .large{
-    width: 806px;
-    height: 536px;
-  }
-
+    .large {
+        width: 806px;
+        height: 536px;
+    }
 }
+
+@media screen and (max-width:1024px) {
+
+    .slideArt {
+        flex: pxToRem(80px);
+        padding-left: 10px;
+
+        .small {
+            width: 242px;
+            height: 161px;
+        }
+
+        .medium {
+            width: 242px;
+            height: 332px;
+        }
+
+        .large {
+            width: 513px;
+            height: 332px;
+        }
+    }
+}
+
+
+
 
 .artImageWrapper {
-  position: relative;  
-  &:hover {
-    cursor: pointer;
-    .imgDataFull {
-      visibility: visible;
-      opacity: 1;
+    position: relative;
+
+    &:hover {
+        cursor: pointer;
+
+        .imgDataFull {
+            visibility: visible;
+            opacity: 1;
+        }
     }
-  }
-  
-  .imgData {
-    @include mut.sized(100%, 113px);
-    @include mut.positioned-as($position: absolute, $bottom: 0);
-    @include mut.colored($color: c.$pure-white-color, $bg-color: rgba(0, 0, 0, 0.5));
-    visibility: hidden;
-    opacity: 0;
-    @include vnd.vendored(transition, 'all .5s ease'); 
-    @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
-    padding: pxToRem(11px) pxToRem(21px);
-  } 
-  
-  .imgTitle {
-    @include mut.with-font();
-    @include mut.rem-padded($bottom: 5px);
-    @include mut.truncated();
-  }
-  
-  .imgDescription {
-    @include mut.with-font($font-size: 15px);
-    @include mut.truncated();
-  }
 
-  .imgImg{
+    .imgData {
+        @include mut.sized(100%, 113px);
+        @include mut.positioned-as($position: absolute, $bottom: 0);
+        @include mut.colored($color: c.$pure-white-color, $bg-color: rgba(0, 0, 0, 0.5));
+        visibility: hidden;
+        opacity: 0;
+        @include vnd.vendored(transition, 'all .5s ease');
+        @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
+        padding: pxToRem(11px) pxToRem(21px);
+    }
 
-    border-radius: pxToRem(30px);
-  }
+    .imgTitle {
+        @include mut.with-font();
+        @include mut.rem-padded($bottom: 5px);
+        @include mut.truncated();
+    }
+
+    .imgDescription {
+        @include mut.with-font($font-size: 15px);
+        @include mut.truncated();
+    }
+
+    .imgImg {
+        border-radius: pxToRem(30px);
+    }
 }
-
-

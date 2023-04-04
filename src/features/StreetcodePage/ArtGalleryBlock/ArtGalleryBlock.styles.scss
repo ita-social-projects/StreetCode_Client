@@ -5,22 +5,85 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .artGallerySliderContainer .sliderClass .slick-slider {
-    height: pxToRem(560px);
+    //height: pxToRem(560px);
+    width: 100%;
 }
+
 .artGalleryWrapper {
-    @include wr.main-page-block-wrapper();
-    margin-bottom: pxToRem(390px);
+    //@include wr.main-page-block-wrapper();
+    //margin-bottom: pxToRem(390px);
 
     .artGalleryContainer {
         @include mut.rem-margined($top: 150px);
-        @include mut.sized(100%, 400px);
-        margin-bottom: pxToRem(290px);
+        //@include mut.sized(100%, 400px);
+        //margin-bottom: pxToRem(290px);
 
         .artGalleryContentContainer {
             @include mut.flex-centered();
-        }  
+        }
     }
+
     .artGallerySliderContainer {
-        @include mut.sized(1230px, 560px);
+        //@include mut.sized(, 560px);
+        width: pxToRem(1230px);
     }
 }
+
+@media screen and (max-width:1024px) and (min-width:768px) {
+    .artGalleryWrapper {
+        @include wr.main-page-block-wrapper();
+        //margin-bottom: pxToRem(390px);
+
+        .artGalleryContainer {
+            @include mut.rem-margined($top: 150px);
+            @include mut.sized(92%, 100%);
+            //margin-bottom: pxToRem(290px);
+
+            .artGalleryContentContainer {
+                @include mut.flex-centered();
+            }
+        }
+
+        .artGallerySliderContainer {
+            @include mut.sized(830px, 360px);
+            // visibility: visible;
+        }
+
+        .artGallarySliderContainerSmall {
+            //visibility: hidden;
+        }
+    }
+}
+
+@media screen and (max-width:767px) {
+    .artGallerySliderContainer {
+        //visibility: hidden;
+    }
+
+    .artGallarySliderContainerSmall {
+        @include mut.sized(830px, 360px);
+        //visibility: visible;
+    }
+}
+//@media screen and (max-width:768px) and (min-width:480) {
+//.artGalleryWrapper {
+//    @include wr.main-page-block-wrapper();
+//margin-bottom: pxToRem(390px);
+
+//    .artGalleryContainer {
+//        @include mut.rem-margined($top: 150px);
+//       @include mut.sized(92%, 100%);
+
+//margin-bottom: pxToRem(290px);
+
+//        .artGalleryContentContainer {
+//           @include mut.flex-centered();
+//       }
+//   }
+//   .artGallerySliderContainer {
+//      @include mut.sized(830px, 360px);
+//   }
+
+
+//}
+//}
