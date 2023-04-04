@@ -239,7 +239,7 @@ and (max-width: 768px){
     //   }
 }
     .interestingFactsSliderContainer {
-        @include mut.sized(915px, 100%); //660px
+        @include mut.sized(815px, 100%); //660px
     
     }
     .interestingFactSlide{

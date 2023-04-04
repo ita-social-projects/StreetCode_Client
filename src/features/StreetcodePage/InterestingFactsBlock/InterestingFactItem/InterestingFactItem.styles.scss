@@ -139,19 +139,20 @@ and (max-width: 768px){
  
 @media screen and (max-width: 480px) { 
 
-  .slick-slide {
-    margin-left: 5.15px;
-  }
-  .slick-slide {
-    // padding-left: 10px;
-    // padding-right: 0;
-}
+  // .slick-slide {
+  //   margin-left: 5.15px;
+  // }
+//   .slick-slide {
+//     // padding-left: 10px;
+//     // padding-right: 0;
+// }
 
   //   margin-right: -11px; /* adjust this value to your desired gap */
   // }
   .interestingFactSlide {
     // @include mut.sized(290px, 312px);
-    @include mut.sized(63%);// 344px
+    // @include mut.sized(63%);// 344px
+    @include mut.sized(70%);// 344px
     @include mut.full-rounded(15px);
 
       .slideImage {
