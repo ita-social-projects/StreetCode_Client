@@ -106,13 +106,17 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
         @include mut.positioned-as(absolute, $left: 88%, $top: -25px);
         @include mut.circular(65px, c.$pure-white-color);
     }
+  }
+}
     .factsModalContainer{
-//216px
-      @include mut.sized($width: 100%, $height: 216px);
-      
+        //216px
+      // @include mut.sized($width: 100%, $height: 216px);
+      // max-height: 20px;
+      width: 100%;
+      height: 15em;
       .factsImgContainer {   
           @include mut.sized($width: 100%, $height: 100%);
-          
+       
           //  @include mut.sized($width: 100%, $height: 285px );
           //pxToEm(285px)
           //  @include mut.sized( $width: 100%, $height: 285px);//pxToEm(285px)
@@ -123,7 +127,7 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
           
         }
         .factsContentContainer {
-          @include mut.sized($width: 90%, $height: 100% );
+          @include mut.sized($width: 100%, $height: 100% );
 
           // @include mut.flexed($direction: column, $gap: 8px);
           display: inline-block;
@@ -134,23 +138,24 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
             line-height: pxToEm(15px);
             @include mut.rem-margined(0px, 16px, 8px, 0px);
           }
-        }
-        .factsTextContainer {
-          height: pxToRem(210px);
-      
-          @include mut.flexed($direction: column, $gap: 10px);
-          @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
-          line-height: pxToEm(20px);
-          padding-right: 0;
-          margin-right: 0;
+          .factsTextContainer {
+            // height: ;
+            // max-height: pxToRem(168px) ;
+            max-height: 85% ;
+            @include mut.flexed($direction: column, $gap: 10px);
+            @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
+            line-height: pxToEm(20px);
+            // padding-right: 0;
+            // margin-right: 0;
+          }
         }
       }
     }
     
 
   
-  }
-}
+  //}
+//}
 
 // @media screen  and (min-device-width: 768px)
 // and (max-device-width: 1024px){
