@@ -4,28 +4,31 @@
 
 .tagModalContainer {
   width: 60%;
+  
   .sliderClass{
     height: f.pxToRem(80px);
   }
+  
   .slick-list {
     padding: f.pxToRem(20px);
   }
+  
   .slick-track {
     position: relative;
     padding: f.pxToRem(22px) 0;
   }
 
-  div.slick-center{
+  div.slick-center {
     transform: scale(1.2);
     padding: 0 f.pxToRem(4px);
   }
   
   .tagModalItem {
-    height: f.pxToRem(38px);
     @include mut.flex-centered();
-
     @include mut.full-rounded(11px);
     @include mut.rem-padded(8px, 10px, 8px, 10px);
+    
+    height: f.pxToRem(38px);
     margin-left: f.pxToRem(8px);
     margin-right: f.pxToRem(8px);
 
