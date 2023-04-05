@@ -13,8 +13,7 @@
   border: 3px solid c.$accented-red-color;
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
-  tra
-
+  
   &:hover {
     cursor: pointer;
     @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');

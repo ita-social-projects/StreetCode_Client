@@ -22,12 +22,10 @@ const EditTermModal = ({ handleEdit, term, setTerm } : Props) => {
 
     const handleChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTerm({ ...term, description: e.target.value });
-        console.log(term);
     };
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTerm({ ...term, title: e.target.value });
-        console.log(term);
     };
 
     return (
