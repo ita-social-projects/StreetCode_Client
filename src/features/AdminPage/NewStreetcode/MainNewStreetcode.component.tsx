@@ -3,12 +3,12 @@ import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import './MainNewStreetcode.styles.scss';
 import PageBar from '../PageBar/PageBar.component';
-
+import TextBlock from './TextBlock/TextBlock.component';
 
 const NewStreetcode = () => (
-    <div className="NewStreetcodePageContainer">
-    <PageBar/>
-    <div className="MainNewStreetcodeContainer">
+    <div className="NewStreetcodeContainer">
+        <TextBlock />
+        <RelatedFiguresBlock/>
         <ForFansBlock />
     </div>
     </div>

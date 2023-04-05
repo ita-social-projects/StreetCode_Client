@@ -1,0 +1,26 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.deleteModal {
+
+    .ant-btn-default {
+
+        color: #000000;
+
+        &:hover {
+            border-color: c.$accented-red-color;
+            color: c.$accented-red-color;
+        }
+    }
+
+    .ant-btn-primary {
+        background-color: c.$accented-red-color;
+        border-color: c.$accented-red-color;
+        color: c.$pure-white-color;
+
+        &:hover {
+            background-color: c.$dark-red-color;
+            border-color: c.$dark-red-color;
+        }
+    }
+}

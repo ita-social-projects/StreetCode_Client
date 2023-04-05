@@ -1,0 +1,7 @@
+@use "@sass/_utils.functions.scss" as f;
+
+.textBlockContainer{
+    display: grid;
+    padding: f.pxToRem(20px) 0;
+    grid-template-columns: 65% 35%;
+}

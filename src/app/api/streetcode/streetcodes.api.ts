@@ -1,6 +1,8 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode, { EventStreetcode, PersonStreetcode } from '@models/streetcode/streetcode-types.model';
+import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
+import GetAllStreetcodesResponse from '@/models/streetcode/getAllStreetcodes.response';
 
 const StreetcodesApi = {
     getById: (id: number) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET}/${id}`),
@@ -11,7 +13,7 @@ const StreetcodesApi = {
 
     getByIndex: (index: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_INDEX}/${index}`),
 
-    getAll: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL}`),
+    getAll: (getAllStreetcodes: GetAllStreetcodesRequest) => Agent.get<GetAllStreetcodesResponse>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
 
     getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
 
