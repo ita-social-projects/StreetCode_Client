@@ -7,6 +7,7 @@
   @include mut.positioned-as(fixed, $bottom: 160px, $right: 50px);
   @include mut.flex-centered();
   @include mut.circular(62px);
+  
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
   
@@ -22,7 +23,7 @@
 .scrollToTopBtnContainer.active {
   @include mut.flex-centered();
   @include mut.circular(62px);
-  
+
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
   
