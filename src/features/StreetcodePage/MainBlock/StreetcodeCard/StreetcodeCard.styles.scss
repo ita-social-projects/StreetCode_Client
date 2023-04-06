@@ -56,16 +56,17 @@
 }
 
 .streetcodeTitle {
-  @include mut.rem-padded(7px, 10px, 7px, 0px);
-  @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
-  color: c.$lighter-black-color;
-  line-height: f.pxToRem(42px);
+    @include mut.rem-padded(7px, 10px, 7px, 0px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
+    color: c.$lighter-black-color;
+    line-height: 47.52px;
 }
 
 .streetcodeDate {
-  @include mut.rem-padded(7px, 10px, 13px, 0px);
-  font-size: f.pxToRem(20px);
-  line-height: f.pxToRem(23px);
+    @include mut.rem-padded(7px, 10px, 13px, 0px);
+    font-size: f.pxToRem(20px);
+    color: c.$lighter-black-color;
+    line-height: 23px;
 }
 
 .headerContainer {
@@ -77,13 +78,15 @@
 }
 
 .teaserBlock {
-  width: 100%;
-  @include mut.rem-margined(13px, 3px, 0px, 0px);
-  @include mut.rem-padded(0px, 5px, 0px, 0px);
-  line-height: 23px;
-  max-height: 214px;
-  overflow: auto;
-  color: c.$lighter-black-color;
+    width: 100%;
+    @include mut.rem-margined(13px, 3px, 0px, 0px);
+    @include mut.rem-padded(0px, 5px, 0px, 0px);
+    line-height: 23px;
+    max-height: 254px;
+    overflow: auto;
+    font-size: f.pxToRem(20px);
+    font-weight:300;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -199,8 +202,7 @@
 
 @media screen and (max-width: 1050px) {
 
-  .blockCentering {
-
+    .blockCentering {
     .headerContainer {
       @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 21px);
     }
@@ -258,20 +260,62 @@
           @include mut.hidden();
         }
 
-        .audioBtn {
-          @include mut.with-font($font-weight: 400, $font-size: 14px);
-          @include mut.sized(95%, 46px);
+        .card {
+            width: 100%;
+            height: unset;
+            background-color: rgba(0, 0, 0, 0) !important;
 
-          .playCircle {
-            font-size: f.pxToRem(23px);
-            margin-right: f.pxToRem(10px);
-          }
+            .leftSider {
+                @include mut.sized(360px, 489px);
+                flex: 0 0 f.pxToRem(360px);
+
+                .leftSiderContent {
+                    background-color: c.$accented-gray-color;
+                    @include mut.border(c.$pure-white-color,10px,solid);
+                }
+            }
+
+            .streetcodeIndex {
+                @include mut.rem-padded(8px, 10px, 0px, 0px);
+                @include mut.with-font($font-weight: 300, $font-size: 15px);
+            }
+
+            .streetcodeTitle {
+                @include mut.rem-padded(0px, 10px, 0px, 0px);
+                @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+                @include mut.withLineHeight(42px);
+            }
+
+            .streetcodeDate {
+                @include mut.rem-padded(0px, 10px, 0px, 0px);
+                @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
+                @include mut.withLineHeight(23px);
+            }
+
+            .streetcodeImg {
+                @include mut.sized(290px, 377px);
+            }
+
+            .cardFooter {
+                bottom: f.pxToRem(10px);
+
+                .animateFigureBtn {
+
+                    @include mut.hidden();
+                }
+
+                .audioBtn {
+                    @include mut.with-font($font-weight: 400, $font-size: 14px);
+                    @include mut.sized(95%, 46px);
+
+                    .playCircle {
+                        font-size: f.pxToRem(23px);
+                        margin-right: f.pxToRem(10px);
+                    }
+                }
+            }
         }
-      }
-
-
     }
-  }
 }
 
 @media screen and (max-width: 680px) {
@@ -300,4 +344,6 @@
       }
     }
   }
+}
+}
 }

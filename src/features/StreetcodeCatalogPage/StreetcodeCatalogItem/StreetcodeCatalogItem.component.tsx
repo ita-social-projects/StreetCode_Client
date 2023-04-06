@@ -22,31 +22,28 @@ const StreetcodeCatalogItem = ({ streetcode }: Props) => {
     console.log(isOnScreen);
 
     return (
-        <div ref={elementRef}>
-            <Link
-                className="catalogItem"
-                style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
-                // change 5 to streetcode.id when all images will be downloaded
-                to={`../streetcode/${streetcode.url}`}
-            >
-                <div className="catalogItemText">
-                    <div className="heading">
-                        <p>{streetcode.title}</p>
-                        {
-                            streetcode.alias !== null
-                                ? (
-                                    <p className="aliasText">
-                                    (
-                                        {streetcode.alias}
-                                    )
-                                    </p>
-                                )
-                                : undefined
-                        }
-                    </div>
+        <Link
+            className="catalogItem"
+            style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
+            to={`../streetcode/${streetcode.url}`}
+        >
+            <div className="catalogItemText">
+                <div className="heading">
+                    <p>{streetcode.title}</p>
+                    {
+                        streetcode.alias !== null
+                            ? (
+                                <p className="aliasText">
+                            (
+                                    {streetcode.alias}
+                            )
+                                </p>
+                            )
+                            : undefined
+                    }
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 };
 

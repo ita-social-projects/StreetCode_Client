@@ -10,18 +10,16 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 .timelineContainer{
   width: 100vw;
   max-width: f.pxToRem(1600px);
-  //width: f.pxToRem(1600px);
   align-self: center;
   align-items: center;
   margin: f.pxToRem(50px) auto;
 
   .timelineContentContainer {
- // margin: f.pxToRem(50px) 0;
   margin: f.pxToRem(50px) auto;
   background-color: c.$timeline-reel-color;
 
    .sliderClass {
-    @include mut.rem-margined($bottom: 25px, $top: 30px /*30px*/);
+    @include mut.rem-margined($bottom: 25px, $top: 30px);
     } 
 
     .slick-slider {
@@ -61,7 +59,6 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     }
     
 
-    // .slick-current + .slick-slide {
     .slick-current {
       border-radius: 40px;
       box-shadow: inset  0px 0px 0px 6px c.$pure-white-color;
