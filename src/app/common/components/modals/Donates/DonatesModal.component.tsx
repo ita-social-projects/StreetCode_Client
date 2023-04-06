@@ -10,6 +10,7 @@ import {
 import useMobx from '@stores/root-store';
 
 import { Button, Input, Modal } from 'antd';
+import axios from 'axios';
 
 const possibleDonateAmounts = [100, 500, 1000];
 
@@ -43,6 +44,14 @@ const DonatesModal = () => {
             setDonateAmount(0);
         }
     };
+
+    const handlePost = async () => {
+        try {
+            const response = await axios.post('controller-link', { donateAmount, donateName, donateComment });
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -105,7 +114,8 @@ const DonatesModal = () => {
                     <Input value={donateComment} onChange={(e)=>setDonateComment(e.target.value)} 
                         placeholder="Коментар (необов’язково)" />
                 </div>
-                <Button className="donatesDonateBtn">Підтримати</Button>
+                <Button onClick={handlePost} 
+                    className="donatesDonateBtn">Підтримати</Button>
             </div>
         </Modal>
     );
