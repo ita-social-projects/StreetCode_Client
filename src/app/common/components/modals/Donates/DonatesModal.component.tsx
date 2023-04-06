@@ -17,11 +17,14 @@ const DonatesModal = () => {
     const { modalStore } = useMobx();
     const { setModal, modalsState: { donates } } = modalStore;
 
-    const [donateAmount, setDonateAmount] = useState(0);
+    const [donateAmount, setDonateAmount] = useState<number>(0);
+    const [donateName, setDonateName] = useState<string | undefined>('');
+    const [donateComment, setDonateComment] = useState<string | undefined>('');
+
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
-    const handleAmountBtnClick = ({ target }: ChangeEvent<HTMLInputElement>, btnIdx: number) => {
+    const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
         setActiveBtnIndex(btnIdx);
     };
@@ -31,7 +34,7 @@ const DonatesModal = () => {
         setDonateAmount(0);
     };
 
-    const handleInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
         const newValue = parseInt(target.value, 10);
 
         if (Number.isSafeInteger(newValue)) {
@@ -78,7 +81,7 @@ const DonatesModal = () => {
                 <h3>Скажи «Дякую» історії</h3>
                 <div className="enterSum">Ввести суму</div>
                 <input
-                    onChange={handleInputChange}
+                    onChange={handleDonateInputChange}
                     style={inputStyle}
                     value={`${donateAmount.toString()}₴`}
                     className={`amountInput ${(donateAmount !== 0) ? 'active' : ''}`}
@@ -89,7 +92,7 @@ const DonatesModal = () => {
                             key={amount}
                             className={(activeBtnIdx === idx
                                 && donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
-                            onClick={(e) => handleAmountBtnClick(e, idx)}
+                            onClick={() => handleAmountBtnClick(idx)}
                         >
                             {amount}
                             ₴
@@ -97,8 +100,10 @@ const DonatesModal = () => {
                     ))}
                 </div>
                 <div className="donatesInputContainer">
-                    <Input placeholder="Ваше ім’я (необов’язково)" />
-                    <Input placeholder="Коментар (необов’язково)" />
+                    <Input value={donateName} onChange={(e)=>setDonateName(e.target.value)} 
+                        placeholder="Ваше ім’я (необов’язково)" />
+                    <Input value={donateComment} onChange={(e)=>setDonateComment(e.target.value)} 
+                        placeholder="Коментар (необов’язково)" />
                 </div>
                 <Button className="donatesDonateBtn">Підтримати</Button>
             </div>
