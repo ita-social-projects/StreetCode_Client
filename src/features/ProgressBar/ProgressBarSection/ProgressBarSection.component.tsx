@@ -10,6 +10,10 @@ interface Props {
     isBlockActive: boolean;
 }
 
+const CurrentClick = (e: any) => {
+    e.stopPropagation();
+}
+
 const ProgressBarSection = ({ idx, block: { title, height }, isBlockActive }: Props) => (
     <Popover
         overlayClassName="progressBarSectionPopover"
@@ -19,6 +23,7 @@ const ProgressBarSection = ({ idx, block: { title, height }, isBlockActive }: Pr
         <div
             key={idx}
             className={`progressBarSection ${isBlockActive ? 'active' : ''}`}
+            onClick={CurrentClick}
         >
             <span onClick={() => window.scrollTo(0, height)}>
                 {idx + 1}

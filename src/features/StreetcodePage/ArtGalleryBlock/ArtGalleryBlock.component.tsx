@@ -1,45 +1,28 @@
 import './ArtGalleryBlock.styles.scss';
-
-import Rectangle106_2 from '@images/art-gallery/Rectangle106_2.png';
-import Rectangle107_2 from '@images/art-gallery/Rectangle107_2.png';
-import Rectangle108_2 from '@images/art-gallery/Rectangle108_2.png';
-import Rectangle109_2 from '@images/art-gallery/Rectangle109_2.png';
-import Rectangle110_2 from '@images/art-gallery/Rectangle110_2.png';
-import Rectangle111_2 from '@images/art-gallery/Rectangle111_2.png';
-
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const SECTION_AMOUNT = 6;
 
 const ArtGalleryBlock = () => {
-    const { streetcodeArtStore } = useMobx();
+    const { streetcodeArtStore, streetcodeStore } = useMobx();
+    const { getStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
 
-    const streetcodeId = useRouteId();
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
 
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(streetcodeId),
-        [streetcodeId],
-    );
-
-    console.log(
-        Rectangle106_2,
-        Rectangle107_2,
-        Rectangle109_2,
-        Rectangle110_2,
-        Rectangle111_2,
-        Rectangle108_2,
+        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
+        [getStreetCodeId],
     );
 
     useEffect(() => {
@@ -47,17 +30,23 @@ const ArtGalleryBlock = () => {
 
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
-                const { width, height } = await getImageSize(image.url.href);
 
-                newMap.push({
-                    index,
-                    description,
-                    imageHref: image.url.href,
-                    title: image.url.title,
-                    offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
-                } as IndexedArt);
+                var url = base64ToUrl(image.base64, image.mimeType);
+
+                if(url) {
+
+                    const { width, height } = await getImageSize(url);
+
+                    newMap.push({
+                        index,
+                        description,
+                        imageHref: url,
+                        title: image.alt,
+                        offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
+                    } as IndexedArt);
+                }
             } catch (error: unknown) {
-                console.log(`Error: cannot parse the image url: ${image.url.href}`);
+                console.log(`Error: cannot parse the image url: ${url}`);
             }
             setIndexedArts(newMap);
         });

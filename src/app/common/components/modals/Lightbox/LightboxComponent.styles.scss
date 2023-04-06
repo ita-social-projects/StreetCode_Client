@@ -72,10 +72,14 @@
     .yarl__navigation_prev {
         @include slick-arrow-lightbox(left);
         left: pxToRem(30px) !important;
+        filter: brightness(35%);
+
     }
 
     .yarl__navigation_next {
         @include slick-arrow-lightbox(right);
         right: pxToRem(30px) !important;
+        filter: brightness(35%);
+
     }
 }

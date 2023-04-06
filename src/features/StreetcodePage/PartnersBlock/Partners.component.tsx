@@ -2,22 +2,43 @@ import './Partners.styles.scss';
 
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
-const PartnersComponent = () => {
-    const { partnersStore } = useMobx();
-    const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
+const settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    autoplay: true,
+    speed: 4000,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 4,
+            },
+        },
+        {
+            breakpoint: 780,
+            settings: {
+                slidesToShow: 2,
+            },
+        },
+    ],
+};
 
-    const streetcodeId = useRouteId();
+const PartnersComponent = () => {
+    const { partnersStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
 
     useAsync(
         () => Promise.all([
-            fetchPartnersByStreetcodeId(streetcodeId),
+            fetchPartnersByStreetcodeId(getStreetCodeId),
         ]),
-        [streetcodeId],
+        [getStreetCodeId],
     );
 
     const sliderItems = getPartnerArray.map((p) => (
@@ -31,11 +52,7 @@ const PartnersComponent = () => {
             <div className="partnerContainer">
                 <SlickSlider
                     className="heightContainer"
-                    slidesToShow={getPartnerArray.length >= 3 ? 3 : getPartnerArray.length}
-                    autoplay
-                    autoplaySpeed={3000}
-                    arrows={false}
-                    dots={false}
+                    {...settings}
                 >
                     {sliderItems}
                 </SlickSlider>

@@ -17,6 +17,18 @@ export default class ImageStore {
         this.ImageMap.set(image.id, image);
     };
 
+    static async getImageById(imageId:number):Promise<Image | undefined> {
+        let image:Image | undefined;
+        await imagesApi.getById(imageId)
+            .then((im) => {
+                image = im;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        return image;
+    }
+
     public getImage = (id: number) => this.ImageMap.get(id);
 
     public fetchImage = async (id: number) => {
@@ -31,7 +43,7 @@ export default class ImageStore {
     public fetchImageByStreetcodeId = async (streetcodeId: number) => {
         try {
             const image = await imagesApi.getByStreetcodeId(streetcodeId);
-            this.setItem(image);
+            this.setInternalMap(image);
         } catch (error: unknown) {
             console.log(error);
         }

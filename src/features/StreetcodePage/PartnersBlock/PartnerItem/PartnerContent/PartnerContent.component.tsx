@@ -7,6 +7,7 @@ import youtube from '@assets/images/partners/youtube.png';
 import useMobx from '@stores/root-store';
 
 import Partner from '@/models/partners/partners.model';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     partner: Partner
@@ -26,7 +27,7 @@ const PartnerContent = ({ partner }: Props) => {
                 <div className="partnerContentLogo">
                     <img
                         key={id}
-                        src={getImage(logoId)?.url.href}
+                        src={base64ToUrl(getImage(logoId)?.base64, getImage(logoId)?.mimeType)}
                         alt={title}
                     />
                 </div>

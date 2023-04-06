@@ -1,0 +1,29 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+.partners-page-container{
+    padding-top: f.pxToRem(90px);
+    @include mut.flexed(column, start,space-between);
+    .partners-table-logo{
+        height: f.pxToRem(40px);
+        margin: 0;
+        padding: 0
+    }
+    .partner-page-actions{
+        @include mut.flexed(row, start,space-between);
+    }
+    .partner-links{
+        @include mut.flexed(row, start,space-between, wrap, 4px);
+    }
+    .partners-table{
+        margin-top: f.pxToRem(20px);
+        width: 75%;
+    }
+    .partner-table-item-name{
+        @include mut.flexed(row, start,flex-start, wrap, 4px);
+    }
+    .site-link{
+        word-break: break-all
+    }
+}
