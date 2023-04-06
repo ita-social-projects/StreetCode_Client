@@ -133,6 +133,7 @@ export const API_ROUTES = {
     STREETCODES: {
         GET_ALL: 'streetcode/getAll',
         GET_ALL_SHORT: 'streetcode/getAllShort',
+        GET_ALL_CATALOG: 'streetcode/getAllCatalog',
         GET_EVENTS: 'streetcode/getEvents',
         GET_PERSONS: 'streetcode/getPersons',
         GET: 'streetcode/getById',

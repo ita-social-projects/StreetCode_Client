@@ -12,7 +12,7 @@ import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalo
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
-        <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/:id`} element={<StreetcodeContent />} />
+        <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/:id/:temp`} element={<StreetcodeContent />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}`} element={<AdminPage />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/new-streetcode`} element={<NewStreetcode />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/for-fans`} element={<ForFans />} />
