@@ -1,6 +1,6 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import ForFans from '@features/AdminPage/NewStreetcode/ForFans/ForFans.component';
+import ForFansBlock from '@features/AdminPage/NewStreetcode/ForFansBlock/ForFansBlock.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
@@ -16,12 +16,12 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/:id`} element={<StreetcodeContent />} />
         <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel`} element={<AdminPage />} />
         <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/new-streetcode`} element={<NewStreetcode />} />
-        <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/for-fans`} element={<ForFansMainPage />} />
+        <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/for-fans-page`} element={<ForFansMainPage />} />
         <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/dictionary`} element={<TermDictionary />} />
         <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/dictionary`} element={<TermDictionary />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}`} element={<AdminPage />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/new-streetcode`} element={<NewStreetcode />} />
-        <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/for-fans`} element={<ForFans />} />
+        <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/for-fans`} element={<ForFansBlock />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/partners`} element={<Partners />} />
         <Route index path={`${FRONTEND_ROUTES.ADMIN.BASE}/dictionary`} element={<TermDictionary />} />
         <Route index path={`${FRONTEND_ROUTES.CATALOG.BASE}`} element={<StreetcodeCatalog />} />

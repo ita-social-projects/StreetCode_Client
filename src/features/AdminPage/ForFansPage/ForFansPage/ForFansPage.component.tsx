@@ -5,7 +5,7 @@ import { DeleteOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react-lite';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import useRouteId from "@hooks/stateful/useRouter.hook";
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import { SourceCategory } from '@models/sources/sources.model';
