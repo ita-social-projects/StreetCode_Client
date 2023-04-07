@@ -13,7 +13,7 @@ $navbar-hidden-innerwidth: 400px;
   @include mut.rem-padded(21px, 32px, 21px, 32px);
 
   background-color: c.$pure-white-color;
-  position: fixed !important;
+  position: fixed;
   z-index: 7;
 
   svg {
@@ -119,6 +119,7 @@ $navbar-hidden-innerwidth: 400px;
 
 @media screen and (max-width: 1024px) { 
   .navBarContainer {
+    @include mut.sized($width: 100%, $height: 64px);
     @include mut.rem-padded(15px, 0, 15px, 0);
 
     .ant-input-affix-wrapper,

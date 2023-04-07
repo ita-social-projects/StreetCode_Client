@@ -1,9 +1,12 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
+
 $bgImg: '@assets/images/streetcode-card/background.png';
+
 .streetcodeContainer {
     width: 100%;
     overflow: hidden;
+    @include mut.rem-padded($top: 82px);
     @include mut.bg-image($bgImg, auto);
 }
 
@@ -11,13 +14,19 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     @include mut.sized(100%, 5875px);
 }
 
-.stickies{
+.stickies {
     @include mut.positioned-as(absolute, $bottom: 290px, $right: 42px);
     margin-bottom: f.pxToRem(8px);
 }
+
+@media screen and (max-width: 1024px) {
+    .streetcodeContainer {
+        @include mut.rem-padded($top: 64px);
+    }
+}
+
 @media screen and (max-width: 680px) {
     .streetcodeContainer{
         background-image: none;
-    }
-    
+    }   
 }
