@@ -5,16 +5,17 @@ import ArtGallerySlideItem from '@streetcode/ArtGalleryBlock/ArtGalleryItem/ArtG
 
 interface Props {
   artGalleryList: IndexedArt[];
+  isAdminPage?: boolean,
 }
 
-const ArtGallerySlide = ({ artGalleryList }: Props) => {
+const ArtGallerySlide = ({ artGalleryList, isAdminPage }: Props) => {
     const offsetSum = artGalleryList.reduce((accumulator, currentValue) => accumulator + currentValue.offset, 0);
-
     return (
-        <div className="slideArtGalleryContainer">
-            <div className={`slideArtGallery width-${offsetSum > 4 ? 2 : 1}`}>
+        <div className={isAdminPage ? 'slideArtGalleryContainerAdmin' : 'slideArtGalleryContainer'}>
+            <div className={`slideArtGallery width-${offsetSum > 4 ? 2 : 1}`}
+            >
                 {artGalleryList.map((item) => (
-                    <ArtGallerySlideItem artGalleryItem={item} />
+                    <ArtGallerySlideItem artGalleryItem={item} offset={item.offset} isAdminPage={isAdminPage} />
                 ))}
             </div>
         </div>

@@ -1,8 +1,5 @@
 import './StreetcodeCard.styles.scss';
 
-import Grushevskiy from '@images/streetcode-card/Grushevskiy.gif';
-import Hrushevskiy from '@images/streetcode-card/Hrushevskyi.png';
-
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -14,7 +11,8 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import Image from '@/models/media/image.model';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
@@ -25,6 +23,8 @@ const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
 
 interface Props {
     streetcode?: Streetcode;
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
+    setActiveBlock: React.Dispatch<React.SetStateAction<number>>
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -43,52 +43,36 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-/* delete this when started using db images */
-const cSlides = [
-    <img
-        src={Grushevskiy}
-        className="streetcodeImg"
-        alt="Hrushevskiy"
-    />,
-    <img
-        src={Hrushevskiy}
-        className="streetcodeImg"
-        alt="Hrushevskiy"
-    />,
-];
-
-const StreetcodeCard = ({ streetcode }: Props) => {
-    const id = useRouteId();
+const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
+    const id = streetcode?.id;
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
 
-    const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id), [id]);
+    const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id ?? 1), [id]);
     const images = value as Image[];
-
-    useAsync(() => fetchAudioByStreetcodeId(id), [id]);
+    useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
 
     return (
         <div className="card">
             <div className="leftSider">
-                <div className="leftSiderContentContainer">
-                    <div className="leftSiderContent">
-                        <BlockSlider
-                            arrows={false}
-                            slidesToShow={1}
-                            swipeOnClick={false}
-                        >
-                            {/* uncomment this to get images brom db, but make sure there are correct urls */}
-                            {/* {images?.map(({ url: { href }, alt }) => (
-                                <img
-                                    src={href}
-                                    className="streetcodeImg"
-                                    alt={alt}
-                                />
-                            ))} */}
-                            {cSlides}
-                        </BlockSlider>
-                    </div>
+                <div className="leftSiderContent">
+                    <BlockSlider
+                        arrows={false}
+                        slidesToShow={1}
+                        swipeOnClick
+                        infinite
+                        draggable={false}
+                    >
+                        {images?.map(({ base64, mimeType, alt }) => (
+                            <img
+                                src={base64ToUrl(base64, mimeType)}
+                                className="streetcodeImg"
+                                alt={alt}
+                            />
+                        ))}
+                    </BlockSlider>
                 </div>
+
             </div>
             <div className="rightSider">
                 <div className="headerContainer">
@@ -98,9 +82,6 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                             {streetcode?.index}
                         </div>
                         <h2 className="streetcodeTitle">
-                            {streetcode?.rank ? `${streetcode?.rank} ` : ''}
-                            {streetcode?.firstName ? `${streetcode?.firstName} ` : ''}
-                            {streetcode?.lastName}
                             {streetcode?.title}
                         </h2>
                         <div className="streetcodeDate">
@@ -109,12 +90,19 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                                 streetcode?.eventEndOrPersonDeathDate,
                             )}
                         </div>
-                        <TagList tags={streetcode?.tags.map((tag: Tag) => tag.title)} />
-                        <p className="teaserBlock">
-                            {streetcode?.teaser}
-                        </p>
+                        <TagList
+                            tags={streetcode?.tags.map((tag: Tag) => tag)}
+                            setActiveTagId={setActiveTagId}
+                            setActiveTagBlock={setActiveBlock}
+                        />
+                        <div className="teaserBlockContainer">
+                            <p className="teaserBlock">
+                                {streetcode?.teaser}
+                            </p>
+                        </div>
+
                         <div className="cardFooter">
-                            {audio?.url?.href
+                            {audio?.base64
                                 ? (
                                     <Button
                                         type="primary"
@@ -130,14 +118,15 @@ const StreetcodeCard = ({ streetcode }: Props) => {
                                         disabled
                                         type="primary"
                                         className="audioBtn"
-                                        onClick={() => setModal('audio')}
                                     >
                                         <span>Аудіо на підході</span>
                                     </Button>
                                 )}
                             <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>

@@ -1,0 +1,106 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.fonts.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+$modal-width: 278px;
+
+.ant-modal.mobileModal {
+    @include mut.sizedImportant($width: $modal-width, $height: 406px);
+
+    .ant-modal-content {
+        @include mut.rem-padded($top: 0, $left: 0);
+        background-color: rgba(0, 0, 0, 0) !important;
+        box-shadow: none !important;
+
+        .relatedFigureSlide {
+            @include mut.sized($width: $modal-width, $height: 345px);
+            border: 3px solid c.$pure-white-color;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            background-color: c.$accented-gray-color;
+
+            display: block;
+        
+            @include vnd.vendored(transition, 'all .5s ease');
+
+            .figureSlideImage {    
+                @include mut.sized($width: $modal-width - 6px, $height: 273px);
+                background-size: 100%;
+                background-repeat: no-repeat;
+            }
+
+            .figureSlideText {
+                @include mut.sized($width: $modal-width, $height: 69px);
+                @include mut.rounded($bottom-left: 29px, $bottom-right: 29px);
+            
+                background-color: c.$dark-red-color;
+            
+                .heading {
+                    @include mut.sized($width: 100%, $height: 69px);
+                    
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    
+                    .aliasText {
+                        line-height: pxToRem(13.2px);
+                        font-size: 10px;
+                    }
+            
+                    p {
+                        @include mut.truncated($line-num: 2);
+                        @include mut.rem-padded($left: 0px, $right: 0px, $top: 0px);
+            
+                        @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
+                        line-height: pxToRem(18.48px);
+                        font-size: 14px;
+                        text-align: center;
+                        color: c.$pure-white-color;
+                    }
+                }
+            }
+        }
+
+        .redirectionButton {
+            box-sizing: border-box;
+
+            @include mut.sized($width: $modal-width, $height: 46px);
+            @include mut.flexed($justify-content: center, $align-items: center);
+            @include mut.rem-margined($top: 15px);
+            @include mut.rem-padded($top: 18px, $right: 26px, $bottom: 18px, $left: 26px);
+            gap: 15px;
+
+            position: absolute;
+
+            @include mut.full-rounded($rad: 10px);
+            background: c.$dark-red-color;
+            border: 2px solid c.$pure-white-color;
+            box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
+
+            p {
+                @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
+                line-height: pxToRem(16.41px);
+                font-size: 14px;
+                text-align: center;
+                color: c.$pure-white-color;
+            }
+        }
+
+        .ant-modal-close {
+            @include mut.positioned-as(absolute, $left: 88%, $top: -15px);
+            @include mut.circular(40px, c.$pure-white-color);
+
+            filter: drop-shadow(0px 2.0241px 2.0241px rgba(0, 0, 0, 0.25));
+            display: inline;
+
+            &:hover {
+                background-color: c.$modal-hover-color;
+            }
+
+            .ant-modal-close-x {
+                padding: 11px !important;
+            }
+        }
+    }
+}

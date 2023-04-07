@@ -1,19 +1,15 @@
-
 import './AdminPage.styles.scss';
 
 import { useState } from 'react';
-import StreetcodesTable from "./StreetcodesTable/StreetcodesTable.component";
-import PageBar from "./PageBar/PageBar.component";
-import {RemoveScroll} from 'react-remove-scroll';
+
+import PageBar from './PageBar/PageBar.component';
+import StreetcodesTable from './StreetcodesTable/StreetcodesTable.component';
 
 const AdminPage = () => (
-    // <RemoveScroll>
-        <div className="adminPageContainer">
-            <StreetcodesTable/>
-            <PageBar/>
-        </div>
-    // </RemoveScroll> 
+    <div className="adminPageContainer">
+        <StreetcodesTable />
+        <PageBar />
+    </div>
 );
 
 export default AdminPage;
-

@@ -8,7 +8,6 @@
 .PageBarContainer {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
     @include mut.sized(15%);
-    margin-top: f.pxToRem(82px);
     float: left;
     min-width: 100px;
 }

@@ -5,6 +5,7 @@ import Instagram from '@images/footer/Instagram.png';
 import StreetcodeFooter from '@images/footer/streetcode-footer.png';
 import TikTok from '@images/footer/TikTok.png';
 import Twitter from '@images/footer/Twitter.png';
+import Youtube from '@images/footer/Youtube.png';
 
 const Footer = () => (
     <>
@@ -18,7 +19,7 @@ const Footer = () => (
                     <li>Стріткоди</li>
                     <li>Маршрути</li>
                     <li>Блог</li>
-                    <li>Про проект</li>
+                    <li>Про проєкт</li>
                     <li>Контакти</li>
                 </ul>
                 <ul className="usefulLinksColumn">
@@ -28,8 +29,7 @@ const Footer = () => (
                 </ul>
                 <ul className="usefulLinksColumn supportLinks">
                     <li>Політика конфіденційності</li>
-                    <li>Зворотній зв'язок</li>
-                    <li>Cookies</li>
+                    <li>Зворотний зв'язок</li>
                 </ul>
                 <ul className="socialIconContainer">
                     <li>
@@ -43,13 +43,18 @@ const Footer = () => (
                         </a>
                     </li>
                     <li>
+                        <a href="https://twitter.com/streetcodeua" target="_blank" rel="noreferrer">
+                            <img src={Twitter} alt="" />
+                        </a>
+                    </li>
+                    <li>
                         <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
                             <img src={TikTok} alt="" />
                         </a>
                     </li>
                     <li>
-                        <a href="https://twitter.com/streetcodeua" target="_blank" rel="noreferrer">
-                            <img src={Twitter} alt="" />
+                        <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
+                            <img src={Youtube} alt="" />
                         </a>
                     </li>
                 </ul>

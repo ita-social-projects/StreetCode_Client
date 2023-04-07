@@ -1,6 +1,7 @@
 import './RelatedFiguresModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { SetStateAction } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -15,6 +16,7 @@ const RelatedFiguresModal = () => {
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
 
     const streetcodeId = relatedFigures.fromCardId!;
+
     useAsync(
         () => {
             if (streetcodeId) {
@@ -40,11 +42,13 @@ const RelatedFiguresModal = () => {
             >
                 <h1>Зв’язки історії</h1>
             </div>
-            <div className="relatedFiguresContentContainer">
+            <div className="relatedFiguresReadMoreContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (
                     <RelatedFigureItem
                         key={figure.id}
                         relatedFigure={figure}
+                        filterTags={false}
+                        setActiveTagId={()=>{}}
                     />
                 ))}
             </div>

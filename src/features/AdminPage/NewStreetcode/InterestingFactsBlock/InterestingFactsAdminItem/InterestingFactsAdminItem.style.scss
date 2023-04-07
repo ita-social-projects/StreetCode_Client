@@ -1,0 +1,32 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+$itemWidth: 154px;
+
+.interestingFactItem {
+   @include mut.sized($width: $itemWidth);
+  
+  .item {
+     position:relative;
+    @include mut.sized($height: 49px);
+    @include mut.flex-centered();  
+    border: 1.5px solid c.$dark-red-color;
+    @include mut.full-rounded($rad: 7.86px);
+    @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
+    p {
+      text-align: center;
+      @include mut.with-font($font-size: 12px,$font-weight: 500);
+      line-height: pxToRem(13.6px);
+      color: c.$dark-red-color;
+    }
+
+    .faIcon {
+      margin: 10px;
+      cursor: pointer;
+      text-align: center;
+      color: black;
+    }
+  }
+}

@@ -4,14 +4,35 @@
 @use '@sass/variables/variables.colors' as c;
 
 .checkBoxContainer{
-  @include mut.sized(257px,148px);
-  @include mut.positioned-as(absolute, 195px, 0, 0, 1143px);
+  @include mut.sized(357px,76px);
+  position: absolute;
+  top: 195px;
+  left: 50%;
+  transform: translateX(-50%);
   @include mut.flexed(row, center, center);
-  z-index: 2;
+
+  z-index: 3;
   background: c.$pure-white-color;
-  border: 3px solid #787878;
+  // border: 3px solid #787878;
   box-shadow: 0px 7px 11px 2px rgba(0, 0, 0, 0.25);
   border-radius: 23px;
+  @media screen and (max-width: 480px) {
+    @include mut.sized(100%,76px);
+    top: 1px;
+    z-index: 3;
+    position:relative ;
+    box-shadow: none;
+    border-radius:none;
+ 
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    @include mut.sized(100%,76px);
+    top: 1px;
+    z-index: 3;
+    position:relative ;
+    box-shadow: none;
+    border-radius:none;
+  }
 }
 
 .selected-checkbox-text{
@@ -19,22 +40,31 @@
   line-height: 23px;
   text-align: center;
   color: c.$accented-red-color;
+  
+}
+
+.checkbox-line{
+  line-height: 23px;
+  text-align: center;
+  gap: 15px;
+  margin-left: 11%;
 }
 
 .checkbox-text{
   @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
-  line-height: 23px;
-  text-align: center;
+  @include mut.positioned-as(relative, $bottom: 2px);
   color: c.$normal-darker-gray-color;
 }
 .ant-checkbox{
   @include mut.sized(25px, 25px);
+  
 }
 
 .ant-checkbox-inner{
   width: 25px !important;
   height: 25px !important;
   border: 3px solid #7E7E7E !important;
+  border-radius: 0  !important;
 }
 .ant-checkbox-checked{
   .ant-checkbox-inner{
@@ -48,4 +78,5 @@
 .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner{
   background: red !important;
   box-shadow: inset 0 0 0 2px white !important;
+  
 }

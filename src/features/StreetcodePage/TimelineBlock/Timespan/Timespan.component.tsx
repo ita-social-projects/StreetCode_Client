@@ -4,26 +4,33 @@ import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import TimelineSwiper from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiper.component';
 
+const settings = {
+    dots: true,
+};
+
 const TimelineTimespan = () => {
     const { timelineItemStore } = useMobx();
-    const { getYearsArray, setActiveYear } = timelineItemStore;
+    const { getYearsArray, setActiveYear, getTimelineItemArray, setChangedByYear } = timelineItemStore;
 
     const middleIdx = Math.round((getYearsArray.length - 1) / 2);
-
     return (
         <div className="timeSpanContainer">
             <div className="timelineYearTicksContainer">
                 <TimelineSwiper
-                    slidesPerView={7}
+                    slidesPerView={5}
                     initialSlide={middleIdx}
-                    spaceBetween={240}
-                    slideToClickedSlide
+                    className="timelineYearTicksContainerSwiper"
+                    {...settings}
                 >
                     {getYearsArray.map((year, idx) => (
                         <div
                             key={idx}
                             className="timelineYearTick"
-                            onClick={() => setActiveYear(year)}
+                            onClick={() => {
+                                setActiveYear(year);
+                                setChangedByYear(true);
+                                console.log(year);
+                            }}
                         >
                             <span>{year}</span>
                         </div>

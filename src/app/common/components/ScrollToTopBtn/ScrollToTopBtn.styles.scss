@@ -1,17 +1,34 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
 
 .scrollToTopBtnContainer {
-  @include mut.positioned-as(fixed, $bottom: 140px, $right: 50px);
+  @include mut.positioned-as(fixed, $bottom: 160px, $right: 50px);
   @include mut.flex-centered();
-
   @include mut.circular(62px);
-  z-index: 4;
-
-  border: 3px solid c.$accented-red-color;
+  
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
+  
+  border: 3px solid c.$accented-red-color;
+  z-index: 4;
+
+  &:hover {
+    cursor: pointer;
+    @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
+  }
+}
+
+.scrollToTopBtnContainer.active {
+  @include mut.flex-centered();
+  @include mut.circular(62px);
+
+  @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
+  @include vnd.vendored(transition, 'filter .5s ease');
+  
+  z-index: 4;
+  border: 3px solid c.$accented-red-color;
 
   &:hover {
     cursor: pointer;
@@ -22,4 +39,10 @@
 @keyframes btnOpacity {
   0% { opacity: 0 }
   100% { opacity: 1 }
+}
+
+.stickyToTop {
+  @include mut.positioned-as(sticky, $bottom: 0px, $right: 0px);
+  margin-bottom: f.pxToRem(15px);
+  margin-left: f.pxToRem(10px);
 }

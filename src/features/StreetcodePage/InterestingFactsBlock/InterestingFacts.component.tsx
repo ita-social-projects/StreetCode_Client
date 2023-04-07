@@ -1,24 +1,27 @@
 import './InterestingFacts.styles.scss';
 
-import BlockSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import { observer } from 'mobx-react-lite';
+import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
-import {useEffect} from "react";
+
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 const InterestingFactsComponent = () => {
-    const streetcodeId = useRouteId();
-    const { factsStore: { fetchFactsByStreetcodeId, getFactArray } } = useMobx();
+    const { streetcodeStore, factsStore } = useMobx();
+    const { getStreetCodeId } = streetcodeStore;
+    const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
 
-    useAsync(
-        () => fetchFactsByStreetcodeId(streetcodeId),
-        [streetcodeId],
-    );
-    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+    useAsync(async () => {
+        fetchFactsByStreetcodeId(getStreetCodeId);
+    }, [getStreetCodeId, streetcodeStore]);
+
+    const sliderArray = getFactArray.length === 3
+    || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
     const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
     getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
+
     return (
         <div className="interestingFactsWrapper">
             <div className="interestingFactsContainer">
@@ -58,4 +61,4 @@ const InterestingFactsComponent = () => {
     );
 };
 
-export default InterestingFactsComponent;
+export default observer(InterestingFactsComponent);

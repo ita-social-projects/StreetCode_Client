@@ -17,6 +17,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
     index: number;
     teaser: string;
+    alias?: string;
     viewCount: number;
     createdAt: Date;
     updatedAt: Date;
@@ -26,6 +27,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     status: Status;
     text: string;
     audio?: Audio | undefined;
+    transliterationUrl: string;
     // coordinate?: StreetcodeCoordinate | undefined;
     transactionLink?: TransactionLink | undefined;
     toponyms: Toponym[];
@@ -48,6 +50,7 @@ export interface EventStreetcode {
 }
 
 export interface PersonStreetcode {
+    title: string;
     firstName: string;
     lastName: string;
     rank: string;
@@ -57,10 +60,23 @@ export interface PersonStreetcode {
 export enum Status {
     Draft,
     Published,
-    Deleted
+    Deleted,
 }
 
 export enum StreetcodeType {
     Event,
-    Person
+    Person,
+}
+export interface StreetcodeShort {
+    id: number;
+    index: number;
+    title: string;
+}
+
+export interface StreetcodeCatalogRecord {
+    id: number,
+    title: string,
+    url: string,
+    imgUrl: string | undefined,
+    alias: string | undefined,
 }

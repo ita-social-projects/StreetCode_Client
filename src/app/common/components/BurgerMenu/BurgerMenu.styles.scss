@@ -3,21 +3,11 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .burgerMenuContainer {
-  @include mut.sized(36px, 100%);
+  @include mut.sized(36px, 28px);
   @include mut.flexed($direction: column, $justify-content: center, $gap: 6px);
-  margin-right: f.pxToRem(24px);
-
-  > * {
-    @include mut.sized(100%, 5px);
-    @include mut.full-rounded(12px);
-    background-color: c.$normal-gray-color;
-  }
+  @include mut.rem-margined($right: 20px);
 
   &:hover {
     cursor: pointer;
-
-    > * {
-      background-color: c.$dark-gray-color;
-    }
   }
 }
