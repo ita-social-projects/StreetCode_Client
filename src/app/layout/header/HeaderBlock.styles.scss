@@ -13,7 +13,7 @@ $navbar-hidden-innerwidth: 400px;
   @include mut.rem-padded(21px, 32px, 21px, 32px);
 
   background-color: c.$pure-white-color;
-  position: fixed;
+  position: fixed !important;
   z-index: 7;
 
   svg {
@@ -128,7 +128,7 @@ $navbar-hidden-innerwidth: 400px;
     
     .leftPartContainer {
       svg {
-        transform: scale(0.8);
+        @include mut.rem-margined($left: 12px);
       }
     }
 
