@@ -47,7 +47,7 @@ const DonatesModal = () => {
 
     const handlePost = async () => {
         try {
-            const response = await axios.post('controller-link', { donateAmount, donateName, donateComment });
+            const response = await axios.post('controller-link', { Amount: donateAmount, Destination: `${donateName}: ${donateComment}` });
         } catch (err) {
             console.error(err);
         }
