@@ -100,33 +100,31 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 {streetcode?.teaser}
                             </p>
                         </div>
-
-                        <div className="cardFooter">
-                            {audio?.base64
-                                ? (
-                                    <Button
-                                        type="primary"
-                                        className="audioBtn audioBtnActive"
-                                        onClick={() => setModal('audio')}
-                                    >
-                                        <PlayCircleFilled className="playCircle" />
-                                        <span>Прослухати текст</span>
-                                    </Button>
-                                )
-                                : (
-                                    <Button
-                                        disabled
-                                        type="primary"
-                                        className="audioBtn"
-                                    >
-                                        <span>Аудіо на підході</span>
-                                    </Button>
-                                )}
-                            <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
-                        </div>
-
                     </div>
 
+                    <div className="cardFooter">
+                        {audio?.base64
+                            ? (
+                                <Button
+                                    type="primary"
+                                    className="audioBtn audioBtnActive"
+                                    onClick={() => setModal('audio')}
+                                >
+                                    <PlayCircleFilled className="playCircle" />
+                                    <span>Прослухати текст</span>
+                                </Button>
+                            )
+                            : (
+                                <Button
+                                    disabled
+                                    type="primary"
+                                    className="audioBtn"
+                                >
+                                    <span>Аудіо на підході</span>
+                                </Button>
+                            )}
+                        <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
+                    </div>
                 </div>
             </div>
         </div>
