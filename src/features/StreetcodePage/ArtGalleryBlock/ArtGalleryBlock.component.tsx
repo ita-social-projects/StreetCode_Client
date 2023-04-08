@@ -21,35 +21,25 @@ const ArtGalleryBlock = () => {
     const { getStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
+    const [indexedArtsSmall, setIndexedArtsSmall] = useState<IndexedArt[]>([]);
     const windowsize = useWindowSize();
 
-    const sortedArtsListSmall = [...indexedArts].sort((a, b) => a.index - b.index);
+    const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
+    let offsetSumForSlide = 0;
+    let offsetSum = 0;
+    let sequenceNumber = -1;
+    const slideOfArtList = [];
+    let artsData: IndexedArt[] = [];
+
+
+    const sortedArtsListSmall = [...indexedArtsSmall].sort((a, b) => a.index - b.index);
     const slideOfArtListSmall = [];
     let offsetSumForSlideSmall = 0;
     let offsetSumSmall = 0;
     let sequenceNumberSmall = -1;
     let artsDataSmall: IndexedArt[] = [];
 
-    const sliderProps = {
-        className: "artGallerySliderContainer",
-        infinite: false,
 
-        swipe: windowsize.width <= 1024,
-        swipeOnClick: false,
-        slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
-        slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
-    };
-
-    const sliderPropsSmall = {
-        className: "artGallarySliderContainerSmall",
-        infinite: false,
-        swipe: true,
-        swipeOnClick: false,
-        centerMode: true,
-        variableWidth: true,
-        slidesToShow: 1,
-        slidesToScroll: 0.5,
-    };
 
     useAsync(
         () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
@@ -77,16 +67,11 @@ const ArtGalleryBlock = () => {
                 console.log(`Error: cannot parse the image url: ${url}`);
             }
             setIndexedArts(newMap);
+            setIndexedArtsSmall(newMap);
         });
     }, [getStreetcodeArtArray]);
 
-    const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
-    let offsetSumForSlide = 0;
-    let offsetSum = 0;
-    let sequenceNumber = -1;
-    const slideOfArtList = [];
-    let artsData: IndexedArt[] = [];
-
+    
     sortedArtsList.forEach(({
         index, offset, imageHref, description, title,
     }) => {
@@ -131,7 +116,7 @@ const ArtGalleryBlock = () => {
                 description,
                 offset,
                 title,
-                sequenceNumber,
+                sequenceNumber: sequenceNumberSmall,
             } as IndexedArt);
         }
         if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL) {
@@ -157,7 +142,26 @@ const ArtGalleryBlock = () => {
         );
     }
 
-    
+    const sliderProps = {
+        className: "artGallerySliderContainer",
+        infinite: false,
+
+        swipe: windowsize.width <= 1024,
+        swipeOnClick: false,
+        slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
+        slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
+    };
+
+    const sliderPropsSmall = {
+        className: "artGallarySliderContainerSmall",
+        infinite: false,
+        swipe: true,
+        swipeOnClick: false,
+        centerMode: true,
+        variableWidth: true,
+        slidesToShow: 1,
+        slidesToScroll: 0.5,
+    };
 
     return (
         <div className="artGalleryWrapper">

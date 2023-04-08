@@ -7,7 +7,7 @@ import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
-
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import ArtGallerySlide from '@/features/StreetcodePage/ArtGalleryBlock/ArtGalleryListOfItem/ArtGallerySlide.component';
 
 const SECTION_AMOUNT = 6;
@@ -19,7 +19,7 @@ const ArtGalleryAdminBlock = () => {
     const isAdminPage = true;
 
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
+        () => fetchStreetcodeArtsByStreetcodeId(1),
         [getStreetCodeId],
     );
 
@@ -36,17 +36,21 @@ const ArtGalleryAdminBlock = () => {
         const newMap: IndexedArt[] = [];
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
-                const { width, height } = await getImageSize(image.url.href);
+                var url = base64ToUrl(image.base64, image.mimeType);
+                if (url) {
 
-                newMap.push({
-                    index,
-                    description,
-                    imageHref: image.url.href,
-                    title: image.url.title,
-                    offset: setOffset(width, height),
-                } as IndexedArt);
+                    const { width, height } = await getImageSize(url);
+
+                    newMap.push({
+                        index,
+                        description,
+                        imageHref: url,
+                        title: image.alt,
+                        offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
+                    } as IndexedArt);
+                }
             } catch (error: unknown) {
-                console.log(`Error: cannot parse the image url: ${image.url.href}`);
+                console.log(`Error: cannot parse the image url: ${url}`);
             }
             setIndexedArts(newMap);
         });

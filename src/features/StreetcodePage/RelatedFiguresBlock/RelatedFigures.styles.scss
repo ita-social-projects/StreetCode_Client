@@ -8,7 +8,7 @@ $moreInfo-width: 150px;
 .relatedFiguresWrapper {
     @include mut.sized($height: 600px);
     @include wr.main-page-block-wrapper();
-    @include mut.rem-margined($bottom: 50px, $top: 20px);
+    @include mut.rem-margined($bottom: 50px, $top: 200px);
 }
 
 .smallWrapper {
@@ -94,10 +94,17 @@ $moreInfo-width: 150px;
         
     }
 }
-@media screen and (max-width: 1024px) and (min-width: 481px) {
+@media screen and (max-width: 1024px) and (min-width: 768px) {
     .relatedFiguresWrapper {
         @include mut.sized($height: 400px); 
         @include mut.rem-margined($bottom: 50px, $top: 100px);
+    }
+}
+
+@media screen and (max-width: 767px) and (min-width: 480px) {
+    .relatedFiguresWrapper {
+        @include mut.sized($height: 400px);
+        @include mut.rem-margined($bottom: 50px, $top: 50px);
     }
 }
 
