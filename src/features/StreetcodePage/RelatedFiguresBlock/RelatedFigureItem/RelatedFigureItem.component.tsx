@@ -5,7 +5,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {

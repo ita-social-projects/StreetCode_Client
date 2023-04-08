@@ -46,7 +46,30 @@
     }
 }
 
+@media screen and (max-width:767px) {
 
+    .slideArt {
+        flex: pxToRem(80px);
+        padding-left: 10px;
+
+        .small {
+            width: 242px;
+            height: 161px;
+            margin-bottom: 10px;
+        }
+
+        .medium {
+            width: 242px;
+            height: 332px;
+        }
+
+        .large {
+            width: 472px;
+            height: 334px;
+
+        }
+    }
+}
 
 
 .artImageWrapper {

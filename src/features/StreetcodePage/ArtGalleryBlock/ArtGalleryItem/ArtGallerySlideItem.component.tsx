@@ -1,6 +1,7 @@
 import './ArtGallerySlideItem.styles.scss';
 
 import { IndexedArt } from '@models/media/art.model';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import useMobx from '@/app/stores/root-store';
 
@@ -13,6 +14,7 @@ const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => 
     //console.log(offset);
     const { imageHref, description, title, sequenceNumber } = artGalleryItem;
     const { modalStore: { setModal } } = useMobx();
+    const windowsize = useWindowSize();
 
     function setStyleByOffset(offset: number): string {
         switch (offset) {
@@ -24,9 +26,7 @@ const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => 
                 return 'large';
         }
     }
-    //${offset === 2 ? 'medium' : offset === 4 ? 'large' : 'small'}
-    //${offset === 2 ? 'two' : offset === 4 ? 'four' : 'one'}
-    //${setStyleByOffset(offset)}
+
     return (
         <div className={isAdminPage ? `slideArtAdmin  ${setStyleByOffset(offset)}` :
             `slideArt ${setStyleByOffset(offset)}`}>
@@ -37,13 +37,13 @@ const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => 
                     onClick={() => setModal('artGallery', sequenceNumber)}
                     alt=""
                 />
-                <div
+                {windowsize.width > 1024 && (<div
                     className={`imgData imgData${description || title ? 'Full' : 'Empty'
                         }`}
                 >
                     <p className="imgTitle">{title}</p>
                     <p className="imgDescription">{description}</p>
-                </div>
+                </div>)}
             </div>
         </div>
     );

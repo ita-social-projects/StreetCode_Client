@@ -16,14 +16,40 @@ import ArtGallerySlideSmall from './ArtGalleryListOfItem/ArtGallerySlide.compone
 const SECTION_AMOUNT = 6;
 const SECTION_AMOUNT_SMALL = 2;
 
-
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore, streetcodeStore } = useMobx();
     const { getStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
-
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const windowsize = useWindowSize();
+
+    const sortedArtsListSmall = [...indexedArts].sort((a, b) => a.index - b.index);
+    const slideOfArtListSmall = [];
+    let offsetSumForSlideSmall = 0;
+    let offsetSumSmall = 0;
+    let sequenceNumberSmall = -1;
+    let artsDataSmall: IndexedArt[] = [];
+
+    const sliderProps = {
+        className: "artGallerySliderContainer",
+        infinite: false,
+
+        swipe: windowsize.width <= 1024,
+        swipeOnClick: false,
+        slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
+        slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
+    };
+
+    const sliderPropsSmall = {
+        className: "artGallarySliderContainerSmall",
+        infinite: false,
+        swipe: true,
+        swipeOnClick: false,
+        centerMode: true,
+        variableWidth: true,
+        slidesToShow: 1,
+        slidesToScroll: 0.5,
+    };
 
     useAsync(
         () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
@@ -32,12 +58,9 @@ const ArtGalleryBlock = () => {
 
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
-
                 var url = base64ToUrl(image.base64, image.mimeType);
-
                 if(url) {
 
                     const { width, height } = await getImageSize(url);
@@ -61,7 +84,6 @@ const ArtGalleryBlock = () => {
     let offsetSumForSlide = 0;
     let offsetSum = 0;
     let sequenceNumber = -1;
-
     const slideOfArtList = [];
     let artsData: IndexedArt[] = [];
 
@@ -90,20 +112,11 @@ const ArtGalleryBlock = () => {
         }
     });
 
-
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
             <ArtGallerySlide artGalleryList={artsData} />,
         );
     }
-
-    const sortedArtsListSmall = [...indexedArts].sort((a, b) => a.index - b.index);
-    const slideOfArtListSmall = [];
-    let offsetSumForSlideSmall = 0;
-    let offsetSumSmall = 0;
-    let sequenceNumberSmall = -1;
-    let artsDataSmall: IndexedArt[] = [];
-
 
     sortedArtsListSmall.forEach(({
         index, offset, imageHref, description, title,
@@ -128,7 +141,7 @@ const ArtGalleryBlock = () => {
             );
             artsDataSmall = [];
         }
-        if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL + 2) {
+        if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL+2) {
             offsetSumForSlideSmall = 0;
             slideOfArtListSmall.push(
                 <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
@@ -144,26 +157,8 @@ const ArtGalleryBlock = () => {
         );
     }
 
+    
 
-
-    const sliderProps = {
-        className: "artGallerySliderContainer",
-
-        swipe: windowsize.width <= 1024,
-        swipeOnClick: false,
-        slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
-        slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
-    };
-
-    const sliderPropsSmall = {
-        className: "artGallarySliderContainerSmall",
-        infinite: true,
-        swipe: windowsize.width <= 1024,
-        swipeOnClick: false,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
-    const isSmall = windowsize.width < 768 ? 'small' : '';
     return (
         <div className="artGalleryWrapper">
             <div className="artGalleryContainer">
@@ -172,20 +167,13 @@ const ArtGalleryBlock = () => {
                     <div className="artGallerySliderContainer">
                         {windowsize.width >= 768 && (
                             <SlickSlider
-                                //infinite={false}
-                                //swipe={true}
-                                //slidesToShow={1}
-                                //slidesToScroll={1}
                                 {...sliderProps}
                             >
                                 {slideOfArtList}
                             </SlickSlider>)}
                         {windowsize.width < 768 && (
                             <SlickSliderSmall
-                                infinite={false}
-                                //swipe={true}
-                                //slidesToShow={1}
-                                //slidesToScroll={1}
+                            
                                 {...sliderPropsSmall}
                             >
                                 {slideOfArtListSmall}
