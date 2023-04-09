@@ -1,7 +1,6 @@
 import './MainNewStreetcode.styles.scss';
 
-import React, { useEffect } from 'react';
-import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 import { ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';

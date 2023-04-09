@@ -57,8 +57,7 @@ export default class PartnersStore {
 
     public createPartner = async (partner: PartnerCreateUpdate) => {
         try {
-            const newPartner = await partnersApi.create(partner);
-            this.setItem(newPartner);
+            await partnersApi.create(partner).then((created) => this.setItem(created));
         } catch (error: unknown) {
             console.log(error);
         }
@@ -66,8 +65,7 @@ export default class PartnersStore {
 
     public updatePartner = async (partner: PartnerCreateUpdate) => {
         try {
-            const updated = await partnersApi.update(partner);
-            this.setItem(updated);
+            await partnersApi.update(partner).then((updated) => this.setItem(updated));
         } catch (error: unknown) {
             console.log(error);
         }

@@ -13,7 +13,7 @@ import { Option } from 'antd/es/mentions';
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import Tag, { TagVisible } from '@/models/additional-content/tag.model';
+import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
@@ -23,7 +23,7 @@ import FileInputsPart from './FileInputsPart.component';
 const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
     const teaserMaxCharCount = 520;
     const allTags = useAsync(() => TagsApi.getAll()).value;
-    const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
+    const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
     const [tags, setTags] = useState< Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
     const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
@@ -99,11 +99,11 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
         if (selectedIndex < 0) {
             TagsApi.create({ title: selectedValue }).then((newTag) => {
-                setSelectedTags([...selectedTags, { ...newTag, visible: false }]);
+                setSelectedTags([...selectedTags, { ...newTag, isVisible: false }]);
             }).catch((e) => console.log(e));
         } else {
             selected = tags[selectedIndex];
-            setSelectedTags([...selectedTags, { ...selected, visible: false }]);
+            setSelectedTags([...selectedTags, { ...selected, isVisible: false }]);
         }
     };
 

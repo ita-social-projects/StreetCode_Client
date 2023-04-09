@@ -63,7 +63,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  description: partnerItem.description,
                  partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
                  logo: [
-                     { name: '', url: partnerItem.logo?.url.href, uid: partnerItem.logoId.toString(), status: 'done' }],
+                     { name: '', url: partnerItem.logo?.base64, uid: partnerItem.logoId.toString(), status: 'done' }],
              });
              selectedStreetcodes.current = partnerItem.streetcodes;
              setPartnersSourceLinks(partnerItem.partnerSourceLinks.map((l) => ({
@@ -123,12 +123,15 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
              urlTitle: formValues.urlTitle,
              isVisibleEverywhere: false,
          };
-         let success = true;
+         let success = false;
          if (partnerItem) {
              partner.id = partnerItem.id;
              partner.logoId = partnerItem.logoId;
              Promise.all([
                  partnersStore.updatePartner(partner)
+                     .then(() => {
+                         success = true;
+                     })
                      .catch((e) => {
                          console.log(e); success = false;
                      }),
@@ -136,6 +139,9 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          } else {
              Promise.all([
                  partnersStore.createPartner(partner)
+                     .then(() => {
+                         success = true;
+                     })
                      .catch((e) => {
                          console.log(e); success = false;
                      }),
@@ -256,13 +262,13 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          className="uploader-small"
                          fileList={(partnerItem)
                              ? [{ name: '',
-                                  url: partnerItem.logo?.url.href,
+                                  url: partnerItem.logo?.base64,
                                   uid: partnerItem.logoId.toString(),
                                   status: 'done' }]
                              : []}
                          defaultFileList={(partnerItem)
                              ? [{ name: '',
-                                  url: partnerItem.logo?.url.href,
+                                  url: partnerItem.logo?.base64,
                                   uid: partnerItem.logoId.toString(),
                                   status: 'done' }]
                              : []}

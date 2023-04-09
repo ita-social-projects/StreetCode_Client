@@ -4,14 +4,13 @@ import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import Tag from '@models/additional-content/tag.model';
+import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import Image from '@/models/media/image.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 
@@ -91,7 +90,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             )}
                         </div>
                         <TagList
-                            tags={streetcode?.tags.map((tag: Tag) => tag)}
+                            tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
