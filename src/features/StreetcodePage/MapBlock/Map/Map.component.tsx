@@ -78,7 +78,7 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
   zoom={defaultZoom} maxZoom={20} minZoom={1} zoomControl={false} className="mapContainer"
   scrollWheelZoom={true}  key={defaultZoom}>
                 <VectorTileLayer                
-                    styleUrl="https://api.maptiler.com/maps/8ea6d995-4375-4873-a720-86be88576488/style.json?key=gEzGMwfl1Uo3TJWS0xcQ"              
+                    styleUrl="https://api.maptiler.com/maps/3f3c1ffa-9171-437c-bcce-06eae220b63f/style.json?key=UhzbQOCzR2G1uwFnnJk9"              
                 />
                 
                 {streetcodes?.isActive && (

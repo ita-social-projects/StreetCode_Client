@@ -18,7 +18,7 @@ import StatisticsComponent from './Statistics.component';
 const InfoComponent = () => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const toponyms = useAsync(() => ToponymsApi
-        .getAll(), []).value as Toponym[];
+    .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as Toponym[];
     const [clicked, setClicked] = useState(false);
     const [hovered, setHovered] = useState(false);
 

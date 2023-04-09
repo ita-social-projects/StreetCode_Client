@@ -1,0 +1,74 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.ToponymsTableWrapper {
+
+
+    .ant-btn-primary:disabled {
+        background-color: c.$lighter-gray-color;
+        color: c.$pure-white-color;
+      }
+      .ant-btn-default {
+        border-color: c.$accented-red-color;
+    }
+
+    .ButtonAddAllToponyms {
+      margin-top: 20px;
+      margin-left: 10px;
+      @include mut.sized(142px, 35px);
+      @include mut.flex-centered();
+      @include mut.full-rounded(12px);
+      @include mut.with-font($font-weight: 400, $font-size: 16px);
+
+      background-color: c.$accented-red-color;
+      border-color: c.$accented-red-color;
+      color: c.$pure-white-color;
+
+      &:hover {
+          border-color: c.$dark-red-color;
+          background-color: c.$dark-red-color;
+      }
+  }
+    .addButton {
+
+        @include mut.sized(142px, 39px);
+        @include mut.flex-centered();
+        @include mut.full-rounded(12px);
+        @include mut.with-font($font-weight: 500, $font-size: 16px);
+
+        margin: 10px;
+
+        background-color: c.$accented-red-color;
+        border-color: c.$accented-red-color;
+        color: c.$pure-white-color;
+
+        &:hover {
+            background-color: c.$dark-red-color;
+        }
+    }
+
+}
+
+.actionButton {
+    margin-right: 10px;
+
+    &:hover {
+        color: c.$dark-red-color;
+        cursor: pointer;
+        scale: 1.2;
+    }
+}
+
+.paginationButton > li {
+    border-color: c.$accented-red-color;
+
+    a {
+        color: c.$accented-red-color;
+    }
+}
+
+.ant-table table { 
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 18px);
+}

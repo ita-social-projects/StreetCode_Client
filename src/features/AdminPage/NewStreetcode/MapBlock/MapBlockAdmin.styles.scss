@@ -1,0 +1,13 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+
+.mapBlockContainerr{
+  margin: 10% auto;
+  @include mut.sized(100%, 1600px);
+   @include mut.positioned-as(relative);
+  .leaflet-container {
+    z-index: 2;
+  }
+
+}

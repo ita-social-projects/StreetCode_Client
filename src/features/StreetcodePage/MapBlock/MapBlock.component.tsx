@@ -17,7 +17,7 @@ import MapOSM from './Map/Map.component';
 const MapBlock = () => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const toponyms = useAsync(() => ToponymsApi
-        .getAll(), []).value as Toponym[];
+        .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as Toponym[];
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
         .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as StreetcodeCoordinate[];
 
