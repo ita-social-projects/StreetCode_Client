@@ -13,14 +13,27 @@
   border: 3px solid c.$accented-red-color;
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
-  tra
 
   &:hover {
     cursor: pointer;
     @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
   }
 }
+.scrollToTopBtnContainer.stopToTop {
+  @include mut.positioned-as(fixed, $bottom: 400px, $right: 50px);
 
+  transition: bottom 0.1s ease-out;
+}
+@media screen and (max-width: 1024px) {
+  .scrollToTopBtnContainer.stopToTop {
+    bottom: f.pxToRem(200px);
+  }
+}
+@media screen and (max-width: 480px) {
+  .scrollToTopBtnContainer.stopToTop {
+    bottom: f.pxToRem(225px);
+  }
+}
 .scrollToTopBtnContainer.active{
   @include mut.flex-centered();
 
@@ -42,8 +55,8 @@
   100% { opacity: 1 }
 }
 
-.stickyToTop {
-  @include mut.positioned-as(sticky, $bottom: 0px, $right: 0px);
-  margin-bottom: f.pxToRem(15px);
-  margin-left: f.pxToRem(10px);
-}
+//.stickyToTop {
+//  @include mut.positioned-as(sticky, $bottom: 0px, $right: 0px);
+//  margin-bottom: f.pxToRem(15px);
+//  margin-left: f.pxToRem(10px);
+//}

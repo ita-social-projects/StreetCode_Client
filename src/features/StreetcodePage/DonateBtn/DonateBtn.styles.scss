@@ -30,6 +30,18 @@
   }
 }
 
-.stickyDonate {
-  @include mut.positioned-as(sticky, $bottom: 0px, $right: 0px);
+.donateBtnContainer.stopToTop {
+  position: fixed;
+  bottom: f.pxToRem(300px);
+  transition: bottom 0.1s ease-out;
+}
+@media screen and (max-width: 1024px) {
+  .donateBtnContainer.stopToTop {
+    bottom: f.pxToRem(100px);
+  }
+}
+@media screen and (max-width: 480px) {
+  .donateBtnContainer.stopToTop {
+    bottom: f.pxToRem(125px);
+  }
 }
