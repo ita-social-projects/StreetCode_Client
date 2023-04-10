@@ -80,3 +80,25 @@ export interface StreetcodeCatalogRecord {
     imgUrl: string | undefined,
     alias: string | undefined,
 }
+
+export interface StreetcodeCreate {
+    mainBlockData: MainBlockDataCreate,
+}
+
+export interface MainBlockDataCreate {
+    index: number;
+    firstName: string,
+    lastName: string,
+    title: string,
+    teaser: string;
+    alias?: string;
+    viewCount: number;
+    createdAt: Date;
+    updatedAt: Date;
+    eventStartOrPersonBirthDate: Date;
+    eventEndOrPersonDeathDate: Date;
+    tags: Tag[];
+    type: StreetcodeType;
+    images: Image[];
+    text: string;
+}
