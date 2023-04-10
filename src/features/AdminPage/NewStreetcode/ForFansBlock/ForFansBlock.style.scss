@@ -5,9 +5,6 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@features/AdminPage/NewStreetcode/ForFansBlock/ForFansAdminItem/ForFansAdminItem.style.scss" as item;
 
-.navBarContainer{
-    position: sticky !important;
-}
 .forFansBlock {
   overflow: auto;  
   @include mut.sized(61%, 215px);
