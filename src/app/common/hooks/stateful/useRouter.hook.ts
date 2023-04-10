@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-export const useRouteId = () => {
+export const useRouteUrl = () => {
     const params = useParams<{ id: string }>();
-    return parseInt(params.id ?? '1', 10);
+    return params.id ?? '404';
 };
 
 const useRouter = <T extends Record<string, string | undefined> | string> () => {

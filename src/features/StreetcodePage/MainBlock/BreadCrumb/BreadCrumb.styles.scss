@@ -4,11 +4,11 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .activeLink {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .breadcrumbContainer {
-  @include mut.with-font($font-weight: 300, $font-size:12px);
+  @include mut.with-font(/*$font-weight: 300,*/ $font-size:12px);
   position: absolute;
   top: f.pxToRem(34px);
   right: f.pxToRem(50px);
@@ -33,4 +33,16 @@
 
   background-color: c.$dark-red-color;
   margin-bottom: f.pxToRem(2px);
+}
+@media (max-width: 1024px) {
+  .breadcrumbContainer{
+    top: f.pxToRem(10px);
+    right: f.pxToRem(10px);
+  }
+}
+@media (max-width: 660px) {
+  .breadcrumbContainer{
+    top: f.pxToRem(20px);
+    right: f.pxToRem(10px);
+  }
 }

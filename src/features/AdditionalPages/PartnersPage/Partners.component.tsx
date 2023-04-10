@@ -6,7 +6,7 @@ import PartnersBtnCircle from './ModalButtons/PartnersBtnCircle/PartnersBtnCircl
 import PartnersBlock from './PartnersBlock/PartnersBlock.component';
 import Title from './Title/Title.component';
 
-const Partners = () => (
+const PartnersPage = () => (
     <div className="partnersContainer">
         <div className="wrapper">
             <Title />
@@ -26,4 +26,4 @@ const Partners = () => (
     </div>
 );
 
-export default Partners;
+export default PartnersPage;

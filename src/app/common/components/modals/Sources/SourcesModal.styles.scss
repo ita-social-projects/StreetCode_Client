@@ -8,7 +8,7 @@ $bookImg: "@assets/images/sources/Books_stretched.png";
 $articlesImg: "@assets/images/sources/Articles.png";
 
 .sourcesModal {
-  @include mut.sized(823px, 765px);
+  @include mut.sizedImportant(823px, 765px);
 
   &.ant-modal {
     .ant-modal-content {
@@ -26,13 +26,18 @@ $articlesImg: "@assets/images/sources/Articles.png";
       &:hover {
         background-color: c.$modal-hover-color;
       }
+      .ant-modal-close-x {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 }
 
 .sourceImgContainer {
   position: sticky;
-  @include mut.sized(100%, 97px);
+  @include mut.sizedImportant(100%, 97px);
   @include mut.flex-centered();
 
   @include vnd.vendored(border-top-left-radius, '70px');

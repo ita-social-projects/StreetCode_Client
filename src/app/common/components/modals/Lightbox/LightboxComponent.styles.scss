@@ -70,12 +70,16 @@
     }
 
     .yarl__navigation_prev {
-        @include slick-arrow-lightbox(left);
+        @include slick-arrow-lightbox(Left);
         left: pxToRem(30px) !important;
+        filter: brightness(35%);
+
     }
 
     .yarl__navigation_next {
-        @include slick-arrow-lightbox(right);
+        @include slick-arrow-lightbox(Right);
         right: pxToRem(30px) !important;
+        filter: brightness(35%);
+
     }
 }

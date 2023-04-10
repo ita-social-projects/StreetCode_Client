@@ -1,23 +1,23 @@
+
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+$navbar-innerwidth: 500px; 
+$navbar-hidden-innerwidth: 400px;
+
 .navBarContainer {
-  @include mut.sized(100%, 82px);
-  max-width: f.pxToRem(1902px);
-
   @include mut.flexed($justify-content: space-between, $align-items: center);
-  padding: f.pxToRem(21px) f.pxToRem(32px);
+  @include mut.sized(100%, 82px);
+  @include mut.rem-padded(21px, 32px, 21px, 32px);
 
+  background-color: c.$pure-white-color;
   position: fixed;
-  z-index: 6;
-
-  background-color: white;
-  border-bottom: 1px dashed c.$dark-gray-color;
+  z-index: 7;
 
   svg {
-    margin-right: f.pxToRem(34px);
+    @include mut.rem-margined($right: 34px);
 
     &:hover {
       cursor: pointer;
@@ -25,9 +25,13 @@
   }
 
   .ant-input,
-  .ant-input-affix-wrapper,
-  .langSelector {
+  .ant-input-affix-wrapper {
     background-color: c.$accented-gray-color;
+    border: none !important;
+  }
+
+  .ant-input:focus {
+    outline: 1px none c.$input-outline-color;
   }
 
   .ant-input-prefix {
@@ -37,57 +41,27 @@
 
   .ant-input-affix-wrapper {
     position: relative;
-    @include mut.sized(1215px, 39px);
-
+    height: f.pxToRem(39px);
+    width: calc(100vw - #{$navbar-innerwidth});
+    
     @include mut.full-rounded(12px);
-    margin-right: f.pxToRem(10px);
+    @include mut.rem-margined($right: 10px);
 
     svg {
       color: c.$selected-arrow-color;
-      margin-right: f.pxToRem(11px);
-    }
-  }
-
-  /*&.dim {
-    background-color: rgba(0, 0, 0, .01);
-    z-index: -10000;
-  }
-   */
-
-  @media screen and (max-width: 1850px) {
-    .ant-input-affix-wrapper {
-      @include mut.sized(815px, 39px);
+      @include mut.rem-margined($right: 11px);
     }
   }
 }
 
 .leftPartContainer,
-.rightPartContainer,
-.langSelector {
-  @include mut.flexed($justify-content: flex-start, $align-items: center);
-}
-
-.langSelector {
-  @include mut.sized(55px, 39px);
-  @include mut.full-rounded(12px);
-  padding: f.pxToRem(10px);
-
-  span {
-    @include mut.with-font($font-weight: 300, $font-size: 18px);
-    color: c.$lighter-black-color;
-
-    &:after {
-      content: "";
-      @include mut.sized(5px, 5px);
-      @include mut.positioned-as(absolute, $top: 42%, $right: 16%);
-      background-color: c.$accented-red-color;
-    }
-  }
+.rightPartContainer {
+  @include mut.flexed($justify-content: space-between, $align-items: center);
 }
 
 .rightSectionContainer {
   @include mut.flexed($align-items: center);
-  margin-left: f.pxToRem(120px);
+  @include mut.rem-margined($left: 20px);
 
   .loginBtn {
     @include mut.sized(142px, 39px);
@@ -105,7 +79,7 @@
 
   svg {
     @include mut.sized(30px, 30px);
-    @include mut.rem-margined($right: 8px, $top: 5px);
+    @include mut.rem-margined($right: 8px);
     filter: invert(51%) sepia(0%) saturate(0%) hue-rotate(140deg) brightness(97%) contrast(93%);
 
     &:hover {
@@ -115,29 +89,107 @@
 }
 
 .hiddenNavBar {
-  background: transparent none;
-  border-bottom: none !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%) !important;
 
   .ant-input-affix-wrapper,
-  .langSelector,
   .loginBtn {
     @include mut.hidden();
   }
-
+  
   .burgerMenuContainer {
-    margin: 0;
+    @include mut.rem-margined(0);
   }
 }
 
 .hiddenHeaderInput {
-  @include mut.sized(1200px, 39px);
-  @include mut.positioned-as(fixed, $left: 17%);
+  width: calc(100vw - #{$navbar-hidden-innerwidth});
+  height: f.pxToRem(39px);
+
+  @include mut.positioned-as(fixed, $left: 240px);
+  @include mut.rem-padded($left: 10px);
   @include mut.full-rounded(12px);
 
-  @include vnd.vendored(transition, 'transform 1s ease');
+  @include vnd.vendored(transition, 'transform 0.7s ease');
   transform: translateY(f.pxToRem(-200px));
 
   &.active {
     transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 1024px) { 
+  .navBarContainer {
+    @include mut.sized($width: 100%, $height: 64px);
+    @include mut.rem-padded(15px, 0, 15px, 0);
+
+    .ant-input-affix-wrapper,
+    .loginBtn {
+      @include mut.hidden(); 
+    }
+    
+    .leftPartContainer {
+      svg {
+        @include mut.rem-margined($left: 12px);
+      }
+    }
+
+    .rightPartContainer {
+      svg {
+        @include mut.rem-margined($right: 15px);
+
+        &:hover {
+          filter: invert(27%) sepia(26%) saturate(0%) hue-rotate(201deg) brightness(96%) contrast(86%);
+        }
+      }
+
+      .burgerMenuContainer {
+        @include mut.rem-margined($right: 15px);
+      }
+    }
+  }
+
+  .hiddenNavBar {
+    background: c.$pure-white-color;
+  }
+
+  .searchContainerMobile { 
+    @include mut.sized(100%, 70px);
+    @include mut.flexed($justify-content: space-between, $align-items: center);
+    @include mut.rem-padded(0, 15px, 15px, 15px);
+
+    position: fixed;
+    z-index: 6;
+    background-color: c.$pure-white-color;
+    transform: translateY(f.pxToRem(-200px));
+    @include vnd.vendored(transition, 'transform 0.7s ease');
+
+    &.active {
+      transform: translateY(f.pxToRem(78px));
+    }
+  
+    .ant-input {
+      @include mut.full-rounded(12px);
+      padding: 12px;
+      width: calc(100vw - f.pxToRem(100px));
+      height: f.pxToRem(45px);
+      margin-right: f.pxToRem(10px);
+      background-color: c.$accented-gray-color;
+      border: none;
+      outline: none !important;
+
+      &:focus {
+        outline: 1px none c.$input-outline-color;
+      }
+
+      &::placeholder {
+        color: c.$text-light-gray-color;
+      }
+    }
+
+    .searchButton {
+      @include mut.full-rounded(12px);
+      @include mut.sized(90px, 45px);
+      background-color: c.$accented-red-color;
+    }
   }
 }

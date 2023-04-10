@@ -1,0 +1,39 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+
+.deleteModal .ant-modal-content{
+    .submit{
+        border-radius: f.pxToRem(5px);
+        font-size: 12pt;
+        text-align: center;
+        height: max-content;
+        border: 0.025rem solid c.$dark-red-color;
+        color: c.$dark-red-color;
+        &:hover{
+            box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem c.$dark-red-color;
+            color: rgb(255, 255, 255);
+        }
+    }
+}
+
+.deleteModal .ant-modal-body{
+    h2{
+        text-align: center;
+        padding-bottom: 2%;
+        color: c.$dark-red-color;
+    }
+}
+
+.deleteModal .ant-modal-close {
+    @include mut.positioned-as(absolute, $left: 94%, $top: -25px);
+    @include mut.circular(80px, c.$pure-white-color);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border: none;
+
+    &:hover {
+      background-color: c.$modal-hover-color;
+    }
+}

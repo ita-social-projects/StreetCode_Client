@@ -5,7 +5,8 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .partnersModal {
-    @include mut.sized(1200px, 460px);
+    width: f.pxToRem(1012px) !important;
+    height: f.pxToRem(460px);
     
     &.ant-modal {
       .ant-modal-content {
@@ -133,7 +134,6 @@
 }
 
 @media screen and (max-width: 1024px){
-
     .partnersModal {       
         &.ant-modal {
             .ant-modal-content {

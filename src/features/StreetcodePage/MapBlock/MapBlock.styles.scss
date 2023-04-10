@@ -3,10 +3,12 @@
 
 
 .mapBlockContainer{
-  margin: 10% auto;
-  @include mut.sized(1600px,872px);
-  @include mut.positioned-as(relative);
-  .leaflet-container{
+ 
+  @include mut.rem-margined($top: 170px);
+   @include mut.positioned-as(relative);
+  .leaflet-container {
     z-index: 1;
   }
+ 
+  
 }
