@@ -9,39 +9,39 @@ import useMobx from '@stores/root-store';
 
 interface Props {
     fact: Fact;
-    // maxTextLength?: number;
+    maxTextLength?: number;
     numberOfSlides: number;
 }
 
 const InterestingFactItem = ({
     fact: { factContent, title, id },
-    // maxTextLength = 250,
+    maxTextLength = 250,
     numberOfSlides,
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-    const maxTextLength = 220;
-    // const [maxTextLength, setMaxCharacterCount] = useState(220);
+    function onResizeWindow() {
+        setWindowWidth(window.innerWidth);
+    }
 
-    // useEffect(() => {
-    //     const handleResize = () => {
-    //         const screenWidth = window.innerWidth;
-    //         if (screenWidth <= 1024) {
-    //             setMaxCharacterCount(220);
-    //         }
+    useEffect(() => {
+        onResizeWindow();
+        window.addEventListener('resize', onResizeWindow);
+        setWindowWidth(windowWidth);
+        return () => {
+            setWindowWidth(windowWidth);
+            window.removeEventListener('resize', onResizeWindow);
+        };
+    }, []);
+
+    if (windowWidth <= 1024) {
+        maxTextLength = 190;
+    }
+
     //         setMaxCharacterCount(250);
     //     };
-    //     window.addEventListener('resize', handleResize);
-    //     return () => window.removeEventListener('resize', handleResize);
-    // }, []);
 
-    // const maxTextLength = () : number => {
-    //     const screenWidth = window.innerWidth;
-    //     if (screenWidth <= 768) {
-    //        return 220;
-    //     }
-    //     return 250;
-    //   };
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
 
     let mainContent = factContent;
