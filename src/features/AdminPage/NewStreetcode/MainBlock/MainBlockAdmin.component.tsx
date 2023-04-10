@@ -42,6 +42,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
     }, [form, streetcodeTitle]);
     const onNameSurnameChange = () => {
         const curSurname = surname.current?.input?.value;
+        console.log(curSurname);
         setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
     };
     const onCheckIndexClick = () => {
@@ -78,6 +79,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
         if (newInputedChar > teaserMaxCharCount || newLinesCharCount > 1) {
             return;
         }
+        console.log(text);
         setStreetcodeTeaser(text);
 
         if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * 49) {

@@ -45,7 +45,7 @@ const NewStreetcode = () => {
             <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminPageContainer">
-                    <Form form={form} layout="vertical" onFinish={onFinish}>
+                    <Form form={form} layout="vertical" onSubmitCapture={onFinish}>
                         <MainBlockAdmin form={form} />
                         <TextBlock />
                         <button type="submit">Відправити</button>
