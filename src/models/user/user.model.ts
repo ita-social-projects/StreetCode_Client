@@ -18,6 +18,15 @@ export interface UserLoginResponce {
     expireAt:Date;
 }
 
+export interface RefreshTokenRequest {
+    token:string;
+}
+
+export interface RefreshTokenResponce {
+    token:string;
+    expireAt:Date;
+}
+
 export enum UserRole {
     MainAdministrator,
     Administrator,

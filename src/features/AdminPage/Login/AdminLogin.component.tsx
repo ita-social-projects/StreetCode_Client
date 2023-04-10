@@ -6,19 +6,37 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Form, Input, message } from 'antd';
 
 import UserApi from '@/app/api/user/user.api';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import useMobx from '@/app/stores/root-store';
 import { UserLoginResponce } from '@/models/user/user.model';
 
 const AdminLogin:React.FC = () => {
+    const { modalStore, userLoginStore } = useMobx();
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const onSuccessfulLogin = (loginResponce: UserLoginResponce) => {
-        navigate('/admin-panel');
+
+    const setConfirmationModal = () => {
+        modalStore.setConfirmationModal('confirmation', () => {
+            userLoginStore.refreshToken()
+                .catch((e) => console.log(e));
+            modalStore.setConfirmationModal('confirmation');
+        }, 'Бажаєте продовжити сеанс?', undefined, () => {
+            userLoginStore.cleanToken();
+        });
     };
+
+    const onSuccessfulLogin = (loginResponce: UserLoginResponce) => userLoginStore
+        .setUserLoginResponce(loginResponce, setConfirmationModal);
+
     const login = (formValues:any) => {
         UserApi.login({ login: formValues.login, password: formValues.password })
             .then((logResp) => onSuccessfulLogin(logResp))
-            .catch((er) => message
-                .error('Неправильний логін чи пароль'));
+            .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
+            .catch((er) => {
+                message
+                    .error('Неправильний логін чи пароль');
+                console.log(er);
+            });
     };
 
     return (

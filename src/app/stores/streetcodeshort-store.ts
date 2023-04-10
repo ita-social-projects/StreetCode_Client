@@ -4,7 +4,7 @@ import { action, makeAutoObservable, observable } from 'mobx';
 import { StreetcodeShort } from '../../models/streetcode/streetcode-types.model';
 import StreetcodesApi from '../api/streetcode/streetcodes.api';
 
-export class StreetcodeShortStore {
+export default class StreetcodeShortStore {
     public streetcodes = new Array<StreetcodeShort>();
 
     public constructor() {
@@ -31,4 +31,3 @@ export class StreetcodeShortStore {
         this.streetcodes.push(item);
     };
 }
-export default StreetcodeShortStore;

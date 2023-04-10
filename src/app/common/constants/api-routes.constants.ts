@@ -163,5 +163,6 @@ export const API_ROUTES = {
     },
     USERS: {
         LOGIN: 'user/login',
+        REFRESH_TOKEN: 'user/refreshToken',
     },
 };

@@ -126,15 +126,18 @@ const Partners:React.FC = observer(() => {
                       key={`${partner.id}${index}111`}
                       className="actionButton"
                       onClick={() => {
-                          console.log(modalStore);
-                          modalStore.setConfirmationModal('confirmation', () => {
-                              partnersStore.deletePartner(partner.id).then(() => {
-                                  partnersStore.PartnerMap.delete(partner.id);
-                              }).catch((e) => {
-                                  console.log(e);
-                              });
-                              modalStore.setConfirmationModal('confirmation');
-                          }, 'Ви впевнені, що хочете видалити цього партнера?');
+                          modalStore.setConfirmationModal(
+                              'confirmation',
+                              () => {
+                                  partnersStore.deletePartner(partner.id).then(() => {
+                                      partnersStore.PartnerMap.delete(partner.id);
+                                  }).catch((e) => {
+                                      console.log(e);
+                                  });
+                                  modalStore.setConfirmationModal('confirmation');
+                              },
+                              'Ви впевнені, що хочете видалити цього партнера?',
+                          );
                       }}
                   />
                   <EditOutlined
