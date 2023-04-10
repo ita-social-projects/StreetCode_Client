@@ -8,18 +8,18 @@
     flex: pxToRem(80px);
 
     .small {
-        width: 380px;
-        height: 250px;
+        width: pxToRem(380px);
+        height: pxToRem(253px);
     }
 
     .medium {
-        width: 380px;
-        height: 535px;
+        width: pxToRem(380px);
+        height: pxToRem(536px);
     }
 
     .large {
-        width: 806px;
-        height: 536px;
+        width: pxToRem(806px);
+        height: pxToRem(536px);
     }
 }
 
@@ -27,21 +27,21 @@
 
     .slideArt {
         flex: pxToRem(80px);
-        padding-left: 10px;
+        padding-left: pxToRem(10px);
 
         .small {
-            width: 242px;
-            height: 161px;
+            width: pxToRem(242px);
+            height: pxToRem(161px);
         }
 
         .medium {
-            width: 242px;
-            height: 332px;
+            width: pxToRem(242px);
+            height: pxToRem(332px);
         }
 
         .large {
-            width: 513px;
-            height: 332px;
+            width: pxToRem(242px);
+            height: pxToRem(161px);
         }
     }
 }
@@ -50,23 +50,22 @@
 
     .slideArt {
         flex: pxToRem(80px);
-        padding-left: 10px;
+        padding-left: pxToRem(10px);
 
         .small {
-            width: 242px;
-            height: 161px;
-            margin-bottom: 10px;
+            width: pxToRem(242px);
+            height: pxToRem(161px);
+            margin-bottom: pxToRem(10px);
         }
 
         .medium {
-            width: 242px;
-            height: 332px;
+            width: pxToRem(242px);
+            height: pxToRem(332px);
         }
 
         .large {
-            width: 472px;
-            height: 334px;
-
+            width: pxToRem(242px);
+            height: pxToRem(161px);
         }
     }
 }
