@@ -11,39 +11,45 @@ import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.mo
 
 interface Props {
     streetcode: StreetcodeCatalogRecord;
+    isLast: boolean;
+    handleNextScreen: () => void;
 }
 
-const StreetcodeCatalogItem = ({ streetcode }: Props) => {
+const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) => {
     const { imagesStore: { fetchImageByStreetcodeId, getImage } } = useMobx();
     const elementRef = useRef<HTMLDivElement>(null);
-    const isOnScreen = useOnScreen(elementRef);
+    const classSelector = 'catalogItem';
+    const isOnScreen = useOnScreen(elementRef, classSelector);
+
+    useAsync(() => (isOnScreen && isLast
+        ? () => handleNextScreen() : () => {}), [isOnScreen]);
     useAsync(() => fetchImageByStreetcodeId(streetcode.id));
 
-    console.log(isOnScreen);
-
     return (
-        <Link
-            className="catalogItem"
-            style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
-            to={`../streetcode/${streetcode.url}`}
-        >
-            <div className="catalogItemText">
-                <div className="heading">
-                    <p>{streetcode.title}</p>
-                    {
-                        streetcode.alias !== null
-                            ? (
-                                <p className="aliasText">
-                            (
-                                    {streetcode.alias}
-                            )
-                                </p>
-                            )
-                            : undefined
-                    }
+        <div>
+            <Link
+                className={classSelector}
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
+                to={`../streetcode/${streetcode.transliterationUrl}`}
+            >
+                <div ref={elementRef} className="catalogItemText">
+                    <div className="heading">
+                        <p>{streetcode.title}</p>
+                        {
+                            streetcode.alias !== null
+                                ? (
+                                    <p className="aliasText">
+                                (
+                                        {streetcode.alias}
+                                )
+                                    </p>
+                                )
+                                : undefined
+                        }
+                    </div>
                 </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
     );
 };
 

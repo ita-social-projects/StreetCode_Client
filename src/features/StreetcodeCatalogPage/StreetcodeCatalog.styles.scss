@@ -27,8 +27,15 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         column-gap: pxToRem(28px);
         row-gap: pxToRem(60px);
     }
-
     @media screen and (max-width: 1024px) {
         
     }
+}
+
+#loadingGif{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 200px;
 }

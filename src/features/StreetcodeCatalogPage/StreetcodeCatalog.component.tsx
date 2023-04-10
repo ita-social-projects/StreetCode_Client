@@ -1,23 +1,37 @@
 import './StreetcodeCatalog.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Footer from '@layout/footer/Footer.component';
 import useMobx from '@stores/root-store';
 
-import useOnScreen from '@/app/common/hooks/scrolling/useOnScreen.hook';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
 
 import StreetcodeCatalogItem from './StreetcodeCatalogItem/StreetcodeCatalogItem.component';
-
-const page = 1;
 
 const StreetcodeCatalog = () => {
     const { streetcodeCatalogStore } = useMobx();
     const { fetchCatalogStreetcodes, getCatalogStreetcodesArray } = streetcodeCatalogStore;
+    const [loading, setLoading] = useState(false);
+    const [screen, setScreen] = useState(1);
 
-    useAsync(() => fetchCatalogStreetcodes(page), [page]);
+    const handleSetNextScreen = () => {
+        setScreen(screen + 1);
+    };
+
+    useAsync(async () => {
+        const count = await StreetcodesApi.getCount();
+        if (count === getCatalogStreetcodesArray.length) {
+            return;
+        }
+        setLoading(true);
+        setTimeout(() => {
+            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then(() => {
+                setLoading(false);
+            });
+        }, 1000);
+    }, [screen]);
 
     return (
         <div>
@@ -26,11 +40,29 @@ const StreetcodeCatalog = () => {
                 <div className="steetcodeCatalogContainer">
                     {
                         getCatalogStreetcodesArray.map(
-                            (streetcode) => <StreetcodeCatalogItem streetcode={streetcode} />,
+                            (streetcode, index) => (
+                                <StreetcodeCatalogItem
+                                    streetcode={streetcode}
+                                    isLast={index === getCatalogStreetcodesArray.length - 1}
+                                    handleNextScreen={handleSetNextScreen}
+                                />
+                            ),
                         )
                     }
                 </div>
             </div>
+            {
+                loading && (
+                    <div>
+                        <iframe
+                            title="loadgif"
+                            src="https://giphy.com/embed/3o7bu3XilJ5BOiSGic"
+                            width="100%"
+                            height="100%"
+                        />
+                    </div>
+                )
+            }
             <Footer />
         </div>
     );

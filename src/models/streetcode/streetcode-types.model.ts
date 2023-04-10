@@ -76,7 +76,6 @@ export interface StreetcodeShort {
 export interface StreetcodeCatalogRecord {
     id: number,
     title: string,
-    url: string,
-    imgUrl: string | undefined,
+    transliterationUrl: string,
     alias: string | undefined,
 }

@@ -25,6 +25,8 @@ const StreetcodesApi = {
             new URLSearchParams({ page: page.toString(), count: count.toString() }),
         ),
 
+    getCount: () => Agent.get<number>(`${API_ROUTES.STREETCODES.GET_COUNT}`),
+
     getAllShort: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`),
 
     getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
