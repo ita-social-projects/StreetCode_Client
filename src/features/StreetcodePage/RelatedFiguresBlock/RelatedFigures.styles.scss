@@ -74,7 +74,8 @@ $moreInfo-width: 150px;
 
 @media screen and (max-width: 480px) {
     .relatedFiguresWrapper {
-        @include mut.sized($height: 600px); 
+        @include mut.sized($height: 600px);
+        @include mut.rem-margined($bottom: 100px); 
 
         .slick-dots {
             bottom: 0;

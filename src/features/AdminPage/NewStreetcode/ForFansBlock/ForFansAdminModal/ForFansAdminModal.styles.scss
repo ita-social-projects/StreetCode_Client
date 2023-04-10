@@ -1,0 +1,80 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+ @use "@assets/sass/variables/_variables.fonts.scss" as ft;
+ @use "@assets/sass/variables/_variables.colors.scss" as c;
+ @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
+
+ .forFansAdminModal {
+
+   &.ant-modal {
+     .ant-modal-content {
+       @include mut.full-rounded(60px, $overflow: visible);
+
+       padding: 0 !important;
+       box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+         0 6px 20px 0 rgb(0 0 0 / 19%);
+         .saveButton{
+           width: 30%;   
+           justify-content: center;
+           left: 28%;
+           @include mut.with-font(ft.$roboto-font, 300, 15px, normal);
+           border-color: c.$dark-red-color;
+           color: c.$dark-red-color;
+           &:hover{
+               color: c.$pure-white-color;
+               background-color: c.$dark-red-color;
+           }
+         }
+         .sectionButton {
+          width: 30%;   
+                   justify-content: center;
+                   left: 28%;
+                   @include mut.with-font(ft.$roboto-font, 300, 15px, normal);
+                   border-color: c.$dark-red-color;
+                   color: c.$dark-red-color;
+                   &:hover{
+                       color: c.$pure-white-color;
+                       background-color: c.$dark-red-color;
+                   }
+        }
+     }
+
+     .ant-modal-close {
+       @include mut.positioned-as(absolute, $left: 90%, $top: -25px);
+       @include mut.circular(80px, c.$pure-white-color);
+
+       &:hover {
+         background-color: c.$modal-hover-color;
+       }
+     }
+   }
+ }
+
+ .forFansForm{
+     padding: 25px;
+     position: relative;
+     left: 5%;
+     @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+     color: c.$dark-red-color;
+     p{
+         padding: 5px;
+     }
+
+     .inputBlock{
+         width: 600px;
+         height: 480px;
+          input, textarea{
+             @include mut.with-font(ft.$roboto-font, 300, 20px, normal) ;
+         }
+
+         input{
+             width: 60%;
+         }
+         textarea{
+             height: 70%;
+             width: 100%;
+             resize: none;
+         }
+     }
+ }

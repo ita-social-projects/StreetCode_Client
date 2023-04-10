@@ -119,6 +119,7 @@ $navbar-hidden-innerwidth: 400px;
 
 @media screen and (max-width: 1024px) { 
   .navBarContainer {
+    @include mut.sized($width: 100%, $height: 64px);
     @include mut.rem-padded(15px, 0, 15px, 0);
 
     .ant-input-affix-wrapper,
@@ -128,7 +129,7 @@ $navbar-hidden-innerwidth: 400px;
     
     .leftPartContainer {
       svg {
-        transform: scale(0.8);
+        @include mut.rem-margined($left: 12px);
       }
     }
 
@@ -163,7 +164,7 @@ $navbar-hidden-innerwidth: 400px;
     @include vnd.vendored(transition, 'transform 0.7s ease');
 
     &.active {
-      transform: translateY(f.pxToRem(78px));
+      transform: translateY(f.pxToRem(64px));
     }
   
     .ant-input {
