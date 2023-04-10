@@ -28,11 +28,11 @@
 }
 
 .slick-prev:before {
-    @include slick-arrow-pseudo(left, -17px);
+    @include slick-arrow-pseudo(Left, -17px);
 }
 
 .slick-next:before {
-    @include slick-arrow-pseudo(right, -5px);
+    @include slick-arrow-pseudo(Right, -5px);
 }
 
 .slick-dots li button:before {

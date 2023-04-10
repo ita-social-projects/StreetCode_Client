@@ -9,7 +9,8 @@ interface Props {
 
 const BurgerMenu = ({ onClick} : Props) => {
     const windowSize = useWindowSize();
-    return(
+    
+    return (
         <div className="burgerMenuContainer" onClick={onClick}>
             <img alt="burger" src={ 
                 windowSize.width > 1024 ?

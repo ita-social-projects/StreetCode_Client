@@ -46,7 +46,7 @@ $list-width: 40%;
     background-color: c.$accented-red-color;
     display: flex;
     align-items: center;
-    line-height: 1; /* reset the line-height to its default value */
+    line-height: 1;
   
     &:hover {
       background-color: c.$dark-red-color;

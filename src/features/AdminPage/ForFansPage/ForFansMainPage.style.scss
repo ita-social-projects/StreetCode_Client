@@ -4,12 +4,14 @@
 @use "@sass/_utils.functions.scss" as f;
 $articlesImg: "@assets/images/sources/Articles.png";
 
-.ForFansContainer {
-    @include mut.sized(80%);
-   
-     h1 {
-        font-weight: 500;
-      }
-}
+ .MainForFansContainer {
+     @include mut.sized(80%);
 
-   
+      margin-top: f.pxToRem(100px);
+      margin-right: f.pxToRem(50px);
+      float: right;
+      h1 {
+         color: white;
+         font-weight: 500;
+       }
+ }

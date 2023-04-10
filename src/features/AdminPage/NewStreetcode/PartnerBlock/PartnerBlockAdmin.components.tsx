@@ -1,13 +1,12 @@
 import './PartnerBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import PartnersStore from '@stores/partners-store';
 
 import { Button, Select } from 'antd';
 
-import PartnersStore from '@/app/stores/partners-store';
+import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
 import { PartnerShort } from '@/models/partners/partners.model';
-
-import PartnerModal from '../../PartnersPage/PartnerModal/PartnerModal.component';
 
 const PartnerBlockAdmin = () => {
     const selectedPartners = useRef<PartnerShort[]>([]);

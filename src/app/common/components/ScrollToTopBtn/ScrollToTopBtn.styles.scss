@@ -6,14 +6,13 @@
 .scrollToTopBtnContainer {
   @include mut.positioned-as(fixed, $bottom: 160px, $right: 50px);
   @include mut.flex-centered();
-
   @include mut.circular(62px);
-  z-index: 4;
-
-  border: 3px solid c.$accented-red-color;
+  
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
-  tra
+  
+  border: 3px solid c.$accented-red-color;
+  z-index: 4;
 
   &:hover {
     cursor: pointer;
@@ -21,15 +20,15 @@
   }
 }
 
-.scrollToTopBtnContainer.active{
+.scrollToTopBtnContainer.active {
   @include mut.flex-centered();
-
   @include mut.circular(62px);
-  z-index: 4;
 
-  border: 3px solid c.$accented-red-color;
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
+  
+  z-index: 4;
+  border: 3px solid c.$accented-red-color;
 
   &:hover {
     cursor: pointer;

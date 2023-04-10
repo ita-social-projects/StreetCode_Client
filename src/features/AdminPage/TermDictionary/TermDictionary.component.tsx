@@ -1,4 +1,4 @@
-import './TermDictionary.component.scss';
+import './TermDictionary.styles.scss';
 
 import { useEffect, useState } from 'react';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';

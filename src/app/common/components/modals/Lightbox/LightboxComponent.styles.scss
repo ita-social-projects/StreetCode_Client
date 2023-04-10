@@ -68,7 +68,7 @@
             color: #918f8f!important;
         }
     }
-@media screen and (min-width:1024px) {
+    @media screen and (min-width:1024px) {
         .yarl__navigation_prev {
             @include slick-arrow-lightbox(left);
             left: pxToRem(30px) !important;
