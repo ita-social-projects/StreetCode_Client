@@ -1,0 +1,38 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+
+.contactUsContainer{
+    .titleBlock{   
+        position: relative;
+        margin-bottom: 150px;
+    
+        .contactsLogoSmall{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
+            line-height: 14px;
+            text-transform: uppercase;
+            color: #891F16;
+    
+            text-align: right; 
+        }
+    
+        .contactsLogoBig{
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
+            line-height: 127px;
+            color: #F4F4F4;
+    
+            position: absolute;
+            top: 0;
+            left: 0;   
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .contactUsContainer .titleBlock .contactsLogoBig{
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
+        line-height: 31px;    
+        top: f.pxToRem(20px);   
+        left: f.pxToRem(10px);      
+    }
+} 

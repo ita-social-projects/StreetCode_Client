@@ -3,9 +3,11 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.wrapper {
-    display: grid;
-    grid-template-columns: 10% 90%;
+.termDictionaryCover{
+    .wrapper {
+        display: grid;
+        grid-template-columns: 10% 90%;
+    }
 }
 
 .termDictionaryContainer {
