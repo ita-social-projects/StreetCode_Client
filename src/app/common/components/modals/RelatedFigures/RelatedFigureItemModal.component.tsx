@@ -52,8 +52,8 @@ const RelatedFiguresItemModal = () => {
             </div>
             <Link 
                 className='redirectionButton'
-                to={`../streetcode/${relation?.id}`} 
-                onClick={() => setModal('relatedFigureItem', relation?.id, false)}           
+                to={`../streetcode/${relation?.url}`} 
+                onClick={() => setModal('relatedFigureItem', relation?.id, false)}
             >
                 <p>Перейти на сторінку постаті</p>
             </Link>
