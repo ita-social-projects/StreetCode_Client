@@ -18,7 +18,7 @@
     }
 
     .contactUsCover{
-        padding-bottom: 100px;
+        padding-bottom: f.pxToRem(100px);
     }
 }
 
@@ -27,7 +27,7 @@
         padding: f.pxToRem(102px) f.pxToRem(10px) 0 f.pxToRem(10px);   
 
         .titleBlock{
-            margin-bottom: 80px;    
+            margin-bottom: f.pxToRem(80px);    
         }
     } 
 }

@@ -6,8 +6,8 @@
     .partnersBlock{
         .keyPartnersBlock{
             display: flex;
-            column-gap: 30px;
-            row-gap: 80px;
+            column-gap: f.pxToRem(30px);
+            row-gap: f.pxToRem(80px);
             flex-wrap: wrap;
             justify-content: center;
 
@@ -20,8 +20,8 @@
         
         .otherPartnersBlock{
             display: flex;
-            column-gap: 10px;
-            row-gap: 80px;
+            column-gap: f.pxToRem(10px);
+            row-gap: f.pxToRem(80px);
             flex-wrap: wrap;
             justify-content: center;
 
@@ -37,8 +37,8 @@
 @media screen and (max-width: 1020px) {
     .partnersContainer .partnersBlock{
         .keyPartnersBlock{
-            column-gap: 30px;
-            row-gap: 40px;
+            column-gap: f.pxToRem(30px);
+            row-gap: f.pxToRem(40px);
 
             .partnersItem{
                 @include mut.sized(340px, 98px);
@@ -46,8 +46,8 @@
         }
 
         .otherPartnersBlock{
-            column-gap: 30px;
-            row-gap: 20px;
+            column-gap: f.pxToRem(30px);
+            row-gap: f.pxToRem(20px);
 
             .partnersItem{
                 @include mut.sized(160px, 46px);

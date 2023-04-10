@@ -11,7 +11,7 @@
       .ant-modal-content {
         @include mut.full-rounded(20px, $overflow: visible);
 
-        padding: f.pxToRem(24px)  f.pxToRem(40px) !important;
+        padding: f.pxToRem(24px)  f.pxToRem(40px);
         box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
       }
   
@@ -138,7 +138,7 @@
         &.ant-modal {
             .ant-modal-content {
                 @include mut.full-rounded(24px, $overflow: visible);
-                padding: f.pxToRem(16px) !important;
+                padding: f.pxToRem(16px);
             }
 
             .ant-modal-close{
@@ -162,7 +162,7 @@
             }
 
             .contactForm{
-                gap: 24px !important;
+                gap: f.pxToRem(24px);
 
                 button{
                     width: 100%;
