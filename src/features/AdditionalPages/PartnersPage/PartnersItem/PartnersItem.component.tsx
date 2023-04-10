@@ -10,6 +10,8 @@ import PartnerContent
     from '@/features/StreetcodePage/PartnersBlock/PartnerItem/PartnerContent/PartnerContent.component';
 import Partner from '@/models/partners/partners.model';
 
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+
 interface Props {
     partner: Partner;
 }
@@ -42,7 +44,7 @@ const PartnersItem = ({ partner }: Props) => {
             >
                 <img
                     key={partner.id}
-                    src={getImage(partner.logoId)?.url.href}
+                    src={base64ToUrl(getImage(partner.logoId)?.base64, getImage(partner.logoId)?.mimeType)}
                     alt={partner.title}
                 />
             </Popover>
