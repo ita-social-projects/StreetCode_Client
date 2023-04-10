@@ -25,7 +25,7 @@ const InterestingFactsComponent = () => {
         swipeOnClick: true,
         centerMode: true,
         swipe: false,
-        centerPadding: '-22px',
+        centerPadding: '-12px',
         responsive: [
             {
                 breakpoint: 480,

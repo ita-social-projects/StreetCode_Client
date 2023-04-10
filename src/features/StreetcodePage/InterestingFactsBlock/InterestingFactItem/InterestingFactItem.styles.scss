@@ -75,19 +75,22 @@
 @media screen
 and (max-width: 1024px){
 
-  .interestingFactsSliderContainer .slick-list {  
-    @include mut.rem-padded(120px);
-  }
+  .interestingFactsSliderContainer {
+  // @include mut.sized(100%, 100%); //80
 
-  .interestingFactsSliderContainer .slick-dots {
-    margin-bottom: 200px;
-  }
+    .slick-list {  
+      @include mut.rem-padded(120px);
+    }
+    .slick-dots {
+      margin-bottom: 200px;
+    }
   
+  }    
   .interestingFactSlide {
    
     //  @include mut.sized(233px, 275px);//250px
     // @include mut.sized(90%, 260px);//250px
-    @include mut.sized(58%); //80
+    // @include mut.sized(58%); //80
 
     @include mut.full-rounded(20px);
     
@@ -136,15 +139,26 @@ and (max-width: 1024px){
 
 
 
-// FIX ME !
 @media screen
-and (max-width: 768px){
+and (min-width: 768px) and (max-width: 1023px) {
 
-  .interestingFactsSliderContainer .slick-list {  
-    @include mut.rem-padded(120px);
+
+  .interestingFactsSliderContainer{
+    @include mut.sized(100%, 100%);
+    .slick-list {  
+      @include mut.rem-padded(120px);
+    }
+    .slick-track {
+      // @include mut.sized(500%);
+
+      @include mut.flexed($align-items: flex-start, $gap: 10px);
+      @include mut.rem-margined($left: -4px);
+    }//   .slick-slider {
+    .slick-dots {
+        margin-bottom: 200px;
+    }
   }
-//   .slick-slider {
-//     margin:0 -2px;
+ //     margin:0 -2px;
 // }
 
 // .slick-slide {
@@ -156,15 +170,17 @@ and (max-width: 768px){
   // .interestingFactsSliderContainer .sliderClass {
   //   height: 110%;
   // }
-  .interestingFactsSliderContainer .slick-dots {
-    margin-bottom: 200px;
-  }
-  
+
   .interestingFactSlide {
    
     //  @include mut.sized(233px, 275px);//250px
     // @include mut.sized(90%, 260px);//250px
-    @include mut.sized(75%); //80
+    // @include mut.sized(75%); //80
+   
+
+    // @include mut.sized(206px, 231px);//то еквівалент 312 і 344
+    // @include mut.sized(205px,240px);// 344px
+
 
     @include mut.full-rounded(20px);
     
@@ -213,7 +229,7 @@ and (max-width: 768px){
 
 
  
-@media screen and (max-width: 480px) { 
+@media screen and (max-width: 480px){ 
 
   // .slick-slide {
   //   margin-left: 5.15px;
@@ -226,9 +242,8 @@ and (max-width: 768px){
   //   margin-right: -11px; /* adjust this value to your desired gap */
   // }
   .interestingFactSlide {
-    // @include mut.sized(290px, 312px);
-    // @include mut.sized(63%);// 344px
-    @include mut.sized(70%);// 344px
+    @include mut.sized(210px,240px);// 344px
+    // @include mut.sized(70%);// 344px
     @include mut.full-rounded(15px);
 
       .slideImage {
@@ -264,7 +279,12 @@ and (max-width: 768px){
   }
  }
 
- 
+@media screen and (max-width: 1024px){ 
+  .interestingFactSlide {
+        @include mut.sized(205px,240px);// 344px
+  }
+}
+
 
 
 
@@ -315,3 +335,6 @@ and (max-width: 768px){
 //      }
 //   } 
 //  }
+
+
+
