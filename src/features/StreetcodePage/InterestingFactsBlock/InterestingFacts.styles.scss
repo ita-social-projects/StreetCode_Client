@@ -77,40 +77,39 @@
         }
     }
 }
+
 @media screen
 and (max-width: 1024px){
 
-    .singleSlideContainer{
+    .interestingFactsWrapper {
+    @include wr.main-page-block-wrapper();
+    margin: 0;
+    .slick-dots{
+       bottom: 1.375rem;
+    }
+  
+}
+    .interestingFactsContainer {
+        @include mut.sized(100%, 720px); 
+        @include mut.flex-centered($direction: column);
     
-        padding-top:7.5%;
-    
-        .interestingFactSlide{
-            // @include mut.sized(600px, 550px);
-            @include mut.sized(45%);
-            @include mut.full-rounded(20px);
-    
-            .slideImage {
-                 @include mut.sized($height: 15%);
-    
-                img {
-                    @include mut.sized($width: 100%);
-                }
-            }
-            .slideText{
-                @include mut.sized($height: 40%);
-    
-                .heading{
-                    font-size: 22px;
-                }
-    
-                .mainText{
-                    overflow: auto;
-                    height: 175px;
-                    font-size: 16px;
-                    line-height: pxToRem(21px);
-                }
-            }
+        .blockHeadingContainer {
+            margin-left: pxToRem(10px);
         }
+    }
+    
+    // .interestingFactsSliderContainer {
+    //    // @include mut.sized(760px, 660px);
+    //     @include mut.sized(10%);
+        
+    // }
+    .interestingFactsSliderContainer {
+        @include mut.sized(95%, 100%); //660px
+      
+        // .slick-slide {
+        //     margin: 0 -2px;
+        //   }
+    
     }
 }
 // FIX ME!

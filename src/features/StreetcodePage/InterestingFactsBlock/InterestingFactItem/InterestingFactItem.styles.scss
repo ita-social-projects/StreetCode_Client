@@ -70,6 +70,72 @@
   }
   
 }
+
+
+@media screen
+and (max-width: 1024px){
+
+  .interestingFactsSliderContainer .slick-list {  
+    @include mut.rem-padded(120px);
+  }
+
+  .interestingFactsSliderContainer .slick-dots {
+    margin-bottom: 200px;
+  }
+  
+  .interestingFactSlide {
+   
+    //  @include mut.sized(233px, 275px);//250px
+    // @include mut.sized(90%, 260px);//250px
+    @include mut.sized(58%); //80
+
+    @include mut.full-rounded(20px);
+    
+     .slideImage {
+      //  @include mut.sized(100%, 160px);//200px
+       @include mut.sized(100%, 132px);//200px
+       @include mut.rounded(20px, 20px);
+
+      img{
+        @include mut.sized(100%, 100%)
+      }
+     }
+     .slideText {
+       @include mut.sized(100%, 105px);
+      // @include mut.sized(100%, 165px);
+      //  @include mut.rem-padded(1px, 2px, 5px, 0px);
+      // @include mut.rem-margined(1px, 16px, 24px, 16px);
+
+       .heading {
+        @include mut.rem-padded(6px, 20px, 4px, 12px);
+         @include mut.with-font($font-weight: 500, $font-size: 12px);
+         line-height: f.pxToEm(17px);
+       }
+       .mainText {
+        //  @include mut.rem-padded(0, 20px, 0px, 20px);
+        @include mut.rem-padded(0, 12px, 0px, 12px);
+        // max-width: 316px;
+        // max-height: 144px;
+
+         @include mut.with-font($font-weight: 300, $font-size: 10px);
+        //  line-height: f.pxToEm(18px);
+         line-height: f.pxToEm(14px);
+
+       }
+     } 
+  
+
+     .readMoreParagraph {
+      //  @include mut.rem-padded(10px, 20px, 0px, 20px);
+      @include mut.rem-padded(4px, 20px, 0px, 12px);
+
+      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
+     }
+  } 
+ }
+
+
+
 // FIX ME !
 @media screen
 and (max-width: 768px){
