@@ -6,7 +6,6 @@ import InterestingFactsAdminModal
     from '@components/modals/InterestingFacts/FactsAdminModal/InterestingFactsAdminModal.component';
 import InterestingFactsModal from '@components/modals/InterestingFacts/InterestingFactsModal.component';
 import LightboxModal from '@components/modals/Lightbox/Lightbox.component';
-import PartnersModal from '@components/modals/Partners/PartnersModal.component';
 import RelatedFigureItemModal from '@components/modals/RelatedFigures/RelatedFigureItemModal.component';
 import RelatedFiguresModal from '@components/modals/RelatedFigures/RelatedFiguresModal.component';
 import SourcesModal from '@components/modals/Sources/SourcesModal.component';
@@ -19,7 +18,6 @@ const ModalWrapper = () => (
         <DonatesModal />
         <HeaderLoginModal />
         <LightboxModal />
-        <PartnersModal />
         <DeleteStreetcodeModal />
         <ConfirmationModal />
         <RelatedFigureItemModal />

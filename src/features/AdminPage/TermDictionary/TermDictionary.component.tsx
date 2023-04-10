@@ -113,29 +113,27 @@ const TermDictionary = () => {
         },
     ];
     return (
-        <div className="termDictionaryCover">
-            <div className="wrapper">
-                <PageBar />
-                <div className="termDictionaryContainer">
-                    <div className="dictionaryHeader">
-                        <h1>Словник термінів</h1>
-                        <div className="controls">
-                            <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
-                        </div>
-                    </div>
-                    <div className="termTable">
-                        <Table
-                            columns={columns}
-                            dataSource={data}
-                            rowKey={({ id }) => id}
-                            pagination={{ defaultPageSize: 5 }}
-                        />
+        <div className="wrapper">
+            <PageBar />
+            <div className="termDictionaryContainer">
+                <div className="dictionaryHeader">
+                    <h1>Словник термінів</h1>
+                    <div className="controls">
+                        <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
                     </div>
                 </div>
-                <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
-                <DeleteTermModal term={term} handleDelete={handleDelete} />
-                <EditTermModal term={term} setTerm={setTerm} handleEdit={handleEdit} />
+                <div className="termTable">
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                        rowKey={({ id }) => id}
+                        pagination={{ defaultPageSize: 5 }}
+                    />
+                </div>
             </div>
+            <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
+            <DeleteTermModal term={term} handleDelete={handleDelete} />
+            <EditTermModal term={term} setTerm={setTerm} handleEdit={handleEdit} />
         </div>
     );
 };

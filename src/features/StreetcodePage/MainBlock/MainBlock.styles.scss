@@ -4,57 +4,53 @@
 $bgImg: '@assets/images/streetcode-card/background.png';
 
 .margin-82px {
-    margin-top: f.pxToRem(82px);
+  margin-top: f.pxToRem(82px);
 }
 
-.mainBlock, .blockCentering {
-    @include mut.flex-centered();
+.mainBlock,.blockCentering {
+  @include mut.flex-centered();
 }
 
 
 .mainContainer {
-    width: f.pxToRem(1300px);
-    position: relative;
+  width: f.pxToRem(1300px);
+  position: relative;
 }
 
 .mainContent {
-    width: f.pxToRem(1300px);
-    @include mut.flex-centered();
-    margin-top: f.pxToRem(34px);
-    padding-top: f.pxToRem(37px);
-
-    ::-webkit-scrollbar {
-        width: f.pxToRem(5px);
-    }
+  width: f.pxToRem(1300px);
+  @include mut.flex-centered();
+  margin-top: f.pxToRem(34px);
+  padding-top: f.pxToRem(37px);
+  ::-webkit-scrollbar {
+    width: f.pxToRem(5px);
+  }
 }
 
-@media screen and (max-width: 1300px) {
-    .mainContainer {
-        width: 100%;
-    }
-
-    .mainContent {
-        width: 100%;
-    }
+@media screen and  (max-width: 1300px) {
+  .mainContainer{
+    width: 100%;
+  }
+  .mainContent {
+   width: 100%;;
+  }
+ 
 }
 
 @media screen and (max-width: 680px) {
-
-    .mainContainer {
-        height: unset;
-
-        .mainContent {
-            ::-webkit-scrollbar {
-                width: f.pxToRem(2px);
-            }
-
-            height: unset;
-            margin-top: f.pxToRem(34px);
-            padding-top: f.pxToRem(22px);
-        }
+  
+  .mainContainer{
+    height: unset;
+    .mainContent {
+      ::-webkit-scrollbar {
+        width: f.pxToRem(2px);
+      }
+      height: unset;
+      margin-top: f.pxToRem(34px);
+      padding-top: f.pxToRem(22px);
     }
-
-    .mainBlock.bgr {
-        background-image: none;
-    }
+  }
+  .mainBlock.bgr{
+    background-image: none;
+  }
 }

@@ -18,10 +18,9 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
   margin: f.pxToRem(50px) auto;
   background-color: c.$timeline-reel-color;
 
-  .sliderClass {
-    @include mut.sized(100%, 380px);
-    @include mut.rem-margined($bottom: 30px, $top: 30px /*30px*/);
-  }
+   .sliderClass {
+    @include mut.rem-margined($bottom: 25px, $top: 30px);
+    } 
 
     .slick-slider {
       @include mut.parent-sized();
@@ -47,9 +46,9 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       border-style: solid ;
       border-color: c.$timeline-reel-color;
       @include mut.bg-image($timelineSquareImg);
-
-      background-size:f.pxToRem(605px) f.pxToRem(365px);
-      background-position: center;   
+      background-size:f.pxToRem(605px) f.pxToRem(365px) ;
+      background-position: center;
+      
 
       &:nth-child(2n + 1) {
         @include mut.bg-image($timelineLvivImg);
@@ -59,6 +58,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       @include vnd.vendored(transition, 'border 500ms ease');
     }
     
+
     .slick-current {
       border-radius: 40px;
       box-shadow: inset  0px 0px 0px 6px c.$pure-white-color;
@@ -69,21 +69,4 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     }
   }
 }
-}
-
-@media screen and (max-width: 1024px) {
-  .timelineContentContainer {
-
-    .sliderClass{
-      @include mut.sized(100%);
-      @include mut.rem-margined($bottom: 10px, $top: 10px /*10px*/);
-    }
-
-    .slick-track {
-      @include mut.flexed($align-items: center, $gap: 14px);
-      .slick-slide{
-        @include mut.sized(300px, 190px)
-      }
-    }
-  }
 }

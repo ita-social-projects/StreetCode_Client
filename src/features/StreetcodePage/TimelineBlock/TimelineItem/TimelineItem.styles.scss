@@ -47,6 +47,7 @@
   color: c.$darker-gray-color;
 }
 
+
 @media screen and (max-width: 1024px) {
   .timelineItem{
     @include mut.sized(300px, 190px);

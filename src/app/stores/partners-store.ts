@@ -10,7 +10,6 @@ export default class PartnersStore {
             PartnerMap: observable,
             fetchPartnersByStreetcodeId: action,
             fetchPartnersAll: action,
-            getAll: action,
             createPartner: action,
             updatePartner: action,
             deletePartner: action,
@@ -39,14 +38,6 @@ export default class PartnersStore {
     get getPartnerArray() {
         return Array.from(this.PartnerMap.values());
     }
-
-    public getAll = async () => {
-        try {
-            this.setInternalMap(await partnersApi.getAll());
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {

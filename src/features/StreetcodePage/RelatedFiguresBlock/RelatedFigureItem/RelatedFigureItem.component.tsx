@@ -1,117 +1,111 @@
-import './RelatedFigures.styles.scss';
+import './RelatedFigureItem.styles.scss';
 
-import { observer } from 'mobx-react-lite';
-import React from 'react';
-import BlockSlider from '@features/SlickSlider/SlickSlider.component';
+import { Link } from 'react-router-dom';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
+import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
-import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
-import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
-
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
+    relatedFigure: RelatedFigure;
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>;
+    filterTags?: boolean;
+    hoverable?: boolean;
 }
 
-const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
-    const { modalStore: { setModal } } = useMobx();
-    const { relatedFiguresStore, tagsStore, streetcodeStore: { getStreetCodeId } } = useMobx();
-    const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
-    const { fetchTagByStreetcodeId } = tagsStore;
+const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
+    const {
+        id, imageId, title, tags, alias, url
+    } = relatedFigure;
 
-    const windowsize = useWindowSize();
-
-    const handleClick = () => {
-        if (windowsize.width > 1024) {
-            setModal('relatedFigures');
-        }
-    };
+    const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
+    const { fetchImage, getImage } = imagesStore;
+    const { setModal, modalsState: {tagsList} } = modalStore;
 
     useAsync(
-        () => Promise.all([
-            fetchRelatedFiguresByStreetcodeId(getStreetCodeId),
-            fetchTagByStreetcodeId(getStreetCodeId),
-        ]),
-        [getStreetCodeId],
+        () => fetchImage(imageId),
+        [imageId],
     );
 
-    const sliderItems = getRelatedFiguresArray.map((figure) => (
-        <RelatedFigureItem
-            key={figure.id}
-            relatedFigure={figure}
-            filterTags
-            hoverable
-            setActiveTagId={setActiveTagId}
-        />
-    ));
-
-    const sliderItemsMobile = [];
-
-    for (let i = 0; i < getRelatedFiguresArray.length; i += 2) {
-    const figureOnTopRow = getRelatedFiguresArray[i];
-    const figureOnBottomRow = getRelatedFiguresArray[i + 1];
-
-    // Check if there is a valid next element to render in the bottom row
-    const hasBottomRow = figureOnBottomRow !== undefined;
-
-    // Render a pair of RelatedFigureItem components for each pair of elements
-    const sliderItem = (
-        <div className='TwoRowSlide' key={i}>
-        <RelatedFigureItem
-            relatedFigure={figureOnTopRow}
-            filterTags
-            hoverable
-            setActiveTagId={setActiveTagId}
-        />
-        {hasBottomRow && (
-            <RelatedFigureItem
-            relatedFigure={figureOnBottomRow}
-            filterTags
-            hoverable
-            setActiveTagId={setActiveTagId}
-            />
-        )}
-        </div>
-    );
-
-    sliderItemsMobile.push(sliderItem);
+    const handleClick = () => {
+        if (windowsize.width <= 1024) {
+            setModal('relatedFigureItem', id, true);
+        }
     }
 
+    const windowsize = useWindowSize(); 
 
-    const sliderProps = {
-        className: 'heightContainer',
-        infinite: windowsize.width > 1024,
-        swipe: windowsize.width <= 1024,
-        dots: windowsize.width <= 1024,
-        variableWidth: windowsize.width <= 1024,
-        swipeOnClick: false,
-        slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width <= 480 ? 2 : undefined,
-        slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width <= 480 ? 1 : 3,
-        rows: 1
-    }; 
+    const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
 
     return (
-        <div className={`relatedFiguresWrapper
-            ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
-        >
-            <div className="relatedFiguresContainer">
-                <BlockHeading headingText="Зв'язки історії" />
-                <div className="headingWrapper">
-                    <div className="moreInfo">
-                        <p onClick={handleClick}>
-                            Дивитися всіх
-                        </p>
+        <>
+          { windowsize.width > 1024 && (
+            <Link
+                className={`relatedFigureSlide 
+                ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
+                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
+
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
+                to={`../streetcode/${url}`}
+                onClick={() => {
+                    if (!tagsList) {
+                        setModal('tagsList');
+                    }
+                }}
+            >
+                <div className="figureSlideText">
+                    <div className="heading"> 
+                        <p>{title}</p>
+                        {
+                            alias !== null ?
+                            <p className='aliasText'>
+                                ({alias})
+                            </p>
+                            : undefined
+                        }
+                    </div>
+                    <div className={`relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}`}>
+                        {tags.filter((tag) => getTagArray.find((ti) => 
+                            ti.id === tag.id || !filterTags))
+                            .map((tag) => (
+                            <button
+                                type="button"
+                                key={tag.id}
+                                className="tag"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    setModal('tagsList');
+                                    setActiveTagId(tag.id);
+                                }}
+                            >
+                                <p>{tag.title}</p>
+                            </button>
+                        ))}
                     </div>
                 </div>
-                <div className="relatedFiguresSliderContainer">
-                    <BlockSlider {...sliderProps}>   
-                        {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
-                    </BlockSlider> 
+            </Link>)}
+            { windowsize.width <= 1024 && (<>
+            <div className='relatedFigureSlide'
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
+                onClick={handleClick}
+            >
+            </div>
+            <div className="figureSlideText mobile">
+                <div className="heading"> 
+                    <p>{title}</p>
+                    {
+                        alias !== null ?
+                        <p className='aliasText'>
+                            ({alias})
+                        </p>
+                        : undefined
+                    }
                 </div>
             </div>
-        </div>
+            </>)}
+        </>
     );
 };
 
-export default observer(RelatedFiguresComponent);
+export default RelatedFigureItem;
