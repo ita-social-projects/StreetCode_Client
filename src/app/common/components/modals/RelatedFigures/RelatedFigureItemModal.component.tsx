@@ -6,6 +6,7 @@ import useMobx from '@stores/root-store';
 import { Modal } from 'antd';
 import { observer } from 'mobx-react-lite';
 import CancelBtn from '@assets/images/utils/Cancel_btn_mobile.svg';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const RelatedFiguresItemModal = () => {
     const { imagesStore } = useMobx();
@@ -35,7 +36,7 @@ const RelatedFiguresItemModal = () => {
         >
             <div className='relatedFigureSlide'>
                 <div className='figureSlideImage'
-                    style={{ backgroundImage: `url(${getImage(relation?.imageId ?? 0)?.url.href})` }}
+                    style={{ backgroundImage: `url(${base64ToUrl(getImage(relation?.imageId ?? 0)?.base64, getImage(relation?.imageId ?? 0)?.mimeType)})` }}
                 ></div>
                 <div className="figureSlideText">
                     <div className="heading"> 
