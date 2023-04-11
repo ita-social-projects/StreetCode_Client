@@ -9,7 +9,6 @@ import StreetcodeMarker from '@images/footer/streetcode-marker.png';
 import MapTableAdmin from '../MapTableAdmin/MapTableAdmin.component';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 
-
 const containerStyle = {
   width: '100%',
   height: '100vh'
