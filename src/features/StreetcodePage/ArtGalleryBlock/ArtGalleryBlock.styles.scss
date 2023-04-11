@@ -9,8 +9,8 @@
     width: 100%;
 
     .slick-dots {
-        padding-right: 25px;
-        margin-top: -60px;
+        padding-right: pxToRem(16px);
+        margin-top: pxToRem(-60px);
     }
 }
 
@@ -46,18 +46,18 @@
         .artGallerySliderContainer {
             @include mut.sized(830px, 360px);
         }
-
     }
 }
 
 @media screen and (max-width:767px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-          @include mut.rem-margined($top: -20px,$bottom:-70px);
-          @include mut.sized(92%, 100%);
-            .artGalleryContentContainer {
-                @include mut.flex-centered();
+            @include mut.rem-margined($top: -20px,$bottom:0px);
+            @include mut.sized(92%, 100%);
+            .slick-list {
+                margin-left: pxToRem(-10px);
             }
-        }   
+
+        }
     }
 }

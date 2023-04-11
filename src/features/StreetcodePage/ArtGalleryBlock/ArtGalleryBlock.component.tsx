@@ -103,6 +103,7 @@ const ArtGalleryBlock = () => {
         );
     }
 
+
     sortedArtsListSmall.forEach(({
         index, offset, imageHref, description, title,
     }) => {
@@ -154,12 +155,13 @@ const ArtGalleryBlock = () => {
 
     const sliderPropsSmall = {
         className: "artGallarySliderContainerSmall",
-        infinite: false,
+        infinite: true,
         swipe: true,
         swipeOnClick: false,
         centerMode: true,
         variableWidth: true,
         slidesToShow: 1,
+        centerPadding: "0px 10px",
         slidesToScroll: 0.5,
     };
 
