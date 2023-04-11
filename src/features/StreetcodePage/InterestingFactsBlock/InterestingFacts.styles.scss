@@ -3,6 +3,8 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/_utils.functions.scss" as f;
+
 
 
 .interestingFactsContainer {
@@ -82,15 +84,23 @@
 and (max-width: 1024px){
 
     .interestingFactsWrapper {
+        @include mut.sized(100%, 100%); 
     @include wr.main-page-block-wrapper();
-    margin: 0;
+    // margin: 0;
     .slick-dots{
-       bottom: 1.375rem;
+        // @include mut.sized(100%);         
+        @include mut.rem-margined(0);
+
+        //     //  left: 0.5rem;   
+        // @include mut.rem-margined(0px);
+        bottom: 25%
+        // f.pxToRem(22px);
+    
     }
-  
+    
 }
-    .interestingFactsContainer {
-        @include mut.sized(100%, 720px); 
+.interestingFactsContainer {
+        @include mut.sized(90%, 720px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
@@ -104,7 +114,7 @@ and (max-width: 1024px){
         
     // }
     .interestingFactsSliderContainer {
-        @include mut.sized(91%, 100%); //660px
+        @include mut.sized(85%, 100%); //660px
       
         // .slick-slide {
         //     margin: 0 -2px;
@@ -118,9 +128,12 @@ and (max-width: 768px){
 
     .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
-    margin: 0;
+    // margin: 0;
     .slick-dots{
-       bottom: 1.375rem;
+        @include mut.rem-margined(0);
+        bottom: 25%
+
+        // bottom: f.pxToRem(160px);
     }
   
 }
@@ -155,7 +168,7 @@ and (max-width: 768px){
    
     .interestingFactSlide{
         // @include mut.sized(500px, 450px);
-        @include mut.sized(60%);
+        // @include mut.sized(60%);
         @include mut.full-rounded(20px);
 
         .slideImage {
@@ -212,7 +225,10 @@ and (max-width: 768px){
     @include wr.main-page-block-wrapper();
     margin: 0;
     .slick-dots{
-        bottom: 5.375rem;
+        // margin: 0;
+        // bottom: 5.375rem;
+        bottom: 25%
+
      }
    
     // .slick-track {

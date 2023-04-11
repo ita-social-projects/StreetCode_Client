@@ -69,7 +69,6 @@
   
 }
 
-
 @media screen
 and (max-width: 1024px){
 
@@ -83,12 +82,55 @@ and (max-width: 1024px){
       margin-bottom: 200px;
       text-align: center; /* horizontally centers the element */
       justify-content: center;
-      // @include mut.rem-margined(-30p x,-30px, -30px, -30px);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      text-align: center;
 
-      li button:before {
+      
+      // @include mut.rem-margined(-30p x,-30px, -30px, -30px);
+      
+    }
+    // ul .slick-dots{
+    //   // padding: 0;
+    //    margin: 0;
+    // }
+    li{
+      text-align: center; /* horizontally centers the element */
+      justify-content: center;
+      // padding: 0;
+      // margin: 0;
+      list-style: none;
+      text-align: center;
+        @include mut.sized(8px, 8px);
+    
+    }
+    li button{
+      text-align: center; /* horizontally centers the element */
+      justify-content: center;
+      padding: 0;
+
+      list-style: none;
+      text-align: center;
+        @include mut.sized(8px, 8px);
+    }
+    li button:before {
+        // margin: 12px;
+        text-align: center; /* horizontally centers the element */
+        justify-content: center;
+        // padding: 5px;
+        // margin: 5px;
+    // left: -1.5rem;
+        left: -270% !important;
+
+          @include mut.rem-margined($right:5px, $left:5px);
+
+
+        list-style: none;
+        text-align: center;
           @include mut.sized(8px, 8px);
       }
-    }
+    
   
   }    
   .interestingFactSlide {
@@ -146,7 +188,8 @@ and (max-width: 1024px){
 
 
 @media screen
-and (min-width: 768px) and (max-width: 1023px) {
+and (min-width: 768px) and (max-width: 1000px) {
+// and (max-width: 768px) {
 
 
   .interestingFactsSliderContainer{
@@ -164,18 +207,6 @@ and (min-width: 768px) and (max-width: 1023px) {
         margin-bottom: 200px;
     }
   }
- //     margin:0 -2px;
-// }
-
-// .slick-slide {
-  
-//   margin-right:2px;
-//   margin-left:2px;
-// }
-
-  // .interestingFactsSliderContainer .sliderClass {
-  //   height: 110%;
-  // }
 
   .interestingFactSlide {
    
