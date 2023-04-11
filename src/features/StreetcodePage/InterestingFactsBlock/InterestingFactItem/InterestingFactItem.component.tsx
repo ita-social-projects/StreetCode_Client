@@ -39,15 +39,9 @@ const InterestingFactItem = ({
         maxTextLength = 190;
     }
 
-    //         setMaxCharacterCount(250);
-    //     };
-
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
 
-    let mainContent = factContent;
-    if (isReadMore) {
-        mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
-    }
+    const mainContent = factContent;
 
     return (
         <div className="interestingFactSlide">

@@ -34,7 +34,8 @@
     .mainText {
       @include mut.rem-padded(0, 20px, 0px, 20px);
       color: c.$lighter-black-color;
-      
+      @include mut.truncated($line-num: 5);
+
       @include mut.with-font($font-weight: 300, $font-size: 13px);
       line-height: f.pxToEm(18px);
     }
@@ -59,7 +60,6 @@
   @include mut.rem-padded(7px, 20px, 0px, 20px);
   @include vnd.vendored(transition, '.5s ease');
   cursor: pointer;
-  
   color: c.$dark-red-color;
   @include mut.with-font(ft.$roboto-font, 300, 13px, normal);
   
@@ -283,7 +283,7 @@ and (min-width: 768px) and (max-width: 1000px) {
   .interestingFactSlide {
     @include mut.sized(210px,240px);// 344px
     // @include mut.sized(70%);// 344px
-    @include mut.full-rounded(15px);
+    @include mut.full-rounded(20px);
     overflow: visible;
 
   
