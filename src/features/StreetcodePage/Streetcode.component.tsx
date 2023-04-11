@@ -18,7 +18,6 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import TimelineBlock from '@streetcode/TimelineBlock/TimelineBlock.component';
 
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
-import useSticky from '@/app/common/hooks/scrolling/useSticky.hook';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 // eslint-disable-next-line import/extensions
@@ -34,7 +33,6 @@ const StreetcodeContent = () => {
     const { streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
 
-    const footer = useSticky();
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl);
     }, [setCurrentStreetcodeId, streetcodeUrl]);
@@ -62,14 +60,14 @@ const StreetcodeContent = () => {
             <Suspense fallback={<div>Loading...</div>}>
                 <PartnersLazyComponent />
             </Suspense>
+            <div className="sticky">
+                <div className="sticky-content">
+                    <ScrollToTopBtn />
+                    <DonateBtn />
+                </div>
+            </div>
             <TickerBlock />
-            <div>
-                <ScrollToTopBtn />
-                <DonateBtn />
-            </div>
-            <div ref={footer}>
-                <Footer />
-            </div>
+            <Footer />
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}
