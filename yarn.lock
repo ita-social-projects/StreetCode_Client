@@ -4538,7 +4538,7 @@ dnd-core@^16.0.1:
     "@react-dnd/asap" "^5.0.1"
     "@react-dnd/invariant" "^4.0.1"
     redux "^4.2.0"
-
+    
 dns-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/dns-equal/-/dns-equal-1.0.0.tgz"
@@ -9253,7 +9253,7 @@ react-async-script@^1.1.1:
   dependencies:
     hoist-non-react-statics "^3.3.0"
     prop-types "^15.5.0"
-
+    
 react-awesome-ticker@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/react-awesome-ticker/-/react-awesome-ticker-1.0.0.tgz"
