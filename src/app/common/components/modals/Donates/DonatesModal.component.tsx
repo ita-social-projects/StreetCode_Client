@@ -1,16 +1,15 @@
 import './DonatesModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-
-import { observer } from 'mobx-react-lite';
+import { Button, Input, Modal } from 'antd';
 import {
     ChangeEvent, SyntheticEvent, useCallback,
     useEffect, useRef, useState,
 } from 'react';
-import useMobx from '@stores/root-store';
 
-import { Button, Input, Modal } from 'antd';
-import axios from 'axios';
+import { observer } from 'mobx-react-lite';
+import useMobx from '@stores/root-store';
+import axios from 'axios';;
 
 const possibleDonateAmounts = [100, 500, 1000];
 
@@ -24,6 +23,9 @@ const DonatesModal = () => {
 
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
+
+
+    const linkBase = 'https://0127-185-244-159-54.ngrok-free.app/api/support/monobank/api/support/monobank';
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
@@ -47,7 +49,8 @@ const DonatesModal = () => {
 
     const handlePost = async () => {
         try {
-            const response = await axios.post('controller-link', { Amount: donateAmount, Destination: `${donateName}: ${donateComment}` });
+            const response = await axios.post(`${linkBase}?${donateAmount}&${donateComment}`);
+            window.location.replace(response.data);
         } catch (err) {
             console.error(err);
         }
