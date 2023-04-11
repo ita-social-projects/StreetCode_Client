@@ -25,6 +25,7 @@
       border-color: c.$accented-red-color;
     }
   }
+  
   .onMapbtn {
     @include mut.sized(300px, 60px);
     @include mut.rem-margined(16px, 0, 15px, 15px);
@@ -40,6 +41,7 @@
       border-color: c.$accented-red-color;
     }
   }
+  
   h1{
     @include mut.with-font(ft.$roboto-font, 500, 22px, normal);
     line-height: 26px;
@@ -50,6 +52,7 @@
   .streetsBlock{
     @include mut.rem-padded($top:10px);
     width:100%;
+    
     p{
       @include mut.flexed($direction:row, $gap:5px);
       @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
@@ -57,6 +60,7 @@
       color: c.$lighter-black-color;
       padding-left: f.pxToRem(20px);
     }
+    
     span{
       @include mut.with-font($font-weight:500, $font-size:22px);
       color: c.$accented-red-color;
