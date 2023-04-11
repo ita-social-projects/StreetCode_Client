@@ -10,3 +10,8 @@ export default interface Audio {
     streetcode?: Streetcode | undefined;
     streetcodeId: number;
 }
+
+export interface AudioCreate {
+    blobName: string;
+    mimeType: string;
+}

@@ -10,11 +10,11 @@ import { Button, Form, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import { UploadFile } from 'antd/lib/upload/interface';
 
-import Image from '@/models/media/image.model';
-import { Fact } from '@/models/streetcode/text-contents.model';
+import Image, { ImageCreate } from '@/models/media/image.model';
+import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsModal = () => {
-    const { modalStore, factsStore: { getFactArray }, imagesStore: { getImageArray } } = useMobx();
+    const { modalStore, factsStore, imagesStore: { getImageArray } } = useMobx();
     const { setModal, modalsState: { adminFacts } } = modalStore;
     const [factContent, setFactContent] = useState('');
 
@@ -23,23 +23,18 @@ const InterestingFactsModal = () => {
     const onFinish = (values: any) => {
         const uploadedFile = values.picture.file as UploadFile<any>;
 
-        const image: Image = {
-            id: getImageArray.length + 1,
-            alt: '',
-            base64: '',
+        const image: ImageCreate = {
             blobName: uploadedFile.name ?? '',
             mimeType: uploadedFile.type ?? '',
         };
 
-        const fact: Fact = {
-            id: getFactArray.length + 1,
+        const fact: FactCreate = {
             title: values.title,
             factContent,
             image,
-            streetcodes: [],
         };
 
-        factsStore.addFact(fact);
+        factsStore.addFactToCreate(fact);
     };
 
     return (

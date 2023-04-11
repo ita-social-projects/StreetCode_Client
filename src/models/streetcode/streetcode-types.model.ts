@@ -4,14 +4,16 @@ import Art from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import Video from '@models/media/video.model';
-import StreetcodePartner from '@models/partners/partners.model';
+import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
 import { SourceLink } from '@models/sources/sources.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import TimelineItem from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
 
-import { Fact } from './text-contents.model';
+import { VideoCreate } from '../map/media/video.model';
+
+import { Fact, FactCreate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -82,23 +84,26 @@ export interface StreetcodeCatalogRecord {
 }
 
 export interface StreetcodeCreate {
-    mainBlockData: MainBlockDataCreate,
-}
-
-export interface MainBlockDataCreate {
     index: number;
-    firstName: string,
-    lastName: string,
+    firstName: string | undefined,
+    lastName: string | undefined,
     title: string,
     teaser: string;
     alias?: string;
+    transliterationUrl: string;
     viewCount: number;
     createdAt: Date;
     updatedAt: Date;
     eventStartOrPersonBirthDate: Date;
     eventEndOrPersonDeathDate: Date;
+    audio?: Audio | undefined;
     tags: Tag[];
     type: StreetcodeType;
     images: Image[];
-    text: string;
+    textTitle: string | undefined;
+    text: string | undefined;
+    video: VideoCreate
+    facts: FactCreate[];
+    timelineItems: TimelineItem[];
+    partners: PartnerShort[];
 }

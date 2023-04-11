@@ -20,7 +20,11 @@ import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.co
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 
-const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
+interface Props {
+    form:FormInstance<any>,
+    onChange: (tag: TagVisible[]) => void;
+}
+const MainBlockAdmin: React.FC<Props> = ({ form, onChange }) => {
     const teaserMaxCharCount = 450;
     const allTags = useAsync(() => TagsApi.getAll()).value;
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
@@ -42,7 +46,6 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
     }, [form, streetcodeTitle]);
     const onNameSurnameChange = () => {
         const curSurname = surname.current?.input?.value;
-        console.log(curSurname);
         setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
     };
     const onCheckIndexClick = () => {
@@ -79,7 +82,6 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
         if (newInputedChar > teaserMaxCharCount || newLinesCharCount > 1) {
             return;
         }
-        console.log(text);
         setStreetcodeTeaser(text);
 
         if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * 49) {
@@ -104,11 +106,15 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
             }).catch((e) => console.log(e));
         } else {
             selected = tags[selectedIndex];
+            const updatedTags = [...selectedTags, { ...selected, visible: false }];
+            onChange(updatedTags);
             setSelectedTags([...selectedTags, { ...selected, visible: false }]);
         }
     };
 
     const onDeselectTag = (deselectedValue:string) => {
+        const updatedTags = selectedTags.filter((t) => t.title !== deselectedValue);
+        onChange(updatedTags);
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -165,7 +171,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
             >
-                <Input maxLength={100} showCount pattern="/^[a-z-]+$/gm" />
+                <Input maxLength={100} showCount />
             </Form.Item>
 
             <Form.Item name="alias" label="Короткий опис" className="maincard-item">
@@ -180,7 +186,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 <Input
                     maxLength={100}
                     showCount
-                    pattern="/^[a-z-]+$/gm"
+                    
                 />
             </Form.Item>
 
