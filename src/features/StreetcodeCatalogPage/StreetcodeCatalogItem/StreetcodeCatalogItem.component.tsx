@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import useMobx from '@stores/root-store';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
@@ -16,8 +17,7 @@ const StreetcodeCatalogItem = ({ streetcode }: Props) => {
     return (
         <Link
             className="catalogItem"
-            style={{ backgroundImage: `url(${getImage(6)?.url.href})` }}
-            // change 5 to streetcode.id when all images will be downloaded
+            style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
             to={`../streetcode/${streetcode.url}`}
         >
             <div className="catalogItemText">

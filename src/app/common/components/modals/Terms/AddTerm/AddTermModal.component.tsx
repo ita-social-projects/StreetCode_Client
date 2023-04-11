@@ -1,16 +1,13 @@
 import './AddTermModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-
+import { Term } from '@/models/streetcode/text-contents.model';
 import { observer } from 'mobx-react-lite';
-import useMobx from '@stores/root-store';
-
 import { Button, Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import Modal from 'antd/es/modal/Modal';
-
-import { Term } from '@/models/streetcode/text-contents.model';
+import useMobx from '@stores/root-store';
 
 interface Props {
     handleAdd: () => void;
@@ -23,6 +20,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTerm({ ...term, title: e.target.value });
     };
+    
     const handleChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTerm({ ...term, description: e.target.value });
     };

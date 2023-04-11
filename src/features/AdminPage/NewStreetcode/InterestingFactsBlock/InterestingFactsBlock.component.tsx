@@ -3,18 +3,17 @@ import './InterestingFactsBlock.style.scss';
 import useMobx from '@stores/root-store';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
 
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
 const InterestingFactsBlock = () => {
-    // Nata
-    const streetcodeId = 2;// useRouteId();
-    const { factsStore: { fetchFactsByStreetcodeId, getFactArray }, modalStore: { setModal } } = useMobx();
+    const { factsStore, streetcodeStore, modalStore: { setModal } } = useMobx();
+    const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
+    const { getStreetCodeId } = streetcodeStore;
 
     useAsync(
-        () => fetchFactsByStreetcodeId(streetcodeId),
-        [streetcodeId],
+        () => fetchFactsByStreetcodeId(getStreetCodeId),
+        [getStreetCodeId],
     );
     return (
         <div className="interestingFactsBlock">

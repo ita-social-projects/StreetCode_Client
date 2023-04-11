@@ -7,18 +7,14 @@ import facebook from '@assets/images/partners/facebook.png';
 import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
+import ImageStore from '@stores/image-store';
+import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-// eslint-disable-next-line import/extensions
-import ImageStore from '@/app/stores/image-store';
-// eslint-disable-next-line import/extensions
-import useMobx from '@/app/stores/root-store';
+import PageBar from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
-
-// eslint-disable-next-line no-restricted-imports
-import PageBar from '../PageBar/PageBar.component';
 
 import PartnerModal from './PartnerModal/PartnerModal.component';
 
@@ -147,7 +143,6 @@ const Partners:React.FC = observer(() => {
                       className="actionButton"
                       onClick={() => {
                           setPartnerToedit(partner);
-                          console.log(partner);
                           setModalEditOpened(true);
                       }}
                   />
