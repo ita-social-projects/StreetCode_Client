@@ -50,6 +50,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id ?? 1), [id]);
     const images = value as Image[];
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
+    console.log(streetcode);
 
     return (
         <div className="card">

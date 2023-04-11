@@ -1,7 +1,7 @@
 import './AdminLogin.style.scss';
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 
 import { Button, Form, Input, message } from 'antd';
 

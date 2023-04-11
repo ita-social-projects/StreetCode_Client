@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './PageBar.styles.scss';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -8,7 +9,7 @@ const PageBar = () => (
             <span>Стріткоди</span>
             <span>Словник</span>
             <span>Користувач</span>
-            <span><a href={FRONTEND_ROUTES.ADMIN.PARTNERS}>Партнери</a></span>
+            <span><Link to={FRONTEND_ROUTES.ADMIN.PARTNERS}>Партнери</Link></span>
         </div>
     </div>
 );

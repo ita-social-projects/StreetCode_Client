@@ -15,11 +15,16 @@ export default class UserLoginStore {
         this.callback = func;
     }
 
+    public get isLoggedIn():boolean {
+        console.log(sessionStorage.getItem(this.tokenStorageName))
+        return sessionStorage.getItem(this.tokenStorageName) !== null;
+    }
+
     public setUserLoginResponce(user:UserLoginResponce, func:()=>void) {
         const expireForSeconds = (new Date(user.expireAt)).getTime() - new Date().getTime();
         this.setCallback(func);
         this.userLoginResponce = user;
-
+        sessionStorage.setItem(this.tokenStorageName, user.token);
         if (expireForSeconds > 10000) {
             this.timeoutHandler = setTimeout(() => {
                 if (this.callback) {
@@ -36,13 +41,12 @@ export default class UserLoginStore {
     public refreshToken = ():Promise<RefreshTokenResponce> => (
         UserApi.refreshToken({ token: sessionStorage.getItem(this.tokenStorageName) ?? '' })
             .then((refreshToken) => {
-                sessionStorage.setItem(this.tokenStorageName, refreshToken.token);
                 const expireForSeconds = (new Date(refreshToken.expireAt)).getTime() - new Date().getTime();
                 this.timeoutHandler = setTimeout(() => {
                     if (this.callback) {
                         this.callback();
                     }
-                }, 10000);
+                }, expireForSeconds);
                 return refreshToken;
             }));
 }
