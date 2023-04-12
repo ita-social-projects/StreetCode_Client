@@ -35,12 +35,12 @@ type FileObject = {
 
 const NewStreetcode = () => {
     const [form] = useForm();
+    const { factsStore, timelineItemStore } = useMobx();
+
     const [partners, setPartners] = useState<PartnerShort[]>([]);
     const [tags, setTags] = useState<TagVisible[]>([]);
-
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
-
-    const { factsStore, timelineItemStore } = useMobx();
+    const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
 
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -48,13 +48,9 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onChangePartners = (partner: PartnerShort[]) => {
-        setPartners(partner);
-    };
-
-    const onChangeTags = (newTags: TagVisible[]) => {
-        setTags(newTags);
-    };
+    const onChangePartners = (partner: PartnerShort[]) => setPartners(partner);
+    const onChangeTags = (newTags: TagVisible[]) => setTags(newTags);
+    const onChangeStreetcodeType = (newStreetcodeType: StreetcodeType) => setStreetcodeType(newStreetcodeType);
 
     const createFileObject = <T extends FileObject>(file: UploadFile<any>): T | undefined => {
         if (file) {
@@ -84,15 +80,12 @@ const NewStreetcode = () => {
 
         const streetcode: StreetcodeCreate = {
             index: form.getFieldValue('streetcodeNumber'),
-            firstName: form.getFieldValue('name'),
-            lastName: form.getFieldValue('surname'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
-
+            type: streetcodeType,
             eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate').toDate(),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
-
             tags,
             textTitle: inputInfo?.title,
             text: inputInfo?.text,
@@ -101,8 +94,16 @@ const NewStreetcode = () => {
             video,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray)),
             partners,
+            firstName: undefined,
+            lastName: undefined,
+            teaser: form.getFieldValue('teaser'),
+            viewCount: 0,
+            createdAt: new Date().toISOString(),
         };
-
+        if (streetcodeType === StreetcodeType.Person) {
+            streetcode.firstName = form.getFieldValue('name');
+            streetcode.lastName = form.getFieldValue('surname');
+        }
         console.log(streetcode);
     };
 
@@ -112,7 +113,11 @@ const NewStreetcode = () => {
             <ConfigProvider locale={ukUA}>
                 <div className="adminPageContainer">
                     <Form form={form} layout="vertical" onFinish={onFinish}>
-                        <MainBlockAdmin onChange={onChangeTags} form={form} />
+                        <MainBlockAdmin
+                            form={form}
+                            onChangeTags={onChangeTags}
+                            onChangeStreetcodeType={onChangeStreetcodeType}
+                        />
                         <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} />
                         <button type="submit">Відправити</button>
                     </Form>

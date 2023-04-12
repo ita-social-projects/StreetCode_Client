@@ -101,9 +101,7 @@
             resize: none;
         }
         .amount-left-char-textarea-teaser{
-            display: flex;
-            justify-content: flex-end;
-            padding-right: f.pxToRem(10px);
+            text-align: right;
             .warning{
                 color:c.$accented-red-color ;
             }

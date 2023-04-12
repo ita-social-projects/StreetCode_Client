@@ -14,6 +14,7 @@ import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
+import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
@@ -22,9 +23,10 @@ import FileInputsPart from './FileInputsPart.component';
 
 interface Props {
     form:FormInstance<any>,
-    onChange: (tag: TagVisible[]) => void;
+    onChangeTags: (tags: TagVisible[]) => void,
+    onChangeStreetcodeType: (newStreetcodeType: StreetcodeType) => void;
 }
-const MainBlockAdmin: React.FC<Props> = ({ form, onChange }) => {
+const MainBlockAdmin: React.FC<Props> = ({ form, onChangeTags, onChangeStreetcodeType }) => {
     const teaserMaxCharCount = 450;
     const allTags = useAsync(() => TagsApi.getAll()).value;
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
@@ -71,8 +73,10 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChange }) => {
     const onSwitchChange = (value:boolean) => {
         if (value) {
             setStreetcodeType('event');
+            onChangeStreetcodeType(StreetcodeType.Event);
         } else {
             setStreetcodeType('people');
+            onChangeStreetcodeType(StreetcodeType.Person);
         }
     };
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -107,14 +111,14 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChange }) => {
         } else {
             selected = tags[selectedIndex];
             const updatedTags = [...selectedTags, { ...selected, visible: false }];
-            onChange(updatedTags);
+            onChangeTags(updatedTags);
             setSelectedTags([...selectedTags, { ...selected, visible: false }]);
         }
     };
 
     const onDeselectTag = (deselectedValue:string) => {
         const updatedTags = selectedTags.filter((t) => t.title !== deselectedValue);
-        onChange(updatedTags);
+        onChangeTags(updatedTags);
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -186,7 +190,7 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChange }) => {
                 <Input
                     maxLength={100}
                     showCount
-                    
+
                 />
             </Form.Item>
 
@@ -241,27 +245,28 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChange }) => {
                         </p>
                     </Popover>
                 </div>
-
             </div>
-
-            <Form.Item
-                className="maincard-item teaser-form-item"
-                label="Тизер"
-                rules={[{ required: true, message: 'Введіть тизер' }]}
-            >
-                <Input.TextArea
-                    onChange={onTextAreaTeaserChange}
-                    className="textarea-teaser"
-                    maxLength={maxCharCount}
-                    value={streetcodeTeaser}
-                />
+            <div className="teaser-form-item">
+                <Form.Item
+                    label="Тизер"
+                    name="teaser"
+                    className="maincard-item teaser-form-item"
+                    rules={[{ required: true, message: 'Введіть тизер', max: 450 }]}
+                >
+                    <Input.TextArea
+                        onChange={onTextAreaTeaserChange}
+                        className="textarea-teaser"
+                        maxLength={450}
+                        // value={streetcodeTeaser}
+                    />
+                </Form.Item>
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                        /450
+                /450
                     </p>
                 </div>
-            </Form.Item>
+            </div>
 
             <FileInputsPart />
         </div>

@@ -92,8 +92,7 @@ export interface StreetcodeCreate {
     alias?: string;
     transliterationUrl: string;
     viewCount: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
     eventStartOrPersonBirthDate: Date;
     eventEndOrPersonDeathDate: Date;
     audio?: Audio | undefined;

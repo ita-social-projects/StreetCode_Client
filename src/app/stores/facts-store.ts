@@ -5,8 +5,6 @@ import { Fact, FactCreate } from '@models/streetcode/text-contents.model';
 export default class FactsStore {
     public factMap = new Map<number, Fact>();
 
-    public facts: Fact[] = [];
-
     public factsToCreate: FactCreate[] = [];
 
     public constructor() {

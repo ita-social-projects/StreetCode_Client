@@ -62,7 +62,6 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     const onContextSelect = (value:string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
-            console.log(value.length);
             if (value.length > 50) {
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 return;
