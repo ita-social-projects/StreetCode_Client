@@ -53,13 +53,8 @@ const StreetcodeCatalog = () => {
             </div>
             {
                 loading && (
-                    <div>
-                        <iframe
-                            title="loadgif"
-                            src="https://giphy.com/embed/3o7bu3XilJ5BOiSGic"
-                            width="100%"
-                            height="100%"
-                        />
+                    <div className="loadingWrapper">
+                        <div id="loadingGif" />
                     </div>
                 )
             }

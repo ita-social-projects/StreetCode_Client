@@ -5,37 +5,57 @@
 @use "@sass/variables/_variables.fonts.scss" as f;
 
 
-$bgImg: '@assets/images/streetcode-card/background.png';
+$bgImg: '@assets/images/catalog/background.png';
+$loadImg: '@assets/images/catalog/loading.gif';
 
 .streetcodeCatalogWrapper{
     padding: pxToRem(100px) 10%;
-    @include mut.bg-image($bgImg);
+    @include mut.bg-image($bgImg, contain, no-repeat);
+    background-color: c.$accented-low-opasity-grayish-gray-color;
+    width: 100%;
+
     .streetcodeCatalogHeading{
-        font-family: 'Closer Text';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 96px;
+        @include mut.with-font('Closer Text', 500, 96px, normal);
+        padding-bottom: pxToRem(40px);
         line-height: pxToRem(127px);
         display: flex;
         align-items: center;
         color: c.$milky-white-color;
     }
+
     .steetcodeCatalogContainer{
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-auto-rows: minmax(165px, 380px);
         column-gap: pxToRem(28px);
         row-gap: pxToRem(60px);
     }
-    @media screen and (max-width: 1024px) {
-        
+}
+
+.loadingWrapper{
+    background-color: c.$accented-grayish-gray-color;
+    width: 100%;
+    @include mut.flex-centered();        
+
+    #loadingGif{
+        @include mut.bg-image($loadImg, contain, no-repeat);
+        @include mut.sized(60px, 60px);
+        margin-bottom: pxToRem(84px);
     }
 }
 
-#loadingGif{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 200px;
+@media only screen and (min-width: 900px) {
+    .steetcodeCatalogContainer{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .steetcodeCatalogContainer{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (min-width: 2000px){
+    .streetcodeCatalogWrapper{
+        padding: pxToRem(100px) pxToRem(200px);
+    }
 }
