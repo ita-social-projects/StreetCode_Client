@@ -217,7 +217,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="url"
                      label="Посилання: "
-                     rules={[{ required: true, message: 'Введіть назву' }]}
                  >
                      <Input maxLength={200} showCount />
                  </Form.Item>
@@ -226,7 +225,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                      name="urlTitle"
                      label="Назва посилання: "
                      className="url-title"
-                     rules={[{ required: true, message: 'Введіть назву посилання' }]}
                  >
                      <Input maxLength={100} showCount />
                  </Form.Item>
@@ -234,7 +232,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="description"
                      label="Опис: "
-                     rules={[{ required: true, message: 'Введіть назву' }]}
                  >
                      <TextArea showCount maxLength={450} />
                  </Form.Item>
@@ -243,7 +240,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                      name="logo"
                      className="maincard-item photo-form-item"
                      label="Лого"
-                     rules={[{ required: true, message: 'Завантажте зображення' }]}
                      valuePropName="fileList"
                      getValueFromEvent={(e: any) => {
                          if (Array.isArray(e)) {
