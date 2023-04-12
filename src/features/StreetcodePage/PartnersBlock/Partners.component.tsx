@@ -1,34 +1,11 @@
 import './Partners.styles.scss';
 
+import { useMemo } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
 import PartnerItem from './PartnerItem/PartnerItem.component';
-
-const settings = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    autoplay: true,
-    speed: 4000,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-        {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 4,
-            },
-        },
-        {
-            breakpoint: 780,
-            settings: {
-                slidesToShow: 2,
-            },
-        },
-    ],
-};
 
 const PartnersComponent = () => {
     const { partnersStore, streetcodeStore: { getStreetCodeId } } = useMobx();
@@ -40,6 +17,27 @@ const PartnersComponent = () => {
         ]),
         [getStreetCodeId],
     );
+
+    const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => useMemo(() => ({
+        breakpoint,
+        settings: {
+            slidesToShow: getPartnerArray.length > slidesToShow ? slidesToShow : getPartnerArray.length,
+        },
+    }), [getPartnerArray, breakpoint, slidesToShow]);
+
+    const responsiveSettingsTablet = useResponsiveSettings(1024, 4);
+    const responsiveSettingsMobile = useResponsiveSettings(780, 2);
+
+    const settings = {
+        dots: false,
+        arrows: false,
+        infinite: true,
+        autoplay: true,
+        speed: 4000,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        responsive: [responsiveSettingsTablet, responsiveSettingsMobile],
+    };
 
     const sliderItems = getPartnerArray.map((p) => (
         <PartnerItem

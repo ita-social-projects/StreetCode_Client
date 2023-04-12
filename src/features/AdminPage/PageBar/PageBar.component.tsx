@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import './PageBar.styles.scss';
-
-import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import { Link } from 'react-router-dom';
+import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
+import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 
 const PageBar = () => (
     <div className="PageBarContainer">
@@ -10,6 +11,7 @@ const PageBar = () => (
             <span>Словник</span>
             <span>Користувач</span>
             <span><Link to={FRONTEND_ROUTES.ADMIN.PARTNERS}>Партнери</Link></span>
+            <Link to={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/for-fans`}><span>Для фанатів</span></Link>
         </div>
     </div>
 );

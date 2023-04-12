@@ -68,3 +68,10 @@ li.slick-active button:before {
         }
     }
 }
+
+@media screen and (max-width:1024px) {
+    .slick-next,
+    .slick-prev {
+        visibility:hidden;
+    }
+}

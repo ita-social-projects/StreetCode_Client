@@ -8,7 +8,10 @@ import { Button, Select } from 'antd';
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
 import { PartnerShort } from '@/models/partners/partners.model';
 
-const PartnerBlockAdmin = () => {
+interface Props {
+    onChange: (partner: PartnerShort) => void;
+}
+const PartnerBlockAdmin = ({ onChange }: Props) => {
     const selectedPartners = useRef<PartnerShort[]>([]);
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -23,6 +26,7 @@ const PartnerBlockAdmin = () => {
     const onPartnerSelect = (value:number) => {
         const index = allPartnersShort.findIndex((c) => c.id === value);
         selectedPartners.current.push(allPartnersShort[index]);
+        onChange(allPartnersShort[index]);
     };
     const onPartnerDeselect = (value:number) => {
         selectedPartners.current = selectedPartners.current.filter((c) => c.id !== value);

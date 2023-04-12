@@ -165,4 +165,7 @@ export const API_ROUTES = {
         LOGIN: 'user/login',
         REFRESH_TOKEN: 'user/refreshToken',
     },
+    EMAIL: {
+        SEND: 'email/send',
+    },
 };

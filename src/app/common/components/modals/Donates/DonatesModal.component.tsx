@@ -45,7 +45,7 @@ const DonatesModal = () => {
         const handleResize = () => {
             if (window.innerWidth <= 1020) {
                 setInputStyle({
-                    width: `${donateAmount === 0 ? 50 : donateAmount.toString().length * 30}px`,
+                    width: `${donateAmount === 0 ? 50 : (donateAmount.toString().length * 30) + 25}px`,
                 });
             } else {
                 setInputStyle({

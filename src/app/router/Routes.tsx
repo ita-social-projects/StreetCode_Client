@@ -1,10 +1,15 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import ForFans from '@features/AdminPage/ForFans/ForFans.component';
+import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
+import ForFansBlock from '@features/AdminPage/NewStreetcode/ForFansBlock/ForFansBlock.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
+import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
+import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
+import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.component';
+import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
@@ -28,7 +33,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ProtectedComponent><ForFans /></ProtectedComponent>}
+            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
         />
         <Route
             index
@@ -47,6 +52,10 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
         {/* <Route path='*' element={<NotFound />} /> */}
+        <Route path="*" element={<NotFound />} />
+        <Route path="/privacy-policy" element={<PrivatePolicy />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/partners-page" element={<PartnersPage />} />
     </Route>,
 ));
 

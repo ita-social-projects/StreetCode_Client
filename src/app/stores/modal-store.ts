@@ -26,6 +26,7 @@ interface ModalList {
     donates: ModalState;
     login: ModalState;
     artGallery: ModalState;
+    partners: ModalState;
     tagsList: ModalState;
     addTerm: ModalState;
     editTerm: ModalState;
@@ -45,6 +46,7 @@ export default class ModalStore {
         donates: DefaultModalState,
         login: DefaultModalState,
         artGallery: DefaultModalState,
+        partners: DefaultModalState,
         tagsList: DefaultModalState,
         addTerm: DefaultModalState,
         editTerm: DefaultModalState,

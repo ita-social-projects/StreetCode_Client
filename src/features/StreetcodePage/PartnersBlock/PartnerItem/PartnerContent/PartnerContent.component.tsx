@@ -6,8 +6,8 @@ import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
 import useMobx from '@stores/root-store';
 
-import Partner from '@/models/partners/partners.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import Partner from '@/models/partners/partners.model';
 
 interface Props {
     partner: Partner
