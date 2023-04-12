@@ -49,7 +49,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      useEffect(() => {
          if (isStreetcodeVisible) {
              streetcodeShortStore.fetchStreetcodesAll();
-             console.log(streetcodeShortStore.streetcodes);
          }
      }, []);
      useEffect(() => {

@@ -18,6 +18,7 @@ import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import PartnerModal from './PartnerModal/PartnerModal.component';
+import axios from 'axios';
 
 const LogoType = [twitter, instagram, facebook, youtube];
 

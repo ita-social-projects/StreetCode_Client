@@ -1,3 +1,4 @@
+import { makeAutoObservable } from 'mobx';
 import UserApi from '@api/user/user.api';
 
 import { RefreshTokenResponce, UserLoginResponce } from '@/models/user/user.model';
@@ -5,26 +6,41 @@ import { RefreshTokenResponce, UserLoginResponce } from '@/models/user/user.mode
 export default class UserLoginStore {
     private timeoutHandler?:NodeJS.Timeout;
 
-    private tokenStorageName = 'token';
+    private static tokenStorageName = 'token';
 
     public userLoginResponce?: UserLoginResponce;
 
     private callback?:()=>void;
 
+    public constructor() {
+        makeAutoObservable(this);
+    }
+
+    public static getToken() {
+        return localStorage.getItem(UserLoginStore.tokenStorageName);
+    }
+
+    public static setToken(newToken:string) {
+        return localStorage.setItem(UserLoginStore.tokenStorageName, newToken);
+    }
+
+    public static clearToken() {
+        localStorage.removeItem(UserLoginStore.tokenStorageName);
+    }
+
     public setCallback(func:()=>void) {
         this.callback = func;
     }
 
-    public get isLoggedIn():boolean {
-        console.log(sessionStorage.getItem(this.tokenStorageName))
-        return sessionStorage.getItem(this.tokenStorageName) !== null;
+    public static get isLoggedIn():boolean {
+        return UserLoginStore.getToken() !== null;
     }
 
     public setUserLoginResponce(user:UserLoginResponce, func:()=>void) {
         const expireForSeconds = (new Date(user.expireAt)).getTime() - new Date().getTime();
         this.setCallback(func);
         this.userLoginResponce = user;
-        sessionStorage.setItem(this.tokenStorageName, user.token);
+        UserLoginStore.setToken(user.token);
         if (expireForSeconds > 10000) {
             this.timeoutHandler = setTimeout(() => {
                 if (this.callback) {
@@ -34,12 +50,8 @@ export default class UserLoginStore {
         }
     }
 
-    public cleanToken = () => {
-        sessionStorage.removeItem(this.tokenStorageName);
-    };
-
     public refreshToken = ():Promise<RefreshTokenResponce> => (
-        UserApi.refreshToken({ token: sessionStorage.getItem(this.tokenStorageName) ?? '' })
+        UserApi.refreshToken({ token: UserLoginStore.getToken() ?? '' })
             .then((refreshToken) => {
                 const expireForSeconds = (new Date(refreshToken.expireAt)).getTime() - new Date().getTime();
                 this.timeoutHandler = setTimeout(() => {

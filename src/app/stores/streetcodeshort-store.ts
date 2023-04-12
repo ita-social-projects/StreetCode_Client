@@ -8,14 +8,7 @@ export default class StreetcodeShortStore {
     public streetcodes = new Array<StreetcodeShort>();
 
     public constructor() {
-        makeAutoObservable(
-            this,
-            {
-                fetchStreetcodesAll: action,
-                addItemToArray: action,
-                streetcodes: observable,
-            },
-        );
+        makeAutoObservable(this);
     }
 
     public fetchStreetcodesAll = async () => {

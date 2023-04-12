@@ -68,6 +68,7 @@
 }
 .teaserBlock {
   width: 100%;
+  text-align: justify;
   @include mut.rem-margined(13px, 3px, 0px, 0px);
   @include mut.rem-padded(0px, 5px, 0px, 0px);
   line-height: 23px;

@@ -1,13 +1,14 @@
 import './AdminLogin.style.scss';
 
 import React from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { Navigate, redirect, useNavigate } from 'react-router-dom';
 
 import { Button, Form, Input, message } from 'antd';
 
 import UserApi from '@/app/api/user/user.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
+import UserLoginStore from '@/app/stores/user-login-store';
 import { UserLoginResponce } from '@/models/user/user.model';
 
 const AdminLogin:React.FC = () => {
@@ -21,7 +22,7 @@ const AdminLogin:React.FC = () => {
                 .catch((e) => console.log(e));
             modalStore.setConfirmationModal('confirmation');
         }, 'Бажаєте продовжити сеанс?', undefined, () => {
-            userLoginStore.cleanToken();
+            UserLoginStore.clearToken();
         });
     };
 
@@ -31,13 +32,18 @@ const AdminLogin:React.FC = () => {
     const login = (formValues:any) => {
         UserApi.login({ login: formValues.login, password: formValues.password })
             .then((logResp) => onSuccessfulLogin(logResp))
-            .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
+            .then(() => {
+                navigate(FRONTEND_ROUTES.ADMIN.BASE);
+            })
             .catch((er) => {
                 message
                     .error('Неправильний логін чи пароль');
                 console.log(er);
             });
     };
+    if (UserLoginStore.isLoggedIn) {
+        return <Navigate to={FRONTEND_ROUTES.ADMIN.BASE} />;
+    }
 
     return (
         <Form form={form} className="admin-login-form" onFinish={login}>
