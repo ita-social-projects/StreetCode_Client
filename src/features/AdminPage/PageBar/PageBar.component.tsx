@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
 import './PageBar.styles.scss';
+
 import { Link } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 
 const PageBar = () => (
     <div className="PageBarContainer">

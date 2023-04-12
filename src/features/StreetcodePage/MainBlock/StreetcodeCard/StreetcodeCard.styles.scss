@@ -187,8 +187,14 @@
         }
     }
 }
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 1060px) {
   .blockCentering {
+  @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+  }
+}
+@media screen and (max-width: 1024px) {
+  .blockCentering {
+    @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 10px);
     .headerContainer {
       @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 21px);
     }
