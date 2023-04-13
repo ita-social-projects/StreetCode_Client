@@ -13,7 +13,6 @@ import { Button } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import Image from '@/models/media/image.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import Image from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',

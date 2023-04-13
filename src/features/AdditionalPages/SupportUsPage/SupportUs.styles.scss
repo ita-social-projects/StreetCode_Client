@@ -4,13 +4,12 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 
 .supportUsPageWrapper {
-    padding: 110px 12% 0;
+    padding: 110px 12.5% 0;
     width: 100%;
-    //background-image: url(Stritcode_Backstage_p1_E2_grey.jpg);
+    //background: linear-gradient(0deg, rgba(252, 252, 252, 0.74), rgba(252, 252, 252, 0.74)), linear-gradient(231.3deg, #FCFCFC 26.85%, rgba(252, 252, 252, 0) 99.92%, rgba(252, 252, 252, 0.47) 99.92%),
+    //background: url('@assets/images/streetcode-card/background.png') no-repeat left top 100%; //100%;
 
     .heading {
-        width: 75vw;
-
         .titleBig {
             @include mut.rem-margined($bottom: 40px);
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
@@ -24,15 +23,17 @@
 
         .text {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-            @include mut.rem-margined($left: 0px, $right: 0px);
+            @include mut.rem-margined($left: 0px, $right: 0px, $bottom: 48px);
             line-height: 23.44px;
         }
     }
 
     .mainBlock {
         .donatesPurposeBlock {
-            @include mut.rem-margined($right: 30px);
-            width: 50%;
+            @include mut.rem-padded($right: 30px);
+            margin: 0;
+            width: 580px;
+            border:rgba(219, 52, 36, 0.18) 1px;
 
             .heading {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
@@ -41,24 +42,38 @@
             }
 
             ul.purposeList {
-                display: inline;
+                @include mut.rem-margined($top: 16px, $bottom: 24px);
+                //display: inline;
 
                 li {
-                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-                    @include mut.rem-margined($left: 0px, $right: 0px);
-                    line-height: 23.44px;
+                    display: inline-block;
+                    vertical-align: middle;
+                    svg {
+                        width: 30px !important;
+                    }
+                    span {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                        @include mut.rem-margined($left: 13.33px, $right: 0px);
+                        vertical-align: middle;
+
+                        //line-height: 30px;
+                    }
                 }
             }
 
             .purposeBottomText {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
                 line-height: 27px;
+
+                p {
+                    margin-top: 16px;
+                }
             }
         }
 
         .donateWindow {
             @include mut.sized($height: 525px, $width: 590px);
-            
+            vertical-align: top;;
             background: c.$pure-white-color;
             
             box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
@@ -69,7 +84,7 @@
     .donateSubBlocks {
         display: inline-block;
         justify-content: stretch;
-        height: 351px;
+        height: 351px !important;
 
         .block {
 

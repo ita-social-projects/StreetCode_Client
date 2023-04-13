@@ -1,6 +1,11 @@
 import './SupportUs.styles.scss';
 import '../ContactUsPage/Title/Title.styles.scss';
 import Footer from '@/app/layout/footer/Footer.component';
+import Printer from '@/assets/images/donates/donatesPage/printer.svg';
+import CreditCard from '@/assets/images/donates/donatesPage/credit-card.svg';
+import Lamp from '@/assets/images/donates/donatesPage/lamp.svg';
+import Camera from '@/assets/images/donates/donatesPage/camera.svg';
+import Route from '@/assets/images/donates/donatesPage/route.svg';
 
 const SupportUs = () => {
     return (
@@ -17,12 +22,31 @@ const SupportUs = () => {
                     </div>
                 </div>
                 <div className='mainBlock'>
-                    <div className='donatePurposeBlock'>
+                    <div className='donatesPurposeBlock'>
                         <p className='heading'>
                             Потрібне фінансування, а саме — донати, внески, щедрості:
                         </p>
                         <ul className='purposeList'>
-
+                            <li>
+                                <Printer />
+                                <span>для друку наших промовистих стріткодів-табличок</span>
+                            </li>
+                            <li>
+                                <CreditCard />
+                                <span>для оплати хостингу платформи та покриття операційних витрат</span>
+                            </li>
+                            <li>
+                                <Lamp />
+                                <span>для створення ілюстрацій «як-живий» </span>
+                            </li>
+                            <li>
+                                <Camera />
+                                <span>для зйомок «оце-так-відосиків»</span>
+                            </li>
+                            <li>
+                                <Route />
+                                <span>для складання «ой-мамо-маршрутів»</span>
+                            </li>
                         </ul>
                         <div className='purposeBottomText'>
                             <p>
@@ -33,7 +57,7 @@ const SupportUs = () => {
                             <p>
                                 Тож обирай зручний спосіб допомогти так, щоб проєкт пульсував та жив, а історія промовляла 
                                 в міських просторах. З історії ми знаємо, що світ не без добрих людей, а Стріткод — не без 
-                                добрих стірткодерів.
+                                добрих стріткодерів.
                             </p>
                         </div>
                     </div>
@@ -41,7 +65,7 @@ const SupportUs = () => {
 
                     </div>
                 </div>
-                <div className='donateSubblocks'>
+                <div className='donateSubBlocks'>
                     <div>
 
                     </div>
