@@ -29,7 +29,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
 
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        art?.forEach( async ({ description, image, index, title }) => {
+        art?.forEach(async ({ description, image, index, title }) => {
             try {
                 if (image) {
 
@@ -62,7 +62,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
     sortedArtsList.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offsetSumForSlide !== SECTION_AMOUNT) {
+        if (offsetSumForSlide !== SECTION_AMOUNT && offsetSumForSlide + offset <= SECTION_AMOUNT) {
             offsetSumForSlide += offset ?? 0;
             offsetSum += offset ?? 0;
             sequenceNumber += 1;
@@ -75,6 +75,24 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
                 sequenceNumber,
             } as IndexedArt);
         }
+        else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+            slideOfArtList.push(
+                <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
+            );
+
+            artsData = [{
+                index,
+                imageHref,
+                description,
+                offset,
+                title,
+                sequenceNumber: sequenceNumber + 1,
+            } as IndexedArt];
+
+            offsetSumForSlide = offset ?? 0;
+            offsetSum = offset ?? 0;
+        }
+        
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
             slideOfArtList.push(
@@ -82,7 +100,10 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
             );
             artsData = [];
         }
+
     });
+
+
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(

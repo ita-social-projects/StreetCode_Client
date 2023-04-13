@@ -3,6 +3,7 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useEffect, useState } from 'react';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
+import { UPDATE } from 'mobx/dist/internal';
 
 interface Art {
     description: string;
@@ -44,9 +45,9 @@ const DownloadBlock: React.FC = () => {
 
                     let art: Art = {
                         index: indexTmp + 1,
-                        description: "",
+                        description: "description",
                         image: src,
-                        title: x.fileName ? x.fileName : x.name,
+                        title: "title",
                         uid: x.uid
                     }
                     setArts([...arts, art]);
@@ -76,17 +77,9 @@ const DownloadBlock: React.FC = () => {
 
     };
 
-    const handleSave = (newTitle: string, newDesc: string) => {
-        const updatedFileList = fileList.map(file => {
-            if (file.uid === filePreview?.uid) {
-                arts.find(x => x.uid === file.uid)?.description = newDesc;
-                arts.find(x => x.uid === file.uid)?.title = newTitle;
-            }
-            return file;
-        });
+    const handleSave = (art: Art) => {
+        arts.find(x => { if (x.uid === art.uid) { x.description = art.description; x.title = art.title; } });
         setArts([...arts]);
-        setFileList([...updatedFileList]);
-        
         setIsOpen(false);
     };
 
@@ -102,9 +95,9 @@ const DownloadBlock: React.FC = () => {
             >
                 {fileList.length < 15 && '+ Додати'}
             </Upload>
-            <ArtGalleryAdminBlock art={arts} />
             <h4>Прев'ю</h4>
-            <PreviewImageModal file={filePreview} title={title} desc={desc} onSave={handleSave} opened={isOpen} setOpened={setIsOpen} />
+            <ArtGalleryAdminBlock art={arts} />
+            <PreviewImageModal file={filePreview} art={arts.find(x => x.uid === filePreview?.uid)} onSave={handleSave} opened={isOpen} setOpened={setIsOpen} />
 
         </>
     );

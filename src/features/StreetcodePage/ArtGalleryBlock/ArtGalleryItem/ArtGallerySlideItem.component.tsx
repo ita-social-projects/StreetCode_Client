@@ -33,7 +33,7 @@ const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => 
                 <img
                     className={`imgImg ${setStyleByOffset(offset)}`}
                     src={imageHref}
-                    onClick={() => setModal('artGallery', sequenceNumber)}
+                    onClick={isAdminPage ? null : () => setModal('artGallery', sequenceNumber)}
                     alt=""
                 />
                 {windowsize.width > 1024 && (<div
