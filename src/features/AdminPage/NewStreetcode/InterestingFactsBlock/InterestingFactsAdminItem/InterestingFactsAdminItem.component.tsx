@@ -5,6 +5,7 @@ import useMobx from '@stores/root-store';
 // import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
 import { useState, useEffect} from 'react';
 import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
+import { observer } from 'mobx-react-lite';
 
 
 interface Props {
@@ -17,6 +18,7 @@ const InterestingFactAdminItem = ({ fact } : Props) => {
 
     const deleteFact = () => {
         factsStore.deleteFactFromMap(fact.id);
+        console.log("delete");
     }
     // useEffect(() => {
     //     // Delete the "name" property from myObject after the component renders
@@ -25,7 +27,7 @@ const InterestingFactAdminItem = ({ fact } : Props) => {
     //     };
     //   }, []);
     return (
-        <div className="interestingFactItem" key={`new${fact.id}`}>
+        <div className="interestingFactItem">
             <div className="item">
                 <div className="faIcon">
                     {/* <FaPencilAlt onClick={() => setModal('adminFacts')} /> */}
@@ -36,7 +38,8 @@ const InterestingFactAdminItem = ({ fact } : Props) => {
                     {fact.title}
                 </p>
                 <div className="faIcon">
-                    <FaRegTrashAlt onClick={() => factsStore.deleteFactFromMap(fact.id)} />
+                    <FaRegTrashAlt onClick={deleteFact} />
+                    {/* <FaRegTrashAlt onClick={() => factsStore.deleteFactFromMap(fact.id)} /> */}
                    
                     {/* <DeleteOutlined onClick={() => factsStore.deleteFactFromMap(fact.id)} /> */}
                     {/* <FaRegTrashAlt onClick={deleteFact} /> */}
@@ -50,4 +53,4 @@ const InterestingFactAdminItem = ({ fact } : Props) => {
     );
 };
 
-export default InterestingFactAdminItem;
+export default observer(InterestingFactAdminItem);

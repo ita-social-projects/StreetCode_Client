@@ -12,6 +12,7 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import { Fact } from '@/models/streetcode/text-contents.model';
+import TextArea from 'antd/es/input/TextArea';
 // import FactsStore from '@/app/stores/facts-store';
 
 interface Props {
@@ -26,9 +27,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
     // const {  } = useMobx();
     const [form] = Form.useForm();
 
-    const [inputedFactContent, setFactContent] = useState('');
+    // const [inputedFactContent, setFactContent] = useState('');
 
-    const characterCount = inputedFactContent.length | 0;
+    // const characterCount = inputedFactContent.length | 0;
 
     useEffect(() => {
         if (fact && open) {
@@ -86,37 +87,47 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                     name="title"
                     className="inputBlock"
                     label="Заголовок: "
-                    rules={[{ required: true, message: 'заголовок', max: 50 }]}
+                    rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
+                        { max: 30, message: 'Заголовок не може містити більше 30 символів ' },
+                    ]}
                 >
-                    <Input  />
+                    <Input className="title" />
                 </Form.Item>
                 {/* <p>Основний текст</p>
                     <textarea value={inputedFactContent} maxLength={600} onChange={(e) => setFactContent(e.target.value)} />
-                    <p className="characterCounter">
+                */}
+                  {/* <p className="characterCounter">
+                        {characterCount}
+                        /600
+                    </p>  */}
+                <Form.Item
+                    name="factContent"
+                    className="inputBlock"
+                    label="Основний текст: "
+                    // rules={[{ required: true, message: 'Введіть заголовок, будь ласка' }]}
+                >
+                    <TextArea
+                        value="Type"
+                        className="factContent"
+                        // value={inputedFactContent}
+                        maxLength={600}
+                        // onChange={(e) => setFactContent(e.target.value)}
+                        showCount
+                    />
+                    {/* <Form.Item className="characterCounter">
+                    {characterCount}
+                        /600
+
+                    </Form.Item> */}
+                    {/* <p className="characterCounter">
                         {characterCount}
                         /600
                     </p> */}
-                <Form.Item
-                    name="name      "
-                    className="inputBlock"
-                    label="Основний текст: "
-                    rules={[{ required: true, message: 'заголовок', max: 50 }]}
-                >
-                    <Input
-                        className="characterCounter"
-                        value={inputedFactContent}
-                        maxLength={600}
-                        onChange={(e) => setFactContent(e.target.value)}
-                    />
-                    <p className="characterCounter">
-                        {characterCount}
-                        /600
-                    </p>
                 </Form.Item>
                 {/* </div> */}
                 <p>Зображення:</p>
                 <FormItem
-                    name="picture"
+                    name="image"
                     className=""
                 >
                     <Upload

@@ -54,18 +54,27 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     .inputBlock{
         // width: 400px;
         // height: 280px;
-         input{
-            @include mut.with-font(ft.$roboto-font, 300, 18px, normal) ;
-        }
-        .characterCounter{
+        
+        // .characterCounter{
+        .factContent{
             color: c.$lighter-black-color;
+            width: 85%;
+            height: 154px;
+            textarea{
+              @include mut.with-font(ft.$roboto-font, 300, 18px, normal) ;
+              resize: none;
+
+            }
+            // width: 100%;
             // text-align: right;
             // padding: 0;
             // @include mut.with-font(ft.$roboto-font, 300, 14px, normal) ;
         }
 
-        input{
-            width: 60%;
+        .title{
+          @include mut.with-font(ft.$roboto-font, 300, 18px, normal) ;
+
+          width: 60%;
         }
         // textarea{
         //     height: 70%;
