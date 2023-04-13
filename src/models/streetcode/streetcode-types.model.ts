@@ -1,8 +1,8 @@
 import Subtitle from '@models/additional-content/subtitles.model';
-import Tag from '@models/additional-content/tag.model';
+import Tag, { TagVisible } from '@models/additional-content/tag.model';
 import Art from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
-import Image from '@models/media/image.model';
+import Image, { ImageCreate } from '@models/media/image.model';
 import Video from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
 import { SourceLink } from '@models/sources/sources.model';
@@ -84,25 +84,26 @@ export interface StreetcodeCatalogRecord {
 }
 
 export interface StreetcodeCreate {
-    index: number;
-    firstName: string | undefined,
-    lastName: string | undefined,
+    index: number,
+    firstName: string | null,
+    lastName: string | null,
     title: string,
-    teaser: string;
-    alias?: string;
-    transliterationUrl: string;
-    viewCount: number;
-    createdAt: string;
-    eventStartOrPersonBirthDate: Date;
-    eventEndOrPersonDeathDate: Date;
-    audio?: Audio | undefined;
-    tags: Tag[];
-    type: StreetcodeType;
-    images: Image[];
-    textTitle: string | undefined;
-    text: string | undefined;
-    video: VideoCreate
-    facts: FactCreate[];
-    timelineItems: TimelineItem[];
-    partners: PartnerShort[];
+    teaser: string,
+    alias?: string,
+    transliterationUrl: string,
+    viewCount: number,
+    createdAt: string,
+    eventStartOrPersonBirthDate: Date,
+    eventEndOrPersonDeathDate: Date,
+    dateString: string,
+    audio?: Audio | undefined,
+    tags: TagVisible[],
+    type: StreetcodeType,
+    images: ImageCreate[],
+    textTitle: string | undefined,
+    text: string | undefined,
+    video: VideoCreate,
+    facts: FactCreate[],
+    timelineItems: TimelineItem[],
+    partners: PartnerShort[],
 }

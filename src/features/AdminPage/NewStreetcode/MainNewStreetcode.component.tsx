@@ -7,14 +7,16 @@ import { useForm } from 'antd/es/form/Form';
 import { UploadFile } from 'antd/lib/upload/interface';
 import ukUA from 'antd/locale/uk_UA';
 
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
 import Video, { VideoCreate } from '@/models/map/media/video.model';
 import { AudioCreate } from '@/models/media/audio.model';
-import Image from '@/models/media/image.model';
+import Image, { ImageCreate } from '@/models/media/image.model';
 import { PartnerShort } from '@/models/partners/partners.model';
 import Streetcode, { MainBlockDataCreate, StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 import { Fact } from '@/models/streetcode/text-contents.model';
+import TimelineItem from '@/models/timeline/chronology.model';
 
 import PageBar from '../PageBar/PageBar.component';
 
@@ -38,7 +40,7 @@ const NewStreetcode = () => {
     const { factsStore, timelineItemStore } = useMobx();
 
     const [partners, setPartners] = useState<PartnerShort[]>([]);
-    const [tags, setTags] = useState<TagVisible[]>([]);
+    const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
 
@@ -47,10 +49,6 @@ const NewStreetcode = () => {
             ukUA.DatePicker.lang.locale = 'uk';
         }
     }, []);
-
-    const onChangePartners = (partner: PartnerShort[]) => setPartners(partner);
-    const onChangeTags = (newTags: TagVisible[]) => setTags(newTags);
-    const onChangeStreetcodeType = (newStreetcodeType: StreetcodeType) => setStreetcodeType(newStreetcodeType);
 
     const createFileObject = <T extends FileObject>(file: UploadFile<any>): T | undefined => {
         if (file) {
@@ -70,11 +68,11 @@ const NewStreetcode = () => {
 
         const audioFile = form.getFieldValue('audio')?.file;
 
-        const images: Image[] = [
-            createFileObject<Image>(animationFile),
-            createFileObject<Image>(pictureBlackWhiteFile),
-            createFileObject<Image>(pictureRelationsFile),
-        ].filter((image) => image !== undefined) as Image[];
+        const images: ImageCreate[] = [
+            createFileObject<ImageCreate>(animationFile),
+            createFileObject<ImageCreate>(pictureBlackWhiteFile),
+            createFileObject<ImageCreate>(pictureRelationsFile),
+        ].filter((image) => image !== undefined) as ImageCreate[];
 
         const video: VideoCreate = { url: inputInfo?.link || '' };
 
@@ -86,25 +84,29 @@ const NewStreetcode = () => {
             type: streetcodeType,
             eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate').toDate(),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
-            tags,
+            tags: selectedTags,
             textTitle: inputInfo?.title,
             text: inputInfo?.text,
             images,
             audio: audioFile && createFileObject<AudioCreate>(audioFile),
             video,
-            timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray)),
+            timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
+                .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             partners,
-            firstName: undefined,
-            lastName: undefined,
+            firstName: null,
+            lastName: null,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
+            dateString: form.getFieldValue('dateString'),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
             streetcode.lastName = form.getFieldValue('surname');
         }
         console.log(streetcode);
+
+        // StreetcodesApi.create(streetcode);
     };
 
     return (
@@ -115,8 +117,10 @@ const NewStreetcode = () => {
                     <Form form={form} layout="vertical" onFinish={onFinish}>
                         <MainBlockAdmin
                             form={form}
-                            onChangeTags={onChangeTags}
-                            onChangeStreetcodeType={onChangeStreetcodeType}
+                            selectedTags={selectedTags}
+                            setSelectedTags={setSelectedTags}
+                            streetcodeType={streetcodeType}
+                            setStreetcodeType={setStreetcodeType}
                         />
                         <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} />
                         <button type="submit">Відправити</button>
@@ -126,7 +130,7 @@ const NewStreetcode = () => {
                     <RelatedFiguresBlock />
                     <TimelineBlockAdmin />
                     <ForFansBlock />
-                    <PartnerBlockAdmin onChange={onChangePartners} />
+                    <PartnerBlockAdmin setPartners={setPartners} />
                 </div>
             </ConfigProvider>
         </div>

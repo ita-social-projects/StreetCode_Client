@@ -1,6 +1,6 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import Streetcode, { EventStreetcode, PersonStreetcode } from '@models/streetcode/streetcode-types.model';
+import Streetcode, { EventStreetcode, PersonStreetcode, StreetcodeCreate } from '@models/streetcode/streetcode-types.model';
 
 import GetAllStreetcodes from '@/models/streetcode/getAllStreetcodes.request';
 
@@ -24,7 +24,7 @@ const StreetcodesApi = {
 
     getPersons: () => Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
 
-    create: (streetcode: Streetcode) => Agent.post<Streetcode>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
+    create: (streetcode: StreetcodeCreate) => Agent.post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
     update: (streetcode: Streetcode) => Agent.put<Streetcode>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 

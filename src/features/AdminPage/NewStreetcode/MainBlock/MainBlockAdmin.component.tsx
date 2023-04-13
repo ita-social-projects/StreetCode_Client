@@ -23,23 +23,28 @@ import FileInputsPart from './FileInputsPart.component';
 
 interface Props {
     form:FormInstance<any>,
-    onChangeTags: (tags: TagVisible[]) => void,
-    onChangeStreetcodeType: (newStreetcodeType: StreetcodeType) => void;
+    selectedTags: TagVisible[];
+    setSelectedTags: React.Dispatch<React.SetStateAction<TagVisible[]>>;
+    streetcodeType: StreetcodeType;
+    setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
 }
-const MainBlockAdmin: React.FC<Props> = ({ form, onChangeTags, onChangeStreetcodeType }) => {
+const MainBlockAdmin: React.FC<Props> = ({
+    form,
+    selectedTags,
+    setSelectedTags,
+    streetcodeType,
+    setStreetcodeType,
+}) => {
     const teaserMaxCharCount = 450;
     const allTags = useAsync(() => TagsApi.getAll()).value;
-    const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [tags, setTags] = useState< Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
-    const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
     const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
     const [popoverProps, setPopoverProps] = useState<{
         width:number, screenWidth:number }>({ width: 360, screenWidth: 360 });
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
     const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
-    const [streetcodeTeaser, setStreetcodeTeaser] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
 
@@ -72,11 +77,9 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChangeTags, onChangeStreetcod
     };
     const onSwitchChange = (value:boolean) => {
         if (value) {
-            setStreetcodeType('event');
-            onChangeStreetcodeType(StreetcodeType.Event);
+            setStreetcodeType(StreetcodeType.Event);
         } else {
-            setStreetcodeType('people');
-            onChangeStreetcodeType(StreetcodeType.Person);
+            setStreetcodeType(StreetcodeType.Person);
         }
     };
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -86,7 +89,6 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChangeTags, onChangeStreetcod
         if (newInputedChar > teaserMaxCharCount || newLinesCharCount > 1) {
             return;
         }
-        setStreetcodeTeaser(text);
 
         if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * 49) {
             setMaxCharCount(teaserMaxCharCount - newLinesCharCount * 49);
@@ -111,14 +113,12 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChangeTags, onChangeStreetcod
         } else {
             selected = tags[selectedIndex];
             const updatedTags = [...selectedTags, { ...selected, visible: false }];
-            onChangeTags(updatedTags);
             setSelectedTags([...selectedTags, { ...selected, visible: false }]);
         }
     };
 
     const onDeselectTag = (deselectedValue:string) => {
         const updatedTags = selectedTags.filter((t) => t.title !== deselectedValue);
-        onChangeTags(updatedTags);
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -257,7 +257,6 @@ const MainBlockAdmin: React.FC<Props> = ({ form, onChangeTags, onChangeStreetcod
                         onChange={onTextAreaTeaserChange}
                         className="textarea-teaser"
                         maxLength={450}
-                        // value={streetcodeTeaser}
                     />
                 </Form.Item>
                 <div className="amount-left-char-textarea-teaser">
