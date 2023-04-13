@@ -52,10 +52,9 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const figureOnTopRow = getRelatedFiguresArray[i];
     const figureOnBottomRow = getRelatedFiguresArray[i + 1];
 
-    // Check if there is a valid next element to render in the bottom row
+   
     const hasBottomRow = figureOnBottomRow !== undefined;
 
-    // Render a pair of RelatedFigureItem components for each pair of elements
     const sliderItem = (
         <div className='TwoRowSlide' key={i}>
         <RelatedFigureItem

@@ -1,0 +1,80 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+
+.contactUsContainer{
+    .contactBlock{
+        position: relative;
+        bottom: f.pxToRem(50px);
+    
+        .contactCover{
+            position: relative;
+            z-index: 1;   
+        }
+    
+        .contactLogo{
+            position: absolute;
+            top: f.pxToRem(-110px);
+            left: f.pxToRem(-54px);
+            z-index: 0;
+        }
+        
+        .emailBlock img,  .phonesBlock img{
+            margin-right: f.pxToRem(10px);
+        }
+        .emailBlock{
+            @include mut.flexed($align-items: center);
+            margin-bottom: f.pxToRem(20px);
+        }
+    
+        .socials{
+            .icon{
+                transition: all 0.2s ease;
+                margin-right: f.pxToRem(30px);
+            }
+            .icon:hover{
+                filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.612));
+                cursor: pointer;
+            }
+        }
+         
+        .email{
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+            line-height: 48px;
+            color: #1D1F23;
+        } 
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .contactUsContainer{
+        .contactBlock{
+            bottom: 0;
+            .icon{
+                transform: scale(0.6);
+            } 
+    
+            .contactLogo{
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
+                line-height: 71px;
+                width: f.pxToRem(140px);
+                height: f.pxToRem(140px);    
+                
+                top: f.pxToRem(-18px);
+                left: f.pxToRem(220px);
+            }
+    
+            .socials .icon{            
+                margin-right: f.pxToRem(20px);   
+            }
+    
+            .email{
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+                line-height: 26px;
+                font-family: 'Closer Text';
+                letter-spacing: 0.005em;
+            }
+        }
+    }   
+} 
+

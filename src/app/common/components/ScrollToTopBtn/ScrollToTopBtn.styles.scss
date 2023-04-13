@@ -25,13 +25,13 @@
 }
 .scrollToTopBtnContainer.active{
   @include mut.flex-centered();
-
   @include mut.circular(62px);
-  z-index: 4;
 
-  border: 3px solid c.$accented-red-color;
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
+  
+  z-index: 4;
+  border: 3px solid c.$accented-red-color;
 
   &:hover {
     cursor: pointer;
@@ -42,4 +42,3 @@
 @keyframes btnOpacity {
   0% { opacity: 0 }
   100% { opacity: 1 }
-}

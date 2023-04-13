@@ -3,9 +3,11 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.wrapper {
-    display: grid;
-    grid-template-columns: 10% 90%;
+.termDictionaryCover{
+    .wrapper {
+        display: grid;
+        grid-template-columns: 10% 90%;
+    }
 }
 
 .termDictionaryContainer {
@@ -61,7 +63,6 @@
 .ant-table{
     .ant-table-thead .ant-table-cell {
         background-color: transparent;
-        //border-bottom: 0.125rem solid c.$dark-red-color;
         #text{
             color: white;
         }

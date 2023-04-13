@@ -4,8 +4,8 @@ import './PartnerModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
-// eslint-disable-next-line no-restricted-imports
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import useMobx from '@stores/root-store';
 
 import {
     Button,
@@ -15,16 +15,12 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
-// eslint-disable-next-line import/extensions
-import useMobx from '@/app/stores/root-store';
+import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Partner, {
     LogoType,
     PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-
-// eslint-disable-next-line no-restricted-imports
-import PartnerLink from '../PartnerLink.component';
 
 const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVisible?:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?:(partner:PartnerCreateUpdate)=>void

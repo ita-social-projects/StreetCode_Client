@@ -3,6 +3,7 @@
 
 .react-player{
   max-width: f.pxToRem(1200px);
+  max-height: f.pxToRem(674px);
   @include mut.full-rounded(50px);
 }
 .player-wrapper{

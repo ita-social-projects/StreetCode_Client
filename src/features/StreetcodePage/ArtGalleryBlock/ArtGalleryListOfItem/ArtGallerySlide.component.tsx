@@ -4,8 +4,8 @@ import { IndexedArt } from '@models/media/art.model';
 import ArtGallerySlideItem from '@streetcode/ArtGalleryBlock/ArtGalleryItem/ArtGallerySlideItem.component';
 
 interface Props {
-  artGalleryList: IndexedArt[];
-  isAdminPage?: boolean,
+    artGalleryList: IndexedArt[];
+    isAdminPage?: boolean,
 }
 
 const ArtGallerySlide = ({ artGalleryList, isAdminPage }: Props) => {

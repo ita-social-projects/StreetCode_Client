@@ -21,7 +21,7 @@ $seek-before-color: #DB3424;
 }
 
 .progressBar {
-  --seek-before-width: 0%;
+  --seek-before-width: 0;
 
   @include mut.flex-centered();
   appearance: none;

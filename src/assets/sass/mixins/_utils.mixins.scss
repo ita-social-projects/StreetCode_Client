@@ -236,18 +236,8 @@
     font-display: swap;
   }
 
-  /*%#{$font-family} {
-    font: {
-      @if $fallback != '' {
-        family: '#{$font-family}', #{$fallback};
-      } @else {
-        family: '#{$font-family}';
-        weight: $font-weight;
-      }
-    }
-  }*/
 }
-// FadeIn FadeOut animations
+
 @mixin fadeKeyframes($type: "fadeIn", $name: "fade") {
   @-webkit-keyframes #{$name} {
     @content;
