@@ -3,9 +3,8 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 
-.supportUsPage {
+.supportUsPageWrapper {
     padding: 110px 12% 0;
-    height: 100vh;
     width: 100%;
     //background-image: url(Stritcode_Backstage_p1_E2_grey.jpg);
 
@@ -32,6 +31,9 @@
 
     .mainBlock {
         .donatesPurposeBlock {
+            @include mut.rem-margined($right: 30px);
+            width: 50%;
+
             .heading {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
                 line-height: 42px;
@@ -48,7 +50,7 @@
                 }
             }
 
-            .bottomText {
+            .purposeBottomText {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
                 line-height: 27px;
             }
@@ -67,6 +69,7 @@
     .donateSubBlocks {
         display: inline-block;
         justify-content: stretch;
+        height: 351px;
 
         .block {
 
@@ -74,6 +77,8 @@
     }
 
     .bottomText {
+        @include mut.rem-margined($top: 80px, $bottom: 100px);
+        text-align: center;
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         line-height: 42px;
         color: #A4271B;
