@@ -26,7 +26,6 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
 
-
     useEffect(() => {
         const newMap: IndexedArt[] = [];
         art?.forEach(async ({ description, image, index, title }) => {
@@ -102,8 +101,6 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
         }
 
     });
-
-
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(

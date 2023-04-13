@@ -11,6 +11,7 @@ const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, rejec
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
 });
+
 interface Art {
     description: string;
     image: string;
@@ -18,15 +19,14 @@ interface Art {
     title: string;
     uid: any;
 }
+
 const PreviewFileModal: React.FC<{
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
     file: UploadFile | null,
     art: Art | null;
-    //desc: string | null,
-    //title: string | null,
     onSave: (art: Art) => void
-}> = ({ opened, setOpened, file, /*desc, title,*/ onSave, art }) => {
+}> = ({ opened, setOpened, file, onSave, art }) => {
     const [fileProps, setFileProps] = useState<{
         previewImage: string, previewTitle: string
     }>({ previewImage: '', previewTitle: '' });
@@ -40,8 +40,6 @@ const PreviewFileModal: React.FC<{
         art.title = new_title;
         onSave(art);
         setOpened(false);
-        setDesc("");
-        setTitle("");
     }
     useEffect(() => {
         setTitle(art?.title);

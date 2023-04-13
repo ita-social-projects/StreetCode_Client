@@ -3,7 +3,6 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useEffect, useState } from 'react';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
-import { UPDATE } from 'mobx/dist/internal';
 
 interface Art {
     description: string;
@@ -98,7 +97,6 @@ const DownloadBlock: React.FC = () => {
             <h4>Прев'ю</h4>
             <ArtGalleryAdminBlock art={arts} />
             <PreviewImageModal file={filePreview} art={arts.find(x => x.uid === filePreview?.uid)} onSave={handleSave} opened={isOpen} setOpened={setIsOpen} />
-
         </>
     );
 };
