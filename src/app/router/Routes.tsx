@@ -14,6 +14,7 @@ import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
@@ -34,6 +35,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/privacy-policy" element={<PrivatePolicy />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/partners-page" element={<PartnersPage />} />
+        <Route path="/support-us" element={<SupportUs />} />
     </Route>,
 ));
 
