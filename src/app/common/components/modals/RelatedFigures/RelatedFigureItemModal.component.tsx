@@ -6,6 +6,7 @@ import useMobx from '@stores/root-store';
 import { Modal } from 'antd';
 import { observer } from 'mobx-react-lite';
 import CancelBtn from '@assets/images/utils/Cancel_btn_mobile.svg';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const RelatedFiguresItemModal = () => {
     const { imagesStore } = useMobx();
@@ -15,6 +16,11 @@ const RelatedFiguresItemModal = () => {
 
     const relationId = relatedFigureItem.fromCardId!;
     const relation = relatedFiguresMap.get(relationId);
+
+    const handleClick = () => {
+        setModal('relatedFigureItem', relation?.id, false)
+        window.scrollTo(0,0)
+    };
 
     useAsync(
         () => {
@@ -35,7 +41,7 @@ const RelatedFiguresItemModal = () => {
         >
             <div className='relatedFigureSlide'>
                 <div className='figureSlideImage'
-                    style={{ backgroundImage: `url(${getImage(relation?.imageId ?? 0)?.url.href})` }}
+                    style={{ backgroundImage: `url(${base64ToUrl(getImage(relation?.imageId ?? 0)?.base64, getImage(relation?.imageId ?? 0)?.mimeType)})` }}
                 ></div>
                 <div className="figureSlideText">
                     <div className="heading"> 
@@ -52,8 +58,8 @@ const RelatedFiguresItemModal = () => {
             </div>
             <Link 
                 className='redirectionButton'
-                to={`../streetcode/${relation?.id}`} 
-                onClick={() => setModal('relatedFigureItem', relation?.id, false)}           
+                to={`../streetcode/${relation?.url}`} 
+                onClick={handleClick}           
             >
                 <p>Перейти на сторінку постаті</p>
             </Link>

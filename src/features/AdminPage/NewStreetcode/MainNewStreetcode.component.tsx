@@ -11,21 +11,24 @@ import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
 import Video, { VideoCreate } from '@/models/map/media/video.model';
+import { IndexedArt } from '@/models/media/art.model';
 import { AudioCreate } from '@/models/media/audio.model';
 import Image, { ImageCreate } from '@/models/media/image.model';
 import { PartnerShort } from '@/models/partners/partners.model';
-import Streetcode, { MainBlockDataCreate, StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
+import Streetcode, { MainBlockDataCreate, StreetcodeCreate, StreetcodeType }
+    from '@/models/streetcode/streetcode-types.model';
 import { Fact } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
 import PageBar from '../PageBar/PageBar.component';
 
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
-import ForFansBlock from './ForFans/ForFans.component';
+import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
+import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
@@ -34,7 +37,6 @@ type FileObject = {
     blobName: string;
     mimeType: string;
 };
-
 const NewStreetcode = () => {
     const [form] = useForm();
     const { factsStore, timelineItemStore } = useMobx();
@@ -43,6 +45,7 @@ const NewStreetcode = () => {
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
+    const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
 
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -131,6 +134,7 @@ const NewStreetcode = () => {
                     <TimelineBlockAdmin />
                     <ForFansBlock />
                     <PartnerBlockAdmin setPartners={setPartners} />
+                    <SubtitleBlock />
                 </div>
             </ConfigProvider>
         </div>

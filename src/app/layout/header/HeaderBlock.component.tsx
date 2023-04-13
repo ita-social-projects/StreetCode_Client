@@ -2,7 +2,8 @@ import './HeaderBlock.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import MagnifyingGlassMobile from '@images/header/Magnifying_glass_mobile.svg';
-import StreetcodeSvg from '@images/header/Streetcode_title.svg';
+import StreetcodeSvg from '@images/header/Streetcode_logo.svg';
+import StreetcodeSvgMobile from '@images/header/Streetcode_logo_mobile.svg';
 
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -52,7 +53,10 @@ const HeaderBlock = () => {
         <div className='HeaderBlock'>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <StreetcodeSvg/>
+                    {windowSize.width > 1024 ? 
+                        <StreetcodeSvg/> : 
+                        <StreetcodeSvgMobile/>
+                    }
                     <input placeholder='Пошук...'
                         ref={inputRef}
                         className={`ant-input css-dev-only-do-not-override-26rdvq
