@@ -1,0 +1,41 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+
+.supportUsPage {
+    @include mut.rem-padded($top: 110px, $left: 200px, $right: 200px);
+
+    //background-image: url(Stritcode_Backstage_p1_E2_grey.jpg);
+
+    .titleBig {
+        @include mut.rem-margined($bottom: 40px);
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
+        line-height: 127px;
+        color: #F4F4F4;
+    }
+
+    .titleSmall {
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+        line-height: 42px;
+
+        &.heading {
+            @include mut.rem-margined($bottom: 24px);
+        }
+    }
+
+    .text.heading {
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+        @include mut.rem-margined($left: 0px, $right: 0px);
+        line-height: 23.44px;
+    }
+
+    .donatesPurposeBlock {
+
+    }
+
+    
+    .donateSubBlocks {
+        
+    }
+}
