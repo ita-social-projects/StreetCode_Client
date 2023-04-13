@@ -1,15 +1,17 @@
 import './PartnerBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import PartnersStore from '@stores/partners-store';
 
 import { Button, Select } from 'antd';
 
-import PartnersStore from '@/app/stores/partners-store';
+import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
 import { PartnerShort } from '@/models/partners/partners.model';
 
-import PartnerModal from '../../PartnersPage/PartnerModal/PartnerModal.component';
-
-const PartnerBlockAdmin = () => {
+interface Props {
+    onChange: (partner: PartnerShort) => void;
+}
+const PartnerBlockAdmin = ({ onChange }: Props) => {
     const selectedPartners = useRef<PartnerShort[]>([]);
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -24,6 +26,7 @@ const PartnerBlockAdmin = () => {
     const onPartnerSelect = (value:string) => {
         const index = allPartnersShort.findIndex((c) => c.title === value);
         selectedPartners.current.push(allPartnersShort[index]);
+        onChange(allPartnersShort[index]);
     };
     const onPartnerDeselect = (value:string) => {
         selectedPartners.current = selectedPartners.current.filter((c) => c.title !== value);

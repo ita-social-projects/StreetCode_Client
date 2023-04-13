@@ -4,13 +4,13 @@ import { useMemo } from 'react';
 import Ticker from 'react-awesome-ticker';
 import subtitlesApi from '@api/additional-content/subtitles.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import Subtitle, { SubtitleStatus } from '@models/additional-content/subtitles.model';
+import Subtitle from '@models/additional-content/subtitles.model';
 import useMobx from '@stores/root-store';
 
 const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
-    new Map(subtitles?.map(({ id, firstName, lastName, subtitleStatus }) => [
+    new Map(subtitles?.map(({ id, subtitleText }) => [
         id,
-        `${Object.keys(SubtitleStatus)[subtitleStatus]} ${firstName} ${lastName}, `,
+        subtitleText
     ]))
 );
 

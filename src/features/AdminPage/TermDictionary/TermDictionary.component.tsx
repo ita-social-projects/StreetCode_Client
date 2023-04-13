@@ -1,4 +1,4 @@
-import './TermDictionary.component.scss';
+import './TermDictionary.styles.scss';
 
 import { useEffect, useState } from 'react';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
@@ -113,27 +113,29 @@ const TermDictionary = () => {
         },
     ];
     return (
-        <div className="wrapper">
-            <PageBar />
-            <div className="termDictionaryContainer">
-                <div className="dictionaryHeader">
-                    <h1>Словник термінів</h1>
-                    <div className="controls">
-                        <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
+        <div className="termDictionaryCover">
+            <div className="wrapper">
+                <PageBar />
+                <div className="termDictionaryContainer">
+                    <div className="dictionaryHeader">
+                        <h1>Словник термінів</h1>
+                        <div className="controls">
+                            <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
+                        </div>
+                    </div>
+                    <div className="termTable">
+                        <Table
+                            columns={columns}
+                            dataSource={data}
+                            rowKey={({ id }) => id}
+                            pagination={{ defaultPageSize: 5 }}
+                        />
                     </div>
                 </div>
-                <div className="termTable">
-                    <Table
-                        columns={columns}
-                        dataSource={data}
-                        rowKey={({ id }) => id}
-                        pagination={{ defaultPageSize: 5 }}
-                    />
-                </div>
+                <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
+                <DeleteTermModal term={term} handleDelete={handleDelete} />
+                <EditTermModal term={term} setTerm={setTerm} handleEdit={handleEdit} />
             </div>
-            <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
-            <DeleteTermModal term={term} handleDelete={handleDelete} />
-            <EditTermModal term={term} setTerm={setTerm} handleEdit={handleEdit} />
         </div>
     );
 };

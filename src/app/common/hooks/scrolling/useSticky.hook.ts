@@ -1,32 +1,22 @@
 import { useEffect } from 'react';
-
-const isSticky = () => {
-    const buttonDonate = document.querySelector('.donateBtnContainer');
-    const buttonUp = document.querySelector('.scrollToTopBtnContainer');
-    if (buttonDonate !== null && buttonUp !== null) {
-        const width = window.innerWidth;
-        let requiredPosition = 7900;
-        if (width < 1024) {
-            requiredPosition = 6800;
-        }
-        const scrollTop = window.scrollY;
-        if (scrollTop >= requiredPosition) {
-            buttonDonate.classList.add('stickyDonate');
-            buttonUp.classList.add('stickyToTop');
-        } else {
-            buttonDonate.classList.remove('stickyDonate');
-            buttonUp.classList.remove('stickyToTop');
-        }
-    }
-};
+import { useInView } from 'react-intersection-observer';
 
 const useSticky = () => {
+    const { ref, inView } = useInView({ threshold: 0.5 });
     useEffect(() => {
-        window.addEventListener('scroll', isSticky);
-        return () => {
-            window.removeEventListener('scroll', isSticky);
-        };
-    }, []);
+        const buttonDonate = document.querySelector('.donateBtnContainer');
+        const buttonUp = document.querySelector('.scrollToTopBtnContainer');
+        if (buttonDonate !== null && buttonUp !== null) {
+            if (inView) {
+                buttonDonate.classList.add('stopToTop');
+                buttonUp.classList.add('stopToTop');
+            } else {
+                buttonDonate.classList.remove('stopToTop');
+                buttonUp.classList.remove('stopToTop');
+            }
+        }
+    }, [inView]);
+    return ref;
 };
 
 export default useSticky;

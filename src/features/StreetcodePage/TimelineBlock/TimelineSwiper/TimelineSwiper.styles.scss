@@ -45,8 +45,16 @@
   }
 }
 
-.swiper-pagination {
-  display: none;
+
+@media screen and (max-width: 1024px) {
+  .swiper-horizontal {
+    .swiper-slide{
+      margin-right: 100px !important;
+    }
+  }
+  .swiper-pagination {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 1024px) {

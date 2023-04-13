@@ -1,9 +1,10 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Partner, { PartnerShort } from '@models/partners/partners.model';
-
 // eslint-disable-next-line no-restricted-imports
 import { PartnerCreateUpdate } from '../../../models/partners/partners.model';
+
+import PartnerResponse from '@/models/partners/partnersResponse.model';
 
 const PartnersApi = {
     getById: (id: number) => Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`),
