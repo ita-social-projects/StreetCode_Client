@@ -1,5 +1,4 @@
 import './Map.styles.scss';
-import Image from '@assets/images/utils/Instagram.png';
 import { observer } from 'mobx-react-lite';
 import { MapContainer, TileLayer,ZoomControl  } from 'react-leaflet';
 import * as L from "leaflet";
@@ -23,7 +22,6 @@ interface Props {
     streetcodeCoordinates: StreetcodeCoordinate[],
     toponyms: Toponym[]
 }
-
 
 const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
     const { checkboxStore } = useMobx();

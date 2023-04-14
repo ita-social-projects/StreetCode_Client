@@ -53,17 +53,3 @@
     }
 }
 
-.ant-table table { 
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 18px);
-}
-
-.ant-table-tbody > tr > td {
-    &:hover {
-        cursor: pointer;
-        scale: 1.01;
-    }
-
-    &:active {
-        size: 1.3;
-    }
-}

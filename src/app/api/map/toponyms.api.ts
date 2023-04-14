@@ -1,13 +1,12 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Toponym from '@models/toponyms/toponym.model';
-import GetAllToponyms from "@models/toponyms/getAllToponyms.request";
 import GetAllToponymsRequest from '@models/toponyms/getAllToponyms.request';
 import GetAllToponymsResponse from '@/models/toponyms/getAllToponyms.response';
 
 const ToponymsApi = {
     getAll: (getAllToponyms: GetAllToponymsRequest) => Agent.get<GetAllToponymsResponse>(`${API_ROUTES.TOPONYMS.GET_ALL}`, getAllToponyms),
-
+    
     getById: (id: number) => Agent.get<Toponym>(`${API_ROUTES.TOPONYMS.GET}/${id}`),
 
     getByStreetcodeId: (streetcodeId: number) => Agent.get<Toponym[]>(

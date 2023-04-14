@@ -32,6 +32,7 @@ interface ModalList {
     deleteStreetcode: ModalState;
     confirmation: ModalState;
     adminFacts: ModalState;
+    statistics: ModalState;
 }
 
 export default class ModalStore {
@@ -51,6 +52,7 @@ export default class ModalStore {
         deleteStreetcode: DefaultModalState,
         confirmation: DefaultModalState,
         adminFacts: DefaultModalState,
+        statistics: DefaultModalState,
     };
 
     public isPageDimmed = false;

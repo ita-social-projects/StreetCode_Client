@@ -24,7 +24,7 @@ const MapBlock = () => {
     return (
         <div className="mapBlockContainer">
             <BlockHeading headingText="Мапа історії" />
-            <CheckBoxComponent />
+            <CheckBoxComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms} />
         </div>
     );

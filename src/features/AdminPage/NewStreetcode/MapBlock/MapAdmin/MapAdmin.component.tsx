@@ -19,19 +19,16 @@ const initialCenter: google.maps.LatLngLiteral = {
   lng: 30.522674496948543
 };
 
-
 const MapOSMAdmin = () => {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
   const [center, setCenter] = useState(initialCenter);
   const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
   const mapRef = useRef<google.maps.Map | null>(null);
 
-
   const handleSaveButtonClick = () => {
     // TODO: save streetcodeCoordinates to the backend
 
   };
-
 
   const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
     setAutocomplete(autocomplete);
@@ -91,7 +88,6 @@ const MapOSMAdmin = () => {
       ]);
     }
   };
-
 
   return (
 
