@@ -1,15 +1,17 @@
 import './HeaderDrawerItem.styles.scss';
 
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {
     id: number;
     text: string;
     parentActive: number;
     setParentActive: React.Dispatch<React.SetStateAction<number>>;
+    link: string;
 }
 
-const HeaderDrawerItem = ({ id, parentActive, setParentActive, text }: Props) => {
+const HeaderDrawerItem = ({ id, parentActive, setParentActive, text, link }: Props) => {
     const [isActive, setActive] = useState(false);
     const handleClick = () => {
         setParentActive(id);
@@ -28,7 +30,7 @@ const HeaderDrawerItem = ({ id, parentActive, setParentActive, text }: Props) =>
                 type="button"
                 id={isActive ? 'active' : ''}
             >
-                {text}
+                <Link to={link} style={{ textDecoration: 'none', color: 'inherit' }}>{text}</Link>
             </button>
         </div>
     );
