@@ -18,19 +18,12 @@ const InterestingFactAdminItem = ({ fact } : Props) => {
 
     const deleteFact = () => {
         factsStore.deleteFactFromMap(fact.id);
-        console.log("delete");
     }
-    // useEffect(() => {
-    //     // Delete the "name" property from myObject after the component renders
-    //     return () => {
-    //     deleteFact();  
-    //     };
-    //   }, []);
+
     return (
         <div className="interestingFactItem">
             <div className="item">
                 <div className="faIcon">
-                    {/* <FaPencilAlt onClick={() => setModal('adminFacts')} /> */}
                     <FaPencilAlt onClick={() => setModalOpen(true)} />
 
                 </div>
@@ -39,13 +32,9 @@ const InterestingFactAdminItem = ({ fact } : Props) => {
                 </p>
                 <div className="faIcon">
                     <FaRegTrashAlt onClick={deleteFact} />
-                    {/* <FaRegTrashAlt onClick={() => factsStore.deleteFactFromMap(fact.id)} /> */}
-                   
-                    {/* <DeleteOutlined onClick={() => factsStore.deleteFactFromMap(fact.id)} /> */}
-                    {/* <FaRegTrashAlt onClick={deleteFact} /> */}
                 </div>
                 <div>
-                <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
+                    <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
                 </div>
 
             </div>
