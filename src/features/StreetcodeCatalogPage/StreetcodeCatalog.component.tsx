@@ -17,7 +17,7 @@ const StreetcodeCatalog = () => {
     return (
         <div>
             <div className="streetcodeCatalogWrapper">
-                <h1 className="streetcodeCatalogHeading">Каталог</h1>
+                <h1 className="streetcodeCatalogHeading">Стріткоди</h1>
                 <div className="steetcodeCatalogContainer">
                     {
                         getCatalogStreetcodesArray.map(

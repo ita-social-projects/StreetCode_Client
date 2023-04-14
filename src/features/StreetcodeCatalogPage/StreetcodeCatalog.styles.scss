@@ -7,10 +7,11 @@
 
 $bgImg: '@assets/images/streetcode-card/background.png';
 
-.streetcodeCatalogWrapper{
+.streetcodeCatalogWrapper {
     padding: pxToRem(100px) 10%;
     @include mut.bg-image($bgImg);
-    .streetcodeCatalogHeading{
+
+    .streetcodeCatalogHeading {
         font-family: 'Closer Text';
         font-style: normal;
         font-weight: 500;
@@ -20,7 +21,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         align-items: center;
         color: c.$milky-white-color;
     }
-    .steetcodeCatalogContainer{
+
+    .steetcodeCatalogContainer {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-auto-rows: minmax(165px, 380px);
@@ -28,7 +30,35 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         row-gap: pxToRem(60px);
     }
 
-    @media screen and (max-width: 1024px) {
-        
+
+}
+
+@media screen and (max-width: 1024px) {
+    .streetcodeCatalogWrapper {
+     padding-top: pxToRem(20px);
+       padding-left: pxToRem(13px);
+       padding-right: pxToRem(12px);
+
+        .streetcodeCatalogHeading {
+            font-size: 54px;
+            line-height: pxToRem(71.28px);
+        }
+
+        .steetcodeCatalogContainer {
+            row-gap: pxToRem(20px);
+            grid-auto-rows: minmax(205px, 236px);
+          grid-template-columns: repeat(auto-fit, 165px);
+
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .streetcodeCatalogWrapper {
+        .steetcodeCatalogContainer {
+            column-gap: pxToRem(10px);
+            grid-template-columns: repeat(auto-fit, 165px);
+        }
     }
 }
