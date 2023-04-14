@@ -7,3 +7,11 @@ export default interface Image {
     blobName: string;
     mimeType: string;
 }
+
+export interface ImageCreate {
+    alt?: string ;
+    title?: string ;
+    baseFormat: string;
+    mimeType: string;
+    extension: string;
+}

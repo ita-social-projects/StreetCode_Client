@@ -1,13 +1,18 @@
 import './MainBlockAdmin.style.scss';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 import { Upload, UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import Dragger from 'antd/es/upload/Dragger';
+import { RcFile, UploadChangeParam, UploadProps } from 'antd/es/upload';
 
-import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
+import ImagesApi from '@/app/api/media/images.api';
+import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import { ImageCreate } from '@/models/media/image.model';
+
+import PreviewFileModal, { getBase64 } from './PreviewFileModal/PreviewFileModal.component';
 
 const FileInputsPart:React.FC = () => {
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -25,7 +30,7 @@ const FileInputsPart:React.FC = () => {
                     label="Анімація"
                     rules={[{ required: true, message: 'Завантажте анімацію' }]}
                 >
-                    <Upload
+                    <FileUploader
                         accept=".gif"
                         listType="picture-card"
                         multiple={false}
@@ -34,7 +39,7 @@ const FileInputsPart:React.FC = () => {
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                    </Upload>
+                    </FileUploader>
                 </FormItem>
 
                 <FormItem
@@ -43,7 +48,7 @@ const FileInputsPart:React.FC = () => {
                     label="Чорнобіле"
                     rules={[{ required: true, message: 'Завантажте зображення' }]}
                 >
-                    <Upload
+                    <FileUploader
                         multiple={false}
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
@@ -52,7 +57,7 @@ const FileInputsPart:React.FC = () => {
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                    </Upload>
+                    </FileUploader>
                 </FormItem>
 
                 <FormItem
@@ -60,7 +65,7 @@ const FileInputsPart:React.FC = () => {
                     className="maincard-item photo-form-item"
                     label="Для зв'язків"
                 >
-                    <Upload
+                    <FileUploader
                         multiple={false}
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
@@ -69,7 +74,7 @@ const FileInputsPart:React.FC = () => {
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                    </Upload>
+                    </FileUploader>
                 </FormItem>
             </div>
 
@@ -78,13 +83,15 @@ const FileInputsPart:React.FC = () => {
                 className="maincard-item"
                 label="Аудіо"
             >
-                <Dragger
+                <FileUploader
                     accept=".mp3"
+                    maxCount={1}
                 >
-                    <InboxOutlined />
-
-                    <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                </Dragger>
+                    <div className="audio-upload-box">
+                        <InboxOutlined />
+                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                    </div>
+                </FileUploader>
             </FormItem>
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>

@@ -21,6 +21,7 @@ import Partner, {
     PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
+import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 
 const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVisible?:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?:(partner:PartnerCreateUpdate)=>void
@@ -247,7 +248,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          return e?.fileList;
                      }}
                  >
-                     <Upload
+                     <FileUploader
                          multiple={false}
                          accept=".jpeg,.png,.jpg"
                          listType="picture-card"
@@ -268,7 +269,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                              : []}
                      >
                          <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                     </Upload>
+                     </FileUploader>
                  </Form.Item>
                  <PreviewFileModal opened={previewOpen} setOpened={setPreviewOpen} file={filePreview} />
 
