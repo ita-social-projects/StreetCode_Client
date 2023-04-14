@@ -38,7 +38,6 @@ const FileUploader:React.FC<Props> = ({ children, ...uploadProps }) => {
                                                  mimeType: uplFile.type!,
                                                  alt: uplFile.name,
                                                  title: uplFile.name };
-                    console.log(image);
                     ImagesApi.create(image)
                         .then((respones) => {
                             onSuccess(respones);
