@@ -90,6 +90,7 @@ const MapOSMAdmin = () => {
   };
 
   return (
+
       <LoadScript googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M" language="uk" libraries={["places"]}>
       <GoogleMap
         ref={mapRef}
@@ -111,6 +112,7 @@ const MapOSMAdmin = () => {
         {streetcodeCoordinates.length > 0 && (
         <Button className="onMapbtn" onClick={handleSaveButtonClick}><a>Зберегти стріткод</a></Button>
         )}
+
       </div>
       {streetcodeCoordinates.map((marker, index) => (
   <Marker 
@@ -124,9 +126,12 @@ const MapOSMAdmin = () => {
     title={`Marker ${marker.latitude}, ${marker.longtitude}`}
   />
 ))}
+
       </GoogleMap>
+
       <MapTableAdmin streetcodeCoordinates={streetcodeCoordinates} />
     </LoadScript>
+
   );
 };
 
