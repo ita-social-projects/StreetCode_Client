@@ -34,7 +34,6 @@ const ForFansBlock = () => {
                 ))}
             </div>
             <ForFansAdminModal open={isModalOpen} setOpen={setIsModalOpen} />
-
         </div>
     );
 };

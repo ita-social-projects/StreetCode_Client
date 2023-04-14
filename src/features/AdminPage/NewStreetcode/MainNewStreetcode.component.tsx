@@ -46,6 +46,7 @@ const NewStreetcode = () => {
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
+    const [subTitle, setSubTitle] = useState<string>('');
 
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -90,18 +91,20 @@ const NewStreetcode = () => {
             tags: selectedTags,
             textTitle: inputInfo?.title,
             text: inputInfo?.text,
-            images,
-            audio: audioFile && createFileObject<AudioCreate>(audioFile),
-            video,
-            timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
-                .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
+            // images,
+            // audio: audioFile && createFileObject<AudioCreate>(audioFile),
+            // video,
+            // timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
+            //     .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             partners,
-            firstName: null,
-            lastName: null,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
             dateString: form.getFieldValue('dateString'),
+            // indexedArts,
+            subTitle,
+            firstName: null,
+            lastName: null,
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
@@ -109,7 +112,13 @@ const NewStreetcode = () => {
         }
         console.log(streetcode);
 
-        // StreetcodesApi.create(streetcode);
+        StreetcodesApi.create(streetcode)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -129,12 +138,12 @@ const NewStreetcode = () => {
                         <button type="submit">Відправити</button>
                     </Form>
                     <InterestingFactsBlock />
-                    <ArtGalleryBlock />
+                    <ArtGalleryBlock indexedArts={indexedArts} setIndexedArts={setIndexedArts} />
                     <RelatedFiguresBlock />
                     <TimelineBlockAdmin />
                     <ForFansBlock />
                     <PartnerBlockAdmin setPartners={setPartners} />
-                    <SubtitleBlock />
+                    <SubtitleBlock setSubTitle={setSubTitle} />
                 </div>
             </ConfigProvider>
         </div>

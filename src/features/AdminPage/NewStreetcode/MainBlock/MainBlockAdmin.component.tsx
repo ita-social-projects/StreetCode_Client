@@ -144,7 +144,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
             </div>
 
-            {streetcodeType === 'people' ? (
+            {streetcodeType === StreetcodeType.Person ? (
                 <Input.Group
                     compact
                     className="maincard-item people-title-group"

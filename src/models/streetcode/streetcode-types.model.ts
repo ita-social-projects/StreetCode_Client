@@ -1,6 +1,6 @@
 import Subtitle from '@models/additional-content/subtitles.model';
 import Tag, { TagVisible } from '@models/additional-content/tag.model';
-import Art from '@models/media/art.model';
+import Art, { IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
 import Video from '@models/media/video.model';
@@ -96,14 +96,16 @@ export interface StreetcodeCreate {
     eventStartOrPersonBirthDate: Date,
     eventEndOrPersonDeathDate: Date,
     dateString: string,
-    audio?: Audio | undefined,
+    // audio?: Audio | undefined,
     tags: TagVisible[],
     type: StreetcodeType,
-    images: ImageCreate[],
+    // images: ImageCreate[],
     textTitle: string | undefined,
     text: string | undefined,
-    video: VideoCreate,
-    facts: FactCreate[],
-    timelineItems: TimelineItem[],
+    // video: VideoCreate,
+    // facts: FactCreate[],
+    // timelineItems: TimelineItem[],
     partners: PartnerShort[],
+    // indexedArts: IndexedArt[],
+    subTitle: string | null,
 }

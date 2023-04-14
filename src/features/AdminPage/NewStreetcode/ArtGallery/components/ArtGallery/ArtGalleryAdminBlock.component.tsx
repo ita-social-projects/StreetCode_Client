@@ -7,9 +7,10 @@ import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
+
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import ArtGallerySlide from '@/features/StreetcodePage/ArtGalleryBlock/ArtGalleryListOfItem/ArtGallerySlide.component';
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const SECTION_AMOUNT = 6;
 
@@ -20,10 +21,14 @@ interface Art {
     title: string;
 }
 
-const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
+interface Props {
+    art: Art[] | undefined,
+    indexedArts: IndexedArt[],
+    setIndexedArts: React.Dispatch<React.SetStateAction<IndexedArt[]>>;
+}
+const ArtGalleryAdminBlock: React.FC<Props> = ({ art, indexedArts, setIndexedArts }) => {
     const { streetcodeArtStore, streetcodeStore: { getStreetCodeId } } = useMobx();
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
-    const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
 
     useEffect(() => {
@@ -31,7 +36,6 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
         art?.forEach(async ({ description, image, index, title }) => {
             try {
                 if (image) {
-
                     const { width, height } = await getImageSize(image);
 
                     newMap.push({
@@ -73,8 +77,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
                 title,
                 sequenceNumber,
             } as IndexedArt);
-        }
-        else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+        } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
             );
@@ -91,7 +94,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
             offsetSumForSlide = offset ?? 0;
             offsetSum = offset ?? 0;
         }
-        
+
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
             slideOfArtList.push(
@@ -99,7 +102,6 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
             );
             artsData = [];
         }
-
     });
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
@@ -109,7 +111,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
     }
 
     const sliderProps = {
-        className: "artGallerySliderContainer",
+        className: 'artGallerySliderContainer',
         infinite: false,
 
         swipe: windowsize.width <= 1024,
@@ -127,7 +129,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
                             {...sliderProps}
                         >
                             {slideOfArtList}
-                        </SlickSlider >
+                        </SlickSlider>
                     </div>
                 </div>
             </div>
