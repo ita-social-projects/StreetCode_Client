@@ -164,7 +164,7 @@ $navbar-hidden-innerwidth: 400px;
     @include vnd.vendored(transition, 'transform 0.7s ease');
 
     &.active {
-      transform: translateY(f.pxToRem(78px));
+      transform: translateY(f.pxToRem(64px));
     }
   
     .ant-input {

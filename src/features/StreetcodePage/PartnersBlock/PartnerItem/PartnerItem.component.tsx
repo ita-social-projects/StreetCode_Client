@@ -6,8 +6,9 @@ import useMobx from '@stores/root-store';
 
 import { Popover } from 'antd';
 
-import PartnerContent from './PartnerContent/PartnerContent.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+
+import PartnerContent from './PartnerContent/PartnerContent.component';
 
 interface Props {
     partner: Partner;

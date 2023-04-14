@@ -1,0 +1,17 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+.contactUsContainer{
+    .mainBlock{
+        @include mut.flexed($justify-content: space-between, $align-items: center);
+        max-width: f.pxToRem(1200px);
+        width: 100%; 
+    }
+    
+    @media screen and (max-width: 1024px) {
+        .mainBlock{
+            @include mut.flexed($direction: column);
+        }
+    }
+}
+
