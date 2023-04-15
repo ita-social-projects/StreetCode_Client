@@ -58,7 +58,6 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     .streetcodeCatalogWrapper {
         .steetcodeCatalogContainer {
             column-gap: pxToRem(10px);
-            grid-template-columns: repeat(auto-fit, 165px);
         }
     }
 }
