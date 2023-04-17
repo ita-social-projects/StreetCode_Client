@@ -94,12 +94,11 @@
         height: 351px !important;
         gap: 100px;
 
-        @include mut.rem-margined($top: 80px, $bottom: 32px);
+        @include mut.rem-margined($top: 80px);
 
         .block {
             .heading {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
-                @include mut.rem-margined($bottom: 34px);
                 line-height: 48px;
                 text-align: center;
             }
