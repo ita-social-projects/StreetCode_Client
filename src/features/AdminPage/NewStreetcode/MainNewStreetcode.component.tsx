@@ -10,14 +10,15 @@ import ukUA from 'antd/locale/uk_UA';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
 import Tag, { TagVisible } from '@/models/additional-content/tag.model';
-import Video, { VideoCreate } from '@/models/map/media/video.model';
+import Video from '@/models/map/media/video.model';
 import { IndexedArt } from '@/models/media/art.model';
 import { AudioCreate } from '@/models/media/audio.model';
 import Image, { ImageCreate } from '@/models/media/image.model';
+import { VideoCreate } from '@/models/media/video.model';
 import { PartnerShort } from '@/models/partners/partners.model';
 import Streetcode, { MainBlockDataCreate, StreetcodeCreate, StreetcodeType }
     from '@/models/streetcode/streetcode-types.model';
-import { Fact } from '@/models/streetcode/text-contents.model';
+import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
 import PageBar from '../PageBar/PageBar.component';
@@ -78,24 +79,29 @@ const NewStreetcode = () => {
             createFileObject<ImageCreate>(pictureRelationsFile),
         ].filter((image) => image !== undefined) as ImageCreate[];
 
-        const video: VideoCreate = { url: inputInfo?.link || '' };
+        const videos: VideoCreate[] = [
+            { url: inputInfo?.link || '' },
+        ];
+
+        const text: TextCreate = {
+            title: inputInfo?.title,
+            textContent: inputInfo?.text,
+        };
 
         const streetcode: StreetcodeCreate = {
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
-            type: streetcodeType,
+            streetcodeType,
             eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate').toDate(),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
             tags: selectedTags,
-            textTitle: inputInfo?.title,
-            text: inputInfo?.text,
             // images,
             // audio: audioFile && createFileObject<AudioCreate>(audioFile),
-            // video,
-            // timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
-            //     .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
+            text: (text.title && text.textContent) ? text : null,
+            timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
+                .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             partners,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
@@ -105,6 +111,7 @@ const NewStreetcode = () => {
             subTitle,
             firstName: null,
             lastName: null,
+            videos,
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');

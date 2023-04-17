@@ -49,7 +49,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
             }
         } else {
             const newTimeline:TimelineItem = { date: formValues.date,
-                                               id: timelineItemStore.timelineItemMap.size,
+                                               id: 0,
                                                title: formValues.title,
                                                description: formValues.description,
                                                historicalContexts: selectedContext.current };
@@ -66,8 +66,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 return;
             }
-            const maxId = Math.max(...historicalContextStore.historicalContextArray.map((i) => i.id));
-            const newItem = { id: maxId + 1, title: value };
+            const newItem = { id: 0, title: value };
             historicalContextStore.addItemToArray(newItem);
             selectedContext.current.push(newItem);
         } else {

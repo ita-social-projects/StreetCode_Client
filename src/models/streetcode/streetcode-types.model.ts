@@ -3,7 +3,7 @@ import Tag, { TagVisible } from '@models/additional-content/tag.model';
 import Art, { IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
-import Video from '@models/media/video.model';
+import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
 import { SourceLink } from '@models/sources/sources.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
@@ -11,9 +11,7 @@ import TimelineItem from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
 
-import { VideoCreate } from '../map/media/video.model';
-
-import { Fact, FactCreate } from './text-contents.model';
+import { Fact, FactCreate, TextCreate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -98,13 +96,12 @@ export interface StreetcodeCreate {
     dateString: string,
     // audio?: Audio | undefined,
     tags: TagVisible[],
-    type: StreetcodeType,
+    streetcodeType: StreetcodeType,
     // images: ImageCreate[],
-    textTitle: string | undefined,
-    text: string | undefined,
-    // video: VideoCreate,
+    text: TextCreate | null,
+    videos: VideoCreate[],
     // facts: FactCreate[],
-    // timelineItems: TimelineItem[],
+    timelineItems: TimelineItem[],
     partners: PartnerShort[],
     // indexedArts: IndexedArt[],
     subTitle: string | null,

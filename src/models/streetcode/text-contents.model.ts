@@ -35,3 +35,8 @@ export interface Text {
     streetcodeId: number;
     streetcode?: Streetcode | undefined;
 }
+
+export interface TextCreate {
+    title: string | undefined;
+    textContent: string | undefined;
+}

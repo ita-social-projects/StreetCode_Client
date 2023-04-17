@@ -8,7 +8,3 @@ export default interface Video {
     streetcode?: Streetcode | undefined;
     streetcodeId: number;
 }
-
-export interface VideoCreate {
-    url: string;
-}
