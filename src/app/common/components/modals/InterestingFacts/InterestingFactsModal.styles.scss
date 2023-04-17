@@ -88,7 +88,7 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     // w 340px
     // @include mut.sized(470px, 580px);
     // @include mut.sized(340px, 434px);
-    @include mut.sized(35%, 60%);
+    @include mut.sized(340px, 445px);
     
     &.ant-modal {
       .ant-modal-content {
@@ -161,7 +161,8 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     // w 340px
     // @include mut.sized(470px, 580px);
     // @include mut.sized(340px, 434px);
-    @include mut.sized(43%, 60%);
+    // @include mut.sized(43%, 445px%);
+    @include mut.sized(340px, 445px);
     
     &.ant-modal {
       .ant-modal-content {
@@ -241,7 +242,8 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     // w 340px
     // @include mut.sized(470px, 580px);
     // @include mut.sized(340px, 434px);
-    @include mut.sized(71%, 62%);
+    // @include mut.sized(71%, 62%);
+    @include mut.sized(340px, 445px);
     
     &.ant-modal {
       .ant-modal-content {
