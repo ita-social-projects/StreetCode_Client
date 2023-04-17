@@ -1,6 +1,7 @@
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
+import RelatedFigure from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -48,6 +49,7 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [subTitle, setSubTitle] = useState<string>('');
+    const [figures, setFigures] = useState<RelatedFigure[]>([]);
 
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -98,6 +100,7 @@ const NewStreetcode = () => {
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
             tags: selectedTags,
             // images,
+            figures,
             // audio: audioFile && createFileObject<AudioCreate>(audioFile),
             text: (text.title && text.textContent) ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
@@ -117,7 +120,6 @@ const NewStreetcode = () => {
             streetcode.firstName = form.getFieldValue('name');
             streetcode.lastName = form.getFieldValue('surname');
         }
-        console.log(streetcode);
 
         StreetcodesApi.create(streetcode)
             .then((response) => {
@@ -146,7 +148,7 @@ const NewStreetcode = () => {
                     </Form>
                     <InterestingFactsBlock />
                     <ArtGalleryBlock indexedArts={indexedArts} setIndexedArts={setIndexedArts} />
-                    <RelatedFiguresBlock />
+                    <RelatedFiguresBlock setFigures={setFigures} />
                     <TimelineBlockAdmin />
                     <ForFansBlock />
                     <PartnerBlockAdmin setPartners={setPartners} />

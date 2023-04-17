@@ -14,7 +14,7 @@ const RelationsList = ({relations, setRelations} : Props) => {
           {
             relations.map((rel)=>
               <li key={rel.title}>
-                <RelatedItem 
+                <RelatedItem
                   relation={rel}
                   relations={relations}
                   setRelations={setRelations}

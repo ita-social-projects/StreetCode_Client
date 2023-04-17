@@ -105,4 +105,5 @@ export interface StreetcodeCreate {
     partners: PartnerShort[],
     // indexedArts: IndexedArt[],
     subTitle: string | null,
+    figures: RelatedFigure[]
 }
