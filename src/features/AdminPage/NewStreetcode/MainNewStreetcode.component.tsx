@@ -32,6 +32,7 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import RelatedFigure from "@models/streetcode/related-figure.model";
 
 type FileObject = {
     blobName: string;
@@ -47,7 +48,7 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [subTitle, setSubTitle] = useState<string>('');
-
+    const [figures, setFigures] = useState<RelatedFigure[]>([]);
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
@@ -91,7 +92,8 @@ const NewStreetcode = () => {
             tags: selectedTags,
             textTitle: inputInfo?.title,
             text: inputInfo?.text,
-            // images,
+            images,
+            figures,
             // audio: audioFile && createFileObject<AudioCreate>(audioFile),
             // video,
             // timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
@@ -110,7 +112,7 @@ const NewStreetcode = () => {
             streetcode.firstName = form.getFieldValue('name');
             streetcode.lastName = form.getFieldValue('surname');
         }
-        console.log(streetcode);
+        console.log(streetcode.figures);
 
         StreetcodesApi.create(streetcode)
             .then((response) => {
@@ -139,7 +141,7 @@ const NewStreetcode = () => {
                     </Form>
                     <InterestingFactsBlock />
                     <ArtGalleryBlock indexedArts={indexedArts} setIndexedArts={setIndexedArts} />
-                    <RelatedFiguresBlock />
+                    <RelatedFiguresBlock setFigures={setFigures} />
                     <TimelineBlockAdmin />
                     <ForFansBlock />
                     <PartnerBlockAdmin setPartners={setPartners} />

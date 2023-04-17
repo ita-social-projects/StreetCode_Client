@@ -99,7 +99,7 @@ export interface StreetcodeCreate {
     // audio?: Audio | undefined,
     tags: TagVisible[],
     type: StreetcodeType,
-    // images: ImageCreate[],
+    images: ImageCreate[],
     textTitle: string | undefined,
     text: string | undefined,
     // video: VideoCreate,
@@ -108,4 +108,5 @@ export interface StreetcodeCreate {
     partners: PartnerShort[],
     // indexedArts: IndexedArt[],
     subTitle: string | null,
+    figures: RelatedFigure[]
 }

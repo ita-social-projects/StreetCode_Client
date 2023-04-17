@@ -20,6 +20,7 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
         setFilteredOptions(options);
         console.log(options);
     }, [options]);
+    
 
     const handleSearch = (value: string) => {
         const filtered = options.filter((option) => option.title.toLowerCase().includes(value.toLowerCase()));
@@ -41,7 +42,7 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
             <AutoComplete
                 placeholder="Знайти стріткод..."
                 style={{ width: 400 }}
-                options={filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
+                options={Array.isArray(filteredOptions) && filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
                 onSearch={handleSearch}
                 onChange={(value) => setRelation(value)}
                 value={relation}
