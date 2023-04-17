@@ -87,12 +87,12 @@ export const API_ROUTES = {
         DELETE: 'transactLinks/delete',
     },
     AUDIOS: {
-        GET_ALL: 'audios/getAll',
-        GET: 'audios/getById',
+        GET_ALL: 'audio/getAll',
+        GET: 'audio/getById',
         GET_BY_STREETCODE_ID: 'audio/getByStreetcodeId',
-        CREATE: 'audios/create',
-        UPDATE: 'audios/update',
-        DELETE: 'audios/delete',
+        CREATE: 'audio/create',
+        UPDATE: 'audio/update',
+        DELETE: 'audio/delete',
     },
     VIDEOS: {
         GET_ALL: 'video/getAll',

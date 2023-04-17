@@ -1,38 +1,36 @@
-import { Upload } from 'antd';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import React, { useEffect, useState } from 'react';
-import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
-import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
+import React, { useEffect, useRef, useState } from 'react';
 
-interface Art {
-    description: string;
-    image: string;
-    index: number;
-    title: string;
-    uid: any;
-}
+import { Upload } from 'antd';
+import type { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload/interface';
+
+import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import { ArtCreate } from '@/models/media/art.model';
+import Image from '@/models/media/image.model';
+
+import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
+import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
 const DownloadBlock: React.FC = () => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const [isOpen, setIsOpen] = useState(false);
-    const [title, setTitle] = useState<string | null>(null);
-    const [desc, setDesc] = useState<string | null>(null);
-    
-    const [arts, setArts] = useState<Art[]>([]);
-    let indexTmp = 0;
+    const uidsFiles = useRef<string[]>([]);
+    const [arts, setArts] = useState<ArtCreate[]>([]);
+    const indexTmp = 0;
 
-    const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-        if (newFileList.length > 0) {
-            setFileList(newFileList.map(x => x));
-            const deletedFiles = fileList?.filter(file => !newFileList.includes(file));
+    useEffect(() => {
+        uidsFiles.current = fileList.map((f) => f.uid);
+    }, [arts]);
+
+    /*    const onChange = (uploadParams:UploadChangeParam<UploadFile<any>>) => {
+        if (uploadParams.fileList.length > 0) {
+            setFileList(uploadParams.fileList.map((x) => x));
+            const deletedFiles = fileList?.filter((file) => !uploadParams.fileList.includes(file));
             if (deletedFiles.length > 0) {
-
-                const updatedArts = arts.filter(art => !deletedFiles.find(x => x.uid === art.uid));
+                const updatedArts = arts.filter((art) => !deletedFiles.find((x) => x.uid === art.uid));
                 setArts([...updatedArts]);
-            }
-            else {
-                newFileList.forEach(async x => {
+            } else {
+                uploadParams.fileList.forEach(async (x) => {
                     let src = x.thumbUrl as string;
                     if (!src) {
                         src = await new Promise((resolve) => {
@@ -42,61 +40,89 @@ const DownloadBlock: React.FC = () => {
                         });
                     }
 
-                    let art: Art = {
+                    const art: ArtCreate = {
                         index: indexTmp + 1,
-                        description: "description",
+                        description: 'description',
                         image: src,
-                        title: "title",
-                        uid: x.uid
-                    }
+                        title: 'title',
+                        ima: x.uid,
+                    };
                     setArts([...arts, art]);
                 });
             }
-        }
-        else {
+        } else {
             setArts([]);
-            setFileList(newFileList.map(x => x));
-
+            setFileList(newFileList.map((x) => x));
         }
+    };
+ */
+    const onChange = (uploadParams:UploadChangeParam<UploadFile<any>>) => {
+        if (uploadParams.file.status === 'removed') {
+            const del = uploadParams.fileList.indexOf(uploadParams.file);
+            console.log(del);
+        }
+        setFileList(uploadParams.fileList.map((x) => x));
     };
 
     const onPreview = async (file: UploadFile) => {
-        let src = file.url as string;
-        if (!src) {
-            src = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj as RcFile);
-                reader.onload = () => resolve(reader.result as string);
-            });
-        }
-        setTitle(arts.find(x => x.uid === file.uid)?.title);
-        setDesc(arts.find(x => x.uid === file.uid)?.description);
         setFilePreview(file);
         setIsOpen(true);
+    };
+    const onSuccessUpload = (image:Image) => {
+        const newArt: ArtCreate = {
+            index: indexTmp + 1,
+            description: 'description',
+            image: image.base64,
+            title: 'title',
+            imageId: image.id,
+            mimeType: image.mimeType,
+        };
+        setArts([...arts, newArt]);
+    };
+    const onRemoveFile = (file:UploadFile) => {
+        const deletedIndex = uidsFiles.current.indexOf(file.uid);
+        if (deletedIndex >= 0) {
+            arts.splice(deletedIndex, 1);
+            uidsFiles.current.splice(deletedIndex, 1);
+            setArts([...arts]);
 
+        }
     };
 
-    const handleSave = (art: Art) => {
-        arts.find(x => { if (x.uid === art.uid) { x.description = art.description; x.title = art.title; } });
+    const handleSave = (art: ArtCreate) => {
+        const updated = arts.find((x) => x.imageId === art.imageId);
+        if (!updated) {
+            return;
+        }
+        updated.description = art.description;
+        updated.title = art.title;
         setArts([...arts]);
         setIsOpen(false);
     };
 
     return (
         <>
-            <Upload
+            <FileUploader
                 accept=".jpeg,.png,.jpg"
                 listType="picture-card"
                 fileList={fileList}
-                onChange={onChange}
                 onPreview={onPreview}
-                onSave={handleSave}
+                uploadTo="image"
+                onChange={onChange}
+                onSuccessUpload={onSuccessUpload}
+                multiple
+                onRemove={onRemoveFile}
             >
-                {fileList.length < 15 && '+ Додати'}
-            </Upload>
+                {fileList.length < 15 ? <p>+ Додати</p> : <></>}
+            </FileUploader>
             <h4>Прев'ю</h4>
             <ArtGalleryAdminBlock art={arts} />
-            <PreviewImageModal file={filePreview} art={arts.find(x => x.uid === filePreview?.uid)} onSave={handleSave} opened={isOpen} setOpened={setIsOpen} />
+            <PreviewImageModal
+                art={arts[fileList.indexOf(filePreview!)]}
+                onSave={handleSave}
+                opened={isOpen}
+                setOpened={setIsOpen}
+            />
         </>
     );
 };

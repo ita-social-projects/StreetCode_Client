@@ -6,6 +6,7 @@ import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd
 import ImagesApi from '@/app/api/media/images.api';
 import Audio, { AudioCreate } from '@/models/media/audio.model';
 import Image, { ImageCreate } from '@/models/media/image.model';
+import AudiosApi from '@/app/api/media/audios.api';
 
 type UploaderWithoutChildren = Omit<UploadProps, 'children'>;
 
@@ -38,6 +39,7 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
                 mimeType: uplFile.type!,
                 title: uplFile.name,
             };
+            return AudiosApi.create(audio);
         }
         const image: ImageCreate = { baseFormat: imageDataAsURL.current
             .substring(imageDataAsURL.current.indexOf(',') + 1, imageDataAsURL.current.length),
