@@ -36,6 +36,7 @@ const FileInputsPart:React.FC = () => {
                         multiple={false}
                         maxCount={1}
                         onPreview={handlePreview}
+                        uploadTo="image"
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
@@ -54,6 +55,7 @@ const FileInputsPart:React.FC = () => {
                         listType="picture-card"
                         maxCount={1}
                         onPreview={handlePreview}
+                        uploadTo="image"
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
@@ -71,6 +73,7 @@ const FileInputsPart:React.FC = () => {
                         listType="picture-card"
                         maxCount={1}
                         onPreview={handlePreview}
+                        uploadTo="image"
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
@@ -86,6 +89,7 @@ const FileInputsPart:React.FC = () => {
                 <FileUploader
                     accept=".mp3"
                     maxCount={1}
+                    uploadTo="audio"
                 >
                     <div className="audio-upload-box">
                         <InboxOutlined />

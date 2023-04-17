@@ -36,7 +36,7 @@ const NewStreetcode = () => {
                     </Form>
                     <InterestingFactsBlock />
                     <ArtGalleryBlock />
-                    <RelatedFiguresBlock />
+                   {/*  <RelatedFiguresBlock /> */}
                     <TimelineBlockAdmin />
                     <ForFansBlock />
                     <PartnerBlockAdmin />
