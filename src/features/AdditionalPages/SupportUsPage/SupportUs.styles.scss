@@ -6,9 +6,6 @@
 .supportUsPageWrapper {
     padding: 110px 12.5% 0;
     width: 100%;
-    
-    //background: linear-gradient(0deg, rgba(252, 252, 252, 0.74), rgba(252, 252, 252, 0.74)), linear-gradient(231.3deg, #FCFCFC 26.85%, rgba(252, 252, 252, 0) 99.92%, rgba(252, 252, 252, 0.47) 99.92%),
-    //background: url('@assets/images/streetcode-card/background.png') no-repeat left top 100%; //100%;
 
     .heading {
         .titleBig {
@@ -39,7 +36,7 @@
         .donatesPurposeBlock {
             @include mut.rem-padded($right: 30px);
             margin: 0;
-            width: 580px;
+            width: calc(75vw - 590px);
             border:rgba(219, 52, 36, 0.18) 1px;
 
             .heading {
@@ -50,14 +47,15 @@
 
             ul.purposeList {
                 @include mut.rem-margined($top: 16px, $bottom: 24px);
-                //display: inline;
 
                 li {
                     display: inline-block;
                     vertical-align: middle;
+
                     svg {
                         width: 30px !important;
                     }
+
                     span {
                         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
                         @include mut.rem-margined($left: 13.33px, $right: 0px);
@@ -79,7 +77,7 @@
         }
 
         .donateWindow {
-            @include mut.sized($height: 525px, $width: 590px);
+            @include mut.sizedImportant($height: 525px, $width: 590px);
             vertical-align: top;;
             background: c.$pure-white-color;
             
@@ -89,8 +87,9 @@
     }
     
     .donateSubBlocks {
-        display: inline-flex;
-        justify-content: space-between;
+        display: flex;
+        justify-content: space-evenly;
+        align-self: center;
         height: 351px !important;
         gap: 100px;
 
