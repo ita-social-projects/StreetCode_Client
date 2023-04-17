@@ -4,27 +4,33 @@ import RelationsList from './components/RelatedFigureList.component';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import InputPanel from './components/InputPanel.component'
 import axios from 'axios';
-
-const RelatedFiguresBlock = () => {
+import {PartnerShort} from "@models/partners/partners.model";
+interface Props {
+    setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
+}
+const RelatedFiguresBlock = ({ setFigures }: Props) => {
     const [relations, setRelations] = useState<RelatedFigure[]>([]);
     const [options, setOptions] = useState<RelatedFigure[]>([]);
 
     const handleAdd = (relationToAdd: RelatedFigure) => {
-        const existing = relations.find((rel)=>rel.id===relationToAdd.id);
-        if(existing === undefined) {
-            setRelations([...relations, relationToAdd]);
+        console.log(relationToAdd.title)
+        const existing = relations.find((rel) => rel.id === relationToAdd.id);
+        if (existing === undefined) {
+            setRelations((prevState) => [...prevState, relationToAdd]);
         }
-    }
+        setFigures((prevState) => [...prevState, relationToAdd]);
+    };
 
-    const getOptions = async() => {
+    const getOptions = async () => {
         try {
             const response = await axios.get<RelatedFigure[]>(
-                `https://localhost:5001/api/Streetcode/GetAll`);
-            setOptions(response.data);
+                'https://localhost:5001/api/Streetcode/GetAll',
+            );
+            setOptions(response.data.streetcodes);
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     useEffect(() => {
         getOptions();
@@ -37,7 +43,7 @@ const RelatedFiguresBlock = () => {
                 <h4>Стріткоди</h4>
             </div>
             <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
-            <RelationsList relations={relations} setRelations={setRelations}/>
+            <RelationsList relations={relations} setRelations={setRelations} />
         </div>
     );
 }
