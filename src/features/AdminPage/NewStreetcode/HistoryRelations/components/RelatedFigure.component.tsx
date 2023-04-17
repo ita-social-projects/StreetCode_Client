@@ -1,7 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
 import EventStreetcode from '../../../../../models/streetcode/related-figure.model';
 import { DeleteOutlined, PictureOutlined } from '@ant-design/icons';
-import axios from 'axios';
 
 interface Props {
     relation: EventStreetcode;
@@ -10,18 +8,12 @@ interface Props {
 };
 
 const RelatedItem = ({relation, relations, setRelations} : Props) => {
-    
     const deleteRelationHandle = async (id: number) => {
         const newRelatedSCs = relations.filter((rel) => rel.id !== id);
         setRelations(newRelatedSCs);
-        try {
-            //const response = await axios.delete(`https://localhost:5001/api/Streetcode/Delete`);
-        } catch (err) {
-            console.error(err);
-        } 
     }
 
-    return(
+    return (
         <div className="relationItem">
             <span className='text'>{relation.title}</span>
             <div className='actions'>
