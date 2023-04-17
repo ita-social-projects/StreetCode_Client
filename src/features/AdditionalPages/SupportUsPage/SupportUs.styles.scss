@@ -49,22 +49,25 @@
                 @include mut.rem-margined($top: 16px, $bottom: 24px);
 
                 li {
-                    display: inline-block;
-                    vertical-align: middle;
-
-                    svg {
-                        width: 30px !important;
-                    }
-
-                    span {
-                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-                        @include mut.rem-margined($left: 13.33px, $right: 0px);
-                        vertical-align: middle;
-
-                        //line-height: 30px;
-                    }
+                  display: flex;
+                  align-items: center;
+                  flex-direction: row;
+                  gap: 13.33px;
+                  margin-bottom: 10px;
+              
+                  svg {
+                    min-width: 29.33px !important;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+              
+                  span {
+                    display: block;
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                  }
                 }
-            }
+            }              
 
             .purposeBottomText {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
