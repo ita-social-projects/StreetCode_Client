@@ -6,6 +6,7 @@
 .supportUsPageWrapper {
     padding: 110px 12.5% 0;
     width: 100%;
+    
     //background: linear-gradient(0deg, rgba(252, 252, 252, 0.74), rgba(252, 252, 252, 0.74)), linear-gradient(231.3deg, #FCFCFC 26.85%, rgba(252, 252, 252, 0) 99.92%, rgba(252, 252, 252, 0.47) 99.92%),
     //background: url('@assets/images/streetcode-card/background.png') no-repeat left top 100%; //100%;
 
@@ -29,6 +30,12 @@
     }
 
     .mainBlock {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+
         .donatesPurposeBlock {
             @include mut.rem-padded($right: 30px);
             margin: 0;
@@ -82,12 +89,61 @@
     }
     
     .donateSubBlocks {
-        display: inline-block;
-        justify-content: stretch;
+        display: inline-flex;
+        justify-content: space-between;
         height: 351px !important;
+        gap: 100px;
+
+        @include mut.rem-margined($top: 80px, $bottom: 32px);
 
         .block {
+            .heading {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+                @include mut.rem-margined($bottom: 34px);
+                line-height: 48px;
+                text-align: center;
+            }
+            .content {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                @include mut.sized($height: 230px);
 
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                
+                line-height: pxToRem(26.84px);
+
+                svg {
+                    margin: 0 18.5px;
+                }
+
+                .accountInfo {
+                    @include mut.rem-margined($top: 16px);
+                    line-height: pxToRem(23.44px);
+
+                    .thickerText {
+                        @include mut.rem-margined($top: 8px);
+                        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+                        line-height: pxToRem(26.84px);
+                    }
+                }
+            }
+
+            button {
+                width: 100%;
+
+                &:hover {
+                    background-color: c.$dark-red-color;
+                }
+            }
+
+            &.forCompanies {
+                @include mut.sized($width: 340px);
+            }
+
+            &.bankAccount {
+                @include mut.sized($width: 442px);
+            }
         }
     }
 
@@ -104,7 +160,8 @@
 
         background: #E04031;
         box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
-        border-radius: 14px;    
+        border-radius: 14px;
+        border: none;
 
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         line-height: 23px;

@@ -6,6 +6,7 @@ import CreditCard from '@/assets/images/donates/donatesPage/credit-card.svg';
 import Lamp from '@/assets/images/donates/donatesPage/lamp.svg';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
+import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
 
 const SupportUs = () => {
     return (
@@ -66,8 +67,35 @@ const SupportUs = () => {
                     </div>
                 </div>
                 <div className='donateSubBlocks'>
-                    <div>
-
+                    <div className='block'>
+                        <p className='heading'>На карту</p>
+                        <div className='content'>
+                            <QRCode />
+                        </div>
+                        <button className='supportButton'>Задонатити</button>
+                    </div>
+                    <div className='block forCompanies'>
+                        <p className='heading'>Для компаній</p>
+                        <div className='content'>
+                            <p>Сконтактуй з нашою командою щодо Стріткод-партнерства та внесків на 
+                                історію в просторі міст від юридичних осіб. Раді будемо запартнеритися 
+                                із соціально-відповідальним бізнесом.</p>
+                        </div>
+                        <button className='supportButton'>Стати партнером</button>
+                    </div>
+                    <div className='block bankAccount'>
+                        <p className='heading'>За реквізитами</p>
+                        <div className='content'>
+                            <p>ГО «Історична платформа»</p>
+                            <p>ЄДРПОУ 44801186</p>
+                            <p>Призначення:</p>
+                            <p>«Добровільний внесок на статутну діяльність»</p>
+                            <div className='accountInfo'>
+                                <p>Рахунок UAH</p>
+                                <p className='thickerText'>UA753057490000026003000018553</p>
+                            </div>
+                        </div>
+                        <button className='supportButton'>Скопіювати рахунок UAH</button>
                     </div>
                 </div>
                 <p className='bottomText'>
