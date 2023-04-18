@@ -3,9 +3,15 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 
+
 .supportUsPageWrapper {
     padding: 110px 12.5% 0;
     width: 100%;
+
+    background-image: url('@/assets/images/donates/donatesPage/background.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
 
     .heading {
         .titleBig {
@@ -91,7 +97,7 @@
     
     .donateSubBlocks {
         @include mut.sized($height: 351px, $width: 1200px);
-        
+
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -150,7 +156,7 @@
     }
 
     .bottomText {
-        @include mut.rem-margined($top: 80px, $bottom: 100px);
+        @include mut.rem-padded($top: 80px, $bottom: 100px);
         text-align: center;
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         line-height: 42px;
