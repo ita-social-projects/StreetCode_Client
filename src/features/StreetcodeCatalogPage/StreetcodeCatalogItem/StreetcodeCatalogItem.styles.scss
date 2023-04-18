@@ -47,9 +47,34 @@
             color: c.$pure-white-color;
         }
     }
+
+    &.mobile {
+        background-color: transparent !important;
+        line-height: pxToRem(18.48px);
+        color: c.$pure-black-color;
+
+        .heading {
+            display: inline;
+            height: 100%;
+
+            p {
+                font-size: 14px;
+                color: c.$pure-black-color;
+                padding-top: pxToRem(9px) !important;
+            }
+
+            .aliasText {
+                line-height: pxToRem(13.2px);
+                font-size: 10px;
+                padding-top: pxToRem(0px) !important;
+                ;
+            }
+        }
+    }
+
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width:1024px) {
     .commonCatalogItem {
         display: flex;
         flex-wrap: wrap;
@@ -61,31 +86,32 @@
             border-radius: pxToRem(30px);
 
         }
+    }
+        // .catalogItemText {
+        //     background-color: transparent !important;
+        //     line-height: pxToRem(18.48px);
+        //     color: c.$pure-black-color;
 
-        .catalogItemText {
-            background-color: transparent !important;
-            line-height: pxToRem(18.48px);
-            color: c.$pure-black-color;
+        //     .heading {
+        //         display: inline;
+        //         height: 100%;
 
-            .heading {
-                display: inline;
-                height: 100%;
-                p {
-                    font-size: 14px;
-                    color: c.$pure-black-color;
-                    padding-top: pxToRem(9px) !important;
-                }
+        //         p {
+        //             font-size: 14px;
+        //             color: c.$pure-black-color;
+        //             padding-top: pxToRem(9px) !important;
+        //         }
 
-                .aliasText {
-                    line-height: pxToRem(13.2px);
-                    font-size: 10px;
-                    padding-top: pxToRem(0px )!important;;
-                }
-            }
-        }
+        //         .aliasText {
+        //             line-height: pxToRem(13.2px);
+        //             font-size: 10px;
+        //             padding-top: pxToRem(0px) !important;
+        //             ;
+        //         }
+        //     }
+        // }
     }
 
     // .relatedFigureSlide {
     //     @include mut.sized($width: 165px, $height: 165px);
     // }
-}

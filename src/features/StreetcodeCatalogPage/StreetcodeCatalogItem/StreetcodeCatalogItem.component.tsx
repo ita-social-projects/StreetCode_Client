@@ -51,7 +51,7 @@ const StreetcodeCatalogItem = ({ streetcode }: Props) => {
                             className="catalogItem"
                             style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
                         />
-                        <div className="catalogItemText">
+                        <div className="catalogItemText mobile">
                             <div className="heading">
                                 <p>{streetcode.title}</p>
                                 {
