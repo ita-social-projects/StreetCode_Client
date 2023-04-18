@@ -27,8 +27,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-
     const [uploadedImage, setUploadedImage] = useState<Image | string >('src');
+    const tempFile = fileList;
+
     useEffect(() => {
         if (fact && open) {
             form.setFieldsValue({
@@ -36,10 +37,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 title: fact.title,
                 factContent: fact.factContent,
                 image: uploadedImage,
-
             });
+            setFileList(tempFile);
         }
-    }, [fact, open, form]);
+    }, [fact, open, fileList, form]);
 
     const onChange: UploadProps['onChange'] = ({ fileList: newFile }) => {
         newFile.forEach(async (x) => {
@@ -62,8 +63,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
             if (item) {
                 item.title = inputedValues.title;
                 item.factContent = inputedValues.factContent;
-                item.image = uploadedImage;// inputedValues.image;
-                console.log('Img upd', item.image);
+                item.image = uploadedImage;
             }
         } else {
             const newFact: Fact = {
@@ -72,10 +72,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 factContent: inputedValues.factContent,
                 image: uploadedImage,
             };
+            setFileList([]);
             factsStore.addFact(newFact);
-            console.log('Img', newFact?.image);
         }
-        setUploadedImage(' ');
         form.resetFields();
         setModalOpen(false);
     };

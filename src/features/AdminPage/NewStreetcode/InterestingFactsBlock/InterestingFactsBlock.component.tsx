@@ -10,7 +10,7 @@ import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminM
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
 const InterestingFactsBlock = () => {
-    const { factsStore, streetcodeStore, modalStore: { setModal } } = useMobx();
+    const { factsStore, streetcodeStore } = useMobx();
     const [openModal, setModalOpen] = useState<boolean>(false);
 
     const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
@@ -21,8 +21,6 @@ const InterestingFactsBlock = () => {
         [getStreetCodeId],
     );
     const showModal = () => {
-        // setIsModalCreateOpen(true);
-        console.log('open');
         setModalOpen(true);
     };
     return (
@@ -33,10 +31,7 @@ const InterestingFactsBlock = () => {
                 </h2>
             </div>
             <div className="factsContainer">
-                <button className="addWowFact" onClick={showModal}> + </button>
-                {/* <button className="addWowFact" onClick={() => setModalOpen(true)}> + </button> */}
-                {/* <button className="addWowFact" onClick={() => setModalOpen(true)}> + </button> */}
-                {/* <button className="addWowFact" onClick={() => setModal('adminFacts')}>+</button> */}
+                <button className="addWowFact" onClick={() => setModalOpen(true)}> + </button>
                 {getFactArray.map((fact) => (
                     <InterestingFactAdminItem
                         fact={fact}
