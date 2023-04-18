@@ -24,10 +24,11 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
     .steetcodeCatalogContainer {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, 278px);
         grid-auto-rows: minmax(165px, 380px);
         column-gap: pxToRem(28px);
         row-gap: pxToRem(60px);
+        justify-content: center;
     }
 
 
