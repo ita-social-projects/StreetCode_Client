@@ -8,7 +8,6 @@ import {
 } from 'react';
 
 import { Checkbox } from 'antd';
-
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import axios from 'axios';;
