@@ -11,6 +11,16 @@ import useMobx from '@/app/stores/root-store';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useMobx();
+    const BANK_ACCOUNT = 'UA753057490000026003000018553';
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(BANK_ACCOUNT);
+        // alert('Скопійовано в буфер обміну!');
+    };
+
+    const handlePay = () => {
+        window.location.assign('https://pay.mbnk.biz/IyAdn53wljbN');
+    }
 
     return (
         <div className='supportUsPage'>
@@ -75,7 +85,7 @@ const SupportUs = () => {
                         <div className='content'>
                             <QRCode />
                         </div>
-                        <button className='supportButton'>Задонатити</button>
+                        <button className='supportButton' onClick={handlePay}>Задонатити</button>
                     </div>
                     <div className='block forCompanies'>
                         <p className='heading'>Для компаній</p>
@@ -95,10 +105,10 @@ const SupportUs = () => {
                             <p>«Добровільний внесок на статутну діяльність»</p>
                             <div className='accountInfo'>
                                 <p>Рахунок UAH</p>
-                                <p className='thickerText'>UA753057490000026003000018553</p>
+                                <p className='thickerText'>{BANK_ACCOUNT}</p>
                             </div>
                         </div>
-                        <button className='supportButton'>Скопіювати рахунок UAH</button>
+                        <button className='supportButton' onClick={handleCopy}>Скопіювати рахунок UAH</button>
                     </div>
                 </div>
                 <p className='bottomText'>

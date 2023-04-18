@@ -65,7 +65,7 @@ const DonatesModal = () => {
         if (isCheckboxChecked) {
             try {
                 const response = await axios.post(linkBase, donation);
-                window.location.replace(response.data.pageUrl);
+                window.location.assign(response.data.pageUrl);
             } catch (err) {
                 console.error(err);
             }
