@@ -12,7 +12,7 @@
             @include mut.rem-margined($bottom: 40px);
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
             line-height: 127px;
-            color: #F4F4F4;
+            color: c.$accented-gray-color;
         }
 
         .titleSmall {
@@ -37,12 +37,12 @@
             @include mut.rem-padded($right: 30px);
             margin: 0;
             width: calc(75vw - 590px);
-            border:rgba(219, 52, 36, 0.18) 1px;
+            border: c.$transparent-redish-gray-color 1px;
 
             .heading {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
                 line-height: 42px;
-                color: #A4271B;
+                color: c.$text-red-color;
             }
 
             ul.purposeList {
@@ -56,7 +56,7 @@
                   margin-bottom: 12px;
               
                   svg {
-                    min-width: 29.33px !important;
+                    min-width: 29.33px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -81,7 +81,7 @@
 
         .donateWindow {
             @include mut.sizedImportant($height: 525px, $width: 590px);
-            vertical-align: top;;
+            vertical-align: top;
             background: c.$pure-white-color;
             
             box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
@@ -93,7 +93,7 @@
         display: flex;
         justify-content: space-evenly;
         align-self: center;
-        height: 351px !important;
+        height: 351px;
         gap: 100px;
 
         @include mut.rem-margined($top: 80px);
@@ -153,14 +153,14 @@
         text-align: center;
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         line-height: 42px;
-        color: #A4271B;
+        color: c.$text-red-color;
     }
 
     .supportButton {
         height: 73px;
 
-        background: #E04031;
-        box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
+        background: c.$accented-red-color;
+        box-shadow: 0px 4px 4px c.$transparent-redish-gray-color;
         border-radius: 14px;
         border: none;
 
