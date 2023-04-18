@@ -43,28 +43,30 @@ const StreetcodeCatalogItem = ({ streetcode }: Props) => {
                 </Link>
             )}
             {windowsize.width <= 1024 && (
-                <> <div className="commonCatalogItem">
-                    <div
-                        className="catalogItem"
-                        style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
-                    />
-                    <div className="catalogItemText">
-                        <div className="heading">
-                            <p>{streetcode.title}</p>
-                            {
-                                streetcode.alias !== null
-                                    ? (
-                                        <p className="aliasText">
+                <>
+                    {' '}
+                    <div className="commonCatalogItem">
+                        <div
+                            className="catalogItem"
+                            style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
+                        />
+                        <div className="catalogItemText">
+                            <div className="heading">
+                                <p>{streetcode.title}</p>
+                                {
+                                    streetcode.alias !== null
+                                        ? (
+                                            <p className="aliasText">
                                             (
-                                            {streetcode.alias}
+                                                {streetcode.alias}
                                             )
-                                        </p>
-                                    )
-                                    : undefined
-                            }
+                                            </p>
+                                        )
+                                        : undefined
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
                 </>
             )}
         </>
