@@ -17,7 +17,7 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-
+import StreetcodeCoordinatesStore from './streetcode-coordinates-store';    
 import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 
 import StreetcodeShortStore from './streetcodeshort-store';
@@ -43,6 +43,7 @@ interface Store {
     streetcodeCatalogStore: StreetcodesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
     newStreetcodeFilesStore: NewStreetcodeFilesStore,
+    streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
 }
 
 export const store: Store = {
@@ -65,6 +66,7 @@ export const store: Store = {
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
     newStreetcodeFilesStore: new NewStreetcodeFilesStore(),
+    streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
 };
 
 const StoreContext = createContext(store);

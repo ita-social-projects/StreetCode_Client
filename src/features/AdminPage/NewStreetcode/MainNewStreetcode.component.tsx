@@ -6,18 +6,20 @@ import { ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
+import { ArtCreate } from '@/models/media/art.model';
+
 import PageBar from '../PageBar/PageBar.component';
 
+import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
 import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
+import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
+import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
-import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
-import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
-import { ArtCreate } from '@/models/media/art.model';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -29,7 +31,7 @@ const NewStreetcode = () => {
     const [arts, setArts] = useState<ArtCreate[]>([]);
     return (
         <div className="NewStreetcodeContainer">
-           <PageBar />
+            <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminPageContainer">
                     <Form form={form} layout="vertical">
@@ -37,12 +39,13 @@ const NewStreetcode = () => {
                         <TextBlock />
                     </Form>
                     <InterestingFactsBlock />
-                    <ArtGalleryBlock arts={arts} setArts={setArts}/>
-                   {/*  <RelatedFiguresBlock /> */}
+                    <ArtGalleryBlock arts={arts} setArts={setArts} />
+                    {/*  <RelatedFiguresBlock /> */}
                     <TimelineBlockAdmin />
                     <ForFansBlock />
                     <PartnerBlockAdmin />
                     <SubtitleBlock />
+                    <MapBlockAdmin />
                 </div>
             </ConfigProvider>
 

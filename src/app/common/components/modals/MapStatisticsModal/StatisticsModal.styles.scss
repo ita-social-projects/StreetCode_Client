@@ -1,0 +1,66 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use '@sass/variables/variables.fonts' as ft;
+@use '@sass/variables/variables.colors' as c;
+
+
+.statisticsModal {
+    @include mut.sizedImportant(492px, 262px);
+    &.ant-modal {
+      .ant-modal-content {
+        @include mut.full-rounded(70px, $overflow: visible);
+        padding: 0 !important;
+        box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+          0 6px 20px 0 rgb(0 0 0 / 19%);
+      }
+    }
+  }
+
+.statisticsModalsContainer{
+  background: c.$pure-white-color;
+  z-index: 3;
+  border-radius: 20px;
+  h1{
+    @include mut.with-font(ft.$roboto-font, 500, 22px, normal);
+    line-height: 26px;
+    @include mut.rem-padded(20px, 20px, 0, 20px);
+    color: c.$accented-red-color;
+    @media screen and (max-width: 480px) {
+      @include mut.sizedImportant(300px, 60px);
+      @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
+    line-height: 26px;
+    }
+  }
+  .streetsBlock{
+    @media screen and (max-width: 480px) {
+      @include mut.sizedImportant(340px, 196px);
+    }
+    @media (min-width: 481px) and (max-width: 1023px) {
+      @include mut.sizedImportant(492px, 262px);
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      @include mut.sizedImportant(492px, 262px);
+    }
+    @include mut.rem-padded($top:10px);
+   
+    p{
+      @include mut.flexed($direction:row, $gap:5px);
+      @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+      line-height: 134.19%;
+      color: c.$lighter-black-color;
+      padding-left: f.pxToRem(20px);
+      @media screen and (max-width: 480px) {
+        @include mut.with-font(ft.$roboto-font, 300, 19px, normal);
+        line-height: 134.19%;
+      }
+    }
+    span{
+      @include mut.with-font($font-weight:500, $font-size:22px);
+      color: c.$accented-red-color;
+      @media screen and (max-width: 480px) {
+        @include mut.with-font($font-weight:500, $font-size:20px);
+        color: c.$accented-red-color;
+      }
+    }
+  }
+}
