@@ -7,6 +7,8 @@ import Lamp from '@/assets/images/donates/donatesPage/lamp.svg';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
+import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
+
 import useMobx from '@/app/stores/root-store';
 
 const SupportUs = () => {
@@ -108,7 +110,10 @@ const SupportUs = () => {
                                 <p className='thickerText'>{BANK_ACCOUNT}</p>
                             </div>
                         </div>
-                        <button className='supportButton' onClick={handleCopy}>Скопіювати рахунок UAH</button>
+                        <div className='supportButton withSvg' onClick={handleCopy}>
+                            <span>Скопіювати рахунок UAH</span>
+                            <Copy/>
+                        </div>
                     </div>
                 </div>
                 <p className='bottomText'>

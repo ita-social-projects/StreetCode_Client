@@ -172,6 +172,13 @@
         line-height: 23px;
         color: c.$pure-white-color;
         text-align: center;
+
+        &.withSvg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
     }
 
     .titleSmall {
