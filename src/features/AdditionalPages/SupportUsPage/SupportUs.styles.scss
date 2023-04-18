@@ -90,13 +90,14 @@
     }
     
     .donateSubBlocks {
+        @include mut.sized($height: 351px, $width: 1200px);
+        
         display: flex;
-        justify-content: space-evenly;
-        align-self: center;
-        height: 351px;
+        justify-content: space-around;
+        align-items: center;
         gap: 100px;
 
-        @include mut.rem-margined($top: 80px);
+        margin: 80px calc((75vw - 1200px) / 2) 0;
 
         .block {
             .heading {
