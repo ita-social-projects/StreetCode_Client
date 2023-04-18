@@ -13,7 +13,7 @@ import Image from '@/models/media/image.model';
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 
 const FileInputsPart:React.FC = () => {
-    const { newStreetcodeFilesStore } = useMobx();
+    const { newStreetcodeInfoStore } = useMobx();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const handlePreview = async (file: UploadFile) => {
@@ -21,10 +21,10 @@ const FileInputsPart:React.FC = () => {
         setPreviewOpen(true);
     };
     const afterBlackAndWhiteUpload = (image:Image) => {
-        newStreetcodeFilesStore.BlackAndWhiteId = image.id;
+        newStreetcodeInfoStore.BlackAndWhiteId = image.id;
     };
     const afterAnimationUpload = (image:Image) => {
-        newStreetcodeFilesStore.AnimationId = image.id;
+        newStreetcodeInfoStore.AnimationId = image.id;
     };
     return (
         <div className="file-upload-container">

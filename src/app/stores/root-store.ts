@@ -1,9 +1,7 @@
 import { createContext, useContext } from 'react';
-import { HistoricalContext } from '@models/timeline/chronology.model';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
-import { HistoricalContextStore } from '@stores/historicalcontext-store';
 import ImageStore from '@stores/image-store';
 import ModalStore from '@stores/modal-store';
 import PartnersStore from '@stores/partners-store';
@@ -17,11 +15,12 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-import StreetcodeCoordinatesStore from './streetcode-coordinates-store';    
+
 import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 
+import NewStreetcodeInfoStore from './newstreetcode-info-store';
+import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import StreetcodeShortStore from './streetcodeshort-store';
-import NewStreetcodeFilesStore from './newstreetcode-files-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -42,7 +41,7 @@ interface Store {
     historicalContextStore: HistoricalContextStore,
     streetcodeCatalogStore: StreetcodesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
-    newStreetcodeFilesStore: NewStreetcodeFilesStore,
+    newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
 }
 
@@ -65,7 +64,7 @@ export const store: Store = {
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
-    newStreetcodeFilesStore: new NewStreetcodeFilesStore(),
+    newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
 };
 

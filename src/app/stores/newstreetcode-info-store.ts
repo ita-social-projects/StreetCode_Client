@@ -1,9 +1,11 @@
 import { makeAutoObservable } from 'mobx';
 
-export default class NewStreetcodeFilesStore {
+export default class NewStreetcodeInfoStore {
     public animationId = 0;
 
     public blackAndWhiteId = 0;
+
+    public selectedToponyms:string[] = [];
 
     public constructor() {
         makeAutoObservable(this);
@@ -15,5 +17,9 @@ export default class NewStreetcodeFilesStore {
 
     set BlackAndWhiteId(id:number) {
         this.blackAndWhiteId = id;
+    }
+
+    set SelectedToponyms(toponyms:string[]) {
+        this.selectedToponyms = toponyms;
     }
 }

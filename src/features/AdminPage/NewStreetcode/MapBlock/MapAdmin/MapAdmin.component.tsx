@@ -113,7 +113,13 @@ const MapOSMAdmin = () => {
                             prefix={<EnvironmentOutlined className="site-form-item-icon" />}
                         />
                     </Autocomplete>
-                    <Button className="onMapbtn" onClick={handleMarkerCurrentPosition}><a>Обрати місце на мапі</a></Button>
+                    <Button
+                        className="onMapbtn"
+                        onClick={handleMarkerCurrentPosition}
+                    >
+                        <a>Обрати місце на мапі</a>
+
+                    </Button>
                     {streetcodeCoordinates.length > 0 && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}><a>Зберегти стріткод</a></Button>
                     )}
