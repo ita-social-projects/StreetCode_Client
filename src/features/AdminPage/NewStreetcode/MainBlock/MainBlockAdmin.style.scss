@@ -134,6 +134,10 @@
             display: flex;
             flex-direction: row;
         }
+        .audio-upload-box{
+            height: f.pxToRem(40px);
+            background-color: c.$timeline-reel-color;
+        }
     }
     
 }

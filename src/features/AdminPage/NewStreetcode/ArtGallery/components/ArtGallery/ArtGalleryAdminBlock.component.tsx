@@ -4,9 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { IndexedArt } from '@models/media/art.model';
-import useMobx from '@stores/root-store';
+import { ArtCreate, IndexedArt } from '@models/media/art.model';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -14,34 +12,22 @@ import ArtGallerySlide from '@/features/StreetcodePage/ArtGalleryBlock/ArtGaller
 
 const SECTION_AMOUNT = 6;
 
-interface Art {
-    description: string;
-    image: string;
-    index: number;
-    title: string;
-}
-
-interface Props {
-    art: Art[] | undefined,
-    indexedArts: IndexedArt[],
-    setIndexedArts: React.Dispatch<React.SetStateAction<IndexedArt[]>>;
-}
-const ArtGalleryAdminBlock: React.FC<Props> = ({ art, indexedArts, setIndexedArts }) => {
-    const { streetcodeArtStore, streetcodeStore: { getStreetCodeId } } = useMobx();
-    const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
+const ArtGalleryAdminBlock: React.FC<{ arts:ArtCreate[] }> = ({ arts }) => {
+    const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
-
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        art?.forEach(async ({ description, image, index, title }) => {
+        arts!.forEach(async ({
+            description, image, index, title, mimeType,
+        }) => {
             try {
                 if (image) {
-                    const { width, height } = await getImageSize(image);
-
+                    const url = base64ToUrl(image, mimeType);
+                    const { width, height } = await getImageSize(url!);
                     newMap.push({
                         index,
                         description,
-                        imageHref: image,
+                        imageHref: url,
                         title,
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
@@ -51,7 +37,7 @@ const ArtGalleryAdminBlock: React.FC<Props> = ({ art, indexedArts, setIndexedArt
             }
             setIndexedArts(newMap);
         });
-    }, [art]);
+    }, [arts]);
 
     const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
     let offsetSumForSlide = 0;

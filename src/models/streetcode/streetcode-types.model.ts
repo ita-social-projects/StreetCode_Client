@@ -1,4 +1,4 @@
-import Subtitle from '@models/additional-content/subtitles.model';
+import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
 import Tag, { TagVisible } from '@models/additional-content/tag.model';
 import Art, { IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
@@ -104,6 +104,6 @@ export interface StreetcodeCreate {
     timelineItems: TimelineItem[],
     partners: PartnerShort[],
     // indexedArts: IndexedArt[],
-    subTitle: string | null,
+    subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigure[]
 }

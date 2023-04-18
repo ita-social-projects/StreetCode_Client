@@ -1,9 +1,7 @@
 import { createContext, useContext } from 'react';
-import { HistoricalContext } from '@models/timeline/chronology.model';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
-import { HistoricalContextStore } from '@stores/historicalcontext-store';
 import ImageStore from '@stores/image-store';
 import ModalStore from '@stores/modal-store';
 import PartnersStore from '@stores/partners-store';
@@ -20,6 +18,8 @@ import TimelineStore from '@stores/timeline-store';
 
 import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 
+import NewStreetcodeInfoStore from './newstreetcode-info-store';
+import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import StreetcodeShortStore from './streetcodeshort-store';
 
 interface Store {
@@ -41,6 +41,8 @@ interface Store {
     historicalContextStore: HistoricalContextStore,
     streetcodeCatalogStore: StreetcodesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
+    newStreetcodeInfoStore: NewStreetcodeInfoStore,
+    streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
 }
 
 export const store: Store = {
@@ -62,6 +64,8 @@ export const store: Store = {
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
+    newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
+    streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
 };
 
 const StoreContext = createContext(store);

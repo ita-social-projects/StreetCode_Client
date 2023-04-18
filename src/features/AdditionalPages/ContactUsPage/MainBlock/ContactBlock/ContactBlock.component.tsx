@@ -1,12 +1,12 @@
 import './ContactBlock.styles.scss';
 
-import Email from '@images/contact-us/Email.png';
+import Email from '@images/contact-us/email.png';
 import Facebook from '@images/contact-us/Facebook.png';
 import Instagram from '@images/contact-us/Instagram.png';
 import Logo from '@images/contact-us/Logo-2.png';
 import TikTok from '@images/contact-us/TikTok.png';
 import Twitter from '@images/contact-us/Twitter.png';
-import YouTube from '@images/contact-us/YouTube.png';
+import YouTube from '@images/contact-us/Youtube.png';
 
 const ContactBlock = () => (
     <div className="contactBlock">

@@ -1,4 +1,5 @@
 import './ArtGalleryBlock.styles.scss';
+
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
@@ -8,9 +9,11 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+
+import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 import ArtGallerySlideSmall from './ArtGalleryListOfItem/ArtGallerySlide.component';
 
 const SECTION_AMOUNT = 6;
@@ -48,8 +51,7 @@ const ArtGalleryBlock = () => {
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
                 var url = base64ToUrl(image.base64, image.mimeType);
-                if(url) {
-
+                if (url) {
                     const { width, height } = await getImageSize(url);
 
                     newMap.push({
@@ -68,7 +70,6 @@ const ArtGalleryBlock = () => {
         });
     }, [getStreetcodeArtArray]);
 
-    
     sortedArtsList.forEach(({
         index, offset, imageHref, description, title,
     }) => {
@@ -84,8 +85,7 @@ const ArtGalleryBlock = () => {
                 title,
                 sequenceNumber,
             } as IndexedArt);
-        }
-        else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+        } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} />,
             );
@@ -120,8 +120,9 @@ const ArtGalleryBlock = () => {
         index, offset, imageHref, description, title,
     }) => {
         if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL && offsetSumForSlide + offset <= SECTION_AMOUNT) {
-            if (offset == 4)
+            if (offset == 4) {
                 offset = 1;
+            }
             offsetSumForSlideSmall += offset ?? 0;
             offsetSumSmall += offset ?? 0;
             sequenceNumberSmall += 1;
@@ -133,8 +134,7 @@ const ArtGalleryBlock = () => {
                 title,
                 sequenceNumber: sequenceNumberSmall,
             } as IndexedArt);
-        }
-        else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+        } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} />,
             );
@@ -165,7 +165,7 @@ const ArtGalleryBlock = () => {
     }
 
     const sliderProps = {
-        className: "artGallerySliderContainer",
+        className: 'artGallerySliderContainer',
         infinite: false,
 
         swipe: windowsize.width <= 1024,
@@ -175,14 +175,14 @@ const ArtGalleryBlock = () => {
     };
 
     const sliderPropsSmall = {
-        className: "artGallarySliderContainerSmall",
+        className: 'artGallarySliderContainerSmall',
         infinite: true,
         swipe: true,
         swipeOnClick: false,
         centerMode: true,
         variableWidth: true,
         slidesToShow: 1,
-        centerPadding: "0px 10px",
+        centerPadding: '0px 10px',
         slidesToScroll: 0.5,
     };
 
@@ -197,10 +197,11 @@ const ArtGalleryBlock = () => {
                                 {...sliderProps}
                             >
                                 {slideOfArtList}
-                            </SlickSlider>)}
+                            </SlickSlider>
+                        )}
                         {windowsize.width < 768 && (
                             <SlickSliderSmall
-                            
+
                                 {...sliderPropsSmall}
                             >
                                 {slideOfArtListSmall}

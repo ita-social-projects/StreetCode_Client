@@ -107,9 +107,14 @@ const MainBlockAdmin: React.FC<Props> = ({
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
         if (selectedIndex < 0) {
-            TagsApi.create({ title: selectedValue }).then((newTag) => {
-                setSelectedTags([...selectedTags, { ...newTag, visible: false }]);
-            }).catch((e) => console.log(e));
+            let minId = selectedTags.reduce((a, b) => ((a.id < b.id) ? a : b)).id;
+            if (minId < 0) {
+                minId -= 1;
+            } else {
+                minId = -1;
+            }
+
+            setSelectedTags([...selectedTags, { id: minId, title: selectedValue, visible: false }]);
         } else {
             selected = tags[selectedIndex];
             const updatedTags = [...selectedTags, { ...selected, visible: false }];
@@ -267,7 +272,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 </div>
             </div>
 
-            <FileInputsPart />
+            {/* <FileInputsPart /> */}
         </div>
     );
 };

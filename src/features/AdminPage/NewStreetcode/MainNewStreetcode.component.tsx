@@ -3,21 +3,18 @@ import './MainNewStreetcode.styles.scss';
 import React, { useEffect, useState } from 'react';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
-import { Button, ConfigProvider, Form } from 'antd';
+import { ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { UploadFile } from 'antd/lib/upload/interface';
 import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
-import Tag, { TagVisible } from '@/models/additional-content/tag.model';
-import Video from '@/models/map/media/video.model';
-import { IndexedArt } from '@/models/media/art.model';
-import { AudioCreate } from '@/models/media/audio.model';
-import Image, { ImageCreate } from '@/models/media/image.model';
+import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
+import { TagVisible } from '@/models/additional-content/tag.model';
+import { ArtCreate } from '@/models/media/art.model';
 import { VideoCreate } from '@/models/media/video.model';
 import { PartnerShort } from '@/models/partners/partners.model';
-import Streetcode, { MainBlockDataCreate, StreetcodeCreate, StreetcodeType }
+import { StreetcodeCreate, StreetcodeType }
     from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
@@ -29,16 +26,13 @@ import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
-type FileObject = {
-    blobName: string;
-    mimeType: string;
-};
 const NewStreetcode = () => {
     const [form] = useForm();
     const { factsStore, timelineItemStore } = useMobx();
@@ -47,9 +41,10 @@ const NewStreetcode = () => {
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
-    const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
+
+    const [arts, setArts] = useState<ArtCreate[]>([]);
 
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -57,30 +52,10 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const createFileObject = <T extends FileObject>(file: UploadFile<any>): T | undefined => {
-        if (file) {
-            const fileObject = {
-                blobName: file.name ?? '',
-                mimeType: file.type ?? '',
-            } as T;
-            return fileObject;
-        }
-        return undefined;
-    };
-
     const onFinish = (data) => {
-        const animationFile = form.getFieldValue('animations').file as UploadFile<any>;
-        const pictureBlackWhiteFile = form.getFieldValue('pictureBlackWhite').file as UploadFile<any>;
-        const pictureRelationsFile = form.getFieldValue('pictureRelations')?.file as UploadFile<any>;
-
-        const audioFile = form.getFieldValue('audio')?.file;
-
-        const images: ImageCreate[] = [
-            createFileObject<ImageCreate>(animationFile),
-            createFileObject<ImageCreate>(pictureBlackWhiteFile),
-            createFileObject<ImageCreate>(pictureRelationsFile),
-        ].filter((image) => image !== undefined) as ImageCreate[];
-
+        const subtitles: SubtitleCreate[] = [{
+            subtitleText: subTitle,
+        }];
         const videos: VideoCreate[] = [
             { url: inputInfo?.link || '' },
         ];
@@ -111,7 +86,7 @@ const NewStreetcode = () => {
             createdAt: new Date().toISOString(),
             dateString: form.getFieldValue('dateString'),
             // indexedArts,
-            subTitle,
+            subtitles,
             firstName: null,
             lastName: null,
             videos,
@@ -149,12 +124,13 @@ const NewStreetcode = () => {
                         <button type="submit">Відправити</button>
                     </Form>
                     <InterestingFactsBlock />
-                    <ArtGalleryBlock indexedArts={indexedArts} setIndexedArts={setIndexedArts} />
                     <RelatedFiguresBlock setFigures={setFigures} />
-                    <TimelineBlockAdmin />
-                    <ForFansBlock />
                     <PartnerBlockAdmin setPartners={setPartners} />
                     <SubtitleBlock setSubTitle={setSubTitle} />
+                    <ArtGalleryBlock arts={arts} setArts={setArts} />
+                    <TimelineBlockAdmin />
+                    <ForFansBlock />
+                    <MapBlockAdmin />
                 </div>
             </ConfigProvider>
         </div>

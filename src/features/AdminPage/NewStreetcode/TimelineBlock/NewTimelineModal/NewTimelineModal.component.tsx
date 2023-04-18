@@ -109,7 +109,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                     name="historicalContexts"
                     label="Контекст: "
                 >
-                    <Select
+                    {/* <Select
                         mode="tags"
                         onSelect={onContextSelect}
                         onDeselect={onContextDeselect}
@@ -122,7 +122,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                                     value={cntx.title}
                                 />
                             ))}
-                    </Select>
+                    </Select> */}
                 </Form.Item>
                 <Form.Item
                     name="description"

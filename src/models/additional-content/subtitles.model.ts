@@ -7,3 +7,7 @@ export default interface Subtitle {
     subtitleText: string;
     streetcodeId: number;
 }
+
+export interface SubtitleCreate {
+    subtitleText: string;
+}

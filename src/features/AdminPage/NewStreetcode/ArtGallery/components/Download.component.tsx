@@ -1,117 +1,82 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Upload } from 'antd';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
-import { IndexedArt } from '@/models/media/art.model';
+import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import { ArtCreate } from '@/models/media/art.model';
+import Image from '@/models/media/image.model';
 
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
-interface Art {
-    description: string;
-    image: string;
-    index: number;
-    title: string;
-    uid: any;
-}
+const DownloadBlock: React.FC<{ arts:ArtCreate[],
+    setArts: React.Dispatch<React.SetStateAction<ArtCreate[]>> }> = ({ arts, setArts }) => {
+        const [fileList, setFileList] = useState<UploadFile[]>([]);
+        const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+        const [isOpen, setIsOpen] = useState(false);
+        const uidsFile = useRef<string>('');
+        const indexTmp = 0;
 
-interface Props {
-    indexedArts: IndexedArt[],
-    setIndexedArts: React.Dispatch<React.SetStateAction<IndexedArt[]>>;
-}
-const DownloadBlock: React.FC<Props> = ({ indexedArts, setIndexedArts }) => {
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [title, setTitle] = useState<string | null>(null);
-    const [desc, setDesc] = useState<string | null>(null);
+        const onChange = (uploadParams:UploadChangeParam<UploadFile<any>>) => {
+            uidsFile.current = uploadParams.file.uid;
+            setFileList(uploadParams.fileList.map((x) => x));
+        };
 
-    const [arts, setArts] = useState<Art[]>([]);
-    const indexTmp = 0;
+        const onPreview = async (file: UploadFile) => {
+            setFilePreview(file);
+            setIsOpen(true);
+        };
+        const onSuccessUpload = (image:Image) => {
+            const newArt: ArtCreate = {
+                index: indexTmp + 1,
+                description: 'description',
+                image: image.base64,
+                title: 'title',
+                imageId: image.id,
+                mimeType: image.mimeType,
+                uidFile: uidsFile.current,
+            };
+            setArts([...arts, newArt]);
+        };
+        const onRemoveFile = (file:UploadFile) => {
+            setArts(arts.filter((a) => a.uidFile !== file.uid));
+        };
 
-    const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-        if (newFileList.length > 0) {
-            setFileList(newFileList.map((x) => x));
-            const deletedFiles = fileList?.filter((file) => !newFileList.includes(file));
-            if (deletedFiles.length > 0) {
-                const updatedArts = arts.filter((art) => !deletedFiles.find((x) => x.uid === art.uid));
-                setArts([...updatedArts]);
-            } else {
-                newFileList.forEach(async (x) => {
-                    let src = x.thumbUrl as string;
-                    if (!src) {
-                        src = await new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.readAsDataURL(x.originFileObj as RcFile);
-                            reader.onload = () => resolve(reader.result as string);
-                        });
-                    }
-
-                    const art: Art = {
-                        index: indexTmp + 1,
-                        description: 'description',
-                        image: src,
-                        title: 'title',
-                        uid: x.uid,
-                    };
-                    setArts([...arts, art]);
-                });
+        const handleSave = (art: ArtCreate) => {
+            const updated = arts.find((x) => x.imageId === art.imageId);
+            if (!updated) {
+                return;
             }
-        } else {
-            setArts([]);
-            setFileList(newFileList.map((x) => x));
-        }
-    };
+            updated.description = art.description;
+            updated.title = art.title;
+            setArts([...arts]);
+            setIsOpen(false);
+        };
 
-    const onPreview = async (file: UploadFile) => {
-        let src = file.url as string;
-        if (!src) {
-            src = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj as RcFile);
-                reader.onload = () => resolve(reader.result as string);
-            });
-        }
-        setTitle(arts.find((x) => x.uid === file.uid)?.title);
-        setDesc(arts.find((x) => x.uid === file.uid)?.description);
-        setFilePreview(file);
-        setIsOpen(true);
+        return (
+            <>
+                <FileUploader
+                    accept=".jpeg,.png,.jpg"
+                    listType="picture-card"
+                    fileList={fileList}
+                    onPreview={onPreview}
+                    uploadTo="image"
+                    onChange={onChange}
+                    onSuccessUpload={onSuccessUpload}
+                    onRemove={onRemoveFile}
+                >
+                    {fileList.length < 15 ? <p>+ Додати</p> : <></>}
+                </FileUploader>
+                <h4>Попередній перегляд</h4>
+                <ArtGalleryAdminBlock arts={arts} />
+                <PreviewImageModal
+                    art={arts[fileList.indexOf(filePreview!)]}
+                    onSave={handleSave}
+                    opened={isOpen}
+                    setOpened={setIsOpen}
+                />
+            </>
+        );
     };
-
-    const handleSave = (art: Art) => {
-        arts.find((x) => {
-            if (x.uid === art.uid) {
-                x.description = art.description; x.title = art.title;
-            }
-        });
-        setArts([...arts]);
-        setIsOpen(false);
-    };
-
-    return (
-        <>
-            <Upload
-                accept=".jpeg,.png,.jpg"
-                listType="picture-card"
-                fileList={fileList}
-                onChange={onChange}
-                onPreview={onPreview}
-                onSave={handleSave}
-            >
-                {fileList.length < 15 && '+ Додати'}
-            </Upload>
-            <h4>Прев'ю</h4>
-            <ArtGalleryAdminBlock art={arts} indexedArts={indexedArts} setIndexedArts={setIndexedArts} />
-            <PreviewImageModal
-                file={filePreview}
-                art={arts.find((x) => x.uid === filePreview?.uid)}
-                onSave={handleSave}
-                opened={isOpen}
-                setOpened={setIsOpen}
-            />
-        </>
-    );
-};
 
 export default DownloadBlock;
