@@ -25,4 +25,5 @@ export interface ArtCreate {
     index: number;
     title: string;
     mimeType:string;
+    uidFile:string;
 }

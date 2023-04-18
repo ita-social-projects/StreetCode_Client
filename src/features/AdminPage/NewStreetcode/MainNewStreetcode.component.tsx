@@ -1,6 +1,6 @@
 import './MainNewStreetcode.styles.scss';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -17,6 +17,7 @@ import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
+import { ArtCreate } from '@/models/media/art.model';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -25,6 +26,7 @@ const NewStreetcode = () => {
             ukUA.DatePicker.lang.locale = 'uk';
         }
     }, []);
+    const [arts, setArts] = useState<ArtCreate[]>([]);
     return (
         <div className="NewStreetcodeContainer">
            <PageBar />
@@ -35,7 +37,7 @@ const NewStreetcode = () => {
                         <TextBlock />
                     </Form>
                     <InterestingFactsBlock />
-                    <ArtGalleryBlock />
+                    <ArtGalleryBlock arts={arts} setArts={setArts}/>
                    {/*  <RelatedFiguresBlock /> */}
                     <TimelineBlockAdmin />
                     <ForFansBlock />

@@ -4,9 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { ArtCreate, IndexedArt } from '@models/media/art.model';
-import useMobx from '@stores/root-store';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -14,18 +12,18 @@ import ArtGallerySlide from '@/features/StreetcodePage/ArtGalleryBlock/ArtGaller
 
 const SECTION_AMOUNT = 6;
 
-const ArtGalleryAdminBlock: React.FC<{ art:ArtCreate[] }> = ({ art }) => {
+const ArtGalleryAdminBlock: React.FC<{ arts:ArtCreate[] }> = ({ arts }) => {
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        art!.forEach(async ({
+        arts!.forEach(async ({
             description, image, index, title, mimeType,
         }) => {
             try {
                 if (image) {
                     const url = base64ToUrl(image, mimeType);
-                    const { width, height } = await getImageSize(url);
+                    const { width, height } = await getImageSize(url!);
                     console.log(width);
                     console.log(height);
                     newMap.push({
@@ -41,7 +39,7 @@ const ArtGalleryAdminBlock: React.FC<{ art:ArtCreate[] }> = ({ art }) => {
             }
             setIndexedArts(newMap);
         });
-    }, [art]);
+    }, [arts]);
 
     const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
     let offsetSumForSlide = 0;
