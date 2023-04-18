@@ -1,0 +1,49 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.partnersBtnCircleContainer {
+  z-index: 4;
+
+  @include mut.positioned-as(fixed, $bottom: 28px, $right: 41px);
+  @include mut.flex-centered($direction: column);
+
+  .partnersBtnCircle {
+    @include mut.circular(62px);
+    @include vnd.vendored(transition, 'filter 1s ease');
+
+    @include mut.flex-centered();
+    margin-bottom: f.pxToRem(5px);
+
+    cursor: pointer;
+    border: 3px solid c.$accented-red-color;
+    
+    &:hover {
+        @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
+        color: c.$dark-red-color;
+        filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.18));
+      }
+  }
+
+  .partnersBtnText {
+    color: c.$accented-red-color;
+    @include mut.with-font($font-size: 15px, $font-weight: 500);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .partnersContainer{
+      .partnersBtnCircleContainer{
+        @include mut.positioned-as(fixed, $bottom: 28px, $right: 10px);
+
+        .partnersBtnCircle{
+          @include mut.circular(50px);
+          filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.18));
+        }
+        .partnersBtnText{
+            display: none;
+        }
+      }       
+  }
+}

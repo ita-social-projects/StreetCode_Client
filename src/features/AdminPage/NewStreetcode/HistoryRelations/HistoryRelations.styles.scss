@@ -3,12 +3,10 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.subheading {
-    margin-bottom: 15px;
+.relationsBlock {
+    @include mut.rem-padded($bottom: 30px);
+    
+    .subheading {
+        margin-bottom: 15px;
+    }
 }
-
-.invisible {
-    visibility: hidden;
-}
-
-

@@ -5,7 +5,7 @@
 
 .donateBtnContainer {
   z-index: 4;
-  @include mut.positioned-as(fixed, $bottom: 60px, $right: 40px);
+  @include mut.positioned-as(relative, $right: 40px);
   @include mut.flex-centered($direction: column);
 
   .donateBtnCircle {
@@ -30,6 +30,16 @@
   }
 }
 
-.stickyDonate {
-  @include mut.positioned-as(sticky, $bottom: 0px, $right: 0px);
+@media screen and (max-width: 1024px) {
+  .donateBtnContainer{
+    @include mut.positioned-as(relative, $right: 50px);
+  }
+}
+@media screen and (max-width: 480px) {
+  .donateBtnContainer{
+    @include mut.positioned-as(relative, $right: 10px);
+    .donateBtnCircle {
+      @include mut.circular(50px);
+    }
+  }
 }
