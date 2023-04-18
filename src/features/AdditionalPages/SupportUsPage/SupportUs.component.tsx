@@ -7,8 +7,11 @@ import Lamp from '@/assets/images/donates/donatesPage/lamp.svg';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
+import useMobx from '@/app/stores/root-store';
 
 const SupportUs = () => {
+    const { modalStore: { setModal } } = useMobx();
+
     return (
         <div className='supportUsPage'>
             <div className='supportUsPageWrapper'>
@@ -81,7 +84,7 @@ const SupportUs = () => {
                                 історію в просторі міст від юридичних осіб. Раді будемо запартнеритися 
                                 із соціально-відповідальним бізнесом.</p>
                         </div>
-                        <button className='supportButton'>Стати партнером</button>
+                        <button className='supportButton' onClick={() => setModal('partners')}>Стати партнером</button>
                     </div>
                     <div className='block bankAccount'>
                         <p className='heading'>За реквізитами</p>
