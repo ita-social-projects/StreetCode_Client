@@ -51,7 +51,6 @@ const StatisticsToponymsComponentAdmin = () => {
                         newStreetcodeInfoStore.SelectedToponyms = newStreetcodeInfoStore
                             .selectedToponyms.filter((t) => t !== text);
                     }
-                    console.log(newStreetcodeInfoStore.selectedToponyms);
                 }}
                 />
             ),
