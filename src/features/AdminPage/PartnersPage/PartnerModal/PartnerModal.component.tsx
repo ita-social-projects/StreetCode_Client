@@ -15,13 +15,14 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
+import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Partner, {
     LogoType,
     PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 
 const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVisible?:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?:(partner:PartnerCreateUpdate)=>void
@@ -63,7 +64,10 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  description: partnerItem.description,
                  partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
                  logo: [
-                     { name: '', url: partnerItem.logo?.url.href, uid: partnerItem.logoId.toString(), status: 'done' }],
+                     { name: '',
+                       url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
+                       uid: partnerItem.logoId.toString(),
+                       status: 'done' }],
              });
              selectedStreetcodes.current = partnerItem.streetcodes;
              setPartnersSourceLinks(partnerItem.partnerSourceLinks.map((l) => ({
@@ -113,7 +117,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          const partner: PartnerCreateUpdate = {
              id: 0,
              isKeyPartner: formValues.isKeyPartner,
-             logoBase64: 'base5',
              logoId: 0,
              partnerSourceLinks,
              streetcodes: selectedStreetcodes.current,
@@ -254,15 +257,16 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          maxCount={1}
                          onPreview={handlePreview}
                          className="uploader-small"
+                         uploadTo="image"
                          fileList={(partnerItem)
                              ? [{ name: '',
-                                  url: partnerItem.logo?.url.href,
+                                  url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
                                   uid: partnerItem.logoId.toString(),
                                   status: 'done' }]
                              : []}
                          defaultFileList={(partnerItem)
                              ? [{ name: '',
-                                  url: partnerItem.logo?.url.href,
+                                  url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
                                   uid: partnerItem.logoId.toString(),
                                   status: 'done' }]
                              : []}

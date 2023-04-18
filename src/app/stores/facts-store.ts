@@ -21,6 +21,10 @@ export default class FactsStore {
         this.factMap.delete(factId);
     };
 
+    public updateFactInMap = (fact: Fact) => {
+        this.setItem(fact);
+    };
+
     private setItem = (fact: Fact) => {
         this.factMap.set(fact.id, fact);
     };
