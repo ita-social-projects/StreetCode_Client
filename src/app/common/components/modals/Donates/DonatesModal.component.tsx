@@ -9,7 +9,9 @@ import {
 
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
-import axios from 'axios';;
+import axios from 'axios';import { link } from 'fs';
+import Donation from '@/models/feedback/donation.model';
+;
 
 const possibleDonateAmounts = [100, 500, 1000];
 
@@ -25,7 +27,7 @@ const DonatesModal = () => {
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
 
-    const linkBase = 'https://0127-185-244-159-54.ngrok-free.app/api/support/monobank/api/support/monobank';
+    const linkBase = 'https://4852-185-244-159-24.ngrok-free.app/api/Payment/CreateInvoice';
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
@@ -48,9 +50,16 @@ const DonatesModal = () => {
     };
 
     const handlePost = async () => {
+        const donation: Donation = { 
+            Amount: donateAmount, 
+            RedirectUrl: window.location.href
+        };
+
+        console.log(window.location.href);
+
         try {
-            const response = await axios.post(`${linkBase}?${donateAmount}&${donateComment}`);
-            window.location.replace(response.data);
+            const response = await axios.post(linkBase, donation);
+            window.location.replace(response.data.pageUrl);
         } catch (err) {
             console.error(err);
         }

@@ -164,4 +164,7 @@ export const API_ROUTES = {
     EMAIL: {
         SEND: 'email/send',
     },
+    DONATION: {
+        CREATE: 'payment/createInvoice',
+    }
 };
