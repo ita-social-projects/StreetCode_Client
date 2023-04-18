@@ -42,7 +42,6 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     padding: 25px;
     position: relative;
     left: 5%;
-    // @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
     color: c.$dark-red-color;
     @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
     p{
@@ -52,10 +51,6 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     }
 
     .inputBlock{
-        // width: 400px;
-        // height: 280px;
-        
-        // .characterCounter{
         .factContent{
             color: c.$lighter-black-color;
             width: 85%;
@@ -65,23 +60,11 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
               resize: none;
 
             }
-            // width: 100%;
-            // text-align: right;
-            // padding: 0;
-            // @include mut.with-font(ft.$roboto-font, 300, 14px, normal) ;
         }
-
         .title{
           @include mut.with-font(ft.$roboto-font, 300, 18px, normal) ;
 
           width: 60%;
         }
-        // textarea{
-        //     height: 70%;
-        //     width: 100%;
-        //     resize: none;
-
-        
-        // }
     }
 }
