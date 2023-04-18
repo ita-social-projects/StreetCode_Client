@@ -20,7 +20,6 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
         setFilteredOptions(options);
         console.log(options);
     }, [options]);
-    
 
     const handleSearch = (value: string) => {
         const filtered = options.filter((option) => option.title.toLowerCase().includes(value.toLowerCase()));

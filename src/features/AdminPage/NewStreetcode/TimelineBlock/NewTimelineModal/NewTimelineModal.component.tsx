@@ -49,7 +49,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
             }
         } else {
             const newTimeline:TimelineItem = { date: formValues.date,
-                                               id: 0,
+                                               id: timelineItemStore.timelineItemMap.size,
                                                title: formValues.title,
                                                description: formValues.description,
                                                historicalContexts: selectedContext.current };

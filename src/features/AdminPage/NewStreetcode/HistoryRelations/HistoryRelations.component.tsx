@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
 import './HistoryRelations.styles.scss';
-import RelationsList from './components/RelatedFigureList.component';
+
+import { useEffect, useState } from 'react';
+import { PartnerShort } from '@models/partners/partners.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
-import InputPanel from './components/InputPanel.component'
 import axios from 'axios';
-import {PartnerShort} from "@models/partners/partners.model";
+
+import InputPanel from './components/InputPanel.component';
+import RelationsList from './components/RelatedFigureList.component';
+
 interface Props {
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
 }
@@ -13,11 +16,11 @@ const RelatedFiguresBlock = ({ setFigures }: Props) => {
     const [options, setOptions] = useState<RelatedFigure[]>([]);
 
     const handleAdd = (relationToAdd: RelatedFigure) => {
-        console.log(relationToAdd.title)
         const existing = relations.find((rel) => rel.id === relationToAdd.id);
         if (existing === undefined) {
             setRelations((prevState) => [...prevState, relationToAdd]);
         }
+        console.log(relationToAdd);
         setFigures((prevState) => [...prevState, relationToAdd]);
     };
 
@@ -35,17 +38,17 @@ const RelatedFiguresBlock = ({ setFigures }: Props) => {
     useEffect(() => {
         getOptions();
     }, []);
-    
+
     return (
-        <div className='relationsBlock'>
-            <div className='subheading'>
+        <div className="relationsBlock">
+            <div className="subheading">
                 <h3>Зв'язки історії</h3>
                 <h4>Стріткоди</h4>
             </div>
             <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
-            <RelationsList relations={relations} setRelations={setRelations} />
+            <RelationsList relations={relations} setRelations={setRelations} setFigures={setFigures} />
         </div>
     );
-}
+};
 
 export default RelatedFiguresBlock;

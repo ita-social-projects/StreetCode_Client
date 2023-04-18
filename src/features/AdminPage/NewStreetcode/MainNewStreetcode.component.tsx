@@ -100,7 +100,7 @@ const NewStreetcode = () => {
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
             tags: selectedTags,
             // images,
-            figures,
+            relatedFigures: figures,
             // audio: audioFile && createFileObject<AudioCreate>(audioFile),
             text: (text.title && text.textContent) ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
@@ -120,6 +120,8 @@ const NewStreetcode = () => {
             streetcode.firstName = form.getFieldValue('name');
             streetcode.lastName = form.getFieldValue('surname');
         }
+
+        console.log(streetcode);
 
         StreetcodesApi.create(streetcode)
             .then((response) => {
