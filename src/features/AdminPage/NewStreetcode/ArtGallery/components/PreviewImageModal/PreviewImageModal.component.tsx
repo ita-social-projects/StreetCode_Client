@@ -18,7 +18,7 @@ const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, rejec
 const PreviewFileModal: React.FC<{
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
-    art: ArtCreate | null;
+    art: ArtCreate;
     onSave: (art: ArtCreate) => void
 }> = ({ opened, setOpened, onSave, art }) => {
     const [fileProps, setFileProps] = useState<{

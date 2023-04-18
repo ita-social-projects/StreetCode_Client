@@ -21,6 +21,7 @@ import TimelineStore from '@stores/timeline-store';
 import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 
 import StreetcodeShortStore from './streetcodeshort-store';
+import NewStreetcodeFilesStore from './newstreetcode-files-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -41,6 +42,7 @@ interface Store {
     historicalContextStore: HistoricalContextStore,
     streetcodeCatalogStore: StreetcodesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
+    newStreetcodeFilesStore: NewStreetcodeFilesStore,
 }
 
 export const store: Store = {
@@ -62,6 +64,7 @@ export const store: Store = {
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
+    newStreetcodeFilesStore: new NewStreetcodeFilesStore(),
 };
 
 const StoreContext = createContext(store);

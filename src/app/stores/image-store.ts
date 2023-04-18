@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import imagesApi from '@api/media/images.api';
-import Image from '@models/media/image.model';
+import Image, { ImageCreate } from '@models/media/image.model';
 
 export default class ImageStore {
     public ImageMap = new Map<number, Image>();
@@ -49,10 +49,11 @@ export default class ImageStore {
         }
     };
 
-    public createImage = async (image: Image) => {
+    public createImage = async (image: ImageCreate) => {
         try {
-            await imagesApi.create(image);
-            this.setItem(image);
+            await imagesApi.create(image).then((resp) => {
+                this.setItem(resp);
+            });
         } catch (error: unknown) {
             console.log(error);
         }

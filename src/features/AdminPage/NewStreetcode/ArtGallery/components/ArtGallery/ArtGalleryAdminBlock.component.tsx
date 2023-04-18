@@ -24,8 +24,6 @@ const ArtGalleryAdminBlock: React.FC<{ arts:ArtCreate[] }> = ({ arts }) => {
                 if (image) {
                     const url = base64ToUrl(image, mimeType);
                     const { width, height } = await getImageSize(url!);
-                    console.log(width);
-                    console.log(height);
                     newMap.push({
                         index,
                         description,
