@@ -48,6 +48,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
             row-gap: pxToRem(20px);
             grid-auto-rows: minmax(205px, 236px);
           grid-template-columns: repeat(auto-fit, 165px);
+          justify-content: center;
 
         }
     }
