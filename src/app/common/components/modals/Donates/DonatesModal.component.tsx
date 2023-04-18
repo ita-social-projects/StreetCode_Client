@@ -7,6 +7,7 @@ import {
     useEffect, useRef, useState,
 } from 'react';
 
+import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import axios from 'axios';import { link } from 'fs';
@@ -26,6 +27,7 @@ const DonatesModal = () => {
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
+    const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
     const linkBase = 'https://4852-185-244-159-24.ngrok-free.app/api/Payment/CreateInvoice';
 
@@ -40,30 +42,38 @@ const DonatesModal = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        const newValue = parseInt(target.value, 10);
-
-        if (Number.isSafeInteger(newValue)) {
-            setDonateAmount(newValue);
-        } else if (Number.isNaN(newValue)) {
-            setDonateAmount(0);
+        let newValue = target.value.replace('₴', '').trim();
+        
+        if (!newValue) {
+          setDonateAmount(0);
+        } else {
+          const parsedValue = parseInt(newValue, 10);
+          if (Number.isSafeInteger(parsedValue)) {
+            setDonateAmount(parsedValue);
+          } else {
+            setDonateAmount(donateAmount);
+          }
         }
-    };
-
+      };
+      
     const handlePost = async () => {
         const donation: Donation = { 
             Amount: donateAmount, 
             RedirectUrl: window.location.href
         };
 
-        console.log(window.location.href);
-
-        try {
-            const response = await axios.post(linkBase, donation);
-            window.location.replace(response.data.pageUrl);
-        } catch (err) {
-            console.error(err);
+        if (isCheckboxChecked) {
+            try {
+                const response = await axios.post(linkBase, donation);
+                window.location.replace(response.data.pageUrl);
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+          console.log('Checkbox not checked');
         }
-    }
+      }
+      
 
     useEffect(() => {
         const handleResize = () => {
@@ -121,12 +131,10 @@ const DonatesModal = () => {
                     ))}
                 </div>
                 <div className="donatesInputContainer">
-                    <Input value={donateName} onChange={(e)=>setDonateName(e.target.value)} 
-                        placeholder="Ваше ім’я (необов’язково)" />
-                    <Input value={donateComment} onChange={(e)=>setDonateComment(e.target.value)} 
-                        placeholder="Коментар (необов’язково)" />
+                        <Checkbox className={"checkbox-borderline"}  checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
                 </div>
                 <Button onClick={handlePost} 
+                    disabled={!isCheckboxChecked}
                     className="donatesDonateBtn">Підтримати</Button>
             </div>
         </Modal>
