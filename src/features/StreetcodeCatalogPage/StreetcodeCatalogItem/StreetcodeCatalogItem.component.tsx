@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import './StreetcodeCatalogItem.styles.scss';
 
 import { Link } from 'react-router-dom';
