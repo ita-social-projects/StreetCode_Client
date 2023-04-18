@@ -8,11 +8,8 @@
     padding: 110px 12.5% 0;
     width: 100%;
 
-    background-image: url('@/assets/images/donates/donatesPage/background.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-
+    background: url('@/assets/images/donates/donatesPage/background.svg') no-repeat center center / cover;
+      
     .heading {
         .titleBig {
             @include mut.rem-margined($bottom: 40px);
