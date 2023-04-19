@@ -46,7 +46,6 @@ const StreetcodeCatalogItem = ({ streetcode }: Props) => {
             {windowsize.width <= 1024 && (
                 <div>
                     {' '}
-                    {/* <div className="commonCatalogItem"> */}
                     <div
                         className="catalogItem"
                         style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
@@ -58,16 +57,15 @@ const StreetcodeCatalogItem = ({ streetcode }: Props) => {
                                 streetcode.alias !== null
                                     ? (
                                         <p className="aliasText">
-                                                (
+                                            (
                                             {streetcode.alias}
-                                                )
+                                            )
                                         </p>
                                     )
                                     : undefined
                             }
                         </div>
                     </div>
-                    {/* </div> */}
                 </div>
             )}
         </>

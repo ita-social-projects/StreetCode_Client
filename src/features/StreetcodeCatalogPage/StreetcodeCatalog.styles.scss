@@ -31,15 +31,10 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         justify-content: center;
         justify-items: center;
     }
-
-
 }
-
-
 
 @media screen and (max-width: 1024px) {
     .streetcodeCatalogWrapper {
-        padding-top: pxToRem(20px);
         padding-left: pxToRem(13px);
         padding-right: pxToRem(12px);
 
@@ -49,6 +44,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         }
 
         .steetcodeCatalogContainer {
+            padding-top: pxToRem(20px);
             row-gap: pxToRem(20px);
             grid-auto-rows: minmax(165px, 236px);
             grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
@@ -58,9 +54,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     }
 }
 
-
 @media screen and (max-width: 768px) {
-
     .streetcodeCatalogWrapper {
         .steetcodeCatalogContainer {
             column-gap: pxToRem(10px);
