@@ -44,31 +44,31 @@ const StreetcodeCatalogItem = ({ streetcode }: Props) => {
                 </Link>
             )}
             {windowsize.width <= 1024 && (
-                <>
+                <div>
                     {' '}
-                    <div className="commonCatalogItem">
-                        <div
-                            className="catalogItem"
-                            style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
-                        />
-                        <div className="catalogItemText mobile">
-                            <div className="heading">
-                                <p>{streetcode.title}</p>
-                                {
-                                    streetcode.alias !== null
-                                        ? (
-                                            <p className="aliasText">
-                                            (
-                                                {streetcode.alias}
-                                            )
-                                            </p>
-                                        )
-                                        : undefined
-                                }
-                            </div>
+                    {/* <div className="commonCatalogItem"> */}
+                    <div
+                        className="catalogItem"
+                        style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
+                    />
+                    <div className="catalogItemText mobile">
+                        <div className="heading">
+                            <p>{streetcode.title}</p>
+                            {
+                                streetcode.alias !== null
+                                    ? (
+                                        <p className="aliasText">
+                                                (
+                                            {streetcode.alias}
+                                                )
+                                        </p>
+                                    )
+                                    : undefined
+                            }
                         </div>
                     </div>
-                </>
+                    {/* </div> */}
+                </div>
             )}
         </>
     );

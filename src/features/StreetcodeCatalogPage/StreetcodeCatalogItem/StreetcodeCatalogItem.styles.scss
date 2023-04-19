@@ -49,6 +49,7 @@
     }
 
     &.mobile {
+        @include mut.sized($width: 165px, $height: 65px);
         background-color: transparent !important;
         line-height: pxToRem(18.48px);
         color: c.$pure-black-color;
@@ -67,7 +68,6 @@
                 line-height: pxToRem(13.2px);
                 font-size: 10px;
                 padding-top: pxToRem(0px) !important;
-                ;
             }
         }
     }
@@ -75,11 +75,11 @@
 }
 
 @media screen and (max-width:1024px) {
-    .commonCatalogItem {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-
+    // .commonCatalogItem {
+    //     display: flex;
+    //     flex-wrap: wrap;
+    //     justify-content: center;
+    // }
 
         .catalogItem {
             @include mut.sized($width: 165px, $height: 165px);
@@ -110,7 +110,6 @@
         //         }
         //     }
         // }
-    }
 
     // .relatedFigureSlide {
     //     @include mut.sized($width: 165px, $height: 165px);
