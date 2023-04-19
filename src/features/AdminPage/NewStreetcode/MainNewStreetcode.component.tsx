@@ -16,6 +16,9 @@ import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
+import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
+
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -26,7 +29,7 @@ const NewStreetcode = () => {
     }, []);
     return (
         <div className="NewStreetcodeContainer">
-            <PageBar />
+           <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminPageContainer">
                     <Form form={form} layout="vertical">
@@ -36,9 +39,11 @@ const NewStreetcode = () => {
                     <InterestingFactsBlock />
                     <ArtGalleryBlock />
                     <RelatedFiguresBlock />
-                    <TimelineBlockAdmin />
+                    <TimelineBlockAdmin />  
                     <ForFansBlock />
                     <PartnerBlockAdmin />
+                    <SubtitleBlock />
+                    <MapBlockAdmin/>   
                 </div>
             </ConfigProvider>
 

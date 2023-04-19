@@ -33,8 +33,6 @@ const StreetcodeContent = () => {
     const { streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
 
-    useSticky();
-
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl);
     }, [setCurrentStreetcodeId, streetcodeUrl]);
@@ -62,11 +60,13 @@ const StreetcodeContent = () => {
             <Suspense fallback={<div>Loading...</div>}>
                 <PartnersLazyComponent />
             </Suspense>
-            <TickerBlock />
-            <div className="stickies">
-                <ScrollToTopBtn />
-                <DonateBtn />
+            <div className="sticky">
+                <div className="sticky-content">
+                    <ScrollToTopBtn />
+                    <DonateBtn />
+                </div>
             </div>
+            <TickerBlock />
             <Footer />
             <TagsModalComponent
                 activeTagId={activeTagId}
