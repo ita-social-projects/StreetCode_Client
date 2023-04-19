@@ -39,6 +39,10 @@
         color: #4E4E4E !important;
     }
 
+    .yarl__slide {
+        padding: 0 !important;
+    }
+
     @media screen and (min-width:1024px) {
 
         .yarl__slide_description_container {
@@ -55,6 +59,28 @@
             @include mut.with-font($font-weight: 300);
             @include mut.with-font();
             -webkit-line-clamp: inherit !important;
+        }
+
+        .yarl__icon {
+            @include mut.sized(30px, 30px);
+            @include mut.rem-margined($top: 8px, $right: 25px);
+            @include mut.colored(#4E4E4E !important, c.$transparent-color);
+
+            &:hover {
+                color: #918f8f !important;
+            }
+        }
+
+        .yarl__navigation_prev {
+            @include slick-arrow-lightbox(left);
+            left: pxToRem(30px) !important;
+            filter: brightness(35%);
+        }
+
+        .yarl__navigation_next {
+            @include slick-arrow-lightbox(right);
+            right: pxToRem(30px) !important;
+            filter: brightness(35%);
         }
     }
 
@@ -80,34 +106,6 @@
 
         button {
             visibility: hidden;
-        }
-    }
-
-    .yarl__slide {
-        padding: 0 !important;
-    }
-
-    @media screen and (min-width:1024px) {
-        .yarl__icon {
-            @include mut.sized(30px, 30px);
-            @include mut.rem-margined($top: 8px, $right: 25px);
-            @include mut.colored(#4E4E4E !important, c.$transparent-color);
-
-            &:hover {
-                color: #918f8f !important;
-            }
-        }
-
-        .yarl__navigation_prev {
-            @include slick-arrow-lightbox(left);
-            left: pxToRem(30px) !important;
-            filter: brightness(35%);
-        }
-
-        .yarl__navigation_next {
-            @include slick-arrow-lightbox(right);
-            right: pxToRem(30px) !important;
-            filter: brightness(35%);
         }
     }
 }
