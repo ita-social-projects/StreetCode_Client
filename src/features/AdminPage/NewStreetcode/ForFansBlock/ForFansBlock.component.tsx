@@ -1,23 +1,15 @@
 import './ForFansBlock.style.scss';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useMobx from '@stores/root-store';
 
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import { useRouteId } from '@/app/common/hooks/stateful/useRouter.hook';
+import { SourceCategory } from '@/models/sources/sources.model';
 
-import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
 
-const ForFansBlock = () => {
-    const streetcodeId = 2;// useRouteId();
-    const { sourcesStore: { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } } = useMobx();
+const ForFansBlock:React.FC<{ categories:SourceCategory[] }> = ({ categories }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useAsync(
-        () => fetchSrcCategoriesByStreetcodeId(streetcodeId),
-        [streetcodeId],
-    );
     return (
         <div className="forFansBlock">
             <div className="forFansHeader">
@@ -27,7 +19,7 @@ const ForFansBlock = () => {
             </div>
             <div className="forFansContainer">
                 <button className="addNewCategory" onClick={() => setIsModalOpen(true)}>+</button>
-                {getSrcCategoriesArray.map((SourceCategory) => (
+                {categories.map((SourceCategory) => (
                     <ForFansAdminItem
                         SourceCategory={SourceCategory}
                     />

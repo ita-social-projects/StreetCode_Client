@@ -20,6 +20,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import { SourceCategory } from '@/models/sources/sources.model';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -29,6 +30,7 @@ const NewStreetcode = () => {
         }
     }, []);
     const [arts, setArts] = useState<ArtCreate[]>([]);
+    const [categories, setCategories] = useState<SourceCategory[]>([]);
     return (
         <div className="NewStreetcodeContainer">
             <PageBar />
@@ -42,7 +44,7 @@ const NewStreetcode = () => {
                     <ArtGalleryBlock arts={arts} setArts={setArts} />
                     {/*  <RelatedFiguresBlock /> */}
                     <TimelineBlockAdmin />
-                    <ForFansBlock />
+                    <ForFansBlock categories={categories} />
                     <PartnerBlockAdmin />
                     <SubtitleBlock />
                     <MapBlockAdmin />
