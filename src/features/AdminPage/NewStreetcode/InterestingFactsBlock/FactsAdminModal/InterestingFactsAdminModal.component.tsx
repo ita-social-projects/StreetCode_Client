@@ -49,7 +49,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 });
         } else {
             setFileList([]);
-            
         }
     }, [fact, open, form]);
 

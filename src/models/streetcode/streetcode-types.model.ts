@@ -1,6 +1,6 @@
 import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
 import Tag, { TagVisible } from '@models/additional-content/tag.model';
-import Art, { IndexedArt } from '@models/media/art.model';
+import Art, { ArtCreateDTO, IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
@@ -94,16 +94,16 @@ export interface StreetcodeCreate {
     eventStartOrPersonBirthDate: Date,
     eventEndOrPersonDeathDate: Date,
     dateString: string,
-    // audio?: Audio | undefined,
     tags: TagVisible[],
+    imagesId: number[],
     streetcodeType: StreetcodeType,
-    // images: ImageCreate[],
     text: TextCreate | null,
     videos: VideoCreate[],
-    // facts: FactCreate[],
+    facts: Fact[],
     timelineItems: TimelineItem[],
     partners: PartnerShort[],
-    // indexedArts: IndexedArt[],
     subtitles: SubtitleCreate[],
-    relatedFigures: RelatedFigure[]
+    relatedFigures: RelatedFigure[],
+    streetcodeArts: ArtCreateDTO[],
+    toponyms: string[],
 }

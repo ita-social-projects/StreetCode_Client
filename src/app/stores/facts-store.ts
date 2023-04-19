@@ -5,15 +5,9 @@ import { Fact, FactCreate } from '@models/streetcode/text-contents.model';
 export default class FactsStore {
     public factMap = new Map<number, Fact>();
 
-    public factsToCreate: FactCreate[] = [];
-
     public constructor() {
         makeAutoObservable(this);
     }
-
-    public addFactToCreate = (fact: FactCreate) => {
-        this.factsToCreate.push(fact);
-    };
 
     private setInternalMap = (facts: Fact[]) => {
         facts.forEach(this.setItem);

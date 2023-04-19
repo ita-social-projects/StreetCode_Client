@@ -11,7 +11,7 @@ import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
 import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { TagVisible } from '@/models/additional-content/tag.model';
-import { ArtCreate } from '@/models/media/art.model';
+import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import { VideoCreate } from '@/models/media/video.model';
 import { PartnerShort } from '@/models/partners/partners.model';
 import { StreetcodeCreate, StreetcodeType }
@@ -35,7 +35,7 @@ import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
 const NewStreetcode = () => {
     const [form] = useForm();
-    const { factsStore, timelineItemStore } = useMobx();
+    const { factsStore, timelineItemStore, newStreetcodeInfoStore } = useMobx();
 
     const [partners, setPartners] = useState<PartnerShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
@@ -43,7 +43,6 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
-
     const [arts, setArts] = useState<ArtCreate[]>([]);
 
     useEffect(() => {
@@ -65,6 +64,14 @@ const NewStreetcode = () => {
             textContent: inputInfo?.text,
         };
 
+        const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
+            imageId: art.imageId,
+            description: art.description,
+            index: art.index,
+            title: art.title,
+            mimeType: art.mimeType,
+        }));
+
         const streetcode: StreetcodeCreate = {
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
@@ -73,23 +80,28 @@ const NewStreetcode = () => {
             streetcodeType,
             eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate').toDate(),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
+            imagesId: [
+                newStreetcodeInfoStore.AnimationId,
+                newStreetcodeInfoStore.BlackAndWhiteId,
+            ],
             tags: selectedTags,
-            // images,
             relatedFigures: figures,
-            // audio: audioFile && createFileObject<AudioCreate>(audioFile),
             text: (text.title && text.textContent) ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
+            facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
+                .map((fact: Fact) => ({ ...fact, id: 0 })),
             partners,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
             dateString: form.getFieldValue('dateString'),
-            // indexedArts,
+            streetcodeArts,
             subtitles,
             firstName: null,
             lastName: null,
             videos,
+            toponyms: newStreetcodeInfoStore.selectedToponyms,
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');

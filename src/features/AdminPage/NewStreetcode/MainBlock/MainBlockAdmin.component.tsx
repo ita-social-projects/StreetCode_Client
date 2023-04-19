@@ -272,7 +272,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 </div>
             </div>
 
-            {/* <FileInputsPart /> */}
+            <FileInputsPart />
         </div>
     );
 };
