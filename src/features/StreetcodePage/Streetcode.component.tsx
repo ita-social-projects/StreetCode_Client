@@ -44,9 +44,9 @@ const StreetcodeContent = () => {
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
                 />
-                <Suspense fallback={<div>Loading...</div>}>
+                {/* <Suspense fallback={<div>Loading...</div>}>
                     <TextLazyComponent />
-                </Suspense>
+                </Suspense> */}
                 <InterestingFactsBlock />
                 <TimelineBlock />
                 <MapBlock />

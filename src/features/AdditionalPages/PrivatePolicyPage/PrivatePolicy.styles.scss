@@ -70,6 +70,8 @@
 
 @media screen and (max-width: 1024px) {
     .privatePolicyContainer{
+        padding-top: f.pxToRem(94px);
+        
         .disclaimer{
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
             line-height: 21px;
