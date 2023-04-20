@@ -41,7 +41,7 @@ const PreviewFileModal:React.FC<{
                     <input />
                     <p>Description</p>
                     <textarea />
-                    <button className="saveButton">Зберегти</button>
+                    <Button className="saveButton">Зберегти</Button>
                 </div>
             </Modal>
         );

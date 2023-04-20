@@ -123,6 +123,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 <FormItem
                     name="image"
                     className=""
+                    rules={[{ required: true, message: 'Завантажте фото, будь ласка' }]}
                 >
                     <Upload
                         multiple={false}
