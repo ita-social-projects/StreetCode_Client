@@ -30,19 +30,15 @@ const InterestingFactsComponent = () => {
             {
                 breakpoint: 480,
                 settings: {
-                    // centerPadding: '-48px',
                     centerPadding: '-48px',
-                    // centerlMode: true,
-
                     swipe: true,
-                    // dots: true,
                     dots: true,
                 },
             },
             {
-                breakpoint: 780,
+                breakpoint: 769,
                 settings: {
-                    centerPadding: '-32.5px',
+                    centerPadding: '-31px',
                     swipe: true,
                     dots: true,
                 },
@@ -50,8 +46,8 @@ const InterestingFactsComponent = () => {
             {
                 breakpoint: 1025,
                 settings: {
-                    centerPadding: '-40px',
-                    // centerlMode: true,
+                    centerPadding: '-34.5px',
+                    centerlMode: true,
                     arrows: false,
                     swipe: true,
                     dots: true,

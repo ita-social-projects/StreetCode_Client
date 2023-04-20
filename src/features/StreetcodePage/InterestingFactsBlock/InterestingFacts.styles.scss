@@ -80,84 +80,112 @@
     }
 }
 
+
 @media screen
 and (max-width: 1024px){
 
     .interestingFactsWrapper {
-        @include mut.sized(100%, 100%); 
+    @include mut.sized(100%, 100%); 
     @include wr.main-page-block-wrapper();
-    // margin: 0;
-    .slick-dots{
-        // @include mut.sized(100%);         
+    .slick-dots{         
         @include mut.rem-margined(0);
-
-        //     //  left: 0.5rem;   
-        // @include mut.rem-margined(0px);
-        bottom: 25%
-        // f.pxToRem(22px);
-    
+        bottom: 25%;
     }
-    
-}
-.interestingFactsContainer {
-        @include mut.sized(90%, 720px); 
+ }
+ .interestingFactsContainer {
+        @include mut.sized(92%, 720px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
             margin-left: pxToRem(10px);
         }
     }
-    
-    // .interestingFactsSliderContainer {
-    //    // @include mut.sized(760px, 660px);
-    //     @include mut.sized(10%);
-        
-    // }
     .interestingFactsSliderContainer {
-        @include mut.sized(85%, 100%); //660px
-      
-        // .slick-slide {
-        //     margin: 0 -2px;
-        //   }
+        @include mut.sized(85%, 100%);
+    }
+    .singleSlideContainer{
     
+        padding-top:7.5%;
+    
+        .interestingFactSlide{
+            // @include mut.sized(610px, 550px);
+            // @include mut.sized(600px, 550px);
+            @include mut.sized(47%);
+            @include mut.full-rounded(20px);
+    
+            .slideImage {
+                @include mut.sized($height: 65%);
+                 @include mut.sized($height: 15%);
+    
+                img {
+                    @include mut.sized($width: 100%, $height: 100%);
+                    @include mut.sized($width: 100%);
+                }
+            }
+            .slideText{
+                @include mut.sized($height: 40%);
+    
+                .heading{
+                    font-size:22px;
+                    font-size: 22px;
+                }
+    
+                .mainText{
+                    overflow: auto;
+                    height: 175px;
+                    font-size: 16px;
+                    line-height: pxToRem(17px);
+                    line-height: pxToRem(21px);
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        z-index: 1;
+                        bottom: 0;
+                        left: 0;
+                        pointer-events: none;
+                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                        width: 100%;
+                        height: 1.7em;
+                      }
+    
+                }
+            }
+        }
     }
 }
-// FIX ME!
+
 @media screen
-and (max-width: 768px){
+and (min-width: 770px) and (max-width: 1023px){
+    .interestingFactsContainer {
+        @include mut.sized(765px, 720px); 
+        @include mut.flex-centered($direction: column);
+    }
+    .interestingFactsSliderContainer {
+        @include mut.sized(100%, 100%); 
+    }
+}
+
+@media screen
+and (max-width: 770px){
 
     .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
-    // margin: 0;
     .slick-dots{
         @include mut.rem-margined(0);
-        bottom: 25%
-
-        // bottom: f.pxToRem(160px);
+        bottom: 25%;
     }
   
 }
     .interestingFactsContainer {
-        @include mut.sized(100%, 720px); 
+        @include mut.sized(770px, 720px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
             margin-left: pxToRem(10px);
         }
     }
-    
-    // .interestingFactsSliderContainer {
-    //    // @include mut.sized(760px, 660px);
-    //     @include mut.sized(100%);
-        
-    // }
     .interestingFactsSliderContainer {
-        @include mut.sized(100%, 100%); //660px
-      
-        // .slick-slide {
-        //     margin: 0 -2px;
-        //   }
-    
+        @include mut.sized(100%, 100%); 
     }
 
 
@@ -167,8 +195,6 @@ and (max-width: 768px){
 
    
     .interestingFactSlide{
-        // @include mut.sized(500px, 450px);
-        // @include mut.sized(60%);
         @include mut.full-rounded(20px);
 
         .slideImage {
@@ -210,6 +236,20 @@ and (max-width: 768px){
 }
 }
 
+@media screen
+and  (min-width: 480px) and (max-width: 765px){
+    .interestingFactsSliderContainer {
+        @include mut.sized(815px, 100%); 
+    
+    }
+    .interestingFactsSliderContainer {
+        @include mut.sized(815px, 100%); 
+    
+    }
+    }
+
+
+
 @media screen and (max-width: 480px){
 
    
@@ -225,19 +265,11 @@ and (max-width: 768px){
     @include wr.main-page-block-wrapper();
     margin: 0;
     .slick-dots{
-        // margin: 0;
-        // bottom: 5.375rem;
-        bottom: 25%
-
+        bottom: 25%;
      }
-   
-    // .slick-track {
-    //     padding-right: 10px; /* adjust this value to your desired gap */
-    //   }
 }
     .interestingFactsSliderContainer {
-        @include mut.sized(815px, 100%); //660px
-    
+        @include mut.sized(815px, 100%); 
     }
     .interestingFactSlide{
         .slideImage {
@@ -252,7 +284,6 @@ and (max-width: 768px){
         padding-top:7.5%;
 
         .interestingFactSlide{
-            // @include mut.sized(345px, 430px);
             @include mut.sized(30%);
             @include mut.full-rounded(20px);
     
@@ -296,90 +327,3 @@ and (max-width: 768px){
       
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// @media screen
-//     and (min-width: 768px)
-//     and (max-width: 1024px){
-
-    
-//     .interestingFactsContainer {
-//         @include mut.sized(90%, 720px);
-    
-//         .single{
-//             margin-bottom: pxToRem(120px) ;
-//        }
-//     }
-    
-//     .interestingFactsWrapper {
-//         @include wr.main-page-block-wrapper();
-//         margin: 0;
-//     }
-//         // .interestingFactsSliderContainer {
-//         //     // @include mut.sized(770px, 410px);
-//         // }
-        
-
-//         .interestingFactSlide{
-//             .slideImage {
-//                 @include mut.sized($height: 45%);
-//                 img {
-//                     @include mut.sized($width: 100%);
-//                 }
-//             }
-//         }
-//         .singleSlideContainer{
-            
-//             padding-top:7.5%;
-    
-//             .interestingFactSlide{
-
-//                 // @include  mut.sized(400px, 430px);
-//                 @include  mut.sized(40%);
-//                 @include mut.full-rounded(20px);
-        
-//                 .slideImage {
-//                     @include mut.sized($height: 40%);
-        
-//                     img {
-//                         @include mut.sized($width: 100%, $height: 100%);
-//                     }
-//                 }
-//                 .slideText{
-//                     @include mut.sized($height: 10%);
-        
-//                     .heading{
-//                         font-size:15px;
-//                     }
-        
-//                     .mainText{
-//                         font-size: 12px;
-//                         line-height: pxToRem(15px);
-//                     }
-//                 }
-//             }
-          
-           
-    
-//           }
-//     }
