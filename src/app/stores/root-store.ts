@@ -13,14 +13,15 @@ import SourcesStore from '@stores/sources-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
 import StreetcodeStore from '@stores/streetcode-current-store';
 import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
+import StreetcodeShortStore from '@stores/streetcodeshort-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-import StreetcodeCoordinatesStore from './streetcode-coordinates-store';    
+
 import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 
-import StreetcodeShortStore from './streetcodeshort-store';
+import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 
 interface Store {
     modalStore: ModalStore,
