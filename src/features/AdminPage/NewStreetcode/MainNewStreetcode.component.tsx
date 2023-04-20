@@ -20,7 +20,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { SourceCategory } from '@/models/sources/sources.model';
+import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -30,7 +30,7 @@ const NewStreetcode = () => {
         }
     }, []);
     const [arts, setArts] = useState<ArtCreate[]>([]);
-    const [categories, setCategories] = useState<SourceCategory[]>([]);
+    const [categories, setCategories] = useState<StreetcodeCategoryContent[]>([]);
     return (
         <div className="NewStreetcodeContainer">
             <PageBar />

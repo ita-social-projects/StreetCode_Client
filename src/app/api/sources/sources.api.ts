@@ -1,9 +1,11 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import { SourceCategory, SourceLink, SourceSubCategory } from '@models/sources/sources.model';
+import { SourceCategory, SourceCategoryName, SourceLink, SourceSubCategory } from '@models/sources/sources.model';
 
 const SourcesApi = {
     getAllCategories: () => Agent.get<SourceCategory[]>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES}`),
+
+    getAllNames: () => Agent.get<SourceCategoryName[]>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES_NAMES}`),
 
     getById: (id: number) => Agent.get<SourceCategory>(`${API_ROUTES.SOURCES.GET}/${id}`),
 

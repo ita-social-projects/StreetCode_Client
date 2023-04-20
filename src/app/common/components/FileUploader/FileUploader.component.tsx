@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
-import { InboxOutlined } from '@ant-design/icons';
 
 import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
 
+import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import Audio, { AudioCreate } from '@/models/media/audio.model';
 import Image, { ImageCreate } from '@/models/media/image.model';
-import AudiosApi from '@/app/api/media/audios.api';
 
 type UploaderWithoutChildren = Omit<UploadProps, 'children'>;
 
@@ -50,7 +49,7 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
                                      title: uplFile.name };
         return ImagesApi.create(image);
     };
-    const customRequest = async (options: UploadRequestOption<any>) => {
+    const customRequest = async (options:any) => {
         const {
             onSuccess, onError, file, action, onProgress,
         } = options;

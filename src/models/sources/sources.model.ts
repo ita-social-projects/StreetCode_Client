@@ -16,6 +16,16 @@ export interface SourceCategory {
     streetcode?: Streetcode | undefined;
     subCategories: SourceSubCategory[];
 }
+export interface SourceCategoryName {
+    id: number;
+    title: string;
+}
+
+export interface StreetcodeCategoryContent {
+    id: number;
+    categoryId:number;
+    text?:string;
+}
 
 export interface SourceSubCategory {
     id: number;
