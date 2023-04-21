@@ -1,5 +1,6 @@
 import './ForFansBlock.style.scss';
 
+import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
 
@@ -8,7 +9,6 @@ import { SourceCategory, SourceCategoryName, StreetcodeCategoryContent } from '@
 
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
-import { observer } from 'mobx-react-lite';
 
 const ForFansBlock = () => {
     const { sourceCreateUpdateStreetcode } = useMobx();
@@ -25,13 +25,18 @@ const ForFansBlock = () => {
                 </h2>
             </div>
             <div className="forFansContainer">
-                <button className="addNewCategory"
-                 onClick={() => setIsModalOpen(true)}>+</button>
+                <button
+                    className="addNewCategory"
+                    onClick={() => setIsModalOpen(true)}
+                >
++
+
+                </button>
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category) => (
                     <ForFansAdminItem
-                        categoryName={categoriesSelect.find((c) => c.id === category.categoryId)!.title}
+                        categoryName={categoriesSelect.find((c) => c.id === category.categoryId)?.title ?? ''}
                         id={category.id}
-                        onEditClick={()=>{
+                        onEditClick={() => {
                             sourceCreateUpdateStreetcode.indexUpdate = category.id;
                             setIsModalOpen(true);
                         }}

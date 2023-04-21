@@ -32,6 +32,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
 
     useEffect(() => {
         if (fact && open) {
+            imageId.current = fact.imageId;
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
                     form.setFieldsValue({
@@ -49,7 +50,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 });
         } else {
             setFileList([]);
-            
         }
     }, [fact, open, form]);
 
@@ -137,6 +137,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         fileList={fileList}
                         onSuccessUpload={(image:Image) => {
                             imageId.current = image.id;
+                        }}
+                        onRemove={(image) => {
+                            ImagesApi.delete(imageId.current);
                         }}
                     >
                         <div className="upload">

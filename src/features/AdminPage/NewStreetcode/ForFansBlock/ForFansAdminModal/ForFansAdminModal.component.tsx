@@ -19,7 +19,7 @@ interface Props {
 const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const editorRef = useRef<Editor | null>(null);
-    const selectedCategory = useRef<string | null>(null);
+    const selectedCategory = useRef<number | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
 
     useEffect(() => {
@@ -39,15 +39,13 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                 .updateElement(
                     sourceCreateUpdateStreetcode.indexUpdate,
                     { ...elementToUpdate,
-                      categoryId: allCategories
-                          .find((el) => el.title === selectedCategory.current)?.id ?? 0,
+                      categoryId: selectedCategory.current!,
                       text: editorRef.current?.editor?.getContent() ?? '' },
                 );
         } else {
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({ id: sourceCreateUpdateStreetcode.streetcodeCategoryContents.length,
-                                            categoryId: allCategories
-                                                .find((el) => el.title === selectedCategory.current)?.id ?? 0,
+                                            categoryId: Number(selectedCategory.current) ?? 0,
                                             text: editorRef.current?.editor?.getContent() ?? '' });
         }
         setOpen(false);
@@ -70,13 +68,13 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
             <Select
                 className="category-select-input"
                 defaultValue={categoryUpdate.current
-                    ? allCategories.find((c) => c.id === categoryUpdate.current?.categoryId)?.title
-                    : allCategories.length > 1 ? allCategories[0].title : ''}
-                onSelect={(value:string) => {
+                    ? categoryUpdate.current.categoryId
+                    : allCategories.length > 1 ? allCategories[0].id : null}
+                onSelect={(value:number) => {
                     selectedCategory.current = value;
                 }}
             >
-                {allCategories.map((c) => <Option key={`${c.id}`} value={c.title} />)}
+                {allCategories.map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
             </Select>
             <Editor
                 ref={editorRef}
