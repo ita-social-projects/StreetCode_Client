@@ -121,7 +121,7 @@ const DonatesModal = () => {
                 <h1>Підтримай проєкт</h1>
                 <h3>Скажи «Дякую» історії</h3>
                 <div className="enterSum">Ввести суму</div>
-                <div className="donateInputContainer">
+                <div className="donateInputContainerWrapper">
                     <input
                         onChange={handleDonateInputChange}
                         style={{ ...style, width: `var(--input-width)` }}
