@@ -14,7 +14,7 @@ import { TagVisible } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import { VideoCreate } from '@/models/media/video.model';
 import { PartnerShort } from '@/models/partners/partners.model';
-import { SourceCategory } from '@/models/sources/sources.model';
+import { SourceCategory, SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType }
     from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
@@ -45,7 +45,7 @@ const NewStreetcode = () => {
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
-    const [categories, setCategories] = useState<SourceCategory[]>([]);
+    const [categories, setCategories] = useState<StreetcodeCategoryContent[]>([]);
 
     useEffect(() => {
         if (ukUA.DatePicker) {

@@ -21,6 +21,7 @@ import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import StreetcodeShortStore from './streetcodeshort-store';
+import SourceCreateUpdateStreetcode from './source-category-store-create';
 
 interface Store {
     modalStore: ModalStore,
@@ -43,6 +44,7 @@ interface Store {
     streetcodeShortStore: StreetcodeShortStore,
     newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
+    sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
 }
 
 export const store: Store = {
@@ -66,6 +68,7 @@ export const store: Store = {
     streetcodeShortStore: new StreetcodeShortStore(),
     newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
+    sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
 };
 
 const StoreContext = createContext(store);

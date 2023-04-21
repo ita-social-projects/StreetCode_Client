@@ -1,36 +1,31 @@
 import './ForFansAdminItem.style.scss';
 
-import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
 import useMobx from '@stores/root-store';
 
-import { SourceCategory } from '@/models/sources/sources.model';
+const ForFansAdminItem:React.FC<{ id:number,
+     categoryName:string, onEditClick:()=>void }> = ({ id, categoryName, onEditClick }) => {
+         const { sourceCreateUpdateStreetcode } = useMobx();
 
-import ForFansAdminModal from '../ForFansAdminModal/ForFansAdminModal.component';
+         return (
+             <div className="forFansItem">
+                 <div className="item">
+                     <div className="faIcon">
+                         <FaPencilAlt onClick={onEditClick} />
+                     </div>
+                     <p>
+                         {categoryName}
+                     </p>
+                     <div className="faIcon">
+                         <FaRegTrashAlt onClick={
+                             () => sourceCreateUpdateStreetcode.removeSourceCategoryContent(id)
+                         }
+                         />
+                     </div>
+                 </div>
+             </div>
+         );
+     };
 
-interface Props {
-    SourceCategory: SourceCategory;
-}
-const ForFansAdminItem = ({ SourceCategory: { title, id } } : Props) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    return (
-        <div className="forFansItem">
-            <div className="item">
-                <div className="faIcon">
-                    <FaPencilAlt onClick={() => setIsModalOpen(true)} />
-                </div>
-                <p>
-                    {title}
-                </p>
-                <div className="faIcon">
-                    <FaRegTrashAlt />
-                </div>
-            </div>
-            {/* NOTE: Add for fans here */}
-            <ForFansAdminModal SourceCategory={} open={isModalOpen} setOpen={setIsModalOpen} />
-        </div>
-    );
-};
-
-export default ForFansAdminItem;
+export default observer(ForFansAdminItem);
