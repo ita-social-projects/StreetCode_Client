@@ -11,20 +11,20 @@ interface Props {
 }
 
 const goToTop = () => {
-    // window.scrollTo({
-    //     top: 0,
-    //     behavior: 'smooth',
-    // });
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+    });
 };
 
 const ScrollToTopBtn = ({ scrollDelay = 300, visibleAfterPx = 1400, btnStyle }: Props) => {
     const [showTopBtn, setShowTopBtn] = useState(false);
-    // useEventListener(
-    //     'scroll',
-    //     () => {
-    //         setShowTopBtn(window.scrollY > visibleAfterPx);
-    //     },
-    // );
+    useEventListener(
+        'scroll',
+        () => {
+            setShowTopBtn(window.scrollY > visibleAfterPx);
+        },
+    );
     return (
         <>
             {showTopBtn && (
