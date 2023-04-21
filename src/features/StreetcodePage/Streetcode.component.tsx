@@ -44,9 +44,9 @@ const StreetcodeContent = () => {
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
                 />
-                {/* <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div>Loading...</div>}>
                     <TextLazyComponent />
-                </Suspense> */}
+                </Suspense>
                 <InterestingFactsBlock />
                 <TimelineBlock />
                 <MapBlock />
@@ -60,12 +60,12 @@ const StreetcodeContent = () => {
             <Suspense fallback={<div>Loading...</div>}>
                 <PartnersLazyComponent />
             </Suspense>
-            <div className="sticky">
+            {/* <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />
                     <DonateBtn />
                 </div>
-            </div>
+            </div> */}
             <TickerBlock />
             <Footer />
             <TagsModalComponent
