@@ -29,7 +29,6 @@ export interface PartnerCreateUpdate {
     logoId: number;
     targetUrl: string;
     urlTitle:string;
-    logoBase64: string;
     partnerSourceLinks:PartnerSourceLinkCreateUpdate[];
     streetcodes:StreetcodeShort[];
 }
