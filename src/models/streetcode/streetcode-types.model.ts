@@ -5,7 +5,7 @@ import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
-import { SourceLink } from '@models/sources/sources.model';
+import { SourceLink, StreetcodeCategoryContent } from '@models/sources/sources.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import TimelineItem from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
@@ -106,4 +106,5 @@ export interface StreetcodeCreate {
     relatedFigures: RelatedFigure[],
     streetcodeArts: ArtCreateDTO[],
     toponyms: string[],
+    streetcodeCategoryContents: StreetcodeCategoryContent[],
 }

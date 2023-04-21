@@ -36,7 +36,7 @@ import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
 const NewStreetcode = () => {
     const [form] = useForm();
-    const { factsStore, timelineItemStore, newStreetcodeInfoStore } = useMobx();
+    const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
 
     const [partners, setPartners] = useState<PartnerShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
@@ -45,6 +45,7 @@ const NewStreetcode = () => {
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
+
     const [categories, setCategories] = useState<StreetcodeCategoryContent[]>([]);
 
     useEffect(() => {
@@ -104,6 +105,12 @@ const NewStreetcode = () => {
             lastName: null,
             videos,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
+            streetcodeCategoryContents: JSON.parse(
+                JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents),
+            )
+                .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
+                    { ...streetcodeCategoryContent, id: 0 }
+                )),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
@@ -112,13 +119,13 @@ const NewStreetcode = () => {
 
         console.log(streetcode);
 
-        StreetcodesApi.create(streetcode)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        // StreetcodesApi.create(streetcode)
+        //     .then((response) => {
+        //         console.log(response);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
     };
 
     return (
