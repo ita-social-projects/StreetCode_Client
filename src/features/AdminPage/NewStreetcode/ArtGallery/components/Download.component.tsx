@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
@@ -15,7 +15,7 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
         const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
         const [isOpen, setIsOpen] = useState(false);
         const uidsFile = useRef<string>('');
-        const indexTmp = 0;
+        const indexTmp = useRef<number>(0);
 
         const onChange = (uploadParams:UploadChangeParam<UploadFile<any>>) => {
             uidsFile.current = uploadParams.file.uid;
@@ -28,7 +28,7 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
         };
         const onSuccessUpload = (image:Image) => {
             const newArt: ArtCreate = {
-                index: indexTmp + 1,
+                index: indexTmp.current + 1,
                 description: 'description',
                 image: image.base64,
                 title: 'title',
@@ -36,10 +36,11 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
                 mimeType: image.mimeType,
                 uidFile: uidsFile.current,
             };
+            indexTmp.current += 1;
             setArts([...arts, newArt]);
         };
         const onRemoveFile = (file:UploadFile) => {
-            setArts(arts.filter((a) => a.uidFile !== file.uid));
+            setArts(arts.filter((a) => a.uidFile !== file.uid) ?? []);
         };
 
         const handleSave = (art: ArtCreate) => {
