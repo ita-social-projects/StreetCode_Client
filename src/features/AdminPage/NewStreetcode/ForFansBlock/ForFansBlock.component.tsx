@@ -8,40 +8,44 @@ import { SourceCategory, SourceCategoryName, StreetcodeCategoryContent } from '@
 
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
+import { observer } from 'mobx-react-lite';
 
-const ForFansBlock:React.FC<{ categories:StreetcodeCategoryContent[],
-    setCategories: React.Dispatch<React.SetStateAction<StreetcodeCategoryContent[]>>
- }> = ({ categories, setCategories }) => {
-     const [isModalOpen, setIsModalOpen] = useState(false);
-     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
-     useEffect(() => {
-         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
-     }, []);
-     return (
-         <div className="forFansBlock">
-             <div className="forFansHeader">
-                 <h2>
+const ForFansBlock = () => {
+    const { sourceCreateUpdateStreetcode } = useMobx();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
+    useEffect(() => {
+        SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
+    }, []);
+    return (
+        <div className="forFansBlock">
+            <div className="forFansHeader">
+                <h2>
                        Для фанатів
-                 </h2>
-             </div>
-             <div className="forFansContainer">
-                 <button className="addNewCategory" onClick={() => setIsModalOpen(true)}>+</button>
-                 {categories.map((SourceCategory) => (
-                     <ForFansAdminItem
-                         SourceCategory={SourceCategory}
-                     />
-                 ))}
-             </div>
-             <ForFansAdminModal
-                 allCategories={categoriesSelect}
-                 streetcodeCategoryContents={categories}
-                 setStreetcodeCategoryContents={setCategories}
-                 open={isModalOpen}
-                 setOpen={setIsModalOpen}
-             />
+                </h2>
+            </div>
+            <div className="forFansContainer">
+                <button className="addNewCategory"
+                 onClick={() => setIsModalOpen(true)}>+</button>
+                {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category) => (
+                    <ForFansAdminItem
+                        categoryName={categoriesSelect.find((c) => c.id === category.categoryId)!.title}
+                        id={category.id}
+                        onEditClick={()=>{
+                            sourceCreateUpdateStreetcode.indexUpdate = category.id;
+                            setIsModalOpen(true);
+                        }}
+                    />
+                ))}
+            </div>
+            <ForFansAdminModal
+                allCategories={categoriesSelect}
+                open={isModalOpen}
+                setOpen={setIsModalOpen}
+            />
 
-         </div>
-     );
- };
+        </div>
+    );
+};
 
-export default ForFansBlock;
+export default observer(ForFansBlock);

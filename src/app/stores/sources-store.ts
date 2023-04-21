@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
 import { SourceCategory, SourceSubCategory } from '@models/sources/sources.model';
-import SourceItemComponent from '@/features/StreetcodePage/SourcesBlock/SourceItem/SourceItem.component';
 
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();

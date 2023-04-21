@@ -71,7 +71,7 @@ export const API_ROUTES = {
         DELETE: 'toponym/delete',
     },
     SOURCES: {
-        GET_ALL_CATEGORIES_NAMES: 'sources/GetAllNames',
+        GET_ALL_CATEGORIES_NAMES: 'sources/getAllNames',
         GET_ALL_CATEGORIES: 'sources/getAllCategories',
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
