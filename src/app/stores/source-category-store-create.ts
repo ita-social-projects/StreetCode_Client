@@ -1,5 +1,4 @@
-import { makeAutoObservable } from 'mobx';
-import { Certificate } from 'crypto';
+import { makeAutoObservable } from 'mobx'
 
 import { StreetcodeCategoryContent } from '@/models/sources/sources.model';
 

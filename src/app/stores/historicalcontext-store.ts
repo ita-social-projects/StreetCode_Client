@@ -2,7 +2,7 @@ import { action, makeAutoObservable, observable } from 'mobx';
 import HistoricalContextApi from '@api/timeline/historicalcontext.api';
 import { HistoricalContext } from '@models/timeline/chronology.model';
 
-export class HistoricalContextStore {
+export default class HistoricalContextStore {
     public historicalContextArray = new Array<HistoricalContext>();
 
     public constructor() {
@@ -27,4 +27,3 @@ export class HistoricalContextStore {
         this.historicalContextArray.push(item);
     };
 }
-export default HistoricalContextStore;

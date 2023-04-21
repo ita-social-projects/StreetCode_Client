@@ -1,5 +1,5 @@
 import Subtitle from '@models/additional-content/subtitles.model';
-import Tag from '@models/additional-content/tag.model';
+import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Art from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
@@ -33,7 +33,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     toponyms: Toponym[];
     arts: Art[];
     images: Image[];
-    tags: Tag[];
+    tags: StreetcodeTag[];
     subtitles: Subtitle[];
     facts: Fact[];
     videos: Video[];

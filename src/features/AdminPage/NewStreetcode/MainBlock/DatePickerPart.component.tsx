@@ -1,12 +1,12 @@
 import './MainBlockAdmin.style.scss';
 
-import React, { useEffect, useRef, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import React, { useState } from 'react';
+import { Dayjs } from 'dayjs';
 
-import {
-    DatePicker, FormInstance, Input, InputRef, Select,
-} from 'antd';
+import { DatePicker, FormInstance, Input, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
+
+import { dateToString, selectDateOptions } from '@/models/timeline/chronology.model';
 
 const DatePickerPart:React.FC<{
     setFirstDate:(newDate: Dayjs | null) => void,
@@ -17,54 +17,6 @@ const DatePickerPart:React.FC<{
     'date' | 'month' | 'year' | 'season-year'>('date');
     const [dateSecondTimePickerType, setSecondDateTimePickerType] = useState<
     'date' | 'month' | 'year' | 'season-year'>('date');
-
-    const selectDateOptions = [{
-        value: 'date',
-        label: 'День/місяць/рік',
-    }, {
-        value: 'month',
-        label: 'Місяць/рік',
-    }, {
-        value: 'year',
-        label: 'Рік',
-    }, {
-        value: 'season-year',
-        label: 'Пора/рік',
-    }];
-
-    const getSeason = (date: Dayjs | null): string => {
-        if (!date) {
-            return '';
-        }
-        const month = date.month();
-        if (month < 2 || month === 11) {
-            return 'зима';
-        }
-        if (month >= 2 && month < 5) {
-            return 'весна';
-        }
-        if (month >= 5 && month < 8) {
-            return 'літо';
-        }
-        return 'осінь';
-    };
-
-    const dateToString = (typeDate:'date' | 'month' | 'year' | 'season-year', date: Dayjs | null):string => {
-        if (!date) {
-            return '';
-        }
-        if (typeDate === 'date') {
-            return date.format('D MMMM YYYY');
-        }
-        if (typeDate === 'month') {
-            return date.format('MMMM YYYY');
-        }
-        const year = date.format('YYYY');
-        if (typeDate === 'year') {
-            return year;
-        }
-        return `${getSeason(date)} ${year}`;
-    };
     const capitalize = (text:string):string => {
         if (!text) {
             return text;

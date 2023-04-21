@@ -1,8 +1,7 @@
-/* eslint-disable import/extensions */
 import './NewTimelineModal.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 
 import {
@@ -13,7 +12,10 @@ import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
 import useMobx from '@/app/stores/root-store';
-import TimelineItem, { HistoricalContext } from '@/models/timeline/chronology.model';
+import TimelineItem, {
+    dateTimePickerTypes,
+    HistoricalContext, selectDateOptions,
+} from '@/models/timeline/chronology.model';
 
 const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -21,6 +23,8 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     const { timelineItemStore, historicalContextStore } = useMobx();
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
+    const [dateTimePickerType, setDateTimePickerType] = useState<
+    'date' | 'month' | 'year' | 'season-year'>('date');
     useEffect(() => {
         if (timelineItem && open) {
             form.setFieldsValue({
@@ -37,7 +41,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const onSuccesfulSubmit = (formValues:any) => {
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
@@ -52,7 +56,8 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                                                id: timelineItemStore.timelineItemMap.size,
                                                title: formValues.title,
                                                description: formValues.description,
-                                               historicalContexts: selectedContext.current };
+                                               historicalContexts: selectedContext.current,
+                                               dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType) };
             timelineItemStore.addTimeline(newTimeline);
         }
 
@@ -89,9 +94,8 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
         >
             <Form
                 form={form}
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 12 }}
                 onFinish={onSuccesfulSubmit}
+                labelCol={{ span: 5 }}
             >
                 <Form.Item
                     name="title"
@@ -100,18 +104,36 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 >
                     <Input maxLength={50} showCount />
                 </Form.Item>
-                <Form.Item
-                    name="date"
-                    label="Дата: "
-                    rules={[{ required: true, message: 'Введіть дату' }]}
-                >
-                    <DatePicker />
-                </Form.Item>
+                <div className="data-input-container">
+                    <Form.Item
+                        label="Дата: "
+                        className="data-input-select-type"
+                    >
+                        <Select
+                            className="date-picker-type-input"
+                            options={selectDateOptions}
+                            defaultValue={dateTimePickerType}
+                            onChange={(val) => {
+                                setDateTimePickerType(val);
+                            }}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="date"
+                        className="data-input"
+                        rules={[{ required: true, message: 'Введіть дату' }]}
+                    >
+                        <DatePicker
+                            picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
+                        />
+                    </Form.Item>
+                </div>
                 <Form.Item
                     name="historicalContexts"
                     label="Контекст: "
+                    className="historical-contexts-form-item"
                 >
-                    {/* <Select
+                    <Select
                         mode="tags"
                         onSelect={onContextSelect}
                         onDeselect={onContextDeselect}
@@ -124,7 +146,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                                     value={cntx.title}
                                 />
                             ))}
-                    </Select> */}
+                    </Select>
                 </Form.Item>
                 <Form.Item
                     name="description"

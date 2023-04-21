@@ -6,8 +6,9 @@ export interface TagCreate {
     title: string;
 }
 
-export interface TagVisible {
+export interface StreetcodeTag {
     id: number;
     title: string;
-    visible: boolean;
+    isVisible: boolean;
+    index?: number;
 }
