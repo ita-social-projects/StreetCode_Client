@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
+import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import { ArtCreate } from '@/models/media/art.model';
 import Image from '@/models/media/image.model';
@@ -40,7 +41,12 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
             setArts([...arts, newArt]);
         };
         const onRemoveFile = (file:UploadFile) => {
-            setArts(arts.filter((a) => a.uidFile !== file.uid) ?? []);
+            const removedArtIndex = arts.findIndex((a) => a.uidFile === file.uid);
+            if (removedArtIndex >= 0) {
+                ImagesApi.delete(arts[removedArtIndex].imageId);
+                arts.splice(removedArtIndex, 1);
+                setArts([...arts]);
+            }
         };
 
         const handleSave = (art: ArtCreate) => {

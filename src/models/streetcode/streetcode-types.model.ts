@@ -1,5 +1,5 @@
 import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
-import Tag, { TagVisible } from '@models/additional-content/tag.model';
+import Tag, { StreetcodeTag } from '@models/additional-content/tag.model';
 import Art, { ArtCreateDTO, IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
@@ -33,7 +33,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     toponyms: Toponym[];
     arts: Art[];
     images: Image[];
-    tags: Tag[];
+    tags: StreetcodeTag[];
     subtitles: Subtitle[];
     facts: Fact[];
     videos: Video[];
@@ -94,8 +94,9 @@ export interface StreetcodeCreate {
     eventStartOrPersonBirthDate: Date,
     eventEndOrPersonDeathDate: Date,
     dateString: string,
-    tags: TagVisible[],
-    imagesId: number[],
+    tags: StreetcodeTag[],
+    imagesId: Array<number | null>,
+    audioId: number | null,
     streetcodeType: StreetcodeType,
     text: TextCreate | null,
     videos: VideoCreate[],

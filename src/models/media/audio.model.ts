@@ -8,7 +8,6 @@ export default interface Audio {
     base64: string;
     mimeType: string;
     streetcode?: Streetcode | undefined;
-    streetcodeId: number;
 }
 
 export interface AudioCreate {

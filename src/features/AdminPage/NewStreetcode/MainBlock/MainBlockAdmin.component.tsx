@@ -13,7 +13,7 @@ import { Option } from 'antd/es/mentions';
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import Tag, { TagVisible } from '@/models/additional-content/tag.model';
+import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
@@ -23,8 +23,8 @@ import FileInputsPart from './FileInputsPart.component';
 
 interface Props {
     form:FormInstance<any>,
-    selectedTags: TagVisible[];
-    setSelectedTags: React.Dispatch<React.SetStateAction<TagVisible[]>>;
+    selectedTags: StreetcodeTag[];
+    setSelectedTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>;
     streetcodeType: StreetcodeType;
     setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
 }
@@ -35,7 +35,7 @@ const MainBlockAdmin: React.FC<Props> = ({
     streetcodeType,
     setStreetcodeType,
 }) => {
-    const teaserMaxCharCount = 450;
+    const teaserMaxCharCount = 520;
     const allTags = useAsync(() => TagsApi.getAll()).value;
     const [tags, setTags] = useState< Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
@@ -68,7 +68,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         );
                     }
                 })
-                .catch((e) => {
+                .catch(() => {
                     message.error('Сервер не відповідає');
                 });
         } else {
@@ -83,15 +83,16 @@ const MainBlockAdmin: React.FC<Props> = ({
         }
     };
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const costForNewLine = 64;
         const text = e.target.value;
         const newLinesCharCount = (text.match(/(\n|\r)/gm) || []).length;
-        const newInputedChar = text.length + newLinesCharCount * 49;
+        const newInputedChar = text.length + newLinesCharCount * costForNewLine;
         if (newInputedChar > teaserMaxCharCount || newLinesCharCount > 1) {
             return;
         }
 
-        if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * 49) {
-            setMaxCharCount(teaserMaxCharCount - newLinesCharCount * 49);
+        if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * costForNewLine) {
+            setMaxCharCount(teaserMaxCharCount - newLinesCharCount * costForNewLine);
         }
         setInputedChar(newInputedChar);
     };
@@ -114,16 +115,16 @@ const MainBlockAdmin: React.FC<Props> = ({
                 minId = -1;
             }
 
-            setSelectedTags([...selectedTags, { id: minId, title: selectedValue, visible: false }]);
+            setSelectedTags([...selectedTags, { id: minId, title: selectedValue, isVisible: false }]);
         } else {
             selected = tags[selectedIndex];
-            const updatedTags = [...selectedTags, { ...selected, visible: false }];
-            setSelectedTags([...selectedTags, { ...selected, visible: false }]);
+            // const updatedTags = [...selectedTags, { ...selected, isVisible: false }];
+            setSelectedTags([...selectedTags, { ...selected, isVisible: false }]);
         }
     };
 
     const onDeselectTag = (deselectedValue:string) => {
-        const updatedTags = selectedTags.filter((t) => t.title !== deselectedValue);
+        // const updatedTags = selectedTags.filter((t) => t.title !== deselectedValue);
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -184,18 +185,17 @@ const MainBlockAdmin: React.FC<Props> = ({
             </Form.Item>
 
             <Form.Item name="alias" label="Короткий опис" className="maincard-item">
-                <Input maxLength={30} showCount />
+                <Input maxLength={33} showCount />
             </Form.Item>
             <Form.Item
                 label="URL"
                 name="streetcodeUrlName"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
+                rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100, pattern: /^[a-z-]+$/ }]}
             >
                 <Input
                     maxLength={100}
                     showCount
-
                 />
             </Form.Item>
 

@@ -23,6 +23,8 @@ import Partner, {
     PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
+import Image from '@/models/media/image.model';
+import ImagesApi from '@/app/api/media/images.api';
 
 const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVisible?:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?:(partner:PartnerCreateUpdate)=>void
@@ -37,6 +39,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
      const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
      const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
+     const imageId = useRef<number>(0);
      const handlePreview = async (file: UploadFile) => {
          setFilePreview(file);
          setPreviewOpen(true);
@@ -55,7 +58,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      }, []);
      useEffect(() => {
          if (partnerItem && open) {
-             console.log(partnerItem);
+             imageId.current = partnerItem.logoId;
              form.setFieldsValue({
                  title: partnerItem.title,
                  isKeyPartner: partnerItem.isKeyPartner,
@@ -117,7 +120,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          const partner: PartnerCreateUpdate = {
              id: 0,
              isKeyPartner: formValues.isKeyPartner,
-             logoId: 0,
+             logoId: imageId.current,
              partnerSourceLinks,
              streetcodes: selectedStreetcodes.current,
              targetUrl: formValues.url,
@@ -126,12 +129,14 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
              urlTitle: formValues.urlTitle,
              isVisibleEverywhere: false,
          };
-         let success = true;
+         let success = false;
          if (partnerItem) {
              partner.id = partnerItem.id;
-             partner.logoId = partnerItem.logoId;
              Promise.all([
                  partnersStore.updatePartner(partner)
+                     .then(() => {
+                         success = true;
+                     })
                      .catch((e) => {
                          console.log(e); success = false;
                      }),
@@ -139,12 +144,16 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          } else {
              Promise.all([
                  partnersStore.createPartner(partner)
+                     .then(() => {
+                         success = true;
+                     })
                      .catch((e) => {
                          console.log(e); success = false;
                      }),
              ]);
          }
          closeAndCleanData();
+         imageId.current = 0;
          if (success && afterSubmit) {
              afterSubmit(partner);
          }
@@ -215,7 +224,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="url"
                      label="Посилання: "
-                     rules={[{ required: true, message: 'Введіть назву' }]}
                  >
                      <Input maxLength={200} showCount />
                  </Form.Item>
@@ -224,7 +232,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                      name="urlTitle"
                      label="Назва посилання: "
                      className="url-title"
-                     rules={[{ required: true, message: 'Введіть назву посилання' }]}
                  >
                      <Input maxLength={100} showCount />
                  </Form.Item>
@@ -232,7 +239,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="description"
                      label="Опис: "
-                     rules={[{ required: true, message: 'Введіть назву' }]}
                  >
                      <TextArea showCount maxLength={450} />
                  </Form.Item>
@@ -241,7 +247,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                      name="logo"
                      className="maincard-item photo-form-item"
                      label="Лого"
-                     rules={[{ required: true, message: 'Завантажте зображення' }]}
                      valuePropName="fileList"
                      getValueFromEvent={(e: any) => {
                          if (Array.isArray(e)) {
@@ -258,12 +263,12 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          onPreview={handlePreview}
                          className="uploader-small"
                          uploadTo="image"
-                         fileList={(partnerItem)
-                             ? [{ name: '',
-                                  url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
-                                  uid: partnerItem.logoId.toString(),
-                                  status: 'done' }]
-                             : []}
+                         onSuccessUpload={(image:Image) => {
+                             imageId.current = image.id;
+                         }}
+                         onRemove={(image) => {
+                             ImagesApi.delete(imageId.current);
+                         }}
                          defaultFileList={(partnerItem)
                              ? [{ name: '',
                                   url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),

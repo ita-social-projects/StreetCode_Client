@@ -23,13 +23,13 @@ const PartnerBlockAdmin = ({ setPartners }: Props) => {
         ]);
     }, []);
 
-    const onPartnerSelect = (value:string) => {
-        const index = allPartnersShort.findIndex((c) => c.title === value);
+    const onPartnerSelect = (value:number) => {
+        const index = allPartnersShort.findIndex((c) => c.id === value);
         selectedPartners.current.push(allPartnersShort[index]);
         setPartners(selectedPartners.current);
     };
-    const onPartnerDeselect = (value:string) => {
-        selectedPartners.current = selectedPartners.current.filter((c) => c.title !== value);
+    const onPartnerDeselect = (value:number) => {
+        selectedPartners.current = selectedPartners.current.filter((c) => c.id !== value);
         setPartners(selectedPartners.current);
     };
     return (
@@ -49,7 +49,7 @@ const PartnerBlockAdmin = ({ setPartners }: Props) => {
                 onDeselect={onPartnerDeselect}
             >
                 {allPartnersShort
-                    .map((s) => <Select.Option key={`${s.id}`} value={s.title}>{s.title}</Select.Option>)}
+                    .map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
             </Select>
             <PartnerModal
                 open={modalAddOpened}

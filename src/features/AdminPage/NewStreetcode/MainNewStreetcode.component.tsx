@@ -10,11 +10,11 @@ import ukUA from 'antd/locale/uk_UA';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
 import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
-import { TagVisible } from '@/models/additional-content/tag.model';
+import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import { VideoCreate } from '@/models/media/video.model';
 import { PartnerShort } from '@/models/partners/partners.model';
-import { SourceCategory, SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
+import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType }
     from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
@@ -39,14 +39,12 @@ const NewStreetcode = () => {
     const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
 
     const [partners, setPartners] = useState<PartnerShort[]>([]);
-    const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
+    const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
-
-    const [categories, setCategories] = useState<StreetcodeCategoryContent[]>([]);
 
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -84,9 +82,10 @@ const NewStreetcode = () => {
             eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate').toDate(),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
             imagesId: [
-                newStreetcodeInfoStore.AnimationId,
-                newStreetcodeInfoStore.BlackAndWhiteId,
+                newStreetcodeInfoStore.animationId,
+                newStreetcodeInfoStore.blackAndWhiteId,
             ],
+            audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
             relatedFigures: figures,
             text: (text.title && text.textContent) ? text : null,
@@ -105,12 +104,11 @@ const NewStreetcode = () => {
             lastName: null,
             videos,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
-            streetcodeCategoryContents: JSON.parse(
-                JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents),
-            )
-                .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
-                    { ...streetcodeCategoryContent, id: 0 }
-                )),
+            streetcodeCategoryContents:
+                JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
+                    .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
+                        { ...streetcodeCategoryContent, id: 0 }
+                    )),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
@@ -119,13 +117,13 @@ const NewStreetcode = () => {
 
         console.log(streetcode);
 
-        // StreetcodesApi.create(streetcode)
-        //     .then((response) => {
-        //         console.log(response);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
+        StreetcodesApi.create(streetcode)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -150,7 +148,7 @@ const NewStreetcode = () => {
                     <SubtitleBlock setSubTitle={setSubTitle} />
                     <ArtGalleryBlock arts={arts} setArts={setArts} />
                     <TimelineBlockAdmin />
-                    <ForFansBlock categories={categories} />
+                    <ForFansBlock />
                     <MapBlockAdmin />
                 </div>
             </ConfigProvider>

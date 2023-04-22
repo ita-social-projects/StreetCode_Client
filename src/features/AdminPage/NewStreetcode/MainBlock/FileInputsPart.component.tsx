@@ -6,8 +6,11 @@ import { InboxOutlined } from '@ant-design/icons';
 import { UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
+import AudiosApi from '@/app/api/media/audios.api';
+import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import useMobx from '@/app/stores/root-store';
+import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
@@ -43,6 +46,9 @@ const FileInputsPart:React.FC = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={afterAnimationUpload}
+                        onRemove={(file) => {
+                            ImagesApi.delete(newStreetcodeInfoStore.animationId!);
+                        }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
@@ -63,6 +69,9 @@ const FileInputsPart:React.FC = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={afterBlackAndWhiteUpload}
+                        onRemove={(file) => {
+                            ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
+                        }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
@@ -81,6 +90,12 @@ const FileInputsPart:React.FC = () => {
                         maxCount={1}
                         onPreview={handlePreview}
                         uploadTo="image"
+                        onSuccessUpload={(image:Image) => {
+                            newStreetcodeInfoStore.relatedFigureId = image.id;
+                        }}
+                        onRemove={(file) => {
+                            ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
+                        }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
@@ -97,6 +112,12 @@ const FileInputsPart:React.FC = () => {
                     accept=".mp3"
                     maxCount={1}
                     uploadTo="audio"
+                    onRemove={(file) => {
+                        AudiosApi.delete(newStreetcodeInfoStore.audioId!);
+                    }}
+                    onSuccessUpload={(audio:Audio) => {
+                        newStreetcodeInfoStore.audioId = audio.id;
+                    }}
                 >
                     <div className="audio-upload-box">
                         <InboxOutlined />

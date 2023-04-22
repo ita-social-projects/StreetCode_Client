@@ -13,10 +13,12 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import PageBar from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
 
+import PageBar from '../PageBar/PageBar.component';
+
 import PartnerModal from './PartnerModal/PartnerModal.component';
+import axios from 'axios';
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
@@ -32,11 +34,10 @@ const Partners:React.FC = observer(() => {
             partnersStore?.fetchPartnersAll(),
         ]).then(() => {
             partnersStore?.PartnerMap.forEach((val, key) => {
-            // eslint-disable-next-line no-param-reassign
                 ImageStore.getImageById(val.logoId).then((logo) => {
                     partnersStore.PartnerMap.set(
                         key,
-                        { ...partnersStore.PartnerMap.get(key)!, logo },
+                        { ...val, logo },
                     );
                 });
             });
@@ -44,7 +45,6 @@ const Partners:React.FC = observer(() => {
     };
     useEffect(() => {
         updatedPartners();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const columns: ColumnsType<Partner> = [
         {
@@ -86,7 +86,7 @@ const Partners:React.FC = observer(() => {
                 <img
                     key={`${record.id}${record.logo?.id}}`}
                     className="partners-table-logo"
-                    src={logo?.url.href}
+                    src={logo?.base64}
                     alt={logo?.alt}
                 />
             ),
@@ -127,15 +127,18 @@ const Partners:React.FC = observer(() => {
                       key={`${partner.id}${index}111`}
                       className="actionButton"
                       onClick={() => {
-                          console.log(modalStore);
-                          modalStore.setConfirmationModal('confirmation', () => {
-                              partnersStore.deletePartner(partner.id).then(() => {
-                                  partnersStore.PartnerMap.delete(partner.id);
-                              }).catch((e) => {
-                                  console.log(e);
-                              });
-                              modalStore.setConfirmationModal('confirmation');
-                          }, 'Ви впевнені, що хочете видалити цього партнера?');
+                          modalStore.setConfirmationModal(
+                              'confirmation',
+                              () => {
+                                  partnersStore.deletePartner(partner.id).then(() => {
+                                      partnersStore.PartnerMap.delete(partner.id);
+                                  }).catch((e) => {
+                                      console.log(e);
+                                  });
+                                  modalStore.setConfirmationModal('confirmation');
+                              },
+                              'Ви впевнені, що хочете видалити цього партнера?',
+                          );
                       }}
                   />
                   <EditOutlined
