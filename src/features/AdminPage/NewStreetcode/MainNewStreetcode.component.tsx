@@ -84,6 +84,7 @@ const NewStreetcode = () => {
             imagesId: [
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
+                newStreetcodeInfoStore.relatedFigureId,
             ],
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
@@ -117,13 +118,13 @@ const NewStreetcode = () => {
 
         console.log(streetcode);
 
-        StreetcodesApi.create(streetcode)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        // StreetcodesApi.create(streetcode)
+        //     .then((response) => {
+        //         console.log(response);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
     };
 
     return (
