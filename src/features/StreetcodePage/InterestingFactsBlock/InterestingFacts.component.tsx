@@ -28,17 +28,22 @@ const InterestingFactsComponent = () => {
         centerPadding: '-12px',
         responsive: [
             {
+                // зменшуєш цифрове значення - йде вправо
                 breakpoint: 480,
                 settings: {
-                    centerPadding: '-48px',
+                    centerPadding: '-36px',
+                    // centerPadding: '-50px',
+                    // centerlMode: true,
+
                     swipe: true,
                     dots: true,
                 },
             },
             {
-                breakpoint: 769,
+                breakpoint: 768,
                 settings: {
-                    centerPadding: '-31px',
+                    centerPadding: '-30px',
+                    // centerPadding: '-30px',
                     swipe: true,
                     dots: true,
                 },
@@ -46,7 +51,7 @@ const InterestingFactsComponent = () => {
             {
                 breakpoint: 1025,
                 settings: {
-                    centerPadding: '-34.5px',
+                    centerPadding: '-27.5px',
                     centerlMode: true,
                     arrows: false,
                     swipe: true,

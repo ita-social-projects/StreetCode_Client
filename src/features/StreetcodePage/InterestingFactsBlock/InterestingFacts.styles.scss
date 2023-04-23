@@ -89,11 +89,11 @@ and (max-width: 1024px){
     @include wr.main-page-block-wrapper();
     .slick-dots{         
         @include mut.rem-margined(0);
-        bottom: 25%;
+        bottom: 8%;
     }
  }
  .interestingFactsContainer {
-        @include mut.sized(92%, 720px); 
+        @include mut.sized(92%, 620px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
@@ -127,37 +127,37 @@ and (max-width: 1024px){
     
                 .heading{
                     font-size:22px;
-                    font-size: 22px;
+                    // font-size: 22px;
                 }
     
-                .mainText{
-                    overflow: auto;
-                    height: 175px;
-                    font-size: 16px;
-                    line-height: pxToRem(17px);
-                    line-height: pxToRem(21px);
-                    &:after {
-                        content: "";
-                        position: absolute;
-                        z-index: 1;
-                        bottom: 0;
-                        left: 0;
-                        pointer-events: none;
-                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
-                        width: 100%;
-                        height: 1.7em;
-                      }
+                // .mainText{
+                //     overflow: auto;
+                //     height: 175px;
+                //     font-size: 16px;
+                //     // line-height: pxToRem(17px);  
+                //     line-height: pxToRem(21px);
+                //     &:after {
+                //         content: "";
+                //         position: absolute;
+                //         z-index: 1;
+                //         bottom: 0;
+                //         left: 0;
+                //         pointer-events: none;
+                //         background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                //         width: 100%;
+                //         height: 1.7em;
+                //       }
     
-                }
+                // }
             }
         }
     }
 }
 
 @media screen
-and (min-width: 770px) and (max-width: 1023px){
+and (min-width: 768px) and (max-width: 1023px){
     .interestingFactsContainer {
-        @include mut.sized(765px, 720px); 
+        @include mut.sized(765px, 620px); 
         @include mut.flex-centered($direction: column);
     }
     .interestingFactsSliderContainer {
@@ -166,18 +166,18 @@ and (min-width: 770px) and (max-width: 1023px){
 }
 
 @media screen
-and (max-width: 770px){
+and (max-width: 768px){
 
     .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
     .slick-dots{
         @include mut.rem-margined(0);
-        bottom: 25%;
+        bottom: 8%;
     }
   
 }
     .interestingFactsContainer {
-        @include mut.sized(770px, 720px); 
+        @include mut.sized(765px, 620px); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
@@ -236,25 +236,11 @@ and (max-width: 770px){
 }
 }
 
-@media screen
-and  (min-width: 480px) and (max-width: 765px){
-    .interestingFactsSliderContainer {
-        @include mut.sized(815px, 100%); 
-    
-    }
-    .interestingFactsSliderContainer {
-        @include mut.sized(815px, 100%); 
-    
-    }
-    }
-
-
-
 @media screen and (max-width: 480px){
 
    
 .interestingFactsContainer {
-    @include mut.sized(90%, 720px);
+    @include mut.sized(90%, 620px);
 
     .single{
         margin-bottom: pxToRem(120px) ;
@@ -263,13 +249,13 @@ and  (min-width: 480px) and (max-width: 765px){
 
 .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
-    margin: 0;
+    // margin: 0;
     .slick-dots{
-        bottom: 25%;
+        bottom: 8%;
      }
 }
     .interestingFactsSliderContainer {
-        @include mut.sized(815px, 100%); 
+        @include mut.sized(770px, 100%); 
     }
     .interestingFactSlide{
         .slideImage {
@@ -284,7 +270,7 @@ and  (min-width: 480px) and (max-width: 765px){
         padding-top:7.5%;
 
         .interestingFactSlide{
-            @include mut.sized(30%);
+            @include mut.sized(32%);
             @include mut.full-rounded(20px);
     
             .slideImage {
@@ -306,7 +292,7 @@ and  (min-width: 480px) and (max-width: 765px){
     
                 .mainText{
                     overflow: auto;
-                    height: 190px;
+                    height: 165px;
                     font-size: 15px;
                     line-height: pxToRem(21px);
                     margin-bottom: pxToEm(10px);
@@ -327,3 +313,23 @@ and  (min-width: 480px) and (max-width: 765px){
       
     }
 }
+
+
+// @media screen
+// and  (min-width: 480px) and (max-width: 765px){
+//     .interestingFactsSliderContainer {
+//         @include mut.sized(815px, 100%); 
+    
+//     }
+//     .interestingFactsSliderContainer {
+//         @include mut.sized(815px, 100%); 
+    
+//     }
+//     .singleSlideContainer{
+
+//         .interestingFactSlide{
+//             @include mut.sized(43%);
+//         }
+//     }
+// }
+

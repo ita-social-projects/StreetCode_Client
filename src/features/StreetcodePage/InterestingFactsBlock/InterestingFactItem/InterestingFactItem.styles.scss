@@ -137,15 +137,14 @@ and (max-width: 1024px){
       @include mut.rounded(0);
 
        .heading {
-        @include mut.rem-padded(6px, 20px, 4px, 12px);
-         @include mut.with-font($font-weight: 500, $font-size: 12px);
-         line-height: f.pxToEm(17px);
+        @include mut.rem-padded(7px, 20px, 6px, 12px);
+        @include mut.with-font($font-weight: 500, $font-size: 12px);
+         line-height: f.pxToEm(12px);
        }
        .mainText {
         @include mut.rem-padded(0, 12px, 0px, 12px);
          @include mut.with-font($font-weight: 300, $font-size: 10px);
-         line-height: f.pxToEm(15.5px);
-
+         line-height: f.pxToEm(16px);
        }
      } 
   
@@ -187,18 +186,20 @@ and (min-width: 768px) and (max-width: 1000px) {
       }
      }
      .slideText {
-       @include mut.sized(100%, 106px);
+       @include mut.sized(100%, 103px);
        @include mut.rounded(0);
 
        .heading {
-        @include mut.rem-padded(6px, 20px, 4px, 12px);
-         @include mut.with-font($font-weight: 500, $font-size: 12px);
-         line-height: f.pxToEm(17px);
+        @include mut.rem-padded(7px, 20px, 6px, 12px);
+        @include mut.with-font($font-weight: 500, $font-size: 12px);
+        //  line-height: f.pxToEm(17px);
+         line-height: f.pxToEm(12px);
+
        }
        .mainText {
         @include mut.rem-padded(0, 12px, 0px, 12px);
          @include mut.with-font($font-weight: 300, $font-size: 10px);
-         line-height: f.pxToEm(15.5px);
+         line-height: f.pxToEm(16px);
 
        }
      } 
@@ -215,7 +216,7 @@ and (min-width: 768px) and (max-width: 1000px) {
  
 @media screen and (max-width: 480px){ 
   .interestingFactSlide {
-    @include mut.sized(210px,240px);
+    // @include mut.sized(210px,240px);
     @include mut.full-rounded(20px);
     overflow: visible;
 
@@ -231,17 +232,19 @@ and (min-width: 768px) and (max-width: 1000px) {
          overflow: visible;
 
          .heading {
+          @include mut.rem-padded(7px, 20px, 6px, 12px);
           @include mut.with-font($font-weight: 500, $font-size: 12px);
           line-height: f.pxToEm(12px);
         }
         .mainText {
+          @include mut.rem-padded(0, 12px, 0px, 12px);
           @include mut.with-font($font-weight: 300, $font-size: 10px);
           line-height: f.pxToEm(16px);
         }
       } 
       .readMoreParagraph {
+        @include mut.rem-padded(6px, 20px, 0px, 12px);
 
-         @include mut.rem-padded(6px, 20px, 0px, 12px);
         @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
       }
   }
