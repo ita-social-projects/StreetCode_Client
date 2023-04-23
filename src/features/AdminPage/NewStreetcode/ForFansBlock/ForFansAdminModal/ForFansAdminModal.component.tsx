@@ -6,7 +6,9 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { Button, Modal, Select } from 'antd';
+import { Button, Form, Modal, Select } from 'antd';
+import { useForm } from 'antd/es/form/Form';
+import FormItem from 'antd/es/form/FormItem';
 
 import { SourceCategoryName, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 
@@ -19,36 +21,40 @@ interface Props {
 const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const editorRef = useRef<Editor | null>(null);
-    const selectedCategory = useRef<number | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
 
+    const [form] = Form.useForm();
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (categoryUpdate.current && open) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
+            form.setFieldValue('category', categoryUpdate.current.categoryId);
         } else {
             categoryUpdate.current = null;
             editorRef.current?.editor?.setContent('');
+            form.setFieldValue('category', (allCategories.length > 1 ? allCategories[0].id : undefined));
         }
     }, [open]);
 
-    const onSave = () => {
+    const onSave = (values:any) => {
+        console.log(values);
         const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (elementToUpdate) {
             sourceCreateUpdateStreetcode
                 .updateElement(
                     sourceCreateUpdateStreetcode.indexUpdate,
                     { ...elementToUpdate,
-                      categoryId: selectedCategory.current!,
+                      categoryId: values.category,
                       text: editorRef.current?.editor?.getContent() ?? '' },
                 );
         } else {
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({ id: sourceCreateUpdateStreetcode.streetcodeCategoryContents.length,
-                                            categoryId: Number(selectedCategory.current) ?? 0,
+                                            categoryId: values.category,
                                             text: editorRef.current?.editor?.getContent() ?? '' });
         }
         setOpen(false);
+        console.log(sourceCreateUpdateStreetcode.streetcodeCategoryContents);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
     };
 
@@ -65,38 +71,39 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
             closeIcon={<CancelBtn />}
         >
             <h2>Для фанатів</h2>
-            <Select
-                className="category-select-input"
-                defaultValue={categoryUpdate.current
-                    ? categoryUpdate.current.categoryId
-                    : allCategories.length > 1 ? allCategories[0].id : null}
-                onSelect={(value:number) => {
-                    selectedCategory.current = value;
-                }}
-            >
-                {allCategories.map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
-            </Select>
-            <Editor
-                ref={editorRef}
-                init={{
-                    height: 300,
-                    menubar: false,
-                    plugins: [
-                        'autolink',
-                        'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
-                    ],
-                    toolbar: 'checklist | bold  formatselect  italic underline strikethrough superscript subscript codeformat '
+            <Form form={form} onFinish={onSave}>
+                <FormItem name="category">
+                    <Select
+                        key="selectForFansCategory"
+                        className="category-select-input"
+                    >
+                        {allCategories
+                            .map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
+                    </Select>
+                </FormItem>
+
+                <Editor
+                    ref={editorRef}
+                    init={{
+                        height: 300,
+                        menubar: false,
+                        plugins: [
+                            'autolink',
+                            'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                            'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                        ],
+                        toolbar: 'checklist | bold  formatselect  italic underline strikethrough superscript subscript codeformat '
                      + 'formats blockformats align | removeformat link',
-                    content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                }}
-            />
-            <Button
-                className="saveButton"
-                onClick={onSave}
-            >
+                        content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                    }}
+                />
+                <Form.Item>
+                    <Button htmlType="submit">
                 Зберегти
-            </Button>
+                    </Button>
+                </Form.Item>
+            </Form>
+
         </Modal>
     );
 };

@@ -26,11 +26,11 @@ const ForFansBlock = () => {
             </div>
             <div className="forFansContainer">
                 <button
+                    type="button"
                     className="addNewCategory"
                     onClick={() => setIsModalOpen(true)}
                 >
-+
-
+                    +
                 </button>
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category) => (
                     <ForFansAdminItem
