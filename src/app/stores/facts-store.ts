@@ -13,6 +13,14 @@ export default class FactsStore {
         facts.forEach(this.setItem);
     };
 
+    public addFact = (fact: Fact) => {
+        this.setItem(fact);
+    };
+
+    public deleteFactFromMap = (factId: number) => {
+        this.factMap.delete(factId);
+    };
+
     private setItem = (fact: Fact) => {
         this.factMap.set(fact.id, fact);
     };

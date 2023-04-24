@@ -42,34 +42,29 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     padding: 25px;
     position: relative;
     left: 5%;
-    @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
     color: c.$dark-red-color;
+    @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
     p{
+      @include mut.with-font(ft.$roboto-font, 300, 15px, normal) ;
+
         padding: 5px;
     }
 
     .inputBlock{
-        width: 400px;
-        height: 280px;
-         input, textarea{
-            @include mut.with-font(ft.$roboto-font, 300, 20px, normal) ;
-        }
-        .characterCounter{
+        .factContent{
             color: c.$lighter-black-color;
-            text-align: right;
-            padding: 0;
-            @include mut.with-font(ft.$roboto-font, 300, 14px, normal) ;
-        }
+            width: 85%;
+            height: 150px;
+            textarea{
+              @include mut.with-font(ft.$roboto-font, 300, 18px, normal) ;
+              resize: none;
 
-        input{
-            width: 60%;
+            }
         }
-        textarea{
-            height: 70%;
-            width: 100%;
-            resize: none;
+        .title{
+          @include mut.with-font(ft.$roboto-font, 300, 18px, normal) ;
 
-        
+          width: 60%;
         }
     }
 }
