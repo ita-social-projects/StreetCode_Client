@@ -9,7 +9,7 @@ import QRMobile from './QRMobile/QRMobile.component';
 
 const QRComponent = () => {
     const isDesktop = useMediaQuery({
-        query: '(min-width: 769px)',
+        query: '(min-width: 1025px)',
     });
 
     return (
