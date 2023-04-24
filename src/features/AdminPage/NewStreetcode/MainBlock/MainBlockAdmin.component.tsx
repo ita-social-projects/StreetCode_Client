@@ -114,17 +114,14 @@ const MainBlockAdmin: React.FC<Props> = ({
             } else {
                 minId = -1;
             }
-
             setSelectedTags([...selectedTags, { id: minId, title: selectedValue, isVisible: false }]);
         } else {
             selected = tags[selectedIndex];
-            // const updatedTags = [...selectedTags, { ...selected, isVisible: false }];
             setSelectedTags([...selectedTags, { ...selected, isVisible: false }]);
         }
     };
 
     const onDeselectTag = (deselectedValue:string) => {
-        // const updatedTags = selectedTags.filter((t) => t.title !== deselectedValue);
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 

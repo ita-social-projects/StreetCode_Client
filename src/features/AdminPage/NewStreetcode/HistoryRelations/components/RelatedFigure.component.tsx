@@ -1,12 +1,11 @@
-import { DeleteOutlined, PictureOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 
-import RelatedFigure from '../../../../../models/streetcode/related-figure.model';
-import EventStreetcode from '../../../../../models/streetcode/related-figure.model';
+import RelatedFigure from '@/models/streetcode/related-figure.model';
 
 interface Props {
-    relation: EventStreetcode;
-    relations: Array<EventStreetcode>;
-    setRelations: React.Dispatch<React.SetStateAction<Array<EventStreetcode>>>;
+    relation: RelatedFigure;
+    relations: Array<RelatedFigure>;
+    setRelations: React.Dispatch<React.SetStateAction<Array<RelatedFigure>>>;
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
 }
 const RelatedItem = ({ relation, relations, setRelations, setFigures } : Props) => {

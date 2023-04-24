@@ -8,7 +8,6 @@ export interface Fact {
     factContent: string;
     image?: Image;
     imageId: number;
-    // streetcodes: Streetcode[];
 }
 export interface FactCreate {
     title: string;

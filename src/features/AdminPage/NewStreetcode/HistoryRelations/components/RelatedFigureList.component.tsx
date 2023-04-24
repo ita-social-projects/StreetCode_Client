@@ -1,16 +1,14 @@
 import './components.styles.scss';
 
-import HistoryRelation from '../../../../../models/streetcode/related-figure.model';
-import RelatedFigure from '../../../../../models/streetcode/related-figure.model';
+import RelatedFigure from '@/models/streetcode/related-figure.model';
 
 import RelatedItem from './RelatedFigure.component';
 
 interface Props {
-    relations: Array<HistoryRelation>,
-    setRelations: React.Dispatch<React.SetStateAction<Array<HistoryRelation>>>
+    relations: Array<RelatedFigure>,
+    setRelations: React.Dispatch<React.SetStateAction<Array<RelatedFigure>>>
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
 }
-
 const RelationsList = ({ relations, setRelations, setFigures } : Props) => (
     <div className="list-container">
         <ul id="list" className="related-figures-list">
