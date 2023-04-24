@@ -48,13 +48,25 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     className={`relatedFigureSlide 
                 ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
                 ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
-
-                    style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
-                    to={`../streetcode/${url}`}
-                    onClick={() => {
-                        relatedFiguresLeaveEvent();
-                        if (!tagsList) {
-                            setModal('tagsList');
+                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
+                to={`../streetcode/${url}`}
+                state={window.scrollTo(0,0)}
+                onClick={() => {
+                    relatedFiguresLeaveEvent();
+                    if (!tagsList) {
+                        setModal('tagsList');
+                    }
+                }}
+            >
+                <div className="figureSlideText">
+                    <div className="heading"> 
+                        <p>{title}</p>
+                        {
+                            alias !== null ?
+                            <p className='aliasText'>
+                                ({alias})
+                            </p>
+                            : undefined
                         }
                     }}
                 >
@@ -67,7 +79,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                         <p className="aliasText">
                                 (
                                             {alias}
-)
+                                )
                                         </p>
                                     )
                                     : undefined

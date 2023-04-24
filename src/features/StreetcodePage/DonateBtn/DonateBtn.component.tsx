@@ -4,6 +4,7 @@ import HandWithCoin from '@images/donates/HandWithCoin.svg';
 
 import { useRef } from 'react';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
+import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 import useMobx from '@stores/root-store';
 
 import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
@@ -11,7 +12,7 @@ import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 const DonateBtn = () => {
     const showModalOnScroll = useRef(true);
     const { modalStore: { setModal } } = useMobx();
-
+    const windowSize = useWindowSize();
     useScrollPosition(({ currentPos: { y } }) => {
         if (showModalOnScroll.current) {
             if (Math.abs(y) > document.documentElement.scrollHeight * 0.87) {
@@ -31,9 +32,7 @@ const DonateBtn = () => {
             <div className="donateBtnCircle">
                 <HandWithCoin />
             </div>
-            <h2 className="donateBtnText">
-                задонатити
-            </h2>
+            { windowSize.width > 1024 && <h2 className="donateBtnText">задонатити</h2> }
         </div>
     );
 };
