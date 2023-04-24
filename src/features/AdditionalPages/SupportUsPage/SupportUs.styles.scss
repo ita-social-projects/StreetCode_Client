@@ -16,7 +16,6 @@
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
             line-height: 127px;
             color: c.$accented-gray-color;
-            display: none;
         }
 
         .titleSmall {
@@ -84,10 +83,10 @@
         }
 
         .donateWindow {
-            @include mut.sizedImportant($height: 525px, $width: 590px);
+            @include mut.sized($height: 525px, $width: 590px);
             vertical-align: top;
             background: c.$pure-white-color;
-            //display: none;
+            
             box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
             border-radius: 32px;
         }
@@ -185,6 +184,117 @@
     .titleSmall {
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         line-height: 42px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .supportUsPageWrapper {
+        padding: 84px 9px 0;
+
+        .heading {
+            .titleBig {
+                @include mut.rem-margined($bottom: 20px);
+                font-size: 54px;
+                line-height: 71px;
+            }
+
+            .titleSmall {
+                @include mut.rem-margined($bottom: 12px);
+                font-size: 16px;
+                line-height: 21.12px;
+            }
+
+            .text {
+                font-size: 14px;
+                line-height: 16.41px;
+            }
+        }
+
+        .mainBlock {
+            .donatesPurposeBlock {
+                @include mut.rem-padded($right: 24px);
+                width: calc(100vw - 340px);
+
+                .heading {
+                    font-size: 20px;
+                    line-height: 26px;
+                }
+
+                .purposeList {
+                    li {
+                        span {
+                            font-size: 14px;
+                            line-height: 16.41px;
+                        }
+                    }
+                }
+
+                .purposeBottomText {
+                    font-size: 14px;
+                    line-height: 16.41px;
+                }
+            }
+
+            .donateWindow {
+                @include mut.sized($width: 340px, $height: 343px);
+            }
+        }
+
+        .donateSubBlocks {
+            @include mut.sized($height: 257px, $width: 748px);
+            margin: 40px calc((100vw - 784px) / 2) 0;
+
+            gap: 12px;
+
+            .block {
+                width: 240px !important;
+
+                .heading {
+                    font-size: 24px;
+                    line-height: 31.68px;
+                }
+
+                .content {
+                    @include mut.sized($height: 147px);
+                    @include mut.rem-margined($top: 12px, $bottom: 12px);
+
+                    font-size: 16px;
+                    line-height: 21.47px;
+
+                    .accountInfo {
+                        @include mut.rem-margined($top: 12px);
+                        line-height: pxToRem(16.41px);
+
+                        .thickerText {
+                            @include mut.rem-margined($top: 8px);
+                            font-size: 12px;
+                            font-weight: 500;
+                            line-height: 14.06px;
+                        }
+                    }
+                }
+
+                svg path {
+                    //@include mut.sized($width: 151px, $height: 151px);
+                    height: 151px;
+                    width: 151px;
+                }
+            }
+        }
+
+        .bottomText {
+            @include mut.rem-padded($top: 40px, $bottom: 40px);
+            font-size: 20px;
+            line-height: 26.4px;
+        }
+
+        .supportButton {
+            height: 46px;
+            border-radius: 10px;
+
+            font-size: 14px;
+            line-height: 16.41px;
+        }
     }
 }
 

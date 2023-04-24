@@ -10,12 +10,14 @@ import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
 import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
 
 import useMobx from '@/app/stores/root-store';
-import useWindowSize from "@hooks/stateful/useWindowSize.hook";
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useMobx();
     const BANK_ACCOUNT = 'UA753057490000026003000018553';
-    const width = useWindowSize();
+
+    const windowSize = useWindowSize();
+
     const handleCopy = () => {
         navigator.clipboard.writeText(BANK_ACCOUNT);
         // alert('Скопійовано в буфер обміну!');
@@ -85,9 +87,13 @@ const SupportUs = () => {
                 <div className='donateSubBlocks'>
                     <div className='block'>
                         <p className='heading'>На карту</p>
-                        {width.width >= 480 && <div className='content'>
-                              <QRCode />
-                        </div>}
+                        <div className='content'>
+                            {
+                                windowSize.width > 1024 ? <QRCode/>
+                                : windowSize.width > 480 ? <QRCodeSmall/>
+                                : undefined
+                            }
+                        </div>
                         <button className='supportButton' onClick={handlePay}>Задонатити</button>
                     </div>
                     <div className='block forCompanies'>
