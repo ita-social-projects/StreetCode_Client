@@ -18,7 +18,7 @@ const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore, streetcodeStore } = useMobx();
-    const { getStreetCodeId } = streetcodeStore;
+    const { getStreetCodeId, checkId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [indexedArtsSmall, setIndexedArtsSmall] = useState<IndexedArt[]>([]);
@@ -39,8 +39,12 @@ const ArtGalleryBlock = () => {
     let artsDataSmall: IndexedArt[] = [];
 
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
-        [getStreetCodeId],
+        () => {
+            if (getStreetCodeId !== -1) {
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId);
+            }
+        },
+        [getStreetCodeId, checkId, fetchStreetcodeArtsByStreetcodeId],
     );
 
     useEffect(() => {

@@ -8,13 +8,17 @@ import useMobx from '@stores/root-store';
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
-    const { partnersStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { partnersStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
 
     useAsync(
-        () => Promise.all([
-            fetchPartnersByStreetcodeId(getStreetCodeId),
-        ]),
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                Promise.all([
+                    fetchPartnersByStreetcodeId(getStreetCodeId),
+                ]);
+            }
+        },
         [getStreetCodeId],
     );
 
