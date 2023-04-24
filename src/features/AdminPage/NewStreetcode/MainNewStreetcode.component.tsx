@@ -118,13 +118,13 @@ const NewStreetcode = () => {
 
         console.log(streetcode);
 
-        // StreetcodesApi.create(streetcode)
-        //     .then((response) => {
-        //         console.log(response);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
+        StreetcodesApi.create(streetcode)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
