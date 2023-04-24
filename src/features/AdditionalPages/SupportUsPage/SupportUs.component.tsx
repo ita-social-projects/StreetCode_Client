@@ -7,6 +7,7 @@ import Lamp from '@/assets/images/donates/donatesPage/lamp.svg';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
+import QRCodeSmall from '@/assets/images/donates/donatesPage/qr-code-small.svg';
 import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
 
 import useMobx from '@/app/stores/root-store';
@@ -31,7 +32,7 @@ const SupportUs = () => {
         <div className='supportUsPage'>
             <div className='supportUsPageWrapper'>
                 <div className='heading'>
-                    <div className="titleBig"> Підтримати {width.width >= 480 && <>нас</>}</div>
+                    <div className="titleBig"> Підтримати {windowSize.width >= 480 && <>нас</>}</div>
                     <div className="titleSmall">
                         Привіт! Після всіх важливих сторінок нашої платформи ти нарешті тут — на не менш важливій сторінці твоєї залученості та підтримки.
                     </div>

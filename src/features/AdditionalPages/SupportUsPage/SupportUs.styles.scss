@@ -306,11 +306,24 @@
             width: unset;
             margin: unset;
             .block {
-                width: unset;
+                width: 100% !important;
             }
         }
         .mainBlock {
             flex-direction: column;
+
+            .donatesPurposeBlock {
+                width: 100vw;
+            }
+            .donateWindow {
+                display: flex;
+                justify-content: center;
+                margin: 10px auto;
+            }
+        }
+        .bottomText {
+            font-size: f.pxToRem(14px);
+            line-height: f.pxToRem(18px);
         }
     }
 }
