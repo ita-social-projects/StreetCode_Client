@@ -4,11 +4,9 @@ import { useMediaQuery } from 'react-responsive';
 
 import { Button } from 'antd';
 
-interface Props {
+import { instagramClick } from '@/app/common/utils/googleAnalytics.unility';
 
-}
-
-const QRMobile = (props: Props) => {
+const QRMobile = () => {
     const isMobile = useMediaQuery({
         query: '(max-width: 675px)',
     });
@@ -31,7 +29,12 @@ const QRMobile = (props: Props) => {
                             <p className="pressButtonText">
                                 Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
                             </p>
-                            <Button className="goToInstaButton">Перейти в Instagram</Button>
+                            <Button
+                                className="goToInstaButton"
+                                onClick={() => instagramClick('mobile')}
+                            >
+                                Перейти в Instagram
+                            </Button>
                         </div>
                     </>
                 )}
@@ -50,7 +53,12 @@ const QRMobile = (props: Props) => {
                                 height="323px"
                             />
                         </div>
-                        <Button className="goToInstaButton">Перейти в Instagram</Button>
+                        <Button
+                            className="goToInstaButton"
+                            onClick={() => instagramClick('mobile')}
+                        >
+                            Перейти в Instagram
+                        </Button>
                     </div>
                 )}
         </div>

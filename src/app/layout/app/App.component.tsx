@@ -10,7 +10,7 @@ import HeaderBlock from '@layout/header/HeaderBlock.component';
 import ModalWrapper from '@layout/ModalWrapper.component';
 import useMobx from '@stores/root-store';
 
-// ReactGA.initialize('your GA measurement id');
+ReactGA.initialize('G-2RHY04JKG0');
 
 const App = () => {
     const { pathname } = useLocation();
