@@ -15,8 +15,7 @@ const NotFound = () => (
                 <a href="https://streetcode/main.com" className="redirectToMain">Гайда на головну!</a>
             </div>
         </div>
-        {/* <Footer /> */}
-
+        <Footer />
     </>
 );
 

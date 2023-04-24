@@ -8,7 +8,7 @@
     height: 100%;
     padding: f.pxToRem(112px) f.pxToRem(10px) f.pxToRem(110px) f.pxToRem(10px);
 
-    @include mut.bg-image('../../../assets/images/partners/background.png');
+    @include mut.bg-image('@assets/images/partners/background.png');
     background-attachment: fixed;
 
     .wrapper{
