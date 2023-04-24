@@ -11,10 +11,73 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-size: 100%;
     background-repeat: no-repeat;
-
-    @include mut.positioned-as();
+    background-color: c.$accented-low-opasity-grayish-gray-color;
+    
     @include mut.flexed($justify-content: center, $align-items: flex-end);
     cursor: pointer;
+
+    .relatedTagList{
+      position: absolute;
+      display: block;
+    }
+
+    &:hover {
+      @include mut.positioned-as();
+      @include vnd.vendored(transition, 'all .5s ease');
+      overflow: visible !important;
+
+      .relatedTagList {
+        animation: fadeIn 1s;
+        box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);   
+        z-index: 10 !important;
+        position: absolute;
+        width: 53% !important;
+        left: pxToRem(145px);
+        top: pxToRem(58px);
+        justify-content: center;
+        @include mut.rem-padded($left: 15px, $top: 10px, $right: 15px, $bottom: 10px);
+
+        background-color: c.$pure-white-color;
+        border-radius: pxToRem(20px);
+
+        visibility: visible;
+  
+        .tag {
+          @include mut.sized($height: 28px);
+          @include mut.flex-centered();
+          gap: 0 !important;
+          border: 2px solid c.$dark-red-color;
+          @include mut.full-rounded($rad: 7.86px);
+          @include mut.rem-margined($left: 1.5px, $top: 1.5px, $right: 1.5px, $bottom: 2px);
+
+            p {
+              @include mut.sized($height: 14px);
+              text-align: center;
+              line-height: 135.69%;
+              @include mut.with-font($font-size: 10px,$font-weight: 500);
+              line-height: pxToRem(13.6px);
+              color: c.$dark-red-color;
+            }
+          }
+
+          &::after {    
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            margin-left: -3em;
+            bottom: -30px;
+            left: 50%;
+            box-sizing: border-box;
+            z-index: -1 !important;
+            border: 1em solid black;
+            border-color: transparent transparent #FFFFFF #FFFFFF;       
+            transform-origin: 0 0;
+            transform: rotate(-45deg);
+            box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.25);
+          }  
+    } 
+  }
 }
 
 .catalogItemText {
@@ -71,7 +134,6 @@
             }
         }
     }
-
 }
 
 @media screen and (max-width:1024px) {
