@@ -10,8 +10,8 @@ import {
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
-import axios from 'axios';import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-;
+import axios from 'axios';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const possibleDonateAmounts = [500, 100, 50];
 
