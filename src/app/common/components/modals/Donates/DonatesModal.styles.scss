@@ -156,13 +156,12 @@
         }
   
         &:last-child {
-          font-family: 'Roboto';
+          @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
+
           font-style: normal;
-          font-weight: 300;
-          font-size: 15px;
-          line-height: 18px;
-          padding-inline-start: 16px;
-          height: 24px;
+          line-height: f.pxToRem(18px);
+          padding-inline-start: f.pxToRem(16px);
+          height: f.pxToRem(24px);
           padding-top: 1vh;
           
         }
@@ -298,13 +297,12 @@
             vertical-align: middle;
       
             &:last-child {
-              height: 28px;
-              padding-top: 2px;
-              font-family: 'Roboto';
+              @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
+            
+              height: f.pxToRem(28px);
+              padding-top: f.pxToRem(2px);
               font-style: normal;
-              font-weight: 500;
-              font-size: 12px;
-              line-height: 14px;
+              line-height: f.pxToRem(14px);
             }
           }
         }

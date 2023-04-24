@@ -10,7 +10,8 @@ import {
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
-import axios from 'axios';;
+import axios from 'axios';import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+;
 
 const possibleDonateAmounts = [500, 100, 50];
 
@@ -19,14 +20,12 @@ const DonatesModal = () => {
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    const [donateName, setDonateName] = useState<string | undefined>('');
-    const [donateComment, setDonateComment] = useState<string | undefined>('');
-
+    
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-
+    const windowSize = useWindowSize();
     const linkBase = 'https://0127-185-244-159-54.ngrok-free.app/api/support/monobank/api/support/monobank';
 
     const handleAmountBtnClick = (btnIdx: number) => {
@@ -53,37 +52,25 @@ const DonatesModal = () => {
         }
     };
     
-    const minWidth = 0; // Minimum width of the input field
-    const charWidth = 42; // Width of each character in pixels
-    const firstWidth = 13;
-    const mobCharWidth = 21;
-    const mobFirstWidth = 6;
+    const charWidth = windowSize.width > 1024 ? 42 : 21;    // Width of each character in pixels
+    const firstWidth = windowSize.width > 1024 ? 13 : 6;
+
     const count = (donateAmount.toString().match(/1/g) || []).length;
     
-    var inputWidth = 0;
-    if(window.innerWidth>1024)
-    {
-        inputWidth = minWidth + donateAmount.toString().length * charWidth - count*firstWidth;
-    }
-    else
-    {
-        inputWidth = minWidth + donateAmount.toString().length * mobCharWidth - count*mobFirstWidth;
-    }
+    var inputWidth = donateAmount.toString().length * charWidth - count * firstWidth;
+
     const style = { "--input-width": `${inputWidth}px` } as React.CSSProperties;
 
     const handlePost = async () => {
         if (isCheckboxChecked) {
             try {
-                const response = await axios.post(`${linkBase}?${donateAmount}&${donateComment}`);
+                const response = await axios.post(`${linkBase}?${donateAmount}`);
                 window.location.replace(response.data);
             } catch (err) {
                 console.error(err);
             }
-        } else {
-            console.log('Checkbox not checked');
-        }
+        } 
     }
-
 
     useEffect(() => {
         const handleResize = () => {
