@@ -4,12 +4,14 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import {
-    ChangeEvent, SyntheticEvent, useCallback,
-    useEffect, useRef, useState,
+    ChangeEvent,
+    useEffect, useState,
 } from 'react';
 import useMobx from '@stores/root-store';
 
 import { Button, Input, Modal } from 'antd';
+
+import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 const possibleDonateAmounts = [100, 500, 1000];
 
@@ -100,7 +102,9 @@ const DonatesModal = () => {
                     <Input placeholder="Ваше ім’я (необов’язково)" />
                     <Input placeholder="Коментар (необов’язково)" />
                 </div>
-                <Button className="donatesDonateBtn">Підтримати</Button>
+                <Button className="donatesDonateBtn" onClick={() => supportEvent('submit_donate_from_modal')}>
+                    Підтримати
+                </Button>
             </div>
         </Modal>
     );
