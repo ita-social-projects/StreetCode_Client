@@ -10,6 +10,7 @@ import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
 import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
 
 import useMobx from '@/app/stores/root-store';
+import DonationBlock from './components/DonationBlock.component';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useMobx();
@@ -78,7 +79,7 @@ const SupportUs = () => {
                         </div>
                     </div>
                     <div className='donateWindow'>
-
+                            <DonationBlock />
                     </div>
                 </div>
                 <div className='donateSubBlocks'>
