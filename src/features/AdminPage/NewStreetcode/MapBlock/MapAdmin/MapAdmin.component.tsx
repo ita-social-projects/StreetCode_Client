@@ -3,11 +3,12 @@ import { observer } from 'mobx-react-lite';
 import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import {  useRef, useState } from 'react';
 import { Button, Input, Table } from 'antd';
-import { EnvironmentOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
 import StreetcodeMarker from '@images/footer/streetcode-marker.png';
 import MapTableAdmin from '../MapTableAdmin/MapTableAdmin.component';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import useMobx from '@/app/stores/root-store';
 
 const containerStyle = {
   width: '100%',
@@ -24,12 +25,26 @@ const MapOSMAdmin = () => {
   const [center, setCenter] = useState(initialCenter);
   const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
   const mapRef = useRef<google.maps.Map | null>(null);
+  const{streetcodeCoordinatesStore} = useMobx();
 
   const handleSaveButtonClick = () => {
-    // TODO: save streetcodeCoordinates to the backend
-
+    if (streetcodeCoordinates.length > 0) {
+      const newCoordinate: StreetcodeCoordinate = {
+        latitude: streetcodeCoordinates[0].latitude,
+        longtitude: streetcodeCoordinates[0].longtitude,
+        streetcodeId: 0, // set a default streetcodeId for now
+        id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size // set a default id for now
+      };
+      streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
+      setStreetcodeCoordinates([]);
+    }
   };
 
+  const handleDelete = (record: { id: any; }) => {
+    const { id } = record;
+    streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
+  };
+  
   const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
     setAutocomplete(autocomplete);
   };
@@ -88,6 +103,38 @@ const MapOSMAdmin = () => {
       ]);
     }
   };
+  const columns = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Широта',
+      dataIndex: 'latitude',
+      key: 'latitude',
+    },
+    {
+      title: 'Довгота',
+      dataIndex: 'longtitude',
+      key: 'longtitude',
+    },
+    {
+      title: 'Дії',
+      key: 'actions',
+      render: (text: any, record: any) => (
+        <span>
+          <DeleteOutlined onClick={() => handleDelete(record)} />
+        </span>
+         ),
+    },
+  ];
+  const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((item) => ({
+    id: item.id,
+    latitude: item.latitude,
+    longtitude: item.longtitude,
+    actions: item,
+  }));
 
   return (
 
@@ -129,7 +176,7 @@ const MapOSMAdmin = () => {
 
       </GoogleMap>
 
-      <MapTableAdmin streetcodeCoordinates={streetcodeCoordinates} />
+           <Table columns={columns} dataSource={data} />
     </LoadScript>
 
   );
