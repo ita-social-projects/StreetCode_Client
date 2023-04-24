@@ -1,5 +1,6 @@
 import './Partners.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import { useMemo } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -63,4 +64,4 @@ const PartnersComponent = () => {
     );
 };
 
-export default PartnersComponent;
+export default observer(PartnersComponent);
