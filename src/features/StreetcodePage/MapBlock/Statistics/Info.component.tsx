@@ -15,13 +15,15 @@ import Toponym from '@/models/toponyms/toponym.model';
 
 import StatisticsComponent from './Statistics.component';
 
-const InfoComponent = () => {
-    const { streetcodeStore: { getStreetCodeId } } = useMobx();
-    const toponyms = useAsync(() => ToponymsApi
-        .getAll(), []).value as Toponym[];
+interface Props {
+    streetcodeCoordinates: StreetcodeCoordinate[],
+    toponyms: Toponym[]
+}
+
+const InfoComponent = ({ streetcodeCoordinates, toponyms }: Props) => {
     const [clicked, setClicked] = useState(false);
     const [hovered, setHovered] = useState(false);
-
+    const { modalStore: { setModal } } = useMobx();
     const handleHoverChange = (open: boolean) => {
         setHovered(open);
         setClicked(false);
@@ -32,38 +34,52 @@ const InfoComponent = () => {
         setClicked(open);
     };
 
-    const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
-        .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as StreetcodeCoordinate[];
+    const onBtnClick = () => {
+        setModal('statistics');
+    };
+
+    const isMobile = window.innerWidth < 1024;
 
     const content = (
         <StatisticsComponent toponyms={toponyms} streetcodeCoordinates={streetcodeCoordinates} />
     );
 
     return (
-        <Popover
-            overlayClassName="transparent-popover"
-            className="infoContainer"
-            placement="bottomLeft"
-            content={content}
-            trigger="hover"
-            open={hovered}
-            onOpenChange={handleHoverChange}
-        >
-            <Popover
-                overlayClassName="transparent-popover"
-                className="infoContainer"
-                placement="bottomLeft"
-                content={content}
-                trigger="click"
-                open={clicked}
-                onOpenChange={handleClickChange}
-            >
+        <>
+            {isMobile ? (
                 <Button
                     className="infoButton"
-                    icon={<InfoCircleOutlined className="infoIcon" style={{ fontSize: '325%' }} />}
+                    icon={<InfoCircleOutlined className="infoIcon" />}
+                    onClick={onBtnClick}
                 />
-            </Popover>
-        </Popover>
+            ) : (
+                <Popover
+                    overlayClassName="transparent-popover"
+                    className="infoContainer"
+                    placement="bottomLeft"
+                    content={content}
+                    trigger="hover"
+                    open={hovered}
+                    onOpenChange={handleHoverChange}
+                >
+                    <Popover
+                        overlayClassName="transparent-popover"
+                        className="infoContainer"
+                        placement="bottomLeft"
+                        content={content}
+                        trigger="click"
+                        open={clicked}
+                        onOpenChange={handleClickChange}
+                    >
+                        <Button
+                            className="infoButton"
+                            icon={<InfoCircleOutlined className="infoIcon" />}
+                        />
+                    </Popover>
+                </Popover>
+            )}
+        </>
     );
 };
+
 export default observer(InfoComponent);

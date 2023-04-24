@@ -11,7 +11,6 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import Image from '@/models/media/image.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {

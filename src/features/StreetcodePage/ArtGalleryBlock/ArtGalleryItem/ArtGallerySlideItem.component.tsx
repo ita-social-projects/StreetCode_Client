@@ -11,7 +11,6 @@ interface Props {
     isAdminPage?: boolean
 }
 const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => {
-    //console.log(offset);
     const { imageHref, description, title, sequenceNumber } = artGalleryItem;
     const { modalStore: { setModal } } = useMobx();
     const windowsize = useWindowSize();
@@ -34,7 +33,7 @@ const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => 
                 <img
                     className={`imgImg ${setStyleByOffset(offset)}`}
                     src={imageHref}
-                    onClick={() => setModal('artGallery', sequenceNumber)}
+                    onClick={isAdminPage ? null : () => setModal('artGallery', sequenceNumber)}
                     alt=""
                 />
                 {windowsize.width > 1024 && (<div

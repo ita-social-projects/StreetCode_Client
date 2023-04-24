@@ -27,7 +27,7 @@
     background-color: c.$lighter-gray-color;
     cursor: pointer;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 1024px) {
     display: none;
   }
   .progressBarPopupContainer {
@@ -40,6 +40,7 @@
     box-shadow: 0 2px 15px 0 #B0B0B040; 
     background-color: c.$pure-white-color;
     box-shadow: 0 2px 15px 0 #B0B0B040;
+    //border: solid 2em rgba(#ffff, .1);
 
     @include vnd.vendored(transform, 'translateY(300px)');
 
