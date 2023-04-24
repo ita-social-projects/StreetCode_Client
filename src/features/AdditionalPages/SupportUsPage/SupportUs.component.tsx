@@ -10,11 +10,12 @@ import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
 import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
 
 import useMobx from '@/app/stores/root-store';
+import useWindowSize from "@hooks/stateful/useWindowSize.hook";
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useMobx();
     const BANK_ACCOUNT = 'UA753057490000026003000018553';
-
+    const width = useWindowSize();
     const handleCopy = () => {
         navigator.clipboard.writeText(BANK_ACCOUNT);
         // alert('Скопійовано в буфер обміну!');
@@ -28,7 +29,7 @@ const SupportUs = () => {
         <div className='supportUsPage'>
             <div className='supportUsPageWrapper'>
                 <div className='heading'>
-                    <div className="titleBig"> Підтримати нас</div>
+                    <div className="titleBig"> Підтримати {width.width >= 480 && <>нас</>}</div>
                     <div className="titleSmall">
                         Привіт! Після всіх важливих сторінок нашої платформи ти нарешті тут — на не менш важливій сторінці твоєї залученості та підтримки.
                     </div>
@@ -84,9 +85,9 @@ const SupportUs = () => {
                 <div className='donateSubBlocks'>
                     <div className='block'>
                         <p className='heading'>На карту</p>
-                        <div className='content'>
-                            <QRCode />
-                        </div>
+                        {width.width >= 480 && <div className='content'>
+                              <QRCode />
+                        </div>}
                         <button className='supportButton' onClick={handlePay}>Задонатити</button>
                     </div>
                     <div className='block forCompanies'>

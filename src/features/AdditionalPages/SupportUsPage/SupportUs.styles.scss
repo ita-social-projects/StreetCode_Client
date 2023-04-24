@@ -16,6 +16,7 @@
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
             line-height: 127px;
             color: c.$accented-gray-color;
+            display: none;
         }
 
         .titleSmall {
@@ -86,7 +87,7 @@
             @include mut.sizedImportant($height: 525px, $width: 590px);
             vertical-align: top;
             background: c.$pure-white-color;
-            
+            //display: none;
             box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
             border-radius: 32px;
         }
@@ -184,5 +185,22 @@
     .titleSmall {
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         line-height: 42px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .supportUsPageWrapper {
+        .donateSubBlocks {
+            flex-flow: column wrap;
+            height: unset;
+            width: unset;
+            margin: unset;
+            .block {
+                width: unset;
+            }
+        }
+        .mainBlock {
+            flex-direction: column;
+        }
     }
 }
