@@ -25,6 +25,7 @@ const PartnersComponent = () => {
         },
     }), [getPartnerArray, breakpoint, slidesToShow]);
 
+    const responsiveSettingsDesktop = useResponsiveSettings(10000, 4);
     const responsiveSettingsTablet = useResponsiveSettings(1024, 4);
     const responsiveSettingsMobile = useResponsiveSettings(780, 2);
 
@@ -36,7 +37,7 @@ const PartnersComponent = () => {
         speed: 4000,
         slidesToShow: 3,
         slidesToScroll: 1,
-        responsive: [responsiveSettingsTablet, responsiveSettingsMobile],
+        responsive: [responsiveSettingsTablet, responsiveSettingsMobile, responsiveSettingsDesktop],
     };
 
     const sliderItems = getPartnerArray.map((p) => (

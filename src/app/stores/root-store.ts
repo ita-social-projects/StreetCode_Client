@@ -22,6 +22,7 @@ import TimelineStore from '@stores/timeline-store';
 import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
+import StreetcodeShortStore from './streetcodeshort-store';
 
 interface Store {
     modalStore: ModalStore,
