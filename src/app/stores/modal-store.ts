@@ -25,6 +25,7 @@ interface ModalList {
     donates: ModalState;
     login: ModalState;
     artGallery: ModalState;
+    partners: ModalState;
     tagsList: ModalState;
     addTerm: ModalState;
     editTerm: ModalState;
@@ -32,6 +33,7 @@ interface ModalList {
     deleteStreetcode: ModalState;
     confirmation: ModalState;
     adminFacts: ModalState;
+    statistics: ModalState;
 }
 
 export default class ModalStore {
@@ -44,6 +46,7 @@ export default class ModalStore {
         donates: DefaultModalState,
         login: DefaultModalState,
         artGallery: DefaultModalState,
+        partners: DefaultModalState,
         tagsList: DefaultModalState,
         addTerm: DefaultModalState,
         editTerm: DefaultModalState,
@@ -51,6 +54,7 @@ export default class ModalStore {
         deleteStreetcode: DefaultModalState,
         confirmation: DefaultModalState,
         adminFacts: DefaultModalState,
+        statistics: DefaultModalState,
     };
 
     public isPageDimmed = false;

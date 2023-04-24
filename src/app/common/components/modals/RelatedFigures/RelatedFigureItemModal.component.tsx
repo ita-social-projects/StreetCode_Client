@@ -17,6 +17,11 @@ const RelatedFiguresItemModal = () => {
     const relationId = relatedFigureItem.fromCardId!;
     const relation = relatedFiguresMap.get(relationId);
 
+    const handleClick = () => {
+        setModal('relatedFigureItem', relation?.id, false)
+        window.scrollTo(0,0)
+    };
+
     useAsync(
         () => {
         if (relation)
@@ -53,8 +58,8 @@ const RelatedFiguresItemModal = () => {
             </div>
             <Link 
                 className='redirectionButton'
-                to={`../streetcode/${relation?.id}`} 
-                onClick={() => setModal('relatedFigureItem', relation?.id, false)}           
+                to={`../streetcode/${relation?.url}`} 
+                onClick={handleClick}           
             >
                 <p>Перейти на сторінку постаті</p>
             </Link>
