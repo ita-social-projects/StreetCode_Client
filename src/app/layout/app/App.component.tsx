@@ -2,6 +2,7 @@ import './App.styles.scss';
 import './ant-styles.overrides.scss';
 
 import { observer } from 'mobx-react-lite';
+import ReactGA from 'react-ga4';
 import { Outlet, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
