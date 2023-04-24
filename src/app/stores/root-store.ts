@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { createContext, useContext } from 'react';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
@@ -19,6 +20,7 @@ import TimelineStore from '@stores/timeline-store';
 
 import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
 
+import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 
 interface Store {
