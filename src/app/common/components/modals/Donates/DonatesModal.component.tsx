@@ -1,16 +1,14 @@
 import './DonatesModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-import { Button, Input, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import {
-    ChangeEvent, SyntheticEvent, useCallback,
-    useEffect, useRef, useState,
+    ChangeEvent, useEffect, useState,
 } from 'react';
 
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
-import axios from 'axios';import { link } from 'fs';
 import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
 ;
@@ -27,8 +25,6 @@ const DonatesModal = () => {
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-
-    const linkBase = 'хост/api/Payment/CreateInvoice';
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
