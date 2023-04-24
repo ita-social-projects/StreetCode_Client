@@ -5,7 +5,7 @@ import Image, { ImageCreate } from '@models/media/image.model';
 const ImagesApi = {
     getAll: () => Agent.get<Image[]>(`${API_ROUTES.IMAGES.GET_ALL}`),
 
-    getById: (id: number) =>{ console.trace(); console.log(id); return Agent.get<Image>(`${API_ROUTES.IMAGES.GET}/${id}`)},
+    getById: (id: number) => Agent.get<Image>(`${API_ROUTES.IMAGES.GET}/${id}`),
 
     getByStreetcodeId: (streetcodeId: number) => Agent
         .get<Image[]>(`${API_ROUTES.IMAGES.GET_BY_STREETCODE_ID}/${streetcodeId}`),

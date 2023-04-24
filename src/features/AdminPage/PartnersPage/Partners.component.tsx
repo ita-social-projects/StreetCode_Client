@@ -43,7 +43,7 @@ const Partners:React.FC = observer(() => {
                     );
                 });
             });
-        });
+        }).then(()=> partnersStore.setInternalMap(partnersStore.getPartnerArray));
     };
     useEffect(() => {
         updatedPartners();
@@ -88,7 +88,7 @@ const Partners:React.FC = observer(() => {
                 <img
                     key={`${record.id}${record.logo?.id}}`}
                     className="partners-table-logo"
-                    src={base64ToUrl(logo?.base64, logo.mimeType)}
+                    src={base64ToUrl(logo?.base64, logo?.mimeType??'')}
                     alt={logo?.alt}
                 />
             ),

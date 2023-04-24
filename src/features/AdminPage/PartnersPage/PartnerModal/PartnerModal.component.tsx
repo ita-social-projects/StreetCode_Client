@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import './PartnerModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -10,21 +9,21 @@ import useMobx from '@stores/root-store';
 import {
     Button,
     Checkbox,
-    Form, Input, Modal, Select, Upload, UploadFile,
+    Form, Input, Modal, Select, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
+import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
+import Image from '@/models/media/image.model';
 import Partner, {
     LogoType,
     PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-import Image from '@/models/media/image.model';
-import ImagesApi from '@/app/api/media/images.api';
 
 const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVisible?:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?:(partner:PartnerCreateUpdate)=>void
@@ -68,7 +67,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
                  logo: [
                      { name: '',
-                       url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
+                       thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
                        uid: partnerItem.logoId.toString(),
                        status: 'done' }],
              });
@@ -80,6 +79,8 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  title: l.title,
 
              })));
+         } else {
+             imageId.current = 0;
          }
      }, [partnerItem, open, form]);
 
@@ -123,10 +124,10 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
              logoId: imageId.current,
              partnerSourceLinks,
              streetcodes: selectedStreetcodes.current,
-             targetUrl: formValues.url,
+             targetUrl: formValues.url ?? '',
              title: formValues.title,
-             description: formValues.description,
-             urlTitle: formValues.urlTitle,
+             description: formValues.description ?? '',
+             urlTitle: formValues.urlTitle ?? '',
              isVisibleEverywhere: false,
          };
          let success = false;
@@ -153,7 +154,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
              ]);
          }
          closeAndCleanData();
-         imageId.current = 0;
          if (success && afterSubmit) {
              afterSubmit(partner);
          }
@@ -271,7 +271,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          }}
                          defaultFileList={(partnerItem)
                              ? [{ name: '',
-                                  url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
+                                  thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
                                   uid: partnerItem.logoId.toString(),
                                   status: 'done' }]
                              : []}

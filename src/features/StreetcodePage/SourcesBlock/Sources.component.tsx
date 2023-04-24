@@ -13,7 +13,8 @@ const SourcesComponent = () => {
     const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
 
     useAsync(
-        () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId),
+        () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId)
+            .then(() => console.log(sourcesStore.srcCategoriesMap)),
         [getStreetCodeId],
     );
 
@@ -28,7 +29,7 @@ const SourcesComponent = () => {
                             swipe={false}
                             dots={false}
                         >
-                            {getSrcCategoriesArray.flatMap((i) => [i, i]).map((sc) => (
+                            {getSrcCategoriesArray.map((sc) => (
                                 <SourceItem
                                     key={sc.id}
                                     srcCategory={sc}

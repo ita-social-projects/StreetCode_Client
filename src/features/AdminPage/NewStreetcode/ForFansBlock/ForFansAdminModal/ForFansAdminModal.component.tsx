@@ -37,7 +37,6 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
     }, [open]);
 
     const onSave = (values:any) => {
-        console.log(values);
         const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (elementToUpdate) {
             sourceCreateUpdateStreetcode
@@ -54,7 +53,6 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                                             text: editorRef.current?.editor?.getContent() ?? '' });
         }
         setOpen(false);
-        console.log(sourceCreateUpdateStreetcode.streetcodeCategoryContents);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
     };
 
@@ -92,8 +90,8 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                             'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
                             'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
                         ],
-                        toolbar: 'checklist | bold  formatselect  italic underline strikethrough superscript subscript codeformat '
-                     + 'formats blockformats align | removeformat link',
+                        toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
+                     + 'formats blockformats align | removeformat strikethrough ',
                         content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                     }}
                 />
