@@ -67,13 +67,11 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     const onContextSelect = (value:string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
-            console.log(value.length);
             if (value.length > 50) {
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 return;
             }
-            const maxId = Math.max(...historicalContextStore.historicalContextArray.map((i) => i.id));
-            const newItem = { id: maxId + 1, title: value };
+            const newItem = { id: 0, title: value };
             historicalContextStore.addItemToArray(newItem);
             selectedContext.current.push(newItem);
         } else {

@@ -9,6 +9,10 @@ export default class ImageStore {
         makeAutoObservable(this);
     }
 
+    public addImage = (image: Image) => {
+        this.setItem(image);
+    };
+
     private setInternalMap = (images: Image[]) => {
         images.forEach(this.setItem);
     };
@@ -16,6 +20,10 @@ export default class ImageStore {
     private setItem = (image: Image) => {
         this.ImageMap.set(image.id, image);
     };
+
+    get getImageArray() {
+        return Array.from(this.ImageMap.values());
+    }
 
     static async getImageById(imageId:number):Promise<Image | undefined> {
         let image:Image | undefined;

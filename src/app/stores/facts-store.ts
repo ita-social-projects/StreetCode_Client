@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import factsApi from '@api/streetcode/text-content/facts.api';
-import { Fact } from '@models/streetcode/text-contents.model';
+import { Fact, FactCreate } from '@models/streetcode/text-contents.model';
 
 export default class FactsStore {
     public factMap = new Map<number, Fact>();

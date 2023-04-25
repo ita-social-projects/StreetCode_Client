@@ -14,9 +14,11 @@ const ForFansBlock = () => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
+
     useEffect(() => {
         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
     }, []);
+    
     return (
         <div className="forFansBlock">
             <div className="forFansHeader">
@@ -48,7 +50,6 @@ const ForFansBlock = () => {
                 open={isModalOpen}
                 setOpen={setIsModalOpen}
             />
-
         </div>
     );
 };

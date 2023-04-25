@@ -14,5 +14,4 @@ const ArtGalleryBlock: React.FC<{ arts:ArtCreate[],
             <DownloadBlock arts={arts} setArts={setArts} />
         </div>
     );
-
 export default ArtGalleryBlock;

@@ -25,5 +25,6 @@ export default class HistoricalContextStore {
 
     public addItemToArray = (item: HistoricalContext) => {
         this.historicalContextArray.push(item);
+        console.log(item);
     };
 }
