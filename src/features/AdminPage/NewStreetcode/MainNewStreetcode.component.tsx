@@ -6,14 +6,14 @@ import RelatedFigure from '@models/streetcode/related-figure.model';
 import { ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
-
+import RelatedFigureApi from '@app/api/streetcode/related-figure.api'
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
-import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
+import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
-import { VideoCreate } from '@/models/media/video.model';
-import { PartnerShort } from '@/models/partners/partners.model';
+import Video, { VideoCreate } from '@/models/media/video.model';
+import Partner, { PartnerShort } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType }
     from '@/models/streetcode/streetcode-types.model';
@@ -33,22 +33,108 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-
+import { useParams } from 'react-router-dom';
+import StreetcodeArtApi from '../../../app/api/media/streetcode-art.api';
+import VideosApi from '../../../app/api/media/videos.api';
+import PartnersApi from '../../../app/api/partners/partners.api';
+import SubtitlesApi from '../../../app/api/additional-content/subtitles.api';
+import FactsApi from '../../../app/api/streetcode/text-content/facts.api';
+import TextsApi from '../../../app/api/streetcode/text-content/texts.api';
+import SourcesApi from '../../../app/api/sources/sources.api';
+import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
+import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
 const NewStreetcode = () => {
     const [form] = useForm();
     const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
 
-    const [partners, setPartners] = useState<PartnerShort[]>([]);
+    const [partners, setPartners] = useState<Partner[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
+    const [video, setVideo] = useState<Video>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
+    const [categories, setCategories] = useState<SourceCategory[]>([]);
+    const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
+    const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
 
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
+        }
+        if (parseId) {
+            StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then(result => {
+                const newArts = result.map(x => ({
+                    description: x.art.description ?? "",
+                    title: x.art.image.alt ?? "",
+                    imageId: x.art.imageId,
+                    image: x.art.image.base64,
+                    index: x.index,
+                    mimeType: x.art.image.mimeType,
+                    uidFile: x.index + ""
+                }));
+                setArts([...newArts]);
+            });
+            StreetcodesApi.getById(parseId).then(x => {
+                if (x.lastName && x.firstName) {
+
+                    form.setFieldsValue({
+                        surname: x.lastName,
+                        name: x.firstName,
+                        streetcodeNumber: parseId,
+                        title: x.title,
+                        alias: x.alias,
+                        streetcodeUrlName: x.transliterationUrl,
+                        firstDate: x.eventStartOrPersonBirthDate,
+                        secondDate: x.eventEndOrPersonDeathDate,
+                        //streetcodeFirstDate: x.eventStartOrPersonBirthDate,
+                        //streetcodeSecondDate: x.eventEndOrPersonDeathDate,
+                        teaser: x.teaser,
+                    });
+                    setSelectedTags(x.tags);
+                    setStreetcodeType(StreetcodeType.Person);
+                }
+                else {
+                    form.setFieldsValue({
+                        streetcodeNumber: parseId,
+                        title: x.title,
+                        alias: x.alias,
+                        streetcodeUrlName: x.transliterationUrl,
+                        firstDate: x.eventStartOrPersonBirthDate,
+                        secondDate: x.eventEndOrPersonDeathDate,
+                        //streetcodeFirstDate: x.eventStartOrPersonBirthDate,
+                        //streetcodeSecondDate: x.eventEndOrPersonDeathDate,
+                        teaser: x.teaser,
+                    });
+                    setSelectedTags(x.tags);
+                    setStreetcodeType(StreetcodeType.Event);
+                }
+            });
+            TextsApi.getByStreetcodeId(parseId).then(result => {
+                setInputInfo(result);
+            })
+            VideosApi.getByStreetcodeId(parseId).then(result => {
+                setVideo(result);
+            })
+            RelatedFigureApi.getByStreetcodeId(parseId).then(result => {
+                setFigures([...result]);
+            });
+            PartnersApi.getByStreetcodeId(parseId).then(result => {
+                setPartners([...result]);
+            });
+            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then(result => {
+                setSubTitle(result[0].subtitleText);
+            });
+            SourcesApi.getCategoriesByStreetcodeId(parseId).then(result => {
+                setCategories([...result]);
+            });
+            StreetcodeCoordinateApi.getByStreetcodeId(parseId).then(result => {
+                setCoordinates([...result]);
+            });
+        
         }
     }, []);
 
@@ -116,6 +202,7 @@ const NewStreetcode = () => {
             streetcode.lastName = form.getFieldValue('surname');
         }
 
+
         StreetcodesApi.create(streetcode)
             .then((response) => {
                 console.log(response);
@@ -123,6 +210,7 @@ const NewStreetcode = () => {
             .catch((error) => {
                 console.log(error);
             });
+
     };
 
     return (
@@ -138,17 +226,17 @@ const NewStreetcode = () => {
                             streetcodeType={streetcodeType}
                             setStreetcodeType={setStreetcodeType}
                         />
-                        <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} />
+                        <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={ setVideo} />
                         <button type="submit">Відправити</button>
                     </Form>
-                    <InterestingFactsBlock />
-                    <RelatedFiguresBlock setFigures={setFigures} />
-                    <PartnerBlockAdmin setPartners={setPartners} />
-                    <SubtitleBlock setSubTitle={setSubTitle} />
+                    <InterestingFactsBlock facts={facts} setFacts={setFacts} />
+                    <RelatedFiguresBlock figures={figures } setFigures={setFigures} />
+                    <PartnerBlockAdmin partners={ partners} setPartners={setPartners} />
+                    <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
                     <ArtGalleryBlock arts={arts} setArts={setArts} />
                     <TimelineBlockAdmin />
-                    <ForFansBlock />
-                    <MapBlockAdmin />
+                    <ForFansBlock categories={categories} setCategories={setCategories} />
+                    <MapBlockAdmin coordinates={coordinates} />
                 </div>
             </ConfigProvider>
         </div>

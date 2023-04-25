@@ -18,7 +18,6 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
 
     useEffect(() => {
         setFilteredOptions(options);
-        console.log(options);
     }, [options]);
 
     const handleSearch = (value: string) => {

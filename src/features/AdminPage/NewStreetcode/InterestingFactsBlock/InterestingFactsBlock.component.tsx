@@ -5,6 +5,7 @@ import { useState } from 'react';
 import useMobx from '@stores/root-store';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { useParams } from 'react-router-dom';
 
 import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
@@ -14,11 +15,11 @@ const InterestingFactsBlock = () => {
     const [openModal, setModalOpen] = useState<boolean>(false);
 
     const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
-    const { getStreetCodeId } = streetcodeStore;
-
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
     useAsync(
-        () => fetchFactsByStreetcodeId(getStreetCodeId),
-        [getStreetCodeId],
+        () => fetchFactsByStreetcodeId(parseId),
+        [parseId],
     );
     return (
         <div className="interestingFactsBlock">
@@ -36,7 +37,9 @@ const InterestingFactsBlock = () => {
                 ))}
             </div>
             <div>
-                <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} />
+                {getFactArray.map((fact) => (
+                    <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
+                ))}
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
@@ -9,6 +9,7 @@ import Image from '@/models/media/image.model';
 
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
+import base64ToUrl from '../../../../../app/common/utils/base64ToUrl.utility';
 
 const DownloadBlock: React.FC<{ arts:ArtCreate[],
     setArts: React.Dispatch<React.SetStateAction<ArtCreate[]>> }> = ({ arts, setArts }) => {
@@ -17,6 +18,19 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
         const [isOpen, setIsOpen] = useState(false);
         const uidsFile = useRef<string>('');
         const indexTmp = useRef<number>(0);
+
+        useEffect(() => {
+
+            const newFileList = arts.map((art: ArtCreate) => ({
+                uid: art.uidFile,
+                name: art.title,
+                status: 'done',
+                thumbUrl: base64ToUrl(art.image, art.mimeType) ?? "",
+                type: art.mimeType,
+            }));
+            setFileList(newFileList);
+            indexTmp.current = Math.max(arts.map(x => x.index)) + 1;
+        }, [arts]);
 
         const onChange = (uploadParams:UploadChangeParam<UploadFile<any>>) => {
             uidsFile.current = uploadParams.file.uid;

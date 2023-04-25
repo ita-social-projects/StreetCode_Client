@@ -10,20 +10,21 @@ import { SourceCategory, SourceCategoryName, StreetcodeCategoryContent } from '@
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
 
-const ForFansBlock = () => {
+const ForFansBlock = (categories: SourceCategory[], setCategories: any) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
 
+
     useEffect(() => {
         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
     }, []);
-    
+
     return (
         <div className="forFansBlock">
             <div className="forFansHeader">
                 <h2>
-                       Для фанатів
+                    Для фанатів
                 </h2>
             </div>
             <div className="forFansContainer">
@@ -36,8 +37,11 @@ const ForFansBlock = () => {
                 </button>
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category, index) => (
                     <ForFansAdminItem
-                        categoryName={categoriesSelect.find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
-                        id={index}
+
+                        categoryName={categoriesSelect.find((c) => c.id === category.categoryId)?.title ?? ''}
+                        id={category.id}
+
+
                         onEditClick={() => {
                             sourceCreateUpdateStreetcode.indexUpdate = index;
                             setIsModalOpen(true);

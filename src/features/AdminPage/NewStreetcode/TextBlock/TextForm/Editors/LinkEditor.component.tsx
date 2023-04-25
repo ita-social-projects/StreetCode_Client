@@ -1,27 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button, Input, Tooltip } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
+import Video from '../../../../../../models/media/video.model';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+    video: Video | undefined;
+    setVideo: React.Dispatch<Video | undefined>;
 }
 
 const toolTipColor = '#8D1F16';
 const videoPattern = 'https?://www.youtube.com/watch.+';
 
-const linkConverter = (link: string) => (link.includes('/watch?v=')
-    ? link.replace('/watch?v=', '/embed/')
-    : link);
+const linkConverter = (link: string) => {
+    let fixedlink = link;
+    if (link.includes('&')) {
+        const index = link.indexOf('&');
+        fixedlink = link.slice(0, index);
+    }
+    return fixedlink.includes('/watch?v=')
+        ? fixedlink.replace('/watch?v=', '/embed/')
+        : fixedlink;
+};
 
-const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
+const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
-
+    useEffect(() => {
+        setInputInfo(info => ({ ...info, link: video?.url.href }));
+    }, [video])
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
+        setVideo(video);
     };
     return (
         <FormItem name="video" rules={[{ required: true, message: 'Введіть посилання!' }]}>
@@ -29,7 +42,7 @@ const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
                 <h3>Відео</h3>
                 <Input
                     title="video"
-                    value={inputInfo?.link}
+                    value={inputInfo?.link??""}
                     className="smallerInput"
                     placeholder="ex. https://www.youtube.com"
                     pattern={videoPattern}
