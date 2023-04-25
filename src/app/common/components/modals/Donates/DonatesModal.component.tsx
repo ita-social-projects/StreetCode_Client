@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
-;
+
 
 const possibleDonateAmounts = [100, 500, 1000];
 
@@ -73,7 +73,7 @@ const DonatesModal = () => {
         const handleResize = () => {
             if (window.innerWidth <= 1020) {
                 setInputStyle({
-                    width: ${donateAmount === 0 ? 50 : (donateAmount.toString().length * 30) + 25}px,
+                    width: `${donateAmount === 0 ? 50 : (donateAmount.toString().length * 30) + 25}px`,
                 });
             } else {
                 setInputStyle({
@@ -108,8 +108,8 @@ return (
                 <input
                     onChange={handleDonateInputChange}
                     style={inputStyle}
-                    value={${donateAmount.toString()}₴}
-                    className={amountInput ${(donateAmount !== 0) ? 'active' : ''}}
+                    value={`${donateAmount.toString()}₴`}
+                    className={`amountInput ${(donateAmount !== 0) ? 'active' : ''}`}
                 />
                 <div className="donatesBtnContainer">
                     {possibleDonateAmounts.map((amount, idx) => (
