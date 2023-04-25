@@ -7,8 +7,7 @@
 
 .donatesModalContent {
   @include mut.flex-centered($direction: column);
-  width: f.pxToRem(590px) !important;
-  height: f.pxToRem(525px) !important;
+  @include mut.sized(590px, 525px);
   display: flex;
 
 
