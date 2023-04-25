@@ -6,6 +6,11 @@
  $factImg: "@assets/images/interesting-facts/WowFacts1.png";
 
  .forFansAdminModal {
+  .category-select-input{
+    .ant-select, .category-select-input{
+      width: f.pxToRem(200px);
+    }
+  }
 
    &.ant-modal {
      .ant-modal-content {

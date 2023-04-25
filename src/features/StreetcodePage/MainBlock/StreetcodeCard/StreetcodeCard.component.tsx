@@ -4,7 +4,7 @@ import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import Tag from '@models/additional-content/tag.model';
+import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx from '@stores/root-store';
 
@@ -48,6 +48,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
+    console.log(streetcode);
 
     const [images, setImages] = useState<Image[]>([]);
     useEffect(() => {
@@ -94,7 +95,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             )}
                         </div>
                         <TagList
-                            tags={streetcode?.tags.map((tag: Tag) => tag)}
+                            tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
@@ -103,33 +104,31 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 {streetcode?.teaser}
                             </p>
                         </div>
-
-                        <div className="cardFooter">
-                            {audio?.base64
-                                ? (
-                                    <Button
-                                        type="primary"
-                                        className="audioBtn audioBtnActive"
-                                        onClick={() => setModal('audio')}
-                                    >
-                                        <PlayCircleFilled className="playCircle" />
-                                        <span>Прослухати текст</span>
-                                    </Button>
-                                )
-                                : (
-                                    <Button
-                                        disabled
-                                        type="primary"
-                                        className="audioBtn"
-                                    >
-                                        <span>Аудіо на підході</span>
-                                    </Button>
-                                )}
-                            <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
-                        </div>
-
                     </div>
 
+                    <div className="cardFooter">
+                        {audio?.base64
+                            ? (
+                                <Button
+                                    type="primary"
+                                    className="audioBtn audioBtnActive"
+                                    onClick={() => setModal('audio')}
+                                >
+                                    <PlayCircleFilled className="playCircle" />
+                                    <span>Прослухати текст</span>
+                                </Button>
+                            )
+                            : (
+                                <Button
+                                    disabled
+                                    type="primary"
+                                    className="audioBtn"
+                                >
+                                    <span>Аудіо на підході</span>
+                                </Button>
+                            )}
+                        <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
+                    </div>
                 </div>
             </div>
         </div>

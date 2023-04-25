@@ -7,7 +7,7 @@ import {
 
 // eslint-disable-next-line import/extensions
 import StrictModeDroppable from '@/app/common/components/StrictModeDroppable';
-import { TagVisible } from '@/models/additional-content/tag.model';
+import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
 
 import ClickableTagItem from './ClickableTagItem';
 
@@ -18,8 +18,8 @@ function reorder<T>(list:Array<T>, startIndex:number, endIndex:number):Array<T> 
 
     return result;
 }
-const DragableTags: React.FC<{ tags: TagVisible[],
-     setTags:React.Dispatch<React.SetStateAction<TagVisible[]>> }> = ({ tags, setTags }) => {
+const DragableTags: React.FC<{ tags: StreetcodeTag[],
+     setTags:React.Dispatch<React.SetStateAction<StreetcodeTag[]>> }> = ({ tags, setTags }) => {
          const onDragEnd = (result: DropResult) => {
              if (!result.destination) return;
 
@@ -62,7 +62,7 @@ const DragableTags: React.FC<{ tags: TagVisible[],
                                                  tag={tag}
                                                  setVisibility={(visibility) => {
                                                      // eslint-disable-next-line no-param-reassign
-                                                     tags[index].visible = visibility;
+                                                     tags[index].isVisible = visibility;
                                                  }}
                                              />
                                          </div>

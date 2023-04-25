@@ -32,12 +32,19 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
 
     useEffect(() => {
         if (fact && open) {
+            imageId.current = fact.imageId;
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
                     form.setFieldsValue({
                         id: fact.id,
                         title: fact.title,
                         factContent: fact.factContent,
+                        image: fact ? [{ name: '',
+                                         url: base64ToUrl(image.base64, image.mimeType),
+                                         thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                                         uid: `${fact.id}`,
+                                         status: 'done',
+                                         type: image.mimeType }] : [],
 
                     });
                     setFileList(fact ? [{ name: '',
@@ -49,7 +56,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 });
         } else {
             setFileList([]);
-            
         }
     }, [fact, open, form]);
 
@@ -118,6 +124,12 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 <FormItem
                     name="image"
                     className=""
+                    getValueFromEvent={(e: any) => {
+                        if (Array.isArray(e)) {
+                            return e;
+                        }
+                        return e?.fileList;
+                    }}
                     rules={[{ required: true, message: 'Завантажте фото, будь ласка' }]}
                 >
                     <FileUploader
@@ -132,6 +144,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         fileList={fileList}
                         onSuccessUpload={(image:Image) => {
                             imageId.current = image.id;
+                        }}
+                        onRemove={(image) => {
+                            ImagesApi.delete(imageId.current);
                         }}
                     >
                         <div className="upload">

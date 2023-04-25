@@ -6,8 +6,8 @@ export interface Fact {
     id: number;
     title: string;
     factContent: string;
-    image: Image | string;
-    imageId?: number | undefined;
+    image?: Image;
+    imageId: number;
 }
 
 export interface Term {

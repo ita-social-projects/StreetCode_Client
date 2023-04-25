@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
+import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import { ArtCreate } from '@/models/media/art.model';
 import Image from '@/models/media/image.model';
@@ -40,7 +41,12 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
             setArts([...arts, newArt]);
         };
         const onRemoveFile = (file:UploadFile) => {
-            setArts(arts.filter((a) => a.uidFile !== file.uid) ?? []);
+            const removedArtIndex = arts.findIndex((a) => a.uidFile === file.uid);
+            if (removedArtIndex >= 0) {
+                ImagesApi.delete(arts[removedArtIndex].imageId);
+                arts.splice(removedArtIndex, 1);
+                setArts([...arts]);
+            }
         };
 
         const handleSave = (art: ArtCreate) => {
@@ -68,14 +74,18 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
                 >
                     {fileList.length < 15 ? <p>+ Додати</p> : <></>}
                 </FileUploader>
-                <h4>Попередній перегляд</h4>
-                <ArtGalleryAdminBlock arts={arts} />
-                <PreviewImageModal
-                    art={arts[fileList.indexOf(filePreview!)]}
-                    onSave={handleSave}
-                    opened={isOpen}
-                    setOpened={setIsOpen}
-                />
+                {arts.length > 0 ? (
+                    <>
+                        <h4>Попередній перегляд</h4>
+                        <ArtGalleryAdminBlock arts={arts} />
+                        <PreviewImageModal
+                            art={arts[fileList.indexOf(filePreview!)]}
+                            onSave={handleSave}
+                            opened={isOpen}
+                            setOpened={setIsOpen}
+                        />
+                    </>
+                ) : null}
             </>
         );
     };

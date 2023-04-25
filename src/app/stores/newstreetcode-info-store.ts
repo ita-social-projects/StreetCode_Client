@@ -1,9 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 
 export default class NewStreetcodeInfoStore {
-    public animationId = 0;
+    public animationId: number | null = null;
 
-    public blackAndWhiteId = 0;
+    public blackAndWhiteId: number | null = null;
+
+    public relatedFigureId: number | null = null;
+
+    public audioId: number | null = null;
 
     public selectedToponyms:string[] = [];
 

@@ -71,10 +71,11 @@ export const API_ROUTES = {
         DELETE: 'toponym/delete',
     },
     SOURCES: {
+        GET_ALL_CATEGORIES_NAMES: 'sources/getAllNames',
         GET_ALL_CATEGORIES: 'sources/getAllCategories',
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
-        GET_SUBCATEGORIES_BY_CATEGORY_ID: 'sources/GetSubCategoriesByCategoryId',
+        GET_CONTENT_BY_STREETCODE_ID: 'sources/getCategoryContentByStreetcodeId',
         CREATE: 'sources/create',
         UPDATE: 'sources/update',
         DELETE: 'sources/delete',
@@ -162,6 +163,10 @@ export const API_ROUTES = {
         CREATE: 'coordinate/create',
         UPDATE: 'coordinate/update',
         DELETE: 'coordinate/delete',
+    },
+    USERS: {
+        LOGIN: 'user/login',
+        REFRESH_TOKEN: 'user/refreshToken',
     },
     EMAIL: {
         SEND: 'email/send',

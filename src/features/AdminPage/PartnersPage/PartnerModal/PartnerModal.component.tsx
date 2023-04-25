@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import './PartnerModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -10,14 +9,16 @@ import useMobx from '@stores/root-store';
 import {
     Button,
     Checkbox,
-    Form, Input, Modal, Select, Upload, UploadFile,
+    Form, Input, Modal, Select, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
+import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
+import Image from '@/models/media/image.model';
 import Partner, {
     LogoType,
     PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,
@@ -37,6 +38,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
      const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
      const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
+     const imageId = useRef<number>(0);
      const handlePreview = async (file: UploadFile) => {
          setFilePreview(file);
          setPreviewOpen(true);
@@ -55,7 +57,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      }, []);
      useEffect(() => {
          if (partnerItem && open) {
-             console.log(partnerItem);
+             imageId.current = partnerItem.logoId;
              form.setFieldsValue({
                  title: partnerItem.title,
                  isKeyPartner: partnerItem.isKeyPartner,
@@ -65,7 +67,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
                  logo: [
                      { name: '',
-                       url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
+                       thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
                        uid: partnerItem.logoId.toString(),
                        status: 'done' }],
              });
@@ -77,6 +79,8 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  title: l.title,
 
              })));
+         } else {
+             imageId.current = 0;
          }
      }, [partnerItem, open, form]);
 
@@ -117,21 +121,23 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          const partner: PartnerCreateUpdate = {
              id: 0,
              isKeyPartner: formValues.isKeyPartner,
-             logoId: 0,
+             logoId: imageId.current,
              partnerSourceLinks,
              streetcodes: selectedStreetcodes.current,
-             targetUrl: formValues.url,
+             targetUrl: formValues.url ?? '',
              title: formValues.title,
-             description: formValues.description,
-             urlTitle: formValues.urlTitle,
+             description: formValues.description ?? '',
+             urlTitle: formValues.urlTitle ?? '',
              isVisibleEverywhere: false,
          };
-         let success = true;
+         let success = false;
          if (partnerItem) {
              partner.id = partnerItem.id;
-             partner.logoId = partnerItem.logoId;
              Promise.all([
                  partnersStore.updatePartner(partner)
+                     .then(() => {
+                         success = true;
+                     })
                      .catch((e) => {
                          console.log(e); success = false;
                      }),
@@ -139,6 +145,9 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          } else {
              Promise.all([
                  partnersStore.createPartner(partner)
+                     .then(() => {
+                         success = true;
+                     })
                      .catch((e) => {
                          console.log(e); success = false;
                      }),
@@ -215,7 +224,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="url"
                      label="Посилання: "
-                     rules={[{ required: true, message: 'Введіть назву' }]}
                  >
                      <Input maxLength={200} showCount />
                  </Form.Item>
@@ -224,7 +232,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                      name="urlTitle"
                      label="Назва посилання: "
                      className="url-title"
-                     rules={[{ required: true, message: 'Введіть назву посилання' }]}
                  >
                      <Input maxLength={100} showCount />
                  </Form.Item>
@@ -232,7 +239,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="description"
                      label="Опис: "
-                     rules={[{ required: true, message: 'Введіть назву' }]}
                  >
                      <TextArea showCount maxLength={450} />
                  </Form.Item>
@@ -241,7 +247,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                      name="logo"
                      className="maincard-item photo-form-item"
                      label="Лого"
-                     rules={[{ required: true, message: 'Завантажте зображення' }]}
                      valuePropName="fileList"
                      getValueFromEvent={(e: any) => {
                          if (Array.isArray(e)) {
@@ -258,15 +263,15 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          onPreview={handlePreview}
                          className="uploader-small"
                          uploadTo="image"
-                         fileList={(partnerItem)
-                             ? [{ name: '',
-                                  url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
-                                  uid: partnerItem.logoId.toString(),
-                                  status: 'done' }]
-                             : []}
+                         onSuccessUpload={(image:Image) => {
+                             imageId.current = image.id;
+                         }}
+                         onRemove={(image) => {
+                             ImagesApi.delete(imageId.current);
+                         }}
                          defaultFileList={(partnerItem)
                              ? [{ name: '',
-                                  url: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
+                                  thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
                                   uid: partnerItem.logoId.toString(),
                                   status: 'done' }]
                              : []}
