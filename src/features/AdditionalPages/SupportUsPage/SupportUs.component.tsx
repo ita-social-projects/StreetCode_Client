@@ -86,7 +86,7 @@ const SupportUs = () => {
                     </div>
                 </div>
                 <div className='donateSubBlocks'>
-                    <div className='block'>
+                    <div className='block qr'>
                         <p className='heading'>На карту</p>
 	                    <div className='content'>
                             {

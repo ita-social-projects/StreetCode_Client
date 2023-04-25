@@ -205,6 +205,7 @@
             }
 
             .text {
+                @include mut.rem-margined($bottom: 40px);
                 font-size: 14px;
                 line-height: 16.41px;
             }
@@ -220,7 +221,10 @@
                     line-height: 26px;
                 }
 
-                .purposeList {
+                ul.purposeList {
+                    @include mut.rem-margined($top: 12px, $bottom: 16px);
+                    gap: 12px;
+
                     li {
                         span {
                             font-size: 14px;
@@ -266,7 +270,7 @@
                         line-height: pxToRem(16.41px);
 
                         .thickerText {
-                            @include mut.rem-margined($top: 8px);
+                            @include mut.rem-margined($top: 0px);
                             font-size: 12px;
                             font-weight: 500;
                             line-height: 14.06px;
@@ -274,10 +278,10 @@
                     }
                 }
 
-                svg path {
-                    //@include mut.sized($width: 151px, $height: 151px);
-                    height: 151px;
-                    width: 151px;
+                &.qr {
+                    .content {
+                        align-items: center;
+                    }
                 }
             }
         }
