@@ -59,16 +59,16 @@ const FileInputsPart: React.FC = () => {
                     newStreetcodeInfoStore.BlackAndWhiteId = result[1] ? result[1].id : -1;
                     newStreetcodeInfoStore.relatedFigureId = result[2] ? result[2].id : null;
                     setImages([...newFileList]);
-                    }).then(() => {
-                        if (images) {
-                            setIsLoading(false);
-                        }
-                        else {
-                            console.log(images);
+                });//.then(() => {
+                    //    if (images) {
+                    //        setIsLoading(false);
+                    //    }
+                    //    else {
+                    //        console.log(images);
 
-                            setIsLoading(true);
-                        }
-                    });
+                    //        setIsLoading(true);
+                    //    }
+                    //});
                 await AudiosApi.getByStreetcodeId(parseId).then(result => {
                     const newAudio: UploadFile = {
                         uid: result.id + "",
@@ -93,9 +93,7 @@ const FileInputsPart: React.FC = () => {
 
     return (
         <div className="file-upload-container">
-            {isLoading ? (
-                <div>Loading...</div>
-            ) : (<>
+
                 <div className="photo-uploader-container">
                     <FormItem
                         name="animations"
@@ -104,7 +102,7 @@ const FileInputsPart: React.FC = () => {
                         rules={[{ required: true, message: 'Завантажте анімацію' }]}
                     >
                         <FileUploader
-                            fileList={images}
+                            //fileList={images}
                             accept=".gif"
                             listType="picture-card"
                             multiple={false}
@@ -118,7 +116,7 @@ const FileInputsPart: React.FC = () => {
                                 images.splice(removedIndex, 1);
                                 setImages([...images]);
                             }}
-                            onChange={x => setImages(...images, images[0])}
+                           // onChange={x => setImages(...images, images[0])}
 
                         >
                             <InboxOutlined />
@@ -145,7 +143,7 @@ const FileInputsPart: React.FC = () => {
                             onRemove={(file) => {
                                 ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
                             }}
-                            onChange={x => setImages(...images, images[1])}
+                            //onChange={x => setImages(...images, images[1])}
 
                         >
                             <InboxOutlined />
@@ -187,7 +185,7 @@ const FileInputsPart: React.FC = () => {
                     label="Аудіо"
                 >
                     <FileUploader
-                        fileList={audios}
+                        //fileList={audios}
                         accept=".mp3"
                         maxCount={1}
                         uploadTo="audio"
@@ -198,7 +196,7 @@ const FileInputsPart: React.FC = () => {
                         onSuccessUpload={(audio: Audio) => {
                             newStreetcodeInfoStore.audioId = audio.id;
                         }}
-                        onChange={x => setAudios(audios)}
+                       // onChange={x => setAudios(audios)}
                     >
                         <div className="audio-upload-box">
                             <InboxOutlined />
@@ -208,7 +206,7 @@ const FileInputsPart: React.FC = () => {
                 </FormItem>
                 <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
 
-            </>)}
+
         </div>
 
     );

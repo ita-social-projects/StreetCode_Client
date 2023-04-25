@@ -7,7 +7,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, UploadFile, UploadProps,
+    Button, Form, Input, Modal, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -24,7 +24,7 @@ interface Props {
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
+const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
@@ -39,25 +39,31 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         id: fact.id,
                         title: fact.title,
                         factContent: fact.factContent,
-                        image: fact ? [{ name: '',
-                                         url: base64ToUrl(image.base64, image.mimeType),
-                                         thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                                         uid: `${fact.id}`,
-                                         status: 'done',
-                                         type: image.mimeType }] : [],
+                        image: fact ? [{
+                            name: '',
+                            url: base64ToUrl(image.base64, image.mimeType),
+                            thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                            uid: `${fact.id}`,
+                            status: 'done',
+                            type: image.mimeType
+                        }] : [],
 
                     });
-                    setFileList(fact ? [{ name: '',
-                                          url: base64ToUrl(image.base64, image.mimeType),
-                                          thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                                          uid: `${fact.id}`,
-                                          status: 'done',
-                                          type: image.mimeType }] : []);
+                    setFileList(fact ? [{
+                        name: '',
+                        url: base64ToUrl(image.base64, image.mimeType),
+                        thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                        uid: `${fact.id}`,
+                        status: 'done',
+                        type: image.mimeType
+                    }] : []);
                 });
-        } 
+        } else {
+            setFileList([]);
+        }
     }, [fact, open, form]);
 
-    const onSuccesfulSubmit = (inputedValues:any) => {
+    const onSuccesfulSubmit = (inputedValues: any) => {
         const newFact: Fact = {
             id: factsStore.factMap.size,
             title: inputedValues.title,
@@ -100,7 +106,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                     className="inputBlock"
                     label="Заголовок: "
                     rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
-                        { max: 30, message: 'Заголовок не може містити більше 30 символів ' },
+                    { max: 30, message: 'Заголовок не може містити більше 30 символів ' },
                     ]}
                 >
                     <Input className="title" />
@@ -140,7 +146,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         listType="picture-card"
                         maxCount={1}
                         fileList={fileList}
-                        onSuccessUpload={(image:Image) => {
+                        onSuccessUpload={(image: Image) => {
                             imageId.current = image.id;
                         }}
                         onRemove={(image) => {

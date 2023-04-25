@@ -9,14 +9,18 @@ import TimelineItem from '@/models/timeline/chronology.model';
 
 import NewTimelineItem from './NewTimelineItem/NewTimelineItem.component';
 import NewTimelineModal from './NewTimelineModal/NewTimelineModal.component';
-
-const TimelineBlockAdmin:React.FC = observer(() => {
+interface Props {
+    timeline: TimelineItem[];
+    setTimeline: React.Dispatch<React.SetStateAction<TimelineItem[]>>;
+}
+const TimelineBlockAdmin = ({ timeline, setTimeline }: Props)=> {
     const { timelineItemStore } = useMobx();
     const [isModalCreateOpen, setIsModalCreateOpen] = useState<boolean>(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState<boolean>(false);
     const [editedTimeline, setEditedTimeline] = useState<TimelineItem>();
     const showModal = () => {
         setIsModalCreateOpen(true);
+        //setTimeline(timelineItemStore)
     };
 
     return (
@@ -29,7 +33,14 @@ const TimelineBlockAdmin:React.FC = observer(() => {
                 >
                 +
                 </div>
-                {timelineItemStore
+                {timeline ? timeline.map((ti) => (
+                    <NewTimelineItem
+                        key={`${ti.id}${ti.date.getFullYear}`}
+                        timelineItem={ti}
+                        setModalOpened={setIsModalEditOpen}
+                        setEditTimelineItem={setEditedTimeline}
+                    />
+                )) : timelineItemStore
                     .getTimelineItemArray
                     .map((ti) => (
                         <NewTimelineItem
@@ -52,6 +63,6 @@ const TimelineBlockAdmin:React.FC = observer(() => {
             />
         </div>
     );
-});
+};
 
 export default TimelineBlockAdmin;

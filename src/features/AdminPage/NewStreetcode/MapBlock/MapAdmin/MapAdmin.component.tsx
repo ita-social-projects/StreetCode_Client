@@ -57,6 +57,17 @@ const MapOSMAdmin: React.FC<Props> = ({
                 id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size // set a default id for now
             };
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
+            coordinates?.map(x => {
+                const newCoor: StreetcodeCoordinate = {
+                    latitude: x.latitude,
+                    longtitude: x.longtitude,
+                    streetcodeId: x.streetcodeId, // set a default streetcodeId for now
+                    id: x.id,
+                    city: x.city// set a default id for now
+                };
+                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoor);
+
+            });
             setStreetcodeCoordinates([]);
         }
     };
@@ -83,7 +94,8 @@ const MapOSMAdmin: React.FC<Props> = ({
                         latitude: lat,
                         longtitude: lng,
                         streetcodeId: 0, // set a default streetcodeId for now
-                        id: 0 // set a default id for now
+                        id: 0, // set a default id for now
+                        city:""
                     },
                 ]);
             }
@@ -100,7 +112,8 @@ const MapOSMAdmin: React.FC<Props> = ({
                             latitude: latitude,
                             longtitude: longitude,
                             streetcodeId: 0, // set a default streetcodeId for now
-                            id: 0 // set a default id for now
+                            id: 0, // set a default id for now
+                            city:""
                         },
                     ]);
                     setCenter({ lat: latitude, lng: longitude });
@@ -119,7 +132,8 @@ const MapOSMAdmin: React.FC<Props> = ({
                     latitude: lat,
                     longtitude: lng,
                     streetcodeId: 0, // set a default streetcodeId for now
-                    id: 0 // set a default id for now
+                    id: 0,
+                    city: ""// set a default id for now
                 },
             ]);
         }

@@ -43,6 +43,7 @@ import TextsApi from '../../../app/api/streetcode/text-content/texts.api';
 import SourcesApi from '../../../app/api/sources/sources.api';
 import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
 import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
+import TimelineApi from '../../../app/api/timeline/timeline.api';
 const NewStreetcode = () => {
     const [form] = useForm();
     const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
@@ -56,6 +57,7 @@ const NewStreetcode = () => {
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
     const [categories, setCategories] = useState<SourceCategory[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
+    const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
@@ -90,8 +92,6 @@ const NewStreetcode = () => {
                         streetcodeUrlName: x.transliterationUrl,
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
-                        //streetcodeFirstDate: x.eventStartOrPersonBirthDate,
-                        //streetcodeSecondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
                     });
                     setSelectedTags(x.tags);
@@ -105,8 +105,6 @@ const NewStreetcode = () => {
                         streetcodeUrlName: x.transliterationUrl,
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
-                        //streetcodeFirstDate: x.eventStartOrPersonBirthDate,
-                        //streetcodeSecondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
                     });
                     setSelectedTags(x.tags);
@@ -134,7 +132,12 @@ const NewStreetcode = () => {
             StreetcodeCoordinateApi.getByStreetcodeId(parseId).then(result => {
                 setCoordinates([...result]);
             });
-        
+            TimelineApi.getByStreetcodeId(parseId).then(result => {
+                setTimeline([...result]);
+            });
+            FactsApi.getFactsByStreetcodeId(parseId).then(result => {
+                setFacts([...result]);
+            });
         }
     }, []);
 
@@ -202,15 +205,24 @@ const NewStreetcode = () => {
             streetcode.lastName = form.getFieldValue('surname');
         }
 
+        if (parseId) {
+            //StreetcodeArtApi.update(streetcode).then((response2) => {
+                console.log(streetcode);
+            //})
+             //   .catch((error2) => {
+              //      console.log(error2);
+              //  });
+        }
+        else {
 
-        StreetcodesApi.create(streetcode)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
+            StreetcodesApi.create(streetcode)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     };
 
     return (
@@ -226,15 +238,15 @@ const NewStreetcode = () => {
                             streetcodeType={streetcodeType}
                             setStreetcodeType={setStreetcodeType}
                         />
-                        <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={ setVideo} />
+                        <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
                         <button type="submit">Відправити</button>
                     </Form>
                     <InterestingFactsBlock facts={facts} setFacts={setFacts} />
-                    <RelatedFiguresBlock figures={figures } setFigures={setFigures} />
-                    <PartnerBlockAdmin partners={ partners} setPartners={setPartners} />
+                    <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
+                    <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
                     <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
                     <ArtGalleryBlock arts={arts} setArts={setArts} />
-                    <TimelineBlockAdmin />
+                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline } />
                     <ForFansBlock categories={categories} setCategories={setCategories} />
                     <MapBlockAdmin coordinates={coordinates} />
                 </div>
