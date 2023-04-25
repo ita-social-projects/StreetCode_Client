@@ -4,41 +4,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
-.donatesModal {
-  width: f.pxToRem(590px) !important;
-  height: f.pxToRem(525px) !important;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &.ant-modal {
-    .ant-modal-content {
-      height: inherit;
-      @include mut.flex-centered($direction: column);
-      @include mut.full-rounded(70px, $overflow: visible);
-
-      padding: 0 !important;
-      box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
-    }
-
-    .ant-modal-close {
-      @include mut.positioned-as(absolute, $left: 94%, $top: -27px);
-      @include mut.circular(90px, c.$pure-white-color);
-      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-      &:hover {
-        background-color: c.$modal-hover-color;
-      }
-
-      .ant-modal-close-x {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-  }
-}
 
 .donatesModalContent {
   @include mut.flex-centered($direction: column);
@@ -52,24 +17,20 @@
 
   > h1 {
     color: #1D1F23 !important;
-    width: 550px;
-    height: 48px;
+    width: f.pxToRem(550px);
+    height: f.pxToRem(48px);
     text-align: center;
-    //  font-size: 36px;
-    //padding: 20px;
-    //padding-top: 28px;
     @include mut.with-font(ft.$closer-text-font, $font-size: 36px, $font-weight: 500);
   }
 
   > h3 {
     @include mut.with-font($font-weight: 300);
-    //visibility: hidden;
   }
 
   .enterSum{
     @include mut.rem-margined($top: 32px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
-    line-height: 18px;
+    line-height: f.pxToRem(18px);
     color: #A3A3A3;
   }
 
@@ -86,7 +47,7 @@
     color: c.$darkish-gray-color;
     border: none;
     padding: 0;
-    
+    overflow: visible !important;
     &:not(.active) {     
       text-decoration-line: underline;  
       text-decoration-thickness: 2px;
@@ -113,7 +74,6 @@
   
     > * {
       @include mut.sized(130px, 58px);
-      //margin-right: 10px;
       @include mut.full-rounded(11px);
       @include mut.flex-centered();
   
@@ -159,7 +119,6 @@
       .ant-checkbox-input {
         width: 23px;
         height: 23px;
-        //overflow: visible !important;
       }
       
       span{
@@ -173,13 +132,11 @@
         }
   
         &:last-child {
-          font-family: 'Roboto';
+          @include mut.with-font(ft.$roboto-font , $font-size: 15px, $font-weight: 300);
           font-style: normal;
-          font-weight: 300;
-          font-size: 15px;
-          line-height: 18px;
-          padding-inline-start: 16px;
-          height: 24px;
+          line-height: f.pxToRem(18px);
+          padding-inline-start: f.pxToRem(16px);
+          height: f.pxToRem(24px);
           padding-top: 1vh;
           
         }
@@ -218,7 +175,7 @@
 
 @media screen and (max-width: 1024px) {
   .donatesModal {
-    @include mut.sizedImportant(340px, 316px);
+    @include mut.sizedImportant(340px, 343px);
     display: flex;
     justify-content: center;
 
@@ -238,6 +195,10 @@
     }
 
     .donatesModalContent {
+      @include mut.sizedImportant(340px, 343px);
+      width: f.pxToRem(340px) !important;
+      height: f.pxToRem(343px) !important;
+
       > h1{
         @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
         line-height: 26px;

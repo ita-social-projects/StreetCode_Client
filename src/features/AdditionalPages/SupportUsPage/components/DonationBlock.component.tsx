@@ -11,6 +11,8 @@ import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import axios from 'axios';;
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+
 
 const possibleDonateAmounts = [100, 50, 20, 10, 1500, 1000, 500, 200];
 
@@ -26,6 +28,7 @@ const DonationBlock = () => {
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+    const windowSize = useWindowSize();
 
     const linkBase = 'https://0127-185-244-159-54.ngrok-free.app/api/support/monobank/api/support/monobank';
 
@@ -53,22 +56,13 @@ const DonationBlock = () => {
         }
     };
     
-    const minWidth = 0; // Minimum width of the input field
-    const charWidth = 42; // Width of each character in pixels
-    const firstWidth = 13;
-    const mobCharWidth = 21;
-    const mobFirstWidth = 6;
+    const charWidth = windowSize.width > 1024 ? 26 : 21;    // Width of each character in pixels
+    const firstWidth = windowSize.width > 1024 ? 8 : 6;
+
     const count = (donateAmount.toString().match(/1/g) || []).length;
     
-    var inputWidth = 0;
-    if(window.innerWidth>1024)
-    {
-        inputWidth = minWidth + donateAmount.toString().length * charWidth - count*firstWidth;
-    }
-    else
-    {
-        inputWidth = minWidth + donateAmount.toString().length * mobCharWidth - count*mobFirstWidth;
-    }
+    var inputWidth = 5 + donateAmount.toString().length * charWidth - count * firstWidth;
+
     const style = { "--input-width": `${inputWidth}px` } as React.CSSProperties;
 
     const handlePost = async () => {
@@ -110,7 +104,6 @@ const DonationBlock = () => {
     return (
             <div className="donatesModalContent">
                 <h1>Підтримай проєкт</h1>
-                {/* <h3>Скажи «Дякую» історії</h3> */}
                 <div className="enterSum">Ввести суму</div>
                 <div className="donateInputContainerWrapper">
                     <input
