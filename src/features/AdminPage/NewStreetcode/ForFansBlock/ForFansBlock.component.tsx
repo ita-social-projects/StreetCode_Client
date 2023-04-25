@@ -16,14 +16,10 @@ const ForFansBlock = () => {
             [streetcodeId],
         );
         return (
-            <div className="forFansBlock">
-                <div className="forFansHeader">
-                    <h2>
-                       Для фанатів
-                    </h2>
-                </div>
-                <div className="forFansContainer">
-                    <button className="addNewCategory" onClick={() => setIsModalOpen(true)}>+</button>
+            <div className="adminContainer-block">
+                    <h2>Для фанатів</h2>
+                <div>
+                    <button className="buttonWithPlus" onClick={() => setIsModalOpen(true)}>+</button>
                     {getSrcCategoriesArray.map((SourceCategory) => (
                         <ForFansAdminItem
                             SourceCategory={SourceCategory}

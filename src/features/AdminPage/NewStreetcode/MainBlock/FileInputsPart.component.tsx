@@ -17,12 +17,11 @@ const FileInputsPart:React.FC = () => {
         setPreviewOpen(true);
     };
     return (
-        <div className="file-upload-container">
+        <div>
             <div className="photo-uploader-container">
                 <FormItem
                     name="animations"
-                    className="maincard-item photo-form-item"
-                    label="Анімація"
+                     label="Анімація"
                     rules={[{ required: true, message: 'Завантажте анімацію' }]}
                 >
                     <Upload
@@ -33,13 +32,12 @@ const FileInputsPart:React.FC = () => {
                         onPreview={handlePreview}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                        <p className="ant-upload-text">+Додати</p>
                     </Upload>
                 </FormItem>
 
                 <FormItem
-                    name="pictureBlackWhite"
-                    className="maincard-item photo-form-item"
+                    name="pictureBlackWhite"                  
                     label="Чорнобіле"
                     rules={[{ required: true, message: 'Завантажте зображення' }]}
                 >
@@ -51,13 +49,12 @@ const FileInputsPart:React.FC = () => {
                         onPreview={handlePreview}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                        <p className="ant-upload-text">+Додати</p>
                     </Upload>
                 </FormItem>
 
                 <FormItem
-                    name="pictureRelations"
-                    className="maincard-item photo-form-item"
+                    name="pictureRelations"              
                     label="Для зв'язків"
                 >
                     <Upload
@@ -68,24 +65,24 @@ const FileInputsPart:React.FC = () => {
                         onPreview={handlePreview}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                        <p className="ant-upload-text">+Додати</p>
                     </Upload>
                 </FormItem>
             </div>
-
+            <div className="display-flex-row display-flex-row">
             <FormItem
                 name="audio"
-                className="maincard-item"
                 label="Аудіо"
             >
+                
                 <Dragger
                     accept=".mp3"
                 >
                     <InboxOutlined />
-
-                    <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                    <p className="ant-upload-text">+Додати</p>
                 </Dragger>
             </FormItem>
+            </div>
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
     );

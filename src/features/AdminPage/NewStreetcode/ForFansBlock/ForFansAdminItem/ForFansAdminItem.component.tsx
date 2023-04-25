@@ -25,7 +25,6 @@ const ForFansAdminItem = ({ SourceCategory: { title, id } } : Props) => {
                     <FaRegTrashAlt />
                 </div>
             </div>
-            {/* NOTE: Add for fans here */}
             <ForFansAdminModal SourceCategory={} open={isModalOpen} setOpen={setIsModalOpen} />
         </div>
     );

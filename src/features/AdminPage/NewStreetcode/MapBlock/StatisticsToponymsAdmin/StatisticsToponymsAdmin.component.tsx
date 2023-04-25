@@ -70,8 +70,7 @@ const StatisticsToponymsComponentAdmin = () => {
         })
     }, [requestGetAll]); 
 
-      return(
-    <>
+      return(   
         <div className="ToponymsTableWrapper">
             <SearchMenu setTitle={setTitleRequest} setRequest={setRequest}/> 
             <div>
@@ -83,10 +82,10 @@ const StatisticsToponymsComponentAdmin = () => {
             </div>
             <div>
                 <div className='underTableZone'>
-                <Button className='ButtonAddAllToponyms'>Додати обрані</Button>
+                <Button className='streetcode-custom-button admin-button'>Додати обрані</Button>
                 </div>
             </div>
         </div>
-    </>);
+    );
 }
 export default StatisticsToponymsComponentAdmin;

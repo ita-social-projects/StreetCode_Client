@@ -18,11 +18,10 @@ const SearchMenu = ({setTitle, setRequest}: IProps) => {
     <>
     <div className='searchMenuToponyms'>
             <div className='searchMenuElement'>
-                <Button className='Button' onClick={() => setRequest()}>Пошук Топонімів</Button>
+                <Button className='streetcode-custom-button admin-button' onClick={() => setRequest()}>Пошук Топонімів</Button>
             </div>
             <div className='searchMenuElement'>
                 <Input
-                    className='searchMenuElementInput'
                     prefix={<MagnifyingGlass />}
                     onChange={handleChangeTitle}
                     placeholder="Назва топоніму"

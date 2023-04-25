@@ -1,5 +1,3 @@
-import './PartnerBlockAdmin.style.scss';
-
 import React, { useEffect, useRef, useState } from 'react';
 import PartnersStore from '@stores/partners-store';
 
@@ -32,17 +30,11 @@ const PartnerBlockAdmin = ({ onChange }: Props) => {
         selectedPartners.current = selectedPartners.current.filter((c) => c.title !== value);
     };
     return (
-        <div className="partner-block-admin-container">
-            <div className="partner-block-admin-header">
-                <p>Партнери</p>
-                <Button
-                    className="streetcode-custom-button"
-                    onClick={() => setModalAddOpened(true)}
-                >
-                 Додати
-                </Button>
-            </div>
+        <div className="adminContainer-block">
+            <h2>Партнери</h2>
+            <div className='display-flex-row'>           
             <Select
+                style={{ width: '100%' }}
                 mode="multiple"
                 onSelect={onPartnerSelect}
                 onDeselect={onPartnerDeselect}
@@ -50,6 +42,13 @@ const PartnerBlockAdmin = ({ onChange }: Props) => {
                 {allPartnersShort
                     .map((s) => <Select.Option key={`${s.id}`} value={s.title}>{s.title}</Select.Option>)}
             </Select>
+            <Button
+                    className="streetcode-custom-button button-margin-left"
+                    onClick={() => setModalAddOpened(true)}
+                >
+                Додати
+            </Button>
+            </div>
             <PartnerModal
                 open={modalAddOpened}
                 setIsModalOpen={setModalAddOpened}

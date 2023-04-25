@@ -31,13 +31,10 @@ const RelatedFiguresBlock = () => {
     }, []);
     
     return (
-        <div className='relationsBlock'>
-            <div className='subheading'>
-                <h3>Зв'язки історії</h3>
-                <h4>Стріткоди</h4>
-            </div>
-            <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
-            <RelationsList relations={relations} setRelations={setRelations}/>
+        <div className='adminContainer-block'>
+            <h2>Зв'язки історії(Стріткоди)</h2>
+                <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
+                <RelationsList relations={relations} setRelations={setRelations}/>
         </div>
     );
 }

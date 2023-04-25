@@ -37,20 +37,13 @@ const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
                     required
                     onChange={handleLinkChange}
                 />
-                <Tooltip
-                    title={
-                        inputInfo?.link?.includes('watch')
-                            ? '' : 'Вкажіть посилання на youtube.com/watch!'
-                    }
-                    color={toolTipColor}
-                >
-                    <Button
+                     <Button
                         disabled={!inputInfo?.link?.includes('watch')}
+                        className = 'streetcode-custom-button button-margin-vertical'
                         onClick={() => setShowPreview(!showPreview)}
                     >
                         Попередній перегляд
                     </Button>
-                </Tooltip>
                 {
                     inputInfo?.link?.includes('watch') && showPreview ? (
                         <div>

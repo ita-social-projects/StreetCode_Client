@@ -17,6 +17,7 @@ const TextPreview = ({ inputInfo } : Props) => {
             <Button
                 disabled={inputInfo === undefined || inputInfo.text?.length === 0}
                 onClick={() => setDisabled(!disabled)}
+                className = 'streetcode-custom-button'
             >
                 Попередній перегляд тексту
             </Button>

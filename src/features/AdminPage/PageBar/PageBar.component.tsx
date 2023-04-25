@@ -6,12 +6,12 @@ import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.com
 const PageBar = () => {
   return (
     <div className='PageBarContainer'>
-      <div className='BarContainer'>
-        <span>Стріткоди</span>
-        <span>Словник</span>
-        <span>Користувач</span>
-        <Link to={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/for-fans`}><span>Для фанатів</span></Link>
-      </div>
+        <div className='BarContainer'>
+            <Link className='Link' to={`/admin-panel/new-streetcode`}>Стріткоди</Link>
+            <Link className='Link'to="#">Словник</Link>
+            <Link className='Link'to="#">Користувач</Link>
+            <Link className='Link'to={`/admin-panel/for-fans`}><span>Для фанатів</span></Link>
+        </div>
     </div>
   );
 }

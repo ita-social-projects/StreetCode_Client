@@ -3,11 +3,11 @@ import './MainNewStreetcode.styles.scss';
 import React, { useEffect } from 'react';
 
 import { ConfigProvider, Form } from 'antd';
-import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
 import PageBar from '../PageBar/PageBar.component';
 
+import StreetCodeBlock from './StreetCodeBlock/StreetCodeBlock.component';
 import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
@@ -20,8 +20,7 @@ import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 
 
-const NewStreetcode = () => {
-    const [form] = useForm();
+const NewStreetcode = () => {    
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
@@ -31,19 +30,16 @@ const NewStreetcode = () => {
         <div className="NewStreetcodeContainer">
            <PageBar />
             <ConfigProvider locale={ukUA}>
-                <div className="adminPageContainer">
-                    <Form form={form} layout="vertical">
-                        <MainBlockAdmin form={form} />
-                        <TextBlock />
-                    </Form>
+                <div className="adminContainer">
+                    <StreetCodeBlock/>
                     <InterestingFactsBlock />
                     <ArtGalleryBlock />
                     <RelatedFiguresBlock />
-                    <TimelineBlockAdmin />  
+                    <TimelineBlockAdmin />
                     <ForFansBlock />
                     <PartnerBlockAdmin />
                     <SubtitleBlock />
-                    <MapBlockAdmin/>   
+                    <MapBlockAdmin/>
                 </div>
             </ConfigProvider>
 

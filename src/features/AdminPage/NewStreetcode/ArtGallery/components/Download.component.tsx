@@ -94,7 +94,7 @@ const DownloadBlock: React.FC = () => {
             >
                 {fileList.length < 15 && '+ Додати'}
             </Upload>
-            <h4>Прев'ю</h4>
+            <h3>Прев'ю</h3>
             <ArtGalleryAdminBlock art={arts} />
             <PreviewImageModal file={filePreview} art={arts.find(x => x.uid === filePreview?.uid)} onSave={handleSave} opened={isOpen} setOpened={setIsOpen} />
         </>

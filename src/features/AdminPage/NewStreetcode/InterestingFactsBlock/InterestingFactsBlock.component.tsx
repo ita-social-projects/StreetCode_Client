@@ -16,14 +16,10 @@ const InterestingFactsBlock = () => {
         [getStreetCodeId],
     );
     return (
-        <div className="interestingFactsBlock">
-            <div className="factsHeader">
-                <h2>
-                   Wow-факти
-                </h2>
-            </div>
-            <div className="factsContainer">
-                <button className="addWowFact" onClick={() => setModal('adminFacts')}>+</button>
+        <div className="adminContainer-block">
+            <h2>Wow-факти</h2>
+            <div>
+                <button className="buttonWithPlus" onClick={() => setModal('adminFacts')}>+</button>
                 {getFactArray.map((fact) => (
                     <InterestingFactAdminItem
                         fact={fact}

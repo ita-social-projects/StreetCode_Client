@@ -101,11 +101,8 @@ const DatePickerPart:React.FC<{
     };
 
     return (
-        <>
-            <p>Роки життя/Дата або період події</p>
-            <div className="date-picker-qroup">
-
-                <div className="date-picker-qroup-item">
+             <div className="date-picker-group">
+                <div className="date-picker-group-item">
                     <Select
                         className="date-picker-type-input"
                         options={selectDateOptions}
@@ -114,18 +111,17 @@ const DatePickerPart:React.FC<{
                             setFirstDateTimePickerType(val);
                             onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
                         }}
-                    />
-                    <div>
+                    /> 
                         <FormItem
                             rules={[{ required: true, message: 'Введіть дату' }]}
                             name="streetcodeFirstDate"
+                            className='my-picker'
                         >
                             <DatePicker
                                 onChange={onChangeFirstDate}
                                 picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
                             />
-                        </FormItem>
-                    </div>
+                        </FormItem> 
 
                 </div>
 
@@ -140,7 +136,9 @@ const DatePickerPart:React.FC<{
                         }}
                     />
 
-                    <FormItem name="streetcodeSecondDate">
+                    <FormItem 
+                        name="streetcodeSecondDate"
+                        className='my-picker'>
                         <DatePicker
                             onChange={onChangeSecondDate}
                             picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
@@ -149,15 +147,12 @@ const DatePickerPart:React.FC<{
                 </div>
 
                 <div className="date-string-input">
-
                     <FormItem name="dateString">
                         <Input disabled />
                     </FormItem>
                 </div>
 
             </div>
-
-        </>
     );
 };
 export default DatePickerPart;

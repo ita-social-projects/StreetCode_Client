@@ -21,8 +21,8 @@ const TextForm: React.FC = () => {
 
     return (
         <FormItem className="textForm">
-            <Form.Item>
-                <h3>Заголовок</h3>
+            <Form.Item
+             label="Заголовок">
                 <Input
                     showCount
                     value={inputInfo?.title}

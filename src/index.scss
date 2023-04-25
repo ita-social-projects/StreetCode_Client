@@ -68,7 +68,23 @@ ul, ol {
     background-color: c.$dark-red-color;
     border-color: c.$dark-red-color;
   }
+  &[disabled]{
+    pointer-events: none;
+  }
+  &:disabled{
+    background-color: c.$lighter-gray-color;
+    border-color: c.$lighter-gray-color;
+  }
+  
+  
 }
+.streetcode-custom-button-disabled{
+    @include ut.flex-centered();
+    @include ut.full-rounded(14px);
+    @include ut.with-font($font-weight: 500);
+    
+}
+
 ::-webkit-scrollbar {
   width: f.pxToRem(15px);
 }

@@ -36,6 +36,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
     const [streetcodeTeaser, setStreetcodeTeaser] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
+    const [switchState, setSwitchState] = useState(false);
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
@@ -70,6 +71,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
         } else {
             setStreetcodeType('people');
         }
+        setSwitchState(!switchState);
     };
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
@@ -115,39 +117,41 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
-    return (
+    return (      
         <div className="mainblock-add-form">
-                Постать
-            <Switch className="person-event-switch" onChange={onSwitchChange} />
-                Подія
-
-            <div className="streetcode-number-container">
-                <Form.Item
+            <Form.Item
                     label="Номер стріткоду"
-                    rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                    rules={[{ required: true, message: 'Введіть номер стріткоду'}]}
                     name="streetcodeNumber"
                 >
-                    <InputNumber min={0} max={10000} />
-                </Form.Item>
-                <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+                <div className='display-flex-row'>
+                <InputNumber 
+                        min={0} max={10000} />
+                <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+                </div>
+            </Form.Item>
+            
+            <Form.Item>
+            <div className='display-flex-row p-margin'>
+                <p className={switchState? 'grey-text':'red-text'}>Постать</p>
+            <Switch className="person-event-switch" onChange={onSwitchChange} />
+                <p className={!switchState? 'grey-text':'red-text'}>Подія</p>
             </div>
+            </Form.Item>
 
             {streetcodeType === 'people' ? (
-                <Input.Group
-                    compact
-                    className="maincard-item people-title-group"
-                >
-                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
+                <Input.Group>
+                    <Form.Item label="Ім'я" name="name" >
                         <Input
-                            ref={surname}
+                            ref={name}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
                     </Form.Item>
-                    <Form.Item label="Ім'я" name="name" className="people-title-input">
+                    <Form.Item name="surname" label="Прізвище">
                         <Input
-                            ref={name}
+                            ref={surname}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
@@ -156,23 +160,21 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 </Input.Group>
             )
                 : ('')}
-
+    
             <Form.Item
                 name="title"
                 label="Назва стріткоду"
-                className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
             >
                 <Input maxLength={100} showCount pattern="/^[a-z-]+$/gm" />
             </Form.Item>
 
-            <Form.Item name="alias" label="Короткий опис" className="maincard-item">
+            <Form.Item name="alias" label="Короткий опис">
                 <Input maxLength={30} showCount />
             </Form.Item>
             <Form.Item
                 label="URL"
                 name="streetcodeUrlName"
-                className="maincard-item"
                 rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
             >
                 <Input
@@ -181,8 +183,9 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                     pattern="/^[a-z-]+$/gm"
                 />
             </Form.Item>
-
-            <DatePickerPart
+        
+            <Form.Item label = 'Роки життя/Дата або період події'>
+            <DatePickerPart 
                 form={form}
                 setFirstDate={(newDate:Dayjs | null) => {
                     firstDate.current = newDate;
@@ -191,12 +194,12 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                     secondDate.current = newDate;
                 }}
             />
+            </Form.Item>
 
-            <p>Теги:</p>
             <div className="tags-block">
+            <Form.Item label = "Теги">
                 <div className="tags-block-tagitems">
                     <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-
                     <Select
                         className="tags-select-input"
                         mode="tags"
@@ -206,8 +209,11 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                         {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
                     </Select>
                 </div>
+            </Form.Item>
+            
+            <Form.Item
+                label = "Розширення">
                 <div className="device-sizes-list">
-                    <p>Розширення</p>
                     <Popover
                         content={(
                             <PopoverForTagContent
@@ -219,25 +225,18 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                         trigger="hover"
                         overlayStyle={{ width: popoverProps.width }}
                     >
-                        <p
-                            className="device-size"
-                            onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
-                        >
-                                360
-                        </p>
-                        <p
-                            className="device-size"
-                            onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
-                        >
-                                1600
-                        </p>
+                        <p  onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
+                        >360</p>
+                        <p  onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
+                        >1600</p>
                     </Popover>
                 </div>
+            </Form.Item>
 
             </div>
 
             <Form.Item
-                className="maincard-item teaser-form-item"
+                className="teaser-form-item"
                 label="Тизер"
                 rules={[{ required: true, message: 'Введіть тизер' }]}
             >
@@ -255,7 +254,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 </div>
             </Form.Item>
 
-            <FileInputsPart />
+            <FileInputsPart />  
         </div>
     );
 };
