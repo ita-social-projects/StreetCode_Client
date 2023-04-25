@@ -2,11 +2,11 @@ import './PreviewImageModal.styles.scss';
 
 import React, { useEffect, useState } from 'react';
 
-import { Button, Modal, UploadFile } from 'antd';
+import { Button, Modal } from 'antd';
 import { RcFile } from 'antd/es/upload';
 
-import { ArtCreate } from '@/models/media/art.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import { ArtCreate } from '@/models/media/art.model';
 
 const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -56,7 +56,7 @@ const PreviewFileModal: React.FC<{
                 <input value={newTitle} onChange={(e) => setTitle(e.target.value)} />
                 <p>Description</p>
                 <textarea value={newDesc} onChange={(e) => setDesc(e.target.value)} />
-                <button onClick={handleSave} className="saveButton">Зберегти</button>
+                <Button onClick={handleSave} className="saveButton">Зберегти</Button>
             </div>
         </Modal>
     );

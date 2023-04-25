@@ -54,7 +54,7 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
         .factContent{
             color: c.$lighter-black-color;
             width: 85%;
-            height: 154px;
+            height: 150px;
             textarea{
               @include mut.with-font(ft.$roboto-font, 300, 18px, normal) ;
               resize: none;

@@ -1,36 +1,28 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodesApi from '@api/streetcode/streetcodes.api';
 
-import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
 import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
 
 export default class StreetcodesCatalogStore {
-    public streetcodes = new Array<StreetcodeCatalogRecord>();
+    public catalog = new Array<StreetcodeCatalogRecord>();
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    public fetchStreetcodes = async () => {
+    public fetchCatalogStreetcodes = async (page: number, count = 8) => {
         try {
-            const array = await StreetcodesApi.getAll(
-                { Page: null, Amount: null, Sort: null, Title: null, Filter: null } as GetAllStreetcodesRequest,
-            );
-            console.log(array);
-            this.streetcodes = array.streetcodes.map((streetcode) => (
-                {
-                    id: streetcode.id,
-                    alias: streetcode.alias,
-                    title: streetcode.title,
-                    imgUrl: undefined,
-                    url: streetcode.transliterationUrl,
-                } as StreetcodeCatalogRecord));
+            const array = await StreetcodesApi.getAllCatalog(page, count);
+            if (this.catalog.length === 0
+                || !array.some((item) => item.id === this.catalog.at(0)?.id)) {
+                this.catalog = this.catalog.concat(array);
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
     get getCatalogStreetcodesArray() {
-        return this.streetcodes;
+        return this.catalog;
     }
 }

@@ -20,6 +20,19 @@ export default class StreetcodeCoordinatesStore {
   get getStreetcodeCoordinateArray() {
     return Array.from(this.setStreetcodeCoordinateMap.values());
   }
+  public addStreetcodeCoordinate = (streetcodeCoordinate: StreetcodeCoordinate) => {
+    this.setItem(streetcodeCoordinate);
+};
+
+private setItem = (streetcodeCoordinateItem: StreetcodeCoordinate) => {
+  this.setStreetcodeCoordinateMap.set(streetcodeCoordinateItem.id, {
+      ...streetcodeCoordinateItem,
+  } as StreetcodeCoordinate);
+};
+
+public deleteStreetcodeCoordinateFromMap = (streetcodeCoordinateItemId: number) => {
+  this.setStreetcodeCoordinateMap.delete(streetcodeCoordinateItemId);
+};
 
   public fetchStreetcodeCoordinatesByStreetcodeId = async (streetcodeId: number) => {
     try {

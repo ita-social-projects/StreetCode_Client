@@ -10,11 +10,15 @@ import TimelineSlider from '@streetcode/TimelineBlock/TimelineSlider.component';
 import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.component';
 
 const TimelineBlock = () => {
-    const { timelineItemStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { timelineItemStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
 
     useAsync(
-        () => fetchTimelineItemsByStreetcodeId(getStreetCodeId),
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                fetchTimelineItemsByStreetcodeId(getStreetCodeId);
+            }
+        },
         [getStreetCodeId],
     );
 

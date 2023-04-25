@@ -32,11 +32,6 @@
 
 @media screen and (max-width: 1024px) {
   .donateBtnContainer{
-    @include mut.positioned-as(relative, $right: 50px);
-  }
-}
-@media screen and (max-width: 480px) {
-  .donateBtnContainer{
     @include mut.positioned-as(relative, $right: 10px);
     .donateBtnCircle {
       @include mut.circular(50px);

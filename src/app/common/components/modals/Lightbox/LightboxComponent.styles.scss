@@ -39,48 +39,73 @@
         color: #4E4E4E !important;
     }
 
-    .yarl__slide_description_container {
-        @include mut.sized($height: 159px);
-    }
-
-    .yarl__slide_title_container {
-        @include mut.sized($height: 68px);
-    }
-
-    .yarl__slide_description {
-        @include mut.sized($height: 129px);
-        @include mut.rem-margined($top: 25px, $left: 50px);
-
-        @include mut.with-font();
-        -webkit-line-clamp: inherit !important;
-    }
-
     .yarl__slide {
         padding: 0 !important;
     }
 
-    .yarl__icon {
-        @include mut.sized(30px, 30px);
-        @include mut.rem-margined($top: 8px, $right: 25px);
-        @include mut.colored(#4E4E4E !important, c.$transparent-color);
-
-        &:hover {
-            color: #918f8f!important;
-        }
-    }
     @media screen and (min-width:1024px) {
+
+        .yarl__slide_description_container {
+            @include mut.sized($height: 159px);
+        }
+
+        .yarl__slide_title_container {
+            @include mut.sized($height: 68px);
+        }
+
+        .yarl__slide_description {
+            @include mut.sized($height: 129px);
+            @include mut.rem-margined($top: 5px, $left: 50px);
+            @include mut.with-font($font-weight: 300);
+            @include mut.with-font();
+            -webkit-line-clamp: inherit !important;
+        }
+
+        .yarl__icon {
+            @include mut.sized(30px, 30px);
+            @include mut.rem-margined($top: 8px, $right: 25px);
+            @include mut.colored(#4E4E4E !important, c.$transparent-color);
+
+            &:hover {
+                color: #918f8f !important;
+            }
+        }
+
         .yarl__navigation_prev {
             @include slick-arrow-lightbox(Left);
             left: pxToRem(30px) !important;
             filter: brightness(35%);
-
         }
 
         .yarl__navigation_next {
             @include slick-arrow-lightbox(Right);
             right: pxToRem(30px) !important;
             filter: brightness(35%);
+        }
+    }
 
+    @media screen and (max-width:1023px) {
+        .yarl__slide_description_container {
+            @include mut.sized($height: 128px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(26.5px);
+        }
+
+        .yarl__slide_title_container {
+            @include mut.sized($height: 45px);
+        }
+
+        .yarl__slide_description {
+            @include mut.rem-margined($top: 2px, $left: 10px);
+            @include mut.with-font();
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 16px;
+            -webkit-line-clamp: inherit !important;
+        }
+
+        button {
+            visibility: hidden;
         }
     }
 }

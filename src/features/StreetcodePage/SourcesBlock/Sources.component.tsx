@@ -9,12 +9,15 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import SourceItem from './SourceItem/SourceItem.component';
 
 const SourcesComponent = () => {
-    const { sourcesStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { sourcesStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
 
     useAsync(
-        () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId)
-            .then(() => console.log(sourcesStore.srcCategoriesMap)),
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                fetchSrcCategoriesByStreetcodeId(getStreetCodeId);
+            }
+        },
         [getStreetCodeId],
     );
 
