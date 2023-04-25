@@ -12,6 +12,7 @@ import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.compo
 import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
 import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
+import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
@@ -48,6 +49,13 @@ const router = createBrowserRouter(createRoutesFromElements(
                 <ProtectedComponent>
                     <TermDictionary />
                 </ProtectedComponent>
+            )}
+        />
+        <Route
+            index
+            path="/admin-panel/analytics"
+            element={(
+                <Analytics />
             )}
         />
         <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
