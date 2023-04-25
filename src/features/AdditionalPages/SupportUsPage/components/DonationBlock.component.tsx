@@ -1,25 +1,17 @@
 import './DonationBlock.styles.scss';
+import { Button, Checkbox} from 'antd';
+import { ChangeEvent, useEffect, useState } from 'react';
 
-import CancelBtn from '@images/utils/Cancel_btn.svg';
-import { Button, Input, Modal } from 'antd';
-import {
-    ChangeEvent, SyntheticEvent, useCallback,
-    useEffect, useRef, useState,
-} from 'react';
-
-import { Checkbox } from 'antd';
-import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import axios from 'axios';;
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import Donation from '@/models/feedback/donation.model';
+import DonationApi from '@/app/api/donates/donation.api';
 
 
 const possibleDonateAmounts = [100, 50, 20, 10, 1500, 1000, 500, 200];
 
 const DonationBlock = () => {
-    const { modalStore } = useMobx();
-    const { setModal, modalsState: { donates } } = modalStore;
-
     const [donateAmount, setDonateAmount] = useState<number>(0);
 
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
@@ -27,9 +19,7 @@ const DonationBlock = () => {
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
     const windowSize = useWindowSize();
-
-    const linkBase = 'https://0127-185-244-159-54.ngrok-free.app/api/support/monobank/api/support/monobank';
-
+    
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
         setActiveBtnIndex(btnIdx);
@@ -59,16 +49,22 @@ const DonationBlock = () => {
     const style = { "--input-width": `${inputWidth}px` } as React.CSSProperties;
 
     const handlePost = async () => {
+        const donation: Donation = { 
+            Amount: donateAmount, 
+            PageUrl: window.location.href
+        };
+
         if (isCheckboxChecked) {
             try {
-                const response = await axios.post(`${linkBase}?${donateAmount}`);
-                window.location.replace(response.data);
+                const response = await DonationApi.create(donation);
+                window.location.assign(response.PageUrl);
             } catch (err) {
                 console.error(err);
             }
-        } 
+        } else {
+          console.log('Checkbox not checked');
+        }
     }
-
 
     useEffect(() => {
         const handleResize = () => {
@@ -93,40 +89,43 @@ const DonationBlock = () => {
     }, [donateAmount]);
 
     return (
-            <div className="donatesModalContent">
-                <h1>Підтримай проєкт</h1>
-                <div className="enterSum">Ввести суму</div>
-                <div className="donateInputContainerWrapper">
-                    <input
-                        onChange={handleDonateInputChange}
-                        style={{ ...style, width: `var(--input-width)` }}
-                        maxLength={14}
-                        value={`${donateAmount.toString()}`}
-                        className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
-                    />
-                    <div className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} GryvnaSymbol`}>₴</div>
-                </div>
-                <div className="donatesBtnContainer">
-                    {possibleDonateAmounts.map((amount, idx) => (
-                        <Button
-                            key={amount}
-                            className={(activeBtnIdx === idx
-                                && donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
-                            onClick={() => handleAmountBtnClick(idx)}
-                        >
-                            {amount}
-                            ₴
-                        </Button>
-                    ))}
-                </div>
-                <div className="donatesInputContainer">
-                    <Checkbox className={"checkbox-borderline"} checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
-                </div>
-                <Button onClick={handlePost}
-                    disabled={!isCheckboxChecked}
-                    className="donatesDonateBtn"
-                >Підтримати</Button>
-            </div>  
+        <div className="donatesBlockContent">
+            <h1>Підтримай проєкт</h1>
+            <div className="enterSum">Ввести суму</div>
+            <div className="donateInputContainerWrapper">
+                <input
+                    onChange={handleDonateInputChange}
+                    style={{ ...style, width: `var(--input-width)` }}
+                    maxLength={14}
+                    value={`${donateAmount.toString()}`}
+                    className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
+                />
+                <div className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} GryvnaSymbol`}>₴</div>
+            </div>
+            <div className="donatesBtnContainer">
+                {possibleDonateAmounts.map((amount, idx) => (
+                    <Button
+                        key={amount}
+                        className={(activeBtnIdx === idx
+                            && donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
+                        onClick={() => handleAmountBtnClick(idx)}
+                    >
+                        {amount}
+                        ₴
+                    </Button>
+                ))}
+            </div>
+            <div className="donatesInputContainer">
+                <Checkbox className={"checkbox-borderline"} checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
+            </div>
+            <Button 
+                onClick={handlePost}
+                disabled={!isCheckboxChecked}
+                className="donatesDonateBtn"
+            >
+                Підтримати
+            </Button>
+        </div>
     );
 };
 
