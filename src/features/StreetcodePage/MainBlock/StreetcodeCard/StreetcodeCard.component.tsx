@@ -13,6 +13,7 @@ import { Button } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
+import { useEffect, useState } from 'react';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -46,11 +47,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-
-    const { value } = useAsync(() => ImagesApi.getByStreetcodeId(id ?? 1), [id]);
-    const images = value as Image[];
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
 
+    const [images, setImages] = useState<Image[]>([]);
+    useEffect(() => {
+        ImagesApi.getByStreetcodeId(id ?? 1)
+            .then((imgs) => setImages(imgs))
+            .catch((e) => console.log(e));
+    }, []);
     return (
         <div className="card">
             <div className="leftSider">

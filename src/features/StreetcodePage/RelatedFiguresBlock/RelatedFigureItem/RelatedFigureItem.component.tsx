@@ -16,12 +16,12 @@ interface Props {
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const {
-        id, imageId, title, tags, alias, url
+        id, imageId, title, tags, alias, url,
     } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal, modalsState: {tagsList} } = modalStore;
+    const { setModal, modalsState: { tagsList } } = modalStore;
 
     useAsync(
         () => fetchImage(imageId),
@@ -32,7 +32,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
         if (windowsize.width <= 1024) {
             setModal('relatedFigureItem', id, true);
         }
-    }
+    };
 
     const windowsize = useWindowSize(); 
 
@@ -56,7 +56,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 }}
             >
                 <div className="figureSlideText">
-                    <div className="heading"> 
+                    <div className="heading">
                         <p>{title}</p>
                         {
                             alias !== null ?
@@ -67,7 +67,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                         }
                     </div>
                     <div className={`relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}`}>
-                        {tags.filter((tag) => getTagArray.find((ti) => 
+                        {tags.filter((tag) => getTagArray.find((ti) =>
                             ti.id === tag.id || !filterTags))
                             .map((tag) => (
                             <button
@@ -85,7 +85,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                         ))}
                     </div>
                 </div>
-            </Link>)}
+                </Link>)}
+            
             { windowsize.width <= 1024 && (<>
             <div className='relatedFigureSlide'
                 style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
@@ -93,7 +94,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             >
             </div>
             <div className="figureSlideText mobile">
-                <div className="heading"> 
+                <div className="heading">
                     <p>{title}</p>
                     {
                         alias !== null ?
