@@ -10,9 +10,11 @@ import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
 
-const TextForm: React.FC = () => {
-    const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
-
+interface Props {
+    inputInfo: Partial<TextInputInfo> | undefined;
+    setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+}
+const TextForm = ({ inputInfo, setInputInfo }: Props) => {
     const maxTitleLength = 50;
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {

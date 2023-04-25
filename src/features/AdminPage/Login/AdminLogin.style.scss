@@ -1,0 +1,11 @@
+
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+.admin-login-form{
+    padding-top: 100px;
+    @include mut.sized(400px,200px);
+    margin: auto;
+
+}

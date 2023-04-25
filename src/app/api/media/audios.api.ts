@@ -1,6 +1,6 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import Audio from '@models/media/audio.model';
+import Audio, { AudioCreate } from '@models/media/audio.model';
 
 const AudiosApi = {
     getAll: () => Agent.get<Audio[]>(`${API_ROUTES.AUDIOS.GET_ALL}`),
@@ -11,7 +11,7 @@ const AudiosApi = {
         `${API_ROUTES.AUDIOS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
     ),
 
-    create: (audio: Audio) => Agent.post<Audio>(`${API_ROUTES.AUDIOS.CREATE}`, audio),
+    create: (audio: AudioCreate) => Agent.post<Audio>(`${API_ROUTES.AUDIOS.CREATE}`, audio),
 
     update: (audio: Audio) => Agent.post<Audio>(`${API_ROUTES.AUDIOS.UPDATE}`, audio),
 

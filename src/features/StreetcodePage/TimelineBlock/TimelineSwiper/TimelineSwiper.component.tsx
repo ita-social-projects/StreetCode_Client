@@ -60,7 +60,7 @@ const TimelineSwiper: React.FC<Props> = ({
             }}
         >
             {
-                yearsArray.indexOf(activeYear) > 2 ? (
+                yearsArray.indexOf(activeYear!) > 2 ? (
                     <TimelineSwiperEdgeBtn
                         lastTickIdx={children.length - 1}
                         side="left"
@@ -77,7 +77,7 @@ const TimelineSwiper: React.FC<Props> = ({
                 </SwiperSlide>
             ))}
             {
-                yearsArray.indexOf(activeYear) < yearsArray.length - 3 ? (
+                yearsArray.indexOf(activeYear!) < yearsArray.length - 3 ? (
                     <TimelineSwiperEdgeBtn
                         lastTickIdx={children.length - 1}
                         side="right"

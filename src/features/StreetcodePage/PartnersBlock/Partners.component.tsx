@@ -1,5 +1,6 @@
 import './Partners.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import { useMemo } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -8,13 +9,17 @@ import useMobx from '@stores/root-store';
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
-    const { partnersStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { partnersStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
 
     useAsync(
-        () => Promise.all([
-            fetchPartnersByStreetcodeId(getStreetCodeId),
-        ]),
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                Promise.all([
+                    fetchPartnersByStreetcodeId(getStreetCodeId),
+                ]);
+            }
+        },
         [getStreetCodeId],
     );
 
@@ -25,6 +30,7 @@ const PartnersComponent = () => {
         },
     }), [getPartnerArray, breakpoint, slidesToShow]);
 
+    const responsiveSettingsDesktop = useResponsiveSettings(10000, 4);
     const responsiveSettingsTablet = useResponsiveSettings(1024, 4);
     const responsiveSettingsMobile = useResponsiveSettings(780, 2);
 
@@ -36,7 +42,7 @@ const PartnersComponent = () => {
         speed: 4000,
         slidesToShow: 3,
         slidesToScroll: 1,
-        responsive: [responsiveSettingsTablet, responsiveSettingsMobile],
+        responsive: [responsiveSettingsTablet, responsiveSettingsMobile, responsiveSettingsDesktop],
     };
 
     const sliderItems = getPartnerArray.map((p) => (
@@ -59,4 +65,4 @@ const PartnersComponent = () => {
     );
 };
 
-export default PartnersComponent;
+export default observer(PartnersComponent);

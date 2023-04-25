@@ -1,17 +1,17 @@
-import Subtitle from '@models/additional-content/subtitles.model';
-import Tag from '@models/additional-content/tag.model';
-import Art from '@models/media/art.model';
+import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
+import Tag, { StreetcodeTag } from '@models/additional-content/tag.model';
+import Art, { ArtCreateDTO, IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
-import Image from '@models/media/image.model';
-import Video from '@models/media/video.model';
-import StreetcodePartner from '@models/partners/partners.model';
-import { SourceLink } from '@models/sources/sources.model';
+import Image, { ImageCreate } from '@models/media/image.model';
+import Video, { VideoCreate } from '@models/media/video.model';
+import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
+import { SourceLink, StreetcodeCategoryContent } from '@models/sources/sources.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import TimelineItem from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
 
-import { Fact } from './text-contents.model';
+import { Fact, FactCreate, TextCreate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -33,7 +33,7 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     toponyms: Toponym[];
     arts: Art[];
     images: Image[];
-    tags: Tag[];
+    tags: StreetcodeTag[];
     subtitles: Subtitle[];
     facts: Fact[];
     videos: Video[];
@@ -79,4 +79,33 @@ export interface StreetcodeCatalogRecord {
     url: string,
     alias: string | undefined,
     tags: Tag[];
+}
+
+export interface StreetcodeCreate {
+    index: number,
+    firstName: string | null,
+    lastName: string | null,
+    title: string,
+    teaser: string,
+    alias?: string,
+    transliterationUrl: string,
+    viewCount: number,
+    createdAt: string,
+    eventStartOrPersonBirthDate: Date,
+    eventEndOrPersonDeathDate: Date,
+    dateString: string,
+    tags: StreetcodeTag[],
+    imagesId: Array<number | null>,
+    audioId: number | null,
+    streetcodeType: StreetcodeType,
+    text: TextCreate | null,
+    videos: VideoCreate[],
+    facts: Fact[],
+    timelineItems: TimelineItem[],
+    partners: PartnerShort[],
+    subtitles: SubtitleCreate[],
+    relatedFigures: RelatedFigure[],
+    streetcodeArts: ArtCreateDTO[],
+    toponyms: string[],
+    streetcodeCategoryContents: StreetcodeCategoryContent[],
 }
