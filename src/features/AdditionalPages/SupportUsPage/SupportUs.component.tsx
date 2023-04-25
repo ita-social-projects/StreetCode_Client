@@ -88,7 +88,7 @@ const SupportUs = () => {
                 <div className='donateSubBlocks'>
                     <div className='block'>
                         <p className='heading'>На карту</p>
-                        <div className='content'>
+	                    <div className='content'>
                             {
                                 windowSize.width > 1024 ? <QRCode/>
                                 : windowSize.width > 480 ? <QRCodeSmall/>

@@ -305,8 +305,13 @@
             height: unset;
             width: unset;
             margin: unset;
+            margin-top: f.pxToRem(40px);
+            gap: f.pxToRem(32px);
             .block {
                 width: 100% !important;
+                .content {
+                    height: auto;
+                }
             }
         }
         .mainBlock {
