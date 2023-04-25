@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
 
 import { Modal } from 'antd';
 
@@ -16,7 +15,12 @@ const ConfirmationModal = () => {
                     confirmation.confirmationProps.onSubmit();
                 }
             }}
-            onCancel={() => setConfirmationModal('confirmation')}
+            onCancel={() => {
+                if (confirmation.confirmationProps?.onCancel) {
+                    confirmation.confirmationProps?.onCancel();
+                }
+                setConfirmationModal('confirmation');
+            }}
         >
             {(confirmation.confirmationProps?.text)
                 ? <p>{confirmation.confirmationProps.text}</p> : <p>Ви впевнені, що хочете видалити цей елемент?</p>}

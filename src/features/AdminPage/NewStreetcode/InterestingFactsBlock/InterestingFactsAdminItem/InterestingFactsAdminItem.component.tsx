@@ -1,29 +1,39 @@
 import './InterestingFactsAdminItem.style.scss';
+
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
 
+import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
+
 interface Props {
     fact: Fact;
 }
+const InterestingFactAdminItem = ({ fact } : Props) => {
+    const { factsStore } = useMobx();
+    const [openModal, setModalOpen] = useState<boolean>(false);
 
-const InterestingFactAdminItem = ({ fact: { title } } : Props) => {
-    const { modalStore: { setModal } } = useMobx();
     return (
         <div className="interestingFactItem">
             <div className="item">
                 <div className="faIcon">
-                    <FaPencilAlt onClick={() => setModal('adminFacts')} />
+                    <FaPencilAlt onClick={() => setModalOpen(true)} />
                 </div>
                 <p>
-                    {title}
+                    {fact.title}
                 </p>
                 <div className="faIcon">
-                    <FaRegTrashAlt />
+                    <FaRegTrashAlt onClick={() => factsStore.deleteFactFromMap(fact.id)} />
                 </div>
+                <div>
+                    <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
+                </div>
+
             </div>
         </div>
     );
 };
 
-export default InterestingFactAdminItem;
+export default observer(InterestingFactAdminItem);

@@ -4,40 +4,30 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { IndexedArt } from '@models/media/art.model';
-import useMobx from '@stores/root-store';
+import { ArtCreate, IndexedArt } from '@models/media/art.model';
+
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import ArtGallerySlide from '@/features/StreetcodePage/ArtGalleryBlock/ArtGalleryListOfItem/ArtGallerySlide.component';
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const SECTION_AMOUNT = 6;
 
-interface Art {
-    description: string;
-    image: string;
-    index: number;
-    title: string;
-}
-
-const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
-    const { streetcodeArtStore, streetcodeStore: { getStreetCodeId } } = useMobx();
-    const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
+const ArtGalleryAdminBlock: React.FC<{ arts:ArtCreate[] }> = ({ arts }) => {
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
-
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        art?.forEach(async ({ description, image, index, title }) => {
+        arts!.forEach(async ({
+            description, image, index, title, mimeType,
+        }) => {
             try {
                 if (image) {
-
-                    const { width, height } = await getImageSize(image);
-
+                    const url = base64ToUrl(image, mimeType);
+                    const { width, height } = await getImageSize(url!);
                     newMap.push({
                         index,
                         description,
-                        imageHref: image,
+                        imageHref: url,
                         title,
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
@@ -47,7 +37,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
             }
             setIndexedArts(newMap);
         });
-    }, [art]);
+    }, [arts]);
 
     const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
     let offsetSumForSlide = 0;
@@ -73,8 +63,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
                 title,
                 sequenceNumber,
             } as IndexedArt);
-        }
-        else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+        } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
             );
@@ -91,7 +80,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
             offsetSumForSlide = offset ?? 0;
             offsetSum = offset ?? 0;
         }
-        
+
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
             slideOfArtList.push(
@@ -99,7 +88,6 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
             );
             artsData = [];
         }
-
     });
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
@@ -109,7 +97,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
     }
 
     const sliderProps = {
-        className: "artGallerySliderContainer",
+        className: 'artGallerySliderContainer',
         infinite: false,
 
         swipe: windowsize.width <= 1024,
@@ -127,7 +115,7 @@ const ArtGalleryAdminBlock: React.FC<Art[] | undefined> = ({ art }) => {
                             {...sliderProps}
                         >
                             {slideOfArtList}
-                        </SlickSlider >
+                        </SlickSlider>
                     </div>
                 </div>
             </div>

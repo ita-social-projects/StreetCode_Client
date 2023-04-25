@@ -1,4 +1,4 @@
-import Image from '@models/media/image.model';
+import Image, { ImageCreate } from '@models/media/image.model';
 
 import Streetcode from './streetcode-types.model';
 
@@ -6,9 +6,13 @@ export interface Fact {
     id: number;
     title: string;
     factContent: string;
-    image: Image;
-    imageId?: number | undefined;
-    streetcodes: Streetcode[];
+    image?: Image;
+    imageId: number;
+}
+export interface FactCreate {
+    title: string;
+    factContent: string;
+    image: ImageCreate;
 }
 
 export interface Term {
@@ -29,4 +33,9 @@ export interface Text {
     textContent: string;
     streetcodeId: number;
     streetcode?: Streetcode | undefined;
+}
+
+export interface TextCreate {
+    title: string | undefined;
+    textContent: string | undefined;
 }
