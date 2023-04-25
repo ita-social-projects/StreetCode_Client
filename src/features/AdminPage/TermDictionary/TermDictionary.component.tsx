@@ -1,5 +1,6 @@
 import './TermDictionary.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import useMobx from '@stores/root-store';
@@ -37,8 +38,11 @@ const TermDictionary = () => {
             title: term?.title as string,
             description: term?.description,
         };
-        termsStore.createTerm(newTerm);
-        setData([...data || [], newTerm]);
+        termsStore.createTerm(newTerm).then(
+            (response) => {
+                setData([...data || [], response ?? newTerm]);
+            },
+        );
     };
 
     const handleDelete = (id: number) => {
@@ -140,4 +144,4 @@ const TermDictionary = () => {
     );
 };
 
-export default TermDictionary;
+export default observer(TermDictionary);

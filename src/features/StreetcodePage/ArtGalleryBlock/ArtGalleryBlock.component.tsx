@@ -188,6 +188,9 @@ const ArtGalleryBlock = () => {
         slidesToShow: 1,
         centerPadding: '0px 10px',
         slidesToScroll: 0.5,
+        touchAction: 'pan-y',
+        touchThreshold: 15,
+        transform: 'translateZ(0)',
     };
 
     return (

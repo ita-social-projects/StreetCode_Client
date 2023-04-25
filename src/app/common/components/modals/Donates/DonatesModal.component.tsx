@@ -12,8 +12,9 @@ import useMobx from '@stores/root-store';
 import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
 
+import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
 
-const possibleDonateAmounts = [100, 500, 1000];
+const possibleDonateAmounts = [500, 100, 50];
 
 const DonatesModal = () => {
     const { modalStore } = useMobx();
@@ -59,16 +60,15 @@ const DonatesModal = () => {
 
         if (isCheckboxChecked) {
             try {
+                supportEvent('submit_donate_from_modal');
                 const response = await DonationApi.create(donation);
                 window.location.assign(response.PageUrl);
             } catch (err) {
                 console.error(err);
             }
-        } else {
-          console.log('Checkbox not checked');
         }
-    }
-      
+    };
+
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 1020) {
@@ -91,7 +91,7 @@ const DonatesModal = () => {
         };
     }, [donateAmount]);
 
-return (
+    return (
         <Modal
             className="donatesModal"
             open={donates.isOpen}
@@ -127,9 +127,13 @@ return (
                 <div className="donatesInputContainer">
                         <Checkbox className={"checkbox-borderline"}  checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
                 </div>
-                <Button onClick={handlePost} 
+                <Button
+                    onClick={handlePost}
                     disabled={!isCheckboxChecked}
-                    className="donatesDonateBtn">Підтримати</Button>
+                    className="donatesDonateBtn"
+                >
+                        Підтримати
+                </Button>
             </div>
         </Modal>
     );
