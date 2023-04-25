@@ -29,12 +29,6 @@ const MapOSMAdmin = () => {
     const [center, setCenter] = useState(initialCenter);
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null);
-
-    const handleSaveButtonClick = () => {
-    // TODO: save streetcodeCoordinates to the backend
-
-    };
-
     const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
         setAutocomplete(autocomplete);
     };
