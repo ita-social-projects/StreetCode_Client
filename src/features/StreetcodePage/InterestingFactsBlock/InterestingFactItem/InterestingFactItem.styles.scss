@@ -34,10 +34,13 @@
     .mainText {
       @include mut.rem-padded(0, 20px, 0px, 20px);
       color: c.$lighter-black-color;
-      @include mut.truncated($line-num: 5);
 
       @include mut.with-font($font-weight: 300, $font-size: 13px);
       line-height: f.pxToEm(18px);
+
+    }
+    .lineSpecifier{
+      @include mut.truncated($line-num: 5);
     }
   }
 }
@@ -67,6 +70,12 @@
     color: c.$accented-red-color;
   }
   
+}
+
+@media screen and (max-width: 1024px){ 
+  .interestingFactSlide {
+    @include mut.sized(205px,240px);
+  }
 }
 
 @media screen
@@ -192,7 +201,6 @@ and (min-width: 768px) and (max-width: 1000px) {
        .heading {
         @include mut.rem-padded(7px, 20px, 6px, 12px);
         @include mut.with-font($font-weight: 500, $font-size: 12px);
-        //  line-height: f.pxToEm(17px);
          line-height: f.pxToEm(12px);
 
        }
@@ -212,15 +220,12 @@ and (min-width: 768px) and (max-width: 1000px) {
   } 
  }
 
-
- 
 @media screen and (max-width: 480px){ 
+
   .interestingFactSlide {
-    // @include mut.sized(210px,240px);
     @include mut.full-rounded(20px);
     overflow: visible;
 
-  
       .slideImage {
         @include mut.sized(100%);//
         @include mut.rounded(20px, 20px);
@@ -244,14 +249,7 @@ and (min-width: 768px) and (max-width: 1000px) {
       } 
       .readMoreParagraph {
         @include mut.rem-padded(6px, 20px, 0px, 12px);
-
         @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
       }
   }
  }
-
-@media screen and (max-width: 1024px){ 
-  .interestingFactSlide {
-        @include mut.sized(205px,240px);
-  }
-}

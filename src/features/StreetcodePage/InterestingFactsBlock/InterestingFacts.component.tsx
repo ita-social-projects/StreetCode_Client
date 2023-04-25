@@ -7,6 +7,7 @@ import { useRouteId } from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
+import { observer } from 'mobx-react-lite';
 
 const InterestingFactsComponent = () => {
     const streetcodeId = useRouteId();
@@ -16,10 +17,7 @@ const InterestingFactsComponent = () => {
         () => fetchFactsByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
-    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
-    // const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
-    // getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
-    
+    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray; 
     const setings = {
         dots: getFactArray.length > 3,
         swipeOnClick: true,
@@ -28,13 +26,9 @@ const InterestingFactsComponent = () => {
         centerPadding: '-12px',
         responsive: [
             {
-                // зменшуєш цифрове значення - йде вправо
                 breakpoint: 480,
                 settings: {
                     centerPadding: '-36px',
-                    // centerPadding: '-50px',
-                    // centerlMode: true,
-
                     swipe: true,
                     dots: true,
                 },
@@ -43,7 +37,6 @@ const InterestingFactsComponent = () => {
                 breakpoint: 768,
                 settings: {
                     centerPadding: '-30px',
-                    // centerPadding: '-30px',
                     swipe: true,
                     dots: true,
                 },
@@ -79,11 +72,6 @@ const InterestingFactsComponent = () => {
                         ) : (
                             <BlockSlider
                                 className="heightContainer"
-                                // dots={getFactArray.length > 3}
-                                // swipeOnClick
-                                // swipe
-                                // centerMode
-                                // centerPadding="-12px"
                                 {...setings}
                             >
                                 {sliderArray.map((fact) => (
@@ -103,4 +91,4 @@ const InterestingFactsComponent = () => {
     );
 };
 
-export default InterestingFactsComponent;
+export default observer(InterestingFactsComponent);

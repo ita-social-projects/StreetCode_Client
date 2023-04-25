@@ -1,11 +1,13 @@
 import './InterestingFactItem.styles.scss';
 
-import WowFactImg from '@images/interesting-facts/WowFacts1.png';
-
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import Image from '@models/media/image.model';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
+
+import ImagesApi from '@/app/api/media/images.api';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     fact: Fact;
@@ -14,45 +16,35 @@ interface Props {
 }
 
 const InterestingFactItem = ({
-    fact: { factContent, title, id },
-    maxTextLength = 250,
+    fact: { factContent, title, id, imageId },
+    maxTextLength = 190,
     numberOfSlides,
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    function onResizeWindow() {
-        setWindowWidth(window.innerWidth);
-    }
-
-    useEffect(() => {
-        onResizeWindow();
-        window.addEventListener('resize', onResizeWindow);
-        setWindowWidth(windowWidth);
-        return () => {
-            setWindowWidth(windowWidth);
-            window.removeEventListener('resize', onResizeWindow);
-        };
-    }, []);
-
-    if (windowWidth <= 1024) {
-        maxTextLength = 190;
-    }
-
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
 
-    const mainContent = factContent;
+    let mainContent = factContent;
+    if (isReadMore) {
+        mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
+    }
+
+    const imgId = imageId as number;
+
+    const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
+    const image = value as Image;
+
+    const url = base64ToUrl(image?.base64, image?.mimeType);
 
     return (
         <div className="interestingFactSlide">
             <div className="slideImage">
-                <img src={WowFactImg} alt="" />
+                <img src={url} alt="" />
             </div>
             <div className="slideText">
                 <p className="heading">
                     {title}
                 </p>
-                <p className="mainText">
+                <p className={`mainText ${(numberOfSlides !== 1) ? 'lineSpecifier' : ''}`}>
                     {mainContent}
                 </p>
                 {isReadMore && (
