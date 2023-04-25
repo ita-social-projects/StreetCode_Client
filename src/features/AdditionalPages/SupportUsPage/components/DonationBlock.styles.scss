@@ -71,7 +71,7 @@
       > span {
         @include vnd.vendored(transition, 'color .75s ease');
         @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-        color: #891F16 !important;
+        color: c.$dark-red-color;
       }
   
       &:where(:hover, &.active) {
@@ -116,7 +116,7 @@
 
     > * {
       @include mut.full-rounded(11px);
-      border: 2px solid #DCDCDC;
+      border: 2px solid $light-border-color;
       @include mut.with-font($font-weight: 300);
     }
   }
