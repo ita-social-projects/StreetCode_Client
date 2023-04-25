@@ -1,11 +1,9 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
-import { SourceCategory, SourceSubCategory } from '@models/sources/sources.model';
+import { SourceCategory } from '@models/sources/sources.model';
 
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();
-
-    public srcSubCategoriesMap = new Map<number, SourceSubCategory>();
 
     public constructor() {
         makeAutoObservable(this);
@@ -13,10 +11,6 @@ export default class SourcesStore {
 
     private setCategoryItem = (srcCategory: SourceCategory) => {
         this.srcCategoriesMap.set(srcCategory.id, srcCategory);
-    };
-
-    private setSubCategoryItem = (srcSubCategory: SourceSubCategory) => {
-        this.srcSubCategoriesMap.set(srcSubCategory.id, srcSubCategory);
     };
 
     private set setInternalCategoriesMap(srcCategories: SourceCategory[]) {
@@ -27,13 +21,10 @@ export default class SourcesStore {
         return Array.from(this.srcCategoriesMap.values());
     }
 
-    get getSrcSubCategoriesArray() {
-        return Array.from(this.srcSubCategoriesMap.values());
-    }
-
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
+            console.log(this.srcCategoriesMap);
         } catch (error: unknown) {
             console.log(error);
         }
@@ -53,7 +44,6 @@ export default class SourcesStore {
             await sourcesApi.update(srcCategory);
             runInAction(() => {
                 const updatedSourceCategory = {
-                    ...this.srcSubCategoriesMap.get(srcCategory.id),
                     ...srcCategory,
                 };
                 this.setCategoryItem(updatedSourceCategory as SourceCategory);
@@ -67,7 +57,7 @@ export default class SourcesStore {
         try {
             await sourcesApi.delete(SourceCategoryId);
             runInAction(() => {
-                this.srcSubCategoriesMap.delete(SourceCategoryId);
+                this.srcCategoriesMap.delete(SourceCategoryId);
             });
         } catch (error: unknown) {
             console.log(error);

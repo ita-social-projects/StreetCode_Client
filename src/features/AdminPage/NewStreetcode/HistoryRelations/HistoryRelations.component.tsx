@@ -20,6 +20,7 @@ const RelatedFiguresBlock = ({ setFigures }: Props) => {
         if (existing === undefined) {
             setRelations((prevState) => [...prevState, relationToAdd]);
         }
+
         setFigures((prevState) => [...prevState, relationToAdd]);
     };
 

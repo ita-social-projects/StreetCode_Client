@@ -124,6 +124,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         }
                         return e?.fileList;
                     }}
+                    rules={[{ required: true, message: 'Завантажте фото, будь ласка' }]}
                 >
                     <FileUploader
                         onChange={(param) => {

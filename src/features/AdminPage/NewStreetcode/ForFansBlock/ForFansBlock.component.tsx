@@ -28,18 +28,18 @@ const ForFansBlock = () => {
             </div>
             <div className="forFansContainer">
                 <button
+                    type="button"
                     className="addNewCategory"
                     onClick={() => setIsModalOpen(true)}
                 >
-+
-
+                    +
                 </button>
-                {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category) => (
+                {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category, index) => (
                     <ForFansAdminItem
-                        categoryName={categoriesSelect.find((c) => c.id === category.categoryId)?.title ?? ''}
-                        id={category.id}
+                        categoryName={categoriesSelect.find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
+                        id={index}
                         onEditClick={() => {
-                            sourceCreateUpdateStreetcode.indexUpdate = category.id;
+                            sourceCreateUpdateStreetcode.indexUpdate = index;
                             setIsModalOpen(true);
                         }}
                     />

@@ -9,16 +9,18 @@ import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
 import ImageStore from '@stores/image-store';
 import useMobx from '@stores/root-store';
+import axios from 'axios';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import Image from '@/models/media/image.model';
 import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
 
 import PageBar from '../PageBar/PageBar.component';
 
 import PartnerModal from './PartnerModal/PartnerModal.component';
-import axios from 'axios';
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
@@ -41,7 +43,7 @@ const Partners:React.FC = observer(() => {
                     );
                 });
             });
-        });
+        }).then(()=> partnersStore.setInternalMap(partnersStore.getPartnerArray));
     };
     useEffect(() => {
         updatedPartners();
@@ -82,11 +84,11 @@ const Partners:React.FC = observer(() => {
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),
-            render: (logo, record) => (
+            render: (logo:Image, record) => (
                 <img
                     key={`${record.id}${record.logo?.id}}`}
                     className="partners-table-logo"
-                    src={logo?.base64}
+                    src={base64ToUrl(logo?.base64, logo?.mimeType??'')}
                     alt={logo?.alt}
                 />
             ),

@@ -1,10 +1,12 @@
-import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import StreetcodesApi from '@api/streetcode/streetcodes.api';
 
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 export default class StreetcodeStore {
-    public currentStreetcode = -1;
+    public errorStreetCodeId = -1;
+
+    public currentStreetcode = this.errorStreetCodeId;
 
     constructor() {
         makeAutoObservable(this);

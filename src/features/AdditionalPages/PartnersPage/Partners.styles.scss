@@ -6,9 +6,9 @@
     position: relative;
     width: 100vw;
     height: 100%;
-    padding: f.pxToRem(30px) f.pxToRem(10px) f.pxToRem(10px) f.pxToRem(10px);
+    padding: f.pxToRem(112px) f.pxToRem(10px) f.pxToRem(110px) f.pxToRem(10px);
 
-    @include mut.bg-image('../../../assets/images/partners/background.png');
+    @include mut.bg-image('@assets/images/partners/background.png');
     background-attachment: fixed;
 
     .wrapper{
@@ -45,6 +45,8 @@
     .partnersContainer{
         background-color: #fffcfc;
         background-image: none;
+        padding-bottom:  f.pxToRem(20px);
+        padding-top: f.pxToRem(94px);
 
         .buttonsBlock{
             @include mut.flexed($justify-content: center, $gap: 12px);

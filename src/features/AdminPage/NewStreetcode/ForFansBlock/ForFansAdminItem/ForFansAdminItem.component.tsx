@@ -19,7 +19,9 @@ const ForFansAdminItem:React.FC<{ id:number,
                      </p>
                      <div className="faIcon">
                          <FaRegTrashAlt onClick={
-                             () => sourceCreateUpdateStreetcode.removeSourceCategoryContent(id)
+                             () => {
+                                 sourceCreateUpdateStreetcode.removeSourceCategoryContent(id);
+                             }
                          }
                          />
                      </div>
