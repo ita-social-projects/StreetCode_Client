@@ -21,8 +21,6 @@ const DonationBlock = () => {
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    const [donateName, setDonateName] = useState<string | undefined>('');
-    const [donateComment, setDonateComment] = useState<string | undefined>('');
 
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
@@ -35,11 +33,6 @@ const DonationBlock = () => {
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
         setActiveBtnIndex(btnIdx);
-    };
-
-    const handleModalClose = () => {
-        setModal('donates');
-        setDonateAmount(0);
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +49,7 @@ const DonationBlock = () => {
         }
     };
     
-    const charWidth = windowSize.width > 1024 ? 26 : 21;    // Width of each character in pixels
+    const charWidth = windowSize.width > 1024 ? 26 : 21; 
     const firstWidth = windowSize.width > 1024 ? 8 : 6;
 
     const count = (donateAmount.toString().match(/1/g) || []).length;
@@ -68,14 +61,12 @@ const DonationBlock = () => {
     const handlePost = async () => {
         if (isCheckboxChecked) {
             try {
-                const response = await axios.post(`${linkBase}?${donateAmount}&${donateComment}`);
+                const response = await axios.post(`${linkBase}?${donateAmount}`);
                 window.location.replace(response.data);
             } catch (err) {
                 console.error(err);
             }
-        } else {
-            console.log('Checkbox not checked');
-        }
+        } 
     }
 
 

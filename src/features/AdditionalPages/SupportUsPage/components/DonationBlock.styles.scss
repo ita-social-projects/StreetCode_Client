@@ -9,14 +9,11 @@
   @include mut.flex-centered($direction: column);
   width: f.pxToRem(590px) !important;
   height: f.pxToRem(525px) !important;
-
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
 
   > h1 {
-    color: #1D1F23 !important;
+    color: c.$pure-black-color;
     width: f.pxToRem(550px);
     height: f.pxToRem(48px);
     text-align: center;
@@ -45,9 +42,7 @@
     padding: 0;
     overflow: visible !important;
     &:not(.active) {     
-      text-decoration-line: underline;  
-      text-decoration-thickness: 2px;
-      text-underline-offset: 4px;
+      text-decoration: underline;
     }
 
     &.active {
@@ -268,13 +263,11 @@
             vertical-align: middle;
       
             &:last-child {
-              height: 28px;
-              padding-top: 2px;
-              font-family: 'Roboto';
+              @include mut.with-font(ft.$roboto-font , $font-size: 12px, $font-weight: 500);
+              height: f.pxToRem(28px);
+              padding-top: f.pxToRem(2px);
               font-style: normal;
-              font-weight: 500;
-              font-size: 12px;
-              line-height: 14px;
+              line-height: f.pxToRem(14px);
             }
           }
         }
