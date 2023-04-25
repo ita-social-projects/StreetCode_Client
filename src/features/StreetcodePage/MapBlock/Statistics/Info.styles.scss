@@ -5,40 +5,57 @@
 
 
 .infoContainer{
-    @include mut.sized(80px,76px);
+    @include mut.sizedImportant(80px,76px);
     @include mut.positioned-as(absolute, 0, 0, 0, 105%);
-    z-index: 2;
+    z-index: 3;
     background: c.$pure-white-color;
-    // border: 3px solid #787878;
     box-shadow: 0px 7px 11px 2px rgba(0, 0, 0, 0.25);
     border-radius: 23px;
-  
+    @media (min-width: 481px) and (max-width: 1024px) {
+      @include mut.sizedImportant(40px,40px);
+      @include mut.positioned-as(absolute, 18px, 0, 0, 100%);
+      background:none;
+      box-shadow: none;
+      border-radius:none;
+    }
   }
+
   .infoButton {
   background-color: transparent;
   border: none;
   color: #ff4d4f;
-  
   &:hover {
-    background-color: #ff4d4f;
     color: #fff;
   }
+  @media screen and (max-width: 480px){
+    @include mut.positioned-as(absolute, 100px, 0, 0, 311px);
+    @include mut.sizedImportant(47px,45px);
+    background: c.$pure-white-color;
+    box-shadow: 0px 7px 11px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+  }
 }
+
 .infoIcon {
     @include mut.positioned-as(absolute, 20%, 0, 0, 0);
     color: c.$accented-red-color;
-  }
-  .transparent-popover .ant-popover-inner {
-    @include mut.sized(317px, 414px);
-    @include mut.positioned-as(absolute, 0px, 0, 100px, 0px);
-    @include mut.rem-padded(5px, 5px, 5px, 5px);
-    background: c.$pure-white-color;
-    z-index: 2;
-     // border: 3px solid #787878;
-    box-shadow: 0px 7px 11px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-    
-    
-  }
+    font-size: 325%;
+    @media (min-width: 481px) and (max-width: 1024px) {
+      @include mut.positioned-as(absolute, 11%, 0, 0, 0);
+    }
+    @media screen and (max-width: 1024px){
+      font-size: 200%;
+    }
+}
+
+.transparent-popover .ant-popover-inner {
+  @include mut.sized(317px, 414px);
+  @include mut.positioned-as(absolute, 0px, 0, 100px, 0px);
+  @include mut.rem-padded(5px, 5px, 5px, 5px);
+  background: c.$pure-white-color;
+  z-index: 2;
+  box-shadow: 0px 7px 11px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+}
  
   

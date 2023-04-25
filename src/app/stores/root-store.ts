@@ -1,18 +1,28 @@
 import { createContext, useContext } from 'react';
+import { HistoricalContext } from '@models/timeline/chronology.model';
 import AudioStore from '@stores/audio-store';
+import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
+import { HistoricalContextStore } from '@stores/historicalcontext-store';
 import ImageStore from '@stores/image-store';
 import ModalStore from '@stores/modal-store';
 import PartnersStore from '@stores/partners-store';
 import RelatedFiguresStore from '@stores/related-figures-store';
+import RelatedTermsStore from '@stores/related-terms-store';
 import SourcesStore from '@stores/sources-store';
+import StreetcodeArtStore from '@stores/streetcode-art-store';
+import StreetcodeStore from '@stores/streetcode-current-store';
+import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
+import StreetcodeShortStore from '@stores/streetcodeshort-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
-import CheckBoxStore from './checkbox-store';
-import StreetcodeArtStore from './streetcode-art-store';
+import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
+
+import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
+import StreetcodeShortStore from './streetcodeshort-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -26,8 +36,14 @@ interface Store {
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
     streetcodeArtStore: StreetcodeArtStore,
+    streetcodeStore: StreetcodeStore,
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
+    relatedTermStore: RelatedTermsStore,
+    historicalContextStore: HistoricalContextStore,
+    streetcodeCatalogStore: StreetcodesCatalogStore,
+    streetcodeShortStore: StreetcodeShortStore,
+    streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
 }
 
 export const store: Store = {
@@ -44,6 +60,12 @@ export const store: Store = {
     sourcesStore: new SourcesStore(),
     relatedFiguresStore: new RelatedFiguresStore(),
     checkboxStore: new CheckBoxStore(),
+    relatedTermStore: new RelatedTermsStore(),
+    streetcodeStore: new StreetcodeStore(),
+    historicalContextStore: new HistoricalContextStore(),
+    streetcodeCatalogStore: new StreetcodesCatalogStore(),
+    streetcodeShortStore: new StreetcodeShortStore(),
+    streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
 };
 
 const StoreContext = createContext(store);

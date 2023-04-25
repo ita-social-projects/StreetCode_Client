@@ -1,6 +1,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
-@use '@assets/sass/variables/variables.fonts' as ft;
+@use '@assets/sass/variables/_variables.fonts.scss' as ft;
 
 
 .textComponentContainer {
@@ -10,10 +10,19 @@
 .TextContainer {
     @include mut.sized(1200px, auto);
     @include mut.rem-margined($top: 27px);
-    //@include mut.with-font($font-family: ft.$roboto-light);
     @include mut.with-font($font-weight: 300, $font-size:20px);
 }
-.videoComponent,
 .textComponent {
     @include mut.flex-centered();
+}
+.videoComponent{
+    margin-bottom: f.pxToRem(30px);
+    margin-right: f.pxToRem(5px);
+    margin-left: f.pxToRem(5px);
+    overflow: hidden;
+}
+@media screen and (max-width: 1024px){
+    .videoComponent{
+        margin-bottom: f.pxToRem(20px);
+    }
 }

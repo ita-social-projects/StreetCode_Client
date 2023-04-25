@@ -1,0 +1,18 @@
+@use "@sass/mixins/_utils.mixins.scss" as ut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.partner-block-admin-container {
+    margin-top: 10px;
+    width: f.pxToRem(400px);
+
+    .ant-select {
+        width: f.pxToRem(400px);
+    }
+
+    .partner-block-admin-header {
+        @include ut.rem-margined(10px, 0, 10px, 0);
+        @include ut.flexed(row, center, space-between, wrap, 5px);
+    }
+}

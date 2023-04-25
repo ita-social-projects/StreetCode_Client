@@ -1,0 +1,61 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/variables/_variables.fonts.scss" as f;
+
+
+$bgImg: '@assets/images/catalog/background.png';
+$loadImg: '@assets/images/catalog/loading.gif';
+
+.streetcodeCatalogWrapper{
+    padding: pxToRem(100px) 10%;
+    @include mut.bg-image($bgImg, contain, no-repeat);
+    background-color: c.$accented-low-opasity-grayish-gray-color;
+    width: 100%;
+
+    .streetcodeCatalogHeading{
+        @include mut.with-font('Closer Text', 500, 96px, normal);
+        padding-bottom: pxToRem(40px);
+        line-height: pxToRem(127px);
+        display: flex;
+        align-items: center;
+        color: c.$milky-white-color;
+    }
+
+    .steetcodeCatalogContainer{
+        display: grid;
+        column-gap: pxToRem(28px);
+        row-gap: pxToRem(60px);
+    }
+}
+
+.loadingWrapper{
+    background-color: c.$accented-grayish-gray-color;
+    width: 100%;
+    @include mut.flex-centered();        
+
+    #loadingGif{
+        @include mut.bg-image($loadImg, contain, no-repeat);
+        @include mut.sized(60px, 60px);
+        margin-bottom: pxToRem(84px);
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .steetcodeCatalogContainer{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .steetcodeCatalogContainer{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (min-width: 2000px){
+    .streetcodeCatalogWrapper{
+        padding: pxToRem(100px) pxToRem(200px);
+    }
+}

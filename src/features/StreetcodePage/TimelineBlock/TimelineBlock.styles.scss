@@ -6,30 +6,30 @@
 
 $timelineLvivImg: "@assets/images/timeline/Lviv.png";
 $timelineSquareImg: "@assets/images/timeline/Square.png";
+
 .timelineContainer{
   width: 100vw;
   max-width: f.pxToRem(1600px);
-  //width: f.pxToRem(1600px);
   align-self: center;
   align-items: center;
   margin: f.pxToRem(50px) auto;
 
   .timelineContentContainer {
- // margin: f.pxToRem(50px) 0;
   margin: f.pxToRem(50px) auto;
   background-color: c.$timeline-reel-color;
 
-   .sliderClass {
-    @include mut.rem-margined($bottom: 25px, $top: 30px /*30px*/);
-  } 
-
-  .slick-slider {
-    @include mut.parent-sized();
+  .sliderClass {
+    @include mut.sized(100%, 380px);
+    @include mut.rem-margined($bottom: 30px, $top: 30px /*30px*/);
   }
 
-  .slick-list {
-    margin:f.pxToRem(15px) 0  ;
-  }
+    .slick-slider {
+      @include mut.parent-sized();
+    }
+
+    .slick-list {
+      margin:f.pxToRem(0) !important;
+    }
 
   .slick-track {
     
@@ -47,9 +47,9 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       border-style: solid ;
       border-color: c.$timeline-reel-color;
       @include mut.bg-image($timelineSquareImg);
-      background-size:f.pxToRem(604px) f.pxToRem(365px) ;
-      background-position: center;
-      
+
+      background-size:f.pxToRem(605px) f.pxToRem(365px);
+      background-position: center;   
 
       &:nth-child(2n + 1) {
         @include mut.bg-image($timelineLvivImg);
@@ -59,11 +59,9 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       @include vnd.vendored(transition, 'border 500ms ease');
     }
     
-
-    // .slick-current + .slick-slide {
     .slick-current {
       border-radius: 40px;
-      box-shadow: inset  0px 0px 2px 6px c.$pure-white-color;
+      box-shadow: inset  0px 0px 0px 6px c.$pure-white-color;
 
       .timelineItemContent {
         margin-top: calc(1.5rem - 4px);
@@ -71,4 +69,19 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     }
   }
 }
+}
+
+@media screen and (max-width: 1024px) {
+  .timelineContentContainer {
+
+    .sliderClass{
+      @include mut.sized(100%);
+      @include mut.rem-margined($bottom: 10px, $top: 10px /*10px*/);
+    }
+
+    .slick-track {
+      @include mut.flexed($align-items: center, $gap: 14px);
+      
+    }
+  }
 }

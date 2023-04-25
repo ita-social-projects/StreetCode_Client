@@ -5,7 +5,7 @@
 
 .tickerContainer {
   @include mut.colored(c.$pure-white-color, c.$selected-arrow-color);
-  @include mut.sized(200%, 44px);
+  @include mut.sizedImportant(200%, 44px);
   z-index: -1;
 }
 
@@ -13,4 +13,5 @@
   @include mut.flex-centered();
   @include mut.with-font(ft.$closer-text-font, 400, 20px);
   padding-right: f.pxToRem(10px);
+  white-space: nowrap;
 }

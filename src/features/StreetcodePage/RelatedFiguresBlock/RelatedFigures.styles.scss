@@ -6,9 +6,9 @@
 $moreInfo-width: 150px;
 
 .relatedFiguresWrapper {
-    @include mut.sized($height: 575px); //needs refactoring
+    @include mut.sized($height: 600px);
     @include wr.main-page-block-wrapper();
-    @include mut.rem-margined($bottom: 50px, $top: 170px);
+    @include mut.rem-margined($bottom: 50px, $top: 90px);
 }
 
 .smallWrapper {
@@ -20,27 +20,24 @@ $moreInfo-width: 150px;
         }
     }
 
-    .moreInfo {
-        display: none;
+    .moreInfo p {
+        color: c.$pure-white-color;
     }
 }
-
-.headingWrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .blockHeadingContainer {
-        width: 1200px - $moreInfo-width;
-    }
-  }
 
 .relatedFiguresContainer {
     @include mut.sized($width: 90%, $height: 100%);
     @include mut.flexed($direction: column, $align-items: center);
 }
 
+.headingWrapper {
+    position: relative;
+}
+
 .moreInfo {
+    position: absolute;
+    bottom: f.pxToRem(70px);
+    left: f.pxToRem(455px);
     width: $moreInfo-width;
     p {
         @include mut.with-font($font-weight: 500, $font-size: 20px);
@@ -72,5 +69,60 @@ $moreInfo-width: 150px;
 
     .slick-track {
         @include mut.flexed($justify-content: center, $align-items: flex-start, $gap: 28px);
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .relatedFiguresWrapper {
+        @include mut.sized($height: 600px); 
+        @include mut.rem-margined($bottom: 100px, $top: 0px);
+        
+        .slick-dots {
+            bottom: 0;
+            left: 7px;
+        }
+        .slick-track {
+            @include mut.flexed($align-items: flex-start, $gap: 10px);
+        }
+        .slick-slide {
+            width: 165px !important;
+            
+            &.slick-active.slick-current {
+                transform: translateX(0px) !important;
+            }
+        }
+        
+    }
+}
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    .relatedFiguresWrapper {
+        @include mut.sized($height: 400px); 
+        @include mut.rem-margined($bottom: 150px, $top: 40px);
+    }
+}
+
+@media screen and (max-width: 767px) and (min-width: 481px) {
+    .relatedFiguresWrapper {
+        @include mut.sized($height: 400px);
+        @include mut.rem-margined($bottom: 100px, $top: 0px);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .relatedFiguresSliderContainer {
+        width: 100vw !important;
+
+        .slick-track {
+            @include mut.flexed($align-items: flex-start, $gap: 10px);
+            @include mut.rem-margined($left: 10px);
+        }
+        .slick-arrow {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    .moreInfo p {
+        color: c.$pure-white-color;
     }
 }

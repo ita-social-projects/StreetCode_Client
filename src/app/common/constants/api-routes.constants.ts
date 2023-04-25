@@ -1,6 +1,9 @@
 // eslint-disable-next-line import/prefer-default-export
 export const API_ROUTES = {
     BASE: '/',
+    HISTORICAL_CONTEXT: {
+        GET_ALL: 'historicalContext/getAll',
+    },
     FACTS: {
         GET_ALL: 'fact/getAll',
         GET: 'fact/getById',
@@ -11,6 +14,7 @@ export const API_ROUTES = {
     },
     PARTNERS: {
         GET_ALL: 'partners/getAll',
+        GET_ALL_SHORT: 'partners/getAllShort',
         GET_SPONSORS: 'partners/getSponsors',
         GET: 'partners/getById',
         GET_BY_STREETCODE_ID: 'partners/getByStreetcodeId',
@@ -33,6 +37,13 @@ export const API_ROUTES = {
         CREATE: 'term/create',
         UPDATE: 'term/update',
         DELETE: 'term/delete',
+    },
+    RELATED_TERMS: {
+        GET_ALL_BY_TERM_ID: 'relatedTerm/getByTermId',
+        CREATE: 'relatedTerm/create',
+        DELETE: 'relatedTerm/delete',
+        UPDATE: 'relatedTerm/update',
+        GET_ALL: 'relatedTerm/getAll',
     },
     TEXTS: {
         GET_ALL: 'text/getAll',
@@ -121,15 +132,20 @@ export const API_ROUTES = {
     },
     STREETCODES: {
         GET_ALL: 'streetcode/getAll',
+        GET_ALL_SHORT: 'streetcode/getAllShort',
+        GET_ALL_CATALOG: 'streetcode/getAllCatalog',
+        GET_COUNT: 'streetcode/getCount',
         GET_EVENTS: 'streetcode/getEvents',
         GET_PERSONS: 'streetcode/getPersons',
         GET: 'streetcode/getById',
         GET_BY_NAME: 'streetcode/getByName',
         GET_BY_TAG_ID: 'streetcode/getByTagId',
         GET_BY_INDEX: 'streetcode/getByIndex',
+        GET_BY_URL: 'streetcode/getByTransliterationUrl',
         CREATE: 'streetcode/create',
         UPDATE: 'streetcode/update',
         DELETE: 'streetcode/delete',
+        EXIST_WITH_INDEX: 'streetcode/existWithIndex',
     },
     SUBTITLES: {
         GET_ALL: 'subtitle/getAll',
@@ -146,5 +162,8 @@ export const API_ROUTES = {
         CREATE: 'coordinate/create',
         UPDATE: 'coordinate/update',
         DELETE: 'coordinate/delete',
+    },
+    EMAIL: {
+        SEND: 'email/send',
     },
 };

@@ -50,12 +50,24 @@
 
 @mixin sized($width: auto, $height: auto) {
   @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
-    width: $width !important;
+    width: $width ;
   } @else {
-    width: f.pxToRem($width) !important;
+    width: f.pxToRem($width) ;
   }
   @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
-    height: $height !important;
+    height: $height ;
+  } @else {
+    height: f.pxToRem($height);
+  }
+}
+@mixin sizedImportant($width: auto, $height: auto) {
+  @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
+    width: $width !important ;
+  } @else {
+    width: f.pxToRem($width) !important ;
+  }
+  @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
+    height: $height !important ;
   } @else {
     height: f.pxToRem($height) !important;
   }
@@ -104,6 +116,9 @@
   overflow: $overflow !important;
   -webkit-background-clip: padding-box;
 }
+@mixin border($color:"#000", $border-width:1px, $type:solid ){
+  border:  f.pxToRem($border-width) $type $color;
+}
 
 @mixin full-rounded($rad, $overflow: hidden) {
   @include rounded($rad, $rad, $rad, $rad, $overflow);
@@ -126,6 +141,14 @@
           f.pxToRem($bottom) f.pxToRem($left) !important;
 }
 // --------------------------Appearance----------------------------
+@mixin backdrop-filtering-blur($f-size){
+  -webkit-backdrop-filter: blur($f-size);
+  -o-backdrop-filter: blur($f-size);
+  -moz-backdrop-filter: blur($f-size);
+
+  backdrop-filter: blur($f-size);
+}
+
 @mixin outlined($b-size: 2px, $color: red) {
   outline: $b-size solid $color !important;
 }
@@ -140,9 +163,9 @@
   visibility: visible !important;
 }
 
-@mixin bg-image($file-path, $bg-size: cover) {
+@mixin bg-image($file-path, $bg-size: cover, $bg-repeat: no-repeat) {
   background-image: url($file-path);
-  background-repeat: no-repeat;
+  background-repeat: $bg-repeat;
   background-size: $bg-size;
 }
 
@@ -151,6 +174,9 @@
   background-color: $bg-color;
 }
 // --------------------------Text----------------------------------
+@mixin withLineHeight($line-height){
+  line-height:f.pxToRem($line-height);
+}
 @mixin truncated($line-num: 3, $text-overflow: ellipsis) {
   overflow: hidden;
   white-space: nowrap;
@@ -210,18 +236,8 @@
     font-display: swap;
   }
 
-  /*%#{$font-family} {
-    font: {
-      @if $fallback != '' {
-        family: '#{$font-family}', #{$fallback};
-      } @else {
-        family: '#{$font-family}';
-        weight: $font-weight;
-      }
-    }
-  }*/
 }
-// FadeIn FadeOut animations
+
 @mixin fadeKeyframes($type: "fadeIn", $name: "fade") {
   @-webkit-keyframes #{$name} {
     @content;

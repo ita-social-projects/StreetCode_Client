@@ -8,11 +8,10 @@
 
 
 .interestingFactsContainer {
-    @include mut.sized(90%, 848px);
+    @include mut.sized(100%, 848px);
     @include mut.flex-centered($direction: column);
-
-    .blockHeadingContainer {
-        margin-left: pxToRem(10px);
+    .blockHeadingWrapper{
+        padding-left: 12px;
     }
 }
 
@@ -35,11 +34,6 @@
     }
 }
 
-.heightContainer,
-.slick-list,
-.slick-track {
-    height: 100%;
-}
 
 .heightContainer {
     padding-top: pxToRem(23px);

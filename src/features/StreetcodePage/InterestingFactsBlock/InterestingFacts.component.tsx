@@ -1,13 +1,13 @@
 import './InterestingFacts.styles.scss';
 
-import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useRouteId } from '@hooks/stateful/useRouter.hook';
+import useRouteId from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
-import { observer } from 'mobx-react-lite';
+
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 const InterestingFactsComponent = () => {
     const streetcodeId = useRouteId();
@@ -17,7 +17,8 @@ const InterestingFactsComponent = () => {
         () => fetchFactsByStreetcodeId(streetcodeId),
         [streetcodeId],
     );
-    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray; 
+    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+
     const setings = {
         dots: getFactArray.length > 3,
         swipeOnClick: true,

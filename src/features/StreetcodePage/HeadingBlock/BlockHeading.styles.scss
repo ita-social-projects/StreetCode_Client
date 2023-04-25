@@ -5,6 +5,7 @@
 .blockHeadingWrapper {
     @include mut.sized(100%, 124px);
     @include mut.flex-centered();
+    margin-top: f.pxToRem(80px);
     margin-bottom: f.pxToRem(26px);
 
     svg {
@@ -25,4 +26,34 @@
 
 .blockHeadingText::first-letter {
     text-transform: uppercase;
+}
+
+@media (max-width: 1350px) {
+    .blockHeadingWrapper{
+        margin-left: f.pxToRem(28px);
+    }
+}
+
+@media (max-width: 768px) {
+    .blockHeadingWrapper{
+        margin-left: f.pxToRem(28px);
+    }
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+    }
+}
+
+@media (max-width: 480px) {
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 35px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+    }
+}
+
+@media (max-width: 280px) {
+    .blockHeadingText {
+        @include mut.positioned-as(relative, $left: -71px, $top: 50px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 22px);
+    }
 }

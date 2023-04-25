@@ -1,0 +1,15 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.partnersItem{
+    text-align: center;
+    position: relative;
+
+    img{
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+        cursor: pointer;
+    }
+}

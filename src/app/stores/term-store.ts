@@ -9,7 +9,7 @@ export default class TermStore {
         makeAutoObservable(this);
     }
 
-    private setInternalMap = (terms: Term[]) => {
+    public setInternalMap = (terms: Term[]) => {
         terms.forEach(this.setItem);
     };
 
@@ -39,16 +39,18 @@ export default class TermStore {
         }
     };
 
-    public updateTerm = async (term: Term) => {
+    public updateTerm = async (id: number, term: Term) => {
         try {
-            await termsApi.update(term);
-            runInAction(() => {
-                const updatedTerm = {
-                    ...this.TermMap.get(term.id),
-                    ...term,
-                };
-                this.setItem(updatedTerm as Term);
-            });
+            if (id !== 0) {
+                await termsApi.update(id, term);
+                runInAction(() => {
+                    const updatedTerm = {
+                        ...this.TermMap.get(term.id),
+                        ...term,
+                    };
+                    this.setItem(updatedTerm as Term);
+                });
+            }
         } catch (error: unknown) {
             console.log(error);
         }
@@ -56,10 +58,12 @@ export default class TermStore {
 
     public deleteTerm = async (termId: number) => {
         try {
-            await termsApi.delete(termId);
-            runInAction(() => {
-                this.TermMap.delete(termId);
-            });
+            if (termId !== 0) {
+                await termsApi.delete(termId);
+                runInAction(() => {
+                    this.TermMap.delete(termId);
+                });
+            }
         } catch (error: unknown) {
             console.log(error);
         }

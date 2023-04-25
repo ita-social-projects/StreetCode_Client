@@ -11,7 +11,7 @@ $bookImg: "@assets/images/sources/Books_stretched.png";
 $articlesImg: "@assets/images/sources/Articles.png";
 
 .tagsModal {
-  @include mut.sized(1000px, 698px);
+  @include mut.sizedImportant(1000px, 698px);
 
   &.ant-modal {
     .ant-modal-content {
@@ -37,7 +37,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
 
 
   .headerTagContainer {
-      @include mut.sized(100%, 97px);
+      @include mut.sizedImportant(100%, 97px);
       position: sticky;
       @include mut.flex-centered();
       height: pxToRem(97px);

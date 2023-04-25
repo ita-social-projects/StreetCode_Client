@@ -21,8 +21,7 @@
 }
 
 .partnerContentLogo{
-    @include mut.sized($width: 108px, $height: 30px);
-
+    @include mut.sized($width: 108px, $height: 100%);
     @include mut.flex-centered();
 
     img{
@@ -65,5 +64,11 @@
         @include mut.with-font($font-size: 15px, $font-weight: 300);
 
         color: c.$lighter-black-color;
+    }
+}
+
+.partnerPopover {
+    .ant-popover-inner {
+        border-radius: 30px;
     }
 }

@@ -5,6 +5,7 @@ import PlayBtn from '@images/audio-player/PlayBtn.png';
 
 import { useEffect, useRef, useState } from 'react';
 import useMobx from '@stores/root-store';
+import base64ToUrl from '../../utils/base64ToUrl.utility';
 
 const AudioPlayer = () => {
     const { audiosStore: { audio } } = useMobx();
@@ -65,8 +66,7 @@ const AudioPlayer = () => {
 
     return (
         <div className="audioPlayer">
-           {/*  <audio ref={audioPlayer} src={audio?.url?.href} preload="metadata" /> */}
-           <audio ref={audioPlayer} src={"https://www.kozco.com/tech/piano2-Audacity1.2.5.mp3"} preload="metadata" />
+           <audio ref={audioPlayer} src={base64ToUrl(audio?.base64, audio?.mimeType)} preload="metadata" />
             {isPlaying
                 ? (
                     <div className="buttonContainer">
@@ -78,7 +78,7 @@ const AudioPlayer = () => {
                         <img src={PlayBtn} alt="Програти" className="play" onClick={togglePlayPause} />
                     </div>
                 )}
-            <div>
+            <div className='progressBarWrapper'>
                 <input
                     ref={progressBar}
                     type="range"

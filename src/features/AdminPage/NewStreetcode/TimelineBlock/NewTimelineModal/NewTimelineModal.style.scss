@@ -1,0 +1,10 @@
+@use "@sass/mixins/_utils.mixins.scss" as ut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+.timeline-modal{
+    .ant-btn, .ant-select-selection-item{
+        color:#FFF;
+        background-color: c.$dark-red-color;
+    }
+}
