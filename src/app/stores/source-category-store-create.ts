@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx';
 
 import { StreetcodeCategoryContent } from '@/models/sources/sources.model';
 

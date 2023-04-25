@@ -13,7 +13,6 @@ interface Props {
 const SourceItem = ({ srcCategory }: Props) => {
     const { modalStore: { setModal } } = useMobx();
 
-    console.log(srcCategory);
     return (
         <div
             className="sourcesSliderItem"

@@ -39,6 +39,12 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         id: fact.id,
                         title: fact.title,
                         factContent: fact.factContent,
+                        image: fact ? [{ name: '',
+                                         url: base64ToUrl(image.base64, image.mimeType),
+                                         thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                                         uid: `${fact.id}`,
+                                         status: 'done',
+                                         type: image.mimeType }] : [],
 
                     });
                     setFileList(fact ? [{ name: '',

@@ -17,7 +17,6 @@ const SourcesComponent = () => {
     const showDots = windowsize.width <= 1024;
     useAsync(() => sourcesStore.fetchSrcCategoriesByStreetcodeId(getStreetCodeId), [getStreetCodeId]);
 
-    console.log(sourcesStore.srcCategoriesMap);
     return (
         <div className="sourcesWrapper">
             <div className="sourcesContainer">

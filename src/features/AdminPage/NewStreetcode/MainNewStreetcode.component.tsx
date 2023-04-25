@@ -116,8 +116,6 @@ const NewStreetcode = () => {
             streetcode.lastName = form.getFieldValue('surname');
         }
 
-        console.log(streetcode);
-
         StreetcodesApi.create(streetcode)
             .then((response) => {
                 console.log(response);
