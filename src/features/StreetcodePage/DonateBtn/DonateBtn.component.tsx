@@ -2,10 +2,12 @@ import './DonateBtn.styles.scss';
 
 import HandWithCoin from '@images/donates/HandWithCoin.svg';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import useScrollPosition from '@hooks/scrolling/useScrollPosition/useScrollPosition.hook';
 import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 import useMobx from '@stores/root-store';
+
+import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 const DonateBtn = () => {
     const showModalOnScroll = useRef(true);
@@ -23,6 +25,7 @@ const DonateBtn = () => {
     const onBtnClick = () => {
         setModal('donates');
         showModalOnScroll.current = false;
+        donateEvent('floating_button');
     };
     return (
         <div className="donateBtnContainer" onClick={onBtnClick}>

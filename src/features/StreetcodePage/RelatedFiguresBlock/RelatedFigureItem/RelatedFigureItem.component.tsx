@@ -16,12 +16,12 @@ interface Props {
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const {
-        id, imageId, title, tags, alias, url,
+        id, imageId, title, tags, alias, url
     } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
-    const { setModal, modalsState: { tagsList } } = modalStore;
+    const { setModal, modalsState: {tagsList} } = modalStore;
 
     useAsync(
         () => fetchImage(imageId),
@@ -32,7 +32,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
         if (windowsize.width <= 1024) {
             setModal('relatedFigureItem', id, true);
         }
-    };
+    }
 
     const windowsize = useWindowSize(); 
 
@@ -46,17 +46,18 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
                 ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
-                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
-                to={`../streetcode/${url}`}
+                style={{ backgroundImage: url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)}) }}
+                to={../streetcode/${url}}
                 state={window.scrollTo(0,0)}
                 onClick={() => {
                     if (!tagsList) {
+                        relatedFiguresLeaveEvent();
                         setModal('tagsList');
                     }
                 }}
             >
                 <div className="figureSlideText">
-                    <div className="heading">
+                    <div className="heading"> 
                         <p>{title}</p>
                         {
                             alias !== null ?
@@ -66,8 +67,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                             : undefined
                         }
                     </div>
-                    <div className={`relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}`}>
-                        {tags.filter((tag) => getTagArray.find((ti) =>
+                    <div className={relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}}>
+                        {tags.filter((tag) => getTagArray.find((ti) => 
                             ti.id === tag.id || !filterTags))
                             .map((tag) => (
                             <button
@@ -76,6 +77,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 className="tag"
                                 onClick={(event) => {
                                     event.preventDefault();
+                                    relatedFiguresTagsEvent(tag.title);
                                     setModal('tagsList');
                                     setActiveTagId(tag.id);
                                 }}
@@ -85,16 +87,15 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                         ))}
                     </div>
                 </div>
-                </Link>)}
-            
+            </Link>)}
             { windowsize.width <= 1024 && (<>
             <div className='relatedFigureSlide'
-                style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
+                style={{ backgroundImage: url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)}) }}
                 onClick={handleClick}
             >
             </div>
             <div className="figureSlideText mobile">
-                <div className="heading">
+                <div className="heading"> 
                     <p>{title}</p>
                     {
                         alias !== null ?

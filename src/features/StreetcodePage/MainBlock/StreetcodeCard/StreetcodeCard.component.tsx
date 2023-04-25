@@ -12,6 +12,7 @@ import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
 import { useEffect, useState } from 'react';
 
@@ -112,7 +113,10 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 <Button
                                     type="primary"
                                     className="audioBtn audioBtnActive"
-                                    onClick={() => setModal('audio')}
+                                    onClick={() => {
+                                            setModal('audio');
+                                            audioClickEvent(streetcode?.id ?? 0);
+                                        }}
                                 >
                                     <PlayCircleFilled className="playCircle" />
                                     <span>Прослухати текст</span>
@@ -127,7 +131,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button className="animateFigureBtn"><a href="#QRBlock">Оживити картинку</a></Button>
+                        <Button className="animateFigureBtn" onClick={() => personLiveEvent(streetcode?.id ?? 0)}><a href="#QRBlock">Оживити картинку</a></Button>
                     </div>
                 </div>
             </div>

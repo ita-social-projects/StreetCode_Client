@@ -11,9 +11,10 @@ import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
 import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
-;
 
-const possibleDonateAmounts = [100, 500, 1000];
+import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
+
+const possibleDonateAmounts = [500, 100, 50];
 
 const DonatesModal = () => {
     const { modalStore } = useMobx();
@@ -59,13 +60,12 @@ const DonatesModal = () => {
 
         if (isCheckboxChecked) {
             try {
+                supportEvent('submit_donate_from_modal');
                 const response = await DonationApi.create(donation);
                 window.location.assign(response.PageUrl);
             } catch (err) {
                 console.error(err);
             }
-        } else {
-          console.log('Checkbox not checked');
         }
     }
       
