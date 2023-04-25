@@ -5,7 +5,7 @@
 
 .footerContainer {
   @include mut.sized(100%, 206px);
-  @include mut.flexed($justify-content: flex-start);
+  @include mut.flexed($justify-content: center);
   background-color: c.$dark-red-color;
 
   @media (max-width: 1024px){
@@ -19,10 +19,16 @@
 
   @include mut.colored(c.$copyright-section-color, c.$pure-white-color);
   @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 400, $font-size: 13px);
-
-  @media (max-width: 1024px){
-    padding: pxToRem(20px) pxToRem(10px);
+  flex-wrap: wrap;
+  text-align: center;
+  @media (max-width: 1024px) {
+    font-size: pxToRem(12px);
+    font-weight: 500;
     text-align: center;
+  }
+  @media screen and (max-width: 480px) {
+    height: pxToRem(72px);
+    line-height: pxToRem(16px);
   }
 }
 
@@ -40,7 +46,7 @@
 .usefulLinksColumnContainer {
   @include mut.sized($width: 60%, $height: 100%);
   display: flex;
-
+  @include mut.flexed($justify-content: space-between);
   > .usefulLinksColumn {
     margin-top: pxToRem(29px);
     margin-right: 10%;
@@ -62,10 +68,24 @@
     margin-top: pxToRem(29px);
     color: c.$pure-white-color;
     @include mut.with-font($font-weight: 300, $font-size: 15px);
-
+    margin-right: 10%;
     > * {
       display: inline;
       margin-right: pxToRem(14.62px);
     }
+  }
+}
+@media screen and (max-width: 480px) {
+  .footerCopyright{
+    height: pxToRem(72px);
+
+  }
+}
+@media screen and (max-width: 1285px) {
+  .usefulLinksColumn{
+    margin-right: 0;
+  }
+  .socialIconContainer{
+    margin-right: 0 !important;
   }
 }

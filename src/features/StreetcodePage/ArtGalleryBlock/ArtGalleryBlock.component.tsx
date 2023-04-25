@@ -18,7 +18,7 @@ const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore, streetcodeStore } = useMobx();
-    const { getStreetCodeId } = streetcodeStore;
+    const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [indexedArtsSmall, setIndexedArtsSmall] = useState<IndexedArt[]>([]);
@@ -31,7 +31,6 @@ const ArtGalleryBlock = () => {
     const slideOfArtList = [];
     let artsData: IndexedArt[] = [];
 
-
     const sortedArtsListSmall = [...indexedArtsSmall].sort((a, b) => a.index - b.index);
     const slideOfArtListSmall = [];
     let offsetSumForSlideSmall = 0;
@@ -39,11 +38,13 @@ const ArtGalleryBlock = () => {
     let sequenceNumberSmall = -1;
     let artsDataSmall: IndexedArt[] = [];
 
-
-
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
-        [getStreetCodeId],
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId);
+            }
+        },
+        [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
     );
 
     useEffect(() => {
@@ -75,7 +76,7 @@ const ArtGalleryBlock = () => {
     sortedArtsList.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offsetSumForSlide !== SECTION_AMOUNT) {
+        if (offsetSumForSlide !== SECTION_AMOUNT && offsetSumForSlide + offset <= SECTION_AMOUNT) {
             offsetSumForSlide += offset ?? 0;
             offsetSum += offset ?? 0;
             sequenceNumber += 1;
@@ -87,6 +88,22 @@ const ArtGalleryBlock = () => {
                 title,
                 sequenceNumber,
             } as IndexedArt);
+        }
+        else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+            slideOfArtList.push(
+                <ArtGallerySlide artGalleryList={artsData} />,
+            );
+            artsData = [{
+                index,
+                imageHref,
+                description,
+                offset,
+                title,
+                sequenceNumber: sequenceNumber + 1,
+            } as IndexedArt];
+
+            offsetSumForSlide = offset ?? 0;
+            offsetSum = offset ?? 0;
         }
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
@@ -106,7 +123,9 @@ const ArtGalleryBlock = () => {
     sortedArtsListSmall.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL) {
+        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL && offsetSumForSlide + offset <= SECTION_AMOUNT) {
+            if (offset == 4)
+                offset = 1;
             offsetSumForSlideSmall += offset ?? 0;
             offsetSumSmall += offset ?? 0;
             sequenceNumberSmall += 1;
@@ -119,6 +138,21 @@ const ArtGalleryBlock = () => {
                 sequenceNumber: sequenceNumberSmall,
             } as IndexedArt);
         }
+        else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+            slideOfArtList.push(
+                <ArtGallerySlide artGalleryList={artsData} />,
+            );
+            artsData = [{
+                index,
+                imageHref,
+                description,
+                offset,
+                title,
+                sequenceNumber: sequenceNumber + 1,
+            } as IndexedArt];
+            offsetSumForSlide = offset ?? 0;
+            offsetSum = offset ?? 0;
+        }
         if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL) {
             offsetSumForSlideSmall = 0;
             slideOfArtListSmall.push(
@@ -126,15 +160,7 @@ const ArtGalleryBlock = () => {
             );
             artsDataSmall = [];
         }
-        if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL+2) {
-            offsetSumForSlideSmall = 0;
-            slideOfArtListSmall.push(
-                <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
-            );
-            artsDataSmall = [];
-        }
     });
-
 
     if (!Number.isInteger(offsetSumSmall / SECTION_AMOUNT_SMALL)) {
         slideOfArtListSmall.push(
@@ -154,12 +180,13 @@ const ArtGalleryBlock = () => {
 
     const sliderPropsSmall = {
         className: "artGallarySliderContainerSmall",
-        infinite: false,
+        infinite: true,
         swipe: true,
         swipeOnClick: false,
         centerMode: true,
         variableWidth: true,
         slidesToShow: 1,
+        centerPadding: "0px 10px",
         slidesToScroll: 0.5,
     };
 
@@ -191,4 +218,3 @@ const ArtGalleryBlock = () => {
 };
 
 export default observer(ArtGalleryBlock);
-

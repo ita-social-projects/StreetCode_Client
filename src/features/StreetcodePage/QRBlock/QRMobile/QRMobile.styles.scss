@@ -3,17 +3,24 @@
 @use "@sass/variables/_variables.fonts.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 
+$loadImg: '@assets/images/qr-block/must_be_gif.png';
+
 .QRMobileContainer{
     width: 100%;
+    height: pxToRem(400px);
     display: inline-flex;
     vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: pxToRem(10px);    
 }
 
 .QRMobileGif{
-    padding-left: pxToRem(10px);
-    iframe {
-        border-radius: pxToRem(20px);
-    }
+    @include mut.bg-image($loadImg, contain, no-repeat);
+    border-radius: pxToRem(20px);
+    height: pxToRem(323px);
+    width: pxToRem(340px);
 }
 
 .QRMobileContent{
@@ -22,7 +29,7 @@
     align-items: center;
     justify-content: center;
 
-    margin: pxToRem(50px) pxToRem(39px);
+    margin: 0 pxToRem(39px);
     p{
         padding-bottom: pxToRem(20px);
     }
@@ -65,15 +72,16 @@
     color: c.$pure-white-color;
 }
 
-@media (max-width: 675px){
+@media (max-width: 715px){
     .QRMobileContainer{
         display: flex;
         flex-direction: column-reverse;
+        margin-bottom: pxToRem(80px);
     }
     .QRMobileGif{
         display: flex;
         justify-content: center;
-        padding-top: pxToRem(35px);
+        margin-top: pxToRem(50px);
     }
     .QRMobileContent{
         button{

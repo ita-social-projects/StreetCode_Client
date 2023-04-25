@@ -1,6 +1,7 @@
 import './QRMobile.styles.scss';
 
 import { useMediaQuery } from 'react-responsive';
+import QRGif from '@assets/images/qr-block/must_be _gif.png';
 
 import { Button } from 'antd';
 
@@ -10,7 +11,7 @@ interface Props {
 
 const QRMobile = (props: Props) => {
     const isMobile = useMediaQuery({
-        query: '(max-width: 675px)',
+        query: '(max-width: 715px)',
     });
 
     return (
@@ -18,14 +19,7 @@ const QRMobile = (props: Props) => {
             {!isMobile
                 && (
                     <>
-                        <div className="QRMobileGif">
-                            <iframe
-                                title="gif"
-                                src="https://giphy.com/embed/11c7UUfN4eoHF6"
-                                width="100%"
-                                height="100%"
-                            />
-                        </div>
+                        <div className="QRMobileGif" />
                         <div className="QRMobileContent">
                             <p className="arInstagram">AR-історія в Інсті!</p>
                             <p className="pressButtonText">
@@ -42,14 +36,7 @@ const QRMobile = (props: Props) => {
                         <p className="pressButtonText">
                             Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
                         </p>
-                        <div className="QRMobileGif">
-                            <iframe
-                                title="gif"
-                                src="https://giphy.com/embed/11c7UUfN4eoHF6"
-                                width="340px"
-                                height="323px"
-                            />
-                        </div>
+                        <div className="QRMobileGif" />
                         <Button className="goToInstaButton">Перейти в Instagram</Button>
                     </div>
                 )}

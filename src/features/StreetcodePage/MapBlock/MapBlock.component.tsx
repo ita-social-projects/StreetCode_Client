@@ -17,14 +17,14 @@ import MapOSM from './Map/Map.component';
 const MapBlock = () => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const toponyms = useAsync(() => ToponymsApi
-        .getAll(), []).value as Toponym[];
+        .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as Toponym[];
     const streetcodeCoordinates = useAsync(() => StreetcodeCoordinatesApi
         .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as StreetcodeCoordinate[];
 
     return (
         <div className="mapBlockContainer">
             <BlockHeading headingText="Мапа історії" />
-            <CheckBoxComponent />
+            <CheckBoxComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms} />
         </div>
     );

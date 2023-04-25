@@ -5,6 +5,8 @@ import Tag from '@models/additional-content/tag.model';
 export default class TagsStore {
     public TagMap = new Map<number, Tag>();
 
+    public TagCatalogMap = new Map<number, Tag>();
+
     public constructor() {
         makeAutoObservable(this);
     }
@@ -14,17 +16,37 @@ export default class TagsStore {
         tags.forEach(this.setItem);
     }
 
+    private set setInternalCatalog(tags: Tag[]) {
+        tags.forEach(this.setCatalogItem);
+    }
+
     private setItem = (tag: Tag) => {
         this.TagMap.set(tag.id, tag);
+    };
+
+    private setCatalogItem = (tag: Tag) => {
+        this.TagCatalogMap.set(tag.id, tag);
     };
 
     get getTagArray() {
         return Array.from(this.TagMap.values());
     }
 
+    get getTagCatalogArray() {
+        return Array.from(this.TagCatalogMap.values());
+    }
+
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap = await tagsApi.getTagsByStreetcodeId(streetcodeId);
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
+    public fetchTagCatalogByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            this.setInternalCatalog = await tagsApi.getTagsByStreetcodeId(streetcodeId);
         } catch (error: unknown) {
             console.log(error);
         }
