@@ -10,15 +10,22 @@ import useMobx from '@stores/root-store';
 const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
     new Map(subtitles?.map(({ id, subtitleText }) => [
         id,
-        subtitleText
+        subtitleText,
     ]))
 );
 
 const TickerComponent = () => {
     const { getSubtitlesByStreetcodeId } = subtitlesApi;
-    const { streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
 
-    const { value } = useAsync(() => getSubtitlesByStreetcodeId(getStreetCodeId), [getStreetCodeId]);
+    const { value } = useAsync(() => {
+        if (getStreetCodeId !== errorStreetCodeId) {
+            getSubtitlesByStreetcodeId(getStreetCodeId)
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [getStreetCodeId]);
     const subtitles = value as Subtitle[];
 
     const subtitleMap = useMemo(() => createSubtitleString(subtitles), [subtitles]);

@@ -40,7 +40,7 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
             <AutoComplete
                 placeholder="Знайти стріткод..."
                 style={{ width: 400 }}
-                options={Array.isArray(filteredOptions) && filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
+                options={filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
                 onSearch={handleSearch}
                 onChange={(value) => setRelation(value)}
                 value={relation}

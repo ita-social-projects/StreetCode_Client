@@ -171,7 +171,7 @@ const NewStreetcode = () => {
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
                 newStreetcodeInfoStore.relatedFigureId,
-            ],
+            ].filter((id) => id !== null),
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
             relatedFigures: figures,
@@ -203,13 +203,14 @@ const NewStreetcode = () => {
         }
 
 
-         //StreetcodesApi.create(streetcode)
-         //    .then((response) => {
-         //        console.log(response);
-         //    })
-         //    .catch((error) => {
-         //        console.log(error);
-         //    });
+        StreetcodesApi.create(streetcode)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
     };
 
     return (

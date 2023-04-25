@@ -9,14 +9,9 @@ export default interface Image {
 }
 
 export interface ImageCreate {
-<<<<<<< HEAD
-    blobName: string;
-    mimeType: string;
-=======
     alt?: string ;
     title?: string ;
     baseFormat: string;
     mimeType: string;
     extension: string;
->>>>>>> origin/photoUploading
 }

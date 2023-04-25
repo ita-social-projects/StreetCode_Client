@@ -5,12 +5,18 @@
 @use "@sass/variables/_variables.fonts.scss" as f;
 
 
-$bgImg: '@assets/images/streetcode-card/background.png';
+$bgImg: '@assets/images/catalog/background.png';
+$loadImg: '@assets/images/catalog/loading.gif';
 
-.streetcodeCatalogWrapper{
+.streetcodeCatalogWrapper {
     padding: pxToRem(100px) 10%;
-    @include mut.bg-image($bgImg);
+    @include mut.bg-image($bgImg, contain, no-repeat);
+    background-color: c.$accented-low-opasity-grayish-gray-color;
+    width: 100%;
+
     .streetcodeCatalogHeading{
+        @include mut.with-font('Closer Text', 500, 96px, normal);
+        padding-bottom: pxToRem(40px);
         font-family: 'Closer Text';
         font-style: normal;
         font-weight: 500;
@@ -20,15 +26,56 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         align-items: center;
         color: c.$milky-white-color;
     }
-    .steetcodeCatalogContainer{
+
+
+    .steetcodeCatalogContainer {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(278px, 1fr));
         grid-auto-rows: minmax(165px, 380px);
         column-gap: pxToRem(28px);
         row-gap: pxToRem(60px);
+        justify-content: center;
+        justify-items: center;
     }
+}
 
-    @media screen and (max-width: 1024px) {
-        
+.loadingWrapper{
+    background-color: c.$accented-grayish-gray-color;
+    width: 100%;
+    @include mut.flex-centered();        
+
+    #loadingGif{
+        @include mut.bg-image($loadImg, contain, no-repeat);
+        @include mut.sized(60px, 60px);
+        margin-bottom: pxToRem(84px);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .streetcodeCatalogWrapper {
+        padding-left: pxToRem(13px);
+        padding-right: pxToRem(12px);
+
+        .streetcodeCatalogHeading {
+            font-size: 54px;
+            line-height: pxToRem(71.28px);
+        }
+
+        .steetcodeCatalogContainer {
+            padding-top: pxToRem(20px);
+            row-gap: pxToRem(20px);
+            grid-auto-rows: minmax(165px, 236px);
+            grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+            justify-content: center;
+
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .streetcodeCatalogWrapper {
+        .steetcodeCatalogContainer {
+            column-gap: pxToRem(10px);
+        }
     }
 }

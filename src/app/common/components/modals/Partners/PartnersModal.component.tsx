@@ -9,6 +9,7 @@ import useMobx from '@stores/root-store';
 import { Button, Form, Input, Modal } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
+import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
@@ -38,7 +39,8 @@ const PartnersModal = () => {
             <div className="partnersModalContent">
                 <div className="formContainer">
                     <div className="formTitle">
-                        Напиши нам! Вкажи контактну особу, опиши, якими бачиш варіанти співпраці. <br></br>
+                        Напиши нам! Вкажи контактну особу, опиши, якими бачиш варіанти співпраці.
+                        <br />
                         Ми відкриті до найсміливіших пропозицій та найкреативніших ідей!
                     </div>
                     <Form
@@ -79,7 +81,7 @@ const PartnersModal = () => {
                             />
                         </Form.Item>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" onClick={() => partnersClickEvent()}>
                             Відправити
                             </Button>
                         </Form.Item>

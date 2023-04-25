@@ -75,7 +75,7 @@ export const API_ROUTES = {
         GET_ALL_CATEGORIES: 'sources/getAllCategories',
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
-        GET_SUBCATEGORIES_BY_CATEGORY_ID: 'sources/GetSubCategoriesByCategoryId',
+        GET_CONTENT_BY_STREETCODE_ID: 'sources/getCategoryContentByStreetcodeId',
         CREATE: 'sources/create',
         UPDATE: 'sources/update',
         DELETE: 'sources/delete',
@@ -134,6 +134,8 @@ export const API_ROUTES = {
     STREETCODES: {
         GET_ALL: 'streetcode/getAll',
         GET_ALL_SHORT: 'streetcode/getAllShort',
+        GET_ALL_CATALOG: 'streetcode/getAllCatalog',
+        GET_COUNT: 'streetcode/getCount',
         GET_EVENTS: 'streetcode/getEvents',
         GET_PERSONS: 'streetcode/getPersons',
         GET: 'streetcode/getById',
@@ -169,4 +171,7 @@ export const API_ROUTES = {
     EMAIL: {
         SEND: 'email/send',
     },
+    DONATION: {
+        CREATE: 'payment/createInvoice',
+    }
 };

@@ -14,7 +14,7 @@ export interface SourceCategory {
     image?: Image | undefined;
     streetcodeId: number;
     streetcode?: Streetcode | undefined;
-    subCategories: SourceSubCategory[];
+    streetcodeCategoryContents: StreetcodeCategoryContent[];
 }
 export interface SourceCategoryName {
     id: number;
@@ -22,15 +22,8 @@ export interface SourceCategoryName {
 }
 
 export interface StreetcodeCategoryContent {
-    id: number;
-    categoryId:number;
-    text?:string;
-}
-
-export interface SourceSubCategory {
-    id: number;
-    title: string;
+    id?:number;
     sourceLinkCategoryId: number;
-    sourceLinkCategory?: SourceCategory | undefined;
-    sourceLinks: SourceLink[];
+    streetcodeId:number;
+    text?:string;
 }

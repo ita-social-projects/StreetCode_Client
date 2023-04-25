@@ -19,29 +19,31 @@ const ForFansBlock = (categories: SourceCategory[], setCategories: any) => {
     useEffect(() => {
         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
     }, []);
-    
+
     return (
         <div className="forFansBlock">
             <div className="forFansHeader">
                 <h2>
-                       Для фанатів
+                    Для фанатів
                 </h2>
             </div>
             <div className="forFansContainer">
                 <button
+                    type="button"
                     className="addNewCategory"
                     onClick={() => setIsModalOpen(true)}
                 >
-+
-
+                    +
                 </button>
-                {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category) => (
+                {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category, index) => (
                     <ForFansAdminItem
+
                         categoryName={categoriesSelect.find((c) => c.id === category.categoryId)?.title ?? ''}
                         id={category.id}
-                        
+
+
                         onEditClick={() => {
-                            sourceCreateUpdateStreetcode.indexUpdate = category.id;
+                            sourceCreateUpdateStreetcode.indexUpdate = index;
                             setIsModalOpen(true);
                         }}
                     />

@@ -1,6 +1,8 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import { SourceCategory, SourceCategoryName, SourceLink, SourceSubCategory } from '@models/sources/sources.model';
+import {
+    SourceCategory, SourceCategoryName, SourceLink, SourceSubCategory, StreetcodeCategoryContent,
+} from '@models/sources/sources.model';
 
 const SourcesApi = {
     getAllCategories: () => Agent.get<SourceCategory[]>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES}`),
@@ -13,12 +15,10 @@ const SourcesApi = {
         `${API_ROUTES.SOURCES.GET_CATEGORIES_BY_STREETCODE_ID}/${streetcodeId}`,
     ),
 
-    getSubCategoriesByCategoryId: async (categoryId?: number) => (
-        (categoryId !== undefined)
-            ? Agent.get<SourceSubCategory[]>(
-                `${API_ROUTES.SOURCES.GET_SUBCATEGORIES_BY_CATEGORY_ID}/${categoryId}`,
-            ) : undefined
-    ),
+    getCategoryContentByStreetcodeId: (streetcodeId: number, categoryId: number) => Agent
+        .get<StreetcodeCategoryContent>(
+            `${API_ROUTES.SOURCES.GET_CONTENT_BY_STREETCODE_ID}/${categoryId}&${streetcodeId}`,
+        ),
 
     create: (source: SourceLink) => Agent.post<SourceLink>(`${API_ROUTES.SOURCES.CREATE}`, source),
 

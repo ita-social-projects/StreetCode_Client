@@ -88,14 +88,18 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
                 >
                     {fileList.length < 15 ? <p>+ Додати</p> : <></>}
                 </FileUploader>
-                <h4>Попередній перегляд</h4>
-                <ArtGalleryAdminBlock arts={arts} />
-                <PreviewImageModal
-                    art={arts[fileList.indexOf(filePreview!)]}
-                    onSave={handleSave}
-                    opened={isOpen}
-                    setOpened={setIsOpen}
-                />
+                {arts.length > 0 ? (
+                    <>
+                        <h4>Попередній перегляд</h4>
+                        <ArtGalleryAdminBlock arts={arts} />
+                        <PreviewImageModal
+                            art={arts[fileList.indexOf(filePreview!)]}
+                            onSave={handleSave}
+                            opened={isOpen}
+                            setOpened={setIsOpen}
+                        />
+                    </>
+                ) : null}
             </>
         );
     };

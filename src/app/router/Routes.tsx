@@ -10,6 +10,7 @@ import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.compo
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
 import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.component';
 import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
+import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
@@ -61,6 +62,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/privacy-policy" element={<PrivatePolicy />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/partners-page" element={<PartnersPage />} />
+        <Route path="/support-us" element={<SupportUs />} />
     </Route>,
 ));
 

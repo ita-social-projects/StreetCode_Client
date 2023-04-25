@@ -11,13 +11,8 @@ export default interface Audio {
 }
 
 export interface AudioCreate {
-<<<<<<< HEAD
-    blobName: string;
-    mimeType: string;
-=======
     title?: string ;
     baseFormat: string;
     mimeType: string;
     extension: string;
->>>>>>> origin/photoUploading
 }

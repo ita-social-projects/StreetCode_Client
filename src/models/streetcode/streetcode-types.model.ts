@@ -77,8 +77,8 @@ export interface StreetcodeCatalogRecord {
     id: number,
     title: string,
     url: string,
-    imgUrl: string | undefined,
     alias: string | undefined,
+    tags: Tag[];
 }
 
 export interface StreetcodeCreate {

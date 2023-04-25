@@ -32,10 +32,7 @@ const MapOSMAdmin: React.FC<Props> = ({
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null);
     const { streetcodeCoordinatesStore } = useMobx();
-    //useEffect(() => {
-    //    setStreetcodeCoordinates([...coordinates.coordinates.coordinates]);
-       // console.log(coordinates.coordinates.coordinates[0]);
-   // }, []);
+
     useEffect(() => {
         if (coordinates.length > 0) {
 

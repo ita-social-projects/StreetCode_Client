@@ -6,16 +6,16 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+
 import SourceItem from './SourceItem/SourceItem.component';
 
 const SourcesComponent = () => {
     const { sourcesStore, streetcodeStore: { getStreetCodeId } } = useMobx();
-    const { fetchSrcCategoriesByStreetcodeId, getSrcCategoriesArray } = sourcesStore;
 
-    useAsync(
-        () => fetchSrcCategoriesByStreetcodeId(getStreetCodeId),
-        [getStreetCodeId],
-    );
+    const windowsize = useWindowSize();
+    const showDots = windowsize.width <= 1024;
+    useAsync(() => sourcesStore.fetchSrcCategoriesByStreetcodeId(getStreetCodeId), [getStreetCodeId]);
 
     return (
         <div className="sourcesWrapper">
@@ -26,9 +26,9 @@ const SourcesComponent = () => {
                         <BlockSlider
                             infinite={false}
                             swipe={false}
-                            dots={false}
+                            dots={showDots}
                         >
-                            {getSrcCategoriesArray.flatMap((i) => [i, i]).map((sc) => (
+                            {sourcesStore.getSrcCategoriesArray.map((sc) => (
                                 <SourceItem
                                     key={sc.id}
                                     srcCategory={sc}
