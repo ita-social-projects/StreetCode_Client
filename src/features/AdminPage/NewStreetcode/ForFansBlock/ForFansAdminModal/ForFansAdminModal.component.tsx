@@ -28,7 +28,7 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (categoryUpdate.current && open) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
-            form.setFieldValue('category', categoryUpdate.current.categoryId);
+            form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
             editorRef.current?.editor?.setContent('');
@@ -43,14 +43,17 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                 .updateElement(
                     sourceCreateUpdateStreetcode.indexUpdate,
                     { ...elementToUpdate,
-                      categoryId: values.category,
+                      sourceLinkCategoryId: values.category,
                       text: editorRef.current?.editor?.getContent() ?? '' },
                 );
         } else {
             sourceCreateUpdateStreetcode
-                .addSourceCategoryContent({ id: sourceCreateUpdateStreetcode.streetcodeCategoryContents.length,
-                                            categoryId: values.category,
-                                            text: editorRef.current?.editor?.getContent() ?? '' });
+                .addSourceCategoryContent({
+                    id: sourceCreateUpdateStreetcode.streetcodeCategoryContents.length,
+                    sourceLinkCategoryId: values.category,
+                    text: editorRef.current?.editor?.getContent() ?? '',
+                    streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
+                });
         }
         setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;

@@ -22,6 +22,7 @@ export interface SourceCategoryName {
 }
 
 export interface StreetcodeCategoryContent {
+    id?:number;
     sourceLinkCategoryId: number;
     streetcodeId:number;
     text?:string;
