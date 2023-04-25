@@ -10,11 +10,13 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore, factsStore } = useMobx();
-    const { getStreetCodeId } = streetcodeStore;
+    const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
 
     useAsync(async () => {
-        fetchFactsByStreetcodeId(getStreetCodeId);
+        if (getStreetCodeId !== errorStreetCodeId) {
+            fetchFactsByStreetcodeId(getStreetCodeId);
+        }
     }, [getStreetCodeId, streetcodeStore]);
 
     const sliderArray = getFactArray.length === 3

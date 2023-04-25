@@ -6,9 +6,8 @@ export interface Fact {
     id: number;
     title: string;
     factContent: string;
-    image?: Image;
-    imageId: number;
-    // streetcodes: Streetcode[];
+    image: Image | string;
+    imageId?: number | undefined;
 }
 
 export interface Term {

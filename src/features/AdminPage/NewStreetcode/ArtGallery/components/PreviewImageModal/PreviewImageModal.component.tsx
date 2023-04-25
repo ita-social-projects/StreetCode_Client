@@ -55,8 +55,8 @@ const PreviewFileModal: React.FC<{
                 <p>Title</p>
                 <input value={newTitle} onChange={(e) => setTitle(e.target.value)} />
                 <p>Description</p>
-                <textarea value={newDesc} onChange={(e) => setDesc(e.target.value)} />
-                <button onClick={handleSave} className="saveButton">Зберегти</button>
+                <textarea value={new_desc } onChange={(e) => setDesc(e.target.value)}></textarea>
+                <Button onClick={handleSave} className="saveButton">Зберегти</Button>
             </div>
         </Modal>
     );

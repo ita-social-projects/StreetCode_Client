@@ -118,12 +118,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 <FormItem
                     name="image"
                     className=""
-                    getValueFromEvent={(e: any) => {
-                        if (Array.isArray(e)) {
-                            return e;
-                        }
-                        return e?.fileList;
-                    }}
+                    rules={[{ required: true, message: 'Завантажте фото, будь ласка' }]}
                 >
                     <FileUploader
                         onChange={(param) => {
