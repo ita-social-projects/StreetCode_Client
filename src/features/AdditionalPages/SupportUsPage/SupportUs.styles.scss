@@ -318,12 +318,13 @@
             flex-direction: column;
 
             .donatesPurposeBlock {
-                width: 100vw;
+                width: 100%;
+                @include mut.rem-padded($right: 0);
             }
             .donateWindow {
                 display: flex;
                 justify-content: center;
-                margin: 10px auto;
+                margin: 24px auto 0;
             }
         }
         .bottomText {

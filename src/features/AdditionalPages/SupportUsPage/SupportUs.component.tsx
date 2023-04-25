@@ -26,7 +26,7 @@ const SupportUs = () => {
 
     const handlePay = () => {
         window.location.assign('https://pay.mbnk.biz/IyAdn53wljbN');
-    }
+    };
 
     return (
         <div className='supportUsPage'>
