@@ -1,17 +1,16 @@
 import './DonatesModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-import { Button, Input, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import {
-    ChangeEvent, SyntheticEvent, useCallback,
-    useEffect, useRef, useState,
+    ChangeEvent, useEffect, useState,
 } from 'react';
 
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
-import axios from 'axios';import { link } from 'fs';
 import Donation from '@/models/feedback/donation.model';
+import DonationApi from '@/app/api/donates/donation.api';
 ;
 
 const possibleDonateAmounts = [100, 500, 1000];
@@ -21,15 +20,11 @@ const DonatesModal = () => {
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    const [donateName, setDonateName] = useState<string | undefined>('');
-    const [donateComment, setDonateComment] = useState<string | undefined>('');
 
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-
-    const linkBase = 'https://4852-185-244-159-24.ngrok-free.app/api/Payment/CreateInvoice';
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
@@ -59,22 +54,21 @@ const DonatesModal = () => {
     const handlePost = async () => {
         const donation: Donation = { 
             Amount: donateAmount, 
-            RedirectUrl: window.location.href
+            PageUrl: window.location.href
         };
 
         if (isCheckboxChecked) {
             try {
-                const response = await axios.post(linkBase, donation);
-                window.location.assign(response.data.pageUrl);
+                const response = await DonationApi.create(donation);
+                window.location.assign(response.PageUrl);
             } catch (err) {
                 console.error(err);
             }
         } else {
           console.log('Checkbox not checked');
         }
-      }
+    }
       
-
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 1020) {

@@ -17,6 +17,11 @@ const RelatedFiguresItemModal = () => {
     const relationId = relatedFigureItem.fromCardId!;
     const relation = relatedFiguresMap.get(relationId);
 
+    const handleClick = () => {
+        setModal('relatedFigureItem', relation?.id, false)
+        window.scrollTo(0,0)
+    };
+
     useAsync(
         () => {
         if (relation)
@@ -54,7 +59,7 @@ const RelatedFiguresItemModal = () => {
             <Link 
                 className='redirectionButton'
                 to={`../streetcode/${relation?.url}`} 
-                onClick={() => setModal('relatedFigureItem', relation?.id, false)}           
+                onClick={handleClick}           
             >
                 <p>Перейти на сторінку постаті</p>
             </Link>

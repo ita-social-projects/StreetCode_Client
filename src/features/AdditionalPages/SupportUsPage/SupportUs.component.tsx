@@ -7,18 +7,21 @@ import Lamp from '@/assets/images/donates/donatesPage/lamp.svg';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 import QRCode from '@/assets/images/donates/donatesPage/qr-code.svg';
+import QRCodeSmall from '@/assets/images/donates/donatesPage/qr-code-small.svg';
 import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
 
 import useMobx from '@/app/stores/root-store';
 import DonationBlock from './components/DonationBlock.component';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useMobx();
     const BANK_ACCOUNT = 'UA753057490000026003000018553';
 
+    const windowSize = useWindowSize();
+
     const handleCopy = () => {
         navigator.clipboard.writeText(BANK_ACCOUNT);
-        // alert('Скопійовано в буфер обміну!');
     };
 
     const handlePay = () => {
@@ -83,10 +86,14 @@ const SupportUs = () => {
                     </div>
                 </div>
                 <div className='donateSubBlocks'>
-                    <div className='block'>
+                    <div className='block qr'>
                         <p className='heading'>На карту</p>
                         <div className='content'>
-                            <QRCode />
+                            {
+                                windowSize.width > 1024 ? <QRCode/> 
+                                : windowSize.width > 480 ? <QRCodeSmall/>
+                                : undefined
+                            }
                         </div>
                         <button className='supportButton' onClick={handlePay}>Задонатити</button>
                     </div>
