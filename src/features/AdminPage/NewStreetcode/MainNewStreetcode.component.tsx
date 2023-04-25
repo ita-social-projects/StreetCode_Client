@@ -85,7 +85,7 @@ const NewStreetcode = () => {
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
                 newStreetcodeInfoStore.relatedFigureId,
-            ],
+            ].filter((id) => id !== null),
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
             relatedFigures: figures,
