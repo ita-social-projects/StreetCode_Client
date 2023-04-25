@@ -20,9 +20,6 @@ const InterestingFactsBlock = () => {
         () => fetchFactsByStreetcodeId(getStreetCodeId),
         [getStreetCodeId],
     );
-    const showModal = () => {
-        setModalOpen(true);
-    };
     return (
         <div className="interestingFactsBlock">
             <div className="factsHeader">

@@ -33,7 +33,7 @@ const StreetcodesApi = {
 
     getPersons: () => Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
 
-    create: (streetcode: Streetcode) => Agent.post<Streetcode>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
+    create: (streetcode: StreetcodeCreate) => Agent.post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
     update: (streetcode: Streetcode) => Agent.put<Streetcode>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 

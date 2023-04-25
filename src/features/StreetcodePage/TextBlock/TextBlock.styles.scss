@@ -11,6 +11,7 @@
     @include mut.sized(1200px, auto);
     @include mut.rem-margined($top: 27px);
     @include mut.with-font($font-weight: 300, $font-size:20px);
+    text-align: justify;
 }
 .textComponent {
     @include mut.flex-centered();

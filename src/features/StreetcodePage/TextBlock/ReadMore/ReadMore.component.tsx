@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import './ReadMore.styles.scss';
 
 import useToggle from '@hooks/stateful/useToggle.hook';

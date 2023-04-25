@@ -45,4 +45,96 @@
             }
         }
     }
+
+    @media screen and (max-width: 481px) {
+        .sourcesWrapper {
+            @include mut.sized($height: 600px); 
+            @include mut.rem-margined($bottom: 100px, $top: 0px);
+            
+            .slick-track {
+                @include mut.flexed($align-items: flex-start, $gap: 10px);
+            }
+            .slick-slide {
+                width: 165px !important;
+                
+                &.slick-active.slick-current {
+                    transform: translateX(0px) !important;
+                }
+            }
+            
+            .slick-dots {
+                bottom: 0;
+                left: 7px;
+            }
+        }
+    }
+    
+    @media screen and (max-width: 1024px) and (min-width: 768px) {
+        .sourcesWrapper {
+            @include mut.sized($height: 400px); 
+            @include mut.rem-margined($bottom: 150px, $top: 40px);
+        }
+    }
+    
+    @media screen and (max-width: 767px) and (min-width: 481px) {
+        .sourcesWrapper {
+            @include mut.sized($height: 400px);
+            @include mut.rem-margined($bottom: 100px, $top: 0px);
+            
+            .sourcesSliderContainer {
+                .slick-track {
+                    @include mut.flexed($align-items: flex-start, $gap: 10px);
+                }
+                .slick-slide {
+                    width: 165px !important;
+                    
+                    &.slick-active.slick-current {
+                        transform: translateX(0px) !important;
+                    }
+                }
+                
+                .slick-dots {
+                    display: block !important;
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width: 1024px) {
+        .sourcesWrapper {
+            .sourcesSliderContainer {
+                width: 100vw !important;
+    
+                .slick-track {
+                    @include mut.flexed($align-items: flex-start, $gap: 10px);
+                    @include mut.rem-margined($left: 10px);
+                }
+                .slick-arrow {
+                    display: none;
+                    visibility: hidden;
+                }
+            }
+        }
+    }  
+    
+    @media screen and (max-width: 767px) {
+        .sourcesWrapper {
+          .sourcesSliderContainer {
+            .slick-slide {
+              width: 140px !important;
+            }
+          }
+        }
+      }
+      
+      @media screen and (max-width: 481px) {
+        .sourcesWrapper {
+          .sourcesSliderContainer {
+            .slick-slide {
+              width: 120px !important;
+            }
+          }
+        }
+      }
+       
 }
