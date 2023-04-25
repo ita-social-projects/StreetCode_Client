@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { createContext, useContext } from 'react';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';

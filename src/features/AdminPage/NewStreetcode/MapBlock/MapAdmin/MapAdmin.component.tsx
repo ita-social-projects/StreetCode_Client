@@ -3,16 +3,12 @@ import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
 
 import StreetcodeMarker from '@images/footer/streetcode-marker.png';
 
-import {
-    Autocomplete, GoogleMap, LoadScript, Marker,
-} from '@react-google-maps/api';
-import {  observer } from 'mobx-react-lite';
+import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { observer } from 'mobx-react-lite';
 import { useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 
-import {
-    Button, Input, Table,
-} from 'antd';
+import { Button, Input, Table } from 'antd';
 
 import useMobx from '@/app/stores/root-store';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
@@ -33,6 +29,8 @@ const MapOSMAdmin = () => {
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null);
     const { streetcodeCoordinatesStore } = useMobx();
+    const [cityName, setCityName] = useState('');
+    const geocoderRef = useRef<google.maps.Geocoder>(null);
 
     const handleSaveButtonClick = () => {
         if (streetcodeCoordinates.length > 0) {
@@ -41,6 +39,7 @@ const MapOSMAdmin = () => {
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0, // set a default streetcodeId for now
                 id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
+                city: cityName,
             };
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
             setStreetcodeCoordinates([]);
@@ -70,6 +69,7 @@ const MapOSMAdmin = () => {
                         longtitude: lng,
                         streetcodeId: 0, // set a default streetcodeId for now
                         id: 0, // set a default id for now
+                        city: cityName,
                     },
                 ]);
             }
@@ -87,6 +87,7 @@ const MapOSMAdmin = () => {
                             longtitude: longitude,
                             streetcodeId: 0, // set a default streetcodeId for now
                             id: 0, // set a default id for now
+                            city: '',
                         },
                     ]);
                     setCenter({ lat: latitude, lng: longitude });
@@ -103,12 +104,22 @@ const MapOSMAdmin = () => {
                 {
                     latitude: lat,
                     longtitude: lng,
-                    streetcodeId: 0, // set a default streetcodeId for now
-                    id: 0, // set a default id for now
+                    streetcodeId: 0,
+                    id: 0,
+                    city: cityName,
                 },
             ]);
+            if (geocoderRef.current !== null) {
+                geocoderRef.current.geocode({ location: { lat, lng } }, (results, status) => {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        const city = results.find((result) => result.types.includes('locality'))?.formatted_address;
+                        setCityName(city || '');
+                    }
+                });
+            }
         }
     };
+
     const columns = [
         {
             title: 'id',
@@ -126,6 +137,11 @@ const MapOSMAdmin = () => {
             key: 'longtitude',
         },
         {
+            title: 'Місто',
+            dataIndex: 'city',
+            key: 'city',
+        },
+        {
             title: 'Дії',
             key: 'actions',
             render: (text: any, record: any) => (
@@ -135,16 +151,29 @@ const MapOSMAdmin = () => {
             ),
         },
     ];
-    const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((item) => ({
-        id: item.id,
-        latitude: item.latitude,
-        longtitude: item.longtitude,
-        actions: item,
-    }));
 
+    const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map(
+        (item) => ({
+            id: item.id,
+            latitude: item.latitude,
+            longtitude: item.longtitude,
+            city: item.city || cityName,
+            actions: item,
+        }),
+    );
+    const handleLoadScriptNext = () => {
+        if (geocoderRef.current === null) {
+            geocoderRef.current = new google.maps.Geocoder();
+        }
+    };
     return (
 
-        <LoadScript googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M" language="uk" libraries={['places']}>
+        <LoadScript
+            googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M"
+            language="uk"
+            onLoad={handleLoadScriptNext}
+            libraries={['places']}
+        >
             <GoogleMap
                 ref={mapRef}
                 mapContainerStyle={containerStyle}
@@ -155,6 +184,7 @@ const MapOSMAdmin = () => {
             >
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
+                    <h1>{cityName}</h1>
                     <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                         <Input
                             className="input-streets"
@@ -162,9 +192,18 @@ const MapOSMAdmin = () => {
                             prefix={<EnvironmentOutlined className="site-form-item-icon" />}
                         />
                     </Autocomplete>
-                    <Button className="onMapbtn" onClick={handleMarkerCurrentPosition}><a>Обрати місце на мапі</a></Button>
+                    <Button
+                        className="onMapbtn"
+                        onClick={handleMarkerCurrentPosition}
+                    >
+                        <a>Обрати місце на мапі</a>
+
+                    </Button>
                     {streetcodeCoordinates.length > 0 && (
-                        <Button className="onMapbtn" onClick={handleSaveButtonClick}><a>Зберегти стріткод</a></Button>
+                        <Button className="onMapbtn" onClick={handleSaveButtonClick}>
+                            <a>Зберегти стріткод</a>
+
+                        </Button>
                     )}
 
                 </div>
