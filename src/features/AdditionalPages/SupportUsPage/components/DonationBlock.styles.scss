@@ -7,15 +7,15 @@
 .donatesBlockContent {
   @include mut.flex-centered($direction: column);
   @include mut.sized(590px, 525px);
+  padding: auto 20px;
 
   > h1 {
-    @include mut.sized(550px, 48px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 36px, $font-weight: 500);
     text-align: center;
     color: c.$pure-black-color;
   }
 
-  .enterSum{
+  .enterSum {
     @include mut.rem-margined($top: 32px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
     line-height: f.pxToRem(18px);
@@ -55,15 +55,14 @@
   }
 
   .donatesBtnContainer {
-    @include mut.sized(550px, 128px);
-    @include mut.flexed($direction: row-reverse, $justify-content: space-between, $gap: 10px, $wrap: wrap);
+    @include mut.flexed($gap: 10px, $wrap: wrap);
+    margin: 0 20px;
   
     > * {
       @include mut.sized(130px, 58px);
       @include mut.full-rounded(11px);
       @include mut.flex-centered();
   
-      border-radius: 15px !important;
       border: 1px solid c.$dark-red-color;
       @include vnd.vendored(transition, 'background-color .75s ease');
       filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.19));
@@ -87,9 +86,8 @@
   }
   
   .donatesInputContainer {
-    @include mut.sized(550px);
-    @include mut.flexed($justify-content: space-between, $gap: 25px);
-    margin: f.pxToRem(32px);
+    @include mut.sized($width: 100%);
+    padding: f.pxToRem(32px) f.pxToRem(20px);
     
     >.checkbox-borderline {
       border: none;
@@ -97,7 +95,6 @@
       align-items: center;
       overflow: visible;
       border-radius: 0px !important;
-
 
       .ant-checkbox-input {
         @include mut.sized(23px, 23px);
@@ -108,17 +105,18 @@
         overflow: visible;
   
         &:last-child {
-          @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
           @include mut.rem-padded($top: 6px, $left: 16px);
+          @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
+          color: c.$checkbox-light-grey;
         }
       }
     }
   }
 
   .donatesDonateBtn {
-    @include mut.sized(550px, 73px);
     @include mut.full-rounded(11px);
-
+    @include mut.sized($width: 550px, $height: 73px);
+    
     background-color: c.$accented-red-color;
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
     border-radius: 15px;
@@ -140,31 +138,25 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1400px) {
   .donatesBlockContent {
     @include mut.sized(340px, 343px);
+    padding: 16px 10px;
 
     > h1 {
       @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-      line-height: 26px;
-      text-align: center;
-      letter-spacing: 0.005em;
-    }
-
-    > h3 {
-      @include mut.with-font($font-size: 14px, $font-weight: 300);
-      @include mut.rem-margined($top: 10px, $bottom: 10px);
+      line-height: 26.4px;
     }
 
     .enterSum {
-      @include mut.rem-margined($top: 0);
+      @include mut.rem-margined($top: 20px);
       @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
       line-height: 15px;
     }
 
     .amountInput {
       @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
-      @include mut.rem-margined($top: 0px, $bottom: 16px);
+      @include mut.rem-margined($bottom: 20px);
 
       display: flex;
       align-items: center;
@@ -178,68 +170,53 @@
       }
     }
 
-    .GryvnaSymbol {
-      @include mut.rem-padded($top: 1px);
-    }
-
     .donatesBtnContainer {
-      @include mut.sized(308px, 100%);
-      gap: 0;
+      @include mut.sized($width: 320px, $height: 78px);
+      @include mut.rem-margined($bottom: 20px);
+      gap: 0.5rem;
 
       > * {
-        @include mut.sizedImportant($width: 100px, $height: 37px);
-        border-radius: 11px;
-        border: 2px solid c.$dark-red-color;
+        @include mut.sizedImportant($width: 100px, $height: 35px);
+        border: 1px;
 
         > span {
-          @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 350);
+          @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 600);
         }
       }
     }
 
     .donatesDonateBtn {
-      @include mut.sized(100%, 46px);
+      @include mut.sized(320px, 46px);
+      @include mut.rem-margined($top: 20px);
+      @include mut.full-rounded(10px);
 
       > span {
         @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
         line-height: 16px;
         color: c.$pure-white-color;
         text-transform: none;
-        border-radius: 10px;
       }
     }
 
     .donatesInputContainer {
-      @include mut.sized(100%, 28px);
-      margin: 16px;
+      @include mut.sized(100%, 24px);
+      padding: 0;
       
       >.checkbox-borderline {
         display: flex;
         overflow: visible;
 
-        > span {
+        span {
           display: inline-block;
-          vertical-align: middle;
+          overflow: visible;
     
           &:last-child {
-            @include mut.sized($height: 28px);
-            @include mut.rem-padded($top: 2px);
             @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
-            line-height: f.pxToRem(14px);
+            line-height: 14px;
+            @include mut.rem-padded($top: 6px, $left: 8px);
           }
         }
       }
-    }
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .donatesBlockContent .donatesBtnContainer {
-    @include mut.sized(308px, 100%);
-    @include mut.flexed($direction: row-reverse, $justify-content: space-between, $gap: 4px);
-
-    > * {
-      width: f.pxToRem(100px);
     }
   }
 }

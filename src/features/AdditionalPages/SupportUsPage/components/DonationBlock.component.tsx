@@ -2,14 +2,9 @@ import './DonationBlock.styles.scss';
 import { Button, Checkbox} from 'antd';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import useMobx from '@stores/root-store';
-import axios from 'axios';;
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
-
-
-const possibleDonateAmounts = [100, 50, 20, 10, 1500, 1000, 500, 200];
 
 const DonationBlock = () => {
     const [donateAmount, setDonateAmount] = useState<number>(0);
@@ -18,8 +13,12 @@ const DonationBlock = () => {
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-    const windowSize = useWindowSize();
     
+    const windowSize = useWindowSize();
+
+    const possibleDonateAmounts = windowSize.width > 1400 ? [100, 50, 20, 10, 1500, 1000, 500, 200] 
+    : [100, 50, 10, 1000, 500, 200];
+
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
         setActiveBtnIndex(btnIdx);

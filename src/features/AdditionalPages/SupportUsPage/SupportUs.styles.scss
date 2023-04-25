@@ -226,6 +226,7 @@
 
             .donateWindow {
                 @include mut.sized($width: 340px, $height: 343px);
+                border-radius: 16px;
             }
         }
 
