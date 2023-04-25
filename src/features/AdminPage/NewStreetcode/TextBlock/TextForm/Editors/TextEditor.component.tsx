@@ -51,13 +51,8 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
 
     useAsync(fetchTerms, []);
     return (
-        <FormItem>
-            <h3>Основний текст</h3>
-            <Button
-                onClick={() => setModal('addTerm')}
-            >
-                Додати новий термін
-            </Button>
+        <FormItem
+            label = "Основний текст">
             <TinyMCEEditor
                 init={{
                     height: 300,
@@ -78,6 +73,12 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     setSelected(editor.selection.getContent());
                 }}
             />
+            <Button
+                className="streetcode-custom-button button-margin-vertical"
+                onClick={() => setModal('addTerm')}
+            >
+                Додати новий термін
+            </Button>
             <Form.Item label="Оберіть пов'язаний термін">
                 <Tooltip
                     title={selected !== '' ? '' : 'Спочатку виділіть слово у тексті'}
@@ -96,30 +97,24 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     </AutoComplete>
                 </Tooltip>
             </Form.Item>
-            <Tooltip
-                title={selected !== '' && term !== undefined
-                    ? `${selected} з ${term?.title}` : 'Виділіть слово та термін!'}
-                color={toolTipColor}
-            >
+            
+            <div className='display-flex-row'>
                 <Button
+                    className = 'streetcode-custom-button button-margin-vertical button-margin-right'
                     onClick={handleAddRelatedWord}
                     disabled={selected === '' || term === undefined}
                 >
                     Пов&#39;язати
                 </Button>
-            </Tooltip>
-            <Tooltip
-                title={selected !== '' && term !== undefined
-                    ? `Видалити ${selected}` : 'Виділіть слово для видалення!'}
-                color={toolTipColor}
-            >
                 <Button
                     onClick={handleDeleteRelatedWord}
                     disabled={selected === '' || term === undefined}
+                    className = 'streetcode-custom-button button-margin-vertical'
                 >
                     Видалити пов&#39;язаний термін
                 </Button>
-            </Tooltip>
+            </div>
+            
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>
     );

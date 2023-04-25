@@ -101,7 +101,7 @@ const StatisticsToponymsComponentAdmin = () => {
             </div>
             <div>
                 <div className="underTableZone">
-                    <Button className="ButtonAddAllToponyms">Додати обрані</Button>
+                    <Button className="streetcode-custom-button">Додати обрані</Button>
                 </div>
             </div>
         </div>

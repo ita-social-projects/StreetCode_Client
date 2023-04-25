@@ -40,13 +40,13 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
         <form className="input-container" onSubmit={handleAddItem}>
             <AutoComplete
                 placeholder="Знайти стріткод..."
-                style={{ width: 400 }}
+                style={{ width: '100%' }}
                 options={filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
                 onSearch={handleSearch}
                 onChange={(value) => setRelation(value)}
                 value={relation}
             />
-            <Button htmlType="submit" className="create-relation-button" type="primary">
+            <Button htmlType="submit" className='streetcode-custom-button button-margin-left' type="primary">
         Додати
             </Button>
         </form>

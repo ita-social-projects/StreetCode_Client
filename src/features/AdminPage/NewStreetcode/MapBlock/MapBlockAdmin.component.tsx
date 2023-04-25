@@ -6,10 +6,8 @@ import StatisticsToponymsComponentAdmin from './StatisticsToponymsAdmin/Statisti
 const MapBlockAdmin = () => {
 
     return(
-        <div className="mapBlockContainerr">  
-            <h2 className="streetcodeTitle">
-               Мапа історії 
-             </h2>
+        <div className="adminContainer-block mapBlockContainerr">  
+        <h2>Мапа історії</h2>
             <MapOSMAdmin  />
             <StatisticsToponymsComponentAdmin/>
         </div>

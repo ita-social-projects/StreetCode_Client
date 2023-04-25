@@ -30,11 +30,10 @@ const FileInputsPart:React.FC = () => {
         newStreetcodeInfoStore.AnimationId = image.id;
     };
     return (
-        <div className="file-upload-container">
+        <div>
             <div className="photo-uploader-container">
                 <FormItem
                     name="animations"
-                    className="maincard-item photo-form-item"
                     label="Анімація"
                     rules={[{ required: true, message: 'Завантажте анімацію' }]}
                 >
@@ -51,13 +50,12 @@ const FileInputsPart:React.FC = () => {
                         }}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                        <p className="ant-upload-text">+Додати</p>
                     </FileUploader>
                 </FormItem>
 
                 <FormItem
                     name="pictureBlackWhite"
-                    className="maincard-item photo-form-item"
                     label="Чорнобіле"
                     rules={[{ required: true, message: 'Завантажте зображення' }]}
                 >
@@ -74,13 +72,12 @@ const FileInputsPart:React.FC = () => {
                         }}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                        <p className="ant-upload-text">+Додати</p>
                     </FileUploader>
                 </FormItem>
 
                 <FormItem
                     name="pictureRelations"
-                    className="maincard-item photo-form-item"
                     label="Для зв'язків"
                 >
                     <FileUploader
@@ -98,19 +95,19 @@ const FileInputsPart:React.FC = () => {
                         }}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                        <p className="ant-upload-text">+Додати</p>
                     </FileUploader>
                 </FormItem>
             </div>
-
+            <div className="display-flex-row">
             <FormItem
                 name="audio"
-                className="maincard-item"
                 label="Аудіо"
             >
                 <FileUploader
                     accept=".mp3"
                     maxCount={1}
+                    listType="picture-card"
                     uploadTo="audio"
                     onRemove={(file) => {
                         AudiosApi.delete(newStreetcodeInfoStore.audioId!);
@@ -119,12 +116,11 @@ const FileInputsPart:React.FC = () => {
                         newStreetcodeInfoStore.audioId = audio.id;
                     }}
                 >
-                    <div className="audio-upload-box">
                         <InboxOutlined />
-                        <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                    </div>
+                        <p className="ant-upload-text">+Додати</p>
                 </FileUploader>
             </FormItem>
+            </div>
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
     );

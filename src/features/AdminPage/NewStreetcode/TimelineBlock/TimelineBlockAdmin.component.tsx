@@ -20,15 +20,15 @@ const TimelineBlockAdmin:React.FC = observer(() => {
     };
 
     return (
-        <div className="timeline-admin-container">
-            <p className="block-header">Хронологія</p>
+        <div className="adminContainer-block">
+            <h2>Хронологія</h2>
             <div className="timeline-admin-new-items-container">
-                <div
-                    className="timeline-admin-item timeline-admin-add-new"
+                <button
+                    className="buttonWithPlus"
                     onClick={showModal}
                 >
                 +
-                </div>
+                </button>
                 {timelineItemStore
                     .getTimelineItemArray
                     .map((ti) => (

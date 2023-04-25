@@ -4,15 +4,108 @@
 @use "@sass/_utils.functions.scss" as f;
 $articlesImg: "@assets/images/sources/Articles.png";
 
- .MainNewStreetcodeContainer {
-     @include mut.sized(80%);
+.NewStreetcodeContainer {
+    margin-top: f.pxToRem(100px);
+    @include mut.sized(100%);
+    display: flex;
+    float: left;  
+    .adminContainer
+    {
+        
+        @include mut.sized(80%);
+        @include mut.with-font();
+        margin: 0px auto;
+        
+        &-block{
+            border: 2px solid red;
+            margin-bottom: 14px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        h2{
+            text-align: center;
+            margin-bottom: 7px;
+            font-size: 1.3em;
+            font-weight: 450;
+        }
+        h3{
+            font-weight: 300;
+            margin-bottom: 7px;
+        }
+        .buttonWithPlus{
+            @include mut.sized($width: 150px, $height: 50px);
+            @include mut.flex-centered();  
+            border: 1.5px solid c.$dark-red-color;
+            @include mut.full-rounded($rad: 7.86px);
+            @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
+            color: c.$dark-red-color;
+            font-size: 25px;
+            &:hover{
+               cursor: pointer;
+                background-color: c.$dark-red-color;    
+                color: white !important;
+                transition: all .3s ease-out;
+            }
+        }
 
-      margin-top: f.pxToRem(100px);
-      margin-right: f.pxToRem(50px);
-      float: right;
-      h1 {
-         color: white;
-         font-weight: 500;
-       }
+        .admin-button{
+            width: fit-content;
+        }
+        .ant-input:hover:enabled{
+            border-color: c.$accented-red-color;
+        }  
+        .ant-input:focus,
+        .ant-input-focused,
+        .ant-select:focus,
+        .ant-picker-focused{
+            border-color: c.$accented-red-color;
+            box-shadow: none !important;   
+        }
+        .ant-upload{
+            max-width: 100px;
+            max-height: 100px;
+        }
+        
+
+        .ant-select-selector, .ant-input-affix-wrapper, .ant-input-number {
+            @include mut.with-font($font-size: 16px);
+            outline: none;
+            &:hover {
+                border-color: c.$accented-red-color;
+            }
+            &:focus-within { //selected input
+                border-color: c.$accented-red-color;
+                box-shadow: none;
+            }
+        }
+        .ant-form-item-label >label{
+            font-size: 16px;
+        }
+        
+        .display-flex-row{
+            display: flex;
+            &-centered{
+                justify-content: center;
+            }
+        }
+        .display-flex-column{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .button-margin{
+            &-vertical{
+                margin: 12px 0px;
+            }
+            &-left{
+                margin-left: 5px;
+            }
+            &-right{
+                margin-right: 5px;
+            }
+        }
+     
+    }
  }
 
