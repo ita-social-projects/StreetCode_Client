@@ -10,13 +10,13 @@ import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.compo
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
 import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.component';
 import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
+import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
-import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
