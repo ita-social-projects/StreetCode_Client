@@ -56,7 +56,5 @@ const InterestingFactItem = ({
 };
 
 export default observer(InterestingFactItem);
-function fetchAudioByStreetcodeId(imageId: number | undefined) {
-    throw new Error('Function not implemented.');
-}
+
 

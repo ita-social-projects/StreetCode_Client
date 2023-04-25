@@ -7,7 +7,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, UploadFile,
+    Button, Form, Input, Modal, UploadFile, UploadProps,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -48,9 +48,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                                           status: 'done',
                                           type: image.mimeType }] : []);
                 });
-        } else {
-            setFileList([]);
-        }
+        } 
     }, [fact, open, form]);
 
     const onSuccesfulSubmit = (inputedValues:any) => {
