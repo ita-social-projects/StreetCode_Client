@@ -18,8 +18,8 @@ const DonationBlock = () => {
 
     const windowSize = useWindowSize();
 
-    const possibleDonateAmounts = windowSize.width > 1400 ? [100, 50, 20, 10, 1500, 1000, 500, 200]
-        : [100, 50, 10, 1000, 500, 200];
+    const possibleDonateAmounts = windowSize.width > 1400 ? [10, 20, 50, 100, 200, 500, 1000, 1500]
+        : [10, 50, 100, 200, 500, 1000];
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
@@ -117,7 +117,13 @@ const DonationBlock = () => {
                 ))}
             </div>
             <div className="donatesInputContainer">
-                <Checkbox className="checkbox-borderline" checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
+                <Checkbox 
+                    className="checkbox-borderline" 
+                    checked={isCheckboxChecked} 
+                    onChange={(e) => setIsCheckboxChecked(e.target.checked)}
+                >
+                    Я даю згоду на обробку моїх персональних даних
+                </Checkbox>
             </div>
             <Button
                 onClick={handlePost}

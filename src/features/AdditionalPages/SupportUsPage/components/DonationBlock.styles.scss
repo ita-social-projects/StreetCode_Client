@@ -90,14 +90,16 @@
     padding: f.pxToRem(32px) f.pxToRem(20px);
     
     >.checkbox-borderline {
-      border: none;
-      display: flex;
-      align-items: center;
-      overflow: visible;
       border-radius: 0px !important;
+      border: 3px solid c.$checkbox-light-grey !important;
 
-      .ant-checkbox-input {
+      .ant-checkbox {
         @include mut.sized(23px, 23px);
+
+        border: 3px solid c.$checkbox-light-grey !important;
+        .ant-checkbox-inner {
+          border: 3px solid c.$checkbox-light-grey !important;
+        }
       }
       
       span {
@@ -180,7 +182,7 @@
         border: 1px;
 
         > span {
-          @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 600);
+          @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 500);
         }
       }
     }
@@ -207,9 +209,6 @@
         overflow: visible;
 
         span {
-          display: inline-block;
-          overflow: visible;
-    
           &:last-child {
             @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
             line-height: 14px;

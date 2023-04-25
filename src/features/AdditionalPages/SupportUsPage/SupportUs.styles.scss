@@ -342,7 +342,7 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 600px) {
     .supportUsPageWrapper {
         .donateSubBlocks {
             flex-flow: column wrap;
@@ -351,6 +351,7 @@
             margin: unset;
             margin-top: f.pxToRem(40px);
             gap: f.pxToRem(32px);
+            
             .block {
                 width: 100% !important;
                 .content {
