@@ -23,10 +23,6 @@
     @include mut.with-font(ft.$closer-text-font, $font-size: 36px, $font-weight: 500);
   }
 
-  > h3 {
-    @include mut.with-font($font-weight: 300);
-  }
-
   .enterSum{
     @include mut.rem-margined($top: 32px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
