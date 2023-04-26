@@ -62,7 +62,8 @@ const NewStreetcode = () => {
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
-    timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
+    if (parseId)
+        timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
@@ -70,13 +71,13 @@ const NewStreetcode = () => {
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then(result => {
                 const newArts = result.map(x => ({
-                    description: x.art.description ?? "",
-                    title: x.art.image.alt ?? "",
+                    description: x.art.description ?? '',
+                    title: x.art.image.alt ?? '',
                     imageId: x.art.imageId,
                     image: x.art.image.base64,
                     index: x.index,
                     mimeType: x.art.image.mimeType,
-                    uidFile: x.index + ""
+                    uidFile: `${x.index}`,
                 }));
                 setArts([...newArts]);
             });
@@ -93,7 +94,7 @@ const NewStreetcode = () => {
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
-                        video: video
+                        video,
                     });
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Person);
@@ -107,7 +108,7 @@ const NewStreetcode = () => {
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
-                        video: "asdasd"
+                        video: 'asdasd'
                     });
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
@@ -115,17 +116,17 @@ const NewStreetcode = () => {
             });
             TextsApi.getByStreetcodeId(parseId).then(result => {
                 setInputInfo(result);
-            })
+            });
             VideosApi.getByStreetcodeId(parseId).then(result => {
                 setVideo(result);
-            })
+            });
             RelatedFigureApi.getByStreetcodeId(parseId).then(result => {
                 setFigures([...result]);
             });
             PartnersApi.getByStreetcodeId(parseId).then(result => {
                 setPartners([...result]);
             });
-            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then(result => {
+            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
                 setSubTitle(result[0].subtitleText);
             });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then(result => {
@@ -225,19 +226,16 @@ const NewStreetcode = () => {
             //StreetcodeArtApi.update(streetcode).then((response2) => {
                 console.log(streetcode);
             //})
-             //   .catch((error2) => {
-              //      console.log(error2);
-              //  });
+            //    .catch((error2) => {
+            //       console.log(error2);
+            //  });
         }
         else {
 
             StreetcodesApi.create(streetcode)
                 .then((response) => {
-                    console.log(response);
-                    console.log('LOG STIIL WORKING')
                 })
                 .catch((error) => {
-                    console.log(streetcode);
                     console.log(error);
                 });
         }
@@ -264,12 +262,12 @@ const NewStreetcode = () => {
                             <button className = 'streetcode-custom-button' type="submit">Відправити</button>
                         </Form>
                      </div>
-                    <InterestingFactsBlock facts={facts} setFacts={setFacts} />
+                    <InterestingFactsBlock id={parseId??-1} />
                     <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                     <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
                     <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
                     <ArtGalleryBlock arts={arts} setArts={setArts} />
-                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline } />
+                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
                     <ForFansBlock  />
                     <MapBlockAdmin coordinates={coordinates} />
                 </div>

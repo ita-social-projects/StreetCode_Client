@@ -49,14 +49,15 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
-    console.log(streetcode);
 
     const [images, setImages] = useState<Image[]>([]);
     useEffect(() => {
-        ImagesApi.getByStreetcodeId(id ?? 1)
-            .then((imgs) => setImages(imgs))
-            .catch((e) => console.log(e));
-    }, []);
+        if (id) {
+            ImagesApi.getByStreetcodeId(id ?? 1)
+                .then((imgs) => setImages(imgs))
+                .catch((e) => console.log(e));
+        }
+    }, [streetcode]);
     return (
         <div className="card">
             <div className="leftSider">

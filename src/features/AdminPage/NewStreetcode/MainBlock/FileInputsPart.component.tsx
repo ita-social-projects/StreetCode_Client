@@ -43,23 +43,24 @@ const FileInputsPart: React.FC = () => {
     const parseId = id ? +id : null;
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
+        if (parseId) {
+            const fetchData = async () => {
+                try {
 
-                await ImagesApi.getByStreetcodeId(parseId).then(result => {
-                    const newFileList = result.map((art: Image) => ({
-                        uid: art.id,
-                        name: art.alt,
-                        status: 'done',
-                        thumbUrl: base64ToUrl(art.base64, art.mimeType) ?? "",
-                        type: art.mimeType,
-                    }));
+                    await ImagesApi.getByStreetcodeId(parseId).then(result => {
+                        const newFileList = result.map((art: Image) => ({
+                            uid: art.id,
+                            name: art.alt,
+                            status: 'done',
+                            thumbUrl: base64ToUrl(art.base64, art.mimeType) ?? "",
+                            type: art.mimeType,
+                        }));
 
-                    newStreetcodeInfoStore.AnimationId = result[0] ? result[0].id : -1;
-                    newStreetcodeInfoStore.BlackAndWhiteId = result[1] ? result[1].id : -1;
-                    newStreetcodeInfoStore.relatedFigureId = result[2] ? result[2].id : null;
-                    setImages([...newFileList]);
-                });//.then(() => {
+                        newStreetcodeInfoStore.AnimationId = result[0] ? result[0].id : -1;
+                        newStreetcodeInfoStore.BlackAndWhiteId = result[1] ? result[1].id : -1;
+                        newStreetcodeInfoStore.relatedFigureId = result[2] ? result[2].id : null;
+                        setImages([...newFileList]);
+                    });//.then(() => {
                     //    if (images) {
                     //        setIsLoading(false);
                     //    }
@@ -69,25 +70,26 @@ const FileInputsPart: React.FC = () => {
                     //        setIsLoading(true);
                     //    }
                     //});
-                await AudiosApi.getByStreetcodeId(parseId).then(result => {
-                    const newAudio: UploadFile = {
-                        uid: result.id + "",
-                        name: "audio",
-                        status: "done",
-                        thumbUrl: base64ToUrl(result.base64, result.mimeType) ?? "",
-                        type: result.mimeType
-                    }
-                    newStreetcodeInfoStore.audioId = result.id;
-                    setAudios([newAudio]);
-                });
+                    await AudiosApi.getByStreetcodeId(parseId).then(result => {
+                        const newAudio: UploadFile = {
+                            uid: result.id + "",
+                            name: "audio",
+                            status: "done",
+                            thumbUrl: base64ToUrl(result.base64, result.mimeType) ?? "",
+                            type: result.mimeType
+                        }
+                        newStreetcodeInfoStore.audioId = result.id;
+                        setAudios([newAudio]);
+                    });
 
-            } catch (error) {
-                console.error(error);
-            } finally {
+                } catch (error) {
+                   
+                } finally {
 
-            }
-        };
-        fetchData();
+                }
+            };
+            fetchData();
+        }
     }, []);
 
 

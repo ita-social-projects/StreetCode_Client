@@ -2,8 +2,10 @@ import { observer } from 'mobx-react-lite';
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
 import useMobx from '@stores/root-store';
 
-const ForFansAdminItem:React.FC<{ id:number,
-     categoryName:string, onEditClick:()=>void }> = ({ id, categoryName, onEditClick }) => {
+const ForFansAdminItem: React.FC<{
+    index:number,
+    categoryName: string, onEditClick: () => void
+}> = ({ index, categoryName, onEditClick }) => {
          const { sourceCreateUpdateStreetcode } = useMobx();
          return (
              <div className="textBlockButton">
@@ -17,7 +19,7 @@ const ForFansAdminItem:React.FC<{ id:number,
                      <div className="blockItem">
                          <FaRegTrashAlt onClick={
                              () => {
-                                 sourceCreateUpdateStreetcode.removeSourceCategoryContent(id);
+                                 sourceCreateUpdateStreetcode.removeSourceCategoryContent(index);
                              }
                          }
                          />

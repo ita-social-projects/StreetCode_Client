@@ -22,7 +22,7 @@ import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 
 interface Props {
-    form:FormInstance<any>,
+    form: FormInstance<any>,
     selectedTags: StreetcodeTag[];
     setSelectedTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>;
     streetcodeType: StreetcodeType;
@@ -37,18 +37,19 @@ const MainBlockAdmin: React.FC<Props> = ({
 }) => {
     const teaserMaxCharCount = 520;
     const allTags = useAsync(() => TagsApi.getAll()).value;
-    const [tags, setTags] = useState< Tag[]>([]);
+    const [tags, setTags] = useState<Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
     const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
     const [popoverProps, setPopoverProps] = useState<{
-        width:number, screenWidth:number }>({ width: 360, screenWidth: 360 });
+        width: number, screenWidth: number
+    }>({ width: 360, screenWidth: 360 });
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
     const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
-    
+
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
 
@@ -77,7 +78,7 @@ const MainBlockAdmin: React.FC<Props> = ({
             message.error('Поле порожнє');
         }
     };
-    const onSwitchChange = (value:boolean) => {
+    const onSwitchChange = (value: boolean) => {
         if (value) {
             setStreetcodeType(StreetcodeType.Event);
         } else {
@@ -101,12 +102,9 @@ const MainBlockAdmin: React.FC<Props> = ({
     };
 
     useEffect(() => {
-        if (allTags) {
-            const returnedTags = allTags as Tag[];
-            setTags(returnedTags);
-        }
-        //setSelectedTags(selectedTags);
-    }, [allTags]);
+        TagsApi.getAll().then(tags => setTags(tags))
+    }, []);
+
 
     const onSelectTag = (selectedValue: string) => {
         let selected;
@@ -122,12 +120,12 @@ const MainBlockAdmin: React.FC<Props> = ({
         } else {
             selected = tags[selectedIndex];
 
-            setSelectedTags([...selectedTags, { ...selected, isVisible: false }]);
+            setSelectedTags([...selectedTags, { ...selected, title: selectedValue, isVisible: false }]);
         }
 
     };
 
-    const onDeselectTag = (deselectedValue:string) => {
+    const onDeselectTag = (deselectedValue: string) => {
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -139,22 +137,22 @@ const MainBlockAdmin: React.FC<Props> = ({
     return (
         <div className="mainblock-add-form">
             <Form.Item
-                    label="Номер стріткоду"
-                    rules={[{ required: true, message: 'Введіть номер стріткоду'}]}
-                    name="streetcodeNumber"
-                >
+                label="Номер стріткоду"
+                rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                name="streetcodeNumber"
+            >
                 <div className='display-flex-row'>
-                <InputNumber 
+                    <InputNumber
                         min={0} max={10000} />
-                <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+                    <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
                 </div>
             </Form.Item>
 
             <Form.Item>
                 <div className='display-flex-row p-margin'>
-                    <p className={switchState? 'grey-text':'red-text'}>Постать</p>
+                    <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
                     <Switch className="person-event-switch" checked={!streetcodeType} onChange={onSwitchChange} />
-                    <p className={!switchState? 'grey-text':'red-text'}>Подія</p>
+                    <p className={!switchState ? 'grey-text' : 'red-text'}>Подія</p>
                 </div>
             </Form.Item>
 
@@ -209,10 +207,10 @@ const MainBlockAdmin: React.FC<Props> = ({
 
             <DatePickerPart
                 form={form}
-                setFirstDate={(newDate:Dayjs | null) => {
+                setFirstDate={(newDate: Dayjs | null) => {
                     firstDate.current = newDate;
                 }}
-                setSecondDate={(newDate:Dayjs | null) => {
+                setSecondDate={(newDate: Dayjs | null) => {
                     secondDate.current = newDate;
                 }}
             />
@@ -249,13 +247,13 @@ const MainBlockAdmin: React.FC<Props> = ({
                             className="device-size"
                             onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
                         >
-                                360
+                            360
                         </p>
                         <p
                             className="device-size"
                             onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
                         >
-                                1600
+                            1600
                         </p>
                     </Popover>
                 </div>
@@ -276,7 +274,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                /450
+                        /450
                     </p>
                 </div>
             </div>

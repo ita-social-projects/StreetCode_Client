@@ -33,19 +33,22 @@ const DatePickerPart:React.FC<{
     const [defaultDate, setDefaultDate] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const x = await StreetcodesApi.getById(parseId);
-                setDefaultFirtsDate(x.eventStartOrPersonBirthDate.toString() ?? "");
-                setDefaultSecondDate(x.eventEndOrPersonDeathDate.toString() ?? "");
-                setDefaultDate(x.dateString ?? "");
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchData();
+        if (parseId) {
+            const fetchData = async () => {
+                try {
+                    const x = await StreetcodesApi.getById(parseId);
+                    setDefaultFirtsDate(x.eventStartOrPersonBirthDate.toString() ?? "");
+                    setDefaultSecondDate(x.eventEndOrPersonDeathDate.toString() ?? "");
+                    setDefaultDate(x.dateString ?? "");
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchData();
+        }
+        else { setIsLoading(false); }
     }, [parseId]);
 
     const onChangeFirstDate = (date: Dayjs | null) => {

@@ -1,7 +1,7 @@
 './ForFansAdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
@@ -22,17 +22,30 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
+    const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
 
     const [form] = Form.useForm();
+    const getAvailableCategories = (): SourceCategoryName[] => {
+        const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
+            .map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
+        const available = allCategories.filter((c) => selected.indexOf(c.id) < 0);
+        if (categoryUpdate.current) {
+            available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate
+                .current?.sourceLinkCategoryId)]);
+        }
+        return available;
+    };
+
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
+        setAvailableCategories(getAvailableCategories());
         if (categoryUpdate.current && open) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
             editorRef.current?.editor?.setContent('');
-            form.setFieldValue('category', (allCategories.length > 1 ? allCategories[0].id : undefined));
+            form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
         }
     }, [open]);
 
@@ -78,7 +91,7 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                         key="selectForFansCategory"
                         className="category-select-input"
                     >
-                        {allCategories
+                        {availableCategories
                             .map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
                     </Select>
                 </FormItem>

@@ -41,10 +41,12 @@ const StatisticsToponymsComponentAdmin = () => {
     };
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedToponyms[]>([]);
     useEffect(() => {
-        ToponymsApi.getByStreetcodeId(parseId).then(result => {
-            setMustChecked(result.map(x => { return x.streetName; }));
+        if (parseId) {
+            ToponymsApi.getByStreetcodeId(parseId).then(result => {
+                setMustChecked(result.map(x => { return x.streetName; }));
 
-        });
+            });
+        }
     }, [])
     useEffect(() => {
         mustChecked?.map(result => newStreetcodeInfoStore.selectedToponyms.push(result??""))
@@ -88,7 +90,7 @@ const StatisticsToponymsComponentAdmin = () => {
     }
 
     useEffect(() => {
-        if (requestGetAll.Title === "") {
+        if (requestGetAll.Title === "" && parseId) {
             ToponymsApi.getByStreetcodeId(parseId).then((x) => setToponyms(x));
         } else {
             ToponymsApi.getAll(requestGetAll).then((response) =>

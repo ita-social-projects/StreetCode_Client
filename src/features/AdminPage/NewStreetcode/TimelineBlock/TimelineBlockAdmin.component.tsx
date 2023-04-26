@@ -7,11 +7,8 @@ import TimelineItem from '@/models/timeline/chronology.model';
 
 import NewTimelineItem from './NewTimelineItem/NewTimelineItem.component';
 import NewTimelineModal from './NewTimelineModal/NewTimelineModal.component';
-interface Props {
-    timeline: TimelineItem[];
-    setTimeline: React.Dispatch<React.SetStateAction<TimelineItem[]>>;
-}
-const TimelineBlockAdmin = ({ timeline, setTimeline }: Props)=> {
+
+const TimelineBlockAdmin = () => {
     const { timelineItemStore } = useMobx();
     const [isModalCreateOpen, setIsModalCreateOpen] = useState<boolean>(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState<boolean>(false);
