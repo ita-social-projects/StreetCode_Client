@@ -1,16 +1,18 @@
 import './DonatesModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-import { Button, Input, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import {
-    ChangeEvent, SyntheticEvent, useCallback,
-    useEffect, useRef, useState,
+    ChangeEvent, useEffect, useState,
 } from 'react';
 
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
 import useMobx from '@stores/root-store';
-import axios from 'axios';
+import Donation from '@/models/feedback/donation.model';
+import DonationApi from '@/app/api/donates/donation.api';
+
+import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const possibleDonateAmounts = [500, 100, 50];
@@ -25,8 +27,8 @@ const DonatesModal = () => {
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+
     const windowSize = useWindowSize();
-    const linkBase = 'https://0127-185-244-159-54.ngrok-free.app/api/support/monobank/api/support/monobank';
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
@@ -62,14 +64,18 @@ const DonatesModal = () => {
     const style = { "--input-width": `${inputWidth}px` } as React.CSSProperties;
 
     const handlePost = async () => {
+        const donation: Donation = { 
+            Amount: donateAmount, 
+            PageUrl: window.location.href
+        };
+
         if (isCheckboxChecked) {
             try {
-                const response = await axios.post(`${linkBase}?${donateAmount}`);
-                window.location.replace(response.data);
-            } catch (err) {
-                console.error(err);
-            }
-        } 
+                supportEvent('submit_donate_from_modal');
+                const response = await DonationApi.create(donation);
+                window.location.assign(response.PageUrl);
+            } catch (err) { }
+        }
     }
 
     useEffect(() => {
