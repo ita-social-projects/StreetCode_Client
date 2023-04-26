@@ -62,7 +62,7 @@ const NewStreetcode = () => {
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
-
+    timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
@@ -93,6 +93,7 @@ const NewStreetcode = () => {
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
+                        video: video
                     });
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Person);
@@ -106,6 +107,7 @@ const NewStreetcode = () => {
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
+                        video: "asdasd"
                     });
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
@@ -127,17 +129,31 @@ const NewStreetcode = () => {
                 setSubTitle(result[0].subtitleText);
             });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then(result => {
-                setCategories([...result]);
+                const id = result.map(x => x.id);
+                id.map(x => {
+                    SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then(x => {
+                        const newSource: StreetcodeCategoryContent = {
+                            sourceLinkCategoryId: x.sourceLinkCategoryId,
+                            streetcodeId: x.streetcodeId,
+                            id: x.id,
+                            text: x.text
+                        }
+                        const existingSource = sourceCreateUpdateStreetcode.streetcodeCategoryContents.find(s => s.sourceLinkCategoryId === newSource.sourceLinkCategoryId);
+
+                        if (!existingSource) {
+                            sourceCreateUpdateStreetcode.addSourceCategoryContent(newSource);
+
+                        }
+                    });
+                });
             });
             StreetcodeCoordinateApi.getByStreetcodeId(parseId).then(result => {
                 setCoordinates([...result]);
             });
-            TimelineApi.getByStreetcodeId(parseId).then(result => {
-                setTimeline([...result]);
-            });
             FactsApi.getFactsByStreetcodeId(parseId).then(result => {
-                setFacts([...result]);
+                //setFacts([...result]);
             });
+
         }
     }, []);
 
@@ -247,7 +263,7 @@ const NewStreetcode = () => {
                     <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
                     <ArtGalleryBlock arts={arts} setArts={setArts} />
                     <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline } />
-                    <ForFansBlock categories={categories} setCategories={setCategories} />
+                    <ForFansBlock  />
                     <MapBlockAdmin coordinates={coordinates} />
                 </div>
             </ConfigProvider>

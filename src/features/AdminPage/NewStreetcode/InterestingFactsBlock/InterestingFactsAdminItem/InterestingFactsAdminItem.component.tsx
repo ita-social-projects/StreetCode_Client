@@ -9,9 +9,11 @@ import useMobx from '@stores/root-store';
 import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
 
 interface Props {
-    fact: Fact;
+    facts: Fact[];
+    setFacts: React.Dispatch<React.SetStateAction<Fact[]>>,
+
 }
-const InterestingFactAdminItem = ({ fact } : Props) => {
+const InterestingFactAdminItem = ({ facts, setFacts }: Props) => {
     const { factsStore } = useMobx();
     const [openModal, setModalOpen] = useState<boolean>(false);
 
@@ -22,13 +24,21 @@ const InterestingFactAdminItem = ({ fact } : Props) => {
                     <FaPencilAlt onClick={() => setModalOpen(true)} />
                 </div>
                 <p>
-                    {fact.title}
+                    {facts.map((f) => (
+                        f.title
+                    ))}
+                    {/* {fact.title} */}
                 </p>
                 <div className="faIcon">
-                    <FaRegTrashAlt onClick={() => factsStore.deleteFactFromMap(fact.id)} />
+                    <FaRegTrashAlt />
+                    {/* // onClick={() => factsStore.deleteFactFromMap(fact.id)} */}
                 </div>
                 <div>
-                    <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
+
+                    {facts.map((fact) => (
+                        <InterestingFactsAdminModal fact={fact} setFacts={setFacts} setModalOpen={setModalOpen} open={openModal} />
+                    ))}
+
                 </div>
 
             </div>

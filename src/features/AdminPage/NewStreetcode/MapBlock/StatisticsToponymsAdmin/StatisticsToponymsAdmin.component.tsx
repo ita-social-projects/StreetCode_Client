@@ -18,7 +18,7 @@ import Toponym from '../../../../../models/toponyms/toponym.model';
 
 const StatisticsToponymsComponentAdmin = () => {
     const { newStreetcodeInfoStore } = useMobx();
-    const [titleRequest, setTitleRequest] = useState<string|"">("");
+    const [titleRequest, setTitleRequest] = useState<string | "">("");
     const [pageRequest, setPageRequest] = useState<number | null>(null);
     const [amountRequest, setAmountRequest] = useState<number | null>(null);
     const [mustChecked, setMustChecked] = useState<(string | undefined)[]>();
@@ -46,6 +46,10 @@ const StatisticsToponymsComponentAdmin = () => {
 
         });
     }, [])
+    useEffect(() => {
+        mustChecked?.map(result => newStreetcodeInfoStore.selectedToponyms.push(result??""))
+
+    }, [mustChecked]);
     const columnsNames = [
         {
             title: ' ',
@@ -54,7 +58,7 @@ const StatisticsToponymsComponentAdmin = () => {
             width: 6,
 
             render: (text, record, index) => (
-                <Checkbox defaultChecked={mustChecked?.includes(text)} onChange={(e: CheckboxChangeEvent) => {
+                <Checkbox defaultChecked={mustChecked?.includes(text) } onChange={(e: CheckboxChangeEvent) => {
                     const indexValue = newStreetcodeInfoStore.selectedToponyms.indexOf(text);
                     if (e.target.checked) {
                         if (indexValue < 0) {
@@ -127,5 +131,4 @@ const StatisticsToponymsComponentAdmin = () => {
     );
 };
 export default StatisticsToponymsComponentAdmin;
-
 

@@ -2,44 +2,48 @@ import './InterestingFactsBlock.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import useMobx from '@stores/root-store';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import { useParams } from 'react-router-dom';
 
 import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
-const InterestingFactsBlock = () => {
-    const { factsStore, streetcodeStore } = useMobx();
+interface Props {
+    facts: Fact[],
+    setFacts: React.Dispatch<React.SetStateAction<Fact[]>>,
+}
+const InterestingFactsBlock = ({ facts, setFacts }: Props) => {
+    // const { factsStore, streetcodeStore } = useMobx();
     const [openModal, setModalOpen] = useState<boolean>(false);
 
-    const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
-    const { id } = useParams<any>();
-    const parseId = id ? +id : null;
-    useAsync(
-        () => fetchFactsByStreetcodeId(parseId),
-        [parseId],
-    );
+    // const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
+    // const { id } = useParams<any>();
+    // const parseId = id ? +id : null;
+    // useAsync(
+    //     () => fetchFactsByStreetcodeId(parseId),
+    //     [parseId],
+    // );
     return (
         <div className="interestingFactsBlock">
             <div className="factsHeader">
                 <h2>
-                   Wow-факти
+                    Wow-факти
                 </h2>
             </div>
             <div className="factsContainer">
                 <button className="addWowFact" onClick={() => setModalOpen(true)}> + </button>
-                {getFactArray.map((fact) => (
-                    <InterestingFactAdminItem
-                        fact={fact}
-                    />
-                ))}
+                {/* {facts?.map((fact) => ( */}
+                <InterestingFactAdminItem
+                    facts={facts}
+                    setFacts={setFacts}
+                />
+                {/* ))} */}
             </div>
             <div>
-                {getFactArray.map((fact) => (
-                    <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
-                ))}
+                <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} />
+
             </div>
         </div>
     );

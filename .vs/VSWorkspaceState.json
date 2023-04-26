@@ -5,7 +5,12 @@
     "\\config",
     "\\public",
     "\\src",
-    "\\src\\app"
+    "\\src\\app",
+    "\\src\\features",
+    "\\src\\features\\AdminPage",
+    "\\src\\features\\AdminPage\\NewStreetcode",
+    "\\src\\features\\StreetcodePage"
   ],
+  "SelectedNode": "\\src\\features\\AdminPage\\NewStreetcode\\MainNewStreetcode.component.tsx",
   "PreviewInSolutionExplorer": false
 }

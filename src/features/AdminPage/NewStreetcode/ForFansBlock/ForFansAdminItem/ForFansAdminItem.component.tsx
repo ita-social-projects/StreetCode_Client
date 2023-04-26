@@ -7,7 +7,6 @@ import useMobx from '@stores/root-store';
 const ForFansAdminItem:React.FC<{ id:number,
      categoryName:string, onEditClick:()=>void }> = ({ id, categoryName, onEditClick }) => {
          const { sourceCreateUpdateStreetcode } = useMobx();
-
          return (
              <div className="forFansItem">
                  <div className="item">

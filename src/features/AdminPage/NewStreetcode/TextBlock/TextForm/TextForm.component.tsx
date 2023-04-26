@@ -1,6 +1,6 @@
 import './TextForm.styles.scss';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextInputInfo from '@features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 
 import { Form, Input } from 'antd';
@@ -23,7 +23,9 @@ const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
         setInputInfo({ ...inputInfo, title: e.target.value });
         
     };
-
+    useEffect(() => {
+        
+    });
     return (
         <FormItem className="textForm">
             <Form.Item>

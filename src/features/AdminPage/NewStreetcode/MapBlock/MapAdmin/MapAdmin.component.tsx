@@ -41,20 +41,23 @@ const MapOSMAdmin: React.FC<Props> = ({
                     latitude: x.latitude,
                     longtitude: x.longtitude,
                     streetcodeId: x.streetcodeId, // set a default streetcodeId for now
-                    id: x.id // set a default id for now
+                    id: x.id,
+                    city: ""// set a default id for now
                 };
                 streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
                 setStreetcodeCoordinates([]);
             });
         }
     }, [coordinates]);
+
     const handleSaveButtonClick = () => {
         if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0, // set a default streetcodeId for now
-                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size // set a default id for now
+                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
+                city: ""
             };
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
             coordinates?.map(x => {

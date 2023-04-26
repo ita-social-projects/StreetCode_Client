@@ -20,7 +20,6 @@ const TimelineBlockAdmin = ({ timeline, setTimeline }: Props)=> {
     const [editedTimeline, setEditedTimeline] = useState<TimelineItem>();
     const showModal = () => {
         setIsModalCreateOpen(true);
-        //setTimeline(timelineItemStore)
     };
 
     return (
@@ -33,14 +32,7 @@ const TimelineBlockAdmin = ({ timeline, setTimeline }: Props)=> {
                 >
                 +
                 </div>
-                {timeline ? timeline.map((ti) => (
-                    <NewTimelineItem
-                        key={`${ti.id}${ti.date.getFullYear}`}
-                        timelineItem={ti}
-                        setModalOpened={setIsModalEditOpen}
-                        setEditTimelineItem={setEditedTimeline}
-                    />
-                )) : timelineItemStore
+                {timelineItemStore
                     .getTimelineItemArray
                     .map((ti) => (
                         <NewTimelineItem
@@ -65,4 +57,4 @@ const TimelineBlockAdmin = ({ timeline, setTimeline }: Props)=> {
     );
 };
 
-export default TimelineBlockAdmin;
+export default observer(TimelineBlockAdmin);
