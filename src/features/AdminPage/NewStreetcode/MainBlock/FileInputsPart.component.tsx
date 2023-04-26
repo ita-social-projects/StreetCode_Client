@@ -92,121 +92,104 @@ const FileInputsPart: React.FC = () => {
 
 
     return (
-        <div className="file-upload-container">
-
-                <div className="photo-uploader-container">
-                    <FormItem
-                        name="animations"
-                        className="maincard-item photo-form-item"
-                        label="Анімація"
-                        rules={[{ required: true, message: 'Завантажте анімацію' }]}
-                    >
-                        <FileUploader
-                            //fileList={images}
-                            accept=".gif"
-                            listType="picture-card"
-                            multiple={false}
-                            maxCount={1}
-                            onPreview={handlePreview}
-                            uploadTo="image"
-                            onSuccessUpload={afterAnimationUpload}
-                            onRemove={(file) => {
-                                ImagesApi.delete(newStreetcodeInfoStore.animationId!);
-                                const removedIndex = images.findIndex(x => x.uid === file.uid)
-                                images.splice(removedIndex, 1);
-                                setImages([...images]);
-                            }}
-                           // onChange={x => setImages(...images, images[0])}
-
-                        >
-                            <InboxOutlined />
-                            <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                        </FileUploader>
-                    </FormItem>
-
-                    <FormItem
-                        name="pictureBlackWhite"
-                        className="maincard-item photo-form-item"
-                        label="Чорнобіле"
-                        rules={[{ required: true, message: 'Завантажте зображення' }]}
-                    >
-                        <FileUploader
-                            //fileList={[images[1] ?? []]}
-
-                            multiple={false}
-                            accept=".jpeg,.png,.jpg"
-                            listType="picture-card"
-                            maxCount={1}
-                            onPreview={handlePreview}
-                            uploadTo="image"
-                            onSuccessUpload={afterBlackAndWhiteUpload}
-                            onRemove={(file) => {
-                                ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
-                            }}
-                            //onChange={x => setImages(...images, images[1])}
-
-                        >
-                            <InboxOutlined />
-                            <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                        </FileUploader>
-                    </FormItem>
-
-                    <FormItem
-                        name="pictureRelations"
-                        className="maincard-item photo-form-item"
-                        label="Для зв'язків"
-                    >
-                        <FileUploader
-                            //fileList={[images[2] ?? []]}
-
-                            multiple={false}
-                            accept=".jpeg,.png,.jpg"
-                            listType="picture-card"
-                            maxCount={1}
-                            onPreview={handlePreview}
-                            uploadTo="image"
-                            onSuccessUpload={(image: Image) => {
-                                newStreetcodeInfoStore.relatedFigureId = image.id;
-                            }}
-                            onRemove={(file) => {
-                                ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
-                            }}
-                            onChange={x => setImages(...images, images[2])}
-                        >
-                            <InboxOutlined />
-                            <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                        </FileUploader>
-                    </FormItem>
-                </div>
-
+        <div>
+            <div className="photo-uploader-container">
                 <FormItem
-                    name="audio"
-                    className="maincard-item"
-                    label="Аудіо"
+                    name="animations"
+                    label="Анімація"
+                    rules={[{ required: true, message: 'Завантажте анімацію' }]}
                 >
                     <FileUploader
-                        //fileList={audios}
-                        accept=".mp3"
+                      //fileList={images}
+                        accept=".gif"
+                        listType="picture-card"
+                        multiple={false}
                         maxCount={1}
-                        uploadTo="audio"
+                        onPreview={handlePreview}
+                        uploadTo="image"
+                        onSuccessUpload={afterAnimationUpload}
                         onRemove={(file) => {
-                            AudiosApi.delete(newStreetcodeInfoStore.audioId!);
-                            setAudios([]);
+                            ImagesApi.delete(newStreetcodeInfoStore.animationId!);
                         }}
-                        onSuccessUpload={(audio: Audio) => {
-                            newStreetcodeInfoStore.audioId = audio.id;
-                        }}
-                       // onChange={x => setAudios(audios)}
+                      // onChange={x => setImages(...images, images[0])}
                     >
-                        <div className="audio-upload-box">
-                            <InboxOutlined />
-                            <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
-                        </div>
+                        <InboxOutlined />
+                        <p className="ant-upload-text">+Додати</p>
                     </FileUploader>
                 </FormItem>
-                <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
 
+                <FormItem
+                    name="pictureBlackWhite"
+                    label="Чорнобіле"
+                    rules={[{ required: true, message: 'Завантажте зображення' }]}
+                >
+                    <FileUploader
+                      //fileList={[images[1] ?? []]}
+                        multiple={false}
+                        accept=".jpeg,.png,.jpg"
+                        listType="picture-card"
+                        maxCount={1}
+                        onPreview={handlePreview}
+                        uploadTo="image"
+                        onSuccessUpload={afterBlackAndWhiteUpload}
+                        onRemove={(file) => {
+                            ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
+                        }}
+                      //onChange={x => setImages(...images, images[1])}
+                    >
+                        <InboxOutlined />
+                        <p className="ant-upload-text">+Додати</p>
+                    </FileUploader>
+                </FormItem>
 
+                <FormItem
+                    name="pictureRelations"
+                    label="Для зв'язків"
+                      <FileUploader
+                        //fileList={[images[2] ?? []]}
+                        multiple={false}
+                        accept=".jpeg,.png,.jpg"
+                        listType="picture-card"
+                        maxCount={1}
+                        onPreview={handlePreview}
+                        uploadTo="image"
+                        onSuccessUpload={(image:Image) => {
+                            newStreetcodeInfoStore.relatedFigureId = image.id;
+                        }}
+                        onRemove={(file) => {
+                            ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
+                        }}
+                        onChange={x => setImages(...images, images[2])}
+                      >
+                        <InboxOutlined />
+                        <p className="ant-upload-text">+Додати</p>
+                    </FileUploader>
+                </FormItem>
+            </div>
+            <div className="display-flex-row">
+            <FormItem
+                name="audio"
+                label="Аудіо"
+            >
+                <FileUploader
+                  //fileList={audios}
+                    accept=".mp3"
+                    maxCount={1}
+                    listType="picture-card"
+                    uploadTo="audio"
+                    onRemove={(file) => {
+                        AudiosApi.delete(newStreetcodeInfoStore.audioId!);
+                    }}
+                    onSuccessUpload={(audio:Audio) => {
+                        newStreetcodeInfoStore.audioId = audio.id;
+                    }}
+                >
+                        <InboxOutlined />
+                        <p className="ant-upload-text">+Додати</p>
+                </FileUploader>
+            </FormItem>
+            </div>
+            <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
 
     );

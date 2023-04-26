@@ -15,25 +15,13 @@ interface Props {
     setFacts: React.Dispatch<React.SetStateAction<Fact[]>>,
 }
 const InterestingFactsBlock = ({ facts, setFacts }: Props) => {
-    // const { factsStore, streetcodeStore } = useMobx();
     const [openModal, setModalOpen] = useState<boolean>(false);
 
-    // const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
-    // const { id } = useParams<any>();
-    // const parseId = id ? +id : null;
-    // useAsync(
-    //     () => fetchFactsByStreetcodeId(parseId),
-    //     [parseId],
-    // );
     return (
-        <div className="interestingFactsBlock">
-            <div className="factsHeader">
-                <h2>
-                    Wow-факти
-                </h2>
-            </div>
-            <div className="factsContainer">
-                <button className="addWowFact" onClick={() => setModalOpen(true)}> + </button>
+        <div className="adminContainer-block">
+            <h2>Wow-факти</h2>
+            <div>
+                <button className="buttonWithPlus" onClick={() => setModalOpen(true)}>+</button>
                 {facts.map((fact) => (
                     <InterestingFactAdminItem
                         fact={fact}
@@ -43,7 +31,6 @@ const InterestingFactsBlock = ({ facts, setFacts }: Props) => {
             </div>
             <div>
                 <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} />
-
             </div>
         </div>
     );

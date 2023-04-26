@@ -17,7 +17,7 @@ interface Props {
 
 const InterestingFactItem = ({
     fact: { factContent, title, id, imageId },
-    maxTextLength = 250,
+    maxTextLength = 190,
     numberOfSlides,
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
@@ -44,7 +44,7 @@ const InterestingFactItem = ({
                 <p className="heading">
                     {title}
                 </p>
-                <p className="mainText">
+                <p className={`mainText ${(numberOfSlides !== 1) ? 'lineSpecifier' : ''}`}>
                     {mainContent}
                 </p>
                 {isReadMore && (

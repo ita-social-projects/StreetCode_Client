@@ -28,8 +28,8 @@ const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     });
     return (
         <FormItem className="textForm">
-            <Form.Item>
-                <h3>Заголовок</h3>
+             <Form.Item
+                label="Заголовок">
                 <Input
                     showCount
                     value={inputInfo?.title}
@@ -43,6 +43,7 @@ const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
                 <TextEditor inputInfo={inputInfo} setInputInfo={setInputInfo} />
                 <TextPreview inputInfo={inputInfo} />
             </Form.Item>
+            
             <Form.Item>
                 <LinkEditor inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
             </Form.Item>

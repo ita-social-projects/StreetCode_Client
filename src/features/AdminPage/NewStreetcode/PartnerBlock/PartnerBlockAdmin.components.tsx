@@ -35,25 +35,27 @@ const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
         setPartners(partners.filter((c) => c.id !== value));
     };
     return (
-        <div className="partner-block-admin-container">
-            <div className="partner-block-admin-header">
-                <p>Партнери</p>
+        <div className="adminContainer-block">
+            <h2>Партнери</h2>
+            <div className='display-flex-row'> 
+                <Select
+                    style={{ width: '100%' }}
+                    mode="multiple"
+                    onSelect={onPartnerSelect}
+                    value={partners.map(x => x.id)}
+                    onDeselect={onPartnerDeselect}
+                >
+                    {allPartnersShort
+                        .map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
+                </Select>
+
                 <Button
-                    className="streetcode-custom-button"
+                    className="streetcode-custom-button button-margin-left"
                     onClick={() => setModalAddOpened(true)}
                 >
-                 Додати
+                     Додати
                 </Button>
             </div>
-            <Select
-                mode="multiple"
-                onSelect={onPartnerSelect}
-                value={partners.map(x => x.id)}
-                onDeselect={onPartnerDeselect}
-            >
-                {allPartnersShort
-                    .map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
-            </Select>
             <PartnerModal
                 open={modalAddOpened}
                 setIsModalOpen={setModalAddOpened}

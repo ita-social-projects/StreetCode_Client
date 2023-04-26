@@ -1,5 +1,3 @@
-import './ForFansBlock.style.scss';
-
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
@@ -20,16 +18,14 @@ const ForFansBlock = () => {
     }, []);
 
     return (
-        <div className="forFansBlock">
-            <div className="forFansHeader">
-                <h2>
-                    Для фанатів
-                </h2>
-            </div>
-            <div className="forFansContainer">
+        <div className="adminContainer-block">
+            <h2>Для фанатів</h2>
+          
+            <div className="textBlockButton-container">
+
                 <button
                     type="button"
-                    className="addNewCategory"
+                    className="buttonWithPlus"
                     onClick={() => setIsModalOpen(true)}
                 >
                     +

@@ -1,4 +1,4 @@
-import './TextBlock.styles.scss';
+
 
 import TextInputInfo from './InputType/TextInputInfo.model';
 import TextForm from './TextForm/TextForm.component';
@@ -10,10 +10,9 @@ interface Props {
     video: Video | undefined;
     setVideo: React.Dispatch<Video | undefined>;
 }
+
 const TextBlock = ({ inputInfo, setInputInfo, video, setVideo }: Props) => (
-    <div className="textBlockContainer">
-        <TextForm inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
-    </div>
+     <TextForm inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
 );
 
 export default TextBlock;

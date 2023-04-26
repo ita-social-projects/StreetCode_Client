@@ -1,11 +1,11 @@
 import './MainNewStreetcode.styles.scss';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
 import { ConfigProvider, Form } from 'antd';
-import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
+
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api'
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
@@ -16,22 +16,24 @@ import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner, { PartnerShort } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType }
-    from '@/models/streetcode/streetcode-types.model';
+from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
+
+import { PartnerShort } from '@/models/partners/partners.model';
+
+
 import PageBar from '../PageBar/PageBar.component';
 
+import StreetCodeBlock from './StreetCodeBlock/StreetCodeBlock.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
 import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
-import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
 import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
-import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
-import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import { useParams } from 'react-router-dom';
 import StreetcodeArtApi from '../../../app/api/media/streetcode-art.api';
@@ -45,6 +47,7 @@ import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetc
 import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
 import TimelineApi from '../../../app/api/timeline/timeline.api';
 const NewStreetcode = () => {
+
     const [form] = useForm();
     const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
 
@@ -53,6 +56,9 @@ const NewStreetcode = () => {
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [video, setVideo] = useState<Video>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
+
+    const [partners, setPartners] = useState<PartnerShort[]>([]);
+
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
     const [categories, setCategories] = useState<SourceCategory[]>([]);
@@ -157,6 +163,7 @@ const NewStreetcode = () => {
         }
     }, []);
 
+//-----------------------------------
     const onFinish = (data) => {
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
@@ -245,18 +252,8 @@ const NewStreetcode = () => {
         <div className="NewStreetcodeContainer">
             <PageBar />
             <ConfigProvider locale={ukUA}>
-                <div className="adminPageContainer">
-                    <Form form={form} layout="vertical" onFinish={onFinish}>
-                        <MainBlockAdmin
-                            form={form}
-                            selectedTags={selectedTags}
-                            setSelectedTags={setSelectedTags}
-                            streetcodeType={streetcodeType}
-                            setStreetcodeType={setStreetcodeType}
-                        />
-                        <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
-                        <button type="submit">Відправити</button>
-                    </Form>
+                <div className="adminContainer">
+                    <StreetCodeBlock />
                     <InterestingFactsBlock facts={facts} setFacts={setFacts} />
                     <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                     <PartnerBlockAdmin partners={partners} setPartners={setPartners} />

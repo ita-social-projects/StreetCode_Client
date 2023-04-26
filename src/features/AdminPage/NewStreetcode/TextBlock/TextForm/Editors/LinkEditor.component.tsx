@@ -37,9 +37,12 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
         setVideo(video);
     };
     return (
-        <FormItem name="video" rules={[{ required: true, message: 'Введіть посилання!' }]}>
+        <FormItem 
+            name="video" 
+            label="Відео"
+            rules={[{ required: true, message: 'Введіть посилання!' }]}>
+            
             <div className="youtube-block">
-                <h3>Відео</h3>
                 <Input
                     title="video"
                     value={inputInfo?.link??""}
@@ -50,20 +53,13 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
                     required
                     onChange={handleLinkChange}
                 />
-                <Tooltip
-                    title={
-                        inputInfo?.link?.includes('watch')
-                            ? '' : 'Вкажіть посилання на youtube.com/watch!'
-                    }
-                    color={toolTipColor}
-                >
-                    <Button
+                <Button
                         disabled={!inputInfo?.link?.includes('watch')}
+                        className = 'streetcode-custom-button button-margin-vertical'
                         onClick={() => setShowPreview(!showPreview)}
                     >
                         Попередній перегляд
-                    </Button>
-                </Tooltip>
+                </Button>
                 {
                     inputInfo?.link?.includes('watch') && showPreview ? (
                         <div>
