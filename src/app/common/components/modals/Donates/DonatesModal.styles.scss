@@ -60,8 +60,8 @@
   .enterSum{
     @include mut.rem-margined($top: 32px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 15px, $font-weight: 500);
-    line-height: 18px;
-    color: #A3A3A3;
+    line-height: f.pxToRem(18px);
+    color: c.$darkish-gray-color;
   }
 
   > .donateInputContainerWrapper{
@@ -141,18 +141,15 @@
       align-items: center;
     
       .ant-checkbox-input {
-        width: 23px;
-        height: 23px;
+        @include mut.sized(23px, 23px);
       }
       
       span{
         display: inline-block;
-        vertical-align: middle;
-        
-             
+        vertical-align:baseline;
+                   
         .ant-checkbox-inner {
-          width: 24px !important;
-          height: 24px !important;
+          @include mut.sizedImportant(24px, 24px);
         }
   
         &:last-child {
@@ -161,16 +158,14 @@
           font-style: normal;
           line-height: f.pxToRem(18px);
           padding-inline-start: f.pxToRem(16px);
-          height: f.pxToRem(24px);
-          padding-top: 1vh;
-          
+          height: f.pxToRem(15px);
+          text-align: left;
         }
       }
     }
 
     > * {
       @include mut.full-rounded(11px);
-      border: 2px solid #DCDCDC;
       @include mut.with-font($font-weight: 300);
     }
   }
@@ -180,15 +175,15 @@
     @include mut.full-rounded(11px);
     background-color: c.$accented-red-color;
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
-    border-radius: 15px !important;
+    border-radius: f.pxToRem(15px) !important;
 
     &:disabled{
       background-color: c.$lighter-gray-color;
-        color: c.$pure-white-color;
+      color: c.$pure-white-color;
       cursor: pointer;
     }
     > span {
-      @include mut.with-font($font-size: 20px, /*$font-weight: 500*/);
+      @include mut.with-font($font-size: 20px, $font-weight: 500);
       color: c.$pure-white-color;
     }
 
