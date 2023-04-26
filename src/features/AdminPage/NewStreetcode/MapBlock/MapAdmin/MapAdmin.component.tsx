@@ -29,7 +29,6 @@ const MapOSMAdmin = () => {
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null);
     const { streetcodeCoordinatesStore } = useMobx();
-    const [cityName, setCityName] = useState('');
     const geocoderRef = useRef<google.maps.Geocoder>(null);
 
     const handleSaveButtonClick = () => {
@@ -39,7 +38,6 @@ const MapOSMAdmin = () => {
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0, // set a default streetcodeId for now
                 id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
-                city: cityName,
             };
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
             setStreetcodeCoordinates([]);
@@ -69,7 +67,6 @@ const MapOSMAdmin = () => {
                         longtitude: lng,
                         streetcodeId: 0, // set a default streetcodeId for now
                         id: 0, // set a default id for now
-                        city: cityName,
                     },
                 ]);
             }
@@ -87,7 +84,6 @@ const MapOSMAdmin = () => {
                             longtitude: longitude,
                             streetcodeId: 0, // set a default streetcodeId for now
                             id: 0, // set a default id for now
-                            city: '',
                         },
                     ]);
                     setCenter({ lat: latitude, lng: longitude });
@@ -106,17 +102,8 @@ const MapOSMAdmin = () => {
                     longtitude: lng,
                     streetcodeId: 0,
                     id: 0,
-                    city: cityName,
                 },
             ]);
-            if (geocoderRef.current !== null) {
-                geocoderRef.current.geocode({ location: { lat, lng } }, (results, status) => {
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        const city = results.find((result) => result.types.includes('locality'))?.formatted_address;
-                        setCityName(city || '');
-                    }
-                });
-            }
         }
     };
 
@@ -137,11 +124,6 @@ const MapOSMAdmin = () => {
             key: 'longtitude',
         },
         {
-            title: 'Місто',
-            dataIndex: 'city',
-            key: 'city',
-        },
-        {
             title: 'Дії',
             key: 'actions',
             render: (text: any, record: any) => (
@@ -157,21 +139,15 @@ const MapOSMAdmin = () => {
             id: item.id,
             latitude: item.latitude,
             longtitude: item.longtitude,
-            city: item.city || cityName,
             actions: item,
         }),
     );
-    const handleLoadScriptNext = () => {
-        if (geocoderRef.current === null) {
-            geocoderRef.current = new google.maps.Geocoder();
-        }
-    };
+
     return (
 
         <LoadScript
             googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M"
             language="uk"
-            onLoad={handleLoadScriptNext}
             libraries={['places']}
         >
             <GoogleMap
@@ -184,7 +160,6 @@ const MapOSMAdmin = () => {
             >
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
-                    <h1>{cityName}</h1>
                     <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                         <Input
                             className="input-streets"
