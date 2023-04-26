@@ -22,8 +22,9 @@ const LightboxComponent = () => {
         ({ art: { image: { base64, mimeType, alt }, description }, index }) => ({
             src: base64ToUrl(base64, mimeType),
             title: `${index}/${getStreetcodeArtArray.length}`,
-            description: `${alt ?? ''}. ${description ?? ''}`,
+            description: `${alt ?? ''}. \n\n${description ?? ''}`
         }),
+
     ), [getStreetcodeArtArray]);
 
     const onIdleTimerHandlers = useMemo(() => ({

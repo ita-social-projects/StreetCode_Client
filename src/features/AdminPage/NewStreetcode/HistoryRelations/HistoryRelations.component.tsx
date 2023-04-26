@@ -1,62 +1,54 @@
-import { useState, useEffect } from 'react';
 import './HistoryRelations.styles.scss';
-import RelationsList from './components/RelatedFigureList.component';
-import RelatedFigure from '@models/streetcode/related-figure.model';
-import InputPanel from './components/InputPanel.component'
-import axios from 'axios';
-import { Button } from 'antd';
 
-const RelatedFiguresBlock = () => {
+import { useEffect, useState } from 'react';
+import { PartnerShort } from '@models/partners/partners.model';
+import RelatedFigure from '@models/streetcode/related-figure.model';
+import axios from 'axios';
+
+import InputPanel from './components/InputPanel.component';
+import RelationsList from './components/RelatedFigureList.component';
+
+interface Props {
+    setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
+}
+const RelatedFiguresBlock = ({ setFigures }: Props) => {
     const [relations, setRelations] = useState<RelatedFigure[]>([]);
     const [options, setOptions] = useState<RelatedFigure[]>([]);
 
     const handleAdd = (relationToAdd: RelatedFigure) => {
-        const existing = relations.find((rel)=>rel.id===relationToAdd.id);
-        if(existing === undefined) {
-            setRelations([...relations, relationToAdd]);
+        const existing = relations.find((rel) => rel.id === relationToAdd.id);
+        if (existing === undefined) {
+            setRelations((prevState) => [...prevState, relationToAdd]);
         }
-    }
 
-    const getOptions = async() => {
+        setFigures((prevState) => [...prevState, relationToAdd]);
+    };
+
+    const getOptions = async () => {
         try {
             const response = await axios.get<RelatedFigure[]>(
-                `https://localhost:5001/api/Streetcode/GetAll`); //fix this
-            setOptions(response.data);
+                'https://localhost:5001/api/Streetcode/GetAll',
+            );
+            setOptions(response.data.streetcodes);
         } catch (error) {
             console.error(error);
         }
-    }
-
-    const saveChanges = async() => {
-        /*try {
-            const response = await axios.get<RelatedFigure[]>(
-                `https://localhost:5001/api/Streetcode/Create/params`); //fix this
-            setOptions(response.data);
-        } catch (error) {
-            console.error(error);
-        }*/
-    }
-
+    };
 
     useEffect(() => {
         getOptions();
     }, []);
-    
+
     return (
-        <div className='relations-block'>
-            <div className='subheading'>
+        <div className="relationsBlock">
+            <div className="subheading">
                 <h3>Зв'язки історії</h3>
                 <h4>Стріткоди</h4>
             </div>
-            <RelationsList relations={relations} setRelations={setRelations}/>
-            <Button 
-                type="text" danger onSubmit={saveChanges}
-                className={`submitButton ${relations.length === 0 ? 'invisible':''}`}
-            >
-                Зберегти зміни
-            </Button>
+            <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
+            <RelationsList relations={relations} setRelations={setRelations} setFigures={setFigures} />
         </div>
     );
-}
+};
 
 export default RelatedFiguresBlock;

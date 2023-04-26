@@ -1,11 +1,13 @@
 import './InterestingFactItem.styles.scss';
-import Image from '@models/media/image.model';
+
 import { observer } from 'mobx-react-lite';
+import Image from '@models/media/image.model';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+
 import ImagesApi from '@/app/api/media/images.api';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     fact: Fact;
@@ -15,7 +17,7 @@ interface Props {
 
 const InterestingFactItem = ({
     fact: { factContent, title, id, imageId },
-    maxTextLength = 250,
+    maxTextLength = 190,
     numberOfSlides,
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
@@ -26,12 +28,12 @@ const InterestingFactItem = ({
         mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
 
-    var imgId = imageId as number
+    const imgId = imageId as number;
 
     const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
     const image = value as Image;
 
-    var url = base64ToUrl(image?.base64, image?.mimeType);
+    const url = base64ToUrl(image?.base64, image?.mimeType);
 
     return (
         <div className="interestingFactSlide">
@@ -42,7 +44,7 @@ const InterestingFactItem = ({
                 <p className="heading">
                     {title}
                 </p>
-                <p className="mainText">
+                <p className={`mainText ${(numberOfSlides !== 1) ? 'lineSpecifier' : ''}`}>
                     {mainContent}
                 </p>
                 {isReadMore && (
@@ -56,7 +58,3 @@ const InterestingFactItem = ({
 };
 
 export default observer(InterestingFactItem);
-function fetchAudioByStreetcodeId(imageId: number | undefined) {
-    throw new Error('Function not implemented.');
-}
-

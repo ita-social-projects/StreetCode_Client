@@ -42,7 +42,7 @@ ul, ol {
 
 .streetcode-custom-button{
   @include ut.flex-centered();
-  @include ut.full-rounded(14px);
+  @include ut.full-rounded(12px);
   @include ut.with-font($font-weight: 500);
   background-color: c.$accented-red-color;
   border-color: c.$accented-red-color;

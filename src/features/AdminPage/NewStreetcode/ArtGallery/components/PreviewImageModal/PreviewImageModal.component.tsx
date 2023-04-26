@@ -2,8 +2,11 @@ import './PreviewImageModal.styles.scss';
 
 import React, { useEffect, useState } from 'react';
 
-import { Modal, UploadFile, Button } from 'antd';
+import { Button, Modal } from 'antd';
 import { RcFile } from 'antd/es/upload';
+
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import { ArtCreate } from '@/models/media/art.model';
 
 const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -12,38 +15,50 @@ const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, rejec
     reader.onerror = (error) => reject(error);
 });
 
-const PreviewFileModal:React.FC<{
-     opened:boolean, setOpened:React.Dispatch<React.SetStateAction<boolean>>, file: UploadFile | null
-    }> = ({ opened, setOpened, file }) => {
-        const [fileProps, setFileProps] = useState<{
-             previewImage:string, previewTitle:string }>({ previewImage: '', previewTitle: '' });
-        const handleCancel = () => {
-            setOpened(false);
-        };
-        useEffect(() => {
-            async function uploadImageToModal() {
-                if (file) {
-                    if (!file.url && !file.preview) {
-                        // eslint-disable-next-line no-param-reassign
-                        file.preview = await getBase64(file.originFileObj as RcFile);
-                    }
-                    setFileProps({ previewImage: file.url || (file.preview as string),
-                                   previewTitle: file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1) });
-                }
-            }
-            uploadImageToModal();
-        }, [opened, file]);
-        return (
-            <Modal open={opened} title="Додаткові дані" style={{ top: 50 }} footer={null} onCancel={handleCancel}>
-                <div className="artPreviewModal">
-                    <img alt="uploaded" src={fileProps.previewImage} />
-                    <p>Title</p>
-                    <input />
-                    <p>Description</p>
-                    <textarea />
-                    <button className="saveButton">Зберегти</button>
-                </div>
-            </Modal>
-        );
+const PreviewFileModal: React.FC<{
+    opened: boolean,
+    setOpened: React.Dispatch<React.SetStateAction<boolean>>,
+    art: ArtCreate;
+    onSave: (art: ArtCreate) => void
+}> = ({ opened, setOpened, onSave, art }) => {
+    const [fileProps, setFileProps] = useState<{
+        previewImage: string, previewTitle: string
+    }>({ previewImage: '', previewTitle: '' });
+    const [newTitle, setTitle] = useState<string>();
+    const [newDesc, setDesc] = useState<string>();
+
+    const handleCancel = () => {
+        setOpened(false);
     };
+    const handleSave = () => {
+        art.description = newDesc;
+        art.title = newTitle;
+        onSave(art);
+        setOpened(false);
+    };
+    useEffect(() => {
+        setTitle(art?.title);
+        setDesc(art?.description);
+        const url = base64ToUrl(art?.image, art?.mimeType);
+        async function uploadImageToModal() {
+            setFileProps({
+                previewImage: url || '',
+                previewTitle: art?.title || '',
+            });
+        }
+        uploadImageToModal();
+    }, [opened]);
+    return (
+        <Modal open={opened} title="Додаткові дані" style={{ top: 50 }} footer={null} onCancel={handleCancel}>
+            <div className="artPreviewModal">
+                <img alt="uploaded" src={fileProps.previewImage} />
+                <p>Title</p>
+                <input value={newTitle} onChange={(e) => setTitle(e.target.value)} />
+                <p>Description</p>
+                <textarea value={newDesc} onChange={(e) => setDesc(e.target.value)} />
+                <Button onClick={handleSave} className="saveButton">Зберегти</Button>
+            </div>
+        </Modal>
+    );
+};
 export default PreviewFileModal;

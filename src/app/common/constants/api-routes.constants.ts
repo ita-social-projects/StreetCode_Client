@@ -71,10 +71,11 @@ export const API_ROUTES = {
         DELETE: 'toponym/delete',
     },
     SOURCES: {
+        GET_ALL_CATEGORIES_NAMES: 'sources/getAllNames',
         GET_ALL_CATEGORIES: 'sources/getAllCategories',
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
-        GET_SUBCATEGORIES_BY_CATEGORY_ID: 'sources/GetSubCategoriesByCategoryId',
+        GET_CONTENT_BY_STREETCODE_ID: 'sources/getCategoryContentByStreetcodeId',
         CREATE: 'sources/create',
         UPDATE: 'sources/update',
         DELETE: 'sources/delete',
@@ -87,12 +88,12 @@ export const API_ROUTES = {
         DELETE: 'transactLinks/delete',
     },
     AUDIOS: {
-        GET_ALL: 'audios/getAll',
-        GET: 'audios/getById',
+        GET_ALL: 'audio/getAll',
+        GET: 'audio/getById',
         GET_BY_STREETCODE_ID: 'audio/getByStreetcodeId',
-        CREATE: 'audios/create',
-        UPDATE: 'audios/update',
-        DELETE: 'audios/delete',
+        CREATE: 'audio/create',
+        UPDATE: 'audio/update',
+        DELETE: 'audio/delete',
     },
     VIDEOS: {
         GET_ALL: 'video/getAll',
@@ -103,12 +104,12 @@ export const API_ROUTES = {
         DELETE: 'video/delete',
     },
     IMAGES: {
-        GET_ALL: 'images/getAll',
+        GET_ALL: 'image/getAll',
         GET: 'image/getById',
         GET_BY_STREETCODE_ID: 'image/getByStreetcodeId',
-        CREATE: 'images/create',
-        UPDATE: 'images/update',
-        DELETE: 'images/delete',
+        CREATE: 'image/create',
+        UPDATE: 'image/update',
+        DELETE: 'image/delete',
     },
     ARTS: {
         GET_ALL: 'arts/getAll',
@@ -133,6 +134,8 @@ export const API_ROUTES = {
     STREETCODES: {
         GET_ALL: 'streetcode/getAll',
         GET_ALL_SHORT: 'streetcode/getAllShort',
+        GET_ALL_CATALOG: 'streetcode/getAllCatalog',
+        GET_COUNT: 'streetcode/getCount',
         GET_EVENTS: 'streetcode/getEvents',
         GET_PERSONS: 'streetcode/getPersons',
         GET: 'streetcode/getById',
@@ -161,7 +164,14 @@ export const API_ROUTES = {
         UPDATE: 'coordinate/update',
         DELETE: 'coordinate/delete',
     },
+    USERS: {
+        LOGIN: 'user/login',
+        REFRESH_TOKEN: 'user/refreshToken',
+    },
     EMAIL: {
         SEND: 'email/send',
     },
+    DONATION: {
+        CREATE: 'payment/createInvoice',
+    }
 };

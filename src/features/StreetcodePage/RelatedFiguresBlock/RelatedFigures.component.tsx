@@ -16,7 +16,7 @@ interface Props {
 
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useMobx();
-    const { relatedFiguresStore, tagsStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { relatedFiguresStore, tagsStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
     const { fetchTagByStreetcodeId } = tagsStore;
 
@@ -29,10 +29,14 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     };
 
     useAsync(
-        () => Promise.all([
-            fetchRelatedFiguresByStreetcodeId(getStreetCodeId),
-            fetchTagByStreetcodeId(getStreetCodeId),
-        ]),
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                Promise.all([
+                    fetchRelatedFiguresByStreetcodeId(getStreetCodeId),
+                    fetchTagByStreetcodeId(getStreetCodeId),
+                ]);
+            }
+        },
         [getStreetCodeId],
     );
 

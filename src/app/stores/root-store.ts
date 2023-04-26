@@ -1,9 +1,9 @@
+/* eslint-disable import/extensions */
 import { createContext, useContext } from 'react';
-import { HistoricalContext } from '@models/timeline/chronology.model';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
-import { HistoricalContextStore } from '@stores/historicalcontext-store';
+import HistoricalContextStore from '@stores/historicalcontext-store';
 import ImageStore from '@stores/image-store';
 import ModalStore from '@stores/modal-store';
 import PartnersStore from '@stores/partners-store';
@@ -13,14 +13,16 @@ import SourcesStore from '@stores/sources-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
 import StreetcodeStore from '@stores/streetcode-current-store';
 import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
+import StreetcodeShortStore from '@stores/streetcodeshort-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
-import { HistoricalContextStore } from '@/app/stores/historicalcontext-store';
-
-import StreetcodeShortStore from './streetcodeshort-store';
+import NewStreetcodeInfoStore from './newstreetcode-info-store';
+import SourceCreateUpdateStreetcode from './source-category-store-create';
+import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
+import UserLoginStore from './user-login-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -41,6 +43,10 @@ interface Store {
     historicalContextStore: HistoricalContextStore,
     streetcodeCatalogStore: StreetcodesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
+    newStreetcodeInfoStore: NewStreetcodeInfoStore,
+    streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
+    sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
+    userLoginStore: UserLoginStore,
 }
 
 export const store: Store = {
@@ -62,6 +68,10 @@ export const store: Store = {
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
+    newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
+    streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
+    sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
+    userLoginStore: new UserLoginStore(),
 };
 
 const StoreContext = createContext(store);

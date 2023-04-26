@@ -81,9 +81,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
     .slick-track {
       @include mut.flexed($align-items: center, $gap: 14px);
-      .slick-slide{
-        @include mut.sized(300px, 190px)
-      }
+      
     }
   }
 }

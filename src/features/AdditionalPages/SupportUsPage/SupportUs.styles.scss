@@ -1,0 +1,380 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+
+
+.supportUsPageWrapper {
+    padding: 110px 12.5% 0;
+    width: 100%;
+
+    background: url('@/assets/images/donates/donatesPage/background.svg') no-repeat center center / cover;
+      
+    .heading {
+        .titleBig {
+            @include mut.rem-margined($bottom: 40px);
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
+            line-height: 127px;
+            color: c.$accented-gray-color;
+        }
+
+        .titleSmall {
+            @include mut.rem-margined($bottom: 24px);
+        }
+
+        .text {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+            @include mut.rem-margined($left: 0px, $right: 0px, $bottom: 48px);
+            line-height: 23.44px;
+        }
+    }
+
+    .mainBlock {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+
+        .donatesPurposeBlock {
+            @include mut.rem-padded($right: 30px);
+            margin: 0;
+            width: calc(75vw - 590px);
+            border: c.$transparent-redish-gray-color 1px;
+
+            .heading {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+                line-height: 42px;
+                color: c.$text-red-color;
+            }
+
+            ul.purposeList {
+                @include mut.rem-margined($top: 16px, $bottom: 24px);
+
+                li {
+                  display: flex;
+                  align-items: center;
+                  flex-direction: row;
+                  gap: 13.33px;
+                  margin-bottom: 12px;
+              
+                  svg {
+                    min-width: 29.33px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+              
+                  span {
+                    display: block;
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                  }
+                }
+            }              
+
+            .purposeBottomText {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                line-height: 27px;
+
+                p {
+                    margin-top: 16px;
+                }
+            }
+        }
+
+        .donateWindow {
+            @include mut.sized($height: 525px, $width: 590px);
+            vertical-align: top;
+            background: c.$pure-white-color;
+            
+            box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
+            border-radius: 32px;
+        }
+    }
+    
+    .donateSubBlocks {
+        @include mut.sized($height: 351px, $width: 1200px);
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 100px;
+
+        margin: 80px calc((75vw - 1200px) / 2) 0;
+
+        .block {
+            .heading {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+                line-height: 48px;
+                text-align: center;
+            }
+            .content {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                @include mut.sized($height: 230px);
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                
+                line-height: pxToRem(26.84px);
+
+                svg {
+                    margin: 0 18.5px;
+                }
+
+                .accountInfo {
+                    @include mut.rem-margined($top: 16px);
+                    line-height: pxToRem(23.44px);
+
+                    .thickerText {
+                        @include mut.rem-margined($top: 8px);
+                        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+                        line-height: pxToRem(26.84px);
+                    }
+                }
+            }
+
+            button {
+                width: 100%;
+
+                &:hover {
+                    background-color: c.$dark-red-color;
+                }
+            }
+
+            &.forCompanies {
+                @include mut.sized($width: 340px);
+            }
+
+            &.bankAccount {
+                @include mut.sized($width: 442px);
+            }
+        }
+    }
+
+    .bottomText {
+        @include mut.rem-padded($top: 80px, $bottom: 100px);
+        text-align: center;
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+        line-height: 42px;
+        color: c.$text-red-color;
+    }
+
+    .supportButton {
+        height: 73px;
+
+        background: c.$accented-red-color;
+        box-shadow: 0px 4px 4px c.$transparent-redish-gray-color;
+        border-radius: 14px;
+        border: none;
+
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+        line-height: 23px;
+        color: c.$pure-white-color;
+        text-align: center;
+
+        &.withSvg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+    }
+
+    .titleSmall {
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+        line-height: 42px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .supportUsPageWrapper {
+        padding: 110px 10% 0;
+
+        .mainBlock {
+            .donatesPurposeBlock {
+                width: calc(80vw - 340px);
+    
+                .heading {
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 28px);
+                    line-height: 32px;
+                }
+
+                ul.purposeList {
+                    @include mut.rem-margined($top: 12px, $bottom: 16px);
+                    gap: 12px;
+
+                    li {
+                        @include mut.rem-margined($bottom: 8px);
+                        gap: 9px;
+
+                        svg {
+                            transform: scale(0.7);
+                        }
+
+                        span {
+                            font-size: 14px;
+                            line-height: 16.41px;
+                        }
+                    }
+                }           
+
+                .purposeBottomText {
+                    font-size: 16px;
+                    line-height: 19px;
+                }
+            }
+
+            .donateWindow {
+                @include mut.sized($width: 340px, $height: 343px);
+                border-radius: 16px;
+            }
+        }
+
+        .donateSubBlocks {
+            @include mut.sized($height: 351px, $width: 1080px);
+            margin: 40px calc((80vw - 1080px) / 2) 0;
+            gap: 40px;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .supportUsPageWrapper {
+        padding: 84px 9px 0;
+
+        .heading {
+            .titleBig {
+                @include mut.rem-margined($bottom: 20px);
+                font-size: 54px;
+                line-height: 71px;
+            }
+
+            .titleSmall {
+                @include mut.rem-margined($bottom: 12px);
+                font-size: 16px;
+                line-height: 21.12px;
+            }
+
+            .text {
+                @include mut.rem-margined($bottom: 40px);
+                font-size: 14px;
+                line-height: 16.41px;
+            }
+        }
+
+        .mainBlock {
+            .donatesPurposeBlock {
+                @include mut.rem-padded($right: 24px);
+                width: calc(100vw - 340px);
+
+                .heading {
+                    font-size: 20px;
+                    line-height: 26px;
+                }
+
+                .purposeBottomText {
+                    font-size: 14px;
+                    line-height: 16.41px;
+                }
+            }
+
+            .donateWindow {
+                @include mut.sized($width: 340px, $height: 343px);
+            }
+        }
+
+        .donateSubBlocks {
+            @include mut.sized($height: 257px, $width: 748px);
+            margin: 40px calc((100vw - 784px) / 2 + 9px) 0;
+
+            gap: 12px;
+
+            .block {
+                width: 240px !important;
+
+                .heading {
+                    font-size: 24px;
+                    line-height: 31.68px;
+                }
+
+                .content {
+                    @include mut.sized($height: 147px);
+                    @include mut.rem-margined($top: 12px, $bottom: 12px);
+
+                    font-size: 16px;
+                    line-height: 21.47px;
+
+                    .accountInfo {
+                        @include mut.rem-margined($top: 12px);
+                        line-height: pxToRem(16.41px);
+
+                        .thickerText {
+                            @include mut.rem-margined($top: 0px);
+                            font-size: 12px;
+                            font-weight: 500;
+                            line-height: 14.06px;
+                        }
+                    }
+                }
+
+                &.qr {
+                    .content {
+                        align-items: center;
+                    }
+                }
+            }
+        }
+
+        .bottomText {
+            @include mut.rem-padded($top: 40px, $bottom: 40px);
+            font-size: 20px;
+            line-height: 26.4px;
+        }
+
+        .supportButton {
+            height: 46px;
+            border-radius: 10px;
+
+            font-size: 14px;
+            line-height: 16.41px;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .supportUsPageWrapper {
+        .donateSubBlocks {
+            flex-flow: column wrap;
+            height: unset;
+            width: unset;
+            margin: unset;
+            margin-top: f.pxToRem(40px);
+            gap: f.pxToRem(32px);
+            
+            .block {
+                width: 100% !important;
+                .content {
+                    height: auto;
+                }
+            }
+        }
+        .mainBlock {
+            flex-direction: column;
+
+            .donatesPurposeBlock {
+                width: 100%;
+                @include mut.rem-padded($right: 0);
+            }
+            .donateWindow {
+                display: flex;
+                justify-content: center;
+                margin: 24px auto 0;
+            }
+        }
+        .bottomText {
+            font-size: f.pxToRem(14px);
+            line-height: f.pxToRem(18px);
+        }
+    }
+}

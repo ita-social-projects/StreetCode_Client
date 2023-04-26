@@ -1,4 +1,5 @@
 import './ArtGalleryBlock.styles.scss';
+
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
@@ -8,9 +9,11 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+
+import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 import ArtGallerySlideSmall from './ArtGalleryListOfItem/ArtGallerySlide.component';
 
 const SECTION_AMOUNT = 6;
@@ -18,7 +21,7 @@ const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore, streetcodeStore } = useMobx();
-    const { getStreetCodeId } = streetcodeStore;
+    const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [indexedArtsSmall, setIndexedArtsSmall] = useState<IndexedArt[]>([]);
@@ -31,7 +34,6 @@ const ArtGalleryBlock = () => {
     const slideOfArtList = [];
     let artsData: IndexedArt[] = [];
 
-
     const sortedArtsListSmall = [...indexedArtsSmall].sort((a, b) => a.index - b.index);
     const slideOfArtListSmall = [];
     let offsetSumForSlideSmall = 0;
@@ -39,11 +41,13 @@ const ArtGalleryBlock = () => {
     let sequenceNumberSmall = -1;
     let artsDataSmall: IndexedArt[] = [];
 
-
-
     useAsync(
-        () => fetchStreetcodeArtsByStreetcodeId(getStreetCodeId),
-        [getStreetCodeId],
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId);
+            }
+        },
+        [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
     );
 
     useEffect(() => {
@@ -51,8 +55,7 @@ const ArtGalleryBlock = () => {
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
                 var url = base64ToUrl(image.base64, image.mimeType);
-                if(url) {
-
+                if (url) {
                     const { width, height } = await getImageSize(url);
 
                     newMap.push({
@@ -71,11 +74,10 @@ const ArtGalleryBlock = () => {
         });
     }, [getStreetcodeArtArray]);
 
-    
     sortedArtsList.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offsetSumForSlide !== SECTION_AMOUNT) {
+        if (offsetSumForSlide !== SECTION_AMOUNT && offsetSumForSlide + offset <= SECTION_AMOUNT) {
             offsetSumForSlide += offset ?? 0;
             offsetSum += offset ?? 0;
             sequenceNumber += 1;
@@ -87,6 +89,21 @@ const ArtGalleryBlock = () => {
                 title,
                 sequenceNumber,
             } as IndexedArt);
+        } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+            slideOfArtList.push(
+                <ArtGallerySlide artGalleryList={artsData} />,
+            );
+            artsData = [{
+                index,
+                imageHref,
+                description,
+                offset,
+                title,
+                sequenceNumber: sequenceNumber + 1,
+            } as IndexedArt];
+
+            offsetSumForSlide = offset ?? 0;
+            offsetSum = offset ?? 0;
         }
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
@@ -103,11 +120,13 @@ const ArtGalleryBlock = () => {
         );
     }
 
-
     sortedArtsListSmall.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL) {
+        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL && offsetSumForSlide + offset <= SECTION_AMOUNT) {
+            if (offset == 4) {
+                offset = 1;
+            }
             offsetSumForSlideSmall += offset ?? 0;
             offsetSumSmall += offset ?? 0;
             sequenceNumberSmall += 1;
@@ -119,6 +138,20 @@ const ArtGalleryBlock = () => {
                 title,
                 sequenceNumber: sequenceNumberSmall,
             } as IndexedArt);
+        } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+            slideOfArtList.push(
+                <ArtGallerySlide artGalleryList={artsData} />,
+            );
+            artsData = [{
+                index,
+                imageHref,
+                description,
+                offset,
+                title,
+                sequenceNumber: sequenceNumber + 1,
+            } as IndexedArt];
+            offsetSumForSlide = offset ?? 0;
+            offsetSum = offset ?? 0;
         }
         if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL) {
             offsetSumForSlideSmall = 0;
@@ -127,15 +160,7 @@ const ArtGalleryBlock = () => {
             );
             artsDataSmall = [];
         }
-        if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL+2) {
-            offsetSumForSlideSmall = 0;
-            slideOfArtListSmall.push(
-                <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
-            );
-            artsDataSmall = [];
-        }
     });
-
 
     if (!Number.isInteger(offsetSumSmall / SECTION_AMOUNT_SMALL)) {
         slideOfArtListSmall.push(
@@ -144,7 +169,7 @@ const ArtGalleryBlock = () => {
     }
 
     const sliderProps = {
-        className: "artGallerySliderContainer",
+        className: 'artGallerySliderContainer',
         infinite: false,
 
         swipe: windowsize.width <= 1024,
@@ -154,15 +179,18 @@ const ArtGalleryBlock = () => {
     };
 
     const sliderPropsSmall = {
-        className: "artGallarySliderContainerSmall",
+        className: 'artGallarySliderContainerSmall',
         infinite: true,
         swipe: true,
         swipeOnClick: false,
         centerMode: true,
         variableWidth: true,
         slidesToShow: 1,
-        centerPadding: "0px 10px",
+        centerPadding: '0px 10px',
         slidesToScroll: 0.5,
+        touchAction: 'pan-y',
+        touchThreshold: 15,
+        transform: 'translateZ(0)',
     };
 
     return (
@@ -176,10 +204,11 @@ const ArtGalleryBlock = () => {
                                 {...sliderProps}
                             >
                                 {slideOfArtList}
-                            </SlickSlider>)}
+                            </SlickSlider>
+                        )}
                         {windowsize.width < 768 && (
                             <SlickSliderSmall
-                            
+
                                 {...sliderPropsSmall}
                             >
                                 {slideOfArtListSmall}
@@ -193,4 +222,3 @@ const ArtGalleryBlock = () => {
 };
 
 export default observer(ArtGalleryBlock);
-

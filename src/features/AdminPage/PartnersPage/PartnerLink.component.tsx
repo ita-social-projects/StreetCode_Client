@@ -4,7 +4,7 @@ import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
 
-import { PartnerSourceLink, PartnerSourceLinkCreateUpdate } from '@/models/partners/partners.model';
+import { PartnerSourceLinkCreateUpdate } from '@/models/partners/partners.model';
 
 const LogoType = [twitter, instagram, facebook, youtube];
 const PartnerLink:React.FC<{ link:PartnerSourceLinkCreateUpdate }> = ({ link }) => (

@@ -7,6 +7,7 @@ type ModalState = {
 };
 interface ConfirmationProps {
  onSubmit?:()=>void,
+ onCancel?:()=>void,
  text?:string
 }
 
@@ -33,6 +34,7 @@ interface ModalList {
     deleteStreetcode: ModalState;
     confirmation: ModalState;
     adminFacts: ModalState;
+    statistics: ModalState;
 }
 
 export default class ModalStore {
@@ -53,6 +55,7 @@ export default class ModalStore {
         deleteStreetcode: DefaultModalState,
         confirmation: DefaultModalState,
         adminFacts: DefaultModalState,
+        statistics: DefaultModalState,
     };
 
     public isPageDimmed = false;
@@ -72,10 +75,16 @@ export default class ModalStore {
         };
     };
 
-    public setConfirmationModal = (modalName: keyof ModalList, onSubmit?:()=>void, text?:string, opened?: boolean) => {
+    public setConfirmationModal = (
+        modalName: keyof ModalList,
+        onSubmit?:()=>void,
+        text?:string,
+        opened?: boolean,
+        onCancel?:()=>void,
+    ) => {
         this.modalsState[modalName] = {
             isOpen: opened ?? !this.modalsState[modalName].isOpen,
-            confirmationProps: { onSubmit, text },
+            confirmationProps: { onSubmit, text, onCancel },
         };
     };
 }

@@ -7,6 +7,8 @@ import useMobx from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
 
+import { becomePartnerEvent, donateEvent, joinToStreetcode } from '@/app/common/utils/googleAnalytics.unility';
+
 const HeaderLoginModal = () => {
     const { modalStore: { setModal, modalsState: { login } } } = useMobx();
 
@@ -21,11 +23,12 @@ const HeaderLoginModal = () => {
             closeIcon={<CancelBtn />}
         >
             <div className="loginModalContent">
-                <Button>Стати партнером</Button>
-                <Button>Долучитися до команди</Button>
+                <Button onClick={() => becomePartnerEvent('modal')}>Стати партнером</Button>
+                <Button onClick={() => joinToStreetcode()}>Долучитися до команди</Button>
                 <Button onClick={() => {
                     setModal('donates');
                     setModal('login');
+                    donateEvent('header_modal');
                 }}
                 >
                     Задонатити

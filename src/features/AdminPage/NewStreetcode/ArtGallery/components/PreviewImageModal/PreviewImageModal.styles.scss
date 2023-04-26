@@ -30,7 +30,7 @@
         border-radius: 5px;
         width: 30%;   
         justify-content: center;
-        left: 50%;
+        left: 33%;
         @include mut.with-font(ft.$roboto-font, 300, 15px, normal);
         border-color: c.$dark-red-color;
         color: c.$dark-red-color;

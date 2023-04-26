@@ -9,7 +9,7 @@
     width: 100vw;
 
     background-color: #fffcfc;
-    padding: f.pxToRem(30px) f.pxToRem(10px) 0 f.pxToRem(10px);
+    padding: f.pxToRem(112px) f.pxToRem(10px) 0 f.pxToRem(10px);
 
     .wrapper{
         max-width: f.pxToRem(1200px);
@@ -24,7 +24,7 @@
 
 @media screen and (max-width: 1024px) {
     .contactUsContainer{
-        padding: f.pxToRem(102px) f.pxToRem(10px) 0 f.pxToRem(10px);   
+        padding: f.pxToRem(94px) f.pxToRem(10px) 0 f.pxToRem(10px);   
 
         .titleBlock{
             margin-bottom: f.pxToRem(80px);    

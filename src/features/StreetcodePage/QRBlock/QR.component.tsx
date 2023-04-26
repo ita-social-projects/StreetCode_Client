@@ -7,13 +7,9 @@ import { useMediaQuery } from 'react-responsive';
 
 import QRMobile from './QRMobile/QRMobile.component';
 
-interface Props {
-
-}
-
-const QRComponent = (props: Props) => {
+const QRComponent = () => {
     const isDesktop = useMediaQuery({
-        query: '(min-width: 769px)',
+        query: '(min-width: 1025px)',
     });
 
     return (
