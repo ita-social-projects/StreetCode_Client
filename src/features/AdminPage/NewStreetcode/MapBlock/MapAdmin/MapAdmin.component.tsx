@@ -12,7 +12,6 @@ import { Button, Form, Input, InputNumber, Table, message } from 'antd';
 
 import useMobx from '@/app/stores/root-store';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 
 const containerStyle = {
@@ -31,7 +30,7 @@ const MapOSMAdmin = () => {
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null);
     const { streetcodeCoordinatesStore } = useMobx();
-    const [cityName, setCityName] = useState('');
+    const [address, setAddress] = useState('');
     const geocoderRef = useRef<google.maps.Geocoder>(null);
     const [number, setNumber] = useState('');
     const [newNumber, setNewNumber] = useState('');
@@ -44,7 +43,6 @@ const MapOSMAdmin = () => {
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0, // set a default streetcodeId for now
                 id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
-                city: cityName,
             };
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
             setStreetcodeCoordinates([]);
@@ -62,24 +60,36 @@ const MapOSMAdmin = () => {
 
     const onPlaceChanged = () => {
         if (autocomplete !== undefined) {
-            const place = autocomplete.getPlace();
-            const location = place.geometry?.location;
-            if (location) {
-                const lat = location.lat();
-                const lng = location.lng();
-                setCenter({ lat, lng });
-                setStreetcodeCoordinates([
-                    {
-                        latitude: lat,
-                        longtitude: lng,
-                        streetcodeId: 0, // set a default streetcodeId for now
-                        id: 0, // set a default id for now
-                        city: cityName,
-                    },
-                ]);
-            }
+          const place = autocomplete.getPlace();
+          const location = place.geometry?.location;
+          if (location) {
+            const lat = location.lat();
+            const lng = location.lng();
+            setCenter({ lat, lng });
+            setStreetcodeCoordinates([
+              {
+                latitude: lat,
+                longtitude: lng,
+                streetcodeId: 0,
+                id: 0,
+              },
+            ]);
+      
+            // Get the address using the Geocoding API
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode(
+              { location: { lat, lng } },
+              (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
+                if (status === 'OK') {
+                  setAddress(results[0].formatted_address);
+                } else {
+                  console.error('Geocode was not successful for the following reason: ' + status);
+                }
+              }
+            );
+          }
         }
-    };
+      };
 
     const handleMarkerCurrentPosition = () => {
         if (mapRef.current) {
@@ -92,7 +102,6 @@ const MapOSMAdmin = () => {
                             longtitude: longitude,
                             streetcodeId: 0, // set a default streetcodeId for now
                             id: 0, // set a default id for now
-                            city: '',
                         },
                     ]);
                     setCenter({ lat: latitude, lng: longitude });
@@ -111,17 +120,9 @@ const MapOSMAdmin = () => {
                     longtitude: lng,
                     streetcodeId: 0,
                     id: 0,
-                    city: cityName,
+                
                 },
             ]);
-            if (geocoderRef.current !== null) {
-                geocoderRef.current.geocode({ location: { lat, lng } }, (results, status) => {
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        const city = results.find((result) => result.types.includes('locality'))?.formatted_address;
-                        setCityName(city || '');
-                    }
-                });
-            }
         }
     };
 
@@ -142,11 +143,6 @@ const MapOSMAdmin = () => {
             key: 'longtitude',
         },
         {
-            title: 'Місто',
-            dataIndex: 'city',
-            key: 'city',
-        },
-        {
             title: 'Дії',
             key: 'actions',
             render: (text: any, record: any) => (
@@ -163,20 +159,14 @@ const MapOSMAdmin = () => {
             id: item.id,
             latitude: item.latitude,
             longtitude: item.longtitude,
-            city: item.city || cityName,
             actions: item,
         }),
     );
 
-    const handleLoadScriptNext = () => {
-        if (geocoderRef.current === null) {
-            geocoderRef.current = new google.maps.Geocoder();
-        }
-    };
 
     const onCheckIndexClick = () => {
         if (newNumber) {
-            StatisticRecordApi.exisByQrId(newNumber)
+            StatisticRecordApi.existByQrId(newNumber)
                 .then((exist) => {
                    
                     if (exist) {
@@ -208,7 +198,6 @@ const MapOSMAdmin = () => {
         <LoadScript
             googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M"
             language="uk"
-            onLoad={handleLoadScriptNext}
             libraries={['places']}
         >
             <GoogleMap
@@ -221,7 +210,10 @@ const MapOSMAdmin = () => {
             >
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
-                    <h1>{cityName}</h1>
+                    <h1>{address}</h1>
+                    
+  
+
                     <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                         <Input
                             className="input-streets"

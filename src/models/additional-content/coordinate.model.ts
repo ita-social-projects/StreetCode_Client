@@ -10,5 +10,4 @@ export interface Coordinate {
     id: number;
     latitude: number;
     longtitude: number;
-    city: string;
 }
