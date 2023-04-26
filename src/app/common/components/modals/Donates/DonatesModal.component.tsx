@@ -56,10 +56,10 @@ const DonatesModal = () => {
     
     const charWidth = windowSize.width > 1024 ? 42 : 21;
     const firstWidth = windowSize.width > 1024 ? 13 : 6;
-
-    const count = (donateAmount.toString().match(/1/g) || []).length;
+    const baseValWidth = windowSize.width > 1024 ? 3 : 4;
+    const count = (donateAmount.toString().match(/1/g) || []).length; 
     
-    var inputWidth = donateAmount.toString().length * charWidth - count * firstWidth;
+    var inputWidth = baseValWidth + donateAmount.toString().length * charWidth - count * firstWidth;
 
     const style = { "--input-width": `${inputWidth}px` } as React.CSSProperties;
 
