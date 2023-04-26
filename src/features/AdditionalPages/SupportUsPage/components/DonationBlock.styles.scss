@@ -97,7 +97,8 @@
         overflow: visible;
   
         &:last-child {
-          @include mut.rem-padded($top: 6px, $left: 16px);
+          @include mut.rem-padded($left: 16px);
+          @include mut.rem-margined($bottom: -4px);
           @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
           color: c.$checkbox-light-grey;
         }
@@ -105,7 +106,7 @@
     }
 
       .ant-checkbox {
-          @include mut.sized(25px, 25px);
+        @include mut.sized(25px, 25px);
       }
 
       .ant-checkbox-inner {
@@ -117,7 +118,6 @@
       }
 
       .ant-checkbox-checked {
-
         .ant-checkbox-inner {
           border: 3px solid c.$accented-red-color;
         }
@@ -125,6 +125,10 @@
 
       .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
         opacity: 0;
+      }
+
+      .ant-checkbox-checked:after {
+        border-color: none !important;
       }
 
       .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
@@ -219,18 +223,22 @@
     }
 
     .donatesInputContainer {
-      @include mut.sized(100%, 24px);
+      @include mut.sized(100%, 25px);
       padding: 0;
+
+      label {
+        @include mut.sizedImportant($height: 25px);
+      }
       
       >.checkbox-borderline {
         display: flex;
         overflow: visible;
 
         span {
+
           &:last-child {
             @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
-            line-height: 14px;
-            @include mut.rem-padded($top: 6px, $left: 8px);
+            @include mut.rem-padded($left: 8px);
           }
         }
       }
