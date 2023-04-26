@@ -11,6 +11,8 @@ import TimelineItem from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
 
+import StreetcodeCoordinate from '../additional-content/coordinate.model';
+
 import { Fact, FactCreate, TextCreate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
@@ -108,4 +110,5 @@ export interface StreetcodeCreate {
     streetcodeArts: ArtCreateDTO[],
     toponyms: string[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
+    coordinates: StreetcodeCoordinate[],
 }
