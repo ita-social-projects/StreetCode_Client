@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import imagesApi from '@api/media/images.api';
-import Image from '@models/media/image.model';
+import Image, { ImageCreate } from '@models/media/image.model';
 
 export default class ImageStore {
     public ImageMap = new Map<number, Image>();
@@ -9,6 +9,10 @@ export default class ImageStore {
         makeAutoObservable(this);
     }
 
+    public addImage = (image: Image) => {
+        this.setItem(image);
+    };
+
     private setInternalMap = (images: Image[]) => {
         images.forEach(this.setItem);
     };
@@ -16,6 +20,10 @@ export default class ImageStore {
     private setItem = (image: Image) => {
         this.ImageMap.set(image.id, image);
     };
+
+    get getImageArray() {
+        return Array.from(this.ImageMap.values());
+    }
 
     static async getImageById(imageId:number):Promise<Image | undefined> {
         let image:Image | undefined;
@@ -49,10 +57,11 @@ export default class ImageStore {
         }
     };
 
-    public createImage = async (image: Image) => {
+    public createImage = async (image: ImageCreate) => {
         try {
-            await imagesApi.create(image);
-            this.setItem(image);
+            await imagesApi.create(image).then((resp) => {
+                this.setItem(resp);
+            });
         } catch (error: unknown) {
             console.log(error);
         }

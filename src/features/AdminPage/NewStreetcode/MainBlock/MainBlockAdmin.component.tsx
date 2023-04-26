@@ -13,27 +13,38 @@ import { Option } from 'antd/es/mentions';
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import Tag, { TagVisible } from '@/models/additional-content/tag.model';
+import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
+import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 
-const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
-    const teaserMaxCharCount = 450;
+interface Props {
+    form:FormInstance<any>,
+    selectedTags: StreetcodeTag[];
+    setSelectedTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>;
+    streetcodeType: StreetcodeType;
+    setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
+}
+const MainBlockAdmin: React.FC<Props> = ({
+    form,
+    selectedTags,
+    setSelectedTags,
+    streetcodeType,
+    setStreetcodeType,
+}) => {
+    const teaserMaxCharCount = 520;
     const allTags = useAsync(() => TagsApi.getAll()).value;
-    const [selectedTags, setSelectedTags] = useState<TagVisible[]>([]);
     const [tags, setTags] = useState< Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
-    const [streetcodeType, setStreetcodeType] = useState<'people' | 'event'>('people');
     const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
     const [popoverProps, setPopoverProps] = useState<{
         width:number, screenWidth:number }>({ width: 360, screenWidth: 360 });
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
     const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
-    const [streetcodeTeaser, setStreetcodeTeaser] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
 
@@ -57,7 +68,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                         );
                     }
                 })
-                .catch((e) => {
+                .catch(() => {
                     message.error('Сервер не відповідає');
                 });
         } else {
@@ -66,22 +77,22 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
     };
     const onSwitchChange = (value:boolean) => {
         if (value) {
-            setStreetcodeType('event');
+            setStreetcodeType(StreetcodeType.Event);
         } else {
-            setStreetcodeType('people');
+            setStreetcodeType(StreetcodeType.Person);
         }
     };
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const costForNewLine = 64;
         const text = e.target.value;
         const newLinesCharCount = (text.match(/(\n|\r)/gm) || []).length;
-        const newInputedChar = text.length + newLinesCharCount * 49;
+        const newInputedChar = text.length + newLinesCharCount * costForNewLine;
         if (newInputedChar > teaserMaxCharCount || newLinesCharCount > 1) {
             return;
         }
-        setStreetcodeTeaser(text);
 
-        if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * 49) {
-            setMaxCharCount(teaserMaxCharCount - newLinesCharCount * 49);
+        if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * costForNewLine) {
+            setMaxCharCount(teaserMaxCharCount - newLinesCharCount * costForNewLine);
         }
         setInputedChar(newInputedChar);
     };
@@ -97,12 +108,16 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
         if (selectedIndex < 0) {
-            TagsApi.create({ title: selectedValue }).then((newTag) => {
-                setSelectedTags([...selectedTags, { ...newTag, visible: false }]);
-            }).catch((e) => console.log(e));
+            let minId = selectedTags.reduce((a, b) => ((a.id < b.id) ? a : b)).id;
+            if (minId < 0) {
+                minId -= 1;
+            } else {
+                minId = -1;
+            }
+            setSelectedTags([...selectedTags, { id: minId, title: selectedValue, isVisible: false }]);
         } else {
             selected = tags[selectedIndex];
-            setSelectedTags([...selectedTags, { ...selected, visible: false }]);
+            setSelectedTags([...selectedTags, { ...selected, isVisible: false }]);
         }
     };
 
@@ -132,7 +147,7 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
             </div>
 
-            {streetcodeType === 'people' ? (
+            {streetcodeType === StreetcodeType.Person ? (
                 <Input.Group
                     compact
                     className="maincard-item people-title-group"
@@ -163,22 +178,21 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
             >
-                <Input maxLength={100} showCount pattern="/^[a-z-]+$/gm" />
+                <Input maxLength={100} showCount />
             </Form.Item>
 
             <Form.Item name="alias" label="Короткий опис" className="maincard-item">
-                <Input maxLength={30} showCount />
+                <Input maxLength={33} showCount />
             </Form.Item>
             <Form.Item
                 label="URL"
                 name="streetcodeUrlName"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100 }]}
+                rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100, pattern: /^[a-z-]+$/ }]}
             >
                 <Input
                     maxLength={100}
                     showCount
-                    pattern="/^[a-z-]+$/gm"
                 />
             </Form.Item>
 
@@ -233,27 +247,27 @@ const MainBlockAdmin: React.FC<{ form:FormInstance<any> }> = ({ form }) => {
                         </p>
                     </Popover>
                 </div>
-
             </div>
-
-            <Form.Item
-                className="maincard-item teaser-form-item"
-                label="Тизер"
-                rules={[{ required: true, message: 'Введіть тизер' }]}
-            >
-                <Input.TextArea
-                    onChange={onTextAreaTeaserChange}
-                    className="textarea-teaser"
-                    maxLength={maxCharCount}
-                    value={streetcodeTeaser}
-                />
+            <div className="teaser-form-item">
+                <Form.Item
+                    label="Тизер"
+                    name="teaser"
+                    className="maincard-item teaser-form-item"
+                    rules={[{ required: true, message: 'Введіть тизер', max: 450 }]}
+                >
+                    <Input.TextArea
+                        onChange={onTextAreaTeaserChange}
+                        className="textarea-teaser"
+                        maxLength={450}
+                    />
+                </Form.Item>
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                        /450
+                /450
                     </p>
                 </div>
-            </Form.Item>
+            </div>
 
             <FileInputsPart />
         </div>

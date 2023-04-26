@@ -14,6 +14,7 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+import dayjs from 'dayjs';
 
 const PartnersLazyComponent = lazy(() => import('@streetcode/PartnersBlock/Partners.component'));
 const MapLazy = lazy(() => import('@streetcode/MapBlock/MapBlock.component'));

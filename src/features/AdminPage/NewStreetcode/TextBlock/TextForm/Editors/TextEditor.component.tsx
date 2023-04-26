@@ -27,7 +27,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     const [selected, setSelected] = useState('');
 
     const handleAddRelatedWord = () => {
-        if (term !== null) {
+        if (term !== null && selected !== null) {
             createRelatedTerm(selected, term?.id as number);
         }
     };
@@ -63,9 +63,8 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     height: 300,
                     menubar: false,
                     plugins: [
-                        'autolink', 'checklist',
+                        'autolink',
                         'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'powerpaste', 'formatpainter',
                         'insertdatetime', 'wordcount',
                     ],
                     toolbar: 'undo redo | bold italic | '

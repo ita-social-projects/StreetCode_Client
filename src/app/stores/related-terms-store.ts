@@ -41,8 +41,12 @@ export default class RelatedTermsStore {
             termId,
         };
         try {
-            await relatedTermApi.create(newRelatedTerm);
-            this.setRelatedTermItem(newRelatedTerm);
+            await relatedTermApi.create(newRelatedTerm)
+                .then(
+                    (response) => {
+                        this.setRelatedTermItem(response);
+                    },
+                );
         } catch (error: unknown) {
             toast("Таке слово вже пов'язано!");
         }

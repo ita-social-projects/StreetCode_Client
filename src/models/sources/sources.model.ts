@@ -14,13 +14,16 @@ export interface SourceCategory {
     image?: Image | undefined;
     streetcodeId: number;
     streetcode?: Streetcode | undefined;
-    subCategories: SourceSubCategory[];
+    streetcodeCategoryContents: StreetcodeCategoryContent[];
 }
-
-export interface SourceSubCategory {
+export interface SourceCategoryName {
     id: number;
     title: string;
+}
+
+export interface StreetcodeCategoryContent {
+    id?:number;
     sourceLinkCategoryId: number;
-    sourceLinkCategory?: SourceCategory | undefined;
-    sourceLinks: SourceLink[];
+    streetcodeId:number;
+    text?:string;
 }

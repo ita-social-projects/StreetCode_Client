@@ -9,9 +9,9 @@ import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/Partner
 import { PartnerShort } from '@/models/partners/partners.model';
 
 interface Props {
-    onChange: (partner: PartnerShort) => void;
+    setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>>;
 }
-const PartnerBlockAdmin = ({ onChange }: Props) => {
+const PartnerBlockAdmin = ({ setPartners }: Props) => {
     const selectedPartners = useRef<PartnerShort[]>([]);
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -23,13 +23,14 @@ const PartnerBlockAdmin = ({ onChange }: Props) => {
         ]);
     }, []);
 
-    const onPartnerSelect = (value:string) => {
-        const index = allPartnersShort.findIndex((c) => c.title === value);
+    const onPartnerSelect = (value:number) => {
+        const index = allPartnersShort.findIndex((c) => c.id === value);
         selectedPartners.current.push(allPartnersShort[index]);
-        onChange(allPartnersShort[index]);
+        setPartners(selectedPartners.current);
     };
-    const onPartnerDeselect = (value:string) => {
-        selectedPartners.current = selectedPartners.current.filter((c) => c.title !== value);
+    const onPartnerDeselect = (value:number) => {
+        selectedPartners.current = selectedPartners.current.filter((c) => c.id !== value);
+        setPartners(selectedPartners.current);
     };
     return (
         <div className="partner-block-admin-container">
@@ -48,7 +49,7 @@ const PartnerBlockAdmin = ({ onChange }: Props) => {
                 onDeselect={onPartnerDeselect}
             >
                 {allPartnersShort
-                    .map((s) => <Select.Option key={`${s.id}`} value={s.title}>{s.title}</Select.Option>)}
+                    .map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
             </Select>
             <PartnerModal
                 open={modalAddOpened}

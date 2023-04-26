@@ -1,19 +1,20 @@
 import './InterestingFactsAdminModal.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, Upload,
+    Button, Form, Input, Modal, UploadFile,
 } from 'antd';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
+import ImagesApi from '@/app/api/media/images.api';
+import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { Fact } from '@/models/streetcode/text-contents.model';
 
@@ -26,55 +27,55 @@ interface Props {
 const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [uploadedImage, setUploadedImage] = useState<Image | string >('src');
-    const tempFile = fileList;
+    const imageId = useRef<number>(0);
+    const [fileList, setFileList] = useState<UploadFile[]>();
 
     useEffect(() => {
         if (fact && open) {
-            form.setFieldsValue({
-                id: fact.id,
-                title: fact.title,
-                factContent: fact.factContent,
-                image: uploadedImage,
-            });
-            setFileList(tempFile);
-        }
-    }, [fact, open, fileList, form]);
+            imageId.current = fact.imageId;
+            ImagesApi.getById(fact.imageId)
+                .then((image) => {
+                    form.setFieldsValue({
+                        id: fact.id,
+                        title: fact.title,
+                        factContent: fact.factContent,
+                        image: fact ? [{ name: '',
+                                         url: base64ToUrl(image.base64, image.mimeType),
+                                         thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                                         uid: `${fact.id}`,
+                                         status: 'done',
+                                         type: image.mimeType }] : [],
 
-    const onChange: UploadProps['onChange'] = ({ fileList: newFile }) => {
-        newFile.forEach(async (x) => {
-            let src = x.thumbUrl as string;
-            if (!src) {
-                src = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(x.originFileObj as RcFile);
-                    reader.onload = () => resolve(reader.result as string);
+                    });
+                    setFileList(fact ? [{ name: '',
+                                          url: base64ToUrl(image.base64, image.mimeType),
+                                          thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                                          uid: `${fact.id}`,
+                                          status: 'done',
+                                          type: image.mimeType }] : []);
                 });
-                setUploadedImage(src);
-            }
-        });
-        setFileList(newFile);
-    };
+        } else {
+            setFileList([]);
+        }
+    }, [fact, open, form]);
 
     const onSuccesfulSubmit = (inputedValues:any) => {
+        const newFact: Fact = {
+            id: factsStore.factMap.size,
+            title: inputedValues.title,
+            factContent: inputedValues.factContent,
+            imageId: imageId.current,
+        };
         if (fact) {
-            const item = factsStore.factMap.get(fact.id);
-            if (item) {
-                item.title = inputedValues.title;
-                item.factContent = inputedValues.factContent;
-                item.image = uploadedImage;
+            newFact.id = fact.id;
+            if (imageId.current === 0) {
+                newFact.imageId = fact.imageId;
             }
+            factsStore.updateFactInMap(newFact);
         } else {
-            const newFact: Fact = {
-                id: factsStore.factMap.size,
-                title: inputedValues.title,
-                factContent: inputedValues.factContent,
-                image: uploadedImage,
-            };
-            setFileList([]);
             factsStore.addFact(newFact);
         }
+        imageId.current = 0;
         form.resetFields();
         setModalOpen(false);
     };
@@ -123,21 +124,36 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                 <FormItem
                     name="image"
                     className=""
+                    getValueFromEvent={(e: any) => {
+                        if (Array.isArray(e)) {
+                            return e;
+                        }
+                        return e?.fileList;
+                    }}
                     rules={[{ required: true, message: 'Завантажте фото, будь ласка' }]}
                 >
-                    <Upload
+                    <FileUploader
+                        onChange={(param) => {
+                            setFileList(param.fileList);
+                        }}
+                        uploadTo="image"
                         multiple={false}
-                        fileList={fileList}
-                        onChange={onChange}
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
+                        fileList={fileList}
+                        onSuccessUpload={(image:Image) => {
+                            imageId.current = image.id;
+                        }}
+                        onRemove={(image) => {
+                            ImagesApi.delete(imageId.current);
+                        }}
                     >
                         <div className="upload">
                             <InboxOutlined />
                             <p>Виберіть чи перетягніть файл</p>
                         </div>
-                    </Upload>
+                    </FileUploader>
                 </FormItem>
                 <Button className="saveButton" htmlType="submit">Зберегти</Button>
             </Form>

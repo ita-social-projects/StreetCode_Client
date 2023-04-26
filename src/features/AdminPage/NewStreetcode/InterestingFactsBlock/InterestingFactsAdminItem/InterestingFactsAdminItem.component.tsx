@@ -1,15 +1,16 @@
 import './InterestingFactsAdminItem.style.scss';
+
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
-import { useState} from 'react';
+
 import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
-import { observer } from 'mobx-react-lite';
 
 interface Props {
     fact: Fact;
 }
-
 const InterestingFactAdminItem = ({ fact } : Props) => {
     const { factsStore } = useMobx();
     const [openModal, setModalOpen] = useState<boolean>(false);

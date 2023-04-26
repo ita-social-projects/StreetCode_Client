@@ -5,12 +5,8 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .donatesModal {
-  width: f.pxToRem(896px) !important;
-  height: f.pxToRem(597px);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: f.pxToRem(1012px) !important;
+  height: f.pxToRem(621px);
 
   &.ant-modal {
     .ant-modal-content {
@@ -43,11 +39,6 @@
 .donatesModalContent {
   @include mut.flex-centered($direction: column);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
   > h1 {
     color: c.$accented-red-color;
     @include mut.with-font(ft.$closer-text-font, $font-size: 40px, $font-weight: 500);
@@ -64,22 +55,16 @@
     color: #A3A3A3;
   }
 
-  > .donateInputContainerWrapper{
-    display: flex;
-    justify-content: center;
-    
-  }
-  .amountInput {
+  > .amountInput {
     @include mut.rem-margined($bottom: 35px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 64px, $font-weight: 500);
-    text-align: right;
-    --input-width: 42px;
+    text-align: center;
+
     color: c.$darkish-gray-color;
     border: none;
-    padding: 0;
 
     &:not(.active) {     
-      text-decoration-line: underline;  
+      text-decoration-line: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 10px;
     }
@@ -94,12 +79,8 @@
     }
   }
 
-  .GryvnaSymbol{
-    width: fit-content !important;
-  }
-
   .donatesBtnContainer {
-    @include mut.sized(686px, 64px);
+    @include mut.sized(679px, 64px);
     @include mut.flexed($direction: row-reverse, $justify-content: space-between, $gap: 25px);
 
     > * {
@@ -107,7 +88,6 @@
       @include mut.full-rounded(11px);
       @include mut.flex-centered();
 
-      border-radius: 15px !important;
       border: 3px solid c.$dark-red-color;
       @include vnd.vendored(transition, 'background-color .75s ease');
       filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.19));
@@ -131,7 +111,7 @@
   }
 
   .donatesInputContainer {
-    @include mut.sized(686px, 64px);
+    @include mut.sized(679px, 64px);
     @include mut.flexed($justify-content: space-between, $gap: 25px);
     margin: f.pxToRem(12px) 0;
 
@@ -148,7 +128,6 @@
       span{
         display: inline-block;
         vertical-align: middle;
-        
              
         .ant-checkbox-inner {
           width: 24px !important;
@@ -156,14 +135,14 @@
         }
   
         &:last-child {
-          @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
-
+          font-family: 'Roboto';
           font-style: normal;
-          line-height: f.pxToRem(18px);
-          padding-inline-start: f.pxToRem(16px);
-          height: f.pxToRem(24px);
+          font-weight: 300;
+          font-size: 15px;
+          line-height: 18px;
+          padding-inline-start: 16px;
+          height: 24px;
           padding-top: 1vh;
-          
         }
       }
     }
@@ -175,19 +154,14 @@
     }
   }
 
-  .donatesDonateBtn {
-    @include mut.sized(212px, 73px);
+.donatesDonateBtn {
+    @include mut.sized(231px, 73px);
     @include mut.full-rounded(11px);
     background-color: c.$accented-red-color;
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
-    border-radius: 15px !important;
 
-    &:disabled{
-      background-color: c.$lighter-gray-color;
-        color: c.$pure-white-color;
-      cursor: pointer;
-    }
     > span {
+      text-transform: uppercase;
       @include mut.with-font($font-size: 20px, /*$font-weight: 500*/);
       color: c.$pure-white-color;
     }
@@ -200,9 +174,7 @@
 
 @media screen and (max-width: 1024px) {
   .donatesModal {
-    @include mut.sizedImportant(340px, 316px);
-    display: flex;
-    justify-content: center;
+    @include mut.sizedImportant(748px, 272px);
 
     &.ant-modal {
       .ant-modal-content {
@@ -229,42 +201,29 @@
 
       > h3{
         @include mut.with-font($font-size: 14px, $font-weight: 300);
-        @include mut.rem-margined($top: 10px, $bottom: 10px);
+        @include mut.rem-margined($top: 10px, $bottom: 16px);
       }
 
       .enterSum{
         @include mut.rem-margined($top: 0);
         @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
-        line-height: 15px;
+        line-height: 13px;
       }
 
       .amountInput{
         @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
-        @include mut.rem-margined($top: 0px, $bottom: 16px);
-
-        display: flex;
-        align-items: center;
-        height: 42px;
+        @include mut.rem-margined($top: 2px, $bottom: 16px);
+        border-bottom: 2px solid #A3A3A3;
         max-width: 100%;
+      }
 
-        &:not(.active) {     
-          text-decoration-line: underline;  
-          text-decoration-thickness: 2px;
-          text-underline-offset: 2px;
-        }
-      }
-      .GryvnaSymbol{
-        padding-top: 1px !important;
-      }
       .donatesBtnContainer{
-        @include mut.sized(308px, 100%);
-        
-        gap: 0;
+        @include mut.sized(408px, 100%);
+        margin-bottom: f.pxToRem(16px);
+
         > * {
-          width: f.pxToRem(100px) !important;
+          width: f.pxToRem(120px) !important;
           height: f.pxToRem(37px) !important;
-          border-radius: 11px !important;
-          border: 2px solid c.$dark-red-color;
 
           > span{
             @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 350);
@@ -280,32 +239,11 @@
           line-height: 16px;
           color: #FFFFFF;
           text-transform: none;
-          border-radius: 10px !important;
         }
       }
 
       .donatesInputContainer{
-        @include mut.sized(100%, 28px);
-        margin: 16px;
-        
-        >.checkbox-borderline {
-          display: flex;
-          overflow: visible !important;
-
-          > span{
-            display: inline-block;
-            vertical-align: middle;
-      
-            &:last-child {
-              @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
-            
-              height: f.pxToRem(28px);
-              padding-top: f.pxToRem(2px);
-              font-style: normal;
-              line-height: f.pxToRem(14px);
-            }
-          }
-        }
+        display: none;
       }
     }
   }

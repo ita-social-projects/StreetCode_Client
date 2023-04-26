@@ -5,11 +5,9 @@ import QRGif from '@assets/images/qr-block/must_be _gif.png';
 
 import { Button } from 'antd';
 
-interface Props {
+import { instagramClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
-}
-
-const QRMobile = (props: Props) => {
+const QRMobile = () => {
     const isMobile = useMediaQuery({
         query: '(max-width: 715px)',
     });
@@ -25,7 +23,12 @@ const QRMobile = (props: Props) => {
                             <p className="pressButtonText">
                                 Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
                             </p>
-                            <Button className="goToInstaButton">Перейти в Instagram</Button>
+                            <Button
+                                className="goToInstaButton"
+                                onClick={() => instagramClickEvent('tablet')}
+                            >
+                                Перейти в Instagram
+                            </Button>
                         </div>
                     </>
                 )}
@@ -37,7 +40,12 @@ const QRMobile = (props: Props) => {
                             Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
                         </p>
                         <div className="QRMobileGif" />
-                        <Button className="goToInstaButton">Перейти в Instagram</Button>
+                        <Button
+                            className="goToInstaButton"
+                            onClick={() => instagramClickEvent('mobile')}
+                        >
+                            Перейти в Instagram
+                        </Button>
                     </div>
                 )}
         </div>

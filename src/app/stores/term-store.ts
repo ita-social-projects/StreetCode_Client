@@ -32,8 +32,14 @@ export default class TermStore {
 
     public createTerm = async (term: Term) => {
         try {
-            await termsApi.create(term);
-            this.setItem(term);
+            let newData = null as unknown as Term;
+            await termsApi.create(term).then(
+                (response) => {
+                    this.setItem(response);
+                    newData = response;
+                },
+            );
+            return newData;
         } catch (error: unknown) {
             console.log(error);
         }
