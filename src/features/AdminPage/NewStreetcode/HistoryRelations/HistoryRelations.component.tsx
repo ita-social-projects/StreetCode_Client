@@ -16,7 +16,7 @@ const RelatedFiguresBlock = ({ figures,setFigures }: Props) => {
     const [relations, setRelations] = useState<RelatedFigure[]>([]);
     const [options, setOptions] = useState<RelatedFigure[]>([]);
     const handleAdd = (relationToAdd: RelatedFigure) => {
-        const existing = figures.find((rel) => rel.id === relationToAdd.id);
+        const existing = relations.find((rel) => rel.id === relationToAdd.id);
         if (existing === undefined) {
 
             setRelations((prevState) => [...prevState, relationToAdd]);

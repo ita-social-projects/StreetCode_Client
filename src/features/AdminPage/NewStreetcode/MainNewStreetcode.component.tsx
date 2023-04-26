@@ -151,7 +151,7 @@ const NewStreetcode = () => {
                 setCoordinates([...result]);
             });
             FactsApi.getFactsByStreetcodeId(parseId).then(result => {
-                //setFacts([...result]);
+                setFacts([...result]);
             });
 
         }

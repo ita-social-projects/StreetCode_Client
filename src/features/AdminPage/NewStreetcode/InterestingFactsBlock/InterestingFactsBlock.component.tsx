@@ -34,12 +34,12 @@ const InterestingFactsBlock = ({ facts, setFacts }: Props) => {
             </div>
             <div className="factsContainer">
                 <button className="addWowFact" onClick={() => setModalOpen(true)}> + </button>
-                {/* {facts?.map((fact) => ( */}
-                <InterestingFactAdminItem
-                    facts={facts}
-                    setFacts={setFacts}
-                />
-                {/* ))} */}
+                {facts.map((fact) => (
+                    <InterestingFactAdminItem
+                        fact={fact}
+                        setFacts={setFacts}
+                    />
+                ))}
             </div>
             <div>
                 <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} />

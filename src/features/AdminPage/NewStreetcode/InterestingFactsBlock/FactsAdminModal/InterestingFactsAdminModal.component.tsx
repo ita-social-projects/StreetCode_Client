@@ -18,15 +18,17 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { Fact } from '@/models/streetcode/text-contents.model';
+import Item from 'antd/es/list/Item';
 
 interface Props {
     fact?: Fact,
-    setFacts?: React.Dispatch<React.SetStateAction<Fact[]>> | undefined,
+    facts: Fact[],
+    setFacts?: React.Dispatch<React.SetStateAction<Fact[]>>,
     open: boolean,
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const InterestingFactsAdminModal = ({ fact, setFacts, open, setModalOpen }: Props) => {
+const InterestingFactsAdminModal = ({ fact, facts, setFacts, open, setModalOpen }: Props) => {
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
@@ -46,6 +48,9 @@ const InterestingFactsAdminModal = ({ fact, setFacts, open, setModalOpen }: Prop
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
                     form.setFieldsValue({
+                        // id: fact.id,
+                        // title: fact.title,
+                        // factContent: fact.factContent,
                         image: fact ? [{
                             name: '',
                             url: base64ToUrl(image.base64, image.mimeType),
@@ -79,6 +84,7 @@ const InterestingFactsAdminModal = ({ fact, setFacts, open, setModalOpen }: Prop
                 item.factContent = inputedValues.factContent;
                 item.imageId = imageId.current;
             }
+            // setFacts([...facts], item);
             factsStore.updateFactInMap(item);
         } else {
             const newFact: Fact = {
@@ -87,12 +93,35 @@ const InterestingFactsAdminModal = ({ fact, setFacts, open, setModalOpen }: Prop
                 factContent: inputedValues.factContent,
                 imageId: imageId.current,
             };
+            factsStore.addFact(newFact);
             factsStore.createFact(newFact);
+            //factsStore.fetchFactsByStreetcodeId(newFact.id);
+            // setFacts([...facts], newFact);
             setFileList([]);
+            // setFacts(newFact);
         }
 
         form.resetFields();
         setModalOpen(false);
+        // const newFact: Fact = {
+        //     id: factsStore.factMap.size,
+        //     title: inputedValues.title,
+        //     factContent: inputedValues.factContent,
+        //     imageId: imageId.current,
+        // };
+        // if (fact) {
+        //     newFact.id = fact.id;
+        //     if (imageId.current === 0) {
+        //         newFact.imageId = fact.imageId;
+        //     }
+        //     factsStore.updateFactInMap(newFact);
+        // }
+        // else {
+        //     factsStore.addFact(newFact);
+        // }
+        // imageId.current = 0;
+        // form.resetFields();
+        // setModalOpen(false);
     };
 
     return (

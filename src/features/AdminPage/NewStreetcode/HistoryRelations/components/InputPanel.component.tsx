@@ -21,6 +21,10 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
             const filtered = options.filter(option => !relations.some(relation => relation.id === option.id));
             setFilteredOptions(filtered);
         }
+        else {
+            //const filtered = options.filter(option => relation => relation.id === option.id));
+            setFilteredOptions(options);
+        }
     }, [options, relations]);
 
 
@@ -29,7 +33,9 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
             const filtered = options.filter(option => !relations.some(relation => relation.id === option.id));
             setFilteredOptions(filtered);
         }
-        
+        else {
+            setFilteredOptions(options);
+        }
     };
 
     const handleAddItem = (event: React.FormEvent<HTMLFormElement>) => {
