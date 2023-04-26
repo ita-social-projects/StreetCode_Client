@@ -5,11 +5,10 @@
 
 
 .interestingFactsModal {
-  @include mut.sizedImportant(823px, 765px);
+  @include mut.sizedImportant(823px, 700px);
 
   &.ant-modal {
     .ant-modal-content {
-      height: pxToRem(765px);
       @include mut.full-rounded(70px, $overflow: visible);
 
       padding: 0 !important;
@@ -37,28 +36,29 @@
 .factsModalContainer{
 
 .factsImgContainer {
-  img{
-    @include mut.rounded(70px, 70px);
-
-    max-height: 395px;
-    width: 99%
+    img{
+      @include mut.rounded(70px, 70px);
+      max-height: 395px;
+      width: 99%
+    }
+    @include mut.flex-centered();
+    @include mut.sizedImportant(100%, 400px);
+    position: sticky;
   }
-  @include mut.flex-centered();
-  @include mut.sizedImportant(100%, 400px);
-  position: sticky;
-}
-}
+
 .factsContentContainer {
+  height: pxToRem(255px);
   @include mut.flexed($direction: column, $gap: 15px);
-  @include mut.rem-margined(29px, 42px, 24px, 42px);
+  @include mut.rem-margined(26px, 42px, 24px, 42px);
 
   h1 {
     @include mut.with-font(ft.$roboto-font, 500, 26px, normal);
-    line-height: pxToEm(30px);
+    line-height: pxToEm(22px);
+    margin: 0;
     color: c.$accented-red-color;
   }
   .factsTextContainer {
-    height: pxToRem(223px);
+    height: pxToRem(168px);
     @include mut.flexed($direction: column, $gap: 10px);
   
     @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
@@ -80,11 +80,11 @@
   
     &::-webkit-scrollbar-track {
       background: c.$accented-gray-color;
-      @include mut.rem-margined($top: -15px, $bottom: 90px);
+      @include mut.rem-margined($top: 0px, $bottom: 10px);
     }
   }
 }
-
+}
 @media screen and (max-width: 1024px){
   
   .interestingFactsModal {
