@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './Analytics.styles.scss';
 
 import { Table } from 'antd';
@@ -48,11 +49,15 @@ const data = [
     },
 ];
 
-const Analytics = () => (
-    <div className="analyticsWrapper">
-        <h1>Аналітика</h1>
-        <Table columns={columns} dataSource={data} />
-    </div>
-);
+const Analytics = () => {
+    const [fetchedData, setFetchedData] = useState();
+
+    return (
+        <div className="analyticsWrapper">
+            <h1>Аналітика</h1>
+            <Table columns={columns} dataSource={data} />
+        </div>
+    );
+};
 
 export default Analytics;
