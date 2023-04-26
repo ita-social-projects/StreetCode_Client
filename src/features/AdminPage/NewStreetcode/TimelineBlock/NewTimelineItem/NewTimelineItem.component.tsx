@@ -11,20 +11,26 @@ const NewTimelineItem: React.FC<{
     }> = ({ timelineItem, setModalOpened, setEditTimelineItem }) => {
         const { timelineItemStore } = useMobx();
         return (
-            <div
-                key={`new${timelineItem.id}`}
-                className="timeline-admin-item timeline-admin-item-short-timeline new-timeline-item-component"
-            >
-                <DeleteOutlined onClick={() => timelineItemStore.deleteTimelineFromMap(timelineItem.id)} />
-                <div>
-                    <p>{timelineItem.title}</p>
+            <div className="textBlockButton">
+                <div
+                    key={`new${timelineItem.id}`}
+                    className="item"
+                >
+                    <div className='blockItem'>
+                        <DeleteOutlined onClick={() => timelineItemStore.deleteTimelineFromMap(timelineItem.id)} />
+                    </div>
+                    <div>
+                        <p>{timelineItem.title}</p>
+                    </div>
+                    <div className='blockItem'>
+                        <EditOutlined
+                            onClick={() => {
+                                setModalOpened(true);
+                                setEditTimelineItem(timelineItem);
+                            }}
+                        />
+                    </div>
                 </div>
-                <EditOutlined
-                    onClick={() => {
-                        setModalOpened(true);
-                        setEditTimelineItem(timelineItem);
-                    }}
-                />
             </div>
         );
     };
