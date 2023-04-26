@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Link, Navigate, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import ForFansBlock from '@features/AdminPage/NewStreetcode/ForFansBlock/ForFansBlock.component';
@@ -67,7 +67,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/partners-page" element={<PartnersPage />} />
         <Route path="/support-us" element={<SupportUs />} />
-        <Route path="/redirect" element={<RedirectPage />} />
+        <Route path="/streetcode" element={<RedirectPage />} />
     </Route>,
 ));
 
