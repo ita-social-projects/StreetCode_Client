@@ -2,7 +2,6 @@ import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
-import useRouteId from '@hooks/stateful/useRouter.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
@@ -10,12 +9,16 @@ import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFa
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 const InterestingFactsComponent = () => {
-    const streetcodeId = useRouteId();
-    const { factsStore: { fetchFactsByStreetcodeId, getFactArray } } = useMobx();
+    const { factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
+    const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
 
     useAsync(
-        () => fetchFactsByStreetcodeId(streetcodeId),
-        [streetcodeId],
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                fetchFactsByStreetcodeId(getStreetCodeId);
+            }
+        },
+        [getStreetCodeId],
     );
     const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
 
