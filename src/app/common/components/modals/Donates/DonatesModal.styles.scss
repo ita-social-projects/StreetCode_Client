@@ -139,9 +139,10 @@
       border: none;
       display: flex;
       align-items: center;
-    
+      
+      
       .ant-checkbox-input {
-        @include mut.sized(23px, 23px);
+        @include mut.sized(24px, 24px);
       }
       
       span{
@@ -158,6 +159,7 @@
           font-style: normal;
           line-height: f.pxToRem(18px);
           padding-inline-start: f.pxToRem(16px);
+          padding-top: f.pxToRem(2px);
           height: f.pxToRem(15px);
           text-align: left;
         }
