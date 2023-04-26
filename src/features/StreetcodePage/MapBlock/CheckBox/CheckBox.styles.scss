@@ -37,13 +37,12 @@
 .checkbox-line{
   line-height: 23px;
   text-align: center;
-  gap: 15px;
   margin-left: 11%;
 }
 
 .checkbox-text{
   @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
-  @include mut.positioned-as(relative, $bottom: 2px);
+  @include mut.positioned-as(relative, $top: 4px);
   color: c.$normal-darker-gray-color;
 }
 .ant-checkbox{

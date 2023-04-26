@@ -26,13 +26,13 @@ const SupportUs = () => {
 
     const handlePay = () => {
         window.location.assign('https://pay.mbnk.biz/IyAdn53wljbN');
-    }
+    };
 
     return (
         <div className='supportUsPage'>
             <div className='supportUsPageWrapper'>
                 <div className='heading'>
-                    <div className="titleBig"> Підтримати нас</div>
+                    <div className="titleBig"> Підтримати {windowSize.width >= 480 && <>нас</>}</div>
                     <div className="titleSmall">
                         Привіт! Після всіх важливих сторінок нашої платформи ти нарешті тут — на не менш важливій сторінці твоєї залученості та підтримки.
                     </div>
@@ -88,9 +88,9 @@ const SupportUs = () => {
                 <div className='donateSubBlocks'>
                     <div className='block qr'>
                         <p className='heading'>На карту</p>
-                        <div className='content'>
+	                    <div className='content'>
                             {
-                                windowSize.width > 1024 ? <QRCode/> 
+                                windowSize.width > 1024 ? <QRCode/>
                                 : windowSize.width > 480 ? <QRCodeSmall/>
                                 : undefined
                             }

@@ -9,6 +9,7 @@ import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
@@ -36,7 +37,13 @@ import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
 const NewStreetcode = () => {
     const [form] = useForm();
-    const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
+    const {
+        factsStore,
+        timelineItemStore,
+        newStreetcodeInfoStore,
+        sourceCreateUpdateStreetcode,
+        streetcodeCoordinatesStore,
+    } = useMobx();
 
     const [partners, setPartners] = useState<PartnerShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
@@ -94,6 +101,8 @@ const NewStreetcode = () => {
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
                 .map((fact: Fact) => ({ ...fact, id: 0 })),
+            coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
+                .map((coordinate: StreetcodeCoordinate) => ({ ...coordinate, id: 0 })),
             partners,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
