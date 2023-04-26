@@ -1,40 +1,30 @@
 import './Ticker.styles.scss';
 
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import Ticker from 'react-awesome-ticker';
 import subtitlesApi from '@api/additional-content/subtitles.api';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import Subtitle from '@models/additional-content/subtitles.model';
 import useMobx from '@stores/root-store';
-
-const createSubtitleString = (subtitles?: Subtitle[]): Map<number, string> => (
-    new Map(subtitles?.map(({ id, subtitleText }) => [
-        id,
-        subtitleText,
-    ]))
-);
+import { observer } from 'mobx-react-lite';
 
 const TickerComponent = () => {
-    const { getSubtitlesByStreetcodeId } = subtitlesApi;
+    const {getSubtitlesByStreetcodeId} = subtitlesApi;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
-
-    const { value } = useAsync(() => {
-        if (getStreetCodeId !== errorStreetCodeId) {
-            getSubtitlesByStreetcodeId(getStreetCodeId)
-                .catch((error) => {
-                    console.log(error);
-                });
+    
+    const [subtitle, setSubtitle] = useState<string>("пусто");
+    
+    useEffect(() => {
+        if(getStreetCodeId !== errorStreetCodeId){
+            getSubtitlesByStreetcodeId(getStreetCodeId).then((response)=>{setSubtitle(response.subtitleText);console.log(response);})
+            .catch((error)=>{console.log(error)});
+            
         }
-    }, [getStreetCodeId]);
-    const subtitles = value as Subtitle[];
-
-    const subtitleMap = useMemo(() => createSubtitleString(subtitles), [subtitles]);
-
+    }),[getStreetCodeId]; 
+    
     return (
         <Ticker className="tickerContainer">
-            <div className="tickerItem">{Array.from(subtitleMap.values()).join('')}</div>
+            <div className="tickerItem">{subtitle}</div>
         </Ticker>
     );
 };
 
-export default TickerComponent;
+export default observer(TickerComponent);
