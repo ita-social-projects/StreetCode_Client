@@ -2,9 +2,7 @@ import './DonatesModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { Button, Modal } from 'antd';
-import {
-    ChangeEvent, useEffect, useState,
-} from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
@@ -13,6 +11,7 @@ import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
 
 import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const possibleDonateAmounts = [500, 100, 50];
 
@@ -26,6 +25,8 @@ const DonatesModal = () => {
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+
+    const windowSize = useWindowSize();
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
