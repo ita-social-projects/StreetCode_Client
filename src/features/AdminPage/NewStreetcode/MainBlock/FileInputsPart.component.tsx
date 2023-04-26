@@ -144,8 +144,8 @@ const FileInputsPart: React.FC = () => {
 
                 <FormItem
                     name="pictureRelations"
-                    label="Для зв'язків"
-                      <FileUploader
+                    label="Для зв'язків">
+                    <FileUploader
                         //fileList={[images[2] ?? []]}
                         multiple={false}
                         accept=".jpeg,.png,.jpg"
@@ -159,7 +159,7 @@ const FileInputsPart: React.FC = () => {
                         onRemove={(file) => {
                             ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
                         }}
-                        onChange={x => setImages(...images, images[2])}
+                        //onChange={x => setImages(...images, images[2])}
                       >
                         <InboxOutlined />
                         <p className="ant-upload-text">+Додати</p>
@@ -191,7 +191,6 @@ const FileInputsPart: React.FC = () => {
             </div>
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
-
     );
 };
 export default FileInputsPart;

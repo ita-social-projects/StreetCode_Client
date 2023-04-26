@@ -76,10 +76,12 @@ const DatePickerPart:React.FC<{
         }
     };
 
-    return (               
-            {isLoading ? (
-            <div>Loading...</div>
-            ) : (
+    return (<>               
+            {
+                isLoading ? (
+                <div>Loading...</div>
+            ) : 
+            (
             <div className="date-picker-group">
                 <div className="date-picker-group-item">
                     <Select
@@ -132,7 +134,7 @@ const DatePickerPart:React.FC<{
                     </FormItem>
                 </div>
            </div>)}
-
+           </>
     );
 };
 export default DatePickerPart;

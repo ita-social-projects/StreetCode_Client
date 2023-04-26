@@ -48,7 +48,7 @@ const MainBlockAdmin: React.FC<Props> = ({
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
-
+    
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
 
@@ -105,6 +105,7 @@ const MainBlockAdmin: React.FC<Props> = ({
             const returnedTags = allTags as Tag[];
             setTags(returnedTags);
         }
+        //setSelectedTags(selectedTags);
     }, [allTags]);
 
     const onSelectTag = (selectedValue: string) => {
@@ -185,42 +186,42 @@ const MainBlockAdmin: React.FC<Props> = ({
             <Form.Item
                 name="title"
                 label="Назва стріткоду"
+                className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
             >
-                <Input maxLength={100} showCount pattern="/^[a-z-]+$/gm" />
+                <Input maxLength={100} showCount />
             </Form.Item>
 
-            <Form.Item name="alias" label="Короткий опис">
+            <Form.Item name="alias" label="Короткий опис" className="maincard-item">
                 <Input maxLength={33} showCount />
             </Form.Item>
             <Form.Item
                 label="URL"
                 name="streetcodeUrlName"
+                className="maincard-item"
                 rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100, pattern: /^[a-z-]+$/ }]}
             >
                 <Input
                     maxLength={100}
                     showCount
-                    pattern="/^[a-z-]+$/gm"
                 />
             </Form.Item>
 
-            <Form.Item label = 'Роки життя/Дата або період події'>
-                <DatePickerPart
-                    form={form}
-                    setFirstDate={(newDate:Dayjs | null) => {
-                        firstDate.current = newDate;
-                    }}
-                    setSecondDate={(newDate:Dayjs | null) => {
-                        secondDate.current = newDate;
-                    }}
-                />
-            </Form.Item>
+            <DatePickerPart
+                form={form}
+                setFirstDate={(newDate:Dayjs | null) => {
+                    firstDate.current = newDate;
+                }}
+                setSecondDate={(newDate:Dayjs | null) => {
+                    secondDate.current = newDate;
+                }}
+            />
 
+            <p>Теги:</p>
             <div className="tags-block">
-            <Form.Item label = "Теги">
                 <div className="tags-block-tagitems">
                     <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+
                     <Select
                         className="tags-select-input"
                         mode="tags"
@@ -231,11 +232,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                         {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
                     </Select>
                 </div>
-            </Form.Item>
-
-            <Form.Item 
-                label = "Розширення">
                 <div className="device-sizes-list">
+                    <p>Розширення</p>
                     <Popover
                         content={(
                             <PopoverForTagContent
@@ -247,32 +245,41 @@ const MainBlockAdmin: React.FC<Props> = ({
                         trigger="hover"
                         overlayStyle={{ width: popoverProps.width }}
                     >
-                        <p  onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
-                        >360</p>
-                        <p  onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
-                        >1600</p>
+                        <p
+                            className="device-size"
+                            onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
+                        >
+                                360
+                        </p>
+                        <p
+                            className="device-size"
+                            onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
+                        >
+                                1600
+                        </p>
                     </Popover>
                 </div>
-            </Form.Item>
             </div>
-            
-            <Form.Item
-                className="teaser-form-item"
-                label="Тизер"
-                rules={[{ required: true, message: 'Введіть тизер' }]}
-            >
-                <Input.TextArea
-                    onChange={onTextAreaTeaserChange}
-                    className="textarea-teaser"
-                    maxLength={maxCharCount}
-                />
+            <div className="teaser-form-item">
+                <Form.Item
+                    label="Тизер"
+                    name="teaser"
+                    className="maincard-item teaser-form-item"
+                    rules={[{ required: true, message: 'Введіть тизер', max: 450 }]}
+                >
+                    <Input.TextArea
+                        onChange={onTextAreaTeaserChange}
+                        className="textarea-teaser"
+                        maxLength={450}
+                    />
+                </Form.Item>
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                        /450
+                /450
                     </p>
                 </div>
-            </Form.Item>
+            </div>
 
             <FileInputsPart />
         </div>
