@@ -22,7 +22,6 @@ const SupportUs = () => {
 
     const handleCopy = () => {
         navigator.clipboard.writeText(BANK_ACCOUNT);
-        // alert('Скопійовано в буфер обміну!');
     };
 
     const handlePay = () => {
