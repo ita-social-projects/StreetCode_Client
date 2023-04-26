@@ -80,14 +80,14 @@ const HeaderDrawer = () => {
                                         parentActive={active}
                                         setParentActive={setActive}
                                         text="Політика конфіденційності"
-                                        link = "/"
+                                        link="privacy-policy"
                                     />
                                     <HeaderDrawerItem
                                         id={8 * scalingCooficient}
                                         parentActive={active}
                                         setParentActive={setActive}
-                                        text="Зворотній зв'язок"
-                                        link = "/"
+                                        text="Зворотний зв'язок"
+                                        link="404"
                                     />
                                 </div>
                                 <SocialMediaLinks />
