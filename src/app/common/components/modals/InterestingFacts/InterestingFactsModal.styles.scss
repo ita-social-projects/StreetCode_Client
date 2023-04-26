@@ -84,17 +84,12 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
 @media screen and (max-width: 1024px){
   
   .interestingFactsModal {
-    // @include mut.sized(618px, 574px);
-    // w 340px
-    // @include mut.sized(470px, 580px);
-    // @include mut.sized(340px, 434px);
     @include mut.sized(340px, 445px);
     
     &.ant-modal {
       .ant-modal-content {
-     //   height: pxToRem(450px);
         width: 100%;
-        height: 100%;//pxToRem(500px);
+        height: 100%;
         @include mut.full-rounded(20px, $overflow: visible);
   
         padding: 0 !important;
@@ -108,27 +103,14 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
   }
 }
     .factsModalContainer{
-        //216px
-      // @include mut.sized($width: 100%, $height: 216px);
-      // max-height: 20px;
       width: 100%;
       height: 15em;
       .factsImgContainer {   
           @include mut.sized($width: 100%, $height: 100%);
-       
-          //  @include mut.sized($width: 100%, $height: 285px );
-          //pxToEm(285px)
-          //  @include mut.sized( $width: 100%, $height: 285px);//pxToEm(285px)
-          //  max-height: 285px;
-          //  min-width: 285px;
-          // width: 100%;
-          // height: 285px ;
-          
         }
         .factsContentContainer {
           @include mut.sized($width: 100%, $height: 100% );
 
-          // @include mut.flexed($direction: column, $gap: 8px);
           display: inline-block;
           @include mut.rem-margined(11px, 16px, 24px, 16px);
         
@@ -138,16 +120,11 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
             @include mut.rem-margined(0px, 16px, 8px, 0px);
           }
           .factsTextContainer {
-            // height: ;
-            // max-height: pxToRem(168px) ;
             max-height: 78% ;
             @include mut.flexed($direction: column, $gap: 10px);
             @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
             line-height: pxToEm(20px);
             margin-right: pxToRem(20px);
-
-            // padding-right: 0;
-            // margin-right: 0;
           }
         }
       }
@@ -157,18 +134,12 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
 @media screen and (max-width: 768px){
   
   .interestingFactsModal {
-    // @include mut.sized(618px, 574px);
-    // w 340px
-    // @include mut.sized(470px, 580px);
-    // @include mut.sized(340px, 434px);
-    // @include mut.sized(43%, 445px%);
     @include mut.sized(340px, 445px);
     
     &.ant-modal {
       .ant-modal-content {
-     //   height: pxToRem(450px);
         width: 100%;
-        height: 100%;//pxToRem(500px);
+        height: 100%;
         @include mut.full-rounded(20px, $overflow: visible);
   
         padding: 0 !important;
@@ -182,27 +153,13 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
   }
 }
     .factsModalContainer{
-        //216px
-      // @include mut.sized($width: 100%, $height: 216px);
-      // max-height: 20px;
       width: 100%;
       height: 15em;
       .factsImgContainer {   
           @include mut.sized($width: 100%, $height: 100%);
-       
-          //  @include mut.sized($width: 100%, $height: 285px );
-          //pxToEm(285px)
-          //  @include mut.sized( $width: 100%, $height: 285px);//pxToEm(285px)
-          //  max-height: 285px;
-          //  min-width: 285px;
-          // width: 100%;
-          // height: 285px ;
-          
         }
         .factsContentContainer {
           @include mut.sized($width: 100%, $height: 100% );
-
-          // @include mut.flexed($direction: column, $gap: 8px);
           display: inline-block;
           @include mut.rem-margined(11px, 16px, 24px, 16px);
         
@@ -212,44 +169,24 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
             @include mut.rem-margined(0px, 16px, 8px, 0px);
           }
           .factsTextContainer {
-            // height: ;
-            // max-height: pxToRem(168px) ;
             max-height: 78% ;
             @include mut.flexed($direction: column, $gap: 10px);
             @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
             line-height: pxToEm(20px);
-            // padding-right: 0;
-            // margin-right: 0;
           }
         }
       }
     }
     
-
-  
-  //}
-//}
-
-// @media screen  and (min-device-width: 768px)
-// and (max-device-width: 1024px){
-
-
-// }
 @media screen and (max-width: 480px){
   
   .interestingFactsModal {
-    // @include mut.sized(618px, 574px);
-    // w 340px
-    // @include mut.sized(470px, 580px);
-    // @include mut.sized(340px, 434px);
-    // @include mut.sized(71%, 62%);
     @include mut.sized(340px, 445px);
     
     &.ant-modal {
       .ant-modal-content {
-     //   height: pxToRem(450px);
         width: 100%;
-        height: 100%;//pxToRem(500px);
+        height: 100%;
         @include mut.full-rounded(20px, $overflow: visible);
   
         padding: 0 !important;
@@ -263,27 +200,13 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
   }
 }
     .factsModalContainer{
-        //216px
-      // @include mut.sized($width: 100%, $height: 216px);
-      // max-height: 20px;
       width: 100%;
       height: 15em;
       .factsImgContainer {   
           @include mut.sized($width: 100%, $height: 100%);
-       
-          //  @include mut.sized($width: 100%, $height: 285px );
-          //pxToEm(285px)
-          //  @include mut.sized( $width: 100%, $height: 285px);//pxToEm(285px)
-          //  max-height: 285px;
-          //  min-width: 285px;
-          // width: 100%;
-          // height: 285px ;
-          
         }
         .factsContentContainer {
           @include mut.sized($width: 100%, $height: 100% );
-
-          // @include mut.flexed($direction: column, $gap: 8px);
           display: inline-block;
           @include mut.rem-margined(11px, 16px, 24px, 16px);
         
@@ -293,26 +216,12 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
             @include mut.rem-margined(0px, 16px, 8px, 0px);
           }
           .factsTextContainer {
-            // height: ;
-            // max-height: pxToRem(168px) ;
             max-height: 85% ;
             @include mut.flexed($direction: column, $gap: 10px);
             @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
             line-height: pxToEm(20px);
-            // padding-right: 0;
-            // margin-right: 0;
           }
         }
       }
     }
     
-
-  
-  //}
-//}
-
-// @media screen  and (min-device-width: 768px)
-// and (max-device-width: 1024px){
-
-
-// }
