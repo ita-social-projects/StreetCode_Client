@@ -98,7 +98,7 @@
   
         &:last-child {
           @include mut.rem-padded($left: 16px);
-          @include mut.rem-margined($bottom: -4px);
+          @include mut.rem-margined($top: -4px);
           @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
           color: c.$checkbox-light-grey;
         }
@@ -235,10 +235,10 @@
         overflow: visible;
 
         span {
-
           &:last-child {
             @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
             @include mut.rem-padded($left: 8px);
+            @include mut.rem-margined($top: -3px);
           }
         }
       }

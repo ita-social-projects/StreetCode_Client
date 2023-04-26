@@ -85,3 +85,7 @@ ul, ol {
 ::-webkit-scrollbar-track {
   background: c.$accented-gray-color;
 }
+
+.ant-checkbox-checked::after {
+  border: none;
+}
