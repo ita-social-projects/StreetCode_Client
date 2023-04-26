@@ -47,7 +47,7 @@ const MainDrawerList = ({ active, scalingCooficient, setActive } : Props) => {
                 parentActive={active}
                 setParentActive={setActive}
                 text="Донати"
-                link = "/"
+                link = "/support-us"
             />
             <HeaderDrawerItem
                 id={6 * scalingCooficient - adjust}
