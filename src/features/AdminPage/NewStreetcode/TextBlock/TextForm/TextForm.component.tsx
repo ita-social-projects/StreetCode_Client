@@ -1,6 +1,6 @@
 import './TextForm.styles.scss';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextInputInfo from '@features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 
 import { Form, Input } from 'antd';
@@ -9,18 +9,23 @@ import FormItem from 'antd/es/form/FormItem';
 import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
+import Video from '../../../../../models/media/video.model';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+    video: Video | undefined;
+    setVideo: React.Dispatch<Video | undefined>;
 }
-const TextForm = ({ inputInfo, setInputInfo }: Props) => {
+const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const maxTitleLength = 50;
-
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, title: e.target.value });
+        
     };
-
+    useEffect(() => {
+        
+    });
     return (
         <FormItem className="textForm">
              <Form.Item
@@ -40,7 +45,7 @@ const TextForm = ({ inputInfo, setInputInfo }: Props) => {
             </Form.Item>
             
             <Form.Item>
-                <LinkEditor inputInfo={inputInfo} setInputInfo={setInputInfo} />
+                <LinkEditor inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
             </Form.Item>
         </FormItem>
     );

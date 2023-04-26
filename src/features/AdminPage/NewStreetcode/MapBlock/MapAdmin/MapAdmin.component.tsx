@@ -1,36 +1,54 @@
 import './MapAdmin.styles.scss';
-import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
-
-import StreetcodeMarker from '@images/footer/streetcode-marker.png';
-
-import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
-import { useRef, useState } from 'react';
-import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
-
+import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Input, Table } from 'antd';
-
-import useMobx from '@/app/stores/root-store';
+import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
+import StreetcodeMarker from '@images/footer/streetcode-marker.png';
+import MapTableAdmin from '../MapTableAdmin/MapTableAdmin.component';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import useMobx from '@/app/stores/root-store';
+import StreetcodeCoordinateApi from '../../../../../app/api/additional-content/streetcode-cooridnates.api';
 
 const containerStyle = {
     width: '100%',
-    height: '100vh',
+    height: '100vh'
 };
 
 const initialCenter: google.maps.LatLngLiteral = {
     lat: 50.44759739385438,
-    lng: 30.522674496948543,
+    lng: 30.522674496948543
 };
+interface Props {
+    coordinates: StreetcodeCoordinate[];
+}
+const MapOSMAdmin: React.FC<Props> = ({
+    coordinates,
+}) => {
 
-const MapOSMAdmin = () => {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
     const [center, setCenter] = useState(initialCenter);
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null);
     const { streetcodeCoordinatesStore } = useMobx();
-    const [cityName, setCityName] = useState('');
-    const geocoderRef = useRef<google.maps.Geocoder>(null);
+
+    useEffect(() => {
+        if (coordinates.length > 0) {
+
+            coordinates.forEach(x => {
+                const newCoordinate: StreetcodeCoordinate = {
+                    latitude: x.latitude,
+                    longtitude: x.longtitude,
+                    streetcodeId: x.streetcodeId, // set a default streetcodeId for now
+                    id: x.id,
+                    city: ""// set a default id for now
+                };
+                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
+                setStreetcodeCoordinates([]);
+            });
+        }
+    }, [coordinates]);
 
     const handleSaveButtonClick = () => {
         if (streetcodeCoordinates.length > 0) {
@@ -39,9 +57,20 @@ const MapOSMAdmin = () => {
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0, // set a default streetcodeId for now
                 id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
-                city: cityName,
+                city: ""
             };
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
+            coordinates?.map(x => {
+                const newCoor: StreetcodeCoordinate = {
+                    latitude: x.latitude,
+                    longtitude: x.longtitude,
+                    streetcodeId: x.streetcodeId, // set a default streetcodeId for now
+                    id: x.id,
+                    city: x.city// set a default id for now
+                };
+                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoor);
+
+            });
             setStreetcodeCoordinates([]);
         }
     };
@@ -69,7 +98,7 @@ const MapOSMAdmin = () => {
                         longtitude: lng,
                         streetcodeId: 0, // set a default streetcodeId for now
                         id: 0, // set a default id for now
-                        city: cityName,
+                        city:""
                     },
                 ]);
             }
@@ -83,18 +112,19 @@ const MapOSMAdmin = () => {
                     const { latitude, longitude } = position.coords;
                     setStreetcodeCoordinates([
                         {
-                            latitude,
+                            latitude: latitude,
                             longtitude: longitude,
                             streetcodeId: 0, // set a default streetcodeId for now
                             id: 0, // set a default id for now
-                            city: '',
+                            city:""
                         },
                     ]);
                     setCenter({ lat: latitude, lng: longitude });
-                },
+
+                }
             );
         }
-    };
+    }
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         const lat = event.latLng?.lat();
@@ -104,22 +134,13 @@ const MapOSMAdmin = () => {
                 {
                     latitude: lat,
                     longtitude: lng,
-                    streetcodeId: 0,
+                    streetcodeId: 0, // set a default streetcodeId for now
                     id: 0,
-                    city: cityName,
+                    city: ""// set a default id for now
                 },
             ]);
-            if (geocoderRef.current !== null) {
-                geocoderRef.current.geocode({ location: { lat, lng } }, (results, status) => {
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        const city = results.find((result) => result.types.includes('locality'))?.formatted_address;
-                        setCityName(city || '');
-                    }
-                });
-            }
         }
     };
-
     const columns = [
         {
             title: 'id',
@@ -137,11 +158,6 @@ const MapOSMAdmin = () => {
             key: 'longtitude',
         },
         {
-            title: 'Місто',
-            dataIndex: 'city',
-            key: 'city',
-        },
-        {
             title: 'Дії',
             key: 'actions',
             render: (text: any, record: any) => (
@@ -151,29 +167,16 @@ const MapOSMAdmin = () => {
             ),
         },
     ];
+    const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((item) => ({
+        id: item.id,
+        latitude: item.latitude,
+        longtitude: item.longtitude,
+        actions: item,
+    }));
 
-    const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map(
-        (item) => ({
-            id: item.id,
-            latitude: item.latitude,
-            longtitude: item.longtitude,
-            city: item.city || cityName,
-            actions: item,
-        }),
-    );
-    const handleLoadScriptNext = () => {
-        if (geocoderRef.current === null) {
-            geocoderRef.current = new google.maps.Geocoder();
-        }
-    };
     return (
 
-        <LoadScript
-            googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M"
-            language="uk"
-            onLoad={handleLoadScriptNext}
-            libraries={['places']}
-        >
+        <LoadScript googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M" language="uk" libraries={["places"]}>
             <GoogleMap
                 ref={mapRef}
                 mapContainerStyle={containerStyle}
@@ -184,30 +187,19 @@ const MapOSMAdmin = () => {
             >
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
-                    <h1>{cityName}</h1>
                     <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-                        <Input
-                            className="input-streets"
+                        <Input className="input-streets"
                             placeholder="введіть вулицю"
                             prefix={<EnvironmentOutlined className="site-form-item-icon" />}
                         />
                     </Autocomplete>
-                    <Button
-                        className="onMapbtn"
-                        onClick={handleMarkerCurrentPosition}
-                    >
-                        <a>Обрати місце на мапі</a>
-
-                    </Button>
+                    <Button className="onMapbtn" onClick={handleMarkerCurrentPosition}><a>Обрати місце на мапі</a></Button>
                     {streetcodeCoordinates.length > 0 && (
-                        <Button className="onMapbtn" onClick={handleSaveButtonClick}>
-                            <a>Зберегти стріткод</a>
-
-                        </Button>
+                        <Button className="onMapbtn" onClick={handleSaveButtonClick}><a>Зберегти стріткод</a></Button>
                     )}
 
                 </div>
-                {streetcodeCoordinates.map((marker, index) => (
+                {streetcodeCoordinates?.map((marker, index) => (
                     <Marker
                         key={index}
                         icon={{

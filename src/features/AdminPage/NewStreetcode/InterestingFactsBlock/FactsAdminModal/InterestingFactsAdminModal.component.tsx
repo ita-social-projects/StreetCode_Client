@@ -13,18 +13,22 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
 import ImagesApi from '@/app/api/media/images.api';
+import FactsApi from '@/app/api/streetcode/text-content/facts.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { Fact } from '@/models/streetcode/text-contents.model';
+import Item from 'antd/es/list/Item';
 
 interface Props {
     fact?: Fact,
+    facts: Fact[],
+    setFacts?: React.Dispatch<React.SetStateAction<Fact[]>>,
     open: boolean,
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
+const InterestingFactsAdminModal = ({ fact, facts, setFacts, open, setModalOpen }: Props) => {
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
@@ -32,52 +36,92 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
 
     useEffect(() => {
         if (fact && open) {
+            FactsApi.getById(fact.id)
+                .then((f) => {
+                    form.setFieldsValue({
+                        id: f.id,
+                        title: f.title,
+                        factContent: f.factContent,
+                    });
+                });
             imageId.current = fact.imageId;
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
                     form.setFieldsValue({
-                        id: fact.id,
-                        title: fact.title,
-                        factContent: fact.factContent,
-                        image: fact ? [{ name: '',
-                                         url: base64ToUrl(image.base64, image.mimeType),
-                                         thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                                         uid: `${fact.id}`,
-                                         status: 'done',
-                                         type: image.mimeType }] : [],
+                        // id: fact.id,
+                        // title: fact.title,
+                        // factContent: fact.factContent,
+                        image: fact ? [{
+                            name: '',
+                            url: base64ToUrl(image.base64, image.mimeType),
+                            thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                            uid: `${fact.id}`,
+                            status: 'done',
+                            type: image.mimeType,
+                        }] : [],
 
                     });
-                    setFileList(fact ? [{ name: '',
-                                          url: base64ToUrl(image.base64, image.mimeType),
-                                          thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                                          uid: `${fact.id}`,
-                                          status: 'done',
-                                          type: image.mimeType }] : []);
+                    setFileList(fact ? [{
+                        name: '',
+                        url: base64ToUrl(image.base64, image.mimeType),
+                        thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                        uid: `${fact.id}`,
+                        status: 'done',
+                        type: image.mimeType,
+                    }] : []);
                 });
         } else {
             setFileList([]);
         }
     }, [fact, open, form]);
 
-    const onSuccesfulSubmit = (inputedValues:any) => {
-        const newFact: Fact = {
-            id: factsStore.factMap.size,
-            title: inputedValues.title,
-            factContent: inputedValues.factContent,
-            imageId: imageId.current,
-        };
+    const onSuccesfulSubmit = (inputedValues: any) => {
         if (fact) {
-            newFact.id = fact.id;
-            if (imageId.current === 0) {
-                newFact.imageId = fact.imageId;
+            const item = fact;
+            if (item) {
+                item.id = fact.id;
+                item.title = inputedValues.title;
+                item.factContent = inputedValues.factContent;
+                item.imageId = imageId.current;
             }
-            factsStore.updateFactInMap(newFact);
+            // setFacts([...facts], item);
+            factsStore.updateFactInMap(item);
         } else {
+            const newFact: Fact = {
+                id: factsStore.factMap.size,
+                title: inputedValues.title,
+                factContent: inputedValues.factContent,
+                imageId: imageId.current,
+            };
             factsStore.addFact(newFact);
+            factsStore.createFact(newFact);
+            //factsStore.fetchFactsByStreetcodeId(newFact.id);
+            // setFacts([...facts], newFact);
+            setFileList([]);
+            // setFacts(newFact);
         }
-        imageId.current = 0;
+
         form.resetFields();
         setModalOpen(false);
+        // const newFact: Fact = {
+        //     id: factsStore.factMap.size,
+        //     title: inputedValues.title,
+        //     factContent: inputedValues.factContent,
+        //     imageId: imageId.current,
+        // };
+        // if (fact) {
+        //     newFact.id = fact.id;
+        //     if (imageId.current === 0) {
+        //         newFact.imageId = fact.imageId;
+        //     }
+        //     factsStore.updateFactInMap(newFact);
+        // }
+        // else {
+        //     factsStore.addFact(newFact);
+        // }
+        // imageId.current = 0;
+        // form.resetFields();
+        // setModalOpen(false);
     };
 
     return (
@@ -102,7 +146,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                     className="inputBlock"
                     label="Заголовок: "
                     rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
-                        { max: 30, message: 'Заголовок не може містити більше 30 символів ' },
+                    { max: 30, message: 'Заголовок не може містити більше 30 символів ' },
                     ]}
                 >
                     <Input className="title" />
@@ -142,7 +186,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         listType="picture-card"
                         maxCount={1}
                         fileList={fileList}
-                        onSuccessUpload={(image:Image) => {
+                        onSuccessUpload={(image: Image) => {
                             imageId.current = image.id;
                         }}
                         onRemove={(image) => {

@@ -1,12 +1,14 @@
 import './MainBlockAdmin.style.scss';
 
-import React, { useState } from 'react';
-import { Dayjs } from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { DatePicker, FormInstance, Input, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
+import { useParams } from 'react-router-dom';
 
 import { dateToString, selectDateOptions } from '@/models/timeline/chronology.model';
+import StreetcodesApi from '../../../../app/api/streetcode/streetcodes.api';
 
 const DatePickerPart:React.FC<{
     setFirstDate:(newDate: Dayjs | null) => void,
@@ -24,7 +26,29 @@ const DatePickerPart:React.FC<{
         return text[0].toLocaleUpperCase() + text.substring(1, text.length);
     };
 
-    const onChangeFirstDate = (date:Dayjs | null) => {
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
+    const [defaultFirstDate, setDefaultFirtsDate] = useState<string>();
+    const [defaultSecondDate, setDefaultSecondDate] = useState<string>();
+    const [defaultDate, setDefaultDate] = useState<string>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const x = await StreetcodesApi.getById(parseId);
+                setDefaultFirtsDate(x.eventStartOrPersonBirthDate.toString() ?? "");
+                setDefaultSecondDate(x.eventEndOrPersonDeathDate.toString() ?? "");
+                setDefaultDate(x.dateString ?? "");
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
+    }, [parseId]);
+
+    const onChangeFirstDate = (date: Dayjs | null) => {
         setFirstDate(date);
         const dateString = form.getFieldValue('dateString') ?? '';
         const index = dateString.indexOf(' — ');
@@ -39,7 +63,7 @@ const DatePickerPart:React.FC<{
         }
     };
 
-    const onChangeSecondDate = (date:Dayjs | null) => {
+    const onChangeSecondDate = (date: Dayjs | null) => {
         setSecondDate(date);
         const dateString = form.getFieldValue('dateString') ?? '';
         const index = dateString.indexOf(' — ');
@@ -52,7 +76,10 @@ const DatePickerPart:React.FC<{
         }
     };
 
-    return (   
+    return (               
+            {isLoading ? (
+            <div>Loading...</div>
+            ) : (
             <div className="date-picker-group">
                 <div className="date-picker-group-item">
                     <Select
@@ -70,6 +97,7 @@ const DatePickerPart:React.FC<{
                         className='my-picker'
                     >
                         <DatePicker
+                            defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
                             onChange={onChangeFirstDate}
                             picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
                         />
@@ -91,6 +119,7 @@ const DatePickerPart:React.FC<{
                         name="streetcodeSecondDate"
                         className='my-picker'>
                         <DatePicker
+                            defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
                             onChange={onChangeSecondDate}
                             picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
                         />
@@ -99,11 +128,10 @@ const DatePickerPart:React.FC<{
 
                 <div className="date-string-input">
                     <FormItem name="dateString">
-                        <Input disabled />
+                        <Input defaultValue={defaultDate} disabled />
                     </FormItem>
                 </div>
-
-            </div>
+           </div>)}
 
     );
 };

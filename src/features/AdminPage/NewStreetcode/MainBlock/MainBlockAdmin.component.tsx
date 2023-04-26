@@ -51,6 +51,7 @@ const MainBlockAdmin: React.FC<Props> = ({
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
+
     }, [form, streetcodeTitle]);
     const onNameSurnameChange = () => {
         const curSurname = surname.current?.input?.value;
@@ -119,8 +120,10 @@ const MainBlockAdmin: React.FC<Props> = ({
             setSelectedTags([...selectedTags, { id: minId, title: selectedValue, isVisible: false }]);
         } else {
             selected = tags[selectedIndex];
+
             setSelectedTags([...selectedTags, { ...selected, isVisible: false }]);
         }
+
     };
 
     const onDeselectTag = (deselectedValue:string) => {
@@ -134,7 +137,7 @@ const MainBlockAdmin: React.FC<Props> = ({
 
     return (
         <div className="mainblock-add-form">
-             <Form.Item
+            <Form.Item
                     label="Номер стріткоду"
                     rules={[{ required: true, message: 'Введіть номер стріткоду'}]}
                     name="streetcodeNumber"
@@ -149,7 +152,7 @@ const MainBlockAdmin: React.FC<Props> = ({
             <Form.Item>
                 <div className='display-flex-row p-margin'>
                     <p className={switchState? 'grey-text':'red-text'}>Постать</p>
-                    <Switch className="person-event-switch" onChange={onSwitchChange} />
+                    <Switch className="person-event-switch" checked={!streetcodeType} onChange={onSwitchChange} />
                     <p className={!switchState? 'grey-text':'red-text'}>Подія</p>
                 </div>
             </Form.Item>
@@ -223,6 +226,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         mode="tags"
                         onSelect={onSelectTag}
                         onDeselect={onDeselectTag}
+                        value={selectedTags.map(x => x.title)}
                     >
                         {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
                     </Select>

@@ -16,12 +16,13 @@ const ForFansBlock = () => {
     useEffect(() => {
         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
     }, []);
-    
+
     return (
         <div className="adminContainer-block">
             <h2>Для фанатів</h2>
-            
+          
             <div className="textBlockButton-container">
+
                 <button
                     type="button"
                     className="buttonWithPlus"
@@ -32,7 +33,7 @@ const ForFansBlock = () => {
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category, index) => (
                     <ForFansAdminItem
                         categoryName={categoriesSelect.find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
-                        id={index}
+                        id={category.sourceLinkCategoryId}
                         onEditClick={() => {
                             sourceCreateUpdateStreetcode.indexUpdate = index;
                             setIsModalOpen(true);

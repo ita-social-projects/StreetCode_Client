@@ -6,31 +6,33 @@ import PartnersStore from '@stores/partners-store';
 import { Button, Select } from 'antd';
 
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
-import { PartnerShort } from '@/models/partners/partners.model';
+import Partner, { PartnerShort } from '@/models/partners/partners.model';
 
 interface Props {
+    partners: PartnerShort[];
     setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>>;
 }
-const PartnerBlockAdmin = ({ setPartners }: Props) => {
-    const selectedPartners = useRef<PartnerShort[]>([]);
+const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
+
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
+
     useEffect(() => {
         Promise.all([
             PartnersStore.getAllPartnerShort()
                 .then((partners) => setAllPartnerShort(partners))
-                .then(() => console.log(allPartnersShort)),
         ]);
-    }, []);
+
+    },[]);
 
     const onPartnerSelect = (value:number) => {
         const index = allPartnersShort.findIndex((c) => c.id === value);
-        selectedPartners.current.push(allPartnersShort[index]);
-        setPartners(selectedPartners.current);
+        //selectedPartners.current.push(allPartnersShort[index]);
+        //setPartners(selectedPartners.current);
+        setPartners([...partners, allPartnersShort[index]]);
     };
     const onPartnerDeselect = (value:number) => {
-        selectedPartners.current = selectedPartners.current.filter((c) => c.id !== value);
-        setPartners(selectedPartners.current);
+        setPartners(partners.filter((c) => c.id !== value));
     };
     return (
         <div className="adminContainer-block">
@@ -40,6 +42,7 @@ const PartnerBlockAdmin = ({ setPartners }: Props) => {
                     style={{ width: '100%' }}
                     mode="multiple"
                     onSelect={onPartnerSelect}
+                    value={partners.map(x => x.id)}
                     onDeselect={onPartnerDeselect}
                 >
                     {allPartnersShort
