@@ -32,7 +32,10 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
       }
     }
   }
+
 }
+
+.factsModalContainer{
 
 .factsImgContainer {
   position: sticky;
@@ -40,7 +43,7 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
   @include mut.flex-centered();
   @include mut.bg-image($factImg);
 }
-
+}
 .factsContentContainer {
   @include mut.flexed($direction: column, $gap: 15px);
   @include mut.rem-margined(29px, 42px, 24px, 42px);
@@ -50,31 +53,175 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
     line-height: pxToEm(30px);
     color: c.$accented-red-color;
   }
+  .factsTextContainer {
+    height: pxToRem(223px);
+    @include mut.flexed($direction: column, $gap: 10px);
+  
+    @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+    color: c.$lighter-black-color;
+    line-height: pxToEm(23px);
+  
+    overflow-y: auto;
+    padding-right: pxToRem(10px);
+    margin-right: pxToRem(10px);
+  
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+      @include mut.full-rounded(15px);
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: c.$card-scrollbar-track-color;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: c.$accented-gray-color;
+      @include mut.rem-margined($top: -15px, $bottom: 90px);
+    }
+  }
 }
 
-.factsTextContainer {
-  height: pxToRem(223px);
-  @include mut.flexed($direction: column, $gap: 10px);
-
-  @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
-  color: c.$lighter-black-color;
-  line-height: pxToEm(23px);
-
-  overflow-y: auto;
-  padding-right: pxToRem(10px);
-  margin-right: pxToRem(10px);
-
-  &::-webkit-scrollbar-thumb,
-  &::-webkit-scrollbar-track {
-    @include mut.full-rounded(15px);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: c.$card-scrollbar-track-color;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: c.$accented-gray-color;
-    @include mut.rem-margined($top: -15px, $bottom: 90px);
+@media screen and (max-width: 1024px){
+  
+  .interestingFactsModal {
+    @include mut.sized(340px, 445px);
+    
+    &.ant-modal {
+      .ant-modal-content {
+        width: 100%;
+        height: 100%;
+        @include mut.full-rounded(20px, $overflow: visible);
+  
+        padding: 0 !important;
+        box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+          0 6px 20px 0 rgb(0 0 0 / 19%);
+      }
+      .ant-modal-close {
+        @include mut.positioned-as(absolute, $left: 88%, $top: -25px);
+        @include mut.circular(65px, c.$pure-white-color);
+    }
   }
 }
+    .factsModalContainer{
+      width: 100%;
+      height: 15em;
+      .factsImgContainer {   
+          @include mut.sized($width: 100%, $height: 100%);
+        }
+        .factsContentContainer {
+          @include mut.sized($width: 100%, $height: 100% );
+
+          display: inline-block;
+          @include mut.rem-margined(11px, 16px, 24px, 16px);
+        
+          h1 {
+            @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
+            line-height: pxToEm(15px);
+            @include mut.rem-margined(0px, 16px, 8px, 0px);
+          }
+          .factsTextContainer {
+            max-height: 78% ;
+            @include mut.flexed($direction: column, $gap: 10px);
+            @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
+            line-height: pxToEm(20px);
+            margin-right: pxToRem(20px);
+          }
+        }
+      }
+    }
+    
+
+@media screen and (max-width: 768px){
+  
+  .interestingFactsModal {
+    @include mut.sized(340px, 445px);
+    
+    &.ant-modal {
+      .ant-modal-content {
+        width: 100%;
+        height: 100%;
+        @include mut.full-rounded(20px, $overflow: visible);
+  
+        padding: 0 !important;
+        box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+          0 6px 20px 0 rgb(0 0 0 / 19%);
+      }
+      .ant-modal-close {
+        @include mut.positioned-as(absolute, $left: 88%, $top: -25px);
+        @include mut.circular(65px, c.$pure-white-color);
+    }
+  }
+}
+    .factsModalContainer{
+      width: 100%;
+      height: 15em;
+      .factsImgContainer {   
+          @include mut.sized($width: 100%, $height: 100%);
+        }
+        .factsContentContainer {
+          @include mut.sized($width: 100%, $height: 100% );
+          display: inline-block;
+          @include mut.rem-margined(11px, 16px, 24px, 16px);
+        
+          h1 {
+            @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
+            line-height: pxToEm(15px);
+            @include mut.rem-margined(0px, 16px, 8px, 0px);
+          }
+          .factsTextContainer {
+            max-height: 78% ;
+            @include mut.flexed($direction: column, $gap: 10px);
+            @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
+            line-height: pxToEm(20px);
+          }
+        }
+      }
+    }
+    
+@media screen and (max-width: 480px){
+  
+  .interestingFactsModal {
+    @include mut.sized(340px, 445px);
+    
+    &.ant-modal {
+      .ant-modal-content {
+        width: 100%;
+        height: 100%;
+        @include mut.full-rounded(20px, $overflow: visible);
+  
+        padding: 0 !important;
+        box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
+          0 6px 20px 0 rgb(0 0 0 / 19%);
+      }
+      .ant-modal-close {
+        @include mut.positioned-as(absolute, $left: 88%, $top: -25px);
+        @include mut.circular(65px, c.$pure-white-color);
+    }
+  }
+}
+    .factsModalContainer{
+      width: 100%;
+      height: 15em;
+      .factsImgContainer {   
+          @include mut.sized($width: 100%, $height: 100%);
+        }
+        .factsContentContainer {
+          @include mut.sized($width: 100%, $height: 100% );
+          display: inline-block;
+          @include mut.rem-margined(11px, 16px, 24px, 16px);
+        
+          h1 {
+            @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
+            line-height: pxToEm(15px);
+            @include mut.rem-margined(0px, 16px, 8px, 0px);
+          }
+          .factsTextContainer {
+            max-height: 85% ;
+            @include mut.flexed($direction: column, $gap: 10px);
+            @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
+            line-height: pxToEm(20px);
+          }
+        }
+      }
+    }
+    
