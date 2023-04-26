@@ -10,7 +10,7 @@ const TickerComponent = () => {
     const {getSubtitlesByStreetcodeId} = subtitlesApi;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     
-    const [subtitle, setSubtitle] = useState<string>("пусто");
+    const [subtitle, setSubtitle] = useState<string>("");
     
     useEffect(() => {
         if(getStreetCodeId !== errorStreetCodeId){
