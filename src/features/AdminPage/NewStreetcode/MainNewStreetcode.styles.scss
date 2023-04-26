@@ -5,6 +5,7 @@
 $articlesImg: "@assets/images/sources/Articles.png";
 
 .NewStreetcodeContainer {
+    $itemWidth: 154px;
     margin-top: f.pxToRem(100px);
     @include mut.sized(100%);
     display: flex;
@@ -48,6 +49,62 @@ $articlesImg: "@assets/images/sources/Articles.png";
                 transition: all .3s ease-out;
             }
         }
+        
+        .textBlockButton-container{
+                @include mut.sized($width: 100%, $height: 100%);
+                display: flex;
+                gap: 5px;
+                overflow: scroll;
+                flex-wrap: wrap;
+                flex-basis: auto;
+                justify-content: flex-start;
+                overflow-x: hidden;
+
+            &::-webkit-scrollbar {
+            width: .765rem;
+            }
+
+            &::-webkit-scrollbar-thumb,
+            &::-webkit-scrollbar-track {
+            @include mut.full-rounded(15px);
+            }
+
+            &::-webkit-scrollbar-thumb {
+            background: c.$card-scrollbar-track-color;
+            }
+
+            &::-webkit-scrollbar-track {
+            background: c.$accented-gray-color;
+            }
+            .textBlockButton {
+            @include mut.sized($width: $itemWidth);
+            //min-width: pxToRem($itemWidth);
+            min-width: fit-content;
+            margin-left: 2px;
+
+            .item {
+                position:relative;
+                @include mut.sized($height: 49px);
+                @include mut.flex-centered();  
+                border: 1.5px solid c.$dark-red-color;
+                @include mut.full-rounded($rad: 7.86px);
+                @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
+                p {
+                text-align: center;
+                @include mut.with-font($font-size: 12px,$font-weight: 500);
+                line-height: pxToRem(13.6px);
+                color: c.$dark-red-color;
+                }
+
+                .blockItem {
+                margin: 10px;
+                cursor: pointer;
+                text-align: center;
+                color: black;
+                }
+        }
+    }
+}
 
         .admin-button{
             width: fit-content;

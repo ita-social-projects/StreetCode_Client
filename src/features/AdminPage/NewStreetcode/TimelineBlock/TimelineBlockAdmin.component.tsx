@@ -1,6 +1,4 @@
 /* eslint-disable import/extensions */
-import './TimelineBlockAdmin.style.scss';
-
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 
@@ -22,7 +20,7 @@ const TimelineBlockAdmin:React.FC = observer(() => {
     return (
         <div className="adminContainer-block">
             <h2>Хронологія</h2>
-            <div className="timeline-admin-new-items-container">
+            <div className="textBlockButton-container">
                 <button
                     className="buttonWithPlus"
                     onClick={showModal}

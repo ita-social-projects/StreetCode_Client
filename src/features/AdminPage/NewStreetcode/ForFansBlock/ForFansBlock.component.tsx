@@ -1,5 +1,3 @@
-import './ForFansBlock.style.scss';
-
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
@@ -23,7 +21,7 @@ const ForFansBlock = () => {
         <div className="adminContainer-block">
             <h2>Для фанатів</h2>
             
-            <div className="forFansContainer">
+            <div className="textBlockButton-container">
                 <button
                     type="button"
                     className="buttonWithPlus"
