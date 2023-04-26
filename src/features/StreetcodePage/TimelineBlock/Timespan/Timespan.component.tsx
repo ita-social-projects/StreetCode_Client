@@ -10,7 +10,7 @@ const settings = {
 
 const TimelineTimespan = () => {
     const { timelineItemStore } = useMobx();
-    const { getYearsArray, setActiveYear, getTimelineItemArray, setChangedByYear } = timelineItemStore;
+    const { getYearsArray, setActiveYear, getTimelineItemArray } = timelineItemStore;
 
     const middleIdx = Math.round((getYearsArray.length - 1) / 2);
     return (
@@ -28,8 +28,6 @@ const TimelineTimespan = () => {
                             className="timelineYearTick"
                             onClick={() => {
                                 setActiveYear(year);
-                                setChangedByYear(true);
-                                console.log(year);
                             }}
                         >
                             <span>{year}</span>

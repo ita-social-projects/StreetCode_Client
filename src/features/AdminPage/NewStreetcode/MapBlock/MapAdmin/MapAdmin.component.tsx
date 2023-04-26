@@ -32,7 +32,6 @@ const MapOSMAdmin: React.FC<Props> = ({
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null);
     const { streetcodeCoordinatesStore } = useMobx();
-
     useEffect(() => {
         if (coordinates.length > 0) {
 
@@ -57,7 +56,6 @@ const MapOSMAdmin: React.FC<Props> = ({
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0, // set a default streetcodeId for now
                 id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
-                city: ""
             };
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
             coordinates?.map(x => {
@@ -98,7 +96,6 @@ const MapOSMAdmin: React.FC<Props> = ({
                         longtitude: lng,
                         streetcodeId: 0, // set a default streetcodeId for now
                         id: 0, // set a default id for now
-                        city:""
                     },
                 ]);
             }
@@ -116,7 +113,6 @@ const MapOSMAdmin: React.FC<Props> = ({
                             longtitude: longitude,
                             streetcodeId: 0, // set a default streetcodeId for now
                             id: 0, // set a default id for now
-                            city:""
                         },
                     ]);
                     setCenter({ lat: latitude, lng: longitude });
@@ -136,7 +132,6 @@ const MapOSMAdmin: React.FC<Props> = ({
                     longtitude: lng,
                     streetcodeId: 0, // set a default streetcodeId for now
                     id: 0,
-                    city: ""// set a default id for now
                 },
             ]);
         }
@@ -175,8 +170,8 @@ const MapOSMAdmin: React.FC<Props> = ({
     }));
 
     return (
-
         <LoadScript googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M" language="uk" libraries={["places"]}>
+
             <GoogleMap
                 ref={mapRef}
                 mapContainerStyle={containerStyle}

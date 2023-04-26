@@ -1,6 +1,7 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .partnersContainer{
     position: relative;
@@ -43,7 +44,7 @@
 
 @media screen and (max-width: 1024px) {
     .partnersContainer{
-        background-color: #fffcfc;
+        background-color: c.$partners-mobile-background-color;
         background-image: none;
         padding-bottom:  f.pxToRem(20px);
         padding-top: f.pxToRem(94px);

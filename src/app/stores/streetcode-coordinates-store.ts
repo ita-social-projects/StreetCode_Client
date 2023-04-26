@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+
 import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-cooridnates.api';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 
 export default class StreetcodeCoordinatesStore {
     public setStreetcodeCoordinateMap = new Map<number, StreetcodeCoordinate>();
@@ -20,6 +21,7 @@ export default class StreetcodeCoordinatesStore {
     get getStreetcodeCoordinateArray() {
         return Array.from(this.setStreetcodeCoordinateMap.values());
     }
+
     public addStreetcodeCoordinate = (streetcodeCoordinate: StreetcodeCoordinate) => {
         this.setItem(streetcodeCoordinate);
     };

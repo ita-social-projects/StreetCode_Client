@@ -9,14 +9,14 @@ import ukUA from 'antd/locale/uk_UA';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api'
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
+
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner, { PartnerShort } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
-import { StreetcodeCreate, StreetcodeType }
-    from '@/models/streetcode/streetcode-types.model';
+import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
@@ -46,7 +46,13 @@ import StreetcodeCoordinate from '../../../models/additional-content/coordinate.
 import TimelineApi from '../../../app/api/timeline/timeline.api';
 const NewStreetcode = () => {
     const [form] = useForm();
-    const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
+    const {
+        factsStore,
+        timelineItemStore,
+        newStreetcodeInfoStore,
+        sourceCreateUpdateStreetcode,
+        streetcodeCoordinatesStore,
+    } = useMobx();
 
     const [partners, setPartners] = useState<Partner[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
@@ -200,6 +206,8 @@ const NewStreetcode = () => {
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
                 .map((fact: Fact) => ({ ...fact, id: 0 })),
+            coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
+                .map((coordinate: StreetcodeCoordinate) => ({ ...coordinate, id: 0 })),
             partners,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
