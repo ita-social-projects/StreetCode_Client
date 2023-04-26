@@ -2,6 +2,10 @@
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/_utils.functions.scss" as f;
+
+
 
 .interestingFactsContainer {
     @include mut.sized(100%, 848px);
@@ -9,6 +13,14 @@
     .blockHeadingWrapper{
         padding-left: 12px;
     }
+}
+
+.interestingFactsWrapper {
+    @include wr.main-page-block-wrapper();
+
+}
+.single{
+     margin-bottom: pxToRem(200px);
 }
 
 .interestingFactsSliderContainer {
@@ -32,10 +44,10 @@
 }
 
 .singleSlideContainer{
+    margin-bottom: pxToRem(200px);
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
     padding-top:7.5%;
-
     .interestingFactSlide{
         @include  mut.sized(650px, 600px);
 
@@ -61,4 +73,265 @@
         }
     }
 }
+
+
+@media screen
+and (max-width: 1024px){
+
+    .interestingFactsWrapper {
+    @include mut.sized(100%, 100%); 
+    @include wr.main-page-block-wrapper();
+    .slick-dots{         
+        @include mut.rem-margined(0);
+        bottom: 8%;
+    }
+ }
+ .interestingFactsContainer {
+        @include mut.sized(92%, 620px); 
+        @include mut.flex-centered($direction: column);
+    
+        .blockHeadingContainer {
+            margin-left: pxToRem(10px);
+        }
+    }
+    .interestingFactsSliderContainer {
+        @include mut.sized(85%, 100%);
+    }
+    .singleSlideContainer{
+    
+        padding-top:7.5%;
+    
+        .interestingFactSlide{
+            @include mut.full-rounded(20px);
+    
+            .slideImage {
+                @include mut.sized($height: 65%);
+                 @include mut.sized($height: 15%);
+    
+                img {
+                    @include mut.sized($width: 100%, $height: 100%);
+                    @include mut.sized($width: 100%);
+                }
+            }
+            .slideText{
+                @include mut.sized($height: 40%);
+    
+                .heading{
+                    font-size: 22px;
+                }
+
+            }
+        }
+    }
+}
+
+@media screen
+and (min-width: 768px) and (max-width: 1023px){
+    .interestingFactsContainer {
+        @include mut.sized(765px, 620px); 
+        @include mut.flex-centered($direction: column);
+    }
+    .interestingFactsSliderContainer {
+        @include mut.sized(100%, 100%); 
+    }
+
+    .singleSlideContainer{
+    
+        padding-top:12.5%;
+    
+       
+        .interestingFactSlide{
+            @include mut.sized(445px);
+    
+            @include mut.full-rounded(20px);
+    
+            .slideImage {
+                @include mut.sized($height: 65%);
+    
+                img {
+                    @include mut.sized($width: 100%, $height: 100%);
+                }
+            }
+            .slideText{
+                @include mut.sized($height: 40%);
+                .heading{
+                    font-size:20px;
+                    @include mut.rem-padded(7px, 0px, 8px, 15px);
+                }
+    
+                .mainText{
+                    overflow: auto;
+                    height: 150px;
+                    font-size: 15px;
+                    line-height: pxToRem(21px);
+                    margin-bottom: pxToEm(10px);
+    
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        z-index: 1;
+                        bottom: 0;
+                        left: 0;
+                        pointer-events: none;
+                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                        width: 100%;
+                        height: 1.7em;
+                      }
+    
+                }
+            }
+        }
+    }
+}
+
+@media screen
+and (max-width: 768px){
+
+    .interestingFactsWrapper {
+    @include wr.main-page-block-wrapper();
+    .slick-dots{
+        @include mut.rem-margined(0);
+        bottom: 8%;
+    }
+  
+}
+    .interestingFactsContainer {
+        @include mut.sized(765px, 620px); 
+        @include mut.flex-centered($direction: column);
+    
+        .blockHeadingContainer {
+            margin-left: pxToRem(10px);
+        }
+    }
+    .interestingFactsSliderContainer {
+        @include mut.sized(100%, 100%); 
+    }
+
+
+.singleSlideContainer{
+    
+    padding-top:15.5%;
+
+   
+    .interestingFactSlide{
+        @include mut.sized(345px);
+
+        @include mut.full-rounded(20px);
+
+        .slideImage {
+            @include mut.sized($height: 65%);
+
+            img {
+                @include mut.sized($width: 100%, $height: 100%);
+            }
+        }
+        .slideText{
+            @include mut.sized($height: 40%);
+            .heading{
+                font-size:20px;
+                @include mut.rem-padded(7px, 0px, 8px, 15px);
+            }
+
+            .mainText{
+                overflow: auto;
+                height: 150px;
+                font-size: 15px;
+                line-height: pxToRem(21px);
+                margin-bottom: pxToEm(10px);
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    bottom: 0;
+                    left: 0;
+                    pointer-events: none;
+                    background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                    width: 100%;
+                    height: 1.7em;
+                  }
+
+            }
+        }
+    }
+}
+}
+
+@media screen and (max-width: 480px){
+
+   
+.interestingFactsContainer {
+    @include mut.sized(90%, 620px);
+
+    .single{
+        margin-bottom: pxToRem(100px) ;
+   }
+}
+
+.interestingFactsWrapper {
+    @include wr.main-page-block-wrapper();
+    .slick-dots{
+        bottom: 8%;
+     }
+}
+    .interestingFactsSliderContainer {
+        @include mut.sized(770px, 100%); 
+    }
+    .interestingFactSlide{
+        .slideImage {
+            @include mut.sized($height: 45%);
+            img {
+                @include mut.sized($width: 100%);
+            }
+        }
+    }
+    .singleSlideContainer{
+
+        padding-top:15.5%;
+
+        .interestingFactSlide{
+            @include mut.sized(32%);
+            @include mut.full-rounded(20px);
+    
+            .slideImage {
+                @include mut.sized($height: 55%);
+    
+                img {
+                    @include mut.sized($width: 100%, $height: 100%);
+                }
+            }
+            .slideText{
+                @include mut.sized($height: 20%);
+                @include mut.full-rounded(0px);
+
+                .heading{
+                    font-size: 20px;
+                    @include mut.rem-padded(7px, 0px, 8px, 15px);
+
+                }
+    
+                .mainText{
+                    overflow: auto;
+                    height: 165px;
+                    font-size: 15px;
+                    line-height: pxToRem(21px);
+                    margin-bottom: pxToEm(10px);
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        z-index: 1;
+                        bottom: 0;
+                        left: 0;
+                        pointer-events: none;
+                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                        width: 100%;
+                        height: 1.7em;
+                    }
+                }
+            }
+        }
+      
+    }
+}
+
 

@@ -90,15 +90,7 @@
     padding: f.pxToRem(32px) f.pxToRem(20px);
     
     >.checkbox-borderline {
-      border: none;
-      display: flex;
-      align-items: center;
-      overflow: visible;
       border-radius: 0px !important;
-
-      .ant-checkbox-input {
-        @include mut.sized(23px, 23px);
-      }
       
       span {
         display: inline-block;
@@ -111,6 +103,34 @@
         }
       }
     }
+
+      .ant-checkbox {
+          @include mut.sized(25px, 25px);
+      }
+
+      .ant-checkbox-inner {
+        @include mut.sizedImportant(25px, 25px);
+
+        border: 3px solid c.$normal-darker-gray-color;
+        border-radius: 0  !important;
+        overflow: visible;
+      }
+
+      .ant-checkbox-checked {
+
+        .ant-checkbox-inner {
+          border: 3px solid c.$accented-red-color;
+        }
+      }
+
+      .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
+        opacity: 0;
+      }
+
+      .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+        background: c.$accented-red-color;
+        box-shadow: inset 0 0 0 2px c.$pure-white-color;
+      }
   }
 
   .donatesDonateBtn {
@@ -180,7 +200,7 @@
         border: 1px;
 
         > span {
-          @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 600);
+          @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 500);
         }
       }
     }
@@ -207,9 +227,6 @@
         overflow: visible;
 
         span {
-          display: inline-block;
-          overflow: visible;
-    
           &:last-child {
             @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
             line-height: 14px;
