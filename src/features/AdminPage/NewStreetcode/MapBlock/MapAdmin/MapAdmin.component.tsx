@@ -5,13 +5,15 @@ import StreetcodeMarker from '@images/footer/streetcode-marker.png';
 
 import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 
-import { Button, Input, Table } from 'antd';
+import { Button, Form, Input, InputNumber, Table, message } from 'antd';
 
 import useMobx from '@/app/stores/root-store';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 
 const containerStyle = {
     width: '100%',
@@ -31,6 +33,9 @@ const MapOSMAdmin = () => {
     const { streetcodeCoordinatesStore } = useMobx();
     const [cityName, setCityName] = useState('');
     const geocoderRef = useRef<google.maps.Geocoder>(null);
+    const [number, setNumber] = useState('');
+    const [newNumber, setNewNumber] = useState('');
+  
 
     const handleSaveButtonClick = () => {
         if (streetcodeCoordinates.length > 0) {
@@ -152,6 +157,7 @@ const MapOSMAdmin = () => {
         },
     ];
 
+
     const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map(
         (item) => ({
             id: item.id,
@@ -161,11 +167,42 @@ const MapOSMAdmin = () => {
             actions: item,
         }),
     );
+
     const handleLoadScriptNext = () => {
         if (geocoderRef.current === null) {
             geocoderRef.current = new google.maps.Geocoder();
         }
     };
+
+    const onCheckIndexClick = () => {
+        if (newNumber) {
+            StatisticRecordApi.exisByQrId(newNumber)
+                .then((exist) => {
+                   
+                    if (exist) {
+                        message.error({
+                            content: 'Даний айді вже використовується. Використайте інший, будь ласка.',
+                            style: { marginTop: '400vh' }, 
+                          });
+                    } else {
+                        message.success({
+                            content:   'Такій айді вільний. Можете з впевненістю його використовувати',
+                            style: { marginTop: '400vh' }, 
+                          });
+                     
+                    }
+                })
+                .catch(() => {
+                    message.error('Сервер не відповідає');
+                });
+        } else {
+            message.error('Поле порожнє');
+        }
+    };
+
+    const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewNumber(event.target.value);
+      };
     return (
 
         <LoadScript
@@ -192,17 +229,29 @@ const MapOSMAdmin = () => {
                             prefix={<EnvironmentOutlined className="site-form-item-icon" />}
                         />
                     </Autocomplete>
+
+                        <Input
+                            type="number"
+                            className="input-streets"
+                            placeholder="введіть номер"
+                            onChange={handleNewNumberChange}
+                            value={newNumber}
+                        />
+                    
+
+                    <Button className="onMapbtn" onClick={onCheckIndexClick}>
+                        <a>Перевірити айді</a>
+                    </Button>
+
                     <Button
                         className="onMapbtn"
                         onClick={handleMarkerCurrentPosition}
                     >
                         <a>Обрати місце на мапі</a>
-
                     </Button>
                     {streetcodeCoordinates.length > 0 && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
                             <a>Зберегти стріткод</a>
-
                         </Button>
                     )}
 

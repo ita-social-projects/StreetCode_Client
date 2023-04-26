@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import ForFansBlock from '@features/AdminPage/NewStreetcode/ForFansBlock/ForFansBlock.component';
@@ -24,12 +24,12 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<AdminPage />}
         />
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
         />
         <Route
             index
@@ -49,6 +49,11 @@ const router = createBrowserRouter(createRoutesFromElements(
                     <TermDictionary />
                 </ProtectedComponent>
             )}
+        />
+         <Route
+            index
+            path="/privacy-policy"
+            element={ <Navigate replace to={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE} /> }
         />
         <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />

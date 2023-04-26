@@ -173,5 +173,13 @@ export const API_ROUTES = {
     },
     DONATION: {
         CREATE: 'payment/createInvoice',
+    },
+    STATISTIC_RECORD:{
+        GET_ALL:'statisticRecord/getAll',
+        GET_BY_QRID:'statisticRecord/getByQrId',
+        EXIST_BY_QRID: 'statisticRecord/existByQrId',
+        CREATE: 'statisticRecord/create',
+        UPDATE: 'statisticRecord/update',
+        DELETE: 'statisticRecord/delete',
     }
 };
