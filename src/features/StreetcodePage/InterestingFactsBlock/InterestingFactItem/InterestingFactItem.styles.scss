@@ -5,7 +5,7 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .interestingFactSlide {
-  @include mut.sized(387px, 416px);
+  @include mut.sized(387px);
   @include mut.full-rounded(33px);
   z-index: 0;
   cursor: pointer;
@@ -34,6 +34,7 @@
     .mainText {
       @include mut.rem-padded(0, 20px, 0px, 20px);
       color: c.$lighter-black-color;
+      word-wrap: break-word;
 
       @include mut.with-font($font-weight: 300, $font-size: 13px);
       line-height: f.pxToEm(18px);
@@ -55,10 +56,6 @@
   height: 100%;
 }
 
-.interestingFactsSliderContainer .slick-list {
-  @include mut.rem-padded(130px);
-}
-
 .readMoreParagraph {
   @include mut.rem-padded(7px, 20px, 0px, 20px);
   @include vnd.vendored(transition, '.5s ease');
@@ -72,28 +69,25 @@
   
 }
 
-@media screen and (max-width: 1024px){ 
-  .interestingFactSlide {
-    @include mut.sized(205px,240px);
-  }
-}
-
 @media screen
 and (max-width: 1024px){
-
+ .interestingFactSlide {
+    @include mut.sized(205px,240px);
+  }
   .interestingFactsSliderContainer {
-    .slick-list {  
-      @include mut.rem-padded(120px);
+    .slick-track {
+      @include mut.flexed($align-items: flex-start, $gap: 10px);
+      @include mut.rem-margined($left: -34px);
     }
+
     .slick-dots {
-      margin-bottom: 200px;
+ 
       text-align: center;
       justify-content: center;
       padding: 0;
       margin: 0;
       list-style: none;
       text-align: center;
-
       
     }
     li{
@@ -170,16 +164,11 @@ and (max-width: 1024px){
 @media screen
 and (min-width: 768px) and (max-width: 1000px) {
   .interestingFactsSliderContainer{
-    @include mut.sized(100%, 100%);
-    .slick-list {  
-      @include mut.rem-padded(120px);
-    }
+    @include mut.sized(100%);
+
     .slick-track {
       @include mut.flexed($align-items: flex-start, $gap: 10px);
-      @include mut.rem-margined($left: -4px);
-    }
-    .slick-dots {
-        margin-bottom: 200px;
+      @include mut.rem-margined($left: -30px);
     }
   }
 
@@ -211,8 +200,6 @@ and (min-width: 768px) and (max-width: 1000px) {
 
        }
      } 
-  
-
      .readMoreParagraph {
       @include mut.rem-padded(6px, 20px, 0px, 12px);
       @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
@@ -221,13 +208,18 @@ and (min-width: 768px) and (max-width: 1000px) {
  }
 
 @media screen and (max-width: 480px){ 
-
+  .interestingFactsSliderContainer{
+    .slick-track {
+      @include mut.flexed($align-items: flex-start, $gap: 10px);
+      @include mut.rem-margined($left: -36px);
+    }
+  }
   .interestingFactSlide {
     @include mut.full-rounded(20px);
     overflow: visible;
 
       .slideImage {
-        @include mut.sized(100%);//
+        @include mut.sized(100%, 50%);
         @include mut.rounded(20px, 20px);
 
       }
