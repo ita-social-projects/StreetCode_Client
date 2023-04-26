@@ -62,8 +62,6 @@ const DonationBlock = () => {
             } catch (err) {
                 console.error(err);
             }
-        } else {
-            console.log('Checkbox not checked');
         }
     };
 
