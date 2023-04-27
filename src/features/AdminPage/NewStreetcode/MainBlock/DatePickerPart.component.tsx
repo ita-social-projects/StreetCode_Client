@@ -79,68 +79,72 @@ const DatePickerPart:React.FC<{
         }
     };
 
-    return (<>               
+    return ( 
+        <FormItem label="Роки Діяльності">         
             {
                 isLoading ? (
                 <div>Loading...</div>
             ) : 
             (
-            <div className="date-picker-group">
-                <div className="date-picker-group-item">
-                    <Select
-                        className="date-picker-type-input"
-                        options={selectDateOptions}
-                        defaultValue={dateFirstTimePickerType}
-                        onChange={(val) => {
-                            setFirstDateTimePickerType(val);
-                            onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
-                        }}
-                    /> 
-                    <FormItem
-                        rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
-                        name="streetcodeFirstDate"
-                        className='my-picker'
-                    >
-                        <DatePicker
-                            defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
-                            onChange={onChangeFirstDate}
-                            picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
-                        />
-                    </FormItem>
-                </div>
-
-                <div className="date-picker-group-item">
-                    <Select
-                        className="date-picker-type-input"
-                        options={selectDateOptions}
-                        defaultValue={dateSecondTimePickerType}
-                        onChange={(val) => {
-                            setSecondDateTimePickerType(val);
-                            onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
-                            setDefaultSecondDate(val);
-                        }}
-                    />
-
-                    <FormItem 
-                        rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
-                        name="streetcodeSecondDate"
-                        className='my-picker'>
-                        <DatePicker
-                            defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
-                            value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
-                            onChange={onChangeSecondDate}
-                            picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
-                        />
-                    </FormItem>
-                </div>
-
+            <div className='date-picker-container'>
                 <div className="date-string-input">
                     <FormItem name="dateString">
                         <Input defaultValue={defaultDate} disabled />
                     </FormItem>
                 </div>
-           </div>)}
-           </>
+                
+                <div className="date-picker-group">
+                    <div className="date-picker-group-item">
+                        <Select
+                            className="date-picker-type-input"
+                            options={selectDateOptions}
+                            defaultValue={dateFirstTimePickerType}
+                            onChange={(val) => {
+                                setFirstDateTimePickerType(val);
+                                onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
+                            }}
+                        /> 
+                        <FormItem
+                            rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
+                            name="streetcodeFirstDate"
+                            className='my-picker'
+                        >
+                            <DatePicker
+                                defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
+                                onChange={onChangeFirstDate}
+                                picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
+                            />
+                        </FormItem>
+                    </div>
+
+                    <div className="date-picker-group-item">
+                        <Select
+                            className="date-picker-type-input"
+                            options={selectDateOptions}
+                            defaultValue={dateSecondTimePickerType}
+                            onChange={(val) => {
+                                setSecondDateTimePickerType(val);
+                                onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
+                                setDefaultSecondDate(val);
+                            }}
+                        />
+
+                        <FormItem 
+                            rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
+                            name="streetcodeSecondDate"
+                            className='my-picker'>
+                            <DatePicker
+                                defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
+                                value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
+                                onChange={onChangeSecondDate}
+                                picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
+                            />
+                        </FormItem>
+                    </div>
+                </div>   
+            </div>
+           )}
+        </FormItem>
     );
 };
 export default DatePickerPart;
