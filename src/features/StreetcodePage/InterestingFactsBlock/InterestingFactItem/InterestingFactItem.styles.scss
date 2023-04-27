@@ -18,6 +18,9 @@
   .slideImage {
     @include mut.sized(100%, 250px);
     @include mut.rounded(33px, 33px);
+    img{
+      max-height: 350px;
+    }
   }
 
   .slideText {
