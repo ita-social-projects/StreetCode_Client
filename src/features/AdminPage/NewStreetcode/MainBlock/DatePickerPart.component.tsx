@@ -80,7 +80,7 @@ const DatePickerPart:React.FC<{
     };
 
     return ( 
-        <FormItem label="Роки Діяльності">         
+        <FormItem label="Роки">         
             {
                 isLoading ? (
                 <div>Loading...</div>

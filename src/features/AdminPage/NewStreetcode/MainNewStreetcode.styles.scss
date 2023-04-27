@@ -5,137 +5,109 @@
 $articlesImg: "@assets/images/sources/Articles.png";
 
 .NewStreetcodeContainer {
-    $itemWidth: 154px;
     margin-top: f.pxToRem(100px);
-    @include mut.sized(100%);
     display: flex;
-    float: left;  
+    float: left;                               
+    
     .adminContainer
     {
+         @include mut.sized(80%);
+        //@include mut.with-font();
+        margin: auto;
         
-        @include mut.sized(80%);
-        @include mut.with-font();
-        margin: 0px auto;
-        
-        &-block{
-            //border: 2px solid red;
-            margin-bottom: 14px;
-            width: 100%;
+        &-block{ 
+            margin-bottom: f.pxToRem(20px);
             display: flex;
             flex-direction: column;
         }
+
         h2{
-            text-align: center;
-            margin-bottom: 7px;
-            font-size: 1.3em;
-            font-weight: 450;
+            margin-bottom: f.pxToRem(15px);
+            font-size: 1.5em;
+            font-weight: 500;
         }
+
         h3{
             font-weight: 300;
-            margin-bottom: 7px;
+            margin-bottom: f.pxToRem(7px);
         }
+
         .buttonWithPlus{
             @include mut.sized($width: 150px, $height: 50px);
-            @include mut.flex-centered();  
             border: 1.5px solid c.$dark-red-color;
             @include mut.full-rounded($rad: 7.86px);
-            @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
             color: c.$dark-red-color;
-            font-size: 25px;
-            &:hover{
-               cursor: pointer;
+            font-size: 1.7em;
+
+              &:hover{
+                cursor: pointer;
                 background-color: c.$dark-red-color;    
                 color: white !important;
                 transition: all .3s ease-out;
             }
         }
-        
+
+        //контейнер для + кнопок
         .textBlockButton-container{
-                @include mut.sized($width: 100%, $height: 100%);
-                display: flex;
-                gap: 5px;
-                overflow: scroll;
-                flex-wrap: wrap;
-                flex-basis: auto;
-                justify-content: flex-start;
-                overflow-x: hidden;
+            gap: f.pxToRem(4px);
+            display: flex;
+            flex-wrap: wrap;
 
-            &::-webkit-scrollbar {
-            width: .765rem;
-            }
-
-            &::-webkit-scrollbar-thumb,
-            &::-webkit-scrollbar-track {
-            @include mut.full-rounded(15px);
-            }
-
-            &::-webkit-scrollbar-thumb {
-            background: c.$card-scrollbar-track-color;
-            }
-
-            &::-webkit-scrollbar-track {
-            background: c.$accented-gray-color;
-            }
             .textBlockButton {
-            @include mut.sized($width: $itemWidth);
-            //min-width: pxToRem($itemWidth);
-            min-width: fit-content;
-            margin-left: 2px;
+                max-width: fit-content !important;
+                min-width: f.pxToRem(154px);
 
-            .item {
-                position:relative;
-                @include mut.sized($height: 49px);
-                @include mut.flex-centered();  
-                border: 1.5px solid c.$dark-red-color;
-                @include mut.full-rounded($rad: 7.86px);
-                @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);
-                p {
-                text-align: center;
-                @include mut.with-font($font-size: 12px,$font-weight: 500);
-                line-height: pxToRem(13.6px);
-                color: c.$dark-red-color;
+                .item {
+                    border: 1.5px solid c.$dark-red-color;
+                    @include mut.flex-centered();  
+                    @include mut.full-rounded($rad: 7.86px);
+                    @include mut.rem-padded($left: 9.5px, $top: 4px, $right: 9.5px, $bottom: 4px);
+
+                    p {
+                        @include mut.with-font($font-size: 14px,$font-weight: 500);
+                        color: c.$dark-red-color;
+                    }
+
+                    .blockItem {
+                        margin: f.pxToRem(10px);
+                        cursor: pointer;
+                        text-align: center;
+                        color: c.$pure-black-color;
+                    }
                 }
-
-                .blockItem {
-                margin: 10px;
-                cursor: pointer;
-                text-align: center;
-                color: black;
-                }
+            }
         }
-    }
-}
-
-        .admin-button{
-            width: fit-content;
-        }
+   
         .ant-input:hover:enabled{
             border-color: c.$accented-red-color;
-        }  
+        } 
+
+        .ant-select:focus,
         .ant-input:focus,
         .ant-input-focused,
-        .ant-select:focus,
+        .ant-select-focused,
         .ant-picker-focused{
             border-color: c.$accented-red-color;
-            box-shadow: none !important;   
+            box-shadow: none !important;  
         }
-        .ant-upload{
-            max-width: 100px;
-            max-height: 100px;
-        }
-        
 
-        .ant-select-selector, .ant-input-affix-wrapper, .ant-input-number {
+        .ant-select-selector, 
+        .ant-input-affix-wrapper,
+        .ant-input-number {
             @include mut.with-font($font-size: 16px);
-            outline: none;
-            &:hover {
+            outline:none ;
+            box-shadow:none !important;
+
+            &:hover{
                 border-color: c.$accented-red-color;
             }
-            &:focus-within { //selected input
+
+            &:focus-within {
                 border-color: c.$accented-red-color;
                 box-shadow: none;
             }
         }
+
         .ant-form-item-label >label{
             font-size: 16px;
         }
@@ -146,6 +118,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
                 justify-content: center;
             }
         }
+
         .display-flex-column{
             display: flex;
             flex-direction: column;
@@ -153,14 +126,20 @@ $articlesImg: "@assets/images/sources/Articles.png";
 
         .button-margin{
             &-vertical{
-                margin: 12px 0px;
+                margin: f.pxToRem(12px) 0px;
             }
             &-left{
-                margin-left: 5px;
+                margin-left: f.pxToRem(5px);
             }
             &-right{
-                margin-right: 5px;
+                margin-right: f.pxToRem(5px);
             }
+        }
+        
+        .submit-button{
+            min-height: f.pxToRem(100px);
+            min-width: 100%;
+            margin-bottom: f.pxToRem(20px);
         }
      
     }
