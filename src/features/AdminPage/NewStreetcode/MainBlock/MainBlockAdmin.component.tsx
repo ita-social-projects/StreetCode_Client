@@ -223,8 +223,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                 }}
             />
 
-            <p>Теги:</p>
             <div className="tags-block">
+            <Form.Item label="Теги">
                 <div className="tags-block-tagitems">
                     <DragableTags setTags={setSelectedTags} tags={selectedTags} />
 
@@ -238,8 +238,9 @@ const MainBlockAdmin: React.FC<Props> = ({
                         {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
                     </Select>
                 </div>
+                </Form.Item>
                 <div className="device-sizes-list">
-                    <p>Розширення</p>
+                    <Form.Item label="Розширення">
                     <Popover
                         content={(
                             <PopoverForTagContent
@@ -264,6 +265,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                             1600
                         </p>
                     </Popover>
+                    </Form.Item>
                 </div>
             </div>
             <div className="teaser-form-item">
