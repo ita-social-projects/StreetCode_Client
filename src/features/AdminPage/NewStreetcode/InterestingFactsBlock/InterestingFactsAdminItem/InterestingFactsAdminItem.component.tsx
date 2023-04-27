@@ -18,15 +18,15 @@ const InterestingFactAdminItem = ({ fact }: Props) => {
     const [openModal, setModalOpen] = useState<boolean>(false);
 
     return (
-        <div className="interestingFactItem">
+        <div className="textBlockButton">
             <div className="item">
-                <div className="faIcon">
+                <div className="blockItem">
                     <FaPencilAlt onClick={() => setModalOpen(true)} />
                 </div>
                 <p>
                     {fact.title}
                 </p>
-                <div className="faIcon">
+                <div className="blockItem">
                     <FaRegTrashAlt onClick={() => factsStore.deleteFactFromMap(fact.id)} />
                 </div>
                 <div>
