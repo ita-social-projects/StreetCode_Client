@@ -9,7 +9,7 @@ import {
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
-
+import { useParams } from 'react-router-dom';
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
@@ -49,11 +49,18 @@ const MainBlockAdmin: React.FC<Props> = ({
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
+    const [indexId, setIndexId] = useState<number>();
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
-
+        if (parseId) {
+            StreetcodesApi.getById(parseId).then(x => setIndexId(x.index))
+        }
     }, [form, streetcodeTitle]);
+
     const onNameSurnameChange = () => {
         const curSurname = surname.current?.input?.value;
         setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
@@ -136,6 +143,7 @@ const MainBlockAdmin: React.FC<Props> = ({
 
     return (
         <div className="mainblock-add-form">
+
             <Form.Item
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
@@ -143,7 +151,7 @@ const MainBlockAdmin: React.FC<Props> = ({
             >
                 <div className='display-flex-row'>
                     <InputNumber
-                        min={0} max={10000} />
+                        min={0} max={10000} value={indexId} onChange={(value) => setIndexId(value)} />
                     <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
                 </div>
             </Form.Item>
@@ -263,18 +271,18 @@ const MainBlockAdmin: React.FC<Props> = ({
                     label="Тизер"
                     name="teaser"
                     className="maincard-item teaser-form-item"
-                    rules={[{ required: true, message: 'Введіть тизер', max: 450 }]}
+                    rules={[{ required: true, message: 'Введіть тизер', max: 500 }]}
                 >
                     <Input.TextArea
                         onChange={onTextAreaTeaserChange}
                         className="textarea-teaser"
-                        maxLength={450}
+                        maxLength={500}
                     />
                 </Form.Item>
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                        /450
+                        /500
                     </p>
                 </div>
             </div>

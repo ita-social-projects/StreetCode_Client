@@ -99,7 +99,7 @@ const FileInputsPart: React.FC = () => {
                 <FormItem
                     name="animations"
                     label="Анімація"
-                    rules={[{ required: true, message: 'Завантажте анімацію' }]}
+                    rules={[{ required: parseId && images.length > 0 ? false : true, message: parseId ? 'Змінити анімацію':'Завантажте анімацію' }]}
                 >
                     <FileUploader
                       //fileList={images}
@@ -116,14 +116,14 @@ const FileInputsPart: React.FC = () => {
                       // onChange={x => setImages(...images, images[0])}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">+Додати</p>
+                        <p className="ant-upload-text">{parseId && images.length>0 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
                 </FormItem>
 
                 <FormItem
                     name="pictureBlackWhite"
                     label="Чорнобіле"
-                    rules={[{ required: true, message: 'Завантажте зображення' }]}
+                    rules={[{ required: parseId && images.length > 1 ? false : true, message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
                 >
                     <FileUploader
                       //fileList={[images[1] ?? []]}
@@ -140,7 +140,7 @@ const FileInputsPart: React.FC = () => {
                       //onChange={x => setImages(...images, images[1])}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">+Додати</p>
+                        <p className="ant-upload-text">{parseId && images.length > 1 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
                 </FormItem>
 
@@ -164,7 +164,7 @@ const FileInputsPart: React.FC = () => {
                         //onChange={x => setImages(...images, images[2])}
                       >
                         <InboxOutlined />
-                        <p className="ant-upload-text">+Додати</p>
+                        <p className="ant-upload-text">{parseId && images.length > 2 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
                 </FormItem>
             </div>
@@ -174,7 +174,7 @@ const FileInputsPart: React.FC = () => {
                 label="Аудіо"
             >
                 <FileUploader
-                  //fileList={audios}
+                    //fileList={audios}
                     accept=".mp3"
                     maxCount={1}
                     listType="picture-card"
@@ -187,7 +187,7 @@ const FileInputsPart: React.FC = () => {
                     }}
                 >
                         <InboxOutlined />
-                        <p className="ant-upload-text">+Додати</p>
+                        <p className="ant-upload-text">{parseId && audios.length > 0 ? 'Змінити' : '+ Додати'}</p>
                 </FileUploader>
             </FormItem>
             </div>

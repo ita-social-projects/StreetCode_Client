@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Button, Input, Tooltip } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-
+import { useParams } from 'react-router-dom';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import Video from '../../../../../../models/media/video.model';
 
@@ -36,21 +36,25 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
         setVideo(video);
     };
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
+
     return (
         <FormItem 
             name="video" 
             label="Відео"
-            rules={[{ required: true, message: 'Введіть посилання!' }]}>
+            rules={[{ required: parseId? false: true , message: 'Введіть посилання!' }]}>
             
             <div className="youtube-block">
                 <Input
                     title="video"
-                    value={inputInfo?.link??""}
+                    value={inputInfo?.link ?? ""}
                     className="smallerInput"
                     placeholder="ex. https://www.youtube.com"
                     pattern={videoPattern}
                     name="link"
-                    required
+
+                    required={ parseId ? false : true}
                     onChange={handleLinkChange}
                 />
                 <Button
