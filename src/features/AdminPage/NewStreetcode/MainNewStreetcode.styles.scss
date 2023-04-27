@@ -18,17 +18,15 @@ $articlesImg: "@assets/images/sources/Articles.png";
         margin: 0px auto;
         
         &-block{
-            //border: 2px solid red;
-            margin-bottom: 14px;
+            margin-bottom: 30px;
             width: 100%;
             display: flex;
             flex-direction: column;
         }
         h2{
-            text-align: center;
-            margin-bottom: 7px;
+            margin-bottom: 20px;
             font-size: 1.3em;
-            font-weight: 450;
+            font-weight: 500;
         }
         h3{
             font-weight: 300;
@@ -162,7 +160,15 @@ $articlesImg: "@assets/images/sources/Articles.png";
                 margin-right: 5px;
             }
         }
-     
+
+        .submit-button{
+            background-color: c.$dark-red-color;
+            min-height: 50px;
+            min-width: 300px;
+            margin-bottom: 20px;
+        }
+
     }
+   
  }
 
