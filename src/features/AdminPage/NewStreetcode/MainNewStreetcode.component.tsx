@@ -277,7 +277,6 @@ const NewStreetcode = () => {
                                 setStreetcodeType={setStreetcodeType}
                             />
                             <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
-                            <button className = 'streetcode-custom-button' type="submit">Відправити</button>
                         </Form>
                      </div>
                     <InterestingFactsBlock id={parseId??-1} />
@@ -288,6 +287,7 @@ const NewStreetcode = () => {
                     <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
                     <ForFansBlock  />
                     <MapBlockAdmin coordinates={coordinates} />
+                    <Button className = 'streetcode-custom-button submit-button' onClick={onFinish}>Відправити</Button>
                 </div>
             </ConfigProvider>
         </div>
