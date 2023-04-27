@@ -1,6 +1,7 @@
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -9,7 +10,6 @@ import {
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
-import { useParams } from 'react-router-dom';
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
@@ -57,7 +57,7 @@ const MainBlockAdmin: React.FC<Props> = ({
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
         if (parseId) {
-            StreetcodesApi.getById(parseId).then(x => setIndexId(x.index))
+            StreetcodesApi.getById(parseId).then((x) => setIndexId(x.index));
         }
     }, [form, streetcodeTitle]);
 
@@ -109,9 +109,8 @@ const MainBlockAdmin: React.FC<Props> = ({
     };
 
     useEffect(() => {
-        TagsApi.getAll().then(tags => setTags(tags))
+        TagsApi.getAll().then((tags) => setTags(tags));
     }, []);
-
 
     const onSelectTag = (selectedValue: string) => {
         let selected;
@@ -129,7 +128,6 @@ const MainBlockAdmin: React.FC<Props> = ({
 
             setSelectedTags([...selectedTags, { ...selected, title: selectedValue, isVisible: false }]);
         }
-
     };
 
     const onDeselectTag = (deselectedValue: string) => {
@@ -146,18 +144,23 @@ const MainBlockAdmin: React.FC<Props> = ({
 
             <Form.Item
                 label="Номер стріткоду"
-                rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
+                        {pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
                 name="streetcodeNumber"
             >
-                <div className='display-flex-row'>
+                <div className="display-flex-row">
                     <InputNumber
-                        min={0} max={10000} value={indexId} onChange={(value) => setIndexId(value)} />
+                        min={0}
+                        max={10000}
+                        value={indexId}
+                        onChange={(value) => setIndexId(value)}
+                    />
                     <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
                 </div>
             </Form.Item>
 
             <Form.Item>
-                <div className='display-flex-row p-margin'>
+                <div className="display-flex-row p-margin">
                     <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
                     <Switch className="person-event-switch" checked={!streetcodeType} onChange={onSwitchChange} />
                     <p className={!switchState ? 'grey-text' : 'red-text'}>Подія</p>
@@ -169,7 +172,15 @@ const MainBlockAdmin: React.FC<Props> = ({
                     compact
                     className="display-flex-column"
                 >
-                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
+                    <Form.Item
+                        name="surname"
+                        label="Прізвище"
+                        className="people-title-input"
+                        rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
+                            { pattern: /^[а-яА-Я\s]+$/, message: 'Прізвище має містити тільки літерали' },
+                            { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                        ]}
+                    >
                         <Input
                             ref={surname}
                             onChange={onNameSurnameChange}
@@ -177,7 +188,15 @@ const MainBlockAdmin: React.FC<Props> = ({
                             showCount
                         />
                     </Form.Item>
-                    <Form.Item label="Ім'я" name="name" className="people-title-input">
+                    <Form.Item
+                        label="Ім'я"
+                        name="name"
+                        className="people-title-input"
+                        rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
+                            { pattern: /^[а-яА-Я\s]+$/, message: "Ім'я має містити тільки літерали" },
+                            { max: 50, message: "Ім'я не може містити більше 50 символів" },
+                        ]}
+                    >
                         <Input
                             ref={name}
                             onChange={onNameSurnameChange}
@@ -193,7 +212,9 @@ const MainBlockAdmin: React.FC<Props> = ({
                 name="title"
                 label="Назва стріткоду"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
+                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
+                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' },
+                    { pattern: /^[а-яА-Я\s]+$/, message: 'Назва стріткоду має містити тільки літерали' }]}
             >
                 <Input maxLength={100} showCount />
             </Form.Item>
@@ -224,47 +245,47 @@ const MainBlockAdmin: React.FC<Props> = ({
             />
 
             <div className="tags-block">
-            <Form.Item label="Теги">
-                <div className="tags-block-tagitems">
-                    <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+                <Form.Item label="Теги">
+                    <div className="tags-block-tagitems">
+                        <DragableTags setTags={setSelectedTags} tags={selectedTags} />
 
-                    <Select
-                        className="tags-select-input"
-                        mode="tags"
-                        onSelect={onSelectTag}
-                        onDeselect={onDeselectTag}
-                        value={selectedTags.map(x => x.title)}
-                    >
-                        {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
-                    </Select>
-                </div>
+                        <Select
+                            className="tags-select-input"
+                            mode="tags"
+                            onSelect={onSelectTag}
+                            onDeselect={onDeselectTag}
+                            value={selectedTags.map((x) => x.title)}
+                        >
+                            {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
+                        </Select>
+                    </div>
                 </Form.Item>
                 <div className="device-sizes-list">
                     <Form.Item label="Розширення">
-                    <Popover
-                        content={(
-                            <PopoverForTagContent
-                                screenWidth={popoverProps.screenWidth}
-                                tags={selectedTags}
-                            />
-                        )}
-                        title=""
-                        trigger="hover"
-                        overlayStyle={{ width: popoverProps.width }}
-                    >
-                        <p
-                            className="device-size"
-                            onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
+                        <Popover
+                            content={(
+                                <PopoverForTagContent
+                                    screenWidth={popoverProps.screenWidth}
+                                    tags={selectedTags}
+                                />
+                            )}
+                            title=""
+                            trigger="hover"
+                            overlayStyle={{ width: popoverProps.width }}
                         >
+                            <p
+                                className="device-size"
+                                onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
+                            >
                             360
-                        </p>
-                        <p
-                            className="device-size"
-                            onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
-                        >
+                            </p>
+                            <p
+                                className="device-size"
+                                onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
+                            >
                             1600
-                        </p>
-                    </Popover>
+                            </p>
+                        </Popover>
                     </Form.Item>
                 </div>
             </div>
