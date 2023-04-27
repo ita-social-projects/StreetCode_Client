@@ -10,7 +10,6 @@ import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.compo
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
 import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.component';
 import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
-import RedirectPage from '@/features/AdditionalPages/RedirectPage/RedirectPage.component';
 import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
@@ -67,7 +66,6 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/partners-page" element={<PartnersPage />} />
         <Route path="/support-us" element={<SupportUs />} />
-        <Route path="/streetcode" element={<RedirectPage />} />
     </Route>,
 ));
 
