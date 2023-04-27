@@ -64,6 +64,7 @@ const NewStreetcode = () => {
     const [categories, setCategories] = useState<SourceCategory[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
+    const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
     const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [facts, setFacts] = useState<Fact[]>([]);
@@ -106,6 +107,7 @@ const NewStreetcode = () => {
                     });
                     setFirstDate(x.eventStartOrPersonBirthDate);
                     setSecondDate(x.eventEndOrPersonDeathDate);
+                    setDateString(x.dateString);
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Person);
                 }
@@ -117,11 +119,13 @@ const NewStreetcode = () => {
                         streetcodeUrlName: x.transliterationUrl,
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
+
                         teaser: x.teaser,
                         video: 'asdasd'
                     });
                     setFirstDate(x.eventStartOrPersonBirthDate);
                     setSecondDate(x.eventEndOrPersonDeathDate);
+                    setDateString(x.dateString);
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
@@ -218,7 +222,7 @@ const NewStreetcode = () => {
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
-            dateString: form.getFieldValue('dateString'),
+            dateString: form.getFieldValue('dateString') ?? dateString,
             streetcodeArts,
             subtitles,
             firstName: null,
@@ -237,12 +241,13 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
-            //StreetcodeArtApi.update(streetcode).then((response2) => {
-                console.log(streetcode);
-            //})
-            //    .catch((error2) => {
-            //       console.log(error2);
-            //  });
+            console.log(streetcode);
+            StreetcodeArtApi.update(streetcode).then((response2) => {
+                console.log(response2);
+            })
+                .catch((error2) => {
+                   console.log(error2);
+            });
         }
         else {
             StreetcodesApi.create(streetcode)
