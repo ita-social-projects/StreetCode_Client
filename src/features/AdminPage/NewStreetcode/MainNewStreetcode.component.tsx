@@ -63,6 +63,8 @@ const NewStreetcode = () => {
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
     const [categories, setCategories] = useState<SourceCategory[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
+    const [firstDate, setFirstDate] = useState<Date>();
+    const [secondDate, setSecondDate] = useState<Date>();
     const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
@@ -93,7 +95,7 @@ const NewStreetcode = () => {
                     form.setFieldsValue({
                         surname: x.lastName,
                         name: x.firstName,
-                        streetcodeNumber: parseId,
+                        streetcodeNumber: x.index,
                         title: x.title,
                         alias: x.alias,
                         streetcodeUrlName: x.transliterationUrl,
@@ -102,6 +104,8 @@ const NewStreetcode = () => {
                         teaser: x.teaser,
                         video,
                     });
+                    setFirstDate(x.eventStartOrPersonBirthDate);
+                    setSecondDate(x.eventEndOrPersonDeathDate);
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Person);
                 }
@@ -116,6 +120,8 @@ const NewStreetcode = () => {
                         teaser: x.teaser,
                         video: 'asdasd'
                     });
+                    setFirstDate(x.eventStartOrPersonBirthDate);
+                    setSecondDate(x.eventEndOrPersonDeathDate);
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
@@ -184,15 +190,15 @@ const NewStreetcode = () => {
             title: art.title,
             mimeType: art.mimeType,
         }));
-
+        
         const streetcode: StreetcodeCreate = {
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             streetcodeType,
-            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate').toDate(),
-            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
+            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate') ? form.getFieldValue('streetcodeFirstDate').toDate() : ( parseId?firstDate: null ),
+            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate') ? form.getFieldValue('streetcodeSecondDate').toDate() : ( parseId?secondDate: null ),
             imagesId: [
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
@@ -239,12 +245,11 @@ const NewStreetcode = () => {
             //  });
         }
         else {
-
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.log(streetcode);
                 });
         }
     };

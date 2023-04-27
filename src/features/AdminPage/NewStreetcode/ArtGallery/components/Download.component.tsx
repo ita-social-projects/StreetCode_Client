@@ -20,16 +20,18 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
         const indexTmp = useRef<number>(0);
 
         useEffect(() => {
+            if (arts.length > 0) {
+                const newFileList = arts.map((art: ArtCreate) => ({
+                    uid: art.uidFile,
+                    name: art.title,
+                    status: 'done',
+                    thumbUrl: base64ToUrl(art.image, art.mimeType) ?? "",
+                    type: art.mimeType,
+                }));
+                setFileList(newFileList);
+                indexTmp.current = Math.max(...arts.map(x => x.index)) + 1;
 
-            const newFileList = arts.map((art: ArtCreate) => ({
-                uid: art.uidFile,
-                name: art.title,
-                status: 'done',
-                thumbUrl: base64ToUrl(art.image, art.mimeType) ?? "",
-                type: art.mimeType,
-            }));
-            setFileList(newFileList);
-            indexTmp.current = Math.max(arts.map(x => x.index)) + 1;
+            }
         }, [arts]);
 
         const onChange = (uploadParams:UploadChangeParam<UploadFile<any>>) => {
@@ -41,9 +43,13 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
             setFilePreview(file);
             setIsOpen(true);
         };
-        const onSuccessUpload = (image:Image) => {
+        const onSuccessUpload = (image: Image) => {
+            if (arts.length > 0)
+                indexTmp.current = Math.max(...arts.map(x => x.index)) + 1;
+            else
+                indexTmp.current += 1;
             const newArt: ArtCreate = {
-                index: indexTmp.current + 1,
+                index: indexTmp.current,
                 description: 'description',
                 image: image.base64,
                 title: 'title',
@@ -51,7 +57,6 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
                 mimeType: image.mimeType,
                 uidFile: uidsFile.current,
             };
-            indexTmp.current += 1;
             setArts([...arts, newArt]);
         };
         const onRemoveFile = (file:UploadFile) => {

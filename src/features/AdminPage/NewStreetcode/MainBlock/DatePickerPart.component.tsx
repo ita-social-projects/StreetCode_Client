@@ -97,7 +97,7 @@ const DatePickerPart:React.FC<{
                         }}
                     /> 
                     <FormItem
-                        rules={[{ required: true, message: 'Введіть дату' }]}
+                        rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
                         name="streetcodeFirstDate"
                         className='my-picker'
                     >
@@ -117,14 +117,17 @@ const DatePickerPart:React.FC<{
                         onChange={(val) => {
                             setSecondDateTimePickerType(val);
                             onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
+                            setDefaultSecondDate(val);
                         }}
                     />
 
                     <FormItem 
+                        rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
                         name="streetcodeSecondDate"
                         className='my-picker'>
                         <DatePicker
                             defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
+                            value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
                             onChange={onChangeSecondDate}
                             picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
                         />
