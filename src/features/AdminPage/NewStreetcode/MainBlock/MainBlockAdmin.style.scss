@@ -42,12 +42,19 @@
         align-self:center;
         @include mut.with-font();
     }
-    
-    .date-picker-group{
-        display: flex;
-        align-items: bottom;
-        justify-content: left;
 
+.date-picker-container{
+   .date-string-input{
+         input{
+            color:#000;
+            width:100%;
+         }
+    } 
+
+    .date-picker-group{
+
+        display: flex;
+        gap: 10px;
         .my-picker :hover{
             border-color: c.$accented-red-color;
         }
@@ -59,38 +66,22 @@
                 @include mut.with-font();
             }
             width: 100%;
-            box-sizing: border-box;
         }
 
         .date-picker-type-input{
-            width: 100%;
             margin-bottom: f.pxToRem(10px);
         }
-        .date-picker-qroup-item{
-            margin-right: f.pxToRem(5px);
-            width: f.pxToRem(200px); 
+        .date-picker-group-item{
+            width: 100%; 
         }
 
-        .date-string-input{
-            width: f.pxToRem(360px);
-            display: flex;
-            align-items: end;
-            input{
-                width: f.pxToRem(360px);
-            }
-            .ant-form-item {
-                  margin-bottom: 0px;
-              }
-              margin-bottom: 0px;
-        }
         .date-string-input input:disabled{
             background-color: #fff;
             color: #000;
             cursor: default;
         }        
     }
-
-    
+}
     .tags-block{   
         display: flex;
         flex-direction: column;
@@ -135,7 +126,6 @@
         }
     }
         .photo-uploader-container{
-            //border: 2px solid salmon;
             display: flex;
             justify-content: space-between;
         } 
@@ -150,4 +140,3 @@
     .ant-upload:hover {
         border-color:  c.$accented-red-color ;
       } 
-
