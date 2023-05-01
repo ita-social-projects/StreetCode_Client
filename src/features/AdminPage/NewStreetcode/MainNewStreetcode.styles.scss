@@ -77,6 +77,14 @@ $articlesImg: "@assets/images/sources/Articles.png";
                 }
             }
         }
+
+      .ant-picker,
+        .ant-select {
+            .ant-picker-input> input{
+                @include mut.with-font();
+            }
+            width: 100%;
+        }
    
         .ant-input:hover:enabled{
             border-color: c.$accented-red-color;
@@ -86,9 +94,16 @@ $articlesImg: "@assets/images/sources/Articles.png";
         .ant-input:focus,
         .ant-input-focused,
         .ant-select-focused,
-        .ant-picker-focused{
+        .ant-picker-focused,
+        .my-picker :hover{
             border-color: c.$accented-red-color;
             box-shadow: none !important;  
+        }
+
+        .ant-select-disabled,
+        .ant-input-disabled
+        {
+            pointer-events: none;
         }
 
         .ant-select-selector, 
@@ -109,9 +124,18 @@ $articlesImg: "@assets/images/sources/Articles.png";
         }
 
         .ant-form-item-label >label{
-            font-size: 16px;
+            @include mut.with-font($font-size: 16px);
         }
+
+        .ant-upload:hover {
+            border-color:  c.$accented-red-color ;
+          }
         
+        .ant-input-number-handler-up-inner,
+        .ant-input-number-handler-down-inner {
+            color: c.$accented-red-color;
+        }
+         
         .display-flex-row{
             display: flex;
             &-centered{

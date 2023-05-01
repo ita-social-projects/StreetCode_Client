@@ -9,79 +9,46 @@
 
 
 .mainblock-add-form{   
-    .p-margin{ 
-        p{
-            font-size: 18px;
-            &:last-child{
-                margin: 0px 0px 0px 5px;
-            }
-            &:first-child{
-                margin: 0px 5px 0px 0px;
+        .p-margin{ 
+            gap:5px;
+            p{
+                font-size: 18px;
+            
             }
         }
-    }
+        
         .grey-text{
             color:grey;
         }
+
         .red-text{
             color:c.$accented-red-color;
         }
+
         .ant-switch-checked{
             background-color: c.$dark-red-color;
         } 
-    }
-    .ant-input-number{
-        margin: 0px;
-    }
-    .ant-input-number-handler-up-inner,
-    .ant-input-number-handler-down-inner {
-        color: c.$accented-red-color;
+
     }
 
-    .ant-input{
-        align-self:center;
-        @include mut.with-font();
-    }
 
-.date-picker-container{
-   .date-string-input{
-         input{
-            color:#000;
-            width:100%;
-         }
-    } 
-
-    .date-picker-group{
-
-        display: flex;
-        gap: 10px;
-        .my-picker :hover{
-            border-color: c.$accented-red-color;
-        }
-        .my-picker{
-            margin-bottom: 0px;
-        }
-        .ant-picker {
-            .ant-picker-input> input{
-                @include mut.with-font();
+    .date-picker-container{
+        .date-picker-group{
+            display: flex;
+            gap: f.pxToRem(10px);
+            .my-picker{
+                margin-bottom: 0px;
             }
-            width: 100%;
-        }
 
-        .date-picker-type-input{
-            margin-bottom: f.pxToRem(10px);
+            .date-picker-type-input{
+                margin-bottom: f.pxToRem(10px);
+            }
+            .date-picker-group-item{
+                width: 100%; 
+            }    
         }
-        .date-picker-group-item{
-            width: 100%; 
-        }
-
-        .date-string-input input:disabled{
-            background-color: #fff;
-            color: #000;
-            cursor: default;
-        }        
     }
-}
+
     .tags-block{   
         display: flex;
         flex-direction: column;
@@ -97,7 +64,7 @@
         }
         .device-sizes-list{
             p{margin-bottom: 2px;}
-             display: flex;
+            display: flex;
             flex-direction: column;
             justify-content: left;
             p:hover{
@@ -106,12 +73,14 @@
              }
         }
     }
+
     .textarea-teaser{
         height:f.pxToRem(80px);
     }
     .ant-input-textarea>textarea{
         resize: none;
     }
+
     .teaser-form-item{
         .textarea-teaser{
             resize: none;
@@ -125,18 +94,11 @@
             }
         }
     }
-        .photo-uploader-container{
-            display: flex;
-            justify-content: space-between;
-        } 
-    .ant-upload{
-        min-width: 100px;
-        min-height: 100px;
-        &-text{
-            font-size: 14px !important;
-        }
-    }
+
+    .photo-uploader-container{
+        display: flex;
+        justify-content: space-between;
+    } 
+ 
     
-    .ant-upload:hover {
-        border-color:  c.$accented-red-color ;
-      } 
+    
