@@ -1,8 +1,9 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
-{ EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord } from '@models/streetcode/streetcode-types.model';
+{ EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord, StreetcodeFilterResultDTO } from '@models/streetcode/streetcode-types.model';
 
+import StreetcodeFilterRequestDTO from '@/models/filters/streetcode-filter.model';
 import GetAllStreetcodes from '@/models/streetcode/getAllStreetcodes.request';
 
 const StreetcodesApi = {
@@ -28,6 +29,11 @@ const StreetcodesApi = {
     getCount: () => Agent.get<number>(`${API_ROUTES.STREETCODES.GET_COUNT}`),
 
     getAllShort: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`),
+
+    getByFilter: (filter: StreetcodeFilterRequestDTO) => Agent.get<StreetcodeFilterResultDTO[]>(
+        `${API_ROUTES.STREETCODES.GET_BY_FILTER}`,
+        new URLSearchParams(Object.entries(filter)),
+    ),
 
     getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
 

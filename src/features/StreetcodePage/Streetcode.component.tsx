@@ -11,10 +11,10 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
+import dayjs from 'dayjs';
 
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
-import dayjs from 'dayjs';
 
 const PartnersLazyComponent = lazy(() => import('@streetcode/PartnersBlock/Partners.component'));
 const MapLazy = lazy(() => import('@streetcode/MapBlock/MapBlock.component'));
@@ -38,6 +38,18 @@ const StreetcodeContent = () => {
             }, 100);
         });
     }, [setCurrentStreetcodeId, streetcodeUrl]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            const blockId = window.location.hash.substring(1);
+            const blockElement = document.getElementById(blockId);
+            console.log(blockId);
+            console.log(blockElement);
+            if (blockElement) {
+                blockElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 5000);
+    }, []);
 
     return (
         <div className="streetcodeContainer">

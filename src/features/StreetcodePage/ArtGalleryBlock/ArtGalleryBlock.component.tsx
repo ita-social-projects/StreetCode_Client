@@ -194,7 +194,10 @@ const ArtGalleryBlock = () => {
     };
 
     return (
-        <div className="artGalleryWrapper">
+        <div
+            id="art-gallery"
+            className="artGalleryWrapper"
+        >
             <div className="artGalleryContainer">
                 <BlockHeading headingText="Арт-галерея" />
                 <div className="artGalleryContentContainer">

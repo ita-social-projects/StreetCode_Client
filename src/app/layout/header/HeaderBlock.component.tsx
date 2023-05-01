@@ -52,6 +52,10 @@ const HeaderBlock = () => {
         toggle();
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+    };
+
     return (
         <div className="HeaderBlock">
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
@@ -62,6 +66,7 @@ const HeaderBlock = () => {
                     <input
                         placeholder="Пошук..."
                         ref={inputRef}
+                        onChange={handleInputChange}
                         className={`ant-input css-dev-only-do-not-override-26rdvq
                             hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
                     />

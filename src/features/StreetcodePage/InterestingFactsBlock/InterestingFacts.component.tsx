@@ -61,7 +61,10 @@ const InterestingFactsComponent = () => {
     };
 
     return (
-        <div className={`interestingFactsWrapper ${getFactArray.length === 1 ? 'single' : ''}`}>
+        <div
+            id="wow-facts"
+            className={`interestingFactsWrapper ${getFactArray.length === 1 ? 'single' : ''}`}
+        >
             <div className="interestingFactsContainer">
                 <BlockHeading headingText="Wow-факти" />
                 <div className="interestingFactsSliderContainer">

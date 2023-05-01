@@ -49,7 +49,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
-    console.log(streetcode);
 
     const [images, setImages] = useState<Image[]>([]);
     useEffect(() => {

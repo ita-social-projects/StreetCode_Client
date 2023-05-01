@@ -1,5 +1,6 @@
 import './PrivatePolicy.styles.scss';
 
+import { useEffect } from 'react';
 import Footer from '@layout/footer/Footer.component';
 
 import SectionFifth from './SubSections/SubSectionFifth/SectionFifth.component';
@@ -11,25 +12,33 @@ import SectionSixth from './SubSections/SubSectionSixth/SectionSixth.component';
 import SectionThird from './SubSections/SubSectionThird/SectionThird.component';
 import Title from './Title/Title.component';
 
-const PrivatePolicy = () => (
-    <>
-        <div className="privatePolicyContainer">
-            <div className="wrapper">
-                <Title />
-                <main>
-                    <SectionFirst />
-                    <SectionSecond />
-                    <SectionThird />
-                    <SectionFourth />
-                    <SectionFifth />
-                    <SectionSixth />
-                    <SectionSeventh />
-                </main>
-            </div>
-        </div>
-        <Footer />
+const PrivatePolicy = () => {
+    useEffect(() => {
+        const blockElement = document.getElementById('fifth');
+        console.log(blockElement);
+        blockElement?.scrollIntoView({ behavior: 'smooth' });
+    }, []);
 
-    </>
-);
+    return (
+        <>
+            <div className="privatePolicyContainer">
+                <div className="wrapper">
+                    <Title />
+                    <main>
+                        <SectionFirst />
+                        <SectionSecond />
+                        <SectionThird />
+                        <SectionFourth />
+                        <SectionFifth />
+                        <SectionSixth />
+                        <SectionSeventh />
+                    </main>
+                </div>
+            </div>
+            <Footer />
+
+        </>
+    );
+};
 
 export default PrivatePolicy;
