@@ -19,42 +19,42 @@ const MainDrawerList = ({ active, scalingCooficient, setActive } : Props) => {
                 parentActive={active}
                 setParentActive={setActive}
                 text="Головна"
-                link = "/"
+                link="/404"
             />
             <HeaderDrawerItem
                 id={2 * scalingCooficient}
                 parentActive={active}
                 setParentActive={setActive}
                 text="Стріткоди"
-                link = "/catalog"
+                link="/catalog"
             />
             <HeaderDrawerItem
                 id={3 * scalingCooficient - adjust}
                 parentActive={active}
                 setParentActive={setActive}
                 text="Про нас"
-                link = "/"
+                link="404"
             />
             <HeaderDrawerItem
                 id={4 * scalingCooficient - adjust}
                 parentActive={active}
                 setParentActive={setActive}
                 text="Партнери"
-                link = "/partners-page"
+                link="/partners-page"
             />
             <HeaderDrawerItem
                 id={5 * scalingCooficient - adjust}
                 parentActive={active}
                 setParentActive={setActive}
                 text="Донати"
-                link = "/support-us"
+                link="/support-us"
             />
             <HeaderDrawerItem
                 id={6 * scalingCooficient - adjust}
                 parentActive={active}
                 setParentActive={setActive}
                 text="Контакти"
-                link = "/contact-us"
+                link="/contact-us"
             />
         </div>
     );
