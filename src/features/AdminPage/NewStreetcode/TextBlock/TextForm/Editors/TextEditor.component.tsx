@@ -92,7 +92,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                         disabled={selected === ''}
                     >
                         {getTermArray.map(
-                            (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
+                            (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>
                         )}
                     </AutoComplete>
             </Form.Item>
