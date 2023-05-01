@@ -1,4 +1,4 @@
-import './MainNewStreetcode.styles.scss';
+import '../MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
 import RelatedFigure from '@models/streetcode/related-figure.model';
@@ -6,73 +6,66 @@ import RelatedFigure from '@models/streetcode/related-figure.model';
 import { ConfigProvider, Form, Button } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
-import RelatedFigureApi from '@app/api/streetcode/related-figure.api'
+
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
-
-import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
+import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
-import Video, { VideoCreate } from '@/models/media/video.model';
-import Partner, { PartnerShort } from '@/models/partners/partners.model';
+import  { VideoCreate } from '@/models/media/video.model';
+import { PartnerShort } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
-import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
+import { StreetcodeCreate, StreetcodeType }
+    from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
-
-import PageBar from '../PageBar/PageBar.component';
-
-import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
-import ForFansBlock from './ForFansBlock/ForFansBlock.component';
-import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
-import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
-import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
-import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
-import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
-import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
-import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
-import TextBlock from './TextBlock/TextBlock.component';
-import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import TextsApi from '@/app/api/streetcode/text-content/texts.api';
+import PartnersApi from '@/app/api/partners/partners.api';
+import VideosApi from '@/app/api/media/videos.api';
+import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
+import SourcesApi from '@/app/api/sources/sources.api';
+import SubtitlesApi from '@/app/api/additional-content/subtitles.api';
+import StreetcodeCoordinateApi from '@/app/api/additional-content/streetcode-cooridnates.api';
+import PageBar from '../../PageBar/PageBar.component';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
+import ArtGalleryBlock from '../ArtGallery/ArtGallery.component'; 
+import ForFansBlock from '../ForFansBlock/ForFansBlock.component';
+import FactsApi from '@/app/api/streetcode/text-content/facts.api';
+import RelatedFiguresBlock from '../HistoryRelations/HistoryRelations.component';
+import InterestingFactsBlock from '../InterestingFactsBlock/InterestingFactsBlock.component';
+import MainBlockAdmin from '../MainBlock/MainBlockAdmin.component';
+import MapBlockAdmin from '../MapBlock/MapBlockAdmin.component';
+import PartnerBlockAdmin from '../PartnerBlock/PartnerBlockAdmin.components';
+import SubtitleBlock from '../SubtitileBlock/SubtitleBlock.component';
+import TextInputInfo from '../TextBlock/InputType/TextInputInfo.model';
+import TextBlock from '../TextBlock/TextBlock.component';
+import TimelineBlockAdmin from '../TimelineBlock/TimelineBlockAdmin.component';
+import Video from '@/models/media/video.model';
 import { useParams } from 'react-router-dom';
-import StreetcodeArtApi from '../../../app/api/media/streetcode-art.api';
-import VideosApi from '../../../app/api/media/videos.api';
-import PartnersApi from '../../../app/api/partners/partners.api';
-import SubtitlesApi from '../../../app/api/additional-content/subtitles.api';
-import FactsApi from '../../../app/api/streetcode/text-content/facts.api';
-import TextsApi from '../../../app/api/streetcode/text-content/texts.api';
-import SourcesApi from '../../../app/api/sources/sources.api';
-import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
-import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
-import TimelineApi from '../../../app/api/timeline/timeline.api';
-const NewStreetcode = () => {
-    const [form] = useForm();
-    const {
-        factsStore,
-        timelineItemStore,
-        newStreetcodeInfoStore,
-        sourceCreateUpdateStreetcode,
-        streetcodeCoordinatesStore,
-    } = useMobx();
 
-    const [partners, setPartners] = useState<Partner[]>([]);
-    const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
-    const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
-    const [video, setVideo] = useState<Video>();
-    const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
-    const [subTitle, setSubTitle] = useState<string>('');
-    const [figures, setFigures] = useState<RelatedFigure[]>([]);
-    const [categories, setCategories] = useState<SourceCategory[]>([]);
+
+
+const streetCodeBlock = () => {
+    const [form] = useForm();
+    const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
+
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
-    const [firstDate, setFirstDate] = useState<Date>();
-    const [dateString, setDateString] = useState<string>();
-    const [secondDate, setSecondDate] = useState<Date>();
-    const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [facts, setFacts] = useState<Fact[]>([]);
+    const [subTitle, setSubTitle] = useState<string>('');
+    const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [arts, setArts] = useState<ArtCreate[]>([]);
+    const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
+    const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
+    const [figures, setFigures] = useState<RelatedFigure[]>([]);
+    const [partners, setPartners] = useState<PartnerShort[]>([]);
+    const [video, setVideo] = useState<Video>();
+    
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
-    if (parseId)
-        timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
+    timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
+    
+
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
@@ -80,13 +73,13 @@ const NewStreetcode = () => {
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then(result => {
                 const newArts = result.map(x => ({
-                    description: x.art.description ?? '',
-                    title: x.art.image.alt ?? '',
+                    description: x.art.description ?? "",
+                    title: x.art.image.alt ?? "",
                     imageId: x.art.imageId,
                     image: x.art.image.base64,
                     index: x.index,
                     mimeType: x.art.image.mimeType,
-                    uidFile: `${x.index}`,
+                    uidFile: x.index + ""
                 }));
                 setArts([...newArts]);
             });
@@ -96,18 +89,15 @@ const NewStreetcode = () => {
                     form.setFieldsValue({
                         surname: x.lastName,
                         name: x.firstName,
-                        streetcodeNumber: x.index,
+                        streetcodeNumber: parseId,
                         title: x.title,
                         alias: x.alias,
                         streetcodeUrlName: x.transliterationUrl,
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
-                        video,
+                        //video: video
                     });
-                    setFirstDate(x.eventStartOrPersonBirthDate);
-                    setSecondDate(x.eventEndOrPersonDeathDate);
-                    setDateString(x.dateString);
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Person);
                 }
@@ -119,30 +109,26 @@ const NewStreetcode = () => {
                         streetcodeUrlName: x.transliterationUrl,
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
-
                         teaser: x.teaser,
-                        video: 'asdasd'
+                        video: "asdasd"
                     });
-                    setFirstDate(x.eventStartOrPersonBirthDate);
-                    setSecondDate(x.eventEndOrPersonDeathDate);
-                    setDateString(x.dateString);
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
             });
             TextsApi.getByStreetcodeId(parseId).then(result => {
                 setInputInfo(result);
-            });
+            })
             VideosApi.getByStreetcodeId(parseId).then(result => {
                 setVideo(result);
-            });
+            })
             RelatedFigureApi.getByStreetcodeId(parseId).then(result => {
                 setFigures([...result]);
             });
             PartnersApi.getByStreetcodeId(parseId).then(result => {
                 setPartners([...result]);
             });
-            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
+            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then(result => {
                 setSubTitle(result[0].subtitleText);
             });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then(result => {
@@ -173,6 +159,7 @@ const NewStreetcode = () => {
 
         }
     }, []);
+    
 
     const onFinish = (data) => {
         const subtitles: SubtitleCreate[] = [{
@@ -194,15 +181,15 @@ const NewStreetcode = () => {
             title: art.title,
             mimeType: art.mimeType,
         }));
-        
+
         const streetcode: StreetcodeCreate = {
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             streetcodeType,
-            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate') ? form.getFieldValue('streetcodeFirstDate').toDate() : ( parseId?firstDate: null ),
-            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate') ? form.getFieldValue('streetcodeSecondDate').toDate() : ( parseId?secondDate: null ),
+            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate').toDate(),
+            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate').toDate(),
             imagesId: [
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
@@ -216,13 +203,11 @@ const NewStreetcode = () => {
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
                 .map((fact: Fact) => ({ ...fact, id: 0 })),
-            coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
-                .map((coordinate: StreetcodeCoordinate) => ({ ...coordinate, id: 0 })),
             partners,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
-            dateString: form.getFieldValue('dateString') ?? dateString,
+            dateString: form.getFieldValue('dateString'),
             streetcodeArts,
             subtitles,
             firstName: null,
@@ -241,57 +226,39 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
-            console.log(streetcode);
-            StreetcodeArtApi.update(streetcode).then((response2) => {
-                console.log(response2);
-            })
-                .catch((error2) => {
-                   console.log(error2);
-            });
+            //StreetcodeArtApi.update(streetcode).then((response2) => {
+                console.log(streetcode);
+            //})
+             //   .catch((error2) => {
+              //      console.log(error2);
+              //  });
         }
         else {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
+                    console.log(response);
                 })
                 .catch((error) => {
-                    console.log(streetcode);
+                    console.log(error);
                 });
         }
     };
-
-
-    return (
-        <div className="NewStreetcodeContainer">
-            <PageBar />
-            <ConfigProvider locale={ukUA}>
-                <div className="adminContainer">
-                    {/*<StreetCodeBlock />*/}
-                    <div className='adminContainer-block'>
-                        <h2>Стріткод</h2>
-                        <Form form={form} layout="vertical" onFinish={onFinish}>
-                            <MainBlockAdmin
-                                form={form}
-                                selectedTags={selectedTags}
-                                setSelectedTags={setSelectedTags}
-                                streetcodeType={streetcodeType}
-                                setStreetcodeType={setStreetcodeType}
-                            />
-                            <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
-                        </Form>
-                     </div>
-                    <InterestingFactsBlock id={parseId??-1} />
-                    <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
-                    <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
-                    <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
-                    <ArtGalleryBlock arts={arts} setArts={setArts} />
-                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
-                    <ForFansBlock  />
-                    <MapBlockAdmin coordinates={coordinates} />
-                    <Button className = 'streetcode-custom-button submit-button' onClick={onFinish}>Відправити</Button>
-                </div>
-            </ConfigProvider>
+    return(
+        <div className='adminContainer-block'>
+            <h2>Стріткод</h2>
+            <Form form={form} layout="vertical" onFinish={onFinish}>
+                <MainBlockAdmin
+                    form={form}
+                    selectedTags={selectedTags}
+                    setSelectedTags={setSelectedTags}
+                    streetcodeType={streetcodeType}
+                    setStreetcodeType={setStreetcodeType}
+                    />
+                    
+                <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} />
+                <Button className = 'streetcode-custom-button' type="submit">Відправити</Button>
+            </Form>
         </div>
     );
-};
-
-export default NewStreetcode;
+}
+export default streetCodeBlock;

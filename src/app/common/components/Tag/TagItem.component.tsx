@@ -2,10 +2,10 @@ import './TagItem.styles.scss';
 
 import { Button } from 'antd';
 
-import { TagVisible } from '@/models/additional-content/tag.model';
+import { StreetcodeTag } from '@/models/additional-content/tag.model';
 
 const TagItem: React.FC<{
-    tag:TagVisible
+    tag: StreetcodeTag
 }> = ({ tag }) => (
     <Button className="tagItem" key={tag.id}>
         { tag.title }

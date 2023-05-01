@@ -3,14 +3,12 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-$factImg: "@assets/images/interesting-facts/WowFacts1.png";
 
 .interestingFactsModal {
-  @include mut.sizedImportant(823px, 765px);
+  @include mut.sizedImportant(823px, 700px);
 
   &.ant-modal {
     .ant-modal-content {
-      height: pxToRem(765px);
       @include mut.full-rounded(70px, $overflow: visible);
 
       padding: 0 !important;
@@ -38,23 +36,29 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
 .factsModalContainer{
 
 .factsImgContainer {
-  position: sticky;
-  @include mut.sizedImportant(100%, 435px);
-  @include mut.flex-centered();
-  @include mut.bg-image($factImg);
-}
-}
+    img{
+      @include mut.rounded(70px, 70px);
+      max-height: 395px;
+      width: 99%
+    }
+    @include mut.flex-centered();
+    @include mut.sizedImportant(100%, 400px);
+    position: sticky;
+  }
+
 .factsContentContainer {
+  height: pxToRem(255px);
   @include mut.flexed($direction: column, $gap: 15px);
-  @include mut.rem-margined(29px, 42px, 24px, 42px);
+  @include mut.rem-margined(26px, 42px, 24px, 42px);
 
   h1 {
     @include mut.with-font(ft.$roboto-font, 500, 26px, normal);
-    line-height: pxToEm(30px);
+    line-height: pxToEm(22px);
+    margin: 0;
     color: c.$accented-red-color;
   }
   .factsTextContainer {
-    height: pxToRem(223px);
+    height: pxToRem(168px);
     @include mut.flexed($direction: column, $gap: 10px);
   
     @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
@@ -76,15 +80,15 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
   
     &::-webkit-scrollbar-track {
       background: c.$accented-gray-color;
-      @include mut.rem-margined($top: -15px, $bottom: 90px);
+      @include mut.rem-margined($top: 0px, $bottom: 10px);
     }
   }
 }
-
+}
 @media screen and (max-width: 1024px){
   
   .interestingFactsModal {
-    @include mut.sized(340px, 445px);
+    @include mut.sizedImportant(350px, 445px);
     
     &.ant-modal {
       .ant-modal-content {
@@ -106,7 +110,14 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
       width: 100%;
       height: 15em;
       .factsImgContainer {   
-          @include mut.sized($width: 100%, $height: 100%);
+          @include mut.sizedImportant(100%, 210px);
+
+          img{
+            @include mut.rounded(20px, 20px);
+        
+            max-height: 100%;
+            width: 99%
+          }
         }
         .factsContentContainer {
           @include mut.sized($width: 100%, $height: 100% );
@@ -120,108 +131,35 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
             @include mut.rem-margined(0px, 16px, 8px, 0px);
           }
           .factsTextContainer {
-            max-height: 78% ;
+            max-height: 79% ;
             @include mut.flexed($direction: column, $gap: 10px);
             @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
             line-height: pxToEm(20px);
             margin-right: pxToRem(20px);
-          }
-        }
-      }
-    }
-    
 
-@media screen and (max-width: 768px){
-  
-  .interestingFactsModal {
-    @include mut.sized(340px, 445px);
-    
-    &.ant-modal {
-      .ant-modal-content {
-        width: 100%;
-        height: 100%;
-        @include mut.full-rounded(20px, $overflow: visible);
-  
-        padding: 0 !important;
-        box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
-          0 6px 20px 0 rgb(0 0 0 / 19%);
+            &::-webkit-scrollbar-track {
+              background: c.$accented-gray-color;
+              @include mut.rem-margined($top: 0px, $bottom: 10px);
+            }
+
+          }
+     
+        }
       }
-      .ant-modal-close {
-        @include mut.positioned-as(absolute, $left: 88%, $top: -25px);
-        @include mut.circular(65px, c.$pure-white-color);
+    }
+    
+@media screen and (max-width: 360px){
+  
+  .factsModalContainer{
+    .factsImgContainer {   
+        @include mut.sizedImportant(100%, 200px);
+
+        img{
+          @include mut.rounded(20px, 20px);
+      
+          max-height: 100%;
+          width: 99%
+        }
+      }
     }
   }
-}
-    .factsModalContainer{
-      width: 100%;
-      height: 15em;
-      .factsImgContainer {   
-          @include mut.sized($width: 100%, $height: 100%);
-        }
-        .factsContentContainer {
-          @include mut.sized($width: 100%, $height: 100% );
-          display: inline-block;
-          @include mut.rem-margined(11px, 16px, 24px, 16px);
-        
-          h1 {
-            @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
-            line-height: pxToEm(15px);
-            @include mut.rem-margined(0px, 16px, 8px, 0px);
-          }
-          .factsTextContainer {
-            max-height: 78% ;
-            @include mut.flexed($direction: column, $gap: 10px);
-            @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
-            line-height: pxToEm(20px);
-          }
-        }
-      }
-    }
-    
-@media screen and (max-width: 480px){
-  
-  .interestingFactsModal {
-    @include mut.sized(340px, 445px);
-    
-    &.ant-modal {
-      .ant-modal-content {
-        width: 100%;
-        height: 100%;
-        @include mut.full-rounded(20px, $overflow: visible);
-  
-        padding: 0 !important;
-        box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
-          0 6px 20px 0 rgb(0 0 0 / 19%);
-      }
-      .ant-modal-close {
-        @include mut.positioned-as(absolute, $left: 88%, $top: -25px);
-        @include mut.circular(65px, c.$pure-white-color);
-    }
-  }
-}
-    .factsModalContainer{
-      width: 100%;
-      height: 15em;
-      .factsImgContainer {   
-          @include mut.sized($width: 100%, $height: 100%);
-        }
-        .factsContentContainer {
-          @include mut.sized($width: 100%, $height: 100% );
-          display: inline-block;
-          @include mut.rem-margined(11px, 16px, 24px, 16px);
-        
-          h1 {
-            @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
-            line-height: pxToEm(15px);
-            @include mut.rem-margined(0px, 16px, 8px, 0px);
-          }
-          .factsTextContainer {
-            max-height: 85% ;
-            @include mut.flexed($direction: column, $gap: 10px);
-            @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
-            line-height: pxToEm(20px);
-          }
-        }
-      }
-    }
-    

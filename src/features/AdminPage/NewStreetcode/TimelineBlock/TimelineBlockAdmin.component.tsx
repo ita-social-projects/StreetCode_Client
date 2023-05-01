@@ -1,6 +1,4 @@
 /* eslint-disable import/extensions */
-import './TimelineBlockAdmin.style.scss';
-
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 
@@ -10,7 +8,7 @@ import TimelineItem from '@/models/timeline/chronology.model';
 import NewTimelineItem from './NewTimelineItem/NewTimelineItem.component';
 import NewTimelineModal from './NewTimelineModal/NewTimelineModal.component';
 
-const TimelineBlockAdmin:React.FC = observer(() => {
+const TimelineBlockAdmin = () => {
     const { timelineItemStore } = useMobx();
     const [isModalCreateOpen, setIsModalCreateOpen] = useState<boolean>(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState<boolean>(false);
@@ -20,15 +18,15 @@ const TimelineBlockAdmin:React.FC = observer(() => {
     };
 
     return (
-        <div className="timeline-admin-container">
-            <p className="block-header">Хронологія</p>
-            <div className="timeline-admin-new-items-container">
-                <div
-                    className="timeline-admin-item timeline-admin-add-new"
+        <div className="adminContainer-block">
+            <h2>Хронологія</h2>
+            <div className="textBlockButton-container">
+                <button
+                    className="buttonWithPlus"
                     onClick={showModal}
                 >
                 +
-                </div>
+                </button>
                 {timelineItemStore
                     .getTimelineItemArray
                     .map((ti) => (
@@ -52,6 +50,6 @@ const TimelineBlockAdmin:React.FC = observer(() => {
             />
         </div>
     );
-});
+};
 
-export default TimelineBlockAdmin;
+export default observer(TimelineBlockAdmin);

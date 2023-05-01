@@ -9,19 +9,19 @@ import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
 
 interface Props {
+    figures: RelatedFigure[];
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
 }
-const RelatedFiguresBlock = ({ setFigures }: Props) => {
+
+const RelatedFiguresBlock = ({ figures,setFigures }: Props) => {
     const [relations, setRelations] = useState<RelatedFigure[]>([]);
     const [options, setOptions] = useState<RelatedFigure[]>([]);
-
     const handleAdd = (relationToAdd: RelatedFigure) => {
         const existing = relations.find((rel) => rel.id === relationToAdd.id);
         if (existing === undefined) {
             setRelations((prevState) => [...prevState, relationToAdd]);
+            setFigures((prevState) => [...prevState, relationToAdd]);
         }
-
-        setFigures((prevState) => [...prevState, relationToAdd]);
     };
 
     const getOptions = async () => {
@@ -40,13 +40,10 @@ const RelatedFiguresBlock = ({ setFigures }: Props) => {
     }, []);
 
     return (
-        <div className="relationsBlock">
-            <div className="subheading">
-                <h3>Зв'язки історії</h3>
-                <h4>Стріткоди</h4>
-            </div>
-            <InputPanel relations={relations} options={options} handleAdd={handleAdd} />
-            <RelationsList relations={relations} setRelations={setRelations} setFigures={setFigures} />
+        <div className='adminContainer-block'>
+            <h2>Зв'язки історії(Стріткоди)</h2>
+            <InputPanel relations={figures} options={options} handleAdd={handleAdd} />
+            <RelationsList relations={figures} setRelations={setRelations} setFigures={setFigures} />
         </div>
     );
 };
