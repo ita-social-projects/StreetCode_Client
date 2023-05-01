@@ -6,7 +6,7 @@
 .partnersBtnCircleContainer {
   z-index: 4;
 
-  @include mut.positioned-as(fixed, $bottom: 28px, $right: 41px);
+  @include mut.positioned-as(fixed, $top: 35%, $bottom: 28px, $right: 41px);
   @include mut.flex-centered($direction: column);
 
   .partnersBtnCircle {
