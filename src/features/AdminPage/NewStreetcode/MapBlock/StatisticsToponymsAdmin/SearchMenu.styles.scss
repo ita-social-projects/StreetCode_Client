@@ -4,7 +4,7 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .searchMenuToponyms {
-    gap: f.pxToRem(10px);;
+    gap: f.pxToRem(10px);
     display: flex;
     @include mut.sized(100%);
 
