@@ -59,7 +59,7 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 670px) {
     .partnersContainer{
         .buttonsBlock{
             @include mut.flexed($justify-content: center, $direction: column, $gap: 12px);

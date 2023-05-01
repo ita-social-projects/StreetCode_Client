@@ -35,7 +35,7 @@
 @media screen and (max-width: 1024px) {
   .partnersContainer{
       .partnersBtnCircleContainer{
-        @include mut.positioned-as(fixed, $bottom: 28px, $right: 10px);
+        @include mut.positioned-as(fixed, $top: 35%, $bottom: 28px, $right: 10px);
 
         .partnersBtnCircle{
           @include mut.circular(50px);
