@@ -63,7 +63,9 @@
             }
         }
         .device-sizes-list{
-            p{margin-bottom: 2px;}
+            p{
+                margin-bottom: 2px;
+            }
             display: flex;
             flex-direction: column;
             justify-content: left;
@@ -77,7 +79,7 @@
     .textarea-teaser{
         height:f.pxToRem(80px);
     }
-    .ant-input-textarea>textarea{
+    .ant-input-textarea > textarea{
         resize: none;
     }
 
@@ -90,7 +92,7 @@
             justify-content: flex-end;
             padding-right: f.pxToRem(10px);
             .warning{
-                color:c.$accented-red-color ;
+                color:c.$accented-red-color;
             }
         }
     }
