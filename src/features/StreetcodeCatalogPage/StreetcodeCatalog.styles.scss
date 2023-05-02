@@ -4,13 +4,12 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@sass/variables/_variables.fonts.scss" as f;
 
-
 $bgImg: '@assets/images/catalog/background.png';
 $loadImg: '@assets/images/catalog/loading.gif';
 
 .streetcodeCatalogWrapper {
     padding: pxToRem(100px) 10%;
-    @include mut.bg-image($bgImg, contain, no-repeat);
+    background: url($bgImg) no-repeat center center / cover;
     background-color: c.$accented-low-opasity-grayish-gray-color;
     width: 100%;
 
