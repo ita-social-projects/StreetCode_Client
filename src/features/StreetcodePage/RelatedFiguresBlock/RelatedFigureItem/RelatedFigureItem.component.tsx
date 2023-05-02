@@ -43,11 +43,11 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
 
     return (
         <>
-            { windowsize.width > 1024 && (
+            {windowsize.width > 1024 && (
                 <Link
                     className={`relatedFigureSlide 
-                ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
-                ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
+                    ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
+                    ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
                     style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
                     to={`../streetcode/${url}`}
@@ -66,9 +66,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 alias !== null
                                     ? (
                                         <p className="aliasText">
-                                (
-                                            {alias}
-)
+                                            ({alias})
                                         </p>
                                     )
                                     : undefined
@@ -95,7 +93,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     </div>
                 </Link>
             )}
-            { windowsize.width <= 1024 && (
+            {windowsize.width <= 1024 && (
                 <>
                     <div
                         className="relatedFigureSlide"
@@ -109,9 +107,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 alias !== null
                                     ? (
                                         <p className="aliasText">
-                            (
-                                            {alias}
-)
+                                            ({alias})
                                         </p>
                                     )
                                     : undefined

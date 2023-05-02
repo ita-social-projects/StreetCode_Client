@@ -9,7 +9,6 @@ import useOnScreen from '@/app/common/hooks/scrolling/useOnScreen.hook';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import Tag from '@/models/additional-content/tag.model';
 import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
@@ -23,46 +22,32 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const elementRef = useRef<HTMLDivElement>(null);
     const classSelector = 'catalogItem';
     const isOnScreen = useOnScreen(elementRef, classSelector);
-    useAsync(() => (isOnScreen && isLast
-        ? () => handleNextScreen() : () => { }), [isOnScreen]);
+
+    useAsync(() => (isOnScreen && isLast ? () => handleNextScreen() : () => { }), [isOnScreen]);
+        
     useAsync(() => Promise.all([fetchImageByStreetcodeId(streetcode.id)]));
+
+    const LinkProps = {
+        className: classSelector,
+        style: { backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})`},
+        to: `../streetcode/${streetcode.url}`
+    }
+
     const windowsize = useWindowSize();
+
     return (
         <>
             {windowsize.width > 1024 && (
-                <Link
-                    className={classSelector}
-                    style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
-                    to={`../streetcode/${streetcode.url}`}
-                >
-                    {
-                        streetcode.tags.length !== 0 && (
-                            <div className="relatedTagList">
-                                {streetcode.tags.map((tag: Tag) => (
-                                    <button
-                                        type="button"
-                                        key={tag.id}
-                                        className="tag"
-                                    >
-                                        <p>{tag.title}</p>
-                                    </button>
-                                ))}
-                            </div>
-                        )
-                    }
+                <Link {...LinkProps} >
                     <div ref={elementRef} className="catalogItemText">
                         <div className="heading">
                             <p>{streetcode.title}</p>
                             {
-                                streetcode.alias !== null
-                                    ? (
-                                        <p className="aliasText">
-                                            (
-                                            {streetcode.alias}
-                                            )
-                                        </p>
-                                    )
-                                    : undefined
+                                streetcode.alias !== null ? (
+                                    <p className="aliasText">
+                                        ({streetcode.alias})
+                                    </p>
+                                ) : undefined
                             }
                         </div>
                     </div>
@@ -70,24 +55,16 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
             )}
             {windowsize.width <= 1024 && (
                 <div>
-                    {' '}
-                    <div
-                        className={classSelector}
-                        style={{ backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})` }}
-                    />
+                    <Link {...LinkProps} />
                     <div ref={elementRef} className="catalogItemText mobile">
                         <div className="heading">
                             <p>{streetcode.title}</p>
                             {
-                                streetcode.alias !== null
-                                    ? (
-                                        <p className="aliasText">
-                                            (
-                                            {streetcode.alias}
-                                            )
-                                        </p>
-                                    )
-                                    : undefined
+                                streetcode.alias !== null ? (
+                                    <p className="aliasText">
+                                        ({streetcode.alias})
+                                    </p>
+                                ) : undefined
                             }
                         </div>
                     </div>
