@@ -1,4 +1,4 @@
-'./ForFansAdminModal.styles.scss';
+import '../../../AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
@@ -74,7 +74,7 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
 
     return (
         <Modal
-            className="forFansAdminModal"
+            className="modalContainer"
             open={open}
             onCancel={() => {
                 setOpen(false); sourceCreateUpdateStreetcode.indexUpdate = -1;
@@ -84,9 +84,17 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <h2>Для фанатів</h2>
-            <Form form={form} onFinish={onSave}>
-                <FormItem name="category">
+            
+            <Form 
+                layout="vertical"
+                form={form} 
+                onFinish={onSave}>
+                <div className='center'>
+                    <h2>Для фанатів</h2>
+                </div>
+                <FormItem 
+                    label="Категорія:"
+                    name="category">
                     <Select
                         key="selectForFansCategory"
                         className="category-select-input"
@@ -95,7 +103,8 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                             .map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
                     </Select>
                 </FormItem>
-
+                <FormItem
+                label = "Текст: ">
                 <Editor
                     ref={editorRef}
                     init={{
@@ -111,11 +120,12 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                         content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                     }}
                 />
-                <Form.Item>
-                    <Button htmlType="submit">
-                Зберегти
+                </FormItem>
+                 <div className='center'>
+                    <Button className='streetcode-custom-button' htmlType="submit">
+                        Зберегти
                     </Button>
-                </Form.Item>
+                </div>
             </Form>
 
         </Modal>

@@ -1,4 +1,4 @@
-import './InterestingFactsAdminModal.style.scss';
+import '../../../AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
@@ -86,7 +86,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
 
     return (
         <Modal
-            className="interestingFactsAdminModal"
+            className="modalContainer"
             open={open}
             onCancel={() => setModalOpen(false)}
             footer={null}
@@ -94,40 +94,40 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             centered
             closeIcon={<CancelBtn />}
         >
+            <div className='modalContainer-content'>
             <Form
-                className="factForm"
                 form={form}
                 layout="vertical"
                 onFinish={onSuccesfulSubmit}
             >
-                <h2>Wow-Факт</h2>
+                <div className='center'>
+                    <h2>Wow-Факт</h2>
+                </div>
                 <Form.Item
                     name="title"
-                    className="inputBlock"
                     label="Заголовок: "
                     rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
                         { max: 30, message: 'Заголовок не може містити більше 30 символів ' },
                     ]}
                 >
-                    <Input className="title" />
+                    <Input />
                 </Form.Item>
+                
                 <Form.Item
                     name="factContent"
-                    className="inputBlock"
                     label="Основний текст: "
                     rules={[{ required: true, message: 'Введіть oсновний текст, будь ласка' }]}
                 >
                     <TextArea
                         value="Type"
-                        className="factContent"
                         maxLength={600}
                         showCount
                     />
                 </Form.Item>
-                <p>Зображення:</p>
+
                 <FormItem
+                    label="Зображення"
                     name="image"
-                    className=""
                     getValueFromEvent={(e: any) => {
                         if (Array.isArray(e)) {
                             return e;
@@ -153,14 +153,18 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             ImagesApi.delete(imageId.current);
                         }}
                     >
-                        <div className="upload">
+                        <div>
                             <InboxOutlined />
-                            <p>Виберіть чи перетягніть файл</p>
+                            <p>+додати</p>
                         </div>
                     </FileUploader>
                 </FormItem>
-                <Button className="saveButton" htmlType="submit">Зберегти</Button>
+                <div className='center'>
+                    <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
+                </div>
+                
             </Form>
+            </div>
         </Modal>
     );
 };
