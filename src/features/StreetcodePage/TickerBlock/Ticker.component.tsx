@@ -21,9 +21,11 @@ const TickerComponent = () => {
     }),[getStreetCodeId]; 
     
     return (
-        <Ticker className="tickerContainer">
-            <div className="tickerItem">{subtitle}</div>
-        </Ticker>
+        <div className="tickerContainer">
+            <Ticker pauseOnHover={true}>
+                <div className="tickerItem">{subtitle}</div>
+            </Ticker>
+        </div>
     );
 };
 
