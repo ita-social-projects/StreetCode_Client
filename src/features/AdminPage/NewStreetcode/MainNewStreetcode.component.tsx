@@ -143,7 +143,7 @@ const NewStreetcode = () => {
                 setPartners([...result]);
             });
             SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
-                setSubTitle(result[0].subtitleText);
+                setSubTitle(result.subtitleText);
             });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then(result => {
                 const id = result.map(x => x.id);
