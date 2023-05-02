@@ -22,7 +22,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
 
     const windowsize = useWindowSize();
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent) => {
         if (windowsize.width > 1024) {
             setModal('relatedFigures');
         }
@@ -53,34 +53,32 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const sliderItemsMobile = [];
 
     for (let i = 0; i < getRelatedFiguresArray.length; i += 2) {
-    const figureOnTopRow = getRelatedFiguresArray[i];
-    const figureOnBottomRow = getRelatedFiguresArray[i + 1];
+        const figureOnTopRow = getRelatedFiguresArray[i];
+        const figureOnBottomRow = getRelatedFiguresArray[i + 1];
 
-   
-    const hasBottomRow = figureOnBottomRow !== undefined;
+        const hasBottomRow = figureOnBottomRow !== undefined;
 
-    const sliderItem = (
-        <div className='TwoRowSlide' key={i}>
-        <RelatedFigureItem
-            relatedFigure={figureOnTopRow}
-            filterTags
-            hoverable
-            setActiveTagId={setActiveTagId}
-        />
-        {hasBottomRow && (
+        const sliderItem = (
+            <div className='TwoRowSlide' key={i}>
             <RelatedFigureItem
-            relatedFigure={figureOnBottomRow}
-            filterTags
-            hoverable
-            setActiveTagId={setActiveTagId}
+                relatedFigure={figureOnTopRow}
+                filterTags
+                hoverable
+                setActiveTagId={setActiveTagId}
             />
-        )}
-        </div>
-    );
+            {hasBottomRow && (
+                <RelatedFigureItem
+                relatedFigure={figureOnBottomRow}
+                filterTags
+                hoverable
+                setActiveTagId={setActiveTagId}
+                />
+            )}
+            </div>
+        );
 
-    sliderItemsMobile.push(sliderItem);
+        sliderItemsMobile.push(sliderItem);
     }
-
 
     const sliderProps = {
         className: 'heightContainer',
@@ -102,7 +100,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 <BlockHeading headingText="Зв'язки історії" />
                 <div className="headingWrapper">
                     <div className="moreInfo">
-                        <p onClick={handleClick}>
+                        <p onClick={(e) => handleClick(e)}>
                             Дивитися всіх
                         </p>
                     </div>

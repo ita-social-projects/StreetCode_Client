@@ -18,9 +18,7 @@ interface Props {
 }
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
-    const {
-        id, imageId, title, tags, alias, url,
-    } = relatedFigure;
+    const { id, imageId, title, tags, alias, url } = relatedFigure;
 
     const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
@@ -51,8 +49,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
 
                     style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
                     to={`../streetcode/${url}`}
-                    state={window.scrollTo(0, 0)}
                     onClick={() => {
+                        window.scrollTo(0, 0);
                         if (!tagsList) {
                             relatedFiguresLeaveEvent();
                             setModal('tagsList');
@@ -63,13 +61,11 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                         <div className="heading">
                             <p>{title}</p>
                             {
-                                alias !== null
-                                    ? (
-                                        <p className="aliasText">
-                                            ({alias})
-                                        </p>
-                                    )
-                                    : undefined
+                                alias !== null ? (
+                                    <p className="aliasText">
+                                        ({alias})
+                                    </p>
+                                ) : undefined
                             }
                         </div>
                         <div className={`relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}`}>
@@ -104,13 +100,11 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                         <div className="heading">
                             <p>{title}</p>
                             {
-                                alias !== null
-                                    ? (
-                                        <p className="aliasText">
-                                            ({alias})
-                                        </p>
-                                    )
-                                    : undefined
+                                alias !== null ? (
+                                    <p className="aliasText">
+                                        ({alias})
+                                    </p>
+                                ) : undefined
                             }
                         </div>
                     </div>
