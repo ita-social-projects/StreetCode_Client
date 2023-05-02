@@ -12,6 +12,7 @@ import SearchMenu from './SearchMenu.component';
 import { formatDate } from './FormatDateAlgorithm';
 import { InputNumber, Pagination } from 'antd';
 import GetAllStreetcodesResponse from '@/models/streetcode/getAllStreetcodes.response';
+import { Link } from 'react-router-dom';
 
 const StreetcodesTable = () => {
 
@@ -97,7 +98,9 @@ const StreetcodesTable = () => {
             <>
                 {record.status != "Видалений" ? 
                 <>
-                    <FormOutlined className='actionButton' onClick={(event) => event.stopPropagation()}/>
+                    <Link to={`/admin-panel/edit-streetcode/${record.key}`}>
+                       <FormOutlined className='actionButton' onClick={(event) => { event.stopPropagation(); }} />
+                    </Link>
                     <DeleteOutlined className='actionButton' onClick={(event) => {
                     event.stopPropagation()
                     DeleteAction(record)
