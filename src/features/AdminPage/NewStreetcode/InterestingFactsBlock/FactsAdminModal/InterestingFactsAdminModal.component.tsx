@@ -13,10 +13,12 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
 import ImagesApi from '@/app/api/media/images.api';
+import FactsApi from '@/app/api/streetcode/text-content/facts.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { Fact } from '@/models/streetcode/text-contents.model';
+import Item from 'antd/es/list/Item';
 
 interface Props {
     fact?: Fact,
@@ -24,7 +26,7 @@ interface Props {
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
+const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
@@ -33,49 +35,51 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
     useEffect(() => {
         if (fact && open) {
             imageId.current = fact.imageId;
+            form.setFieldsValue({
+                title: fact.title,
+                factContent: fact.factContent
+            });
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
                     form.setFieldsValue({
-                        id: fact.id,
-                        title: fact.title,
-                        factContent: fact.factContent,
-                        image: fact ? [{ name: '',
-                                         url: base64ToUrl(image.base64, image.mimeType),
-                                         thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                                         uid: `${fact.id}`,
-                                         status: 'done',
-                                         type: image.mimeType }] : [],
+                        image: fact ? [{
+                            name: '',
+                            url: base64ToUrl(image.base64, image.mimeType),
+                            thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                            uid: `${fact.id}`,
+                            status: 'done',
+                            type: image.mimeType,
+                        }] : [],
 
                     });
-                    setFileList(fact ? [{ name: '',
-                                          url: base64ToUrl(image.base64, image.mimeType),
-                                          thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                                          uid: `${fact.id}`,
-                                          status: 'done',
-                                          type: image.mimeType }] : []);
+                    setFileList(fact ? [{
+                        name: '',
+                        url: base64ToUrl(image.base64, image.mimeType),
+                        thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                        uid: `${fact.id}`,
+                        status: 'done',
+                        type: image.mimeType,
+                    }] : []);
                 });
         } else {
             setFileList([]);
         }
     }, [fact, open, form]);
 
-    const onSuccesfulSubmit = (inputedValues:any) => {
-        const newFact: Fact = {
+    const onSuccesfulSubmit = (inputedValues: any) => {
+        const item: Fact = {
             id: factsStore.factMap.size,
             title: inputedValues.title,
             factContent: inputedValues.factContent,
             imageId: imageId.current,
         };
         if (fact) {
-            newFact.id = fact.id;
-            if (imageId.current === 0) {
-                newFact.imageId = fact.imageId;
-            }
-            factsStore.updateFactInMap(newFact);
+            item.id = fact.id;
+            factsStore.updateFactInMap(item);
         } else {
-            factsStore.addFact(newFact);
+            factsStore.addFact(item);
         }
-        imageId.current = 0;
+
         form.resetFields();
         setModalOpen(false);
     };
@@ -142,7 +146,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen } : Props) => {
                         listType="picture-card"
                         maxCount={1}
                         fileList={fileList}
-                        onSuccessUpload={(image:Image) => {
+                        onSuccessUpload={(image: Image) => {
                             imageId.current = image.id;
                         }}
                         onRemove={(image) => {

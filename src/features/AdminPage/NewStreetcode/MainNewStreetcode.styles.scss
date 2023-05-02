@@ -4,15 +4,144 @@
 @use "@sass/_utils.functions.scss" as f;
 $articlesImg: "@assets/images/sources/Articles.png";
 
- .MainNewStreetcodeContainer {
-     @include mut.sized(80%);
+.NewStreetcodeContainer {
+    margin-top: f.pxToRem(100px);
+    display: flex;
+    float: left;                               
+    
+    .adminContainer
+    {
+         @include mut.sized(80%);
+        //@include mut.with-font();
+        margin: auto;
+        
+        &-block{ 
+            margin-bottom: f.pxToRem(20px);
+            display: flex;
+            flex-direction: column;
+        }
 
-      margin-top: f.pxToRem(100px);
-      margin-right: f.pxToRem(50px);
-      float: right;
-      h1 {
-         color: white;
-         font-weight: 500;
-       }
+        h2{
+            margin-bottom: f.pxToRem(15px);
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        h3{
+            font-weight: 300;
+            margin-bottom: f.pxToRem(7px);
+        }
+
+        .buttonWithPlus{
+            @include mut.sized($width: 150px, $height: 50px);
+            border: 1.5px solid c.$dark-red-color;
+            @include mut.full-rounded($rad: 7.86px);
+            color: c.$dark-red-color;
+            font-size: 1.7em;
+
+              &:hover{
+                cursor: pointer;
+                background-color: c.$dark-red-color;    
+                color: white !important;
+                transition: all .3s ease-out;
+            }
+        }
+
+        //контейнер для + кнопок
+        .textBlockButton-container{
+            gap: f.pxToRem(4px);
+            display: flex;
+            flex-wrap: wrap;
+
+            .textBlockButton {
+                max-width: fit-content !important;
+                min-width: f.pxToRem(154px);
+
+                .item {
+                    border: 1.5px solid c.$dark-red-color;
+                    @include mut.flex-centered();  
+                    @include mut.full-rounded($rad: 7.86px);
+                    @include mut.rem-padded($left: 9.5px, $top: 4px, $right: 9.5px, $bottom: 4px);
+
+                    p {
+                        @include mut.with-font($font-size: 14px,$font-weight: 500);
+                        color: c.$dark-red-color;
+                    }
+
+                    .blockItem {
+                        margin: f.pxToRem(10px);
+                        cursor: pointer;
+                        text-align: center;
+                        color: c.$pure-black-color;
+                    }
+                }
+            }
+        }
+   
+        .ant-input:hover:enabled{
+            border-color: c.$accented-red-color;
+        } 
+
+        .ant-select:focus,
+        .ant-input:focus,
+        .ant-input-focused,
+        .ant-select-focused,
+        .ant-picker-focused{
+            border-color: c.$accented-red-color;
+            box-shadow: none !important;  
+        }
+
+        .ant-select-selector, 
+        .ant-input-affix-wrapper,
+        .ant-input-number {
+            @include mut.with-font($font-size: 16px);
+            outline:none ;
+            box-shadow:none !important;
+
+            &:hover{
+                border-color: c.$accented-red-color;
+            }
+
+            &:focus-within {
+                border-color: c.$accented-red-color;
+                box-shadow: none;
+            }
+        }
+
+        .ant-form-item-label >label{
+            font-size: 16px;
+        }
+        
+        .display-flex-row{
+            display: flex;
+            &-centered{
+                justify-content: center;
+            }
+        }
+
+        .display-flex-column{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .button-margin{
+            &-vertical{
+                margin: f.pxToRem(12px) 0px;
+            }
+            &-left{
+                margin-left: f.pxToRem(5px);
+            }
+            &-right{
+                margin-right: f.pxToRem(5px);
+            }
+        }
+        
+        .submit-button{
+            min-height: f.pxToRem(100px);
+            min-width: 100%;
+            margin-bottom: f.pxToRem(20px);
+        }
+     
+    }
  }
 

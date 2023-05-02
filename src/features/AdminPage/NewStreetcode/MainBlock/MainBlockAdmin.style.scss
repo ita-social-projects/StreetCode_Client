@@ -6,42 +6,105 @@
     top: 100px !important;
     width: f.pxToRem(400px) ;
   }
-.mainblock-add-form{
-    @include mut.with-font();
-   .ant-form-item-label>label{
-        @include mut.with-font();
 
+
+.mainblock-add-form{   
+    .p-margin{ 
+        p{
+            font-size: 18px;
+            &:last-child{
+                margin: 0px 0px 0px 5px;
+            }
+            &:first-child{
+                margin: 0px 5px 0px 0px;
+            }
+        }
     }
-   
-    .maincard-item{
-        width:f.pxToRem(500px) ;
-        margin: 10px 0;
+        .grey-text{
+            color:grey;
+        }
+        .red-text{
+            color:c.$accented-red-color;
+        }
+        .ant-switch-checked{
+            background-color: c.$dark-red-color;
+        } 
     }
+    .ant-input-number{
+        margin: 0px;
+    }
+    .ant-input-number-handler-up-inner,
+    .ant-input-number-handler-down-inner {
+        color: c.$accented-red-color;
+    }
+
     .ant-input{
         align-self:center;
         @include mut.with-font();
     }
-    .ant-select,
-    .ant-select-selector,
-    .ant-select-selection-search-input,
-    .ant-picker{
-        @include mut.with-font();
-    }
-    
-    .people-title-group{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .stretcode-title-people{ 
-        width:f.pxToRem(200px) ;
-    }
-    .streetcode-number-container{
-        width:f.pxToRem(400px) ;
-        justify-content: space-between;
-        display: flex;
-        flex-direction: row;
 
+.date-picker-container{
+   .date-string-input{
+         input{
+            color:#000;
+            width:100%;
+         }
+    } 
+
+    .date-picker-group{
+
+        display: flex;
+        gap: 10px;
+        .my-picker :hover{
+            border-color: c.$accented-red-color;
+        }
+        .my-picker{
+            margin-bottom: 0px;
+        }
+        .ant-picker {
+            .ant-picker-input> input{
+                @include mut.with-font();
+            }
+            width: 100%;
+        }
+
+        .date-picker-type-input{
+            margin-bottom: f.pxToRem(10px);
+        }
+        .date-picker-group-item{
+            width: 100%; 
+        }
+
+        .date-string-input input:disabled{
+            background-color: #fff;
+            color: #000;
+            cursor: default;
+        }        
+    }
+}
+    .tags-block{   
+        display: flex;
+        flex-direction: column;
+         .ant-select-selector{
+            box-shadow: none !important;
+        }
+       
+        .tags-block-tagitems{
+            width: 100%;
+            .tags-select-input{
+                width: 100%;
+            }
+        }
+        .device-sizes-list{
+            p{margin-bottom: 2px;}
+             display: flex;
+            flex-direction: column;
+            justify-content: left;
+            p:hover{
+                color: c.$dark-red-color;
+                font-weight: 600;
+             }
+        }
     }
     .textarea-teaser{
         height:f.pxToRem(80px);
@@ -49,96 +112,31 @@
     .ant-input-textarea>textarea{
         resize: none;
     }
-    .ant-picker {
-
-        .ant-picker-input> input{
-            @include mut.with-font();
-        }
-        width: 100%;
-        box-sizing: border-box;
-       
-    }
-    .date-picker-qroup{
-        margin:f.pxToRem(20px) 0;
-        width: f.pxToRem(750px);
-        display: flex;
-        align-items: bottom;
-        flex-direction: row;
-        justify-content: left;
-        .date-picker-type-input{
-            width: 100%;
-            margin-bottom: f.pxToRem(10px);
-        }
-        .date-picker-qroup-item{
-            width: f.pxToRem(200px); 
-        }
-        p{
-            margin-left: f.pxToRem(10px);
-            display: block;
-            align-self:flex-end;
-        }
-        .date-string-input{
-            width: f.pxToRem(360px);
-            display: flex;
-            align-items: end;
-            input{
-                width: f.pxToRem(360px);
-            }
-        }
-        .date-string-input input:disabled{
-            background-color: #fff;
-            color: #000;
-            cursor: default;
-        }
-        
-    }
-    .photo-form-item{
-        width: f.pxToRem(750px);
-    }
     .teaser-form-item{
-        width: f.pxToRem(750px);
         .textarea-teaser{
             resize: none;
         }
         .amount-left-char-textarea-teaser{
-            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: f.pxToRem(10px);
             .warning{
                 color:c.$accented-red-color ;
             }
         }
     }
-    .tags-block{   
-        display: flex;
-        flex-direction: row;
-        width: f.pxToRem(750px);
-        .tags-block-tagitems{
-            width: 80%;
-            .tags-select-input{
-                width: 100%;
-            }
-        }
-        .device-sizes-list{
-            width: 20%;
-            text-align: center;
-            transition: font-weight 1s, color 0.7s;
-            .device-size:hover{
-                color: c.$dark-red-color;
-                font-weight: 600;
-                transition: font-weight 1s, color 0.7s;
-            }
-        }
-    }
-    .file-upload-container{
-        width: f.pxToRem(750px);
         .photo-uploader-container{
             display: flex;
-            flex-direction: row;
-        }
-        .audio-upload-box{
-            height: f.pxToRem(40px);
-            background-color: c.$timeline-reel-color;
+            justify-content: space-between;
+        } 
+    .ant-upload{
+        min-width: 100px;
+        min-height: 100px;
+        &-text{
+            font-size: 14px !important;
         }
     }
     
-}
-
+    .ant-upload:hover {
+        border-color:  c.$accented-red-color ;
+      } 
