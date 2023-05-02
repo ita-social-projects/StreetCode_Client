@@ -18,7 +18,7 @@ interface Props {
     allCategories: SourceCategoryName[],
 }
 
-const AdditionalTextBlock = ({ open, setOpen, allCategories } : Props) => {
+const AdditionalTextBlockAdminForm = ({ open, setOpen, allCategories } : Props) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
@@ -73,18 +73,19 @@ const AdditionalTextBlock = ({ open, setOpen, allCategories } : Props) => {
     };
 
     return (
-        <Modal
-            className="AdditionalTextBlock"
-            open={open}
-            onCancel={() => {
-                setOpen(false); sourceCreateUpdateStreetcode.indexUpdate = -1;
-            }}
-            footer={null}
-            maskClosable
-            centered
-            closeIcon={<CancelBtn />}
-        >
-            <h2>Для фанатів</h2>
+        // <Modal
+        //     className="AdditionalTextBlock"
+        //     open={open}
+        //     onCancel={() => {
+        //         setOpen(false); sourceCreateUpdateStreetcode.indexUpdate = -1;
+        //     }}
+        //     footer={null}
+        //     maskClosable
+        //     centered
+        //     closeIcon={<CancelBtn />}
+        // >
+        <>
+            <h2>Текст підготовлений спільно з...</h2>
             <Form form={form} onFinish={onSave}>
                 <FormItem name="category">
                     <Select
@@ -117,9 +118,9 @@ const AdditionalTextBlock = ({ open, setOpen, allCategories } : Props) => {
                     </Button>
                 </Form.Item>
             </Form>
-
-        </Modal>
+        </>
+        // </Modal>
     );
 };
 
-export default observer(AdditionalTextBlock);
+export default observer(AdditionalTextBlockAdminForm);
