@@ -91,15 +91,18 @@
     
     >.checkbox-borderline {
       border-radius: 0px !important;
-      
+      align-items: center;
       span {
         display: inline-block;
         overflow: visible;
+        //align-items: center;
   
         &:last-child {
           @include mut.rem-padded($left: 16px);
           @include mut.rem-margined($top: -4px);
           @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
+          @include mut.sized($height: 15px);
+          //height: f.pxToRem(15px);
           color: c.$checkbox-light-grey;
         }
       }
@@ -239,6 +242,7 @@
             @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
             @include mut.rem-padded($left: 8px);
             @include mut.rem-margined($top: -3px);
+            @include mut.sized($height: 12px);
           }
         }
       }
