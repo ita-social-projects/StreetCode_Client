@@ -11,6 +11,7 @@ import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermMo
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
+
 import TermsApi from '../../../../../../app/api/streetcode/text-content/terms.api';
 
 interface Props {
@@ -52,12 +53,13 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     useAsync(fetchTerms, []);
     return (
         <FormItem
-            label = "Основний текст">
+            label="Основний текст"
+        >
             <TinyMCEEditor
                 init={{
                     height: 300,
                     menubar: false,
-                    init_instance_callback: function (editor) {
+                    init_instance_callback(editor) {
                         editor.setContent(inputInfo?.textContent);
                     },
                     plugins: [
@@ -101,10 +103,10 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     </AutoComplete>
                 </Tooltip>
             </Form.Item>
-            
-            <div className='display-flex-row'>
+
+            <div className="display-flex-row">
                 <Button
-                    className = 'streetcode-custom-button button-margin-vertical button-margin-right'
+                    className="streetcode-custom-button button-margin-vertical button-margin-right"
                     onClick={handleAddRelatedWord}
                     disabled={selected === '' || term === undefined}
                 >
@@ -113,12 +115,12 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 <Button
                     onClick={handleDeleteRelatedWord}
                     disabled={selected === '' || term === undefined}
-                    className = 'streetcode-custom-button button-margin-vertical'
+                    className="streetcode-custom-button button-margin-vertical"
                 >
                     Видалити пов&#39;язаний термін
                 </Button>
             </div>
-            
+
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>
     );

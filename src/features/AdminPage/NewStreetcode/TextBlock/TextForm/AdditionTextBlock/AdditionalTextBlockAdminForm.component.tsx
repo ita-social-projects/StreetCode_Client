@@ -2,7 +2,7 @@
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
-import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+// import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -12,13 +12,16 @@ import FormItem from 'antd/es/form/FormItem';
 
 import { SourceCategoryName, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 
+
+
 interface Props {
-    open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    allCategories: SourceCategoryName[],
+    // open: boolean,
+    // setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+   allCategories: SourceCategoryName[],
 }
 
-const AdditionalTextBlockAdminForm = ({ open, setOpen, allCategories } : Props) => {
+// const AdditionalTextBlockAdminForm = ({ open, setOpen, allCategories }: Props) => {
+const AdditionalTextBlockAdminForm = () => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
@@ -39,7 +42,8 @@ const AdditionalTextBlockAdminForm = ({ open, setOpen, allCategories } : Props) 
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
         setAvailableCategories(getAvailableCategories());
-        if (categoryUpdate.current && open) {
+        // if (categoryUpdate.current && open) {
+        if (categoryUpdate.current) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
@@ -47,17 +51,20 @@ const AdditionalTextBlockAdminForm = ({ open, setOpen, allCategories } : Props) 
             editorRef.current?.editor?.setContent('');
             form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
         }
-    }, [open]);
+        // }, [open]);
+    }, []);
 
-    const onSave = (values:any) => {
+    const onSave = (values: any) => {
         const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (elementToUpdate) {
             sourceCreateUpdateStreetcode
                 .updateElement(
                     sourceCreateUpdateStreetcode.indexUpdate,
-                    { ...elementToUpdate,
-                      sourceLinkCategoryId: values.category,
-                      text: editorRef.current?.editor?.getContent() ?? '' },
+                    {
+                        ...elementToUpdate,
+                        sourceLinkCategoryId: values.category,
+                        text: editorRef.current?.editor?.getContent() ?? '',
+                    },
                 );
         } else {
             sourceCreateUpdateStreetcode
@@ -68,7 +75,7 @@ const AdditionalTextBlockAdminForm = ({ open, setOpen, allCategories } : Props) 
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
                 });
         }
-        setOpen(false);
+        // setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
     };
 
@@ -108,13 +115,13 @@ const AdditionalTextBlockAdminForm = ({ open, setOpen, allCategories } : Props) 
                             'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
                         ],
                         toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
-                     + 'formats blockformats align | removeformat strikethrough ',
+                            + 'formats blockformats align | removeformat strikethrough ',
                         content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                     }}
                 />
                 <Form.Item>
                     <Button htmlType="submit">
-                Зберегти
+                        Зберегти
                     </Button>
                 </Form.Item>
             </Form>

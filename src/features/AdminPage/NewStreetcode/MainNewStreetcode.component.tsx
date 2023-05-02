@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
@@ -34,7 +35,7 @@ import StreetcodeCoordinate from '../../../models/additional-content/coordinate.
 import PageBar from '../PageBar/PageBar.component';
 
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
-import AdditionalTextBlockAdminFormComponent from './AdditionTextBlock/AdditionalTextBlockAdminForm.component';
+
 import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
@@ -277,9 +278,7 @@ const NewStreetcode = () => {
                             <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
                         </Form>
                     </div>
-                    <AdditionalTextBlockAdminFormComponent open={false} setOpen={function (value: React.SetStateAction<boolean>): void {
-                        throw new Error('Function not implemented.');
-                    } } allCategories={[]} />
+                    
                     <InterestingFactsBlock id={parseId ?? -1} />
                     <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                     <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
