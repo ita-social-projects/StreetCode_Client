@@ -243,18 +243,21 @@ const NewStreetcode = () => {
         if (parseId) {
             console.log(streetcode);
             StreetcodeArtApi.update(streetcode).then((response2) => {
-                console.log(response2);
+                alert("Cтріткод успішно оновленний");
+
             })
                 .catch((error2) => {
-                   console.log(error2);
-            });
+                    alert("Виникла помилка при оновленні стріткоду");
+                });
         }
         else {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
+                    setTimeout(()=>location.reload(),100);
+                    window.open("http://localhost:3000/streetcode/" + form.getFieldValue('streetcodeUrlName'));
                 })
                 .catch((error) => {
-                    console.log(streetcode);
+                    alert("Виникла помилка при створенні стріткоду");
                 });
         }
     };
