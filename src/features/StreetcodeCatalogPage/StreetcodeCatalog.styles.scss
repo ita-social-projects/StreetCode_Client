@@ -4,29 +4,23 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@sass/variables/_variables.fonts.scss" as f;
 
-
 $bgImg: '@assets/images/catalog/background.png';
 $loadImg: '@assets/images/catalog/loading.gif';
 
 .streetcodeCatalogWrapper {
     padding: pxToRem(100px) 10%;
-    @include mut.bg-image($bgImg, contain, no-repeat);
+    background: url($bgImg) no-repeat center center / cover;
     background-color: c.$accented-low-opasity-grayish-gray-color;
     width: 100%;
 
-    .streetcodeCatalogHeading{
+    .streetcodeCatalogHeading {
         @include mut.with-font('Closer Text', 500, 96px, normal);
         padding-bottom: pxToRem(40px);
-        font-family: 'Closer Text';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 96px;
         line-height: pxToRem(127px);
         display: flex;
         align-items: center;
         color: c.$milky-white-color;
     }
-
 
     .steetcodeCatalogContainer {
         display: grid;
@@ -39,12 +33,12 @@ $loadImg: '@assets/images/catalog/loading.gif';
     }
 }
 
-.loadingWrapper{
+.loadingWrapper {
     background-color: c.$accented-grayish-gray-color;
     width: 100%;
     @include mut.flex-centered();        
 
-    #loadingGif{
+    #loadingGif {
         @include mut.bg-image($loadImg, contain, no-repeat);
         @include mut.sized(60px, 60px);
         margin-bottom: pxToRem(84px);
@@ -53,10 +47,10 @@ $loadImg: '@assets/images/catalog/loading.gif';
 
 @media screen and (max-width: 1024px) {
     .streetcodeCatalogWrapper {
-        padding-left: pxToRem(13px);
-        padding-right: pxToRem(12px);
+        padding: pxToRem(80px) pxToRem(13px) 0;
 
         .streetcodeCatalogHeading {
+            padding-bottom: 0;
             font-size: 54px;
             line-height: pxToRem(71.28px);
         }
@@ -67,7 +61,6 @@ $loadImg: '@assets/images/catalog/loading.gif';
             grid-auto-rows: minmax(165px, 236px);
             grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
             justify-content: center;
-
         }
     }
 }
