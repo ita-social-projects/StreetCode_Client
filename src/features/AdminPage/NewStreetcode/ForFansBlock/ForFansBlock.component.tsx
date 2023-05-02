@@ -18,7 +18,6 @@ const ForFansBlock = () => {
     useEffect(() => {
         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
     }, []);
-    
     return (
         <div className="forFansBlock">
             <div className="forFansHeader">
