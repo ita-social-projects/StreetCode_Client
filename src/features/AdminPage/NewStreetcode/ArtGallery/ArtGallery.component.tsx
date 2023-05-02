@@ -1,5 +1,3 @@
-import './ArtGallery.styles.scss';
-
 import { ArtCreate } from '@/models/media/art.model';
 
 import DownloadBlock from './components/Download.component';

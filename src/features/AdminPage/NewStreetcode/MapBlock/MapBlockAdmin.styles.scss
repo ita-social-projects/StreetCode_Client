@@ -2,11 +2,8 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .mapBlockContainerr{
-  margin: 10% auto;
-  @include mut.sized(100%, 1600px);
-   @include mut.positioned-as(relative);
-  .leaflet-container {
-    z-index: 2;
-  }
-
+    display: flex;
+    gap: f.pxToRem(10px);
+    max-height: 1600px;
+    @include mut.positioned-as(relative);
 }

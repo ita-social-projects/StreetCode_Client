@@ -169,17 +169,18 @@ const MainBlockAdmin: React.FC<Props> = ({
                     compact
                     className="display-flex-column"
                 >
-                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
+                    <Form.Item label="Ім'я" name="name" className="people-title-input">
                         <Input
-                            ref={surname}
+                            ref={name}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
                     </Form.Item>
-                    <Form.Item label="Ім'я" name="name" className="people-title-input">
+               
+                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
                         <Input
-                            ref={name}
+                            ref={surname}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
