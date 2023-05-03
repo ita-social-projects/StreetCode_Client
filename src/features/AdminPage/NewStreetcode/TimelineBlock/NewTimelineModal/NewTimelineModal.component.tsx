@@ -1,5 +1,5 @@
 import './NewTimelineModal.style.scss';
-import '../../../AdminModal.styles.scss'
+import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
@@ -90,7 +90,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
             onCancel={() => {
                 setIsModalOpen(false);
             }}
-            footer={[]}
+            footer={null}
             closeIcon={<CancelBtn />}
         >
             <div className='modalContainer-content'>
@@ -111,7 +111,6 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                     <Input maxLength={50} showCount />
                 </Form.Item>
 
-                
                 <Form.Item label="Дата:"> 
                 <div className="data-container">
                     <Select
@@ -132,9 +131,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                     </Form.Item>
                     </div>
                 </Form.Item>
-                  
 
-                
                 <Form.Item
                     name="historicalContexts"
                     label="Контекст: "

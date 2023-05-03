@@ -1,4 +1,4 @@
-import '../../../../../../features/AdminPage/AdminModal.styles.scss'
+import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { Term } from '@/models/streetcode/text-contents.model';
@@ -27,30 +27,40 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
 
     return (
         <Modal
-            className="addModal"
+            className="modalContainer"
             open={addTerm.isOpen}
             onCancel={() => setModal('addTerm')}
-            footer={[
-                <Button
-                    className="submit"
-                    onClick={() => {
-                        handleAdd();
-                        setModal('addTerm');
-                    }}
-                >
-                    Зберегти
-                </Button>,
-            ]}
+            footer={null}
             closeIcon={<CancelBtn />}
         >
-            <h2>Створення нового визначення</h2>
-            <Form id="myForm" onFinish={() => handleAdd}>
+            <Form 
+                layout="vertical"
+                id="myForm" 
+                onFinish={() => handleAdd}
+                >
+                <div className='center'>
+                    <h2>Створення нового визначення</h2>
+                </div>
+
                 <FormItem label="Назва">
                     <Input onChange={handleChangeTitle} />
                 </FormItem>
+                
                 <FormItem label="Визначення">
                     <TextArea onChange={handleChangeDesc} />
                 </FormItem>
+
+                <div className='center'>
+                    <Button 
+                        className='streetcode-custom-button'
+                        onClick={() => {
+                            handleAdd();
+                            setModal('addTerm');
+                        }}
+                        >
+                        Зберегти
+                    </Button>
+                </div>
             </Form>
         </Modal>
     );

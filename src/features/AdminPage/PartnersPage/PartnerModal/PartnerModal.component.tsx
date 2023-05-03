@@ -1,5 +1,5 @@
 import './PartnerModal.styles.scss';
-import '../../AdminModal.styles.scss';
+import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
@@ -14,6 +14,7 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
+import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -179,6 +180,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
              onCancel={closeAndCleanData}
              className="modalContainer"
              footer = {null}
+             closeIcon={<CancelBtn />}
          >
             <div className='modalContainer-content'>
              <Form
