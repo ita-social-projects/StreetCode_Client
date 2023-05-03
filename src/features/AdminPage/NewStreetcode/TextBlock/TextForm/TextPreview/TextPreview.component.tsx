@@ -14,22 +14,23 @@ const TextPreview = ({ inputInfo } : Props) => {
 
     return (
         <div>
-            <Button
-                disabled={inputInfo === undefined || inputInfo.text?.length === 0}
-                onClick={() => setDisabled(!disabled)}
-            >
-                Попередній перегляд тексту
-            </Button>
-            { inputInfo !== undefined && !disabled ? (
-                <div className="textComponent">
-                    <div className="TextContainer">
-                        <ReadMore text={String(inputInfo?.text)} />
-                    </div>
+        <Button
+            disabled={inputInfo === undefined || inputInfo.text?.length === 0}
+            onClick={() => setDisabled(!disabled)}
+            className = 'streetcode-custom-button'
+        >
+            Попередній перегляд тексту
+        </Button>
+        { inputInfo !== undefined && !disabled ? (
+            <div className="textComponent">
+                <div className="TextContainer">
+                    <ReadMore text={String(inputInfo?.text)} />
                 </div>
-            ) : (
-                <div style={{ width: '0' }} />
-            ) }
-        </div>
+            </div>
+        ) : (
+            <div style={{ width: '0' }} />
+        ) }
+    </div>
     );
 };
 

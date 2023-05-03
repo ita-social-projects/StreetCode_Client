@@ -22,7 +22,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
 
     const windowsize = useWindowSize();
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent) => {
         if (windowsize.width > 1024) {
             setModal('relatedFigures');
         }
@@ -59,7 +59,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         const hasBottomRow = figureOnBottomRow !== undefined;
 
         const sliderItem = (
-            <div className="TwoRowSlide" key={Math.random()}>
+            <div className="TwoRowSlide" key={i}>
                 <RelatedFigureItem
                     relatedFigure={figureOnTopRow}
                     filterTags
@@ -100,7 +100,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 <BlockHeading headingText="Зв'язки історії" />
                 <div className="headingWrapper">
                     <div className="moreInfo">
-                        <p onClick={handleClick}>
+                        <p onClick={(e) => handleClick(e)}>
                             Дивитися всіх
                         </p>
                     </div>

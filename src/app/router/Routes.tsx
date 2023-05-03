@@ -24,7 +24,12 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<ProtectedComponent> < AdminPage /> </ProtectedComponent>}
+        />
+        <Route
+            index
+            path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
+            element={<ProtectedComponent>  <NewStreetcode /></ProtectedComponent>}
         />
         <Route
             index

@@ -1,4 +1,3 @@
-
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/variables/_variables.colors.scss" as c;
@@ -7,24 +6,27 @@
 
 .PageBarContainer {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
-    @include mut.sized(15%);
+    @include mut.sized(14%);
     float: left;
-    min-width: 100px;
+    display: flex;
+    justify-content: center;
 }
 
 .BarContainer {
     @include mut.flexed(column, $align-items: flex-start, $gap: 10px);
-    margin-top: 20px;  
-    margin-left: 30%;
-    min-width: 100px;
-
-    span {
+  
+    position: fixed;
+    .Link {
+        color:black;
+        margin-bottom: 10px;
         &:hover {
-            transform: scale(1.1);
             cursor: pointer;
+            color: c.$dark-red-color
         }
-
+        &:focus {
+            outline: none;
+            box-shadow: none;
+          }
         @include vnd.vendored(transition, 'scale .3s ease');
     }
 }
-

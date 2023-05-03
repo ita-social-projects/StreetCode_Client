@@ -9,7 +9,7 @@ import {
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
-
+import { useParams } from 'react-router-dom';
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
@@ -22,7 +22,7 @@ import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 
 interface Props {
-    form:FormInstance<any>,
+    form: FormInstance<any>,
     selectedTags: StreetcodeTag[];
     setSelectedTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>;
     streetcodeType: StreetcodeType;
@@ -37,20 +37,30 @@ const MainBlockAdmin: React.FC<Props> = ({
 }) => {
     const teaserMaxCharCount = 520;
     const allTags = useAsync(() => TagsApi.getAll()).value;
-    const [tags, setTags] = useState< Tag[]>([]);
+    const [tags, setTags] = useState<Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
     const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
     const [popoverProps, setPopoverProps] = useState<{
-        width:number, screenWidth:number }>({ width: 360, screenWidth: 360 });
+        width: number, screenWidth: number
+    }>({ width: 360, screenWidth: 360 });
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
     const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
+    const [switchState, setSwitchState] = useState(false);
+    const [indexId, setIndexId] = useState<number>();
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
+        if (parseId) {
+            StreetcodesApi.getById(parseId).then(x => setIndexId(x.index))
+        }
     }, [form, streetcodeTitle]);
+
     const onNameSurnameChange = () => {
         const curSurname = surname.current?.input?.value;
         setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
@@ -75,12 +85,13 @@ const MainBlockAdmin: React.FC<Props> = ({
             message.error('Поле порожнє');
         }
     };
-    const onSwitchChange = (value:boolean) => {
+    const onSwitchChange = (value: boolean) => {
         if (value) {
             setStreetcodeType(StreetcodeType.Event);
         } else {
             setStreetcodeType(StreetcodeType.Person);
         }
+        setSwitchState(!switchState);
     };
     const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const costForNewLine = 64;
@@ -98,11 +109,9 @@ const MainBlockAdmin: React.FC<Props> = ({
     };
 
     useEffect(() => {
-        if (allTags) {
-            const returnedTags = allTags as Tag[];
-            setTags(returnedTags);
-        }
-    }, [allTags]);
+        TagsApi.getAll().then(tags => setTags(tags))
+    }, []);
+
 
     const onSelectTag = (selectedValue: string) => {
         let selected;
@@ -117,11 +126,13 @@ const MainBlockAdmin: React.FC<Props> = ({
             setSelectedTags([...selectedTags, { id: minId, title: selectedValue, isVisible: false }]);
         } else {
             selected = tags[selectedIndex];
-            setSelectedTags([...selectedTags, { ...selected, isVisible: false }]);
+
+            setSelectedTags([...selectedTags, { ...selected, title: selectedValue, isVisible: false }]);
         }
+
     };
 
-    const onDeselectTag = (deselectedValue:string) => {
+    const onDeselectTag = (deselectedValue: string) => {
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -132,37 +143,44 @@ const MainBlockAdmin: React.FC<Props> = ({
 
     return (
         <div className="mainblock-add-form">
-                Постать
-            <Switch className="person-event-switch" onChange={onSwitchChange} />
-                Подія
 
-            <div className="streetcode-number-container">
-                <Form.Item
-                    label="Номер стріткоду"
-                    rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
-                    name="streetcodeNumber"
-                >
-                    <InputNumber min={0} max={10000} />
-                </Form.Item>
-                <Button className="streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
-            </div>
+            <Form.Item
+                label="Номер стріткоду"
+                rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                name="streetcodeNumber"
+            >
+                <div className='display-flex-row'>
+                    <InputNumber
+                        min={0} max={10000} value={indexId} onChange={(value) => setIndexId(value)} />
+                    <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+                </div>
+            </Form.Item>
+
+            <Form.Item>
+                <div className='display-flex-row p-margin'>
+                    <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
+                    <Switch className="person-event-switch" checked={!streetcodeType} onChange={onSwitchChange} />
+                    <p className={!switchState ? 'grey-text' : 'red-text'}>Подія</p>
+                </div>
+            </Form.Item>
 
             {streetcodeType === StreetcodeType.Person ? (
                 <Input.Group
                     compact
-                    className="maincard-item people-title-group"
+                    className="display-flex-column"
                 >
-                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
+                    <Form.Item label="Ім'я" name="name" className="people-title-input">
                         <Input
-                            ref={surname}
+                            ref={name}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
                     </Form.Item>
-                    <Form.Item label="Ім'я" name="name" className="people-title-input">
+               
+                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
                         <Input
-                            ref={name}
+                            ref={surname}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
@@ -198,16 +216,16 @@ const MainBlockAdmin: React.FC<Props> = ({
 
             <DatePickerPart
                 form={form}
-                setFirstDate={(newDate:Dayjs | null) => {
+                setFirstDate={(newDate: Dayjs | null) => {
                     firstDate.current = newDate;
                 }}
-                setSecondDate={(newDate:Dayjs | null) => {
+                setSecondDate={(newDate: Dayjs | null) => {
                     secondDate.current = newDate;
                 }}
             />
 
-            <p>Теги:</p>
             <div className="tags-block">
+            <Form.Item label="Теги">
                 <div className="tags-block-tagitems">
                     <DragableTags setTags={setSelectedTags} tags={selectedTags} />
 
@@ -216,12 +234,14 @@ const MainBlockAdmin: React.FC<Props> = ({
                         mode="tags"
                         onSelect={onSelectTag}
                         onDeselect={onDeselectTag}
+                        value={selectedTags.map(x => x.title)}
                     >
                         {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
                     </Select>
                 </div>
+                </Form.Item>
                 <div className="device-sizes-list">
-                    <p>Розширення</p>
+                    <Form.Item label="Розширення">
                     <Popover
                         content={(
                             <PopoverForTagContent
@@ -237,15 +257,16 @@ const MainBlockAdmin: React.FC<Props> = ({
                             className="device-size"
                             onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
                         >
-                                360
+                            360
                         </p>
                         <p
                             className="device-size"
                             onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
                         >
-                                1600
+                            1600
                         </p>
                     </Popover>
+                    </Form.Item>
                 </div>
             </div>
             <div className="teaser-form-item">
@@ -253,18 +274,18 @@ const MainBlockAdmin: React.FC<Props> = ({
                     label="Тизер"
                     name="teaser"
                     className="maincard-item teaser-form-item"
-                    rules={[{ required: true, message: 'Введіть тизер', max: 450 }]}
+                    rules={[{ required: true, message: 'Введіть тизер', max: 500 }]}
                 >
                     <Input.TextArea
                         onChange={onTextAreaTeaserChange}
                         className="textarea-teaser"
-                        maxLength={450}
+                        maxLength={500}
                     />
                 </Form.Item>
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                /450
+                        /500
                     </p>
                 </div>
             </div>

@@ -1,56 +1,69 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button, Input, Tooltip } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-
+import { useParams } from 'react-router-dom';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
+import Video from '../../../../../../models/media/video.model';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+    video: Video | undefined;
+    setVideo: React.Dispatch<Video | undefined>;
 }
 
 const toolTipColor = '#8D1F16';
 const videoPattern = 'https?://www.youtube.com/watch.+';
 
-const linkConverter = (link: string) => (link.includes('/watch?v=')
-    ? link.replace('/watch?v=', '/embed/')
-    : link);
+const linkConverter = (link: string) => {
+    let fixedlink = link;
+    if (link.includes('&')) {
+        const index = link.indexOf('&');
+        fixedlink = link.slice(0, index);
+    }
+    return fixedlink.includes('/watch?v=')
+        ? fixedlink.replace('/watch?v=', '/embed/')
+        : fixedlink;
+};
 
-const LinkEditor = ({ inputInfo, setInputInfo }: Props) => {
+const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
-
+    useEffect(() => {
+        setInputInfo(info => ({ ...info, link: video?.url.href }));
+    }, [video])
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
+        setVideo(video);
     };
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
+
     return (
-        <FormItem name="video" rules={[{ required: true, message: 'Введіть посилання!' }]}>
+        <FormItem 
+            name="video" 
+            label="Відео"
+            rules={[{ required: parseId? false: true , message: 'Введіть посилання!' }]}>
+            
             <div className="youtube-block">
-                <h3>Відео</h3>
                 <Input
                     title="video"
-                    value={inputInfo?.link}
+                    value={inputInfo?.link ?? ""}
                     className="smallerInput"
                     placeholder="ex. https://www.youtube.com"
                     pattern={videoPattern}
                     name="link"
-                    required
+
+                    required={ parseId ? false : true}
                     onChange={handleLinkChange}
                 />
-                <Tooltip
-                    title={
-                        inputInfo?.link?.includes('watch')
-                            ? '' : 'Вкажіть посилання на youtube.com/watch!'
-                    }
-                    color={toolTipColor}
-                >
-                    <Button
+                <Button
                         disabled={!inputInfo?.link?.includes('watch')}
+                        className = 'streetcode-custom-button button-margin-vertical'
                         onClick={() => setShowPreview(!showPreview)}
                     >
                         Попередній перегляд
-                    </Button>
-                </Tooltip>
+                </Button>
                 {
                     inputInfo?.link?.includes('watch') && showPreview ? (
                         <div>

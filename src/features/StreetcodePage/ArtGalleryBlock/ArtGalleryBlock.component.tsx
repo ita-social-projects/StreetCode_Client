@@ -171,7 +171,9 @@ const ArtGalleryBlock = () => {
     const sliderProps = {
         className: 'artGallerySliderContainer',
         infinite: false,
-
+        touchAction: 'pan-y',
+        touchThreshold: 15,
+        transform: 'translateZ(0)',
         swipe: windowsize.width <= 1024,
         swipeOnClick: false,
         slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,

@@ -4,10 +4,11 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .adminPageContainer {
-    width: 100vh;
-    max-width: pxToRem(1800px);
+    margin-top: f.pxToRem(100px);
+    display: flex;
+    float: left;
+    width: 100%;
     @include mut.with-font();
-    
     .dimmed {
         @include mut.sized(100%);
     }

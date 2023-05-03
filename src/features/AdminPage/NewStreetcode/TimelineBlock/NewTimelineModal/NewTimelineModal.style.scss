@@ -2,32 +2,8 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
-.timeline-modal{
-    .historical-contexts-form-item{
-        .ant-select-selection-item{
-            color:#FFF;
-            background-color: c.$dark-red-color;
-        }
-    }
-    .ant-btn{
-        color:#FFF;
-        background-color: c.$dark-red-color;
-    }
-
-    .ant-form-item-control-input{
-        width: f.pxToRem(300px);
-    }
-    .data-input-container{
-        margin-left: -10px;
-        .ant-form-item .ant-form-item-label{
-            overflow: visible;
-        }
-        .ant-form-item-control-input{
-            width: f.pxToRem(150px);
-        }
-       .data-input-select-type, .date-picker-type-input {
-        width: f.pxToRem(200px);
-       }
-        @include ut.flexed(row, center, space-evenly, nowrap);
-    }
+.data-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
