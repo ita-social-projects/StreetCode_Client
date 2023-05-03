@@ -1,5 +1,7 @@
 import './HeaderDrawer.styles.scss';
 
+import CancelBtn from '@images/utils/Cancel_btn_drawer_mobile.svg';
+
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import ReactSlider from 'react-slider';
@@ -41,6 +43,7 @@ const HeaderDrawer = () => {
                 onClose={toggle}
                 open={drawerState}
                 className="drawer"
+                closeIcon={<CancelBtn />}
             >
                 <div className="grid-container">
                     <ReactSlider
@@ -62,6 +65,7 @@ const HeaderDrawer = () => {
                                     active={active}
                                     setActive={setActive}
                                     scalingCooficient={scalingCooficient}
+                                    toggleState={toggle}
                                 />
                             </div>
                         )}
@@ -72,6 +76,7 @@ const HeaderDrawer = () => {
                                     active={active}
                                     setActive={setActive}
                                     scalingCooficient={scalingCooficient}
+                                    toggleState={toggle}
                                 />
                                 <br />
                                 <div className="headerDrawerContainer">
@@ -79,6 +84,7 @@ const HeaderDrawer = () => {
                                         id={7 * scalingCooficient}
                                         parentActive={active}
                                         setParentActive={setActive}
+                                        toggleState={toggle}
                                         text="Політика конфіденційності"
                                         link="privacy-policy"
                                     />
@@ -86,6 +92,7 @@ const HeaderDrawer = () => {
                                         id={8 * scalingCooficient}
                                         parentActive={active}
                                         setParentActive={setActive}
+                                        toggleState={toggle}
                                         text="Зворотний зв'язок"
                                         link="404"
                                     />

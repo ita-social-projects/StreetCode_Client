@@ -8,8 +8,20 @@
   justify-content: flex-end;
 }
 
-.ant-drawer-close {
-  padding: 0;
+.ant-drawer .ant-drawer-header{
+  padding: f.pxToRem(20px) f.pxToRem(15px);
+  border: 0;
+  .ant-drawer-header-title{
+    padding: 0;
+  }
+  .ant-drawer-close {
+    padding: 0;
+  }
+}
+
+.ant-drawer .ant-drawer-body{
+  padding-top: 0;
+  padding-bottom: f.pxToRem(33px);
 }
 
 .ant-drawer-content-wrapper {
@@ -84,7 +96,7 @@
   }
   .socialIconHeaderContainer {
     position: absolute;
-    top: 25rem;
+    top: 24rem;
     padding-left: f.pxToRem(7px);
     @include mut.with-font($font-weight: 300, $font-size: 16px);
   
@@ -101,11 +113,11 @@
   }
   .ant-drawer-content-wrapper{
     border-radius: 0 0 0 f.pxToRem(50px);
-    height: f.pxToRem(559px);
+    height: f.pxToRem(525px);
   }
   
   .ant-drawer-content {
     border-radius: 0 0 0 f.pxToRem(50px);
-    height: f.pxToRem(559px);
+    height: f.pxToRem(525px);
   }  
 }
