@@ -189,10 +189,7 @@ const StreetcodesTable = () => {
     }, [requestGetAll]);
 
     return (
-        <>
-            <br/>
-            <br/>
-            <br/>
+        
             <div className="StreetcodeTableWrapper">
                 <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest} />
                 <div>
@@ -221,8 +218,7 @@ const StreetcodesTable = () => {
                     </div>
                 </div>
             </div>
-
-        </>);
+);
 }
 
 export default StreetcodesTable;
