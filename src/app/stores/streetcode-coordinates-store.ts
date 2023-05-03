@@ -22,17 +22,17 @@ export default class StreetcodeCoordinatesStore {
   }
   public addStreetcodeCoordinate = (streetcodeCoordinate: StreetcodeCoordinate) => {
     this.setItem(streetcodeCoordinate);
-};
+  };
 
-private setItem = (streetcodeCoordinateItem: StreetcodeCoordinate) => {
-  this.setStreetcodeCoordinateMap.set(streetcodeCoordinateItem.id, {
+  private setItem = (streetcodeCoordinateItem: StreetcodeCoordinate) => {
+    this.setStreetcodeCoordinateMap.set(streetcodeCoordinateItem.id, {
       ...streetcodeCoordinateItem,
-  } as StreetcodeCoordinate);
-};
+    } as StreetcodeCoordinate);
+  };
 
-public deleteStreetcodeCoordinateFromMap = (streetcodeCoordinateItemId: number) => {
-  this.setStreetcodeCoordinateMap.delete(streetcodeCoordinateItemId);
-};
+  public deleteStreetcodeCoordinateFromMap = (streetcodeCoordinateItemId: number) => {
+    this.setStreetcodeCoordinateMap.delete(streetcodeCoordinateItemId);
+  };
 
   public fetchStreetcodeCoordinatesByStreetcodeId = async (streetcodeId: number) => {
     try {

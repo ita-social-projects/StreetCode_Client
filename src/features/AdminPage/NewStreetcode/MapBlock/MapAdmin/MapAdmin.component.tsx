@@ -13,6 +13,7 @@ import { Button, Form, Input, InputNumber, Table, message } from 'antd';
 import useMobx from '@/app/stores/root-store';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
+import StatisticRecord from '@/models/analytics/analytics/statisticrecord.model';
 
 const containerStyle = {
     width: '100%',
@@ -28,30 +29,41 @@ const MapOSMAdmin = () => {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
     const [center, setCenter] = useState(initialCenter);
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
-    const mapRef = useRef<google.maps.Map | null>(null);
-    const { streetcodeCoordinatesStore } = useMobx();
+    const [statisticRecord, setStatisticRecord] = useState<StatisticRecord>();
+    const mapRef = useRef<GoogleMap | null>(null);
+    const { streetcodeCoordinatesStore, statisticRecordStore } = useMobx();
     const [address, setAddress] = useState('');
-    const geocoderRef = useRef<google.maps.Geocoder>(null);
-    const [number, setNumber] = useState('');
     const [newNumber, setNewNumber] = useState('');
-  
+    const newNumberAsNumber = parseInt(newNumber, 10);
 
     const handleSaveButtonClick = () => {
         if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
-                streetcodeId: 0, // set a default streetcodeId for now
-                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
+                streetcodeId: 0,
+                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, 
+                
             };
-            streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
-            setStreetcodeCoordinates([]);
+            const newStatisticRecord: StatisticRecord = {
+                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size,
+                streetcodeCoordinate: newCoordinate,
+                coordinateId: newCoordinate.id,
+                qrId: newNumberAsNumber,
+                title: 'Sample Title',
+                count: 0,
+                address: address,
+              };
+              statisticRecordStore.addStatisticRecord(newStatisticRecord);
+              setStatisticRecord(newStatisticRecord);
+              streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
+              setStreetcodeCoordinates([]);
         }
     };
 
     const handleDelete = (record: { id: any; }) => {
         const { id } = record;
-        streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
+        statisticRecordStore.deleteStatisticRecordFromMap(id);
     };
 
     const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
@@ -74,17 +86,15 @@ const MapOSMAdmin = () => {
                 id: 0,
               },
             ]);
-      
-            // Get the address using the Geocoding API
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode(
               { location: { lat, lng } },
-              (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
-                if (status === 'OK') {
-                  setAddress(results[0].formatted_address);
-                } else {
-                  console.error('Geocode was not successful for the following reason: ' + status);
-                }
+              (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+                if (results && status === 'OK') {
+                    setAddress(results[0].formatted_address);
+                  } else {
+                    console.error('Geocode was not successful for the following reason: ' + status);
+                  }
               }
             );
           }
@@ -98,7 +108,7 @@ const MapOSMAdmin = () => {
                     const { latitude, longitude } = position.coords;
                     setStreetcodeCoordinates([
                         {
-                            latitude,
+                            latitude: latitude,
                             longtitude: longitude,
                             streetcodeId: 0, // set a default streetcodeId for now
                             id: 0, // set a default id for now
@@ -119,16 +129,26 @@ const MapOSMAdmin = () => {
                     latitude: lat,
                     longtitude: lng,
                     streetcodeId: 0,
-                    id: 0,
-                
+                    id: 0,          
                 },
             ]);
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode(
+              { location: { lat, lng } },
+              (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+                if (results && status === 'OK') {
+                    setAddress(results[0].formatted_address);
+                  } else {
+                    console.error('Geocode was not successful for the following reason: ' + status);
+                  }
+              }
+            );
         }
     };
 
     const columns = [
         {
-            title: 'id',
+            title: 'QrId',
             dataIndex: 'id',
             key: 'id',
         },
@@ -143,6 +163,11 @@ const MapOSMAdmin = () => {
             key: 'longtitude',
         },
         {
+            title: 'Адреса',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
             title: 'Дії',
             key: 'actions',
             render: (text: any, record: any) => (
@@ -154,19 +179,19 @@ const MapOSMAdmin = () => {
     ];
 
 
-    const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map(
+    const data = statisticRecordStore.getStatisticRecordArray.map(
         (item) => ({
-            id: item.id,
-            latitude: item.latitude,
-            longtitude: item.longtitude,
+            id: item.qrId,
+            latitude: item.streetcodeCoordinate.latitude,
+            longtitude: item.streetcodeCoordinate.longtitude,
+            address: item.address,
             actions: item,
         }),
     );
 
-
     const onCheckIndexClick = () => {
-        if (newNumber) {
-            StatisticRecordApi.existByQrId(newNumber)
+        if (newNumberAsNumber) {
+            StatisticRecordApi.existByQrId(newNumberAsNumber)
                 .then((exist) => {
                    
                     if (exist) {
@@ -193,6 +218,7 @@ const MapOSMAdmin = () => {
     const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewNumber(event.target.value);
       };
+      
     return (
 
         <LoadScript
@@ -210,10 +236,6 @@ const MapOSMAdmin = () => {
             >
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
-                    <h1>{address}</h1>
-                    
-  
-
                     <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                         <Input
                             className="input-streets"
@@ -225,7 +247,7 @@ const MapOSMAdmin = () => {
                         <Input
                             type="number"
                             className="input-streets"
-                            placeholder="введіть номер"
+                            placeholder="введіть айді стріткоду"
                             onChange={handleNewNumberChange}
                             value={newNumber}
                         />
