@@ -7,12 +7,14 @@ import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import useMobx from '@stores/root-store';
 
-import { Button, Form, Input, InputNumber, Table, message } from 'antd';
+import {
+    Button, Form, Input, InputNumber, message, Table,
+} from 'antd';
 
-import useMobx from '@/app/stores/root-store';
-import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 
 const containerStyle = {
     width: '100%',
@@ -34,7 +36,6 @@ const MapOSMAdmin = () => {
     const geocoderRef = useRef<google.maps.Geocoder>(null);
     const [number, setNumber] = useState('');
     const [newNumber, setNewNumber] = useState('');
-  
 
     const handleSaveButtonClick = () => {
         if (streetcodeCoordinates.length > 0) {
@@ -60,36 +61,36 @@ const MapOSMAdmin = () => {
 
     const onPlaceChanged = () => {
         if (autocomplete !== undefined) {
-          const place = autocomplete.getPlace();
-          const location = place.geometry?.location;
-          if (location) {
-            const lat = location.lat();
-            const lng = location.lng();
-            setCenter({ lat, lng });
-            setStreetcodeCoordinates([
-              {
-                latitude: lat,
-                longtitude: lng,
-                streetcodeId: 0,
-                id: 0,
-              },
-            ]);
-      
-            // Get the address using the Geocoding API
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode(
-              { location: { lat, lng } },
-              (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
-                if (status === 'OK') {
-                  setAddress(results[0].formatted_address);
-                } else {
-                  console.error('Geocode was not successful for the following reason: ' + status);
-                }
-              }
-            );
-          }
+            const place = autocomplete.getPlace();
+            const location = place.geometry?.location;
+            if (location) {
+                const lat = location.lat();
+                const lng = location.lng();
+                setCenter({ lat, lng });
+                setStreetcodeCoordinates([
+                    {
+                        latitude: lat,
+                        longtitude: lng,
+                        streetcodeId: 0,
+                        id: 0,
+                    },
+                ]);
+
+                // Get the address using the Geocoding API
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode(
+                    { location: { lat, lng } },
+                    (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
+                        if (status === 'OK') {
+                            setAddress(results[0].formatted_address);
+                        } else {
+                            console.error(`Geocode was not successful for the following reason: ${status}`);
+                        }
+                    },
+                );
+            }
         }
-      };
+    };
 
     const handleMarkerCurrentPosition = () => {
         if (mapRef.current) {
@@ -120,7 +121,6 @@ const MapOSMAdmin = () => {
                     longtitude: lng,
                     streetcodeId: 0,
                     id: 0,
-                
                 },
             ]);
         }
@@ -153,7 +153,6 @@ const MapOSMAdmin = () => {
         },
     ];
 
-
     const data = streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map(
         (item) => ({
             id: item.id,
@@ -163,23 +162,20 @@ const MapOSMAdmin = () => {
         }),
     );
 
-
     const onCheckIndexClick = () => {
         if (newNumber) {
-            StatisticRecordApi.existByQrId(newNumber)
+            StatisticRecordApi.existByQrId(+newNumber)
                 .then((exist) => {
-                   
                     if (exist) {
                         message.error({
                             content: 'Даний айді вже використовується. Використайте інший, будь ласка.',
-                            style: { marginTop: '400vh' }, 
-                          });
+                            style: { marginTop: '400vh' },
+                        });
                     } else {
                         message.success({
-                            content:   'Такій айді вільний. Можете з впевненістю його використовувати',
-                            style: { marginTop: '400vh' }, 
-                          });
-                     
+                            content: 'Такий айді вільний. Можете з впевненістю його використовувати',
+                            style: { marginTop: '400vh' },
+                        });
                     }
                 })
                 .catch(() => {
@@ -192,9 +188,9 @@ const MapOSMAdmin = () => {
 
     const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewNumber(event.target.value);
-      };
-    return (
+    };
 
+    return (
         <LoadScript
             googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M"
             language="uk"
@@ -211,9 +207,6 @@ const MapOSMAdmin = () => {
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
                     <h1>{address}</h1>
-                    
-  
-
                     <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                         <Input
                             className="input-streets"
@@ -221,20 +214,16 @@ const MapOSMAdmin = () => {
                             prefix={<EnvironmentOutlined className="site-form-item-icon" />}
                         />
                     </Autocomplete>
-
-                        <Input
-                            type="number"
-                            className="input-streets"
-                            placeholder="введіть номер"
-                            onChange={handleNewNumberChange}
-                            value={newNumber}
-                        />
-                    
-
+                    <Input
+                        type="number"
+                        className="input-streets"
+                        placeholder="введіть номер"
+                        onChange={handleNewNumberChange}
+                        value={newNumber}
+                    />
                     <Button className="onMapbtn" onClick={onCheckIndexClick}>
                         <a>Перевірити айді</a>
                     </Button>
-
                     <Button
                         className="onMapbtn"
                         onClick={handleMarkerCurrentPosition}
@@ -246,7 +235,6 @@ const MapOSMAdmin = () => {
                             <a>Зберегти стріткод</a>
                         </Button>
                     )}
-
                 </div>
                 {streetcodeCoordinates.map((marker, index) => (
                     <Marker
@@ -260,12 +248,9 @@ const MapOSMAdmin = () => {
                         title={`Marker ${marker.latitude}, ${marker.longtitude}`}
                     />
                 ))}
-
             </GoogleMap>
-
             <Table columns={columns} dataSource={data} />
         </LoadScript>
-
     );
 };
 

@@ -17,12 +17,9 @@
     @include mut.sized(300px, 40px);
     @include mut.full-rounded(10px);
     @include mut.rem-margined(16px, 0, 15px, 20px);
-    justify-content: space-between;
-    display: flex;
-    flex-direction: column;
+    @include mut.flexed();
 }
   .input-streets{
-
     @include mut.sized(300px, 40px);
     @include mut.full-rounded(10px);
     @include mut.rem-margined(16px, 0, 15px, 15px);
