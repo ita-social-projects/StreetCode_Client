@@ -21,37 +21,30 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
     const [form] = Form.useForm();
 
     return (
-        <>
-            <h2>Текст підготовлений спільно з...</h2>
-            <Form form={form}>
-                <Editor
-                    init={{
-                        height: 300,
-                        menubar: false,
-                        init_instance_callback(editor) {
-                            editor.setContent(inputInfo?.аdditionalText);
-                        },
-                        plugins: [
-                            'autolink',
-                            'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                            'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
-                        ],
-                        toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
-                            + 'formats blockformats align | removeformat strikethrough ',
-                        content_style: 'body {font - family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                    }}
+        <FormItem label='Авторство'>
+            <Editor
+                init={{
+                    height: 300,
+                    menubar: false,
+                    init_instance_callback(editor) {
+                        editor.setContent("");
+                    },
+                    plugins: [
+                        'autolink',
+                        'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                        'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                    ],
+                    toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
+                        + 'formats blockformats align | removeformat strikethrough ',
+                    content_style: 'body {font - family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                    placeholder: 'Текст підготовлений спільно з...'
+                }}
 
-                    onChange={(e, editor) => {
-                        setInputInfo({ ...inputInfo, аdditionalText: editor.getContent() });
-                    }}
-                />
-                <Form.Item>
-                    <Button htmlType="submit">
-                        Зберегти
-                    </Button>
-                </Form.Item>
-            </Form>
-        </>
+                onChange={(e, editor) => {
+                    setInputInfo({ ...inputInfo, аdditionalText: editor.getContent() });
+                }}
+            />
+        </FormItem>
     );
 };
 
