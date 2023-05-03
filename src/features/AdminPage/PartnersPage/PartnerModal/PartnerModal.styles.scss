@@ -2,41 +2,22 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
-.partner-modal{
-    .form-input-line-group{
-        width: 100%;
-        @include mut.flexed(row, start,space-between, wrap, 4px);
-    }
-    .partner-form{
-        textarea{
-            resize: none;
-        }
-    }
-    .red-text{
-        color: c.$accented-red-color;
-    }
-    .partner-source-list{
-        .partner-source-list-item{
-            @include mut.flexed(row, start,space-between, wrap, 4px);
-            .link-item{
-                width: 70%;
-            }
-        }
-    }
-    .url-title, label{
-        word-wrap: break-word;
-        word-break: break-all;
-        line-break: anywhere;
-    }
-    .partner-source-inputs-container{
-        @include mut.rem-margined(20px);
-        @include mut.flexed(row, end,space-between, wrap, 4px);
-        .url-input{
-            flex-grow: 2;
-        }
-    }
-    .ant-modal-footer{
+
+.checkbox-container{
+    display: flex;
+    justify-content: space-between;
+    
+    &-flex{ 
         display: flex;
-        @include mut.flexed(row,start, flex-end);
     }
+    
+    p{
+        margin-left: 5px;
+    }
+}
+
+.link-container{
+    gap: 5px;
+    display: flex;
+    align-items: center;
 }

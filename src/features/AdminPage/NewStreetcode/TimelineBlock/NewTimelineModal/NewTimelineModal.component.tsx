@@ -1,4 +1,5 @@
 import './NewTimelineModal.style.scss';
+import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
@@ -16,6 +17,7 @@ import TimelineItem, {
     dateTimePickerTypes,
     HistoricalContext, selectDateOptions,
 } from '@/models/timeline/chronology.model';
+import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 
 const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -83,18 +85,24 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     };
     return (
         <Modal
-            className="timeline-modal"
+            className="modalContainer"
             open={open}
             onCancel={() => {
                 setIsModalOpen(false);
             }}
-            footer={[]}
+            footer={null}
+            closeIcon={<CancelBtn />}
         >
+            <div className='modalContainer-content'>
             <Form
                 form={form}
+                layout="vertical"
                 onFinish={onSuccesfulSubmit}
-                labelCol={{ span: 5 }}
             >
+                <div className='center'>
+                    <h2>Хронологія</h2>
+                </div>
+
                 <Form.Item
                     name="title"
                     label="Назва: "
@@ -102,34 +110,31 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 >
                     <Input maxLength={50} showCount />
                 </Form.Item>
-                <div className="data-input-container">
-                    <Form.Item
-                        label="Дата: "
-                        className="data-input-select-type"
-                    >
-                        <Select
-                            className="date-picker-type-input"
-                            options={selectDateOptions}
-                            defaultValue={dateTimePickerType}
-                            onChange={(val) => {
-                                setDateTimePickerType(val);
-                            }}
-                        />
-                    </Form.Item>
+
+                <Form.Item label="Дата:"> 
+                <div className="data-container">
+                    <Select
+                        options={selectDateOptions}
+                        defaultValue={dateTimePickerType}
+                        onChange={(val) => {
+                            setDateTimePickerType(val);
+                        }}
+                    />
+
                     <Form.Item
                         name="date"
-                        className="data-input"
                         rules={[{ required: true, message: 'Введіть дату' }]}
                     >
                         <DatePicker
                             picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
                         />
                     </Form.Item>
-                </div>
+                    </div>
+                </Form.Item>
+
                 <Form.Item
                     name="historicalContexts"
                     label="Контекст: "
-                    className="historical-contexts-form-item"
                 >
                     <Select
                         mode="tags"
@@ -146,19 +151,21 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                             ))}
                     </Select>
                 </Form.Item>
+
                 <Form.Item
                     name="description"
                     label="Опис: "
                     rules={[{ required: true, message: 'Введіть опис' }]}
                 >
                     <TextArea maxLength={400} showCount />
-                </Form.Item>
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
+                </Form.Item>     
+                <div className='center'>
+                    <Button className='streetcode-custom-button' type="primary" htmlType="submit">
                         Зберегти
                     </Button>
-                </Form.Item>
+                </div>
             </Form>
+            </div>
         </Modal>
     );
 });
