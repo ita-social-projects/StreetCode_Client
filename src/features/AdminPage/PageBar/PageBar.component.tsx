@@ -6,7 +6,7 @@ import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 const PageBar = () => (
     <div className="PageBarContainer">
         <div className="BarContainer">
-            <Link className='Link' to={`/admin-panel/new-streetcode`}>Стріткоди</Link>
+            <Link className='Link' to={`/admin-panel`}>Стріткоди</Link>
             <Link className='Link' to="#">Словник</Link>
             <Link className='Link' to="#">Користувач</Link>
             <Link className='Link' to={FRONTEND_ROUTES.ADMIN.PARTNERS}>Партнери</Link>
