@@ -46,7 +46,7 @@ const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
                 <TextPreview inputInfo={inputInfo} />
             </Form.Item>
             <Form.Item>
-                <AdditionalTextBlockAdminFormComponent />
+                <AdditionalTextBlockAdminFormComponent inputInfo={inputInfo} setInputInfo={setInputInfo} />
             </Form.Item>
             <Form.Item>
                 <LinkEditor inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
