@@ -128,7 +128,7 @@ const StreetcodesTable = () => {
                                         });
                                         modalStore.setConfirmationModal('confirmation');
                                     },
-                                    'Ви впевнені, що хочете видалити цього партнера?',
+                                    'Ви впевнені, що хочете видалити цей стріткод?',
                                 );
                             }} />
                         </>
