@@ -196,7 +196,9 @@ const ArtGalleryBlock = () => {
     };
 
     return (
-        <div className="artGalleryWrapper">
+        <div className = {`artGalleryWrapper 
+            ${getStreetcodeArtArray.length?'':'display-none'}`}
+        >
             <div className="artGalleryContainer">
                 <BlockHeading headingText="Арт-галерея" />
                 <div className="artGalleryContentContainer">
