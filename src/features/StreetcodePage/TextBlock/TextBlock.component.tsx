@@ -27,7 +27,8 @@ const TextComponent = () => {
     return (
         <div
             id="text"
-            className="textComponentContainer"
+            className={`textComponentContainer 
+                ${text? '' : 'display-none'}`}
         >
             <BlockHeading headingText={String(text?.title)} />
             <div className="textComponent">

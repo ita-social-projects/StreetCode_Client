@@ -94,6 +94,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
 
     return (
         <div className={`relatedFiguresWrapper
+            ${getRelatedFiguresArray.length?'':'display-none'}
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">

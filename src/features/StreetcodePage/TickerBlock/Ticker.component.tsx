@@ -21,7 +21,9 @@ const TickerComponent = () => {
     }),[getStreetCodeId]; 
     
     return (
-        <div className="tickerContainer">
+        <div className={`tickerContainer
+            ${subtitle.length?'':'display-none'}`}
+        >
             <Ticker pauseOnHover={true}>
                 <div className="tickerItem">{subtitle}</div>
             </Ticker>
