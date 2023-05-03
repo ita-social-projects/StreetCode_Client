@@ -5,5 +5,7 @@
 
 .searchResultsBlock{
     width: 100%;
+    height: 418px;
+    overflow-y: scroll;
     @include mut.flexed($direction: column);
 }

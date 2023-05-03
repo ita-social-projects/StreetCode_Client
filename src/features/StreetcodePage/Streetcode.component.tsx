@@ -1,6 +1,8 @@
 import './Streetcode.styles.scss';
 
-import { lazy, Suspense, useEffect, useState } from 'react';
+import {
+    lazy, Suspense, useEffect, useRef, useState,
+} from 'react';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -16,12 +18,13 @@ import dayjs from 'dayjs';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 
-const PartnersLazyComponent = lazy(() => import('@streetcode/PartnersBlock/Partners.component'));
-const MapLazy = lazy(() => import('@streetcode/MapBlock/MapBlock.component'));
-const InterestingFactsLazy = lazy(() => import('@streetcode/InterestingFactsBlock/InterestingFacts.component'));
-const TimelineLazy = lazy(() => import('@streetcode/TimelineBlock/TimelineBlock.component'));
-const ArtGalleryLazy = lazy(() => import('@streetcode/ArtGalleryBlock/ArtGalleryBlock.component'));
-const RelatedFiguresLazy = lazy(() => import('@streetcode/RelatedFiguresBlock/RelatedFigures.component'));
+import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
+import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
+import MapComponent from './MapBlock/Map/Map.component';
+import MapBlock from './MapBlock/MapBlock.component';
+import PartnersComponent from './PartnersBlock/Partners.component';
+import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
+import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => {
     const streetcodeUrl = useRouteUrl();
@@ -32,64 +35,39 @@ const StreetcodeContent = () => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        setCurrentStreetcodeId(streetcodeUrl).then(() => {
-            setTimeout(() => {
-                setLoaded(true);
-            }, 100);
-        });
+        setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
     useEffect(() => {
-        setTimeout(() => {
-            const blockId = window.location.hash.substring(1);
-            const blockElement = document.getElementById(blockId);
-            console.log(blockId);
+        if (loaded) {
+            const blockElement = document.getElementById('wow-facts');
+            console.log(loaded);
             console.log(blockElement);
             if (blockElement) {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
-        }, 5000);
-    }, []);
+        }
+    }, [loaded]);
 
     return (
         <div className="streetcodeContainer">
-            {
-                loaded && (
-                    <>
-                        <ProgressBar>
-                            <MainBlock
-                                setActiveTagId={setActiveTagId}
-                                setActiveBlock={setActiveBlock}
-                            />
-                            <TextBlockComponent />
-                            <Suspense>
-                                <InterestingFactsLazy />
-                            </Suspense>
-                            <Suspense>
-                                <TimelineLazy />
-                            </Suspense>
-                            <Suspense>
-                                <MapLazy />
-                            </Suspense>
-                            <Suspense>
-                                <ArtGalleryLazy />
-                            </Suspense>
-                            <Suspense>
-                                <RelatedFiguresLazy
-                                    setActiveTagId={setActiveTagId}
-                                />
-                            </Suspense>
-                            <Suspense>
-                                <SourcesBlock />
-                            </Suspense>
-                        </ProgressBar>
-                        <QRBlock />
-                        <Suspense>
-                            <PartnersLazyComponent />
-                        </Suspense>
-                    </>
-                )
-            }
+            <ProgressBar setLoaded={setLoaded}>
+                <MainBlock
+                    setActiveTagId={setActiveTagId}
+                    setActiveBlock={setActiveBlock}
+                />
+                <TextBlockComponent />
+                <InterestingFactsComponent />
+                <TimelineBlockComponent />
+                <MapBlock />
+                <ArtGalleryBlockComponent />
+                <RelatedFiguresComponent
+                    setActiveTagId={setActiveTagId}
+                />
+                <SourcesBlock />
+            </ProgressBar>
+            <QRBlock />
+            <PartnersComponent />
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />

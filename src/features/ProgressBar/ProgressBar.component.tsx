@@ -17,6 +17,7 @@ interface Props {
     topDistance?: number;
     visibleBefore?: number;
     hidingDelay?: number;
+    setLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const getPercentage = (value: number, ofValue: number) => (value * 1e2) / ofValue;
@@ -40,6 +41,7 @@ const ProgressBar: FC<Props> = ({
     topDistance = 82,
     visibleBefore = 1600,
     hidingDelay = 10e3,
+    setLoaded,
 }) => {
     const wasScrolled = useRef(false);
     const scrollPercentage = useRef(0);
@@ -117,7 +119,7 @@ const ProgressBar: FC<Props> = ({
 
     return (
         <>
-            <NavigableBlockWrapper setBlocks={setBlocks} topDistance={topDistance}>
+            <NavigableBlockWrapper setBlocks={setBlocks} setLoaded={setLoaded} topDistance={topDistance}>
                 {children}
             </NavigableBlockWrapper>
             <div className="progressBarContainer" onClick={onProgressBarCallerClick}>

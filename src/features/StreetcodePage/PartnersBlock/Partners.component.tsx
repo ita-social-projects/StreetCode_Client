@@ -30,7 +30,7 @@ const PartnersComponent = () => {
         },
     }), [getPartnerArray, breakpoint, slidesToShow]);
 
-    const responsiveSettingsDesktop = useResponsiveSettings(10000, 4);
+    const responsiveSettingsDesktop = useResponsiveSettings(10000, 3);
     const responsiveSettingsTablet = useResponsiveSettings(1024, 4);
     const responsiveSettingsMobile = useResponsiveSettings(780, 2);
 

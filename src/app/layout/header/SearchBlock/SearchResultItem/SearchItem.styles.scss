@@ -5,9 +5,8 @@
 
 .resultItemContainer{ 
     max-width: 915px;
-    @include mut.sized(100%, 42px);
     @include mut.flexed($align-items: center);
-    @include mut.rem-padded($left: 20px, $right: 20px);
+    padding: f.pxToRem(13px) f.pxToRem(20px);
 
     white-space: nowrap;
 

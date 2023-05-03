@@ -53,34 +53,32 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const sliderItemsMobile = [];
 
     for (let i = 0; i < getRelatedFiguresArray.length; i += 2) {
-    const figureOnTopRow = getRelatedFiguresArray[i];
-    const figureOnBottomRow = getRelatedFiguresArray[i + 1];
+        const figureOnTopRow = getRelatedFiguresArray[i];
+        const figureOnBottomRow = getRelatedFiguresArray[i + 1];
 
-   
-    const hasBottomRow = figureOnBottomRow !== undefined;
+        const hasBottomRow = figureOnBottomRow !== undefined;
 
-    const sliderItem = (
-        <div className='TwoRowSlide' key={i}>
-        <RelatedFigureItem
-            relatedFigure={figureOnTopRow}
-            filterTags
-            hoverable
-            setActiveTagId={setActiveTagId}
-        />
-        {hasBottomRow && (
-            <RelatedFigureItem
-            relatedFigure={figureOnBottomRow}
-            filterTags
-            hoverable
-            setActiveTagId={setActiveTagId}
-            />
-        )}
-        </div>
-    );
+        const sliderItem = (
+            <div className="TwoRowSlide" key={Math.random()}>
+                <RelatedFigureItem
+                    relatedFigure={figureOnTopRow}
+                    filterTags
+                    hoverable
+                    setActiveTagId={setActiveTagId}
+                />
+                {hasBottomRow && (
+                    <RelatedFigureItem
+                        relatedFigure={figureOnBottomRow}
+                        filterTags
+                        hoverable
+                        setActiveTagId={setActiveTagId}
+                    />
+                )}
+            </div>
+        );
 
-    sliderItemsMobile.push(sliderItem);
+        sliderItemsMobile.push(sliderItem);
     }
-
 
     const sliderProps = {
         className: 'heightContainer',
@@ -91,8 +89,8 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         swipeOnClick: false,
         slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width <= 480 ? 2 : undefined,
         slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width <= 480 ? 1 : 3,
-        rows: 1
-    }; 
+        rows: 1,
+    };
 
     return (
         <div className={`relatedFiguresWrapper
@@ -108,9 +106,9 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
-                    <BlockSlider {...sliderProps}>   
+                    <BlockSlider {...sliderProps}>
                         {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
-                    </BlockSlider> 
+                    </BlockSlider>
                 </div>
             </div>
         </div>

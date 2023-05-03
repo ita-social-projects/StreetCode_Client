@@ -8,6 +8,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     overflow: clip;
     @include mut.rem-padded($top: 82px);
     @include mut.bg-image($bgImg, auto);
+
+    overflow-anchor: none;
 }
 .sticky{
     position: sticky;
