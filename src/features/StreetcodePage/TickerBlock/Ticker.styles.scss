@@ -4,6 +4,8 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 
 .tickerContainer {
+  display: flex;
+  justify-content: center;
   @include mut.colored(c.$pure-white-color, c.$selected-arrow-color);
   @include mut.sizedImportant(200%, 44px);
   z-index: -1;
