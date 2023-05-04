@@ -1,5 +1,6 @@
 import './StreetcodeCard.styles.scss';
 
+import { useEffect, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -14,7 +15,6 @@ import ImagesApi from '@/app/api/media/images.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
-import { useEffect, useState } from 'react';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -67,7 +67,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         slidesToShow={1}
                         swipeOnClick
                         infinite
-                        draggable={false}
                     >
                         {images?.map(({ base64, mimeType, alt }) => (
                             <img
@@ -115,9 +114,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     type="primary"
                                     className="audioBtn audioBtnActive"
                                     onClick={() => {
-                                            setModal('audio');
-                                            audioClickEvent(streetcode?.id ?? 0);
-                                        }}
+                                        setModal('audio');
+                                        audioClickEvent(streetcode?.id ?? 0);
+                                    }}
                                 >
                                     <PlayCircleFilled className="playCircle" />
                                     <span>Прослухати текст</span>

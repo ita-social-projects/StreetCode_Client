@@ -296,7 +296,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                        /500
+                            /
+                        {teaserMaxCharCount}
                     </p>
                 </div>
             </div>

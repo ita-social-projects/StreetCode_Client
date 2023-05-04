@@ -55,7 +55,29 @@ li.slick-active button:before {
 }
 
 .sliderClass {
+
     width: 100%;
+    .slider-item-container{
+        display: flex !important;
+        position: relative;
+        flex-direction: row;
+        .left{
+            position: absolute;
+            width: 100px;
+            height: 100%;
+            left: 0;
+            opacity: 0;
+        }
+    
+        .right{
+            position: absolute;
+            width: 100px;
+            height: 100%;
+            right: 0;
+            opacity: 0;
+            width: 100px;
+        }
+    }
 }
 
 .nonInfiniteSlider {
