@@ -7,17 +7,15 @@ interface Props {
     id: number;
     text: string;
     parentActive: number;
-    setParentActive: React.Dispatch<React.SetStateAction<number>>;
     link: string;
     toggleState: () => void;
 }
 
 const HeaderDrawerItem = ({
-    id, parentActive, setParentActive, text, link, toggleState,
+    id, parentActive, text, link, toggleState,
 }: Props) => {
     const [isActive, setActive] = useState(false);
     const handleClick = () => {
-        setParentActive(id);
         setActive(true);
         toggleState();
     };
