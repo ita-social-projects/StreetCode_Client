@@ -49,7 +49,6 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
                     href={`../streetcode/${url}`}
                     onClick={() => {
-                        window.location.reload();
                         window.scrollTo(0, 0);
                         if (!tagsList) {
                             relatedFiguresLeaveEvent();
