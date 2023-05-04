@@ -52,11 +52,11 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100000;
     pointer-events: none;
 
     .spinner{
-        z-index: 1001;
+        z-index: 100001;
     }
 
 }
