@@ -24,7 +24,6 @@ const VideoPlayer = ({ videoUrls, setTextBlockState }: Props) => {
                     url={videoUrls}
                     controls
                     onReady={(() => {
-
                         setTextBlockState(true);
                     })}
                 />

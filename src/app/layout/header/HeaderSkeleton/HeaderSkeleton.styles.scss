@@ -7,7 +7,6 @@
   @include mut.flexed($justify-content: flex-start);
   transition: all 1s;
   overflow-x: auto;
-  // @include mut.rem-margined(16px, 0, 16px, 45px);
 
   position: relative;
   z-index: 1;

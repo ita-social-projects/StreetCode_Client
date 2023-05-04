@@ -20,7 +20,7 @@ export default class AudioStore {
                 this.setItem(audio as Audio);
             });
         } catch (error: unknown) {
-            // console.log(error);
+            console.log(error);
         }
     };
 

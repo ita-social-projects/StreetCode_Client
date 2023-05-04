@@ -6,6 +6,5 @@ export interface StreetcodeFilterResultDTO {
     streetcodeId: number,
     streetcodeUrl: string,
     content: string,
-    subEntityId?: number,
     sourceName: string
 }

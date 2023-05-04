@@ -40,7 +40,6 @@ const ProgressBar: FC<Props> = ({
     topDistance = 82,
     visibleBefore = 1600,
     hidingDelay = 10e3,
-    setLoaded,
 }) => {
     const wasScrolled = useRef(false);
     const scrollPercentage = useRef(0);
@@ -119,7 +118,7 @@ const ProgressBar: FC<Props> = ({
 
     return (
         <>
-            <NavigableBlockWrapper setBlocks={setBlocks} setLoaded={setLoaded} topDistance={topDistance}>
+            <NavigableBlockWrapper setBlocks={setBlocks} topDistance={topDistance}>
                 {children}
             </NavigableBlockWrapper>
             <div className="progressBarContainer" onClick={onProgressBarCallerClick}>
@@ -127,7 +126,6 @@ const ProgressBar: FC<Props> = ({
                     {...cursorCaptureHandlers}
                     style={(!isOnTimeout) ? { pointerEvents: 'none' } : undefined}
                     className={`progressBarPopupContainer ${isPBVisible ? 'visible' : ''}`}
-
                 >
 
                     <div className="progressBarPopupContent">

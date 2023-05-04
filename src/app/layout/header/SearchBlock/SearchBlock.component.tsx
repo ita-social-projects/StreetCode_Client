@@ -23,7 +23,6 @@ const SearchBlock = ({ searchQuery } : Props) => {
 
         StreetcodesApi.getByFilter(filter)
             .then((response: StreetcodeFilterResultDTO[]) => {
-                console.log(response);
                 setSearchResult(response);
             });
     }, [searchQuery]);
