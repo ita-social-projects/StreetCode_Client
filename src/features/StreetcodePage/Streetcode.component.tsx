@@ -1,6 +1,6 @@
 import './Streetcode.styles.scss';
 
-import {
+import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
@@ -32,32 +32,51 @@ const StreetcodeContent = () => {
     const [activeBlock, setActiveBlock] = useState(0);
     const { streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const [loaded, setLoaded] = useState(false);
+
+    const [loading, setLoading] = useState(true);
+
+    const [streetcodeCardState, setStreetcodeCardState] = useState(false);
+    const [textBlockState, setTextBlockState] = useState(false);
+    const [interestingFactsState, setInterestingFactsState] = useState(false);
+    const [partnersState, setPartnersState] = useState(false);
 
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
     useEffect(() => {
-        if (loaded) {
-            const blockElement = document.getElementById('wow-facts');
-            console.log(loaded);
-            console.log(blockElement);
+        document.body.style.overflow = 'hidden';
+        if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
+            setLoading(false);
+            document.body.style.overflow = 'auto';
+
+            const anchorId = window.location.hash.substring(1);
+            const blockElement = document.getElementById(anchorId);
             if (blockElement) {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [loaded]);
+    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]);
 
     return (
         <div className="streetcodeContainer">
-            <ProgressBar setLoaded={setLoaded}>
+            {loading && (
+                <div className="loader-container">
+                    <img
+                        className="spinner"
+                        alt=""
+                        src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
+                    />
+                </div>
+            )}
+            <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
+                    setStreetcodeCardState={setStreetcodeCardState}
                 />
-                <TextBlockComponent />
-                <InterestingFactsComponent />
+                <TextBlockComponent setTextBlockState={setTextBlockState} />
+                <InterestingFactsComponent setInterestingFactsState={setInterestingFactsState} />
                 <TimelineBlockComponent />
                 <MapBlock />
                 <ArtGalleryBlockComponent />
@@ -67,7 +86,7 @@ const StreetcodeContent = () => {
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersComponent />
+            <PartnersComponent setPartnersState={setPartnersState} />
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />

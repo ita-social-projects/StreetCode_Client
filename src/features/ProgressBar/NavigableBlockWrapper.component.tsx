@@ -10,10 +10,9 @@ interface Props {
     children: JSX.Element[];
     setBlocks: (blocks: NamedBlock[]) => void;
     topDistance: number;
-    setLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NavigableBlockWrapper = ({ children, setBlocks, topDistance, setLoaded }: Props) => {
+const NavigableBlockWrapper = ({ children, setBlocks, topDistance }: Props) => {
     const parentRef = useRef<HTMLDivElement>(null);
 
     useResizeObserver(parentRef, () => {
@@ -35,7 +34,6 @@ const NavigableBlockWrapper = ({ children, setBlocks, topDistance, setLoaded }: 
         });
 
         setBlocks(blocks);
-        setLoaded(Array.from(parentRef.current.children).length >= 8 ? true : false);
     });
 
     return (
