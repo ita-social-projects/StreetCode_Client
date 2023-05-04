@@ -228,12 +228,12 @@
       }
       .streetcodeTitle {
         @include mut.rem-padded(0px, 10px, 0px, 0px);
-        @include mut.with-font($font-weight: 500, $font-size: 32px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         @include mut.withLineHeight(42px);
       }
       .streetcodeDate {
-        @include mut.rem-padded(0px, 10px, 0px, 0px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
+        @include mut.rem-padded(0px, 5px, 0px, 0px);
+        @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
         @include mut.withLineHeight(23px);
       }
       .streetcodeImg {
@@ -241,7 +241,7 @@
       }
       .cardFooter {
         width: 95%;
-        @include mut.rem-padded(10px, 0px, 10px, 0px);
+        @include mut.rem-padded(10px, 0px, 0px, 0px);
         .animateFigureBtn {
           @include mut.hidden();
         }

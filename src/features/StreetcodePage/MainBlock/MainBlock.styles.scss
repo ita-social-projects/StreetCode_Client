@@ -6,7 +6,10 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 .margin-82px {
     margin-top: f.pxToRem(82px);
 }
-
+.mainBlock{
+    @include mut.bg-image($bgImg, auto);
+    background-repeat: repeat-x;
+}
 .mainBlock, .blockCentering {
     @include mut.flex-centered();
 }
