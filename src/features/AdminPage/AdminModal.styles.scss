@@ -61,6 +61,26 @@ $factImg: "@assets/images/interesting-facts/WowFacts1.png";
                     box-shadow: none;
                 }
             }
+            .ant-checkbox-inner {
+                width: pxToRem(25px) !important;
+                height: pxToRem(25px) !important;
+                border: pxToRem(3px) solid #7E7E7E !important;
+                border-radius: 0  !important;
+            }
+    
+            .ant-checkbox-checked {
+                .ant-checkbox-inner {
+                    border: 3px solid #DB3424 !important;
+                }
+            }
+            .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
+                opacity: 0;
+            }
+    
+            .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+                background: red !important;
+                box-shadow: inset 0 0 0 2px white !important;
+            }
         }
     } 
 }

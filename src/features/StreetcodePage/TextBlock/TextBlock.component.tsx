@@ -30,7 +30,8 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     return (
         <div
             id="text"
-            className="textComponentContainer"
+            className={`textComponentContainer 
+                ${text? '' : 'display-none'}`}
         >
             <BlockHeading headingText={String(text?.title)} />
             <div className="textComponent">

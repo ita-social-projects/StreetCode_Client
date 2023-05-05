@@ -76,10 +76,12 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
     return (
         <div
             id="wow-facts"
-            className={`interestingFactsWrapper ${getFactArray.length === 1 ? 'single' : ''}`}
+            className={`interestingFactsWrapper 
+            ${getFactArray.length === 1 ? 'single' : ''} 
+            ${getFactArray.length?'':'display-none'}`}
         >
             <div className="interestingFactsContainer">
-                <BlockHeading headingText="Wow-факти" />
+                <BlockHeading headingText="Wow—факти" />
                 <div className="interestingFactsSliderContainer">
                     <div style={{ height: '100%' }}>
                         {(getFactArray.length === 1) ? (

@@ -69,7 +69,9 @@ const PartnersComponent = ({ setPartnersState }: Props) => {
     }, [sliderItems, loadedImagesCount]);
 
     return (
-        <div className="partnersWrapper">
+        <div className={`partnersWrapper 
+            ${getPartnerArray.length? '' : 'display-none'}`}
+        >
             <div className="partnerContainer">
                 <SlickSlider
                     className="heightContainer"

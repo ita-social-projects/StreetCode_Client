@@ -49,7 +49,7 @@ const MainBlockAdmin: React.FC<Props> = ({
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
-    const [indexId, setIndexId] = useState<number>();
+    const [indexId, setIndexId] = useState<number>(0);
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -112,7 +112,13 @@ const MainBlockAdmin: React.FC<Props> = ({
         TagsApi.getAll().then(tags => setTags(tags))
     }, []);
 
-
+    const setIndex = (index :number|null) =>{
+        if(index){
+            form.setFieldValue('streetcodeNumber',index);
+            setIndexId(index);
+        }
+    }
+    
     const onSelectTag = (selectedValue: string) => {
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
@@ -151,7 +157,7 @@ const MainBlockAdmin: React.FC<Props> = ({
             >
                 <div className='display-flex-row'>
                     <InputNumber
-                        min={0} max={10000} value={indexId} onChange={(value) => setIndexId(value)} />
+                        min={0} max={10000} value={indexId} onChange={setIndex}/>
                     <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
                 </div>
             </Form.Item>

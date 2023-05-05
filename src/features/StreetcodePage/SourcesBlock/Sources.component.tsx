@@ -18,7 +18,9 @@ const SourcesComponent = () => {
     useAsync(() => sourcesStore.fetchSrcCategoriesByStreetcodeId(getStreetCodeId), [getStreetCodeId]);
 
     return (
-        <div className="sourcesWrapper">
+        <div className={`sourcesWrapper 
+            ${sourcesStore.getSrcCategoriesArray.length? '' : 'display-none'}`}
+        >
             <div className="sourcesContainer">
                 <BlockHeading headingText="Для фанатів" />
                 <div className="sourceContentContainer">
