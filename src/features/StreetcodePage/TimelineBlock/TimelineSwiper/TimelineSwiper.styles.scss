@@ -14,17 +14,24 @@
   @include mut.parent-sized();
   @include mut.flex-centered();
 
-  .swiper-slide:not(.swiper-slide-active) {
-    bottom: f.pxToRem(-12px);
+  .swiper-slide:not(.swiper-slide-visible) {
+    visibility: hidden;
   }
 
-  .swiper-slide .timelineYearTick {
-    align-items: center;
+  .swiper-slide {
     align-self: center;
+    position: unset;
     justify-content: center;
     margin: auto;
-    @include mut.sized(21px, 21px);
+    .timelineYearTick {
+      align-items: center;
+      align-self: center;
+      justify-content: center;
+      margin: auto;
+      @include mut.sized(21px, 21px);
+    }
   }
+  
 }
 
 .tickContainer {
@@ -61,6 +68,7 @@
     }
 
     .swiper-slide:not(.swiper-slide-active){
+      visibility: visible;
       bottom: f.pxToRem(-3px);
     }
   }

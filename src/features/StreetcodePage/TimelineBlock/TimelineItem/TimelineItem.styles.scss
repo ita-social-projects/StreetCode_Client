@@ -8,7 +8,6 @@
   border-radius: 30px;
   align-self: center;
   @include mut.sized(604px, 366px);
-  @include mut.full-rounded(30px);
 
   @include vnd.vendored(transition, 'backdrop-filter 300ms ease-in');
   backdrop-filter: blur(2px);
@@ -50,7 +49,7 @@
 @media screen and (max-width: 1024px) {
   .timelineItem{
     @include mut.sized(300px, 190px);
-
+    border-radius: 15px;
     .timelineItemContent{
       margin: f.pxToRem(13px);
 
