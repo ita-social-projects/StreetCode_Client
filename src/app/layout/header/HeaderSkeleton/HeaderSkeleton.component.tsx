@@ -55,11 +55,9 @@ const HeaderSkeleton = () => {
             )}
         >
             <Input
-                // size="large"
                 onChange={handleInputChange}
                 placeholder="Пошук..."
                 prefix={<MagnifyingGlass />}
-                // {...onFocusEvents}
             />
         </Popover>
     );

@@ -4,8 +4,7 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .searchResultsBlock{
-    width: 100%;
-    height: 418px;
+    @include mut.sized(100%, 418px);
     overflow-y: scroll;
     @include mut.flexed($direction: column);
 }

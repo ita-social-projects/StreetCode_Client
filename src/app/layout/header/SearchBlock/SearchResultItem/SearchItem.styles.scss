@@ -4,13 +4,13 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .resultItemContainer{ 
-    max-width: 915px;
+    max-width: f.pxToRem(915px);
     @include mut.flexed($align-items: center);
     padding: f.pxToRem(13px) f.pxToRem(20px);
 
     white-space: nowrap;
 
-    border-bottom: 1px solid #F4F4F4;
+    border-bottom: 1px solid c.$accented-gray-color;
     &:last-child{
         border: none;
     }
@@ -24,9 +24,9 @@
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
         @include mut.rem-margined($right: 14px);
 
-        max-width: 503px;     
+        max-width: f.pxToRem(503px);     
         line-height: 18px;
-        color: #1D1F23;
+        color: c.$lighter-black-color;
 
         text-overflow: ellipsis;
         overflow: hidden;    
@@ -35,7 +35,7 @@
     .resultSourceName{
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
 
-        max-width: 503px;     
+        max-width: f.pxToRem(503px);     
         line-height: 18px;
         color: #D1D1D1;
     }
