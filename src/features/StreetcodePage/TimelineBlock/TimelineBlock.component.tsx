@@ -16,7 +16,10 @@ const TimelineBlock = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchTimelineItemsByStreetcodeId(getStreetCodeId);
+                fetchTimelineItemsByStreetcodeId(getStreetCodeId).then(() => {
+                    const years = timelineItemStore.getYearsArray;
+                    timelineItemStore.setActiveYear(years[years.length / 2]);
+                });
             }
         },
         [getStreetCodeId],
@@ -24,7 +27,7 @@ const TimelineBlock = () => {
 
     return (
         <div className={`timelineContainer 
-            ${getTimelineItemArray.length?'':'display-none'}`}
+            ${getTimelineItemArray.length ? '' : 'display-none'}`}
         >
             <BlockHeading headingText="Хронологія" />
             <TimelineTimespan />

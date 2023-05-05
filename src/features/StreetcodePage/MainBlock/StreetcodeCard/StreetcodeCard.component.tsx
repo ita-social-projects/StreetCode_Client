@@ -100,7 +100,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
-                        <div className="teaserBlockContainer">
+                        <div className={streetcode?.teaser.length > 450 ? 'teaserBlockContainer' : ''}>
                             <p className="teaserBlock">
                                 {streetcode?.teaser}
                             </p>
