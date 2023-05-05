@@ -13,7 +13,7 @@
   overflow: visible;
   @include mut.parent-sized();
   @include mut.flex-centered();
-  .swiper-slide:not(.swiper-slide-visible) {
+  .swiper-slide:not(.swiper-slide-visible):not(.swiper-slide-active) {
     visibility: hidden;
   }
 

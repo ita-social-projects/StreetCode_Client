@@ -154,7 +154,6 @@ const MainBlockAdmin: React.FC<Props> = ({
 
     return (
         <div className="mainblock-add-form">
-
             <Form.Item
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
@@ -172,8 +171,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         onClick={onCheckIndexClick}
                     >
                         {' '}
-Перевірити
-
+                        Перевірити
                     </Button>
                 </div>
             </Form.Item>

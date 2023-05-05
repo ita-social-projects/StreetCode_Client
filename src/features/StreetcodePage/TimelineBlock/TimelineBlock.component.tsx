@@ -26,35 +26,37 @@ const TimelineBlock = () => {
     );
 
     return (
-        <div
-            id="timeline"
-            className={`timelineContainer 
-            ${getTimelineItemArray.length ? '' : 'display-none'}`}
-        >
-            <BlockHeading headingText="Хронологія" />
-            <TimelineTimespan />
-            <div className="timelineContentContainer">
-                <TimelineReelOutline />
-                <TimelineSlider
-                    dots={false}
-                    arrows={false}
-                    centerMode
-                    swipeOnClick
-                    infinite={false}
-                    variableWidth
-                    swipeToSlide
-                    slidesToScroll={1}
+        (getTimelineItemArray.length > 0)
+            ? (
+                <div
+                    id="timeline"
+                    className="timelineContainer"
                 >
-                    {getTimelineItemArray.map((timelineItem) => (
-                        <TimelineSlideCard
-                            key={timelineItem.id}
-                            timelineItem={timelineItem}
-                        />
-                    ))}
-                </TimelineSlider>
-                <TimelineReelOutline />
-            </div>
-        </div>
+                    <BlockHeading headingText="Хронологія" />
+                    <TimelineTimespan />
+                    <div className="timelineContentContainer">
+                        <TimelineReelOutline />
+                        <TimelineSlider
+                            dots={false}
+                            arrows={false}
+                            centerMode
+                            swipeOnClick
+                            infinite={false}
+                            variableWidth
+                            swipeToSlide
+                            slidesToScroll={1}
+                        >
+                            {getTimelineItemArray.map((timelineItem) => (
+                                <TimelineSlideCard
+                                    key={timelineItem.id}
+                                    timelineItem={timelineItem}
+                                />
+                            ))}
+                        </TimelineSlider>
+                        <TimelineReelOutline />
+                    </div>
+                </div>
+            ) : <></>
     );
 };
 

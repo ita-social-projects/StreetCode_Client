@@ -28,22 +28,25 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
     return (
-        <div
-            id="text"
-            className={`textComponentContainer 
-                ${text? '' : 'display-none'}`}
-        >
-            <BlockHeading headingText={String(text?.title)} />
-            <div className="textComponent">
-                <div className="TextContainer">
-                    <ReadMore text={String(text?.textContent)} />
+        text
+            ? (
+                <div
+                    id="text"
+                    className={`textComponentContainer 
+                ${text ? '' : 'display-none'}`}
+                >
+                    <BlockHeading headingText={String(text?.title)} />
+                    <div className="textComponent">
+                        <div className="TextContainer">
+                            <ReadMore text={String(text?.textContent)} />
+                        </div>
+                    </div>
+                    <div className="videoComponent">
+                        <VideoPlayer videoUrls={String(video?.url.href)} setTextBlockState={setTextBlockState} />
+                        {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
+                    </div>
                 </div>
-            </div>
-            <div className="videoComponent">
-                <VideoPlayer videoUrls={String(video?.url.href)} setTextBlockState={setTextBlockState} />
-                {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
-            </div>
-        </div>
+            ) : <></>
     );
 };
 
