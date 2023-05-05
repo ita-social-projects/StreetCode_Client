@@ -30,7 +30,7 @@
     }
 }
 
-@media screen and (max-width:1024px) and (min-width:768px) {
+/*@media screen and (max-width:1024px) and (min-width:768px) {
     .artGalleryWrapper {
         @include wr.main-page-block-wrapper();
 
@@ -47,9 +47,9 @@
             @include mut.sized(830px, 360px);
         }
     }
-}
+}*/
 
-@media screen and (max-width:767px) {
+@media screen and (max-width:1025px) {
     .artGalleryWrapper {
         .artGalleryContainer {
             @include mut.rem-margined($top: -20px,$bottom:0px);

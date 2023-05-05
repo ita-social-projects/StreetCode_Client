@@ -54,7 +54,7 @@ const StreetcodesTable = () => {
             render: (text:string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.index}`, '_blank')}>
+                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )
@@ -69,7 +69,7 @@ const StreetcodesTable = () => {
             render: (text: string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.index}`, '_blank')}>
+                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )
@@ -83,7 +83,7 @@ const StreetcodesTable = () => {
             render: (text: string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.index}`, '_blank')}>
+                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )
@@ -97,7 +97,7 @@ const StreetcodesTable = () => {
             render: (text: string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.index}`, '_blank')}>
+                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )
@@ -155,7 +155,8 @@ const StreetcodesTable = () => {
         index: number,
         status: string,
         date: string,
-        name: string
+        name: string,
+        url: string
     }
 
     useEffect(() => {
@@ -178,6 +179,7 @@ const StreetcodesTable = () => {
                     status: currentStatus,
                     date: formatDate(new Date(streetcode.updatedAt)),
                     name: streetcode.title,
+                    url: streetcode.transliterationUrl
                 }
 
                 mapedStreetCodes.push(mapedStreetCode);

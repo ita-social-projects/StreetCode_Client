@@ -23,7 +23,7 @@
     }
 }
 
-@media screen and (max-width:1024px) {
+/*@media screen and (max-width:1024px) {
 
     .slideArt {
         flex: pxToRem(80px);
@@ -44,13 +44,13 @@
             height: pxToRem(161px);
         }
     }
-}
+}*/
 
-@media screen and (max-width:767px) {
+@media screen and (max-width:1025px) {
 
     .slideArt {
         flex: pxToRem(80px);
-        padding-left: pxToRem(10px);
+        margin-left: pxToRem(10px);
 
         .small {
             width: pxToRem(242px);

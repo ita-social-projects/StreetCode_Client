@@ -11,7 +11,7 @@ interface Props {
     isAdminPage?: boolean
 }
 const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => {
-    const { imageHref, description, title, sequenceNumber } = artGalleryItem;
+    const { imageHref, description,title , sequenceNumber } = artGalleryItem;
     const { modalStore: { setModal } } = useMobx();
     const windowsize = useWindowSize();
 
