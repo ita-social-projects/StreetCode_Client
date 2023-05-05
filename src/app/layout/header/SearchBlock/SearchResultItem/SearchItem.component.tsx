@@ -13,7 +13,8 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
     const url = `${BASE_URL}/${searchResultItem.streetcodeTransliterationUrl
     }${searchResultItem.blockName ? (`#${searchResultItem.blockName}`) : ''}`;
 
-    const sourceName = `Стріткод #${searchResultItem.streetcodeIndex.toString().padStart(4, '0')}${searchResultItem.sourceName ? `/${searchResultItem.sourceName}` : ''}`;
+    const sourceName = `Стріткод #${searchResultItem.streetcodeIndex.toString().padStart(4, '0')
+    }${searchResultItem.sourceName ? `/${searchResultItem.sourceName}` : ''}`;
 
     return (
         <a href={url} className="resultItemContainer">
