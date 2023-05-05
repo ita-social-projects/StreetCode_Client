@@ -31,6 +31,7 @@ export interface Text {
     id: number;
     title: string;
     textContent: string;
+    аdditionalText?: string;
     streetcodeId: number;
     streetcode?: Streetcode | undefined;
 }

@@ -1,0 +1,56 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.readMore {
+    color: c.$dark-red-color;
+    cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+.readMoreContainer {
+    @include mut.rem-margined($top: 35px,$bottom: 50px);
+    @include mut.with-font($font-weight: 600)
+}
+
+.mainTextContent {
+    white-space: pre-line;
+    @include mut.rem-margined($bottom: 35px);
+}
+
+.textShort {
+    @include mut.truncated($line-num: 25);
+}
+
+.text{
+    white-space: pre-line;
+    margin-right: f.pxToRem(10px);
+    margin-left: f.pxToRem(10px);
+}
+
+@media screen and (max-width: 1024px){
+    .text{
+        font-size: f.pxToRem(16px);
+        margin: f.pxToRem(10px);
+        line-height: f.pxToRem(21px);
+    }
+    .readMore{
+        font-size: f.pxToRem(16px);
+        line-height: f.pxToRem(18.75px);
+    }
+    .readMoreContainer {
+        @include mut.rem-margined($top: 20px,$bottom: 20px);
+        @include mut.with-font($font-weight: 600)
+    }
+}
+
+@media screen and (max-width: 480px){
+    .readMore{
+        display: flex;
+        justify-content: center;
+    }
+
+}
+
