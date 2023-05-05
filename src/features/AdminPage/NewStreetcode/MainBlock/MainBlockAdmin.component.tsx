@@ -118,6 +118,13 @@ const MainBlockAdmin: React.FC<Props> = ({
         TagsApi.getAll().then((tgs) => setTags(tgs));
     }, []);
 
+    const setIndex = (index :number | null) => {
+        if (index) {
+            form.setFieldValue('streetcodeNumber', index);
+            setIndexId(index);
+        }
+    };
+
     const onSelectTag = (selectedValue: string) => {
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
@@ -158,7 +165,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         min={0}
                         max={10000}
                         value={indexId}
-                        onChange={(value) => setIndexId(value ?? 1)}
+                        onChange={setIndex}
                     />
                     <Button
                         className="button-margin-left streetcode-custom-button"

@@ -22,9 +22,9 @@ const QRComponent = () => {
                         </div>
                         <div className="QRBlockText">
                             <div className="QRBlockTextContainer">
-                                <h1>AR-історія в Інсті!</h1>
+                                <h1>AR—історія в Інсті!</h1>
                                 <p>
-            Переходь за QR-кодом, фокусуй камеру
+            Переходь за QR—кодом, фокусуй камеру
                                     <br />
             на ілюстрації та вітай нову реальність.
                                 </p>

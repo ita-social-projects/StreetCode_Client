@@ -24,7 +24,6 @@ export default class SourcesStore {
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
-            console.log(this.srcCategoriesMap);
         } catch (error: unknown) {
             console.log(error);
         }
