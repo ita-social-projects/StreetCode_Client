@@ -1,5 +1,5 @@
 const SectionFifth = () => (
-    <section>
+    <section id="fifth" data-block-id="fifth">
         <div className="title">5. Використання файлів Cookie</div>
         <div className="content">
             Cookie – це текстовий файл або файли, що містять невеликий обсяг інформації, які
