@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 import './RelatedFigureItem.styles.scss';
 
-import { Link } from 'react-router-dom';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx from '@stores/root-store';
@@ -44,13 +43,13 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
     return (
         <>
             {windowsize.width > 1024 && (
-                <Link
+                <a
                     className={`relatedFigureSlide 
                     ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
                     ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
                     style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
-                    to={`../streetcode/${url}`}
+                    href={`../streetcode/${url}`}
                     onClick={() => {
                         window.scrollTo(0, 0);
                         if (!tagsList) {
@@ -91,7 +90,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 ))}
                         </div>
                     </div>
-                </Link>
+                </a>
             )}
             {windowsize.width <= 1024 && (
                 <>

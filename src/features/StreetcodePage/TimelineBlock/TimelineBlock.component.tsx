@@ -26,6 +26,7 @@ const TimelineBlock = () => {
         <div
             id="timeline"
             className="timelineContainer"
+            ${getTimelineItemArray.length?'':'display-none'}`}
         >
             <BlockHeading headingText="Хронологія" />
             <TimelineTimespan />
