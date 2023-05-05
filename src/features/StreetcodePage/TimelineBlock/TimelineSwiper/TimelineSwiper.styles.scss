@@ -13,14 +13,12 @@
   overflow: visible;
   @include mut.parent-sized();
   @include mut.flex-centered();
-
   .swiper-slide:not(.swiper-slide-visible) {
     visibility: hidden;
   }
 
   .swiper-slide {
     align-self: center;
-    position: unset;
     justify-content: center;
     margin: auto;
     .timelineYearTick {
@@ -69,7 +67,7 @@
 
     .swiper-slide:not(.swiper-slide-active){
       visibility: visible;
-      bottom: f.pxToRem(-3px);
+      bottom: f.pxToRem(1.5px);
     }
   }
 
@@ -90,19 +88,19 @@
   .swiper-pagination {
     @include mut.flexed();
     position: absolute;
-    top: f.pxToRem(370px);
+    top: f.pxToRem(350px);
   }
 
   .swiper-pagination-bullet {
     display: block;
-    @include mut.sized(10px, 10px);
-    margin: 0 f.pxToRem(10px);
+    @include mut.sized(8px, 8px);
+    margin: 0 f.pxToRem(7.5px);
     background-color: #D9D9D9;;
     transition: all 0.4s ease-in;
   }
 
   .swiper-pagination-bullet-active {
     background-color: #891F16;
-    width: f.pxToRem(30px) !important;
+    width: f.pxToRem(28px) !important;
   }
 }

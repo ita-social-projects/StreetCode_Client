@@ -19,6 +19,10 @@
     .slick-track {
         margin: 0;
     }
+    .slick-initialized .slick-slide {
+      @include mut.flexed($justify-content: center, $gap: 0px);
+      @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+    }
 }
 .leftSider {
     @include mut.full-rounded(53px);
@@ -150,10 +154,7 @@
     font-size: f.pxToRem(37px);
     margin-right: f.pxToRem(10px);
 }
-.slick-initialized .slick-slide {
-  @include mut.flexed($justify-content: center, $gap: 0px);
-  @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
-}
+
 @media screen and (max-width: 1300px) {
     .blockCentering {
         width: 100%;
