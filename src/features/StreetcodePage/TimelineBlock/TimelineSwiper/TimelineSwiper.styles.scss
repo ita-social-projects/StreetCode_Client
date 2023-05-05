@@ -16,6 +16,7 @@
   .swiper-slide:not(.swiper-slide-visible):not(.swiper-slide-active) {
     visibility: hidden;
   }
+  
 
   .swiper-slide {
     align-self: center;
@@ -68,6 +69,9 @@
     .swiper-slide:not(.swiper-slide-active){
       visibility: visible;
       bottom: f.pxToRem(1.5px);
+    }
+    .swiper-slide-active{
+      bottom: f.pxToRem(2px);
     }
   }
 
