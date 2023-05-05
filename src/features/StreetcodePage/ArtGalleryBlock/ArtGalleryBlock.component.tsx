@@ -78,26 +78,39 @@ const ArtGalleryBlock = () => {
 
     const offsetAll = useRef<number>(0);
 
-    useEffect(() => {
-
-        sortedArtsList.forEach(({ offset }) => offsetAll.current += offset);
-
-/*        if (offsetAll.current > 0) {*/
-            
-        //}
-    }, []);
-    
-
     sortedArtsList.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offsetAll.current < 3 && offset == 1) {
-            offset = 4;
-        }
+        sortedArtsList.forEach(({ offset }) => offsetAll.current += offset);
+
+        //if (offsetAll.current % 6 === 0 && offsetAll.current > 0) {
+
+        //}
+        //else {
+
+            if ((offsetAll.current % 6) < 3 && offsetAll.current > 0 && offset === 1) {
+                offset = 4;
+            }
+            else if ((offsetAll.current % 6) === 3 && offsetAll.current > 0 && offset === 1 && sortedArtsList[0].offset === 1) {
+                sortedArtsList[0].offset = 4;
+            }
+            else if ((offsetAll.current % 6) > 6 && offsetAll.current > 0 && offset === 1) {
+                for (let i = 0; i < sortedArtsList.length; i++) {
+                    if (sortedArtsList[i].offset === 1 && sortedArtsList[i + 1].offset === 2) {
+                        sortedArtsList[i].offset = 4;
+                    }
+                    else {
+                        offset = 1;
+                    }
+                }
+                
+            }
+        //}
+
         if (offsetSumForSlide !== SECTION_AMOUNT && offsetSumForSlide + offset <= SECTION_AMOUNT) {
             offsetSumForSlide += offset ?? 0;
             offsetSum += offset ?? 0;
-            sequenceNumber += 1;
+            sequenceNumber = index - 1;
             artsData.push({
                 index,
                 imageHref,
@@ -110,13 +123,14 @@ const ArtGalleryBlock = () => {
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} />,
             );
+            sequenceNumber = index - 1;
             artsData = [{
                 index,
                 imageHref,
                 description,
                 offset,
                 title,
-                sequenceNumber: sequenceNumber + 1,
+                sequenceNumber: sequenceNumber,
             } as IndexedArt];
 
             offsetSumForSlide = offset ?? 0;
@@ -124,6 +138,7 @@ const ArtGalleryBlock = () => {
         }
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
+            
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} />,
             );
@@ -146,7 +161,7 @@ const ArtGalleryBlock = () => {
         if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL && offsetSumForSlideSmall + offset <= SECTION_AMOUNT_SMALL) {
             offsetSumForSlideSmall += offset ?? 0;
             offsetSumSmall += offset ?? 0;
-            sequenceNumberSmall += 1;
+            sequenceNumberSmall = index-1;
             artsDataSmall.push({
                 index,
                 imageHref,
@@ -156,6 +171,7 @@ const ArtGalleryBlock = () => {
                 sequenceNumber: sequenceNumberSmall,
             } as IndexedArt);
         } else if (artsDataSmall.length > 0 && offsetSumForSlideSmall + offset > SECTION_AMOUNT_SMALL) {
+            sequenceNumberSmall = index-1;
             slideOfArtListSmall.push(
                 <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
             );
@@ -165,7 +181,7 @@ const ArtGalleryBlock = () => {
                 description,
                 offset,
                 title,
-                sequenceNumber: sequenceNumberSmall + 1,
+                sequenceNumber: sequenceNumberSmall,
             } as IndexedArt];
             offsetSumForSlideSmall = offset ?? 0;
             offsetSumSmall = offset ?? 0;
