@@ -19,7 +19,7 @@ const QRMobile = () => {
                     <>
                         <div className="QRMobileGif" />
                         <div className="QRMobileContent">
-                            <p className="arInstagram">AR-історія в Інсті!</p>
+                            <p className="arInstagram">AR—історія в Інсті!</p>
                             <p className="pressButtonText">
                                 Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
                             </p>
@@ -35,7 +35,7 @@ const QRMobile = () => {
             {isMobile
                 && (
                     <div className="QRMobileContent">
-                        <p className="arInstagram">AR-історія в Інсті!</p>
+                        <p className="arInstagram">AR—історія в Інсті!</p>
                         <p className="pressButtonText">
                             Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
                         </p>
