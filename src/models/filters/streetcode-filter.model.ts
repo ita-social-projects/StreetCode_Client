@@ -4,7 +4,9 @@ export default interface StreetcodeFilterRequestDTO {
 
 export interface StreetcodeFilterResultDTO {
     streetcodeId: number,
-    streetcodeUrl: string,
+    streetcodeTransliterationUrl: string,
+    streetcodeIndex: number,
+    blockName: string,
     content: string,
     sourceName: string
 }
