@@ -44,23 +44,24 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
-            setLoading(false);
-            document.body.style.overflow = 'auto';
+    // useEffect(() => {
+    //     document.body.style.overflow = 'hidden';
 
-            const anchorId = window.location.hash.substring(1);
-            const blockElement = document.getElementById(anchorId);
-            if (blockElement) {
-                blockElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]);
+    //     if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
+    //         setLoading(false);
+    //         document.body.style.overflow = 'auto';
+
+    //         const anchorId = window.location.hash.substring(1);
+    //         const blockElement = document.getElementById(anchorId);
+    //         if (blockElement) {
+    //             blockElement.scrollIntoView({ behavior: 'smooth' });
+    //         }
+    //     }
+    // }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]);
 
     return (
         <div className="streetcodeContainer">
-            {loading && (
+            {/* {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -68,7 +69,7 @@ const StreetcodeContent = () => {
                         src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
                     />
                 </div>
-            )}
+            )} */}
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}

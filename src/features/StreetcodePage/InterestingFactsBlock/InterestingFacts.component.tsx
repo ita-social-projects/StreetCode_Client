@@ -31,8 +31,10 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
 
     const setings = {
         dots: getFactArray.length > 3,
-        swipeOnClick: true,
+        swipeOnClick: false,
+        rtl: false,
         centerMode: true,
+        slidesToShow: 3,
         swipe: false,
         centerPadding: '-5px',
         responsive: [
@@ -78,7 +80,7 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
             id="wow-facts"
             className={`interestingFactsWrapper 
             ${getFactArray.length === 1 ? 'single' : ''} 
-            ${getFactArray.length?'':'display-none'}`}
+            ${getFactArray.length ? '' : 'display-none'}`}
         >
             <div className="interestingFactsContainer">
                 <BlockHeading headingText="Wow—факти" />
