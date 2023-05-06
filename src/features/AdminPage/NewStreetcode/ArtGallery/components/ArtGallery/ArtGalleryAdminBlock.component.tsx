@@ -40,6 +40,7 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
     }, [arts]);
 
     const sortedArtsList = [...indexedArts].sort((a, b) => a.index - b.index);
+
     let offsetSumForSlide = 0;
     let offsetSum = 0;
     let sequenceNumber = -1;
@@ -47,36 +48,14 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
 
     const slideOfArtList = [];
     let artsData: IndexedArt[] = [];
-    const offsetAll = useRef<number>(0);
-
     sortedArtsList.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offsetAll.current>6)
-            offsetAll.current -= offsetAll.current % 6;
 
-        if ((offsetAll.current % 6) < 3 && offsetAll.current > 0 && offset === 1) {
-            offset = 4;
-        }
-        else if ((offsetAll.current % 6) === 3 && offsetAll.current > 0 && offset === 1 && sortedArtsList[0].offset === 1) {
-            sortedArtsList[0].offset = 4;
-        }
-        else if ((offsetAll.current % 6) > 6 && offsetAll.current > 0 && offset === 1) {
-            
-            for (let i = 0; i < sortedArtsList.length; i++) {
-                if (sortedArtsList[i].offset === 1 && sortedArtsList[i + 1].offset === 2) {
-                    sortedArtsList[i].offset = 4;
-                }
-                else {
-                    offset = 1;
-                }
-            }
-
-        }
         if (offsetSumForSlide !== SECTION_AMOUNT && offsetSumForSlide + offset <= SECTION_AMOUNT) {
             offsetSumForSlide += offset ?? 0;
             offsetSum += offset ?? 0;
-            sequenceNumber += 1;
+            sequenceNumber = index - 1;
             artsData.push({
                 index,
                 imageHref,
@@ -85,18 +64,18 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
                 title,
                 sequenceNumber,
             } as IndexedArt);
-        } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
+        } else if (artsData.length > 0 && (offsetSumForSlide + offset > SECTION_AMOUNT /*|| offsetSumForSlide + offset === 5 && offset === 1*/)) {
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
             );
-
+            sequenceNumber = index - 1;
             artsData = [{
                 index,
                 imageHref,
                 description,
                 offset,
                 title,
-                sequenceNumber: sequenceNumber + 1,
+                sequenceNumber,
             } as IndexedArt];
 
             offsetSumForSlide = offset ?? 0;
@@ -116,6 +95,33 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
         slideOfArtList.push(
             <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
         );
+    }
+
+    let offsetTmp = 0;
+
+    sortedArtsList.forEach(x => offsetTmp += x.offset);
+
+    const offsetSlide = offsetTmp % 6;
+
+    let lastSlide: IndexedArt[] = [];
+
+    let currentV = 0;
+
+    for (let i = sortedArtsList.length - 1; i >= 0 && currentV < offsetSlide; i--) {
+        lastSlide.push(sortedArtsList[i]);
+        currentV += sortedArtsList[i].offset;
+    }
+
+    lastSlide = lastSlide.reverse();
+    if (lastSlide.length >= 2) {
+        if (lastSlide[0].offset === 1 && lastSlide[1].offset === 2) { lastSlide[0].offset = 4; lastSlide.slice(0, 1); }
+    }
+    if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every(x => x.offset === 1)) {
+        lastSlide[0].offset = 4;
+    }
+
+    if (offsetSlide < 3 && offsetSlide > 0 && lastSlide.every(x => x.offset === 1)) {
+        lastSlide.forEach(x => { if (x.offset === 1) x.offset = 4; })
     }
 
     const sliderProps = {
