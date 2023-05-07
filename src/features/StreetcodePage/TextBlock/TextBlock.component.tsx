@@ -13,7 +13,10 @@ import { Text } from '@/models/streetcode/text-contents.model';
 
 import ReadMore from './ReadMore/ReadMore.component';
 
-const TextComponent = () => {
+interface Props {
+    setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const TextComponent = ({ setTextBlockState }: Props) => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
@@ -27,7 +30,8 @@ const TextComponent = () => {
     return (
         <div
             id="text"
-            className="textComponentContainer"
+            className={`textComponentContainer 
+                ${text? '' : 'display-none'}`}
         >
             <BlockHeading headingText={String(text?.title)} />
             <div className="textComponent">
@@ -36,7 +40,7 @@ const TextComponent = () => {
                 </div>
             </div>
             <div className="videoComponent">
-                <VideoPlayer videoUrls={String(video?.url.href)} />
+                <VideoPlayer videoUrls={String(video?.url.href)} setTextBlockState={setTextBlockState} />
                 {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
             </div>
         </div>

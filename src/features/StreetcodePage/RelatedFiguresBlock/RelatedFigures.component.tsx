@@ -59,21 +59,21 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         const hasBottomRow = figureOnBottomRow !== undefined;
 
         const sliderItem = (
-            <div className='TwoRowSlide' key={i}>
-            <RelatedFigureItem
-                relatedFigure={figureOnTopRow}
-                filterTags
-                hoverable
-                setActiveTagId={setActiveTagId}
-            />
-            {hasBottomRow && (
+            <div className="TwoRowSlide" key={i}>
                 <RelatedFigureItem
-                relatedFigure={figureOnBottomRow}
-                filterTags
-                hoverable
-                setActiveTagId={setActiveTagId}
+                    relatedFigure={figureOnTopRow}
+                    filterTags
+                    hoverable
+                    setActiveTagId={setActiveTagId}
                 />
-            )}
+                {hasBottomRow && (
+                    <RelatedFigureItem
+                        relatedFigure={figureOnBottomRow}
+                        filterTags
+                        hoverable
+                        setActiveTagId={setActiveTagId}
+                    />
+                )}
             </div>
         );
 
@@ -89,11 +89,12 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         swipeOnClick: false,
         slidesToShow: windowsize.width > 1024 ? 4 : windowsize.width <= 480 ? 2 : undefined,
         slidesToScroll: windowsize.width > 1024 ? undefined : windowsize.width <= 480 ? 1 : 3,
-        rows: 1
-    }; 
+        rows: 1,
+    };
 
     return (
         <div className={`relatedFiguresWrapper
+            ${getRelatedFiguresArray.length?'':'display-none'}
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
         >
             <div className="relatedFiguresContainer">
@@ -106,9 +107,9 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                     </div>
                 </div>
                 <div className="relatedFiguresSliderContainer">
-                    <BlockSlider {...sliderProps}>   
+                    <BlockSlider {...sliderProps}>
                         {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
-                    </BlockSlider> 
+                    </BlockSlider>
                 </div>
             </div>
         </div>

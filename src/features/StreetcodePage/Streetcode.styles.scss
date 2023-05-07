@@ -1,5 +1,6 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
 
 $bgImg: '@assets/images/streetcode-card/background.png';
 
@@ -8,6 +9,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     overflow: clip;
     @include mut.rem-padded($top: 82px);
     @include mut.bg-image($bgImg, auto);
+
+    overflow-anchor: none;
 }
 .sticky{
     position: sticky;
@@ -39,3 +42,19 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         background-image: none;
     }   
 }
+
+.loader-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    @include mut.sized(100%,100%);
+    background-color: c.$accented-gray-color;
+    @include mut.flexed($justify-content: center, $align-items: center);
+    z-index: 100000;
+    pointer-events: none;
+}
+
+.display-none{
+    display: none !important;
+}
+

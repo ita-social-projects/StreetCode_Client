@@ -98,12 +98,14 @@
 }
 
 .cardFooter {
-  @include mut.rem-padded(10px, 0px, 54px, 0px);
-  @include mut.flexed($justify-content: flex-start, $gap: 20px);
+    width: 100% !important;
+    margin-top: f.pxToRem(45px) !important;
+    @include mut.rem-padded(10px, 0px, 54px, 0px);
+    @include mut.flexed($justify-content: flex-start, $gap: 20px);
   .ant-btn-primary:disabled {
     background-color: c.$lighter-gray-color;
     color: c.$pure-white-color;
-  }
+    }
   .ant-btn-default {
     border-width: 3px;
     border-color: c.$accented-red-color;

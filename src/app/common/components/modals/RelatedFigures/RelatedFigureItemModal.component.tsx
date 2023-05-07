@@ -1,6 +1,5 @@
 import './RelatedFigureItemModal.styles.scss';
 
-import { Link } from 'react-router-dom';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import { Modal } from 'antd';
@@ -56,13 +55,13 @@ const RelatedFiguresItemModal = () => {
                     </div>
                 </div>
             </div>
-            <Link 
+            <a 
                 className='redirectionButton'
-                to={`../streetcode/${relation?.url}`} 
+                href={`../streetcode/${relation?.url}`} 
                 onClick={handleClick}           
             >
                 <p>Перейти на сторінку постаті</p>
-            </Link>
+            </a>
         </Modal>
     );
 };
