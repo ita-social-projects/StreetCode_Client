@@ -30,25 +30,6 @@
     }
 }
 
-/*@media screen and (max-width:1024px) and (min-width:768px) {
-    .artGalleryWrapper {
-        @include wr.main-page-block-wrapper();
-
-        .artGalleryContainer {
-            @include mut.rem-margined($top: -30px,$bottom:-60px);
-            @include mut.sized(92%, 100%);
-
-            .artGalleryContentContainer {
-                @include mut.flex-centered();
-            }
-        }
-
-        .artGallerySliderContainer {
-            @include mut.sized(830px, 360px);
-        }
-    }
-}*/
-
 @media screen and (max-width:1025px) {
     .artGalleryWrapper {
         .artGalleryContainer {
