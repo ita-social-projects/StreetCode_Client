@@ -93,6 +93,17 @@ const ArtGalleryBlock = () => {
                 title,
                 sequenceNumber,
             } as IndexedArt);
+            if (artsData.length >= 2) {
+                if (artsData[0].offset === 1 && artsData[1].offset != 1) {
+                    sortedArtsList.forEach(x => { if (x.index === artsData[0].index) x.offset = 4; })
+                    slideOfArtList.push(
+                        <ArtGallerySlide artGalleryList={artsData} />,
+                    );
+                    artsData = [];
+                    offsetSumForSlide = 0;
+                    offsetSum = 0;
+                }
+            }
         } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
                 <ArtGallerySlide artGalleryList={artsData} />,
@@ -129,7 +140,7 @@ const ArtGalleryBlock = () => {
 
     sortedArtsList.forEach(x => offsetTmp += x.offset);
 
-    const offsetSlide = offsetTmp % 6;
+    let offsetSlide = offsetTmp % 6;
 
     let lastSlide: IndexedArt[] = [];
 
@@ -141,17 +152,23 @@ const ArtGalleryBlock = () => {
     }
 
     lastSlide = lastSlide.reverse();
+
     if (lastSlide.length >= 2) {
-        if (lastSlide[0].offset === 1 && lastSlide[1].offset === 2) {
-            lastSlide[0].offset = 4;
-            lastSlide.splice(0, 2);
+        if (lastSlide[0].offset === 1 && lastSlide[1].offset != 1) {
+            lastSlide.splice(1, 1);
+            lastSlide.splice(0, 1);
+            offsetSlide += 3;
+            if (offsetSlide > 6) {
+                offsetSlide -= 6;
+            }
         }
     }
+
     if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every(x => x.offset === 1)) {
         lastSlide[0].offset = 4;
     }
 
-    if (offsetSlide < 3 && offsetSlide > 0 && lastSlide.every(x => x.offset === 1)) {
+    if (offsetSlide < 3 && offsetSlide > 0) {
         lastSlide.forEach(x => { if (x.offset === 1) x.offset = 4; })
     }
 
