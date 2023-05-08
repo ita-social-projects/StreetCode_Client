@@ -45,6 +45,7 @@ import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetc
 import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
 import TimelineApi from '../../../app/api/timeline/timeline.api';
 import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
+
 const NewStreetcode = () => {
     const [form] = useForm();
     const {
@@ -71,6 +72,9 @@ const NewStreetcode = () => {
     const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
+
+    const [funcName,setFuncName] = useState<string>("create");
+    
     const parseId = id ? +id : null;
     if (parseId)
         timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
@@ -130,6 +134,7 @@ const NewStreetcode = () => {
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
+                setFuncName("update"); //---------------------------------------------
             });
             TextsApi.getByStreetcodeId(parseId).then(result => {
                 setInputInfo(result);
@@ -197,6 +202,7 @@ const NewStreetcode = () => {
         }));
         
         const streetcode: StreetcodeCreate = {
+            id: parseId, //----------------------------------------------------
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
@@ -243,15 +249,17 @@ const NewStreetcode = () => {
 
         if (parseId) {
             console.log(streetcode);
-            StreetcodeArtApi.update(streetcode).then((response2) => {
-                alert("Cтріткод успішно оновленний");
 
+            StreetcodesApi.update(streetcode).then((response2) => {
+                alert("Cтріткод успішно оновленний");
+                console.log(response2);
             })
                 .catch((error2) => {
                     alert("Виникла помилка при оновленні стріткоду");
                 });
         }
         else {
+
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                     setTimeout(()=>location.reload(),100);
@@ -291,7 +299,7 @@ const NewStreetcode = () => {
                     <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
                     <ForFansBlock  />
                     <MapBlockAdmin coordinates={coordinates} />
-                    <Button className = 'streetcode-custom-button submit-button' onClick={onFinish}>Відправити</Button>
+                    <Button className = 'streetcode-custom-button submit-button' onClick={onFinish}>{funcName}</Button>
                 </div>
             </ConfigProvider>
         </div>
