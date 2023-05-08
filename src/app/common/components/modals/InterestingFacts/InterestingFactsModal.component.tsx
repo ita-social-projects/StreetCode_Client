@@ -18,12 +18,19 @@ const InterestingFactsModal = () => {
     const factId = facts.fromCardId!;
     const fact = factMap.get(factId);
 
-    const imgId = fact?.imageId as number;
+    const imgId = fact?.imageId as number ?? 0;
+    let value: any;
+    let image: Image;
+    let url: any;
+    if(imgId !== 0 ){
+        value  = useAsync(() => ImagesApi.getById(imgId), [imgId]);
+        image = value as Image;
+        url = base64ToUrl(image?.base64, image?.mimeType);
+    }
+    // const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
+    // const image = value as Image; 
 
-    const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
-    const image = value as Image;
-
-    const url = base64ToUrl(image?.base64, image?.mimeType);
+    // const url = base64ToUrl(image?.base64, image?.mimeType);
 
     return (
         <Modal

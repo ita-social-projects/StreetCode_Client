@@ -55,7 +55,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
-                .catch((e) => console.log(e));
+                .catch((e) => {});
         }
     }, [streetcode]);
     return (
@@ -71,6 +71,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                     >
                         {images?.map(({ base64, mimeType, alt }) => (
                             <img
+                                key={base64}
                                 src={base64ToUrl(base64, mimeType)}
                                 className="streetcodeImg"
                                 alt={alt}

@@ -32,9 +32,7 @@ const ArtGalleryAdminBlock: React.FC<{ arts:ArtCreate[] }> = ({ arts }) => {
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) {
-                console.log(`Error: cannot parse the image url: ${image}`);
-            }
+            } catch (error: unknown) {}
             setIndexedArts(newMap);
         });
     }, [arts]);

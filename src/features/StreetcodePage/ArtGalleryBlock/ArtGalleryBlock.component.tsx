@@ -66,9 +66,7 @@ const ArtGalleryBlock = () => {
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) {
-                console.log(`Error: cannot parse the image url: ${url}`);
-            }
+            } catch (error: unknown) {}
             setIndexedArts(newMap);
             setIndexedArtsSmall(newMap);
         });
@@ -91,7 +89,7 @@ const ArtGalleryBlock = () => {
             } as IndexedArt);
         } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} />,
+                <ArtGallerySlide key={index} artGalleryList={artsData} />,
             );
             artsData = [{
                 index,
@@ -108,7 +106,7 @@ const ArtGalleryBlock = () => {
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} />,
+                <ArtGallerySlide key={index} artGalleryList={artsData} />,
             );
             artsData = [];
         }
@@ -116,7 +114,7 @@ const ArtGalleryBlock = () => {
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
-            <ArtGallerySlide artGalleryList={artsData} />,
+            <ArtGallerySlide key={artsData.length} artGalleryList={artsData} />,
         );
     }
 
@@ -140,7 +138,7 @@ const ArtGalleryBlock = () => {
             } as IndexedArt);
         } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} />,
+                <ArtGallerySlide key={index} artGalleryList={artsData} />,
             );
             artsData = [{
                 index,
@@ -156,7 +154,7 @@ const ArtGalleryBlock = () => {
         if (offsetSumForSlideSmall === SECTION_AMOUNT_SMALL) {
             offsetSumForSlideSmall = 0;
             slideOfArtListSmall.push(
-                <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
+                <ArtGallerySlideSmall key={index} artGalleryList={artsDataSmall} />,
             );
             artsDataSmall = [];
         }

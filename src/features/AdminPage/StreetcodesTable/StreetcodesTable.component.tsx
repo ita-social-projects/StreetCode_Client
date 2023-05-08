@@ -34,7 +34,6 @@ const StreetcodesTable = () => {
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
 
     const setRequest = () => {
-        console.log(`Page:${pageRequest}\nAmount:${amountRequest}\nTitle:${titleRequest}\nSort:${null}\nFilter:Status:${statusRequest}\n`);
         setRequestGetAll({
             Page: pageRequest,
             Amount: amountRequest,
@@ -49,7 +48,6 @@ const StreetcodesTable = () => {
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 
     const DeleteAction = (record: MapedStreetCode) => {
-        console.log("OK!")
         setModal('deleteStreetcode', record.key);
         StreetcodesApi.delete(record.key)
                 let updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
@@ -172,7 +170,6 @@ const StreetcodesTable = () => {
                 <div className='underTableZone'>
                     <div className='underTableElement'>
                         <InputNumber className='pageAmountElement' min={1} max={20} defaultValue={1} onChange={(value: any) => {
-                            console.log(value);
                             setAmountRequest(value)
                             }}/>
                     </div>

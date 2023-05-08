@@ -49,6 +49,7 @@ const PartnersComponent = () => {
 
     const sliderItems = getPartnerArray.map((p) => (
         <PartnerItem
+            key={p.id}
             partner={p}
         />
     ));

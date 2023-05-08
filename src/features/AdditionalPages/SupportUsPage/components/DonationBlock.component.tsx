@@ -59,9 +59,7 @@ const DonationBlock = () => {
             try {
                 const response = await DonationApi.create(donation);
                 window.location.assign(response.PageUrl);
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) {}
         }
     };
 

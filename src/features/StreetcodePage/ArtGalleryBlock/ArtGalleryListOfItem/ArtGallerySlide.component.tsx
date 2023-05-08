@@ -15,7 +15,7 @@ const ArtGallerySlide = ({ artGalleryList, isAdminPage }: Props) => {
             <div className={`slideArtGallery width-${offsetSum > 4 ? 2 : 1}`}
             >
                 {artGalleryList.map((item) => (
-                    <ArtGallerySlideItem artGalleryItem={item} offset={item.offset} isAdminPage={isAdminPage} />
+                    <ArtGallerySlideItem key={item.index} artGalleryItem={item} offset={item.offset} isAdminPage={isAdminPage} />
                 ))}
             </div>
         </div>

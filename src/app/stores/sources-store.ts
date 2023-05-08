@@ -24,19 +24,14 @@ export default class SourcesStore {
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
-            console.log(this.srcCategoriesMap);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public createSourceCategory = async (srcCategory: SourceCategory) => {
         try {
             await sourcesApi.create(srcCategory);
             this.setCategoryItem(srcCategory);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public updateSourceCategory = async (srcCategory: SourceCategory) => {
@@ -48,9 +43,7 @@ export default class SourcesStore {
                 };
                 this.setCategoryItem(updatedSourceCategory as SourceCategory);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteSourceCategory = async (SourceCategoryId: number) => {
@@ -59,8 +52,6 @@ export default class SourcesStore {
             runInAction(() => {
                 this.srcCategoriesMap.delete(SourceCategoryId);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 }
