@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-restricted-imports */
 /* eslint-disable max-len */
 import './MainNewStreetcode.styles.scss';
 
@@ -19,7 +21,7 @@ import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner, { PartnerShort } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
-import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
+import { AdditionalTextCreate, Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
 import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
@@ -35,7 +37,6 @@ import StreetcodeCoordinate from '../../../models/additional-content/coordinate.
 import PageBar from '../PageBar/PageBar.component';
 
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
-
 import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
@@ -187,6 +188,9 @@ const NewStreetcode = () => {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
         };
+        const аddText: AdditionalTextCreate = {
+            additionalText: inputInfo?.аdditionalText,
+        };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
             imageId: art.imageId,
@@ -213,6 +217,7 @@ const NewStreetcode = () => {
             tags: selectedTags,
             relatedFigures: figures,
             text: (text.title && text.textContent) ? text : null,
+            additionalText: (аddText.additionalText) ? аddText : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
@@ -278,7 +283,7 @@ const NewStreetcode = () => {
                             <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
                         </Form>
                     </div>
-                    
+
                     <InterestingFactsBlock id={parseId ?? -1} />
                     <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                     <PartnerBlockAdmin partners={partners} setPartners={setPartners} />

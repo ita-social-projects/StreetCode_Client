@@ -11,6 +11,7 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
+import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
 
 const TextComponent = () => {
@@ -33,6 +34,7 @@ const TextComponent = () => {
             <div className="textComponent">
                 <div className="TextContainer">
                     <ReadMore text={String(text?.textContent)} />
+                    <AdditionalText аdditionalText={String(text?.аdditionalText)} />
                 </div>
             </div>
             <div className="videoComponent">

@@ -20,7 +20,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => (
                 height: 300,
                 menubar: false,
                 init_instance_callback(editor) {
-                    editor.setContent('');
+                    editor.setContent(inputInfo?.аdditionalText);
                 },
                 plugins: [
                     'autolink',
