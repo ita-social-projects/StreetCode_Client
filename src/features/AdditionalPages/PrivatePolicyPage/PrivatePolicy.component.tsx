@@ -1,5 +1,6 @@
 import './PrivatePolicy.styles.scss';
 
+import { useEffect } from 'react';
 import Footer from '@layout/footer/Footer.component';
 
 import SectionFifth from './SubSections/SubSectionFifth/SectionFifth.component';
@@ -28,7 +29,6 @@ const PrivatePolicy = () => (
             </div>
         </div>
         <Footer />
-
     </>
 );
 

@@ -16,38 +16,47 @@ const TimelineBlock = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchTimelineItemsByStreetcodeId(getStreetCodeId);
+                fetchTimelineItemsByStreetcodeId(getStreetCodeId).then(() => {
+                    const years = timelineItemStore.getYearsArray;
+                    timelineItemStore.setActiveYear(years[years.length / 2]);
+                });
             }
         },
         [getStreetCodeId],
     );
 
     return (
-        <div className="timelineContainer">
-            <BlockHeading headingText="Хронологія" />
-            <TimelineTimespan />
-            <div className="timelineContentContainer">
-                <TimelineReelOutline />
-                <TimelineSlider
-                    dots={false}
-                    arrows={false}
-                    centerMode
-                    swipeOnClick
-                    infinite={false}
-                    variableWidth
-                    swipeToSlide
-                    slidesToScroll={1}
+        (getTimelineItemArray.length > 0)
+            ? (
+                <div
+                    id="timeline"
+                    className="timelineContainer"
                 >
-                    {getTimelineItemArray.map((timelineItem) => (
-                        <TimelineSlideCard
-                            key={timelineItem.id}
-                            timelineItem={timelineItem}
-                        />
-                    ))}
-                </TimelineSlider>
-                <TimelineReelOutline />
-            </div>
-        </div>
+                    <BlockHeading headingText="Хронологія" />
+                    <TimelineTimespan />
+                    <div className="timelineContentContainer">
+                        <TimelineReelOutline />
+                        <TimelineSlider
+                            dots={false}
+                            arrows={false}
+                            centerMode
+                            swipeOnClick
+                            infinite={false}
+                            variableWidth
+                            swipeToSlide
+                            slidesToScroll={1}
+                        >
+                            {getTimelineItemArray.map((timelineItem) => (
+                                <TimelineSlideCard
+                                    key={timelineItem.id}
+                                    timelineItem={timelineItem}
+                                />
+                            ))}
+                        </TimelineSlider>
+                        <TimelineReelOutline />
+                    </div>
+                </div>
+            ) : <></>
     );
 };
 

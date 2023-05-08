@@ -9,7 +9,6 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
 .timelineContainer{
   width: 100vw;
-  max-width: f.pxToRem(1600px);
   align-self: center;
   align-items: center;
   margin: f.pxToRem(50px) auto;
@@ -20,7 +19,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 
   .sliderClass {
     @include mut.sized(100%, 380px);
-    @include mut.rem-margined($bottom: 30px, $top: 30px /*30px*/);
+    @include mut.rem-margined($bottom: 30px, $top: 30px);
   }
 
     .slick-slider {
@@ -32,7 +31,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     }
 
   .slick-track {
-    
+    @include mut.rem-margined($top: 30.50px, $right: 0px, $bottom: 30.50px, $left: 0px);
     display: flex;
     @include mut.flexed($align-items: center);
     @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
@@ -47,6 +46,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
       border-style: solid ;
       border-color: c.$timeline-reel-color;
       @include mut.bg-image($timelineSquareImg);
+      
 
       background-size:f.pxToRem(605px) f.pxToRem(365px);
       background-position: center;   
@@ -62,26 +62,39 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
     .slick-current {
       border-radius: 40px;
       box-shadow: inset  0px 0px 0px 6px c.$pure-white-color;
-
-      .timelineItemContent {
-        margin-top: calc(1.5rem - 4px);
-      }
     }
   }
 }
 }
 
 @media screen and (max-width: 1024px) {
+  
+.timelineContainer{
   .timelineContentContainer {
-
+    margin: f.pxToRem(28px) auto;
     .sliderClass{
-      @include mut.sized(100%);
-      @include mut.rem-margined($bottom: 10px, $top: 10px /*10px*/);
+      @include mut.rem-margined($bottom: 10px, $top: 10px);
     }
 
     .slick-track {
-      @include mut.flexed($align-items: center, $gap: 14px);
+      @include mut.rem-margined($top: 11px, $right: 0px, $bottom: 11px, $left: 0px);
+       .slick-slide >div{
+        height: min-content;
+        border-radius: 20px;
+        place-items: center;
+      }
+      .slick-slide {
+        border-radius: 20px;
+        border-width:f.pxToRem(7px) f.pxToRem(7px);
+        background-size:f.pxToRem(295px) f.pxToRem(185px);
+        background-position: center;  
+      }
+      .slick-current {
+        box-shadow: inset  0px 0px 0px 3px c.$pure-white-color;
+      }
+       
       
     }
   }
+}
 }
