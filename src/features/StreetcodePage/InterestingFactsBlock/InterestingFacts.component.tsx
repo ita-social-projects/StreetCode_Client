@@ -1,7 +1,7 @@
 import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';

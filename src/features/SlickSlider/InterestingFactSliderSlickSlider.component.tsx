@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable max-len */
+/* eslint-disable react-hooks/exhaustive-deps */
 import './SlickSlider.styles.scss';
 
-import { FC, memo, useCallback, useRef, useState } from 'react';
+import {
+    FC, memo, useCallback, useRef, useState,
+} from 'react';
 import Slider from 'react-slick';
+
+import useMobx from '@/app/stores/root-store';
 
 import SliderProps, { defaultSliderProps } from './index';
 
@@ -11,33 +18,39 @@ const GenericSlider: FC<SliderProps> = ({
     swipeOnClick = false,
     ...sliderProps
 }) => {
+    const { modalStore: { setModal } } = useMobx();
     const sliderRef = useRef<Slider>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lastClick, setLastClick] = useState(Date.now());
 
-    const moveNext = useCallback((slideToIndex:number) => {
-        if (Date.now() - lastClick >= sliderProps.speed + 100) {
-            sliderRef.current?.slickNext();
-            setCurrentIndex(slideToIndex);
-            setLastClick(Date.now());
-        }
-    });
-    const movePrev = useCallback((slideToIndex:number) => {
-        if (Date.now() - lastClick >= sliderProps.speed + 100) {
-            sliderRef.current?.slickPrev();
-            setCurrentIndex(slideToIndex);
-            setLastClick(Date.now());
-        }
-    });
     const isOnRightEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === children.length - 1 && slideToIndex === 0);
     const isOnLeftEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === 0 && slideToIndex === children.length - 1);
-    
+
+    const move = useCallback(
+        (direction: 'next' | 'prev', slideToIndex: number) => {
+            if (slideToIndex === currentIndex) {
+                const factId = children[currentIndex].props.fact.id;
+                setModal('facts', factId, true);
+                return;
+            }
+
+            if (Date.now() - lastClick >= sliderProps.speed + 100) {
+                direction === 'next'
+                    ? sliderRef.current?.slickNext()
+                    : sliderRef.current?.slickPrev();
+                setCurrentIndex(slideToIndex);
+                setLastClick(Date.now());
+            }
+        },
+        [lastClick, setCurrentIndex, setLastClick, sliderProps.speed, currentIndex, children.length],
+    );
 
     return (
         <div className="sliderClass">
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
+                beforeChange={(currentSlide, nextSlide) => setCurrentIndex(nextSlide)} // for handle dots click
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
                 {
@@ -47,7 +60,7 @@ const GenericSlider: FC<SliderProps> = ({
                             return (
                                 <div
                                     key={slideToIndex}
-                                    onClick={() => movePrev(slideToIndex)}
+                                    onClick={() => move('prev', slideToIndex)}
                                 >
                                     {slide}
                                 </div>
@@ -57,7 +70,7 @@ const GenericSlider: FC<SliderProps> = ({
                             return (
                                 <div
                                     key={slideToIndex}
-                                    onClick={() => moveNext(slideToIndex)}
+                                    onClick={() => move('next', slideToIndex)}
                                 >
                                     {slide}
                                 </div>
