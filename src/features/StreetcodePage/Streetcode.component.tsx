@@ -13,8 +13,6 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
-import dayjs from 'dayjs';
-
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 
