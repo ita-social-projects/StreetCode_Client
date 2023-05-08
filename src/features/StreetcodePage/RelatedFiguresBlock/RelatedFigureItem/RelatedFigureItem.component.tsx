@@ -48,7 +48,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
                     style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
-                    to={`../streetcode/${url}`}
+                    to={`../${url}`}
                     onClick={() => {
                         window.scrollTo(0, 0);
                         if (!tagsList) {
