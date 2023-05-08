@@ -243,7 +243,7 @@ const NewStreetcode = () => {
 
         if (parseId) {
             console.log(streetcode);
-            StreetcodeArtApi.update(streetcode).then((response2) => {
+            StreetcodesApi.update(streetcode).then((response2) => {
                 alert("Cтріткод успішно оновленний");
 
             })
