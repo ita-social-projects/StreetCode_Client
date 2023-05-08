@@ -47,6 +47,8 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
+
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -74,7 +76,9 @@ const NewStreetcode = () => {
     const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
-    const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
+
+  //  const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
+    const [funcName,setFuncName] = useState<string>("create");
     const parseId = id ? +id : null;
     if (parseId) {
         timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
@@ -133,6 +137,7 @@ const NewStreetcode = () => {
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
+                setFuncName("update"); //---------------------------------------------
             });
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
@@ -147,7 +152,7 @@ const NewStreetcode = () => {
                 setPartners([...result]);
             });
             SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
-                setSubTitle(result[0].subtitleText);
+                setSubTitle(result.subtitleText);
             });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
                 const id = result.map((x) => x.id);
@@ -201,6 +206,7 @@ const NewStreetcode = () => {
         }));
 
         const streetcode: StreetcodeCreate = {
+            id: parseId, //----------------------------------------------------
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
@@ -248,18 +254,24 @@ const NewStreetcode = () => {
 
         if (parseId) {
             console.log(streetcode);
-            StreetcodeArtApi.update(streetcode).then((response2) => {
+            StreetcodesApi.update(streetcode).then((response2) => {
+                alert("Cтріткод успішно оновленний");
                 console.log(response2);
             })
                 .catch((error2) => {
-                    console.log(error2);
+
+                    alert("Виникла помилка при оновленні стріткоду");
                 });
-        } else {
+        }
+        else {
+
             StreetcodesApi.create(streetcode)
                 .then((response) => {
+                    setTimeout(()=>location.reload(),100);
+                    window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {
-                    console.log(streetcode);
+                    alert("Виникла помилка при створенні стріткоду");
                 });
         }
     };
@@ -292,7 +304,8 @@ const NewStreetcode = () => {
                     <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
                     <ForFansBlock />
                     <MapBlockAdmin coordinates={coordinates} />
-                    <Button className="streetcode-custom-button submit-button" onClick={onFinish}>Відправити</Button>
+
+                    <Button className = 'streetcode-custom-button submit-button' onClick={onFinish}>{funcName}</Button>
                 </div>
             </ConfigProvider>
         </div>

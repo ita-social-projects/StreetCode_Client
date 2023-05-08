@@ -1,5 +1,3 @@
-import './InterestingFactsBlock.style.scss';
-
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -20,7 +18,7 @@ const InterestingFactsBlock = ({ id }) => {
     }), [];
     return (
         <div className="adminContainer-block">
-            <h2>Wow-факти</h2>
+            <h2>Wow—факти</h2>
             <div className='textBlockButton-container'>
                 <button className="buttonWithPlus" onClick={() => setModalOpen(true)}>+</button>
                 {factsStore.getFactArray.map((f) => <InterestingFactAdminItem fact={f} />)}

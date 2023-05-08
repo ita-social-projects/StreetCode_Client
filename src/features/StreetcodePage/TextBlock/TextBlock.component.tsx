@@ -14,7 +14,10 @@ import { Text } from '@/models/streetcode/text-contents.model';
 import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
 
-const TextComponent = () => {
+interface Props {
+    setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const TextComponent = ({ setTextBlockState }: Props) => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
@@ -26,22 +29,27 @@ const TextComponent = () => {
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
     return (
-        <div
-            id="text"
-            className="textComponentContainer"
-        >
-            <BlockHeading headingText={String(text?.title)} />
-            <div className="textComponent">
-                <div className="TextContainer">
-                    <ReadMore text={String(text?.textContent)} />
-                    <AdditionalText аdditionalText={String(text?.аdditionalText)} />
+
+        text
+            ? (
+                <div
+                    id="text"
+                    className="textComponentContainer"
+                >
+                    <BlockHeading headingText={String(text?.title)} />
+                    <div className="textComponent">
+                        <div className="TextContainer">
+                            <ReadMore text={String(text?.textContent)} />
+                            <AdditionalText аdditionalText={String(text?.аdditionalText)} />
+                        </div>
+                    </div>
+                    <div className="videoComponent">
+                        <VideoPlayer videoUrls={String(video?.url.href)} setTextBlockState={setTextBlockState} />
+                        {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
+                    </div>
+
                 </div>
-            </div>
-            <div className="videoComponent">
-                <VideoPlayer videoUrls={String(video?.url.href)} />
-                {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
-            </div>
-        </div>
+            ) : <></>
     );
 };
 

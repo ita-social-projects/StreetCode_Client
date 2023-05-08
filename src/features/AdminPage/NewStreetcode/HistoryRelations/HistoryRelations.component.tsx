@@ -1,5 +1,3 @@
-import './HistoryRelations.styles.scss';
-
 import { useEffect, useState } from 'react';
 import { PartnerShort } from '@models/partners/partners.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';

@@ -3,9 +3,11 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
-.timelineYearTicksContainerSwiper{
+
+.timelineYearTicksContainerSwiper {
   width: 100vw;
 }
+
 .timeSpanContainer {
   height: f.pxToRem(8px);
   margin: f.pxToRem(100px) auto 0 auto;
@@ -13,7 +15,7 @@
 
   .timelineYearTicksContainer {
     position: relative;
-    
+
     @include mut.sized(100%, 26px);
     @include mut.rem-padded(0, 100px, 20px, 100px);
 
@@ -30,7 +32,7 @@
         cursor: pointer;
       }
 
-      > * {
+      >* {
         position: relative;
         bottom: f.pxToRem(30px);
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500);
@@ -40,21 +42,22 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .timeSpanContainer{
+  .timeSpanContainer {
     height: f.pxToRem(3px);
   }
 
-  .timeSpanContainer .timelineYearTicksContainer 
-  .timelineYearTick > * {
-    bottom: f.pxToRem(20px);
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 12px);
+  .timeSpanContainer .timelineYearTicksContainer {
+    @include mut.rem-padded(0, 0px, 20px, 0px);
+    .timelineYearTick>* {
+      bottom: f.pxToRem(20px);
+      @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 12px);
+    }
   }
+
 }
 
 @media screen and (max-width: 480px) {
-  .timeSpanContainer .timelineYearTicksContainer{
+  .timeSpanContainer .timelineYearTicksContainer {
     @include mut.rem-padded(0, 0px, 20px, 0px);
-  } 
+  }
 }
-
-

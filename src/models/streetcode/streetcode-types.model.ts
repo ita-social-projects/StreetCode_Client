@@ -85,6 +85,7 @@ export interface StreetcodeCatalogRecord {
 }
 
 export interface StreetcodeCreate {
+    id: number | null,
     index: number,
     firstName: string | null,
     lastName: string | null,

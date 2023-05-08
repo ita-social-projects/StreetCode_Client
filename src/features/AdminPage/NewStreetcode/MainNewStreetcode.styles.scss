@@ -7,7 +7,8 @@ $articlesImg: "@assets/images/sources/Articles.png";
 .NewStreetcodeContainer {
     margin-top: f.pxToRem(100px);
     display: flex;
-    float: left;                               
+    float: left;
+    width: 100%;            
     
     .adminContainer
     {
@@ -77,6 +78,14 @@ $articlesImg: "@assets/images/sources/Articles.png";
                 }
             }
         }
+
+      .ant-picker,
+        .ant-select {
+            .ant-picker-input> input{
+                @include mut.with-font();
+            }
+            width: 100%;
+        }
    
         .ant-input:hover:enabled{
             border-color: c.$accented-red-color;
@@ -86,9 +95,16 @@ $articlesImg: "@assets/images/sources/Articles.png";
         .ant-input:focus,
         .ant-input-focused,
         .ant-select-focused,
-        .ant-picker-focused{
+        .ant-picker-focused,
+        .my-picker :hover{
             border-color: c.$accented-red-color;
             box-shadow: none !important;  
+        }
+
+        .ant-select-disabled,
+        .ant-input-disabled
+        {
+            pointer-events: none;
         }
 
         .ant-select-selector, 
@@ -109,9 +125,18 @@ $articlesImg: "@assets/images/sources/Articles.png";
         }
 
         .ant-form-item-label >label{
-            font-size: 16px;
+            @include mut.with-font($font-size: 16px);
         }
+
+        .ant-upload:hover {
+            border-color:  c.$accented-red-color ;
+          }
         
+        .ant-input-number-handler-up-inner,
+        .ant-input-number-handler-down-inner {
+            color: c.$accented-red-color;
+        }
+         
         .display-flex-row{
             display: flex;
             &-centered{
@@ -140,6 +165,27 @@ $articlesImg: "@assets/images/sources/Articles.png";
             min-height: f.pxToRem(100px);
             min-width: 100%;
             margin-bottom: f.pxToRem(20px);
+        }
+        
+        .ant-checkbox-inner {
+            width: f.pxToRem(25px) !important;
+            height: f.pxToRem(25px) !important;
+            border: f.pxToRem(3px) solid #7E7E7E !important;
+            border-radius: 0  !important;
+        }
+
+        .ant-checkbox-checked {
+            .ant-checkbox-inner {
+                border: 3px solid #DB3424 !important;
+            }
+        }
+        .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
+            opacity: 0;
+        }
+
+        .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+            background: red !important;
+            box-shadow: inset 0 0 0 2px white !important;
         }
      
     }

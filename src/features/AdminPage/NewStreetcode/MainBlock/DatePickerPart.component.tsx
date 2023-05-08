@@ -87,7 +87,7 @@ const DatePickerPart:React.FC<{
             ) : 
             (
             <div className='date-picker-container'>
-                <div className="date-string-input">
+                <div>
                     <FormItem name="dateString">
                         <Input defaultValue={defaultDate} disabled />
                     </FormItem>

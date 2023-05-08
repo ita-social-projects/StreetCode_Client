@@ -13,12 +13,14 @@ interface Props {
     fact: Fact;
     maxTextLength?: number;
     numberOfSlides: number;
+    handleImageLoad: (() => void);
 }
 
 const InterestingFactItem = ({
     fact: { factContent, title, id, imageId },
     maxTextLength = 250,
     numberOfSlides,
+    handleImageLoad,
 }: Props) => {
     const { modalStore: { setModal } } = useMobx();
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
@@ -38,7 +40,11 @@ const InterestingFactItem = ({
     return (
         <div className="interestingFactSlide">
             <div className="slideImage">
-                <img src={url} alt="" />
+                <img
+                    src={url}
+                    alt=""
+                    onLoad={handleImageLoad}
+                />
             </div>
             <div className="slideText">
                 <p className="heading">

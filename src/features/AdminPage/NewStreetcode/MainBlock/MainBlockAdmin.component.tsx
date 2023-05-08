@@ -1,6 +1,7 @@
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -9,10 +10,9 @@ import {
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
-import { useParams } from 'react-router-dom';
+
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
@@ -28,6 +28,11 @@ interface Props {
     streetcodeType: StreetcodeType;
     setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
 }
+
+interface TagPreviewProps {
+    width: number;
+    screenWidth: number;
+}
 const MainBlockAdmin: React.FC<Props> = ({
     form,
     selectedTags,
@@ -36,28 +41,29 @@ const MainBlockAdmin: React.FC<Props> = ({
     setStreetcodeType,
 }) => {
     const teaserMaxCharCount = 520;
-    const allTags = useAsync(() => TagsApi.getAll()).value;
+    const tagPreviewPropsList:TagPreviewProps[] = [
+        { width: 360, screenWidth: 360 },
+        { width: 365, screenWidth: 768 },
+        { width: 612, screenWidth: 1600 },
+    ];
     const [tags, setTags] = useState<Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
     const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
-    const [popoverProps, setPopoverProps] = useState<{
-        width: number, screenWidth: number
-    }>({ width: 360, screenWidth: 360 });
+    const [popoverProps, setPopoverProps] = useState<TagPreviewProps>(tagPreviewPropsList[0]);
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
     const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
-    const [indexId, setIndexId] = useState<number>();
+    const [indexId, setIndexId] = useState<number>(1);
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
         if (parseId) {
-            StreetcodesApi.getById(parseId).then(x => setIndexId(x.index))
+            StreetcodesApi.getById(parseId).then((x) => setIndexId(x.index));
         }
     }, [form, streetcodeTitle]);
 
@@ -109,15 +115,21 @@ const MainBlockAdmin: React.FC<Props> = ({
     };
 
     useEffect(() => {
-        TagsApi.getAll().then(tags => setTags(tags))
+        TagsApi.getAll().then((tgs) => setTags(tgs));
     }, []);
 
+    const setIndex = (index :number | null) => {
+        if (index) {
+            form.setFieldValue('streetcodeNumber', index);
+            setIndexId(index);
+        }
+    };
 
     const onSelectTag = (selectedValue: string) => {
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
         if (selectedIndex < 0) {
-            let minId = selectedTags.reduce((a, b) => ((a.id < b.id) ? a : b)).id;
+            let minId = Math.min(...selectedTags.map((t) => t.id));
             if (minId < 0) {
                 minId -= 1;
             } else {
@@ -129,7 +141,6 @@ const MainBlockAdmin: React.FC<Props> = ({
 
             setSelectedTags([...selectedTags, { ...selected, title: selectedValue, isVisible: false }]);
         }
-
     };
 
     const onDeselectTag = (deselectedValue: string) => {
@@ -143,21 +154,30 @@ const MainBlockAdmin: React.FC<Props> = ({
 
     return (
         <div className="mainblock-add-form">
-
             <Form.Item
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
                 name="streetcodeNumber"
             >
-                <div className='display-flex-row'>
+                <div className="display-flex-row">
                     <InputNumber
-                        min={0} max={10000} value={indexId} onChange={(value) => setIndexId(value)} />
-                    <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+                        min={0}
+                        max={10000}
+                        value={indexId}
+                        onChange={setIndex}
+                    />
+                    <Button
+                        className="button-margin-left streetcode-custom-button"
+                        onClick={onCheckIndexClick}
+                    >
+                        {' '}
+                        Перевірити
+                    </Button>
                 </div>
             </Form.Item>
 
             <Form.Item>
-                <div className='display-flex-row p-margin'>
+                <div className="display-flex-row p-margin">
                     <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
                     <Switch className="person-event-switch" checked={!streetcodeType} onChange={onSwitchChange} />
                     <p className={!switchState ? 'grey-text' : 'red-text'}>Подія</p>
@@ -169,17 +189,18 @@ const MainBlockAdmin: React.FC<Props> = ({
                     compact
                     className="display-flex-column"
                 >
-                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
+                    <Form.Item label="Ім'я" name="name" className="people-title-input">
                         <Input
-                            ref={surname}
+                            ref={name}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
                     </Form.Item>
-                    <Form.Item label="Ім'я" name="name" className="people-title-input">
+
+                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
                         <Input
-                            ref={name}
+                            ref={surname}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
@@ -224,47 +245,43 @@ const MainBlockAdmin: React.FC<Props> = ({
             />
 
             <div className="tags-block">
-            <Form.Item label="Теги">
-                <div className="tags-block-tagitems">
-                    <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+                <Form.Item label="Теги">
+                    <div className="tags-block-tagitems">
+                        <DragableTags setTags={setSelectedTags} tags={selectedTags} />
 
-                    <Select
-                        className="tags-select-input"
-                        mode="tags"
-                        onSelect={onSelectTag}
-                        onDeselect={onDeselectTag}
-                        value={selectedTags.map(x => x.title)}
-                    >
-                        {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
-                    </Select>
-                </div>
+                        <Select
+                            className="tags-select-input"
+                            mode="tags"
+                            onSelect={onSelectTag}
+                            onDeselect={onDeselectTag}
+                            value={selectedTags.map((x) => x.title)}
+                        >
+                            {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
+                        </Select>
+                    </div>
                 </Form.Item>
                 <div className="device-sizes-list">
                     <Form.Item label="Розширення">
-                    <Popover
-                        content={(
-                            <PopoverForTagContent
-                                screenWidth={popoverProps.screenWidth}
-                                tags={selectedTags}
-                            />
-                        )}
-                        title=""
-                        trigger="hover"
-                        overlayStyle={{ width: popoverProps.width }}
-                    >
-                        <p
-                            className="device-size"
-                            onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
+                        <Popover
+                            content={(
+                                <PopoverForTagContent
+                                    screenWidth={popoverProps.screenWidth}
+                                    tags={selectedTags}
+                                />
+                            )}
+                            title=""
+                            trigger="hover"
+                            overlayStyle={{ width: popoverProps.width }}
                         >
-                            360
-                        </p>
-                        <p
-                            className="device-size"
-                            onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
-                        >
-                            1600
-                        </p>
-                    </Popover>
+                            {tagPreviewPropsList.map((el) => (
+                                <p
+                                    className="device-size"
+                                    onMouseEnter={() => setPopoverProps(el)}
+                                >
+                                    {el.screenWidth}
+                                </p>
+                            ))}
+                        </Popover>
                     </Form.Item>
                 </div>
             </div>
@@ -284,7 +301,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                        /500
+                            /
+                        {teaserMaxCharCount}
                     </p>
                 </div>
             </div>
