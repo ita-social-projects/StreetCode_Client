@@ -49,7 +49,6 @@
                 line-height: 27px;
                  
                 overflow: auto !important;
-                // color: #C4C4C4;
             }
         
             .textareaBlock{
@@ -122,19 +121,28 @@
     .contactUsContainer{
         .formContainer{
             width: 100%;
-            margin-top:  f.pxToRem(60px);
             
-            .formTitle{
-                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
-                text-align: left;
-                line-height: 18px;
+            padding: f.pxToRem(16px);
+            margin-top:  f.pxToRem(60px);
+
+            .formTitleContainer{
+                @include mut.flexed($direction: column, $gap: 16px);
+                margin-bottom: 16px;
+
+                .formTitle{
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
+                    text-align: left;
+                    line-height: 18px;
+                }
+                .formSubTitle{
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 14px);
+                    line-height: 16px;
+                }
             }
-            .formSubTitle{
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 14px);
-                line-height: 16px;
-            }
-    
+
             .contactForm{
+                @include mut.flexed($direction: column, $gap: 16px);
+
                 button{
                     width: 100%;
                     padding: f.pxToRem(15px) 0;
@@ -147,6 +155,10 @@
     
                 .ant-input-textarea-show-count::after{
                     top: f.pxToRem(110px);
+                }
+
+                .ant-input-textarea-show-count .ant-input-data-count{
+                    margin-bottom: -18px;
                 }
             }
         }
