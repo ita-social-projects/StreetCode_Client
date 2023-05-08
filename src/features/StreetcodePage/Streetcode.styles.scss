@@ -9,7 +9,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     overflow: clip;
     @include mut.rem-padded($top: 82px);
     @include mut.bg-image($bgImg, auto);
-
+    background-color:c.$streetcode-background-color ;
     overflow-anchor: none;
 }
 .sticky{
