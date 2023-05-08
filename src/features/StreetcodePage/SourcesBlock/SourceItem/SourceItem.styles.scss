@@ -15,4 +15,10 @@ $articlesImg: "@assets/images/sources/Articles.png";
     color: white;
     font-weight: 500;
   }
-} 
+}
+@media screen and (max-width: 768px) {
+  .sourcesSliderItem {
+    width: ut.pxToRem(250px) !important;
+    height: ut.pxToRem(150px) !important;
+  }
+}

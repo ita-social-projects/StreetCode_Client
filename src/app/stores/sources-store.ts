@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
-import { SourceCategory } from '@models/sources/sources.model';
+import { SourceCategory, SourceCategoryAdmin } from '@models/sources/sources.model';
 
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();
@@ -24,7 +24,6 @@ export default class SourcesStore {
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
-            console.log(this.srcCategoriesMap);
         } catch (error: unknown) {
             console.log(error);
         }
