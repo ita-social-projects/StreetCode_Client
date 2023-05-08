@@ -79,12 +79,12 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
                         swipeOnClick
                         infinite
                     >
-                        {images?.map(({ id, base64, mimeType, alt }) => (
+                        {images.slice(0, 2).map((im) => (
                             <img
-                                key={id}
-                                src={base64ToUrl(base64, mimeType)}
+                                key={im.id}
+                                src={base64ToUrl(im.base64, im.mimeType)}
                                 className="streetcodeImg"
-                                alt={alt}
+                                alt={im.alt}
                                 onLoad={handleImageLoad}
                             />
                         ))}
@@ -96,8 +96,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
                 <div className="headerContainer">
                     <div>
                         <div className="streetcodeIndex">
-                            Стріткод #000
-                            {streetcode?.index}
+                            Стріткод #
+                            {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4) : streetcode?.index}
                         </div>
                         <h2 className="streetcodeTitle">
                             {streetcode?.title}
