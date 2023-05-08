@@ -65,10 +65,23 @@
   }
 
   > .donateInputContainerWrapper{
+    //@include mut.sized(48px, 100px);
+    position: relative;
     display: flex;
     justify-content: center;
-    
+    &::before {    // Create a pseudo-element for the border
+      content: '';
+      position: absolute;    // Position the element absolutely
+      bottom: 0;    // Position the element at the bottom of the div
+      width: 100%;    // Set the width of the element to 100% of the div
+      border-bottom: 2px solid c.$darkish-gray-color;   // Add the border to the bottom of the element
+      transform: translateY(-52px);    // Move the element upwards by 40 pixels
+    }
+    &.active::before {
+      content: none;    // Hide the border-bottom when the input is active
+    }
   }
+
   .amountInput {
     @include mut.rem-margined($bottom: 35px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 64px, $font-weight: 500);
@@ -78,11 +91,11 @@
     border: none;
     padding: 0;
 
-    &:not(.active) {     
-      text-decoration-line: underline;  
-      text-decoration-thickness: 2px;
-      text-underline-offset: 10px;
-    }
+    // &:not(.active) {     
+    //   text-decoration-line: underline;  
+    //   text-decoration-thickness: 2px;
+    //   text-underline-offset: 10px;
+    //}
 
     &.active {
       color: c.$pure-black-color;
@@ -127,6 +140,9 @@
           font-weight: 500;
         }
       }
+      &:focus{
+          outline: none;
+        }
     }
   }
 
@@ -191,6 +207,11 @@
 
     &:hover {
       filter: brightness(110%);
+      border: none;
+    }
+
+    &:focus{
+      outline: none;
     }
   }
 }
@@ -235,6 +256,15 @@
         line-height: 15px;
       }
 
+      .donateInputContainerWrapper{
+        &::before {    // Create a pseudo-element for the border
+          transform: translateY(-20px);    // Move the element upwards by 40 pixels
+        }
+        &:not(.active) {
+
+        }
+      }
+
       .amountInput{
         @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
         @include mut.rem-margined($top: 0px, $bottom: 16px);
@@ -245,9 +275,9 @@
         max-width: 100%;
 
         &:not(.active) {     
-          text-decoration-line: underline;  
-          text-decoration-thickness: 2px;
-          text-underline-offset: 2px;
+          // text-decoration-line: underline;  
+          // text-decoration-thickness: 2px;
+          // text-underline-offset: 2px;
         }
       }
       .GryvnaSymbol{
