@@ -17,8 +17,9 @@ $articlesImg: "@assets/images/sources/Articles.png";
 
       padding: 0 !important;
       box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%),
-      0 6px 20px 0 rgb(0 0 0 / 19%);
+        0 6px 20px 0 rgb(0 0 0 / 19%);
     }
+
     .ant-modal-close {
       @include mut.positioned-as(absolute, $left: 93%, $top: -25px);
       @include mut.circular(80px, c.$pure-white-color);
@@ -26,6 +27,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
       &:hover {
         background-color: c.$modal-hover-color;
       }
+
       .ant-modal-close-x {
         display: flex;
         justify-content: center;
@@ -33,41 +35,113 @@ $articlesImg: "@assets/images/sources/Articles.png";
       }
     }
   }
-}
-
-.sourceImgContainer {
-  position: sticky;
-  @include mut.sizedImportant(100%, 97px);
-  @include mut.flex-centered();
-
-  @include vnd.vendored(border-top-left-radius, '70px');
-  @include vnd.vendored(border-top-right-radius, '70px');
-  h1 {
-    color: c.$pure-white-color;
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+  .sourceImgContainer {
+    position: sticky;
+    @include mut.sizedImportant(100%, 97px);
+    @include mut.flex-centered();
+  
+    @include vnd.vendored(border-top-left-radius, '70px');
+    @include vnd.vendored(border-top-right-radius, '70px');
+  
+    h1 {
+      color: c.$pure-white-color;
+      @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+    }
+  }
+  .highlightedHeader {
+    font-size: pxToRem(36px) !important;
+    line-height: 47.52px;
+  }
+  
+  .mainContentContainer {
+    height: pxToRem(610px);
+    @include mut.flexed($direction: column, $gap: 10px);
+  
+    overflow-y: scroll;
+    @include mut.rem-margined(30px, 10px, 30px, 30px);
+    padding-right: pxToRem(10px);
+    @include mut.with-font($font-family: ft.$roboto-font, $font-weight:300, $font-size: 15px, $font-style:light );
+    line-height: pxToRem(18px);
+    
+    >h1, strong, h2,h3 {
+      @include mut.with-font($font-family: ft.$closer-text-font, $font-weight:500, $font-size: 24px, $font-style:light );
+      line-height: pxToRem(26.4px);
+    }
+    a{
+      text-decoration: underline;
+      color: c.$pure-black-color;
+    }
+  
+    &::-webkit-scrollbar {
+      width: .765rem;
+    }
+  
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+      @include mut.full-rounded(15px);
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: c.$card-scrollbar-track-color;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: c.$accented-gray-color;
+      @include mut.rem-margined($top: -15px, $bottom: 90px);
+    }
   }
 }
 
-.highlightedHeader {
-  font-size: pxToRem(36px) !important;
-  line-height: 47.52px;
-}
 
-.mainContentContainer {
-  height: pxToRem(610px);
-  @include mut.flexed($direction: column, $gap: 10px);
 
-  overflow-y: scroll;
-  @include mut.rem-margined(30px, 10px, 30px, 30px);
-  padding-right: pxToRem(10px);
+@media (max-width: 480px) {
 
-  > h1 {
-    @include mut.with-font($font-weight: 500, $font-size: 24px);
+  .sourcesModal {
+    width: 340px;
+    height: 442px;
+
+    .mainContentContainer {
+      width: 340px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .ant-modal-content {
+      height: 370px;
+      @include mut.full-rounded(20px, $overflow: visible);
+      padding: 0 !important;
+      box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        width: .765rem;
+        position: absolute(331px, 95px);
+      }
+    }
+
+
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+      @include mut.full-rounded(10px);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: c.$card-scrollbar-track-color;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: c.$accented-gray-color;
+      @include mut.rem-margined($top: -15px, $bottom: 90px);
+    }
   }
+
   .sectionLinksContainer {
+    height: pxToRem(392px);
     @include mut.flexed($direction: column, $gap: 10px);
 
-    > * {
+    >* {
       @include mut.with-font($font-weight: 300, $font-size: 15px);
       color: c.$pure-black-color;
       line-height: pxToEm(18px);
@@ -79,85 +153,14 @@ $articlesImg: "@assets/images/sources/Articles.png";
     }
   }
 
-  &::-webkit-scrollbar {
-    width: .765rem;
-  }
-
-  &::-webkit-scrollbar-thumb,
-  &::-webkit-scrollbar-track {
-    @include mut.full-rounded(15px);
-  }
-  &::-webkit-scrollbar-thumb {
-    background: c.$card-scrollbar-track-color;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: c.$accented-gray-color;
-    @include mut.rem-margined($top: -15px, $bottom: 90px);
-  }
-}
-
-@media (max-width: 480px) {
-
-  .sourcesModal {
-  width: 340px;
-  height: 442px;
-  }
-  
-  .mainContentContainer {
-  width: 340px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  }
-  
-  .sourcesModal .ant-modal-content {
-  height: 370px;
-  @include mut.full-rounded(20px, $overflow: visible);
-  padding: 0 !important;
-  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: .765rem;
-    position:absolute(331px,95px);
-  }
-  
-  &::-webkit-scrollbar-thumb,
-  &::-webkit-scrollbar-track {
-    @include mut.full-rounded(10px);
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: c.$card-scrollbar-track-color;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: c.$accented-gray-color;
-    @include mut.rem-margined($top: -15px, $bottom: 90px);
-  }
-}
-.sectionLinksContainer {
-  height: pxToRem(392px);
-  @include mut.flexed($direction: column, $gap: 10px);
-  > * {
-    @include mut.with-font($font-weight: 300, $font-size: 15px);
-    color: c.$pure-black-color;
-    line-height: pxToEm(18px);
-  
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  }
-  }
-  
   .ant-modal-close {
     @include mut.positioned-as(absolute, $left: 90%, $top: -15px);
-    @include mut.circular(40px, c.$pure-white-color); 
+    @include mut.circular(40px, c.$pure-white-color);
+
     &:hover {
       background-color: c.$modal-hover-color;
     }
+
     .ant-modal-close-x {
       display: flex;
       justify-content: center;
