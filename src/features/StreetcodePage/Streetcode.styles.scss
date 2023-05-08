@@ -35,12 +35,18 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     .streetcodeContainer {
         @include mut.rem-padded($top: 64px);
     }
+    .sticky{
+        bottom: f.pxToRem(25px);
+    }
 }
 
 @media screen and (max-width: 680px) {
     .streetcodeContainer{
         background-image: none;
     }   
+    .sticky{
+        bottom: f.pxToRem(50px);
+    }
 }
 
 .loader-container{

@@ -1,7 +1,10 @@
 import './HeaderDrawer.styles.scss';
 
+import CancelBtn from '@images/utils/Cancel_btn_drawer_mobile.svg';
+
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useLocation } from 'react-router-dom';
 import ReactSlider from 'react-slider';
 import BurgerMenu from '@components/BurgerMenu/BurgerMenu.component';
 import useToggle from '@hooks/stateful/useToggle.hook';
@@ -10,93 +13,151 @@ import { Drawer } from 'antd';
 
 import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
 
-import MainDrawerList from './MainDrawerHeaderItems/MainDrawerList.component';
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
+
+const mobileOptions = 8;
+const desktopOptions = 6;
+const scaleDesktop = 1;
+const scaleMobile = 5;
+const menuPositionsMobile = [
+    1 * scaleMobile,
+    2 * scaleMobile - 1,
+    3 * scaleMobile - 1,
+    4 * scaleMobile - 1,
+    5 * scaleMobile - 1,
+    6 * scaleMobile - 1,
+    7 * scaleMobile - 1,
+    8 * scaleMobile,
+];
+const menuOptions = [
+    '/404',
+    '/catalog',
+    '/404',
+    '/partners-page',
+    '/support-us',
+    '/contact-us',
+    '/privacy-policy',
+    '/404',
+];
 
 const HeaderDrawer = () => {
     const { toggleState: drawerState, handlers: { toggle } } = useToggle();
     const [active, setActive] = useState(1);
-    const [options, setOptions] = useState(6);
-    const [scalingCooficient, setScalingCooficient] = useState(1);
+    const [options, setOptions] = useState(desktopOptions);
+    const [scalingCooficient, setScalingCooficient] = useState(scaleDesktop);
+    const location = useLocation();
+
     const isSmall = useMediaQuery({
-        query: '(max-width: 768px)',
+        query: '(max-width: 1024px)',
     });
 
     useEffect(() => {
+        const optionId = menuOptions.indexOf(location.pathname);
         if (isSmall) {
-            setScalingCooficient(4);
-            setOptions(8);
+            setScalingCooficient(scaleMobile);
+            setOptions(mobileOptions);
+            setActive(menuPositionsMobile[optionId]);
         } else {
-            setScalingCooficient(1);
-            setOptions(6);
+            setScalingCooficient(scaleDesktop);
+            setOptions(desktopOptions);
+            setActive(optionId + 1);
         }
-    }, [isSmall]);
+    }, [isSmall, location]);
 
     return (
-        <>
+        <div className="drawerContainer">
             <Drawer
                 placement="right"
                 closable
                 style={{ zIndex: 0 }}
                 onClose={toggle}
                 open={drawerState}
-                className="drawer"
+                closeIcon={<CancelBtn />}
             >
                 <div className="grid-container">
                     <ReactSlider
                         className="customSlider"
                         trackClassName="customSlider-track"
                         thumbClassName="thumb"
-                        onSliderClick={() => {}}
-                        onChange={() => {}}
                         min={scalingCooficient}
                         max={options * scalingCooficient}
                         value={active}
                         renderTrack={(props) => <div {...props} />}
                         orientation="vertical"
                     />
-                    {!isSmall
+                    <div>
+                        <div className="headerDrawerContainer">
+                            <HeaderDrawerItem
+                                id={1}
+                                parentActive={active}
+                                text="Головна"
+                                link="/404"
+                                toggleState={toggle}
+                            />
+                            <HeaderDrawerItem
+                                id={2}
+                                parentActive={active}
+                                text="Стріткоди"
+                                link="/catalog"
+                                toggleState={toggle}
+                            />
+                            <HeaderDrawerItem
+                                id={3}
+                                parentActive={active}
+                                text="Про нас"
+                                link="/404"
+                                toggleState={toggle}
+                            />
+                            <HeaderDrawerItem
+                                id={4}
+                                parentActive={active}
+                                text="Партнери"
+                                link="/partners-page"
+                                toggleState={toggle}
+                            />
+                            <HeaderDrawerItem
+                                id={5}
+                                parentActive={active}
+                                text="Донати"
+                                link="/support-us"
+                                toggleState={toggle}
+                            />
+                            <HeaderDrawerItem
+                                id={6}
+                                parentActive={active}
+                                text="Контакти"
+                                link="/contact-us"
+                                toggleState={toggle}
+                            />
+                        </div>
+                        {isSmall
                         && (
-                            <div>
-                                <MainDrawerList
-                                    active={active}
-                                    setActive={setActive}
-                                    scalingCooficient={scalingCooficient}
-                                />
-                            </div>
-                        )}
-                    {isSmall
-                        && (
-                            <div>
-                                <MainDrawerList
-                                    active={active}
-                                    setActive={setActive}
-                                    scalingCooficient={scalingCooficient}
-                                />
+                            <>
                                 <br />
                                 <div className="headerDrawerContainer">
                                     <HeaderDrawerItem
-                                        id={7 * scalingCooficient}
+                                        id={7}
                                         parentActive={active}
-                                        setParentActive={setActive}
+                                        toggleState={toggle}
                                         text="Політика конфіденційності"
-                                        link="privacy-policy"
+                                        link="/privacy-policy"
                                     />
                                     <HeaderDrawerItem
-                                        id={8 * scalingCooficient}
+                                        id={8}
                                         parentActive={active}
-                                        setParentActive={setActive}
+                                        toggleState={toggle}
                                         text="Зворотний зв'язок"
-                                        link="404"
+                                        link="/404"
                                     />
                                 </div>
                                 <SocialMediaLinks />
-                            </div>
+                            </>
                         )}
+                    </div>
                 </div>
             </Drawer>
             <BurgerMenu onClick={toggle} />
-        </>
+        </div>
     );
 };
 
