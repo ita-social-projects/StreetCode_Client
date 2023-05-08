@@ -13,9 +13,13 @@ const GenericSlider: FC<SliderProps> = ({
 }) => {
     const sliderRef = useRef<Slider>(null);
 
-    const handleClick = useCallback((index: number) => {
+    const handleClick = useCallback((index: number, direction:'right' | 'left') => {
         if (sliderRef && sliderRef.current && swipeOnClick) {
-            sliderRef.current.slickGoTo(index + 1);
+            if (direction === 'right') {
+                sliderRef.current.slickGoTo(index + 1);
+            } else {
+                sliderRef.current.slickGoTo(index - 1);
+            }
         }
         if (onClick) {
             onClick(index);
@@ -30,8 +34,20 @@ const GenericSlider: FC<SliderProps> = ({
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
                 {children?.map((slide, idx) => (
-                    <div key={idx} onClick={() => handleClick(idx)}>
+                    <div className="slider-item-container" key={idx}>
+                        <div
+                            className="left"
+                            onClick={() => {
+                                handleClick(idx, 'left');
+                            }}
+                        />
                         {slide}
+                        <div
+                            className="right"
+                            onClick={() => {
+                                handleClick(idx, 'right');
+                            }}
+                        />
                     </div>
                 ))}
             </Slider>

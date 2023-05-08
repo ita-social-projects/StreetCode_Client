@@ -93,26 +93,28 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     };
 
     return (
-        <div className={`relatedFiguresWrapper
-            ${getRelatedFiguresArray.length?'':'display-none'}
+        getRelatedFiguresArray.length > 0
+            ? (
+                <div className={`relatedFiguresWrapper
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
-        >
-            <div className="relatedFiguresContainer">
-                <BlockHeading headingText="Зв'язки історії" />
-                <div className="headingWrapper">
-                    <div className="moreInfo">
-                        <p onClick={(e) => handleClick(e)}>
+                >
+                    <div className="relatedFiguresContainer">
+                        <BlockHeading headingText="Зв'язки історії" />
+                        <div className="headingWrapper">
+                            <div className="moreInfo">
+                                <p onClick={(e) => handleClick(e)}>
                             Дивитися всіх
-                        </p>
+                                </p>
+                            </div>
+                        </div>
+                        <div className="relatedFiguresSliderContainer">
+                            <BlockSlider {...sliderProps}>
+                                {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
+                            </BlockSlider>
+                        </div>
                     </div>
                 </div>
-                <div className="relatedFiguresSliderContainer">
-                    <BlockSlider {...sliderProps}>
-                        {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
-                    </BlockSlider>
-                </div>
-            </div>
-        </div>
+            ) : <></>
     );
 };
 

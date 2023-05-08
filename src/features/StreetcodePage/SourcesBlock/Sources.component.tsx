@@ -18,29 +18,30 @@ const SourcesComponent = () => {
     useAsync(() => sourcesStore.fetchSrcCategoriesByStreetcodeId(getStreetCodeId), [getStreetCodeId]);
 
     return (
-        <div className={`sourcesWrapper 
-            ${sourcesStore.getSrcCategoriesArray.length? '' : 'display-none'}`}
-        >
-            <div className="sourcesContainer">
-                <BlockHeading headingText="Для фанатів" />
-                <div className="sourceContentContainer">
-                    <div className="sourcesSliderContainer">
-                        <BlockSlider
-                            infinite={false}
-                            swipe={false}
-                            dots={showDots}
-                        >
-                            {sourcesStore.getSrcCategoriesArray.map((sc) => (
-                                <SourceItem
-                                    key={sc.id}
-                                    srcCategory={sc}
-                                />
-                            ))}
-                        </BlockSlider>
+        sourcesStore.getSrcCategoriesArray.length > 0
+            ? (
+                <div className="sourcesWrapper">
+                    <div className="sourcesContainer">
+                        <BlockHeading headingText="Для фанатів" />
+                        <div className="sourceContentContainer">
+                            <div className="sourcesSliderContainer">
+                                <BlockSlider
+                                    infinite={false}
+                                    swipe={false}
+                                    dots={showDots}
+                                >
+                                    {sourcesStore.getSrcCategoriesArray.map((sc) => (
+                                        <SourceItem
+                                            key={sc.id}
+                                            srcCategory={sc}
+                                        />
+                                    ))}
+                                </BlockSlider>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            ) : <></>
     );
 };
 

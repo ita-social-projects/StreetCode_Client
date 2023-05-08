@@ -42,7 +42,7 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
-    useEffect(() => {
+/*     useEffect(() => {
         document.body.style.overflow = 'hidden';
         if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
             setLoading(false);
@@ -54,11 +54,11 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]);
+    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]); */
 
     return (
         <div className="streetcodeContainer">
-            {loading && (
+           {/*  {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -66,7 +66,7 @@ const StreetcodeContent = () => {
                         src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
                     />
                 </div>
-            )}
+            )} */}
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}

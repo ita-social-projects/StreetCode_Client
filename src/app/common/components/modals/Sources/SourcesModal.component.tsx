@@ -1,11 +1,12 @@
 import './SourcesModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import sourcesApi from '@api/sources/sources.api';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import useMobx from '@stores/root-store';
+import htmpReactParser from 'html-react-parser';
 
 import { Modal } from 'antd';
 
@@ -46,7 +47,7 @@ const SourcesModal = () => {
                 <h1>{category?.title}</h1>
             </div>
             <div className="mainContentContainer">
-                {content?.text}
+                {htmpReactParser(content?.text ?? '')}
             </div>
         </Modal>
     );
