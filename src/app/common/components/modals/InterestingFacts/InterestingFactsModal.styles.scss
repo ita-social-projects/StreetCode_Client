@@ -38,8 +38,9 @@
 .factsImgContainer {
     img{
       @include mut.rounded(70px, 70px);
-      max-height: 395px;
-      width: 99%
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
     @include mut.flex-centered();
     @include mut.sizedImportant(100%, 400px);
@@ -47,9 +48,8 @@
   }
 
 .factsContentContainer {
-  height: pxToRem(255px);
   @include mut.flexed($direction: column, $gap: 15px);
-  @include mut.rem-margined(26px, 42px, 24px, 42px);
+  @include mut.rem-padded(29px, 42px, 42px, 42px);
 
   h1 {
     @include mut.with-font(ft.$roboto-font, 500, 26px, normal);
@@ -58,16 +58,11 @@
     color: c.$accented-red-color;
   }
   .factsTextContainer {
-    height: pxToRem(168px);
     @include mut.flexed($direction: column, $gap: 10px);
   
     @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
     color: c.$lighter-black-color;
     line-height: pxToEm(23px);
-  
-    overflow-y: auto;
-    padding-right: pxToRem(10px);
-    margin-right: pxToRem(10px);
   
     &::-webkit-scrollbar-thumb,
     &::-webkit-scrollbar-track {
