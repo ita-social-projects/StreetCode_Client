@@ -24,7 +24,7 @@
     @include mut.truncated($line-num: 25);
 }
 
-.text{
+.additionalText{
     white-space: pre-line;
     margin-right: f.pxToRem(10px);
     margin-left: f.pxToRem(10px);
