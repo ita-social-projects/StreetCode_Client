@@ -45,8 +45,13 @@ const StreetcodeContent = () => {
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
     useEffect(() => {
+        console.log(streetcodeCardState);
+        console.log(textBlockState);
+        console.log(interestingFactsState);
+        console.log(partnersState);
+
         document.body.style.overflow = 'hidden';
-        if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
+        if (streetcodeCardState /* && textBlockState */ && interestingFactsState && partnersState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
 

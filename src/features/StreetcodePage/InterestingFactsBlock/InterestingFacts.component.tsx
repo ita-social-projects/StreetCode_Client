@@ -67,7 +67,7 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
     };
 
     useEffect(() => {
-        if ((loadedImagesCount === 1 && getFactArray.length === 1)
+        if (getFactArray.length === 0 || (loadedImagesCount === 1 && getFactArray.length === 1)
             || (loadedImagesCount === sliderArray.length && loadedImagesCount !== 0)) {
             setInterestingFactsState(true);
         }

@@ -63,7 +63,7 @@ const PartnersComponent = ({ setPartnersState }: Props) => {
     ));
 
     useEffect(() => {
-        if (loadedImagesCount !== 0 && loadedImagesCount === sliderItems.length) {
+        if (getPartnerArray.length === 0 || (loadedImagesCount !== 0 && loadedImagesCount === sliderItems.length)) {
             setPartnersState(true);
         }
     }, [sliderItems, loadedImagesCount]);
