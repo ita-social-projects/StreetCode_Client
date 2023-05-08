@@ -20,8 +20,8 @@ interface CheckBoxList {
 
 export default class CheckBoxStore {
     public checkBoxesState: CheckBoxList = {
-        streets: DisabledCheckBoxState,
-        streetcodes: ActiveCheckBoxState,
+        streets: ActiveCheckBoxState,
+        streetcodes: DisabledCheckBoxState,
         routes: DisabledCheckBoxState,
     };
 

@@ -59,7 +59,7 @@ const StreetcodeContent = () => {
 
     return (
         <div className="streetcodeContainer">
-            {/* {loading && (
+            {/*  {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"

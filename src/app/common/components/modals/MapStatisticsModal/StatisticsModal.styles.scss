@@ -14,23 +14,22 @@
           0 6px 20px 0 rgb(0 0 0 / 19%);
       }
     }
+    
   }
 
 .statisticsModalsContainer{
   background: c.$pure-white-color;
   z-index: 3;
   border-radius: 20px;
+  
   h1{
     @include mut.with-font(ft.$roboto-font, 500, 22px, normal);
     line-height: 26px;
     @include mut.rem-padded(20px, 20px, 0, 20px);
     color: c.$accented-red-color;
-    @media screen and (max-width: 480px) {
-      @include mut.sizedImportant(300px, 60px);
-      @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
-    line-height: 26px;
-    }
+    
   }
+
   .streetsBlock{
     @media screen and (max-width: 480px) {
       @include mut.sizedImportant(340px, 196px);
@@ -51,7 +50,6 @@
       padding-left: f.pxToRem(20px);
       @media screen and (max-width: 480px) {
         @include mut.with-font(ft.$roboto-font, 300, 19px, normal);
-        line-height: 134.19%;
       }
     }
     span{
@@ -59,8 +57,26 @@
       color: c.$accented-red-color;
       @media screen and (max-width: 480px) {
         @include mut.with-font($font-weight:500, $font-size:20px);
-        color: c.$accented-red-color;
       }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+
+  .statisticsModal {
+    .ant-modal-close {
+      @include mut.circular(30px, c.$pure-white-color);
+  }
+  }
+
+  .statisticsModalsContainer{
+   
+    h1{
+        @include mut.sizedImportant(300px, 60px);
+        @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
+        line-height: 26px;
+      
     }
   }
 }
