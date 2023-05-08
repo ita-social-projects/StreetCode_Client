@@ -60,7 +60,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     height: 300,
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(inputInfo?.textContent);
+                        editor.setContent(inputInfo.text);
                     },
                     plugins: [
                         'autolink',
