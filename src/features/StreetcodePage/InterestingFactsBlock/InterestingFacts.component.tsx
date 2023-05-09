@@ -27,14 +27,16 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
         },
         [getStreetCodeId],
     );
-    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+    const sliderArray = getFactArray.length === 3
+                        || getFactArray.length === 2
+        ? getFactArray.concat(getFactArray)
+        : getFactArray;
 
-    const setings = {
+    const sliderSettings = {
         dots: getFactArray.length > 3,
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
-        slidesToShow: 3,
         swipe: false,
         centerPadding: '-5px',
         responsive: [
@@ -97,7 +99,7 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
                         ) : (
                             <BlockSlider
                                 className="heightContainer"
-                                {...setings}
+                                {...sliderSettings}
                             >
                                 {sliderArray.map((fact) => (
                                     <InterestingFactItem
