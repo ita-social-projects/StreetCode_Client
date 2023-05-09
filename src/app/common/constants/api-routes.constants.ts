@@ -134,6 +134,7 @@ export const API_ROUTES = {
     STREETCODES: {
         GET_ALL: 'streetcode/getAll',
         GET_ALL_SHORT: 'streetcode/getAllShort',
+        GET_SHORT_BY_ID: 'streetcode/getShortById',
         GET_ALL_CATALOG: 'streetcode/getAllCatalog',
         GET_COUNT: 'streetcode/getCount',
         GET_EVENTS: 'streetcode/getEvents',
@@ -178,6 +179,7 @@ export const API_ROUTES = {
     STATISTIC_RECORD: {
         GET_ALL: 'statisticRecord/getAll',
         GET_BY_QRID: 'statisticRecord/getByQrId',
+        GET_ALL_BY_STREETCODE_ID: 'statisticRecord/getAllByStreetcodeId',
         EXIST_BY_QRID: 'statisticRecord/existByQrId',
         CREATE: 'statisticRecord/create',
         UPDATE: 'statisticRecord/update',

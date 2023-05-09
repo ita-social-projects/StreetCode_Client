@@ -29,6 +29,8 @@ const StreetcodesApi = {
 
     getAllShort: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`),
 
+    getShortById: (id: number) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_SHORT_BY_ID}/${id}`),
+
     getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
 
     getPersons: () => Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),

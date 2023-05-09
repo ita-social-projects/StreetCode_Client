@@ -25,7 +25,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<AdminPage />}
         />
         <Route
             index
@@ -53,7 +53,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route
             index
-            path="/admin-panel/analytics"
+            path="/admin-panel/analytics/:id"
             element={(
                 <Analytics />
             )}

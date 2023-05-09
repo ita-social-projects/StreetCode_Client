@@ -8,6 +8,9 @@ const StatisticRecordApi = {
 
     getByQrId: (qrId: number) => Agent.get<StatisticRecord>(`${API_ROUTES.STATISTIC_RECORD.GET_BY_QRID}/${qrId}`),
 
+    getAllByStreetcodeId: (streetcodeId: number) => Agent.get<StatisticRecord[]>(`${
+        API_ROUTES.STATISTIC_RECORD.GET_ALL_BY_STREETCODE_ID}/${streetcodeId}`),
+
     existByQrId: (qrId: number) => Agent.get<boolean>(`${API_ROUTES.STATISTIC_RECORD.EXIST_BY_QRID}/${qrId}`),
 
     create: (statisticRecord: StatisticRecord) => Agent.post<StatisticRecord>(`${
