@@ -127,7 +127,7 @@
 
             .formTitleContainer{
                 @include mut.flexed($direction: column, $gap: 16px);
-                margin-bottom: 16px;
+                margin-bottom: f.pxToRem(16px);
 
                 .formTitle{
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
