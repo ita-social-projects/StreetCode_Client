@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 /* eslint-disable react/jsx-props-no-multi-spaces */
 
 './AdditionalTextBlockAdminForm.styles.scss';
