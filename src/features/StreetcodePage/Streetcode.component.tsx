@@ -13,7 +13,6 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
-import dayjs from 'dayjs';
 
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
@@ -65,7 +64,7 @@ const StreetcodeContent = () => {
 
     return (
         <div className="streetcodeContainer">
-            {loading && (
+            {/*  {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -73,7 +72,7 @@ const StreetcodeContent = () => {
                         src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
                     />
                 </div>
-            )}
+            )} */}
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}

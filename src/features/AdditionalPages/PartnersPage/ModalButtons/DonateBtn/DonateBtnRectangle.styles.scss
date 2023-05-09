@@ -1,36 +1,17 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.donateBtnRectangleContainer{
-    .donateBtn{
-        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-        @include mut.full-rounded(14px);
+.donate-button{
+    border: f.pxToRem(3px) solid;
+    border-color: c.$accented-red-color;
+    background-color: c.$pure-white-color; 
+    color: c.$accented-red-color;
+}
 
-        line-height: 23px;
-        color: #E04031;
-        cursor: pointer;
-
-        text-align: center;
-
-        border: 3px solid #E04031;
-        background-color: #FFFFFF; 
-        padding: f.pxToRem(25px) f.pxToRem(26px);    
-
-        box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);    
+@media screen and (max-width: 670px) {
+    .donate-button{
+        border: f.pxToRem(2px) solid !important;    
     }
 }
-
-@media screen and (max-width: 1024px) {
-    .partnersContainer .donateBtnRectangleContainer .donateBtn{        
-        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
-        line-height: 16px;
-
-        border: 2px solid #E04031;
-        padding: f.pxToRem(13px) f.pxToRem(113px);
-        @include mut.full-rounded(10px);
-    } 
-}
-
-
-
