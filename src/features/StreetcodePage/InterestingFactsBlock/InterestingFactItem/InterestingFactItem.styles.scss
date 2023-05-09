@@ -100,7 +100,7 @@ and (max-width: 1024px){
       justify-content: center;
       list-style: none;
       text-align: center;
-        @include mut.sized(8px, 8px);
+      @include mut.sized(8px, 8px);
     
     }
     li button{
@@ -110,7 +110,7 @@ and (max-width: 1024px){
 
       list-style: none;
       text-align: center;
-        @include mut.sized(8px, 8px);
+      @include mut.sized(8px, 8px);
     }
     li button:before {
 
@@ -118,12 +118,12 @@ and (max-width: 1024px){
         justify-content: center;
         left: -270% !important;
 
-          @include mut.rem-margined($right:5px, $left:5px);
+        @include mut.rem-margined($right:5px, $left:5px);
 
 
         list-style: none;
         text-align: center;
-          @include mut.sized(8px, 8px);
+        @include mut.sized(8px, 8px);
       }
     
   
