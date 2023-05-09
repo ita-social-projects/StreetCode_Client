@@ -13,8 +13,6 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
-import dayjs from 'dayjs';
-
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 
@@ -44,24 +42,23 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
-    // useEffect(() => {
-    //     document.body.style.overflow = 'hidden';
+/*     useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
+            setLoading(false);
+            document.body.style.overflow = 'auto';
 
-    //     if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
-    //         setLoading(false);
-    //         document.body.style.overflow = 'auto';
-
-    //         const anchorId = window.location.hash.substring(1);
-    //         const blockElement = document.getElementById(anchorId);
-    //         if (blockElement) {
-    //             blockElement.scrollIntoView({ behavior: 'smooth' });
-    //         }
-    //     }
-    // }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]);
+            const anchorId = window.location.hash.substring(1);
+            const blockElement = document.getElementById(anchorId);
+            if (blockElement) {
+                blockElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]); */
 
     return (
         <div className="streetcodeContainer">
-            {/* {loading && (
+           {/*  {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
