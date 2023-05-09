@@ -23,13 +23,12 @@ const NavigableBlockWrapper = ({ children, setBlocks, topDistance }: Props) => {
         const blocks: NamedBlock[] = [];
         Array.from(parentRef.current.children).forEach((child, idx) => {
             const headerBlock = Array.from(child.getElementsByTagName('h1'))
-                .find(({ className }) => className === 'blockHeadingText')??
-             Array.from(child.getElementsByTagName('h2'))
-                .find(({ className }) => className === 'streetcodeTitle');
-            
- 
+                .find(({ className }) => className === 'blockHeadingText')
+             ?? Array.from(child.getElementsByTagName('h2'))
+                 .find(({ className }) => className === 'streetcodeTitle');
+
             blocks.push({
-                title: headerBlock?.textContent ??`Секція №${idx + 1}`,
+                title: headerBlock?.textContent ?? `Секція №${idx + 1}`,
                 height: (child as HTMLElement).offsetTop - topDistance,
             } as NamedBlock);
         });

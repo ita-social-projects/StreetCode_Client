@@ -43,7 +43,7 @@
         padding: 0 !important;
     }
 
-    @media screen and (min-width:1024px) {
+    @media screen and (min-width:1025px) {
 
         .yarl__slide_description_container {
             @include mut.sized($height: 159px);
@@ -84,7 +84,7 @@
         }
     }
 
-    @media screen and (max-width:1023px) {
+    @media screen and (max-width:1025px) {
         .yarl__slide_description_container {
             @include mut.sized($height: 128px);
             background: rgba(0, 0, 0, 0.5);
@@ -102,10 +102,6 @@
             font-weight: 300;
             line-height: 16px;
             -webkit-line-clamp: inherit !important;
-        }
-
-        button {
-            visibility: hidden;
         }
     }
 }

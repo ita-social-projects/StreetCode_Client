@@ -1,0 +1,45 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/_utils.functions.scss" as f;
+@import 'react-toastify/dist/ReactToastify.css';
+
+.mainPageContainer {
+    width: 100%;
+    overflow: clip;
+    @include mut.rem-padded($top: 82px);
+}
+
+.sticky {
+    position: sticky;
+    display: flex;
+    z-index: 4;
+    bottom: f.pxToRem(50px);
+    justify-content: flex-end;
+}
+
+.sticky-content {
+    position: absolute;
+    bottom: f.pxToRem(5px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: f.pxToRem(10px);
+}
+
+.dimmed {
+    @include mut.sized(100%, 5875px);
+}
+
+@media screen and (max-width: 1024px) {
+    .mainPageContainer {
+        @include mut.rem-padded($top: 64px);
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .mainPageContainer {
+        background-image: none;
+    }
+}

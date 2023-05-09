@@ -1,33 +1,87 @@
 import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import useImageLoader from '@/app/common/hooks/stateful/useImageLoading';
 
-const InterestingFactsComponent = () => {
-    const { streetcodeStore, factsStore } = useMobx();
+interface Props {
+    setInterestingFactsState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
+    const { factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
-    const { fetchFactsByStreetcodeId, getFactArray } = factsStore;
+    const [loadedImagesCount, handleImageLoad] = useImageLoader();
 
-    useAsync(async () => {
-        if (getStreetCodeId !== errorStreetCodeId) {
-            fetchFactsByStreetcodeId(getStreetCodeId);
+    useAsync(
+        () => {
+            if (getStreetCodeId !== errorStreetCodeId) {
+                fetchFactsByStreetcodeId(getStreetCodeId);
+            }
+        },
+        [getStreetCodeId],
+    );
+    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+
+    const setings = {
+        dots: getFactArray.length > 3,
+        swipeOnClick: true,
+        centerMode: true,
+        swipe: false,
+        centerPadding: '-5px',
+        responsive: [
+            {
+                breakpoint: 480,
+                settings: {
+                    centerPadding: '-36px',
+                    swipe: true,
+                    dots: true,
+                },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    centerPadding: '-30px',
+                    swipe: true,
+                    dots: true,
+                },
+            },
+            {
+                breakpoint: 1025,
+                settings: {
+                    centerPadding: '-27.5px',
+                    centerlMode: true,
+                    arrows: false,
+                    swipe: true,
+                    dots: true,
+                },
+            },
+
+        ],
+    };
+
+    useEffect(() => {
+        if ((loadedImagesCount === 1 && getFactArray.length === 1)
+            || (loadedImagesCount === sliderArray.length && loadedImagesCount !== 0)) {
+            setInterestingFactsState(true);
         }
-    }, [getStreetCodeId, streetcodeStore]);
-
-    const sliderArray = getFactArray.length === 3
-    || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
-    const blockToUpdateMargin = document.querySelector('.interestingFactsWrapper') as HTMLElement;
-    getFactArray.length === 1 ? blockToUpdateMargin.style.marginBottom = '200px' : null;
+    }, [loadedImagesCount]);
 
     return (
-        <div className="interestingFactsWrapper">
+        <div
+            id="wow-facts"
+            className={`interestingFactsWrapper 
+            ${getFactArray.length === 1 ? 'single' : ''} 
+            ${getFactArray.length?'':'display-none'}`}
+        >
             <div className="interestingFactsContainer">
-                <BlockHeading headingText="Wow-факти" />
+                <BlockHeading headingText="Wow—факти" />
                 <div className="interestingFactsSliderContainer">
                     <div style={{ height: '100%' }}>
                         {(getFactArray.length === 1) ? (
@@ -35,22 +89,20 @@ const InterestingFactsComponent = () => {
                                 <InterestingFactItem
                                     numberOfSlides={1}
                                     fact={getFactArray[0]}
+                                    handleImageLoad={handleImageLoad}
                                 />
                             </div>
                         ) : (
                             <BlockSlider
-                                dots={getFactArray.length > 3}
                                 className="heightContainer"
-                                swipeOnClick
-                                swipe={false}
-                                centerMode
-                                centerPadding="-12px"
+                                {...setings}
                             >
                                 {sliderArray.map((fact) => (
                                     <InterestingFactItem
                                         key={fact.id}
                                         fact={fact}
                                         numberOfSlides={sliderArray.length}
+                                        handleImageLoad={handleImageLoad}
                                     />
                                 ))}
                             </BlockSlider>

@@ -1,6 +1,7 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .partnersContainer{
     position: relative;
@@ -30,6 +31,14 @@
     }
     .buttonsBlock{
         @include mut.flexed($justify-content: center, $gap: 20px);
+
+        .button-sized{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+            @include mut.full-rounded(14px); 
+            padding: f.pxToRem(24.5px) f.pxToRem(26.25px);
+            box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
+            cursor: pointer;
+        }
     }
 }
 
@@ -43,7 +52,7 @@
 
 @media screen and (max-width: 1024px) {
     .partnersContainer{
-        background-color: #fffcfc;
+        background-color: c.$partners-mobile-background-color;
         background-image: none;
         padding-bottom:  f.pxToRem(20px);
         padding-top: f.pxToRem(94px);
@@ -58,10 +67,18 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 670px) {
     .partnersContainer{
         .buttonsBlock{
+            .button-sized{
+                @include mut.full-rounded(10px);
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+                padding: 0;
+                min-height: f.pxToRem(46px);
+            }
             @include mut.flexed($justify-content: center, $direction: column, $gap: 12px);
         }
     }
 }
+
+

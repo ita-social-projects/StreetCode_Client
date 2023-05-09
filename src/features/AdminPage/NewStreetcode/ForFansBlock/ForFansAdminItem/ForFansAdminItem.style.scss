@@ -5,9 +5,10 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 $itemWidth: 154px;
 
-.forFansItem {
+.textBlockButton {
    @include mut.sized($width: $itemWidth);
-
+   //min-width: pxToRem($itemWidth);
+   //width: fit-content;
   .item {
      position:relative;
     @include mut.sized($height: 49px);
@@ -22,7 +23,7 @@ $itemWidth: 154px;
       color: c.$dark-red-color;
     }
 
-    .faIcon {
+    .blockItem {
       margin: 10px;
       cursor: pointer;
       text-align: center;

@@ -68,6 +68,14 @@ ul, ol {
     background-color: c.$dark-red-color;
     border-color: c.$dark-red-color;
   }
+  
+  &[disabled]{
+    pointer-events: none;
+  }
+  &:disabled{
+    background-color: c.$lighter-gray-color;
+    border-color: c.$lighter-gray-color;
+  }
 }
 ::-webkit-scrollbar {
   width: f.pxToRem(15px);
@@ -84,4 +92,8 @@ ul, ol {
 
 ::-webkit-scrollbar-track {
   background: c.$accented-gray-color;
+}
+
+.ant-checkbox-checked::after {
+  border: none;
 }

@@ -1,7 +1,7 @@
-'./ForFansAdminModal.styles.scss';
+import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
@@ -22,17 +22,30 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
+    const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
 
     const [form] = Form.useForm();
+    const getAvailableCategories = (): SourceCategoryName[] => {
+        const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
+            .map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
+        const available = allCategories.filter((c) => selected.indexOf(c.id) < 0);
+        if (categoryUpdate.current) {
+            available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate
+                .current?.sourceLinkCategoryId)]);
+        }
+        return available;
+    };
+
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
+        setAvailableCategories(getAvailableCategories());
         if (categoryUpdate.current && open) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
             editorRef.current?.editor?.setContent('');
-            form.setFieldValue('category', (allCategories.length > 1 ? allCategories[0].id : undefined));
+            form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
         }
     }, [open]);
 
@@ -61,7 +74,7 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
 
     return (
         <Modal
-            className="forFansAdminModal"
+            className="modalContainer"
             open={open}
             onCancel={() => {
                 setOpen(false); sourceCreateUpdateStreetcode.indexUpdate = -1;
@@ -71,18 +84,27 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <h2>Для фанатів</h2>
-            <Form form={form} onFinish={onSave}>
-                <FormItem name="category">
+            
+            <Form 
+                layout="vertical"
+                form={form} 
+                onFinish={onSave}>
+                <div className='center'>
+                    <h2>Для фанатів</h2>
+                </div>
+                <FormItem 
+                    label="Категорія:"
+                    name="category">
                     <Select
                         key="selectForFansCategory"
                         className="category-select-input"
                     >
-                        {allCategories
+                        {availableCategories
                             .map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
                     </Select>
                 </FormItem>
-
+                <FormItem
+                label = "Текст: ">
                 <Editor
                     ref={editorRef}
                     init={{
@@ -98,11 +120,12 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                         content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                     }}
                 />
-                <Form.Item>
-                    <Button htmlType="submit">
-                Зберегти
+                </FormItem>
+                 <div className='center'>
+                    <Button className='streetcode-custom-button' htmlType="submit">
+                        Зберегти
                     </Button>
-                </Form.Item>
+                </div>
             </Form>
 
         </Modal>

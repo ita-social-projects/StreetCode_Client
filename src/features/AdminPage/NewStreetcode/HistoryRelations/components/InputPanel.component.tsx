@@ -17,13 +17,25 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
     const [filteredOptions, setFilteredOptions] = useState<RelatedFigure[]>(options);
 
     useEffect(() => {
-        setFilteredOptions(options);
-        console.log(options);
-    }, [options]);
+        if (relations.length > 0) {
+            const filtered = options.filter(option => !relations.some(relation => relation.id === option.id));
+            setFilteredOptions(filtered);
+        }
+        else {
+            //const filtered = options.filter(option => relation => relation.id === option.id));
+            setFilteredOptions(options);
+        }
+    }, [options, relations]);
+
 
     const handleSearch = (value: string) => {
-        const filtered = options.filter((option) => option.title.toLowerCase().includes(value.toLowerCase()));
-        setFilteredOptions(filtered);
+        if (relations.length > 0) {
+            const filtered = options.filter(option => !relations.some(relation => relation.id === option.id));
+            setFilteredOptions(filtered);
+        }
+        else {
+            setFilteredOptions(options);
+        }
     };
 
     const handleAddItem = (event: React.FormEvent<HTMLFormElement>) => {
@@ -40,13 +52,13 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
         <form className="input-container" onSubmit={handleAddItem}>
             <AutoComplete
                 placeholder="Знайти стріткод..."
-                style={{ width: 400 }}
+                style={{ width: '100%' }}
                 options={filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
                 onSearch={handleSearch}
                 onChange={(value) => setRelation(value)}
                 value={relation}
             />
-            <Button htmlType="submit" className="create-relation-button" type="primary">
+            <Button htmlType="submit" className='streetcode-custom-button button-margin-left' type="primary">
         Додати
             </Button>
         </form>

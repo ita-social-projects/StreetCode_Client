@@ -1,7 +1,9 @@
 import './NewTimelineModal.style.scss';
+import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
+import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import dayjs from 'dayjs';
 
 import {
@@ -83,82 +85,87 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
     };
     return (
         <Modal
-            className="timeline-modal"
+            className="modalContainer"
             open={open}
             onCancel={() => {
                 setIsModalOpen(false);
             }}
-            footer={[]}
+            footer={null}
+            closeIcon={<CancelBtn />}
         >
-            <Form
-                form={form}
-                onFinish={onSuccesfulSubmit}
-                labelCol={{ span: 5 }}
-            >
-                <Form.Item
-                    name="title"
-                    label="Назва: "
-                    rules={[{ required: true, message: 'Введіть назву', max: 50 }]}
+            <div className="modalContainer-content">
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={onSuccesfulSubmit}
                 >
-                    <Input maxLength={50} showCount />
-                </Form.Item>
-                <div className="data-input-container">
+                    <div className="center">
+                        <h2>Хронологія</h2>
+                    </div>
+
                     <Form.Item
-                        label="Дата: "
-                        className="data-input-select-type"
+                        name="title"
+                        label="Назва: "
+                        rules={[{ required: true, message: 'Введіть назву', max: 50 }]}
+                    >
+                        <Input maxLength={50} showCount />
+                    </Form.Item>
+
+                    <Form.Item label="Дата:">
+                        <div className="data-container">
+                            <Select
+                                options={selectDateOptions}
+                                defaultValue={dateTimePickerType}
+                                onChange={(val) => {
+                                    setDateTimePickerType(val);
+                                }}
+                            />
+
+                            <Form.Item
+                                name="date"
+                                rules={[{ required: true, message: 'Введіть дату' }]}
+                            >
+                                <DatePicker
+                                    picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
+                                />
+                            </Form.Item>
+                        </div>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="historicalContexts"
+                        label="Контекст: "
                     >
                         <Select
-                            className="date-picker-type-input"
-                            options={selectDateOptions}
-                            defaultValue={dateTimePickerType}
-                            onChange={(val) => {
-                                setDateTimePickerType(val);
-                            }}
-                        />
+                            mode="tags"
+                            onSelect={onContextSelect}
+                            onDeselect={onContextDeselect}
+                            maxLength={20}
+                        >
+                            {historicalContextStore.historicalContextArray
+                                .map((cntx, index) => (
+                                    <Option
+                                        key={`${cntx.id + index}`}
+                                        value={cntx.title}
+                                    />
+                                ))}
+                        </Select>
                     </Form.Item>
+
                     <Form.Item
-                        name="date"
-                        className="data-input"
-                        rules={[{ required: true, message: 'Введіть дату' }]}
+                        name="description"
+                        label="Опис: "
+                        rules={[{ required: true, message: 'Введіть опис' }]}
                     >
-                        <DatePicker
-                            picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
-                        />
+                        <TextArea maxLength={400} showCount />
                     </Form.Item>
-                </div>
-                <Form.Item
-                    name="historicalContexts"
-                    label="Контекст: "
-                    className="historical-contexts-form-item"
-                >
-                    <Select
-                        mode="tags"
-                        onSelect={onContextSelect}
-                        onDeselect={onContextDeselect}
-                        maxLength={20}
-                    >
-                        {historicalContextStore.historicalContextArray
-                            .map((cntx, index) => (
-                                <Option
-                                    key={`${cntx.id + index}`}
-                                    value={cntx.title}
-                                />
-                            ))}
-                    </Select>
-                </Form.Item>
-                <Form.Item
-                    name="description"
-                    label="Опис: "
-                    rules={[{ required: true, message: 'Введіть опис' }]}
-                >
-                    <TextArea maxLength={400} showCount />
-                </Form.Item>
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
+                    <div className="center">
+                        <Button className="streetcode-custom-button" type="primary" htmlType="submit">
                         Зберегти
-                    </Button>
-                </Form.Item>
-            </Form>
+                        </Button>
+                    </div>
+                </Form>
+            </div>
         </Modal>
     );
 });

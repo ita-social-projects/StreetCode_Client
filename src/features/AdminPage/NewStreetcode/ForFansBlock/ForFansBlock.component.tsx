@@ -1,11 +1,9 @@
-import './ForFansBlock.style.scss';
-
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
 
 import SourcesApi from '@/app/api/sources/sources.api';
-import { SourceCategory, SourceCategoryName, StreetcodeCategoryContent } from '@/models/sources/sources.model';
+import { SourceCategoryName } from '@/models/sources/sources.model';
 
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
@@ -18,18 +16,16 @@ const ForFansBlock = () => {
     useEffect(() => {
         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
     }, []);
-    
+
     return (
-        <div className="forFansBlock">
-            <div className="forFansHeader">
-                <h2>
-                       Для фанатів
-                </h2>
-            </div>
-            <div className="forFansContainer">
+        <div className="adminContainer-block">
+            <h2>Для фанатів</h2>
+          
+            <div className="textBlockButton-container">
+
                 <button
                     type="button"
-                    className="addNewCategory"
+                    className="buttonWithPlus"
                     onClick={() => setIsModalOpen(true)}
                 >
                     +
@@ -37,7 +33,7 @@ const ForFansBlock = () => {
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category, index) => (
                     <ForFansAdminItem
                         categoryName={categoriesSelect.find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
-                        id={index}
+                        index={ index}
                         onEditClick={() => {
                             sourceCreateUpdateStreetcode.indexUpdate = index;
                             setIsModalOpen(true);

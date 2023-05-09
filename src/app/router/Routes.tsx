@@ -1,7 +1,6 @@
 import { createBrowserRouter, createRoutesFromElements, Link, Navigate, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
-import ForFansBlock from '@features/AdminPage/NewStreetcode/ForFansBlock/ForFansBlock.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
@@ -21,11 +20,15 @@ import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalo
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
-        <Route index path={`${FRONTEND_ROUTES.STREETCODE.BASE}/:id`} element={<StreetcodeContent />} />
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
             element={<AdminPage />}
+        />
+        <Route
+            index
+            path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             index
@@ -60,12 +63,12 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
-        {/* <Route path='*' element={<NotFound />} /> */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="/404" element={<NotFound />} />
         <Route path="/privacy-policy" element={<PrivatePolicy />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/partners-page" element={<PartnersPage />} />
         <Route path="/support-us" element={<SupportUs />} />
+        <Route index path="/:id" element={<StreetcodeContent />} />
     </Route>,
 ));
 

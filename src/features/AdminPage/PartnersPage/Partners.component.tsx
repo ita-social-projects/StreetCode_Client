@@ -156,15 +156,17 @@ const Partners:React.FC = observer(() => {
           ) },
     ];
     return (
-        <>
+        <div className='partners-page'>
             <PageBar />
             <div className="partners-page-container">
-                <Button
-                    className="streetcode-custom-button"
-                    onClick={() => setModalAddOpened(true)}
-                >
-                Додати
-                </Button>
+                <div className='container-justify-end'>
+                    <Button
+                        className="streetcode-custom-button partners-page-add-button"
+                        onClick={() => setModalAddOpened(true)}
+                    >
+                    Створити партнера
+                    </Button>
+                </div>
                 <Table
                     pagination={{ pageSize: 10 }}
                     className="partners-table"
@@ -180,7 +182,7 @@ const Partners:React.FC = observer(() => {
                 partnerItem={partnerToEdit}
                 isStreetcodeVisible
             />
-        </>
+        </div>
 
     );
 });

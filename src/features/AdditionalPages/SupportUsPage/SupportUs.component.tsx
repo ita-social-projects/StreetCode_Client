@@ -26,18 +26,18 @@ const SupportUs = () => {
 
     const handlePay = () => {
         window.location.assign('https://pay.mbnk.biz/IyAdn53wljbN');
-    }
+    };
 
     return (
         <div className='supportUsPage'>
             <div className='supportUsPageWrapper'>
                 <div className='heading'>
-                    <div className="titleBig"> Підтримати нас</div>
+                    <div className="titleBig"> Підтримати {windowSize.width >= 480 && <>нас</>}</div>
                     <div className="titleSmall">
                         Привіт! Після всіх важливих сторінок нашої платформи ти нарешті тут — на не менш важливій сторінці твоєї залученості та підтримки.
                     </div>
                     <div className='text'>
-                        Наша команда горить-палає місією «застріткодити всю Україну», розповісти про видатних Героїв та подати цікавенні факти з історії. 
+                        Наша команда горить—палає місією «застріткодити всю Україну», розповісти про видатних Героїв та подати цікавенні факти з історії. 
                         Так, це ми. Але окрім внутрішніх волонтерських вогників наших сердець проєкту для стійкості та розвитку...
                     </div>
                 </div>
@@ -49,7 +49,7 @@ const SupportUs = () => {
                         <ul className='purposeList'>
                             <li>
                                 <Printer />
-                                <span>для друку наших промовистих стріткодів-табличок</span>
+                                <span>для друку наших промовистих стріткодів—табличок</span>
                             </li>
                             <li>
                                 <CreditCard />
@@ -57,15 +57,15 @@ const SupportUs = () => {
                             </li>
                             <li>
                                 <Lamp />
-                                <span>для створення ілюстрацій «як-живий» </span>
+                                <span>для створення ілюстрацій «як—живий» </span>
                             </li>
                             <li>
                                 <Camera />
-                                <span>для зйомок «оце-так-відосиків»</span>
+                                <span>для зйомок «оце—так—відосиків»</span>
                             </li>
                             <li>
                                 <Route />
-                                <span>для складання «ой-мамо-маршрутів»</span>
+                                <span>для складання «ой—мамо—маршрутів»</span>
                             </li>
                         </ul>
                         <div className='purposeBottomText'>
@@ -88,9 +88,9 @@ const SupportUs = () => {
                 <div className='donateSubBlocks'>
                     <div className='block qr'>
                         <p className='heading'>На карту</p>
-                        <div className='content'>
+	                    <div className='content'>
                             {
-                                windowSize.width > 1024 ? <QRCode/> 
+                                windowSize.width > 1024 ? <QRCode/>
                                 : windowSize.width > 480 ? <QRCodeSmall/>
                                 : undefined
                             }
@@ -100,9 +100,9 @@ const SupportUs = () => {
                     <div className='block forCompanies'>
                         <p className='heading'>Для компаній</p>
                         <div className='content'>
-                            <p>Сконтактуй з нашою командою щодо Стріткод-партнерства та внесків на 
+                            <p>Сконтактуй з нашою командою щодо Стріткод—партнерства та внесків на 
                                 історію в просторі міст від юридичних осіб. Раді будемо запартнеритися 
-                                із соціально-відповідальним бізнесом.</p>
+                                із соціально—відповідальним бізнесом.</p>
                         </div>
                         <button className='supportButton' onClick={() => setModal('partners')}>Стати партнером</button>
                     </div>

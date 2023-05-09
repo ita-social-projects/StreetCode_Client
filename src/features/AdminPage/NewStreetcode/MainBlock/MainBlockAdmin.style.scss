@@ -6,139 +6,101 @@
     top: 100px !important;
     width: f.pxToRem(400px) ;
   }
-.mainblock-add-form{
-    @include mut.with-font();
-   .ant-form-item-label>label{
-        @include mut.with-font();
 
-    }
-   
-    .maincard-item{
-        width:f.pxToRem(500px) ;
-        margin: 10px 0;
-    }
-    .ant-input{
-        align-self:center;
-        @include mut.with-font();
-    }
-    .ant-select,
-    .ant-select-selector,
-    .ant-select-selection-search-input,
-    .ant-picker{
-        @include mut.with-font();
-    }
-    
-    .people-title-group{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .stretcode-title-people{ 
-        width:f.pxToRem(200px) ;
-    }
-    .streetcode-number-container{
-        width:f.pxToRem(400px) ;
-        justify-content: space-between;
-        display: flex;
-        flex-direction: row;
 
-    }
-    .textarea-teaser{
-        height:f.pxToRem(80px);
-    }
-    .ant-input-textarea>textarea{
-        resize: none;
-    }
-    .ant-picker {
-
-        .ant-picker-input> input{
-            @include mut.with-font();
-        }
-        width: 100%;
-        box-sizing: border-box;
-       
-    }
-    .date-picker-qroup{
-        margin:f.pxToRem(20px) 0;
-        width: f.pxToRem(750px);
-        display: flex;
-        align-items: bottom;
-        flex-direction: row;
-        justify-content: left;
-        .date-picker-type-input{
-            width: 100%;
-            margin-bottom: f.pxToRem(10px);
-        }
-        .date-picker-qroup-item{
-            width: f.pxToRem(200px); 
-        }
-        p{
-            margin-left: f.pxToRem(10px);
-            display: block;
-            align-self:flex-end;
-        }
-        .date-string-input{
-            width: f.pxToRem(360px);
-            display: flex;
-            align-items: end;
-            input{
-                width: f.pxToRem(360px);
+.mainblock-add-form{   
+        .p-margin{ 
+            gap:5px;
+            p{
+                font-size: 18px;
+            
             }
-        }
-        .date-string-input input:disabled{
-            background-color: #fff;
-            color: #000;
-            cursor: default;
         }
         
-    }
-    .photo-form-item{
-        width: f.pxToRem(750px);
-    }
-    .teaser-form-item{
-        width: f.pxToRem(750px);
-        .textarea-teaser{
-            resize: none;
+        .grey-text{
+            color:grey;
         }
-        .amount-left-char-textarea-teaser{
-            text-align: right;
-            .warning{
-                color:c.$accented-red-color ;
+
+        .red-text{
+            color:c.$accented-red-color;
+        }
+
+        .ant-switch-checked{
+            background-color: c.$dark-red-color;
+        } 
+
+    }
+
+
+    .date-picker-container{
+        .date-picker-group{
+            display: flex;
+            gap: f.pxToRem(10px);
+            .my-picker{
+                margin-bottom: 0px;
             }
+
+            .date-picker-type-input{
+                margin-bottom: f.pxToRem(10px);
+            }
+            .date-picker-group-item{
+                width: 100%; 
+            }    
         }
     }
+
     .tags-block{   
         display: flex;
-        flex-direction: row;
-        width: f.pxToRem(750px);
+        flex-direction: column;
+         .ant-select-selector{
+            box-shadow: none !important;
+        }
+       
         .tags-block-tagitems{
-            width: 80%;
+            width: 100%;
             .tags-select-input{
                 width: 100%;
             }
         }
         .device-sizes-list{
-            width: 20%;
-            text-align: center;
-            transition: font-weight 1s, color 0.7s;
-            .device-size:hover{
+            p{
+                margin-bottom: 2px;
+            }
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            p:hover{
                 color: c.$dark-red-color;
                 font-weight: 600;
-                transition: font-weight 1s, color 0.7s;
+             }
+        }
+    }
+
+    .textarea-teaser{
+        height:f.pxToRem(80px);
+    }
+    .ant-input-textarea > textarea{
+        resize: none;
+    }
+
+    .teaser-form-item{
+        .textarea-teaser{
+            resize: none;
+        }
+        .amount-left-char-textarea-teaser{
+            display: flex;
+            justify-content: flex-end;
+            padding-right: f.pxToRem(10px);
+            .warning{
+                color:c.$accented-red-color;
             }
         }
     }
-    .file-upload-container{
-        width: f.pxToRem(750px);
-        .photo-uploader-container{
-            display: flex;
-            flex-direction: row;
-        }
-        .audio-upload-box{
-            height: f.pxToRem(40px);
-            background-color: c.$timeline-reel-color;
-        }
-    }
-    
-}
 
+    .photo-uploader-container{
+        display: flex;
+        justify-content: space-between;
+    } 
+ 
+    
+    

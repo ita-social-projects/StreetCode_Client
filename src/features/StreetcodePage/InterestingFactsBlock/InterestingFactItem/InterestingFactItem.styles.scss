@@ -5,40 +5,46 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .interestingFactSlide {
-  @include mut.sized(387px, 416px);
+  @include mut.sized(387px);
   @include mut.full-rounded(33px);
-
   z-index: 0;
   cursor: pointer;
   position: relative;
   @include vnd.vendored(transition, '.5s ease');
-
+  
   background-color: c.$pure-white-color;
   box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, .25);
-
+  
   .slideImage {
     @include mut.sized(100%, 250px);
     @include mut.rounded(33px, 33px);
+    img{
+      max-height: 350px;
+    }
   }
 
   .slideText {
     @include mut.sized(100%, 167px);
     @include mut.rounded($bottom-right: 33px, $bottom-left: 33px);
-
     .heading {
       @include mut.rem-padded(8px, 20px, 7px, 20px);
       color: c.$accented-red-color;
-
+      
       @include mut.with-font($font-weight: 500, $font-size: 17px);
       line-height: f.pxToEm(20px);
     }
-
+    
     .mainText {
       @include mut.rem-padded(0, 20px, 0px, 20px);
       color: c.$lighter-black-color;
+      word-wrap: break-word;
 
       @include mut.with-font($font-weight: 300, $font-size: 13px);
       line-height: f.pxToEm(18px);
+
+    }
+    .lineSpecifier{
+      @include mut.truncated($line-num: 5);
     }
   }
 }
@@ -50,22 +56,195 @@
 }
 
 .interestingFactsSliderContainer .sliderClass {
-     height: 100%;
-}
-
-.interestingFactsSliderContainer .slick-list {
-  @include mut.rem-padded(130px);
+  height: 100%;
 }
 
 .readMoreParagraph {
   @include mut.rem-padded(7px, 20px, 0px, 20px);
   @include vnd.vendored(transition, '.5s ease');
   cursor: pointer;
-
   color: c.$dark-red-color;
   @include mut.with-font(ft.$roboto-font, 300, 13px, normal);
-
+  
   &:hover {
     color: c.$accented-red-color;
   }
+  
 }
+
+@media screen
+and (max-width: 1024px){
+ .interestingFactSlide {
+    @include mut.sized(205px,240px);
+  }
+  .interestingFactsSliderContainer {
+    .slick-track {
+      @include mut.flexed($align-items: flex-start, $gap: 10px);
+      @include mut.rem-margined($left: -34px);
+    }
+
+    .slick-dots {
+ 
+      text-align: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      text-align: center;
+      
+    }
+    li{
+      text-align: center;
+      justify-content: center;
+      list-style: none;
+      text-align: center;
+        @include mut.sized(8px, 8px);
+    
+    }
+    li button{
+      text-align: center; 
+      justify-content: center;
+      padding: 0;
+
+      list-style: none;
+      text-align: center;
+        @include mut.sized(8px, 8px);
+    }
+    li button:before {
+
+        text-align: center; 
+        justify-content: center;
+        left: -270% !important;
+
+          @include mut.rem-margined($right:5px, $left:5px);
+
+
+        list-style: none;
+        text-align: center;
+          @include mut.sized(8px, 8px);
+      }
+    
+  
+  }    
+  .interestingFactSlide {
+   
+    @include mut.full-rounded(20px);
+    
+     .slideImage {
+       @include mut.sized(100%, 132px);
+       @include mut.rounded(20px, 20px);
+
+      img{
+        @include mut.sized(100%, 100%)
+      }
+     }
+     .slideText {
+       @include mut.sized(100%, 105px);
+      @include mut.rounded(0);
+
+       .heading {
+        @include mut.rem-padded(7px, 20px, 6px, 12px);
+        @include mut.with-font($font-weight: 500, $font-size: 12px);
+         line-height: f.pxToEm(12px);
+       }
+       .mainText {
+        @include mut.rem-padded(0, 12px, 0px, 12px);
+         @include mut.with-font($font-weight: 300, $font-size: 10px);
+         line-height: f.pxToEm(16px);
+       }
+     } 
+  
+
+     .readMoreParagraph {
+      @include mut.rem-padded(6px, 20px, 0px, 12px);
+      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
+     }
+  } 
+ }
+
+
+
+@media screen
+and (min-width: 768px) and (max-width: 1000px) {
+  .interestingFactsSliderContainer{
+    @include mut.sized(100%);
+
+    .slick-track {
+      @include mut.flexed($align-items: flex-start, $gap: 10px);
+      @include mut.rem-margined($left: -30px);
+    }
+  }
+
+  .interestingFactSlide {
+    @include mut.full-rounded(20px);
+    
+     .slideImage {
+       @include mut.sized(100%, 132px);
+       @include mut.rounded(20px, 20px);
+
+      img{
+        @include mut.sized(100%, 100%)
+      }
+     }
+     .slideText {
+       @include mut.sized(100%, 103px);
+       @include mut.rounded(0);
+
+       .heading {
+        @include mut.rem-padded(7px, 20px, 6px, 12px);
+        @include mut.with-font($font-weight: 500, $font-size: 12px);
+         line-height: f.pxToEm(12px);
+
+       }
+       .mainText {
+        @include mut.rem-padded(0, 12px, 0px, 12px);
+         @include mut.with-font($font-weight: 300, $font-size: 10px);
+         line-height: f.pxToEm(16px);
+
+       }
+     } 
+     .readMoreParagraph {
+      @include mut.rem-padded(6px, 20px, 0px, 12px);
+      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
+     }
+  } 
+ }
+
+@media screen and (max-width: 480px){ 
+  .interestingFactsSliderContainer{
+    .slick-track {
+      @include mut.flexed($align-items: flex-start, $gap: 10px);
+      @include mut.rem-margined($left: -36px);
+    }
+  }
+  .interestingFactSlide {
+    @include mut.full-rounded(20px);
+    overflow: visible;
+
+      .slideImage {
+        @include mut.sized(100%, 50%);
+        @include mut.rounded(20px, 20px);
+
+      }
+      .slideText {
+        @include mut.full-rounded(0px);
+         @include mut.sized(100%, 103px);
+         overflow: visible;
+
+         .heading {
+          @include mut.rem-padded(7px, 20px, 6px, 12px);
+          @include mut.with-font($font-weight: 500, $font-size: 12px);
+          line-height: f.pxToEm(12px);
+        }
+        .mainText {
+          @include mut.rem-padded(0, 12px, 0px, 12px);
+          @include mut.with-font($font-weight: 300, $font-size: 10px);
+          line-height: f.pxToEm(16px);
+        }
+      } 
+      .readMoreParagraph {
+        @include mut.rem-padded(6px, 20px, 0px, 12px);
+        @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
+      }
+  }
+ }

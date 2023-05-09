@@ -1,14 +1,14 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
-
+@use "@assets/sass/variables/_variables.colors.scss" as c;
 .contactUsContainer{
     position: relative;
 
     height: 100%;
     width: 100vw;
 
-    background-color: #fffcfc;
+    background-color: c.$accented-grayish-gray-color;
     padding: f.pxToRem(112px) f.pxToRem(10px) 0 f.pxToRem(10px);
 
     .wrapper{
