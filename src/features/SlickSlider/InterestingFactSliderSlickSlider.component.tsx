@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable max-len */
-/* eslint-disable react-hooks/exhaustive-deps */
 import './SlickSlider.styles.scss';
 
 import {
@@ -23,8 +20,15 @@ const GenericSlider: FC<SliderProps> = ({
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lastClick, setLastClick] = useState(Date.now());
 
-    const isOnRightEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === children.length - 1 && slideToIndex === 0);
-    const isOnLeftEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === 0 && slideToIndex === children.length - 1);
+    const isOnRightEdge = (
+        currentIndx : number,
+        slideToIndex : number,
+    ) => (currentIndx === children.length - 1 && slideToIndex === 0);
+
+    const isOnLeftEdge = (
+        currentIndx : number,
+        slideToIndex : number,
+    ) => (currentIndx === 0 && slideToIndex === children.length - 1);
 
     const move = useCallback(
         (direction: 'next' | 'prev', slideToIndex: number) => {
@@ -35,9 +39,11 @@ const GenericSlider: FC<SliderProps> = ({
             }
 
             if (Date.now() - lastClick >= sliderProps.speed + 100) {
-                direction === 'next'
-                    ? sliderRef.current?.slickNext()
-                    : sliderRef.current?.slickPrev();
+                if (direction === 'next') {
+                    sliderRef.current?.slickNext();
+                } else {
+                    sliderRef.current?.slickPrev();
+                }
                 setCurrentIndex(slideToIndex);
                 setLastClick(Date.now());
             }
