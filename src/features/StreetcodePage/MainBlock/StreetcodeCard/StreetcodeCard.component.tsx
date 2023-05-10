@@ -12,7 +12,6 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import useImageLoader from '@/app/common/hooks/stateful/useImageLoading';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
@@ -27,7 +26,6 @@ interface Props {
     streetcode?: Streetcode;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
     setActiveBlock: React.Dispatch<React.SetStateAction<number>>
-    setStreetcodeCardState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -46,11 +44,11 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetcodeCardState }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = streetcode?.id;
     const { imageLoaderStore, modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-    const { handleImageLoad, imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
+    const { handleImageLoad } = imageLoaderStore;
 
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
 
@@ -66,7 +64,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
     }, [streetcode]);
 
     useEffect(() => {
-        // imageLoaderStore.totalImagesToLoad += images.length;
+        imageLoaderStore.totalImagesToLoad += images.length;
     }, [images]);
 
     return (
@@ -85,12 +83,11 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
                                 src={base64ToUrl(im.base64, im.mimeType)}
                                 className="streetcodeImg"
                                 alt={im.alt}
-                                // onLoad={handleImageLoad}
+                                onLoad={handleImageLoad}
                             />
                         ))}
                     </BlockSlider>
                 </div>
-
             </div>
             <div className="rightSider">
                 <div className="headerContainer">

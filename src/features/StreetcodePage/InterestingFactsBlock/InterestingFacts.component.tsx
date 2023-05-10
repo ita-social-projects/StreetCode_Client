@@ -9,24 +9,17 @@ import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFa
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
-interface Props {
-    setInterestingFactsState: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
+const InterestingFactsComponent = () => {
     const { imageLoaderStore, factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { handleImageLoad } = imageLoaderStore;
-    const [requestFinished, setRequestFinished] = useState(false);
 
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
                 Promise.all([
                     fetchFactsByStreetcodeId(getStreetCodeId),
-                ]).then(() => {
-                    setRequestFinished(true);
-                });
+                ]);
             }
         },
         [getStreetCodeId],
@@ -34,9 +27,9 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
 
     const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
 
-    useEffect(() => {
-        imageLoaderStore.totalImagesToLoad += sliderArray.length;
-    }, [getFactArray.length, requestFinished]);
+    // useEffect(() => {
+    //     imageLoaderStore.totalImagesToLoad += sliderArray.length;
+    // }, [getFactArray.length]);
 
     const setings = {
         dots: getFactArray.length > 3,
@@ -93,7 +86,7 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
                                         <InterestingFactItem
                                             numberOfSlides={1}
                                             fact={getFactArray[0]}
-                                            handleImageLoad={handleImageLoad}
+                                            // handleImageLoad={handleImageLoad}
                                         />
                                     </div>
                                 ) : (
@@ -106,7 +99,7 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
                                                 key={fact.id}
                                                 fact={fact}
                                                 numberOfSlides={sliderArray.length}
-                                                handleImageLoad={handleImageLoad}
+                                                // handleImageLoad={handleImageLoad}
                                             />
                                         ))}
                                     </BlockSlider>

@@ -10,33 +10,26 @@ import ImageLoaderStore from '@/app/stores/image-loader-store';
 
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
-interface Props {
-    setPartnersState: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const PartnersComponent = ({ setPartnersState }: Props) => {
+const PartnersComponent = () => {
     const {imageLoaderStore, partnersStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
     const { handleImageLoad } = imageLoaderStore;
-    const [requestFinished, setRequestFinished] = useState(false);
 
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
                 Promise.all([
                     fetchPartnersByStreetcodeId(getStreetCodeId),
-                ]).then(() => {
-                    setRequestFinished(true);
-                });
+                ]);
             }
         },
         [getStreetCodeId],
     );
 
-    // useEffect(() => {
-    //     imageLoaderStore.totalImagesToLoad += getPartnerArray.length;
-    //     console.log(imageLoaderStore.totalImagesToLoad);
-    // }, [getPartnerArray.length, requestFinished]);
+    useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += getPartnerArray.length;
+        console.log(imageLoaderStore.totalImagesToLoad);
+    }, [getPartnerArray.length]);
 
     const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => useMemo(() => ({
         breakpoint,
@@ -66,7 +59,7 @@ const PartnersComponent = ({ setPartnersState }: Props) => {
         <PartnerItem
             key={p.id}
             partner={p}
-            // handleImageLoad={handleImageLoad}
+            handleImageLoad={handleImageLoad}
         />
     ));
 

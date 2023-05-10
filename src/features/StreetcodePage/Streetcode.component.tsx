@@ -37,10 +37,7 @@ const StreetcodeContent = () => {
     const [activeBlock, setActiveBlock] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    const [streetcodeCardState, setStreetcodeCardState] = useState(false);
     const [textBlockState, setTextBlockState] = useState(false);
-    const [interestingFactsState, setInterestingFactsState] = useState(false);
-    const [partnersState, setPartnersState] = useState(false);
 
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
@@ -52,7 +49,7 @@ const StreetcodeContent = () => {
         console.log(imageLoaderStore.loadedImagesCount);
         console.log(imageLoaderStore.totalImagesToLoad);
 
-        if (imageLoaderStore.imagesLoadedPercentage >= 90) {
+        if (imageLoaderStore.imagesLoadedPercentage >= 90 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
 
@@ -62,7 +59,7 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState, imageLoaderStore.loadedImagesCount]);
+    }, [textBlockState, imageLoaderStore.loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">
@@ -79,20 +76,17 @@ const StreetcodeContent = () => {
                 <MainBlock
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
-                    setStreetcodeCardState={setStreetcodeCardState}
                 />
                 <TextBlockComponent setTextBlockState={setTextBlockState} />
-                <InterestingFactsComponent setInterestingFactsState={setInterestingFactsState} />
+                <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlock />
                 <ArtGalleryBlockComponent />
-                <RelatedFiguresComponent
-                    setActiveTagId={setActiveTagId}
-                />
+                <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersComponent setPartnersState={setPartnersState} />
+            <PartnersComponent />
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />
