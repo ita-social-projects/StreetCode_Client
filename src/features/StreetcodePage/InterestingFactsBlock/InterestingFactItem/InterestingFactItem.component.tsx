@@ -46,7 +46,7 @@ const InterestingFactItem = ({
                     onLoad={handleImageLoad}
                 />
             </div>
-            <div className="slideText">
+            {/* <div className="slideText">
                 <p className="heading">
                     {title}
                 </p>
@@ -58,7 +58,7 @@ const InterestingFactItem = ({
                         Трохи ще...
                     </p>
                 )}
-            </div>
+            </div> */}
         </div>
     );
 };
