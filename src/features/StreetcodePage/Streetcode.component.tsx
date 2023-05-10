@@ -29,7 +29,8 @@ import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 const StreetcodeContent = () => {
     const { imageLoaderStore, streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const { imagesLoadedPercentage, totalImagesToLoad } = imageLoaderStore;
+    const { imagesLoadedPercentage, loadedImagesCount, totalImagesToLoad } = imageLoaderStore;
+    const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
 
     const streetcodeUrl = useRouteUrl();
 
@@ -45,11 +46,19 @@ const StreetcodeContent = () => {
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
-        console.log(imageLoaderStore.imagesLoadedPercentage);
-        console.log(imageLoaderStore.loadedImagesCount);
-        console.log(imageLoaderStore.totalImagesToLoad);
+        console.log(imagesLoadedPercentage);
+        console.log(loadedImagesCount);
+        console.log(totalImagesToLoad);
 
-        if (imageLoaderStore.imagesLoadedPercentage >= 90 && textBlockState) {
+        // for cloned images in sliders
+        if (slideCloneCountAdded === 0) {
+            const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
+            const slideCloneCount = slideClonedImgs.length;
+            imageLoaderStore.totalImagesToLoad += slideCloneCount;
+            setSlideCloneCountAdded(slideCloneCount);
+        }
+
+        if (imagesLoadedPercentage >= 90 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
 
@@ -59,7 +68,7 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [textBlockState, imageLoaderStore.loadedImagesCount]);
+    }, [textBlockState, loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">

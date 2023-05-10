@@ -83,7 +83,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 src={base64ToUrl(im.base64, im.mimeType)}
                                 className="streetcodeImg"
                                 alt={im.alt}
-                                // onLoad={handleImageLoad}
+                                onLoad={handleImageLoad}
                             />
                         ))}
                     </BlockSlider>

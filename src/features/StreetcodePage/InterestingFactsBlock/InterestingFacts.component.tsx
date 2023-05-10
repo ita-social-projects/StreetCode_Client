@@ -73,9 +73,9 @@ const InterestingFactsComponent = () => {
             ? (
                 <div
                     id="wow-facts"
-                    className="interestingFactsWrapper"
-                    // ${getFactArray.length === 1 ? 'single' : ''} 
-                    // ${getFactArray.length ? '' : 'display-none'}`}
+                    className={`"interestingFactsWrapper"
+                    ${getFactArray.length === 1 ? 'single' : ''} 
+                    ${getFactArray.length ? '' : 'display-none'}`}
                 >
                     <div className="interestingFactsContainer">
                         <BlockHeading headingText="Wow—факти" />
@@ -86,7 +86,7 @@ const InterestingFactsComponent = () => {
                                         <InterestingFactItem
                                             numberOfSlides={1}
                                             fact={getFactArray[0]}
-                                            // handleImageLoad={handleImageLoad}
+                                            handleImageLoad={handleImageLoad}
                                         />
                                     </div>
                                 ) : (
@@ -99,7 +99,7 @@ const InterestingFactsComponent = () => {
                                                 key={fact.id}
                                                 fact={fact}
                                                 numberOfSlides={sliderArray.length}
-                                                // handleImageLoad={handleImageLoad}
+                                                handleImageLoad={handleImageLoad}
                                             />
                                         ))}
                                     </BlockSlider>

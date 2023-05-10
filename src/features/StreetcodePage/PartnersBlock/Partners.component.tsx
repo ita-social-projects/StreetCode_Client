@@ -26,7 +26,6 @@ const PartnersComponent = () => {
 
     useEffect(() => {
         imageLoaderStore.totalImagesToLoad += getPartnerArray.length;
-        console.log(imageLoaderStore.totalImagesToLoad);
     }, [getPartnerArray.length]);
 
     const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => useMemo(() => ({

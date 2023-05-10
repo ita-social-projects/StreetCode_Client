@@ -31,7 +31,6 @@ const GenericSlider: FC<SliderProps> = ({
     });
     const isOnRightEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === children.length - 1 && slideToIndex === 0);
     const isOnLeftEdge = (currentIndex : number, slideToIndex : number) => (currentIndex === 0 && slideToIndex === children.length - 1);
-    
 
     return (
         <div className="sliderClass">
