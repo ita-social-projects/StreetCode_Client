@@ -18,8 +18,8 @@ export default class UserLoginStore {
         makeAutoObservable(this);
     }
 
-    private static getExpiredDate():Date {
-        return new Date(localStorage.getItem(UserLoginStore.dateStorageName)!);
+    private static getExpiredDate():number {
+        return Number(localStorage.getItem(UserLoginStore.dateStorageName)!);
     }
 
     private static setExpiredDate(date: string):void {
@@ -43,7 +43,7 @@ export default class UserLoginStore {
     }
 
     public static get isLoggedIn():boolean {
-        return UserLoginStore.getExpiredDate() > new Date(Date.now() + 2 * 60000);
+        return UserLoginStore.getExpiredDate() > new Date(Date.now()).getTime();
     }
 
     public clearUserData() {
@@ -59,17 +59,22 @@ export default class UserLoginStore {
     }
 
     public setUserLoginResponce(user:UserLoginResponce, func:()=>void) {
-        UserLoginStore.setExpiredDate(user.expireAt.toDateString());
-        const expireForSeconds = (new Date(user.expireAt)).getTime() - new Date().getTime();
-        this.setCallback(func);
-        this.userLoginResponce = user;
-        UserLoginStore.setToken(user.token);
-        if (expireForSeconds > 10000) {
-            this.timeoutHandler = setTimeout(() => {
-                if (this.callback) {
-                    this.callback();
-                }
-            }, expireForSeconds - 10000);
+        try {
+            const timeNumber = (new Date(user.expireAt)).getTime();
+            UserLoginStore.setExpiredDate(timeNumber.toString());
+            const expireForSeconds = timeNumber - new Date().getTime();
+            this.setCallback(func);
+            this.userLoginResponce = user;
+            UserLoginStore.setToken(user.token);
+            if (expireForSeconds > 10000) {
+                this.timeoutHandler = setTimeout(() => {
+                    if (this.callback) {
+                        this.callback();
+                    }
+                }, expireForSeconds - 10000);
+            }
+        } catch (e) {
+            console.log(e);
         }
     }
 

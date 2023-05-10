@@ -32,9 +32,7 @@ const AdminLogin:React.FC = () => {
     const login = (formValues:any) => {
         UserApi.login({ login: formValues.login, password: formValues.password })
             .then((logResp) => onSuccessfulLogin(logResp))
-            .then(() => {
-                navigate(FRONTEND_ROUTES.ADMIN.BASE);
-            })
+            .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
             .catch((er) => {
                 message
                     .error('Неправильний логін чи пароль');
