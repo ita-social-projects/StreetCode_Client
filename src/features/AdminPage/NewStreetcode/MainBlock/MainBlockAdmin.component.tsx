@@ -219,7 +219,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <Input maxLength={100} showCount />
             </Form.Item>
 
-            <Form.Item name="alias" label="Короткий опис" className="maincard-item">
+            <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
                 <Input maxLength={33} showCount />
             </Form.Item>
             <Form.Item
