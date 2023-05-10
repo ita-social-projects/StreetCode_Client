@@ -1,7 +1,7 @@
 import './SourcesModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import sourcesApi from '@api/sources/sources.api';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import CancelBtnMobile from '@assets/images/utils/Cancel_btn_mobile.svg';
@@ -31,43 +31,41 @@ const SourcesModal = () => {
     return (
         <>
             {windowsize.width <= 1024
-              && (
-                  <Modal
-                      className="sourcesModal"
-                      open={sources.isOpen}
-                      maskClosable
-                      centered
-                      footer={null}
-                      onCancel={() => setModal('sources', categoryId)}
-                      closeIcon={<CancelBtnMobile />}
-                  >
-                      <div className="sourceImgContainer">
-                          <h1>{category?.title}</h1>
-                      </div>
-                      <div className="mainContentContainer">
-                          {content?.text}
-                      </div>
-                  </Modal>
-              )}
-            {windowsize.width > 1025
-              && (
-                  <Modal
-                      className="sourcesModal"
-                      open={sources.isOpen}
-                      maskClosable
-                      centered
-                      footer={null}
-                      onCancel={() => setModal('sources', categoryId)}
-                      closeIcon={<CancelBtn />}
-                  >
-                      <div className="sourceImgContainer">
-                          <h1>{category?.title}</h1>
-                      </div>
-                      <div className="mainContentContainer">
-                          {content?.text}
-                      </div>
-                  </Modal>
-              )}
+                ? (
+                    <Modal
+                        className="sourcesModal"
+                        open={sources.isOpen}
+                        maskClosable
+                        centered
+                        footer={null}
+                        onCancel={() => setModal('sources', categoryId)}
+                        closeIcon={<CancelBtnMobile />}
+                    >
+                        <div className="sourceImgContainer">
+                            <h1>{category?.title}</h1>
+                        </div>
+                        <div className="mainContentContainer">
+                            {content?.text}
+                        </div>
+                    </Modal>
+                ) : (
+                    <Modal
+                        className="sourcesModal"
+                        open={sources.isOpen}
+                        maskClosable
+                        centered
+                        footer={null}
+                        onCancel={() => setModal('sources', categoryId)}
+                        closeIcon={<CancelBtn />}
+                    >
+                        <div className="sourceImgContainer">
+                            <h1>{category?.title}</h1>
+                        </div>
+                        <div className="mainContentContainer">
+                            {content?.text}
+                        </div>
+                    </Modal>
+                )}
         </>
     );
 };
