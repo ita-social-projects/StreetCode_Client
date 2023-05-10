@@ -53,64 +53,6 @@
         }
     }
 
-    //@media screen and (max-width: 481px) {
-    //    .sourcesWrapper {
-    //        @include mut.sized($height: 600px);
-    //        @include mut.rem-margined($bottom: 100px, $top: 0px);
-    //        .sourcesContainer {
-    //            .sourceContentContainer {
-    //                justify-content: stretch;
-    //            }
-    //        }
-    //        .slick-track {
-    //            @include mut.flexed($align-items: flex-start, $gap: 10px);
-    //        }
-    //        .slick-slide {
-    //            width: 165px !important;
-    //
-    //            &.slick-active.slick-current {
-    //                transform: translateX(0px) !important;
-    //            }
-    //        }
-    //
-    //        .slick-dots {
-    //            bottom: 0;
-    //            left: 7px;
-    //        }
-    //    }
-    //}
-
-    //@media screen and (max-width: 1024px) and (min-width: 768px) {
-    //    .sourcesWrapper {
-    //        @include mut.sized($height: 400px);
-    //        @include mut.rem-margined($bottom: 150px, $top: 40px);
-    //    }
-    //}
-
-    //@media screen and (max-width: 767px) and (min-width: 481px) {
-    //    .sourcesWrapper {
-    //        @include mut.sized($height: 400px);
-    //        @include mut.rem-margined($bottom: 100px, $top: 0px, $right: 200px, $left: 200px);
-    //
-    //        .sourcesSliderContainer {
-    //            .slick-track {
-    //                @include mut.flexed($align-items: flex-start, $gap: 10px);
-    //            }
-    //            .slick-slide {
-    //                width: 165px !important;
-    //
-    //                &.slick-active.slick-current {
-    //                    transform: translateX(0px) !important;
-    //                }
-    //            }
-    //
-    //            .slick-dots {
-    //                display: block !important;
-    //            }
-    //        }
-    //    }
-    //}
-
     @media screen and (max-width: 1024px) {
         .sourcesSliderContainer {
             .slick-track {
