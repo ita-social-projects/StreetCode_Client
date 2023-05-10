@@ -192,10 +192,11 @@ const NewStreetcode = () => {
         const text: TextCreate = {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
-        };
-        const аddText: AdditionalTextCreate = {
             additionalText: inputInfo?.additionalText,
         };
+        // const аddText: AdditionalTextCreate = {
+        //     additionalText: inputInfo?.additionalText,
+        // };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
             imageId: art.imageId,
@@ -223,7 +224,7 @@ const NewStreetcode = () => {
             tags: selectedTags,
             relatedFigures: figures,
             text: (text.title && text.textContent) ? text : null,
-            additionalText: (аddText.additionalText) ? аddText : null,
+          //  additionalText: (аddText.additionalText) ? аddText : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))

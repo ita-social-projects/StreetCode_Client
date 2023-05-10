@@ -39,8 +39,9 @@ export interface Text {
 export interface TextCreate {
   title: string | undefined;
   textContent: string | undefined;
-}
-
-export interface AdditionalTextCreate {
   additionalText: string | undefined;
 }
+
+// export interface AdditionalTextCreate {
+//   additionalText: string | undefined;
+// }
