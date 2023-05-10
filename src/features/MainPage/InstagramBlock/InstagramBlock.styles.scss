@@ -5,9 +5,12 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .InstagramBlock {
-    padding-bottom: 110px;
-    
-    .sliderContainer {
+    padding: 0 20px 110px;
 
+    .sliderContainer {
+        .slick-track {
+            @include mut.flexed($align-items: flex-start, $gap: 20px);
+            padding-bottom: 5px;
+        }
     }
 }

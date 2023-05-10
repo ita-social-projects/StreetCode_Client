@@ -6,17 +6,19 @@
 
 .InstagramSliderItem {
     @include mut.sized($width: 300px, $height: 396px);
-
+    @include mut.flexed($align-items: flex-end);
+    @include mut.full-rounded($rad: 50px);
+    
     border: 6px solid c.$pure-white-color;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-color: c.$pure-white-color;
-    border-radius: 50px;
 
     .textContainer {
         @include mut.sized($width: 300px, $height: 97px);
+        background-color: c.$pure-white-color;
         padding: 17px 20px 16px;
-        border-bottom-left-radius: 50px;
-        border-bottom-right-radius: 50px;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
 
         p {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 15px);

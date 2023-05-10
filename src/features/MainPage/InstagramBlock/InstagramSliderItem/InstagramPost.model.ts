@@ -1,7 +1,7 @@
 interface InstagramPost {
-    id: number,
-    description: string,
-    image: string
+    id: number;
+    caption: string;
+    media_url: string;
 }
 
 export default InstagramPost;

@@ -3,7 +3,6 @@ import ScrollToTopBtn from "../../app/common/components/ScrollToTopBtn/ScrollToT
 import Footer from "../../app/layout/footer/Footer.component";
 import ProgressBar from "../ProgressBar/ProgressBar.component";
 import DonateBtn from "../StreetcodePage/DonateBtn/DonateBtn.component";
-import TextBlockComponent from '../StreetcodePage/TextBlock/TextBlock.component';
 import InstagramBlock from './InstagramBlock/InstagramBlock.component';
 
 
