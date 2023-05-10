@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-multi-spaces */
 import { useState } from 'react';
 import useMobx from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
@@ -15,7 +16,7 @@ import { Term } from '@/models/streetcode/text-contents.model';
 import TermsApi from '../../../../../../app/api/streetcode/text-content/terms.api';
 
 interface Props {
-    inputInfo: Partial<TextInputInfo> | undefined;
+  inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
 }
 
@@ -60,7 +61,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     height: 300,
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(inputInfo?.textContent);
+                        editor.setContent(inputInfo.text);
                     },
                     plugins: [
                         'autolink',
@@ -86,22 +87,17 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 Додати новий термін
             </Button>
             <Form.Item label="Оберіть пов'язаний термін">
-                <Tooltip
-                    title={selected !== '' ? '' : 'Спочатку виділіть слово у тексті'}
-                    color={toolTipColor}
+                <AutoComplete
+                    filterOption
+                    onSelect={(value, option) => {
+                        setTerm({ id: option.key, title: value });
+                    }}
+                    disabled={selected === ''}
                 >
-                    <AutoComplete
-                        filterOption
-                        onSelect={(value, option) => {
-                            setTerm({ id: option.key, title: value });
-                        }}
-                        disabled={selected === ''}
-                    >
-                        {getTermArray.map(
-                            (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
-                        )}
-                    </AutoComplete>
-                </Tooltip>
+                    {getTermArray.map(
+                        (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
+                    )}
+                </AutoComplete>
             </Form.Item>
 
             <div className="display-flex-row">

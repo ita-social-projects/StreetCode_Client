@@ -64,7 +64,15 @@ const DownloadBlock: React.FC<{ arts:ArtCreate[],
             if (removedArtIndex >= 0) {
                 ImagesApi.delete(arts[removedArtIndex].imageId);
                 arts.splice(removedArtIndex, 1);
+                // Decrement indexes of all elements after the removed element
+                for (let i = removedArtIndex; i < arts.length; i++) {
+                    arts[i].index -= 1;
+                }
                 setArts([...arts]);
+                // Decrement indexTmp.current if the removed element had the highest index
+                if (removedArtIndex === arts.length && indexTmp.current > 0) {
+                    indexTmp.current -= 1;
+                }
             }
         };
 

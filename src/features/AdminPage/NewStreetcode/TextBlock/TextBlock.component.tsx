@@ -1,8 +1,8 @@
-
+/* eslint-disable no-restricted-imports */
+import Video from '../../../../models/media/video.model';
 
 import TextInputInfo from './InputType/TextInputInfo.model';
 import TextForm from './TextForm/TextForm.component';
-import Video from '../../../../models/media/video.model';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TextBlock = ({ inputInfo, setInputInfo, video, setVideo }: Props) => (
-     <TextForm inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
+    <TextForm inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
 );
 
 export default TextBlock;

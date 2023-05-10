@@ -17,12 +17,16 @@ interface Props extends UploaderWithoutChildren {
 }
 const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...uploadProps }) => {
     const imageDataAsURL = useRef<any | null>(null);
-    const onUploadChange = (uploadParams:UploadChangeParam<UploadFile<any>>) => {
+    const onUploadChange = (uploadParams: UploadChangeParam<UploadFile<any>>) => {
         const reader = new FileReader();
         reader.onloadend = (obj) => {
             imageDataAsURL.current = obj.target?.result;
         };
-        reader.readAsDataURL(uploadParams.file.originFileObj as RcFile);
+        if (uploadParams.fileList.length === 0) {
+            imageDataAsURL.current = undefined;
+        } else {
+            reader.readAsDataURL(uploadParams.file.originFileObj as RcFile);
+        }
         if (uploadProps.onChange) {
             uploadProps.onChange(uploadParams);
         }

@@ -8,7 +8,7 @@ import FormItem from 'antd/es/form/FormItem';
 
 import Video from '../../../../../models/media/video.model';
 
-import AdditionalTextBlockAdminFormComponent from './AdditionTextBlock/AdditionalTextBlockAdminForm.component';
+import AdditionalTextBlockAdminForm from './AdditionTextBlock/AdditionalTextBlockAdminForm.component';
 import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
@@ -46,7 +46,7 @@ const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
                 <TextPreview inputInfo={inputInfo} />
             </Form.Item>
             <Form.Item>
-                <AdditionalTextBlockAdminFormComponent />
+                <AdditionalTextBlockAdminForm inputInfo={inputInfo} setInputInfo={setInputInfo} />
             </Form.Item>
             <Form.Item>
                 <LinkEditor inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />

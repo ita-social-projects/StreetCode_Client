@@ -1,5 +1,6 @@
 import './StreetcodeCard.styles.scss';
 
+import { useEffect, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -11,10 +12,10 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
+import useImageLoader from '@/app/common/hooks/stateful/useImageLoading';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
-import { useEffect, useState } from 'react';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -26,6 +27,7 @@ interface Props {
     streetcode?: Streetcode;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
     setActiveBlock: React.Dispatch<React.SetStateAction<number>>
+    setStreetcodeCardState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -44,10 +46,12 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetcodeCardState }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
+    const [loadedImagesCount, handleImageLoad] = useImageLoader();
+
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
 
     const [images, setImages] = useState<Image[]>([]);
@@ -58,6 +62,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                 .catch((e) => console.log(e));
         }
     }, [streetcode]);
+
+    useEffect(() => {
+        if (loadedImagesCount !== 0 && loadedImagesCount === images.length) {
+            setStreetcodeCardState(true);
+        }
+    }, [loadedImagesCount]);
+
     return (
         <div className="card">
             <div className="leftSider">
@@ -67,13 +78,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         slidesToShow={1}
                         swipeOnClick
                         infinite
-                        draggable={false}
                     >
-                        {images?.map(({ base64, mimeType, alt }) => (
+                        {images.slice(0, 2).map((im) => (
                             <img
-                                src={base64ToUrl(base64, mimeType)}
+                                key={im.id}
+                                src={base64ToUrl(im.base64, im.mimeType)}
                                 className="streetcodeImg"
-                                alt={alt}
+                                alt={im.alt}
+                                onLoad={handleImageLoad}
                             />
                         ))}
                     </BlockSlider>
@@ -84,8 +96,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                 <div className="headerContainer">
                     <div>
                         <div className="streetcodeIndex">
-                            Стріткод #000
-                            {streetcode?.index}
+                            Стріткод #
+                            {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4) : streetcode?.index}
                         </div>
                         <h2 className="streetcodeTitle">
                             {streetcode?.title}
@@ -101,7 +113,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
-                        <div className="teaserBlockContainer">
+                        <div className={streetcode?.teaser.length > 450 ? 'teaserBlockContainer' : ''}>
                             <p className="teaserBlock">
                                 {streetcode?.teaser}
                             </p>
@@ -115,9 +127,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     type="primary"
                                     className="audioBtn audioBtnActive"
                                     onClick={() => {
-                                            setModal('audio');
-                                            audioClickEvent(streetcode?.id ?? 0);
-                                        }}
+                                        setModal('audio');
+                                        audioClickEvent(streetcode?.id ?? 0);
+                                    }}
                                 >
                                     <PlayCircleFilled className="playCircle" />
                                     <span>Прослухати текст</span>
