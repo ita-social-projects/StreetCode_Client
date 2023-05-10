@@ -1,5 +1,6 @@
 import './Streetcode.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
@@ -26,13 +27,14 @@ import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.compon
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => {
-    const { imageLoaderStore: { imagesLoadedPercentage, totalImagesToLoad } } = useMobx();
+    const { imageLoaderStore, streetcodeStore } = useMobx();
+    const { setCurrentStreetcodeId } = streetcodeStore;
+    const { imagesLoadedPercentage, totalImagesToLoad } = imageLoaderStore;
+
     const streetcodeUrl = useRouteUrl();
+
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const { streetcodeStore } = useMobx();
-    const { setCurrentStreetcodeId } = streetcodeStore;
-
     const [loading, setLoading] = useState(true);
 
     const [streetcodeCardState, setStreetcodeCardState] = useState(false);
@@ -45,15 +47,12 @@ const StreetcodeContent = () => {
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
     useEffect(() => {
-        console.log(streetcodeCardState);
-        console.log(textBlockState);
-        console.log(interestingFactsState);
-        console.log(partnersState);
-        console.log(imagesLoadedPercentage);
-        console.log(totalImagesToLoad);
-        
         document.body.style.overflow = 'hidden';
-        if (true) {
+        console.log(imageLoaderStore.imagesLoadedPercentage);
+        console.log(imageLoaderStore.loadedImagesCount);
+        console.log(imageLoaderStore.totalImagesToLoad);
+
+        if (imageLoaderStore.imagesLoadedPercentage >= 90) {
             setLoading(false);
             document.body.style.overflow = 'auto';
 
@@ -63,8 +62,7 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState, imagesLoadedPercentage]);
+    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState, imageLoaderStore.loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">
@@ -112,4 +110,4 @@ const StreetcodeContent = () => {
     );
 };
 
-export default StreetcodeContent;
+export default observer(StreetcodeContent);

@@ -60,12 +60,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
                     setImages(imgs);
-                    imageLoaderStore.totalImagesToLoad += imgs.length;
-                    console.log(imageLoaderStore.totalImagesToLoad);
                 })
                 .catch((e) => console.log(e));
         }
     }, [streetcode]);
+
+    useEffect(() => {
+        // imageLoaderStore.totalImagesToLoad += images.length;
+    }, [images]);
 
     return (
         <div className="card">
@@ -83,7 +85,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
                                 src={base64ToUrl(im.base64, im.mimeType)}
                                 className="streetcodeImg"
                                 alt={im.alt}
-                                onLoad={handleImageLoad}
+                                // onLoad={handleImageLoad}
                             />
                         ))}
                     </BlockSlider>

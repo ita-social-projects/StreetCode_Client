@@ -6,6 +6,8 @@ import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
+import ImageLoaderStore from '@/app/stores/image-loader-store';
+
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 interface Props {
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const PartnersComponent = ({ setPartnersState }: Props) => {
-    const { partnersStore, imageLoaderStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
+    const {imageLoaderStore, partnersStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
     const { handleImageLoad } = imageLoaderStore;
     const [requestFinished, setRequestFinished] = useState(false);
@@ -31,10 +33,10 @@ const PartnersComponent = ({ setPartnersState }: Props) => {
         [getStreetCodeId],
     );
 
-    useEffect(() => {
-        imageLoaderStore.totalImagesToLoad += getPartnerArray.length;
-        console.log(imageLoaderStore.totalImagesToLoad);
-    }, [getPartnerArray.length, requestFinished]);
+    // useEffect(() => {
+    //     imageLoaderStore.totalImagesToLoad += getPartnerArray.length;
+    //     console.log(imageLoaderStore.totalImagesToLoad);
+    // }, [getPartnerArray.length, requestFinished]);
 
     const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => useMemo(() => ({
         breakpoint,
@@ -64,7 +66,7 @@ const PartnersComponent = ({ setPartnersState }: Props) => {
         <PartnerItem
             key={p.id}
             partner={p}
-            handleImageLoad={handleImageLoad}
+            // handleImageLoad={handleImageLoad}
         />
     ));
 
