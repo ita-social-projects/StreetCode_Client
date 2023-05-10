@@ -27,9 +27,9 @@ const InterestingFactsComponent = () => {
 
     const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
 
-    // useEffect(() => {
-    //     imageLoaderStore.totalImagesToLoad += sliderArray.length;
-    // }, [getFactArray.length]);
+    useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += sliderArray.length;
+    }, [getFactArray.length]);
 
     const setings = {
         dots: getFactArray.length > 3,
@@ -73,9 +73,9 @@ const InterestingFactsComponent = () => {
             ? (
                 <div
                     id="wow-facts"
-                    className={`interestingFactsWrapper 
-                    ${getFactArray.length === 1 ? 'single' : ''} 
-                    ${getFactArray.length ? '' : 'display-none'}`}
+                    className="interestingFactsWrapper"
+                    // ${getFactArray.length === 1 ? 'single' : ''} 
+                    // ${getFactArray.length ? '' : 'display-none'}`}
                 >
                     <div className="interestingFactsContainer">
                         <BlockHeading headingText="Wow—факти" />

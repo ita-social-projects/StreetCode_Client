@@ -6,8 +6,6 @@ import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
-import ImageLoaderStore from '@/app/stores/image-loader-store';
-
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
