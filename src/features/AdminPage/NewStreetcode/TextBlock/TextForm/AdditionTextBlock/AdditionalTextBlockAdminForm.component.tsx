@@ -4,11 +4,9 @@
 './AdditionalTextBlockAdminForm.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-// import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { Editor } from '@tinymce/tinymce-react';
 
 import FormItem from 'antd/es/form/FormItem';
-
 import TextInputInfo from '../../InputType/TextInputInfo.model';
 
 interface Props {
@@ -18,7 +16,6 @@ interface Props {
 
 const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
     Props) => {
-    const contentText: string = inputInfo?.аdditionalText || '';
     return (
         <FormItem label="Авторство">
             <Editor
@@ -26,7 +23,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
                     height: 300,
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(contentText);
+                        editor.setContent(inputInfo.additionalText);
                     },
                     plugins: [
                         'autolink',
@@ -40,7 +37,8 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
                 }}
 
                 onChange={(e, editor) => {
-                    setInputInfo({ ...inputInfo, аdditionalText: editor.getContent() });
+                    setInputInfo({ ...inputInfo, additionalText: editor.getContent() });
+                    console.log('input: ', inputInfo);
                 }}
             />
         </FormItem>
