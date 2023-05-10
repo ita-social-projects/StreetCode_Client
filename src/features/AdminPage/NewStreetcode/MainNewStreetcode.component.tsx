@@ -262,7 +262,7 @@ const NewStreetcode = () => {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                     setTimeout(()=>location.reload(),100);
-                    window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+                    window.open(`${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {
                     alert("Виникла помилка при створенні стріткоду");

@@ -53,13 +53,13 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
-        <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
+        <Route index path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
-        <Route path="/404" element={<NotFound />} />
-        <Route path="/privacy-policy" element={<PrivatePolicy />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/partners-page" element={<PartnersPage />} />
-        <Route path="/support-us" element={<SupportUs />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US} element={<ContactUs />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
         <Route index path="/:id" element={<StreetcodeContent />} />
     </Route>,
 ));

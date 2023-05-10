@@ -54,7 +54,7 @@ const StreetcodesTable = () => {
             render: (text:string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                        <div onClick={() => window.open(`${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )
@@ -69,7 +69,7 @@ const StreetcodesTable = () => {
             render: (text: string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                        <div onClick={() => window.open(`${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )
@@ -83,7 +83,7 @@ const StreetcodesTable = () => {
             render: (text: string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                        <div onClick={() => window.open(`${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )
@@ -97,7 +97,7 @@ const StreetcodesTable = () => {
             render: (text: string, record: MapedStreetCode) => {
                 return {
                     children: (
-                        <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                        <div onClick={() => window.open(`${record.url}`, '_blank')}>
                             {text}
                         </div>
                     )

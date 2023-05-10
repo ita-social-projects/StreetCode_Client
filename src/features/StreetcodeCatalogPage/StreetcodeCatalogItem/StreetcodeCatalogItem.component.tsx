@@ -30,7 +30,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const LinkProps = {
         className: classSelector,
         style: { backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})`},
-        to: `../streetcode/${streetcode.url}`
+        to: `../${streetcode.url}`,
     }
 
     const windowsize = useWindowSize();
