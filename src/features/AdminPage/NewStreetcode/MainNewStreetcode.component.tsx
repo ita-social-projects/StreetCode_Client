@@ -194,7 +194,7 @@ const NewStreetcode = () => {
             textContent: inputInfo?.text,
         };
         const аddText: AdditionalTextCreate = {
-            additionalText: inputInfo?.аdditionalText,
+            additionalText: inputInfo?.additionalText,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({

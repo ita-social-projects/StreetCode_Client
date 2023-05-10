@@ -9,6 +9,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import FormItem from 'antd/es/form/FormItem';
 
 import TextInputInfo from '../../InputType/TextInputInfo.model';
+import TextsApi from '@/app/api/streetcode/text-content/texts.api';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
@@ -37,6 +38,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
             }}
 
             onChange={(e, editor) => {
+                console.log('editor: ', editor.getContent());
                 setInputInfo({ ...inputInfo, additionalText: editor.getContent() });
                 console.log('input: ', inputInfo);
             }}
