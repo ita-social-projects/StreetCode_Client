@@ -4,14 +4,16 @@ import Footer from "../../app/layout/footer/Footer.component";
 import ProgressBar from "../ProgressBar/ProgressBar.component";
 import DonateBtn from "../StreetcodePage/DonateBtn/DonateBtn.component";
 import TextBlockComponent from '../StreetcodePage/TextBlock/TextBlock.component';
+import InstagramBlock from './InstagramBlock/InstagramBlock.component';
+
 
 const mainPageContent = () => {
     return (
         <div className="mainPageContainer">
-
-            {/*<ProgressBar >*/}
-
-            {/*</ProgressBar>*/}
+            <ProgressBar>
+                <></>
+                <InstagramBlock/>
+            </ProgressBar>
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />
