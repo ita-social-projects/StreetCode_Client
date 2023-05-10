@@ -6,8 +6,6 @@ import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
-import useImageLoader from '@/app/common/hooks/stateful/useImageLoading';
-
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 interface Props {
@@ -15,20 +13,28 @@ interface Props {
 }
 
 const PartnersComponent = ({ setPartnersState }: Props) => {
-    const { partnersStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
+    const { partnersStore, imageLoaderStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
     const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
-    const [loadedImagesCount, handleImageLoad] = useImageLoader();
+    const { handleImageLoad } = imageLoaderStore;
+    const [requestFinished, setRequestFinished] = useState(false);
 
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
                 Promise.all([
                     fetchPartnersByStreetcodeId(getStreetCodeId),
-                ]);
+                ]).then(() => {
+                    setRequestFinished(true);
+                });
             }
         },
         [getStreetCodeId],
     );
+
+    useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += getPartnerArray.length;
+        console.log(imageLoaderStore.totalImagesToLoad);
+    }, [getPartnerArray.length, requestFinished]);
 
     const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => useMemo(() => ({
         breakpoint,
@@ -61,12 +67,6 @@ const PartnersComponent = ({ setPartnersState }: Props) => {
             handleImageLoad={handleImageLoad}
         />
     ));
-
-    useEffect(() => {
-        if (getPartnerArray.length === 0 || (loadedImagesCount !== 0 && loadedImagesCount === sliderItems.length)) {
-            setPartnersState(true);
-        }
-    }, [sliderItems, loadedImagesCount]);
 
     return (
         getPartnerArray.length > 0 ? (

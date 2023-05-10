@@ -26,6 +26,7 @@ import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.compon
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => {
+    const { imageLoaderStore: { imagesLoadedPercentage, totalImagesToLoad } } = useMobx();
     const streetcodeUrl = useRouteUrl();
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
@@ -48,9 +49,11 @@ const StreetcodeContent = () => {
         console.log(textBlockState);
         console.log(interestingFactsState);
         console.log(partnersState);
-
+        console.log(imagesLoadedPercentage);
+        console.log(totalImagesToLoad);
+        
         document.body.style.overflow = 'hidden';
-        if (streetcodeCardState /* && textBlockState */ && interestingFactsState && partnersState) {
+        if (true) {
             setLoading(false);
             document.body.style.overflow = 'auto';
 
@@ -60,11 +63,12 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]);
+
+    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState, imagesLoadedPercentage]);
 
     return (
         <div className="streetcodeContainer">
-            {/*  {loading && (
+            {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -72,7 +76,7 @@ const StreetcodeContent = () => {
                         src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
                     />
                 </div>
-            )} */}
+            )}
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}

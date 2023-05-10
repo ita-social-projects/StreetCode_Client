@@ -48,9 +48,9 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
 
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetcodeCardState }: Props) => {
     const id = streetcode?.id;
-    const { modalStore: { setModal } } = useMobx();
+    const { imageLoaderStore, modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-    const [loadedImagesCount, handleImageLoad] = useImageLoader();
+    const { handleImageLoad, imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
 
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
 
@@ -58,16 +58,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
     useEffect(() => {
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
-                .then((imgs) => setImages(imgs))
+                .then((imgs) => {
+                    setImages(imgs);
+                    imageLoaderStore.totalImagesToLoad += imgs.length;
+                    console.log(imageLoaderStore.totalImagesToLoad);
+                })
                 .catch((e) => console.log(e));
         }
     }, [streetcode]);
-
-    useEffect(() => {
-        if (loadedImagesCount !== 0 && loadedImagesCount === images.length) {
-            setStreetcodeCardState(true);
-        }
-    }, [loadedImagesCount]);
 
     return (
         <div className="card">

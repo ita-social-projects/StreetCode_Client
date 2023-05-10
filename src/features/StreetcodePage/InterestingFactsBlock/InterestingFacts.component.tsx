@@ -8,26 +8,35 @@ import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import useImageLoader from '@/app/common/hooks/stateful/useImageLoading';
 
 interface Props {
     setInterestingFactsState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
-    const { factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
+    const { imageLoaderStore, factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
-    const [loadedImagesCount, handleImageLoad] = useImageLoader();
+    const { handleImageLoad } = imageLoaderStore;
+    const [requestFinished, setRequestFinished] = useState(false);
 
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchFactsByStreetcodeId(getStreetCodeId);
+                Promise.all([
+                    fetchFactsByStreetcodeId(getStreetCodeId),
+                ]).then(() => {
+                    setRequestFinished(true);
+                });
             }
         },
         [getStreetCodeId],
     );
+
     const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+
+    useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += sliderArray.length;
+    }, [getFactArray.length, requestFinished]);
 
     const setings = {
         dots: getFactArray.length > 3,
@@ -66,52 +75,49 @@ const InterestingFactsComponent = ({ setInterestingFactsState }:Props) => {
         ],
     };
 
-    useEffect(() => {
-        if (getFactArray.length === 0 || (loadedImagesCount === 1 && getFactArray.length === 1)
-            || (loadedImagesCount === sliderArray.length && loadedImagesCount !== 0)) {
-            setInterestingFactsState(true);
-        }
-    }, [loadedImagesCount]);
-
     return (
-        <div
-            id="wow-facts"
-            className={`interestingFactsWrapper 
-            ${getFactArray.length === 1 ? 'single' : ''} 
-            ${getFactArray.length?'':'display-none'}`}
-        >
-            <div className="interestingFactsContainer">
-                <BlockHeading headingText="Wow—факти" />
-                <div className="interestingFactsSliderContainer">
-                    <div style={{ height: '100%' }}>
-                        {(getFactArray.length === 1) ? (
-                            <div className="singleSlideContainer">
-                                <InterestingFactItem
-                                    numberOfSlides={1}
-                                    fact={getFactArray[0]}
-                                    handleImageLoad={handleImageLoad}
-                                />
-                            </div>
-                        ) : (
-                            <BlockSlider
-                                className="heightContainer"
-                                {...setings}
-                            >
-                                {sliderArray.map((fact) => (
-                                    <InterestingFactItem
-                                        key={fact.id}
-                                        fact={fact}
-                                        numberOfSlides={sliderArray.length}
-                                        handleImageLoad={handleImageLoad}
-                                    />
-                                ))}
-                            </BlockSlider>
-                        )}
+        getFactArray.length > 0
+            ? (
+                <div
+                    id="wow-facts"
+                    className={`interestingFactsWrapper 
+                    ${getFactArray.length === 1 ? 'single' : ''} 
+                    ${getFactArray.length ? '' : 'display-none'}`}
+                >
+                    <div className="interestingFactsContainer">
+                        <BlockHeading headingText="Wow—факти" />
+                        <div className="interestingFactsSliderContainer">
+                            <div style={{ height: '100%' }}>
+                                {(getFactArray.length === 1) ? (
+                                    <div className="singleSlideContainer">
+                                        <InterestingFactItem
+                                            numberOfSlides={1}
+                                            fact={getFactArray[0]}
+                                            handleImageLoad={handleImageLoad}
+                                        />
+                                    </div>
+                                ) : (
+                                    <BlockSlider
+                                        className="heightContainer"
+                                        {...setings}
+                                    >
+                                        {sliderArray.map((fact) => (
+                                            <InterestingFactItem
+                                                key={fact.id}
+                                                fact={fact}
+                                                numberOfSlides={sliderArray.length}
+                                                handleImageLoad={handleImageLoad}
+                                            />
+                                        ))}
+                                    </BlockSlider>
+                                )}
 
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            )
+            : <></>
     );
 };
 
