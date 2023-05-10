@@ -3,6 +3,7 @@ import './Streetcode.styles.scss';
 import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -15,7 +16,9 @@ import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+import dayjs from 'dayjs';
 
+import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import MapComponent from './MapBlock/Map/Map.component';
@@ -38,6 +41,37 @@ const StreetcodeContent = () => {
     const [interestingFactsState, setInterestingFactsState] = useState(false);
     const [partnersState, setPartnersState] = useState(false);
 
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const checkExist = async (qrId: number) => {
+        const exist = await StatisticRecordApi.existByQrId(qrId);
+        return exist;
+    };
+
+    const addCount = async (qrId: number) => {
+        await StatisticRecordApi.update(qrId);
+    };
+
+    useEffect(() => {
+        const idParam = searchParams.get('qrid');
+        if (idParam !== null) {
+            const tempId = +idParam;
+            Promise.all([checkExist(tempId), addCount(tempId)]).then(
+                (resp) => {
+                    if (resp.at(0) && resp.at(1) !== null) {
+                        searchParams.delete('qrid');
+                        setSearchParams(searchParams);
+                    }
+                },
+            ).catch(
+                () => {
+                    navigate('/404', { replace: true });
+                },
+            );
+        }
+    });
+    
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
