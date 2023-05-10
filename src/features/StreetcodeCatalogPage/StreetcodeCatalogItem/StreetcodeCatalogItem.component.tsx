@@ -24,21 +24,20 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const isOnScreen = useOnScreen(elementRef, classSelector);
 
     useAsync(() => (isOnScreen && isLast ? () => handleNextScreen() : () => { }), [isOnScreen]);
-        
     useAsync(() => Promise.all([fetchImageByStreetcodeId(streetcode.id)]));
 
     const LinkProps = {
         className: classSelector,
         style: { backgroundImage: `url(${base64ToUrl(getImage(6)?.base64, getImage(6)?.mimeType)})`},
-        to: `../streetcode/${streetcode.url}`
-    }
+        to: `../${streetcode.url}`,
+    };
 
     const windowsize = useWindowSize();
 
     return (
         <>
             {windowsize.width > 1024 && (
-                <Link {...LinkProps} >
+                <Link {...LinkProps}>
                     <div ref={elementRef} className="catalogItemText">
                         <div className="heading">
                             <p>{streetcode.title}</p>

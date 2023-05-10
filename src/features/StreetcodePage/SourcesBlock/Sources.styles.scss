@@ -37,6 +37,9 @@
 
         .slick-slide {
             @include vnd.vendored(transition, 'all .5s ease');
+            .left, .right{
+                width: 0;
+            }
 
             &:hover {
                 scale: 101%;
