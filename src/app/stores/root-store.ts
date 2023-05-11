@@ -19,6 +19,7 @@ import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
+import SourcesAdminStore from "@stores/sourceadmin-store";
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
@@ -36,6 +37,7 @@ interface Store {
     termsStore: TermStore,
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
+    sourcesAdminStore: SourcesAdminStore
     streetcodeArtStore: StreetcodeArtStore,
     streetcodeStore: StreetcodeStore,
     relatedFiguresStore: RelatedFiguresStore,
@@ -74,6 +76,7 @@ export const store: Store = {
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
+    sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
 };
 
