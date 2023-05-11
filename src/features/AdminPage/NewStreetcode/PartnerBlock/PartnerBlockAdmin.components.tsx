@@ -1,5 +1,3 @@
-import './PartnerBlockAdmin.style.scss';
-
 import React, { useEffect, useRef, useState } from 'react';
 import PartnersStore from '@stores/partners-store';
 
@@ -39,7 +37,6 @@ const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
             <h2>Партнери</h2>
             <div className='display-flex-row'> 
                 <Select
-                    style={{ width: '100%' }}
                     mode="multiple"
                     onSelect={onPartnerSelect}
                     value={partners.map(x => x.id)}

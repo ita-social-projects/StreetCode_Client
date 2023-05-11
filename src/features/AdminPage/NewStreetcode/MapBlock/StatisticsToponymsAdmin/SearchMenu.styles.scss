@@ -4,13 +4,9 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .searchMenuToponyms {
-    margin: 10px;
+    gap: f.pxToRem(10px);
+    display: flex;
     @include mut.sized(100%);
-
-    .searchMenuElement {
-        display: inline-block;
-        margin-left: 10px
-    }
 
     .ant-select-selector {
         @include mut.sized(400px, 35px);
@@ -30,27 +26,10 @@
             border-color: c.$accented-red-color;
         }
     }
-
-    .Button {
-        @include mut.sized(142px, 35px);
-        @include mut.flex-centered();
-        @include mut.full-rounded(12px);
-        @include mut.with-font($font-weight: 400, $font-size: 16px);
-
-        background-color: c.$accented-red-color;
-        border-color: c.$accented-red-color;
-        color: c.$pure-white-color;
-
-        &:hover {
-            border-color: c.$dark-red-color;
-            background-color: c.$dark-red-color;
-        }
-    }
+    
 }
 
 .actionButton {
-    margin-right: 10px;
-
     &:hover {
         color: c.$dark-red-color;
         cursor: pointer;

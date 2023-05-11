@@ -8,7 +8,6 @@
   border-radius: 30px;
   align-self: center;
   @include mut.sized(604px, 366px);
-  @include mut.full-rounded(30px);
 
   @include vnd.vendored(transition, 'backdrop-filter 300ms ease-in');
   backdrop-filter: blur(2px);
@@ -20,7 +19,7 @@
 }
 
 .timelineItemContent {
-  margin: f.pxToRem(24px) f.pxToRem(26px);
+  padding: f.pxToRem(24px) f.pxToRem(26px);
 
   .timelineItemMetadata {
     @include mut.truncated($line-num: 1);
@@ -49,10 +48,10 @@
 
 @media screen and (max-width: 1024px) {
   .timelineItem{
-    @include mut.sized(300px, 190px);
-
+    @include mut.sized(299px, 190px);
+    border-radius: 15px;
     .timelineItemContent{
-      margin: f.pxToRem(13px);
+      padding: f.pxToRem(13px);
 
       .timelineItemMetadata{
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);

@@ -7,6 +7,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import CancelBtnMobile from '@assets/images/utils/Cancel_btn_mobile.svg';
 import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 import useMobx from '@stores/root-store';
+import htmpReactParser from 'html-react-parser';
 
 import { Modal } from 'antd';
 

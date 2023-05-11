@@ -44,6 +44,8 @@ import SourcesApi from '../../../app/api/sources/sources.api';
 import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
 import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
 import TimelineApi from '../../../app/api/timeline/timeline.api';
+import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
+
 const NewStreetcode = () => {
     const [form] = useForm();
     const {
@@ -70,6 +72,9 @@ const NewStreetcode = () => {
     const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
+
+    const [funcName,setFuncName] = useState<string>("create");
+    
     const parseId = id ? +id : null;
     if (parseId)
         timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
@@ -129,6 +134,7 @@ const NewStreetcode = () => {
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
+                setFuncName("update"); //---------------------------------------------
             });
             TextsApi.getByStreetcodeId(parseId).then(result => {
                 setInputInfo(result);
@@ -143,7 +149,7 @@ const NewStreetcode = () => {
                 setPartners([...result]);
             });
             SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
-                setSubTitle(result[0].subtitleText);
+                setSubTitle(result.subtitleText);
             });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then(result => {
                 const id = result.map(x => x.id);
@@ -196,6 +202,7 @@ const NewStreetcode = () => {
         }));
         
         const streetcode: StreetcodeCreate = {
+            id: parseId, //----------------------------------------------------
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
@@ -242,19 +249,23 @@ const NewStreetcode = () => {
 
         if (parseId) {
             console.log(streetcode);
-            StreetcodeArtApi.update(streetcode).then((response2) => {
+            StreetcodesApi.update(streetcode).then((response2) => {
+                alert("Cтріткод успішно оновленний");
                 console.log(response2);
             })
                 .catch((error2) => {
-                   console.log(error2);
-            });
+                    alert("Виникла помилка при оновленні стріткоду");
+                });
         }
         else {
+
             StreetcodesApi.create(streetcode)
                 .then((response) => {
+                    setTimeout(()=>location.reload(),100);
+                    window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {
-                    console.log(streetcode);
+                    alert("Виникла помилка при створенні стріткоду");
                 });
         }
     };
@@ -287,7 +298,7 @@ const NewStreetcode = () => {
                     <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
                     <ForFansBlock  />
                     <MapBlockAdmin coordinates={coordinates} />
-                    <Button className = 'streetcode-custom-button submit-button' onClick={onFinish}>Відправити</Button>
+                    <Button className = 'streetcode-custom-button submit-button' onClick={onFinish}>{funcName}</Button>
                 </div>
             </ConfigProvider>
         </div>

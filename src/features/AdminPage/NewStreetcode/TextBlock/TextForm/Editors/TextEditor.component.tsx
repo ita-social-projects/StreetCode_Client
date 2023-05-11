@@ -84,10 +84,6 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 Додати новий термін
             </Button>
             <Form.Item label="Оберіть пов'язаний термін">
-                <Tooltip
-                    title={selected !== '' ? '' : 'Спочатку виділіть слово у тексті'}
-                    color={toolTipColor}
-                >
                     <AutoComplete
                         filterOption
                         onSelect={(value, option) => {
@@ -96,10 +92,9 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                         disabled={selected === ''}
                     >
                         {getTermArray.map(
-                            (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
+                            (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>
                         )}
                     </AutoComplete>
-                </Tooltip>
             </Form.Item>
             
             <div className='display-flex-row'>

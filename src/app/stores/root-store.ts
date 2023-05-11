@@ -24,6 +24,7 @@ import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import UserLoginStore from './user-login-store';
+import StatisticRecordStore from './statistic-record-store';
 
 interface Store {
     modalStore: ModalStore,
@@ -49,6 +50,7 @@ interface Store {
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
     sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
     userLoginStore: UserLoginStore,
+    statisticRecordStore: StatisticRecordStore,
 }
 
 export const store: Store = {
@@ -75,6 +77,7 @@ export const store: Store = {
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
     sourcesAdminStore: new SourcesAdminStore(),
+    statisticRecordStore: new StatisticRecordStore(),
 };
 
 const StoreContext = createContext(store);
