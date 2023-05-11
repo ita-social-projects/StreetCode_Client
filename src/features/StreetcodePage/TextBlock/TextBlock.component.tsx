@@ -1,6 +1,7 @@
 import './TextBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
@@ -29,8 +30,8 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     );
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
+   console.log(`ADD TEXT: ${text.аdditionalText}`);
     return (
-
         text
             ? (
                 <div
