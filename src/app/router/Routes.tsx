@@ -11,7 +11,6 @@ import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.compo
 import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
 import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
-import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
@@ -23,7 +22,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<AdminPage />}
+            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route
             index
@@ -33,7 +32,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<NewStreetcode />}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             index
@@ -52,17 +51,6 @@ const router = createBrowserRouter(createRoutesFromElements(
                 <ProtectedComponent>
                     <TermDictionary />
                 </ProtectedComponent>
-            )}
-        />
-        <Route
-            index
-<<<<<<< HEAD
-            path="/admin-panel/analytics"
-=======
-            path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
->>>>>>> analytics-qr
-            element={(
-                <Analytics />
             )}
         />
         <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
