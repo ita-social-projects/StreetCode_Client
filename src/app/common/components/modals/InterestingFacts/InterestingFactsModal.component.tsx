@@ -27,10 +27,6 @@ const InterestingFactsModal = () => {
         image = value as Image;
         url = base64ToUrl(image?.base64, image?.mimeType);
     }
-    // const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
-    // const image = value as Image; 
-
-    // const url = base64ToUrl(image?.base64, image?.mimeType);
 
     return (
         <Modal
