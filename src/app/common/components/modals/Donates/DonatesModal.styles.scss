@@ -65,20 +65,19 @@
   }
 
   > .donateInputContainerWrapper{
-    //@include mut.sized(48px, 100px);
     position: relative;
     display: flex;
     justify-content: center;
-    &::before {    // Create a pseudo-element for the border
+    &::before {
       content: '';
-      position: absolute;    // Position the element absolutely
-      bottom: 0;    // Position the element at the bottom of the div
-      width: 100%;    // Set the width of the element to 100% of the div
-      border-bottom: 2px solid c.$darkish-gray-color;   // Add the border to the bottom of the element
-      transform: translateY(-52px);    // Move the element upwards by 40 pixels
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      border-bottom: 2px solid c.$darkish-gray-color;
+      transform: translateY(-52px);
     }
     &.active::before {
-      content: none;    // Hide the border-bottom when the input is active
+      content: none;
     }
   }
 
@@ -90,12 +89,6 @@
     color: c.$darkish-gray-color;
     border: none;
     padding: 0;
-
-    // &:not(.active) {     
-    //   text-decoration-line: underline;  
-    //   text-decoration-thickness: 2px;
-    //   text-underline-offset: 10px;
-    //}
 
     &.active {
       color: c.$pure-black-color;
@@ -257,8 +250,8 @@
       }
 
       .donateInputContainerWrapper{
-        &::before {    // Create a pseudo-element for the border
-          transform: translateY(-20px);    // Move the element upwards by 40 pixels
+        &::before {
+          transform: translateY(-20px);
         }
         &:not(.active) {
 
@@ -274,11 +267,6 @@
         height: 42px;
         max-width: 100%;
 
-        &:not(.active) {     
-          // text-decoration-line: underline;  
-          // text-decoration-thickness: 2px;
-          // text-underline-offset: 2px;
-        }
       }
       .GryvnaSymbol{
         padding-top: 1px !important;
