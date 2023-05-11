@@ -5,6 +5,7 @@ import ProgressBar from "../ProgressBar/ProgressBar.component";
 import DonateBtn from "../StreetcodePage/DonateBtn/DonateBtn.component";
 import TextBlockComponent from '../StreetcodePage/TextBlock/TextBlock.component';
 import TopCarouselComponent from './TopCarousel/TopCarousel.component';
+import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
 const mainPageContent = () => {
     return (
         <div className="mainPageContainer">
@@ -15,7 +16,8 @@ const mainPageContent = () => {
                 </div>
             </div>
             <TopCarouselComponent/>
-            {/* <Footer /> */}
+            <StreetcodeSliderComponent/>
+            <Footer />
         </div>
     );
 }

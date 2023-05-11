@@ -25,8 +25,7 @@ const content = [
 ];
 const TopCarouselBlock = () => {
     return (
-        <Carousel>
-            
+        <Carousel className="top-carousel" autoplay autoplaySpeed={3000}>      
         {content.map(item => (
             <div  key={item.image}>
                 <img src={item.image}

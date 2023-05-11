@@ -7,45 +7,19 @@
 .carousel-image {
     width: 100%;
     height: 737px;
-    object-fit: cover;
-    .slick-dots {
+    
  
-        text-align: center;
-        justify-content: center;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        text-align: center;
-        
-      }
-      li{
-        text-align: center;
-        justify-content: center;
-        list-style: none;
-        text-align: center;
-          @include mut.sized(8px, 8px);
-      
-      }
-      li button{
-        text-align: center; 
-        justify-content: center;
-        padding: 0;
-  
-        list-style: none;
-        text-align: center;
-          @include mut.sized(8px, 8px);
-      }
-      li button:before {
-  
-          text-align: center; 
-          justify-content: center;
-          left: -270% !important;
-  
-            @include mut.rem-margined($right:5px, $left:5px);
-  
-  
-          list-style: none;
-          text-align: center;
-            @include mut.sized(8px, 8px);
-        }
+}
+
+.top-carousel .slick-dots li button {
+  @include mut.sized(12px, 12px);
+}
+
+.top-carousel .slick-dots {
+  bottom: f.pxToRem(30px);;
+  top: auto;
+}
+
+.top-carousel .slick-dots li {
+  margin: 0 8px;
 }
