@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-alert */
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
@@ -13,6 +15,7 @@ import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner, { PartnerShort } from '@/models/partners/partners.model';
@@ -54,6 +57,7 @@ const NewStreetcode = () => {
         newStreetcodeInfoStore,
         sourceCreateUpdateStreetcode,
         streetcodeCoordinatesStore,
+        statisticRecordStore,
     } = useMobx();
 
     const [partners, setPartners] = useState<Partner[]>([]);
@@ -238,6 +242,16 @@ const NewStreetcode = () => {
                     .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
                         { ...streetcodeCategoryContent, id: 0 }
                     )),
+            statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
+                .map((statisticRecord: StatisticRecord) => (
+                    { ...statisticRecord,
+                      id: 0,
+                      coordinateId: 0,
+                      streetcodeCoordinate: {
+                          ...statisticRecord.streetcodeCoordinate,
+                          id: 0,
+                      } }
+                )),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
@@ -260,6 +274,7 @@ const NewStreetcode = () => {
                     window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {
+                    console.log(error);
                     alert('Виникла помилка при створенні стріткоду');
                 });
         }
