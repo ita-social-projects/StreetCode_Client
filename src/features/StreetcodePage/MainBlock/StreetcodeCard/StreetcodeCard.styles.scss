@@ -19,6 +19,10 @@
     .slick-track {
         margin: 0;
     }
+    .slick-initialized .slick-slide {
+      @include mut.flexed($justify-content: center, $gap: 0px);
+      @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+    }
 }
 .leftSider {
     @include mut.full-rounded(53px);
@@ -73,7 +77,7 @@
   @include mut.rem-margined(13px, 3px, 0px, 0px);
   @include mut.rem-padded(0px, 5px, 0px, 0px);
   line-height: 23px;
-  max-height: 214px;
+  max-height: f.pxToRem(214px);
   overflow: auto;
   color: c.$lighter-black-color;
   &::-webkit-scrollbar {
@@ -83,16 +87,17 @@
 
 .teaserBlockContainer {
     position: relative;
+    height: f.pxToRem(214px);
 
     &:after {
-        content: initial;
+        content: '';
         position: absolute;
-        bottom: -5px;
+        bottom: 0px;
         left: 0;
         right: 5px;
         height: 6em;
         box-shadow: none;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 100%, rgba(255, 255, 255, 0) 0%);
+        background: linear-gradient(0deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.75) 2%, rgba(255,255,255,0.1) 21%);
         -webkit-text-fill-color: transparent;
     }
 }
@@ -149,10 +154,7 @@
     font-size: f.pxToRem(37px);
     margin-right: f.pxToRem(10px);
 }
-.slick-initialized .slick-slide {
-  @include mut.flexed($justify-content: center, $gap: 0px);
-  @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
-}
+
 @media screen and (max-width: 1300px) {
     .blockCentering {
         width: 100%;
@@ -228,12 +230,12 @@
       }
       .streetcodeTitle {
         @include mut.rem-padded(0px, 10px, 0px, 0px);
-        @include mut.with-font($font-weight: 500, $font-size: 32px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         @include mut.withLineHeight(42px);
       }
       .streetcodeDate {
-        @include mut.rem-padded(0px, 10px, 0px, 0px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
+        @include mut.rem-padded(0px, 5px, 0px, 0px);
+        @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
         @include mut.withLineHeight(23px);
       }
       .streetcodeImg {
@@ -241,11 +243,12 @@
       }
       .cardFooter {
         width: 95%;
-        @include mut.rem-padded(10px, 0px, 10px, 0px);
+        @include mut.rem-padded(10px, 0px, 0px, 0px);
         .animateFigureBtn {
           @include mut.hidden();
         }
         .audioBtn {
+          @include mut.full-rounded(8px);
           @include mut.with-font($font-weight: 400, $font-size: 14px);
           @include mut.sized(95%, 46px);
           .playCircle {
@@ -268,9 +271,16 @@
         height: unset ;
       }
       .cardFooter{
+        margin-top: f.pxToRem(39px) !important;
+        @include mut.rem-padded(0px, 0px, 5px, 0px);
         .audioBtn{
           width: 100%;
         }
+      }
+      .teaserBlockContainer {
+        height: fit-content;
+        &:after {
+        content: none;}
       }
       .teaserBlock {
         max-height: f.pxToRem(240px);

@@ -4,7 +4,7 @@
 @use '@sass/variables/variables.colors' as c;
 
 .statisticsContainerAdmin{
-  @include mut.sized(350px, 414px);
+  @include mut.sized(350px, 500px);
   @include mut.positioned-as(absolute, 150px, 0, 0, 100px);
   @include mut.rem-padded(5px, 5px, 5px, 5px);
   background: c.$pure-white-color;
@@ -12,13 +12,18 @@
   border: 3px solid #787878;
   box-shadow: 0px 7px 11px 2px rgba(0, 0, 0, 0.25);
   border-radius: 23px;
+  
+  .input-id{
+    @include mut.sized(300px, 40px);
+    @include mut.full-rounded(10px);
+    @include mut.rem-margined(16px, 0, 15px, 20px);
+    @include mut.flexed();
+}
   .input-streets{
-
     @include mut.sized(300px, 40px);
     @include mut.full-rounded(10px);
     @include mut.rem-margined(16px, 0, 15px, 15px);
     border: 3px solid #787878;
-
     border-radius: 23px;
     &:hover {
       filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));

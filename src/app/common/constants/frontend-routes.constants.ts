@@ -11,6 +11,7 @@ const FRONTEND_ROUTES = {
         DICTIONARY: '/admin-panel/dictionary',
         FOR_FANS: '/admin-panel/dictionary',
         LOGIN: '/admin-panel/login',
+        ANALYTICS: '/admin-panel/analytics',
     },
     CATALOG: {
         BASE: '/catalog',
