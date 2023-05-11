@@ -4,19 +4,19 @@ import './AdditionalTextBlock.styles.scss';
 import { useEffect } from 'react';
 
 interface Props {
-    аdditionalText: string | JSX.Element | JSX.Element[];
+    additionalText: string | JSX.Element | JSX.Element[];
 }
 
-const AdditionalText = ({ аdditionalText }: Props) => {
+const AdditionalText = ({ additionalText }: Props) => {
     useEffect(() => {
-        console.log('Additional text is:', аdditionalText);
-    }, [аdditionalText]);
+        console.log('Additional text is:', additionalText);
+    }, [additionalText]);
 
     return (
         <div className="additionalText">
             {/* eslint-disable-next-line react/jsx-no-useless-fragment */}
             <div>
-                {аdditionalText || null}
+                {additionalText || null}
             </div>
         </div>
     );

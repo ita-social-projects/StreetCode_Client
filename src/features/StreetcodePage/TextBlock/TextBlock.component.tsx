@@ -31,7 +31,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
     console.log(`ADD TEXT: ${JSON.stringify(text)}`);
-    console.log(`ADD TEXT: ${text.аdditionalText}`);
+    console.log(`ADD TEXT: ${text?.additionalText}`);
     return (
         text
             ? (
@@ -43,7 +43,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                     <div className="textComponent">
                         <div className="TextContainer">
                             <ReadMore text={String(text?.textContent)} />
-                            <AdditionalText аdditionalText={htmpReactParser(text?.аdditionalText ?? '')} />
+                            <AdditionalText additionalText={htmpReactParser(text?.аdditionalText ?? '')} />
                         </div>
                     </div>
                     <div className="videoComponent">
