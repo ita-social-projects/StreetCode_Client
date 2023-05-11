@@ -7,6 +7,7 @@ import VideoPlayer from '@components/Video/Video.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+import htmpReactParser from 'html-react-parser';
 
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
@@ -40,7 +41,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                     <div className="textComponent">
                         <div className="TextContainer">
                             <ReadMore text={String(text?.textContent)} />
-                            <AdditionalText аdditionalText={String(text?.аdditionalText)} />
+                            <AdditionalText аdditionalText={htmpReactParser(text?.аdditionalText ?? '')} />
                         </div>
                     </div>
                     <div className="videoComponent">

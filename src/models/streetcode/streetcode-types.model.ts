@@ -103,7 +103,7 @@ export interface StreetcodeCreate {
     audioId: number | null,
     streetcodeType: StreetcodeType,
     text: TextCreate | null,
-    additionalText: AdditionalTextCreate | null,
+    //additionalText: AdditionalTextCreate | null,
     videos: VideoCreate[],
     facts: Fact[],
     timelineItems: TimelineItem[],
