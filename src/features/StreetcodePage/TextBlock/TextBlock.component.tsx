@@ -12,34 +12,56 @@ import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
 import ReadMore from './ReadMore/ReadMore.component';
+import React, { useEffect, useState } from 'react';
 
-const TextComponent = () => {
+interface Props {
+    setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const TextComponent = ({ setTextBlockState }: Props) => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
 
-    const { value } = useAsync(
-        () => Promise.all([getText(getStreetCodeId), getVideo(getStreetCodeId)]),
-        [getStreetCodeId],
-    );
-    const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
+    const [text, setText] = useState(undefined);
+    const [video, setVideo] = useState(undefined);
+
+    useEffect(() => {
+        if (getStreetCodeId > 0) {
+            Promise.all([getText(getStreetCodeId), getVideo(getStreetCodeId)])
+                .then(([textResult, videoResult]) => {
+                    setText(textResult);
+                    setVideo(videoResult);
+                })
+                .catch(error => {
+                    console.error(error);
+                    setText(undefined);
+                    setVideo(undefined);
+                });
+        } else {
+            setText(undefined);
+            setVideo(undefined);
+        }
+    }, [getStreetCodeId]);
 
     return (
-        <div
-            id="text"
-            className="textComponentContainer"
-        >
-            <BlockHeading headingText={String(text?.title)} />
-            <div className="textComponent">
-                <div className="TextContainer">
-                    <ReadMore text={String(text?.textContent)} />
+        text
+            ? (
+                <div
+                    id="text"
+                    className="textComponentContainer"
+                >
+                    <BlockHeading headingText={String(text?.title)} />
+                    <div className="textComponent">
+                        <div className="TextContainer">
+                            <ReadMore text={String(text?.textContent)} />
+                        </div>
+                    </div>
+                    <div className="videoComponent">
+                        <VideoPlayer videoUrls={String(video?.url.href)} setTextBlockState={setTextBlockState} />
+                        {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
+                    </div>
                 </div>
-            </div>
-            <div className="videoComponent">
-                <VideoPlayer videoUrls={String(video?.url.href)} />
-                {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
-            </div>
-        </div>
+            ) : <></>
     );
 };
 

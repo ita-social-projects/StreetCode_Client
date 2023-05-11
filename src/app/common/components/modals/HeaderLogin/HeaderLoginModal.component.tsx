@@ -8,9 +8,17 @@ import useMobx from '@stores/root-store';
 import { Button, Modal } from 'antd';
 
 import { becomePartnerEvent, donateEvent, joinToStreetcode } from '@/app/common/utils/googleAnalytics.unility';
+import { useNavigate } from "react-router-dom";
 
 const HeaderLoginModal = () => {
     const { modalStore: { setModal, modalsState: { login } } } = useMobx();
+    const navigate = useNavigate();
+
+    const becomePartnerHandler = () => {
+        login.isOpen=false;
+        navigate(`../partners-page`);
+        becomePartnerEvent('modal');
+    }
 
     return (
         <Modal
@@ -23,7 +31,9 @@ const HeaderLoginModal = () => {
             closeIcon={<CancelBtn />}
         >
             <div className="loginModalContent">
-                <Button onClick={() => becomePartnerEvent('modal')}>Стати партнером</Button>
+                <Button onClick={becomePartnerHandler}>
+                    Стати партнером
+                </Button>
                 <Button onClick={() => joinToStreetcode()}>Долучитися до команди</Button>
                 <Button onClick={() => {
                     setModal('donates');

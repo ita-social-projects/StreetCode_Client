@@ -3,11 +3,10 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .headerPopupSkeleton {
-  width: f.pxToRem(1150px);
+  width: f.pxToRem(915px);
   @include mut.flexed($justify-content: flex-start);
-
+  transition: all 1s;
   overflow-x: auto;
-  @include mut.rem-margined(16px, 0, 16px, 45px);
 
   position: relative;
   z-index: 1;

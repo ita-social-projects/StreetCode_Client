@@ -50,7 +50,7 @@ const SearchMenu = ({setStatus, setTitle, setRequest}: IProps) => {
                     />
                 </div>
                 <div className='searchMenuElement'>
-                    <Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/new-streetcode`,'_blank')}>Новий стріткод</Button>
+                    <Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}`, '_blank')}>Новий стріткод</Button>
                 </div>
     </div>
     </>

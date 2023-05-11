@@ -1,4 +1,5 @@
 import './PartnerModal.styles.scss';
+import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,6 +14,7 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
+import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -174,42 +176,40 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      }];
      return (
          <Modal
-             title={partnerItem ? 'Редагувати' : 'Додати'}
              open={open}
              onCancel={closeAndCleanData}
-             className="partner-modal"
-             footer={[
-                 <Button className="streetcode-custom-button" onClick={() => form.submit()}>
-                        Зберегти
-                 </Button>]}
+             className="modalContainer"
+             footer = {null}
+             closeIcon={<CancelBtn />}
          >
+            <div className='modalContainer-content'>
              <Form
                  form={form}
-                 labelCol={{ span: 7 }}
-                 wrapperCol={{ span: 18 }}
-                 className="partner-form"
+                 layout='vertical'
                  onFinish={onSuccesfulSubmitPartner}
              >
-                 <div className="form-input-line-group">
-
+                <div className='center'>
+                    <h2>{partnerItem ? 'Редагувати' : 'Додати'} партнера</h2>
+                </div>
+                <div className="checkbox-container">
                      <Form.Item
-                         labelCol={{ span: 20 }}
-                         wrapperCol={{ span: 27 }}
                          name="isKeyPartner"
-                         label="Ключовий партнер: "
                          valuePropName="checked"
                      >
-                         <Checkbox />
+                        <div className="checkbox-container-flex">
+                            <Checkbox />
+                            <p>Ключовий партнер</p>
+                        </div>
                      </Form.Item>
 
                      <Form.Item
-                         labelCol={{ span: 20 }}
-                         wrapperCol={{ span: 27 }}
                          name="isVisibleEverywhere"
-                         label="Видимий для всіх: "
                          valuePropName="checked"
                      >
-                         <Checkbox />
+                        <div className="checkbox-container-flex">
+                            <Checkbox />
+                            <p>Видимий для всіх</p>
+                        </div>
                      </Form.Item>
                  </div>
 
@@ -231,7 +231,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  <Form.Item
                      name="urlTitle"
                      label="Назва посилання: "
-                     className="url-title"
                  >
                      <Input maxLength={100} showCount />
                  </Form.Item>
@@ -245,7 +244,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
 
                  <Form.Item
                      name="logo"
-                     className="maincard-item photo-form-item"
                      label="Лого"
                      valuePropName="fileList"
                      getValueFromEvent={(e: any) => {
@@ -261,7 +259,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          listType="picture-card"
                          maxCount={1}
                          onPreview={handlePreview}
-                         className="uploader-small"
                          uploadTo="image"
                          onSuccessUpload={(image:Image) => {
                              imageId.current = image.id;
@@ -276,7 +273,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                                   status: 'done' }]
                              : []}
                      >
-                         <p className="ant-upload-text">Виберіть чи перетягніть файл</p>
+                         <p>Виберіть чи перетягніть файл</p>
                      </FileUploader>
                  </Form.Item>
                  <PreviewFileModal opened={previewOpen} setOpened={setPreviewOpen} file={filePreview} />
@@ -293,8 +290,9 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          </Select>
                      </Form.Item>
                  ) : ''}
-
+                
              </Form>
+             </div>
 
              <Form
                  layout="vertical"
@@ -305,11 +303,10 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
 
                      {partnerSourceLinks.map((link) => (
                          <div
-                             className="partner-source-list-item"
                              key={`${link.id}${link.logoType}`}
                          >
                              <PartnerLink link={link} />
-                             <p className="link-item">{link.targetUrl}</p>
+                             <p>{link.targetUrl}</p>
                              <DeleteOutlined
                                  onClick={() => setPartnersSourceLinks(partnerSourceLinks
                                      .filter((l) => l.id !== link.id))}
@@ -317,7 +314,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          </div>
                      ))}
                  </div>
-                 <div className="partner-source-inputs-container">
+                 <div className="link-container">
                      <FormItem
                          name="logotype"
                          label="Соціальна мережа"
@@ -328,6 +325,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          />
                      </FormItem>
                      <Form.Item
+                         label=" "
                          className="url-input"
                          name="url"
                          rules={[{ required: true, message: 'Введіть посилання' }]}
@@ -335,13 +333,20 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          <Input min={1} max={255} showCount />
                      </Form.Item>
 
-                     <Form.Item>
+                     <Form.Item 
+                        label=" ">
                          <Button htmlType="submit">
                              <UserAddOutlined />
                          </Button>
                      </Form.Item>
                  </div>
                  {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
+                 
+                 <div className='center'>
+                    <Button className="streetcode-custom-button" onClick={() => form.submit()}>
+                            Зберегти
+                    </Button>
+                 </div>
              </Form>
          </Modal>
      );

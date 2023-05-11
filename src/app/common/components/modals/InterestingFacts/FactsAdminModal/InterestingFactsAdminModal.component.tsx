@@ -48,7 +48,7 @@ const InterestingFactsModal = () => {
             closeIcon={<CancelBtn />}
         >
             <Form className="factForm" onFinish={onFinish}>
-                <h2>Wow-Факт</h2>
+                <h2>Wow—Факт</h2>
                 <p>Заголовок</p>
                 <div className="inputBlock">
                     <Form.Item name="title">

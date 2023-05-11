@@ -123,7 +123,7 @@ const DonationBlock = () => {
             </div>
             <Button
                 onClick={handlePost}
-                disabled={!isCheckboxChecked}
+                disabled={!isCheckboxChecked || donateAmount == 0}
                 className="donatesDonateBtn"
             >
                 Підтримати
