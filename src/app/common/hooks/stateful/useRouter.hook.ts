@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 export const useRouteUrl = () => {
     const params = useParams<{ id: string }>();

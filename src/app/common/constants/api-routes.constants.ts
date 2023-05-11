@@ -135,6 +135,7 @@ export const API_ROUTES = {
         GET_ALL: 'streetcode/getAll',
         GET_BY_FILTER: 'streetcode/getByFilter',
         GET_ALL_SHORT: 'streetcode/getAllShort',
+        GET_SHORT_BY_ID: 'streetcode/getShortById',
         GET_ALL_CATALOG: 'streetcode/getAllCatalog',
         GET_COUNT: 'streetcode/getCount',
         GET_EVENTS: 'streetcode/getEvents',
@@ -144,6 +145,7 @@ export const API_ROUTES = {
         GET_BY_TAG_ID: 'streetcode/getByTagId',
         GET_BY_INDEX: 'streetcode/getByIndex',
         GET_BY_URL: 'streetcode/getByTransliterationUrl',
+        GET_URL_BY_QR_ID: 'streetcode/getByQrId',
         CREATE: 'streetcode/create',
         UPDATE: 'streetcode/update',
         DELETE: 'streetcode/delete',
@@ -174,5 +176,14 @@ export const API_ROUTES = {
     },
     DONATION: {
         CREATE: 'payment/createInvoice',
-    }
+    },
+    STATISTIC_RECORD: {
+        GET_ALL: 'statisticRecord/getAll',
+        GET_BY_QRID: 'statisticRecord/getByQrId',
+        GET_ALL_BY_STREETCODE_ID: 'statisticRecord/getAllByStreetcodeId',
+        EXIST_BY_QRID: 'statisticRecord/existByQrId',
+        CREATE: 'statisticRecord/create',
+        UPDATE: 'statisticRecord/update',
+        DELETE: 'statisticRecord/delete',
+    },
 };
