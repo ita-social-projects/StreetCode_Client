@@ -1,6 +1,6 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
+
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import StatisticRecordApi from '../api/analytics/statistic-record.api';
 
 export default class StatisticRecordStore {
     public setStatisticRecordMap = new Map<number, StatisticRecord>();
@@ -34,5 +34,4 @@ export default class StatisticRecordStore {
     public deleteStatisticRecordFromMap = (statisticRecordItemId: number) => {
         this.setStatisticRecordMap.delete(statisticRecordItemId);
     };
-
 }

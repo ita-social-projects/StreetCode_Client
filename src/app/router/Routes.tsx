@@ -56,7 +56,11 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route
             index
+<<<<<<< HEAD
             path="/admin-panel/analytics"
+=======
+            path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
+>>>>>>> analytics-qr
             element={(
                 <Analytics />
             )}

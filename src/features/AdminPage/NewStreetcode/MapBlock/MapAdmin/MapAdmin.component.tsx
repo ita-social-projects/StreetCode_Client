@@ -10,7 +10,7 @@ import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import useMobx from '@/app/stores/root-store';
-import StreetcodeCoordinateApi from '../../../../../app/api/additional-content/streetcode-cooridnates.api';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 
 const containerStyle = {
     width: '100%',
@@ -58,8 +58,9 @@ const MapOSMAdmin: React.FC<Props> = ({
             const newCoordinate: StreetcodeCoordinate = {
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
-                streetcodeId: 0, // set a default streetcodeId for now
-                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, // set a default id for now
+                streetcodeId: 0,
+                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size, 
+                
             };
             const newStatisticRecord: StatisticRecord = {
                 id: statisticRecordStore.setStatisticRecordMap.size,
@@ -243,7 +244,7 @@ const MapOSMAdmin: React.FC<Props> = ({
 
     const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewNumber(event.target.value);
-      };
+    };
 
     return (
         <LoadScript

@@ -26,6 +26,9 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
+import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
+import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 const StreetcodeContent = () => {
     const streetcodeUrl = useRouteUrl();
@@ -71,7 +74,6 @@ const StreetcodeContent = () => {
             );
         }
     });
-    
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
