@@ -31,7 +31,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
 
     console.log(`ADD TEXT: ${JSON.stringify(text)}`);
-    console.log(`ADD TEXT: ${text?.additionalText}`);
+    console.log(`ADD TEXT: ${text?.аdditionalText}`);
     return (
         text
             ? (
