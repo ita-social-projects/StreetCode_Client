@@ -76,9 +76,9 @@ export const API_ROUTES = {
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
         GET_CONTENT_BY_STREETCODE_ID: 'sources/getCategoryContentByStreetcodeId',
-        CREATE: 'sources/create',
-        UPDATE: 'sources/update',
-        DELETE: 'sources/delete',
+        CREATE: 'sources/createCategory',
+        UPDATE: 'sources/updateCategory',
+        DELETE: 'sources/deleteCategory',
     },
     TRANSACTION_LINKS: {
         GET_ALL: 'transactLinks/getAll',
