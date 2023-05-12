@@ -27,8 +27,10 @@ const SearchBlock = ({ searchQuery } : Props) => {
             });
     }, [searchQuery]);
 
+    const blockHeight = searchResult.length > 9 ? '418px' : '100%';
+
     return (
-        <div className="searchResultsBlock">
+        <div className="searchResultsBlock" style={{ height: blockHeight }}>
             {searchResult.map((searchResultItem: StreetcodeFilterResultDTO) => (
                 <SearchResultItem searchResultItem={searchResultItem} />
             ))}
