@@ -20,11 +20,11 @@ const SourcesApi = {
             `${API_ROUTES.SOURCES.GET_CONTENT_BY_STREETCODE_ID}/${categoryId}&${streetcodeId}`,
         ),
 
-    create: (source: SourceCategoryAdmin) => Agent.post<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.CREATE_CATEGORY}`, source),
+    create: (source: SourceCategoryAdmin) => Agent.post<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.CREATE}`, source),
 
-    update: (source: SourceCategoryAdmin) => Agent.put<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.UPDATE_CATEGORY}/${source.id}`, source),
+    update: (source: SourceCategoryAdmin) => Agent.put<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.UPDATE}/${source.id}`, source),
 
-    delete: (id: number) => Agent.delete(`${API_ROUTES.SOURCES.DELETE_BY_SOURCE_ID}/${id}`),
+    delete: (id: number) => Agent.delete(`${API_ROUTES.SOURCES.DELETE}/${id}`),
 };
 
 export default SourcesApi;

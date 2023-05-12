@@ -47,7 +47,8 @@ const SourcesComponent = () => {
                         </BlockSlider>
                     </div>
                 </div>
-            ) : <></>
+            </div>
+        </div>
     );
 };
 

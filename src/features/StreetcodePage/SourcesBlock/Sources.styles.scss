@@ -17,6 +17,13 @@
             height: pxToRem(320px);
             @include mut.flex-centered();
             margin-top: pxToRem(24px);
+            .slick-slide {
+                .slider-item-container {
+                    .left, .right {
+                        display: none;
+                    }
+                }
+            }
         }
 
         > .blockHeadingWrapper {
