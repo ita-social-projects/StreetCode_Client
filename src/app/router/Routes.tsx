@@ -14,6 +14,7 @@ import AdminPage from '@/features/AdminPage/AdminPage.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
+import News from '@/features/AdminPage/NewsPage/News.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
@@ -38,12 +39,12 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+            element={<ForFansMainPage />}
         />
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            element={<ProtectedComponent><Partners /></ProtectedComponent>}
+            element={<Partners />}
         />
         <Route
             index
@@ -54,10 +55,15 @@ const router = createBrowserRouter(createRoutesFromElements(
             index
             path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
             element={(
-                <ProtectedComponent>
+                
                     <TermDictionary />
-                </ProtectedComponent>
+    
             )}
+        />
+        <Route
+            index
+            path={FRONTEND_ROUTES.ADMIN.NEWS}
+            element={<News />}
         />
         <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />

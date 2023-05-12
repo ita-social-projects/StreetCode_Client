@@ -7,10 +7,11 @@ const PageBar = () => (
     <div className="PageBarContainer">
         <div className="BarContainer">
             <Link className='Link' to={`/admin-panel`}>Стріткоди</Link>
-            <Link className='Link' to="#">Словник</Link>
+            <Link className='Link' to={FRONTEND_ROUTES.ADMIN.DICTIONARY}>Словник</Link>
             <Link className='Link' to="#">Користувач</Link>
             <Link className='Link' to={FRONTEND_ROUTES.ADMIN.PARTNERS}>Партнери</Link>
             <Link className='Link' to={`${FRONTEND_ROUTES.STREETCODE.BASE}/admin-panel/for-fans`}>Для фанатів</Link>
+            <Link className='Link' to={FRONTEND_ROUTES.ADMIN.NEWS}>Новини</Link>
         </div>
     </div>
 );
