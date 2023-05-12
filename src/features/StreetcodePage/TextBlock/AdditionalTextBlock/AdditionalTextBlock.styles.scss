@@ -1,33 +1,32 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.fonts.scss" as fon;
 
-.readMore {
-    color: c.$dark-red-color;
-    cursor: pointer;
-    &:hover{
-        text-decoration: underline;
-    }
-}
 
-.readMoreContainer {
-    @include mut.rem-margined($top: 35px,$bottom: 50px);
-    @include mut.with-font($font-weight: 600)
-}
-
-.mainTextContent {
-    white-space: pre-line;
-    @include mut.rem-margined($bottom: 35px);
-}
-
-.textShort {
-    @include mut.truncated($line-num: 25);
-}
 
 .additionalText{
     white-space: pre-line;
     margin-right: f.pxToRem(10px);
     margin-left: f.pxToRem(10px);
+    text-align: right;
+    padding-bottom: f.pxToRem(42px);
+   // font-family: fon.$closer-text-font 300 italic;
+    font-family: 'Closer Text' !important;
+    font-size: f.pxToRem(20px);
+    font-weight: 300;
+    font-style: italic;
+    
+    
+    // @mixin rem-padded($top: 0, $right: 0, $bottom: 0, $left: 0) {
+    //     padding: f.pxToRem($top) f.pxToRem($right)
+    //             f.pxToRem($bottom) f.pxToRem($left) !important;
+    //   }
+
+
+.textShort {
+    @include mut.truncated($line-num: 25);
+}
 }
 
 @media screen and (max-width: 1024px){
