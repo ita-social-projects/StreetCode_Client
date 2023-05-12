@@ -24,3 +24,10 @@ $articlesImg: "@assets/images/sources/Articles.png";
   max-width: 100%;
   width: 80vw;
 }
+.sourceActions {
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+  margin-left: 5px;
+  z-index: 2;
+}

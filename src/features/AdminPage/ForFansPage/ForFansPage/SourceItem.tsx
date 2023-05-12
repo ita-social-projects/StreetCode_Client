@@ -34,6 +34,7 @@ const SourceItem = ({ srcCategory }: Props) => {
     const handleDelete = (event: React.MouseEvent) => {
         event.stopPropagation();
         setIsModalDeleteVisible((prevState) => !prevState);
+        console.log('clicked');
     };
 
     const handleEdit = (event: React.MouseEvent) => {
