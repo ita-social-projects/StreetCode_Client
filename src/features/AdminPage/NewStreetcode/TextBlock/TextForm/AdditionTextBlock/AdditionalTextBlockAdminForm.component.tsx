@@ -1,14 +1,10 @@
 /* eslint-disable no-restricted-imports */
 /* eslint-disable react/jsx-props-no-multi-spaces */
 
-'./AdditionalTextBlockAdminForm.styles.scss';
-
 import { observer } from 'mobx-react-lite';
 import { Editor } from '@tinymce/tinymce-react';
 
 import FormItem from 'antd/es/form/FormItem';
-
-import TextsApi from '@/app/api/streetcode/text-content/texts.api';
 
 import TextInputInfo from '../../InputType/TextInputInfo.model';
 

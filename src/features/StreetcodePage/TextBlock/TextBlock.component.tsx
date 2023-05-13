@@ -29,9 +29,6 @@ const TextComponent = ({ setTextBlockState }: Props) => {
         [getStreetCodeId],
     );
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
-
-    console.log(`ADD TEXT OBJECT: ${JSON.stringify(text)}`);
-    console.log(`ADD TEXT: ${text?.additionalText}`);
     return (
         text
             ? (
