@@ -5,51 +5,37 @@
 
 
 
-.additionalText{
+.additionalText {
+
     white-space: pre-line;
-    margin-right: f.pxToRem(10px);
-    margin-left: f.pxToRem(10px);
     text-align: right;
-    padding-bottom: f.pxToRem(42px);
-   // font-family: fon.$closer-text-font 300 italic;
-    font-family: 'Closer Text' !important;
+    margin-bottom: f.pxToRem(42px);
+    margin-top: f.pxToRem(12px);
     font-size: f.pxToRem(20px);
-    font-weight: 300;
+    line-height: f.pxToRem(26px);
     font-style: italic;
-    
-    
-    // @mixin rem-padded($top: 0, $right: 0, $bottom: 0, $left: 0) {
-    //     padding: f.pxToRem($top) f.pxToRem($right)
-    //             f.pxToRem($bottom) f.pxToRem($left) !important;
-    //   }
 
+    p {
+        font-family: 'Closer Text' !important;
 
-.textShort {
-    @include mut.truncated($line-num: 25);
-}
-}
+        a {
+            font-weight: 350;
+            color: #891F16;
 
-@media screen and (max-width: 1024px){
-    .additionalText{
-        font-size: f.pxToRem(16px);
-        margin: f.pxToRem(10px);
-        line-height: f.pxToRem(21px);
-    }
-    .readMore{
-        font-size: f.pxToRem(16px);
-        line-height: f.pxToRem(18.75px);
-    }
-    .readMoreContainer {
-        @include mut.rem-margined($top: 20px,$bottom: 20px);
-        @include mut.with-font($font-weight: 600)
+        }
     }
 }
 
-@media screen and (max-width: 480px){
-    .readMore{
-        display: flex;
-        justify-content: center;
+@media screen and (max-width: 1024px) {
+    .additionalText {
+        margin-bottom: f.pxToRem(20px);
+        margin-top: f.pxToRem(20px);
     }
-
 }
 
+@media screen and (max-width: 480px) {
+    .additionalText {
+        font-size: f.pxToRem(14px);
+        line-height: f.pxToRem(18.48px);
+    }
+}
