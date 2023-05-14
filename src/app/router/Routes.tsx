@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Link, Navigate, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import App from '@layout/app/App.component';
@@ -17,13 +17,15 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import TeamPage from '../../features/AdminPage/TeamPage/TeamPage.component';
+import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<AdminPage />}
         />
         <Route
             index
@@ -33,7 +35,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
         />
         <Route
             index
@@ -44,6 +46,11 @@ const router = createBrowserRouter(createRoutesFromElements(
             index
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
             element={<ProtectedComponent><Partners /></ProtectedComponent>}
+        />
+        <Route
+            index
+            path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
+            element={<Analytics />}
         />
         <Route
             index
