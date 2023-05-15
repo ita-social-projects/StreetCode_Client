@@ -1,11 +1,10 @@
 import './MainPage.styles.scss';
 import ScrollToTopBtn from "../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component";
 import Footer from "../../app/layout/footer/Footer.component";
-import ProgressBar from "../ProgressBar/ProgressBar.component";
 import DonateBtn from "../StreetcodePage/DonateBtn/DonateBtn.component";
-import TextBlockComponent from '../StreetcodePage/TextBlock/TextBlock.component';
 import TopCarouselComponent from './TopCarousel/TopCarousel.component';
 import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
+import TeamSlider from './TeamSlider/TeamSlider.component';
 const mainPageContent = () => {
     return (
         <div className="mainPageContainer">
@@ -16,7 +15,8 @@ const mainPageContent = () => {
                 </div>
             </div>
             <TopCarouselComponent/>
-            <StreetcodeSliderComponent/>
+            <StreetcodeSliderComponent />
+            <TeamSlider />
             <Footer />
         </div>
     );
