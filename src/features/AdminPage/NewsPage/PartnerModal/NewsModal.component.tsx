@@ -163,7 +163,6 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                                  newsItem.image = image;
                              }}
                              onRemove={(image) => {
-                                 imageId.current = undefined;
                                  newsItem.image = undefined;
                              }}
                              defaultFileList={(newsItem)
