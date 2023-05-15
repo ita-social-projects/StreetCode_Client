@@ -268,7 +268,7 @@ const NewStreetcode = () => {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                     setTimeout(()=>location.reload(),500);
-                    window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+                    window.open(`${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {
                     console.log(error);

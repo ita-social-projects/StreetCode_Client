@@ -1,6 +1,5 @@
 import './SearchItem.styles.scss';
 
-import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 
 interface Props {
