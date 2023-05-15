@@ -15,9 +15,7 @@ export default class StreetcodeShortStore {
         StreetcodesApi.getAllShort()
             .then((value) => {
                 this.streetcodes = value.map((s) => ({ id: s.id, title: s.title, index: s.index }));
-            }).catch((error) => {
-                console.log(error);
-            });
+            }).catch((error) => {});
     };
 
     public addItemToArray = (item: StreetcodeShort) => {

@@ -43,7 +43,7 @@ const RelatedFiguresModal = () => {
             </div>
             <div className="relatedFiguresReadMoreContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (
-                    <div onClick={() => setModal('relatedFigures', streetcodeId, false)}>
+                    <div key={figure.id } onClick={() => setModal('relatedFigures', streetcodeId, false)}>
                         <RelatedFigureItem
                             key={figure.id}
                             relatedFigure={figure}

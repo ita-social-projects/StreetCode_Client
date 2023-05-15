@@ -12,10 +12,9 @@ import Streetcode from '@/models/streetcode/streetcode-types.model';
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
     setActiveBlock: React.Dispatch<React.SetStateAction<number>>
-    setStreetcodeCardState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MainBlock = ({ setActiveTagId, setActiveBlock, setStreetcodeCardState } : Props) => {
+const MainBlock = ({ setActiveTagId, setActiveBlock } : Props) => {
     const streetcodeUrl = useRouteUrl();
     const { value } = useAsync(() => StreetcodesApi.getByUrl(streetcodeUrl), [streetcodeUrl]);
     const streetcode = value as Streetcode;
@@ -30,7 +29,6 @@ const MainBlock = ({ setActiveTagId, setActiveBlock, setStreetcodeCardState } : 
                             streetcode={streetcode}
                             setActiveTagId={setActiveTagId}
                             setActiveBlock={setActiveBlock}
-                            setStreetcodeCardState={setStreetcodeCardState}
                         />
                     </div>
                 </div>

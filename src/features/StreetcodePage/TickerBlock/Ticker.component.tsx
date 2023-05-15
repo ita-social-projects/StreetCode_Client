@@ -15,11 +15,9 @@ const TickerComponent = () => {
     useEffect(() => {
         if (getStreetCodeId !== errorStreetCodeId) {
             getSubtitlesByStreetcodeId(getStreetCodeId).then((response) => {
-                setSubtitle(response.subtitleText); console.log(response);
+                setSubtitle(response.subtitleText);
             })
-                .catch((error) => {
-                    console.log(error);
-                });
+                .catch((error) => {});
         }
     }), [getStreetCodeId];
 
