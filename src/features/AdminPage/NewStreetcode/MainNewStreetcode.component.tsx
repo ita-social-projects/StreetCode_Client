@@ -4,13 +4,24 @@ import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
+import SubtitlesApi from '@app/api/additional-content/subtitles.api';
+import VideosApi from '@app/api/media/videos.api';
+import PartnersApi from '@app/api/partners/partners.api';
+import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
+import FactsApi from '@app/api/streetcode/text-content/facts.api';
+import TextsApi from '@app/api/streetcode/text-content/texts.api';
+import TimelineApi from '@app/api/timeline/timeline.api';
+import FRONTEND_ROUTES from '@app/common/constants/frontend-routes.constants';
+import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
+import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
@@ -24,17 +35,6 @@ import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
-import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
-import SubtitlesApi from '../../../app/api/additional-content/subtitles.api';
-import StreetcodeArtApi from '../../../app/api/media/streetcode-art.api';
-import VideosApi from '../../../app/api/media/videos.api';
-import PartnersApi from '../../../app/api/partners/partners.api';
-import SourcesApi from '../../../app/api/sources/sources.api';
-import FactsApi from '../../../app/api/streetcode/text-content/facts.api';
-import TextsApi from '../../../app/api/streetcode/text-content/texts.api';
-import TimelineApi from '../../../app/api/timeline/timeline.api';
-import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
-import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
@@ -137,7 +137,7 @@ const NewStreetcode = () => {
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
-                setFuncName('update'); //---------------------------------------------
+                setFuncName('update');
             });
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
@@ -203,7 +203,7 @@ const NewStreetcode = () => {
         }));
 
         const streetcode: StreetcodeCreate = {
-            id: parseId, //----------------------------------------------------
+            id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
@@ -262,7 +262,6 @@ const NewStreetcode = () => {
             console.log(streetcode);
             StreetcodesApi.update(streetcode).then((response2) => {
                 alert('Cтріткод успішно оновленний');
-                console.log(response2);
             })
                 .catch((error2) => {
                     alert('Виникла помилка при оновленні стріткоду');
