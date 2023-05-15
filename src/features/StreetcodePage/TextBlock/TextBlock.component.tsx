@@ -12,6 +12,7 @@ import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
 import ReadMore from './ReadMore/ReadMore.component';
+import { useEffect, useState } from 'react';
 
 interface Props {
     setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,11 +22,26 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
 
-    const { value } = useAsync(
-        () => Promise.all([getText(getStreetCodeId), getVideo(getStreetCodeId)]),
-        [getStreetCodeId],
-    );
-    const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
+    const [text, setText] = useState(undefined);
+    const [video, setVideo] = useState(undefined);
+
+    useEffect(() => {
+        if (getStreetCodeId > 0) {
+            Promise.all([getText(getStreetCodeId), getVideo(getStreetCodeId)])
+                .then(([textResult, videoResult]) => {
+                    setText(textResult);
+                    setVideo(videoResult);
+                })
+                .catch(error => {
+                    console.error(error);
+                    setText(undefined);
+                    setVideo(undefined);
+                });
+        } else {
+            setText(undefined);
+            setVideo(undefined);
+        }
+    }, [getStreetCodeId]);
 
     return (
         text
