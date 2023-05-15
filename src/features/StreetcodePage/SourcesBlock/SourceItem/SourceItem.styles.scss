@@ -19,6 +19,6 @@ $articlesImg: "@assets/images/sources/Articles.png";
 }
 @media screen and (max-width: 768px) {
   .sourcesSliderItem {
-     @include mut.sizedImportant($width: 250px, $height: 250px);
+     @include mut.sizedImportant($width: 250px, $height: 165px);
   }
 }
