@@ -141,7 +141,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          success = true;
                      })
                      .catch((e) => {
-                         console.log(e); success = false;
+                         success = false;
                      }),
              ]);
          } else {
@@ -151,7 +151,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          success = true;
                      })
                      .catch((e) => {
-                         console.log(e); success = false;
+                         success = false;
                      }),
              ]);
          }

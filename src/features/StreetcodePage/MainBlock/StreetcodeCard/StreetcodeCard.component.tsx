@@ -56,10 +56,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     useEffect(() => {
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
-                .then((imgs) => {
-                    setImages(imgs);
-                })
-                .catch((e) => console.log(e));
+                .then((imgs) => setImages(imgs))
+                .catch((e) => {});
         }
     }, [streetcode]);
 
