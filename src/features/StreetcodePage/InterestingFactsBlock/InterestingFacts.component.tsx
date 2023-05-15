@@ -39,6 +39,7 @@ const InterestingFactsComponent = () => {
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
+        infinite: getFactArray.length > 1,
         swipe: false,
         centerPadding: '-5px',
         responsive: [
@@ -85,29 +86,19 @@ const InterestingFactsComponent = () => {
                         <BlockHeading headingText="Wow—факти" />
                         <div className="interestingFactsSliderContainer">
                             <div style={{ height: '100%' }}>
-                                {(getFactArray.length === 1) ? (
-                                    <div className="singleSlideContainer">
+                                <BlockSlider
+                                    className="heightContainer"
+                                    {...setings}
+                                >
+                                    {sliderArray.map((fact) => (
                                         <InterestingFactItem
-                                            numberOfSlides={1}
-                                            fact={getFactArray[0]}
+                                            key={fact.id}
+                                            fact={fact}
+                                            numberOfSlides={sliderArray.length}
                                             handleImageLoad={handleImageLoad}
                                         />
-                                    </div>
-                                ) : (
-                                    <BlockSlider
-                                        className="heightContainer"
-                                        {...setings}
-                                    >
-                                        {sliderArray.map((fact) => (
-                                            <InterestingFactItem
-                                                key={fact.id}
-                                                fact={fact}
-                                                numberOfSlides={sliderArray.length}
-                                                handleImageLoad={handleImageLoad}
-                                            />
-                                        ))}
-                                    </BlockSlider>
-                                )}
+                                    ))}
+                                </BlockSlider>
                             </div>
                         </div>
                     </div>

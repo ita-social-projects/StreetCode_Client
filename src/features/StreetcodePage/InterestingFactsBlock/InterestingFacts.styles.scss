@@ -66,7 +66,6 @@
                       
             .mainText{
                 @include mut.sized($height: 75%);
-                overflow-y :scroll;
                 font-size:15px;
                 line-height: pxToRem(20px);
                 @include mut.rem-margined($right: 5px );
