@@ -4,6 +4,9 @@
 
 $bgImg: '@assets/images/streetcode-card/background.png';
 
+.container{
+    margin-top: f.pxToRem(110px);
+}
 .streetcodeContainer {
     width: 100%;
     overflow: clip;

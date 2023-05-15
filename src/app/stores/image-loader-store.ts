@@ -19,8 +19,6 @@ export default class ImageLoaderStore {
     };
 
     get imagesLoadedPercentage() {
-        console.log(this.loadedImagesCount);
-        console.log(this.totalImagesToLoad);
         return (this.loadedImagesCount / this.totalImagesToLoad) * 100;
     }
 }

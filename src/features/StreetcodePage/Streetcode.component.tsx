@@ -17,6 +17,7 @@ import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import dayjs from 'dayjs';
+
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
@@ -73,7 +74,7 @@ const StreetcodeContent = () => {
             );
         }
     });
-  
+
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
@@ -89,16 +90,16 @@ const StreetcodeContent = () => {
             setSlideCloneCountAdded(slideCloneCount);
         }
 
-        if (imagesLoadedPercentage >= 90 && textBlockState) {
+        if (imagesLoadedPercentage >= 80 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
-
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
             if (blockElement) {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
-        }    }, [textBlockState, loadedImagesCount]);
+        }
+    }, [textBlockState, loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">

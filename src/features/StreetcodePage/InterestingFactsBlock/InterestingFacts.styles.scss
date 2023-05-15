@@ -5,8 +5,6 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/_utils.functions.scss" as f;
 
-
-
 .interestingFactsContainer {
     @include mut.sized(100%);
     @include mut.flex-centered($direction: column);
@@ -17,10 +15,6 @@
 
 .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
-
-}
-.single{
-     margin-bottom: pxToRem(200px);
 }
 
 .interestingFactsSliderContainer {
@@ -49,7 +43,7 @@
     margin-bottom: pxToRem(90px);
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
-    padding-top:10.5%;
+    padding-top: pxToRem(88px);
     
     .interestingFactSlide{
         @include  mut.sized(650px, 600px);

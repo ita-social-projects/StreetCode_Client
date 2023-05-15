@@ -81,7 +81,7 @@ const InterestingFactsComponent = () => {
                     ${getFactArray.length === 1 ? 'single' : ''} 
                     ${getFactArray.length ? '' : 'display-none'}`}
                 >
-                    <div className="interestingFactsContainer">
+                    <div className="interestingFactsContainer container">
                         <BlockHeading headingText="Wow—факти" />
                         <div className="interestingFactsSliderContainer">
                             <div style={{ height: '100%' }}>
