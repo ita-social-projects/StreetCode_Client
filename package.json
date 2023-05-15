@@ -74,7 +74,7 @@
     "yet-another-react-lightbox": "^2.2.7"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "webpack serve --mode development --config config/webpack.dev.js",
     "build": "webpack --mode development --config config/webpack.dev.js",
     "serve:w": "webpack --mode development --config config/webpack.dev.js --watch && serve ./dist/",
     "lint": "eslint --ext \".js,.ts,.tsx\" --ignore-path .gitignore .",
