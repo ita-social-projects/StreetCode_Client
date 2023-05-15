@@ -39,9 +39,9 @@ export default class SourcesAdminStore {
     };
 
     public addSourceCategory = async (sourceItem: SourceCategoryAdmin) => {
-        this.setSource(sourceItem);
         try {
-            await sourcesApi.create(sourceItem);
+            await sourcesApi.create(sourceItem).then((created) => {this.setSource(created);
+                console.log(created)});
         } catch (e: unknown) {
             console.log(e);
         }
