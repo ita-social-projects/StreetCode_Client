@@ -10,7 +10,6 @@ import {
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
-
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
@@ -124,7 +123,6 @@ const MainBlockAdmin: React.FC<Props> = ({
             setIndexId(index);
         }
     };
-
     const onSelectTag = (selectedValue: string) => {
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
@@ -156,7 +154,8 @@ const MainBlockAdmin: React.FC<Props> = ({
         <div className="mainblock-add-form">
             <Form.Item
                 label="Номер стріткоду"
-                rules={[{ required: true, message: 'Введіть номер стріткоду' }]}
+                rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
+                        {pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
                 name="streetcodeNumber"
             >
                 <div className="display-flex-row">
@@ -189,7 +188,15 @@ const MainBlockAdmin: React.FC<Props> = ({
                     compact
                     className="display-flex-column"
                 >
-                    <Form.Item label="Ім'я" name="name" className="people-title-input">
+                    <Form.Item
+                        label="Ім'я"
+                        name="name"
+                        className="people-title-input"
+                        rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
+                        { pattern: /^[а-яА-ЯіІ\s]+$/u, message: "Ім'я має містити тільки літерали" },
+                        { max: 50, message: "Ім'я не може містити більше 50 символів" },
+                        ]}
+                    >
                         <Input
                             ref={name}
                             onChange={onNameSurnameChange}
@@ -198,7 +205,15 @@ const MainBlockAdmin: React.FC<Props> = ({
                         />
                     </Form.Item>
 
-                    <Form.Item name="surname" label="Прізвище" className="people-title-input">
+                    <Form.Item
+                        name="surname"
+                        label="Прізвище"
+                        className="people-title-input"
+                        rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
+                        { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Прізвище має містити тільки літерали' },
+                        { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                        ]}
+                    >
                         <Input
                             ref={surname}
                             onChange={onNameSurnameChange}
@@ -214,7 +229,9 @@ const MainBlockAdmin: React.FC<Props> = ({
                 name="title"
                 label="Назва стріткоду"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть назву стріткоду', max: 100 }]}
+                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
+                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' },
+                    { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
             >
                 <Input maxLength={100} showCount />
             </Form.Item>
