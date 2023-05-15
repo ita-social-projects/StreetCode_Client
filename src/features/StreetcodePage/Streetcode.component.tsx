@@ -73,6 +73,7 @@ const StreetcodeContent = () => {
             );
         }
     });
+  
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
