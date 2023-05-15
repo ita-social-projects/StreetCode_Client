@@ -57,7 +57,7 @@ const RelatedFiguresItemModal = () => {
             </div>
             <a 
                 className='redirectionButton'
-                href={`../streetcode/${relation?.url}`} 
+                href={`../${relation?.url}`} 
                 onClick={handleClick}           
             >
                 <p>Перейти на сторінку постаті</p>

@@ -39,26 +39,20 @@ export default class TagsStore {
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap = await tagsApi.getTagsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public fetchTagCatalogByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCatalog = await tagsApi.getTagsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public createTag = async (tag: Tag) => {
         try {
             await tagsApi.create(tag);
             this.setItem(tag);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public updateTag = async (tag: Tag) => {
@@ -71,9 +65,7 @@ export default class TagsStore {
                 };
                 this.setItem(updatedTag as Tag);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteTag = async (tagId: number) => {
@@ -82,8 +74,6 @@ export default class TagsStore {
             runInAction(() => {
                 this.TagMap.delete(tagId);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 }

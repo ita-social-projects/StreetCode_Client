@@ -5,7 +5,7 @@ import useMobx from '@stores/root-store';
 import TimelineSwiper from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiper.component';
 
 const settings = {
-    dots: true,
+    dots: "true",
 };
 
 const TimelineTimespan = () => {

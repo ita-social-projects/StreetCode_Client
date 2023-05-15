@@ -1,9 +1,8 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
-{ EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord, StreetcodeFilterResultDTO } from '@models/streetcode/streetcode-types.model';
+{ EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord } from '@models/streetcode/streetcode-types.model';
 
-import StreetcodeFilterRequestDTO from '@/models/filters/streetcode-filter.model';
 import GetAllStreetcodes from '@/models/streetcode/getAllStreetcodes.request';
 
 const StreetcodesApi = {
@@ -30,6 +29,8 @@ const StreetcodesApi = {
 
     getAllShort: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`),
 
+    getShortById: (id: number) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_SHORT_BY_ID}/${id}`),
+
     getByFilter: (filter: StreetcodeFilterRequestDTO) => Agent.get<StreetcodeFilterResultDTO[]>(
         `${API_ROUTES.STREETCODES.GET_BY_FILTER}`,
         new URLSearchParams(Object.entries(filter)),
@@ -39,9 +40,11 @@ const StreetcodesApi = {
 
     getPersons: () => Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
 
+    getUrlByQrId: (id: number) => Agent.get<string>(`${API_ROUTES.STREETCODES.GET_URL_BY_QR_ID}/${id}`),
+
     create: (streetcode: StreetcodeCreate) => Agent.post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
-    update: (streetcode: StreetcodeCreate) => Agent.put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
+    update: (streetcode: StreetcodeCreate) => Agent.put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}/${streetcode.id}`, streetcode),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 

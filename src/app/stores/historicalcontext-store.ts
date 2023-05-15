@@ -18,13 +18,10 @@ export default class HistoricalContextStore {
         HistoricalContextApi.getAll()
             .then((value) => {
                 this.historicalContextArray = value as HistoricalContext[];
-            }).catch((error) => {
-                console.log(error);
-            });
+            }).catch((error) => {});
     };
 
     public addItemToArray = (item: HistoricalContext) => {
         this.historicalContextArray.push(item);
-        console.log(item);
     };
 }
