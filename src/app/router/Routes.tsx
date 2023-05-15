@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Link, Navigate, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import App from '@layout/app/App.component';
@@ -16,6 +16,9 @@ import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
+import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
@@ -46,6 +49,11 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route
             index
+            path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
+            element={<Analytics />}
+        />
+        <Route
+            index
             path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
             element={(
                 <ProtectedComponent>
@@ -54,6 +62,15 @@ const router = createBrowserRouter(createRoutesFromElements(
             )}
         />
         <Route index path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
+        <Route
+            index
+            path={FRONTEND_ROUTES.ADMIN.TEAM}
+            element={(
+                <ProtectedComponent>
+                    <TeamPage />
+                </ProtectedComponent>
+            )}
+        />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />

@@ -1,0 +1,66 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.analyticsWrapper{
+    padding: 6.25rem 0.25rem;
+
+    .analyticsInfoWrapper{
+        @include mut.rem-padded($left: 250px);
+    }
+
+    .analyticsHeader {
+        @include mut.with-font($font-family: 
+            ft.$closer-text-font,
+            $font-weight: 500,
+            $font-size: 48px);
+        @include mut.rem-padded($bottom: 20px);
+    }
+
+    .streetcodeName {
+        @include mut.with-font(
+            $font-family: ft.$closer-text-font,
+            $font-weight: 400,
+            $font-size: 36px);
+        @include mut.rem-padded($bottom: 20px);
+        line-height: f.pxToRem(50px);
+    }
+
+    .streetcodeImgWrapper{
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .streetcodeImg{
+        @include mut.full-rounded(100px);
+        @include mut.sized(400px, 500px);
+    }
+
+    .analyticsGridView{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: f.pxToRem(12px);
+    }
+
+    .statisticTableWrapper{
+       @include mut.rem-padded($left: 10px);
+       @include mut.with-font(
+            $font-family: ft.$closer-text-font,
+            $font-weight: 400,
+            $font-size: 36px);
+    }
+
+    @media screen and (max-width: 1024px) {
+        .analyticsGridView {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        .statisticTableWrapper{
+            @include mut.rem-padded($top: 20px);
+        }
+        .streetcodeImg{
+            display: none;
+        }
+    }
+}

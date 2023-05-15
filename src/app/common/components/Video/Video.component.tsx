@@ -5,9 +5,9 @@ import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 
 interface Props {
     videoUrls: string[] | string;
-    setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
+    setVideoLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const VideoPlayer = ({ videoUrls, setTextBlockState }: Props) => {
+const VideoPlayer = ({ videoUrls, setVideoLoaded }: Props) => {
     const windowSize = useWindowSize();
     let width = '50vw';
 
@@ -24,7 +24,7 @@ const VideoPlayer = ({ videoUrls, setTextBlockState }: Props) => {
                     url={videoUrls}
                     controls
                     onReady={(() => {
-                        setTextBlockState(true);
+                        setVideoLoaded(true);
                     })}
                 />
             </div>

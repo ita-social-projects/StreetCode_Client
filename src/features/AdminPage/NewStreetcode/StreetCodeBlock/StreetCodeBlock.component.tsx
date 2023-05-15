@@ -227,7 +227,6 @@ const streetCodeBlock = () => {
 
         if (parseId) {
             //StreetcodeArtApi.update(streetcode).then((response2) => {
-                console.log(streetcode);
             //})
              //   .catch((error2) => {
               //      console.log(error2);
@@ -235,12 +234,8 @@ const streetCodeBlock = () => {
         }
         else {
             StreetcodesApi.create(streetcode)
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+                .then((response) => {})
+                .catch((error) => {});
         }
     };
     return(

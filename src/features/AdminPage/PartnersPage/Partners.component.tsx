@@ -134,9 +134,7 @@ const Partners:React.FC = observer(() => {
                               () => {
                                   partnersStore.deletePartner(partner.id).then(() => {
                                       partnersStore.PartnerMap.delete(partner.id);
-                                  }).catch((e) => {
-                                      console.log(e);
-                                  });
+                                  }).catch((e) => {});
                                   modalStore.setConfirmationModal('confirmation');
                               },
                               'Ви впевнені, що хочете видалити цього партнера?',
