@@ -3,7 +3,8 @@ import './Streetcode.styles.scss';
 import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -14,12 +15,12 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
-
-import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
-import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import dayjs from 'dayjs';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
+import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
+import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+
 import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import MapComponent from './MapBlock/Map/Map.component';
@@ -27,9 +28,6 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
 
 const StreetcodeContent = () => {
     const streetcodeUrl = useRouteUrl();
@@ -91,11 +89,11 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]); 
+    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]);
 
     return (
         <div className="streetcodeContainer">
-           {/*  {loading && (
+            {/*  {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
