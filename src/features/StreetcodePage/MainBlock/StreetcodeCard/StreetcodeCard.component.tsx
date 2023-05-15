@@ -59,7 +59,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
-                .catch((e) => console.log(e));
+                .catch((e) => {});
         }
     }, [streetcode]);
 
