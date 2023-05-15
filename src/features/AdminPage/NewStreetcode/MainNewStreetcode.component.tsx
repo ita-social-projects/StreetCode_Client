@@ -63,7 +63,6 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
-    const [categories, setCategories] = useState<SourceCategory[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
@@ -180,7 +179,7 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onFinish = (data) => {
+    const onFinish = (data: any) => {
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -260,7 +259,7 @@ const NewStreetcode = () => {
 
             StreetcodesApi.create(streetcode)
                 .then((response) => {
-                    setTimeout(()=>location.reload(),100);
+                    setTimeout(()=>location.reload(),500);
                     window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {

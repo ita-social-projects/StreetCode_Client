@@ -1,0 +1,55 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.checkbox-container {
+    display: flex;
+    justify-content: space-between;
+
+    &-flex {
+        display: flex;
+        justify-self: center;
+    }
+
+    p {
+        margin-left: 5px;
+    }
+}
+
+.link-container {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+}
+.positions-block {
+    display: flex;
+    flex-direction: column;
+
+    .ant-select-selector {
+        box-shadow: none !important;
+    }
+
+    .positions-block-positionitems {
+        width: 100%;
+
+        .positions-select-input {
+            width: 100%;
+        }
+    }
+
+    .device-sizes-list {
+        p {
+            margin-bottom: 2px;
+        }
+
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+
+        p:hover {
+            color: c.$dark-red-color;
+            font-weight: 600;
+        }
+    }
+}

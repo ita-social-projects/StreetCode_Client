@@ -7,6 +7,13 @@ export interface SourceLink {
     url?: Url | undefined;
 }
 
+export interface SourceCategoryAdmin {
+    id?: number;
+    title: string;
+    imageId: number;
+    image?: Image | undefined;
+}
+
 export interface SourceCategory {
     id: number;
     title: string;
