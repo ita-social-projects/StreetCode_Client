@@ -17,6 +17,7 @@ import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import dayjs from 'dayjs';
+
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
@@ -32,7 +33,7 @@ import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 const StreetcodeContent = () => {
     const { imageLoaderStore, streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const { imagesLoadedPercentage, loadedImagesCount, totalImagesToLoad } = imageLoaderStore;
+    const { imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
     const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
 
     const streetcodeUrl = useRouteUrl();
@@ -79,9 +80,6 @@ const StreetcodeContent = () => {
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
-        console.log(imagesLoadedPercentage);
-        console.log(loadedImagesCount);
-        console.log(totalImagesToLoad);
 
         // for cloned images in sliders
         if (slideCloneCountAdded === 0) {
@@ -100,7 +98,8 @@ const StreetcodeContent = () => {
             if (blockElement) {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
-        }    }, [textBlockState, loadedImagesCount]);
+        }
+    }, [textBlockState, loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">
