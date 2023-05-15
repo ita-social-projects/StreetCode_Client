@@ -6,14 +6,16 @@ import { becomePartnerEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 const PartnersBtn = () => {
     const { modalStore: { setModal } } = useMobx();
-    const onBtnClick = () => setModal('partners');
+    const onBtnClick = () => {
+        setModal('partners');
+        becomePartnerEvent('partners_page');
+    };
+
 
     return (
-        <div className="partnersBtnContainer" onClick={onBtnClick}>
-            <div className="partnersBtn" onClick={() => becomePartnerEvent('partners_page')}>
-                Стати партнером
-            </div>
-        </div>
+        <button className='button-sized partner-button' onClick={onBtnClick}>
+            Стати партнером
+        </button>
     );
 };
 

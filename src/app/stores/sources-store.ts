@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
-import { SourceCategory } from '@models/sources/sources.model';
+import { SourceCategory, SourceCategoryAdmin } from '@models/sources/sources.model';
 
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();
@@ -24,18 +24,14 @@ export default class SourcesStore {
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public createSourceCategory = async (srcCategory: SourceCategory) => {
         try {
             await sourcesApi.create(srcCategory);
             this.setCategoryItem(srcCategory);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public updateSourceCategory = async (srcCategory: SourceCategory) => {
@@ -47,9 +43,7 @@ export default class SourcesStore {
                 };
                 this.setCategoryItem(updatedSourceCategory as SourceCategory);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteSourceCategory = async (SourceCategoryId: number) => {
@@ -58,8 +52,6 @@ export default class SourcesStore {
             runInAction(() => {
                 this.srcCategoriesMap.delete(SourceCategoryId);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 }
