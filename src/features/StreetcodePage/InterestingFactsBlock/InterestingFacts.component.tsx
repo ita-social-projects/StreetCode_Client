@@ -1,7 +1,7 @@
 import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -25,7 +25,10 @@ const InterestingFactsComponent = () => {
         [getStreetCodeId],
     );
 
-    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+    const sliderArray = getFactArray.length === 3
+                        || getFactArray.length === 2
+        ? getFactArray.concat(getFactArray)
+        : getFactArray;
 
     useEffect(() => {
         imageLoaderStore.totalImagesToLoad += sliderArray.length;
@@ -33,7 +36,8 @@ const InterestingFactsComponent = () => {
 
     const setings = {
         dots: getFactArray.length > 3,
-        swipeOnClick: true,
+        swipeOnClick: false,
+        rtl: false,
         centerMode: true,
         swipe: false,
         centerPadding: '-5px',
@@ -104,7 +108,6 @@ const InterestingFactsComponent = () => {
                                         ))}
                                     </BlockSlider>
                                 )}
-
                             </div>
                         </div>
                     </div>

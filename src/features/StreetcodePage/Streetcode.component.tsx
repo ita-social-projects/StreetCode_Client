@@ -79,9 +79,6 @@ const StreetcodeContent = () => {
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
-        console.log(imagesLoadedPercentage);
-        console.log(loadedImagesCount);
-        console.log(totalImagesToLoad);
 
         // for cloned images in sliders
         if (slideCloneCountAdded === 0) {
@@ -105,7 +102,6 @@ const StreetcodeContent = () => {
     return (
         <div className="streetcodeContainer">
             {loading && (
-
                 <div className="loader-container">
                     <img
                         className="spinner"
