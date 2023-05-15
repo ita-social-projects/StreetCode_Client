@@ -13,7 +13,7 @@ import TransactionLink from '@models/transactions/transaction-link.model';
 
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
 
-import { AdditionalTextCreate, Fact, FactCreate, TextCreate } from './text-contents.model';
+import { Fact, FactCreate, TextCreate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -31,7 +31,6 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     text: string;
     audio?: Audio | undefined;
     transliterationUrl: string;
-    // coordinate?: StreetcodeCoordinate | undefined;
     transactionLink?: TransactionLink | undefined;
     toponyms: Toponym[];
     arts: Art[];
@@ -103,7 +102,6 @@ export interface StreetcodeCreate {
     audioId: number | null,
     streetcodeType: StreetcodeType,
     text: TextCreate | null,
-    //additionalText: AdditionalTextCreate | null,
     videos: VideoCreate[],
     facts: Fact[],
     timelineItems: TimelineItem[],

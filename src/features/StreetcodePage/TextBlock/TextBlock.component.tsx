@@ -29,8 +29,6 @@ const TextComponent = ({ setTextBlockState }: Props) => {
         [getStreetCodeId],
     );
     const [text, video] = (value as [Text, Video]) ?? [undefined, undefined];
-    // console.log(`ADD TEXT OBJECT: ${JSON.stringify(text)}`);
-    //  console.log(`ADD TEXT: ${text?.additionalText}`);
     return (
         text
             ? (
@@ -47,7 +45,6 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                     </div>
                     <div className="videoComponent">
                         <VideoPlayer videoUrls={String(video?.url.href)} setTextBlockState={setTextBlockState} />
-                        {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
                     </div>
 
                 </div>

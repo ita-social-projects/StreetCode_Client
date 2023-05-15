@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import Video from '../../../../models/media/video.model';
+import Video from '@/models/media/video.model';
 
 import TextInputInfo from './InputType/TextInputInfo.model';
 import TextForm from './TextForm/TextForm.component';

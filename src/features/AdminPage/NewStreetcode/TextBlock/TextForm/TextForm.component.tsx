@@ -6,7 +6,7 @@ import TextInputInfo from '@features/AdminPage/NewStreetcode/TextBlock/InputType
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
-import Video from '../../../../../models/media/video.model';
+import Video from '@/models/media/video.model';
 
 import AdditionalTextBlockAdminForm from './AdditionTextBlock/AdditionalTextBlockAdminForm.component';
 import LinkEditor from './Editors/LinkEditor.component';

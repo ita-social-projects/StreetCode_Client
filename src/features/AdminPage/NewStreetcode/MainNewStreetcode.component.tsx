@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 import './MainNewStreetcode.styles.scss';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import RelatedFigure from '@models/streetcode/related-figure.model';
@@ -14,14 +14,14 @@ import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
-import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
+import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
-import Partner, { PartnerShort } from '@/models/partners/partners.model';
+import Partner from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
-import { AdditionalTextCreate, Fact, TextCreate } from '@/models/streetcode/text-contents.model';
+import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
 import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
@@ -32,7 +32,6 @@ import PartnersApi from '../../../app/api/partners/partners.api';
 import SourcesApi from '../../../app/api/sources/sources.api';
 import FactsApi from '../../../app/api/streetcode/text-content/facts.api';
 import TextsApi from '../../../app/api/streetcode/text-content/texts.api';
-import TimelineApi from '../../../app/api/timeline/timeline.api';
 import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
 import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
 import PageBar from '../PageBar/PageBar.component';
@@ -76,7 +75,6 @@ const NewStreetcode = () => {
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
 
-    //  const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
     const [funcName, setFuncName] = useState<string>('create');
     const parseId = id ? +id : null;
     if (parseId) {
@@ -180,7 +178,7 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onFinish = (data) => {
+    const onFinish = () => {
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -193,9 +191,6 @@ const NewStreetcode = () => {
             textContent: inputInfo?.text,
             additionalText: inputInfo?.additionalText,
         };
-        // const аddText: AdditionalTextCreate = {
-        //     additionalText: inputInfo?.additionalText,
-        // };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
             imageId: art.imageId,
@@ -223,7 +218,6 @@ const NewStreetcode = () => {
             tags: selectedTags,
             relatedFigures: figures,
             text: (text.title && text.textContent) ? text : null,
-            //  additionalText: (аddText.additionalText) ? аddText : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
@@ -258,16 +252,16 @@ const NewStreetcode = () => {
                 alert('Cтріткод успішно оновленний');
                 console.log(response2);
             })
-                .catch((error2) => {
+                .catch(() => {
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {
             StreetcodesApi.create(streetcode)
-                .then((response) => {
+                .then(() => {
                     setTimeout(() => location.reload(), 100);
                     window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                 })
-                .catch((error) => {
+                .catch(() => {
                     alert('Виникла помилка при створенні стріткоду');
                 });
         }
@@ -278,7 +272,6 @@ const NewStreetcode = () => {
             <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">
-                    {/* <StreetCodeBlock /> */}
                     <div className="adminContainer-block">
                         <h2>Стріткод</h2>
                         <Form form={form} layout="vertical" onFinish={onFinish}>

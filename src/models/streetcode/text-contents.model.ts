@@ -1,6 +1,6 @@
-import Image, { ImageCreate } from "@models/media/image.model";
+import Image, { ImageCreate } from '@models/media/image.model';
 
-import Streetcode from "./streetcode-types.model";
+import Streetcode from './streetcode-types.model';
 
 export interface Fact {
   id: number;
@@ -41,7 +41,3 @@ export interface TextCreate {
   textContent: string | undefined;
   additionalText: string | undefined;
 }
-
-// export interface AdditionalTextCreate {
-//   additionalText: string | undefined;
-// }
