@@ -1,6 +1,6 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import { Positions } from '../../../models/team/team.model';
+import { Positions } from '@/models/team/team.model';
 
 const PositionsApi = {
     getById: (id: number) => Agent.get<Positions>(`${API_ROUTES.POSITIONS.GET}/${id}`),
