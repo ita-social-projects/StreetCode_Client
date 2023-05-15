@@ -80,7 +80,7 @@ export const store: Store = {
     userLoginStore: new UserLoginStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
-    newsStore: new NewsStore()
+    newsStore: new NewsStore(),
 };
 
 const StoreContext = createContext(store);

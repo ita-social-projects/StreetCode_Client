@@ -1,23 +1,20 @@
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
-import partnersApi from '@api/partners/partners.api';
 import newsApi from '@api/news/news.api';
-import Partner, { PartnerCreateUpdate, PartnerShort } from '@models/partners/partners.model';
-import News from '@models/news/news.model'
+import News from '@models/news/news.model';
+
 export default class NewsStore {
-    // public PartnerMap = new Map<number, Partner>();
     public NewsMap = new Map<number, News>();
 
     public constructor() {
         makeAutoObservable(this, {
             NewsMap: observable,
-            // fetchPartnersByStreetcodeId: action,
             fetchNewsAll: action,
             getAll: action,
             createNews: action,
-            // updatePartner: action,
             deleteNews: action,
             setInternalMap: action,
             setItem: action,
+            updateNews: action,
         });
     }
 
@@ -28,15 +25,6 @@ export default class NewsStore {
     public setItem = (news: News) => {
         this.NewsMap.set(news.id, news);
     };
-
-    // public static async getAllPartnerShort():Promise<PartnerShort[]> {
-    //     try {
-    //         return await partnersApi.getAllShort();
-    //     } catch (error: unknown) {
-    //         console.log(error);
-    //     }
-    //     return [];
-    // }
 
     get getNewsArray() {
         return Array.from(this.NewsMap.values());
@@ -49,14 +37,6 @@ export default class NewsStore {
             console.log(error);
         }
     };
-
-    // public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
-    //     try {
-    //         this.setInternalMap(await partnersApi.getByStreetcodeId(streetcodeId));
-    //     } catch (error: unknown) {
-    //         console.log(error);
-    //     }
-    // };
 
     public fetchNewsAll = async () => {
         try {
@@ -74,13 +54,13 @@ export default class NewsStore {
         }
     };
 
-    // public updatePartner = async (partner: PartnerCreateUpdate) => {
-    //     try {
-    //         await partnersApi.update(partner).then((updated) => this.setItem(updated));
-    //     } catch (error: unknown) {
-    //         console.log(error);
-    //     }
-    // };
+    public updateNews = async (news: News) => {
+        try {
+            await newsApi.update(news).then((updated) => this.setItem(updated));
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
 
     public deleteNews = async (newsId: number) => {
         try {
