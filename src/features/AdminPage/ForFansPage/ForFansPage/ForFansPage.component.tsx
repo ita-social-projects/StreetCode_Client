@@ -1,142 +1,64 @@
+import './ForFansPage.style.scss';
+
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { useRef, useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
+import ImagesApi from '@api/media/images.api';
+import FileUploader from '@components/FileUploader/FileUploader.component';
+import SourceItem from '@features/AdminPage/ForFansPage/ForFansPage/SourceItem';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useRouteId from '@hooks/stateful/useRouter.hook';
-import { SourceCategory } from '@models/sources/sources.model';
+import Image from '@models/media/image.model';
+import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
-import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+import base64ToUrl from '@utils/base64ToUrl.utility';
 
 import {
-    Button, Card, Col, Input, Modal, Row, Space,
+    Button, Input, Modal, Space, UploadFile,
 } from 'antd';
 
-import SourcesComponent from '@/features/StreetcodePage/SourcesBlock/Sources.component';
-
-interface Props {
-  srcCategory: SourceCategory;
-}
-
-const SourceItem = ({ srcCategory }: Props) => {
-    const { sourcesStore } = useMobx();
-    const { deleteSrcCategoryById } = sourcesStore;
-    const { modalStore: { setModal } } = useMobx();
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [title, setTitle] = useState(srcCategory.title);
-    const [imageUrl, setImageUrl] = useState(srcCategory.image?.url.href);
-
-    const handleDelete = (event: React.MouseEvent) => {
-        event.stopPropagation();
-        deleteSrcCategoryById(srcCategory.id);
-    };
-
-    const handleEdit = (event: React.MouseEvent) => {
-        event.stopPropagation();
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        // Perform validation and update source category
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setTitle(srcCategory.title);
-        setImageUrl(srcCategory.image?.url.href);
-        setIsModalVisible(false);
-    };
-
-    const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-    };
-
-    const handleChangeImageUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setImageUrl(event.target.value);
-    };
-
-    return (
-        <div
-            className="sourcesSliderItem"
-            style={{ backgroundImage: `url(${imageUrl})` }}
-        >
-            <h1>{title}</h1>
-            <div className="sourceActions">
-                <Button icon={<EditOutlined />} onClick={handleEdit} />
-                <Button icon={<DeleteOutlined />} onClick={handleDelete} />
-            </div>
-            <Modal
-                title="Edit Source Category"
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <Space direction="vertical" size="middle">
-                    <Input placeholder="Title" value={title} onChange={handleChangeTitle} />
-                    <Input placeholder="Image URL" value={imageUrl} onChange={handleChangeImageUrl} />
-                </Space>
-            </Modal>
-        </div>
-    );
-};
-
 const ForFansPage = () => {
-    const { sourcesStore } = useMobx();
-    const { fetchSrcCategoriesByStreetcodeId, srcCategoriesMap } = sourcesStore;
-    const streetcodeId = useRouteId();
-
-    useAsync(
-        () => fetchSrcCategoriesByStreetcodeId(streetcodeId),
-        [streetcodeId],
-    );
-
-    const getSrcCategoriesArray = () => Array.from(srcCategoriesMap.values());
-
+    const { sourcesAdminStore } = useMobx();
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+    const [image, setImage] = useState<Image>();
+    const imageId = useRef<number>(0);
+    const { addSourceCategory } = sourcesAdminStore;
+    const handlePreview = async (file: UploadFile) => {
+        setFilePreview(file);
+        setPreviewOpen(true);
+    };
+    useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [newTitle, setNewTitle] = useState('');
-    const [newImageUrl, setNewImageUrl] = useState('');
-
     const handleAdd = () => {
         setIsAddModalVisible(true);
     };
-
     const handleAddOk = () => {
-        // Perform validation and add new source category
         setIsAddModalVisible(false);
+        const src: SourceCategoryAdmin = {
+            imageId: imageId.current,
+            image,
+            title: newTitle,
+        };
+        setNewTitle('');
+        setImage(undefined);
+        sourcesAdminStore.addSourceCategory(src);
     };
 
     const handleAddCancel = () => {
         setNewTitle('');
-        setNewImageUrl('');
         setIsAddModalVisible(false);
     };
 
     const handleChangeNewTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewTitle(event.target.value);
     };
-
-    const handleChangeNewImageUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewImageUrl(event.target.value);
-    };
-
-    const handleDeleteAll = () => {
-        // Perform confirmation and delete all source categories
-    };
-
-    const handleSaveOrder = (srcCategories: SourceCategory[]) => {
-        // Update order of source categories
-    };
-
     return (
         <div className="forFansPage">
-            <BlockHeading title="For Fans" />
             <BlockSlider>
-                {getSrcCategoriesArray(streetcodeId)?.map((srcCategory) => (
-                    <Col span={6}>
-                        <Card bordered={false}>
-                            <SourceItem srcCategory={srcCategory} />
-                        </Card>
-                    </Col>
+                {sourcesAdminStore.getSourcesAdmin.map((srcCategory: SourceCategoryAdmin) => (
+                    <SourceItem srcCategory={srcCategory} />
                 ))}
             </BlockSlider>
             <Button
@@ -145,17 +67,40 @@ const ForFansPage = () => {
                 style={{ marginTop: 16 }}
                 onClick={handleAdd}
             >
-  Add New Source Category
+                {/* eslint-disable-next-line no-tabs */}
+				Add New Source Category
             </Button>
             <Modal
                 title="Add New Source Category"
-                visible={isAddModalVisible}
+                open={isAddModalVisible}
                 onOk={handleAddOk}
                 onCancel={handleAddCancel}
             >
                 <Space direction="vertical" size="middle">
                     <Input placeholder="Title" value={newTitle} onChange={handleChangeNewTitle} />
-                    <Input placeholder="Image URL" value={newImageUrl} onChange={handleChangeNewImageUrl} />
+                    <FileUploader
+                        multiple={false}
+                        accept=".jpeg,.png,.jpg"
+                        listType="picture-card"
+                        maxCount={1}
+                        onPreview={handlePreview}
+                        uploadTo="image"
+                        onSuccessUpload={(img: Image) => {
+                            imageId.current = img.id;
+                            setImage(img);
+                        }}
+                        onRemove={(img) => {
+                            ImagesApi.delete(imageId.current);
+                        }}
+                        defaultFileList={(image)
+                            ? [{ name: '',
+                                 thumbUrl: base64ToUrl(image?.base64, image?.mimeType),
+                                 uid: image?.id.toString(),
+                                 status: 'done' }]
+                            : []}
+                    >
+                        <p>Виберіть чи перетягніть файл</p>
+                    </FileUploader>
                 </Space>
             </Modal>
         </div>

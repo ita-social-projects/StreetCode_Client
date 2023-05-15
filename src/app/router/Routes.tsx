@@ -16,14 +16,16 @@ import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<AdminPage />}
+            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route
             index
@@ -33,7 +35,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<NewStreetcode />}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             index
@@ -56,6 +58,15 @@ const router = createBrowserRouter(createRoutesFromElements(
             element={(
                 <ProtectedComponent>
                     <TermDictionary />
+                </ProtectedComponent>
+            )}
+        />
+        <Route
+            index
+            path={FRONTEND_ROUTES.ADMIN.TEAM}
+            element={(
+                <ProtectedComponent>
+                    <TeamPage />
                 </ProtectedComponent>
             )}
         />

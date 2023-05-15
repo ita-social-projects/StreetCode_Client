@@ -28,10 +28,7 @@ export default class RelatedTermsStore {
     public fetchRelatedTermsByTermId = async (id: number) => {
         try {
             this.setRelatedTermMap = await relatedTermApi.getAllByTermId(id);
-            // console.log(this.storage.values());
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     public createRelatedTerm = async (word: string, termId: number) => {
@@ -73,8 +70,6 @@ export default class RelatedTermsStore {
                 };
                 this.setRelatedTermItem(updateRelatedTerm as RelatedTerm);
             });
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 }

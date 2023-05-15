@@ -37,18 +37,14 @@ export default class FactsStore {
         try {
             const facts = await factsApi.getFactsByStreetcodeId(streetcodeId);
             this.setInternalMap(facts);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public createFact = async (fact: Fact) => {
         try {
             await factsApi.create(fact);
             this.setItem(fact);
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public updateFact = async (fact: Fact) => {
@@ -61,9 +57,7 @@ export default class FactsStore {
                 };
                 this.setItem(updatedFact as Fact);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteFact = async (factId: number) => {
@@ -72,8 +66,6 @@ export default class FactsStore {
             runInAction(() => {
                 this.factMap.delete(factId);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 }

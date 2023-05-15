@@ -61,6 +61,20 @@ export const API_ROUTES = {
         UPDATE: 'timelineItem/update',
         DELETE: 'timelineItem/delete',
     },
+    TEAM: {
+        GET_ALL: 'team/getAll',
+        GET: 'team/getById',
+        CREATE: 'team/create',
+        UPDATE: 'team/update',
+        DELETE: 'team/delete',
+    },
+    POSITIONS: {
+        GET_ALL: 'position/getAll',
+        GET: 'position/getById',
+        CREATE: 'position/create',
+        UPDATE: 'position/update',
+        DELETE: 'position/delete',
+    },
     TOPONYMS: {
         GET_ALL: 'toponym/getAll',
         CREATE: 'toponym/create',
@@ -76,9 +90,9 @@ export const API_ROUTES = {
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
         GET_CONTENT_BY_STREETCODE_ID: 'sources/getCategoryContentByStreetcodeId',
-        CREATE: 'sources/create',
-        UPDATE: 'sources/update',
-        DELETE: 'sources/delete',
+        CREATE: 'sources/createCategory',
+        UPDATE: 'sources/updateCategory',
+        DELETE: 'sources/deleteCategory',
     },
     TRANSACTION_LINKS: {
         GET_ALL: 'transactLinks/getAll',

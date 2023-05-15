@@ -33,7 +33,6 @@ const StreetcodesTable = () => {
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
 
     const setRequest = () => {
-        console.log(`Page:${pageRequest}\nAmount:${amountRequest}\nTitle:${titleRequest}\nSort:${null}\nFilter:Status:${statusRequest}\n`);
         setRequestGetAll({
             Page: pageRequest,
             Amount: amountRequest,
@@ -216,7 +215,6 @@ const StreetcodesTable = () => {
                             max={20}
                             defaultValue={1}
                             onChange={(value: any) => {
-                                console.log(value);
                                 setAmountRequest(value);
                             }}
                         />
