@@ -11,9 +11,6 @@ export default class TeamStore {
             fetchTeamAll: action,
             getAll: action,
             getById: action,
-            createPartner: action,
-            updatePartner: action,
-            deletePartner: action,
             setInternalMap: action,
             setItem: action,
         });

@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { action, makeAutoObservable, observable } from 'mobx';
 
 import { Positions } from '../../models/team/team.model';

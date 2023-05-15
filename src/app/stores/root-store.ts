@@ -82,7 +82,7 @@ export const store: Store = {
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
-    positionsStore: new PositionsStore()
+    positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
 };
