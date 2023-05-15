@@ -20,7 +20,7 @@ const InstagramSliderItem = ({ photoUrl, caption }: Props) => {
             style={imageStyle}
         >
             <div className='textContainer'>
-                {caption}
+                <p>{caption}</p>
             </div>
         </div>
     );
