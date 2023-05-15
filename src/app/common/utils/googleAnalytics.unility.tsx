@@ -13,6 +13,7 @@ export const personLiveEvent = (streetcodeId : number) => ReactGA.event(
         streetcodeId: `${streetcodeId}`,
     },
 );
+
 export const donateEvent = (from: string) => ReactGA.event('donate_click', { method: `${from}` });
 export const supportEvent = (from: string) => ReactGA.event('support_click', { method: `${from}` });
 export const becomePartnerEvent = (from: string) => ReactGA.event('become_partner_click', { method: `${from}` });

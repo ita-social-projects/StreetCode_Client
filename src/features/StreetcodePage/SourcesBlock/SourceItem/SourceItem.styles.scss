@@ -7,7 +7,8 @@ $articlesImg: "@assets/images/sources/Articles.png";
   @include mut.sizedImportant(380px, 250px);
   @include mut.full-rounded(30px);
   box-shadow: 4px 4px 4px rgba(0, 0, 0, .25);
-
+  display: flex;
+  gap: 10px;
   @include mut.flex-centered();
   @include mut.bg-image($articlesImg);
 
@@ -15,4 +16,9 @@ $articlesImg: "@assets/images/sources/Articles.png";
     color: white;
     font-weight: 500;
   }
-} 
+}
+@media screen and (max-width: 768px) {
+  .sourcesSliderItem {
+     @include mut.sizedImportant($width: 250px, $height: 250px);
+  }
+}

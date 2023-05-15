@@ -19,10 +19,15 @@ import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
+import SourcesAdminStore from "@stores/sourceadmin-store";
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import UserLoginStore from './user-login-store';
+import TeamStore from './team-store';
+import PositionsStore from './position-store';
+import StatisticRecordStore from './statistic-record-store';
+
 
 interface Store {
     modalStore: ModalStore,
@@ -32,9 +37,11 @@ interface Store {
     audiosStore: AudioStore,
     imagesStore: ImageStore,
     partnersStore: PartnersStore,
+    teamStore: TeamStore,
     termsStore: TermStore,
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
+    sourcesAdminStore: SourcesAdminStore
     streetcodeArtStore: StreetcodeArtStore,
     streetcodeStore: StreetcodeStore,
     relatedFiguresStore: RelatedFiguresStore,
@@ -47,6 +54,8 @@ interface Store {
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
     sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
     userLoginStore: UserLoginStore,
+    positionsStore: PositionsStore,
+    statisticRecordStore: StatisticRecordStore,
 }
 
 export const store: Store = {
@@ -59,6 +68,7 @@ export const store: Store = {
     imagesStore: new ImageStore(),
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
+    teamStore: new TeamStore(),
     timelineItemStore: new TimelineStore(),
     sourcesStore: new SourcesStore(),
     relatedFiguresStore: new RelatedFiguresStore(),
@@ -72,6 +82,9 @@ export const store: Store = {
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
+    positionsStore: new PositionsStore(),
+    sourcesAdminStore: new SourcesAdminStore(),
+    statisticRecordStore: new StatisticRecordStore(),
 };
 
 const StoreContext = createContext(store);
