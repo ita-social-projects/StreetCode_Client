@@ -1,5 +1,3 @@
-import './HistoryRelations.styles.scss';
-
 import { useEffect, useState } from 'react';
 import { PartnerShort } from '@models/partners/partners.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
@@ -30,9 +28,7 @@ const RelatedFiguresBlock = ({ figures,setFigures }: Props) => {
                 'https://localhost:5001/api/Streetcode/GetAll',
             );
             setOptions(response.data.streetcodes);
-        } catch (error) {
-            console.error(error);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {

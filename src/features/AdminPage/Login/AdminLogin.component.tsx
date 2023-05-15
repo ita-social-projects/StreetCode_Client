@@ -19,7 +19,7 @@ const AdminLogin:React.FC = () => {
     const setConfirmationModal = () => {
         modalStore.setConfirmationModal('confirmation', () => {
             userLoginStore.refreshToken()
-                .catch((e) => console.log(e));
+                .catch((e) => {});
             modalStore.setConfirmationModal('confirmation');
         }, 'Бажаєте продовжити сеанс?', undefined, () => {
             UserLoginStore.clearToken();
@@ -38,7 +38,6 @@ const AdminLogin:React.FC = () => {
             .catch((er) => {
                 message
                     .error('Неправильний логін чи пароль');
-                console.log(er);
             });
     };
     if (UserLoginStore.isLoggedIn) {

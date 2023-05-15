@@ -61,7 +61,7 @@ const ProgressBar: FC<Props> = ({
             const curScrollY = Math.abs(y);
 
             setScrollPosition(curScrollY);
-            
+
             wasScrolled.current = curScrollY > visibleBefore;
         },
         waitMsOnRender,
@@ -88,8 +88,9 @@ const ProgressBar: FC<Props> = ({
         },
         onMouseLeave: () => {
             setProgressBarUse(false);
-            timeoutId.current = setTimeout(() => {setIsOnTimeout(false)
-            toggle()
+            timeoutId.current = setTimeout(() => {
+                setIsOnTimeout(false);
+                toggle();
             }, hidingDelay);
         },
     }), [hidingDelay]);
@@ -108,9 +109,9 @@ const ProgressBar: FC<Props> = ({
     };
 
     const onProgressBarCallerClick = () => {
-            toggle();
-            setIsOnTimeout(true);
-            isScrollInFirstTwoSections.current = false;
+        toggle();
+        setIsOnTimeout(true);
+        isScrollInFirstTwoSections.current = false;
     };
 
     const isPBVisible = (isScrollInFirstTwoSections.current || isVisible) && isOnTimeout;
@@ -125,9 +126,8 @@ const ProgressBar: FC<Props> = ({
                     {...cursorCaptureHandlers}
                     style={(!isOnTimeout) ? { pointerEvents: 'none' } : undefined}
                     className={`progressBarPopupContainer ${isPBVisible ? 'visible' : ''}`}
-                    
                 >
-                    
+
                     <div className="progressBarPopupContent">
                         {blocks.map((block, idx) => {
                             let isBlockActive = block.height <= scrollPosition;
@@ -144,6 +144,7 @@ const ProgressBar: FC<Props> = ({
 
                             return (
                                 <ProgressBarSection
+                                    key={idx}
                                     idx={idx}
                                     block={block}
                                     isBlockActive={isBlockActive}
@@ -156,7 +157,7 @@ const ProgressBar: FC<Props> = ({
                         />
                     </div>
                 </div>
-                <ArrowUp style={isPBVisible ? { rotate: 'x 180deg' } : undefined}/>
+                <ArrowUp style={isPBVisible ? { rotate: 'x 180deg' } : undefined} />
             </div>
         </>
     );

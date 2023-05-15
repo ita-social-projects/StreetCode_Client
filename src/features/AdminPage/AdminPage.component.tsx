@@ -7,8 +7,8 @@ import StreetcodesTable from './StreetcodesTable/StreetcodesTable.component';
 
 const AdminPage = () => (
     <div className="adminPageContainer">
-        <StreetcodesTable />
         <PageBar />
+        <StreetcodesTable />
     </div>
 );
 

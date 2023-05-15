@@ -12,7 +12,6 @@ import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
@@ -28,6 +27,11 @@ interface Props {
     streetcodeType: StreetcodeType;
     setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
 }
+
+interface TagPreviewProps {
+    width: number;
+    screenWidth: number;
+}
 const MainBlockAdmin: React.FC<Props> = ({
     form,
     selectedTags,
@@ -36,23 +40,24 @@ const MainBlockAdmin: React.FC<Props> = ({
     setStreetcodeType,
 }) => {
     const teaserMaxCharCount = 520;
-    const allTags = useAsync(() => TagsApi.getAll()).value;
+    const tagPreviewPropsList:TagPreviewProps[] = [
+        { width: 360, screenWidth: 360 },
+        { width: 365, screenWidth: 768 },
+        { width: 612, screenWidth: 1600 },
+    ];
     const [tags, setTags] = useState<Tag[]>([]);
     const [inputedChar, setInputedChar] = useState<number>(0);
     const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
-    const [popoverProps, setPopoverProps] = useState<{
-        width: number, screenWidth: number
-    }>({ width: 360, screenWidth: 360 });
+    const [popoverProps, setPopoverProps] = useState<TagPreviewProps>(tagPreviewPropsList[0]);
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
     const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
-    const [indexId, setIndexId] = useState<number>();
+    const [indexId, setIndexId] = useState<number>(1);
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
@@ -109,14 +114,20 @@ const MainBlockAdmin: React.FC<Props> = ({
     };
 
     useEffect(() => {
-        TagsApi.getAll().then((tags) => setTags(tags));
+        TagsApi.getAll().then((tgs) => setTags(tgs));
     }, []);
 
+    const setIndex = (index :number | null) => {
+        if (index) {
+            form.setFieldValue('streetcodeNumber', index);
+            setIndexId(index);
+        }
+    };
     const onSelectTag = (selectedValue: string) => {
         let selected;
         const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
         if (selectedIndex < 0) {
-            let minId = selectedTags.reduce((a, b) => ((a.id < b.id) ? a : b)).id;
+            let minId = Math.min(...selectedTags.map((t) => t.id));
             if (minId < 0) {
                 minId -= 1;
             } else {
@@ -141,7 +152,6 @@ const MainBlockAdmin: React.FC<Props> = ({
 
     return (
         <div className="mainblock-add-form">
-
             <Form.Item
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
@@ -153,9 +163,15 @@ const MainBlockAdmin: React.FC<Props> = ({
                         min={0}
                         max={10000}
                         value={indexId}
-                        onChange={(value) => setIndexId(value)}
+                        onChange={setIndex}
                     />
-                    <Button className="button-margin-left streetcode-custom-button" onClick={onCheckIndexClick}> Перевірити</Button>
+                    <Button
+                        className="button-margin-left streetcode-custom-button"
+                        onClick={onCheckIndexClick}
+                    >
+                        {' '}
+                        Перевірити
+                    </Button>
                 </div>
             </Form.Item>
 
@@ -173,32 +189,33 @@ const MainBlockAdmin: React.FC<Props> = ({
                     className="display-flex-column"
                 >
                     <Form.Item
-                        name="surname"
-                        label="Прізвище"
+                        label="Ім'я"
+                        name="name"
                         className="people-title-input"
-                        rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
-                            { pattern: /^[а-яА-Я\s]+$/, message: 'Прізвище має містити тільки літерали' },
-                            { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                        rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
+                        { pattern: /^[а-яА-Я\s]+$/, message: "Ім'я має містити тільки літерали" },
+                        { max: 50, message: "Ім'я не може містити більше 50 символів" },
                         ]}
                     >
                         <Input
-                            ref={surname}
+                            ref={name}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
                     </Form.Item>
+
                     <Form.Item
-                        label="Ім'я"
-                        name="name"
+                        name="surname"
+                        label="Прізвище"
                         className="people-title-input"
-                        rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
-                            { pattern: /^[а-яА-Я\s]+$/, message: "Ім'я має містити тільки літерали" },
-                            { max: 50, message: "Ім'я не може містити більше 50 символів" },
+                        rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
+                        { pattern: /^[а-яА-Я\s]+$/, message: 'Прізвище має містити тільки літерали' },
+                        { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
                         ]}
                     >
                         <Input
-                            ref={name}
+                            ref={surname}
                             onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
@@ -219,7 +236,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <Input maxLength={100} showCount />
             </Form.Item>
 
-            <Form.Item name="alias" label="Короткий опис" className="maincard-item">
+            <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
                 <Input maxLength={33} showCount />
             </Form.Item>
             <Form.Item
@@ -273,18 +290,14 @@ const MainBlockAdmin: React.FC<Props> = ({
                             trigger="hover"
                             overlayStyle={{ width: popoverProps.width }}
                         >
-                            <p
-                                className="device-size"
-                                onMouseEnter={() => setPopoverProps({ screenWidth: 360, width: 360 })}
-                            >
-                            360
-                            </p>
-                            <p
-                                className="device-size"
-                                onMouseEnter={() => setPopoverProps({ screenWidth: 1600, width: 612 })}
-                            >
-                            1600
-                            </p>
+                            {tagPreviewPropsList.map((el) => (
+                                <p
+                                    className="device-size"
+                                    onMouseEnter={() => setPopoverProps(el)}
+                                >
+                                    {el.screenWidth}
+                                </p>
+                            ))}
                         </Popover>
                     </Form.Item>
                 </div>
@@ -305,7 +318,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <div className="amount-left-char-textarea-teaser">
                     <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
                         {inputedChar}
-                        /500
+                            /
+                        {teaserMaxCharCount}
                     </p>
                 </div>
             </div>

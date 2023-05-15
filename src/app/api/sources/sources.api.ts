@@ -1,7 +1,7 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import {
-    SourceCategory, SourceCategoryName, SourceLink, SourceSubCategory, StreetcodeCategoryContent,
+    SourceCategory, SourceCategoryAdmin, SourceCategoryName, SourceLink, StreetcodeCategoryContent,
 } from '@models/sources/sources.model';
 
 const SourcesApi = {
@@ -20,9 +20,9 @@ const SourcesApi = {
             `${API_ROUTES.SOURCES.GET_CONTENT_BY_STREETCODE_ID}/${categoryId}&${streetcodeId}`,
         ),
 
-    create: (source: SourceLink) => Agent.post<SourceLink>(`${API_ROUTES.SOURCES.CREATE}`, source),
+    create: (source: SourceCategoryAdmin) => Agent.post<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.CREATE}`, source),
 
-    update: (source: SourceLink) => Agent.put<SourceLink>(`${API_ROUTES.SOURCES.UPDATE}`, source),
+    update: (source: SourceCategoryAdmin) => Agent.put<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.UPDATE}/${source.id}`, source),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.SOURCES.DELETE}/${id}`),
 };

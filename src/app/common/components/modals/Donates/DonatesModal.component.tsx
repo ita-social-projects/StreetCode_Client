@@ -114,7 +114,7 @@ const DonatesModal = () => {
                 <h1>Підтримай проєкт</h1>
                 <h3>Скажи «Дякую» історії</h3>
                 <div className="enterSum">Ввести суму</div>
-                <div className="donateInputContainerWrapper">
+                <div className={`donateInputContainerWrapper ${(donateAmount !== 0) ? 'active' : ''} `}>
                     <input
                         onChange={handleDonateInputChange}
                         style={{ ...style, width: `var(--input-width)` }}
@@ -141,7 +141,7 @@ const DonatesModal = () => {
                     <Checkbox className={"checkbox-borderline"} checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
                 </div>
                 <Button onClick={handlePost}
-                    disabled={!isCheckboxChecked}
+                    disabled={!isCheckboxChecked || donateAmount == 0}
                     className="donatesDonateBtn"
                 >Підтримати</Button>
             </div>

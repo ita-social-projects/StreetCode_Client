@@ -61,6 +61,20 @@ export const API_ROUTES = {
         UPDATE: 'timelineItem/update',
         DELETE: 'timelineItem/delete',
     },
+    TEAM: {
+        GET_ALL: 'team/getAll',
+        GET: 'team/getById',
+        CREATE: 'team/create',
+        UPDATE: 'team/update',
+        DELETE: 'team/delete',
+    },
+    POSITIONS: {
+        GET_ALL: 'position/getAll',
+        GET: 'position/getById',
+        CREATE: 'position/create',
+        UPDATE: 'position/update',
+        DELETE: 'position/delete',
+    },
     TOPONYMS: {
         GET_ALL: 'toponym/getAll',
         CREATE: 'toponym/create',
@@ -76,9 +90,9 @@ export const API_ROUTES = {
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
         GET_CONTENT_BY_STREETCODE_ID: 'sources/getCategoryContentByStreetcodeId',
-        CREATE: 'sources/create',
-        UPDATE: 'sources/update',
-        DELETE: 'sources/delete',
+        CREATE: 'sources/createCategory',
+        UPDATE: 'sources/updateCategory',
+        DELETE: 'sources/deleteCategory',
     },
     TRANSACTION_LINKS: {
         GET_ALL: 'transactLinks/getAll',
@@ -133,7 +147,9 @@ export const API_ROUTES = {
     },
     STREETCODES: {
         GET_ALL: 'streetcode/getAll',
+        GET_BY_FILTER: 'streetcode/getByFilter',
         GET_ALL_SHORT: 'streetcode/getAllShort',
+        GET_SHORT_BY_ID: 'streetcode/getShortById',
         GET_ALL_CATALOG: 'streetcode/getAllCatalog',
         GET_COUNT: 'streetcode/getCount',
         GET_EVENTS: 'streetcode/getEvents',
@@ -143,6 +159,7 @@ export const API_ROUTES = {
         GET_BY_TAG_ID: 'streetcode/getByTagId',
         GET_BY_INDEX: 'streetcode/getByIndex',
         GET_BY_URL: 'streetcode/getByTransliterationUrl',
+        GET_URL_BY_QR_ID: 'streetcode/getByQrId',
         CREATE: 'streetcode/create',
         UPDATE: 'streetcode/update',
         DELETE: 'streetcode/delete',
@@ -173,5 +190,14 @@ export const API_ROUTES = {
     },
     DONATION: {
         CREATE: 'payment/createInvoice',
-    }
+    },
+    STATISTIC_RECORD: {
+        GET_ALL: 'statisticRecord/getAll',
+        GET_BY_QRID: 'statisticRecord/getByQrId',
+        GET_ALL_BY_STREETCODE_ID: 'statisticRecord/getAllByStreetcodeId',
+        EXIST_BY_QRID: 'statisticRecord/existByQrId',
+        CREATE: 'statisticRecord/create',
+        UPDATE: 'statisticRecord/update',
+        DELETE: 'statisticRecord/delete',
+    },
 };

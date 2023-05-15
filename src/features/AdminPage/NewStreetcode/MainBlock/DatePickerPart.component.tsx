@@ -40,9 +40,7 @@ const DatePickerPart:React.FC<{
                     setDefaultFirtsDate(x.eventStartOrPersonBirthDate.toString() ?? "");
                     setDefaultSecondDate(x.eventEndOrPersonDeathDate.toString() ?? "");
                     setDefaultDate(x.dateString ?? "");
-                } catch (error) {
-                    console.error(error);
-                } finally {
+                } catch (error) {} finally {
                     setIsLoading(false);
                 }
             };
@@ -80,14 +78,14 @@ const DatePickerPart:React.FC<{
     };
 
     return ( 
-        <FormItem label="Роки Діяльності">         
+        <FormItem label="Роки">         
             {
                 isLoading ? (
                 <div>Loading...</div>
             ) : 
             (
             <div className='date-picker-container'>
-                <div className="date-string-input">
+                <div>
                     <FormItem name="dateString">
                         <Input defaultValue={defaultDate} disabled />
                     </FormItem>

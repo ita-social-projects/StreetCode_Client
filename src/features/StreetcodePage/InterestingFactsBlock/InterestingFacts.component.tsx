@@ -1,6 +1,7 @@
 import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { SetStateAction, useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -9,22 +10,34 @@ import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFa
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 const InterestingFactsComponent = () => {
-    const { factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
+    const { imageLoaderStore, factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
+    const { handleImageLoad } = imageLoaderStore;
 
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchFactsByStreetcodeId(getStreetCodeId);
+                Promise.all([
+                    fetchFactsByStreetcodeId(getStreetCodeId),
+                ]);
             }
         },
         [getStreetCodeId],
     );
-    const sliderArray = getFactArray.length === 3 || getFactArray.length === 2 ? getFactArray.concat(getFactArray) : getFactArray;
+
+    const sliderArray = getFactArray.length === 3
+                        || getFactArray.length === 2
+        ? getFactArray.concat(getFactArray)
+        : getFactArray;
+
+    useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += sliderArray.length;
+    }, [getFactArray.length]);
 
     const setings = {
         dots: getFactArray.length > 3,
-        swipeOnClick: true,
+        swipeOnClick: false,
+        rtl: false,
         centerMode: true,
         swipe: false,
         centerPadding: '-5px',
@@ -57,41 +70,50 @@ const InterestingFactsComponent = () => {
             },
 
         ],
-
     };
 
     return (
-        <div className={`interestingFactsWrapper ${getFactArray.length === 1 ? 'single' : ''}`}>
-            <div className="interestingFactsContainer">
-                <BlockHeading headingText="Wow-факти" />
-                <div className="interestingFactsSliderContainer">
-                    <div style={{ height: '100%' }}>
-                        {(getFactArray.length === 1) ? (
-                            <div className="singleSlideContainer">
-                                <InterestingFactItem
-                                    numberOfSlides={1}
-                                    fact={getFactArray[0]}
-                                />
+        getFactArray.length > 0
+            ? (
+                <div
+                    id="wow-facts"
+                    className={`"interestingFactsWrapper"
+                    ${getFactArray.length === 1 ? 'single' : ''} 
+                    ${getFactArray.length ? '' : 'display-none'}`}
+                >
+                    <div className="interestingFactsContainer">
+                        <BlockHeading headingText="Wow—факти" />
+                        <div className="interestingFactsSliderContainer">
+                            <div style={{ height: '100%' }}>
+                                {(getFactArray.length === 1) ? (
+                                    <div className="singleSlideContainer">
+                                        <InterestingFactItem
+                                            numberOfSlides={1}
+                                            fact={getFactArray[0]}
+                                            handleImageLoad={handleImageLoad}
+                                        />
+                                    </div>
+                                ) : (
+                                    <BlockSlider
+                                        className="heightContainer"
+                                        {...setings}
+                                    >
+                                        {sliderArray.map((fact) => (
+                                            <InterestingFactItem
+                                                key={fact.id}
+                                                fact={fact}
+                                                numberOfSlides={sliderArray.length}
+                                                handleImageLoad={handleImageLoad}
+                                            />
+                                        ))}
+                                    </BlockSlider>
+                                )}
                             </div>
-                        ) : (
-                            <BlockSlider
-                                className="heightContainer"
-                                {...setings}
-                            >
-                                {sliderArray.map((fact) => (
-                                    <InterestingFactItem
-                                        key={fact.id}
-                                        fact={fact}
-                                        numberOfSlides={sliderArray.length}
-                                    />
-                                ))}
-                            </BlockSlider>
-                        )}
-
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            )
+            : <></>
     );
 };
 

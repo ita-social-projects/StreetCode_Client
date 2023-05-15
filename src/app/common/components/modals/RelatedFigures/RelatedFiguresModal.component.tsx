@@ -1,7 +1,6 @@
 import './RelatedFiguresModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { SetStateAction } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import ModalBg from '@assets/images/utils/ModalBg.png';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -44,12 +43,14 @@ const RelatedFiguresModal = () => {
             </div>
             <div className="relatedFiguresReadMoreContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (
-                    <RelatedFigureItem
-                        key={figure.id}
-                        relatedFigure={figure}
-                        filterTags={false}
-                        setActiveTagId={()=>{}}
-                    />
+                    <div key={figure.id } onClick={() => setModal('relatedFigures', streetcodeId, false)}>
+                        <RelatedFigureItem
+                            key={figure.id}
+                            relatedFigure={figure}
+                            filterTags={false}
+                            setActiveTagId={()=>{}}
+                        />
+                    </div>
                 ))}
             </div>
         </Modal>

@@ -124,11 +124,6 @@ const StatisticsToponymsComponentAdmin = () => {
                     pagination={false}
                 />
             </div>
-            <div>
-                <div className="underTableZone">
-                    <Button className="streetcode-custom-button">Додати обрані</Button>
-                </div>
-            </div>
         </div>
     );
 };

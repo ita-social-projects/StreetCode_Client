@@ -59,9 +59,7 @@ const DonationBlock = () => {
             try {
                 const response = await DonationApi.create(donation);
                 window.location.assign(response.PageUrl);
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) {}
         }
     };
 
@@ -125,7 +123,7 @@ const DonationBlock = () => {
             </div>
             <Button
                 onClick={handlePost}
-                disabled={!isCheckboxChecked}
+                disabled={!isCheckboxChecked || donateAmount == 0}
                 className="donatesDonateBtn"
             >
                 Підтримати
