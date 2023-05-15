@@ -9,6 +9,8 @@ import Youtube from '@images/footer/Youtube.png';
 
 import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+
 const Footer = () => {
     const windowSize = useWindowSize();
     return (
@@ -20,21 +22,21 @@ const Footer = () => {
                     </div>
                     <div className="usefulLinksColumnContainer">
                         <ul className="usefulLinksColumn">
-                            <li>Головна</li>
-                            <li>Стріткоди</li>
-                            <li>Маршрути</li>
-                            <li>Блог</li>
-                            <li>Про проєкт</li>
-                            <li>Контакти</li>
+                            <li><a href={FRONTEND_ROUTES.BASE}>Головна</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>Стріткоди</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}>Маршрути</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}>Блог</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}>Про проєкт</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Контакти</a></li>
                         </ul>
                         <ul className="usefulLinksColumn">
-                            <li>Партнери</li>
-                            <li>Вакансії</li>
-                            <li>Донати</li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS}>Партнери</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}>Вакансії</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US}>Донати</a></li>
                         </ul>
                         <ul className="usefulLinksColumn supportLinks">
-                            <li>Політика конфіденційності</li>
-                            <li>Зворотний зв'язок</li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}>Політика конфіденційності</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Зворотний зв&apos;язок</a></li>
                         </ul>
                         <ul className="socialIconContainer">
                             <li>

@@ -1,8 +1,5 @@
 const FRONTEND_ROUTES = {
     BASE: '/',
-    STREETCODE: {
-        BASE: '/streetcode',
-    },
     ADMIN: {
         BASE: '/admin-panel',
         PARTNERS: '/admin-panel/partners',
@@ -11,10 +8,17 @@ const FRONTEND_ROUTES = {
         DICTIONARY: '/admin-panel/dictionary',
         FOR_FANS: '/admin-panel/dictionary',
         LOGIN: '/admin-panel/login',
+        TEAM: '/admin-panel/team',
         ANALYTICS: '/admin-panel/analytics',
+
     },
-    CATALOG: {
-        BASE: '/catalog',
+    OTHER_PAGES: {
+        CATALOG: '/catalog',
+        ERROR404: '/404',
+        PRIVACY_POLICY: '/privacy-policy',
+        CONTACT_US: '/contact-us',
+        PARTNERS: '/partners-page',
+        SUPPORT_US: '/support-us',
     },
 };
 

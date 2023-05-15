@@ -1,9 +1,11 @@
 import './Streetcode.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -29,18 +31,18 @@ import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.compon
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => {
+    const { imageLoaderStore, streetcodeStore } = useMobx();
+    const { setCurrentStreetcodeId } = streetcodeStore;
+    const { imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
+    const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
+
     const streetcodeUrl = useRouteUrl();
+
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const { streetcodeStore } = useMobx();
-    const { setCurrentStreetcodeId } = streetcodeStore;
-
     const [loading, setLoading] = useState(true);
 
-    const [streetcodeCardState, setStreetcodeCardState] = useState(false);
     const [textBlockState, setTextBlockState] = useState(false);
-    const [interestingFactsState, setInterestingFactsState] = useState(false);
-    const [partnersState, setPartnersState] = useState(false);
 
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -76,26 +78,55 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+
+        // for cloned images in sliders
+        if (slideCloneCountAdded === 0) {
+            const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
+            const slideCloneCount = slideClonedImgs.length;
+            imageLoaderStore.totalImagesToLoad += slideCloneCount;
+            setSlideCloneCountAdded(slideCloneCount);
+        }
+
+        if (imagesLoadedPercentage >= 90 && textBlockState) {
+            setLoading(false);
+            document.body.style.overflow = 'auto';
+
+            const anchorId = window.location.hash.substring(1);
+            const blockElement = document.getElementById(anchorId);
+            if (blockElement) {
+                blockElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [textBlockState, loadedImagesCount]);
+
     return (
         <div className="streetcodeContainer">
+            {loading && (
+                <div className="loader-container">
+                    <img
+                        className="spinner"
+                        alt=""
+                        src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
+                    />
+                </div>
+            )}
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
-                    setStreetcodeCardState={setStreetcodeCardState}
                 />
                 <TextBlockComponent setTextBlockState={setTextBlockState} />
-                <InterestingFactsComponent setInterestingFactsState={setInterestingFactsState} />
+                <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlock />
                 <ArtGalleryBlockComponent />
-                <RelatedFiguresComponent
-                    setActiveTagId={setActiveTagId}
-                />
+                <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersComponent setPartnersState={setPartnersState} />
+            <PartnersComponent />
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />
@@ -113,4 +144,4 @@ const StreetcodeContent = () => {
     );
 };
 
-export default StreetcodeContent;
+export default observer(StreetcodeContent);

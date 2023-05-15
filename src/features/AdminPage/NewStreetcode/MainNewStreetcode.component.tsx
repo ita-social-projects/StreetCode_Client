@@ -1,21 +1,33 @@
-/* eslint-disable complexity */
-/* eslint-disable no-restricted-imports */
 /* eslint-disable max-len */
+/* eslint-disable complexity */
+/* eslint-disable no-alert */
 import './MainNewStreetcode.styles.scss';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
+import SubtitlesApi from '@app/api/additional-content/subtitles.api';
+import VideosApi from '@app/api/media/videos.api';
+import PartnersApi from '@app/api/partners/partners.api';
+import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
+import FactsApi from '@app/api/streetcode/text-content/facts.api';
+import TextsApi from '@app/api/streetcode/text-content/texts.api';
+import TimelineApi from '@app/api/timeline/timeline.api';
+import FRONTEND_ROUTES from '@app/common/constants/frontend-routes.constants';
+import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
+import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useMobx from '@/app/stores/root-store';
-import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
+import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner from '@/models/partners/partners.model';
@@ -24,16 +36,6 @@ import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
-import StreetcodeCoordinateApi from '../../../app/api/additional-content/streetcode-cooridnates.api';
-import SubtitlesApi from '../../../app/api/additional-content/subtitles.api';
-import StreetcodeArtApi from '../../../app/api/media/streetcode-art.api';
-import VideosApi from '../../../app/api/media/videos.api';
-import PartnersApi from '../../../app/api/partners/partners.api';
-import SourcesApi from '../../../app/api/sources/sources.api';
-import FactsApi from '../../../app/api/streetcode/text-content/facts.api';
-import TextsApi from '../../../app/api/streetcode/text-content/texts.api';
-import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
-import StreetcodeCoordinate from '../../../models/additional-content/coordinate.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
@@ -56,6 +58,7 @@ const NewStreetcode = () => {
         newStreetcodeInfoStore,
         sourceCreateUpdateStreetcode,
         streetcodeCoordinatesStore,
+        statisticRecordStore,
     } = useMobx();
 
     const [partners, setPartners] = useState<Partner[]>([]);
@@ -65,7 +68,6 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<string>('');
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
-    const [categories, setCategories] = useState<SourceCategory[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
@@ -134,7 +136,8 @@ const NewStreetcode = () => {
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
-                setFuncName('update'); //---------------------------------------------
+
+                setFuncName('update');
             });
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
@@ -178,7 +181,7 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onFinish = () => {
+    const onFinish = (data: any) => {
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -201,7 +204,7 @@ const NewStreetcode = () => {
         }));
 
         const streetcode: StreetcodeCreate = {
-            id: parseId, //----------------------------------------------------
+            id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
@@ -240,6 +243,16 @@ const NewStreetcode = () => {
                     .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
                         { ...streetcodeCategoryContent, id: 0 }
                     )),
+            statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
+                .map((statisticRecord: StatisticRecord) => (
+                    { ...statisticRecord,
+                      id: 0,
+                      coordinateId: 0,
+                      streetcodeCoordinate: {
+                          ...statisticRecord.streetcodeCoordinate,
+                          id: 0,
+                      } }
+                )),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
@@ -247,21 +260,21 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
-            console.log(streetcode);
             StreetcodesApi.update(streetcode).then((response2) => {
                 alert('Cтріткод успішно оновленний');
-                console.log(response2);
             })
-                .catch(() => {
+                .catch((error2) => {
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {
             StreetcodesApi.create(streetcode)
-                .then(() => {
-                    setTimeout(() => location.reload(), 100);
-                    window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+
+                .then((response) => {
+                    setTimeout(() => location.reload(), 500);
+                    window.open(`${form.getFieldValue('streetcodeUrlName')}`);
                 })
-                .catch(() => {
+                .catch((error) => {
+                    console.log(error);
                     alert('Виникла помилка при створенні стріткоду');
                 });
         }
@@ -272,6 +285,7 @@ const NewStreetcode = () => {
             <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">
+
                     <div className="adminContainer-block">
                         <h2>Стріткод</h2>
                         <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -285,7 +299,6 @@ const NewStreetcode = () => {
                             <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
                         </Form>
                     </div>
-
                     <InterestingFactsBlock id={parseId ?? -1} />
                     <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                     <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
@@ -294,7 +307,6 @@ const NewStreetcode = () => {
                     <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
                     <ForFansBlock />
                     <MapBlockAdmin coordinates={coordinates} />
-
                     <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>
                 </div>
             </ConfigProvider>

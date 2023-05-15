@@ -14,7 +14,7 @@ const ForFansBlock = () => {
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
 
     useEffect(() => {
-        SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => console.log(e));
+        SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => { });
     }, []);
     return (
         <div className="adminContainer-block">

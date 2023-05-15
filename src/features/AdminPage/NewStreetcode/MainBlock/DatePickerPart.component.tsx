@@ -40,9 +40,7 @@ const DatePickerPart:React.FC<{
                     setDefaultFirtsDate(x.eventStartOrPersonBirthDate.toString() ?? "");
                     setDefaultSecondDate(x.eventEndOrPersonDeathDate.toString() ?? "");
                     setDefaultDate(x.dateString ?? "");
-                } catch (error) {
-                    console.error(error);
-                } finally {
+                } catch (error) {} finally {
                     setIsLoading(false);
                 }
             };

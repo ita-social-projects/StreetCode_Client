@@ -23,9 +23,7 @@ export default class StreetcodeStore {
                 this.setStreetCode = streetcode;
                 return streetcode;
             }
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     public get getStreetCodeId() {
