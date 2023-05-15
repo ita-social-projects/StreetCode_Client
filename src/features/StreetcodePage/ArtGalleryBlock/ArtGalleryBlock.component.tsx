@@ -21,7 +21,7 @@ const SECTION_AMOUNT = 6;
 const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
-    const { streetcodeArtStore, streetcodeStore } = useMobx();
+    const { streetcodeArtStore, streetcodeStore, imageLoaderStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
@@ -50,6 +50,10 @@ const ArtGalleryBlock = () => {
         },
         [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
     );
+
+    useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += getStreetcodeArtArray.length;
+    }, [getStreetcodeArtArray.length]);
 
     useEffect(() => {
         const newMap: IndexedArt[] = [];

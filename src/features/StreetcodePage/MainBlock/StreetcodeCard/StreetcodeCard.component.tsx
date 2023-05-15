@@ -12,7 +12,6 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import useImageLoader from '@/app/common/hooks/stateful/useImageLoading';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
@@ -27,7 +26,6 @@ interface Props {
     streetcode?: Streetcode;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
     setActiveBlock: React.Dispatch<React.SetStateAction<number>>
-    setStreetcodeCardState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -46,11 +44,11 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetcodeCardState }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = streetcode?.id;
-    const { modalStore: { setModal } } = useMobx();
+    const { imageLoaderStore, modalStore: { setModal } } = useMobx();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-    const [loadedImagesCount, handleImageLoad] = useImageLoader();
+    const { handleImageLoad } = imageLoaderStore;
 
     useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
 
@@ -64,10 +62,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
     }, [streetcode]);
 
     useEffect(() => {
-        if (loadedImagesCount !== 0 && loadedImagesCount === images.length) {
-            setStreetcodeCardState(true);
-        }
-    }, [loadedImagesCount]);
+        imageLoaderStore.totalImagesToLoad += images.length;
+    }, [images]);
 
     return (
         <div className="card">
@@ -90,7 +86,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setStreetc
                         ))}
                     </BlockSlider>
                 </div>
-
             </div>
             <div className="rightSider">
                 <div className="headerContainer">

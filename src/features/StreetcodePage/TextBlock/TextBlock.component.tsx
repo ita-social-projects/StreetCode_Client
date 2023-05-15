@@ -1,6 +1,7 @@
 import './TextBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
@@ -22,6 +23,8 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
+    const [videoLoaded, setVideoLoaded] = useState(false);
+    const [shouldRender, setShouldRender] = useState(false);
 
     const [text, setText] = useState(undefined);
     const [video, setVideo] = useState(undefined);
@@ -44,8 +47,18 @@ const TextComponent = ({ setTextBlockState }: Props) => {
         }
     }, [getStreetCodeId]);
 
+    useEffect(() => {
+        if (text || video) {
+            setShouldRender(true);
+        }
+
+        if (!(text && video) || (text && !video) || (video && videoLoaded)) {
+            setTextBlockState(true);
+        }
+    }, [videoLoaded, text, video]);
+
     return (
-        text
+        shouldRender
             ? (
                 <div
                     id="text"
@@ -58,11 +71,11 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                         </div>
                     </div>
                     <div className="videoComponent">
-                        <VideoPlayer videoUrls={String(video?.url.href)} setTextBlockState={setTextBlockState} />
+                        <VideoPlayer videoUrls={String(video?.url.href)} setVideoLoaded={setVideoLoaded} />
                         {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
                     </div>
                 </div>
-            ) : <></>
+            ) : null
     );
 };
 
