@@ -193,7 +193,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         name="name"
                         className="people-title-input"
                         rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
-                        { pattern: /^[а-яА-Я\s]+$/, message: "Ім'я має містити тільки літерали" },
+                        { pattern: /^[а-яА-ЯіІ\s]+$/u, message: "Ім'я має містити тільки літерали" },
                         { max: 50, message: "Ім'я не може містити більше 50 символів" },
                         ]}
                     >
@@ -210,7 +210,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         label="Прізвище"
                         className="people-title-input"
                         rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
-                        { pattern: /^[а-яА-Я\s]+$/, message: 'Прізвище має містити тільки літерали' },
+                        { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Прізвище має містити тільки літерали' },
                         { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
                         ]}
                     >
@@ -231,7 +231,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
                     { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' },
-                    { pattern: /^[а-яА-Я\s]+$/, message: 'Назва стріткоду має містити тільки літерали' }]}
+                    { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
             >
                 <Input maxLength={100} showCount />
             </Form.Item>
