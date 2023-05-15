@@ -37,9 +37,9 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
             }}
 
             onChange={(e, editor) => {
-                console.log('editor: ', editor.getContent());
+                //  console.log('editor: ', editor.getContent());
                 setInputInfo({ ...inputInfo, additionalText: editor.getContent() });
-                console.log('input: ', inputInfo);
+                // console.log('input: ', inputInfo);
             }}
         />
     </FormItem>

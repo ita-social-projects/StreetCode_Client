@@ -7,13 +7,14 @@
 
 .additionalText {
 
+    width: 50%;
     white-space: pre-line;
     text-align: right;
-    margin-bottom: f.pxToRem(42px);
-    margin-top: f.pxToRem(12px);
+    @include mut.rem-margined($top: 12px, $bottom: 42px);
     font-size: f.pxToRem(20px);
     line-height: f.pxToRem(26px);
     font-style: italic;
+    display: flex;
 
     p {
         font-family: 'Closer Text' !important;
@@ -28,8 +29,8 @@
 
 @media screen and (max-width: 1024px) {
     .additionalText {
-        margin-bottom: f.pxToRem(20px);
-        margin-top: f.pxToRem(20px);
+        width: 100%;
+        @include mut.rem-margined($top: 20px, $left: 10px, $bottom: 20px, $right: 10px );
     }
 }
 

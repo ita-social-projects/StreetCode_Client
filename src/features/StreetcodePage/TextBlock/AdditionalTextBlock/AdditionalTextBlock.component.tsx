@@ -14,10 +14,7 @@ const AdditionalText = ({ additionalText }: Props) => {
 
     return (
         <div className="additionalText">
-            {/* eslint-disable-next-line react/jsx-no-useless-fragment */}
-            <div>
-                {additionalText || null}
-            </div>
+            {additionalText || null}
         </div>
     );
 };
