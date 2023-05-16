@@ -4,6 +4,7 @@ import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -75,6 +76,7 @@ const NewStreetcode = () => {
     const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
+    const navigate = useNavigate();
 
     const [funcName, setFuncName] = useState<string>('create');
 
@@ -268,7 +270,7 @@ const NewStreetcode = () => {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                     setTimeout(()=>location.reload(),500);
-                    window.open(`${form.getFieldValue('streetcodeUrlName')}`);
+                    navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {
                     console.log(error);
