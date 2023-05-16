@@ -25,8 +25,6 @@ const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
 
     const onPartnerSelect = (value:number) => {
         const index = allPartnersShort.findIndex((c) => c.id === value);
-        //selectedPartners.current.push(allPartnersShort[index]);
-        //setPartners(selectedPartners.current);
         setPartners([...partners, allPartnersShort[index]]);
     };
     const onPartnerDeselect = (value:number) => {

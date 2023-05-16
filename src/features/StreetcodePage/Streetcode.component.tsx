@@ -1,8 +1,11 @@
 import './Streetcode.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
+import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -13,6 +16,9 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
+import dayjs from 'dayjs';
+
+import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 
@@ -25,26 +31,66 @@ import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.compon
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => {
+    const { imageLoaderStore, streetcodeStore } = useMobx();
+    const { setCurrentStreetcodeId } = streetcodeStore;
+    const { imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
+    const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
+
     const streetcodeUrl = useRouteUrl();
+
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const { streetcodeStore } = useMobx();
-    const { setCurrentStreetcodeId } = streetcodeStore;
-
     const [loading, setLoading] = useState(true);
 
-    const [streetcodeCardState, setStreetcodeCardState] = useState(false);
     const [textBlockState, setTextBlockState] = useState(false);
-    const [interestingFactsState, setInterestingFactsState] = useState(false);
-    const [partnersState, setPartnersState] = useState(false);
 
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const checkExist = async (qrId: number) => {
+        const exist = await StatisticRecordApi.existByQrId(qrId);
+        return exist;
+    };
+
+    const addCount = async (qrId: number) => {
+        await StatisticRecordApi.update(qrId);
+    };
+
+    useEffect(() => {
+        const idParam = searchParams.get('qrid');
+        if (idParam !== null) {
+            const tempId = +idParam;
+            Promise.all([checkExist(tempId), addCount(tempId)]).then(
+                (resp) => {
+                    if (resp.at(0) && resp.at(1) !== null) {
+                        searchParams.delete('qrid');
+                        setSearchParams(searchParams);
+                    }
+                },
+            ).catch(
+                () => {
+                    navigate('/404', { replace: true });
+                },
+            );
+        }
+    });
+  
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
-/*     useEffect(() => {
+    useEffect(() => {
         document.body.style.overflow = 'hidden';
-        if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
+
+        // for cloned images in sliders
+        if (slideCloneCountAdded === 0) {
+            const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
+            const slideCloneCount = slideClonedImgs.length;
+            imageLoaderStore.totalImagesToLoad += slideCloneCount;
+            setSlideCloneCountAdded(slideCloneCount);
+        }
+
+        if (imagesLoadedPercentage >= 90 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
 
@@ -54,11 +100,11 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]); */
+    }, [textBlockState, loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">
-           {/*  {loading && (
+            {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -66,25 +112,22 @@ const StreetcodeContent = () => {
                         src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
                     />
                 </div>
-            )} */}
+            )}
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
-                    setStreetcodeCardState={setStreetcodeCardState}
                 />
                 <TextBlockComponent setTextBlockState={setTextBlockState} />
-                <InterestingFactsComponent setInterestingFactsState={setInterestingFactsState} />
+                <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlock />
                 <ArtGalleryBlockComponent />
-                <RelatedFiguresComponent
-                    setActiveTagId={setActiveTagId}
-                />
+                <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersComponent setPartnersState={setPartnersState} />
+            <PartnersComponent />
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />
@@ -102,4 +145,4 @@ const StreetcodeContent = () => {
     );
 };
 
-export default StreetcodeContent;
+export default observer(StreetcodeContent);

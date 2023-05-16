@@ -19,7 +19,7 @@ const AdminLogin:React.FC = () => {
     const setConfirmationModal = () => {
         modalStore.setConfirmationModal('confirmation', () => {
             userLoginStore.refreshToken()
-                .catch((e) => console.log(e));
+                .catch((e) => {});
             modalStore.setConfirmationModal('confirmation');
         }, 'Бажаєте продовжити сеанс?', undefined, () => {
             userLoginStore.clearUserData();

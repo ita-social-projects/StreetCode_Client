@@ -4,7 +4,8 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import sourcesApi from '@api/sources/sources.api';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import ModalBg from '@assets/images/utils/ModalBg.png';
+import CancelBtnMobile from '@assets/images/utils/Cancel_btn_mobile.svg';
+import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 import useMobx from '@stores/root-store';
 import htmpReactParser from 'html-react-parser';
 
@@ -16,7 +17,7 @@ import { StreetcodeCategoryContent } from '@/models/sources/sources.model';
 const SourcesModal = () => {
     const { sourcesStore: { srcCategoriesMap }, modalStore, streetcodeStore } = useMobx();
     const { setModal, modalsState: { sources } } = modalStore;
-
+    const windowsize = useWindowSize();
     const [content, setContent] = useState<StreetcodeCategoryContent>();
     const categoryId = sources.fromCardId!;
     const category = srcCategoriesMap.get(categoryId);
@@ -36,14 +37,9 @@ const SourcesModal = () => {
             centered
             footer={null}
             onCancel={() => setModal('sources', categoryId)}
-            closeIcon={<CancelBtn />}
+            closeIcon={windowsize.width <= 1024 ? <CancelBtnMobile /> : <CancelBtn />}
         >
-            <div
-                className="sourceImgContainer"
-                style={{
-                    background: `url(${ModalBg})`,
-                }}
-            >
+            <div className="sourceImgContainer">
                 <h1>{category?.title}</h1>
             </div>
             <div className="mainContentContainer">

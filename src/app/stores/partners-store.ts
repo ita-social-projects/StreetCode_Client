@@ -30,9 +30,7 @@ export default class PartnersStore {
     public static async getAllPartnerShort():Promise<PartnerShort[]> {
         try {
             return await partnersApi.getAllShort();
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
         return [];
     }
 
@@ -43,41 +41,31 @@ export default class PartnersStore {
     public getAll = async () => {
         try {
             this.setInternalMap(await partnersApi.getAll());
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap(await partnersApi.getByStreetcodeId(streetcodeId));
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public fetchPartnersAll = async () => {
         try {
             this.setInternalMap(await partnersApi.getAll());
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public createPartner = async (partner: PartnerCreateUpdate) => {
         try {
             await partnersApi.create(partner).then((created) => this.setItem(created));
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public updatePartner = async (partner: PartnerCreateUpdate) => {
         try {
             await partnersApi.update(partner).then((updated) => this.setItem(updated));
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public deletePartner = async (partnerId: number) => {
@@ -86,8 +74,6 @@ export default class PartnersStore {
             runInAction(() => {
                 this.PartnerMap.delete(partnerId);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 }
