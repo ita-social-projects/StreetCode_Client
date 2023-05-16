@@ -98,7 +98,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 <div className={`relatedFiguresWrapper container
             ${(getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')}`}
                 >
-                    <div className="relatedFiguresContainer container">
+                    <div className="relatedFiguresContainer">
                         <BlockHeading headingText="Зв'язки історії" />
                         <div className="headingWrapper">
                             <div className="moreInfo">
