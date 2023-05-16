@@ -78,27 +78,39 @@ const InterestingFactsComponent = () => {
             ? (
                 <div
                     id="wow-facts"
-                    className={`"interestingFactsWrapper"
+                    className={`container "interestingFactsWrapper"
                     ${getFactArray.length === 1 ? 'single' : ''} 
                     ${getFactArray.length ? '' : 'display-none'}`}
                 >
-                    <div className="interestingFactsContainer container">
-                        <BlockHeading headingText="Wow—факти" />
+                    <BlockHeading headingText="Wow—факти" />
+                    <div className={`interestingFactsContainer
+                    ${getFactArray.length === 1 ? 'singleFact' : ''}`}
+                    >
                         <div className="interestingFactsSliderContainer">
                             <div style={{ height: '100%' }}>
-                                <BlockSlider
-                                    className="heightContainer"
-                                    {...setings}
-                                >
-                                    {sliderArray.map((fact) => (
+                                {(getFactArray.length === 1) ? (
+                                    <div className="singleSlideContainer">
                                         <InterestingFactItem
-                                            key={fact.id}
-                                            fact={fact}
-                                            numberOfSlides={sliderArray.length}
+                                            numberOfSlides={1}
+                                            fact={getFactArray[0]}
                                             handleImageLoad={handleImageLoad}
                                         />
-                                    ))}
-                                </BlockSlider>
+                                    </div>
+                                ) : (
+                                    <BlockSlider
+                                        className="heightContainer"
+                                        {...setings}
+                                    >
+                                        {sliderArray.map((fact) => (
+                                            <InterestingFactItem
+                                                key={fact.id}
+                                                fact={fact}
+                                                numberOfSlides={sliderArray.length}
+                                                handleImageLoad={handleImageLoad}
+                                            />
+                                        ))}
+                                    </BlockSlider>
+                                )}
                             </div>
                         </div>
                     </div>

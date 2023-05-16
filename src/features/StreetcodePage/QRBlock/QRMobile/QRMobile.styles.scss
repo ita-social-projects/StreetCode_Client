@@ -7,7 +7,6 @@ $loadImg: '@assets/images/qr-block/must_be_gif.png';
 
 .QRMobileContainer{
     width: 100%;
-    height: pxToRem(400px);
     display: inline-flex;
     vertical-align: middle;
     display: flex;
@@ -77,7 +76,6 @@ $loadImg: '@assets/images/qr-block/must_be_gif.png';
     .QRMobileContainer{
         display: flex;
         flex-direction: column-reverse;
-        margin-bottom: pxToRem(80px);
     }
     .QRMobileGif{
         display: flex;
