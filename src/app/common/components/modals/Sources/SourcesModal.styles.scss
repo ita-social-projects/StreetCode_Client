@@ -54,7 +54,12 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
     font-weight: 300;
     font-size: 15px;
     > h1 {
-      @include mut.with-font($font-weight: 500, $font-size: 24px);
+      @include mut.with-font($font-family: ft.$closer-text-font, $font-weight:500, $font-size: 24px, $font-style:light );
+      line-height: pxToRem(26.4px);
+    }
+    a{
+      text-decoration: underline;
+      color: c.$pure-black-color;
     }
     .sectionLinksContainer {
       @include mut.flexed($direction: column, $gap: 10px);
