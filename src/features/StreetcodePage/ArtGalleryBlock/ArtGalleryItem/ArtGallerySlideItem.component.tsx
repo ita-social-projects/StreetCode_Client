@@ -1,8 +1,8 @@
 import './ArtGallerySlideItem.styles.scss';
 
 import { IndexedArt } from '@models/media/art.model';
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import useMobx from '@/app/stores/root-store';
 
 interface Props {
@@ -11,38 +11,42 @@ interface Props {
     isAdminPage?: boolean
 }
 const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => {
-    const { imageHref, description,title , sequenceNumber } = artGalleryItem;
-    const { modalStore: { setModal } } = useMobx();
+    const { imageHref, description, title, sequenceNumber } = artGalleryItem;
+    const { modalStore: { setModal }, imageLoaderStore } = useMobx();
     const windowsize = useWindowSize();
 
     function setStyleByOffset(offset: number): string {
         switch (offset) {
-            case 1:
-                return 'small';
-            case 2:
-                return 'medium';
-            case 4:
-                return 'large';
+        case 1:
+            return 'small';
+        case 2:
+            return 'medium';
+        case 4:
+            return 'large';
         }
     }
 
     return (
-        <div className={isAdminPage ? `slideArtAdmin  ${setStyleByOffset(offset)}` :
-            `slideArt ${setStyleByOffset(offset)}`}>
-            <div className={isAdminPage ? `artImageWrapperAdmin` : `artImageWrapper`}>
+        <div className={isAdminPage ? `slideArtAdmin  ${setStyleByOffset(offset)}`
+            : `slideArt ${setStyleByOffset(offset)}`}
+        >
+            <div className={isAdminPage ? 'artImageWrapperAdmin' : 'artImageWrapper'}>
                 <img
                     className={`imgImg ${setStyleByOffset(offset)}`}
                     src={imageHref}
                     onClick={isAdminPage ? null : () => setModal('artGallery', sequenceNumber)}
                     alt=""
+                    onLoad={imageLoaderStore.handleImageLoad}
                 />
-                {windowsize.width > 1024 && (<div
-                    className={`imgData imgData${description || title ? 'Full' : 'Empty'
+                {windowsize.width > 1024 && (
+                    <div
+                        className={`imgData imgData${description || title ? 'Full' : 'Empty'
                         }`}
-                >
-                    <p className="imgTitle">{title}</p>
-                    <p className="imgDescription">{description}</p>
-                </div>)}
+                    >
+                        <p className="imgTitle">{title}</p>
+                        <p className="imgDescription">{description}</p>
+                    </div>
+                )}
             </div>
         </div>
     );

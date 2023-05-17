@@ -144,6 +144,7 @@ const ProgressBar: FC<Props> = ({
 
                             return (
                                 <ProgressBarSection
+                                    key={idx}
                                     idx={idx}
                                     block={block}
                                     isBlockActive={isBlockActive}

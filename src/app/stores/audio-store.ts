@@ -19,9 +19,7 @@ export default class AudioStore {
             runInAction(() => {
                 this.setItem(audio as Audio);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public createAudio = async (audio: Audio) => {
@@ -30,9 +28,7 @@ export default class AudioStore {
             runInAction(() => {
                 this.setItem(audio as Audio);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) { }
     };
 
     public updateAudio = async (audio: Audio) => {
@@ -41,9 +37,7 @@ export default class AudioStore {
             runInAction(() => {
                 this.setItem(audio as Audio);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteAudio = async (audioId: number) => {
@@ -52,8 +46,6 @@ export default class AudioStore {
             runInAction(() => {
                 this.setItem(undefined);
             });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        } catch (error: unknown) {}
     };
 }

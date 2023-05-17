@@ -6,7 +6,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 .margin-82px {
     margin-top: f.pxToRem(82px);
 }
-.mainBlock{
+.streetcodeContainer .mainBlock{
     @include mut.bg-image($bgImg, auto);
     background-repeat: repeat-x;
 }

@@ -17,9 +17,7 @@ export default class StreetcodesCatalogStore {
                 || !array.some((item) => item.id === this.catalog.at(0)?.id)) {
                 this.catalog = this.catalog.concat(array);
             }
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     get getCatalogStreetcodesArray() {

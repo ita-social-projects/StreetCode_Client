@@ -31,8 +31,12 @@ const mainPageContent = () => {
                     <ScrollToTopBtn/>
                 </div>
             </div>
-            <Footer/>
+            <TopCarouselComponent/>
+            <StreetcodeSliderComponent />
+            <TeamComponent />
+            <Footer />
         </div>
     );
 }
+
 export default mainPageContent;
