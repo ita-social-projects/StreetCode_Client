@@ -22,7 +22,7 @@ const MapBlock = () => {
         .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as StreetcodeCoordinate[];
 
     return (
-        <div className="mapBlockContainer">
+        <div className="mapBlockContainer container">
             <BlockHeading headingText="Мапа історії" />
             <CheckBoxComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms}/>
             <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms} />
