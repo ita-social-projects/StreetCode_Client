@@ -4,7 +4,7 @@ import Footer from "../../app/layout/footer/Footer.component";
 import DonateBtn from "../StreetcodePage/DonateBtn/DonateBtn.component";
 import TopCarouselComponent from './TopCarousel/TopCarousel.component';
 import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
-import TeamSlider from './TeamSlider/TeamSlider.component';
+import TeamComponent from './TeamSlider/TeamComponent.component';
 const mainPageContent = () => {
     return (
         <div className="mainPageContainer">
@@ -16,7 +16,7 @@ const mainPageContent = () => {
             </div>
             <TopCarouselComponent/>
             <StreetcodeSliderComponent />
-            <TeamSlider />
+            <TeamComponent />
             <Footer />
         </div>
     );
