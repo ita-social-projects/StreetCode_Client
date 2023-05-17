@@ -2,15 +2,16 @@ import Ornament from '@/assets/images/main-page/ornament.svg';
 import './StaticBanner.styles.scss';
 
 interface Props {
+    id: string;
     blockName: string,
     blockContent: string,
     buttonName: string,
     setActionOnClick: React.MouseEventHandler<HTMLParagraphElement>
 }
 
-const StaticBanner = ({ blockName, blockContent, buttonName, setActionOnClick }: Props) => {
+const StaticBanner = ({ id, blockName, blockContent, buttonName, setActionOnClick }: Props) => {
     return (
-        <div className='mainPageBlockStaticBanner'>
+        <div className={`mainPageBlockStaticBanner ${id}`}>
             <Ornament className='left'/>
             
             <div className='mainContainer'>
