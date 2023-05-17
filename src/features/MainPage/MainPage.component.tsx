@@ -1,25 +1,26 @@
 import './MainPage.styles.scss';
-import ScrollToTopBtn from "../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component";
-import Footer from "../../app/layout/footer/Footer.component";
-import ProgressBar from "../ProgressBar/ProgressBar.component";
-import DonateBtn from "../StreetcodePage/DonateBtn/DonateBtn.component";
-import TextBlockComponent from '../StreetcodePage/TextBlock/TextBlock.component';
 
-const mainPageContent = () => {
-    return (
-        <div className="mainPageContainer">
+import ScrollToTopBtn from '../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component';
+import Footer from '../../app/layout/footer/Footer.component';
+import DonateBtn from '../StreetcodePage/DonateBtn/DonateBtn.component';
 
-            {/*<ProgressBar >*/}
+import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
+import TeamComponent from './TeamSlider/TeamComponent.component';
+import TopCarouselComponent from './TopCarousel/TopCarousel.component';
 
-            {/*</ProgressBar>*/}
-            <div className="sticky">
-                <div className="sticky-content">
-                    <ScrollToTopBtn />
-                    <DonateBtn />
-                </div>
+const mainPageContent = () => (
+    <div className="mainPageContainer">
+        <div className="sticky">
+            <div className="sticky-content">
+                <ScrollToTopBtn />
+                <DonateBtn />
             </div>
         </div>
-    );
 
-}
+        <TopCarouselComponent />
+        <StreetcodeSliderComponent />
+        <TeamComponent />
+    </div>
+);
+
 export default mainPageContent;

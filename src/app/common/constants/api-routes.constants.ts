@@ -63,6 +63,7 @@ export const API_ROUTES = {
     },
     TEAM: {
         GET_ALL: 'team/getAll',
+        GET_ALL_MAIN: 'team/getAllMain',
         GET: 'team/getById',
         CREATE: 'team/create',
         UPDATE: 'team/update',
