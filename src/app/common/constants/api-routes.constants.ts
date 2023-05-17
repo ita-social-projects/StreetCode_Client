@@ -15,6 +15,7 @@ export const API_ROUTES = {
     NEWS: {
         GET_ALL: 'news/getAll',
         GET: 'news/getById',
+        GET_BY_URL: 'news/getByUrl',
         CREATE: 'news/create',
         DELETE: 'news/delete',
         UPDATE: 'news/update',

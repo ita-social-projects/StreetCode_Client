@@ -18,6 +18,7 @@ import News from '@/features/AdminPage/NewsPage/News.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
+import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
@@ -73,6 +74,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/partners-page" element={<PartnersPage />} />
         <Route path="/support-us" element={<SupportUs />} />
         <Route index path="/:id" element={<StreetcodeContent />} />
+        <Route index path="/news/:id" element={<NewsPage />} />
     </Route>,
 ));
 

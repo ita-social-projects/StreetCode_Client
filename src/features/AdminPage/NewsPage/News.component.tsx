@@ -90,9 +90,9 @@ const Newss:React.FC = observer(() => {
           key: 'action',
           width: '10%',
           render: (value, news, index) => (
-              <div key={`${news.id}${index}`} className="partner-page-actions">
+              <div key={`${news.id}${index}1`} className="partner-page-actions">
                   <DeleteOutlined
-                      key={`${news.id}${index}222`}
+                      key={`${news.id}${index}`}
                       className="actionButton"
                       onClick={() => {
                           modalStore.setConfirmationModal(
@@ -110,7 +110,7 @@ const Newss:React.FC = observer(() => {
                       }}
                   />
                   <EditOutlined
-                      key={`${news.id}${index}111`}
+                      key={`${news.id}${index}2`}
                       className="actionButton"
                       onClick={() => {
                           setNewsToEdit(news);
