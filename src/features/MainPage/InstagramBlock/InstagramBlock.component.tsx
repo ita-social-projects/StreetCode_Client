@@ -18,7 +18,6 @@ const InstagramBlock = () => {
                 axios.get(`https://graph.instagram.com/${userId}/media?fields=id,media_type,media_url,caption&limit=${POST_LIMIT}&access_token=${accessToken}`)
                 .then(response => {
                     const posts = response.data.data;
-                    console.log(posts);
 
                     const mappedPosts = posts.map((post:InstagramPost) => {
                         const { id, media_url, caption } = post;

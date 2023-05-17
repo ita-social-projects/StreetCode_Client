@@ -15,15 +15,15 @@
 
     .textContainer {
         @include mut.sized($width: 300px, $height: 97px);
-        background-color: c.$pure-white-color;
-        padding: 17px 20px 16px;
+        padding: f.pxToRem(17px) f.pxToRem(20px) f.pxToRem(16px);
+
         border-bottom-left-radius: 30px;
         border-bottom-right-radius: 30px;
+        background-color: c.$pure-white-color;
 
         p {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 15px);
             line-height: 17.58px;
         }
     }
-    
 }

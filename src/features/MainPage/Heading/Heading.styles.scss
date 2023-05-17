@@ -20,8 +20,9 @@
     }
 
     .headingButton {
-        width: f.pxToRem(235px);
+        @include mut.sized($width: 235px);
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+        
         line-height: 23.44px;
         text-decoration: underline;
         text-align: right;

@@ -18,7 +18,7 @@
         margin: 0 3rem f.pxToRem(72px);
 
         .textContainer {
-            @include mut.sized($width: 872px);
+            max-width: 872px;
 
             p.title {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 36px);
@@ -50,7 +50,7 @@
     }
 
     &.catalog {
-        height: f.pxToRem(225px);
+        @include mut.sized($height: 225px);
 
         .mainContainer {
             margin: f.pxToRem(47px) 3rem;
@@ -58,7 +58,7 @@
             .textContainer {
                 p.title {
                     @include mut.rem-margined($bottom: 20px);
-                    height: 30px;
+                    @include mut.sized($height: 30px);
                 }
             }
         }

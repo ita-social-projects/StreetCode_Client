@@ -4,8 +4,6 @@ import Footer from "../../app/layout/footer/Footer.component";
 import ProgressBar from "../ProgressBar/ProgressBar.component";
 import InstagramBlock from './InstagramBlock/InstagramBlock.component';
 import StaticBanner from './StaticBanners/StaticBanner.component';
-import { useHref } from 'react-router-dom';
-
 
 const mainPageContent = () => {
     return (
