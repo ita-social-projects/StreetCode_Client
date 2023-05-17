@@ -11,17 +11,19 @@ interface Props {
 const StaticBanner = ({ blockName, blockContent, buttonName, setActionOnClick }: Props) => {
     return (
         <div className='mainPageBlockStaticBanner'>
-            <Ornament/>
-            <Ornament/>
-            <div className='textContainer'>
-                <p className='title'>{blockName}</p>
-                <p className='content'>{blockContent}</p>
+            <Ornament className='left'/>
+            <Ornament className='right'/>
+            <div className='mainContainer'>
+                <div className='textContainer'>
+                    <p className='title'>{blockName}</p>
+                    <p className='content'>{blockContent}</p>
+                </div>
+                <div className='redirectButton'>
+                    <p onClick={setActionOnClick}>{buttonName}</p>
+                </div>
             </div>
-            <div className='redirectButton'>
-                <p onClick={setActionOnClick}>{buttonName}</p>
-            </div>
-            <Ornament/>
-            <Ornament/>
+            <Ornament className='left'/>
+            <Ornament className='right'/>
         </div>
     );
 }

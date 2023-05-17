@@ -1,0 +1,48 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+.mainPageBlockStaticBanner {
+    // @include mut.sized($width: 90%);
+    min-height: f.pxToRem(225px);
+
+    @include mut.flexed();
+
+    margin: f.pxToRem(50px) f.pxToRem(20px);
+    padding: 0 f.pxToRem(46.5px);
+    background-color: c.$pure-white-color;
+    @include mut.full-rounded(50px);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+    svg {
+        margin: f.pxToRem(46px) 0 f.pxToRem(48px) 0;
+    }
+
+    .mainContainer {
+        @include mut.flexed($align-items: center);
+        margin: 0 3rem;
+        .textContainer {
+            p.title {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 36px);
+            }
+
+            p.content {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 24px);
+            }
+        }
+
+        .redirectButton {
+            @include mut.sized($width: 267px, $height: 73px);
+            @include mut.full-rounded(14px);
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+
+            // display: flex;
+            text-align: center;
+            padding: f.pxToRem(25px) 0;
+            background-color: c.$accented-red-color;
+            color: c.$pure-white-color;
+        }
+    }
+}
