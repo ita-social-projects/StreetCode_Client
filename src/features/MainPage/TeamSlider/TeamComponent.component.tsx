@@ -31,6 +31,7 @@ const TeamComponent = () => {
         dots:false,
         infinite:true,
         variableWidth: true,
+        slidesToShow: 1,
         swipeOnClick: false
     }
     if (team.length > 0) {
