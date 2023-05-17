@@ -12,7 +12,7 @@ const StaticBanner = ({ blockName, blockContent, buttonName, setActionOnClick }:
     return (
         <div className='mainPageBlockStaticBanner'>
             <Ornament className='left'/>
-            <Ornament className='right'/>
+            
             <div className='mainContainer'>
                 <div className='textContainer'>
                     <p className='title'>{blockName}</p>
@@ -22,7 +22,6 @@ const StaticBanner = ({ blockName, blockContent, buttonName, setActionOnClick }:
                     <p onClick={setActionOnClick}>{buttonName}</p>
                 </div>
             </div>
-            <Ornament className='left'/>
             <Ornament className='right'/>
         </div>
     );
