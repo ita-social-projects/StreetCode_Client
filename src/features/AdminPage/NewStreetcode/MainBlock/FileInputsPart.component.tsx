@@ -1,10 +1,12 @@
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { Form, useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
 
 import { Image, UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
+import Upload from 'antd/es/upload/Upload';
 
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
@@ -12,11 +14,10 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import useMobx from '@/app/stores/root-store';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
-import { Form, useParams } from 'react-router-dom';
+
+import base64ToUrl from '../../../../app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
-import Upload from 'antd/es/upload/Upload';
-import base64ToUrl from '../../../../app/common/utils/base64ToUrl.utility';
 
 const FileInputsPart: React.FC = () => {
     const { newStreetcodeInfoStore } = useMobx();
@@ -46,13 +47,12 @@ const FileInputsPart: React.FC = () => {
         if (parseId) {
             const fetchData = async () => {
                 try {
-
-                    await ImagesApi.getByStreetcodeId(parseId).then(result => {
+                    await ImagesApi.getByStreetcodeId(parseId).then((result) => {
                         const newFileList = result.map((art: Image) => ({
                             uid: art.id,
                             name: art.alt,
                             status: 'done',
-                            thumbUrl: base64ToUrl(art.base64, art.mimeType) ?? "",
+                            thumbUrl: base64ToUrl(art.base64, art.mimeType) ?? '',
                             type: art.mimeType,
                         }));
 
@@ -60,7 +60,7 @@ const FileInputsPart: React.FC = () => {
                         newStreetcodeInfoStore.BlackAndWhiteId = result[1] ? result[1].id : -1;
                         newStreetcodeInfoStore.relatedFigureId = result[2] ? result[2].id : null;
                         setImages([...newFileList]);
-                    });//.then(() => {
+                    });// .then(() => {
                     //    if (images) {
                     //        setIsLoading(false);
                     //    }
@@ -69,21 +69,20 @@ const FileInputsPart: React.FC = () => {
 
                     //        setIsLoading(true);
                     //    }
-                    //});
-                    await AudiosApi.getByStreetcodeId(parseId).then(result => {
+                    // });
+                    await AudiosApi.getByStreetcodeId(parseId).then((result) => {
                         const newAudio: UploadFile = {
-                            uid: result.id + "",
-                            name: "audio",
-                            status: "done",
-                            thumbUrl: base64ToUrl(result.base64, result.mimeType) ?? "",
-                            type: result.mimeType
-                        }
+                            uid: `${result.id}`,
+                            name: 'audio',
+                            status: 'done',
+                            thumbUrl: base64ToUrl(result.base64, result.mimeType) ?? '',
+                            type: result.mimeType,
+                        };
                         newStreetcodeInfoStore.audioId = result.id;
                         setAudios([newAudio]);
                     });
-
                 } catch (error) {
-                   
+
                 } finally {
 
                 }
@@ -92,17 +91,16 @@ const FileInputsPart: React.FC = () => {
         }
     }, []);
 
-
     return (
         <div>
             <div className="photo-uploader-container">
                 <FormItem
                     name="animations"
                     label="Анімація"
-                    rules={[{ required: parseId && images.length > 0 ? false : true, message: parseId ? 'Змінити анімацію':'Завантажте анімацію' }]}
+                    rules={[{ required: !(parseId && images.length > 0), message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
                 >
                     <FileUploader
-                      //fileList={images}
+                        // fileList={images}
                         accept=".gif"
                         listType="picture-card"
                         multiple={false}
@@ -113,20 +111,20 @@ const FileInputsPart: React.FC = () => {
                         onRemove={(file) => {
                             ImagesApi.delete(newStreetcodeInfoStore.animationId!);
                         }}
-                      // onChange={x => setImages(...images, images[0])}
+                        // onChange={x => setImages(...images, images[0])}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">{parseId && images.length>0 ? 'Змінити' : '+ Додати'}</p>
+                        <p className="ant-upload-text">{parseId && images.length > 0 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
                 </FormItem>
 
                 <FormItem
                     name="pictureBlackWhite"
                     label="Чорнобіле"
-                    rules={[{ required: parseId && images.length > 1 ? false : true, message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
+                    rules={[{ required: !(parseId && images.length > 1), message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
                 >
                     <FileUploader
-                      //fileList={[images[1] ?? []]}
+                        // fileList={[images[1] ?? []]}
                         multiple={false}
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
@@ -137,7 +135,7 @@ const FileInputsPart: React.FC = () => {
                         onRemove={(file) => {
                             ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
                         }}
-                      //onChange={x => setImages(...images, images[1])}
+                        // onChange={x => setImages(...images, images[1])}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && images.length > 1 ? 'Змінити' : '+ Додати'}</p>
@@ -146,9 +144,10 @@ const FileInputsPart: React.FC = () => {
 
                 <FormItem
                     name="pictureRelations"
-                    label="Для зв'язків">
+                    label="Для зв'язків"
+                >
                     <FileUploader
-                        //fileList={[images[2] ?? []]}
+                        // fileList={[images[2] ?? []]}
                         multiple={false}
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
@@ -161,35 +160,34 @@ const FileInputsPart: React.FC = () => {
                         onRemove={(file) => {
                             ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
                         }}
-                        //onChange={x => setImages(...images, images[2])}
-                      >
+                    >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && images.length > 2 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
                 </FormItem>
             </div>
             <div className="display-flex-row">
-            <FormItem
-                name="audio"
-                label="Аудіо"
-            >
-                <FileUploader
-                    //fileList={audios}
-                    accept=".mp3"
-                    maxCount={1}
-                    listType="picture-card"
-                    uploadTo="audio"
-                    onRemove={(file) => {
-                        AudiosApi.delete(newStreetcodeInfoStore.audioId!);
-                    }}
-                    onSuccessUpload={(audio:Audio) => {
-                        newStreetcodeInfoStore.audioId = audio.id;
-                    }}
+                <FormItem
+                    name="audio"
+                    label="Аудіо"
                 >
+                    <FileUploader
+                    // fileList={audios}
+                        accept=".mp3"
+                        maxCount={1}
+                        listType="picture-card"
+                        uploadTo="audio"
+                        onRemove={(file) => {
+                            AudiosApi.delete(newStreetcodeInfoStore.audioId!);
+                        }}
+                        onSuccessUpload={(audio:Audio) => {
+                            newStreetcodeInfoStore.audioId = audio.id;
+                        }}
+                    >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && audios.length > 0 ? 'Змінити' : '+ Додати'}</p>
-                </FileUploader>
-            </FormItem>
+                    </FileUploader>
+                </FormItem>
             </div>
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
