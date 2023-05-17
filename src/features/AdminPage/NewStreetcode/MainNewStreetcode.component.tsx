@@ -300,13 +300,13 @@ const NewStreetcode = () => {
                         </Form>
                     </div>
                     <InterestingFactsBlock id={parseId ?? -1} />
+                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
+                    <MapBlockAdmin coordinates={coordinates} />
+                    <ArtGalleryBlock arts={arts} setArts={setArts} />
                     <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
+                    <ForFansBlock />
                     <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
                     <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
-                    <ArtGalleryBlock arts={arts} setArts={setArts} />
-                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
-                    <ForFansBlock />
-                    <MapBlockAdmin coordinates={coordinates} />
                     <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>
                 </div>
             </ConfigProvider>
