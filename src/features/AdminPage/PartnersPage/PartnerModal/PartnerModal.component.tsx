@@ -70,6 +70,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  urlTitle: partnerItem.targetUrl.title,
                  description: partnerItem.description,
                  partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
+                 isVisibleEverywhere: partnerItem.isVisibleEverywhere,
                  logo: [
                      { name: '',
                        thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
