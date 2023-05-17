@@ -1,0 +1,70 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+
+.partnersContainer{
+    .titleContainer{
+        margin-bottom: f.pxToRem(24px);
+    
+        .titleSmall{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
+            line-height: 14px;
+            color: #891F16;
+            text-align: right;
+            text-transform: uppercase;      
+        }
+    
+        .titleBig{
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
+            line-height: 127px;
+            color: #F4F4F4;
+        }
+        
+        .content{
+            position: relative;
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+            line-height: 23px;
+            color: #1D1F23;
+            margin: f.pxToRem(40px) 0 f.pxToRem(16px) 0; 
+            z-index: 1;
+
+            .logo{
+                position: absolute;
+                top:  f.pxToRem(-150px);
+                right:  f.pxToRem(70px);
+                z-index: -1;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .partnersContainer{
+        .titleContainer{
+            .titleBig{
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
+                line-height: 71px;
+            }
+
+            .content{
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                line-height: 21px;
+                
+                .logo{
+                    transform: scale(0.5);
+                }
+            } 
+        }       
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .partnersContainer{
+        .titleContainer{
+            .content .logo{
+                top:  f.pxToRem(-50px);
+                right:  f.pxToRem(-80px);
+            }
+        }       
+    }
+}

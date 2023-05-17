@@ -5,6 +5,10 @@ import News from '@models/news/news.model';
 export default class NewsStore {
     public NewsMap = new Map<number, News>();
 
+    public errorNewsId = -1;
+
+    public currentNews = this.errorNewsId;
+
     public constructor() {
         makeAutoObservable(this, {
             NewsMap: observable,
@@ -22,11 +26,32 @@ export default class NewsStore {
         news.forEach(this.setItem);
     }
 
+    public set setNews(news: News) {
+        this.currentNews = news.id;
+    }
+
+    public setCurrentNewsId = async (url: string) => {
+        try {
+            const news = await newsApi.getByUrl(url);
+            if (news !== null) {
+                this.setNews = news;
+                return news;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    public get getNewsId() {
+        return this.currentNews;
+    }
+
     public setItem = (news: News) => {
         this.NewsMap.set(news.id, news);
     };
 
     get getNewsArray() {
+        this.getAll();
         return Array.from(this.NewsMap.values());
     }
 
@@ -45,6 +70,8 @@ export default class NewsStore {
             console.log(error);
         }
     };
+
+
 
     public createNews = async (news: News) => {
         try {

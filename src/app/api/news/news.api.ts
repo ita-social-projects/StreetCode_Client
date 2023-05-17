@@ -5,6 +5,8 @@ import News from '@models/news/news.model';
 const NewsApi = {
     getById: (id: number) => Agent.get<News>(`${API_ROUTES.NEWS.GET}/${id}`),
 
+    getByUrl: (url: string) => Agent.get<News>(`${API_ROUTES.NEWS.GET_BY_URL}/${url}`),
+
     getAll: () => Agent.get<News[]>(`${API_ROUTES.NEWS.GET_ALL}`),
 
     create: (news: News) => Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news),
