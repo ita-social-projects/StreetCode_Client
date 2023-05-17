@@ -3,8 +3,8 @@ import './Heading.styles.scss';
 
 interface Props {
     blockName: string,
-    buttonName: string,
-    setActionOnClick: React.MouseEventHandler<HTMLParagraphElement>
+    buttonName: string | undefined,
+    setActionOnClick: React.MouseEventHandler<HTMLParagraphElement> | undefined
 }
 
 const Heading = ({ blockName, buttonName, setActionOnClick }: Props) => {
