@@ -5,7 +5,6 @@
 .blockHeadingWrapper {
     @include mut.sized(100%, 124px);
     @include mut.flex-centered();
-    margin-top: f.pxToRem(80px);
     margin-bottom: f.pxToRem(26px);
 
     svg {

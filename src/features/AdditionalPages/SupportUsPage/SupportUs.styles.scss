@@ -12,7 +12,7 @@
       
     .heading {
         .titleBig {
-            @include mut.rem-margined($bottom: 40px);
+            @include mut.rem-margined($bottom: 20px);
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
             line-height: 127px;
             color: c.$accented-gray-color;
@@ -24,7 +24,7 @@
 
         .text {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-            @include mut.rem-margined($left: 0px, $right: 0px, $bottom: 48px);
+            @include mut.rem-margined($left: 0px, $right: 0px, $bottom: 40px);
             line-height: 23.44px;
         }
     }

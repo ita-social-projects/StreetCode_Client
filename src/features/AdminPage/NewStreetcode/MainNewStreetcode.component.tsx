@@ -267,6 +267,7 @@ const NewStreetcode = () => {
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {
+            console.log(streetcode);
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                     setTimeout(()=>location.reload(),500);

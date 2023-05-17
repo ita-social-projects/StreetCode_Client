@@ -63,7 +63,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
             ? (
                 <div
                     id="text"
-                    className="textComponentContainer"
+                    className="textComponentContainer container"
                 >
                     <BlockHeading headingText={String(text?.title)} />
                     <div className="textComponent">

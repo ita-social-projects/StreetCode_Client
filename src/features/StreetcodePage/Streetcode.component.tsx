@@ -74,7 +74,7 @@ const StreetcodeContent = () => {
             );
         }
     });
-  
+
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
@@ -90,10 +90,9 @@ const StreetcodeContent = () => {
             setSlideCloneCountAdded(slideCloneCount);
         }
 
-        if (imagesLoadedPercentage >= 90 && textBlockState) {
+        if (imagesLoadedPercentage >= 80 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
-
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
             if (blockElement) {
