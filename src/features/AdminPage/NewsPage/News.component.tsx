@@ -40,7 +40,7 @@ const Newss:React.FC = observer(() => {
     };
     useEffect(() => {
         updatedNews();
-    }, []);
+    }, [modalAddOpened]);
     const columns: ColumnsType<News> = [
         {
             title: 'Назва',

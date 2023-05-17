@@ -33,7 +33,8 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
      };
      useEffect(() => {
          if (newsItem && open) {
-             imageId.current = newsItem.imageId!;
+             imageId.current = newsItem.imageId;
+
              form.setFieldsValue({
                  title: newsItem.title,
                  url: newsItem.url,
@@ -66,11 +67,12 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
          let success = false;
          if (newsItem) {
              news.id = newsItem.id;
+             news.imageId = imageId.current;
+             news.image = newsItem.image;
              Promise.all([
                  newsStore.updateNews(news)
                      .then(() => {
                          success = true;
-                         console.log(news);
                      })
                      .catch((e) => {
                          console.log(e); success = false;
@@ -125,6 +127,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                      <Form.Item
                          name="url"
                          label="Посилання: "
+                         rules={[{ required: true, message: 'Введіть Посилання' }]}
                      >
                          <Input maxLength={200} showCount />
                      </Form.Item>
@@ -132,6 +135,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                      <Form.Item
                          name="text"
                          label="Текст новини: "
+                         rules={[{ required: true, message: 'Введіть Текст' }]}
                      >
                          <TextArea showCount />
                      </Form.Item>
@@ -156,9 +160,10 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                              uploadTo="image"
                              onSuccessUpload={(image:Image) => {
                                  imageId.current = image.id;
+                                 newsItem.image = image;
                              }}
                              onRemove={(image) => {
-                                 ImagesApi.delete(imageId.current);
+                                 newsItem.image = undefined;
                              }}
                              defaultFileList={(newsItem)
                                  ? [{ name: '',

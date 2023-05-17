@@ -83,7 +83,8 @@ export default class NewsStore {
 
     public updateNews = async (news: News) => {
         try {
-            await newsApi.update(news).then((updated) => this.setItem(updated));
+            await newsApi.update(news).then((updated) => {this.setItem(updated);
+                console.log(updated)});
         } catch (error: unknown) {
             console.log(error);
         }
