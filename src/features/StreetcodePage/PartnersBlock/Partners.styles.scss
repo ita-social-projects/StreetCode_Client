@@ -2,9 +2,9 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .partnersWrapper {
-    @include mut.sized($height: 181px);
     @include mut.flex-centered();
-
+    margin-top: f.pxToRem(20px);
+    
     @include mut.rem-padded($top: 30px, $right: 200px, $bottom: 30px, $left: 200px);
 
     .partnerContainer {

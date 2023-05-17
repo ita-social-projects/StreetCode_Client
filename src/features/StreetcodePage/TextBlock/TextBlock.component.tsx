@@ -15,6 +15,7 @@ import { Text } from '@/models/streetcode/text-contents.model';
 
 import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
+import { useState } from 'react';
 
 interface Props {
     setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,7 +62,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
             ? (
                 <div
                     id="text"
-                    className="textComponentContainer"
+                    className="textComponentContainer container"
                 >
                     <BlockHeading headingText={String(text?.title)} />
                     <div className="textComponent">

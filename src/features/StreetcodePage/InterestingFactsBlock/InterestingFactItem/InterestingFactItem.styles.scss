@@ -113,7 +113,7 @@ and (max-width: 1024px){
 
         text-align: center; 
         justify-content: center;
-        left: -270% !important;
+        left: -20% !important;
 
         @include mut.rem-margined($right:5px, $left:5px);
 

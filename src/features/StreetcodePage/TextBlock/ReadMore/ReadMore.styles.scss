@@ -11,8 +11,10 @@
 }
 
 .readMoreContainer {
+
     @include mut.rem-margined($top: 35px);
-    @include mut.with-font($font-weight: 600)
+    @include mut.with-font($font-weight: 500);
+
 }
 
 .mainTextContent {
