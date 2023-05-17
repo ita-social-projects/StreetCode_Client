@@ -1,7 +1,7 @@
 import './ForFansPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
@@ -73,7 +73,7 @@ const ForFansPage = () => {
                 {...sliderProps}
             >
                 {sourcesAdminStore.getSourcesAdmin.map((srcCategory: SourceCategoryAdmin) => (
-                    <SourceItem srcCategory={srcCategory} />
+                    <SourceItem srcCategory={srcCategory} key={srcCategory.id} />
                 ))}
             </BlockSlider>
             <Button
