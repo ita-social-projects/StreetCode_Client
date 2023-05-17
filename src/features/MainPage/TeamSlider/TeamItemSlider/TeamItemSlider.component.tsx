@@ -30,52 +30,54 @@ const TeamItemSlider = ({ team }: Props) => {
     }, [team]);
 
     return (
-        <div className="itemTeam">
-            <div className="leftSlider">
-                <div className="leftSliderContent">
-                    <img
-                        key={image?.id}
-                        src={base64ToUrl(image?.base64, image?.mimeType)}
-                        className="teamImg"
-                        alt={image?.alt}
-                        onLoad={handleImageLoad}
-                    />
+        <div className="teamItemSlider">
+            <div className="itemTeam">
+                <div className="leftSlider">
+                    <div className="leftSliderContent">
+                        <img
+                            key={image?.id}
+                            src={base64ToUrl(image?.base64, image?.mimeType)}
+                            className="teamImg"
+                            alt={image?.alt}
+                            onLoad={handleImageLoad}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className="rightSlider">
-                <div className="headerTeamContainer">
-                    <div>
-                        <h2 className="teamTitle">
-                            {team?.firstName + " " + team?.lastName}
-                        </h2>
-                        <div className="teamPosition">
-                            {team?.positions
-                                .filter((position) => position.position)
-                                .map((position) => (
-                                    <span key={position.id}>{position.position} </span>
-                                ))}
-                        </div>
+                <div className="rightSlider">
+                    <div className="headerTeamContainer">
                         <div>
-                            <p className="descBlock">
-                                {team?.description}
-                            </p>
-                        </div>
-                        <div key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`} className="teamLinkItem">
-                            {team?.teamMemberLinks.map((link) => (
-                                <a
-                                    key={`${link.id}${link.targetUrl}`}
-                                    rel="noreferrer"
-                                    target="_blank"
-                                    className="teamLinkItem"
-                                    href={link.targetUrl}
-                                >
-                                    <img
-                                        key={link.id * link.logoType}
-                                        src={LogoType[link.logoType]}
-                                        alt={link.targetUrl}
-                                    />
-                                </a>
-                            ))}
+                            <h2 className="teamTitle">
+                                {team?.firstName + " " + team?.lastName}
+                            </h2>
+                            <div className="teamPosition">
+                                {team?.positions
+                                    .filter((position) => position.position)
+                                    .map((position) => (
+                                        <span key={position.id}>{position.position} </span>
+                                    ))}
+                            </div>
+                            <div>
+                                <p className="descBlock">
+                                    {team?.description}
+                                </p>
+                            </div>
+                            <div key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`} className="teamLinkItems">
+                                {team?.teamMemberLinks.map((link) => (
+                                    <a
+                                        key={`${link.id}${link.targetUrl}`}
+                                        rel="noreferrer"
+                                        target="_blank"
+                                        className="teamLinkItem"
+                                        href={link.targetUrl}
+                                    >
+                                        <img
+                                            key={link.id * link.logoType}
+                                            src={LogoType[link.logoType]}
+                                            alt={link.targetUrl}
+                                        />
+                                    </a>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

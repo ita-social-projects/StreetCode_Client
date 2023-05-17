@@ -3,99 +3,106 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/_utils.functions.scss" as f;
 
-.itemTeam {
-    @include mut.flexed(row, center, center, wrap);
-    @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
-    @include mut.sized(648px, 313px);
-    @include mut.full-rounded(50px);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    line-height: f.pxToRem(23px);
-    background-color: #FFFFFF;
-
-    .slick-initialized .slick-slide {
+.teamItemSlider {
+    .itemTeam {
         @include mut.flexed(row, center, center, wrap);
-        @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
+        @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+        @include mut.sized(648px, 313px);
+        @include mut.full-rounded(50px);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        line-height: f.pxToRem(23px);
+        background-color: #FFFFFF;
+
+        .slick-initialized .slick-slide {
+            @include mut.flexed(row, center, center, wrap);
+            @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
+        }
+
+        .slick-track {
+            margin: 0;
+        }
+
+        .slick-initialized .slick-slide {
+            @include mut.flexed($justify-content: center, $gap: 0px);
+            @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+        }
     }
 
-    .slick-track {
-        margin: 0;
+    .leftSlider {
+        @include mut.full-rounded(53px);
+        @include mut.sized(294px, 311px);
+        flex: 0 0 f.pxToRem(294px);
+        background-color: #FFFFFF;
+        justify-self: flex-start;
     }
 
-    .slick-initialized .slick-slide {
-        @include mut.flexed($justify-content: center, $gap: 0px);
-        @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+    .leftSliderContent {
+        background-color: c.$accented-gray-color;
+        @include mut.border(c.$pure-white-color,22px,solid);
+        @include mut.full-rounded(50px);
+        @include mut.parent-sized();
+        @include mut.flex-centered();
     }
 
-    
-}
-
-.leftSlider {
-    @include mut.full-rounded(53px);
-    @include mut.sized(294px, 311px);
-    flex: 0 0 f.pxToRem(294px);
-    background-color: #FFFFFF;
-    justify-self: flex-start;
-}
-
-.leftSliderContent {
-    background-color: c.$accented-gray-color;
-    @include mut.border(c.$pure-white-color,22px,solid);
-    @include mut.full-rounded(50px);
-    @include mut.parent-sized();
-    @include mut.flex-centered();
-}
-
-.rightSlider {
-    box-sizing: border-box;
-    @include mut.flexed(column, start, start, nowrap);
-    justify-self: flex-end;
-    align-self: flex-start;
-    width: min-content;
-    height: f.pxToRem(313px);
-    padding-top: f.pxToRem(20px);
-    flex: 1 1 auto;
-    position: relative;
-}
-.teamLinkItem {
-    position: absolute;
-    bottom: 23.5px;
-}
-.teamTitle {
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
-    color: #1D1F23;
-    line-height: f.pxToRem(42px);
-}
-
-.headerTeamContainer {
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    @include mut.flexed(column, start, space-between, nowrap);
-    @include mut.rem-padded(31.5px, 0px, 0px, 0px);
-}
-
-.descBlock {
-    width: 100%;
-    @include mut.rem-margined(13px, 3px, 0px, 0px);
-    @include mut.rem-padded(0px, 5px, 0px, 0px);
-    line-height: 23px;
-    max-height: f.pxToRem(214px);
-    overflow: auto;
-    color: #1D1F23;
-    @include mut.with-font($font-weight: 300, $font-size: 20px);
-
-    &::-webkit-scrollbar {
-        display: none;
+    .rightSlider {
+        box-sizing: border-box;
+        @include mut.flexed(column, start, start, nowrap);
+        justify-self: flex-end;
+        align-self: flex-start;
+        width: min-content;
+        height: f.pxToRem(313px);
+        padding-top: f.pxToRem(20px);
+        flex: 1 1 auto;
+        position: relative;
     }
-}
-.teamPosition {
-    color: #6D6D6D;
-    @include mut.rem-margined(13px, 0px, 0px, 0px);
-    @include mut.with-font($font-weight: 600, $font-size: 20px);
-}
+
+    .teamLinkItems {
+        position: absolute;
+        bottom: 33.5px;
+
+        .teamLinkItem {
+            @include mut.rem-margined(0px, 17px, 0px, 0px);
+        }
+    }
+
+    .teamTitle {
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 34px);
+        color: #1D1F23;
+        line-height: f.pxToRem(40px);
+    }
+
+    .headerTeamContainer {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        @include mut.flexed(column, start, space-between, nowrap);
+        @include mut.rem-padded(28px, 0px, 0px, 0px);
+    }
+
+    .descBlock {
+        width: 100%;
+        @include mut.rem-margined(12px, 3px, 0px, 0px);
+        @include mut.rem-padded(0px, 5px, 0px, 0px);
+        line-height: 23px;
+        max-height: f.pxToRem(214px);
+        overflow: auto;
+        color: #1D1F23;
+        @include mut.with-font($font-weight: 300, $font-size: 20px);
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .teamPosition {
+        color: #6D6D6D;
+        @include mut.rem-margined(9px, 0px, 0px, 0px);
+        @include mut.with-font($font-weight: 500, $font-size: 20px);
+    }
 
 
-.teamImg {
-    margin: auto;
-    @include mut.sized(284px, 301px);
+    .teamImg {
+        margin: auto;
+        @include mut.sized(284px, 301px);
+    }
 }

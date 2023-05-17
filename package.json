@@ -65,6 +65,7 @@
     "react-slick": "^0.29.0",
     "react-slider": "^2.0.4",
     "react-toastify": "^9.1.1",
+    "react-transition-group": "^4.4.5",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",
     "svg-react-loader": "^0.4.6",
