@@ -67,7 +67,7 @@ const SearchTerms = ({ mainText }: Props) => {
 
     return (
         <div>
-            {splittedKeywordText.map((part, idx) => (
+            {searchTerms.length > 0 ? splittedKeywordText.map((part, idx) => (
                 <span
                     key={idx}
                     style={searchTerms.includes(part) ? keywordColoring : undefined}
@@ -85,7 +85,7 @@ const SearchTerms = ({ mainText }: Props) => {
                         </>
                     )}
                 </span>
-            ))}
+            )) : parse(mainText)}
         </div>
     );
 };

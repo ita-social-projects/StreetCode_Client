@@ -84,13 +84,13 @@ const SourceItem = ({ srcCategory }: Props) => {
             </div>
             <Modal
                 title="Are you sure you want to delete this source?"
-                visible={isModalDeleteVisible}
+                open={isModalDeleteVisible}
                 onOk={handleDeleteOk}
                 onCancel={handleDeleteCancel}
             />
             <Modal
                 title="Edit Source Category"
-                visible={isModalEditVisible}
+                open={isModalEditVisible}
                 onOk={handleEditOk}
                 onCancel={handleEditCancel}
             >

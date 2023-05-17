@@ -3,7 +3,7 @@ import './Partners.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import NewsModal from '@features/AdminPage/NewsPage/PartnerModal/NewsModal.component';
+import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import ImageStore from '@stores/image-store';
 import useMobx from '@stores/root-store';
 
@@ -26,7 +26,6 @@ const Newss:React.FC = observer(() => {
             newsStore.fetchNewsAll(),
         ]).then(() => {
             newsStore?.NewsMap.forEach((val, key) => {
-                console.log(val.imageId);
                 if (val.imageId !== null && val.imageId !== undefined) {
                     ImageStore.getImageById(val.imageId!).then((image) => {
                         newsStore.NewsMap.set(

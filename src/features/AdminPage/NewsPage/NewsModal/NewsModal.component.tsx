@@ -7,13 +7,12 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
 
 import {
     Button, Form, Input, Modal, UploadFile,
 } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 
-import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
@@ -27,6 +26,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
      const [previewOpen, setPreviewOpen] = useState(false);
      const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
      const imageId = useRef<number>(0);
+     const editorRef = useRef<TinyMCEEditor>();
      const handlePreview = async (file: UploadFile) => {
          setFilePreview(file);
          setPreviewOpen(true);
@@ -34,17 +34,18 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
      useEffect(() => {
          if (newsItem && open) {
              imageId.current = newsItem.imageId;
-
              form.setFieldsValue({
                  title: newsItem.title,
                  url: newsItem.url,
-                 text: newsItem.text,
                  image: [
                      { name: '',
                        thumbUrl: base64ToUrl(newsItem.image?.base64, newsItem.image?.mimeType),
                        uid: newsItem.imageId?.toString(),
                        status: 'done' }],
              });
+             if (editorRef.current) {
+                 editorRef.current.setContent(newsItem.text);
+             }
          } else {
              imageId.current = 0;
          }
@@ -61,7 +62,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
              imageId: imageId.current,
              url: formValues.url,
              title: formValues.title,
-             text: formValues.text,
+             text: editorRef.current.getContent(),
          };
 
          let success = false;
@@ -132,13 +133,24 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                          <Input maxLength={200} showCount />
                      </Form.Item>
 
-                     <Form.Item
-                         name="text"
-                         label="Текст новини: "
-                         rules={[{ required: true, message: 'Введіть Текст' }]}
-                     >
-                         <TextArea showCount />
-                     </Form.Item>
+                     <TinyMCEEditor
+                         onInit={(evt, editor) => {
+                             editorRef.current = editor;
+                         }}
+                         initialValue={newsItem ? newsItem.text : ''}
+                         init={{
+                             height: 300,
+                             menubar: false,
+                             plugins: [
+                                 'autolink',
+                                 'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                                 'insertdatetime', 'wordcount',
+                             ],
+                             toolbar: 'undo redo | bold italic | '
+                                     + 'removeformat ',
+                             content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                         }}
+                     />
 
                      <Form.Item
                          name="image"
