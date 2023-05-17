@@ -4,12 +4,14 @@ import Footer from "../../app/layout/footer/Footer.component";
 import ProgressBar from "../ProgressBar/ProgressBar.component";
 import InstagramBlock from './InstagramBlock/InstagramBlock.component';
 import StaticBanner from './StaticBanners/StaticBanner.component';
+import TopCarouselComponent from './TopCarousel/TopCarousel.component';
+import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
+import TeamComponent from './TeamSlider/TeamComponent.component';
 
 const mainPageContent = () => {
     return (
         <div className="mainPageContainer">
             <ProgressBar>
-                <></>
                 <StaticBanner
                     id='catalog'
                     blockName='Хочеш більше стріткодів?'
@@ -32,9 +34,9 @@ const mainPageContent = () => {
                 </div>
             </div>
             <TopCarouselComponent/>
-            <StreetcodeSliderComponent />
-            <TeamComponent />
-            <Footer />
+            <StreetcodeSliderComponent/>
+            <TeamComponent/>
+            <Footer/>
         </div>
     );
 }
