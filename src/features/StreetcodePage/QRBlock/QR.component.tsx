@@ -13,7 +13,7 @@ const QRComponent = () => {
     });
 
     return (
-        <div id="QRBlock" className="QRBlockContainer">
+        <div id="QRBlock" className="QRBlockContainer container">
             {isDesktop
                 && (
                     <div className="QRBlockContent">

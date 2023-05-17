@@ -6,9 +6,7 @@
 $moreInfo-width: 150px;
 
 .relatedFiguresWrapper {
-    @include mut.sized($height: 600px);
     @include wr.main-page-block-wrapper();
-    @include mut.rem-margined($bottom: 50px, $top: 90px);
 }
 
 .smallWrapper {
@@ -74,9 +72,6 @@ $moreInfo-width: 150px;
 
 @media screen and (max-width: 481px) {
     .relatedFiguresWrapper {
-        @include mut.sized($height: 600px); 
-        @include mut.rem-margined($bottom: 100px, $top: 0px);
-        
         .slick-dots {
             bottom: 0;
             left: 7px;
@@ -94,17 +89,10 @@ $moreInfo-width: 150px;
         
     }
 }
-@media screen and (max-width: 1024px) and (min-width: 768px) {
-    .relatedFiguresWrapper {
-        @include mut.sized($height: 400px); 
-        @include mut.rem-margined($bottom: 150px, $top: 40px);
-    }
-}
 
 @media screen and (max-width: 767px) and (min-width: 481px) {
     .relatedFiguresWrapper {
         @include mut.sized($height: 400px);
-        @include mut.rem-margined($bottom: 100px, $top: 0px);
     }
 }
 

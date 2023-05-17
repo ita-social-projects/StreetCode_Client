@@ -18,7 +18,6 @@ const mainPageContent = () => {
                     <DonateBtn />
                 </div>
             </div>
-            <Footer />
         </div>
     );
 

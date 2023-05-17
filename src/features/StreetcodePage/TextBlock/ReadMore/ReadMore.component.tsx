@@ -11,7 +11,7 @@ interface Props {
   maxTextLength?: number;
 }
 
-const ReadMore = ({ text, maxTextLength = 2e3 }: Props) => {
+const ReadMore = ({ text, maxTextLength = 100 }: Props) => {
     const {
         toggleState: isReadMore,
         handlers: { toggle },
