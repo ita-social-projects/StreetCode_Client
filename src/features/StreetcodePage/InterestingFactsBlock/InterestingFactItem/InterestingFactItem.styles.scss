@@ -73,9 +73,9 @@
 
 @media screen and (max-width: 1450px){
   .interestingFactSlide {
-    @include mut.sized(245px,250px);
+    @include mut.sized(280px,305px);
   }
-  
+
   .interestingFactsSliderContainer {
     .slick-track {
       @include mut.flexed($align-items: flex-start, $gap: 10px);
@@ -88,32 +88,36 @@
      .slideImage {
        @include mut.sized(100%, 142px);
        @include mut.rounded(20px, 20px);
-
-      img{
-        @include mut.sized(100%, 100%)
-      }
      }
+
      .slideText {
-       @include mut.sized(100%, 145px);
+        @include mut.sized(100%, 145px);
         @include mut.rounded(0);
 
        .heading {
-        @include mut.rem-padded(7px, 20px, 6px, 12px);
-        @include mut.with-font($font-weight: 500, $font-size: 12px);
-         line-height: f.pxToEm(12px);
-       }
-       .mainText {
-        @include mut.rem-padded(0, 12px, 0px, 12px);
-         @include mut.with-font($font-weight: 300, $font-size: 10px);
-         line-height: f.pxToEm(16px);
+          @include mut.rem-padded(7px, 20px, 6px, 12px);
+          @include mut.with-font($font-weight: 500, $font-size: 12px);
+          line-height: f.pxToEm(12px);
+        }
+
+        .mainText {
+          @include mut.rem-padded(0, 12px, 0px, 12px);
+          @include mut.with-font($font-weight: 300, $font-size: 10px);
+          line-height: f.pxToEm(16px);
        }
      } 
   
      .readMoreParagraph {
-      @include mut.rem-padded(6px, 20px, 0px, 12px);
-      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
+        @include mut.rem-padded(6px, 20px, 0px, 12px);
+        @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
      }
   } 
+}
+
+@media screen and (max-width: 1200px){
+  .interestingFactSlide {
+    @include mut.sized(250px,285px);
+  }
 }
 
 @media screen and (max-width: 1024px){
@@ -122,12 +126,7 @@
   }
   
   .interestingFactsSliderContainer {
-    .slick-track {
-      @include mut.flexed($align-items: flex-start, $gap: 10px);
-    }
-
     .slick-dots {
- 
       text-align: center;
       justify-content: center;
       padding: 0;
@@ -160,7 +159,6 @@
 
       @include mut.rem-margined($right:5px, $left:5px);
 
-
       list-style: none;
       text-align: center;
       @include mut.sized(8px, 8px);
@@ -169,89 +167,35 @@
 
   .interestingFactSlide {
     @include mut.full-rounded(20px);
-    
      .slideImage {
        @include mut.sized(100%, 132px);
-       @include mut.rounded(20px, 20px);
-
-      img{
-        @include mut.sized(100%, 100%)
-      }
      }
      .slideText {
        @include mut.sized(100%, 105px);
-      @include mut.rounded(0);
-
-       .heading {
-        @include mut.rem-padded(7px, 20px, 6px, 12px);
-        @include mut.with-font($font-weight: 500, $font-size: 12px);
-         line-height: f.pxToEm(12px);
-       }
-       .mainText {
-        @include mut.rem-padded(0, 12px, 0px, 12px);
-         @include mut.with-font($font-weight: 300, $font-size: 10px);
-         line-height: f.pxToEm(16px);
-       }
      } 
-  
-
-     .readMoreParagraph {
-      @include mut.rem-padded(6px, 20px, 0px, 12px);
-      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
-     }
   } 
- }
+}
 
 @media screen and (min-width: 768px) and (max-width: 1000px) {
   .interestingFactsSliderContainer{
     @include mut.sized(100%);
-
-    .slick-track {
-      @include mut.flexed($align-items: flex-start, $gap: 10px);
-    }
   }
 
   .interestingFactSlide {
     @include mut.full-rounded(20px);
     
-     .slideImage {
-       @include mut.sized(100%, 132px);
-       @include mut.rounded(20px, 20px);
+    .slideImage {
+      @include mut.sized(100%, 132px);
+      @include mut.rounded(20px, 20px);
+    }
 
-      img{
-        @include mut.sized(100%, 100%)
-      }
-     }
-     .slideText {
-       @include mut.sized(100%, 103px);
-       @include mut.rounded(0);
-
-       .heading {
-        @include mut.rem-padded(7px, 20px, 6px, 12px);
-        @include mut.with-font($font-weight: 500, $font-size: 12px);
-         line-height: f.pxToEm(12px);
-
-       }
-       .mainText {
-        @include mut.rem-padded(0, 12px, 0px, 12px);
-         @include mut.with-font($font-weight: 300, $font-size: 10px);
-         line-height: f.pxToEm(16px);
-
-       }
-     } 
-     .readMoreParagraph {
-      @include mut.rem-padded(6px, 20px, 0px, 12px);
-      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
-     }
+    .slideText {
+      @include mut.sized(100%, 103px);
+    } 
   } 
- }
+}
 
 @media screen and (max-width: 480px){ 
-  .interestingFactsSliderContainer{
-    .slick-track {
-      @include mut.flexed($align-items: flex-start, $gap: 10px);
-    }
-  }
   .interestingFactSlide {
     @include mut.full-rounded(20px);
     overflow: visible;
@@ -259,27 +203,11 @@
     .slideImage {
       @include mut.sized(100%, 50%);
       @include mut.rounded(20px, 20px);
-
     }
+
     .slideText {
       @include mut.full-rounded(0px);
-        @include mut.sized(100%, 103px);
-        overflow: visible;
-
-        .heading {
-        @include mut.rem-padded(7px, 20px, 6px, 12px);
-        @include mut.with-font($font-weight: 500, $font-size: 12px);
-        line-height: f.pxToEm(12px);
-      }
-      .mainText {
-        @include mut.rem-padded(0, 12px, 0px, 12px);
-        @include mut.with-font($font-weight: 300, $font-size: 10px);
-        line-height: f.pxToEm(16px);
-      }
+      overflow: visible;
     } 
-    .readMoreParagraph {
-      @include mut.rem-padded(6px, 20px, 0px, 12px);
-      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
-    }
   }
- }
+}

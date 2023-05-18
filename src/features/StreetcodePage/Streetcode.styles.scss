@@ -41,6 +41,17 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     @include mut.sized(100%, 5875px);
 }
 
+@media screen and (max-width: 1450px) {
+    .streetcodeContainer{
+        .slick-next{
+            right: f.pxToRem(-57px); 
+        }
+        .slick-prev{
+            left: f.pxToRem(-67px); 
+        }
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .streetcodeContainer {
         @include mut.rem-padded($top: 64px);
