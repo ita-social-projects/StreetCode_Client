@@ -70,8 +70,6 @@ export default class NewsStore {
         }
     };
 
-
-
     public createNews = async (news: News) => {
         try {
             await newsApi.create(news).then((created) => this.setItem(created));

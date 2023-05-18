@@ -1,5 +1,3 @@
-import './Partners.styles.scss';
-
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';

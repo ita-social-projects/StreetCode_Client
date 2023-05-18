@@ -1,5 +1,3 @@
-import '@features/AdminPage/AdminModal.styles.scss';
-
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
