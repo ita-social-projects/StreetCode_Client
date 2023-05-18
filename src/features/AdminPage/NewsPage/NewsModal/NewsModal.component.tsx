@@ -1,4 +1,3 @@
-import './PartnerModal.styles.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
