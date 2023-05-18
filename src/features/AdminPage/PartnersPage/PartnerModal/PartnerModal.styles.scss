@@ -3,22 +3,40 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.checkbox-container{
+.checkbox-container {
     display: flex;
     justify-content: space-between;
-    
-    &-flex{ 
+
+    &-flex {
         display: flex;
         justify-self: center;
     }
-    
-    p{
+
+    p {
         margin-left: 5px;
     }
 }
 
-.link-container{
+.link-container {
     gap: 5px;
     display: flex;
     align-items: center;
+}
+
+.partner-modal-container {
+    .line-form-item div{
+        @include mut.flexed($direction: row,
+            $align-items: center,
+            $justify-content: center,
+            $wrap: nowrap,
+            $gap: 0)
+    }
+
+    .partner-source-list .partner-source-list-item {
+        @include mut.flexed($direction: row,
+            $align-items: center,
+            $justify-content: center,
+            $wrap: nowrap,
+            $gap: 5px)
+    }
 }

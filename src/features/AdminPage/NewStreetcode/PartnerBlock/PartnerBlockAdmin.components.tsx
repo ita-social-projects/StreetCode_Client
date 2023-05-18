@@ -1,27 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PartnersStore from '@stores/partners-store';
 
 import { Button, Select } from 'antd';
 
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
-import Partner, { PartnerShort } from '@/models/partners/partners.model';
+import { PartnerShort } from '@/models/partners/partners.model';
 
-interface Props {
-    partners: PartnerShort[];
-    setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>>;
-}
-const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
-
+const PartnerBlockAdmin:React.FC<{ partners: PartnerShort[],
+setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>> }> = ({ partners, setPartners }) => {
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
 
     useEffect(() => {
         Promise.all([
             PartnersStore.getAllPartnerShort()
-                .then((partners) => setAllPartnerShort(partners))
+                .then((parts) => setAllPartnerShort(parts)),
         ]);
-
-    },[]);
+    }, []);
 
     const onPartnerSelect = (value:number) => {
         const index = allPartnersShort.findIndex((c) => c.id === value);
@@ -33,11 +28,11 @@ const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
     return (
         <div className="adminContainer-block">
             <h2>Партнери</h2>
-            <div className='display-flex-row'> 
+            <div className="display-flex-row">
                 <Select
                     mode="multiple"
                     onSelect={onPartnerSelect}
-                    value={partners.map(x => x.id)}
+                    value={partners.map((x) => x.id)}
                     onDeselect={onPartnerDeselect}
                 >
                     {allPartnersShort
@@ -56,7 +51,10 @@ const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
                 setIsModalOpen={setModalAddOpened}
                 isStreetcodeVisible={false}
                 afterSubmit={
-                    (partner) => setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }])
+                    (partner) => {
+                        setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }]);
+                        setPartners([...partners, { id: partner.id, title: partner.title }]);
+                    }
                 }
             />
         </div>
