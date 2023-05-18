@@ -71,6 +71,7 @@ export const API_ROUTES = {
     },
     TEAM: {
         GET_ALL: 'team/getAll',
+        GET_ALL_MAIN: 'team/getAllMain',
         GET: 'team/getById',
         CREATE: 'team/create',
         UPDATE: 'team/update',
@@ -156,6 +157,7 @@ export const API_ROUTES = {
     STREETCODES: {
         GET_ALL: 'streetcode/getAll',
         GET_BY_FILTER: 'streetcode/getByFilter',
+        GET_ALL_MAINPAGE: 'streetcode/getAllMainPage',
         GET_ALL_SHORT: 'streetcode/getAllShort',
         GET_SHORT_BY_ID: 'streetcode/getShortById',
         GET_ALL_CATALOG: 'streetcode/getAllCatalog',

@@ -1,0 +1,28 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.carousel-image {
+    width: 100%;
+    height: 737px;
+}
+
+.top-carousel .slick-dots li button {
+  @include mut.sized(12px, 12px);
+}
+
+.top-carousel .slick-dots {
+  bottom: f.pxToRem(30px);;
+  top: auto;
+}
+
+.top-carousel .slick-dots li {
+  margin: 0 8px;
+}
+@media screen and (min-width: 1800px) {
+  .carousel-image {
+    height: 830px;
+  }
+}

@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\.github",
-    "\\config",
-    "\\public",
     "\\src",
-    "\\src\\app",
     "\\src\\features",
     "\\src\\features\\AdminPage",
-    "\\src\\features\\AdminPage\\NewStreetcode",
-    "\\src\\features\\StreetcodePage"
+    "\\src\\features\\AdminPage\\TeamPage\\TeamModal",
+    "\\src\\features\\MainPage",
+    "\\src\\features\\MainPage\\TeamSlider",
+    "\\src\\features\\MainPage\\TeamSlider\\TeamItemSlider",
+    "\\src\\features\\StreetcodePage",
+    "\\src\\features\\StreetcodePage\\TimelineBlock"
   ],
-  "SelectedNode": "\\src\\features\\AdminPage\\NewStreetcode\\MainNewStreetcode.component.tsx",
+  "SelectedNode": "\\src\\features\\MainPage\\TeamSlider\\TeamItemSlider\\TeamItemSlider.styles.scss",
   "PreviewInSolutionExplorer": false
 }
