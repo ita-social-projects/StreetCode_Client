@@ -27,6 +27,7 @@ import UserLoginStore from './user-login-store';
 import TeamStore from './team-store';
 import PositionsStore from './position-store';
 import StatisticRecordStore from './statistic-record-store';
+import StreetcodesMainPageStore from './streetcode-mainpage-store';
 
 
 interface Store {
@@ -57,6 +58,7 @@ interface Store {
     imageLoaderStore: ImageLoaderStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
+    streetcodeMainPageStore: StreetcodesMainPageStore,
 
 }
 
@@ -88,6 +90,7 @@ export const store: Store = {
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
+    streetcodeMainPageStore: new StreetcodesMainPageStore(),
 };
 
 const StoreContext = createContext(store);

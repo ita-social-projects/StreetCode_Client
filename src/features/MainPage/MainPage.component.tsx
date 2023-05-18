@@ -14,7 +14,8 @@ import TopCarouselComponent from './TopCarousel/TopCarousel.component';
 
 const mainPageContent = () => (
     <div className="mainPageContainer">
-        <ProgressBar>
+          <TopCarouselComponent/>
+            <StreetcodeSliderComponent/>
             <StaticBanner
                 id="catalog"
                 blockName="Хочеш більше стріткодів?"
@@ -34,14 +35,13 @@ const mainPageContent = () => (
                     window.location.href = '../support-us';
                 }}
             />
-        </ProgressBar>
+   
         <div className="sticky">
             <div className="sticky-content">
                 <ScrollToTopBtn />
             </div>
         </div>
-        <TopCarouselComponent />
-        <StreetcodeSliderComponent />
+       
         <TeamComponent />
         <PartnersBlockComponent />
         <Footer />
