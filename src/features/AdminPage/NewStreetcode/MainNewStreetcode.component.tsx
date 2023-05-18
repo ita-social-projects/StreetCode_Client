@@ -182,6 +182,7 @@ const NewStreetcode = () => {
             });
             TransactionLinksApi.getByStreetcodeId(parseId)
                 .then((res) => form.setFieldValue('arlink', res.qrCodeUrl.href));
+            factsStore.fetchFactsByStreetcodeId(parseId);
         }
     }, []);
 
