@@ -7,8 +7,6 @@
 .carousel-image {
     width: 100%;
     height: 737px;
-    
- 
 }
 
 .top-carousel .slick-dots li button {
@@ -22,4 +20,9 @@
 
 .top-carousel .slick-dots li {
   margin: 0 8px;
+}
+@media screen and (min-width: 1800px) {
+  .carousel-image {
+    height: 830px;
+  }
 }

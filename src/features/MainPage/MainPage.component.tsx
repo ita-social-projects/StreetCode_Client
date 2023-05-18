@@ -11,7 +11,9 @@ import TeamComponent from './TeamSlider/TeamComponent.component';
 const mainPageContent = () => {
     return (
         <div className="mainPageContainer">
-            <ProgressBar>
+           
+            <TopCarouselComponent/>
+            <StreetcodeSliderComponent/>
                 <StaticBanner
                     id='catalog'
                     blockName='Хочеш більше стріткодів?'
@@ -19,6 +21,7 @@ const mainPageContent = () => {
                     buttonName='До стріткодів'
                     setActionOnClick={() => {window.location.href = '../catalog'}}
                 />
+                <TeamComponent/>
                 <InstagramBlock/>
                 <StaticBanner
                     id='support'
@@ -27,15 +30,13 @@ const mainPageContent = () => {
                     buttonName='Підтримати'
                     setActionOnClick={() => {window.location.href = '../support-us'}}
                 />
-            </ProgressBar>
+          
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn/>
                 </div>
             </div>
-            <TopCarouselComponent/>
-            <StreetcodeSliderComponent/>
-            <TeamComponent/>
+           
             <Footer/>
         </div>
     );
