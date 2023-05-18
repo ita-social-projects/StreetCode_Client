@@ -20,21 +20,25 @@ const App = () => {
     const { modalStore: { isPageDimmed } } = useMobx();
 
     return (
-        <div style={{ position: 'relative' }}>
+        <div className="mainBlockWrapper" style={{ position: 'relative' }}>
             <ToastContainer position="bottom-right" limit={3} />
             <ModalWrapper />
             <HeaderBlock />
-            <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
-            {(pathname !== FRONTEND_ROUTES.BASE) && (
-                <Outlet />
-            )}
-            {(pathname === FRONTEND_ROUTES.BASE) && (
-                <>
+            <div className="mainWrapper">
+                <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
+                {(pathname !== FRONTEND_ROUTES.BASE) && (
                     <Outlet />
-                    <MainPage />
-                </>
-            )}
-            <Footer />
+                )}
+                {(pathname === FRONTEND_ROUTES.BASE) && (
+                    <>
+                        <Outlet />
+                        <MainPage />
+                    </>
+                )}
+            </div>
+            <div className="footerWrapper">
+                <Footer />
+            </div>
         </div>
     );
 };

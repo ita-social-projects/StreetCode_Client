@@ -29,3 +29,13 @@ div {
   @include vnd.vendored(transition, 'background .5s ease');
   z-index: 5;
 }
+
+.mainBlockWrapper{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mainWrapper{
+  flex: 1 1 auto;
+}

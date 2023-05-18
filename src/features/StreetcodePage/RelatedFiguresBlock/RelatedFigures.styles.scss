@@ -72,8 +72,8 @@ $moreInfo-width: 150px;
 @media screen and (max-width: 481px) {
     .relatedFiguresWrapper {
         .slick-dots {
-            bottom: 0;
-            left: 7px;
+            bottom: f.pxToRem(-30px);
+            left: f.pxToRem(7px);
         }
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 10px);
@@ -96,6 +96,10 @@ $moreInfo-width: 150px;
 }
 
 @media screen and (max-width: 1024px) {
+    .relatedFiguresWrapper.container{
+        margin-top: f.pxToRem(60px);
+    }
+
     .relatedFiguresSliderContainer {
         width: 100vw !important;
 

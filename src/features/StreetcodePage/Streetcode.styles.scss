@@ -9,6 +9,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 }
 .streetcodeContainer {
     width: 100%;
+    height: 100%;
+    
     overflow: clip;
     @include mut.rem-padded($top: 82px);
     @include mut.bg-image($bgImg, auto);

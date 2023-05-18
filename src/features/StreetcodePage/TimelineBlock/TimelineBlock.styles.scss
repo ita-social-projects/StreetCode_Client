@@ -7,8 +7,6 @@
 $timelineLvivImg: "@assets/images/timeline/Lviv.png";
 $timelineSquareImg: "@assets/images/timeline/Square.png";
 
-
-
 .timelineContainer{
   width: 100vw;
   align-self: center;
@@ -72,34 +70,43 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
 }
 }
 
-@media screen and (max-width: 1024px) {
-  
-.timelineContainer{
-  .timelineContentContainer {
-    margin: f.pxToRem(28px) auto;
-    .sliderClass{
-      @include mut.rem-margined($bottom: 10px, $top: 10px);
-    }
-
-    .slick-track {
-      @include mut.rem-margined($top: 11px, $right: 0px, $bottom: 11px, $left: 0px);
-       .slick-slide >div{
-        height: min-content;
-        border-radius: 20px;
-        place-items: center;
-      }
-      .slick-slide {
-        border-radius: 20px;
-        border-width:f.pxToRem(7px) f.pxToRem(7px);
-        background-size:f.pxToRem(295px) f.pxToRem(185px);
-        background-position: center;  
-      }
-      .slick-current {
-        box-shadow: inset  0px 0px 0px 3px c.$pure-white-color;
-      }
-       
-      
+@media screen and (max-width: 1450px) {
+  .timelineContainer{
+    &.container{
+      margin-top: f.pxToRem(80px);
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .timelineContainer{
+    &.container{
+      margin-top: f.pxToRem(65px);
+    }
+
+    .timelineContentContainer {
+      margin: f.pxToRem(28px) auto;
+      .sliderClass{
+        @include mut.rem-margined($bottom: 10px, $top: 10px);
+      }
+
+      .slick-track {
+        @include mut.rem-margined($top: 11px, $right: 0px, $bottom: 11px, $left: 0px);
+        .slick-slide >div{
+          height: min-content;
+          border-radius: 20px;
+          place-items: center;
+        }
+        .slick-slide {
+          border-radius: 20px;
+          border-width:f.pxToRem(7px) f.pxToRem(7px);
+          background-size:f.pxToRem(295px) f.pxToRem(185px);
+          background-position: center;  
+        }
+        .slick-current {
+          box-shadow: inset  0px 0px 0px 3px c.$pure-white-color;
+        }
+      }
+    }
+  }
 }

@@ -2,10 +2,11 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
+
 .contactUsContainer{
     position: relative;
 
-    min-height: 100vh;
+    height: 100%;
     width: 100vw;
 
     background-color: c.$accented-grayish-gray-color;

@@ -27,10 +27,10 @@ const SourcesComponent = () => {
         initialSlide: 1,
         centerMode: windowsize.width < 1024,
     };
-    console.log(sourcesStore.getSrcCategoriesArray);
+
     return (sourcesStore.getSrcCategoriesArray.length > 0
         ? (
-            <div className="sourcesWrapper">
+            <div className="sourcesWrapper container">
 
                 <div className="sourcesContainer">
                     <BlockHeading headingText="Для фанатів" />
