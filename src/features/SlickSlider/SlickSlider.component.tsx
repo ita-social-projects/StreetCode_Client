@@ -35,19 +35,23 @@ const GenericSlider: FC<SliderProps> = ({
             >
                 {children?.map((slide, idx) => (
                     <div className="slider-item-container" key={idx}>
-                        {swipeOnClick? <div
-                            className="left"
-                            onClick={() => {
-                                handleClick(idx, 'left');
-                            }}
-                        />:<></>}
+                        {swipeOnClick ? (
+                            <div
+                                className="left"
+                                onClick={() => {
+                                    handleClick(idx, 'left');
+                                }}
+                            />
+                        ) : <></>}
                         {slide}
-                        {swipeOnClick?<div
-                            className="right"
-                            onClick={() => {
-                                handleClick(idx, 'right');
-                            }}
-                        />:<></>}
+                        {swipeOnClick ? (
+                            <div
+                                className="right"
+                                onClick={() => {
+                                    handleClick(idx, 'right');
+                                }}
+                            />
+                        ) : <></>}
                     </div>
                 ))}
             </Slider>
