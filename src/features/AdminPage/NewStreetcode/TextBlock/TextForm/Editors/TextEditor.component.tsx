@@ -13,11 +13,6 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
 
-<<<<<<< HEAD
-=======
-import TermsApi from '../../../../../../app/api/streetcode/text-content/terms.api';
->>>>>>> master
-
 interface Props {
   inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
