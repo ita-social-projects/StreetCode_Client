@@ -25,6 +25,8 @@ const mainPageContent = () => (
                     window.location.href = '../catalog';
                 }}
             />
+            <TeamComponent />
+            <PartnersBlockComponent />
             <InstagramBlock />
             <StaticBanner
                 id="support"
@@ -41,9 +43,6 @@ const mainPageContent = () => (
                 <ScrollToTopBtn />
             </div>
         </div>
-       
-        <TeamComponent />
-        <PartnersBlockComponent />
         <Footer />
     </div>
 );
