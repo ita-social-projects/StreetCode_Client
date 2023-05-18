@@ -3,22 +3,23 @@ import './HeaderLoginModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
+// import { useNavigate } from 'react-router-dom';
 import useMobx from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
 
 import { becomePartnerEvent, donateEvent, joinToStreetcode } from '@/app/common/utils/googleAnalytics.unility';
-import { useNavigate } from "react-router-dom";
 
 const HeaderLoginModal = () => {
     const { modalStore: { setModal, modalsState: { login } } } = useMobx();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const becomePartnerHandler = () => {
-        login.isOpen=false;
-        navigate(`../partners-page`);
+        login.isOpen = false;
+        // navigate(`../partners-page`);
+        setModal('partners');
         becomePartnerEvent('modal');
-    }
+    };
 
     return (
         <Modal
