@@ -34,7 +34,7 @@ const App = () => {
                     <MainPage />
                 </>
             )}
-            {/* <Footer /> */}
+            <Footer />
         </div>
     );
 };

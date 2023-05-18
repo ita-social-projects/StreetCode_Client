@@ -7,10 +7,16 @@
 $timelineLvivImg: "@assets/images/timeline/Lviv.png";
 $timelineSquareImg: "@assets/images/timeline/Square.png";
 
+
+
 .timelineContainer{
   width: 100vw;
   align-self: center;
   align-items: center;
+
+  &.container{
+    margin-top: f.pxToRem(155px);
+  }
 
   .timelineContentContainer {
   margin: f.pxToRem(50px) auto 0 auto;

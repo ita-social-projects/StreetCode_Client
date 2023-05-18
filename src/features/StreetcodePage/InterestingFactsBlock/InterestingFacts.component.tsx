@@ -35,7 +35,7 @@ const InterestingFactsComponent = () => {
     }, [getFactArray.length]);
 
     const setings = {
-        dots: getFactArray.length > 3,
+        dots: getFactArray.length >= 2,
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
@@ -69,7 +69,16 @@ const InterestingFactsComponent = () => {
                     dots: true,
                 },
             },
-
+            {
+                breakpoint: 1450,
+                settings: {
+                    centerPadding: '-27.5px',
+                    centerlMode: true,
+                    arrows: false,
+                    swipe: true,
+                    dots: true,
+                },
+            },
         ],
     };
 

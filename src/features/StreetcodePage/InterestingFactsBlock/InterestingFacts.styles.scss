@@ -23,14 +23,13 @@
 
 .interestingFactsSliderContainer {
     @include mut.sized(1220px);
+
     .slick-list {
-        padding: 9.125rem 0 !important;
+        padding: f.pxToRem(110px) 0;
     }
-    .slick-next{
-        right: f.pxToRem(-87px);
-    }
-    .slick-prev{
-        left: f.pxToRem(-100px);
+
+    .slick-dots{
+        bottom: -57px;
     }
 }
 
@@ -93,6 +92,10 @@
             }
         }
     }
+}
+
+@media screen and (max-width: 1450px){
+    
 }
 
 @media screen and (max-width: 1024px){

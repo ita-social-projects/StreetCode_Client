@@ -14,6 +14,13 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     @include mut.bg-image($bgImg, auto);
     background-color:c.$streetcode-background-color ;
     overflow-anchor: none;
+
+    .slick-next{
+        right: f.pxToRem(-87px); 
+    }
+    .slick-prev{
+        left: f.pxToRem(-97px); 
+    }
 }
 .sticky{
     position: sticky;

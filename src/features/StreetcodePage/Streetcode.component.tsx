@@ -134,7 +134,6 @@ const StreetcodeContent = () => {
                 </div>
             </div>
             <TickerBlock />
-            <Footer />
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}
