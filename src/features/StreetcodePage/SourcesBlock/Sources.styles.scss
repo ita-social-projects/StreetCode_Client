@@ -7,18 +7,13 @@
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
 
-    &.container{
-        margin-top: pxToRem(160px);
-    }
-
     .sourcesContainer {
-        @include mut.sizedImportant(100%, 400px);
-        margin-bottom: pxToRem(190px);
+        @include mut.sizedImportant(100%, 100%);
+
         @media screen and (max-width: 768px) {
             justify-content: stretch !important;
         }
         .sourceContentContainer {
-            height: pxToRem(320px);
             @include mut.flex-centered();
             margin-top: pxToRem(24px);
             .slick-slide {
@@ -36,7 +31,7 @@
     }
 
     .sourcesSliderContainer {
-        @include mut.sizedImportant(1230px, 300px);
+        @include mut.sizedImportant(1230px, 100%);
         .slick-arrow {
             display: none;
             visibility: hidden;
@@ -76,12 +71,6 @@
                 }
             }
         }     
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    .sourcesWrapper .sourcesContainer {
-        margin-bottom: pxToRem(86px);
     }
 }
 

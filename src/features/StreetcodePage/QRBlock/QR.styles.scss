@@ -21,6 +21,10 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
         @include mut.flex-centered(column);
         padding-left: pxToRem(31px);
     }
+
+    &.container{
+        margin-top: pxToRem(190px);
+    }
 }
 
 .QRBlockText {
@@ -63,6 +67,10 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
 @media (max-width: 1024px) {
     .QRBlockContainer{
         background-image: none;
-        @include mut.sized(100%, 100%);
+        @include mut.sized(100%, auto);
+
+        &.container{
+            margin-top: pxToRem(86px);
+        }
     }
 }
