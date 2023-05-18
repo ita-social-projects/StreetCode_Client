@@ -4,6 +4,11 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .partnersBlockMainContainer{
+    .partnersBlock{
+        max-width: 1920px;
+        margin: 0 auto;
+    }
+
     .otherPartnersBlock{
         display: none;
     }
