@@ -30,7 +30,7 @@ const ListenTextModal = () => {
         <>
             {audio.isOpen && (
                 <div className={`modal ${closing ? 'fadeOutAnimation' : 'fadeInAnimation'}`}>
-                    <AudioPlayer />
+                    <AudioPlayer immediatelyPlay />
                     <img
                         src={ExitBtn}
                         alt="Audio player close button"
