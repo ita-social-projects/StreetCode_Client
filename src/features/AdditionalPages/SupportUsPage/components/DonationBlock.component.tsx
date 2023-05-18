@@ -89,7 +89,7 @@ const DonationBlock = () => {
         <div className="donatesBlockContent">
             <h1>Підтримай проєкт</h1>
             <div className="enterSum">Ввести суму</div>
-            <div className="donateInputContainerWrapper">
+            <div className={`donateInputContainerWrapper ${(donateAmount !== 0) ? 'active' : ''} `}>
                 <input
                     onChange={handleDonateInputChange}
                     style={{ ...style, width: 'var(--input-width)' }}
