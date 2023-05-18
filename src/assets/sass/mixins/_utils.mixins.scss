@@ -201,7 +201,6 @@
 ) {
   font-family: $font-family;
   // px equivalent for browsers without rem support
-  font-size: $font-size;
   font-size: f.pxToRem($font-size);
   font-weight: $font-weight;
   font-style: $font-style;

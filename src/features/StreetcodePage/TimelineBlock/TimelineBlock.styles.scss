@@ -11,10 +11,9 @@ $timelineSquareImg: "@assets/images/timeline/Square.png";
   width: 100vw;
   align-self: center;
   align-items: center;
-  margin: f.pxToRem(50px) auto;
 
   .timelineContentContainer {
-  margin: f.pxToRem(50px) auto;
+  margin: f.pxToRem(50px) auto 0 auto;
   background-color: c.$timeline-reel-color;
 
   .sliderClass {

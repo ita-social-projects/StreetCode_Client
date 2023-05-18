@@ -4,6 +4,9 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+.artGalleryContainer .blockHeadingWrapper{
+    margin-bottom: pxToRem(10px);
+}
 
 .artGallerySliderContainer .sliderClass .slick-slider {
     width: 100%;
@@ -15,11 +18,7 @@
 }
 
 .artGalleryWrapper {
-    @include wr.main-page-block-wrapper();
-
     .artGalleryContainer {
-        @include mut.rem-margined($top: 30px);
-
         .artGalleryContentContainer {
             @include mut.flex-centered();
         }
@@ -33,7 +32,6 @@
 @media screen and (max-width:1025px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-            @include mut.rem-margined($top: -20px,$bottom:0px);
             @include mut.sized(92%, 100%);
             .slick-list {
                 margin-left: pxToRem(-10px);

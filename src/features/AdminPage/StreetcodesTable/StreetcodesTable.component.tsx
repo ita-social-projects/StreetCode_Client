@@ -33,7 +33,6 @@ const StreetcodesTable = () => {
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
 
     const setRequest = () => {
-        console.log(`Page:${pageRequest}\nAmount:${amountRequest}\nTitle:${titleRequest}\nSort:${null}\nFilter:Status:${statusRequest}\n`);
         setRequestGetAll({
             Page: pageRequest,
             Amount: amountRequest,
@@ -55,7 +54,7 @@ const StreetcodesTable = () => {
             key: 'name',
             render: (text:string, record: MapedStreetCode) => ({
                 children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                    <div onClick={() => window.open(`${record.url}`, '_blank')}>
                         {text}
                     </div>
                 ),
@@ -68,7 +67,7 @@ const StreetcodesTable = () => {
             key: 'index',
             render: (text: string, record: MapedStreetCode) => ({
                 children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                    <div onClick={() => window.open(`${record.url}`, '_blank')}>
                         {text}
                     </div>
                 ),
@@ -80,7 +79,7 @@ const StreetcodesTable = () => {
             key: 'status',
             render: (text: string, record: MapedStreetCode) => ({
                 children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                    <div onClick={() => window.open(`${record.url}`, '_blank')}>
                         {text}
                     </div>
                 ),
@@ -92,7 +91,7 @@ const StreetcodesTable = () => {
             key: 'date',
             render: (text: string, record: MapedStreetCode) => ({
                 children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.STREETCODE.BASE}/${record.url}`, '_blank')}>
+                    <div onClick={() => window.open(`${record.url}`, '_blank')}>
                         {text}
                     </div>
                 ),
@@ -216,7 +215,6 @@ const StreetcodesTable = () => {
                             max={20}
                             defaultValue={1}
                             onChange={(value: any) => {
-                                console.log(value);
                                 setAmountRequest(value);
                             }}
                         />

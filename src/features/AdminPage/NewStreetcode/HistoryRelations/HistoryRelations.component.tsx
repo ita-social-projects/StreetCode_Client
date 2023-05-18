@@ -28,9 +28,7 @@ const RelatedFiguresBlock = ({ figures,setFigures }: Props) => {
                 'https://localhost:5001/api/Streetcode/GetAll',
             );
             setOptions(response.data.streetcodes);
-        } catch (error) {
-            console.error(error);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {

@@ -17,15 +17,17 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import News from '@/features/AdminPage/NewsPage/News.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<AdminPage />}
+            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route
             index
@@ -35,7 +37,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<NewStreetcode />}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             index
@@ -66,13 +68,22 @@ const router = createBrowserRouter(createRoutesFromElements(
             path={FRONTEND_ROUTES.ADMIN.NEWS}
             element={<News />}
         />
-        <Route index path={FRONTEND_ROUTES.CATALOG.BASE} element={<StreetcodeCatalog />} />
+        <Route index path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
+        <Route
+            index
+            path={FRONTEND_ROUTES.ADMIN.TEAM}
+            element={(
+                <ProtectedComponent>
+                    <TeamPage />
+                </ProtectedComponent>
+            )}
+        />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
-        <Route path="/404" element={<NotFound />} />
-        <Route path="/privacy-policy" element={<PrivatePolicy />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/partners-page" element={<PartnersPage />} />
-        <Route path="/support-us" element={<SupportUs />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US} element={<ContactUs />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
         <Route index path="/:id" element={<StreetcodeContent />} />
         <Route index path="/news/:id" element={<NewsPage />} />
     </Route>,

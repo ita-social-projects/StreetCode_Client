@@ -18,14 +18,17 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-
+import ImageLoaderStore from './image-loader-store';
 import SourcesAdminStore from "@stores/sourceadmin-store";
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import UserLoginStore from './user-login-store';
+import TeamStore from './team-store';
+import PositionsStore from './position-store';
 import StatisticRecordStore from './statistic-record-store';
 import NewsStore from './news-store';
+
 
 interface Store {
     modalStore: ModalStore,
@@ -35,6 +38,7 @@ interface Store {
     audiosStore: AudioStore,
     imagesStore: ImageStore,
     partnersStore: PartnersStore,
+    teamStore: TeamStore,
     termsStore: TermStore,
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
@@ -51,6 +55,8 @@ interface Store {
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
     sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
     userLoginStore: UserLoginStore,
+    imageLoaderStore: ImageLoaderStore,
+    positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
     newsStore: NewsStore;
 }
@@ -65,6 +71,7 @@ export const store: Store = {
     imagesStore: new ImageStore(),
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
+    teamStore: new TeamStore(),
     timelineItemStore: new TimelineStore(),
     sourcesStore: new SourcesStore(),
     relatedFiguresStore: new RelatedFiguresStore(),
@@ -78,6 +85,8 @@ export const store: Store = {
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
+    imageLoaderStore: new ImageLoaderStore(),
+    positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
     newsStore: new NewsStore(),

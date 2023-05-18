@@ -24,7 +24,7 @@
 
     .ant-modal-close {
       @include mut.positioned-as(absolute, $left: 94%, $top: -27px);
-      @include mut.circular(90px, c.$pure-white-color);
+      @include mut.circular(80px, c.$pure-white-color);
       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
       &:hover {
@@ -65,10 +65,22 @@
   }
 
   > .donateInputContainerWrapper{
+    position: relative;
     display: flex;
     justify-content: center;
-    
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      border-bottom: 2px solid c.$darkish-gray-color;
+      transform: translateY(-52px);
+    }
+    &.active::before {
+      content: none;
+    }
   }
+
   .amountInput {
     @include mut.rem-margined($bottom: 35px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 64px, $font-weight: 500);
@@ -77,12 +89,6 @@
     color: c.$darkish-gray-color;
     border: none;
     padding: 0;
-
-    &:not(.active) {     
-      text-decoration-line: underline;  
-      text-decoration-thickness: 2px;
-      text-underline-offset: 10px;
-    }
 
     &.active {
       color: c.$pure-black-color;
@@ -104,7 +110,7 @@
 
     > * {
       @include mut.sized(212px, inherit);
-      @include mut.full-rounded(11px);
+      @include mut.full-rounded(15px);
       @include mut.flex-centered();
 
       border-radius: 15px !important;
@@ -127,6 +133,9 @@
           font-weight: 500;
         }
       }
+      &:focus{
+          outline: none;
+        }
     }
   }
 
@@ -174,10 +183,11 @@
 
   .donatesDonateBtn {
     @include mut.sized(212px, 73px);
-    @include mut.full-rounded(11px);
+    @include mut.full-rounded(15px);
     background-color: c.$accented-red-color;
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
     border-radius: f.pxToRem(15px) !important;
+    border: none;
 
     &:disabled{
       background-color: c.$lighter-gray-color;
@@ -191,6 +201,11 @@
 
     &:hover {
       filter: brightness(110%);
+      border: none;
+    }
+
+    &:focus{
+      outline: none;
     }
   }
 }
@@ -235,6 +250,15 @@
         line-height: 15px;
       }
 
+      .donateInputContainerWrapper{
+        &::before {
+          transform: translateY(-20px);
+        }
+        &:not(.active) {
+
+        }
+      }
+
       .amountInput{
         @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
         @include mut.rem-margined($top: 0px, $bottom: 16px);
@@ -244,11 +268,6 @@
         height: 42px;
         max-width: 100%;
 
-        &:not(.active) {     
-          text-decoration-line: underline;  
-          text-decoration-thickness: 2px;
-          text-underline-offset: 2px;
-        }
       }
       .GryvnaSymbol{
         padding-top: 1px !important;
@@ -271,6 +290,7 @@
 
       .donatesDonateBtn {
         @include mut.sized(100%, 46px);
+        @include mut.full-rounded(10px);
 
         > span{
           @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);

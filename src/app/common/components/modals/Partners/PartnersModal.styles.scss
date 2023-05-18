@@ -44,7 +44,7 @@
             }
             
             .contactForm{
-                @include mut.flexed($direction: column, $gap: 32px);
+                @include mut.flexed($direction: column, $gap: 24px);
         
                 textarea{
                     resize: none;

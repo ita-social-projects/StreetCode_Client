@@ -9,19 +9,19 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+import { title } from 'process';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 import ArtGallerySlideSmall from './ArtGalleryListOfItem/ArtGallerySlide.component';
-import { title } from 'process';
 
 const SECTION_AMOUNT = 6;
 const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
-    const { streetcodeArtStore, streetcodeStore } = useMobx();
+    const { streetcodeArtStore, streetcodeStore, imageLoaderStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
@@ -52,10 +52,14 @@ const ArtGalleryBlock = () => {
     );
 
     useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += getStreetcodeArtArray.length;
+    }, [getStreetcodeArtArray.length]);
+
+    useEffect(() => {
         const newMap: IndexedArt[] = [];
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
-                var url = base64ToUrl(image.base64, image.mimeType);
+                const url = base64ToUrl(image.base64, image.mimeType);
                 if (url) {
                     const { width, height } = await getImageSize(url);
 
@@ -67,14 +71,11 @@ const ArtGalleryBlock = () => {
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) {
-                console.log(`Error: cannot parse the image url: ${url}`);
-            }
+            } catch (error: unknown) {}
             setIndexedArts(newMap);
             setIndexedArtsSmall(newMap);
         });
     }, [getStreetcodeArtArray]);
-
 
     const offsetAll = useRef<number>(0);
 
@@ -95,9 +96,11 @@ const ArtGalleryBlock = () => {
             } as IndexedArt);
             if (artsData.length >= 2) {
                 if (artsData[0].offset === 1 && artsData[1].offset != 1) {
-                    sortedArtsList.forEach(x => { if (x.index === artsData[0].index) x.offset = 4; })
+                    sortedArtsList.forEach((x) => {
+                        if (x.index === artsData[0].index) x.offset = 4;
+                    });
                     slideOfArtList.push(
-                        <ArtGallerySlide artGalleryList={artsData} />,
+                        <ArtGallerySlide key={index} artGalleryList={artsData} />,
                     );
                     artsData = [];
                     offsetSumForSlide = 0;
@@ -106,7 +109,7 @@ const ArtGalleryBlock = () => {
             }
         } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} />,
+                <ArtGallerySlide key={index} artGalleryList={artsData} />,
             );
             sequenceNumber = index - 1;
             artsData = [{
@@ -115,7 +118,7 @@ const ArtGalleryBlock = () => {
                 description,
                 offset,
                 title,
-                sequenceNumber: sequenceNumber,
+                sequenceNumber,
             } as IndexedArt];
 
             offsetSumForSlide = offset ?? 0;
@@ -125,7 +128,7 @@ const ArtGalleryBlock = () => {
             offsetSumForSlide = 0;
 
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} />,
+                <ArtGallerySlide key={index} artGalleryList={artsData} />,
             );
             artsData = [];
         }
@@ -133,12 +136,12 @@ const ArtGalleryBlock = () => {
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
-            <ArtGallerySlide artGalleryList={artsData} />,
+            <ArtGallerySlide key={artsData.length} artGalleryList={artsData} />,
         );
     }
     let offsetTmp = 0;
 
-    sortedArtsList.forEach(x => offsetTmp += x.offset);
+    sortedArtsList.forEach((x) => offsetTmp += x.offset);
 
     let offsetSlide = offsetTmp % 6;
 
@@ -164,12 +167,14 @@ const ArtGalleryBlock = () => {
         }
     }
 
-    if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every(x => x.offset === 1)) {
+    if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every((x) => x.offset === 1)) {
         lastSlide[0].offset = 4;
     }
 
     if (offsetSlide < 3 && offsetSlide > 0) {
-        lastSlide.forEach(x => { if (x.offset === 1) x.offset = 4; })
+        lastSlide.forEach((x) => {
+            if (x.offset === 1) x.offset = 4;
+        });
     }
 
     sortedArtsListSmall.forEach(({
@@ -193,7 +198,7 @@ const ArtGalleryBlock = () => {
         } else if (artsDataSmall.length > 0 && offsetSumForSlideSmall + offset > SECTION_AMOUNT_SMALL) {
             sequenceNumberSmall = index - 1;
             slideOfArtListSmall.push(
-                <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
+                <ArtGallerySlideSmall key={index} artGalleryList={artsDataSmall} />,
             );
             artsDataSmall = [{
                 index,
@@ -209,7 +214,7 @@ const ArtGalleryBlock = () => {
 
         if (offsetSumForSlideSmall >= SECTION_AMOUNT_SMALL) {
             slideOfArtListSmall.push(
-                <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
+                <ArtGallerySlideSmall key={index} artGalleryList={artsDataSmall} />,
             );
             artsDataSmall = [];
             offsetSumForSlideSmall = 0;
@@ -218,7 +223,7 @@ const ArtGalleryBlock = () => {
 
     if (!Number.isInteger(offsetSumSmall / SECTION_AMOUNT_SMALL)) {
         slideOfArtListSmall.push(
-            <ArtGallerySlideSmall artGalleryList={artsDataSmall} />,
+            <ArtGallerySlideSmall key={artsDataSmall.length} artGalleryList={artsDataSmall} />,
         );
     }
 
@@ -234,7 +239,6 @@ const ArtGalleryBlock = () => {
         slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
     };
 
-
     const sliderPropsSmall = {
         className: 'artGallarySliderContainerSmall',
         infinite: true,
@@ -249,14 +253,13 @@ const ArtGalleryBlock = () => {
         touchThreshold: 25,
         transform: 'translateZ(0)',
     };
-
     return (
         <div
             id="art-gallery"
-            className = {`artGalleryWrapper 
-            ${getStreetcodeArtArray.length?'':'display-none'}`}
+            className={`artGalleryWrapper 
+            ${getStreetcodeArtArray.length ? '' : 'display-none'}`}
         >
-            <div className="artGalleryContainer">
+            <div className="artGalleryContainer container">
                 <BlockHeading headingText="Арт-галерея" />
                 <div className="artGalleryContentContainer">
                     <div className="artGallerySliderContainer">

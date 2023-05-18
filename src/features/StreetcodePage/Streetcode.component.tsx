@@ -1,9 +1,11 @@
 import './Streetcode.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
@@ -14,11 +16,12 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
-import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
-import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import dayjs from 'dayjs';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
+import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
+import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+
 import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import MapComponent from './MapBlock/Map/Map.component';
@@ -26,23 +29,20 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
 
 const StreetcodeContent = () => {
+    const { imageLoaderStore, streetcodeStore } = useMobx();
+    const { setCurrentStreetcodeId } = streetcodeStore;
+    const { imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
+    const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
+
     const streetcodeUrl = useRouteUrl();
+
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const { streetcodeStore } = useMobx();
-    const { setCurrentStreetcodeId } = streetcodeStore;
-
     const [loading, setLoading] = useState(true);
 
-    const [streetcodeCardState, setStreetcodeCardState] = useState(false);
     const [textBlockState, setTextBlockState] = useState(false);
-    const [interestingFactsState, setInterestingFactsState] = useState(false);
-    const [partnersState, setPartnersState] = useState(false);
 
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -74,27 +74,36 @@ const StreetcodeContent = () => {
             );
         }
     });
+
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
-/*     useEffect(() => {
+    useEffect(() => {
         document.body.style.overflow = 'hidden';
-        if (streetcodeCardState && textBlockState && interestingFactsState && partnersState) {
+
+        // for cloned images in sliders
+        if (slideCloneCountAdded === 0) {
+            const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
+            const slideCloneCount = slideClonedImgs.length;
+            imageLoaderStore.totalImagesToLoad += slideCloneCount;
+            setSlideCloneCountAdded(slideCloneCount);
+        }
+
+        if (imagesLoadedPercentage >= 80 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
-
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
             if (blockElement) {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [streetcodeCardState, textBlockState, interestingFactsState, partnersState]); */
+    }, [textBlockState, loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">
-           {/*  {loading && (
+            {loading && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -102,25 +111,22 @@ const StreetcodeContent = () => {
                         src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
                     />
                 </div>
-            )} */}
+            )}
             <ProgressBar>
                 <MainBlock
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
-                    setStreetcodeCardState={setStreetcodeCardState}
                 />
                 <TextBlockComponent setTextBlockState={setTextBlockState} />
-                <InterestingFactsComponent setInterestingFactsState={setInterestingFactsState} />
+                <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlock />
                 <ArtGalleryBlockComponent />
-                <RelatedFiguresComponent
-                    setActiveTagId={setActiveTagId}
-                />
+                <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
-            <PartnersComponent setPartnersState={setPartnersState} />
+            <PartnersComponent />
             <div className="sticky">
                 <div className="sticky-content">
                     <ScrollToTopBtn />
@@ -138,4 +144,4 @@ const StreetcodeContent = () => {
     );
 };
 
-export default StreetcodeContent;
+export default observer(StreetcodeContent);

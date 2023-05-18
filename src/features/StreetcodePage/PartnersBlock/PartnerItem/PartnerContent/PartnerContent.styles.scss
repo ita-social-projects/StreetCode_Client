@@ -72,3 +72,8 @@
         border-radius: 30px;
     }
 }
+@media screen and (max-width: 480px) {
+    .partnerContent{
+        width: pxToRem(280px);
+    }
+}

@@ -69,6 +69,20 @@ export const API_ROUTES = {
         UPDATE: 'timelineItem/update',
         DELETE: 'timelineItem/delete',
     },
+    TEAM: {
+        GET_ALL: 'team/getAll',
+        GET: 'team/getById',
+        CREATE: 'team/create',
+        UPDATE: 'team/update',
+        DELETE: 'team/delete',
+    },
+    POSITIONS: {
+        GET_ALL: 'position/getAll',
+        GET: 'position/getById',
+        CREATE: 'position/create',
+        UPDATE: 'position/update',
+        DELETE: 'position/delete',
+    },
     TOPONYMS: {
         GET_ALL: 'toponym/getAll',
         CREATE: 'toponym/create',
