@@ -13,6 +13,10 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
 
+<<<<<<< HEAD
+=======
+import TermsApi from '../../../../../../app/api/streetcode/text-content/terms.api';
+>>>>>>> master
 
 interface Props {
   inputInfo: Partial<TextInputInfo> | undefined;
@@ -58,17 +62,19 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             <TinyMCEEditor
                 init={{
                     height: 300,
+                    max_chars: 1000,
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(inputInfo.text);
+
+                        editor.setContent(inputInfo?.textContent);
                     },
                     plugins: [
                         'autolink',
                         'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'insertdatetime', 'wordcount',
+                        'insertdatetime', 'wordcount', 'charcount',
                     ],
                     toolbar: 'undo redo | bold italic | '
-                        + 'removeformat ',
+                        + 'removeformat',
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                 }}
 
