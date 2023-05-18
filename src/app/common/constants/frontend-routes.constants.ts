@@ -6,11 +6,11 @@ const FRONTEND_ROUTES = {
         NEW_STREETCODE: '/admin-panel/new-streetcode',
         EDIT_STREETCODE: '/admin-panel/edit-streetcode',
         DICTIONARY: '/admin-panel/dictionary',
-        FOR_FANS: '/admin-panel/dictionary',
+        FOR_FANS: '/admin-panel/for-fans',
         LOGIN: '/admin-panel/login',
         TEAM: '/admin-panel/team',
         ANALYTICS: '/admin-panel/analytics',
-
+        NEWS: '/admin-panel/news'
     },
     OTHER_PAGES: {
         CATALOG: '/catalog',

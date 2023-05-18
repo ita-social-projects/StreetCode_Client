@@ -16,7 +16,7 @@ const SourceItem = ({ srcCategory }: Props) => {
     return (
         <div
             className="sourcesSliderItem"
-            onClick={() => setModal('sources', srcCategory.id)}
+            onClick={() => setModal('sources', srcCategory.id, true)}
             style={{ backgroundImage: `url(${base64ToUrl(srcCategory.image?.base64, srcCategory.image?.mimeType)})` }}
         >
             <h1>{srcCategory.title}</h1>

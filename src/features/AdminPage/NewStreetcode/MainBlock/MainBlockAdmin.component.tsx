@@ -46,8 +46,6 @@ const MainBlockAdmin: React.FC<Props> = ({
         { width: 612, screenWidth: 1600 },
     ];
     const [tags, setTags] = useState<Tag[]>([]);
-    const [inputedChar, setInputedChar] = useState<number>(0);
-    const [maxCharCount, setMaxCharCount] = useState<number>(teaserMaxCharCount);
     const [popoverProps, setPopoverProps] = useState<TagPreviewProps>(tagPreviewPropsList[0]);
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
@@ -98,20 +96,6 @@ const MainBlockAdmin: React.FC<Props> = ({
         }
         setSwitchState(!switchState);
     };
-    const onTextAreaTeaserChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const costForNewLine = 64;
-        const text = e.target.value;
-        const newLinesCharCount = (text.match(/(\n|\r)/gm) || []).length;
-        const newInputedChar = text.length + newLinesCharCount * costForNewLine;
-        if (newInputedChar > teaserMaxCharCount || newLinesCharCount > 1) {
-            return;
-        }
-
-        if (maxCharCount !== teaserMaxCharCount - newLinesCharCount * costForNewLine) {
-            setMaxCharCount(teaserMaxCharCount - newLinesCharCount * costForNewLine);
-        }
-        setInputedChar(newInputedChar);
-    };
 
     useEffect(() => {
         TagsApi.getAll().then((tgs) => setTags(tgs));
@@ -153,6 +137,7 @@ const MainBlockAdmin: React.FC<Props> = ({
     return (
         <div className="mainblock-add-form">
             <Form.Item
+                initialValue={1}
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
                         {pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
@@ -307,21 +292,14 @@ const MainBlockAdmin: React.FC<Props> = ({
                     label="Тизер"
                     name="teaser"
                     className="maincard-item teaser-form-item"
-                    rules={[{ required: true, message: 'Введіть тизер', max: 500 }]}
+                    rules={[{ required: true, message: 'Введіть тизер', max: teaserMaxCharCount }]}
                 >
                     <Input.TextArea
-                        onChange={onTextAreaTeaserChange}
+                        showCount
                         className="textarea-teaser"
-                        maxLength={500}
+                        maxLength={teaserMaxCharCount}
                     />
                 </Form.Item>
-                <div className="amount-left-char-textarea-teaser">
-                    <p className={teaserMaxCharCount - inputedChar < 50 ? 'warning' : ''}>
-                        {inputedChar}
-                            /
-                        {teaserMaxCharCount}
-                    </p>
-                </div>
             </div>
 
             <FileInputsPart />
