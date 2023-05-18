@@ -42,12 +42,12 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ForFansMainPage />}
+            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
         />
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            element={<Partners />}
+            element={<ProtectedComponent><Partners /></ProtectedComponent>}
         />
         <Route
             index
@@ -58,15 +58,15 @@ const router = createBrowserRouter(createRoutesFromElements(
             index
             path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
             element={(
-                
+                <ProtectedComponent>
                     <TermDictionary />
-    
+                </ProtectedComponent>
             )}
         />
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.NEWS}
-            element={<News />}
+            element={<ProtectedComponent><News /></ProtectedComponent>}
         />
         <Route index path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
         <Route
