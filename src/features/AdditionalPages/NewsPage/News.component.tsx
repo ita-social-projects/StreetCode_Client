@@ -16,6 +16,8 @@ import News from '@/models/news/news.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Paragraph from 'antd/es/skeleton/Paragraph';
 import { Link } from 'react-router-dom';
+import BreadCrumb from './BreadCrumb/BreadCrumb.component';
+import { Url } from 'url';
 
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
@@ -25,21 +27,20 @@ const NewsPage = () => {
     var { value } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
     const news = value as News;
     const id = news?.id;
-    console.log(newsStore.getNewsArray);
+    console.log(value);
     const newsArr = newsStore.getNewsArray as News[];
-    //console.log(newsArr.indexOf(news),'абв');
+    console.log(newsArr.findIndex(x => x.id == news?.id),'абв');
     newsArr.forEach((record)=> {
         console.log(record.id);
         console.log('абв')
     })
-    console.log(newsArr.indexOf(value as News));
-    // const getNewsArrId () => {
 
+
+    console.log(newsArr[0]);
+    // const getNewsArrId () => {
+    //console.log(news?.text)
     // }
-    value = useAsync(() => NewsApi.getById(id+1), [id]);
-    const nextNews = value as News;
-    value = useAsync(() => NewsApi.getById(id-1), [id]);
-    const prevNews = value as News;
+    
     //const id = news?.id;
     // const { newspres } = useAsync(() => NewsApi.getById(id), [id]);
     // const { pvalue } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
@@ -50,13 +51,36 @@ const NewsPage = () => {
     const paragraphs = news?.text.split('\n');
     const { fetchImage, getImage } = imagesStore;
 
+    function getPreviousIndex(currentIndex: number) {
+        if (currentIndex > 0) {
+          return currentIndex - 1;
+        }
+        return -1;
+      }
+      
+    function getNextIndex(arr: News[], currentIndex: number) {
+        if (currentIndex < arr.length - 1) {
+          return currentIndex + 1;
+        }
+        return -1;
+      }
+    const prevIndex = getPreviousIndex(newsArr.findIndex(x => x.id == news?.id));
+    const nextIndex = getNextIndex(newsArr, newsArr.findIndex(x => x.id == news?.id));
+
+    
+    // console.log(nextIndex,prevIndex);
+    // value = useAsync(() => NewsApi.getByUrl((newsArr[nextIndex]?.url as unknown as string)), [newsArr]);
+    // const nextNews = value as News;
+    // value = useAsync(() => NewsApi.getByUrl((newsArr[prevIndex]?.url as unknown as string)), [newsArr]);
+    // const prevNews = value as News;
+    // console.log(nextNews, prevNews, "qsdfvgbnmk");
     useAsync(
         () => fetchImage(news?.imageId!),
         [news?.imageId],
     );
     const NewsId = newsStore.currentNews;
 
-    console.log(nextNews, prevNews, "qsdfvgbnmk");
+    
     // var prevNews = news;
     // var nextNews = news;
     // const getNews = (id: number) => {
@@ -108,32 +132,38 @@ const NewsPage = () => {
     //     fetchNews();
     //   }, [id]);
 
-    useEffect(() => {
-        setCurrentNewsId(newsUrl).then();
-    }, [setCurrentNewsId, newsUrl]);
+    // useEffect(() => {
+    //     setCurrentNewsId(newsUrl).then();
+    // }, [setCurrentNewsId, newsUrl]);
 
     return(<div>
-        <div className="partnersContainer">
+        <div className="newsContainer">
             <div className="wrapper">
-                <Title />
-                <h1>{news?.title}</h1>
-                <div className="newsTextArea">
-                    {paragraphs?.slice(0, 3).map((paragraph, index) =>
-                    (
-                        <p key={index}>
-                            {paragraph}
-                            <br />
-                        </p>
-                    ))}
-                    
+                {/* <Title /> */}
+                <BreadCrumb separator={<div className="separator" />} news={news} />
+                <div className='NewsHeader'>
+                <h1 className=''>{news?.title}</h1>
                 </div>
-                { 
-                /*<PartnersBlock /> */}
-                <img
-                    key={news?.id}
-                    src={base64ToUrl(getImage(news?.imageId!)?.base64, getImage(news?.imageId!)?.mimeType)}
-                    alt={news?.title}
-                />
+                <div className="newsWithImageWrapper">
+                    <div className="newsTextArea">
+                        {paragraphs?.slice(0, 3).map((paragraph, index) =>
+                        (
+                            <p key={index}>
+                                {paragraph}
+                                <br />
+                            </p>
+                        ))}
+                        
+                    </div>
+                    { 
+                    /*<PartnersBlock /> */}
+                    <img className="newsImage"
+                        key={news?.id}
+                        src={base64ToUrl(getImage(news?.imageId!)?.base64, getImage(news?.imageId!)?.mimeType)}
+                        alt={news?.title}
+                    />
+                </div>
+                
                 <div className="newsTextArea">
                     {paragraphs?.slice(3).map((paragraph, index) =>
                     (
@@ -143,17 +173,30 @@ const NewsPage = () => {
                         </p>
                     ))}
                 </div>
-                <div className="NewsLinks">
-                {/* <Link className='Link' to="/news/ghjklccc">Попередня новина</Link>
-                <Link className='Link' to="/news/streetcode-was-updated">Наступна новина</Link> */}
-                <Link className='Link' to={`/news/${prevNews?.url}`}>Попередня новина</Link>
-                <Link className='Link' to={`/news/${nextNews?.url}`}>Наступна новина</Link>
-                <Link className='Link' to={`/news/${nextNews?.url}`}>Наступна новина</Link>
+                <div className="newsLinks">
+                <Link className='Link' to="/news/ghjklccc">Попередня новина</Link>
+                <Link className='Link' to="/news/streetcode-was-updated">Наступна новина</Link>
+                {/* <Link className='Link' to={`/news/${prevNews?.url}`}>Попередня новина</Link>
+                <Link className='Link' to={`/news/${nextNews?.url}`}>Наступна новина</Link> */}
+                {/* <Link className='Link' to={`/news/${nextNews?.url}`}>Наступна новина</Link> */}
                
                 </div>
-                <div className="RandomNewsLink">
-                    Також читайте:
+                <div className="randomNewsBlock">
+                    <div className="randomNewsLink">
+                        <div className="additionalNewsText">
+                            Також читайте:
+                        </div>
+                        <div className="randomNewsTitleAndButtn">
+                            {news?.title}   
+                            <div className="newsButtonContainer">
+                                <Link to="/news/ghjklccc">
+                                    <button >Перейти</button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
                 
                 {/* <div className="newsTextArea">{news?.text}</div> */}
                 {/* <div className="subTitle titleBottom">

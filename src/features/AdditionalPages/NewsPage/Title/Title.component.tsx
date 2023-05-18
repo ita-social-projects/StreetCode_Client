@@ -4,7 +4,11 @@ import Logo from '@images/partners/logo_white.png';
 
 const Title = () => (
     <div className="titleContainer">
-        <div className="titleSmall">Новина</div>
+        
+            <div className="titleSmall main">Головна  </div>
+            <div className="titleSmall"> Новина</div>
+        
+        
         {/* <div className="titleBig">Партнери</div>
         <div className="content">
             <img className="logo" src={Logo} alt="лого" />

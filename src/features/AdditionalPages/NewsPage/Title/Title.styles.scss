@@ -2,16 +2,26 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-.partnersContainer{
+.newsContainer{
     .titleContainer{
-        margin-bottom: f.pxToRem(24px);
+        margin-bottom: f.pxToRem(20px);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     
         .titleSmall{
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
             line-height: 14px;
             color: #891F16;
             text-align: right;
-            text-transform: uppercase;      
+            text-transform: uppercase;    
+            //display: block;   
+            //width: auto !important;
+        }
+
+        .titleSmall.main{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: bold, $font-size: 12px);
+            margin-right: 14px;
         }
     
         .titleBig{

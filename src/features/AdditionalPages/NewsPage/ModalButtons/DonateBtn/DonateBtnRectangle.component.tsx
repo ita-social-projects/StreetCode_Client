@@ -12,7 +12,7 @@ const DonateBtnRectangle = () => {
 
     return (
         <button className='button-sized donate-button' onClick={onBtnClick}>
-            Задонатити
+            Перейти
         </button>       
     );
 };
