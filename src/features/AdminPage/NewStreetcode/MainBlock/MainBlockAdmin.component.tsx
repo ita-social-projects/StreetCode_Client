@@ -137,6 +137,7 @@ const MainBlockAdmin: React.FC<Props> = ({
     return (
         <div className="mainblock-add-form">
             <Form.Item
+                initialValue={1}
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
                         {pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}

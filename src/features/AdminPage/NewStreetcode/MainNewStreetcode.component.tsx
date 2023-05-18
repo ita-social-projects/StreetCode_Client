@@ -71,8 +71,6 @@ const NewStreetcode = () => {
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
-    const [timeline, setTimeline] = useState<TimelineItem[]>([]);
-    const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const { id } = useParams<any>();
     const navigate = useNavigate();
@@ -80,9 +78,6 @@ const NewStreetcode = () => {
     const [funcName, setFuncName] = useState<string>('create');
 
     const parseId = id ? +id : null;
-    if (parseId) {
-        timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
-    }
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
@@ -177,12 +172,10 @@ const NewStreetcode = () => {
             StreetcodeCoordinateApi.getByStreetcodeId(parseId).then((result) => {
                 setCoordinates([...result]);
             });
-            FactsApi.getFactsByStreetcodeId(parseId).then((result) => {
-                setFacts([...result]);
-            });
             TransactionLinksApi.getByStreetcodeId(parseId)
                 .then((res) => form.setFieldValue('arlink', res.qrCodeUrl.href));
             factsStore.fetchFactsByStreetcodeId(parseId);
+            timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
         }
     }, []);
 
@@ -309,18 +302,17 @@ const NewStreetcode = () => {
                                 setVideo={setVideo}
                             />
                             <InterestingFactsBlock id={parseId ?? -1} />
+                            <TimelineBlockAdmin />
+                            <MapBlockAdmin coordinates={coordinates} />
+                            <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
+                            <ForFansBlock />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
-                            <ArtGalleryBlock arts={arts} setArts={setArts} />
-                            <TimelineBlockAdmin />
-                            <ForFansBlock />
-                            <MapBlockAdmin coordinates={coordinates} />
                             <ARBlock />
 
                         </Form>
                     </div>
-
                     <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>
                 </div>
             </ConfigProvider>
