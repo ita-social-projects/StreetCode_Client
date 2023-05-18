@@ -9,13 +9,13 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+import { title } from 'process';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import ArtGallerySlide from './ArtGalleryListOfItem/ArtGallerySlide.component';
 import ArtGallerySlideSmall from './ArtGalleryListOfItem/ArtGallerySlide.component';
-import { title } from 'process';
 
 const SECTION_AMOUNT = 6;
 const SECTION_AMOUNT_SMALL = 2;
@@ -59,7 +59,7 @@ const ArtGalleryBlock = () => {
         const newMap: IndexedArt[] = [];
         getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
             try {
-                var url = base64ToUrl(image.base64, image.mimeType);
+                const url = base64ToUrl(image.base64, image.mimeType);
                 if (url) {
                     const { width, height } = await getImageSize(url);
 
@@ -76,7 +76,6 @@ const ArtGalleryBlock = () => {
             setIndexedArtsSmall(newMap);
         });
     }, [getStreetcodeArtArray]);
-
 
     const offsetAll = useRef<number>(0);
 
@@ -97,7 +96,9 @@ const ArtGalleryBlock = () => {
             } as IndexedArt);
             if (artsData.length >= 2) {
                 if (artsData[0].offset === 1 && artsData[1].offset != 1) {
-                    sortedArtsList.forEach(x => { if (x.index === artsData[0].index) x.offset = 4; })
+                    sortedArtsList.forEach((x) => {
+                        if (x.index === artsData[0].index) x.offset = 4;
+                    });
                     slideOfArtList.push(
                         <ArtGallerySlide key={index} artGalleryList={artsData} />,
                     );
@@ -117,7 +118,7 @@ const ArtGalleryBlock = () => {
                 description,
                 offset,
                 title,
-                sequenceNumber: sequenceNumber,
+                sequenceNumber,
             } as IndexedArt];
 
             offsetSumForSlide = offset ?? 0;
@@ -140,7 +141,7 @@ const ArtGalleryBlock = () => {
     }
     let offsetTmp = 0;
 
-    sortedArtsList.forEach(x => offsetTmp += x.offset);
+    sortedArtsList.forEach((x) => offsetTmp += x.offset);
 
     let offsetSlide = offsetTmp % 6;
 
@@ -166,12 +167,14 @@ const ArtGalleryBlock = () => {
         }
     }
 
-    if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every(x => x.offset === 1)) {
+    if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every((x) => x.offset === 1)) {
         lastSlide[0].offset = 4;
     }
 
     if (offsetSlide < 3 && offsetSlide > 0) {
-        lastSlide.forEach(x => { if (x.offset === 1) x.offset = 4; })
+        lastSlide.forEach((x) => {
+            if (x.offset === 1) x.offset = 4;
+        });
     }
 
     sortedArtsListSmall.forEach(({
@@ -192,7 +195,6 @@ const ArtGalleryBlock = () => {
                 title,
                 sequenceNumber: sequenceNumberSmall,
             } as IndexedArt);
-
         } else if (artsDataSmall.length > 0 && offsetSumForSlideSmall + offset > SECTION_AMOUNT_SMALL) {
             sequenceNumberSmall = index - 1;
             slideOfArtListSmall.push(
@@ -237,7 +239,6 @@ const ArtGalleryBlock = () => {
         slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
     };
 
-
     const sliderPropsSmall = {
         className: 'artGallarySliderContainerSmall',
         infinite: true,
@@ -252,14 +253,13 @@ const ArtGalleryBlock = () => {
         touchThreshold: 25,
         transform: 'translateZ(0)',
     };
-
     return (
         <div
             id="art-gallery"
-            className = {`artGalleryWrapper 
-            ${getStreetcodeArtArray.length?'':'display-none'}`}
+            className={`artGalleryWrapper 
+            ${getStreetcodeArtArray.length ? '' : 'display-none'}`}
         >
-            <div className="artGalleryContainer">
+            <div className="artGalleryContainer container">
                 <BlockHeading headingText="Арт-галерея" />
                 <div className="artGalleryContentContainer">
                     <div className="artGallerySliderContainer">

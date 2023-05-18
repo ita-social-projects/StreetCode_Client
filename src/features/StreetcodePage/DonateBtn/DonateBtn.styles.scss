@@ -35,6 +35,10 @@
     @include mut.positioned-as(relative, $right: 10px);
     .donateBtnCircle {
       @include mut.circular(50px);
+
+      svg{
+        transform: scale(0.8);
+      }
     }
   }
 }

@@ -39,6 +39,7 @@ const InterestingFactsComponent = () => {
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
+        infinite: getFactArray.length > 1,
         swipe: false,
         centerPadding: '-5px',
         responsive: [
@@ -77,12 +78,14 @@ const InterestingFactsComponent = () => {
             ? (
                 <div
                     id="wow-facts"
-                    className={`"interestingFactsWrapper"
+                    className={`container "interestingFactsWrapper"
                     ${getFactArray.length === 1 ? 'single' : ''} 
                     ${getFactArray.length ? '' : 'display-none'}`}
                 >
-                    <div className="interestingFactsContainer">
-                        <BlockHeading headingText="Wow—факти" />
+                    <BlockHeading headingText="Wow—факти" />
+                    <div className={`interestingFactsContainer
+                    ${getFactArray.length === 1 ? 'singleFact' : ''}`}
+                    >
                         <div className="interestingFactsSliderContainer">
                             <div style={{ height: '100%' }}>
                                 {(getFactArray.length === 1) ? (

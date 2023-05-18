@@ -139,7 +139,7 @@
   }
 
   .donatesDonateBtn {
-    @include mut.full-rounded(11px);
+    @include mut.full-rounded(10px);
     @include mut.sized($width: 550px, $height: 73px);
     
     background-color: c.$accented-red-color;
@@ -205,7 +205,7 @@
         border: 1px;
 
         > span {
-          @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 500);
+          @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 500);
         }
       }
     }

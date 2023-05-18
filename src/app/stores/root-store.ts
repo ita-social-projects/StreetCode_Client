@@ -27,7 +27,9 @@ import UserLoginStore from './user-login-store';
 import TeamStore from './team-store';
 import PositionsStore from './position-store';
 import StatisticRecordStore from './statistic-record-store';
+import NewsStore from './news-store';
 import StreetcodesMainPageStore from './streetcode-mainpage-store';
+
 
 
 interface Store {
@@ -58,8 +60,8 @@ interface Store {
     imageLoaderStore: ImageLoaderStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
+    newsStore: NewsStore,
     streetcodeMainPageStore: StreetcodesMainPageStore,
-
 }
 
 export const store: Store = {
@@ -90,6 +92,7 @@ export const store: Store = {
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
+    newsStore: new NewsStore(),
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
 };
 

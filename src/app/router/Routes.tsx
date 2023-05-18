@@ -17,9 +17,14 @@ import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
-import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
+import News from '@/features/AdminPage/NewsPage/News.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
+import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
+import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
+
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
@@ -62,6 +67,11 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
+        <Route
+            index
+            path={FRONTEND_ROUTES.ADMIN.NEWS}
+            element={<ProtectedComponent><News /></ProtectedComponent>}
+        />
         <Route index path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
         <Route
             index
@@ -79,6 +89,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
         <Route index path="/:id" element={<StreetcodeContent />} />
+        <Route index path="/news/:id" element={<NewsPage />} />
     </Route>,
 ));
 
