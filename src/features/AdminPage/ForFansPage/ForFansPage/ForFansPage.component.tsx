@@ -63,7 +63,6 @@ const ForFansPage = () => {
             imageId: imageId.current,
             image,
         };
-        console.log(newSource);
         await addSourceCategory(newSource);
         form.resetFields();
     }
