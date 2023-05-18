@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import { Popover } from 'antd';
 
 interface Props {
-  mainText: string;
+    mainText: string;
 }
 
 const keywordColoring = {
@@ -16,7 +16,6 @@ const parser = (input: string) => parse(input, {
     replace: () => {
         const newInput = input.split('<p>').pop();
         const inputWithoutP = newInput?.replace('</p>', '');
-
         return <>{parse(String(inputWithoutP))}</>;
     },
 });
@@ -55,7 +54,6 @@ const SearchTerms = ({ mainText }: Props) => {
             'gi',
         ),
     );
-
     const checkMapping = (part: string) => {
         if (searchTerms.includes(part)) {
             const index = searchTerms.indexOf(part);
@@ -64,12 +62,11 @@ const SearchTerms = ({ mainText }: Props) => {
         }
         return false;
     };
-
+    const containsSearchTerm = searchTerms.some((term) => mainText.toLowerCase().includes(term.toLowerCase()));
     return (
         <div>
-            {searchTerms.length > 0 ? splittedKeywordText.map((part, idx) => (
+            {containsSearchTerm ? splittedKeywordText.map((part) => (
                 <span
-                    key={idx}
                     style={searchTerms.includes(part) ? keywordColoring : undefined}
                 >
                     {checkMapping(part) ? (
@@ -81,7 +78,7 @@ const SearchTerms = ({ mainText }: Props) => {
                         </Popover>
                     ) : (
                         <>
-                            {parser(`${part}`)}
+                            {parse(`${part}`)}
                         </>
                     )}
                 </span>
