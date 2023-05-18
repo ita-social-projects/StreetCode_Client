@@ -1,15 +1,16 @@
-import React from 'react';
-import ForFansPage from './ForFansPage/ForFansPage.component';
 import './ForFansMainPage.style.scss';
-import PageBar from '../PageBar/PageBar.component';
 
+import React from 'react';
+import ForFansPageComponent from '@features/AdminPage/ForFansPage/ForFansPage/ForFansPage.component';
+
+import PageBar from '../PageBar/PageBar.component';
 
 const ForFansMainPage = () => (
     <div className="ForFansPageContainer">
-        <PageBar/>
-    <div className="MainForFansPageContainer">
-        <ForFansPage />
-    </div>
+        <PageBar />
+        <div className="MainForFansContainer">
+            <ForFansPageComponent />
+        </div>
     </div>
 );
 

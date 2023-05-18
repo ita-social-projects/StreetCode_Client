@@ -5,7 +5,9 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/_utils.functions.scss" as f;
 
-
+.singleFact{
+    width: 100% !important;
+}
 
 .interestingFactsContainer {
     @include mut.sized(100%);
@@ -17,10 +19,6 @@
 
 .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
-
-}
-.single{
-     margin-bottom: pxToRem(200px);
 }
 
 .interestingFactsSliderContainer {
@@ -28,11 +26,11 @@
     .slick-list {
         padding: 9.125rem 0 !important;
     }
-    .slick-dots {
-        @include mut.rem-margined($top:-23px, $left:-30px);
+    .slick-next{
+        right: f.pxToRem(-87px);
     }
-    .slick-slider{
-        height: 100%;
+    .slick-prev{
+        left: f.pxToRem(-100px);
     }
 }
 
@@ -49,7 +47,7 @@
     margin-bottom: pxToRem(90px);
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
-    padding-top:10.5%;
+    padding-top: pxToRem(88px);
     
     .interestingFactSlide{
         @include  mut.sized(650px, 600px);
@@ -72,7 +70,6 @@
                       
             .mainText{
                 @include mut.sized($height: 75%);
-                overflow-y :scroll;
                 font-size:15px;
                 line-height: pxToRem(20px);
                 @include mut.rem-margined($right: 5px );
@@ -98,18 +95,20 @@
     }
 }
 
-
-@media screen
-and (max-width: 1024px){
+@media screen and (max-width: 1024px){
+    .interestingFactsSliderContainer .slick-list{
+        padding: 4.125rem 0 !important;
+    }
 
     .interestingFactsWrapper {
-    .slick-dots{         
-        @include mut.rem-margined(0);
-        bottom: 15%;
+        .slick-dots{         
+            @include mut.rem-margined(0);
+            bottom: 15%;
+        }
     }
- }
- .interestingFactsContainer {
-        @include mut.sized(92%, 620px); 
+
+    .interestingFactsContainer {
+        @include mut.sized(92%, 100%); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
@@ -121,10 +120,8 @@ and (max-width: 1024px){
     }
 
     .singleSlideContainer{
- 
         .interestingFactSlide{
-            @include mut.sized(445px);
-    
+            @include mut.sized(445px); 
             @include mut.full-rounded(20px);
     
             .slideImage {
@@ -178,8 +175,9 @@ and (min-width: 768px) and (max-width: 1023px){
   
 }
     .interestingFactsContainer {
-        @include mut.sized(765px, 620px); 
+        @include mut.sized(765px, 100%); 
         @include mut.flex-centered($direction: column);
+        margin: 0 auto;
     }
     .interestingFactsSliderContainer {
         @include mut.sized(100%, 100%); 
@@ -234,17 +232,16 @@ and (min-width: 768px) and (max-width: 1023px){
 
 @media screen
 and (max-width: 768px){
-
     .interestingFactsWrapper {
-    @include wr.main-page-block-wrapper();
-    .slick-dots{
-        @include mut.rem-margined(0);
-        bottom: 15%;
+        @include wr.main-page-block-wrapper();
+        .slick-dots{
+            @include mut.rem-margined(0);
+            bottom: 15%;
+        }
     }
-  
-}
+
     .interestingFactsContainer {
-        @include mut.sized(765px, 620px); 
+        @include mut.sized(765px, 100%); 
         @include mut.flex-centered($direction: column);
     
         .blockHeadingContainer {
@@ -304,10 +301,8 @@ and (max-width: 768px){
 }
 
 @media screen and (max-width: 480px){
-
-   
 .interestingFactsContainer {
-    @include mut.sized(90%, 620px);
+    @include mut.sized(100%, 100%);
 
     .single{
         margin-bottom: pxToRem(100px) ;

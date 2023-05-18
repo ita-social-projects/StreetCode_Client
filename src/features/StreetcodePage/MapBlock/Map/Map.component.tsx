@@ -81,12 +81,12 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
                 
                 {streetcodes?.isActive && (
                     <CustomMarkerCluster>
-                        {streetcodeCoordinates?.map((sc) => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)} />)}
+                        {streetcodeCoordinates?.map((sc) => <CustomMarker key={sc.id} latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)} />)}
                     </CustomMarkerCluster>
                 )}
                 {streets?.isActive && (
                     <CustomMarkerCluster>
-                        {toponyms?.map((t) => <CustomMarker latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`} />)}
+                        {toponyms?.map((t) => <CustomMarker key={t.id} latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`} />)}
                     </CustomMarkerCluster>
                 )}
                 

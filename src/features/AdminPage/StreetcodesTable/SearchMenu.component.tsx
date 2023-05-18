@@ -18,12 +18,10 @@ const SearchMenu = ({setStatus, setTitle, setRequest}: IProps) => {
       ];
 
     const handleChangeStatus = (value: string) => {
-        console.log(`selected ${value}`);
         setStatus(value);
     };
 
     const handleChangeTitle = (event: any) => {
-        console.log(`selected ${event.target.value}`);
         setTitle(event.target.value);
     };
 
