@@ -11,7 +11,6 @@ const PartnersBtn = () => {
         becomePartnerEvent('partners_page');
     };
 
-
     return (
         <button className='button-sized partner-button' onClick={onBtnClick}>
             Стати партнером
