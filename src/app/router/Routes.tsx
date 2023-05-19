@@ -11,14 +11,13 @@ import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.compo
 import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
 import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
+import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
+import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
-import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
-import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
-
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
@@ -26,6 +25,11 @@ const router = createBrowserRouter(createRoutesFromElements(
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
             element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+        />
+        <Route
+            index
+            path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
+            element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
         />
         <Route
             index

@@ -3,7 +3,7 @@
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, redirect } from 'react-router-dom';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -48,6 +48,7 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import { toast } from 'react-toastify';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -74,9 +75,11 @@ const NewStreetcode = () => {
     const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
+    const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
 
     const [funcName, setFuncName] = useState<string>('create');
+    const navigate = useNavigate();
 
     const parseId = id ? +id : null;
     if (parseId) {
@@ -180,7 +183,7 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onFinish = (data: any) => {
+    const onFinish = (statusCurrent: number) => {
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -235,6 +238,7 @@ const NewStreetcode = () => {
             firstName: null,
             lastName: null,
             videos,
+            status: statusCurrent,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
             streetcodeCategoryContents:
                 JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
@@ -267,8 +271,15 @@ const NewStreetcode = () => {
         } else {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
-                    setTimeout(()=>location.reload(),500);
-                    window.open(`${form.getFieldValue('streetcodeUrlName')}`);
+                    setTimeout(() => {
+                        if (streetcode.status === 1) {
+                            window.location.reload();
+                            window.open(`/${form.getFieldValue('streetcodeUrlName')}`);
+                        } else {
+                            alert('Стріткод збережено як чернетку');
+                            window.location.reload();
+                        }
+                    }, 1000);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -304,7 +315,24 @@ const NewStreetcode = () => {
                     <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
                     <ForFansBlock />
                     <MapBlockAdmin coordinates={coordinates} />
-                    <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={() => {
+                            // setStatus(1);
+                            onFinish(1);
+                        }}
+                    >
+                            Опублікувати
+                    </Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={() => {
+                            // setStatus(0);
+                            onFinish(0);
+                        }}
+                    >
+                        Зберегти як чернетку
+                    </Button>
                 </div>
             </ConfigProvider>
         </div>

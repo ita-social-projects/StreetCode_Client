@@ -46,9 +46,16 @@ const StreetcodesApi = {
 
     update: (streetcode: StreetcodeCreate) => Agent.put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}/${streetcode.id}`, streetcode),
 
+    updateState: (id: number, stateId: number) => Agent.put<void>(
+        `${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`,
+        {},
+    ),
+
     delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 
     existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
+
+    existWithUrl: (url: string) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_URL}/${url}`),
 };
 
 export default StreetcodesApi;
