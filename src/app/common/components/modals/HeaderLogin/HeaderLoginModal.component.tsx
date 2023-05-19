@@ -12,11 +12,9 @@ import { becomePartnerEvent, donateEvent, joinToStreetcode } from '@/app/common/
 
 const HeaderLoginModal = () => {
     const { modalStore: { setModal, modalsState: { login } } } = useMobx();
-    // const navigate = useNavigate();
 
     const becomePartnerHandler = () => {
         login.isOpen = false;
-        // navigate(`../partners-page`);
         setModal('partners');
         becomePartnerEvent('modal');
     };
