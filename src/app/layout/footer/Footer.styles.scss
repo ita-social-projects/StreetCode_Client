@@ -73,10 +73,15 @@
     color: c.$pure-white-color;
     @include mut.with-font($font-weight: 300, $font-size: 15px);
     margin-right: 10%;
+    display: flex;
+    align-items: center;
+     height: pxToRem(27px);
     > * {
-      display: inline;
       margin-right: pxToRem(14.62px);
     }
+      li:nth-child(5) {
+        height: 20px;
+      }
   }
 }
 @media screen and (max-width: 480px) {
