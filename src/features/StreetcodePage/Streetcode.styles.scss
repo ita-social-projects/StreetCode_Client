@@ -18,7 +18,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     overflow-anchor: none;
 
     .slick-next{
-        right: f.pxToRem(-87px); 
+        right: f.pxToRem(-97px); 
     }
     .slick-prev{
         left: f.pxToRem(-97px); 
@@ -46,7 +46,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 @media screen and (max-width: 1450px) {
     .streetcodeContainer{
         .slick-next{
-            right: f.pxToRem(-57px); 
+            right: f.pxToRem(-67px); 
         }
         .slick-prev{
             left: f.pxToRem(-67px); 

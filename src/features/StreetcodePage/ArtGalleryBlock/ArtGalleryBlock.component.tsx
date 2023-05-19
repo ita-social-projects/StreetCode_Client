@@ -233,10 +233,10 @@ const ArtGalleryBlock = () => {
         touchAction: 'pan-y',
         touchThreshold: 25,
         transform: 'translateZ(0)',
-        swipe: windowsize.width <= 1024,
         swipeOnClick: false,
         slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
         slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
+        centerPadding: '0px',
     };
 
     const sliderPropsSmall = {
