@@ -3,7 +3,6 @@ import './HeaderLoginModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-// import { useNavigate } from 'react-router-dom';
 import useMobx from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
