@@ -30,44 +30,22 @@ const SourcesModal = () => {
         }
     }, [categoryId]);
     return (
-        <>
-            {windowsize.width <= 1024
-                ? (
-                    <Modal
-                        className="sourcesModal"
-                        open={sources.isOpen}
-                        maskClosable
-                        centered
-                        footer={null}
-                        onCancel={() => setModal('sources', categoryId)}
-                        closeIcon={<CancelBtnMobile />}
-                    >
-                        <div className="sourceImgContainer">
-                            <h1>{category?.title}</h1>
-                        </div>
-                        <div className="mainContentContainer">
-                            {content?.text}
-                        </div>
-                    </Modal>
-                ) : (
-                    <Modal
-                        className="sourcesModal"
-                        open={sources.isOpen}
-                        maskClosable
-                        centered
-                        footer={null}
-                        onCancel={() => setModal('sources', categoryId)}
-                        closeIcon={<CancelBtn />}
-                    >
-                        <div className="sourceImgContainer">
-                            <h1>{category?.title}</h1>
-                        </div>
-                        <div className="mainContentContainer">
-                            {content?.text}
-                        </div>
-                    </Modal>
-                )}
-        </>
+        <Modal
+            className="sourcesModal"
+            open={sources.isOpen}
+            maskClosable
+            centered
+            footer={null}
+            onCancel={() => setModal('sources', categoryId)}
+            closeIcon={windowsize.width <= 1024 ? <CancelBtnMobile /> : <CancelBtn />}
+        >
+            <div className="sourceImgContainer">
+                <h1>{category?.title}</h1>
+            </div>
+            <div className="mainContentContainer">
+                {htmpReactParser(content?.text ?? '')}
+            </div>
+        </Modal>
     );
 };
 

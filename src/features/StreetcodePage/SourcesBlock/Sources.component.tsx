@@ -27,29 +27,31 @@ const SourcesComponent = () => {
         initialSlide: 1,
         centerMode: windowsize.width < 1024,
     };
-    return (
-        <div className={`sourcesWrapper 
-            ${sourcesStore.getSrcCategoriesArray.length? '' : 'display-none'}`}
-        >
-            <div className="sourcesContainer">
-                <BlockHeading headingText="Для фанатів" />
-                <div className="sourceContentContainer">
-                    <div className="sourcesSliderContainer">
-                        <BlockSlider
-                            {...sliderProps}
-                        >
-                            {sourcesStore.getSrcCategoriesArray.map((sc) => (
-                                <SourceItem
-                                    key={sc.id}
-                                    srcCategory={sc}
-                                />
-                            ))}
-                        </BlockSlider>
+    console.log(sourcesStore.getSrcCategoriesArray);
+    return (sourcesStore.getSrcCategoriesArray.length > 0
+        ? (
+            <div className="sourcesWrapper">
+
+                <div className="sourcesContainer">
+                    <BlockHeading headingText="Для фанатів" />
+                    <div className="sourceContentContainer">
+                        <div className="sourcesSliderContainer">
+                            <BlockSlider
+                                {...sliderProps}
+                            >
+                                {sourcesStore.getSrcCategoriesArray.map((sc) => (
+                                    <SourceItem
+                                        key={`${sc.id}${sc.streetcodeId}`}
+                                        srcCategory={sc}
+                                    />
+                                ))}
+                            </BlockSlider>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        )
+        : <></>);
 };
 
 export default observer(SourcesComponent);

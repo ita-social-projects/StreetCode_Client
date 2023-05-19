@@ -1,7 +1,7 @@
 import './AdminLogin.style.scss';
 
 import React from 'react';
-import { Navigate, redirect, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { Button, Form, Input, message } from 'antd';
 
@@ -22,7 +22,7 @@ const AdminLogin:React.FC = () => {
                 .catch((e) => {});
             modalStore.setConfirmationModal('confirmation');
         }, 'Бажаєте продовжити сеанс?', undefined, () => {
-            UserLoginStore.clearToken();
+            userLoginStore.clearUserData();
         });
     };
 
@@ -32,9 +32,7 @@ const AdminLogin:React.FC = () => {
     const login = (formValues:any) => {
         UserApi.login({ login: formValues.login, password: formValues.password })
             .then((logResp) => onSuccessfulLogin(logResp))
-            .then(() => {
-                navigate(FRONTEND_ROUTES.ADMIN.BASE);
-            })
+            .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
             .catch((er) => {
                 message
                     .error('Неправильний логін чи пароль');

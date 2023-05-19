@@ -77,9 +77,9 @@ const NewStreetcode = () => {
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
+    const navigate = useNavigate();
 
     const [funcName, setFuncName] = useState<string>('create');
-    const navigate = useNavigate();
 
     const parseId = id ? +id : null;
     if (parseId) {
@@ -269,6 +269,7 @@ const NewStreetcode = () => {
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {
+            console.log(streetcode);
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                     setTimeout(() => {
@@ -308,7 +309,11 @@ const NewStreetcode = () => {
                         </Form>
                     </div>
                     <InterestingFactsBlock id={parseId ?? -1} />
+                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
+                    <MapBlockAdmin coordinates={coordinates} />
+                    <ArtGalleryBlock arts={arts} setArts={setArts} />
                     <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
+                    <ForFansBlock />
                     <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
                     <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
                     <ArtGalleryBlock arts={arts} setArts={setArts} />

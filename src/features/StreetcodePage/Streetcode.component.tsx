@@ -34,7 +34,7 @@ import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 const StreetcodeContent = () => {
     const { imageLoaderStore, streetcodeStore } = useMobx();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const { imagesLoadedPercentage, loadedImagesCount, totalImagesToLoad } = imageLoaderStore;
+    const { imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
     const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
 
     const streetcodeUrl = useRouteUrl();
@@ -93,7 +93,7 @@ const StreetcodeContent = () => {
                 },
             );
         }
-    }, [setCurrentStreetcodeId, streetcodeUrl]);
+    });
     useEffect(() => {
         document.body.style.overflow = 'hidden';
 
@@ -105,10 +105,9 @@ const StreetcodeContent = () => {
             setSlideCloneCountAdded(slideCloneCount);
         }
 
-        if (imagesLoadedPercentage >= 90 && textBlockState) {
+        if (imagesLoadedPercentage >= 80 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
-
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
             if (blockElement) {
