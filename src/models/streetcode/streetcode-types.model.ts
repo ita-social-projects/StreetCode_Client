@@ -95,6 +95,7 @@ export interface StreetcodeCreate {
     teaser: string,
     alias?: string,
     transliterationUrl: string,
+    arBlockURL?: string,
     viewCount: number,
     createdAt: string,
     eventStartOrPersonBirthDate: Date,

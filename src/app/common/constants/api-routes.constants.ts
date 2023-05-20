@@ -104,10 +104,8 @@ export const API_ROUTES = {
     },
     TRANSACTION_LINKS: {
         GET_ALL: 'transactLinks/getAll',
-        GET: 'transactLinks/getById',
-        CREATE: 'transactLinks/create',
-        UPDATE: 'transactLinks/update',
-        DELETE: 'transactLinks/delete',
+        GET_BY_ID: 'transactLinks/getById',
+        GET_BY_STREETCODE_ID: 'transactLinks/getByStreetcodeId',
     },
     AUDIOS: {
         GET_ALL: 'audio/getAll',
