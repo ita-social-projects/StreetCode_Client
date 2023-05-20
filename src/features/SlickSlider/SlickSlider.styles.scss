@@ -64,7 +64,7 @@ li.slick-active button:before {
 
         .left {
             position: absolute;
-            width: 180px;
+            width: 35%;
             height: 100%;
             left: 0;
             opacity: 0;
@@ -72,7 +72,7 @@ li.slick-active button:before {
     
         .right {
             position: absolute;
-            width: 180px;
+            width: 35%;
             height: 100%;
             right: 0;
             opacity: 0;
@@ -95,17 +95,5 @@ li.slick-active button:before {
     .slick-next,
     .slick-prev {
         visibility:hidden;
-    }
-
-    .sliderClass {
-        .slider-item-container {
-            .left {
-                width: 100px;
-            }
-        
-            .right {
-                width: 100px;
-            }
-        }
     }
 }

@@ -11,7 +11,8 @@ import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermMo
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
-import TermsApi from '../../../../../../app/api/streetcode/text-content/terms.api';
+
+import TermsApi from '@/app/api/streetcode/text-content/terms.api';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
@@ -52,21 +53,23 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     useAsync(fetchTerms, []);
     return (
         <FormItem
-            label = "Основний текст">
+            label="Основний текст"
+        >
             <TinyMCEEditor
                 init={{
                     height: 300,
+                    max_chars: 1000,
                     menubar: false,
-                    init_instance_callback: function (editor) {
+                    init_instance_callback(editor) {
                         editor.setContent(inputInfo?.textContent);
                     },
                     plugins: [
                         'autolink',
                         'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'insertdatetime', 'wordcount',
+                        'insertdatetime', 'wordcount', 'charcount',
                     ],
                     toolbar: 'undo redo | bold italic | '
-                        + 'removeformat ',
+                        + 'removeformat',
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                 }}
 
@@ -84,22 +87,22 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 Додати новий термін
             </Button>
             <Form.Item label="Оберіть пов'язаний термін">
-                    <AutoComplete
-                        filterOption
-                        onSelect={(value, option) => {
-                            setTerm({ id: option.key, title: value });
-                        }}
-                        disabled={selected === ''}
-                    >
-                        {getTermArray.map(
-                            (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>
-                        )}
-                    </AutoComplete>
+                <AutoComplete
+                    filterOption
+                    onSelect={(value, option) => {
+                        setTerm({ id: option.key, title: value });
+                    }}
+                    disabled={selected === ''}
+                >
+                    {getTermArray.map(
+                        (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
+                    )}
+                </AutoComplete>
             </Form.Item>
-            
-            <div className='display-flex-row'>
+
+            <div className="display-flex-row">
                 <Button
-                    className = 'streetcode-custom-button button-margin-vertical button-margin-right'
+                    className="streetcode-custom-button button-margin-vertical button-margin-right"
                     onClick={handleAddRelatedWord}
                     disabled={selected === '' || term === undefined}
                 >
@@ -108,12 +111,12 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 <Button
                     onClick={handleDeleteRelatedWord}
                     disabled={selected === '' || term === undefined}
-                    className = 'streetcode-custom-button button-margin-vertical'
+                    className="streetcode-custom-button button-margin-vertical"
                 >
                     Видалити пов&#39;язаний термін
                 </Button>
             </div>
-            
+
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>
     );
