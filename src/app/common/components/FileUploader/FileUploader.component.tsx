@@ -25,7 +25,11 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
         if (uploadParams.fileList.length === 0) {
             imageDataAsURL.current = undefined;
         } else {
-            reader.readAsDataURL(uploadParams.file.originFileObj as RcFile);
+            const file = uploadParams.fileList[0].originFileObj as File;
+            if (file) {
+                const blob = new Blob([file], { type: file.type });
+                reader.readAsDataURL(blob);
+            }
         }
         if (uploadProps.onChange) {
             uploadProps.onChange(uploadParams);
