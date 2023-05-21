@@ -50,7 +50,11 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
     const { handleImageLoad } = imageLoaderStore;
 
-    useAsync(() => fetchAudioByStreetcodeId(id ?? 1), [id]);
+    useAsync(() => {
+        if (id && id > 0) {
+            fetchAudioByStreetcodeId(id);
+        }
+    }, [id]);
 
     const [images, setImages] = useState<Image[]>([]);
     useEffect(() => {
@@ -139,7 +143,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button className="animateFigureBtn" onClick={() => personLiveEvent(streetcode?.id ?? 0)}><a href="#QRBlock">Оживити картинку</a></Button>
+                        <Button className="animateFigureBtn"
+                         onClick={() => personLiveEvent(streetcode?.id ?? 0)}><a href="#QRBlock">Оживити картинку</a></Button>
                     </div>
                 </div>
             </div>

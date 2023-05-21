@@ -1,34 +1,37 @@
 import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { Fact } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsComponent = () => {
     const { imageLoaderStore, factsStore: { fetchFactsByStreetcodeId, getFactArray }, streetcodeStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { handleImageLoad } = imageLoaderStore;
 
+    const [sliderArray, setSliderArray] = useState<Fact[]>([]);
     useAsync(
         () => {
-            if (getStreetCodeId !== errorStreetCodeId) {
+            if (getStreetCodeId !== errorStreetCodeId && getStreetCodeId > 0) {
                 Promise.all([
-                    fetchFactsByStreetcodeId(getStreetCodeId),
-                ]);
+                    fetchFactsByStreetcodeId(getStreetCodeId).then((res) => {
+                        console.log(1);
+                        setSliderArray(res.length === 3
+                            || res.length === 2
+                            ? res.concat(res)
+                            : res);
+                    })]);
             }
         },
         [getStreetCodeId],
     );
-
-    const sliderArray = getFactArray.length === 3
-                        || getFactArray.length === 2
-        ? getFactArray.concat(getFactArray)
-        : getFactArray;
+    console.log(4);
 
     useEffect(() => {
         imageLoaderStore.totalImagesToLoad += sliderArray.length;
@@ -114,4 +117,4 @@ const InterestingFactsComponent = () => {
     );
 };
 
-export default observer(InterestingFactsComponent);
+export default (InterestingFactsComponent);

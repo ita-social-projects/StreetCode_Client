@@ -1,53 +1,60 @@
-
 import './StatisticsModal.styles.scss';
-import Toponym from '@/models/toponyms/toponym.model';
-import { Modal } from 'antd';
-import useMobx from '@/app/stores/root-store';
+
 import { observer } from 'mobx-react-lite';
-import ToponymsApi from '@/app/api/map/toponyms.api';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 
+import { Modal } from 'antd';
 
-const countByStreetType = (toponyms: Toponym[]): Map<string, number> => {
-    return toponyms?.reduce((acc, toponym) => {
-      const streetType = toponym.streetType;
-      if (streetType) {
+import ToponymsApi from '@/app/api/map/toponyms.api';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import useMobx from '@/app/stores/root-store';
+import Toponym from '@/models/toponyms/toponym.model';
+
+const countByStreetType = (toponyms: Toponym[]): Map<string, number> => toponyms?.reduce((acc, toponym) => {
+    const { streetType } = toponym;
+    if (streetType) {
         acc.set(streetType, (acc.get(streetType) || 0) + 1);
-      }
-      return acc;
-    }, new Map());
-  };
+    }
+    return acc;
+}, new Map());
 
 const StatisticsModal = () => {
     const { streetcodeStore: { getStreetCodeId } } = useMobx();
-    const toponyms = useAsync(() => ToponymsApi
-    .getByStreetcodeId(getStreetCodeId), [getStreetCodeId]).value as Toponym[];
-    const {  modalStore } = useMobx();
+    const toponyms = useAsync(() => {
+        const streetcodeId = getStreetCodeId;
+        if (streetcodeId > 0) {
+            ToponymsApi.getByStreetcodeId(streetcodeId);
+        }
+    }, [getStreetCodeId]).value as Toponym[];
+    const { modalStore } = useMobx();
     const { setModal, modalsState: { statistics } } = modalStore;
     const countByStreetTypeMap = countByStreetType(toponyms);
     const handleModalClose = () => {
-        setModal('statistics'); 
+        setModal('statistics');
     };
 
     return (
-        <Modal 
-        className='statisticsModal'
-        maskClosable
-        centered
-        footer={null}
-        open={statistics.isOpen}
-        onCancel={handleModalClose}
-        closeIcon={<CancelBtn />}>
-            <div className='statisticsModalsContainer'>
-            <h1>В Україні іменем Михайла Грушевського названі:</h1>
-            <div className="streetsBlock" style={{ display: 'flex', flexWrap: 'wrap'}}>
-                {countByStreetTypeMap && [...countByStreetTypeMap.entries()].map(([streetType, count]) => (
-                    <p style={{ flexBasis: '50%', width: '45%' }}>
-                        {streetType}: <span>{count}</span> 
-                    </p>
-                ))}
-            </div>
+        <Modal
+            className="statisticsModal"
+            maskClosable
+            centered
+            footer={null}
+            open={statistics.isOpen}
+            onCancel={handleModalClose}
+            closeIcon={<CancelBtn />}
+        >
+            <div className="statisticsModalsContainer">
+                <h1>В Україні іменем Михайла Грушевського названі:</h1>
+                <div className="streetsBlock" style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {countByStreetTypeMap && [...countByStreetTypeMap.entries()].map(([streetType, count]) => (
+                        <p style={{ flexBasis: '50%', width: '45%' }}>
+                            {streetType}
+:
+                            {' '}
+                            <span>{count}</span>
+                        </p>
+                    ))}
+                </div>
             </div>
         </Modal>
     );

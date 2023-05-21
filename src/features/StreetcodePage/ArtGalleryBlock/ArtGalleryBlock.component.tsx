@@ -4,12 +4,10 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import SlickSliderSmall from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
-import { title } from 'process';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -271,12 +269,12 @@ const ArtGalleryBlock = () => {
                             </SlickSlider>
                         )}
                         {windowsize.width <= 1024 && (
-                            <SlickSliderSmall
+                            <SlickSlider
 
                                 {...sliderPropsSmall}
                             >
                                 {slideOfArtListSmall}
-                            </SlickSliderSmall>
+                            </SlickSlider>
                         )}
                     </div>
                 </div>
