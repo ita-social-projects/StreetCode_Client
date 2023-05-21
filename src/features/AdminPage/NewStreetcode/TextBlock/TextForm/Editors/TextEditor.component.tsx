@@ -12,7 +12,7 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
 
-import TermsApi from '../../../../../../app/api/streetcode/text-content/terms.api';
+import TermsApi from '@/app/api/streetcode/text-content/terms.api';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;

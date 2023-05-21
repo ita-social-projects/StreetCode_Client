@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import Image from '@models/media/image.model';
@@ -44,8 +45,7 @@ const SourceItem = ({ srcCategory }: Props) => {
     const handleEditOk = () => {
         srcCategory.title = title;
         srcCategory.image = image;
-        if (imageId.current === 0)
-            srcCategory.imageId = null;
+        if (imageId.current === 0) srcCategory.imageId = null;
         updateSourceCategory(srcCategory);
         setIsModalEditVisible(false);
     };
@@ -58,6 +58,7 @@ const SourceItem = ({ srcCategory }: Props) => {
     const handleDeleteOk = () => {
         setIsModalDeleteVisible(false);
         deleteSourceCategory(srcCategory.id);
+        ImagesApi.delete(srcCategory.imageId);
     };
 
     const handleDeleteCancel = () => {
@@ -68,10 +69,13 @@ const SourceItem = ({ srcCategory }: Props) => {
         setTitle(event.target.value);
     };
 
+    useEffect(() => {
+        Promise.all([ImagesApi.getById(imageId.current)]).then((r) => setImage(r.at(0)));
+    }, []);
     return (
         <div
             className="sourcesSliderItem"
-            style={{ backgroundImage: `url(${base64ToUrl(srcCategory.image?.base64, srcCategory.image?.mimeType)})` }}
+            style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})` }}
         >
             <h1>{title}</h1>
             <div className="sourceActions">
@@ -80,13 +84,13 @@ const SourceItem = ({ srcCategory }: Props) => {
             </div>
             <Modal
                 title="Are you sure you want to delete this source?"
-                visible={isModalDeleteVisible}
+                open={isModalDeleteVisible}
                 onOk={handleDeleteOk}
                 onCancel={handleDeleteCancel}
             />
             <Modal
                 title="Edit Source Category"
-                visible={isModalEditVisible}
+                open={isModalEditVisible}
                 onOk={handleEditOk}
                 onCancel={handleEditCancel}
             >
@@ -108,7 +112,7 @@ const SourceItem = ({ srcCategory }: Props) => {
                             imageId.current = 0;
                         }}
                         defaultFileList={(srcCategory)
-                            ? [{ name: srcCategory.title,
+                            ? [{ name: '',
                                  thumbUrl: base64ToUrl(srcCategory.image?.base64, srcCategory.image?.mimeType),
                                  uid: srcCategory.image?.id.toString(),
                                  status: 'done' }]

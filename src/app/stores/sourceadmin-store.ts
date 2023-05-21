@@ -1,19 +1,27 @@
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
-import { SourceCategory, SourceCategoryAdmin } from '@models/sources/sources.model';
+import { SourceCategoryAdmin } from '@models/sources/sources.model';
 
 export default class SourcesAdminStore {
     public srcSourcesMap = new Map<number, SourceCategoryAdmin>();
 
     public constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {
+            srcSourcesMap: observable,
+            fetchSourceCategories: action,
+            addSourceCategory: action,
+            deleteSourceCategory: action,
+            setInternalSourceCategories: action,
+            setSource: action,
+            updateSourceCategory: action,
+        });
     }
 
-    private setSource = (srcCategory: SourceCategoryAdmin) => {
+    public setSource = (srcCategory: SourceCategoryAdmin) => {
         this.srcSourcesMap.set(srcCategory.id, srcCategory);
     };
 
-    private set setInternalSourceCategories(src: SourceCategoryAdmin[]) {
+    public setInternalSourceCategories(src: SourceCategoryAdmin[]) {
         src.forEach(this.setSource);
     }
 
@@ -23,25 +31,28 @@ export default class SourcesAdminStore {
 
     public fetchSourceCategories = async () => {
         try {
-            this.setInternalSourceCategories = await sourcesApi.getAllCategories();
+            this.setInternalSourceCategories(await sourcesApi.getAllCategories());
         } catch (error: unknown) {
             console.log(error);
         }
     };
 
     public deleteSourceCategory = async (srcId: number) => {
-        this.srcSourcesMap.delete(srcId);
         try {
             await sourcesApi.delete(srcId);
+            runInAction(() => {
+                this.srcSourcesMap.delete(srcId);
+            });
         } catch (error: unknown) {
             console.log(error);
         }
     };
 
     public addSourceCategory = async (sourceItem: SourceCategoryAdmin) => {
-        this.setSource(sourceItem);
         try {
-            await sourcesApi.create(sourceItem);
+            await sourcesApi.create(sourceItem).then((created) => {
+                this.setSource(created);
+            });
         } catch (e: unknown) {
             console.log(e);
         }
