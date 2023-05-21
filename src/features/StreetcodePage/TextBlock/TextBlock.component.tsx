@@ -25,10 +25,9 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
     const [videoLoaded, setVideoLoaded] = useState(false);
-    const [shouldRender, setShouldRender] = useState(false);
 
-    const [text, setText] = useState(undefined);
-    const [video, setVideo] = useState(undefined);
+    const [text, setText] = useState<Text>();
+    const [video, setVideo] = useState<Video>();
 
     useEffect(() => {
         if (getStreetCodeId > 0) {
@@ -49,17 +48,13 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     }, [getStreetCodeId]);
 
     useEffect(() => {
-        if (text || video) {
-            setShouldRender(true);
-        }
-
         if (!(text && video) || (text && !video) || (video && videoLoaded)) {
             setTextBlockState(true);
         }
     }, [videoLoaded, text, video]);
 
     return (
-        shouldRender
+        text
             ? (
                 <div
                     id="text"

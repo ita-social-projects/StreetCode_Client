@@ -69,6 +69,7 @@ const InterestingFactsComponent = () => {
             },
         ],
     };
+    console.log("fact");
 
     return (
         getFactArray.length > 0
