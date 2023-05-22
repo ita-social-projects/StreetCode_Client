@@ -2,22 +2,22 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
+.keyPartnersBlock{
+    display: flex;
+    column-gap: f.pxToRem(30px);
+    row-gap: f.pxToRem(80px);
+    flex-wrap: wrap;
+    justify-content: center;
+
+    margin-bottom: f.pxToRem(80px);
+
+    .partnersItem{
+        @include mut.sized(380px, 110px);
+    }
+}
+
 .partnersContainer{
-    .partnersBlock{
-        .keyPartnersBlock{
-            display: flex;
-            column-gap: f.pxToRem(30px);
-            row-gap: f.pxToRem(80px);
-            flex-wrap: wrap;
-            justify-content: center;
-
-            margin-bottom: f.pxToRem(80px);
-
-            .partnersItem{
-                @include mut.sized(380px, 110px);
-            }
-        }
-        
+    .partnersBlock{        
         .otherPartnersBlock{
             display: flex;
             column-gap: f.pxToRem(10px);

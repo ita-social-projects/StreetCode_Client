@@ -1,0 +1,15 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+.InstagramBlock {
+    .sliderContainer {
+        padding: 0 f.pxToRem(20px) f.pxToRem(110px);
+        .slick-track {
+            @include mut.flexed($align-items: flex-start, $gap: 20px);
+            @include mut.rem-padded($bottom: 5px);
+        }
+    }
+}

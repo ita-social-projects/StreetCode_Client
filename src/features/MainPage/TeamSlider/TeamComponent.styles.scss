@@ -1,0 +1,86 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+$bgImg: '@assets/images/streetcode-card/background.png';
+
+.teamComponent {
+    .margin-82px {
+        margin-top: f.pxToRem(82px);
+    }
+
+    .streetcodeContainer .mainBlock {
+        @include mut.bg-image($bgImg, auto);
+        background-repeat: repeat-x;
+    }
+
+    .mainBlock,
+    .blockCentering {
+        @include mut.flex-centered();
+    }
+
+    .mainContainer {
+        width: 100%;
+        position: relative;
+    }
+
+    .mainContent {
+        width: 100%;
+        @include mut.flex-centered();
+        margin-top: f.pxToRem(1px);
+        padding-top: f.pxToRem(1px);
+
+        ::-webkit-scrollbar {
+            width: f.pxToRem(5px);
+        }
+    }
+
+    @media screen and (max-width: 1300px) {
+        .mainContainer {
+            width: 100%;
+        }
+
+        .mainContent {
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 680px) {
+        .mainContainer {
+            height: unset;
+
+            .mainContent {
+                ::-webkit-scrollbar {
+                    width: f.pxToRem(2px);
+                }
+
+                height: unset;
+                margin-top: f.pxToRem(10px);
+                padding-top: f.pxToRem(10px);
+            }
+        }
+
+        .mainBlock {
+            background-image: none;
+        }
+    }
+
+    .slick-slide {
+        width: unset !important;
+    }
+
+    .slick-initialized .slick-slide {
+        @include mut.flexed(row, center, center, wrap);
+        @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
+    }
+
+    .slick-track {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .slick-initialized .slick-slide {
+        @include mut.flexed($justify-content: center, $gap: 0px);
+        @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
+    }
+}
