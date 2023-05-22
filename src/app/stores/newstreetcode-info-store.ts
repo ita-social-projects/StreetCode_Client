@@ -9,6 +9,8 @@ export default class NewStreetcodeInfoStore {
 
     public audioId: number | null = null;
 
+    public arUrl: string | null = null;
+
     public selectedToponyms:string[] = [];
 
     public constructor() {

@@ -12,6 +12,14 @@ export const API_ROUTES = {
         UPDATE: 'fact/update',
         DELETE: 'fact/delete',
     },
+    NEWS: {
+        GET_ALL: 'news/getAll',
+        GET: 'news/getById',
+        GET_BY_URL: 'news/getByUrl',
+        CREATE: 'news/create',
+        DELETE: 'news/delete',
+        UPDATE: 'news/update',
+    },
     PARTNERS: {
         GET_ALL: 'partners/getAll',
         GET_ALL_SHORT: 'partners/getAllShort',
@@ -96,10 +104,8 @@ export const API_ROUTES = {
     },
     TRANSACTION_LINKS: {
         GET_ALL: 'transactLinks/getAll',
-        GET: 'transactLinks/getById',
-        CREATE: 'transactLinks/create',
-        UPDATE: 'transactLinks/update',
-        DELETE: 'transactLinks/delete',
+        GET_BY_ID: 'transactLinks/getById',
+        GET_BY_STREETCODE_ID: 'transactLinks/getByStreetcodeId',
     },
     AUDIOS: {
         GET_ALL: 'audio/getAll',

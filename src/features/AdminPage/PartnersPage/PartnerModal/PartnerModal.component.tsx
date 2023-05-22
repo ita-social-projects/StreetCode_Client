@@ -142,9 +142,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                  partnersStore.updatePartner(partner)
                      .then((p) => {
                          if (afterSubmit) {
-                             console.log('fater');
                              if (p) {
-                                 console.log('if');
                                  afterSubmit({ ...p });
                              }
                          }
