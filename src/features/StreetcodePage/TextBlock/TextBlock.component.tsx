@@ -1,21 +1,21 @@
 import './TextBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+import htmpReactParser from 'html-react-parser';
 
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
+import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
 import { useState } from 'react';
-
-import React, { useEffect, useState } from 'react';
 
 interface Props {
     setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +26,6 @@ const TextComponent = ({ setTextBlockState }: Props) => {
     const { getByStreetcodeId: getText } = textsApi;
     const [videoLoaded, setVideoLoaded] = useState(false);
     const [shouldRender, setShouldRender] = useState(false);
-
     const [text, setText] = useState(undefined);
     const [video, setVideo] = useState(undefined);
 
@@ -37,7 +36,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                     setText(textResult);
                     setVideo(videoResult);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error(error);
                     setText(undefined);
                     setVideo(undefined);
@@ -69,12 +68,15 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                     <div className="textComponent">
                         <div className="TextContainer">
                             <ReadMore text={String(text?.textContent)} />
+                            <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                         </div>
                     </div>
                     <div className="videoComponent">
+
                         <VideoPlayer videoUrls={String(video?.url.href)} setVideoLoaded={setVideoLoaded} />
                         {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
                     </div>
+
                 </div>
             ) : null
     );

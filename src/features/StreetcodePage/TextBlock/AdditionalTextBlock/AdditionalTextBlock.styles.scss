@@ -1,0 +1,38 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.fonts.scss" as fon;
+
+.additionalText {
+    width: 50%;
+    text-align: right;
+    @include mut.rem-margined($top: 12px, $bottom: 42px);
+    @include mut.with-font($font-family: fon.$closer-text-font,
+        $font-style: italic, $font-weight: inherit);
+    @include mut.withLineHeight($line-height: 26px);
+    @include mut.flexed($justify-content: flex-end);
+
+    p {
+        @include mut.with-font($font-family: fon.$closer-text-font,
+            $font-style: italic, $font-weight: inherit);
+
+        a {
+            font-weight: 350;
+            color: c.$dark-red-color;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .additionalText {
+        @include mut.sized($width: 100%);
+        @include mut.rem-margined($top: 20px, $left: 10px, $bottom: 20px, $right: 10px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .additionalText {
+        @include mut.with-font($font-size: 14px);
+        @include mut.withLineHeight($line-height: 18.48px);
+    }
+}

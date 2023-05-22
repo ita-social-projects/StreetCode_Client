@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable complexity */
 /* eslint-disable no-alert */
 import './MainNewStreetcode.styles.scss';
@@ -28,7 +29,7 @@ import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
-import Partner, { PartnerShort } from '@/models/partners/partners.model';
+import Partner from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
@@ -76,7 +77,6 @@ const NewStreetcode = () => {
     const navigate = useNavigate();
 
     const [funcName, setFuncName] = useState<string>('create');
-
     const parseId = id ? +id : null;
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -132,6 +132,7 @@ const NewStreetcode = () => {
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
+
                 setFuncName('update');
             });
             TextsApi.getByStreetcodeId(parseId).then((result) => {
@@ -195,6 +196,7 @@ const NewStreetcode = () => {
         const text: TextCreate = {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
+            additionalText: inputInfo?.additionalText,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
@@ -273,6 +275,7 @@ const NewStreetcode = () => {
                 });
         } else {
             StreetcodesApi.create(streetcode)
+
                 .then((response) => {
                     setTimeout(() => window.location.reload(), 500);
                     navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
