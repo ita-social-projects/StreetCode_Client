@@ -100,17 +100,15 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 >
                     <div className="relatedFiguresContainer">
                         <BlockHeading headingText="Зв'язки історії" />
-                        <div className="headingWrapper">
-                            <div className="moreInfo">
-                                <p onClick={(e) => handleClick(e)}>
-                            Дивитися всіх
-                                </p>
-                            </div>
-                        </div>
                         <div className="relatedFiguresSliderContainer">
                             <BlockSlider {...sliderProps}>
                                 {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
                             </BlockSlider>
+                            <div className="moreInfo">
+                                <p onClick={(e) => handleClick(e)}>
+                                    Дивитися всіх
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

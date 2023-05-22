@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
-import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+
 import useMobx from '@stores/root-store';
 
 const ForFansAdminItem: React.FC<{
@@ -11,18 +12,15 @@ const ForFansAdminItem: React.FC<{
         <div className="textBlockButton">
             <div className="item">
                 <div className="blockItem">
-                    <FaPencilAlt onClick={onEditClick} />
+
+                    <EditOutlined onClick={onEditClick} />
+
                 </div>
                 <p>
                     {categoryName}
                 </p>
                 <div className="blockItem">
-                    <FaRegTrashAlt onClick={
-                        () => {
-                            sourceCreateUpdateStreetcode.removeSourceCategoryContent(index);
-                        }
-                    }
-                    />
+                    <DeleteOutlined onClick={() => sourceCreateUpdateStreetcode.removeSourceCategoryContent(index)} />
                 </div>
             </div>
         </div>

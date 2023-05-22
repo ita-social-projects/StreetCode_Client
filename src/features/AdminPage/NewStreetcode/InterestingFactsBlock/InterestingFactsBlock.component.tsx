@@ -16,7 +16,7 @@ const InterestingFactsBlock = () => {
         <div className="adminContainer-block">
             <h2>Wow—факти</h2>
             <div className='textBlockButton-container'>
-                <button className="buttonWithPlus" onClick={() => setModalOpen(true)}>+</button>
+                <button className="buttonWithPlus" onClick={() => {setModalOpen(true) }}>+</button>
                 {factsStore.getFactArray.map((f) => <InterestingFactAdminItem fact={f} />)}
             </div>
             <div>

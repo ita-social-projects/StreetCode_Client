@@ -13,7 +13,7 @@
     @include mut.sized(100%);
     @include mut.flex-centered($direction: column);
     .blockHeadingWrapper{
-        padding-left: 12px;
+        padding-left: f.pxToRem(12px);
     }
 }
 
@@ -23,17 +23,15 @@
 
 .interestingFactsSliderContainer {
     @include mut.sized(1220px);
+
     .slick-list {
-        padding: 9.125rem 0 !important;
+        padding: f.pxToRem(110px) 0;
     }
-    .slick-next{
-        right: f.pxToRem(-87px);
-    }
-    .slick-prev{
-        left: f.pxToRem(-100px);
+
+    .slick-dots{
+        bottom: f.pxToRem(-57px);
     }
 }
-
 
 .heightContainer {
     padding-top: pxToRem(23px);
@@ -92,6 +90,24 @@
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 1450px){
+    .interestingFactsSliderContainer {
+        @include mut.sized(930px);
+    }
+
+    .interestingFactsSliderContainer {
+        .slick-dots{
+            bottom: auto;
+        }
+    }
+}
+
+@media screen and (max-width: 1200px){
+    .interestingFactsSliderContainer {
+        @include mut.sized(830px);
     }
 }
 
@@ -164,7 +180,7 @@
 }
 
 @media screen
-and (min-width: 768px) and (max-width: 1023px){
+and (min-width: 768px) and (max-width: 1024px){
 
 .interestingFactsWrapper {
     @include wr.main-page-block-wrapper();
@@ -230,8 +246,7 @@ and (min-width: 768px) and (max-width: 1023px){
     }
 }
 
-@media screen
-and (max-width: 768px){
+@media screen and (max-width: 768px){
     .interestingFactsWrapper {
         @include wr.main-page-block-wrapper();
         .slick-dots{
@@ -254,10 +269,11 @@ and (max-width: 768px){
 
 
 .singleSlideContainer{
+    margin-bottom: pxToRem(65px);
+    padding-top: pxToRem(50px);
 
     .interestingFactSlide{
         @include mut.sized(345px);
-
         @include mut.full-rounded(20px);
 
         .slideImage {
@@ -271,14 +287,13 @@ and (max-width: 768px){
         .slideText{
             @include mut.sized($height: 40%);
             .heading{
-                font-size:20px;
+                font-size:14px;
                 @include mut.rem-padded(7px, 0px, 8px, 15px);
             }
 
             .mainText{
                 overflow: auto;
-                height: 150px;
-                font-size: 15px;
+                font-size: 12px;
                 line-height: pxToRem(21px);
                 margin-bottom: pxToEm(10px);
 
@@ -301,23 +316,30 @@ and (max-width: 768px){
 }
 
 @media screen and (max-width: 480px){
-.interestingFactsContainer {
-    @include mut.sized(100%, 100%);
+    .singleSlideContainer{
+        margin-bottom: 3.0625rem;
+        padding-top: 2.125rem;
+    }
 
-    .single{
-        margin-bottom: pxToRem(100px) ;
-   }
-}
+    .interestingFactsContainer {
+        @include mut.sized(100%, 100%);
 
-.interestingFactsWrapper {
-    @include wr.main-page-block-wrapper();
-    .slick-dots{
-        bottom: 15%;
-     }
-}
+        .single{
+            margin-bottom: pxToRem(100px) ;
+        }
+    }
+
+    .interestingFactsWrapper {
+        @include wr.main-page-block-wrapper();
+        .slick-dots{
+            bottom: 15%;
+        }
+    }
+
     .interestingFactsSliderContainer {
         @include mut.sized(770px, 100%); 
     }
+
     .interestingFactSlide{
         .slideImage {
             @include mut.sized($height: 45%);
@@ -327,10 +349,8 @@ and (max-width: 768px){
             }
         }
     }
+
     .singleSlideContainer{
-
-        padding-top:15.5%;
-
         .interestingFactSlide{
             @include mut.sized(32%);
             @include mut.full-rounded(20px);
@@ -343,36 +363,10 @@ and (max-width: 768px){
                 }
             }
             .slideText{
-                @include mut.sized($height: 20%);
+                @include mut.sized($height: 110px);
                 @include mut.full-rounded(0px);
-
-                .heading{
-                    font-size: 20px;
-                    @include mut.rem-padded(7px, 0px, 8px, 15px);
-
-                }
-    
-                .mainText{
-                    overflow: auto;
-                    height: 165px;
-                    font-size: 15px;
-                    line-height: pxToRem(21px);
-                    margin-bottom: pxToEm(10px);
-                    &:after {
-                        content: "";
-                        position: absolute;
-                        z-index: 1;
-                        bottom: 0;
-                        left: 0;
-                        pointer-events: none;
-                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
-                        width: 100%;
-                        height: 1.7em;
-                    }
-                }
             }
         }
-      
     }
 }
 
