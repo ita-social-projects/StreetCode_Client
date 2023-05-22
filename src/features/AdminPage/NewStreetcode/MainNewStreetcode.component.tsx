@@ -3,7 +3,8 @@
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { redirect, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -22,6 +23,7 @@ import ukUA from 'antd/locale/uk_UA';
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
@@ -48,8 +50,6 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { toast } from 'react-toastify';
-import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -273,15 +273,11 @@ const NewStreetcode = () => {
         } else {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
-                    setTimeout(() => {
-                        if (streetcode.status === 1) {
-                            // window.location.reload();
-                            window.open(`/${form.getFieldValue('streetcodeUrlName')}`);
-                        } else {
-                            // window.location.reload();
-                            window.open(`/${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
-                        }
-                    }, 1000);
+                    if (streetcode.status === 1) {
+                        navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
+                    } else {
+                        navigate(`/${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -326,7 +322,6 @@ const NewStreetcode = () => {
                     <Button
                         className="streetcode-custom-button submit-button"
                         onClick={() => {
-                            // setStatus(1);
                             onFinish(1);
                         }}
                     >
@@ -335,7 +330,6 @@ const NewStreetcode = () => {
                     <Button
                         className="streetcode-custom-button submit-button"
                         onClick={() => {
-                            // setStatus(0);
                             onFinish(0);
                         }}
                     >
