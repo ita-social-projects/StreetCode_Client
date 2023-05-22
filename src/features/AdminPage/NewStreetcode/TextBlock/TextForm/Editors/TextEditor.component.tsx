@@ -2,17 +2,12 @@
 import { useState } from 'react';
 import useMobx from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
-
-import {
-    AutoComplete, Button, Form, Select,
-} from 'antd';
+import { AutoComplete, Button, Form, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
-
 
 interface Props {
   inputInfo: Partial<TextInputInfo> | undefined;
@@ -87,17 +82,6 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 Додати новий термін
             </Button>
             <Form.Item label="Оберіть пов'язаний термін">
-                <AutoComplete
-                    filterOption
-                    onSelect={(value, option) => {
-                        setTerm({ id: option.key, title: value });
-                    }}
-                    disabled={selected === ''}
-                >
-                    {getTermArray.map(
-                        (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
-                    )}
-                </AutoComplete>
                 <AutoComplete
                     filterOption
                     onSelect={(value, option) => {
