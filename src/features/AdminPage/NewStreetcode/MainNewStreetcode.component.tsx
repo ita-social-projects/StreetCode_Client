@@ -3,7 +3,7 @@
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams, redirect } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -12,8 +12,6 @@ import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import FactsApi from '@app/api/streetcode/text-content/facts.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
-import TimelineApi from '@app/api/timeline/timeline.api';
-import FRONTEND_ROUTES from '@app/common/constants/frontend-routes.constants';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
@@ -23,6 +21,7 @@ import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
@@ -37,6 +36,7 @@ import TimelineItem from '@/models/timeline/chronology.model';
 
 import PageBar from '../PageBar/PageBar.component';
 
+import ARBlock from './ARBlock/ARBlock.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
 import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
@@ -49,6 +49,7 @@ import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import { toast } from 'react-toastify';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
 const NewStreetcode = () => {
     const [form] = useForm();
@@ -72,8 +73,6 @@ const NewStreetcode = () => {
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
-    const [timeline, setTimeline] = useState<TimelineItem[]>([]);
-    const [facts, setFacts] = useState<Fact[]>([]);
     const [arts, setArts] = useState<ArtCreate[]>([]);
     const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
@@ -82,9 +81,6 @@ const NewStreetcode = () => {
     const [funcName, setFuncName] = useState<string>('create');
 
     const parseId = id ? +id : null;
-    if (parseId) {
-        timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
-    }
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
@@ -166,7 +162,9 @@ const NewStreetcode = () => {
                             id: x.id,
                             text: x.text,
                         };
-                        const existingSource = sourceCreateUpdateStreetcode.streetcodeCategoryContents.find((s) => s.sourceLinkCategoryId === newSource.sourceLinkCategoryId);
+                        const existingSource = sourceCreateUpdateStreetcode
+                            .streetcodeCategoryContents.find((s) => s
+                                .sourceLinkCategoryId === newSource.sourceLinkCategoryId);
 
                         if (!existingSource) {
                             sourceCreateUpdateStreetcode.addSourceCategoryContent(newSource);
@@ -177,9 +175,10 @@ const NewStreetcode = () => {
             StreetcodeCoordinateApi.getByStreetcodeId(parseId).then((result) => {
                 setCoordinates([...result]);
             });
-            FactsApi.getFactsByStreetcodeId(parseId).then((result) => {
-                setFacts([...result]);
-            });
+            TransactionLinksApi.getByStreetcodeId(parseId)
+                .then((res) => form.setFieldValue('arlink', res.qrCodeUrl.href));
+            factsStore.fetchFactsByStreetcodeId(parseId);
+            timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
         }
     }, []);
 
@@ -210,14 +209,17 @@ const NewStreetcode = () => {
             title: form.getFieldValue('title'),
             alias: form.getFieldValue('alias'),
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
+            arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
-            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate') ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null),
-            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate') ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
+            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate')
+                ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null),
+            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
+                ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
             imagesId: [
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
                 newStreetcodeInfoStore.relatedFigureId,
-            ].filter((id) => id !== null),
+            ].filter((idx) => idx !== null),
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
             relatedFigures: figures,
@@ -269,7 +271,6 @@ const NewStreetcode = () => {
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {
-            console.log(streetcode);
             StreetcodesApi.create(streetcode)
                 .then((response) => {
                     setTimeout(() => {
@@ -294,7 +295,6 @@ const NewStreetcode = () => {
             <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">
-                    {/* <StreetCodeBlock /> */}
                     <div className="adminContainer-block">
                         <h2>Стріткод</h2>
                         <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -305,21 +305,24 @@ const NewStreetcode = () => {
                                 streetcodeType={streetcodeType}
                                 setStreetcodeType={setStreetcodeType}
                             />
-                            <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
+                            <TextBlock
+                                inputInfo={inputInfo}
+                                setInputInfo={setInputInfo}
+                                video={video}
+                                setVideo={setVideo}
+                            />
+                            <InterestingFactsBlock id={parseId ?? -1} />
+                            <TimelineBlockAdmin />
+                            <MapBlockAdmin coordinates={coordinates} />
+                            <ArtGalleryBlock arts={arts} setArts={setArts} />
+                            <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
+                            <ForFansBlock />
+                            <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
+                            <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
+                            <ARBlock />
+
                         </Form>
                     </div>
-                    <InterestingFactsBlock id={parseId ?? -1} />
-                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
-                    <MapBlockAdmin coordinates={coordinates} />
-                    <ArtGalleryBlock arts={arts} setArts={setArts} />
-                    <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
-                    <ForFansBlock />
-                    <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
-                    <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
-                    <ArtGalleryBlock arts={arts} setArts={setArts} />
-                    <TimelineBlockAdmin timeline={timeline} setTimeline={setTimeline} />
-                    <ForFansBlock />
-                    <MapBlockAdmin coordinates={coordinates} />
                     <Button
                         className="streetcode-custom-button submit-button"
                         onClick={() => {

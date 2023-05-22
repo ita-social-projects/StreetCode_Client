@@ -12,6 +12,7 @@ const PageBar = () => (
             <Link className='Link' to={FRONTEND_ROUTES.ADMIN.PARTNERS}>Партнери</Link>
             <Link className='Link' to={FRONTEND_ROUTES.ADMIN.FOR_FANS}>Для фанатів</Link>
             <Link className='Link' to={`${FRONTEND_ROUTES.ADMIN.TEAM}`}>Команда</Link>
+            <Link className='Link' to={FRONTEND_ROUTES.ADMIN.NEWS}>Новини</Link>
         </div>
     </div>
 );

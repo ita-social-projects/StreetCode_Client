@@ -84,17 +84,19 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
             centered
             closeIcon={<CancelBtn />}
         >
-            
-            <Form 
+
+            <Form
                 layout="vertical"
-                form={form} 
-                onFinish={onSave}>
-                <div className='center'>
+                form={form}
+                onFinish={onSave}
+            >
+                <div className="center">
                     <h2>Для фанатів</h2>
                 </div>
-                <FormItem 
+                <FormItem
                     label="Категорія:"
-                    name="category">
+                    name="category"
+                >
                     <Select
                         key="selectForFansCategory"
                         className="category-select-input"
@@ -104,25 +106,27 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                     </Select>
                 </FormItem>
                 <FormItem
-                label = "Текст: ">
-                <Editor
-                    ref={editorRef}
-                    init={{
-                        height: 300,
-                        menubar: false,
-                        plugins: [
-                            'autolink',
-                            'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                            'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
-                        ],
-                        toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
+                    label="Текст: "
+                >
+                    <Editor
+                        ref={editorRef}
+                        init={{
+                            max_chars: 800,
+                            height: 300,
+                            menubar: false,
+                            plugins: [
+                                'autolink',
+                                'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                                'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                            ],
+                            toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                      + 'formats blockformats align | removeformat strikethrough ',
-                        content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                    }}
-                />
+                            content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                        }}
+                    />
                 </FormItem>
-                 <div className='center'>
-                    <Button className='streetcode-custom-button' htmlType="submit">
+                <div className="center">
+                    <Button className="streetcode-custom-button" htmlType="submit">
                         Зберегти
                     </Button>
                 </div>

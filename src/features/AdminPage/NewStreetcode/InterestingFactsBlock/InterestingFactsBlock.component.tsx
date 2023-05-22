@@ -8,14 +8,10 @@ import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminM
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
 
-const InterestingFactsBlock = ({ id }) => {
+const InterestingFactsBlock = () => {
     const [openModal, setModalOpen] = useState<boolean>(false);
     const { factsStore } = useMobx();
-    useEffect(() => {
-        if (id >= 0) {
-            factsStore.fetchFactsByStreetcodeId(id);
-        }
-    }), [];
+
     return (
         <div className="adminContainer-block">
             <h2>Wow—факти</h2>

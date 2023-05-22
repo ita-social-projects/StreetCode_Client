@@ -96,6 +96,7 @@ export interface StreetcodeCreate {
     alias?: string,
     status: Status;
     transliterationUrl: string,
+    arBlockURL?: string,
     viewCount: number,
     createdAt: string,
     eventStartOrPersonBirthDate: Date,

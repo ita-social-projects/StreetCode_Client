@@ -65,8 +65,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 alias !== null ? (
                                     <p className="aliasText">
                                         (
-                                        {alias}
-)
+                                            {alias}
+                                        )
                                     </p>
                                 ) : undefined
                             }
@@ -106,8 +106,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 alias !== null ? (
                                     <p className="aliasText">
                                         (
-                                        {alias}
-)
+                                            {alias}
+                                        )
                                     </p>
                                 ) : undefined
                             }
