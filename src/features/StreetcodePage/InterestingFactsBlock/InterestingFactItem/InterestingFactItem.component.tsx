@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import Image from '@models/media/image.model';
 import { Fact } from '@models/streetcode/text-contents.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
@@ -23,7 +23,7 @@ const InterestingFactItem = ({
     numberOfSlides,
     handleImageLoad,
 }: Props) => {
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore } = useModalContext();
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
 
     let mainContent = factContent;
@@ -31,20 +31,19 @@ const InterestingFactItem = ({
     if (isReadMore) {
         mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
+
     useEffect(() => {
         if (!image) {
-            console.log("dfs")
+            console.log("ImagesApi.getById")
             ImagesApi.getById(imageId).then((res) => setImage(res));
         }
     }, []);
-
-    const url = base64ToUrl(image?.base64, image?.mimeType);
-
+    console.log("fact item render")
     return (
         <div className="interestingFactSlide">
             <div className="slideImage">
                 <img
-                    src={url}
+                    src={base64ToUrl(image?.base64, image?.mimeType)}
                     alt=""
                     onLoad={handleImageLoad}
                 />
@@ -57,7 +56,7 @@ const InterestingFactItem = ({
                     {mainContent}
                 </p>
                 {isReadMore && (
-                    <p className="readMoreParagraph" onClick={() => setModal('facts', id, true)}>
+                    <p className="readMoreParagraph" onClick={() => modalStore.setModal('facts', id, true)}>
                         Трохи ще...
                     </p>
                 )}

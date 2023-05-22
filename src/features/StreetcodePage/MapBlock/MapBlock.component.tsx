@@ -1,7 +1,7 @@
 import './MapBlock.styles.scss';
 
 import { useEffect, useState } from 'react';
-import useMobx from '@stores/root-store';
+import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-cooridnates.api';
@@ -16,7 +16,7 @@ import 'leaflet/dist/leaflet.css';
 import MapOSM from './Map/Map.component';
 
 const MapBlock = () => {
-    const { streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const [toponyms, setToponyms] = useState<Toponym[]>([]);
 
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);

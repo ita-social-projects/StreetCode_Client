@@ -6,7 +6,7 @@ import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useAdditionalContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
@@ -19,7 +19,9 @@ const SECTION_AMOUNT = 6;
 const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
-    const { streetcodeArtStore, streetcodeStore, imageLoaderStore } = useMobx();
+    const { streetcodeArtStore } = useMobx();
+    const { streetcodeStore } = useStreetcodeDataContext();
+    const {imageLoaderStore} = useAdditionalContext();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);

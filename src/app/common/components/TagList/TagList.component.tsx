@@ -1,6 +1,6 @@
 import './TagList.styles.scss';
 
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const TagList = ({ tags, setActiveTagId, setActiveTagBlock }: Props) => {
-    const { modalStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal } = modalStore;
     return (
         <div className="tagContainer">

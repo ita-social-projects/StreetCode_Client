@@ -3,7 +3,7 @@ import './RelatedFigureItem.styles.scss';
 
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -21,7 +21,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
         id, imageId, title, tags, alias, url,
     } = relatedFigure;
 
-    const { imagesStore, tagsStore: { getTagArray }, modalStore } = useMobx();
+    const { imagesStore, tagsStore: { getTagArray } } = useMobx();
+    const { modalStore } = useModalContext();
     const { fetchImage, getImage } = imagesStore;
     const { setModal, modalsState: { tagsList } } = modalStore;
 

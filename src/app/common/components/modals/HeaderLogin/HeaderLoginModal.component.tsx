@@ -3,7 +3,7 @@ import './HeaderLoginModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
 
@@ -11,11 +11,11 @@ import { becomePartnerEvent, donateEvent, joinToStreetcode } from '@/app/common/
 import { useNavigate } from "react-router-dom";
 
 const HeaderLoginModal = () => {
-    const { modalStore: { setModal, modalsState: { login } } } = useMobx();
+    const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
     const navigate = useNavigate();
 
     const becomePartnerHandler = () => {
-        login.isOpen=false;
+        login.isOpen = false;
         navigate(`../partners-page`);
         becomePartnerEvent('modal');
     }

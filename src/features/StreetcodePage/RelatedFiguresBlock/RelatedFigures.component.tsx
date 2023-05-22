@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
@@ -15,11 +15,12 @@ interface Props {
 }
 
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
-    const { modalStore: { setModal } } = useMobx();
-    const { relatedFiguresStore, tagsStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
+    const { relatedFiguresStore, tagsStore } = useMobx();
     const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
     const { fetchTagByStreetcodeId } = tagsStore;
 
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const windowsize = useWindowSize();
 
     const handleClick = (e: React.MouseEvent) => {

@@ -4,36 +4,44 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo, useState } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx from '@stores/root-store';
+import useMobx, { useAdditionalContext, useStreetcodeDataContext } from '@stores/root-store';
+
+import PartnersApi from '@/app/api/partners/partners.api';
+import Partner from '@/models/partners/partners.model';
 
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
-    const {imageLoaderStore, partnersStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
-    const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
-    const { handleImageLoad } = imageLoaderStore;
+    // const { partnersStore } = useMobx();
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
+    // const { imageLoaderStore } = useAdditionalContext();
+    // const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
+    // const { handleImageLoad } = imageLoaderStore;
+    const [partners, setPartners] = useState<Partner[]>([]);
 
     useAsync(
         () => {
-            if (getStreetCodeId !== errorStreetCodeId) {
-                Promise.all([
+            const streetcodeId = getStreetCodeId;
+            if (streetcodeId !== errorStreetCodeId && streetcodeId > 0) {
+                PartnersApi.getByStreetcodeId(getStreetCodeId).then((res) => setPartners(res));
+                /*  Promise.all([
                     fetchPartnersByStreetcodeId(getStreetCodeId),
-                ]);
+                ]); */
             }
         },
         [getStreetCodeId],
     );
 
-    useEffect(() => {
-        imageLoaderStore.totalImagesToLoad += getPartnerArray.length;
-    }, [getPartnerArray.length]);
+/*     useEffect(() => {
+        imageLoaderStore.totalImagesToLoad += partners.length;
+    }, [partners.length]); */
 
-    const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => useMemo(() => ({
+    const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => ({
         breakpoint,
         settings: {
-            slidesToShow: getPartnerArray.length > slidesToShow ? slidesToShow : getPartnerArray.length,
+            slidesToShow: partners.length > slidesToShow ? slidesToShow : partners.length,
         },
-    }), [getPartnerArray, breakpoint, slidesToShow]);
+    });
 
     const responsiveSettingsDesktop = useResponsiveSettings(10000, 3);
     const responsiveSettingsTablet = useResponsiveSettings(1024, 4);
@@ -52,16 +60,16 @@ const PartnersComponent = () => {
         responsive: [responsiveSettingsTablet, responsiveSettingsMobile, responsiveSettingsDesktop],
     };
 
-    const sliderItems = getPartnerArray.map((p) => (
+    const sliderItems = partners.map((p) => (
         <PartnerItem
             key={p.id}
             partner={p}
-            handleImageLoad={handleImageLoad}
+            handleImageLoad={()=>{}}
         />
     ));
 
     return (
-        getPartnerArray.length > 0 ? (
+        partners.length > 0 ? (
             <div className="partnersWrapper ">
                 <div className="partnerContainer">
                     <SlickSlider
@@ -76,4 +84,4 @@ const PartnersComponent = () => {
     );
 };
 
-export default observer(PartnersComponent);
+export default (PartnersComponent);

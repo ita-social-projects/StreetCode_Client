@@ -9,6 +9,7 @@ import ModalStore from '@stores/modal-store';
 import PartnersStore from '@stores/partners-store';
 import RelatedFiguresStore from '@stores/related-figures-store';
 import RelatedTermsStore from '@stores/related-terms-store';
+import SourcesAdminStore from '@stores/sourceadmin-store';
 import SourcesStore from '@stores/sources-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
 import StreetcodeStore from '@stores/streetcode-current-store';
@@ -18,19 +19,18 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-import ImageLoaderStore from './image-loader-store';
-import SourcesAdminStore from "@stores/sourceadmin-store";
-import NewStreetcodeInfoStore from './newstreetcode-info-store';
-import SourceCreateUpdateStreetcode from './source-category-store-create';
-import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
-import UserLoginStore from './user-login-store';
-import TeamStore from './team-store';
-import PositionsStore from './position-store';
-import StatisticRecordStore from './statistic-record-store';
 
+import ImageLoaderStore from './image-loader-store';
+import NewStreetcodeInfoStore from './newstreetcode-info-store';
+import PositionsStore from './position-store';
+import SourceCreateUpdateStreetcode from './source-category-store-create';
+import StatisticRecordStore from './statistic-record-store';
+import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
+import TeamStore from './team-store';
+import UserLoginStore from './user-login-store';
 
 interface Store {
-    modalStore: ModalStore,
+    // modalStore: ModalStore,
     factsStore: FactsStore,
     subtitlesStore: SubtitlesStore,
     tagsStore: TagsStore,
@@ -43,7 +43,7 @@ interface Store {
     sourcesStore: SourcesStore,
     sourcesAdminStore: SourcesAdminStore
     streetcodeArtStore: StreetcodeArtStore,
-    streetcodeStore: StreetcodeStore,
+    // streetcodeStore: StreetcodeStore,
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
@@ -54,14 +54,23 @@ interface Store {
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
     sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
     userLoginStore: UserLoginStore,
-    imageLoaderStore: ImageLoaderStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
 
 }
+export interface AdditionalDataStore {
+    imageLoaderStore: ImageLoaderStore,
+}
+
+export interface StreetcodeDataStore {
+    streetcodeStore: StreetcodeStore,
+}
+export interface ModalDataStore {
+    modalStore: ModalStore,
+}
 
 export const store: Store = {
-    modalStore: new ModalStore(),
+    // modalStore: new ModalStore(),
     factsStore: new FactsStore(),
     subtitlesStore: new SubtitlesStore(),
     tagsStore: new TagsStore(),
@@ -76,7 +85,7 @@ export const store: Store = {
     relatedFiguresStore: new RelatedFiguresStore(),
     checkboxStore: new CheckBoxStore(),
     relatedTermStore: new RelatedTermsStore(),
-    streetcodeStore: new StreetcodeStore(),
+    // streetcodeStore: new StreetcodeStore(),
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
@@ -84,11 +93,29 @@ export const store: Store = {
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
-    imageLoaderStore: new ImageLoaderStore(),
+    // imageLoaderStore: new ImageLoaderStore(),
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
 };
+export const additionalDataStore:AdditionalDataStore = {
+    imageLoaderStore: new ImageLoaderStore(),
+};
+export const streetcodeDataStore:StreetcodeDataStore = {
+    streetcodeStore: new StreetcodeStore(),
+};
+
+export const modalDataStore:ModalDataStore = {
+    modalStore: new ModalStore(),
+};
+
+const additionalDataContext = createContext(additionalDataStore);
+
+export const useAdditionalContext = () => useContext(additionalDataContext);
+
+export const useStreetcodeDataContext = () => useContext(createContext(streetcodeDataStore));
+
+export const useModalContext = () => useContext(createContext(modalDataStore));
 
 const StoreContext = createContext(store);
 

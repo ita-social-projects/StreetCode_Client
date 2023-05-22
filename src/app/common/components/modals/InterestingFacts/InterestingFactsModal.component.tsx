@@ -1,31 +1,33 @@
 import './InterestingFactsModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import Image from '@models/media/image.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Modal } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const InterestingFactsModal = () => {
-    const { factsStore: { factMap }, modalStore } = useMobx();
+    const { factsStore: { factMap } } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { facts } } = modalStore;
+
+    const [image, setImage] = useState<Image>();
 
     const factId = facts.fromCardId!;
     const fact = factMap.get(factId);
 
     const imgId = fact?.imageId as number ?? 0;
 
-    const { value } = useAsync(() => {
-        if (imgId > 0)ImagesApi.getById(imgId);
+    useEffect(() => {
+        if (imgId > 0)ImagesApi.getById(imgId).then((img) => setImage(img));
     }, [imgId]);
-    const image = value as Image;
-    const url = base64ToUrl(image?.base64, image?.mimeType);
 
+    console.log(fact);
     return (
         <Modal
             className="interestingFactsModal"
@@ -38,7 +40,7 @@ const InterestingFactsModal = () => {
         >
             <div className="factsModalContainer">
                 <div className="factsImgContainer">
-                    <img src={url} alt="" />
+                    <img src={base64ToUrl(image?.base64, image?.mimeType)} alt="" />
                 </div>
                 <div className="factsContentContainer">
                     <h1>{fact?.title}</h1>

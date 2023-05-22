@@ -7,7 +7,7 @@ import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useAdditionalContext, useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 
@@ -46,7 +46,8 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
 
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = streetcode?.id;
-    const { imageLoaderStore, modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
+    const { imageLoaderStore } = useAdditionalContext();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
     const { handleImageLoad } = imageLoaderStore;
 

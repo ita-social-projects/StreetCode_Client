@@ -9,33 +9,33 @@ import { useNavigate, useSearchParams, useSearchParams } from 'react-router-dom'
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import Footer from '@layout/footer/Footer.component';
-import useMobx from '@stores/root-store';
+import useMobx, { useAdditionalContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
-import dayjs from 'dayjs';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 
 import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
-import MapComponent from './MapBlock/Map/Map.component';
 import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => {
-    const { imageLoaderStore, streetcodeStore } = useMobx();
+    const { streetcodeStore } = useStreetcodeDataContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const { imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
-    const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
+    const { imageLoaderStore } = useAdditionalContext();
+    // const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
 
+    const slideCloneCountAdded = useRef<number>(0);
     const streetcodeUrl = useRouteUrl();
 
     const [activeTagId, setActiveTagId] = useState(0);
@@ -56,7 +56,7 @@ const StreetcodeContent = () => {
         await StatisticRecordApi.update(qrId);
     };
 
-    useEffect(() => {
+    useAsync(() => {
         const idParam = searchParams.get('qrid');
         if (idParam !== null) {
             const tempId = +idParam;
@@ -79,16 +79,18 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl).then();
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
+    console.log('streetcde');
     useEffect(() => {
         // for cloned images in sliders
-        if (slideCloneCountAdded === 0) {
+        if (slideCloneCountAdded.current === 0) {
             const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
             const slideCloneCount = slideClonedImgs.length;
             imageLoaderStore.totalImagesToLoad += slideCloneCount;
-            setSlideCloneCountAdded(slideCloneCount);
+            // setSlideCloneCountAdded(slideCloneCount);
+            slideCloneCountAdded.current = slideCloneCount;
         }
 
-        if (imagesLoadedPercentage >= 90 && textBlockState) {
+        if (imageLoaderStore.imagesLoadedPercentage >= 90 && textBlockState) {
             setLoading(false);
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
@@ -96,7 +98,7 @@ const StreetcodeContent = () => {
                 blockElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [textBlockState, loadedImagesCount]);
+    }, [textBlockState, imageLoaderStore.loadedImagesCount]);
 
     return (
         <div className="streetcodeContainer">

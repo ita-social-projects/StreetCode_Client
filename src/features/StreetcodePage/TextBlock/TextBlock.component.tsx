@@ -6,7 +6,7 @@ import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx from '@stores/root-store';
+import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import Video from '@/models/media/video.model';
@@ -21,7 +21,7 @@ interface Props {
     setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const TextComponent = ({ setTextBlockState }: Props) => {
-    const { streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
     const [videoLoaded, setVideoLoaded] = useState(false);
@@ -35,6 +35,7 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                 .then(([textResult, videoResult]) => {
                     setText(textResult);
                     setVideo(videoResult);
+                    setTextBlockState(true);
                 })
                 .catch(error => {
                     console.error(error);
@@ -47,11 +48,11 @@ const TextComponent = ({ setTextBlockState }: Props) => {
         }
     }, [getStreetCodeId]);
 
-    useEffect(() => {
+/*     useEffect(() => {
         if (!(text && video) || (text && !video) || (video && videoLoaded)) {
             setTextBlockState(true);
         }
-    }, [videoLoaded, text, video]);
+    }, [videoLoaded, text, video]); */
 
     return (
         text

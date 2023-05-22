@@ -5,10 +5,10 @@ import ExitBtn from '@images/audio-player/ExitBtn.png';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { AudioPlayer } from '@components/AudioPlayer/AudioPlayer.component';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 const ListenTextModal = () => {
-    const { modalStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { audio } } = modalStore;
 
     const [closing, setClosing] = useState(false);

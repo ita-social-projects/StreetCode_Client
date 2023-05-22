@@ -7,7 +7,7 @@ import { Modal } from 'antd';
 
 import ToponymsApi from '@/app/api/map/toponyms.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import useMobx from '@/app/stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext } from '@/app/stores/root-store';
 import Toponym from '@/models/toponyms/toponym.model';
 
 const countByStreetType = (toponyms: Toponym[]): Map<string, number> => toponyms?.reduce((acc, toponym) => {
@@ -19,14 +19,14 @@ const countByStreetType = (toponyms: Toponym[]): Map<string, number> => toponyms
 }, new Map());
 
 const StatisticsModal = () => {
-    const { streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const toponyms = useAsync(() => {
         const streetcodeId = getStreetCodeId;
         if (streetcodeId > 0) {
             ToponymsApi.getByStreetcodeId(streetcodeId);
         }
     }, [getStreetCodeId]).value as Toponym[];
-    const { modalStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { statistics } } = modalStore;
     const countByStreetTypeMap = countByStreetType(toponyms);
     const handleModalClose = () => {

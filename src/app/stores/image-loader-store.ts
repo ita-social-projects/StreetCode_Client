@@ -15,7 +15,7 @@ export default class ImageLoaderStore {
     }
 
     public handleImageLoad = () => {
-        this.loadedImagesCount += 1;
+        this.loadedImagesCount += 2;
     };
 
     get imagesLoadedPercentage() {

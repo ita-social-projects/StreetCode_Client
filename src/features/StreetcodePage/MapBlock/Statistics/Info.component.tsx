@@ -3,7 +3,7 @@ import './Info.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Popover } from 'antd';
 
@@ -23,7 +23,7 @@ interface Props {
 const InfoComponent = ({ streetcodeCoordinates, toponyms }: Props) => {
     const [clicked, setClicked] = useState(false);
     const [hovered, setHovered] = useState(false);
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
     const handleHoverChange = (open: boolean) => {
         setHovered(open);
         setClicked(false);

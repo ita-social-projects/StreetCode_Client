@@ -4,11 +4,11 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import Ticker from 'react-awesome-ticker';
 import subtitlesApi from '@api/additional-content/subtitles.api';
-import useMobx from '@stores/root-store';
+import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 
 const TickerComponent = () => {
     const { getSubtitlesByStreetcodeId } = subtitlesApi;
-    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
 
     const [subtitle, setSubtitle] = useState<string>('');
 
