@@ -159,6 +159,10 @@
         &.withSvg {
             @include mut.flexed($align-items: center, $justify-content: center, $gap: 18px);
         }
+
+        &:hover {
+            background-color: c.$dark-red-color;
+        }
     }
 
     .titleSmall {
