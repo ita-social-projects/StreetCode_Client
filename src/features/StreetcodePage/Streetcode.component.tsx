@@ -67,14 +67,13 @@ const StreetcodeContent = () => {
         Promise.all([checkStreetcodeExist(streetcodeUrl)]).then(
             (resp) => {
                 if (!resp.at(0)) {
-                    navigate('/404', { replace: true });
-                } else {
-                    setCurrentStreetcodeId(streetcodeUrl).then((st) => {
-                        if (st?.status !== 1 && !location.pathname.includes(`${FRONTEND_ROUTES.ADMIN.BASE}`)) {
-                            redirect('/404');
-                        }
-                    });
+                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
                 }
+                setCurrentStreetcodeId(streetcodeUrl).then((st) => {
+                    if (st?.status !== 1 && !location.pathname.includes(`${FRONTEND_ROUTES.ADMIN.BASE}`)) {
+                        navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                    }
+                });
             },
         );
         const idParam = searchParams.get('qrid');
@@ -89,11 +88,11 @@ const StreetcodeContent = () => {
                 },
             ).catch(
                 () => {
-                    navigate('/404', { replace: true });
+                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
                 },
             );
         }
-    });
+    }, [streetcodeUrl]);
     useEffect(() => {
         document.body.style.overflow = 'hidden';
 
@@ -105,7 +104,7 @@ const StreetcodeContent = () => {
             setSlideCloneCountAdded(slideCloneCount);
         }
 
-        if (imagesLoadedPercentage >= 80 && textBlockState) {
+        if (imagesLoadedPercentage >= 90 && textBlockState) {
             setLoading(false);
             document.body.style.overflow = 'auto';
             const anchorId = window.location.hash.substring(1);

@@ -274,11 +274,11 @@ const NewStreetcode = () => {
                 .then((response) => {
                     setTimeout(() => {
                         if (streetcode.status === 1) {
-                            window.location.reload();
+                            // window.location.reload();
                             window.open(`/${form.getFieldValue('streetcodeUrlName')}`);
                         } else {
-                            alert('Стріткод збережено як чернетку');
-                            window.location.reload();
+                            // window.location.reload();
+                            window.open(`/${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                         }
                     }, 1000);
                 })

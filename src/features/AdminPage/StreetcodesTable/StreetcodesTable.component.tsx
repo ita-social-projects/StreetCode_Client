@@ -113,7 +113,7 @@ const StreetcodesTable = () => {
             key: 'name',
             render: (text:string, record: MapedStreetCode) => ({
                 children: (
-                    <div onClick={() => window.open(`${record.url}`, '_blank')}>
+                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
                         {text}
                     </div>
                 ),
@@ -126,7 +126,7 @@ const StreetcodesTable = () => {
             key: 'index',
             render: (text: string, record: MapedStreetCode) => ({
                 children: (
-                    <div onClick={() => window.open(`${record.url}`, '_blank')}>
+                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
                         {text}
                     </div>
                 ),
@@ -158,7 +158,7 @@ const StreetcodesTable = () => {
             key: 'date',
             render: (text: string, record: MapedStreetCode) => ({
                 children: (
-                    <div onClick={() => window.open(`${record.url}`, '_blank')}>
+                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
                         {text}
                     </div>
                 ),
@@ -173,7 +173,7 @@ const StreetcodesTable = () => {
               <>
                   {record.status !== 'Видалений' ? (
                       <>
-                          <Link to={`/admin-panel/edit-streetcode/${record.key}`}>
+                          <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/${record.key}`}>
                               <FormOutlined
                                   className="actionButton"
                                   onClick={(event) => {
