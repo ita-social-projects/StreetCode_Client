@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Button, Input, Tooltip } from 'antd';
+import { Button, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import { useParams } from 'react-router-dom';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
@@ -13,7 +13,6 @@ interface Props {
     setVideo: React.Dispatch<Video | undefined>;
 }
 
-const toolTipColor = '#8D1F16';
 const videoPattern = 'https?://www.youtube.com/watch.+';
 
 const linkConverter = (link: string) => {
@@ -37,7 +36,7 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
         setVideo(video);
     };
     const { id } = useParams<any>();
-    const parseId = id ? +id : null;
+    const parseId = id ? + id : null;
 
     return (
         <FormItem 

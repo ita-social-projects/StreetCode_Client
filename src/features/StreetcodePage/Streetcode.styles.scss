@@ -4,16 +4,26 @@
 
 $bgImg: '@assets/images/streetcode-card/background.png';
 
-.container{
+.container {
     margin-top: f.pxToRem(110px);
+    margin-bottom: f.pxToRem(48px);
 }
 .streetcodeContainer {
     width: 100%;
+    height: 100%;
+    
     overflow: clip;
     @include mut.rem-padded($top: 82px);
     @include mut.bg-image($bgImg, auto);
     background-color:c.$streetcode-background-color ;
     overflow-anchor: none;
+
+    .slick-next{
+        right: f.pxToRem(-87px); 
+    }
+    .slick-prev{
+        left: f.pxToRem(-97px); 
+    }
 }
 .sticky{
     position: sticky;
@@ -32,6 +42,17 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 }
 .dimmed {
     @include mut.sized(100%, 5875px);
+}
+
+@media screen and (max-width: 1450px) {
+    .streetcodeContainer{
+        .slick-next{
+            right: f.pxToRem(-57px); 
+        }
+        .slick-prev{
+            left: f.pxToRem(-67px); 
+        }
+    }
 }
 
 @media screen and (max-width: 1024px) {

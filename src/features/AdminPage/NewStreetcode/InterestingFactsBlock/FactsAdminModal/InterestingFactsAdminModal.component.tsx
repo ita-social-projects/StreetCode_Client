@@ -107,7 +107,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                     name="title"
                     label="Заголовок: "
                     rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
-                        { max: 30, message: 'Заголовок не може містити більше 30 символів ' },
+                        { max: 68, message: 'Заголовок не може містити більше 68 символів ' },
                     ]}
                 >
                     <Input />

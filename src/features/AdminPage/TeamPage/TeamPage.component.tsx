@@ -104,7 +104,7 @@ const TeamPage = () => {
                                 key={`${link.id}${link.targetUrl}`}
                                 rel="noreferrer"
                                 target="_blanc"
-                                className="sourceLink"
+                                className="teamLink"
                                 href={link.targetUrl}
                             >
                                 <img

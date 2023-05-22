@@ -13,23 +13,20 @@ import SectionThird from './SubSections/SubSectionThird/SectionThird.component';
 import Title from './Title/Title.component';
 
 const PrivatePolicy = () => (
-    <>
-        <div className="privatePolicyContainer">
-            <div className="wrapper">
-                <Title />
-                <main>
-                    <SectionFirst />
-                    <SectionSecond />
-                    <SectionThird />
-                    <SectionFourth />
-                    <SectionFifth />
-                    <SectionSixth />
-                    <SectionSeventh />
-                </main>
-            </div>
+    <div className="privatePolicyContainer">
+        <div className="wrapper">
+            <Title />
+            <main>
+                <SectionFirst />
+                <SectionSecond />
+                <SectionThird />
+                <SectionFourth />
+                <SectionFifth />
+                <SectionSixth />
+                <SectionSeventh />
+            </main>
         </div>
-        <Footer />
-    </>
+    </div>
 );
 
 export default PrivatePolicy;

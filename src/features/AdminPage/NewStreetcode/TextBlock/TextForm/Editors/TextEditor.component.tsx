@@ -1,21 +1,15 @@
+/* eslint-disable react/jsx-props-no-multi-spaces */
 import { useState } from 'react';
 import useMobx from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
-
-import {
-    AutoComplete, Button, Form, Select, Tooltip,
-} from 'antd';
-import FormItem from 'antd/es/form/FormItem';
-
+import TermsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
 
-import TermsApi from '@/app/api/streetcode/text-content/terms.api';
-
 interface Props {
-    inputInfo: Partial<TextInputInfo> | undefined;
+  inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
 }
 
@@ -100,6 +94,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 </AutoComplete>
             </Form.Item>
 
+
             <div className="display-flex-row">
                 <Button
                     className="streetcode-custom-button button-margin-vertical button-margin-right"
@@ -116,6 +111,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     Видалити пов&#39;язаний термін
                 </Button>
             </div>
+
 
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>

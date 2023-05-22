@@ -13,6 +13,7 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
 import PageBar from '../PageBar/PageBar.component';
+import dayjs from "dayjs";
 
 const Newss:React.FC = observer(() => {
     const { newsStore, modalStore } = useMobx();
@@ -82,6 +83,19 @@ const Newss:React.FC = observer(() => {
                 />
             ),
 
+        },
+        {
+            title: 'Дата створення',
+            dataIndex: 'creationDate',
+            key: 'creationDate',
+            onCell: () => ({
+                style: { padding: '0', margin: '0' },
+            }),
+            render: (value: string, record) => (
+                <div key={`${value}`} className="partner-table-item-name">
+                    <p>{value.substring(0, 10)}</p>
+                </div>
+            ),
         },
         { title: 'Дії',
           dataIndex: 'action',

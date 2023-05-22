@@ -10,6 +10,7 @@ import { Modal } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import { useEffect, useState } from 'react';
 
 const InterestingFactsModal = () => {
     const { factsStore: { factMap }, modalStore } = useMobx();
@@ -19,8 +20,15 @@ const InterestingFactsModal = () => {
     const fact = factMap.get(factId);
 
     const imgId = fact?.imageId as number ?? 0;
+    const [value, setValue] = useState(null);
 
-    const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
+    useEffect(() => {
+        if (imgId > 0) {
+            ImagesApi.getById(imgId)
+                .then(result => setValue(result))
+                .catch(error => console.error(error));
+        }
+    }, [imgId]);
     const image = value as Image;
     const url = base64ToUrl(image?.base64, image?.mimeType);
 

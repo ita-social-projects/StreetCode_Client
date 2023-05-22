@@ -3,26 +3,31 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.termDictionaryCover{
+.termDictionaryCover {
     .wrapper {
         display: grid;
-        grid-template-columns: 10% 90%;
+        grid-template-columns: 14% 85%;
+
+        .PageBarContainer {
+            width: unset;
+            padding-top: f.pxToRem(100px);
+        }
     }
 }
 
 .termDictionaryContainer {
     padding-top: f.pxToRem(100px);
-    height: 100vh;
-    width: 100%;
-    margin: auto;
+    display: flex;
+    gap: f.pxToRem(10px);
 
-    .dictionaryHeader{
+    .dictionaryHeader {
         display: grid;
         grid-template-columns: 85% 15%;
         margin-bottom: f.pxToRem(40px);
         padding: 0 f.pxToRem(170px);
     }
-    .termTable{
+
+    .termTable {
         padding: 0 f.pxToRem(170px);
     }
 }

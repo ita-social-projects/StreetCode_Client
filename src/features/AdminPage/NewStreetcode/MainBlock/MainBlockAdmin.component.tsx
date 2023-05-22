@@ -178,7 +178,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         name="name"
                         className="people-title-input"
                         rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
-                        { pattern: /^[а-яА-ЯіІ\s]+$/u, message: "Ім'я має містити тільки літерали" },
+                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: "Ім'я має містити тільки літерали" },
                         { max: 50, message: "Ім'я не може містити більше 50 символів" },
                         ]}
                     >
@@ -195,7 +195,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         label="Прізвище"
                         className="people-title-input"
                         rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
-                        { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Прізвище має містити тільки літерали' },
+                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: 'Прізвище має містити тільки літерали' },
                         { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
                         ]}
                     >

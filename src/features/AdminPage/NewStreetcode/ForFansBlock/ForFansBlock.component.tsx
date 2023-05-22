@@ -16,7 +16,6 @@ const ForFansBlock = () => {
     useEffect(() => {
         SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => { });
     }, []);
-
     return (
         <div className="adminContainer-block">
             <h2>Для фанатів</h2>

@@ -11,8 +11,8 @@
 }
 
 .readMoreContainer {
-    @include mut.rem-margined($top: 35px,$bottom: 50px);
-    @include mut.with-font($font-weight: 500)
+    @include mut.rem-margined($top: 35px);
+    @include mut.with-font($font-weight: 500);
 }
 
 .mainTextContent {
@@ -24,16 +24,16 @@
     @include mut.truncated($line-num: 25);
 }
 
-.text{
+.text {
     white-space: pre-line;
     margin-right: f.pxToRem(10px);
     margin-left: f.pxToRem(10px);
 }
 
-@media screen and (max-width: 1024px){
-    .text{
+@media screen and (max-width: 1024px) {
+    .text {
         font-size: f.pxToRem(16px);
-        margin: f.pxToRem(10px);
+        @include mut.rem-margined($top: 10px, $right: 10px, $left: 10px  );
         line-height: f.pxToRem(21px);
     }
     .readMore{
@@ -41,7 +41,7 @@
         line-height: f.pxToRem(18.75px);
     }
     .readMoreContainer {
-        @include mut.rem-margined($top: 20px,$bottom: 20px);
+        @include mut.rem-margined($top: 20px);
         @include mut.with-font($font-weight: 600)
     }
 }
