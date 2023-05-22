@@ -96,6 +96,7 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                 <FormItem
                     label="Категорія:"
                     name="category"
+                    rules={[{ required: true, message: 'Введіть Категорію' }]}
                 >
                     <Select
                         key="selectForFansCategory"
