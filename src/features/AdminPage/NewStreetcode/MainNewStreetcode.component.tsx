@@ -173,13 +173,18 @@ const NewStreetcode = () => {
                 setCoordinates([...result]);
             });
             TransactionLinksApi.getByStreetcodeId(parseId)
-                .then((res) => form.setFieldValue('arlink', res.qrCodeUrl.href));
+                .then((res) => {
+                    if (res)
+                        form.setFieldValue('arlink', res.qrCodeUrl.href)
+                });
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
         }
     }, []);
 
     const onFinish = (data: any) => {
+        data.stopPropagation();
+
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -273,7 +278,6 @@ const NewStreetcode = () => {
                     navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
                 })
                 .catch((error) => {
-                    console.log(error);
                     alert('Виникла помилка при створенні стріткоду');
                 });
         }
@@ -309,7 +313,6 @@ const NewStreetcode = () => {
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
                             <ARBlock />
-
                         </Form>
                     </div>
                     <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>

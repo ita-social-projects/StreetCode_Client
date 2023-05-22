@@ -13,7 +13,7 @@ const GenericSlider: FC<SliderProps> = ({
 }) => {
     const sliderRef = useRef<Slider>(null);
 
-    const handleClick = useCallback((index: number, direction:'right' | 'left') => {
+    const handleClick = useCallback((index: number, direction: 'right' | 'left') => {
         if (sliderRef && sliderRef.current && swipeOnClick) {
             if (direction === 'right') {
                 sliderRef.current.slickGoTo(index + 1);

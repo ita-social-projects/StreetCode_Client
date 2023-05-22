@@ -58,7 +58,7 @@ li.slick-active button:before {
     width: 100%;
 
     .slider-item-container {
-        display: flex;
+        display: flex !important;
         position: relative;
         flex-direction: row;
 
@@ -69,7 +69,7 @@ li.slick-active button:before {
             left: 0;
             opacity: 0;
         }
-    
+
         .right {
             position: absolute;
             width: 35%;
@@ -91,9 +91,9 @@ li.slick-active button:before {
     }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width:1024px) {
     .slick-next,
     .slick-prev {
-        visibility:hidden;
+        visibility: hidden;
     }
 }
