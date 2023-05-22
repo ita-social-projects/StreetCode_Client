@@ -2,37 +2,39 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.fonts.scss" as fon;
-
 .additionalText {
+
     width: 50%;
+    white-space: pre-line;
     text-align: right;
     @include mut.rem-margined($top: 12px, $bottom: 42px);
-    @include mut.with-font($font-family: fon.$closer-text-font,
-        $font-style: italic, $font-weight: inherit);
-    @include mut.withLineHeight($line-height: 26px);
-    @include mut.flexed($justify-content: flex-end);
+    font-size: f.pxToRem(20px);
+    line-height: f.pxToRem(26px);
+    font-style: italic;
+    display: flex;
+    justify-content:flex-end;
 
     p {
-        @include mut.with-font($font-family: fon.$closer-text-font,
-            $font-style: italic, $font-weight: inherit);
+        font-family: 'Closer Text' !important;
 
         a {
             font-weight: 350;
-            color: c.$dark-red-color;
+            color: #891F16;
+
         }
     }
 }
 
 @media screen and (max-width: 1024px) {
     .additionalText {
-        @include mut.sized($width: 100%);
-        @include mut.rem-margined($top: 20px, $left: 10px, $bottom: 20px, $right: 10px);
+        width: 100%;
+        @include mut.rem-margined($top: 20px, $left: 10px, $bottom: 20px, $right: 10px );
     }
 }
 
 @media screen and (max-width: 480px) {
     .additionalText {
-        @include mut.with-font($font-size: 14px);
-        @include mut.withLineHeight($line-height: 18.48px);
+        font-size: f.pxToRem(14px);
+        line-height: f.pxToRem(18.48px);
     }
 }
