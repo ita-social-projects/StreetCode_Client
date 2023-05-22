@@ -2,7 +2,7 @@ import './InterestingFactsAdminItem.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo, useState } from 'react';
-import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
 
@@ -21,13 +21,13 @@ const InterestingFactAdminItem = ({ fact }: Props) => {
         <div className="textBlockButton">
             <div className="item">
                 <div className="blockItem">
-                    <FaPencilAlt onClick={() => setModalOpen(true)} />
+                    <EditOutlined onClick={() => setModalOpen(true)} />
                 </div>
                 <p>
                     {fact.title}
                 </p>
                 <div className="blockItem">
-                    <FaRegTrashAlt onClick={() => factsStore.deleteFactFromMap(fact.id)} />
+                    <DeleteOutlined onClick={() => factsStore.deleteFactFromMap(fact.id)} />
                 </div>
                 <div>
                     <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />

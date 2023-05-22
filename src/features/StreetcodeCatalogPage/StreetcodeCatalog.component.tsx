@@ -58,7 +58,6 @@ const StreetcodeCatalog = () => {
                     </div>
                 )
             }
-            <Footer />
         </div>
     );
 };

@@ -24,10 +24,15 @@ const PartnersPage = () => (
                         <DonateBtnRectangle />
                     </div>
                 </div>
-                <PartnersBtnCircle />
             </div>
         </div>
-        <Footer />
+        <div className="partnersSticky">
+            <div className="sticky">
+                <div className="sticky-content">
+                    <PartnersBtnCircle />
+                </div>
+            </div>
+        </div>
     </>
 );
 

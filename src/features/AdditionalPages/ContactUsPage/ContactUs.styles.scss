@@ -2,6 +2,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
+
 .contactUsContainer{
     position: relative;
 
@@ -28,6 +29,14 @@
 
         .titleBlock{
             margin-bottom: f.pxToRem(80px);    
+        }
+    } 
+}
+
+@media screen and (max-width: 480px) {
+    .contactUsContainer{
+        .contactUsCover{
+            padding-bottom: f.pxToRem(24px);
         }
     } 
 }
