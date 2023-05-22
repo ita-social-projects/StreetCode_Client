@@ -1,0 +1,19 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+
+.partnersBlockMainContainer{
+    .partnersBlock{
+        max-width: 1920px;
+        margin: 0 auto;
+    }
+
+    .otherPartnersBlock{
+        display: none;
+    }
+
+    .keyPartnersBlock{
+        margin: 0;
+    }
+}
