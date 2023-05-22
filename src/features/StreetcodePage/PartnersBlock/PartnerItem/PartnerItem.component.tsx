@@ -32,7 +32,7 @@ const PartnerItem = ({ partner, handleImageLoad }: Props) => {
             <Popover
                 overlayClassName="partnerPopover"
                 content={<PartnerContent partner={partner} />}
-                trigger="click"
+                trigger="hover"
             >
                 <img
                     key={partner.id}

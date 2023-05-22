@@ -1,19 +1,18 @@
 import './NotFound.styles.scss';
 
 import { useNavigate } from 'react-router-dom';
-import Link from 'antd/es/typography/Link';
 import Footer from '@layout/footer/Footer.component';
 
-const NotFound = () => {
+import Link from 'antd/es/typography/Link';
 
+const NotFound = () => {
     const navigate = useNavigate();
-    
-    const redirect = () =>{
-        navigate('../')
-    }
+
+    const redirect = () => {
+        navigate('../');
+    };
 
     return (
-    <>
         <div className="notFoundContainer">
             <div className="notFoundNumber">404</div>
             <div className="content">
@@ -25,8 +24,7 @@ const NotFound = () => {
                 <Link onClick={redirect} className="redirectToMain">Гайда на головну!</Link>
             </div>
         </div>
-        <Footer />
-    </>
-)};
+    );
+};
 
 export default NotFound;
