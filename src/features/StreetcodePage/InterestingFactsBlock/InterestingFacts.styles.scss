@@ -13,7 +13,7 @@
     @include mut.sized(100%);
     @include mut.flex-centered($direction: column);
     .blockHeadingWrapper{
-        padding-left: f.pxToRem(12px);
+        padding-left: 12px;
     }
 }
 
@@ -23,15 +23,17 @@
 
 .interestingFactsSliderContainer {
     @include mut.sized(1220px);
-
     .slick-list {
-        padding: f.pxToRem(110px) 0;
+        padding: 9.125rem 0 !important;
     }
-
-    .slick-dots{
-        bottom: f.pxToRem(-57px);
+    .slick-next{
+        right: f.pxToRem(-87px);
+    }
+    .slick-prev{
+        left: f.pxToRem(-100px);
     }
 }
+
 
 .heightContainer {
     padding-top: pxToRem(23px);
@@ -90,24 +92,6 @@
                 }
             }
         }
-    }
-}
-
-@media screen and (max-width: 1450px){
-    .interestingFactsSliderContainer {
-        @include mut.sized(930px);
-    }
-
-    .interestingFactsSliderContainer {
-        .slick-dots{
-            bottom: auto;
-        }
-    }
-}
-
-@media screen and (max-width: 1200px){
-    .interestingFactsSliderContainer {
-        @include mut.sized(830px);
     }
 }
 
@@ -246,7 +230,8 @@ and (min-width: 768px) and (max-width: 1023px){
     }
 }
 
-@media screen and (max-width: 768px){
+@media screen
+and (max-width: 768px){
     .interestingFactsWrapper {
         @include wr.main-page-block-wrapper();
         .slick-dots{
@@ -269,6 +254,7 @@ and (min-width: 768px) and (max-width: 1023px){
 
 
 .singleSlideContainer{
+
     .interestingFactSlide{
         @include mut.sized(345px);
 
@@ -342,6 +328,7 @@ and (min-width: 768px) and (max-width: 1023px){
         }
     }
     .singleSlideContainer{
+
         padding-top:15.5%;
 
         .interestingFactSlide{
@@ -385,6 +372,7 @@ and (min-width: 768px) and (max-width: 1023px){
                 }
             }
         }
+      
     }
 }
 

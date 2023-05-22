@@ -43,7 +43,7 @@ const PartnersComponent = () => {
         dots: false,
         arrows: false,
         infinite: true,
-        autoplay: false,
+        autoplay: true,
         draggable: true,
         swipe: true,
         speed: 4000,

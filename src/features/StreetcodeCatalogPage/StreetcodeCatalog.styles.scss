@@ -13,9 +13,6 @@ $loadImg: '@assets/images/catalog/loading.gif';
     background-color: c.$accented-low-opasity-grayish-gray-color;
     width: 100%;
 
-    height: 100%;
-    height: 100%;
-
     .streetcodeCatalogHeading {
         @include mut.with-font('Closer Text', 500, 96px, normal);
         padding-bottom: pxToRem(40px);

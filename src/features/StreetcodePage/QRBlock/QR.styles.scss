@@ -10,6 +10,7 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
 
     @include mut.flexed(column, center, flex-start);
     @include mut.bg-image($QRBgImg);
+    padding-top: pxToRem(134px);
 
     .QRBlockContent {
         @include mut.sized(855px, 608px);
@@ -20,10 +21,6 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
         height: 100%;
         @include mut.flex-centered(column);
         padding-left: pxToRem(31px);
-    }
-
-    &.container{
-        margin-top: pxToRem(190px);
     }
 }
 
@@ -76,10 +73,7 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
 @media (max-width: 1024px) {
     .QRBlockContainer{
         background-image: none;
-        @include mut.sized(100%, auto);
-
-        &.container{
-            margin-top: pxToRem(86px);
-        }
+        @include mut.sized(100%, 100%);
+        padding-top: pxToRem(20px);
     }
 }

@@ -45,6 +45,7 @@ const mainPageContent = () => (
                 <ScrollToTopBtn />
             </div>
         </div>
+        <Footer />
     </div>
 );
 

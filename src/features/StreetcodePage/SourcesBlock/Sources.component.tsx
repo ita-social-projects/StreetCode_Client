@@ -29,7 +29,7 @@ const SourcesComponent = () => {
     };
     return (sourcesStore.getSrcCategoriesArray.length > 0
         ? (
-            <div className="sourcesWrapper container">
+            <div className="sourcesWrapper">
 
                 <div className="sourcesContainer">
                     <BlockHeading headingText="Для фанатів" />

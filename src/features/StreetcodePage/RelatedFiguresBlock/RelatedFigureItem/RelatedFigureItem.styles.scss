@@ -17,8 +17,6 @@
 
     @include vnd.vendored(transition, 'all .5s ease');
     cursor: pointer;
-
-    z-index: 1000;
 }
 
 .figureSlideText {

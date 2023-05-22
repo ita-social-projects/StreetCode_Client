@@ -6,6 +6,7 @@
 .partnersBtnCircleContainer {
   z-index: 4;
 
+  @include mut.positioned-as(fixed, $top: 35%, $bottom: 28px, $right: 41px);
   @include mut.flex-centered($direction: column);
 
   .partnersBtnCircle {
@@ -32,19 +33,21 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .partnersBtnCircleContainer{
-    @include mut.positioned-as(fixed, $top: 35%, $bottom: 28px, $right: 10px);
+  .partnersContainer{
+      .partnersBtnCircleContainer{
+        @include mut.positioned-as(fixed, $top: 35%, $bottom: 28px, $right: 10px);
 
-    .partnersBtnCircle{
-      @include mut.circular(50px);
-      filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.18));
-      
-      svg{
-        transform: scale(0.8);
-      }
-    }
-    .partnersBtnText{
-        display: none;
-    }    
+        .partnersBtnCircle{
+          @include mut.circular(50px);
+          filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.18));
+          
+          svg{
+            transform: scale(0.8);
+          }
+        }
+        .partnersBtnText{
+            display: none;
+        }
+      }       
   }
 }

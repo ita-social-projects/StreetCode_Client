@@ -35,7 +35,7 @@ const InterestingFactsComponent = () => {
     }, [getFactArray.length]);
 
     const setings = {
-        dots: getFactArray.length >= 2,
+        dots: getFactArray.length > 3,
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
@@ -48,6 +48,7 @@ const InterestingFactsComponent = () => {
                 settings: {
                     centerPadding: '-36px',
                     swipe: true,
+                    dots: true,
                 },
             },
             {
@@ -55,17 +56,20 @@ const InterestingFactsComponent = () => {
                 settings: {
                     centerPadding: '-30px',
                     swipe: true,
+                    dots: true,
                 },
             },
             {
                 breakpoint: 1025,
                 settings: {
                     centerPadding: '-27.5px',
+                    centerlMode: true,
                     arrows: false,
                     swipe: true,
                     dots: true,
                 },
             },
+
         ],
     };
 

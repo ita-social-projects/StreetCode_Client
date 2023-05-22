@@ -16,19 +16,19 @@ const NewTimelineItem: React.FC<{
                     key={`new${timelineItem.id}`}
                     className="item"
                 >
-                    <div className="blockItem">
+                    <div className='blockItem'>
+                        <DeleteOutlined onClick={() => timelineItemStore.deleteTimelineFromMap(timelineItem.id)} />
+                    </div>
+                    <div>
+                        <p>{timelineItem.title}</p>
+                    </div>
+                    <div className='blockItem'>
                         <EditOutlined
                             onClick={() => {
                                 setModalOpened(true);
                                 setEditTimelineItem(timelineItem);
                             }}
                         />
-                    </div>
-                    <div>
-                        <p>{timelineItem.title}</p>
-                    </div>
-                    <div className="blockItem">
-                        <DeleteOutlined onClick={() => timelineItemStore.deleteTimelineFromMap(timelineItem.id)} />
                     </div>
                 </div>
             </div>

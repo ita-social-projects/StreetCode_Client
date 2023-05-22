@@ -8,12 +8,13 @@
     @include wr.main-page-block-wrapper();
 
     .sourcesContainer {
-        @include mut.sizedImportant(100%, 100%);
-
+        @include mut.sizedImportant(100%, 400px);
+        margin-bottom: pxToRem(190px);
         @media screen and (max-width: 768px) {
             justify-content: stretch !important;
         }
         .sourceContentContainer {
+            height: pxToRem(320px);
             @include mut.flex-centered();
             margin-top: pxToRem(24px);
             .slick-slide {
@@ -31,7 +32,7 @@
     }
 
     .sourcesSliderContainer {
-        @include mut.sizedImportant(1230px, 100%);
+        @include mut.sizedImportant(1230px, 300px);
         .slick-arrow {
             display: none;
             visibility: hidden;
@@ -63,20 +64,15 @@
             }
         }
 
-        @media screen and (max-width: 1024px) {
-            .sourcesSliderContainer {
-                .slick-track {
-                    @include mut.flexed($justify-content: flex-start, $align-items: flex-start, $gap: 10px);
-                    margin: 0 10px;
-                }
+        
+    }
+
+    @media screen and (max-width: 1024px) {
+        .sourcesSliderContainer {
+            .slick-track {
+                @include mut.flexed($justify-content: flex-start, $align-items: flex-start, $gap: 10px);
+                margin: 0 10px;
             }
-        }     
+        }
     }
 }
-
-@media screen and (max-width: 780px) {
-    .sourcesWrapper .sourcesContainer {
-        margin-bottom: 0;
-    }
-}
-
