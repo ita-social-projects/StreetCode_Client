@@ -55,8 +55,6 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
         <FormItem
             label="Основний текст"
         >
-            label="Основний текст"
-        >
             <TinyMCEEditor
                 init={{
                     height: 300,
@@ -113,11 +111,9 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 </AutoComplete>
             </Form.Item>
 
-            <div className="display-flex-row">
 
             <div className="display-flex-row">
                 <Button
-                    className="streetcode-custom-button button-margin-vertical button-margin-right"
                     className="streetcode-custom-button button-margin-vertical button-margin-right"
                     onClick={handleAddRelatedWord}
                     disabled={selected === '' || term === undefined}
@@ -127,7 +123,6 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 <Button
                     onClick={handleDeleteRelatedWord}
                     disabled={selected === '' || term === undefined}
-                    className="streetcode-custom-button button-margin-vertical"
                     className="streetcode-custom-button button-margin-vertical"
                 >
                     Видалити пов&#39;язаний термін
