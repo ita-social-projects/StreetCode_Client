@@ -27,22 +27,31 @@ const NewsSliderItem = ({ news }: Props) => {
                 .then((imgs) => setImage(imgs))
                 .catch((e) => { });
         }
-
     }, [news]);
 
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
-            return text;
+          return text;
         }
-        const truncatedText = text.substr(0, maxLength);
+      
+        let truncatedText = text.substr(0, maxLength);
+      
+        if (news?.title.length < 41) {
+          truncatedText = truncatedText.substr(0, 450);
+        } else if (news?.title.length >= 40 && news?.title.length < 81) {
+          truncatedText = truncatedText.substr(0, 250);
+        } else {
+          truncatedText = truncatedText.substr(0, 75);
+        }
+      
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
-    };
+      };
 
-    const newsText = truncateText(news?.text || '', 447);
+    const newsText = truncateText(news?.text || '', 450);
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        window.location.href = news.text;
+        window.location.href = news.url.toString();
     };
 
     return (
@@ -69,7 +78,6 @@ const NewsSliderItem = ({ news }: Props) => {
                                     До новини
                                 </a>
                             </div>
-
                         </div>
                     </div>
                 </div>

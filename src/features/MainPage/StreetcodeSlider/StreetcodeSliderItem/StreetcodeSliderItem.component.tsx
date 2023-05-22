@@ -80,7 +80,7 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                             </div>
                             <div>
                                 <a className="streetcodeLink" href={streetcode.transliterationUrl} onClick={handleLinkClick}>
-                                    Перейти до стріткоду
+                                    До стріткоду
                                 </a>
                             </div>
                         </div>

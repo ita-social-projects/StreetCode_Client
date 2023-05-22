@@ -73,7 +73,6 @@ const NewsSlider = () => {
         );
     
 
-    return null;
 };
 
 export default observer(NewsSlider);
