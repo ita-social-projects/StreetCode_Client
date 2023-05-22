@@ -20,8 +20,38 @@
     margin-left: f.pxToRem(5px);
     overflow: hidden;
 }
+
 @media screen and (max-width: 1024px){
     .videoComponent{
         margin-bottom: f.pxToRem(20px);
+    }
+    .TextContainer{
+        padding: 0rem 0.625rem 0rem 0.625rem !important;
+    }
+
+    .textComponentContainer {
+        .blockHeadingContainer{
+            position: relative;
+            
+            .bigTextComponent{
+                position: absolute;
+                max-width: 360px;
+
+                left:  f.pxToRem(-25px);
+                top: 1.1875rem;
+            }
+        }  
+    }
+}
+
+
+@media screen and (max-width: 780px){
+    .textComponentContainer {
+        .blockHeadingContainer{
+            .bigTextComponent{
+                position: absolute;
+                left:  f.pxToRem(-35px);
+            }
+        }  
     }
 }
