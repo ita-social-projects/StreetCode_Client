@@ -30,11 +30,7 @@
     }
 
     .mainBlock {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-wrap: nowrap;
+        @include mut.flexed($direction: row, $justify-content: space-between, $align-items: flex-start, $wrap: nowrap);
 
         .donatesPurposeBlock {
             @include mut.rem-padded($right: 30px);
@@ -52,23 +48,18 @@
                 @include mut.rem-margined($top: 16px, $bottom: 24px);
 
                 li {
-                  display: flex;
-                  align-items: center;
-                  flex-direction: row;
-                  gap: 13.33px;
-                  margin-bottom: 12px;
+                    @include mut.flexed($align-items: center, $direction: row, $gap: 13.33px);
+                    @include mut.rem-margined($bottom: 12px);
               
-                  svg {
-                    min-width: 29.33px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  }
-              
-                  span {
-                    display: block;
-                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-                  }
+                    svg {
+                        min-width: 29.33px;
+                        @include mut.flexed($align-items: center, $justify-content: center);
+                    }
+                
+                    span {
+                        display: block;
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                    }
                 }
             }              
 
@@ -77,7 +68,7 @@
                 line-height: 27px;
 
                 p {
-                    margin-top: 16px;
+                    @include mut.rem-margined(16px);
                 }
             }
         }
@@ -88,17 +79,13 @@
             background: c.$pure-white-color;
             
             box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
-            border-radius: 32px;
+            @include mut.full-rounded(32px);
         }
     }
     
     .donateSubBlocks {
         @include mut.sized($height: 351px, $width: 1200px);
-
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        gap: 100px;
+        @include mut.flexed($justify-content: space-around, $align-items: center, $gap: 100px);
 
         margin: 80px calc((75vw - 1200px) / 2) 0;
 
@@ -109,13 +96,9 @@
                 text-align: center;
             }
             .content {
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
                 @include mut.sized($height: 230px);
-
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                
+                @include mut.flexed($direction: column, $justify-content: center);
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
                 line-height: pxToRem(26.84px);
 
                 svg {
@@ -165,7 +148,7 @@
 
         background: c.$accented-red-color;
         box-shadow: 0px 4px 4px c.$transparent-redish-gray-color;
-        border-radius: 14px;
+        @include mut.full-rounded(14px);
         border: none;
 
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
@@ -174,10 +157,7 @@
         text-align: center;
 
         &.withSvg {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
+            @include mut.flexed($align-items: center, $justify-content: center, $gap: 18px);
         }
     }
 
@@ -227,7 +207,7 @@
 
             .donateWindow {
                 @include mut.sized($width: 340px, $height: 343px);
-                border-radius: 16px;
+                @include mut.full-rounded(16px);
             }
         }
 
@@ -239,7 +219,7 @@
     }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1094px) {
     .supportUsPageWrapper {
         padding: 84px 9px 0;
 
@@ -291,7 +271,7 @@
             gap: 12px;
 
             .block {
-                width: 240px !important;
+                @include mut.sizedImportant($width: 240px);
 
                 .heading {
                     font-size: 24px;
@@ -333,8 +313,8 @@
         }
 
         .supportButton {
-            height: 46px;
-            border-radius: 10px;
+            @include mut.sized($height: 46px);
+            @include mut.full-rounded(10px);
 
             font-size: 14px;
             line-height: 16.41px;
@@ -345,36 +325,37 @@
 @media screen and (max-width: 600px) {
     .supportUsPageWrapper {
         .donateSubBlocks {
-            flex-flow: column wrap;
+            margin: unset;
+            @include mut.rem-margined($top: 40px);
             height: unset;
             width: unset;
-            margin: unset;
-            margin-top: f.pxToRem(40px);
+            flex-flow: column wrap;
             gap: f.pxToRem(32px);
             
             .block {
-                width: 100% !important;
+                @include mut.sizedImportant($width: 100%);
+
                 .content {
                     height: auto;
                 }
             }
         }
+
         .mainBlock {
             flex-direction: column;
 
             .donatesPurposeBlock {
-                width: 100%;
+                @include mut.sized($width: 100%);
                 @include mut.rem-padded($right: 0);
             }
             .donateWindow {
-                display: flex;
-                justify-content: center;
+                @include mut.flexed($justify-content: center);
                 margin: 24px auto 0;
             }
         }
         .bottomText {
-            font-size: f.pxToRem(14px);
-            line-height: f.pxToRem(18px);
+            font-size: 14px;
+            line-height: 18px;
         }
     }
 }

@@ -20,8 +20,12 @@ const SupportUs = () => {
 
     const windowSize = useWindowSize();
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(BANK_ACCOUNT);
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(BANK_ACCOUNT);
+        } catch {
+            alert("No permission to copy bank account to the clipboard!");
+        }
     };
 
     const handlePay = () => {
