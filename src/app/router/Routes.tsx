@@ -21,7 +21,6 @@ import News from '@/features/AdminPage/NewsPage/News.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
-import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 
 

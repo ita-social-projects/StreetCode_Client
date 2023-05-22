@@ -27,8 +27,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     .mainContent {
         width: 100%;
         @include mut.flex-centered();
-        margin-top: f.pxToRem(34px);
-        padding-top: f.pxToRem(37px);
+        margin-top: f.pxToRem(1px);
+        padding-top: f.pxToRem(1px);
 
         ::-webkit-scrollbar {
             width: f.pxToRem(5px);
@@ -55,8 +55,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
                 }
 
                 height: unset;
-                margin-top: f.pxToRem(34px);
-                padding-top: f.pxToRem(22px);
+                margin-top: f.pxToRem(10px);
+                padding-top: f.pxToRem(10px);
             }
         }
 
@@ -81,6 +81,6 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
     .slick-initialized .slick-slide {
         @include mut.flexed($justify-content: center, $gap: 0px);
-        @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+        @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
     }
 }

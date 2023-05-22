@@ -11,6 +11,7 @@ import StaticBanner from './StaticBanners/StaticBanner.component';
 import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
 import TeamComponent from './TeamSlider/TeamComponent.component';
 import TopCarouselComponent from './TopCarousel/TopCarousel.component';
+import NewsSliderComponent from './NewsSlider/NewsSlider.component';
 
 const mainPageContent = () => (
     <div className="mainPageContainer">
@@ -25,9 +26,10 @@ const mainPageContent = () => (
                     window.location.href = '../catalog';
                 }}
             />
+            <NewsSliderComponent/>
             <TeamComponent />
             <PartnersBlockComponent />
-            <InstagramBlock />
+            {/* <InstagramBlock /> */}
             <StaticBanner
                 id="support"
                 blockName="Ти теж можеш зробити свій вклад для розвитку нашого проєкту"
