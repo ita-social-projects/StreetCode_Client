@@ -273,9 +273,6 @@ const TeamModal: React.FC<{
                             onSuccessUpload={(image: Image) => {
                                 imageId.current = image.id;
                             }}
-                            onRemove={(image) => {
-                                ImagesApi.delete(imageId.current);
-                            }}
                             defaultFileList={(teamMember)
                                 ? [{
                                     name: '',

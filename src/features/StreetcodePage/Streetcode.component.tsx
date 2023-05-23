@@ -80,8 +80,6 @@ const StreetcodeContent = () => {
     }, [setCurrentStreetcodeId, streetcodeUrl]);
 
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
-
         // for cloned images in sliders
         if (slideCloneCountAdded === 0) {
             const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
@@ -90,9 +88,8 @@ const StreetcodeContent = () => {
             setSlideCloneCountAdded(slideCloneCount);
         }
 
-        if (imagesLoadedPercentage >= 80 && textBlockState) {
+        if (imagesLoadedPercentage >= 90 && textBlockState) {
             setLoading(false);
-            document.body.style.overflow = 'auto';
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
             if (blockElement) {
@@ -134,7 +131,6 @@ const StreetcodeContent = () => {
                 </div>
             </div>
             <TickerBlock />
-            <Footer />
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}

@@ -127,6 +127,11 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                             >
                                 <DatePicker
                                     picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
+                                    placeholder={(dateTimePickerType === 'date'
+                                ? 'yyyy-mm-dd'
+                                : dateTimePickerType === 'year'
+                                    ? 'yyyy'
+                                    : 'yyyy-mm')}
                                 />
                             </Form.Item>
                         </div>

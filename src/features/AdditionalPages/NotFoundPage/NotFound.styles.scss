@@ -7,7 +7,8 @@
     @include mut.flexed($justify-content: center, $align-items: center, $direction: column);
 
     width: 100vw;
-    height: 100vh;
+    height: 100%;
+    
     padding: f.pxToRem(10px);
     @include mut.bg-image('../../../assets/images/streetcode-card/background.png');
       

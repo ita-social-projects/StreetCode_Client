@@ -39,12 +39,14 @@
 .infoIcon {
     @include mut.positioned-as(absolute, 20%, 0, 0, 0);
     color: c.$accented-red-color;
-    font-size: 325%;
+    font-size: 325% !important;
+
     @media (min-width: 481px) and (max-width: 1024px) {
-      @include mut.positioned-as(absolute, 17%, 0, 0, 0);
+        @include mut.positioned-as(absolute, 17%, 0, 0, 0);
     }
-    @media screen and (max-width: 1024px){
-      font-size: 200%;
+
+    @media screen and (max-width: 1024px) {
+        font-size: 200% !important;
     }
 }
 

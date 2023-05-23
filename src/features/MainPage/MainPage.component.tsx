@@ -1,26 +1,51 @@
 import './MainPage.styles.scss';
-import ScrollToTopBtn from "../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component";
-import Footer from "../../app/layout/footer/Footer.component";
-import ProgressBar from "../ProgressBar/ProgressBar.component";
-import DonateBtn from "../StreetcodePage/DonateBtn/DonateBtn.component";
-import TextBlockComponent from '../StreetcodePage/TextBlock/TextBlock.component';
 
-const mainPageContent = () => {
-    return (
-        <div className="mainPageContainer">
+import ScrollToTopBtn from '../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component';
+import Footer from '../../app/layout/footer/Footer.component';
+import ProgressBar from '../ProgressBar/ProgressBar.component';
+import DonateBtn from '../StreetcodePage/DonateBtn/DonateBtn.component';
 
-            {/*<ProgressBar >*/}
+import InstagramBlock from './InstagramBlock/InstagramBlock.component';
+import PartnersBlockComponent from './PartnersBlockMain/PartnersBlockMain.component';
+import StaticBanner from './StaticBanners/StaticBanner.component';
+import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
+import TeamComponent from './TeamSlider/TeamComponent.component';
+import TopCarouselComponent from './TopCarousel/TopCarousel.component';
+import NewsSliderComponent from './NewsSlider/NewsSlider.component';
 
-            {/*</ProgressBar>*/}
-            <div className="sticky">
-                <div className="sticky-content">
-                    <ScrollToTopBtn />
-                    <DonateBtn />
-                </div>
+const mainPageContent = () => (
+    <div className="mainPageContainer">
+          <TopCarouselComponent/>
+            <StreetcodeSliderComponent/>
+            <StaticBanner
+                id="catalog"
+                blockName="Хочеш більше стріткодів?"
+                blockContent="Не обмежуй знання про минуле нудними підручниками з минулого. Переходь на сторінку стріткодів про постаті та події, читай або слухай історичне та захоплююче."
+                buttonName="До стріткодів"
+                setActionOnClick={() => {
+                    window.location.href = '../catalog';
+                }}
+            />
+            <NewsSliderComponent/>
+            <TeamComponent />
+            <PartnersBlockComponent />
+            {/* <InstagramBlock /> */}
+            <StaticBanner
+                id="support"
+                blockName="Слід в історії у кожного різний. У тебе може бути свій"
+                blockContent="Підтримай проєкт про історію в назвах вулиць. Обери зручний спосіб для донату, який підсвітить історію в міських просторах. Наш проєкт живе та пульсує завдяки небайдужим стріткодерам — таким, як ти!"
+                buttonName="Задонатити"
+                setActionOnClick={() => {
+                    window.location.href = '../support-us';
+                }}
+            />
+   
+        <div className="sticky">
+            <div className="sticky-content">
+                <ScrollToTopBtn />
             </div>
-            <Footer />
         </div>
-    );
+    </div>
+);
 
-}
 export default mainPageContent;

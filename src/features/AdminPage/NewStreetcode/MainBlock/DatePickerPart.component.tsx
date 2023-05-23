@@ -111,6 +111,11 @@ const DatePickerPart:React.FC<{
                                 defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
                                 onChange={onChangeFirstDate}
                                 picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
+                                placeholder={(dateFirstTimePickerType === 'date'
+                                ? 'yyyy-mm-dd'
+                                : dateFirstTimePickerType === 'year'
+                                    ? 'yyyy'
+                                    : 'yyyy-mm')}
                             />
                         </FormItem>
                     </div>
@@ -136,6 +141,11 @@ const DatePickerPart:React.FC<{
                                 value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
                                 onChange={onChangeSecondDate}
                                 picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
+                                placeholder={(dateSecondTimePickerType === 'date'
+                                ? 'yyyy-mm-dd'
+                                : dateSecondTimePickerType === 'year'
+                                    ? 'yyyy'
+                                    : 'yyyy-mm')}
                             />
                         </FormItem>
                     </div>
