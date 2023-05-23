@@ -7,6 +7,9 @@ import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermMo
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
+import { Form } from 'react-router-dom';
+import { AutoComplete, Button, Select } from 'antd';
+import FormItem from 'antd/es/form/FormItem';
 
 interface Props {
   inputInfo: Partial<TextInputInfo> | undefined;
@@ -80,7 +83,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             >
                 Додати новий термін
             </Button>
-            <Form.Item label="Оберіть пов'язаний термін">
+            <FormItem label="Оберіть пов'язаний термін">
                 <AutoComplete
                     filterOption
                     onSelect={(value, option) => {
@@ -92,7 +95,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                         (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
                     )}
                 </AutoComplete>
-            </Form.Item>
+            </FormItem>
 
 
             <div className="display-flex-row">
