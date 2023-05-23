@@ -2,7 +2,6 @@ import './RelatedFigureItemModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import CancelBtn from '@assets/images/utils/Cancel_btn_mobile.svg';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Modal } from 'antd';
@@ -10,8 +9,6 @@ import { Modal } from 'antd';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const RelatedFiguresItemModal = () => {
-    const { imagesStore } = useMobx();
-    const { fetchImage, getImage } = imagesStore;
     const { relatedFiguresStore: { relatedFiguresMap } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { relatedFigureItem } } = modalStore;
@@ -23,15 +20,6 @@ const RelatedFiguresItemModal = () => {
         setModal('relatedFigureItem', relation?.id, false);
         window.scrollTo(0, 0);
     };
-
-    useAsync(
-        () => {
-            if (relation) {
-                fetchImage(relation?.imageId);
-            }
-        },
-        [relation?.imageId],
-    );
 
     return (
         <Modal
@@ -46,7 +34,10 @@ const RelatedFiguresItemModal = () => {
             <div className="relatedFigureSlide">
                 <div
                     className="figureSlideImage"
-                    style={{ backgroundImage: `url(${base64ToUrl(getImage(relation?.imageId ?? 0)?.base64, getImage(relation?.imageId ?? 0)?.mimeType)})` }}
+                    style={{ backgroundImage: `url(${base64ToUrl(
+                        relation?.image?.base64,
+                        relation?.image?.mimeType,
+                    )})` }}
                 />
                 <div className="figureSlideText">
                     <div className="heading">

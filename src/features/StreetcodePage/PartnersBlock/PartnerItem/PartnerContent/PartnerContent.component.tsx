@@ -17,7 +17,7 @@ const LogoType = [twitter, instagram, facebook, youtube];
 
 const PartnerContent = ({ partner }: Props) => {
     const {
-        id, title, logoId, targetUrl, partnerSourceLinks, description,
+        id, title, targetUrl, partnerSourceLinks, description,
     } = partner;
     const { imagesStore: { getImage } } = useMobx();
 
@@ -27,7 +27,7 @@ const PartnerContent = ({ partner }: Props) => {
                 <div className="partnerContentLogo">
                     <img
                         key={id}
-                        src={base64ToUrl(getImage(logoId)?.base64, getImage(logoId)?.mimeType)}
+                        src={base64ToUrl(partner.logo?.base64, partner.logo?.mimeType)}
                         alt={title}
                     />
                 </div>

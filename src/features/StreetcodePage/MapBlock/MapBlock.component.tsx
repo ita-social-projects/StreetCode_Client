@@ -25,6 +25,7 @@ const MapBlock = () => {
         () => {
             const streetcodeId = getStreetCodeId;
             if (streetcodeId > 0) {
+                console.log("map block fetch");
                 ToponymsApi.getByStreetcodeId(streetcodeId).then((res) => setToponyms(res));
                 StreetcodeCoordinatesApi
                     .getByStreetcodeId(streetcodeId).then((res) => setStreetcodeCoordinates(res));
@@ -32,19 +33,6 @@ const MapBlock = () => {
         },
         [getStreetCodeId],
     );
-    /*     const toponyms = useAsync(() => {
-        const streetcodeId = getStreetCodeId;
-        if (streetcodeId > 0) {
-            ToponymsApi.getByStreetcodeId(streetcodeId);
-        }
-    }, [getStreetCodeId]).value as Toponym[];
-    const streetcodeCoordinates = useAsync(() => {
-        const streetcodeId = getStreetCodeId;
-        if (streetcodeId > 0) {
-            StreetcodeCoordinatesApi
-                .getByStreetcodeId(streetcodeId);
-        }
-    }, [getStreetCodeId]).value as StreetcodeCoordinate[]; */
 
     return (
         <div className="mapBlockContainer container">

@@ -30,7 +30,7 @@ import TeamStore from './team-store';
 import UserLoginStore from './user-login-store';
 
 interface Store {
-    // modalStore: ModalStore,
+    modalStore: ModalStore,
     factsStore: FactsStore,
     subtitlesStore: SubtitlesStore,
     tagsStore: TagsStore,
@@ -56,6 +56,7 @@ interface Store {
     userLoginStore: UserLoginStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
+    imageLoaderStore: ImageLoaderStore,
 
 }
 export interface AdditionalDataStore {
@@ -70,7 +71,7 @@ export interface ModalDataStore {
 }
 
 export const store: Store = {
-    // modalStore: new ModalStore(),
+    modalStore: new ModalStore(),
     factsStore: new FactsStore(),
     subtitlesStore: new SubtitlesStore(),
     tagsStore: new TagsStore(),
@@ -93,7 +94,7 @@ export const store: Store = {
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
-    // imageLoaderStore: new ImageLoaderStore(),
+    imageLoaderStore: new ImageLoaderStore(),
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),

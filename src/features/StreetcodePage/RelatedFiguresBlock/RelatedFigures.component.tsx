@@ -8,6 +8,8 @@ import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
+import ImagesApi from '@/app/api/media/images.api';
+import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 interface Props {
@@ -33,9 +35,14 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
                 Promise.all([
-                    fetchRelatedFiguresByStreetcodeId(getStreetCodeId),
-                    fetchTagByStreetcodeId(getStreetCodeId),
-                ]);
+                    RelatedFigureApi.getByStreetcodeId(getStreetCodeId)
+                        .then((res) => {
+                            Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
+                                res[index].image = img;
+                            }))).then(() => {
+                                relatedFiguresStore.setInternalRelatedFiguresMap = res;
+                            });
+                        })]);
             }
         },
         [getStreetCodeId],

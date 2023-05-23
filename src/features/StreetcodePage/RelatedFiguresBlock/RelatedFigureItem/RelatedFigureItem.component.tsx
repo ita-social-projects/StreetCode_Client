@@ -8,6 +8,9 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { relatedFiguresLeaveEvent, relatedFiguresTagsEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { useState } from 'react';
+import Image from '@/models/media/image.model';
+import ImagesApi from '@/app/api/media/images.api';
 
 interface Props {
     relatedFigure: RelatedFigure;
@@ -18,18 +21,12 @@ interface Props {
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const {
-        id, imageId, title, tags, alias, url,
+        id, imageId, title, tags, alias, url, image
     } = relatedFigure;
 
-    const { imagesStore, tagsStore: { getTagArray } } = useMobx();
+    const { tagsStore: { getTagArray } } = useMobx();
     const { modalStore } = useModalContext();
-    const { fetchImage, getImage } = imagesStore;
     const { setModal, modalsState: { tagsList } } = modalStore;
-
-    useAsync(
-        () => fetchImage(imageId),
-        [imageId],
-    );
 
     const windowsize = useWindowSize();
 
@@ -49,7 +46,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                     ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
                     ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
-                    style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
+                    style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})` }}
                     href={`/${url}`}
                     onClick={() => {
                         window.scrollTo(0, 0);
@@ -97,7 +94,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 <>
                     <div
                         className="relatedFigureSlide"
-                        style={{ backgroundImage: `url(${base64ToUrl(getImage(imageId)?.base64, getImage(imageId)?.mimeType)})` }}
+                        style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})` }}
                         onClick={handleClick}
                     />
                     <div className="figureSlideText mobile">

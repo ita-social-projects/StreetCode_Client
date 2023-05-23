@@ -1,40 +1,41 @@
 import './Partners.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx, { useAdditionalContext, useStreetcodeDataContext } from '@stores/root-store';
 
+import ImagesApi from '@/app/api/media/images.api';
 import PartnersApi from '@/app/api/partners/partners.api';
 import Partner from '@/models/partners/partners.model';
 
 import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
-    // const { partnersStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-    // const { imageLoaderStore } = useAdditionalContext();
-    // const { fetchPartnersByStreetcodeId, getPartnerArray } = partnersStore;
-    // const { handleImageLoad } = imageLoaderStore;
+    const { imageLoaderStore } = useAdditionalContext();
     const [partners, setPartners] = useState<Partner[]>([]);
 
     useAsync(
         () => {
             const streetcodeId = getStreetCodeId;
-            if (streetcodeId !== errorStreetCodeId && streetcodeId > 0) {
-                PartnersApi.getByStreetcodeId(getStreetCodeId).then((res) => setPartners(res));
-                /*  Promise.all([
-                    fetchPartnersByStreetcodeId(getStreetCodeId),
-                ]); */
+            if (streetcodeId && streetcodeId !== errorStreetCodeId && streetcodeId > 0) {
+                PartnersApi.getByStreetcodeId(getStreetCodeId)
+                    .then((res) => {
+                        Promise.all(res.map((p, index) => ImagesApi.getById(p.logoId)
+                            .then((img) => {
+                                res[index].logo = img;
+                            }))).then(() => setPartners(res));
+                    });
             }
         },
         [getStreetCodeId],
     );
 
-/*     useEffect(() => {
+    useEffect(() => {
         imageLoaderStore.totalImagesToLoad += partners.length;
-    }, [partners.length]); */
+    }, [partners.length]);
 
     const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => ({
         breakpoint,
@@ -60,14 +61,6 @@ const PartnersComponent = () => {
         responsive: [responsiveSettingsTablet, responsiveSettingsMobile, responsiveSettingsDesktop],
     };
 
-    const sliderItems = partners.map((p) => (
-        <PartnerItem
-            key={p.id}
-            partner={p}
-            handleImageLoad={()=>{}}
-        />
-    ));
-
     return (
         partners.length > 0 ? (
             <div className="partnersWrapper ">
@@ -76,7 +69,13 @@ const PartnersComponent = () => {
                         className="heightContainer"
                         {...settings}
                     >
-                        {sliderItems}
+                        {partners.map((p) => (
+                            <PartnerItem
+                                key={p.id}
+                                partner={p}
+                                handleImageLoad={() => {}}
+                            />
+                        ))}
                     </SlickSlider>
                 </div>
             </div>
@@ -84,4 +83,4 @@ const PartnersComponent = () => {
     );
 };
 
-export default (PartnersComponent);
+export default observer(PartnersComponent);

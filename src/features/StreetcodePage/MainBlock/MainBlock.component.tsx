@@ -8,6 +8,7 @@ import ListenTextModal from '@/app/common/components/modals/ListenText/ListenTex
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
@@ -19,6 +20,7 @@ const MainBlock = ({ setActiveTagId, setActiveBlock } : Props) => {
     const { value } = useAsync(() => StreetcodesApi.getByUrl(streetcodeUrl), [streetcodeUrl]);
     const streetcode = value as Streetcode;
 
+    console.log("main block render");
     return (
         <div id="mainBlock" className="mainBlock">
             <div className="mainContainer">
@@ -38,4 +40,4 @@ const MainBlock = ({ setActiveTagId, setActiveBlock } : Props) => {
     );
 };
 
-export default MainBlock;
+export default observer(MainBlock);

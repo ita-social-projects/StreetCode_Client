@@ -86,11 +86,10 @@ const StreetcodeContent = () => {
             const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
             const slideCloneCount = slideClonedImgs.length;
             imageLoaderStore.totalImagesToLoad += slideCloneCount;
-            // setSlideCloneCountAdded(slideCloneCount);
             slideCloneCountAdded.current = slideCloneCount;
         }
 
-        if (imageLoaderStore.imagesLoadedPercentage >= 90 && textBlockState) {
+        if (imageLoaderStore.imagesLoadedPercentage >= 50 && textBlockState) {
             setLoading(false);
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
