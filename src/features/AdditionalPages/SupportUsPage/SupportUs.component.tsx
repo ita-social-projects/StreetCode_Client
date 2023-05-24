@@ -94,7 +94,7 @@ const SupportUs = () => {
                         <p className='heading'>На карту</p>
 	                    <div className='content'>
                             {
-                                windowSize.width > 1024 ? <QRCode/>
+                                windowSize.width > 1200 ? <QRCode/>
                                 : windowSize.width > 480 ? <QRCodeSmall/>
                                 : undefined
                             }

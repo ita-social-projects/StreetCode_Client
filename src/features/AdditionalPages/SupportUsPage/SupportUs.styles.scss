@@ -3,7 +3,6 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 
-
 .supportUsPageWrapper {
     padding: 110px 12.5% 0;
     width: 100%;
@@ -177,8 +176,8 @@
 
         .mainBlock {
             .donatesPurposeBlock {
-                width: calc(80vw - 340px);
-    
+                width: calc(80vw - 348px);
+
                 .heading {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 28px);
                     line-height: 32px;
@@ -223,10 +222,8 @@
     }
 }
 
-@media screen and (max-width: 1094px) {
+@media screen and (max-width: 1200px) {
     .supportUsPageWrapper {
-        padding: 84px 9px 0;
-
         .heading {
             .titleBig {
                 @include mut.rem-margined($bottom: 20px);
@@ -250,7 +247,7 @@
         .mainBlock {
             .donatesPurposeBlock {
                 @include mut.rem-padded($right: 24px);
-                width: calc(100vw - 340px);
+                width: calc(80vw - 364px);
 
                 .heading {
                     font-size: 20px;
@@ -270,7 +267,7 @@
 
         .donateSubBlocks {
             @include mut.sized($height: 257px, $width: 748px);
-            margin: 40px calc((100vw - 784px) / 2 + 9px) 0;
+            margin: 40px calc((80vw - 784px) / 2 + 9px) 0;
 
             gap: 12px;
 
@@ -326,7 +323,23 @@
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1024px) {
+    .supportUsPageWrapper {
+        padding: 84px 10px 0;
+
+        .mainBlock {
+            .donatesPurposeBlock {
+                width: calc(100vw - 348px);
+            }
+        }
+
+        .donateSubBlocks {
+            margin: 40px calc((100vw - 784px) / 2 + 9px) 0;
+        }
+    }
+}
+
+@media screen and (max-width: 760px) {
     .supportUsPageWrapper {
         .donateSubBlocks {
             margin: unset;

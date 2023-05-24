@@ -25,7 +25,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<AdminPage />}
         />
         <Route
             index
@@ -40,7 +40,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             index
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+            element={<ForFansMainPage />}
         />
         <Route
             index
