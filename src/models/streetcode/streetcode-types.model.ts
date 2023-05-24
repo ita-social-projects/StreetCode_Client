@@ -6,7 +6,7 @@ import Image, { ImageCreate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent } from '@models/sources/sources.model';
-import RelatedFigure from '@models/streetcode/related-figure.model';
+import RelatedFigure, { RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import TimelineItem from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
@@ -127,4 +127,21 @@ export interface StreetcodeCreate {
     streetcodeCategoryContents: StreetcodeCategoryContent[],
     coordinates: StreetcodeCoordinate[],
     statisticRecords: StatisticRecord[],
+}
+
+export interface StreetcodeUpdate {
+    id: number,
+    index: number,
+    title: string,
+    teaser: string,
+    alias?: string,
+    transliterationUrl: string,
+    eventStartOrPersonBirthDate: Date,
+    eventEndOrPersonDeathDate: Date,
+    dateString: string,
+    streetcodeType: StreetcodeType,
+    videos: Video[],
+    facts: Fact[],
+    relatedFigures: RelatedFigureUpdate[],
+    timelineItems: TimelineItem[],
 }

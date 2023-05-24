@@ -57,13 +57,13 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
                     onChange={handleLinkChange}
                 />
                 <Button
-                        disabled={!inputInfo?.link?.includes('watch')}
+                        // disabled={!inputInfo?.link?.includes('watch')}
                         className = 'streetcode-custom-button button-margin-vertical'
                         onClick={() => setShowPreview(!showPreview)}
                     >
                         Попередній перегляд
                 </Button>
-                {
+                {/* {
                     inputInfo?.link?.includes('watch') && showPreview ? (
                         <div>
                             <h4>Попередній перегляд</h4>
@@ -78,7 +78,7 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
                     ) : (
                         <div />
                     )
-                }
+                } */}
             </div>
         </FormItem>
     );

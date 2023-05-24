@@ -9,3 +9,8 @@ export default interface RelatedFigure {
     imageId: number;
     tags: Tag[];
 }
+
+export interface RelatedFigureUpdate {
+    observerId: number;
+    targetId: number;
+}

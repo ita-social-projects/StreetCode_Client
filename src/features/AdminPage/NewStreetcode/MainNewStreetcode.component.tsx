@@ -14,7 +14,8 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import FactsApi from '@app/api/streetcode/text-content/facts.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
-import RelatedFigure from '@models/streetcode/related-figure.model';
+import Url from '@models/additional-content/url.model';
+import RelatedFigure, { RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -31,7 +32,7 @@ import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
-import { StreetcodeCreate, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
+import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
@@ -175,8 +176,9 @@ const NewStreetcode = () => {
             });
             TransactionLinksApi.getByStreetcodeId(parseId)
                 .then((res) => {
-                    if (res)
-                        form.setFieldValue('arlink', res.qrCodeUrl.href)
+                    if (res) {
+                        form.setFieldValue('arlink', res.qrCodeUrl.href);
+                    }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
@@ -189,9 +191,9 @@ const NewStreetcode = () => {
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
-        const videos: VideoCreate[] = [
-            { url: inputInfo?.link || '' },
-        ];
+        // const videos: VideoCreate[] = [
+        //     { url: inputInfo?.link || '' },
+        // ];
 
         const text: TextCreate = {
             title: inputInfo?.title,
@@ -230,8 +232,7 @@ const NewStreetcode = () => {
             text: (text.title && text.textContent) ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
-            facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
-                .map((fact: Fact) => ({ ...fact, id: 0 })),
+            facts: JSON.parse(JSON.stringify(factsStore.getFactArray)),
             coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
                 .map((coordinate: StreetcodeCoordinate) => ({ ...coordinate, id: 0 })),
             partners,
@@ -243,7 +244,7 @@ const NewStreetcode = () => {
             subtitles,
             firstName: null,
             lastName: null,
-            videos,
+            // videos,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
             streetcodeCategoryContents:
                 JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
@@ -267,10 +268,39 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
-            StreetcodesApi.update(streetcode).then((response2) => {
+            video.url = { href: inputInfo?.link };
+            const videos: Video[] = [video];
+
+            const relatedFiguresUpdate: RelatedFigureUpdate[] = figures.map((figure) => ({
+                observerId: parseId,
+                targetId: figure.id,
+            }));
+
+            const streetcodeUpdate: StreetcodeUpdate = {
+                id: parseId,
+                index: form.getFieldValue('streetcodeNumber'),
+                title: form.getFieldValue('title'),
+                alias: form.getFieldValue('alias'),
+                transliterationUrl: form.getFieldValue('streetcodeUrlName'),
+                streetcodeType,
+                eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate')
+                    ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null),
+                eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
+                    ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
+                facts: JSON.parse(JSON.stringify(factsStore.getFactArray)),
+                teaser: form.getFieldValue('teaser'),
+                dateString: form.getFieldValue('dateString') ?? dateString,
+                videos,
+                relatedFigures: relatedFiguresUpdate,
+                timelineItems: timelineItemStore.getTimelineItemArray,
+            };
+
+            console.log(streetcodeUpdate);
+            StreetcodesApi.update(streetcodeUpdate).then((response2) => {
                 alert('Cтріткод успішно оновленний');
             })
                 .catch((error2) => {
+                    console.log(error2);
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {

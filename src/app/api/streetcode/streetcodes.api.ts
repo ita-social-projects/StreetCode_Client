@@ -46,7 +46,7 @@ const StreetcodesApi = {
 
     create: (streetcode: StreetcodeCreate) => Agent.post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
-    update: (streetcode: StreetcodeCreate) => Agent.put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}/${streetcode.id}`, streetcode),
+    update: (streetcode: StreetcodeCreate) => Agent.put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 
