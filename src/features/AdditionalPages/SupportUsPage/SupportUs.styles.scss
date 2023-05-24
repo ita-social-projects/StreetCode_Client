@@ -367,7 +367,7 @@
             }
             .donateWindow {
                 @include mut.flexed($justify-content: center);
-                margin: 24px auto 0;
+                margin: f.pxToRem(24px) auto 0;
             }
         }
         .bottomText {
