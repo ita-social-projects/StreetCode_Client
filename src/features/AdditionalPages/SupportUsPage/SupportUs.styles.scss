@@ -67,7 +67,7 @@
                 line-height: 27px;
 
                 p {
-                    @include mut.rem-margined(16px);
+                    @include mut.rem-margined($top: 16px);
                 }
             }
         }
