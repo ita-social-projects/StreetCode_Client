@@ -30,7 +30,7 @@ const menuPositionsMobile = [
     8 * scaleMobile,
 ];
 const menuOptions = [
-    '/404',
+    '/',
     '/catalog',
     '/404',
     '/partners-page',
@@ -91,42 +91,42 @@ const HeaderDrawer = () => {
                                 id={1}
                                 parentActive={active}
                                 text="Головна"
-                                link="/404"
+                                link={menuOptions[0]}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={2}
                                 parentActive={active}
                                 text="Стріткоди"
-                                link="/catalog"
+                                link={menuOptions[1]}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={3}
                                 parentActive={active}
                                 text="Про нас"
-                                link="/404"
+                                link={menuOptions[2]}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={4}
                                 parentActive={active}
                                 text="Партнери"
-                                link="/partners-page"
+                                link={menuOptions[3]}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={5}
                                 parentActive={active}
                                 text="Донати"
-                                link="/support-us"
+                                link={menuOptions[4]}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={6}
                                 parentActive={active}
                                 text="Контакти"
-                                link="/contact-us"
+                                link={menuOptions[5]}
                                 toggleState={toggle}
                             />
                         </div>
@@ -140,14 +140,14 @@ const HeaderDrawer = () => {
                                         parentActive={active}
                                         toggleState={toggle}
                                         text="Політика конфіденційності"
-                                        link="/privacy-policy"
+                                        link={menuOptions[6]}
                                     />
                                     <HeaderDrawerItem
                                         id={8}
                                         parentActive={active}
                                         toggleState={toggle}
                                         text="Зворотний зв'язок"
-                                        link="/404"
+                                        link={menuOptions[7]}
                                     />
                                 </div>
                                 <SocialMediaLinks />
