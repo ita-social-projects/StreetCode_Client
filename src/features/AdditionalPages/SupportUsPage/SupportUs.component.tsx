@@ -20,8 +20,12 @@ const SupportUs = () => {
 
     const windowSize = useWindowSize();
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(BANK_ACCOUNT);
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(BANK_ACCOUNT);
+        } catch {
+            alert("No permission to copy bank account to the clipboard!");
+        }
     };
 
     const handlePay = () => {
@@ -90,7 +94,7 @@ const SupportUs = () => {
                         <p className='heading'>На карту</p>
 	                    <div className='content'>
                             {
-                                windowSize.width > 1024 ? <QRCode/>
+                                windowSize.width > 1200 ? <QRCode/>
                                 : windowSize.width > 480 ? <QRCodeSmall/>
                                 : undefined
                             }
