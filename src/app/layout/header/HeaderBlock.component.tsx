@@ -56,9 +56,11 @@ const HeaderBlock = () => {
         <div className="HeaderBlock">
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
+                    <div onClick={() => window.location.href=`/`}>
                     {windowSize.width > 1024
                         ? <StreetcodeSvg />
-                        : <StreetcodeSvgMobile />}
+                            : <StreetcodeSvgMobile />}
+                    </div>
                     <input
                         placeholder="Пошук..."
                         ref={inputRef}

@@ -1,16 +1,18 @@
 import './TextBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
 import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
+import htmpReactParser from 'html-react-parser';
 
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
+import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
 
 const TextComponent = () => {
@@ -45,6 +47,7 @@ const TextComponent = () => {
                     <div className="textComponent">
                         <div className="TextContainer">
                             <ReadMore text={String(text?.textContent)} />
+                            <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                         </div>
                     </div>
                     <div className="videoComponent">
@@ -58,6 +61,7 @@ const TextComponent = () => {
                         />
                         {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
                     </div>
+
                 </div>
             ) : null
     );

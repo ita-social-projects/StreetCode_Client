@@ -15,6 +15,7 @@ import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.compon
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
+import News from '@/features/AdminPage/NewsPage/News.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
@@ -61,6 +62,11 @@ const router = createBrowserRouter(createRoutesFromElements(
                     <TermDictionary />
                 </ProtectedComponent>
             )}
+        />
+        <Route
+            index
+            path={FRONTEND_ROUTES.ADMIN.NEWS}
+            element={<ProtectedComponent><News /></ProtectedComponent>}
         />
         <Route index path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
         <Route

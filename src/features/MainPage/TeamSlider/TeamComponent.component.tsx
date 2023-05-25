@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useState, useEffect } from 'react';
 import SlickSlider from './../../SlickSlider/SlickSlider.component'
+import Heading from '../Heading/Heading.component';
 const TeamComponent = () => {
     const [team, setTeam] = useState<TeamMember[]>([]);
 
@@ -34,9 +35,16 @@ const TeamComponent = () => {
         slidesToShow: 1,
         swipeOnClick: false
     }
+    
+    const handleClick = () => {
+        window.location.assign('https://www.instagram.com/streetcodeua/');
+    }
+
     if (team.length > 0) {
         return (
+            
             <div id="mainBlock" className="teamComponent">
+                <Heading blockName='Команда' buttonName='Вся команда' setActionOnClick={handleClick}/>
                 <div className="mainContainer">
                     <div className="blockCentering">
                         <div className="mainContent">

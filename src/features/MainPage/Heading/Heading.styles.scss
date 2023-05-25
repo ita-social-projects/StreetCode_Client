@@ -1,0 +1,32 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+.mainPageBlockHeading {
+    @include mut.sized($height: 145px, $width: 100%);
+    @include mut.rem-padded($left: 25px, $right: 20px);
+    @include mut.flexed($justify-content: space-between, $align-items: center);
+
+    .leftPart {
+        @include mut.flexed($align-items: center);
+
+        .blockName {
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+            @include mut.rem-margined($left: 30px);
+            line-height: 53px;
+        }
+    }
+
+    .headingButton {
+        @include mut.sized($width: 235px);
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+        
+        line-height: 23.44px;
+        text-decoration: underline;
+        text-align: right;
+        color: c.$text-red-color;
+        cursor: pointer;
+    }
+}

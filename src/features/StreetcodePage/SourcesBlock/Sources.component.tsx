@@ -33,7 +33,6 @@ const SourcesComponent = () => {
         initialSlide: 1,
         centerMode: windowsize.width < 1024,
     };
-
     return (sourcesStore.getSrcCategoriesArray.length > 0
         ? (
             <div className="sourcesWrapper container">

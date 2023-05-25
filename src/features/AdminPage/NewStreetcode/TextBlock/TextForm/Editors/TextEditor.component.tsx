@@ -1,21 +1,18 @@
+/* eslint-disable react/jsx-props-no-multi-spaces */
 import { useState } from 'react';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
-
-import {
-    AutoComplete, Button, Form, Select, Tooltip,
-} from 'antd';
-import FormItem from 'antd/es/form/FormItem';
-
+import TermsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Term } from '@/models/streetcode/text-contents.model';
-
-import TermsApi from '../../../../../../app/api/streetcode/text-content/terms.api';
+import { Form } from 'react-router-dom';
+import { AutoComplete, Button, Select } from 'antd';
+import FormItem from 'antd/es/form/FormItem';
 
 interface Props {
-    inputInfo: Partial<TextInputInfo> | undefined;
+  inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
 }
 
@@ -87,7 +84,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             >
                 Додати новий термін
             </Button>
-            <Form.Item label="Оберіть пов'язаний термін">
+            <FormItem label="Оберіть пов'язаний термін">
                 <AutoComplete
                     filterOption
                     onSelect={(value, option) => {
@@ -99,7 +96,8 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                         (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
                     )}
                 </AutoComplete>
-            </Form.Item>
+            </FormItem>
+
 
             <div className="display-flex-row">
                 <Button
@@ -117,6 +115,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     Видалити пов&#39;язаний термін
                 </Button>
             </div>
+
 
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>

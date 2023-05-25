@@ -129,5 +129,9 @@
 @media screen and (max-width: 1024px) {
     .relatedFigureSlide {
         @include mut.sized($width: 165px, $height: 165px);
+        
+        .sliderClass .slider-item-container {
+            display: block !important;
+        }   
     }
 }

@@ -69,14 +69,17 @@
   }
 
   .socialIconContainer {
-    margin-top: pxToRem(29px);
+    @include mut.rem-margined($top: 29px);
     color: c.$pure-white-color;
     @include mut.with-font($font-weight: 300, $font-size: 15px);
-    margin-right: 10%;
+    @include mut.flexed($align-items: center);
+    @include mut.sized($height: 27px);
     > * {
-      display: inline;
-      margin-right: pxToRem(14.62px);
+     @include mut.rem-margined($right: 14.62px);
     }
+      li:nth-child(5) {
+        @include mut.sized($height: 20px);
+      }
   }
 }
 @media screen and (max-width: 480px) {

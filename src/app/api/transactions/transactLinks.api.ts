@@ -5,19 +5,11 @@ import TransactionLink from '@models/transactions/transaction-link.model';
 const TransactionLinksApi = {
     getAll: () => Agent.get<TransactionLink[]>(`${API_ROUTES.TRANSACTION_LINKS.GET_ALL}`),
 
-    getById: (id: number) => Agent.get<TransactionLink>(`${API_ROUTES.TRANSACTION_LINKS.GET}/${id}`),
+    getById: (id: number) => Agent.get<TransactionLink>(`${API_ROUTES.TRANSACTION_LINKS.GET_BY_ID}/${id}`),
 
-    create: (transactionLink: TransactionLink) => Agent.post<TransactionLink>(
-        `${API_ROUTES.TRANSACTION_LINKS.CREATE}`,
-        transactionLink,
-    ),
+    getByStreetcodeId: (id: number) => Agent
+        .get<TransactionLink>(`${API_ROUTES.TRANSACTION_LINKS.GET_BY_STREETCODE_ID}/${id}`),
 
-    update: (transactionLink: TransactionLink) => Agent.put<TransactionLink>(
-        `${API_ROUTES.TRANSACTION_LINKS.UPDATE}`,
-        transactionLink,
-    ),
-
-    delete: (id: number) => Agent.delete(`${API_ROUTES.TRANSACTION_LINKS.DELETE}/${id}`),
 };
 
 export default TransactionLinksApi;

@@ -1,8 +1,7 @@
-import { useModalContext } from '@/app/stores/root-store';
 import './DonateBtnRectangle.styles.scss';
 
-
 import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { useModalContext } from '@/app/stores/root-store';
 
 const DonateBtnRectangle = () => {
     const { modalStore: { setModal } } = useModalContext();
@@ -12,14 +11,10 @@ const DonateBtnRectangle = () => {
     };
 
     return (
-        <button className='button-sized donate-button' onClick={onBtnClick}>
+        <button className="button-sized donate-button" onClick={onBtnClick}>
             Задонатити
-        </button>       
+        </button>
     );
 };
 
 export default DonateBtnRectangle;
-function modalContext(): { modalStore: { setModal: any; }; } {
-    throw new Error('Function not implemented.');
-}
-

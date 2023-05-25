@@ -19,11 +19,13 @@ import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
+import NewsStore from './news-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StatisticRecordStore from './statistic-record-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
+import StreetcodesMainPageStore from './streetcode-mainpage-store';
 import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
@@ -54,7 +56,8 @@ interface Store {
     userLoginStore: UserLoginStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
-
+    newsStore: NewsStore,
+    streetcodeMainPageStore: StreetcodesMainPageStore,
 }
 
 export interface StreetcodeDataStore {
@@ -89,6 +92,8 @@ export const store: Store = {
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
+    newsStore: new NewsStore(),
+    streetcodeMainPageStore: new StreetcodesMainPageStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),

@@ -1,74 +1,59 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
-@use "@sass/_utils.functions.scss" as *;
-@use "@sass/mixins/_vendor.mixins.scss" as vnd;
-@use "@sass/variables/_variables.fonts.scss" as f;
 
+$bgImg: '@assets/images/streetcode-card/background.png';
 $bgImg: '@assets/images/catalog/background.png';
-$loadImg: '@assets/images/catalog/loading.gif';
 
-.streetcodeCatalogWrapper {
-    padding: pxToRem(100px) 10%;
-    background: url($bgImg) no-repeat center center / cover;
-    background-color: c.$accented-low-opasity-grayish-gray-color;
-    width: 100%;
+.streetcodeMainPageWrapper{
+  background: url($bgImg) no-repeat center center / cover;
+  background-color: c.$accented-low-opasity-grayish-gray-color;
+  width: 100%;
 
-    .streetcodeCatalogHeading {
-        @include mut.with-font('Closer Text', 500, 96px, normal);
-        padding-bottom: pxToRem(40px);
-        line-height: pxToRem(127px);
-        display: flex;
-        align-items: center;
-        color: c.$milky-white-color;
+.streetcodeSliderComponent {
+    .streetcodeContainer .mainBlock {
+        @include mut.bg-image($bgImg, auto);
+        background-repeat: repeat-x;
     }
 
-    .steetcodeCatalogContainer {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(278px, 1fr));
-        grid-auto-rows: minmax(165px, 380px);
-        column-gap: pxToRem(28px);
-        row-gap: pxToRem(60px);
-        justify-content: center;
-        justify-items: center;
+    .streetcodeSliderContentBlock,
+    .blockCentering {
+        @include mut.flex-centered();
     }
-}
 
-.loadingWrapper {
-    background-color: c.$accented-grayish-gray-color;
-    width: 100%;
-    @include mut.flex-centered();        
-
-    #loadingGif {
-        @include mut.bg-image($loadImg, contain, no-repeat);
-        @include mut.sized(60px, 60px);
-        margin-bottom: pxToRem(84px);
+    .streetcodeSliderContainer {
+        width: 100%;
+        position: relative;
     }
-}
 
-@media screen and (max-width: 1024px) {
-    .streetcodeCatalogWrapper {
-        padding: pxToRem(80px) pxToRem(13px) 0;
+    .streetcodeSliderContent {
+        width: 100%;
+        @include mut.flex-centered();
+        margin-top: f.pxToRem(10px);
+        padding-top: f.pxToRem(10px);
 
-        .streetcodeCatalogHeading {
-            padding-bottom: 0;
-            font-size: 54px;
-            line-height: pxToRem(71.28px);
-        }
-
-        .steetcodeCatalogContainer {
-            padding-top: pxToRem(20px);
-            row-gap: pxToRem(20px);
-            grid-auto-rows: minmax(165px, 236px);
-            grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
-            justify-content: center;
+        ::-webkit-scrollbar {
+            width: f.pxToRem(5px);
         }
     }
-}
 
-@media screen and (max-width: 768px) {
-    .streetcodeCatalogWrapper {
-        .steetcodeCatalogContainer {
-            column-gap: pxToRem(10px);
-        }
+    .slick-slide {
+        width: unset !important;
     }
+
+    .slick-initialized .slick-slide {
+        @include mut.flexed(row, center, center, wrap);
+        @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
+    }
+
+    .slick-track {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .slick-initialized .slick-slide {
+        @include mut.flexed($justify-content: center, $gap: 0px);
+        @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+    }
+}
 }

@@ -55,23 +55,24 @@ li.slick-active button:before {
 }
 
 .sliderClass {
-
     width: 100%;
-    .slider-item-container{
+
+    .slider-item-container {
         display: flex !important;
         position: relative;
         flex-direction: row;
-        .left{
+
+        .left {
             position: absolute;
-            width: 180px;
+            width: 35%;
             height: 100%;
             left: 0;
             opacity: 0;
         }
-    
-        .right{
+
+        .right {
             position: absolute;
-            width: 180px;
+            width: 35%;
             height: 100%;
             right: 0;
             opacity: 0;
@@ -93,18 +94,6 @@ li.slick-active button:before {
 @media screen and (max-width:1024px) {
     .slick-next,
     .slick-prev {
-        visibility:hidden;
-    }
-
-    .sliderClass {
-        .slider-item-container{
-            .left{
-                width: 100px;
-            }
-        
-            .right{
-                width: 100px;
-            }
-        }
+        visibility: hidden;
     }
 }

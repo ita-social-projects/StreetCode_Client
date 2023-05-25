@@ -49,7 +49,7 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
     };
 
     return (
-        <form className="input-container" onSubmit={handleAddItem}>
+        <form className="input-container">
             <AutoComplete
                 placeholder="Знайти стріткод..."
                 style={{ width: '100%' }}
@@ -58,7 +58,7 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
                 onChange={(value) => setRelation(value)}
                 value={relation}
             />
-            <Button htmlType="submit" className='streetcode-custom-button button-margin-left' type="primary">
+            <Button onClick={handleAddItem} className='streetcode-custom-button button-margin-left' type="primary">
         Додати
             </Button>
         </form>

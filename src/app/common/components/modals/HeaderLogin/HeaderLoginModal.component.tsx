@@ -3,12 +3,12 @@ import './HeaderLoginModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useNavigate } from 'react-router-dom';
+import { useModalContext } from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
 
 import { becomePartnerEvent, donateEvent, joinToStreetcode } from '@/app/common/utils/googleAnalytics.unility';
-import { useNavigate } from "react-router-dom";
 
 const HeaderLoginModal = () => {
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
@@ -16,9 +16,9 @@ const HeaderLoginModal = () => {
 
     const becomePartnerHandler = () => {
         login.isOpen = false;
-        navigate(`../partners-page`);
+        navigate('../partners-page');
         becomePartnerEvent('modal');
-    }
+    };
 
     return (
         <Modal

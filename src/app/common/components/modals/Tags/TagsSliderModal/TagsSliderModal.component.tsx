@@ -26,7 +26,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, activeTagBlock, setActiveT
         <div className="tagModalContainer">
             <BlockSlider
                 className="tagSliderClass"
-                infinite={false}
+                infinite
                 slidesToShow={3}
                 arrows={false}
                 swipe={false}

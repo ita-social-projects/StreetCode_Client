@@ -1,20 +1,17 @@
 import './InterestingFactsModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import Image from '@models/media/image.model';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Modal } from 'antd';
 
-import ImagesApi from '@/app/api/media/images.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+
 const InterestingFactsModal = () => {
     const { factsStore: { factMap } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { facts } } = modalStore;
-
 
     const factId = facts.fromCardId!;
     const fact = factMap.get(factId);
