@@ -51,7 +51,6 @@ export default class NewsStore {
     };
 
     get getNewsArray() {
-        this.getAll();
         return Array.from(this.NewsMap.values());
     }
 

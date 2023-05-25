@@ -3,14 +3,12 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.newsContainer{
+.newsContainer {
     position: relative;
     width: 100%;
     height: 100%;
     padding: f.pxToRem(150px) f.pxToRem(200px) f.pxToRem(100px) f.pxToRem(200px);
-    background: #F5F5F5;
-    // @include mut.bg-image('@assets/images/partners/background.png');
-    // background-attachment: fixed;
+    background: c.$accented-white-color;
 
     .wrapper{
         max-width: f.pxToRem(1200px);
@@ -18,82 +16,120 @@
         margin: 0 auto;
         display: block;
 
-        .NewsHeader{
-            margin-bottom: 40px !important ;
-            //width: 10px !important;
-            h1{
+        .NewsHeader {
+            margin-bottom: f.pxToRem(40px) !important ;
+
+            h1 {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px); 
             }
         }
     }
     
-    .newsTextArea{
+    .newsTextArea {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-        
-        p{
-            padding-bottom: 24px;
+
+        p {
+            padding-bottom: f.pxToRem(24px);
         }
     }
 
-    .newsImage{
-        padding-bottom: 24px;
-        height: 100%;
+    .newsImageClass {
+        display: none;
+    }
+
+    .newsGoodImageClass {
+        display: none;
+    }
+
+    .newsGoodImageClass.Full {
+        padding-top: f.pxToRem(24px);
+        display: initial;
         width: 100%;
-        //padding-bottom: 24px;
     }
 
-    .newsWithImageWrapper{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .newsLinks{
+    .newsMainTextArea {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-        line-height: 14px;
-        padding-top: 24px;
-        text-align: right;
+        width: 100%;
+        min-width: 50%;
+        .newsParagraph {
+            font-family: "Closer Text", sans-serif !important;
+        }
+
+        p {
+            padding-bottom: f.pxToRem(24px);
+        }
+    }
+
+    .newsWithImageWrapper {  
+        min-height: f.pxToRem(500px);
+    }
+
+    .newsWithImageWrapper.Full {
+        flex-wrap: wrap;
+    }
+
+    .newsImage {
+        padding-bottom: f.pxToRem(24px);
+        height: 100%;
+        max-width: 100%;
+        min-width: 50%;
+        float: right;
+    }
+
+    .newsImage.Full {
+        width: 100%;
+        display: none;
+    }
+
+    .newsLinks {
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+        line-height: f.pxToRem(14px);
+        padding-top: f.pxToRem(24px);
+        text-align: center;
         text-decoration: underline;
-        //text-transform: uppercase;   
+        text-decoration-color: c.$dark-red-color;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
     
-    .newsLinks .Link{
-        color: #891F16 !important;
+    .newsLinks .Link {
+        color: c.$dark-red-color;
     }
-    .randomNewsBlock{
-        margin-top: 40px;
-        //box-shadow: #1D1F23;
-        box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
-        border-radius: 20px;
-        .randomNewsLink{
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-            padding: 40px;
 
-            .additionalNewsText{
-                padding-bottom: 16px;
+    .newsLinks .Link.toHide {
+        visibility: hidden;
+    }
+
+    .randomNewsBlock {
+        margin-top: f.pxToRem(40px);
+        box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
+        border-radius: f.pxToRem(20px);
+
+        .randomNewsLink {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+            padding: f.pxToRem(40px);
+
+            .additionalNewsText {
+                padding-bottom: f.pxToRem(16px);
             }
 
-            .randomNewsTitleAndButtn{
-                color: #1d1f23;
-                font-size: 32px;
-                font-weight: 500;
-                font-family: Closer Text, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-                    'Liberation Sans', sans-serif;
+            .randomNewsTitleAndButtn {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+                color: c.$lighter-black-color;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 
-                .newsButtonContainer{
-                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px); 
-                    padding: 25px 93px;
-                    background: #E04031;
-                    border-radius: 14px;
-                    max-height: 73px;
-                    button{
-                        color: #FFFFFF !important; 
+                .newsButtonContainer {
+                    max-height: f.pxToRem(73px);
+
+                    button {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px); 
+                        padding:f.pxToRem(25px)  f.pxToRem(93px);
+                        background: c.$accented-red-color;
+                        border-radius: 14px;
+                        color: c.$pure-white-color; 
                     }
                     
                 }
@@ -101,24 +137,8 @@
         }
     }
     
-    .buttonsBlock{
-        @include mut.flexed($justify-content: center, $gap: 20px);
-
-        .button-sized{
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-            @include mut.full-rounded(14px); 
-            padding: f.pxToRem(24.5px) f.pxToRem(26.25px);
-            box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
-            cursor: pointer;
-        }
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .newsContainer{
-        .subTitle.titleBottom{
-            white-space: normal;
-        }
+    .randomNewsBlock.toHide {
+        display: none;
     }
 }
 
@@ -126,58 +146,171 @@
     .newsContainer{
         background-color: c.$partners-mobile-background-color;
         background-image: none;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: f.pxToRem(10px);
+        padding-right: f.pxToRem(10px);
         padding-bottom:  f.pxToRem(20px);
         padding-top: f.pxToRem(94px);
 
-        .wrapper{
+        .wrapper {
 
-            .NewsHeader{
-                margin-bottom: 24px !important;
-                h1{
+            .NewsHeader {
+                margin-bottom: f.pxToRem(24px) !important;
+
+                h1 {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px); 
                 }
             }
         }
 
-        .newsTextArea{
-            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
+        .newsTextArea {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
         }
-        
-        .buttonsBlock{
-            @include mut.flexed($justify-content: center, $gap: 12px);
+    
+        .newsMainTextArea {
+            p {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            }
         }
 
-        .subTitle{
-            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
+
+        .randomNewsBlock {
+            
+            .randomNewsLink {
+                padding: f.pxToRem(40px);
+    
+                .additionalNewsText {
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+                }
+
+                .randomNewsTitleAndButtn {
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+                    
+                    .newsButtonContainer {
+                        button {
+                            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+                        }
+                        
+                    }
+                }
+            }
         }
     }
 }
 
-@media screen and (max-width: 670px) {
+@media screen and (max-width: 770px) {
     .newsContainer{
+        .wrapper {
+            .NewsHeader {
+                margin-bottom: f.pxToRem(24px) !important;
 
-        .wrapper{
-
-            .NewsHeader{
-                
-                h1{
-                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px); 
+                h1 {
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px); 
                 }
             }
         }
 
-        .buttonsBlock{
-            .button-sized{
-                @include mut.full-rounded(10px);
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
-                padding: 0;
-                min-height: f.pxToRem(46px);
+        .newsTextArea {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+        }
+    
+        .newsMainTextArea {
+            p {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
             }
-            @include mut.flexed($justify-content: center, $direction: column, $gap: 12px);
+        }
+
+        .newsWithImageWrapper {
+            flex-wrap: wrap;
+        }
+    
+        .newsImage {
+            width: 100%;
+        }
+        
+        .randomNewsBlock {
+            .randomNewsLink {
+                .additionalNewsText {
+                    @include mut.with-font($font-size: 14px);
+                }
+
+                .randomNewsTitleAndButtn {
+                    @include mut.with-font($font-size: 20px);
+                    
+                    .newsButtonContainer {
+                        padding-left: f.pxToRem(10px);
+
+                        button {
+                            @include mut.with-font($font-size: 14px); 
+                            padding: 0;
+                            width: f.pxToRem(180px);
+                            height: f.pxToRem(46px);
+                        }
+                        
+                    }
+                }
+            }
         }
     }
 }
 
+@media screen and (max-width: 400px) {
+    .newsContainer{
+        .wrapper {
+            .NewsHeader {
+                h1 {
+                    @include mut.with-font($font-size: 20px); 
+                }
+            }
+
+            .newsLinks {
+                display: flex;
+                flex-wrap:wrap;
+                justify-content: center;
+                text-align: center;
+                padding-top: 0px;
+                text-decoration: none;
+                text-decoration-color: c.$dark-red-color;
+
+                .Link {
+                    @include mut.with-font($font-size: 14px);
+                    color: c.$accented-red-color;
+                    padding: f.pxToRem(14px)  f.pxToRem(50px);
+                    border: 2px solid c.$accented-red-color;
+                    border-radius: 10px;
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .newsLinks .Link.toHide {
+                display:none;
+            }
+
+            .randomNewsBlock {
+                margin-top: 24px;
+
+                .randomNewsLink {
+                    padding: 20px;
+
+                    .randomNewsTitleAndButtn {
+                        display: flex;
+                        flex-wrap:wrap;
+
+                        .newsButtonContainer {
+                            min-width: 100%;
+                            margin-top: f.pxToRem(12px);
+                            padding-left: 0px;
+                            button {
+                                    height: f.pxToRem(46px);
+                                    padding: f.pxToRem(0px)  f.pxToRem(0px);
+                                    min-width: 100%;
+                                }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
 

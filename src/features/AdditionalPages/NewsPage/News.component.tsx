@@ -2,220 +2,141 @@ import './News.styles.scss';
 
 import Footer from '@layout/footer/Footer.component';
 
-import DonateBtnRectangle from './ModalButtons/DonateBtn/DonateBtnRectangle.component';
-import PartnersBtn from './ModalButtons/PartnersBtn/PartnersBtn.component';
-import PartnersBtnCircle from './ModalButtons/PartnersBtnCircle/PartnersBtnCircle.component';
-import PartnersBlock from './PartnersBlock/PartnersBlock.component';
-import Title from './Title/Title.component';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useMobx from '@/app/stores/root-store';
-import React, {useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import NewsApi from '@/app/api/news/news.api';
 import News from '@/models/news/news.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import Paragraph from 'antd/es/skeleton/Paragraph';
 import { Link } from 'react-router-dom';
 import BreadCrumb from './BreadCrumb/BreadCrumb.component';
-import { Url } from 'url';
+import parse from 'html-react-parser';
 
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
-    const {newsStore, imagesStore} = useMobx();
-    const { setCurrentNewsId } = newsStore;
-    console.log(newsUrl);
+    const [newsImg, setNewsImg] = useState<HTMLElement>(); 
+    const { newsStore, imagesStore } = useMobx();
     var { value } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
     const news = value as News;
-    const id = news?.id;
-    console.log(value);
+    newsStore.fetchNewsAll();
     const newsArr = newsStore.getNewsArray as News[];
-    console.log(newsArr.findIndex(x => x.id == news?.id),'абв');
-    newsArr.forEach((record)=> {
-        console.log(record.id);
-        console.log('абв')
-    })
-
-
-    console.log(newsArr[0]);
-    // const getNewsArrId () => {
-    //console.log(news?.text)
-    // }
-    
-    //const id = news?.id;
-    // const { newspres } = useAsync(() => NewsApi.getById(id), [id]);
-    // const { pvalue } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
-    // const nnews = nvalue as News;
-    console.log(news);
-    console.log(123);
-    console.log(value);
-    const paragraphs = news?.text.split('\n');
+    const newsIndex = newsArr.findIndex(x => x.id == news?.id);
+    const parsedText = parse(news?.text ?? "");
+    const [width, setWidth] = useState(0);
     const { fetchImage, getImage } = imagesStore;
+    const [wrapperWidth, setWrapperWidth] = useState(0);
+    const wrapperObj = document.querySelector('.wrapper') as HTMLElement;
 
-    function getPreviousIndex(currentIndex: number) {
-        if (currentIndex > 0) {
-          return currentIndex - 1;
+    const getNewsElement = (newsArr: News[], ind: number) => {
+        const arrLength = newsArr.length;
+        if (arrLength > 3) {
+          if ( newsArr[ind + 1] == newsArr[arrLength - 1] || newsArr[ind] == newsArr[arrLength - 1]) {
+            return newsArr[ind - 2];
+          }
+          else {
+            return newsArr[arrLength-1]
+          }
+        } else {
+          return newsArr[ind];
         }
-        return -1;
-      }
-      
-    function getNextIndex(arr: News[], currentIndex: number) {
-        if (currentIndex < arr.length - 1) {
-          return currentIndex + 1;
-        }
-        return -1;
-      }
-    const prevIndex = getPreviousIndex(newsArr.findIndex(x => x.id == news?.id));
-    const nextIndex = getNextIndex(newsArr, newsArr.findIndex(x => x.id == news?.id));
+    }
 
-    
-    // console.log(nextIndex,prevIndex);
-    // value = useAsync(() => NewsApi.getByUrl((newsArr[nextIndex]?.url as unknown as string)), [newsArr]);
-    // const nextNews = value as News;
-    // value = useAsync(() => NewsApi.getByUrl((newsArr[prevIndex]?.url as unknown as string)), [newsArr]);
-    // const prevNews = value as News;
-    // console.log(nextNews, prevNews, "qsdfvgbnmk");
+    const getFullImg = () => {
+        var newsimg = new Image;
+        var strongTags = document.getElementsByTagName('strong');
+        var lastStrongTag = strongTags[strongTags.length - 1]; 
+        if(news){
+            var imgUrl = base64ToUrl(getImage(news.imageId!)?.base64, getImage(news.imageId!)?.mimeType);
+            newsimg.src = imgUrl!;
+
+            newsimg.onload = function() {
+                setWidth(newsimg.width);
+
+                if (strongTags.length > 0 ) {
+                    const img = document.createElement('img');
+                    img.src = imgUrl!;
+                    img.className = `newsGoodImageClass ${newsimg.width > wrapperWidth * 0.5 ? 'Full' : ''}`;
+                    setNewsImg(img);
+
+                    if (newsimg.width > wrapperWidth * 0.5 || wrapperWidth <= 600)
+                    {
+                        lastStrongTag.parentNode?.insertBefore(img, lastStrongTag.nextSibling);
+                    }    
+                }
+            }      
+        }     
+        
+    }
+
+    const DellFullImg = () => {
+        if(newsImg){
+            var parentElement = newsImg.parentNode;
+            parentElement?.removeChild(newsImg!);
+        }
+    };
+
     useAsync(
-        () => fetchImage(news?.imageId!),
-        [news?.imageId],
+        () => {DellFullImg();
+        fetchImage(news?.imageId!)
+        .then(getFullImg);
+        window.scrollTo(0,0);
+        },
+        [news?.url],
     );
-    const NewsId = newsStore.currentNews;
 
-    
-    // var prevNews = news;
-    // var nextNews = news;
-    // const getNews = (id: number) => {
-    //     try {
-    //         if(id>1)
-    //         {
-                
-    //             prevNews = NewsApi.getById(id-1);
-    //             nextNews = NewsApi.getById(id+1);
-    //         }
-    //         else{
-    //             nextNews = NewsApi.getById(id+1);
-    //         }
-    //     } catch (error: unknown) {
-    //         console.log(error);
-    //     }
-    // };
+    useEffect(
+        () => {setWrapperWidth(wrapperObj?.offsetWidth);},
+        [wrapperObj]
+    )
 
-
-    
-    // const createPartnersItem = (partners: Partner[]) => partners.map((partner) => (
-    //     <PartnersItem partner={partner} />
-    // ));
-    // const [keyPartners, otherPartners] = getPartnerArray.reduce(
-    //     (acc: [Partner[], Partner[]], partner: Partner) => {
-    //         acc[partner.isKeyPartner ? 0 : 1].push(partner);
-    //         return acc;
-    //     },
-    //     [[], []] as [Partner[], Partner[]],
-    // );
- 
-    // useEffect(() => {
-    //     const fetchNews = async () => {
-    //       try {
-    //         const response = await axios.get(`newsApi.GetByUrl(${id})`);
-    //         const news = response.data;
-    
-    //         // Отримання попередньої та наступної новини
-    //         const prevNews = await axios.get(`newsApi.GetPreviousNews(${news.id})`);
-    //         const nextNews = await axios.get(`newsApi.GetNextNews(${news.id})`);
-    
-    //         setPrevNewsId(prevNews.data.id);
-    //         setNextNewsId(nextNews.data.id);
-    //       } catch (error) {
-    //         console.error('Помилка при отриманні даних новини', error);
-    //       }
-    //     };
-    
-    //     fetchNews();
-    //   }, [id]);
-
-    // useEffect(() => {
-    //     setCurrentNewsId(newsUrl).then();
-    // }, [setCurrentNewsId, newsUrl]);
-
-    return(<div>
+    return (<div>
         <div className="newsContainer">
             <div className="wrapper">
-                {/* <Title /> */}
                 <BreadCrumb separator={<div className="separator" />} news={news} />
                 <div className='NewsHeader'>
-                <h1 className=''>{news?.title}</h1>
+                    <h1 className=''>{news?.title}</h1>
                 </div>
-                <div className="newsWithImageWrapper">
-                    <div className="newsTextArea">
-                        {paragraphs?.slice(0, 3).map((paragraph, index) =>
-                        (
-                            <p key={index}>
-                                {paragraph}
-                                <br />
-                            </p>
-                        ))}
-                        
-                    </div>
-                    { 
-                    /*<PartnersBlock /> */}
-                    <img className="newsImage"
+                <div  className={`newsWithImageWrapper ${width > wrapperWidth * 0.5 ? 'Full' : ''}`}>
+                <img className= {`newsImage ${width > wrapperWidth * 0.5 ? 'Full' : ''}`}
                         key={news?.id}
                         src={base64ToUrl(getImage(news?.imageId!)?.base64, getImage(news?.imageId!)?.mimeType)}
                         alt={news?.title}
                     />
-                </div>
-                
-                <div className="newsTextArea">
-                    {paragraphs?.slice(3).map((paragraph, index) =>
-                    (
-                        <p key={index}>
-                            {paragraph}
-                            <br />
-                        </p>
-                    ))}
+                    <div className="newsTextArea">
+                        {parsedText}
+                    </div>
                 </div>
                 <div className="newsLinks">
-                <Link className='Link' to="/news/ghjklccc">Попередня новина</Link>
-                <Link className='Link' to="/news/streetcode-was-updated">Наступна новина</Link>
-                {/* <Link className='Link' to={`/news/${prevNews?.url}`}>Попередня новина</Link>
-                <Link className='Link' to={`/news/${nextNews?.url}`}>Наступна новина</Link> */}
-                {/* <Link className='Link' to={`/news/${nextNews?.url}`}>Наступна новина</Link> */}
-               
+                    <Link className={`Link ${typeof newsArr[newsIndex - 1]?.url === 'undefined' ? 'toHide' : ''}`} 
+                    to={`/news/${newsArr[newsIndex - 1]?.url}`}>
+                        Попередня новина
+                    </Link>
+                    <Link className={`Link ${typeof newsArr[newsIndex + 1]?.url === 'undefined' ? 'toHide' : ''}`} 
+                    to={`/news/${newsArr[newsIndex + 1]?.url}`}>
+                        Наступна новина
+                    </Link>
                 </div>
-                <div className="randomNewsBlock">
+                <div className={`randomNewsBlock ${news?.url === getNewsElement(newsArr, newsIndex)?.url ? 'toHide' : ''}`}>
                     <div className="randomNewsLink">
                         <div className="additionalNewsText">
                             Також читайте:
                         </div>
                         <div className="randomNewsTitleAndButtn">
-                            {news?.title}   
+                            {getNewsElement(newsArr, newsIndex)?.title}
                             <div className="newsButtonContainer">
-                                <Link to="/news/ghjklccc">
+                                <Link className={`Link ${news?.url === getNewsElement(newsArr, newsIndex)?.url ? 'toHide' : ''}`} to={`/news/${getNewsElement(newsArr, newsIndex)?.url}`} >
                                     <button >Перейти</button>
                                 </Link>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
-                {/* <div className="newsTextArea">{news?.text}</div> */}
-                {/* <div className="subTitle titleBottom">
-                
-                
-                </div> */}
-                {/* <div className="buttonsContainer">
-                    <div className="buttonsBlock">
-                        <PartnersBtn />
-                        <DonateBtnRectangle />
-                    </div>
-                </div>
-                <PartnersBtnCircle /> */}
-
             </div>
         </div>
         <Footer />
     </div>
-);
+    );
 }
 
 export default NewsPage;
