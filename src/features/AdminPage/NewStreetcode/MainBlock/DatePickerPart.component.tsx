@@ -10,16 +10,16 @@ import { useParams } from 'react-router-dom';
 import { dateToString, selectDateOptions } from '@/models/timeline/chronology.model';
 import StreetcodesApi from '../../../../app/api/streetcode/streetcodes.api';
 
-const DatePickerPart:React.FC<{
-    setFirstDate:(newDate: Dayjs | null) => void,
-    setSecondDate:(newDate: Dayjs | null) => void,
-    form:FormInstance<any>
+const DatePickerPart: React.FC<{
+    setFirstDate: (newDate: Dayjs | null) => void,
+    setSecondDate: (newDate: Dayjs | null) => void,
+    form: FormInstance<any>
 }> = ({ setFirstDate, setSecondDate, form }) => {
     const [dateFirstTimePickerType, setFirstDateTimePickerType] = useState<
-    'date' | 'month' | 'year' | 'season-year'>('date');
+        'date' | 'month' | 'year' | 'season-year'>('date');
     const [dateSecondTimePickerType, setSecondDateTimePickerType] = useState<
-    'date' | 'month' | 'year' | 'season-year'>('date');
-    const capitalize = (text:string):string => {
+        'date' | 'month' | 'year' | 'season-year'>('date');
+    const capitalize = (text: string): string => {
         if (!text) {
             return text;
         }
@@ -40,7 +40,7 @@ const DatePickerPart:React.FC<{
                     setDefaultFirtsDate(x.eventStartOrPersonBirthDate.toString() ?? "");
                     setDefaultSecondDate(x.eventEndOrPersonDeathDate.toString() ?? "");
                     setDefaultDate(x.dateString ?? "");
-                } catch (error) {} finally {
+                } catch (error) { } finally {
                     setIsLoading(false);
                 }
             };
@@ -77,81 +77,90 @@ const DatePickerPart:React.FC<{
         }
     };
 
-    return ( 
-        <FormItem label="Роки">         
+    return (
+        <FormItem label="Роки">
             {
                 isLoading ? (
-                <div>Loading...</div>
-            ) : 
-            (
-            <div className='date-picker-container'>
-                <div>
-                    <FormItem name="dateString">
-                        <Input defaultValue={defaultDate} disabled />
-                    </FormItem>
-                </div>
-                
-                <div className="date-picker-group">
-                    <div className="date-picker-group-item">
-                        <Select
-                            className="date-picker-type-input"
-                            options={selectDateOptions}
-                            defaultValue={dateFirstTimePickerType}
-                            onChange={(val) => {
-                                setFirstDateTimePickerType(val);
-                                onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
-                            }}
-                        /> 
-                        <FormItem
-                            rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
-                            name="streetcodeFirstDate"
-                            className='my-picker'
-                        >
-                            <DatePicker
-                                defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
-                                onChange={onChangeFirstDate}
-                                picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
-                                placeholder={(dateFirstTimePickerType === 'date'
-                                ? 'yyyy-mm-dd'
-                                : dateFirstTimePickerType === 'year'
-                                    ? 'yyyy'
-                                    : 'yyyy-mm')}
-                            />
-                        </FormItem>
-                    </div>
+                    <div>Loading...</div>
+                ) :
+                    (
+                        <div className='date-picker-container'>
+                            <div>
+                                <FormItem name="dateString">
+                                    <Input defaultValue={defaultDate} disabled />
+                                </FormItem>
+                            </div>
 
-                    <div className="date-picker-group-item">
-                        <Select
-                            className="date-picker-type-input"
-                            options={selectDateOptions}
-                            defaultValue={dateSecondTimePickerType}
-                            onChange={(val) => {
-                                setSecondDateTimePickerType(val);
-                                onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
-                                setDefaultSecondDate(val);
-                            }}
-                        />
+                            <div className="date-picker-group">
+                                <div className="date-picker-group-item">
+                                    <Select
+                                        className="date-picker-type-input"
+                                        options={selectDateOptions}
+                                        defaultValue={dateFirstTimePickerType}
+                                        onChange={(val) => {
+                                            setFirstDateTimePickerType(val);
+                                            onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
+                                        }}
+                                    />
+                                    <FormItem
+                                        rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
+                                        name="streetcodeFirstDate"
+                                        className='my-picker'
+                                    >
+                                        <DatePicker
+                                            defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
+                                            onChange={onChangeFirstDate}
+                                            picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
+                                            format={(dateFirstTimePickerType === 'date'
+                                                ? 'D MMMM YYYY'
+                                                : dateFirstTimePickerType === 'year'
+                                                    ? 'YYYY'
+                                                    : 'YYYY-MMMM')}
+                                            placeholder={(dateSecondTimePickerType === 'date'
+                                                ? 'D MMMM YYYY'
+                                                : dateSecondTimePickerType === 'year'
+                                                    ? 'YYYY'
+                                                    : 'YYYY-MMMM')}
+                                        />
+                                    </FormItem>
+                                </div>
 
-                        <FormItem 
-                            rules={[{ required: parseId ? false : true, message: 'Введіть дату' }]}
-                            name="streetcodeSecondDate"
-                            className='my-picker'>
-                            <DatePicker
-                                defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
-                                value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
-                                onChange={onChangeSecondDate}
-                                picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
-                                placeholder={(dateSecondTimePickerType === 'date'
-                                ? 'yyyy-mm-dd'
-                                : dateSecondTimePickerType === 'year'
-                                    ? 'yyyy'
-                                    : 'yyyy-mm')}
-                            />
-                        </FormItem>
-                    </div>
-                </div>   
-            </div>
-           )}
+                                <div className="date-picker-group-item">
+                                    <Select
+                                        className="date-picker-type-input"
+                                        options={selectDateOptions}
+                                        defaultValue={dateSecondTimePickerType}
+                                        onChange={(val) => {
+                                            setSecondDateTimePickerType(val);
+                                            onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
+                                            setDefaultSecondDate(val);
+                                        }}
+                                    />
+
+                                    <FormItem
+                                        name="streetcodeSecondDate"
+                                        className='my-picker'>
+                                        <DatePicker
+                                            defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
+                                            value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
+                                            onChange={onChangeSecondDate}
+                                            picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
+                                            format={(dateSecondTimePickerType === 'date'
+                                                ? 'D MMMM YYYY'
+                                                : dateSecondTimePickerType === 'year'
+                                                    ? 'YYYY'
+                                                    : 'YYYY-MMMM')}
+                                            placeholder={(dateSecondTimePickerType === 'date'
+                                                ? 'D MMMM YYYY'
+                                                : dateSecondTimePickerType === 'year'
+                                                    ? 'YYYY'
+                                                    : 'YYYY-MMMM')}
+                                        />
+                                    </FormItem>
+                                </div>
+                            </div>
+                        </div>
+                    )}
         </FormItem>
     );
 };
