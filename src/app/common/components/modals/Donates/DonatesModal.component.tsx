@@ -140,10 +140,14 @@ const DonatesModal = () => {
                 <div className="donatesInputContainer">
                     <Checkbox className={"checkbox-borderline"} checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
                 </div>
-                <Button onClick={handlePost}
-                    disabled={!isCheckboxChecked || donateAmount == 0}
+                <button
+                    onClick={handlePost}
+                    type="button"
+                    disabled={!isCheckboxChecked || donateAmount === 0}
                     className="donatesDonateBtn"
-                >Підтримати</Button>
+                >
+                    Підтримати
+                </button>
             </div>
         </Modal>
     );

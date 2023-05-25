@@ -57,6 +57,10 @@
     @include mut.with-font($font-weight: 300);
   }
 
+  > .ant-btn {
+    border: none;
+  }
+
   .enterSum{
     @include mut.rem-margined($top: 32px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 15px, $font-weight: 500);
@@ -206,6 +210,7 @@
 
     &:focus{
       outline: none;
+      border: none;
     }
   }
 }

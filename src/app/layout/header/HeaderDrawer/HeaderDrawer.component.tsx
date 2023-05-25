@@ -21,7 +21,7 @@ const scaleDesktop = 1;
 const scaleMobile = 5;
 const menuPositionsMobile = [
     1 * scaleMobile,
-    2 * scaleMobile - 1,
+    2 * scaleMobile,
     3 * scaleMobile - 1,
     4 * scaleMobile - 1,
     5 * scaleMobile - 1,
