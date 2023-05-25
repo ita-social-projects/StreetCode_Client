@@ -20,6 +20,7 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 
 
 
@@ -86,6 +87,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
         <Route index path="/:id" element={<StreetcodeContent />} />
+        <Route index path="news/:id" element={<NewsPage />} />
     </Route>,
 ));
 
