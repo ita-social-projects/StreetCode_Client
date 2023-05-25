@@ -11,9 +11,9 @@ const ToponymsApi = {
 
     getById: (id: number) => Agent.get<Toponym>(`${API_ROUTES.TOPONYMS.GET}/${id}`),
 
-    getByStreetcodeId: (streetcodeId: number) => {  return Agent.get<Toponym[]>(
+    getByStreetcodeId: (streetcodeId: number) => Agent.get<Toponym[]>(
         `${API_ROUTES.TOPONYMS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
-    )},
+    ),
 
     create: (toponym: Toponym) => Agent.post<Toponym>(`${API_ROUTES.TOPONYMS.CREATE}`, toponym),
 

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx, { useAdditionalContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 
 import ImagesApi from '@/app/api/media/images.api';
 import PartnersApi from '@/app/api/partners/partners.api';
@@ -14,7 +14,7 @@ import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-    const { imageLoaderStore } = useAdditionalContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const [partners, setPartners] = useState<Partner[]>([]);
 
     useAsync(
@@ -26,16 +26,14 @@ const PartnersComponent = () => {
                         Promise.all(res.map((p, index) => ImagesApi.getById(p.logoId)
                             .then((img) => {
                                 res[index].logo = img;
-                            }))).then(() => setPartners(res));
+                            }))).then(() => {
+                            setPartners(res); streecodePageLoaderContext.addBlockFetched();
+                        });
                     });
             }
         },
         [getStreetCodeId],
     );
-
-    useEffect(() => {
-        imageLoaderStore.totalImagesToLoad += partners.length;
-    }, [partners.length]);
 
     const useResponsiveSettings = (breakpoint: number, slidesToShow: number) => ({
         breakpoint,
@@ -73,7 +71,6 @@ const PartnersComponent = () => {
                             <PartnerItem
                                 key={p.id}
                                 partner={p}
-                                handleImageLoad={() => {}}
                             />
                         ))}
                     </SlickSlider>

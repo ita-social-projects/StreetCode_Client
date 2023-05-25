@@ -8,6 +8,8 @@ export default class StreetcodeStore {
 
     public currentStreetcode = this.errorStreetCodeId;
 
+    public streetcodeUrl = '';
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -16,7 +18,7 @@ export default class StreetcodeStore {
         this.currentStreetcode = streetcode.id;
     }
 
-    public setCurrentStreetcodeId = async (url: string) => {
+    public setCurrentStreetcodeId = async (url: string): Promise<Streetcode | undefined> => {
         try {
             const streetcode = await StreetcodesApi.getByUrl(url);
             if (streetcode !== null) {

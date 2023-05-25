@@ -7,7 +7,7 @@ import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
-import useMobx, { useAdditionalContext, useModalContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 
@@ -47,13 +47,12 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
-    const { imageLoaderStore } = useAdditionalContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-    const { handleImageLoad } = imageLoaderStore;
 
     useAsync(() => {
         if (id && id > 0) {
-            fetchAudioByStreetcodeId(id);
+            fetchAudioByStreetcodeId(id).then(() => streecodePageLoaderContext.addBlockFetched());
         }
     }, [id]);
 
@@ -65,10 +64,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                 .catch((e) => {});
         }
     }, [streetcode]);
-
-    useEffect(() => {
-        imageLoaderStore.totalImagesToLoad += images.length;
-    }, [images]);
 
     return (
         <div className="card">
@@ -86,7 +81,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 src={base64ToUrl(im.base64, im.mimeType)}
                                 className="streetcodeImg"
                                 alt={im.alt}
-                                onLoad={handleImageLoad}
                             />
                         ))}
                     </BlockSlider>

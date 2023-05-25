@@ -1,36 +1,33 @@
 import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import {  useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
-import useMobx, { useAdditionalContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
 import ImagesApi from '@/app/api/media/images.api';
-import FactsApi from '@/app/api/streetcode/text-content/facts.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Fact } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { factsStore } = useMobx();
-    const { imageLoaderStore } = useAdditionalContext();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const [sliderArray, setSliderArray] = useState<Fact[]>([]);
     const facts = useRef<Fact[]>([]);
-
-    console.log("facts render");
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId && getStreetCodeId > 0) {
-                console.log(facts);
                 factsStore.fetchFactsByStreetcodeId(getStreetCodeId).then(() =>{
                     const res = factsStore.getFactArray;
                     Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
                         res[index].image = img;
                     }))).then(() => {
                         facts.current = res;
+                        streecodePageLoaderContext.addBlockFetched();
                         setSliderArray(res.length === 3
                             || res.length === 2
                             ? res.concat(res)
@@ -106,7 +103,6 @@ const InterestingFactsComponent = () => {
                                                 key={fact.id}
                                                 fact={fact}
                                                 numberOfSlides={sliderArray.length}
-                                                handleImageLoad={imageLoaderStore.handleImageLoad}
                                             />
                                         ))}
                                     </BlockSlider>

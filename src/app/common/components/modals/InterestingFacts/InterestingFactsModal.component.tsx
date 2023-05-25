@@ -19,11 +19,6 @@ const InterestingFactsModal = () => {
     const factId = facts.fromCardId!;
     const fact = factMap.get(factId);
 
-/*     useEffect(() => {
-        if (imgId > 0)ImagesApi.getById(imgId).then((img) => setImage(img));
-    }, [imgId]);*/
-
-    console.log(fact?.image);
     return (
         <Modal
             className="interestingFactsModal"

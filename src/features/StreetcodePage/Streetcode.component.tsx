@@ -1,15 +1,11 @@
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, {
-    lazy, Suspense, useEffect, useRef, useState,
-} from 'react';
-import { useNavigate } from 'react-router';
-import { useNavigate, useSearchParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import Footer from '@layout/footer/Footer.component';
-import useMobx, { useAdditionalContext, useStreetcodeDataContext } from '@stores/root-store';
+import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -21,6 +17,7 @@ import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
@@ -32,17 +29,12 @@ import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const { imageLoaderStore } = useAdditionalContext();
-    // const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
-
-    const slideCloneCountAdded = useRef<number>(0);
-    const streetcodeUrl = useRouteUrl();
+    const pageLoadercontext = useStreecodePageLoaderContext();
+    const streetcodeUrl = useRef<string>(useRouteUrl());
 
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const [loading, setLoading] = useState(true);
-
-    const [textBlockState, setTextBlockState] = useState(false);
+    const [streetcode, setStreecode] = useState<Streetcode>();
 
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -76,32 +68,12 @@ const StreetcodeContent = () => {
     });
 
     useEffect(() => {
-        setCurrentStreetcodeId(streetcodeUrl).then();
-    }, [setCurrentStreetcodeId, streetcodeUrl]);
-
-    console.log('streetcde');
-    useEffect(() => {
-        // for cloned images in sliders
-        if (slideCloneCountAdded.current === 0) {
-            const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
-            const slideCloneCount = slideClonedImgs.length;
-            imageLoaderStore.totalImagesToLoad += slideCloneCount;
-            slideCloneCountAdded.current = slideCloneCount;
-        }
-
-        if (imageLoaderStore.imagesLoadedPercentage >= 50 && textBlockState) {
-            setLoading(false);
-            const anchorId = window.location.hash.substring(1);
-            const blockElement = document.getElementById(anchorId);
-            if (blockElement) {
-                blockElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    }, [textBlockState, imageLoaderStore.loadedImagesCount]);
+        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => setStreecode(val));
+    }, []);
 
     return (
         <div className="streetcodeContainer">
-            {loading && (
+            {!pageLoadercontext.isPageLoaded && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -112,10 +84,11 @@ const StreetcodeContent = () => {
             )}
             <ProgressBar>
                 <MainBlock
+                    streetcode={streetcode}
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
                 />
-                <TextBlockComponent setTextBlockState={setTextBlockState} />
+                <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlock />

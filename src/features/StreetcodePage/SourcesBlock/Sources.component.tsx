@@ -3,7 +3,6 @@ import './Sources.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 

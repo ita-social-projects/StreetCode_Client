@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { createContext, useContext } from 'react';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
@@ -20,17 +19,17 @@ import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
-import ImageLoaderStore from './image-loader-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StatisticRecordStore from './statistic-record-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
+import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import TeamStore from './team-store';
+import ToponymStore from './toponym-store';
 import UserLoginStore from './user-login-store';
 
 interface Store {
-    modalStore: ModalStore,
     factsStore: FactsStore,
     subtitlesStore: SubtitlesStore,
     tagsStore: TagsStore,
@@ -43,7 +42,6 @@ interface Store {
     sourcesStore: SourcesStore,
     sourcesAdminStore: SourcesAdminStore
     streetcodeArtStore: StreetcodeArtStore,
-    // streetcodeStore: StreetcodeStore,
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
@@ -56,11 +54,7 @@ interface Store {
     userLoginStore: UserLoginStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
-    imageLoaderStore: ImageLoaderStore,
 
-}
-export interface AdditionalDataStore {
-    imageLoaderStore: ImageLoaderStore,
 }
 
 export interface StreetcodeDataStore {
@@ -71,7 +65,6 @@ export interface ModalDataStore {
 }
 
 export const store: Store = {
-    modalStore: new ModalStore(),
     factsStore: new FactsStore(),
     subtitlesStore: new SubtitlesStore(),
     tagsStore: new TagsStore(),
@@ -86,7 +79,6 @@ export const store: Store = {
     relatedFiguresStore: new RelatedFiguresStore(),
     checkboxStore: new CheckBoxStore(),
     relatedTermStore: new RelatedTermsStore(),
-    // streetcodeStore: new StreetcodeStore(),
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
@@ -94,13 +86,9 @@ export const store: Store = {
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
     userLoginStore: new UserLoginStore(),
-    imageLoaderStore: new ImageLoaderStore(),
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
-};
-export const additionalDataStore:AdditionalDataStore = {
-    imageLoaderStore: new ImageLoaderStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),
@@ -110,13 +98,18 @@ export const modalDataStore:ModalDataStore = {
     modalStore: new ModalStore(),
 };
 
-const additionalDataContext = createContext(additionalDataStore);
+export const toponymDataStore:ToponymStore = new ToponymStore();
+export const streecodePageLoaderStore = new StreetcodePageLoaderStore();
 
-export const useAdditionalContext = () => useContext(additionalDataContext);
+const streecodePageLoaderContext = createContext(streecodePageLoaderStore);
+const streetcodeContext = createContext(streetcodeDataStore);
+const modalContext = createContext(modalDataStore);
+const toponymContext = createContext(toponymDataStore);
 
-export const useStreetcodeDataContext = () => useContext(createContext(streetcodeDataStore));
-
-export const useModalContext = () => useContext(createContext(modalDataStore));
+export const useStreetcodeDataContext = () => useContext(streetcodeContext);
+export const useModalContext = () => useContext(modalContext);
+export const useToponymContext = () => useContext(toponymContext);
+export const useStreecodePageLoaderContext = () => useContext(streecodePageLoaderContext);
 
 const StoreContext = createContext(store);
 

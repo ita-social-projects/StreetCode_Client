@@ -9,7 +9,7 @@ import Table from 'antd/es/table/Table';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useMobx from '@/app/stores/root-store';
+import useMobx, { useModalContext } from '@/app/stores/root-store';
 import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
 
 import { formatDate } from './FormatDateAlgorithm';
@@ -42,7 +42,7 @@ const StreetcodesTable = () => {
         });
     };
 
-    const { modalStore } = useMobx();
+    const { modalStore } = useModalContext();
 
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 

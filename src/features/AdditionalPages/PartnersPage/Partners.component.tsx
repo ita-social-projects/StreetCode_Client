@@ -1,5 +1,6 @@
 import './Partners.styles.scss';
 
+import { useEffect } from 'react';
 import Footer from '@layout/footer/Footer.component';
 
 import DonateBtnRectangle from './ModalButtons/DonateBtn/DonateBtnRectangle.component';
@@ -9,6 +10,7 @@ import PartnersBlock from './PartnersBlock/PartnersBlock.component';
 import Title from './Title/Title.component';
 
 const PartnersPage = () => (
+
     <>
         <div className="partnersContainer">
             <div className="wrapper">

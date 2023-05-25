@@ -23,9 +23,6 @@ const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
         setInputInfo({ ...inputInfo, title: e.target.value });
         
     };
-    useEffect(() => {
-        
-    });
     return (
         <FormItem className="textForm">
              <Form.Item

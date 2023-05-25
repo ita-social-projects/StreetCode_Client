@@ -13,7 +13,6 @@ interface Props {
 const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => {
     const { imageHref, description, title, sequenceNumber } = artGalleryItem;
     const { modalStore: { setModal } } = useModalContext();
-    const { imageLoaderStore } = useAdditionalContext();
     const windowsize = useWindowSize();
 
     function setStyleByOffset(offset: number): string {
@@ -37,7 +36,6 @@ const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => 
                     src={imageHref}
                     onClick={isAdminPage ? null : () => setModal('artGallery', sequenceNumber)}
                     alt=""
-                    onLoad={imageLoaderStore.handleImageLoad}
                 />
                 {windowsize.width > 1024 && (
                     <div

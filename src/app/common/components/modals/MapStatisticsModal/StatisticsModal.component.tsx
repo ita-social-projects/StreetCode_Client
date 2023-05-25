@@ -7,8 +7,9 @@ import { Modal } from 'antd';
 
 import ToponymsApi from '@/app/api/map/toponyms.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import useMobx, { useModalContext, useStreetcodeDataContext } from '@/app/stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext, useToponymContext } from '@/app/stores/root-store';
 import Toponym from '@/models/toponyms/toponym.model';
+import { useEffect } from 'react';
 
 const countByStreetType = (toponyms: Toponym[]): Map<string, number> => toponyms?.reduce((acc, toponym) => {
     const { streetType } = toponym;
@@ -20,15 +21,16 @@ const countByStreetType = (toponyms: Toponym[]): Map<string, number> => toponyms
 
 const StatisticsModal = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
-    const toponyms = useAsync(() => {
+    const toponymContext = useToponymContext();
+    useEffect(() => {
         const streetcodeId = getStreetCodeId;
-        if (streetcodeId > 0) {
-            ToponymsApi.getByStreetcodeId(streetcodeId);
+        if (streetcodeId > 0 && !toponymContext.loaded) {
+            toponymContext.fetchToponymByStreetcodeId(streetcodeId);
         }
-    }, [getStreetCodeId]).value as Toponym[];
+    }, [getStreetCodeId]);
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { statistics } } = modalStore;
-    const countByStreetTypeMap = countByStreetType(toponyms);
+    const countByStreetTypeMap = countByStreetType(toponymContext.toponyms);
     const handleModalClose = () => {
         setModal('statistics');
     };

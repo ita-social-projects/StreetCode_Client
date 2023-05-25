@@ -19,7 +19,6 @@ const PartnerContent = ({ partner }: Props) => {
     const {
         id, title, targetUrl, partnerSourceLinks, description,
     } = partner;
-    const { imagesStore: { getImage } } = useMobx();
 
     return (
         <div className="partnerContent">

@@ -11,7 +11,7 @@ interface Props {
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
 }
 
-const RelatedFiguresBlock = ({ figures,setFigures }: Props) => {
+const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
     const [relations, setRelations] = useState<RelatedFigure[]>([]);
     const [options, setOptions] = useState<RelatedFigure[]>([]);
     const handleAdd = (relationToAdd: RelatedFigure) => {
