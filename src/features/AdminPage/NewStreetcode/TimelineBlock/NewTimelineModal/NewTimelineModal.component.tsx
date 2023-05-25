@@ -136,7 +136,7 @@ const NewTimelineModal: React.FC<{
                                             ? 'YYYY'
                                             : 'YYYY, MMMM')}
                                     placeholder={(dateTimePickerType === 'date'
-                                        ? 'yyyy, d mmmm'
+                                        ? 'yyyy, dd mm'
                                         : dateTimePickerType === 'year'
                                             ? 'yyyy'
                                             : 'yyyy, mm')}

@@ -66,14 +66,35 @@ const DatePickerPart: React.FC<{
 
     const onChangeSecondDate = (date: Dayjs | null) => {
         setSecondDate(date);
+        const firstDate = form.getFieldValue('streetcodeFirstDate');
+        if (firstDate && date && date.isBefore(firstDate)) {
+            form.setFields([
+                {
+                    name: 'streetcodeSecondDate',
+                    errors: ['Ця дата має бути більшою ніж перша'],
+                },
+            ]);
+        } else {
+            form.setFields([
+                {
+                    name: 'streetcodeSecondDate',
+                    errors: [],
+                },
+            ]);
+        }
+
         const dateString = form.getFieldValue('dateString') ?? '';
         const index = dateString.indexOf(' — ');
         if (index < 0) {
-            form.setFieldValue('dateString', dateString
-                .concat(`${date ? ' — ' : ''} ${dateToString(dateSecondTimePickerType, date)}`));
+            form.setFieldValue(
+                'dateString',
+                dateString.concat(`${date ? ' — ' : ''} ${dateToString(dateSecondTimePickerType, date)}`)
+            );
         } else {
-            form.setFieldValue('dateString', dateString.substring(0, index)
-                .concat(`${date ? ' — ' : ''} ${dateToString(dateSecondTimePickerType, date)}`));
+            form.setFieldValue(
+                'dateString',
+                dateString.substring(0, index).concat(`${date ? ' — ' : ''} ${dateToString(dateSecondTimePickerType, date)}`)
+            );
         }
     };
 
@@ -116,11 +137,11 @@ const DatePickerPart: React.FC<{
                                                 : dateFirstTimePickerType === 'year'
                                                     ? 'YYYY'
                                                     : 'YYYY-MMMM')}
-                                            placeholder={(dateSecondTimePickerType === 'date'
-                                                ? 'D MMMM YYYY'
-                                                : dateSecondTimePickerType === 'year'
-                                                    ? 'YYYY'
-                                                    : 'YYYY-MMMM')}
+                                            placeholder={(dateFirstTimePickerType === 'date'
+                                                ? 'dd mm yyyy'
+                                                : dateFirstTimePickerType === 'year'
+                                                    ? 'yyyy'
+                                                    : 'yyyy-mm')}
                                         />
                                     </FormItem>
                                 </div>
@@ -151,10 +172,10 @@ const DatePickerPart: React.FC<{
                                                     ? 'YYYY'
                                                     : 'YYYY-MMMM')}
                                             placeholder={(dateSecondTimePickerType === 'date'
-                                                ? 'D MMMM YYYY'
+                                                ? 'dd mm yyyy'
                                                 : dateSecondTimePickerType === 'year'
-                                                    ? 'YYYY'
-                                                    : 'YYYY-MMMM')}
+                                                    ? 'yyyy'
+                                                    : 'yyyy-mm')}
                                         />
                                     </FormItem>
                                 </div>
