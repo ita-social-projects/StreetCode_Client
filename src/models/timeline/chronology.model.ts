@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 export interface HistoricalContext {
     id: number;
     title: string;
+    isDeleted?: boolean,
 }
 export enum DateViewPattern {
     DateMonthYear,
@@ -18,6 +19,11 @@ export default interface TimelineItem {
     title: string;
     description?: string | undefined;
     historicalContexts: HistoricalContext[];
+}
+
+export interface TimelineItemUpdate extends TimelineItem {
+    isDeleted?: boolean,
+    isPersisted?: boolean,
 }
 
 export const getSeason = (date: Dayjs | null): string => {

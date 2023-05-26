@@ -1,9 +1,11 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import timelineApi from '@api/timeline/timeline.api';
-import TimelineItem from '@models/timeline/chronology.model';
+import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
 
 export default class TimelineStore {
     public timelineItemMap = new Map<number, TimelineItem>();
+
+    public timelineItemMapToUpdate = new Map<number, TimelineItemUpdate>();
 
     public activeYear: number | null = null;
 
@@ -13,14 +15,38 @@ export default class TimelineStore {
 
     public addTimeline = (timelineItem: TimelineItem) => {
         this.setItem(timelineItem);
+
+        const timelineitemToUpdate: TimelineItemUpdate = {
+            ...timelineItem,
+            id: 0,
+            isDeleted: false,
+        };
+
+        this.timelineItemMapToUpdate.set(timelineItem.id, timelineitemToUpdate);
     };
 
     public deleteTimelineFromMap = (timelineItemId: number) => {
         this.timelineItemMap.delete(timelineItemId);
+        const timelineItem = this.timelineItemMapToUpdate.get(timelineItemId);
+        if (timelineItem && timelineItem.isPersisted) {
+            this.timelineItemMapToUpdate.set(timelineItemId, {
+                ...timelineItem,
+                isDeleted: true,
+            });
+        } else {
+            this.timelineItemMapToUpdate.delete(timelineItemId);
+        }
     };
 
     private setInternalMap = (timelineItems: TimelineItem[]) => {
         timelineItems.forEach(this.setItem);
+
+        this.timelineItemMap.forEach((item) => {
+            this.timelineItemMapToUpdate.set(item.id, {
+                ...item,
+                isPersisted: true,
+            });
+        });
     };
 
     private setItem = (timelineItem: TimelineItem) => {
@@ -36,6 +62,11 @@ export default class TimelineStore {
 
     get getTimelineItemArray() {
         return Array.from(this.timelineItemMap.values())
+            .sort((prev, cur) => Number(prev.date) - Number(cur.date));
+    }
+
+    get getTimelineItemArrayToUpdate() {
+        return Array.from(this.timelineItemMapToUpdate.values())
             .sort((prev, cur) => Number(prev.date) - Number(cur.date));
     }
 

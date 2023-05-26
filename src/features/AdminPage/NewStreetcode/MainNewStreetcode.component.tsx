@@ -292,7 +292,7 @@ const NewStreetcode = () => {
                 dateString: form.getFieldValue('dateString') ?? dateString,
                 videos,
                 relatedFigures: relatedFiguresUpdate,
-                timelineItems: timelineItemStore.getTimelineItemArray,
+                timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
             };
 
             console.log(streetcodeUpdate);
