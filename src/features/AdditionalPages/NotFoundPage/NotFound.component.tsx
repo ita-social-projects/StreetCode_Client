@@ -20,9 +20,9 @@ const NotFound = () => {
                 <br />
             Історія ще не створила цієї сторінки.
             </div>
-            <div className="redirect">
-                <Link onClick={redirect} className="redirectToMain">Гайда на головну!</Link>
-            </div>
+            <button type="button" className="redirectToMain" onClick={redirect}>
+                Гайда на головну!
+            </button>
         </div>
     );
 };

@@ -6,7 +6,7 @@ import sourcesApi from '@api/sources/sources.api';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import CancelBtnMobile from '@assets/images/utils/Cancel_btn_mobile.svg';
 import useWindowSize from '@hooks/stateful/useWindowSize.hook';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 import htmpReactParser from 'html-react-parser';
 
 import { Modal } from 'antd';
@@ -15,7 +15,9 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { StreetcodeCategoryContent } from '@/models/sources/sources.model';
 
 const SourcesModal = () => {
-    const { sourcesStore: { srcCategoriesMap }, modalStore, streetcodeStore } = useMobx();
+    const { sourcesStore: { srcCategoriesMap } } = useMobx();
+    const { modalStore } = useModalContext();
+    const { streetcodeStore } = useStreetcodeDataContext();
     const { setModal, modalsState: { sources } } = modalStore;
     const windowsize = useWindowSize();
     const [content, setContent] = useState<StreetcodeCategoryContent>();

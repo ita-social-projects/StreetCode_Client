@@ -7,7 +7,7 @@ import { Button, Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import Modal from 'antd/es/modal/Modal';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 interface Props {
     handleAdd: () => void;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
-    const { modalStore: { setModal, modalsState: { addTerm } } } = useMobx();
+    const { modalStore: { setModal, modalsState: { addTerm } } } = useModalContext();
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTerm({ ...term, title: e.target.value });
     };

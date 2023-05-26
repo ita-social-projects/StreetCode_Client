@@ -4,10 +4,12 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
+import ImagesApi from '@/app/api/media/images.api';
+import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 interface Props {
@@ -15,11 +17,12 @@ interface Props {
 }
 
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
-    const { modalStore: { setModal } } = useMobx();
-    const { relatedFiguresStore, tagsStore, streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useMobx();
-    const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
-    const { fetchTagByStreetcodeId } = tagsStore;
+    const { modalStore: { setModal } } = useModalContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const { relatedFiguresStore } = useMobx();
+    const { getRelatedFiguresArray } = relatedFiguresStore;
 
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const windowsize = useWindowSize();
 
     const handleClick = (e: React.MouseEvent) => {
@@ -32,9 +35,15 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
                 Promise.all([
-                    fetchRelatedFiguresByStreetcodeId(getStreetCodeId),
-                    fetchTagByStreetcodeId(getStreetCodeId),
-                ]);
+                    RelatedFigureApi.getByStreetcodeId(getStreetCodeId)
+                        .then((res) => {
+                            Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
+                                res[index].image = img;
+                            }))).then(() => {
+                                relatedFiguresStore.setInternalRelatedFiguresMap = res;
+                                streecodePageLoaderContext.addBlockFetched();
+                            });
+                        })]);
             }
         },
         [getStreetCodeId],

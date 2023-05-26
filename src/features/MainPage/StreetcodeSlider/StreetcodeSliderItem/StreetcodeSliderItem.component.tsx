@@ -17,10 +17,9 @@ interface Props {
 
 
 const StreetcodeSliderItem = ({ streetcode }: Props) => {
-    const { imagesStore: { getImage, fetchImage } } = useMobx();
+    const { imagesStore } = useMobx();
     const id = streetcode?.id;
-    const { imageLoaderStore, modalStore: { setModal } } = useMobx();
-    const { handleImageLoad } = imageLoaderStore;
+    const { handleImageLoad } = imagesStore;
     const [image, setImage] = useState<Image>();
 
     const truncateText = (text: string, maxLength: number) => {

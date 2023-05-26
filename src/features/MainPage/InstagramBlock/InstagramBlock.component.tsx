@@ -10,7 +10,7 @@ import Post from '@/models/instagram/instagram.model';
 const InstagramBlock = () => {
     const [posts, setPosts] = useState<Post[]>([]);
 
-    useEffect(() => {
+      useEffect(() => {
         const fetchPosts = async () => {
             const response = await InstagramApi.getAll();
             setPosts(response);     

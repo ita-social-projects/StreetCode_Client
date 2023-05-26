@@ -14,7 +14,7 @@
       
     .notFoundNumber{
         @include mut.with-font($font-weight: 500, $font-size: 220px);
-        color: #891F16;
+        color: c.$dark-red-color;
         line-height: 170px;
     }
 
@@ -22,7 +22,7 @@
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
         line-height: 48px;
         text-align: center;
-        color: #1D1F23;
+        color: c.$lighter-black-color;
 
         margin: f.pxToRem(110px) 0 f.pxToRem(40px) 0;  
     }
@@ -30,18 +30,23 @@
     .redirectToMain{
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         display: block;
-        width: 100%; 
+        width: f.pxToRem(219px);
+        height: f.pxToRem(73px);
         
         line-height: 23px;
-        color: #FFFFFF;
+        color: c.$pure-white-color;
         white-space: nowrap;
         text-align: center;
        
-        background: #E04031;     
+        background: c.$accented-red-color;     
         @include mut.full-rounded(10px);
         
         padding: f.pxToRem(25px) f.pxToRem(26px);
         box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
+
+        &:hover{
+            background: c.$dark-red-color;
+        }
     }
 }
 

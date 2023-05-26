@@ -15,10 +15,9 @@ interface Props {
 
 
 const NewsSliderItem = ({ news }: Props) => {
-    const { imagesStore: { getImage, fetchImage } } = useMobx();
+    const { imagesStore } = useMobx();
     const id = news?.id;
-    const { imageLoaderStore, modalStore: { setModal } } = useMobx();
-    const { handleImageLoad } = imageLoaderStore;
+    const { handleImageLoad } = imagesStore;
     const [image, setImage] = useState<Image>();
 
     useEffect(() => {
