@@ -196,7 +196,7 @@ const NewStreetcode = () => {
         const text: TextCreate = {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
-            additionalText: inputInfo?.additionalText,
+            additionalText: inputInfo?.additionalText == "<p>Текст підготовлений спільно з</p>" ? "" : inputInfo?.additionalText,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
@@ -206,7 +206,6 @@ const NewStreetcode = () => {
             title: art.title,
             mimeType: art.mimeType,
         }));
-
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -252,20 +251,21 @@ const NewStreetcode = () => {
                     )),
             statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                 .map((statisticRecord: StatisticRecord) => (
-                    { ...statisticRecord,
-                      id: 0,
-                      coordinateId: 0,
-                      streetcodeCoordinate: {
-                          ...statisticRecord.streetcodeCoordinate,
-                          id: 0,
-                      } }
+                    {
+                        ...statisticRecord,
+                        id: 0,
+                        coordinateId: 0,
+                        streetcodeCoordinate: {
+                            ...statisticRecord.streetcodeCoordinate,
+                            id: 0,
+                        }
+                    }
                 )),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
             streetcode.lastName = form.getFieldValue('surname');
         }
-
         if (parseId) {
             StreetcodesApi.update(streetcode).then((response2) => {
                 alert('Cтріткод успішно оновленний');
@@ -275,7 +275,6 @@ const NewStreetcode = () => {
                 });
         } else {
             StreetcodesApi.create(streetcode)
-
                 .then((response) => {
                     setTimeout(() => window.location.reload(), 500);
                     navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
