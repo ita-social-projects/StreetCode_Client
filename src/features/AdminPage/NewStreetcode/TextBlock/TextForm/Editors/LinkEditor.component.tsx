@@ -48,9 +48,7 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
         <FormItem
             name="video"
             label="Відео"
-            rules={[{ required: !parseId, message: 'Введіть посилання!' }]}
         >
-
             <div className="youtube-block">
                 <Input
                     title="video"

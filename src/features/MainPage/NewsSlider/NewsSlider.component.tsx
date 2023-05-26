@@ -18,7 +18,7 @@ const NewsSlider = () => {
     useEffect(() => {
         const fetchNewsAll = async () => {
             try {
-                const response = await NewsApi.getAll();
+                const response = await NewsApi.getAllSortedNews();
                 setNews(response);
                 console.log(response);
             } catch (error) {

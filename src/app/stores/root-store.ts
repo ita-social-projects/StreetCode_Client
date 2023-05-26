@@ -18,7 +18,7 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-
+import ImageLoaderStore from './image-loader-store';
 import NewsStore from './news-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
@@ -29,6 +29,8 @@ import StreetcodesMainPageStore from './streetcode-mainpage-store';
 import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
+import StreetcodesByTagStore from './streetcodes-bytag-store';
+import TeamStore from './team-store';
 import UserLoginStore from './user-login-store';
 
 interface Store {
@@ -58,6 +60,7 @@ interface Store {
     statisticRecordStore: StatisticRecordStore,
     newsStore: NewsStore,
     streetcodeMainPageStore: StreetcodesMainPageStore,
+    relatedByTag: StreetcodesByTagStore,
 }
 
 export interface StreetcodeDataStore {
@@ -94,6 +97,7 @@ export const store: Store = {
     statisticRecordStore: new StatisticRecordStore(),
     newsStore: new NewsStore(),
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
+    relatedByTag: new StreetcodesByTagStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),

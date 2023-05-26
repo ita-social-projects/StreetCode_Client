@@ -41,6 +41,9 @@ $articlesImg: "@assets/images/sources/Articles.png";
       position: sticky;
       @include mut.flex-centered();
       height: pxToRem(97px);
+      .tagsSliderWrappper{
+         width: 90%;
+      }
   }
 
   .figuresByTags{
