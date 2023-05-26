@@ -18,12 +18,14 @@ export default class StreetcodeStore {
 
     public setCurrentStreetcodeId = async (url: string) => {
         try {
-            const streetcode = await StreetcodesApi.getByUrl(url);
-            if (streetcode !== null) {
-                this.setStreetCode = streetcode;
-                return streetcode;
+            if (await StreetcodesApi.existWithUrl(url)) {
+                const streetcode = await StreetcodesApi.getByUrl(url);
+                if (streetcode !== null) {
+                    this.setStreetCode = streetcode;
+                    return streetcode;
+                }
             }
-        } catch (error) {}
+        } catch (error) { }
     };
 
     public get getStreetCodeId() {

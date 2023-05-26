@@ -16,7 +16,11 @@ interface Props {
 
 const MainBlock = ({ setActiveTagId, setActiveBlock } : Props) => {
     const streetcodeUrl = useRouteUrl();
-    const { value } = useAsync(() => StreetcodesApi.getByUrl(streetcodeUrl), [streetcodeUrl]);
+    const { value } = useAsync(() => StreetcodesApi.existWithUrl(streetcodeUrl).then((resp) => {
+        if (resp) {
+            StreetcodesApi.getByUrl(streetcodeUrl);
+        }
+    }), [streetcodeUrl]);
     const streetcode = value as Streetcode;
 
     return (

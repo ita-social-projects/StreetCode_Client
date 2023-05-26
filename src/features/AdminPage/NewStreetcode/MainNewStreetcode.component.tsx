@@ -4,7 +4,8 @@
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { redirect, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -23,6 +24,7 @@ import ukUA from 'antd/locale/uk_UA';
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
@@ -73,6 +75,7 @@ const NewStreetcode = () => {
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<ArtCreate[]>([]);
+    const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
 
@@ -183,9 +186,9 @@ const NewStreetcode = () => {
         }
     }, []);
 
+
     const onFinish = (data: any) => {
         data.stopPropagation();
-
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -243,6 +246,7 @@ const NewStreetcode = () => {
             firstName: null,
             lastName: null,
             videos,
+            status: statusCurrent,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
             streetcodeCategoryContents:
                 JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
@@ -276,8 +280,11 @@ const NewStreetcode = () => {
         } else {
             StreetcodesApi.create(streetcode)
                 .then((response) => {
-                    setTimeout(() => window.location.reload(), 500);
-                    navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
+                    if (streetcode.status === 1) {
+                        navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
+                    } else {
+                        navigate(`/${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+                    }
                 })
                 .catch((error) => {
                     alert('Виникла помилка при створенні стріткоду');
@@ -317,7 +324,22 @@ const NewStreetcode = () => {
                             <ARBlock />
                         </Form>
                     </div>
-                    <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={() => {
+                            onFinish(1);
+                        }}
+                    >
+                            Опублікувати
+                    </Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={() => {
+                            onFinish(0);
+                        }}
+                    >
+                        Зберегти як чернетку
+                    </Button>
                 </div>
             </ConfigProvider>
         </div>
