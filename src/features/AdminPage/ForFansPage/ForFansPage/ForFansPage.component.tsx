@@ -76,9 +76,7 @@ const ForFansPage = () => {
                 ))}
             </BlockSlider>
             <Button
-                // type="button"
                 icon={<PlusOutlined />}
-                // style={{ marginTop: 16 }}
                 className="streetcode-custom-button"
                 onClick={handleAdd}
             >
