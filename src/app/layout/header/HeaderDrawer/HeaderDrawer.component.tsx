@@ -11,6 +11,7 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 
 import { Drawer } from 'antd';
 
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
 
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
@@ -91,42 +92,42 @@ const HeaderDrawer = () => {
                                 id={1}
                                 parentActive={active}
                                 text="Головна"
-                                link={menuOptions[0]}
+                                link={FRONTEND_ROUTES.BASE}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={2}
                                 parentActive={active}
                                 text="Стріткоди"
-                                link={menuOptions[1]}
+                                link={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={3}
                                 parentActive={active}
                                 text="Про нас"
-                                link={menuOptions[2]}
+                                link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={4}
                                 parentActive={active}
                                 text="Партнери"
-                                link={menuOptions[3]}
+                                link={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={5}
                                 parentActive={active}
                                 text="Донати"
-                                link={menuOptions[4]}
+                                link={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={6}
                                 parentActive={active}
                                 text="Контакти"
-                                link={menuOptions[5]}
+                                link={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}
                                 toggleState={toggle}
                             />
                         </div>
@@ -140,14 +141,14 @@ const HeaderDrawer = () => {
                                         parentActive={active}
                                         toggleState={toggle}
                                         text="Політика конфіденційності"
-                                        link={menuOptions[6]}
+                                        link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
                                     />
                                     <HeaderDrawerItem
                                         id={8}
                                         parentActive={active}
                                         toggleState={toggle}
                                         text="Зворотний зв'язок"
-                                        link={menuOptions[7]}
+                                        link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
                                     />
                                 </div>
                                 <SocialMediaLinks />
