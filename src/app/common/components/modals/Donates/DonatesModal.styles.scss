@@ -57,10 +57,6 @@
     @include mut.with-font($font-weight: 300);
   }
 
-  > .ant-btn {
-    border: none;
-  }
-
   .enterSum{
     @include mut.rem-margined($top: 32px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 15px, $font-weight: 500);
@@ -199,6 +195,12 @@
       background-color: c.$lighter-gray-color;
       color: c.$pure-white-color;
       cursor: pointer;
+
+      &:hover {
+        cursor: default;
+        background-color: c.$lighter-gray-color;
+        border: none;
+      }
     }
     > span {
       @include mut.with-font($font-size: 20px, $font-weight: 500);
