@@ -31,14 +31,14 @@ const menuPositionsMobile = [
     8 * scaleMobile,
 ];
 const menuOptions = [
-    '/',
-    '/catalog',
-    '/404',
-    '/partners-page',
-    '/support-us',
-    '/contact-us',
-    '/privacy-policy',
-    '/404',
+    FRONTEND_ROUTES.BASE,
+    FRONTEND_ROUTES.OTHER_PAGES.CATALOG,
+    FRONTEND_ROUTES.OTHER_PAGES.ERROR404,
+    FRONTEND_ROUTES.OTHER_PAGES.PARTNERS,
+    FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US,
+    FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US,
+    FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY,
+    FRONTEND_ROUTES.OTHER_PAGES.ERROR404,
 ];
 
 const HeaderDrawer = () => {
