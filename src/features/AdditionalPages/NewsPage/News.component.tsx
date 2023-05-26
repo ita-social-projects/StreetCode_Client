@@ -15,7 +15,7 @@ import parse from 'html-react-parser';
 
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
-    const [newsImg, setNewsImg] = useState<HTMLElement>(); 
+    const [newsImg, setNewsImg] = useState<HTMLElement| null>(null);; 
     const { newsStore, imagesStore } = useMobx();
     var { value } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
     const news = value as News;
@@ -78,8 +78,14 @@ const NewsPage = () => {
 
     useAsync(
         () => {
-        fetchImage(news.imageId!)
-        .then(getFullImg);
+            if(news.imageId!=null)
+            {
+                fetchImage(news.imageId!)
+                .then(getFullImg);
+            }
+            else {
+                setNewsImg(null);
+            }
         },
         [news?.imageId],
     );
@@ -112,11 +118,14 @@ const NewsPage = () => {
                     <h1 className=''>{news?.title}</h1>
                 </div>
                 <div  className={`newsWithImageWrapper ${width > wrapperWidth * 0.5 ? 'Full' : ''}`}>
-                <img className= {`newsImage ${width > wrapperWidth * 0.5 ? 'Full' : ''}`}
+                {newsImg && (
+                    <img
+                        className={`newsImage ${width > wrapperWidth * 0.5 ? 'Full' : ''}`}
                         key={news?.id}
                         src={base64ToUrl(getImage(news?.imageId!)?.base64, getImage(news?.imageId!)?.mimeType)}
                         alt={news?.title}
                     />
+                    )}
                     <div className="newsTextArea">
                         {parsedText}
                     </div>
