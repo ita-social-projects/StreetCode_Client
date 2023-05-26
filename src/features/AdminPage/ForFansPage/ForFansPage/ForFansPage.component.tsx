@@ -76,13 +76,13 @@ const ForFansPage = () => {
                 ))}
             </BlockSlider>
             <Button
-                type="dashed"
+                // type="button"
                 icon={<PlusOutlined />}
-                style={{ marginTop: 16 }}
+                // style={{ marginTop: 16 }}
+                className="streetcode-custom-button"
                 onClick={handleAdd}
             >
-                {/* eslint-disable-next-line no-tabs */}
-				Add New Source Category
+                Додати нову категорію
             </Button>
             <Modal
                 title="Add New Source Category"
