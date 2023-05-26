@@ -7,6 +7,13 @@ interface Props {
 }
 
 const InstagramSliderItem = ({ photoUrl, caption }: Props) => {
+
+    const MAX_CAPTION_LENGTH = 110;
+    const truncatedCaption =
+        caption && caption.length > MAX_CAPTION_LENGTH
+            ? caption.substring(0, MAX_CAPTION_LENGTH).split(' ').slice(0, -1).join(' ') + '...'
+            : caption;
+
     const imageStyle = {
         backgroundImage: `url(${photoUrl})`,
         backgroundSize: 'cover',
@@ -20,7 +27,7 @@ const InstagramSliderItem = ({ photoUrl, caption }: Props) => {
             style={imageStyle}
         >
             <div className='textContainer'>
-                <p>{caption}</p>
+                <p>{truncatedCaption}</p>
             </div>
         </div>
     );
