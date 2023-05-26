@@ -3,7 +3,7 @@ import './TermDictionary.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Space, Table } from 'antd';
 
@@ -15,7 +15,8 @@ import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
 import { Term } from '@/models/streetcode/text-contents.model';
 
 const TermDictionary = () => {
-    const { termsStore, modalStore } = useMobx();
+    const {termsStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { fetchTerms } = termsStore;
     const { setModal } = modalStore;
     const [term, setTerm] = useState<Partial<Term>>();

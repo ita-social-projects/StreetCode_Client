@@ -4,7 +4,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import ModalBg from '@assets/images/utils/ModalBg.png';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 
 import { Modal } from 'antd';
 
@@ -21,10 +21,12 @@ interface Props {
 }
 
 const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
-    const { relatedByTag, modalStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { relatedByTag } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { tagsList } } = modalStore;
     const { fetchRelatedFiguresByTagId, getStreetcodesByTag } = relatedByTag;
-
+    const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
+  
     const tagId = activeTagId;
     useAsync(
         () => {

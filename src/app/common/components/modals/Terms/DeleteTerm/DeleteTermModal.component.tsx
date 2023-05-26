@@ -3,7 +3,7 @@ import './DeleteTermModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const DeleteTermModal = ({ handleDelete, term } : Props) => {
-    const { modalStore: { setModal, modalsState: { deleteTerm } } } = useMobx();
+    const { modalStore: { setModal, modalsState: { deleteTerm } } } = useModalContext();
 
     return (
         <Modal

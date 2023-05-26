@@ -8,7 +8,7 @@ import {
 
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
 
@@ -18,11 +18,10 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 const possibleDonateAmounts = [500, 100, 50];
 
 const DonatesModal = () => {
-    const { modalStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 

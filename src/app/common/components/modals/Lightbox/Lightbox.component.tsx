@@ -3,7 +3,7 @@ import './LightboxComponent.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useMemo, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 import Lightbox from 'yet-another-react-lightbox';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
 
@@ -13,7 +13,8 @@ import 'yet-another-react-lightbox/styles.css';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const LightboxComponent = () => {
-    const { streetcodeArtStore: { getStreetcodeArtArray }, modalStore } = useMobx();
+    const { streetcodeArtStore: { getStreetcodeArtArray } } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
 
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);

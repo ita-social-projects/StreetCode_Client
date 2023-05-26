@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Button, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import { useParams } from 'react-router-dom';
+
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
+
 import Video from '../../../../../../models/media/video.model';
 
 interface Props {
@@ -16,12 +18,16 @@ interface Props {
 const videoPattern = 'https?://www.youtube.com/watch.+';
 
 const linkConverter = (link: string) => {
+    if (!link) {
+        return link;
+    }
     let fixedlink = link;
-    if (link.includes('&')) {
+    console.log(link);
+    if (link.indexOf('&') >= 0) {
         const index = link.indexOf('&');
         fixedlink = link.slice(0, index);
     }
-    return fixedlink.includes('/watch?v=')
+    return fixedlink?.includes('/watch?v=')
         ? fixedlink.replace('/watch?v=', '/embed/')
         : fixedlink;
 };
@@ -29,8 +35,8 @@ const linkConverter = (link: string) => {
 const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
     useEffect(() => {
-        setInputInfo(info => ({ ...info, link: video?.url.href }));
-    }, [video])
+        setInputInfo((info) => ({ ...info, link: video?.url.href }));
+    }, [video]);
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
         setVideo(video);
@@ -39,38 +45,36 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const parseId = id ? + id : null;
 
     return (
-        <FormItem 
-            name="video" 
+        <FormItem
+            name="video"
             label="Відео"
         >
-            
             <div className="youtube-block">
                 <Input
                     title="video"
-                    value={inputInfo?.link ?? ""}
+                    value={inputInfo?.link ?? ''}
                     className="smallerInput"
                     placeholder="ex. https://www.youtube.com"
                     pattern={videoPattern}
                     name="link"
-
-                    required={ parseId ? false : true}
+                    required={!parseId}
                     onChange={handleLinkChange}
                 />
                 <Button
-                        disabled={!inputInfo?.link?.includes('watch')}
-                        className = 'streetcode-custom-button button-margin-vertical'
-                        onClick={() => setShowPreview(!showPreview)}
-                    >
+                    // disabled={!inputInfo?.link?.includes('watch')}
+                    className="streetcode-custom-button button-margin-vertical"
+                    onClick={() => setShowPreview(!showPreview)}
+                >
                         Попередній перегляд
                 </Button>
                 {
-                    inputInfo?.link?.includes('watch') && showPreview ? (
+                    inputInfo?.link && showPreview && inputInfo.link.indexOf('watch') > -1 ? (
                         <div>
                             <h4>Попередній перегляд</h4>
                             <iframe
                                 title="video-preview"
                                 src={
-                                    linkConverter(inputInfo.link)
+                                    linkConverter(inputInfo?.link ?? '')
                                 }
                                 allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
                             />

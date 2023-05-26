@@ -33,11 +33,13 @@ export default class FactsStore {
         return Array.from(this.factMap.values());
     }
 
-    public fetchFactsByStreetcodeId = async (streetcodeId: number) => {
+    public fetchFactsByStreetcodeId = async (streetcodeId: number): Promise<Fact[]> => {
         try {
             const facts = await factsApi.getFactsByStreetcodeId(streetcodeId);
             this.setInternalMap(facts);
+            return facts;
         } catch (error: unknown) {}
+        return Array<Fact>(0);
     };
 
     public createFact = async (fact: Fact) => {

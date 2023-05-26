@@ -1,6 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable complexity */
-/* eslint-disable no-alert */
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';

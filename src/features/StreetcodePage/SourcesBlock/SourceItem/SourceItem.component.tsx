@@ -2,7 +2,7 @@ import './SourceItem.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { SourceCategory } from '@models/sources/sources.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const SourceItem = ({ srcCategory }: Props) => {
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
 
     return (
         <div

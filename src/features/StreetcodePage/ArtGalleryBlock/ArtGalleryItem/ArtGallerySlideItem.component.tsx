@@ -3,7 +3,7 @@ import './ArtGallerySlideItem.styles.scss';
 import { IndexedArt } from '@models/media/art.model';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import useMobx from '@/app/stores/root-store';
+import useMobx, { useAdditionalContext, useModalContext } from '@/app/stores/root-store';
 
 interface Props {
     artGalleryItem: IndexedArt,
@@ -12,7 +12,7 @@ interface Props {
 }
 const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => {
     const { imageHref, description, title, sequenceNumber } = artGalleryItem;
-    const { modalStore: { setModal }, imageLoaderStore } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
     const windowsize = useWindowSize();
 
     function setStyleByOffset(offset: number): string {
@@ -36,7 +36,6 @@ const ArtGallerySlideItem = ({ artGalleryItem, offset, isAdminPage }: Props) => 
                     src={imageHref}
                     onClick={isAdminPage ? null : () => setModal('artGallery', sequenceNumber)}
                     alt=""
-                    onLoad={imageLoaderStore.handleImageLoad}
                 />
                 {windowsize.width > 1024 && (
                     <div
