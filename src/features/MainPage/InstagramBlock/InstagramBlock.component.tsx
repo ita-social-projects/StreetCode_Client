@@ -13,9 +13,8 @@ const InstagramBlock = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const accessToken = "tk";
-                const userId = '2896840440453292'; 
-                axios.get(`https://graph.instagram.com/${userId}/media?fields=id,media_type,media_url,caption&limit=${POST_LIMIT}&access_token=${accessToken}`)
+            const accessToken = "dummytoken";
+                axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,caption&limit=${POST_LIMIT}&access_token=${accessToken}`)
                 .then(response => {
                     const posts = response.data.data;
 
