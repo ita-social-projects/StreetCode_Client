@@ -9,6 +9,8 @@ const NewsApi = {
 
     getAll: () => Agent.get<News[]>(`${API_ROUTES.NEWS.GET_ALL}`),
 
+    getAllSortedNews: () => Agent.get<News[]>(`${API_ROUTES.NEWS.GET_ALL_SORTED}`),
+
     create: (news: News) => Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.NEWS.DELETE}/${id}`),
