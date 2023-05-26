@@ -11,6 +11,7 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 
 import { Drawer } from 'antd';
 
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
 
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
@@ -30,14 +31,14 @@ const menuPositionsMobile = [
     8 * scaleMobile,
 ];
 const menuOptions = [
-    '/404',
-    '/catalog',
-    '/404',
-    '/partners-page',
-    '/support-us',
-    '/contact-us',
-    '/privacy-policy',
-    '/404',
+    FRONTEND_ROUTES.BASE,
+    FRONTEND_ROUTES.OTHER_PAGES.CATALOG,
+    FRONTEND_ROUTES.OTHER_PAGES.ERROR404,
+    FRONTEND_ROUTES.OTHER_PAGES.PARTNERS,
+    FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US,
+    FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US,
+    FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY,
+    FRONTEND_ROUTES.OTHER_PAGES.ERROR404,
 ];
 
 const HeaderDrawer = () => {
@@ -91,42 +92,42 @@ const HeaderDrawer = () => {
                                 id={1}
                                 parentActive={active}
                                 text="Головна"
-                                link="/404"
+                                link={FRONTEND_ROUTES.BASE}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={2}
                                 parentActive={active}
                                 text="Стріткоди"
-                                link="/catalog"
+                                link={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={3}
                                 parentActive={active}
                                 text="Про нас"
-                                link="/404"
+                                link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={4}
                                 parentActive={active}
                                 text="Партнери"
-                                link="/partners-page"
+                                link={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={5}
                                 parentActive={active}
                                 text="Донати"
-                                link="/support-us"
+                                link={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
                                 id={6}
                                 parentActive={active}
                                 text="Контакти"
-                                link="/contact-us"
+                                link={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}
                                 toggleState={toggle}
                             />
                         </div>
@@ -140,14 +141,14 @@ const HeaderDrawer = () => {
                                         parentActive={active}
                                         toggleState={toggle}
                                         text="Політика конфіденційності"
-                                        link="/privacy-policy"
+                                        link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
                                     />
                                     <HeaderDrawerItem
                                         id={8}
                                         parentActive={active}
                                         toggleState={toggle}
                                         text="Зворотний зв'язок"
-                                        link="/404"
+                                        link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
                                     />
                                 </div>
                                 <SocialMediaLinks />
