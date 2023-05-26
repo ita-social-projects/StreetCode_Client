@@ -5,9 +5,7 @@
 .tagModalContainer {
   width: 100%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include mut.flex-centered();
   
   .sliderClass{
     height: f.pxToRem(80px);
