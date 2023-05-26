@@ -124,8 +124,13 @@ const TermDictionary = () => {
                 <div className="termDictionaryContainer">
                     <div className="dictionaryHeader">
                         <h1>Словник термінів</h1>
-                        <div className="controls">
-                            <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
+                        <div>
+                            <Button
+                                className="streetcode-custom-button"
+                                onClick={() => setModal('addTerm')}
+                            >
+                                Новий термін
+                            </Button>
                         </div>
                     </div>
                     <div className="termTable">

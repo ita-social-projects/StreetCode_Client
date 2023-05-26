@@ -28,7 +28,7 @@
     .subTitle{
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
         line-height: 26px;
-        color:  #1D1F23; 
+        color:  c.$lighter-black-color; 
     }
 
     .subTitle.titleBottom{

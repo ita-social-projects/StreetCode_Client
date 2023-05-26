@@ -24,7 +24,7 @@
 .customSlider {
   position: absolute;
   top: f.pxToRem(13px);
-  max-height: f.pxToRem(378px);
+  max-height: f.pxToRem(365px);
   width: 25%;
 }
 
@@ -108,8 +108,8 @@
     }
   }
   .customSlider {
-    top: f.pxToRem(9px);
-    max-height: f.pxToRem(335px);
+    top: f.pxToRem(5px);
+    max-height: f.pxToRem(322px);
   }
   .ant-drawer-content-wrapper{
     border-radius: 0 0 0 f.pxToRem(50px);
@@ -118,5 +118,12 @@
   .ant-drawer-content {
     border-radius: 0 0 0 f.pxToRem(50px);
     height: f.pxToRem(525px);
+  }
+  .thumb {
+    background: c.$dark-red-color;
+    border: f.pxToRem(5px) solid c.$dark-red-color;
+    display: block;
+    transition: all;
+    transition-duration: 0.5s;
   }
 }
