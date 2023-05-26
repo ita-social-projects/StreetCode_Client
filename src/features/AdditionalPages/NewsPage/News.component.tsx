@@ -157,7 +157,7 @@ const NewsPage = () => {
                 </div>
             </div>
         </div>
-        {/* <Footer /> */}
+        <Footer />
     </div>
     );
 }
