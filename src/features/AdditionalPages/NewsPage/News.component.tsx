@@ -19,8 +19,8 @@ const NewsPage = () => {
     const { newsStore, imagesStore } = useMobx();
     var { value } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
     const news = value as News;
-    newsStore.fetchNewsAll();
     const newsArr = newsStore.getNewsArray as News[];
+
     const newsIndex = newsArr.findIndex(x => x.id == news?.id);
     const parsedText = parse(news?.text ?? "");
     const [width, setWidth] = useState(0);
@@ -46,7 +46,7 @@ const NewsPage = () => {
         var newsimg = new Image;
         var strongTags = document.getElementsByTagName('strong');
         var lastStrongTag = strongTags[strongTags.length - 1]; 
-        if(news){
+        if(news.image){
             var imgUrl = base64ToUrl(getImage(news.imageId!)?.base64, getImage(news.imageId!)?.mimeType);
             newsimg.src = imgUrl!;
 
@@ -77,13 +77,27 @@ const NewsPage = () => {
     };
 
     useAsync(
-        () => {DellFullImg();
-        fetchImage(news?.imageId!)
+        () => {
+        fetchImage(news.imageId!)
         .then(getFullImg);
+        },
+        [news?.imageId],
+    );
+
+    useEffect(
+        () => {
+        DellFullImg();
         window.scrollTo(0,0);
         },
         [news?.url],
     );
+
+    useEffect(
+        () => {
+            newsStore.fetchNewsAll();
+        },
+        [],
+    )
 
     useEffect(
         () => {setWrapperWidth(wrapperObj?.offsetWidth);},
@@ -134,7 +148,7 @@ const NewsPage = () => {
                 </div>
             </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
     </div>
     );
 }
