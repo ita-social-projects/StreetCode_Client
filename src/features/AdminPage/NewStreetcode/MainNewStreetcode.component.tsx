@@ -50,6 +50,8 @@ import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
 const NewStreetcode = () => {
+    const publish = 'Опублікувати';
+    const draft = 'Зберегти як чернетку';
     const [form] = useForm();
     const {
         factsStore,
@@ -175,16 +177,26 @@ const NewStreetcode = () => {
             });
             TransactionLinksApi.getByStreetcodeId(parseId)
                 .then((res) => {
-                    if (res)
-                        form.setFieldValue('arlink', res.qrCodeUrl.href)
+                    if (res) {
+                        form.setFieldValue('arlink', res.qrCodeUrl.href);
+                    }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
         }
     }, []);
 
-
     const onFinish = (data: any) => {
+        console.log(data.target.getAttribute('name'));
+        let tempStatus = 0;
+
+        if (data.target.getAttribute('name') as string) {
+            const buttonName = data.target.getAttribute('name') as string;
+            if (buttonName.includes(publish)) {
+                console.log('publish success');
+                tempStatus = 1;
+            }
+        }
         data.stopPropagation();
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
@@ -196,7 +208,7 @@ const NewStreetcode = () => {
         const text: TextCreate = {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
-            additionalText: inputInfo?.additionalText == "<p>Текст підготовлений спільно з</p>" ? "" : inputInfo?.additionalText,
+            additionalText: inputInfo?.additionalText == '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
@@ -243,7 +255,7 @@ const NewStreetcode = () => {
             firstName: null,
             lastName: null,
             videos,
-            status: statusCurrent,
+            status: tempStatus,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
             streetcodeCategoryContents:
                 JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
@@ -259,7 +271,7 @@ const NewStreetcode = () => {
                         streetcodeCoordinate: {
                             ...statisticRecord.streetcodeCoordinate,
                             id: 0,
-                        }
+                        },
                     }
                 )),
         };
@@ -276,11 +288,11 @@ const NewStreetcode = () => {
                 });
         } else {
             StreetcodesApi.create(streetcode)
-                .then((response) => {
-                    if (streetcode.status === 1) {
-                        navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
+                .then(() => {
+                    if (tempStatus === 1) {
+                        navigate(`../${form.getFieldValue('streetcodeUrlName')}`, {replace: true});
                     } else {
-                        navigate(`/${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+                        navigate(`${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                     }
                 })
                 .catch((error) => {
@@ -323,19 +335,21 @@ const NewStreetcode = () => {
                     </div>
                     <Button
                         className="streetcode-custom-button submit-button"
-                        onClick={() => {
-                            onFinish(1);
-                        }}
+                        onClick={
+                            onFinish
+                        }
+                        name={publish}
                     >
-                            Опублікувати
+                        {publish}
                     </Button>
                     <Button
                         className="streetcode-custom-button submit-button"
-                        onClick={() => {
-                            onFinish(0);
-                        }}
+                        onClick={
+                            onFinish
+                        }
+                        name={draft}
                     >
-                        Зберегти як чернетку
+                        {draft}
                     </Button>
                 </div>
             </ConfigProvider>
