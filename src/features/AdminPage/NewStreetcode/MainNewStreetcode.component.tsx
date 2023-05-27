@@ -187,13 +187,11 @@ const NewStreetcode = () => {
     }, []);
 
     const onFinish = (data: any) => {
-        console.log(data.target.getAttribute('name'));
         let tempStatus = 0;
 
         if (data.target.getAttribute('name') as string) {
             const buttonName = data.target.getAttribute('name') as string;
             if (buttonName.includes(publish)) {
-                console.log('publish success');
                 tempStatus = 1;
             }
         }
