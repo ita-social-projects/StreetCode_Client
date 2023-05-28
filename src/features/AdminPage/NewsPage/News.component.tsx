@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import ImageStore from '@stores/image-store';
@@ -13,7 +14,6 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
 import PageBar from '../PageBar/PageBar.component';
-import dayjs from "dayjs";
 
 const Newss:React.FC = observer(() => {
     const { newsStore, modalStore } = useMobx();
@@ -47,25 +47,12 @@ const Newss:React.FC = observer(() => {
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="partner-table-item-name">
-                        <p>{value}</p>
+                        <Link to={`/news/${record.url}`} target="_blank" className="site-link">
+                            {value}
+                        </Link>
                     </div>
                 );
             },
-        },
-        {
-            title: 'Посилання на новину',
-            dataIndex: 'url',
-            key: 'url',
-            width: '28%',
-            render: (targeteurl) => (
-                <a
-                    className="site-link"
-                    key={`${targeteurl}`}
-                    href={targeteurl}
-                >
-                    {targeteurl}
-                </a>
-            ),
         },
         {
             title: 'Картинка',
@@ -93,7 +80,7 @@ const Newss:React.FC = observer(() => {
             }),
             render: (value: string, record) => (
                 <div key={`${value}`} className="partner-table-item-name">
-                    <p>{value.substring(0, 10)}</p>
+                    <p>{value ? value.substring(0, 10) : ''}</p>
                 </div>
             ),
         },
