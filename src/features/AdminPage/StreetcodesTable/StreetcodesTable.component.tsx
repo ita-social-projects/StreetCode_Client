@@ -138,7 +138,7 @@ const StreetcodesTable = () => {
                     )
                         : <RollbackOutlined className="actionButton" />}
                 </>
-            )
+            ),
         },
     ];
     const deleteFile = (record: any) => {
@@ -164,25 +164,21 @@ const StreetcodesTable = () => {
     }
 
     useEffect(() => {
-        //  console.log('GET ALL USE EFFECT', requestGetAll);
         requestGetAll.Page = pageRequest;
         requestGetAll.Amount = amountRequest;
         const getAllStreetcodesResponse = StreetcodesApi.getAll(
-            requestGetAll);
-        //  console.log('Get All Response Codes:', getAllStreetcodesResponse);
+            requestGetAll,
+        );
         const mapederStreetCodes: MapedStreetCode[] = [];
 
         Promise.all([getAllStreetcodesResponse]).then((response) => {
-            console.log('Response:', response);
-            console.log('First element of response:', response[0]);
-
             response[0].streetcodes?.map((streetcode) => {
                 let currentStatus = '';
 
                 switch (streetcode.status) {
-                    case 0: { currentStatus = 'Чернетка'; break; }
-                    case 1: { currentStatus = 'Опублікований'; break; }
-                    case 2: { currentStatus = 'Видалений'; break; }
+                case 0: { currentStatus = 'Чернетка'; break; }
+                case 1: { currentStatus = 'Опублікований'; break; }
+                case 2: { currentStatus = 'Видалений'; break; }
                 }
 
                 const mapedStreetCode = {
@@ -202,18 +198,6 @@ const StreetcodesTable = () => {
                 ? response[0].pages * amountRequest : 0);
         });
     }, [requestGetAll, amountRequest]);
-
-    // useEffect(() => {
-    //     console.log('Total items:', totalItems);
-    // }, [totalItems]);
-
-    // useEffect(() => {
-    //     console.log('Mapped Street Codes:', mapedStreetCodes);
-    // }, [mapedStreetCodes]);
-
-    // useEffect(() => {
-    //     console.log('Current Status:', statusRequest);
-    // }, [statusRequest]);
 
     return (
 
@@ -252,11 +236,9 @@ const StreetcodesTable = () => {
                             total={totalItems}
                             pageSize={amountRequest !== null ? amountRequest : 0}
                             onChange={(value: any) => {
-                                // console.log('Value OnChangePagination', value);
                                 setCurrentPages(value);
                                 setPageRequest(value);
                                 setRequest();
-                                // console.log('PAGE REQUEST', pageRequest);
                             }}
                         />
                     </div>
