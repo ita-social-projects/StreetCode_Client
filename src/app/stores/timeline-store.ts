@@ -18,10 +18,10 @@ export default class TimelineStore {
 
         const timelineitemToUpdate: TimelineItemUpdate = {
             ...timelineItem,
-            id: 0,
             isDeleted: false,
+            isCreated: true,
         };
-
+        console.log(this.getTimelineItemArray);
         this.timelineItemMapToUpdate.set(timelineItem.id, timelineitemToUpdate);
     };
 

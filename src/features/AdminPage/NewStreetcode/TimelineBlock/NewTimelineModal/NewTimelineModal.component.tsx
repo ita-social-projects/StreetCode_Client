@@ -54,8 +54,11 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 item.historicalContexts = selectedContext.current;
             }
         } else {
+            const maxId = timelineItemStore.timelineItemMap.size > 0
+                ? Math.max(...Array.from(timelineItemStore.timelineItemMap.values()).map((item) => item.id)) : 0;
+
             const newTimeline:TimelineItem = { date: formValues.date,
-                                               id: timelineItemStore.timelineItemMap.size,
+                                               id: maxId + 1,
                                                title: formValues.title,
                                                description: formValues.description,
                                                historicalContexts: selectedContext.current,
@@ -128,10 +131,10 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                                 <DatePicker
                                     picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
                                     placeholder={(dateTimePickerType === 'date'
-                                ? 'yyyy-mm-dd'
-                                : dateTimePickerType === 'year'
-                                    ? 'yyyy'
-                                    : 'yyyy-mm')}
+                                        ? 'yyyy-mm-dd'
+                                        : dateTimePickerType === 'year'
+                                            ? 'yyyy'
+                                            : 'yyyy-mm')}
                                 />
                             </Form.Item>
                         </div>

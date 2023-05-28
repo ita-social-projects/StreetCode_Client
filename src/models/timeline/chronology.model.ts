@@ -23,6 +23,7 @@ export default interface TimelineItem {
 
 export interface TimelineItemUpdate extends TimelineItem {
     isDeleted?: boolean,
+    isCreated?: boolean,
     isPersisted?: boolean,
 }
 
