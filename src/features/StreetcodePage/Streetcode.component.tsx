@@ -67,11 +67,11 @@ const StreetcodeContent = () => {
         Promise.all([checkStreetcodeExist(streetcodeUrl.current)]).then(
             (resp) => {
                 if (!resp.at(0)) {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                    // navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
                 }
                 setCurrentStreetcodeId(streetcodeUrl.current).then((st) => {
                     if (st?.status !== 1 && !location.pathname.includes(`${FRONTEND_ROUTES.ADMIN.BASE}`)) {
-                        navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                        // navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
                     }
                 });
             },
