@@ -9,11 +9,13 @@ $bgImg: '@assets/images/catalog/background.png';
   background: url($bgImg) no-repeat center center / cover;
   background-color: c.$accented-low-opasity-grayish-gray-color;
   width: 100%;
+  
 
 .streetcodeSliderComponent {
     .streetcodeContainer .mainBlock {
         @include mut.bg-image($bgImg, auto);
         background-repeat: repeat-x;
+        height: 500px;
     }
 
     .streetcodeSliderContentBlock,

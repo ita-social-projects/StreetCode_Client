@@ -50,6 +50,8 @@ const NewsSlider = () => {
     }
    
         return (
+            (news.length > 0)
+            ? (
             <div>
                 <div className="NewsWrapper">
                 <Heading blockName='Новини' buttonName='Всі новини' setActionOnClick={handleClick}/>
@@ -70,6 +72,7 @@ const NewsSlider = () => {
                     </div>
                 </div>
             </div>
+          ) : <></>
         );
     
 
