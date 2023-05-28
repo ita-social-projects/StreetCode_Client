@@ -43,14 +43,17 @@ const InstagramBlock = () => {
     }
     
     return (
+        (posts.length > 0)
+            ? (
         <div className='InstagramBlock'>
-            <Heading blockName='Інстаграм' buttonName='Зацінити інстаграм' setActionOnClick={handleClick}/>
+            <Heading blockName='Ми в Інсті' buttonName='Зацінити інстаграм' setActionOnClick={handleClick}/>
             <div className='sliderContainer'>
             <BlockSlider {...sliderProps}>
                     {sliderItems}
                 </BlockSlider>
             </div>
         </div>
+    ) : <></>
     );
 }
 
