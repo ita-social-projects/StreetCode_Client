@@ -121,13 +121,14 @@ const DonationBlock = () => {
                     Я даю згоду на обробку моїх персональних даних
                 </Checkbox>
             </div>
-            <Button
+            <button
                 onClick={handlePost}
                 disabled={!isCheckboxChecked || donateAmount == 0}
                 className="donatesDonateBtn"
+                type="button"
             >
                 Підтримати
-            </Button>
+            </button>
         </div>
     );
 };

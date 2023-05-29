@@ -13,37 +13,25 @@ import PartnerContent from './PartnerContent/PartnerContent.component';
 
 interface Props {
     partner: Partner;
-    handleImageLoad: () => void;
 }
 
-const PartnerItem = ({ partner, handleImageLoad }: Props) => {
-    const { imagesStore } = useMobx();
-    const { fetchImage, getImage } = imagesStore;
-
-    useAsync(
-        () => fetchImage(partner.logoId),
-        [partner.logoId],
-    );
-
-    return (
-        <div
-            className="partnerItem"
+const PartnerItem = ({ partner }: Props) => (
+    <div
+        className="partnerItem"
+    >
+        <Popover
+            overlayClassName="partnerPopover"
+            content={<PartnerContent key={`pc${partner.id}`} partner={partner} />}
+            trigger="hover"
         >
-            <Popover
-                overlayClassName="partnerPopover"
-                content={<PartnerContent partner={partner} />}
-                trigger="hover"
-            >
-                <img
-                    key={partner.id}
-                    className="partnerLogo"
-                    src={base64ToUrl(getImage(partner.logoId)?.base64, getImage(partner.logoId)?.mimeType)}
-                    alt={partner.title}
-                    onLoad={handleImageLoad}
-                />
-            </Popover>
-        </div>
-    );
-};
+            <img
+                key={partner.id}
+                className="partnerLogo"
+                src={base64ToUrl(partner.logo?.base64, partner.logo?.mimeType)}
+                alt={partner.title}
+            />
+        </Popover>
+    </div>
+);
 
 export default PartnerItem;

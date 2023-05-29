@@ -188,11 +188,19 @@
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
     border-radius: f.pxToRem(15px) !important;
     border: none;
+    color: c.$pure-white-color;
+    @include mut.with-font(ft.$roboto-font, $font-size: 20px, $font-weight: 500);
 
     &:disabled{
       background-color: c.$lighter-gray-color;
       color: c.$pure-white-color;
       cursor: pointer;
+
+      &:hover {
+        cursor: default;
+        background-color: c.$lighter-gray-color;
+        border: none;
+      }
     }
     > span {
       @include mut.with-font($font-size: 20px, $font-weight: 500);
@@ -200,12 +208,14 @@
     }
 
     &:hover {
-      filter: brightness(110%);
+      background-color: c.$dark-red-color;
+      transition: 0.5s;
       border: none;
     }
 
     &:focus{
       outline: none;
+      border: none;
     }
   }
 }

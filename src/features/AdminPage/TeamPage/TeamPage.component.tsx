@@ -9,7 +9,7 @@ import facebook from '@assets/images/partners/facebook.png';
 import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
-import useMobx from "../../../app/stores/root-store";
+import useMobx, { useModalContext } from "../../../app/stores/root-store";
 import TeamMember, { LogoType, TeamMemberLink } from "../../../models/team/team.model";
 import PageBar from "../PageBar/PageBar.component";
 import Image from '@/models/media/image.model';
@@ -17,7 +17,8 @@ import './TeamPage.styles.scss';
 import TeamModal from "./TeamModal/TeamModal.component";
 const TeamPage = () => {
 
-    const { teamStore, modalStore } = useMobx();
+    const { teamStore } = useMobx();
+    const { modalStore } = useModalContext();
     const LogoType = [twitter, instagram, facebook, youtube];
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);

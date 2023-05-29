@@ -9,7 +9,7 @@ import { useMediaQuery } from 'react-responsive';
 import { QRCode } from 'antd';
 
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
-import useMobx from '@/app/stores/root-store';
+import { useStreetcodeDataContext } from '@/app/stores/root-store';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import QRMobile from './QRMobile/QRMobile.component';
@@ -19,7 +19,7 @@ const QRComponent = () => {
         query: '(min-width: 1025px)',
     });
     const [qrUrl, setQrUrl] = useState<TransactionLink>();
-    const { streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     useEffect(() => {
         if (getStreetCodeId && getStreetCodeId >= 1) {
             TransactionLinksApi.getByStreetcodeId(getStreetCodeId).then((res) => setQrUrl(res));

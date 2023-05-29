@@ -19,14 +19,15 @@ import TimelineItem, {
     HistoricalContext, selectDateOptions,
 } from '@/models/timeline/chronology.model';
 
-const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
+const NewTimelineModal: React.FC<{
+    timelineItem?: TimelineItem, open: boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }> = observer(({ timelineItem, open, setIsModalOpen }) => {
     const { timelineItemStore, historicalContextStore } = useMobx();
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
     const [dateTimePickerType, setDateTimePickerType] = useState<
-    'date' | 'month' | 'year' | 'season-year'>('date');
+        'date' | 'month' | 'year' | 'season-year'>('date');
     useEffect(() => {
         if (timelineItem && open) {
             form.setFieldsValue({
@@ -44,7 +45,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
 
-    const onSuccesfulSubmit = (formValues:any) => {
+    const onSuccesfulSubmit = (formValues: any) => {
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
@@ -54,19 +55,21 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 item.historicalContexts = selectedContext.current;
             }
         } else {
-            const newTimeline:TimelineItem = { date: formValues.date,
-                                               id: timelineItemStore.timelineItemMap.size,
-                                               title: formValues.title,
-                                               description: formValues.description,
-                                               historicalContexts: selectedContext.current,
-                                               dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType) };
+            const newTimeline: TimelineItem = {
+                date: formValues.date,
+                id: timelineItemStore.timelineItemMap.size,
+                title: formValues.title,
+                description: formValues.description,
+                historicalContexts: selectedContext.current,
+                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType)
+            };
             timelineItemStore.addTimeline(newTimeline);
         }
 
         setIsModalOpen(false);
         form.resetFields();
     };
-    const onContextSelect = (value:string) => {
+    const onContextSelect = (value: string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
             if (value.length > 50) {
@@ -80,7 +83,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
             selectedContext.current.push(historicalContextStore.historicalContextArray[index]);
         }
     };
-    const onContextDeselect = (value:string) => {
+    const onContextDeselect = (value: string) => {
         selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
     };
     return (
@@ -127,11 +130,16 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                             >
                                 <DatePicker
                                     picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
+                                    format={(dateTimePickerType === 'date'
+                                        ? 'YYYY, D MMMM'
+                                        : dateTimePickerType === 'year'
+                                            ? 'YYYY'
+                                            : 'YYYY, MMMM')}
                                     placeholder={(dateTimePickerType === 'date'
-                                ? 'yyyy-mm-dd'
-                                : dateTimePickerType === 'year'
-                                    ? 'yyyy'
-                                    : 'yyyy-mm')}
+                                        ? 'yyyy, dd mm'
+                                        : dateTimePickerType === 'year'
+                                            ? 'yyyy'
+                                            : 'yyyy, mm')}
                                 />
                             </Form.Item>
                         </div>
@@ -166,7 +174,7 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                     </Form.Item>
                     <div className="center">
                         <Button className="streetcode-custom-button" type="primary" htmlType="submit">
-                        Зберегти
+                            Зберегти
                         </Button>
                     </div>
                 </Form>

@@ -39,6 +39,7 @@
     @include mut.sized(288px, 73px);
     @include mut.full-rounded(14px);
     background-color: c.$accented-red-color;
+    border: none;
 
     > * {
       @include mut.with-font($font-weight: 500);

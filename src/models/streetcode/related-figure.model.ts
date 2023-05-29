@@ -7,5 +7,6 @@ export default interface RelatedFigure {
     url: string;
     alias?: string;
     imageId: number;
+    image?: Image;
     tags: Tag[];
 }

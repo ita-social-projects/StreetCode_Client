@@ -1,10 +1,8 @@
-/* eslint-disable max-len */
-/* eslint-disable complexity */
-/* eslint-disable no-alert */
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { redirect, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -23,6 +21,7 @@ import ukUA from 'antd/locale/uk_UA';
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
@@ -51,6 +50,8 @@ import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
 const NewStreetcode = () => {
+    const publish = 'Опублікувати';
+    const draft = 'Зберегти як чернетку';
     const [form] = useForm();
     const {
         factsStore,
@@ -73,6 +74,7 @@ const NewStreetcode = () => {
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<ArtCreate[]>([]);
+    const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
 
@@ -175,8 +177,9 @@ const NewStreetcode = () => {
             });
             TransactionLinksApi.getByStreetcodeId(parseId)
                 .then((res) => {
-                    if (res)
-                        form.setFieldValue('arlink', res.qrCodeUrl.href)
+                    if (res) {
+                        form.setFieldValue('arlink', res.qrCodeUrl.href);
+                    }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
@@ -184,8 +187,15 @@ const NewStreetcode = () => {
     }, []);
 
     const onFinish = (data: any) => {
-        data.stopPropagation();
+        let tempStatus = 0;
 
+        if (data.target.getAttribute('name') as string) {
+            const buttonName = data.target.getAttribute('name') as string;
+            if (buttonName.includes(publish)) {
+                tempStatus = 1;
+            }
+        }
+        data.stopPropagation();
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -196,7 +206,7 @@ const NewStreetcode = () => {
         const text: TextCreate = {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
-            additionalText: inputInfo?.additionalText,
+            additionalText: inputInfo?.additionalText == '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
@@ -206,7 +216,6 @@ const NewStreetcode = () => {
             title: art.title,
             mimeType: art.mimeType,
         }));
-
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -244,6 +253,7 @@ const NewStreetcode = () => {
             firstName: null,
             lastName: null,
             videos,
+            status: tempStatus,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
             streetcodeCategoryContents:
                 JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
@@ -252,20 +262,21 @@ const NewStreetcode = () => {
                     )),
             statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                 .map((statisticRecord: StatisticRecord) => (
-                    { ...statisticRecord,
-                      id: 0,
-                      coordinateId: 0,
-                      streetcodeCoordinate: {
-                          ...statisticRecord.streetcodeCoordinate,
-                          id: 0,
-                      } }
+                    {
+                        ...statisticRecord,
+                        id: 0,
+                        coordinateId: 0,
+                        streetcodeCoordinate: {
+                            ...statisticRecord.streetcodeCoordinate,
+                            id: 0,
+                        },
+                    }
                 )),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
             streetcode.lastName = form.getFieldValue('surname');
         }
-
         if (parseId) {
             StreetcodesApi.update(streetcode).then((response2) => {
                 alert('Cтріткод успішно оновленний');
@@ -275,10 +286,12 @@ const NewStreetcode = () => {
                 });
         } else {
             StreetcodesApi.create(streetcode)
-
-                .then((response) => {
-                    setTimeout(() => window.location.reload(), 500);
-                    navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
+                .then(() => {
+                    if (tempStatus === 1) {
+                        navigate(`../${form.getFieldValue('streetcodeUrlName')}`, {replace: true});
+                    } else {
+                        navigate(`${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+                    }
                 })
                 .catch((error) => {
                     alert('Виникла помилка при створенні стріткоду');
@@ -318,7 +331,24 @@ const NewStreetcode = () => {
                             <ARBlock />
                         </Form>
                     </div>
-                    <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={
+                            onFinish
+                        }
+                        name={publish}
+                    >
+                        {publish}
+                    </Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={
+                            onFinish
+                        }
+                        name={draft}
+                    >
+                        {draft}
+                    </Button>
                 </div>
             </ConfigProvider>
         </div>

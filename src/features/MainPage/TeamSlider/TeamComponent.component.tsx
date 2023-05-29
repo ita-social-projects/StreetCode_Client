@@ -39,10 +39,9 @@ const TeamComponent = () => {
     const handleClick = () => {
         window.location.assign('https://www.instagram.com/streetcodeua/');
     }
-
-    if (team.length > 0) {
         return (
-            
+            (team.length > 0)
+            ? (
             <div id="mainBlock" className="teamComponent">
                 <Heading blockName='Команда' buttonName='Вся команда' setActionOnClick={handleClick}/>
                 <div className="mainContainer">
@@ -61,10 +60,8 @@ const TeamComponent = () => {
                     </div>
                 </div>
             </div >
+           ) : <></>
         );
-    }
-
-    return null;
 };
 
 export default TeamComponent;

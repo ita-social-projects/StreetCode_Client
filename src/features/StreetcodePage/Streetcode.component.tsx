@@ -1,54 +1,61 @@
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import React, {
     lazy, Suspense, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate } from 'react-router';
-import { useNavigate, useSearchParams, useSearchParams } from 'react-router-dom';
+import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import Footer from '@layout/footer/Footer.component';
-import useMobx from '@stores/root-store';
+import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
-import dayjs from 'dayjs';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
+
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
-import MapComponent from './MapBlock/Map/Map.component';
 import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 
 const StreetcodeContent = () => {
-    const { imageLoaderStore, streetcodeStore } = useMobx();
+    const { streetcodeStore } = useStreetcodeDataContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const { imagesLoadedPercentage, loadedImagesCount } = imageLoaderStore;
-    const [slideCloneCountAdded, setSlideCloneCountAdded] = useState(0);
-
-    const streetcodeUrl = useRouteUrl();
+    const pageLoadercontext = useStreecodePageLoaderContext();
+    const streetcodeUrl = useRef<string>(useRouteUrl());
 
     const [activeTagId, setActiveTagId] = useState(0);
     const [activeBlock, setActiveBlock] = useState(0);
-    const [loading, setLoading] = useState(true);
-
-    const [textBlockState, setTextBlockState] = useState(false);
+    const [streetcode, setStreecode] = useState<Streetcode>();
 
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
+    const location = useLocation();
 
     const checkExist = async (qrId: number) => {
         const exist = await StatisticRecordApi.existByQrId(qrId);
+        return exist;
+    };
+
+    const checkStreetcodeExist = async (url: string) => {
+        const exist = await StreetcodesApi.existWithUrl(url);
         return exist;
     };
 
@@ -56,7 +63,20 @@ const StreetcodeContent = () => {
         await StatisticRecordApi.update(qrId);
     };
 
-    useEffect(() => {
+    useAsync(() => {
+        Promise.all([checkStreetcodeExist(streetcodeUrl.current)]).then(
+            (resp) => {
+                if (!resp.at(0)) {
+                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                }
+                setCurrentStreetcodeId(streetcodeUrl.current).then((st) => {
+                    if (st?.status !== 1 && !location.pathname.includes(`${FRONTEND_ROUTES.ADMIN.BASE}`)) {
+                        navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                    }
+                });
+            },
+        );
+
         const idParam = searchParams.get('qrid');
         if (idParam !== null) {
             const tempId = +idParam;
@@ -69,38 +89,19 @@ const StreetcodeContent = () => {
                 },
             ).catch(
                 () => {
-                    navigate('/404', { replace: true });
+                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
                 },
             );
         }
     });
 
     useEffect(() => {
-        setCurrentStreetcodeId(streetcodeUrl).then();
-    }, [setCurrentStreetcodeId, streetcodeUrl]);
-
-    useEffect(() => {
-        // for cloned images in sliders
-        if (slideCloneCountAdded === 0) {
-            const slideClonedImgs = document.querySelectorAll('.slick-cloned img');
-            const slideCloneCount = slideClonedImgs.length;
-            imageLoaderStore.totalImagesToLoad += slideCloneCount;
-            setSlideCloneCountAdded(slideCloneCount);
-        }
-
-        if (imagesLoadedPercentage >= 90 && textBlockState) {
-            setLoading(false);
-            const anchorId = window.location.hash.substring(1);
-            const blockElement = document.getElementById(anchorId);
-            if (blockElement) {
-                blockElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    }, [textBlockState, loadedImagesCount]);
+        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => setStreecode(val));
+    }, []);
 
     return (
         <div className="streetcodeContainer">
-            {loading && (
+            {!pageLoadercontext.isPageLoaded && (
                 <div className="loader-container">
                     <img
                         className="spinner"
@@ -111,10 +112,11 @@ const StreetcodeContent = () => {
             )}
             <ProgressBar>
                 <MainBlock
+                    streetcode={streetcode}
                     setActiveTagId={setActiveTagId}
                     setActiveBlock={setActiveBlock}
                 />
-                <TextBlockComponent setTextBlockState={setTextBlockState} />
+                <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlock />

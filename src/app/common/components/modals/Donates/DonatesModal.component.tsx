@@ -8,7 +8,7 @@ import {
 
 import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 import Donation from '@/models/feedback/donation.model';
 import DonationApi from '@/app/api/donates/donation.api';
 
@@ -18,11 +18,10 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 const possibleDonateAmounts = [500, 100, 50];
 
 const DonatesModal = () => {
-    const { modalStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
@@ -65,16 +64,18 @@ const DonatesModal = () => {
 
     const handlePost = async () => {
         const donation: Donation = { 
-            Amount: donateAmount, 
-            PageUrl: window.location.href
+            amount: donateAmount, 
+            pageUrl: window.location.href
         };
 
         if (isCheckboxChecked) {
-            try {
-                supportEvent('submit_donate_from_modal');
-                const response = await DonationApi.create(donation);
-                window.location.assign(response.PageUrl);
-            } catch (err) { }
+            supportEvent('submit_donate_from_modal');
+            
+            Promise.all([DonationApi.create(donation)])
+            .then(response => {
+                window.location.assign(response[0].pageUrl);
+            })
+            .catch();
         }
     }
 
@@ -140,10 +141,14 @@ const DonatesModal = () => {
                 <div className="donatesInputContainer">
                     <Checkbox className={"checkbox-borderline"} checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
                 </div>
-                <Button onClick={handlePost}
-                    disabled={!isCheckboxChecked || donateAmount == 0}
+                <button
+                    onClick={handlePost}
+                    type="button"
+                    disabled={!isCheckboxChecked || donateAmount === 0}
                     className="donatesDonateBtn"
-                >Підтримати</Button>
+                >
+                    Підтримати
+                </button>
             </div>
         </Modal>
     );
