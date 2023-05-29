@@ -1,14 +1,14 @@
 import './InstagramSliderItem.styles.scss';
 
 interface Props {
-    // key: number,
     photoUrl: string | undefined,
-    caption: string | undefined
+    caption: string | undefined,
+    permalink: string
 }
 
-const InstagramSliderItem = ({ photoUrl, caption }: Props) => {
-
+const InstagramSliderItem = ({ photoUrl, caption, permalink } : Props) => {
     const MAX_CAPTION_LENGTH = 110;
+
     const truncatedCaption =
         caption && caption.length > MAX_CAPTION_LENGTH
             ? caption.substring(0, MAX_CAPTION_LENGTH).split(' ').slice(0, -1).join(' ') + '...'
@@ -21,10 +21,15 @@ const InstagramSliderItem = ({ photoUrl, caption }: Props) => {
         backgroundRepeat: 'no-repeat',
     };
 
+    const handleOpenPost = () => {
+        window.open(permalink);
+    }
+
     return (
         <div 
             className='InstagramSliderItem'
             style={imageStyle}
+            onClick={handleOpenPost}
         >
             <div className='textContainer'>
                 <p>{truncatedCaption}</p>
