@@ -201,6 +201,9 @@
     @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 10px);
     .headerContainer {
       @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 21px);
+      .tagContainer{
+        max-height: f.pxToRem(82px);
+      }
     }
     .teaserBlock {
       line-height: f.pxToRem(19px);
