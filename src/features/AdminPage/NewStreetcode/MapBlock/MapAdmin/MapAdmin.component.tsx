@@ -1,7 +1,7 @@
 import './MapAdmin.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState,useCallback } from 'react';
 import { Button, Form, Input, InputNumber, Table, message } from 'antd';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
@@ -10,6 +10,7 @@ import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import useMobx from '@/app/stores/root-store';
+import { Modal } from 'antd';
 
 const containerStyle = {
     width: '100%',
@@ -178,7 +179,14 @@ const MapOSMAdmin: React.FC<Props> = ({
             );
         }
     };
+    const [visibleModal, setVisibleModal] = useState(false);
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
 
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
     const columns = [
         {
             title: 'Номер таблички',
@@ -205,7 +213,13 @@ const MapOSMAdmin: React.FC<Props> = ({
             key: 'actions',
             render: (text: any, record: any) => (
                 <span>
-                    <DeleteOutlined onClick={() => handleDelete(record)} />
+                    <DeleteOutlined onClick={() => handleRemove()} />
+                    <Modal
+                    title="Ви впевнені, що хочете видалити дану точку?"
+                    open={visibleModal}
+                    onOk={(e) => {handleDelete(record); setVisibleModal(false);}}
+                    onCancel={handleCancelModalRemove}
+                />
                 </span>
             ),
         },
