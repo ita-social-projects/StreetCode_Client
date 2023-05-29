@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-
+import { useCallback, useState } from 'react';
+import { Modal } from 'antd';
 import useMobx from '@stores/root-store';
 
 const ForFansAdminItem: React.FC<{
@@ -8,6 +9,14 @@ const ForFansAdminItem: React.FC<{
     categoryName: string, onEditClick: () => void
 }> = ({ index, categoryName, onEditClick }) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
+    const [visibleModal, setVisibleModal] = useState(false);
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
+
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
     return (
         <div className="textBlockButton">
             <div className="item">
@@ -20,8 +29,14 @@ const ForFansAdminItem: React.FC<{
                     {categoryName}
                 </p>
                 <div className="blockItem">
-                    <DeleteOutlined onClick={() => sourceCreateUpdateStreetcode.removeSourceCategoryContent(index)} />
+                    <DeleteOutlined onClick={() => handleRemove()} />
                 </div>
+                <Modal
+                    title="Ви впевнені, що хочете видалити дану категорію?"
+                    open={visibleModal}
+                    onOk={(e) => {sourceCreateUpdateStreetcode.removeSourceCategoryContent(index);setVisibleModal(false);}}
+                    onCancel={handleCancelModalRemove}
+                />
             </div>
         </div>
     );
