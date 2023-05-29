@@ -199,6 +199,9 @@ export const API_ROUTES = {
     DONATION: {
         CREATE: 'payment/createInvoice',
     },
+    INSTAGRAM: {
+        GET_ALL: 'instagram/getAll',
+    },
     STATISTIC_RECORD: {
         GET_ALL: 'statisticRecord/getAll',
         GET_BY_QRID: 'statisticRecord/getByQrId',
