@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import ImageStore from '@stores/image-store';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
@@ -17,7 +16,8 @@ import PageBar from '../PageBar/PageBar.component';
 import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
 
 const Newss: React.FC = observer(() => {
-    const { newsStore, modalStore } = useMobx();
+    const { modalStore } = useModalContext();
+    const { newsStore } = useMobx();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [newsToEdit, setNewsToEdit] = useState<News>();

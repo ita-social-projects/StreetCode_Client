@@ -19,7 +19,6 @@ interface Props {
 const SourceItem = ({ srcCategory }: Props) => {
     const { sourcesAdminStore } = useMobx();
     const { deleteSourceCategory, updateSourceCategory } = sourcesAdminStore;
-    const { modalStore: { setModal } } = useMobx();
     const [isModalEditVisible, setIsModalEditVisible] = useState(false);
     const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
     const [title, setTitle] = useState(srcCategory.title);
