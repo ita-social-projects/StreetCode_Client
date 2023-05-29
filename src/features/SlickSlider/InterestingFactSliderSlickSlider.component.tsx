@@ -5,7 +5,7 @@ import {
 } from 'react';
 import Slider from 'react-slick';
 
-import useMobx from '@/app/stores/root-store';
+import useMobx, { useModalContext } from '@/app/stores/root-store';
 
 import SliderProps, { defaultSliderProps } from './index';
 
@@ -15,7 +15,7 @@ const GenericSlider: FC<SliderProps> = ({
     swipeOnClick = false,
     ...sliderProps
 }) => {
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
     const sliderRef = useRef<Slider>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lastClick, setLastClick] = useState(Date.now());

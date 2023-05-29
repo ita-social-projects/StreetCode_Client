@@ -3,7 +3,7 @@ import './EditTermModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Form, Input, Modal } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const EditTermModal = ({ handleEdit, term, setTerm } : Props) => {
-    const { modalStore: { setModal, modalsState: { editTerm } } } = useMobx();
+    const { modalStore: { setModal, modalsState: { editTerm } } } = useModalContext();
 
     const handleChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTerm({ ...term, description: e.target.value });

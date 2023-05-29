@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite';
 
 import { Modal } from 'antd';
 
-import useMobx from '@/app/stores/root-store';
+import useMobx, { useModalContext } from '@/app/stores/root-store';
 
 const ConfirmationModal = () => {
-    const { modalStore: { setConfirmationModal, modalsState: { confirmation } } } = useMobx();
+    const { modalStore: { setConfirmationModal, modalsState: { confirmation } } } = useModalContext();
     return (
         <Modal
             title="Підтведження"

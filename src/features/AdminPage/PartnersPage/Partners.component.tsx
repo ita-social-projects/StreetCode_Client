@@ -8,7 +8,7 @@ import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
 import ImageStore from '@stores/image-store';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 import axios from 'axios';
 
 import { Button } from 'antd';
@@ -25,8 +25,9 @@ import PartnerModal from './PartnerModal/PartnerModal.component';
 const LogoType = [twitter, instagram, facebook, youtube];
 
 const Partners:React.FC = observer(() => {
-    const { partnersStore, modalStore } = useMobx();
+    const { partnersStore } = useMobx();
 
+    const { modalStore } = useModalContext();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [partnerToEdit, setPartnerToedit] = useState<Partner>();

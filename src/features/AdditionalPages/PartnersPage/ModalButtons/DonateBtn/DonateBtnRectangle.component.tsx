@@ -1,12 +1,10 @@
-/* eslint-disable react/button-has-type */
 import './DonateBtnRectangle.styles.scss';
 
-import useMobx from '@stores/root-store';
-
 import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { useModalContext } from '@/app/stores/root-store';
 
 const DonateBtnRectangle = () => {
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
     const onBtnClick = () => {
         setModal('donates');
         donateEvent('partners_page_donate');

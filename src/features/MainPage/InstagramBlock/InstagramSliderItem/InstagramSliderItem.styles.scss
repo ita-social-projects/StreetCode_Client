@@ -17,8 +17,7 @@
         @include mut.sized($width: 300px, $height: 97px);
         padding: f.pxToRem(17px) f.pxToRem(20px) f.pxToRem(16px);
 
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
+        @include mut.rounded($bottom-left: 20px, $bottom-right: 30px);
         background-color: c.$pure-white-color;
 
         p {

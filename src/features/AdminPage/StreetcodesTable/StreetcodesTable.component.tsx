@@ -261,7 +261,6 @@ const StreetcodesTable = () => {
     }, [requestGetAll, amountRequest, pageRequest]);
 
     return (
-
         <div className="StreetcodeTableWrapper">
             <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest} />
             <div>
@@ -270,7 +269,6 @@ const StreetcodesTable = () => {
                     dataSource={mapedStreetCodes}
                     scroll={{ y: 440 }}
                     pagination={false}
-
                 />
             </div>
             <div>
@@ -288,7 +286,6 @@ const StreetcodesTable = () => {
                             }}
                         />
                     </div>
-
                     <div className="underTableElement">
                         <Pagination
                             className="pagenationElement"

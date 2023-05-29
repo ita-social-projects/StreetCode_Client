@@ -34,7 +34,7 @@ const StreetcodeCatalog = () => {
     }, [screen]);
 
     return (
-        <div>
+        <div className="catalogPage">
             <div className="streetcodeCatalogWrapper">
                 <h1 className="streetcodeCatalogHeading">Стріткоди</h1>
                 <div className="steetcodeCatalogContainer">
