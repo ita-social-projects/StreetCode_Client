@@ -71,6 +71,10 @@
     height: 100%;
     @include mut.flexed(column, start, space-between, nowrap);
     @include mut.rem-padded(50px, 15px, 0px, 50px);
+    .upper-info{
+      @include mut.flexed(column, start, start, nowrap);
+      max-height: f.pxToRem(433px);
+    }
 }
 .teaserBlock {
   width: 100%;
@@ -80,6 +84,7 @@
   max-height: f.pxToRem(214px);
   overflow: auto;
   color: c.$lighter-black-color;
+  float: left;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -89,22 +94,12 @@
     position: relative;
     height: f.pxToRem(214px);
 
-    &:after {
-        content: '';
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        right: 5px;
-        height: 6em;
-        box-shadow: none;
-        background: linear-gradient(0deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.75) 2%, rgba(255,255,255,0.1) 21%);
-        -webkit-text-fill-color: transparent;
-    }
+    
 }
 
 .cardFooter {
-    width: 100% !important;
-    margin-top: f.pxToRem(45px) !important;
+    width: 100%;
+    position: relative;
     @include mut.rem-padded(10px, 0px, 54px, 0px);
     @include mut.flexed($justify-content: flex-start, $gap: 20px);
   .ant-btn-primary:disabled {
@@ -115,6 +110,18 @@
     border-width: 3px;
     border-color: c.$accented-red-color;
   }
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 45px;
+    left: 0;
+    right: 5px;
+    height: 25px;
+    box-shadow: none;
+    background: linear-gradient(0deg, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255,255,255,0.75) 21%);
+    -webkit-text-fill-color: transparent;
+}
+
 }
 .audioBtnActive {
   background-color: c.$accented-red-color;
@@ -245,7 +252,7 @@
         @include mut.sized(290px, 377px);
       }
       .cardFooter {
-        width: 95%;
+        width: 98%;
         @include mut.rem-padded(10px, 0px, 0px, 0px);
         .animateFigureBtn {
           @include mut.hidden();
@@ -279,11 +286,6 @@
         .audioBtn{
           width: 100%;
         }
-      }
-      .teaserBlockContainer {
-        height: fit-content;
-        &:after {
-        content: none;}
       }
       .teaserBlock {
         max-height: f.pxToRem(240px);
