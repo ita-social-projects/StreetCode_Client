@@ -5,6 +5,7 @@ import InstagramSliderItem from './InstagramSliderItem/InstagramSliderItem.compo
 import { useEffect, useState } from 'react';
 import InstagramPost from '@/models/instagram/instagram.model';
 import InstagramApi from '@/app/api/instagram/instagram.api';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const InstagramBlock = () => {
     const [posts, setPosts] = useState<InstagramPost[]>([]);
@@ -17,13 +18,15 @@ const InstagramBlock = () => {
       fetchPosts();
     }, []);
 
+    const windowSize = useWindowSize();
+
     const sliderProps = {
-        infinite: false,
-        swipe: true,
+        infinite: true,
+        swipe: windowSize.width < 1025,
         variableWidth: true,
         swipeOnClick: false,
         slidesToShow: 4,
-        dots: false,
+        dots: true,
         arrows: false,
         slidesToScroll: 1,
         rows: 1,

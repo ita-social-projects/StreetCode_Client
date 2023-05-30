@@ -7,6 +7,11 @@
 .InstagramBlock {
     .sliderContainer {
         padding: 0 f.pxToRem(20px) f.pxToRem(110px);
+
+        .slick-dots {
+            bottom: -40px;
+        }
+        
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 20px);
             @include mut.rem-padded($bottom: 5px);
