@@ -63,9 +63,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             index
             path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
             element={(
-                <ProtectedComponent>
-                    <TermDictionary />
-                </ProtectedComponent>
+                <TermDictionary />
             )}
         />
         <Route
