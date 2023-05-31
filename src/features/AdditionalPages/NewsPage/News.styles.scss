@@ -8,10 +8,10 @@
     width: 100%;
     height: 100%;
     padding: f.pxToRem(150px) f.pxToRem(200px) f.pxToRem(100px) f.pxToRem(200px);
-    background: c.$accented-white-color;
+    background: c.$pure-white-color;
 
     .wrapper{
-        max-width: f.pxToRem(1200px);
+        max-width: 100%;
         width: 100%;
         margin: 0 auto;
         display: block;
@@ -27,10 +27,17 @@
     
     .newsTextArea {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+        overflow-wrap:break-word;
 
         p {
             padding-bottom: f.pxToRem(24px);
+
+            strong {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500);
+            }
         }
+
+        
     }
 
     .newsImageClass {
@@ -42,7 +49,9 @@
     }
 
     .newsGoodImageClass.Full {
-        padding-top: f.pxToRem(24px);
+        border: 6px solid c.$pure-white-color;
+        border-radius: f.pxToRem(30px);
+        margin-bottom: f.pxToRem(24px);
         display: initial;
         width: 100%;
     }
@@ -51,6 +60,7 @@
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         width: 100%;
         min-width: 50%;
+
         .newsParagraph {
             font-family: "Closer Text", sans-serif !important;
         }
@@ -69,22 +79,30 @@
     }
 
     .newsImage {
-        padding-bottom: f.pxToRem(24px);
+        margin-bottom: f.pxToRem(20px);
+        margin-left: f.pxToRem(20px);
         height: 100%;
-        max-width: 100%;
-        min-width: 50%;
+        max-height: fit-content;
+        min-width:fit-content;
         float: right;
+        border-radius: 24px;
     }
 
     .newsImage.Full {
-        width: 100%;
+        min-width:0%;
+        max-width: 100%;
         display: none;
+    }
+
+    .newsImage.Full.Show {
+        min-width:0%;
+        max-width: 100%;
+        display: initial;
     }
 
     .newsLinks {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         line-height: f.pxToRem(14px);
-        padding-top: f.pxToRem(24px);
         text-align: center;
         text-decoration: underline;
         text-decoration-color: c.$dark-red-color;
@@ -130,6 +148,11 @@
                         background: c.$accented-red-color;
                         border-radius: 14px;
                         color: c.$pure-white-color; 
+
+                    }
+
+                    button:focus {
+                        outline: none;
                     }
                     
                 }
@@ -144,7 +167,6 @@
 
 @media screen and (max-width: 1024px) {
     .newsContainer{
-        background-color: c.$partners-mobile-background-color;
         background-image: none;
         padding-left: f.pxToRem(10px);
         padding-right: f.pxToRem(10px);
@@ -226,6 +248,10 @@
         .newsImage {
             width: 100%;
         }
+
+        .newsGoodImageClass.Full {
+            border-radius: f.pxToRem(24px);
+        }
         
         .randomNewsBlock {
             .randomNewsLink {
@@ -279,7 +305,7 @@
                     border-radius: 10px;
                     width: 100%;
                     margin-bottom: 10px;
-                }
+                    filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.18));                }
             }
 
             .newsLinks .Link.toHide {
@@ -300,10 +326,12 @@
                             min-width: 100%;
                             margin-top: f.pxToRem(12px);
                             padding-left: 0px;
+
                             button {
                                     height: f.pxToRem(46px);
                                     padding: f.pxToRem(0px)  f.pxToRem(0px);
                                     min-width: 100%;
+                                    box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
                                 }
                         }
                     }

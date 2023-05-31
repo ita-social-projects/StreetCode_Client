@@ -15,7 +15,8 @@ import parse from 'html-react-parser';
 
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
-    const [newsImg, setNewsImg] = useState<HTMLElement| null>(null);; 
+    const [newsImg, setNewsImg] = useState<HTMLElement| null>(null); 
+    const [strongTagCounter, setCounter] = useState(0); 
     const { newsStore, imagesStore } = useMobx();
     var { value } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
     const news = value as News;
@@ -44,32 +45,37 @@ const NewsPage = () => {
 
     const getFullImg = () => {
         var newsimg = new Image;
-        var strongTags = document.getElementsByTagName('strong');
-        var lastStrongTag = strongTags[strongTags.length - 1]; 
+        var parTags = document.getElementsByTagName('p');
+        
         if(news.image){
             var imgUrl = base64ToUrl(getImage(news.imageId!)?.base64, getImage(news.imageId!)?.mimeType);
             newsimg.src = imgUrl!;
 
             newsimg.onload = function() {
                 setWidth(newsimg.width);
-
-                if (strongTags.length > 0 ) {
+                var Par = parTags[0];
+                if(parTags.length>2) {
+                   Par = parTags[1];
+                }
+                else {
+                    Par = parTags[0];
+                }
+                
                     const img = document.createElement('img');
                     img.src = imgUrl!;
-                    img.className = `newsGoodImageClass ${newsimg.width > wrapperWidth * 0.5 ? 'Full' : ''}`;
+                    img.className = `newsGoodImageClass ${(newsimg.width > wrapperWidth * 0.6 || wrapperWidth <= 770) ? 'Full' : ''}`;
                     setNewsImg(img);
-
-                    if (newsimg.width > wrapperWidth * 0.5 || wrapperWidth <= 600)
+                    setCounter(1);
+                    
+                    if ((newsimg.width > wrapperWidth * 0.6 || wrapperWidth <= 770) && Par)
                     {
-                        lastStrongTag.parentNode?.insertBefore(img, lastStrongTag.nextSibling);
-                    }    
-                }
+                        Par.parentNode?.insertBefore(img, Par.nextSibling);
+                    }
             }      
-        }     
-        
+        }        
     }
 
-    const DellFullImg = () => {
+      const DellFullImg = () => {
         if(newsImg){
             var parentElement = newsImg.parentNode;
             parentElement?.removeChild(newsImg!);
@@ -117,10 +123,10 @@ const NewsPage = () => {
                 <div className='NewsHeader'>
                     <h1 className=''>{news?.title}</h1>
                 </div>
-                <div  className={`newsWithImageWrapper ${width > wrapperWidth * 0.5 ? 'Full' : ''}`}>
+                <div  className={`newsWithImageWrapper ${width > wrapperWidth * 0.6 ? 'Full' : ''}`}>
                 {newsImg && (
                     <img
-                        className={`newsImage ${width > wrapperWidth * 0.5 ? 'Full' : ''}`}
+                        className={`newsImage ${(width > wrapperWidth * 0.6 || wrapperWidth <= 770) ? 'Full' : ''} ${strongTagCounter > 0 ? '' : 'Show'}`}
                         key={news?.id}
                         src={base64ToUrl(getImage(news?.imageId!)?.base64, getImage(news?.imageId!)?.mimeType)}
                         alt={news?.title}
@@ -157,7 +163,6 @@ const NewsPage = () => {
                 </div>
             </div>
         </div>
-        <Footer />
     </div>
     );
 }
