@@ -149,9 +149,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                         onSuccessUpload={(image: Image) => {
                             imageId.current = image.id;
                         }}
-                        onRemove={(image) => {
-                            ImagesApi.delete(imageId.current);
-                        }}
                     >
                         <div>
                             <InboxOutlined />
