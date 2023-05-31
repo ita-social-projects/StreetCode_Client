@@ -44,7 +44,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
      const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
      const imageId = useRef<number>(0);
-     const handlePreview = async (file: UploadFile) => {
+     const handlePreview = (file: UploadFile) => {
          setFilePreview(file);
          setPreviewOpen(true);
      };
