@@ -7,6 +7,10 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import TeamMember, {
+    LogoType, Positions,
+    TeamCreateUpdate, TeamMemberLinkCreateUpdate,
+} from '@models/team/team.model';
 import useMobx from '@stores/root-store';
 
 import {
@@ -18,14 +22,11 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
-import ImagesApi from '@/app/api/media/images.api';
+import PositionsApi from '@/app/api/team/positions.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Image from '@/models/media/image.model';
-
-import PositionsApi from '../../../../app/api/team/positions.api';
-import TeamMember, { LogoType, Positions, TeamCreateUpdate, TeamMemberLinkCreateUpdate } from '../../../../models/team/team.model';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -273,7 +274,9 @@ const TeamModal: React.FC<{
                             accept=".jpeg,.png,.jpg"
                             listType="picture-card"
                             maxCount={1}
-                            onPreview={(e) => { setFilePreview(e); setPreviewOpen(true); }}
+                            onPreview={(e) => {
+                                setFilePreview(e); setPreviewOpen(true);
+                            }}
                             uploadTo="image"
                             onSuccessUpload={(image: Image) => {
                                 imageId.current = image.id;

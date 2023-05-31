@@ -16,7 +16,6 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import { CheckboxProps } from 'antd/lib/checkbox';
 
 import ImagesApi from '@/app/api/media/images.api';
 import partnersApi from '@/app/api/partners/partners.api';
@@ -187,7 +186,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          <Modal
              open={open}
              onCancel={closeAndCleanData}
-             className="partner-modal-container"
+             className="modalContainer"
              footer={null}
              closeIcon={<CancelBtn />}
          >
