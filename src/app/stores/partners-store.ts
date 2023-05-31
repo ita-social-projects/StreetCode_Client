@@ -79,9 +79,6 @@ export default class PartnersStore {
     public deletePartner = async (partnerId: number) => {
         try {
             await partnersApi.delete(partnerId);
-            runInAction(() => {
-                this.PartnerMap.delete(partnerId);
-            });
         } catch (error: unknown) {}
     };
 }

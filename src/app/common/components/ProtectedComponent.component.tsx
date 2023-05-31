@@ -10,10 +10,16 @@ import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
 type PropsWithChildren = { children: ReactNode };
 const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => {
     const { userLoginStore } = useMobx();
+    const navigate = useNavigate();
     if (!UserLoginStore.isLoggedIn) {
         const token = UserLoginStore.getToken();
+        console.log(token);
         if (token && token !== '') {
-            userLoginStore.refreshToken().catch((er) => <Navigate to={FRONTEND_ROUTES.ADMIN.LOGIN} />);
+            console.log('if');
+            userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+        } else {
+            console.log('elde');
+            navigate(FRONTEND_ROUTES.ADMIN.LOGIN);
         }
     }
     if (!Array.isArray(children)) return <>{children}</>;
