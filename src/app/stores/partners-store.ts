@@ -2,6 +2,8 @@ import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import partnersApi from '@api/partners/partners.api';
 import Partner, { PartnerCreateUpdate, PartnerShort } from '@models/partners/partners.model';
 
+import ImagesApi from '../api/media/images.api';
+
 export default class PartnersStore {
     public PartnerMap = new Map<number, Partner>();
 
@@ -58,17 +60,23 @@ export default class PartnersStore {
 
     public createPartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
         try {
-            await partnersApi.create(partner).then((created) => {
-                this.setItem(created); return created;
+            return await partnersApi.create(partner).then((created) => {
+                ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
+                    .then((p) => this.setItem(p));
+                return created;
             });
         } catch (error: unknown) {
             return undefined;
         }
     };
 
-    public static updatePartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
+    public updatePartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
         try {
-            return await partnersApi.update(partner);
+            return await partnersApi.update(partner).then((created) => {
+                ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
+                    .then((p) => this.setItem(p));
+                return created;
+            });
         } catch (error: unknown) {
             return undefined;
         }

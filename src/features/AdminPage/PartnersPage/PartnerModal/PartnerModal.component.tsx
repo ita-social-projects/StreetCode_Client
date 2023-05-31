@@ -157,9 +157,9 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
              ]);
          } else {
              Promise.all([
-                 partnersApi.create(partner)
+                 partnersStore.createPartner(partner)
                      .then((p) => {
-                         if (afterSubmit) {
+                         if (afterSubmit && p) {
                              afterSubmit(p);
                          }
                      })

@@ -33,7 +33,7 @@ const TeamPage = () => {
         Promise.all([teamStore?.fetchTeamAll()]).then(() => {
             teamStore?.TeamMap.forEach((val, key) => {
                 ImageStore.getImageById(val.imageId).then((image) => {
-                    teamStore.TeamMap.set(key, { ...val, image });
+                    teamStore.TeamMap.set(val.id, { ...val, image });
                 });
             });
         }).then(() => teamStore.setInternalMap(teamStore.getTeamArray));
