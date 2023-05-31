@@ -26,10 +26,9 @@ const InstagramBlock = () => {
         variableWidth: true,
         swipeOnClick: false,
         slidesToShow: 4,
-        dots: true,
-        arrows: false,
-        slidesToScroll: 1,
-        rows: 1,
+        dots: false,
+        arrows: windowSize.width > 1024,
+        slidesToScroll: 1
     };
 
     const sliderItems = posts.map((p) => (
