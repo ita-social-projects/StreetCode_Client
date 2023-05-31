@@ -40,7 +40,7 @@ const Partners:React.FC = observer(() => {
             partnersStore?.PartnerMap.forEach((val, key) => {
                 ImageStore.getImageById(val.logoId).then((logo) => {
                     partnersStore.PartnerMap.set(
-                        key,
+                        val.id,
                         { ...val, logo },
                     );
                 });
@@ -137,7 +137,7 @@ const Partners:React.FC = observer(() => {
                                   PartnersApi.delete(partner.id)
                                       .then(() => {
                                           partnersStore.PartnerMap.delete(partner.id);
-                                      }).catch((e) => {console.log("delete cathc")});
+                                      }).catch((e) => {});
                                   modalStore.setConfirmationModal('confirmation');
                               },
                               'Ви впевнені, що хочете видалити цього партнера?',

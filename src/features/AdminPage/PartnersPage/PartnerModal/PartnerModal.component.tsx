@@ -139,20 +139,25 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          if (partnerItem) {
              partner.id = partnerItem.id;
              Promise.all([
-                 partnersStore.updatePartner(partner)
+                 partnersApi.update(partner)
                      .then((p) => {
                          if (afterSubmit) {
                              if (p) {
                                  afterSubmit({ ...p });
                              }
                          }
+                         return p;
+                     }).then((p) => {
+                         ImagesApi.getById(p.logoId).then((img) => {
+                             partnersStore.setItem({ ...p, logo: img });
+                         });
                      })
                      .catch((e) => {
                      }),
              ]);
          } else {
              Promise.all([
-                 await partnersApi.create(partner)
+                 partnersApi.create(partner)
                      .then((p) => {
                          if (afterSubmit) {
                              afterSubmit(p);
@@ -268,9 +273,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                              uploadTo="image"
                              onSuccessUpload={(image:Image) => {
                                  imageId.current = image.id;
-                             }}
-                             onRemove={(image) => {
-                                 ImagesApi.delete(imageId.current);
                              }}
                              defaultFileList={(partnerItem)
                                  ? [{ name: '',

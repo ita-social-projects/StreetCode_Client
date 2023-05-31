@@ -66,17 +66,15 @@ export default class PartnersStore {
         }
     };
 
-    public updatePartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
+    public static updatePartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
         try {
-            await partnersApi.update(partner).then((updated) => {
-                this.setItem(updated); return updated;
-            });
+            return await partnersApi.update(partner);
         } catch (error: unknown) {
             return undefined;
         }
     };
 
-    public deletePartner = async (partnerId: number) => {
+    public static deletePartner = async (partnerId: number) => {
         try {
             await partnersApi.delete(partnerId);
         } catch (error: unknown) {}

@@ -17,8 +17,8 @@
 
 .termDictionaryContainer {
     padding-top: f.pxToRem(100px);
-    display: flex;
     gap: f.pxToRem(10px);
+    @include mut.flexed(row, center, center, wrap);
 
     .dictionaryHeader {
         display: grid;
