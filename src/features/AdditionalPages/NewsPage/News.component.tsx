@@ -18,7 +18,7 @@ const NewsPage = () => {
     const [newsImg, setNewsImg] = useState<HTMLElement| null>(null); 
     const [strongTagCounter, setCounter] = useState(0); 
     const { newsStore, imagesStore } = useMobx();
-    var { value } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
+    const { value } = useAsync(() => NewsApi.getByUrl(newsUrl), [newsUrl]);
     const news = value as News;
     const newsArr = newsStore.getNewsArray as News[];
 
