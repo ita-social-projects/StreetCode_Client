@@ -74,11 +74,11 @@ const SearchTerms = ({ mainText }: Props) => {
                             overlayStyle={{ width: '300px' }}
                             content={descriptiveSearchTerms.get(part)}
                         >
-                            <span style={{ cursor: 'pointer' }}>{parse(`${part}`)}</span>
+                            <span style={{ cursor: 'pointer' }}>{parser(`${part}`)}</span>
                         </Popover>
                     ) : (
                         <>
-                            {parse(`${part}`)}
+                            {parser(`${part}`)}
                         </>
                     )}
                 </span>
