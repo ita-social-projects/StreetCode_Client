@@ -25,7 +25,7 @@ const PartnersBlock = () => {
     );
 
     const createPartnersItem = (partners: Partner[]) => partners.map((partner) => (
-        <PartnersItem partner={partner} />
+        <PartnersItem key={partner.id} partner={partner} />
     ));
 
     return (
