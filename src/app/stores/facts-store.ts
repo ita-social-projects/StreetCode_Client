@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import factsApi from '@api/streetcode/text-content/facts.api';
-import { Fact, FactCreate } from '@models/streetcode/text-contents.model';
+import { Fact, FactCreate, FactUpdate } from '@models/streetcode/text-contents.model';
+import { ModelState } from '@/models/enums/model-state';
 
 export default class FactsStore {
     public factMap = new Map<number, Fact>();
@@ -10,15 +11,36 @@ export default class FactsStore {
     }
 
     private setInternalMap = (facts: Fact[]) => {
-        facts.forEach(this.setItem);
+        facts.forEach((item) => {
+            const updatedItem = {
+                ...item,
+                isPersisted: true,
+            };
+
+            this.setItem(updatedItem);
+        });
     };
 
     public addFact = (fact: Fact) => {
-        this.setItem(fact);
+        const factToUpdate: FactUpdate = {
+            ...fact,
+            modelState: ModelState.Created,
+        };
+
+        this.setItem(factToUpdate);
     };
 
     public deleteFactFromMap = (factId: number) => {
-        this.factMap.delete(factId);
+        const fact = this.factMap.get(factId) as FactUpdate;
+        if (fact && fact.isPersisted) {
+            const factToUpdate: FactUpdate = {
+                ...fact,
+                modelState: ModelState.Deleted,
+            };
+            this.setItem(factToUpdate);
+        } else {
+            this.factMap.delete(factId);
+        }
     };
 
     public updateFactInMap = (fact: Fact) => {
@@ -30,14 +52,27 @@ export default class FactsStore {
     };
 
     get getFactArray() {
-        return Array.from(this.factMap.values());
+        return (Array.from(this.factMap.values()) as FactUpdate[])
+            .filter((item: FactUpdate) => item.modelState !== ModelState.Deleted);
     }
 
-    public fetchFactsByStreetcodeId = async (streetcodeId: number) => {
+    get getFactArrayToUpdate() {
+        return (Array.from(this.factMap.values()) as FactUpdate[])
+            .map((item: FactUpdate) => {
+                if (item.modelState === ModelState.Created) {
+                    return { ...item, id: 0 };
+                }
+                return item;
+            });
+    }
+
+    public fetchFactsByStreetcodeId = async (streetcodeId: number): Promise<Fact[]> => {
         try {
             const facts = await factsApi.getFactsByStreetcodeId(streetcodeId);
             this.setInternalMap(facts);
+            return facts;
         } catch (error: unknown) {}
+        return Array<Fact>(0);
     };
 
     public createFact = async (fact: Fact) => {

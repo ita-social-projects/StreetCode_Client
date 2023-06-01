@@ -1,5 +1,8 @@
 import Image, { ImageCreate } from '@models/media/image.model';
 
+import IModelState from '../interfaces/IModelState';
+import IPersisted from '../interfaces/IPersisted';
+
 import Streetcode from './streetcode-types.model';
 
 export interface Fact {
@@ -13,6 +16,9 @@ export interface FactCreate {
   title: string;
   factContent: string;
   image: ImageCreate;
+}
+export interface FactUpdate extends Fact, IModelState, IPersisted {
+
 }
 
 export interface Term {

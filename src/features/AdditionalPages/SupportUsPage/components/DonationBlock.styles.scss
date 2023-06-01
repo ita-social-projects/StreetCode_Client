@@ -150,7 +150,8 @@
   .donatesDonateBtn {
     @include mut.full-rounded(10px);
     @include mut.sized($width: 550px, $height: 73px);
-    
+    @include mut.with-font($font-size: 20px);
+    color: c.$pure-white-color;
     background-color: c.$accented-red-color;
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
     border-radius: 15px;
@@ -159,6 +160,11 @@
       cursor: pointer;
       background-color: c.$lighter-gray-color;
       color: c.$pure-white-color;
+
+      &:hover {
+        background-color: c.$lighter-gray-color;
+        cursor: default;
+      }
     }
 
     > span {
@@ -167,7 +173,7 @@
     }
 
     &:hover {
-      filter: brightness(110%);
+      background-color: c.$dark-red-color;
     }
   }
 }

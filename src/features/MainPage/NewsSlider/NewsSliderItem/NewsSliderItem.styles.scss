@@ -10,10 +10,10 @@
 
     .newsMainPage {
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
-        @include mut.sized(840px, 578px);
+        @include mut.sized(840px, 567px);
         @include mut.full-rounded(30px);
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        background-color: #FFFFFF;
+        background-color: c.$pure-white-color;
         margin-left: 20px;
     }
 
@@ -23,13 +23,13 @@
         z-index: 2;
         @include mut.sized(840px, 193px);
         @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
-        background-color: #FFFFFF;
+        background-color: c.$pure-white-color;
     }
 
     .newsPageImgContainer {
         position: relative;
         z-index: 1;
-
+        @include mut.rem-padded($top: 5px, $right: 5px, $bottom: 5px, $left: 5px);
         .newsPageImg {
             position: relative;
             width: 100%;

@@ -13,7 +13,7 @@ export default class RelatedFiguresStore {
         this.relatedFiguresMap.set(relatedFigure.id, relatedFigure);
     };
 
-    private set setInternalRelatedFiguresMap(relatedFigures: RelatedFigure[]) {
+    public set setInternalRelatedFiguresMap(relatedFigures: RelatedFigure[]) {
         this.relatedFiguresMap.clear();
         relatedFigures.forEach(this.setRelatedFigureItem);
     }

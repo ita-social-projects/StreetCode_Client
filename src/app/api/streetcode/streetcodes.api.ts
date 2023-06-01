@@ -1,8 +1,12 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
-{ EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord, StreetcodeMainPage } from '@models/streetcode/streetcode-types.model';
+{
+    EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord,
+    StreetcodeCreate, StreetcodeMainPage, StreetcodeUpdate,
+} from '@models/streetcode/streetcode-types.model';
 
+import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 import GetAllStreetcodes from '@/models/streetcode/getAllStreetcodes.request';
 
 const StreetcodesApi = {
@@ -44,13 +48,22 @@ const StreetcodesApi = {
 
     getUrlByQrId: (id: number) => Agent.get<string>(`${API_ROUTES.STREETCODES.GET_URL_BY_QR_ID}/${id}`),
 
-    create: (streetcode: StreetcodeCreate) => Agent.post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
+    create: (streetcode: StreetcodeCreate) => Agent
+        .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
-    update: (streetcode: StreetcodeCreate) => Agent.put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
+    update: (streetcode: StreetcodeUpdate) => Agent
+        .put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
+
+    updateState: (id: number, stateId: number) => Agent.put<void>(
+        `${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`,
+        {},
+    ),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 
     existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
+
+    existWithUrl: (url: string) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_URL}/${url}`),
 };
 
 export default StreetcodesApi;

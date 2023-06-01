@@ -14,7 +14,7 @@ import TransactionLink from '@models/transactions/transaction-link.model';
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
 import StatisticRecord from '../analytics/statisticrecord.model';
 
-import { Fact, FactCreate, TextCreate } from './text-contents.model';
+import { Fact, FactCreate, FactUpdate, TextCreate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -104,6 +104,7 @@ export interface StreetcodeCreate {
     title: string,
     teaser: string,
     alias?: string,
+    status: Status;
     transliterationUrl: string,
     arBlockURL?: string,
     viewCount: number,
@@ -141,7 +142,7 @@ export interface StreetcodeUpdate {
     dateString: string,
     streetcodeType: StreetcodeType,
     videos: Video[],
-    facts: Fact[],
+    facts: FactUpdate[],
     relatedFigures: RelatedFigureUpdate[],
     timelineItems: TimelineItemUpdate[],
 }

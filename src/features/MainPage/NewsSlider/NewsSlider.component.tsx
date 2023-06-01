@@ -18,7 +18,7 @@ const NewsSlider = () => {
     useEffect(() => {
         const fetchNewsAll = async () => {
             try {
-                const response = await NewsApi.getAll();
+                const response = await NewsApi.getAllSortedNews();
                 setNews(response);
                 console.log(response);
             } catch (error) {
@@ -50,6 +50,8 @@ const NewsSlider = () => {
     }
    
         return (
+            (news.length > 0)
+            ? (
             <div>
                 <div className="NewsWrapper">
                 <Heading blockName='Новини' buttonName='Всі новини' setActionOnClick={handleClick}/>
@@ -70,6 +72,7 @@ const NewsSlider = () => {
                     </div>
                 </div>
             </div>
+          ) : <></>
         );
     
 

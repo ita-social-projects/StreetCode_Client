@@ -4,12 +4,10 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import SlickSliderSmall from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
-import { title } from 'process';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -21,8 +19,9 @@ const SECTION_AMOUNT = 6;
 const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
-    const { streetcodeArtStore, streetcodeStore, imageLoaderStore } = useMobx();
-    const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
+    const { streetcodeArtStore } = useMobx();
+    const { streetcodeStore:{getStreetCodeId, errorStreetCodeId} } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [indexedArtsSmall, setIndexedArtsSmall] = useState<IndexedArt[]>([]);
@@ -45,15 +44,12 @@ const ArtGalleryBlock = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId);
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId).then(() => streecodePageLoaderContext.addBlockFetched());
             }
         },
         [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
     );
 
-    useEffect(() => {
-        imageLoaderStore.totalImagesToLoad += getStreetcodeArtArray.length;
-    }, [getStreetcodeArtArray.length]);
 
     useEffect(() => {
         const newMap: IndexedArt[] = [];
@@ -233,10 +229,10 @@ const ArtGalleryBlock = () => {
         touchAction: 'pan-y',
         touchThreshold: 25,
         transform: 'translateZ(0)',
-        swipe: windowsize.width <= 1024,
         swipeOnClick: false,
         slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
         slidesToScroll: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : 3,
+        centerPadding: '0px',
     };
 
     const sliderPropsSmall = {
@@ -271,12 +267,12 @@ const ArtGalleryBlock = () => {
                             </SlickSlider>
                         )}
                         {windowsize.width <= 1024 && (
-                            <SlickSliderSmall
+                            <SlickSlider
 
                                 {...sliderPropsSmall}
                             >
                                 {slideOfArtListSmall}
-                            </SlickSliderSmall>
+                            </SlickSlider>
                         )}
                     </div>
                 </div>

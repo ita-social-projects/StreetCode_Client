@@ -1,7 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 
 import { ModelState } from '../enums/model-state';
-import IChanged from '../interfaces/IChanged';
+import IModelState from '../interfaces/IModelState';
+import IChanged from '../interfaces/IModelState';
 import IPersisted from '../interfaces/IPersisted';
 
 export interface HistoricalContext {
@@ -9,8 +10,8 @@ export interface HistoricalContext {
     title: string;
 }
 
-export interface HistoricalContextUpdate extends HistoricalContext, IPersisted {
-    modelState: ModelState;
+export interface HistoricalContextUpdate extends HistoricalContext, IModelState, IPersisted {
+
 }
 
 export enum DateViewPattern {

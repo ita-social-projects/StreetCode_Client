@@ -34,8 +34,6 @@ export default class TimelineStore {
         } else {
             this.timelineItemMap.delete(timelineItemId);
         }
-
-        console.log(this.getTimelineItemArray);
     };
 
     private setInternalMap = (timelineItems: TimelineItem[]) => {

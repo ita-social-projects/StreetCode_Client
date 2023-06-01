@@ -4,7 +4,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Form, Input, Modal } from 'antd';
 
@@ -15,7 +15,7 @@ import Email from '@/models/email/email.model';
 const MAX_SYMBOLS = 500;
 
 const PartnersModal = () => {
-    const { modalStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { setModal, modalsState: { partners } } = modalStore;
 
     const [formData, setFormData] = useState({ email: '', message: '' });

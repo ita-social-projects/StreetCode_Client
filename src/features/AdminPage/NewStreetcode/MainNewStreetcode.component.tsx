@@ -1,10 +1,9 @@
-/* eslint-disable max-len */
 /* eslint-disable complexity */
-/* eslint-disable no-alert */
 import './MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { redirect, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -24,6 +23,7 @@ import ukUA from 'antd/locale/uk_UA';
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
@@ -52,6 +52,8 @@ import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
 const NewStreetcode = () => {
+    const publish = 'Опублікувати';
+    const draft = 'Зберегти як чернетку';
     const [form] = useForm();
     const {
         factsStore,
@@ -74,6 +76,7 @@ const NewStreetcode = () => {
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<ArtCreate[]>([]);
+    const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
 
@@ -186,8 +189,15 @@ const NewStreetcode = () => {
     }, []);
 
     const onFinish = (data: any) => {
-        data.stopPropagation();
+        let tempStatus = 0;
 
+        if (data.target.getAttribute('name') as string) {
+            const buttonName = data.target.getAttribute('name') as string;
+            if (buttonName.includes(publish)) {
+                tempStatus = 1;
+            }
+        }
+        data.stopPropagation();
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
@@ -198,7 +208,7 @@ const NewStreetcode = () => {
         const text: TextCreate = {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
-            additionalText: inputInfo?.additionalText,
+            additionalText: inputInfo?.additionalText == '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
@@ -208,7 +218,6 @@ const NewStreetcode = () => {
             title: art.title,
             mimeType: art.mimeType,
         }));
-
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -232,7 +241,8 @@ const NewStreetcode = () => {
             text: (text.title && text.textContent) ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
-            facts: JSON.parse(JSON.stringify(factsStore.getFactArray)),
+            facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
+                .map((fact: Fact) => ({ ...fact, id: 0 })),
             coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
                 .map((coordinate: StreetcodeCoordinate) => ({ ...coordinate, id: 0 })),
             partners,
@@ -245,6 +255,7 @@ const NewStreetcode = () => {
             firstName: null,
             lastName: null,
             videos,
+            status: tempStatus,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
             streetcodeCategoryContents:
                 JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
@@ -253,20 +264,21 @@ const NewStreetcode = () => {
                     )),
             statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                 .map((statisticRecord: StatisticRecord) => (
-                    { ...statisticRecord,
-                      id: 0,
-                      coordinateId: 0,
-                      streetcodeCoordinate: {
-                          ...statisticRecord.streetcodeCoordinate,
-                          id: 0,
-                      } }
+                    {
+                        ...statisticRecord,
+                        id: 0,
+                        coordinateId: 0,
+                        streetcodeCoordinate: {
+                            ...statisticRecord.streetcodeCoordinate,
+                            id: 0,
+                        },
+                    }
                 )),
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
             streetcode.lastName = form.getFieldValue('surname');
         }
-
         if (parseId) {
             video.url = { href: inputInfo?.link };
             const videos: Video[] = [video];
@@ -287,16 +299,16 @@ const NewStreetcode = () => {
                     ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null),
                 eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                     ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
-                facts: JSON.parse(JSON.stringify(factsStore.getFactArray)),
                 teaser: form.getFieldValue('teaser'),
                 dateString: form.getFieldValue('dateString') ?? dateString,
                 videos,
                 relatedFigures: relatedFiguresUpdate,
-                timelineItems: timelineItemStore.getTimelineItemArrayToUpdate as TimelineItemUpdate[],
+                timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
+                facts: factsStore.getFactArrayToUpdate,
             };
 
             console.log(streetcodeUpdate);
-            StreetcodesApi.update(streetcodeUpdate).then((response2) => {
+            StreetcodesApi.update(streetcodeUpdate).then((response) => {
                 alert('Cтріткод успішно оновленний');
             })
                 .catch((error2) => {
@@ -306,10 +318,12 @@ const NewStreetcode = () => {
         } else {
             console.log(streetcode);
             StreetcodesApi.create(streetcode)
-
-                .then((response) => {
-                    setTimeout(() => window.location.reload(), 500);
-                    navigate(`/${form.getFieldValue('streetcodeUrlName')}`);
+                .then(() => {
+                    if (tempStatus === 1) {
+                        navigate(`../${form.getFieldValue('streetcodeUrlName')}`, { replace: true });
+                    } else {
+                        navigate(`${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
+                    }
                 })
                 .catch((error) => {
                     alert('Виникла помилка при створенні стріткоду');
@@ -349,7 +363,24 @@ const NewStreetcode = () => {
                             <ARBlock />
                         </Form>
                     </div>
-                    <Button className="streetcode-custom-button submit-button" onClick={onFinish}>{funcName}</Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={
+                            onFinish
+                        }
+                        name={publish}
+                    >
+                        {publish}
+                    </Button>
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={
+                            onFinish
+                        }
+                        name={draft}
+                    >
+                        {draft}
+                    </Button>
                 </div>
             </ConfigProvider>
         </div>

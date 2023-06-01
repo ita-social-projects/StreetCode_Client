@@ -16,6 +16,7 @@ export const API_ROUTES = {
         GET_ALL: 'news/getAll',
         GET: 'news/getById',
         GET_BY_URL: 'news/getByUrl',
+        GET_ALL_SORTED: 'news/sortedNewsByDateTime',
         CREATE: 'news/create',
         DELETE: 'news/delete',
         UPDATE: 'news/update',
@@ -170,8 +171,10 @@ export const API_ROUTES = {
         GET_URL_BY_QR_ID: 'streetcode/getByQrId',
         CREATE: 'streetcode/create',
         UPDATE: 'streetcode/update',
+        UPDATE_STATE: 'streetcode/patchStage',
         DELETE: 'streetcode/delete',
         EXIST_WITH_INDEX: 'streetcode/existWithIndex',
+        EXIST_WITH_URL: 'streetcode/existWithUrl',
     },
     SUBTITLES: {
         GET_ALL: 'subtitle/getAll',
@@ -198,6 +201,9 @@ export const API_ROUTES = {
     },
     DONATION: {
         CREATE: 'payment/createInvoice',
+    },
+    INSTAGRAM: {
+        GET_ALL: 'instagram/getAll',
     },
     STATISTIC_RECORD: {
         GET_ALL: 'statisticRecord/getAll',

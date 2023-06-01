@@ -27,7 +27,7 @@
         .title{
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             line-height: 26px;
-            color: #1D1F23;   
+            color: c.$lighter-black-color;   
 
             margin-bottom: f.pxToRem(24px);
         }
@@ -35,7 +35,7 @@
         .content{
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             line-height: 27px;
-            color: #1D1F23;      
+            color: c.$lighter-black-color;      
         }
 
         ul {
@@ -60,7 +60,7 @@
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
         line-height: 27px;
     
-        color: #1D1F23;
+        color: c.$lighter-black-color;
         box-shadow: 0px 5.57966px 5.57966px rgba(0, 0, 0, 0.25);
     
         padding: f.pxToRem(24px);

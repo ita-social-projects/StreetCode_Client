@@ -292,7 +292,11 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                                  onDeselect={onStreetcodeDeselect}
                              >
                                  {streetcodeShortStore.streetcodes
-                                     .map((s) => <Select.Option key={`${s.id}`} value={s.title}>{s.title}</Select.Option>)}
+                                     .map((s) => (
+                                         <Select.Option key={`${s.id}`} value={s.title}>
+                                             {s.title}
+                                         </Select.Option>
+                                     ))}
                              </Select>
                          </Form.Item>
                      ) : ''}

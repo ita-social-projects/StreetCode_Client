@@ -8,6 +8,10 @@
     border-color: c.$accented-red-color;
     background-color: c.$pure-white-color; 
     color: c.$accented-red-color;
+
+    &:hover {
+        box-shadow: 0 5px 5px rgba(219, 52, 36, 0.18);
+    }
 }
 
 @media screen and (max-width: 670px) {
