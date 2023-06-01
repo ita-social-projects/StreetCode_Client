@@ -68,9 +68,11 @@ const SearchTerms = ({ mainText }: Props) => {
             {containsSearchTerm ? splittedKeywordText.map((part) => (
                 <span
                     style={searchTerms.includes(part) ? keywordColoring : undefined}
+                    key={part}
                 >
                     {checkMapping(part) ? (
                         <Popover
+                            key={part}
                             overlayStyle={{ width: '300px' }}
                             content={descriptiveSearchTerms.get(part)}
                         >
