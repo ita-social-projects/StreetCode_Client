@@ -1,11 +1,11 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import timelineApi from '@api/timeline/timeline.api';
-import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
+import TimelineItem, { HistoricalContextUpdate, TimelineItemUpdate } from '@models/timeline/chronology.model';
+
+import { ModelState } from '@/models/enums/model-state';
 
 export default class TimelineStore {
     public timelineItemMap = new Map<number, TimelineItem>();
-
-    public timelineItemMapToUpdate = new Map<number, TimelineItemUpdate>();
 
     public activeYear: number | null = null;
 
@@ -14,38 +14,47 @@ export default class TimelineStore {
     }
 
     public addTimeline = (timelineItem: TimelineItem) => {
-        this.setItem(timelineItem);
-
         const timelineitemToUpdate: TimelineItemUpdate = {
             ...timelineItem,
-            isDeleted: false,
-            isCreated: true,
+            modelState: ModelState.Created,
+            historicalContexts: timelineItem.historicalContexts as HistoricalContextUpdate[],
         };
-        console.log(this.getTimelineItemArray);
-        this.timelineItemMapToUpdate.set(timelineItem.id, timelineitemToUpdate);
+
+        this.setItem(timelineitemToUpdate);
     };
 
     public deleteTimelineFromMap = (timelineItemId: number) => {
-        this.timelineItemMap.delete(timelineItemId);
-        const timelineItem = this.timelineItemMapToUpdate.get(timelineItemId);
+        const timelineItem = this.timelineItemMap.get(timelineItemId) as TimelineItemUpdate;
         if (timelineItem && timelineItem.isPersisted) {
-            this.timelineItemMapToUpdate.set(timelineItemId, {
+            const timelineitemToUpdate: TimelineItemUpdate = {
                 ...timelineItem,
-                isDeleted: true,
-            });
+                modelState: ModelState.Deleted,
+            };
+            this.setItem(timelineitemToUpdate);
         } else {
-            this.timelineItemMapToUpdate.delete(timelineItemId);
+            this.timelineItemMap.delete(timelineItemId);
         }
+
+        console.log(this.getTimelineItemArray);
     };
 
     private setInternalMap = (timelineItems: TimelineItem[]) => {
-        timelineItems.forEach(this.setItem);
+        timelineItems.forEach((item) => {
+            const updatedContexts = item.historicalContexts.map((context) => {
+                const updatedContext = {
+                    ...context,
+                    isPersisted: true,
+                };
+                return updatedContext as HistoricalContextUpdate;
+            });
 
-        this.timelineItemMap.forEach((item) => {
-            this.timelineItemMapToUpdate.set(item.id, {
+            const updatedItem = {
                 ...item,
                 isPersisted: true,
-            });
+                historicalContexts: updatedContexts,
+            };
+
+            this.setItem(updatedItem);
         });
     };
 
@@ -53,7 +62,7 @@ export default class TimelineStore {
         this.timelineItemMap.set(timelineItem.id, {
             ...timelineItem,
             date: new Date(timelineItem.date),
-        } as TimelineItem);
+        });
     };
 
     public setActiveYear = (year: number | null) => {
@@ -61,13 +70,19 @@ export default class TimelineStore {
     };
 
     get getTimelineItemArray() {
-        return Array.from(this.timelineItemMap.values())
+        return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[])
+            .filter((item: TimelineItemUpdate) => item.modelState !== ModelState.Deleted)
             .sort((prev, cur) => Number(prev.date) - Number(cur.date));
     }
 
     get getTimelineItemArrayToUpdate() {
-        return Array.from(this.timelineItemMapToUpdate.values())
-            .sort((prev, cur) => Number(prev.date) - Number(cur.date));
+        return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[])
+            .map((item: TimelineItemUpdate) => {
+                if (item.modelState === ModelState.Created) {
+                    return { ...item, id: 0 };
+                }
+                return item;
+            });
     }
 
     get getYearsArray() {

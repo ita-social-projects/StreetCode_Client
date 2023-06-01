@@ -14,9 +14,10 @@ import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
 import useMobx from '@/app/stores/root-store';
+import { ModelState } from '@/models/enums/model-state';
 import TimelineItem, {
     dateTimePickerTypes,
-    HistoricalContext, selectDateOptions,
+    HistoricalContext, HistoricalContextUpdate, selectDateOptions,
 } from '@/models/timeline/chronology.model';
 
 const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
@@ -33,7 +34,9 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 title: timelineItem.title,
                 description: timelineItem.description,
                 date: dayjs(timelineItem.date),
-                historicalContexts: timelineItem.historicalContexts.map((c) => c.title),
+                historicalContexts: timelineItem.historicalContexts
+                    .filter((x) => (x as HistoricalContextUpdate).modelState !== ModelState.Deleted)
+                    .map((c) => c.title),
             });
             selectedContext.current = timelineItem.historicalContexts;
         } else {
@@ -76,15 +79,27 @@ const NewTimelineModal:React.FC<{ timelineItem?:TimelineItem, open:boolean,
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 return;
             }
-            const newItem = { id: 0, title: value };
+            const newItem: HistoricalContextUpdate = {
+                id: 0,
+                title: value,
+                modelState: ModelState.Created,
+            };
+
             historicalContextStore.addItemToArray(newItem);
             selectedContext.current.push(newItem);
         } else {
-            selectedContext.current.push(historicalContextStore.historicalContextArray[index]);
+            const historicalContext = historicalContextStore.historicalContextArray[index] as HistoricalContextUpdate;
+            historicalContext.modelState = ModelState.Created;
+            selectedContext.current.push(historicalContext);
         }
     };
     const onContextDeselect = (value:string) => {
-        selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
+        const historicalContext = selectedContext.current.find((x) => x.title === value) as HistoricalContextUpdate;
+        if (historicalContext && historicalContext.isPersisted) {
+            historicalContext.modelState = ModelState.Deleted;
+        } else {
+            selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
+        }
     };
     return (
         <Modal

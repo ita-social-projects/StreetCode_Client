@@ -34,7 +34,7 @@ import Partner from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
-import TimelineItem from '@/models/timeline/chronology.model';
+import TimelineItem, { TimelineItemUpdate } from '@/models/timeline/chronology.model';
 
 import PageBar from '../PageBar/PageBar.component';
 
@@ -191,9 +191,9 @@ const NewStreetcode = () => {
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
         }];
-        // const videos: VideoCreate[] = [
-        //     { url: inputInfo?.link || '' },
-        // ];
+        const videos: VideoCreate[] = [
+            { url: inputInfo?.link || '' },
+        ];
 
         const text: TextCreate = {
             title: inputInfo?.title,
@@ -244,7 +244,7 @@ const NewStreetcode = () => {
             subtitles,
             firstName: null,
             lastName: null,
-            // videos,
+            videos,
             toponyms: newStreetcodeInfoStore.selectedToponyms,
             streetcodeCategoryContents:
                 JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
@@ -292,7 +292,7 @@ const NewStreetcode = () => {
                 dateString: form.getFieldValue('dateString') ?? dateString,
                 videos,
                 relatedFigures: relatedFiguresUpdate,
-                timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
+                timelineItems: timelineItemStore.getTimelineItemArrayToUpdate as TimelineItemUpdate[],
             };
 
             console.log(streetcodeUpdate);
@@ -304,6 +304,7 @@ const NewStreetcode = () => {
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {
+            console.log(streetcode);
             StreetcodesApi.create(streetcode)
 
                 .then((response) => {

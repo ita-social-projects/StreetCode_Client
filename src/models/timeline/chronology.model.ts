@@ -1,10 +1,18 @@
 import dayjs, { Dayjs } from 'dayjs';
 
+import { ModelState } from '../enums/model-state';
+import IChanged from '../interfaces/IChanged';
+import IPersisted from '../interfaces/IPersisted';
+
 export interface HistoricalContext {
     id: number;
     title: string;
-    isDeleted?: boolean,
 }
+
+export interface HistoricalContextUpdate extends HistoricalContext, IPersisted {
+    modelState: ModelState;
+}
+
 export enum DateViewPattern {
     DateMonthYear,
     MonthYear,
@@ -21,10 +29,9 @@ export default interface TimelineItem {
     historicalContexts: HistoricalContext[];
 }
 
-export interface TimelineItemUpdate extends TimelineItem {
-    isDeleted?: boolean,
-    isCreated?: boolean,
-    isPersisted?: boolean,
+export interface TimelineItemUpdate extends TimelineItem, IPersisted {
+    modelState: ModelState;
+    historicalContexts: HistoricalContextUpdate[];
 }
 
 export const getSeason = (date: Dayjs | null): string => {

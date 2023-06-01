@@ -88,7 +88,7 @@ const StreetcodeContent = () => {
             setSlideCloneCountAdded(slideCloneCount);
         }
 
-        if (imagesLoadedPercentage >= 90 && textBlockState) {
+        if (imagesLoadedPercentage >= 10 && textBlockState) {
             setLoading(false);
             const anchorId = window.location.hash.substring(1);
             const blockElement = document.getElementById(anchorId);
