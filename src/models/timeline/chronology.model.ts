@@ -30,8 +30,7 @@ export default interface TimelineItem {
     historicalContexts: HistoricalContext[];
 }
 
-export interface TimelineItemUpdate extends TimelineItem, IPersisted {
-    modelState: ModelState;
+export interface TimelineItemUpdate extends TimelineItem, IModelState, IPersisted {
     historicalContexts: HistoricalContextUpdate[];
 }
 

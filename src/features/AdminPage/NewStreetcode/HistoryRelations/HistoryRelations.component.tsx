@@ -1,34 +1,57 @@
 import { useEffect, useState } from 'react';
-import { PartnerShort } from '@models/partners/partners.model';
-import RelatedFigure from '@models/streetcode/related-figure.model';
+import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
 import axios from 'axios';
+
+import { ModelState } from '@/models/enums/model-state';
 
 import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
 
 interface Props {
-    figures: RelatedFigure[];
-    setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
+    figures: RelatedFigureCreateUpdate[];
+    setFigures: React.Dispatch<React.SetStateAction<RelatedFigureCreateUpdate[]>>;
 }
 
 const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
-    const [relations, setRelations] = useState<RelatedFigure[]>([]);
-    const [options, setOptions] = useState<RelatedFigure[]>([]);
-    const handleAdd = (relationToAdd: RelatedFigure) => {
-        const existing = relations.find((rel) => rel.id === relationToAdd.id);
-        if (existing === undefined) {
-            setRelations((prevState) => [...prevState, relationToAdd]);
-            setFigures((prevState) => [...prevState, relationToAdd]);
+    const [options, setOptions] = useState<RelatedFigureCreateUpdate[]>([]);
+
+    const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
+        const figurePersisted = figures.find((rel) => rel.id === relationToAdd.id);
+        if (figurePersisted) { // for case when delete persisted item and add it again
+            figurePersisted.modelState = ModelState.Updated;
+            setFigures([...figures]);
+        } else {
+            const existing = figures.find((rel) => rel.id === relationToAdd.id);
+            if (existing === undefined) {
+                setFigures((prevState) => [...prevState, relationToAdd]);
+            }
         }
     };
+
+    const handleDelete = async (id: number) => {
+        const figureToDelete = figures.find((x) => x.id === id);
+        if (figureToDelete?.isPersisted) {
+            figureToDelete.modelState = ModelState.Deleted;
+            setFigures([...figures]);
+        } else {
+            const newRelatedSCs = figures.filter((rel) => rel.id !== id);
+            setFigures(newRelatedSCs);
+        }
+    };
+
+    console.log(figures);
 
     const getOptions = async () => {
         try {
             const response = await axios.get<RelatedFigure[]>(
                 'https://localhost:5001/api/Streetcode/GetAll',
             );
-            setOptions(response.data.streetcodes);
-        } catch (error) {}
+            const allOptions: RelatedFigureShort[] = response.data.streetcodes.map((item) => ({
+                id: item.id,
+                title: item.title,
+            }));
+            setOptions(allOptions);
+        } catch (error) { /* empty */ }
     };
 
     useEffect(() => {
@@ -36,10 +59,10 @@ const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
     }, []);
 
     return (
-        <div className='adminContainer-block'>
-            <h2>Зв'язки історії(Стріткоди)</h2>
-            <InputPanel relations={figures} options={options} handleAdd={handleAdd} />
-            <RelationsList relations={figures} setRelations={setRelations} setFigures={setFigures} />
+        <div className="adminContainer-block">
+            <h2>Зв&apos;язки історії(Стріткоди)</h2>
+            <InputPanel figures={figures} options={options} handleAdd={handleAdd} />
+            <RelationsList figures={figures} handleDelete={handleDelete} />
         </div>
     );
 };

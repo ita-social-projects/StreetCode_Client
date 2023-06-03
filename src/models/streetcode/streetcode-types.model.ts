@@ -4,7 +4,7 @@ import Art, { ArtCreateDTO, IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
-import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
+import StreetcodePartner, { PartnerCreateUpdate, PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent } from '@models/sources/sources.model';
 import RelatedFigure, { RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
@@ -77,7 +77,7 @@ export interface StreetcodeShort {
     title: string;
 }
 
-export interface StreetcodeMainPage{
+export interface StreetcodeMainPage {
     id: number,
     title: string,
     teaser: string,
@@ -145,4 +145,5 @@ export interface StreetcodeUpdate {
     facts: FactUpdate[],
     relatedFigures: RelatedFigureUpdate[],
     timelineItems: TimelineItemUpdate[],
+    partners: PartnerUpdate[],
 }

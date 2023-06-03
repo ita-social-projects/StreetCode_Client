@@ -14,7 +14,7 @@ import FactsApi from '@app/api/streetcode/text-content/facts.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import Url from '@models/additional-content/url.model';
-import RelatedFigure, { RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+import RelatedFigure, { RelatedFigureCreateUpdateShort, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -28,9 +28,10 @@ import useMobx from '@/app/stores/root-store';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
+import { ModelState } from '@/models/enums/model-state';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
-import Partner from '@/models/partners/partners.model';
+import Partner, { PartnerCreateUpdate, PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
@@ -64,13 +65,13 @@ const NewStreetcode = () => {
         statisticRecordStore,
     } = useMobx();
 
-    const [partners, setPartners] = useState<Partner[]>([]);
+    const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [video, setVideo] = useState<Video>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<string>('');
-    const [figures, setFigures] = useState<RelatedFigure[]>([]);
+    const [figures, setFigures] = useState<RelatedFigureCreateUpdateShort[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
@@ -146,10 +147,24 @@ const NewStreetcode = () => {
                 setVideo(result);
             });
             RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
-                setFigures([...result]);
+                const persistedFigures: RelatedFigureCreateUpdateShort[] = result.map((item) => ({
+                    id: item.id,
+                    title: item.title,
+                    isPersisted: true,
+                    modelState: ModelState.Updated,
+                }));
+
+                setFigures(persistedFigures);
             });
-            PartnersApi.getByStreetcodeId(parseId).then((result) => {
-                setPartners([...result]);
+            PartnersApi.getToUpdateByStreetcodeId(parseId).then((result) => {
+                const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
+                    id: item.id,
+                    title: item.title,
+                    isPersisted: true,
+                    modelState: ModelState.Updated,
+                }));
+
+                setPartners(persistedPartners);
             });
             SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
                 setSubTitle(result.subtitleText);
@@ -281,11 +296,17 @@ const NewStreetcode = () => {
         }
         if (parseId) {
             video.url = { href: inputInfo?.link };
-            const videos: Video[] = [video];
+            const videosUpdate: Video[] = [video];
 
             const relatedFiguresUpdate: RelatedFigureUpdate[] = figures.map((figure) => ({
                 observerId: parseId,
                 targetId: figure.id,
+            }));
+
+            const partnersUpdate: PartnerUpdate[] = partners.map((partner) => ({
+                streetcodeId: parseId,
+                partnerId: partner.id,
+                modelState: partner.modelState,
             }));
 
             const streetcodeUpdate: StreetcodeUpdate = {
@@ -301,10 +322,11 @@ const NewStreetcode = () => {
                     ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
                 teaser: form.getFieldValue('teaser'),
                 dateString: form.getFieldValue('dateString') ?? dateString,
-                videos,
+                videos: videosUpdate,
                 relatedFigures: relatedFiguresUpdate,
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
                 facts: factsStore.getFactArrayToUpdate,
+                partners: partnersUpdate,
             };
 
             console.log(streetcodeUpdate);
