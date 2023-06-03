@@ -18,7 +18,7 @@ export interface RelatedFigureShort {
     title: string;
 }
 
-export interface RelatedFigureUpdate {
+export interface RelatedFigureUpdate extends IModelState {
     observerId: number;
     targetId: number;
 }

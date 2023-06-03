@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { AutoComplete, Button } from 'antd';
 
+import { ModelState } from '@/models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@/models/streetcode/related-figure.model';
 
 interface Props {
@@ -17,9 +18,11 @@ const InputPanel = ({ figures, options, handleAdd }: Props) => {
     const [filteredOptions, setFilteredOptions] = useState<RelatedFigureCreateUpdate[]>(options);
 
     useEffect(() => {
-        console.log('changed');
         if (figures.length > 0) {
-            const filtered = options.filter((option) => !figures.some((figure) => figure.id === option.id));
+            const filtered = options.filter((option) => figures.some((figure) => figure.id === option.id
+                && figure.modelState === ModelState.Deleted)
+                || !figures.some((figure) => figure.id === option.id));
+
             setFilteredOptions(filtered);
         } else {
             // const filtered = options.filter(option => relation => relation.id === option.id));

@@ -14,7 +14,7 @@ import FactsApi from '@app/api/streetcode/text-content/facts.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import Url from '@models/additional-content/url.model';
-import RelatedFigure, { RelatedFigureCreateUpdateShort, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureCreateUpdateShort, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -71,7 +71,7 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<string>('');
-    const [figures, setFigures] = useState<RelatedFigureCreateUpdateShort[]>([]);
+    const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
@@ -147,7 +147,7 @@ const NewStreetcode = () => {
                 setVideo(result);
             });
             RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
-                const persistedFigures: RelatedFigureCreateUpdateShort[] = result.map((item) => ({
+                const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
                     id: item.id,
                     title: item.title,
                     isPersisted: true,
@@ -301,6 +301,7 @@ const NewStreetcode = () => {
             const relatedFiguresUpdate: RelatedFigureUpdate[] = figures.map((figure) => ({
                 observerId: parseId,
                 targetId: figure.id,
+                modelState: figure.modelState,
             }));
 
             const partnersUpdate: PartnerUpdate[] = partners.map((partner) => ({

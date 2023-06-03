@@ -21,10 +21,9 @@ const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
             figurePersisted.modelState = ModelState.Updated;
             setFigures([...figures]);
         } else {
-            const existing = figures.find((rel) => rel.id === relationToAdd.id);
-            if (existing === undefined) {
-                setFigures((prevState) => [...prevState, relationToAdd]);
-            }
+            const figure = options.find((rel) => rel.id === relationToAdd.id) as RelatedFigureCreateUpdate;
+            figure.modelState = ModelState.Created;
+            setFigures((prevState) => [...prevState, figure]);
         }
     };
 
