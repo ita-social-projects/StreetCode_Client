@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 
 import { AutoComplete, Button } from 'antd';
 
-import { RelatedFigureCreateUpdate } from '@/models/streetcode/related-figure.model';
+import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@/models/streetcode/related-figure.model';
 
 interface Props {
     figures: RelatedFigureCreateUpdate[];
-    options: RelatedFigureCreateUpdate[];
+    options: RelatedFigureShort[];
     handleAdd: (relation: RelatedFigureCreateUpdate) => void;
 }
 
@@ -41,6 +41,7 @@ const InputPanel = ({ figures, options, handleAdd }: Props) => {
         const found = filteredOptions.find((rel) => rel.title === relation);
         if (found !== undefined) {
             handleAdd(found);
+            setRelation('');
             setFilteredOptions(options.filter((figure) => !figures.includes(figure) && figure.title !== found.title));
         }
     };
@@ -52,6 +53,7 @@ const InputPanel = ({ figures, options, handleAdd }: Props) => {
                 style={{ width: '100%' }}
                 options={filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
                 onSearch={handleSearch}
+                onChange={(value) => setRelation(value)}
                 value={relation}
             />
             <Button onClick={handleAddItem} className="streetcode-custom-button button-margin-left" type="primary">

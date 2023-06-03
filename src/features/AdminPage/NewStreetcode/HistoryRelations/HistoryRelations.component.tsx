@@ -13,7 +13,7 @@ interface Props {
 }
 
 const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
-    const [options, setOptions] = useState<RelatedFigureCreateUpdate[]>([]);
+    const [options, setOptions] = useState<RelatedFigureShort[]>([]);
 
     const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
         const figurePersisted = figures.find((rel) => rel.id === relationToAdd.id);
