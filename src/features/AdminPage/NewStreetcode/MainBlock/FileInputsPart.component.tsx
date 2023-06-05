@@ -98,9 +98,6 @@ const FileInputsPart: React.FC = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={afterAnimationUpload}
-                        onRemove={(file) => {
-                            ImagesApi.delete(newStreetcodeInfoStore.animationId!);
-                        }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && images.length > 0 ? 'Змінити' : '+ Додати'}</p>
@@ -120,9 +117,6 @@ const FileInputsPart: React.FC = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={afterBlackAndWhiteUpload}
-                        onRemove={(file) => {
-                            ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
-                        }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && images.length > 1 ? 'Змінити' : '+ Додати'}</p>
@@ -143,9 +137,6 @@ const FileInputsPart: React.FC = () => {
                         onSuccessUpload={(image:Image) => {
                             newStreetcodeInfoStore.relatedFigureId = image.id;
                         }}
-                        onRemove={(file) => {
-                            ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
-                        }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && images.length > 2 ? 'Змінити' : '+ Додати'}</p>
@@ -162,9 +153,6 @@ const FileInputsPart: React.FC = () => {
                         maxCount={1}
                         listType="picture-card"
                         uploadTo="audio"
-                        onRemove={(file) => {
-                            AudiosApi.delete(newStreetcodeInfoStore.audioId!);
-                        }}
                         onSuccessUpload={(audio:Audio) => {
                             newStreetcodeInfoStore.audioId = audio.id;
                         }}

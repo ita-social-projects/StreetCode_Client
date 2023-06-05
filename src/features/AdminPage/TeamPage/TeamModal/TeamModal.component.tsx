@@ -1,11 +1,18 @@
 import './TeamModal.styles.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
+
+import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import TeamMember, {
+    LogoType, Positions,
+    TeamCreateUpdate, TeamMemberLinkCreateUpdate,
+} from '@models/team/team.model';
 import useMobx from '@stores/root-store';
-import { Option } from 'antd/es/mentions';
+
 import {
     Button,
     Checkbox,
@@ -13,24 +20,20 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import CancelBtn from '@images/utils/Cancel_btn.svg';
+import { Option } from 'antd/es/mentions';
 
-import ImagesApi from '@/app/api/media/images.api';
+import PositionsApi from '@/app/api/team/positions.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Image from '@/models/media/image.model';
-import TeamMember, { LogoType, Positions, TeamCreateUpdate, TeamMemberLinkCreateUpdate } from '../../../../models/team/team.model';
-import PositionsApi from '../../../../app/api/team/positions.api';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?: (team: TeamCreateUpdate) => void
-}> = observer(({
-    teamMember, open, setIsModalOpen, afterSubmit,
-}) => {
+}> = observer(({ teamMember, open, setIsModalOpen, afterSubmit }) => {
     const [form] = Form.useForm();
-    const { teamStore, positionsStore } = useMobx();
+    const { teamStore } = useMobx();
     const [positions, setPositions] = useState<Positions[]>([]);
     const [teamLinksForm] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -38,6 +41,7 @@ const TeamModal: React.FC<{
     const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
+    const [isMain, setIsMain] = useState(false);
     const imageId = useRef<number>(0);
 
     useEffect(() => {
@@ -54,11 +58,11 @@ const TeamModal: React.FC<{
             } else {
                 minId = -1;
             }
-            setSelectedPositions([...selectedPositions, { id: minId, position: selectedValue}]);
+            setSelectedPositions([...selectedPositions, { id: minId, position: selectedValue }]);
         } else {
             selected = positions[selectedIndex];
 
-            setSelectedPositions([...selectedPositions, { ...selected, position: selectedValue}]);
+            setSelectedPositions([...selectedPositions, { ...selected, position: selectedValue }]);
         }
     };
 
@@ -80,7 +84,7 @@ const TeamModal: React.FC<{
                         name: '',
                         thumbUrl: base64ToUrl(teamMember.image?.base64, teamMember.image?.mimeType),
                         uid: teamMember.imageId.toString(),
-                        status: 'done'
+                        status: 'done',
                     }],
             });
             setSelectedPositions(teamMember.positions);
@@ -128,10 +132,10 @@ const TeamModal: React.FC<{
                 teamSourceLinks[index].id = 0;
             }
         });
-        
+
         const team: TeamCreateUpdate = {
             id: 0,
-            isMain: isMain,
+            isMain,
             imageId: imageId.current,
             teamMemberLinks: teamSourceLinks,
             firstName: formValues.firstName,
@@ -139,34 +143,33 @@ const TeamModal: React.FC<{
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
-        let success = false;
         if (teamMember) {
             team.id = teamMember.id;
             Promise.all([
                 teamStore.updateTeam(team)
                     .then(() => {
-                        success = true;
+                        if (afterSubmit) {
+                            afterSubmit(team);
+                        }
                     })
                     .catch((e) => {
-                        console.log(e); success = false;
+                        console.log(e);
                     }),
             ]);
         } else {
             Promise.all([
                 teamStore.createTeam(team)
                     .then(() => {
-                        success = true;
+                        if (afterSubmit) {
+                            afterSubmit(team);
+                        }
                     })
                     .catch((e) => {
-                        console.log(e); success = false;
+                        console.log(e);
                     }),
-                
             ]);
         }
         closeAndCleanData();
-        if (success && afterSubmit) {
-            afterSubmit(team);
-        }
     };
 
     const selectSocialMediaOptions = [{
@@ -181,8 +184,7 @@ const TeamModal: React.FC<{
     }, {
         value: 'youtube',
         label: 'Youtube',
-        }];
-    const [isMain, setIsMain] = useState(false);
+    }];
 
     useEffect(() => {
         setIsMain(teamMember ? teamMember.isMain : false);
@@ -199,14 +201,18 @@ const TeamModal: React.FC<{
             footer={null}
             closeIcon={<CancelBtn />}
         >
-            <div className='modalContainer-content'>
+            <div className="modalContainer-content">
                 <Form
                     form={form}
-                    layout='vertical'
+                    layout="vertical"
                     onFinish={onSuccesfulSubmitPosition}
                 >
-                    <div className='center'>
-                        <h2>{teamMember ? 'Редагувати' : 'Додати'} нового члена команди</h2>
+                    <div className="center">
+                        <h2>
+                            {teamMember ? 'Редагувати' : 'Додати'}
+                            {' '}
+нового члена команди
+                        </h2>
                     </div>
                     <div className="checkbox-container">
                         <Form.Item>
@@ -268,7 +274,9 @@ const TeamModal: React.FC<{
                             accept=".jpeg,.png,.jpg"
                             listType="picture-card"
                             maxCount={1}
-                            onPreview={(e) => e}
+                            onPreview={(e) => {
+                                setFilePreview(e); setPreviewOpen(true);
+                            }}
                             uploadTo="image"
                             onSuccessUpload={(image: Image) => {
                                 imageId.current = image.id;
@@ -278,7 +286,7 @@ const TeamModal: React.FC<{
                                     name: '',
                                     thumbUrl: base64ToUrl(teamMember.image?.base64, teamMember.image?.mimeType),
                                     uid: teamMember.imageId.toString(),
-                                    status: 'done'
+                                    status: 'done',
                                 }]
                                 : []}
                         >
@@ -330,7 +338,8 @@ const TeamModal: React.FC<{
                     </Form.Item>
 
                     <Form.Item
-                        label=" ">
+                        label=" "
+                    >
                         <Button htmlType="submit">
                             <UserAddOutlined />
                         </Button>
@@ -338,7 +347,7 @@ const TeamModal: React.FC<{
                 </div>
                 {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
 
-                <div className='center'>
+                <div className="center">
                     <Button className="streetcode-custom-button" onClick={() => form.submit()}>
                         Зберегти
                     </Button>

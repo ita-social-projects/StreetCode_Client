@@ -24,11 +24,14 @@ const PreviewFileModal:React.FC<{
             async function uploadImageToModal() {
                 if (file) {
                     if (!file.url && !file.preview) {
-                        // eslint-disable-next-line no-param-reassign
-                        file.preview = await getBase64(file.originFileObj as RcFile);
+                        if (file.originFileObj) {
+                            // eslint-disable-next-line no-param-reassign
+                            file.preview = await getBase64(file.originFileObj as RcFile);
+                        }
                     }
-                    setFileProps({ previewImage: file.url || (file.preview as string),
-                                   previewTitle: file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1) });
+                    const imageSrc = file.url || (file.preview as string) || file.thumbUrl || '';
+                    setFileProps({ previewImage: imageSrc,
+                                   previewTitle: file.name || '' });
                 }
             }
             uploadImageToModal();
