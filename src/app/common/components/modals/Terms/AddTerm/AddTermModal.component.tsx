@@ -43,11 +43,11 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                 </div>
 
                 <FormItem label="Назва">
-                    <Input onChange={handleChangeTitle} />
+                    <Input value={term?.title} onChange={handleChangeTitle} />
                 </FormItem>
                 
                 <FormItem label="Визначення">
-                    <TextArea onChange={handleChangeDesc} />
+                    <TextArea value={term?.description} onChange={handleChangeDesc} />
                 </FormItem>
 
                 <div className='center'>
