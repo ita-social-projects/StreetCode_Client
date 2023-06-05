@@ -16,7 +16,7 @@ import CopyWithCopyright from '@/app/common/components/CopyWithCopyright.compone
 
 ReactGA.initialize('G-2RHY04JKG0');
 
-const CopyrightText = "© 2023 ГО “Історична Платформа”. При використанні матеріалів сайту посилання на джерело обов’язкове.";
+const CopyrightText = `© ${new Date().getFullYear()} ГО “Історична Платформа”. При використанні матеріалів сайту посилання на джерело обов’язкове.`;
 
 const App = () => {
     const { pathname } = useLocation();
