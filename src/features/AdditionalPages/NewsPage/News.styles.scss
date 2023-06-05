@@ -200,17 +200,17 @@
         .randomNewsBlock {
             .randomNewsLink {
                 .additionalNewsText {
-                    @include mut.with-font($font-size: 14px);
+                    @include mut.with-font($font-size: 14px, $font-weight: 300);
                 }
 
                 .randomNewsTitleAndButtn {
-                    @include mut.with-font($font-size: 20px);
+                    @include mut.with-font($font-size: 20px, $font-family: ft.$closer-text-font, $font-weight: 500);
                     
                     .newsButtonContainer {
                         padding-left: f.pxToRem(10px);
 
                         button {
-                            @include mut.with-font($font-size: 14px); 
+                            @include mut.with-font($font-size: 14px, $font-weight: 500); 
                             @include mut.sized($width: 180px, $height: 46px);
                             padding: 0;
                         }
@@ -226,7 +226,7 @@
         .wrapper {
             .NewsHeader {
                 h1 {
-                    @include mut.with-font($font-size: 20px); 
+                    @include mut.with-font($font-size: 20px, $font-family: ft.$closer-text-font, $font-weight: 500); 
                 }
             }
 
@@ -237,7 +237,7 @@
                 text-decoration: none;
 
                 .Link {
-                    @include mut.with-font($font-size: 14px);
+                    @include mut.with-font($font-size: 14px, $font-weight: 500);
                     color: c.$accented-red-color;
                     padding: f.pxToRem(14px)  f.pxToRem(50px);
                     border: 2px solid c.$accented-red-color;
