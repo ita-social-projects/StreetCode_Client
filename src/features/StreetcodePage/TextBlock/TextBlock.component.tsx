@@ -46,7 +46,7 @@ const TextComponent = () => {
                     <BlockHeading headingText={String(text?.title)} />
                     <div className="textComponent">
                         <div className="TextContainer">
-                            <ReadMore text={String(text?.textContent)} />
+                            <ReadMore key={text?.title} text={String(text?.textContent)} />
                             <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                         </div>
                     </div>

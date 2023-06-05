@@ -3,17 +3,19 @@ import './NewsSlider.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
-import SlickSlider from '../../SlickSlider/SlickSlider.component';
-import News from '@/models/news/news.model';
+
 import NewsApi from '@/app/api/news/news.api';
-import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
+import News from '@/models/news/news.model';
+
+import SlickSlider from '../../SlickSlider/SlickSlider.component';
 import Heading from '../Heading/Heading.component';
+
+import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
 
 const NewsSlider = () => {
     const { streetcodeMainPageStore, newsStore } = useMobx();
-    const {fetchNewsAll } = newsStore;
+    const { fetchNewsAll } = newsStore;
     const [news, setNews] = useState<News[]>([]);
-   
 
     useEffect(() => {
         const fetchNewsAll = async () => {
@@ -26,10 +28,8 @@ const NewsSlider = () => {
         fetchNewsAll();
     }, []);
 
-
-
     const props = {
-        
+
         touchAction: 'pan-y',
         touchThreshold: 25,
         transform: 'translateZ(0)',
@@ -38,43 +38,41 @@ const NewsSlider = () => {
         infinite: true,
         variableWidth: true,
         slidesToShow: 1,
-        
+
         swipeOnClick: false,
         centerMode: true,
-      
+
     };
 
     const handleClick = () => {
         window.location.assign('https://www.instagram.com/streetcodeua/');
-    }
-   
-        return (
-            (news.length > 0)
+    };
+
+    return (
+        (news.length > 0)
             ? (
-            <div>
-                <div className="NewsWrapper">
-                <Heading blockName='Новини' buttonName='Всі новини' setActionOnClick={handleClick}/>
-                    <div id="newsSliderContentBlock" className="newsSliderComponent">
-                        <div className="newsSliderContainer">
-                            <div className="blockCentering">
-                                <div className="newsSliderContent">
-                                    <SlickSlider {...props}>
-                                        {news.map((item) => (
-                                            <div key={item.id} className="slider-item">
-                                                <NewsSliderItem news={item} />
-                                            </div>
-                                        ))}
-                                    </SlickSlider>
+                <div>
+                    <div className="NewsWrapper">
+                        <Heading blockName="Новини" buttonName="Всі новини" setActionOnClick={handleClick} />
+                        <div id="newsSliderContentBlock" className="newsSliderComponent">
+                            <div className="newsSliderContainer">
+                                <div className="blockCentering">
+                                    <div className="newsSliderContent">
+                                        <SlickSlider {...props}>
+                                            {news.map((item) => (
+                                                <div key={item.id} className="slider-item">
+                                                    <NewsSliderItem news={item} />
+                                                </div>
+                                            ))}
+                                        </SlickSlider>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-          ) : <></>
-        );
-    
-
+            ) : <></>
+    );
 };
 
 export default observer(NewsSlider);

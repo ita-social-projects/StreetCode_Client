@@ -33,8 +33,9 @@ const PartnersBlock = () => {
         [[], []] as [Partner[], Partner[]],
     );
 
-    const createPartnersItem = (partnersArray: Partner[]) => partnersArray.map((p) => (
-        <PartnersItem partner={p} />
+    const createPartnersItem = (partners: Partner[]) => partners.map((partner) => (
+        <PartnersItem key={partner.id} partner={partner} />
+
     ));
 
     return (
