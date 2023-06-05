@@ -104,6 +104,7 @@ export interface StreetcodeCreate {
     title: string,
     teaser: string,
     alias?: string,
+    status: Status;
     transliterationUrl: string,
     arBlockURL?: string,
     viewCount: number,

@@ -5,8 +5,7 @@ import React, { useEffect, useState } from 'react';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx from '@stores/root-store';
+import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import htmpReactParser from 'html-react-parser';
 
@@ -15,19 +14,14 @@ import { Text } from '@/models/streetcode/text-contents.model';
 
 import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
-import { useState } from 'react';
 
-interface Props {
-    setTextBlockState: React.Dispatch<React.SetStateAction<boolean>>;
-}
-const TextComponent = ({ setTextBlockState }: Props) => {
-    const { streetcodeStore: { getStreetCodeId } } = useMobx();
+const TextComponent = () => {
+    const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { getByStreetcodeId: getVideo } = videosApi;
     const { getByStreetcodeId: getText } = textsApi;
-    const [videoLoaded, setVideoLoaded] = useState(false);
-    const [shouldRender, setShouldRender] = useState(false);
-    const [text, setText] = useState(undefined);
-    const [video, setVideo] = useState(undefined);
+    const [text, setText] = useState<Text>();
+    const [video, setVideo] = useState<Video>();
 
     useEffect(() => {
         if (getStreetCodeId > 0) {
@@ -38,27 +32,12 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                 })
                 .catch((error) => {
                     console.error(error);
-                    setText(undefined);
-                    setVideo(undefined);
-                });
-        } else {
-            setText(undefined);
-            setVideo(undefined);
+                }).then();
         }
     }, [getStreetCodeId]);
 
-    useEffect(() => {
-        if (text || video) {
-            setShouldRender(true);
-        }
-
-        if (!(text && video) || (text && !video) || (video && videoLoaded)) {
-            setTextBlockState(true);
-        }
-    }, [videoLoaded, text, video]);
-
     return (
-        shouldRender
+        text
             ? (
                 <div
                     id="text"
@@ -67,13 +46,19 @@ const TextComponent = ({ setTextBlockState }: Props) => {
                     <BlockHeading headingText={String(text?.title)} />
                     <div className="textComponent">
                         <div className="TextContainer">
-                            <ReadMore text={String(text?.textContent)} />
+                            <ReadMore key={text?.title} text={String(text?.textContent)} />
                             <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                         </div>
                     </div>
                     <div className="videoComponent">
-
-                        <VideoPlayer videoUrls={String(video?.url.href)} setVideoLoaded={setVideoLoaded} />
+                        <VideoPlayer
+                            videoUrls={String(video?.url.href)}
+                            onReady={() => {
+                                if (video) {
+                                    streecodePageLoaderContext.addBlockFetched();
+                                }
+                            }}
+                        />
                         {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
                     </div>
 

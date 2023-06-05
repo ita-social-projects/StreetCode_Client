@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import ImageStore from '@stores/image-store';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
@@ -13,10 +13,11 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
 import PageBar from '../PageBar/PageBar.component';
-import dayjs from "dayjs";
+import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
 
-const Newss:React.FC = observer(() => {
-    const { newsStore, modalStore } = useMobx();
+const Newss: React.FC = observer(() => {
+    const { modalStore } = useModalContext();
+    const { newsStore } = useMobx();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [newsToEdit, setNewsToEdit] = useState<News>();
@@ -46,26 +47,11 @@ const Newss:React.FC = observer(() => {
             key: 'title',
             render(value, record) {
                 return (
-                    <div key={`${value}${record.id}`} className="partner-table-item-name">
-                        <p>{value}</p>
+                    <div /* onClick={() => window.open(`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/${record.url}`, '_blank')}*/>
+                        {value}
                     </div>
                 );
             },
-        },
-        {
-            title: 'Посилання на новину',
-            dataIndex: 'url',
-            key: 'url',
-            width: '28%',
-            render: (targeteurl) => (
-                <a
-                    className="site-link"
-                    key={`${targeteurl}`}
-                    href={targeteurl}
-                >
-                    {targeteurl}
-                </a>
-            ),
         },
         {
             title: 'Картинка',
@@ -74,7 +60,7 @@ const Newss:React.FC = observer(() => {
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),
-            render: (image:Image, record) => (
+            render: (image: Image, record) => (
                 <img
                     key={`${record.id}${record.image?.id}}`}
                     className="partners-table-logo"
@@ -93,45 +79,47 @@ const Newss:React.FC = observer(() => {
             }),
             render: (value: string, record) => (
                 <div key={`${value}`} className="partner-table-item-name">
-                    <p>{value.substring(0, 10)}</p>
+                    <p>{value ? value.substring(0, 10) : ''}</p>
                 </div>
             ),
         },
-        { title: 'Дії',
-          dataIndex: 'action',
-          key: 'action',
-          width: '10%',
-          render: (value, news, index) => (
-              <div key={`${news.id}${index}1`} className="partner-page-actions">
-                  <DeleteOutlined
-                      key={`${news.id}${index}`}
-                      className="actionButton"
-                      onClick={() => {
-                          modalStore.setConfirmationModal(
-                              'confirmation',
-                              () => {
-                                  newsStore.deleteNews(news.id).then(() => {
-                                      newsStore.NewsMap.delete(news.id);
-                                  }).catch((e) => {
-                                      console.log(e);
-                                  });
-                                  modalStore.setConfirmationModal('confirmation');
-                              },
-                              'Ви впевнені, що хочете видалити чю новину?',
-                          );
-                      }}
-                  />
-                  <EditOutlined
-                      key={`${news.id}${index}2`}
-                      className="actionButton"
-                      onClick={() => {
-                          setNewsToEdit(news);
-                          setModalEditOpened(true);
-                      }}
-                  />
+        {
+            title: 'Дії',
+            dataIndex: 'action',
+            key: 'action',
+            width: '10%',
+            render: (value, news, index) => (
+                <div key={`${news.id}${index}1`} className="partner-page-actions">
+                    <DeleteOutlined
+                        key={`${news.id}${index}`}
+                        className="actionButton"
+                        onClick={() => {
+                            modalStore.setConfirmationModal(
+                                'confirmation',
+                                () => {
+                                    newsStore.deleteNews(news.id).then(() => {
+                                        newsStore.NewsMap.delete(news.id);
+                                    }).catch((e) => {
+                                        console.log(e);
+                                    });
+                                    modalStore.setConfirmationModal('confirmation');
+                                },
+                                'Ви впевнені, що хочете видалити чю новину?',
+                            );
+                        }}
+                    />
+                    <EditOutlined
+                        key={`${news.id}${index}2`}
+                        className="actionButton"
+                        onClick={() => {
+                            setNewsToEdit(news);
+                            setModalEditOpened(true);
+                        }}
+                    />
 
-              </div>
-          ) },
+                </div>
+            )
+        },
     ];
     return (
         <div className="partners-page">
@@ -142,7 +130,7 @@ const Newss:React.FC = observer(() => {
                         className="streetcode-custom-button partners-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                    Створити новину
+                        Створити новину
                     </Button>
                 </div>
                 <Table

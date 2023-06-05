@@ -1,12 +1,11 @@
 import './InterestingFactsAdminItem.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
-
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { Modal } from 'antd';
 
 import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
 
@@ -16,6 +15,15 @@ interface Props {
 const InterestingFactAdminItem = ({ fact }: Props) => {
     const { factsStore } = useMobx();
     const [openModal, setModalOpen] = useState<boolean>(false);
+    const [visibleModal, setVisibleModal] = useState(false);
+
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
+
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
 
     return (
         <div className="textBlockButton">
@@ -27,12 +35,17 @@ const InterestingFactAdminItem = ({ fact }: Props) => {
                     {fact.title}
                 </p>
                 <div className="blockItem">
-                    <DeleteOutlined onClick={() => factsStore.deleteFactFromMap(fact.id)} />
+                    <DeleteOutlined onClick={() => handleRemove()} />
                 </div>
                 <div>
                     <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
                 </div>
-
+                <Modal
+                    title="Ви впевнені, що хочете видалити даний Wow-факт?"
+                    open={visibleModal}
+                    onOk={(e) => {factsStore.deleteFactFromMap(fact.id);setVisibleModal(false);}}
+                    onCancel={handleCancelModalRemove}
+                />
             </div>
         </div>
     );

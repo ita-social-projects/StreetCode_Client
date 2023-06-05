@@ -19,7 +19,7 @@ const ForFansBlock = () => {
     return (
         <div className="adminContainer-block">
             <h2>Для фанатів</h2>
-          
+
             <div className="textBlockButton-container">
 
                 <button
@@ -32,7 +32,7 @@ const ForFansBlock = () => {
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category, index) => (
                     <ForFansAdminItem
                         categoryName={categoriesSelect.find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
-                        index={ index}
+                        index={index}
                         onEditClick={() => {
                             sourceCreateUpdateStreetcode.indexUpdate = index;
                             setIsModalOpen(true);

@@ -16,7 +16,6 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import { CheckboxProps } from 'antd/lib/checkbox';
 
 import ImagesApi from '@/app/api/media/images.api';
 import partnersApi from '@/app/api/partners/partners.api';
@@ -44,7 +43,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
      const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
      const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
      const imageId = useRef<number>(0);
-     const handlePreview = async (file: UploadFile) => {
+     const handlePreview = (file: UploadFile) => {
          setFilePreview(file);
          setPreviewOpen(true);
      };
@@ -139,22 +138,27 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          if (partnerItem) {
              partner.id = partnerItem.id;
              Promise.all([
-                 partnersStore.updatePartner(partner)
+                 partnersApi.update(partner)
                      .then((p) => {
                          if (afterSubmit) {
                              if (p) {
                                  afterSubmit({ ...p });
                              }
                          }
+                         return p;
+                     }).then((p) => {
+                         ImagesApi.getById(p.logoId).then((img) => {
+                             partnersStore.setItem({ ...p, logo: img });
+                         });
                      })
                      .catch((e) => {
                      }),
              ]);
          } else {
              Promise.all([
-                 await partnersApi.create(partner)
+                 partnersStore.createPartner(partner)
                      .then((p) => {
-                         if (afterSubmit) {
+                         if (afterSubmit && p) {
                              afterSubmit(p);
                          }
                      })
@@ -182,7 +186,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
          <Modal
              open={open}
              onCancel={closeAndCleanData}
-             className="partner-modal-container"
+             className="modalContainer"
              footer={null}
              closeIcon={<CancelBtn />}
          >
@@ -269,9 +273,6 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                              onSuccessUpload={(image:Image) => {
                                  imageId.current = image.id;
                              }}
-                             onRemove={(image) => {
-                                 ImagesApi.delete(imageId.current);
-                             }}
                              defaultFileList={(partnerItem)
                                  ? [{ name: '',
                                       thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
@@ -292,7 +293,11 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                                  onDeselect={onStreetcodeDeselect}
                              >
                                  {streetcodeShortStore.streetcodes
-                                     .map((s) => <Select.Option key={`${s.id}`} value={s.title}>{s.title}</Select.Option>)}
+                                     .map((s) => (
+                                         <Select.Option key={`${s.id}`} value={s.title}>
+                                             {s.title}
+                                         </Select.Option>
+                                     ))}
                              </Select>
                          </Form.Item>
                      ) : ''}

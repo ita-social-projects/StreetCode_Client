@@ -1,29 +1,23 @@
 import './InterestingFactItem.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import Image from '@models/media/image.model';
 import { Fact } from '@models/streetcode/text-contents.model';
-import useMobx from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
-import ImagesApi from '@/app/api/media/images.api';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { useState } from 'react';
 
 interface Props {
     fact: Fact;
     maxTextLength?: number;
     numberOfSlides: number;
-    handleImageLoad: (() => void);
 }
 
 const InterestingFactItem = ({
-    fact: { factContent, title, id, imageId },
+    fact: { factContent, title, id, image },
     maxTextLength = 250,
     numberOfSlides,
-    handleImageLoad,
 }: Props) => {
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore } = useModalContext();
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
 
     let mainContent = factContent;
@@ -31,20 +25,12 @@ const InterestingFactItem = ({
         mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
 
-    const imgId = imageId as number;
-
-    const { value } = useAsync(() => ImagesApi.getById(imgId), [imgId]);
-    const image = value as Image;
-
-    const url = base64ToUrl(image?.base64, image?.mimeType);
-
     return (
         <div className="interestingFactSlide">
             <div className="slideImage">
                 <img
-                    src={url}
+                    src={base64ToUrl(image?.base64, image?.mimeType)}
                     alt=""
-                    onLoad={handleImageLoad}
                 />
             </div>
             <div className="slideText">
@@ -55,7 +41,7 @@ const InterestingFactItem = ({
                     {mainContent}
                 </p>
                 {isReadMore && (
-                    <p className="readMoreParagraph" onClick={() => setModal('facts', id, true)}>
+                    <p className="readMoreParagraph" onClick={() => modalStore.setModal('facts', id, true)}>
                         Трохи ще...
                     </p>
                 )}
