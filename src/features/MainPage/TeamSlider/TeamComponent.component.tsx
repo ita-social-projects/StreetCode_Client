@@ -16,8 +16,6 @@ const TeamComponent = () => {
             try {
                 const response = await TeamApi.getAllMain();
                 setTeam(response);
-                console.log(response);
-
             } catch (error) {
             }
         };

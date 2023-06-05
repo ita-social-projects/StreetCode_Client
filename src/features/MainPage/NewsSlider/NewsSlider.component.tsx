@@ -20,7 +20,6 @@ const NewsSlider = () => {
             try {
                 const response = await NewsApi.getAllSortedNews();
                 setNews(response);
-                console.log(response);
             } catch (error) {
             }
         };
