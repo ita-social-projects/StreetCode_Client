@@ -3,14 +3,13 @@ import Heading from '../Heading/Heading.component';
 import './InstagramBlock.styles.scss';
 import InstagramSliderItem from './InstagramSliderItem/InstagramSliderItem.component';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import InstagramPost from '@/models/instagram/instagram.model';
 import InstagramApi from '@/app/api/instagram/instagram.api';
-import Post from '@/models/instagram/instagram.model';
 
 const InstagramBlock = () => {
-    const [posts, setPosts] = useState<Post[]>([]);
-
-      useEffect(() => {
+    const [posts, setPosts] = useState<InstagramPost[]>([]);
+     
+    useEffect(() => {
         const fetchPosts = async () => {
             const response = await InstagramApi.getAll();
             setPosts(response);     
@@ -35,6 +34,7 @@ const InstagramBlock = () => {
             key={p.id}
             photoUrl={p.media_url}
             caption={p.caption}
+            permalink={p.permalink}
         />
     ));
 

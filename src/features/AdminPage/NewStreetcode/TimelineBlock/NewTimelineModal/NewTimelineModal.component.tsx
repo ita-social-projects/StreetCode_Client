@@ -17,7 +17,7 @@ import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import useMobx from '@/app/stores/root-store';
 import TimelineItem, {
     dateTimePickerTypes,
-    HistoricalContext, selectDateOptions,
+    HistoricalContext, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 
 const NewTimelineModal: React.FC<{
@@ -118,7 +118,7 @@ const NewTimelineModal: React.FC<{
                     <Form.Item label="Дата:">
                         <div className="data-container">
                             <Select
-                                options={selectDateOptions}
+                                options={selectDateOptionsforTimeline}
                                 defaultValue={dateTimePickerType}
                                 onChange={(val) => {
                                     setDateTimePickerType(val);

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, FormOutlined, RollbackOutlined,
 } from '@ant-design/icons';
-import useMobx from '@stores/root-store';
 
 import {
     Button, Dropdown, InputNumber, MenuProps, Pagination, Space,
@@ -22,16 +21,18 @@ import { formatDate } from './FormatDateAlgorithm';
 import SearchMenu from './SearchMenu.component';
 
 const StreetcodesTable = () => {
-    const [currentPagesAmount, setCurrentPagesAmount] = useState<number>(1);
+    const [currentPages, setCurrentPages] = useState<number>(1);
+    const [totalItems, setTotalItems] = useState<number>(0);
     const [titleRequest, setTitleRequest] = useState<string | null>(null);
     const [statusRequest, setStatusRequest] = useState<string | null>(null);
-    const [pageRequest, setPageRequest] = useState<number | null>(null);
-    const [amountRequest, setAmountRequest] = useState<number | null>(null);
+    const [pageRequest, setPageRequest] = useState<number | null>(1);
+    const [amountRequest, setAmountRequest] = useState<number | null>(4);
+    const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
 
     const requestDefault: GetAllStreetcodesRequest = {
-        Page: null,
-        Amount: null,
+        Page: pageRequest,
+        Amount: amountRequest,
         Title: null,
         Sort: null,
         Filter: null,
@@ -45,7 +46,7 @@ const StreetcodesTable = () => {
             Amount: amountRequest,
             Title: titleRequest === '' ? null : titleRequest,
             Sort: null,
-            Filter: `Status:${statusRequest}`,
+            Filter: statusRequest == null ? null : `Status:${statusRequest}`,
         });
     };
 
@@ -65,8 +66,6 @@ const StreetcodesTable = () => {
             key: '2',
         },
     ];
-
-    const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
 
     const updateState = (id: number, state: string) => {
         const updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
@@ -112,7 +111,7 @@ const StreetcodesTable = () => {
             dataIndex: 'name',
             width: 500,
             key: 'name',
-            render: (text:string, record: MapedStreetCode) => ({
+            render: (text: string, record: MapedStreetCode) => ({
                 children: (
                     <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
                         {text}
@@ -165,55 +164,57 @@ const StreetcodesTable = () => {
                 ),
             }),
         },
-        { title: 'Дії',
-          dataIndex: 'action',
-          width: 100,
-          key: 'action',
-          render: (value: any, record: MapedStreetCode, index: any) => (
-              // eslint-disable-next-line react/jsx-no-useless-fragment
-              <>
-                  {record.status !== 'Видалений' ? (
-                      <>
-                          <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/${record.key}`}>
-                              <FormOutlined
-                                  className="actionButton"
-                                  onClick={(event) => {
-                                      event.stopPropagation();
-                                  }}
-                              />
-                          </Link>
-                          <DeleteOutlined
-                              className="actionButton"
-                              onClick={(event) => {
-                                  modalStore.setConfirmationModal(
-                                      'confirmation',
-                                      () => {
-                                          StreetcodesApi.delete(record.key).then(() => {
-                                              updateState(record, 'Видалений');
-                                          }).catch((e) => {
-                                              console.log(e);
-                                          });
-                                          modalStore.setConfirmationModal('confirmation');
-                                      },
-                                      'Ви впевнені, що хочете видалити цей стріткод?',
-                                  );
-                              }}
-                          />
-                          <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
-                              <BarChartOutlined />
-                          </Link>
-                      </>
-                  )
-                      : (
-                          <RollbackOutlined
-                              className="actionButton"
-                              onClick={() => handleUndoDelete(record.key)}
-                          />
-                      )}
-              </>
-          ) },
-    ];
 
+        {
+            title: 'Дії',
+            dataIndex: 'action',
+            width: 100,
+            key: 'action',
+            render: (value: any, record: MapedStreetCode, index: any) => (
+                // eslint-disable-next-line react/jsx-no-useless-fragment
+                <>
+                    {record.status !== 'Видалений' ? (
+                        <>
+                            <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/${record.key}`}>
+                                <FormOutlined
+                                    className="actionButton"
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                    }}
+                                />
+                            </Link>
+                            <DeleteOutlined
+                                className="actionButton"
+                                onClick={(event) => {
+                                    modalStore.setConfirmationModal(
+                                        'confirmation',
+                                        () => {
+                                            StreetcodesApi.delete(record.key).then(() => {
+                                                updateState(record, 'Видалений');
+                                            }).catch((e) => {
+                                                console.log(e);
+                                            });
+                                            modalStore.setConfirmationModal('confirmation');
+                                        },
+                                        'Ви впевнені, що хочете видалити цей стріткод?',
+                                    );
+                                }}
+                            />
+                            <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
+                                <BarChartOutlined />
+                            </Link>
+                        </>
+                    )
+                        : (
+                            <RollbackOutlined
+                                className="actionButton"
+                                onClick={() => handleUndoDelete(record.key)}
+                            />
+                        )}
+                </>
+            ),
+        },
+    ];
     interface MapedStreetCode {
         key: number,
         index: number,
@@ -224,9 +225,13 @@ const StreetcodesTable = () => {
     }
 
     useEffect(() => {
+        if (amountRequest === null) {
+            setAmountRequest(0);
+        }
+        requestGetAll.Page = pageRequest;
+        requestGetAll.Amount = amountRequest;
         const getAllStreetcodesResponse = StreetcodesApi.getAll(requestGetAll);
         const mapedStreetCodesBuffer: MapedStreetCode[] = [];
-
         Promise.all([getAllStreetcodesResponse]).then((response) => {
             response[0].streetcodes?.map((streetcode) => {
                 let currentStatus = '';
@@ -246,17 +251,16 @@ const StreetcodesTable = () => {
                     name: streetcode.title,
                     url: streetcode.transliterationUrl,
                 };
-
                 mapedStreetCodesBuffer.push(mapedStreetCode);
             });
 
             setMapedStreetCodes(mapedStreetCodesBuffer);
-            setCurrentPagesAmount(response[0].pages);
+            setTotalItems(amountRequest !== null
+                ? response[0].pages * amountRequest : 0);
         });
-    }, [requestGetAll]);
+    }, [requestGetAll, amountRequest, pageRequest]);
 
     return (
-
         <div className="StreetcodeTableWrapper">
             <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest} />
             <div>
@@ -265,7 +269,6 @@ const StreetcodesTable = () => {
                     dataSource={mapedStreetCodes}
                     scroll={{ y: 440 }}
                     pagination={false}
-
                 />
             </div>
             <div>
@@ -276,9 +279,10 @@ const StreetcodesTable = () => {
                             className="pageAmountElement"
                             min={1}
                             max={20}
-                            defaultValue={1}
-                            onChange={(value: any) => {
+                            defaultValue={amountRequest !== null ? amountRequest : 4}
+                            onChange={(value: number | null) => {
                                 setAmountRequest(value);
+                                setRequest();
                             }}
                         />
                     </div>
@@ -287,8 +291,11 @@ const StreetcodesTable = () => {
                             className="pagenationElement"
                             simple
                             defaultCurrent={1}
-                            total={currentPagesAmount * 10}
+                            current={currentPages}
+                            total={totalItems}
+                            pageSize={amountRequest !== null ? amountRequest : 0}
                             onChange={(value: any) => {
+                                setCurrentPages(value);
                                 setPageRequest(value);
                                 setRequest();
                             }}
