@@ -6,10 +6,39 @@
 
 .InstagramBlock {
     .sliderContainer {
-        padding: 0 f.pxToRem(20px) f.pxToRem(110px);
+        .slick-slider {
+            .slick-arrow {
+                @include mut.sized(68px, 101px);
+            }
+
+            .slick-prev, .slick-next {
+                z-index: 9999;
+                filter: none !important;
+            }
+
+            .slick-prev {
+                left: 20px !important;
+
+                &::before {
+                    content: url("@assets/images/utils/LeftSmallSliderArrow.svg");
+                    opacity: 0.9;
+                }
+            }
+
+            .slick-next {
+                right: 20px !important;
+
+                &::before {
+                    content: url("@assets/images/utils/RightSmallSliderArrow.svg");
+                    opacity: 0.9;
+                }
+            }
+        }
+        
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 20px);
             @include mut.rem-padded($bottom: 5px);
+            @include mut.rem-margined($left: 20px);
         }
     }
 }
