@@ -34,7 +34,7 @@ const StreetcodeCatalog = () => {
     }, [screen]);
 
     return (
-        <div>
+        <div className="catalogPage">
             <div className="streetcodeCatalogWrapper">
                 <h1 className="streetcodeCatalogHeading">Стріткоди</h1>
                 <div className="steetcodeCatalogContainer">
@@ -42,6 +42,7 @@ const StreetcodeCatalog = () => {
                         getCatalogStreetcodesArray.map(
                             (streetcode, index) => (
                                 <StreetcodeCatalogItem
+                                    key={streetcode.id}
                                     streetcode={streetcode}
                                     isLast={index === getCatalogStreetcodesArray.length - 1}
                                     handleNextScreen={handleSetNextScreen}

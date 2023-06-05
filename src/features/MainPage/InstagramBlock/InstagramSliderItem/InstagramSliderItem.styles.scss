@@ -6,19 +6,24 @@
 
 .InstagramSliderItem {
     @include mut.sized($width: 300px, $height: 396px);
-    @include mut.flexed($align-items: flex-end);
     @include mut.full-rounded($rad: 50px);
-    
-    border: 6px solid c.$pure-white-color;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-color: c.$pure-white-color;
 
-    .textContainer {
-        @include mut.sized($width: 300px, $height: 97px);
-        padding: f.pxToRem(17px) f.pxToRem(20px) f.pxToRem(16px);
+    .imageContainer {
+        @include mut.flexed($align-items: flex-start);
+        @include mut.sized($width: 300px, $height: 300px);
+        @include mut.rounded($top-left: 50px, $top-right: 50px);
+        border: 6px solid c.$pure-white-color;
+    }
 
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
+    .textContainer {
+        @include mut.flexed($align-items: flex-start);
+        @include mut.sized($width: 300px, $height: 97px);
+        padding: f.pxToRem(11px) f.pxToRem(20px) f.pxToRem(16px);
+
+        position: absolute;
+        @include mut.rounded($bottom-left: 50px, $bottom-right: 50px);
         background-color: c.$pure-white-color;
 
         p {

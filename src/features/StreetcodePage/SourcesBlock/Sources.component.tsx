@@ -1,9 +1,9 @@
 import './Sources.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx from '@stores/root-store';
+import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
@@ -11,9 +11,15 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import SourceItem from './SourceItem/SourceItem.component';
 
 const SourcesComponent = () => {
-    const { sourcesStore, streetcodeStore: { getStreetCodeId } } = useMobx();
+    const { sourcesStore } = useMobx();
+    const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const windowsize = useWindowSize();
-    useAsync(() => sourcesStore.fetchSrcCategoriesByStreetcodeId(getStreetCodeId), [getStreetCodeId]);
+    useEffect(() => {
+        const streetcodeId = getStreetCodeId;
+        if (streetcodeId > 0) {
+            sourcesStore.fetchSrcCategoriesByStreetcodeId(streetcodeId);
+        }
+    }, [getStreetCodeId]);
     const sliderProps = {
         className: 'heightContainer',
         infinite: true,

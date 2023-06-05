@@ -5,6 +5,7 @@ import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
+
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
 import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
@@ -22,12 +23,18 @@ import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.c
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 
+
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
             element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+        />
+        <Route
+            index
+            path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
+            element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
         />
         <Route
             index

@@ -7,7 +7,8 @@ import { Button, Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import Modal from 'antd/es/modal/Modal';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
+import { useEffect } from 'react';
 
 interface Props {
     handleAdd: () => void;
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
-    const { modalStore: { setModal, modalsState: { addTerm } } } = useMobx();
+    const { modalStore: { setModal, modalsState: { addTerm } } } = useModalContext();
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTerm({ ...term, title: e.target.value });
     };
@@ -43,11 +44,11 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                 </div>
 
                 <FormItem label="Назва">
-                    <Input onChange={handleChangeTitle} />
+                    <Input value={term?.title} onChange={handleChangeTitle} />
                 </FormItem>
                 
                 <FormItem label="Визначення">
-                    <TextArea onChange={handleChangeDesc} />
+                    <TextArea value={term?.description} onChange={handleChangeDesc} />
                 </FormItem>
 
                 <div className='center'>

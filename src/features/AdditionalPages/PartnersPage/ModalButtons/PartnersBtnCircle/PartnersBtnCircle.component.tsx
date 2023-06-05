@@ -2,10 +2,10 @@ import './PartnersBtnCircle.styles.scss';
 
 import ShakeHand from '@images/partners/ShakeHand.svg';
 
-import useMobx from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
 const PartnersBtnCircle = () => {
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
     const onBtnClick = () => setModal('partners');
 
     return (

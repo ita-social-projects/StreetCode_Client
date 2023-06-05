@@ -13,7 +13,7 @@ import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 
@@ -25,7 +25,7 @@ const HeaderBlock = () => {
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
 
     const inputRef = useRef<HTMLInputElement>(null);
-    const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useMobx();
+    const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
 
     const windowSize = useWindowSize();
 

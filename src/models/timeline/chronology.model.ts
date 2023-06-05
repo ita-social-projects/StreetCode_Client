@@ -38,7 +38,7 @@ export const getSeason = (date: Dayjs | null): string => {
 };
 export const selectDateOptions = [{
     value: 'date',
-    label: 'Рік-місяць-день',
+    label: 'День місяць рік',
 }, {
     value: 'month',
     label: 'Рік-місяць',
@@ -48,6 +48,20 @@ export const selectDateOptions = [{
 }, {
     value: 'season-year',
     label: 'Рік-пора',
+    }];
+
+export const selectDateOptionsforTimeline = [{
+    value: 'date',
+    label: 'Рік, день місяць',
+}, {
+    value: 'month',
+    label: 'Рік, місяць',
+}, {
+    value: 'year',
+    label: 'Рік',
+}, {
+    value: 'season-year',
+    label: 'Рік, пора(місяць)',
 }];
 export const dateTimePickerTypes = ['date', 'month', 'season-year', 'year'];
 

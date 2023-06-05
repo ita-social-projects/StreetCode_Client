@@ -13,8 +13,6 @@
         line-height: f.pxToRem(23px);
         background-color: #FFFFFF;
         margin-left: 20px;
-
-
     }
 
     .leftSlider {
@@ -49,7 +47,7 @@
         position: absolute;
         bottom: 33.5px;
         display: flex;
-
+        align-items: center;
         .teamLinkItem {
             @include mut.rem-margined(0px, 17px, 0px, 0px);
         }
