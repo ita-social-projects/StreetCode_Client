@@ -6,7 +6,7 @@ import { Button, Modal } from 'antd';
 import { RcFile } from 'antd/es/upload';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { ArtCreate } from '@/models/media/art.model';
+import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -18,9 +18,9 @@ const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, rejec
 const PreviewFileModal: React.FC<{
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
-    art: ArtCreate;
-    onSave: (art: ArtCreate) => void
-}> = ({ opened, setOpened, onSave, art }) => {
+    streetcodeArt: StreetcodeArtCreateUpdate;
+    onSave: (art: StreetcodeArtCreateUpdate) => void
+}> = ({ opened, setOpened, onSave, streetcodeArt }) => {
     const [fileProps, setFileProps] = useState<{
         previewImage: string, previewTitle: string
     }>({ previewImage: '', previewTitle: '' });
@@ -30,24 +30,27 @@ const PreviewFileModal: React.FC<{
     const handleCancel = () => {
         setOpened(false);
     };
+
     const handleSave = () => {
-        art.description = newDesc;
-        art.title = newTitle;
-        onSave(art);
+        streetcodeArt?.art.description = newDesc;
+        streetcodeArt?.art.image.title = newTitle;
+        onSave(streetcodeArt);
         setOpened(false);
     };
+
     useEffect(() => {
-        setTitle(art?.title);
-        setDesc(art?.description);
-        const url = base64ToUrl(art?.image, art?.mimeType);
+        setTitle(streetcodeArt?.art.image.title);
+        setDesc(streetcodeArt?.art.description);
+        const url = base64ToUrl(streetcodeArt?.art.image.base64, streetcodeArt?.art.image.mimeType);
         async function uploadImageToModal() {
             setFileProps({
                 previewImage: url || '',
-                previewTitle: art?.title || '',
+                previewTitle: streetcodeArt?.art.image.title || '',
             });
         }
         uploadImageToModal();
     }, [opened]);
+
     return (
         <Modal open={opened} title="Додаткові дані" style={{ top: 50 }} footer={null} onCancel={handleCancel}>
             <div className="artPreviewModal">

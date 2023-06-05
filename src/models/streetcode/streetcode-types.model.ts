@@ -1,6 +1,6 @@
-import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
+import Subtitle, { SubtitleCreate, SubtitleCreateUpdate } from '@models/additional-content/subtitles.model';
 import Tag, { StreetcodeTag } from '@models/additional-content/tag.model';
-import Art, { ArtCreateDTO, IndexedArt } from '@models/media/art.model';
+import Art, { ArtCreateDTO, ArtUpdate, IndexedArt } from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
@@ -146,4 +146,6 @@ export interface StreetcodeUpdate {
     relatedFigures: RelatedFigureUpdate[],
     timelineItems: TimelineItemUpdate[],
     partners: PartnerUpdate[],
+    streetcodeArts: ArtUpdate[];
+    subtitles: Subtitle[],
 }

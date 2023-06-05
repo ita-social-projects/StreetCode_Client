@@ -25,11 +25,13 @@ import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import useMobx from '@/app/stores/root-store';
-import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
+import Subtitle, { SubtitleCreate, SubtitleCreateUpdate } from '@/models/additional-content/subtitles.model';
+import SubTitle from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import { ModelState } from '@/models/enums/model-state';
-import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
+import { ArtCreate, ArtCreateDTO, ArtUpdate, ArtUpdateDTO } from '@/models/media/art.model';
+import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner, { PartnerCreateUpdate, PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
@@ -70,35 +72,42 @@ const NewStreetcode = () => {
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
     const [video, setVideo] = useState<Video>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
-    const [subTitle, setSubTitle] = useState<string>('');
+    const [subTitle, setSubTitle] = useState<SubTitle>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
-    const [arts, setArts] = useState<ArtCreate[]>([]);
+    const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
     const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
 
     const [funcName, setFuncName] = useState<string>('create');
     const parseId = id ? +id : null;
+
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
         }
+
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                const newArts = result.map((x) => ({
-                    description: x.art.description ?? '',
-                    title: x.art.image.alt ?? '',
-                    imageId: x.art.imageId,
-                    image: x.art.image.base64,
-                    index: x.index,
-                    mimeType: x.art.image.mimeType,
-                    uidFile: `${x.index}`,
+                const artToUpdate = result.map((streetcodeArt) => ({
+                    ...streetcodeArt,
+                    art: {
+                        ...streetcodeArt.art,
+                        image: {
+                            ...streetcodeArt.art.image,
+                            title: streetcodeArt.art.image.alt ?? '',
+                        },
+                    },
+                    modelState: ModelState.Updated,
+                    isPersisted: true,
                 }));
-                setArts([...newArts]);
+
+                setArts([...artToUpdate]);
+                console.log(artToUpdate);
             });
             StreetcodesApi.getById(parseId).then((x) => {
                 if (x.lastName && x.firstName) {
@@ -167,7 +176,7 @@ const NewStreetcode = () => {
                 setPartners(persistedPartners);
             });
             SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
-                setSubTitle(result.subtitleText);
+                setSubTitle(result);
             });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
                 const id = result.map((x) => x.id);
@@ -213,9 +222,10 @@ const NewStreetcode = () => {
             }
         }
         data.stopPropagation();
-        const subtitles: SubtitleCreate[] = [{
-            subtitleText: subTitle,
-        }];
+
+        const subtitles: SubTitle[] = subTitle ? [subTitle] : [];
+        console.log(subtitles);
+
         const videos: VideoCreate[] = [
             { url: inputInfo?.link || '' },
         ];
@@ -223,16 +233,18 @@ const NewStreetcode = () => {
         const text: TextCreate = {
             title: inputInfo?.title,
             textContent: inputInfo?.text,
-            additionalText: inputInfo?.additionalText == '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
+            additionalText:
+                inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
         };
 
-        const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
+        const streetcodeArts: ArtCreateDTO[] = arts.map((art) => ({
             imageId: art.imageId,
             description: art.description,
             index: art.index,
             title: art.title,
             mimeType: art.mimeType,
         }));
+
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -310,6 +322,8 @@ const NewStreetcode = () => {
                 modelState: partner.modelState,
             }));
 
+            console.log(arts);
+
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
@@ -328,6 +342,7 @@ const NewStreetcode = () => {
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
                 facts: factsStore.getFactArrayToUpdate,
                 partners: partnersUpdate,
+                subtitles,
             };
 
             console.log(streetcodeUpdate);

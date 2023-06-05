@@ -1,5 +1,8 @@
-import Streetcode from "../streetcode/streetcode-types.model";
-import Art from "./art.model";
+import IModelState from '../interfaces/IModelState';
+import IPersisted from '../interfaces/IPersisted';
+import Streetcode from '../streetcode/streetcode-types.model';
+
+import Art from './art.model';
 
 export default interface StreetcodeArt {
     index: number;
@@ -7,4 +10,8 @@ export default interface StreetcodeArt {
     streetcode: Streetcode;
     artId: number;
     art: Art;
+}
+
+export interface StreetcodeArtCreateUpdate extends StreetcodeArt, IModelState, IPersisted {
+
 }

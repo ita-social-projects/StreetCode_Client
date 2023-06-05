@@ -38,8 +38,6 @@ const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
         }
     };
 
-    console.log(figures);
-
     const getOptions = async () => {
         try {
             const response = await axios.get<RelatedFigure[]>(

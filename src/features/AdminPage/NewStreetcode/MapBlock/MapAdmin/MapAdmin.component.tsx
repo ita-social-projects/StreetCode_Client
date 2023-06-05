@@ -1,33 +1,35 @@
 import './MapAdmin.styles.scss';
-import { observer } from 'mobx-react-lite';
-import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useEffect, useRef, useState,useCallback } from 'react';
-import { Button, Form, Input, InputNumber, Table, message } from 'antd';
-import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
+
 import StreetcodeMarker from '@images/footer/streetcode-marker.png';
-import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+
+import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { observer } from 'mobx-react-lite';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
+
+import {
+    Button, Form, Input, InputNumber, message, Modal, Table,
+} from 'antd';
+
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import useMobx from '@/app/stores/root-store';
-import { Modal } from 'antd';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 
 const containerStyle = {
     width: '100%',
-    height: '100vh'
+    height: '100vh',
 };
 
 const initialCenter: google.maps.LatLngLiteral = {
     lat: 50.44759739385438,
-    lng: 30.522674496948543
+    lng: 30.522674496948543,
 };
 interface Props {
     coordinates: StreetcodeCoordinate[];
 }
-const MapOSMAdmin: React.FC<Props> = ({
-    coordinates,
-}) => {
-
+const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
     const [center, setCenter] = useState(initialCenter);
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
@@ -39,8 +41,7 @@ const MapOSMAdmin: React.FC<Props> = ({
     const newNumberAsNumber = parseInt(newNumber, 10);
     useEffect(() => {
         if (coordinates.length > 0) {
-
-            coordinates.forEach(x => {
+            coordinates.forEach((x) => {
                 const newCoordinate: StreetcodeCoordinate = {
                     latitude: x.latitude,
                     longtitude: x.longtitude,
@@ -54,43 +55,40 @@ const MapOSMAdmin: React.FC<Props> = ({
     }, [coordinates]);
 
     const handleSaveButtonClick = () => {
-        if (!newNumber || newNumber === "") {
+        if (!newNumber || newNumber === '') {
             message.error({
                 content: 'Будь ласка введіть значення номеру фізичного стіткоду для збереження',
                 style: { marginTop: '400vh' },
             });
-        } else {
-            if (streetcodeCoordinates.length > 0) {
-                const newCoordinate: StreetcodeCoordinate = {
-                    latitude: streetcodeCoordinates[0].latitude,
-                    longtitude: streetcodeCoordinates[0].longtitude,
-                    streetcodeId: 0,
-                    id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size + 1,
+        } else if (streetcodeCoordinates.length > 0) {
+            const newCoordinate: StreetcodeCoordinate = {
+                latitude: streetcodeCoordinates[0].latitude,
+                longtitude: streetcodeCoordinates[0].longtitude,
+                streetcodeId: 0,
+                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size + 1,
 
+            };
+            const newStatisticRecord: StatisticRecord = {
+                id: statisticRecordStore.setStatisticRecordMap.size + 1,
+                streetcodeCoordinate: newCoordinate,
+                coordinateId: newCoordinate.id,
+                qrId: newNumberAsNumber,
+                count: 0,
+                address,
+            };
+            statisticRecordStore.addStatisticRecord(newStatisticRecord);
+            setStatisticRecord(newStatisticRecord);
+            streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
+            coordinates?.map((x) => {
+                const newCoor: StreetcodeCoordinate = {
+                    latitude: x.latitude,
+                    longtitude: x.longtitude,
+                    streetcodeId: x.streetcodeId,
+                    id: x.id,
                 };
-                const newStatisticRecord: StatisticRecord = {
-                    id: statisticRecordStore.setStatisticRecordMap.size + 1,
-                    streetcodeCoordinate: newCoordinate,
-                    coordinateId: newCoordinate.id,
-                    qrId: newNumberAsNumber,
-                    count: 0,
-                    address: address,
-                };
-                statisticRecordStore.addStatisticRecord(newStatisticRecord);
-                setStatisticRecord(newStatisticRecord);
-                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
-                coordinates?.map(x => {
-                    const newCoor: StreetcodeCoordinate = {
-                        latitude: x.latitude,
-                        longtitude: x.longtitude,
-                        streetcodeId: x.streetcodeId,
-                        id: x.id,
-                    };
-                    streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoor);
-
-                });
-                setStreetcodeCoordinates([]);
-            }
+                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoor);
+            });
+            setStreetcodeCoordinates([]);
         }
     };
 
@@ -127,9 +125,9 @@ const MapOSMAdmin: React.FC<Props> = ({
                         if (results && status === 'OK') {
                             setAddress(results[0].formatted_address);
                         } else {
-                            console.error('Geocode was not successful for the following reason: ' + status);
+                            console.error(`Geocode was not successful for the following reason: ${status}`);
                         }
-                    }
+                    },
                 );
             }
         }
@@ -142,17 +140,17 @@ const MapOSMAdmin: React.FC<Props> = ({
                     const { latitude, longitude } = position.coords;
                     setStreetcodeCoordinates([
                         {
-                            latitude: latitude,
+                            latitude,
                             longtitude: longitude,
                             streetcodeId: 0,
                             id: 0,
                         },
                     ]);
                     setCenter({ lat: latitude, lng: longitude });
-                }
+                },
             );
         }
-    }
+    };
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         const lat = event.latLng?.lat();
@@ -173,9 +171,9 @@ const MapOSMAdmin: React.FC<Props> = ({
                     if (results && status === 'OK') {
                         setAddress(results[0].formatted_address);
                     } else {
-                        console.error('Geocode was not successful for the following reason: ' + status);
+                        console.error(`Geocode was not successful for the following reason: ${status}`);
                     }
-                }
+                },
             );
         }
     };
@@ -215,11 +213,13 @@ const MapOSMAdmin: React.FC<Props> = ({
                 <span>
                     <DeleteOutlined onClick={() => handleRemove()} />
                     <Modal
-                    title="Ви впевнені, що хочете видалити дану точку?"
-                    open={visibleModal}
-                    onOk={(e) => {handleDelete(record); setVisibleModal(false);}}
-                    onCancel={handleCancelModalRemove}
-                />
+                        title="Ви впевнені, що хочете видалити дану точку?"
+                        open={visibleModal}
+                        onOk={(e) => {
+                            handleDelete(record); setVisibleModal(false);
+                        }}
+                        onCancel={handleCancelModalRemove}
+                    />
                 </span>
             ),
         },
@@ -240,7 +240,6 @@ const MapOSMAdmin: React.FC<Props> = ({
         if (newNumberAsNumber) {
             StatisticRecordApi.existByQrId(newNumberAsNumber)
                 .then((exist) => {
-
                     if (exist) {
                         message.error({
                             content: 'Даний номер таблички вже використовується. Використайте інший, будь ласка.',
@@ -251,7 +250,6 @@ const MapOSMAdmin: React.FC<Props> = ({
                             content: 'Такій номер таблички вільний. Можете з впевненістю його використовувати',
                             style: { marginTop: '400vh' },
                         });
-
                     }
                 })
                 .catch(() => {
@@ -298,7 +296,6 @@ const MapOSMAdmin: React.FC<Props> = ({
                         value={newNumber}
 
                     />
-
 
                     <Button className="onMapbtn" onClick={onCheckIndexClick}>
                         <a>Перевірити айді</a>

@@ -30,7 +30,7 @@ const InputPanel = ({ figures, options, handleAdd }: Props) => {
         }
     }, [options, figures]);
 
-    // TODO: add search
+    // TODO: fix search
     const handleSearch = (value: string) => {
         if (figures.length > 0) {
             const filtered = options.filter((option) => !figures.some((figure) => figure.id === option.id));
