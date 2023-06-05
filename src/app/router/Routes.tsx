@@ -22,8 +22,6 @@ import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.c
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 
-
-
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
         <Route

@@ -7,12 +7,12 @@
   font-weight: 600;
 }
 
-.breadcrumbContainer {
+.breadcrumbForNewsContainer {
   @include mut.with-font($font-weight: 500, $font-size:12px);
-  position: absolute;
-  top: f.pxToRem(120px);
-  right: f.pxToRem(200px);
-
+  position:relative;
+  ol {
+    justify-content: flex-end;
+  }
   > * {
     color: c.$dark-red-color;
     text-transform: uppercase;
@@ -35,13 +35,14 @@
   margin-bottom: f.pxToRem(2px);
 }
 @media (max-width: 1024px) {
-  .breadcrumbContainer{
+  .breadcrumbForNewsContainer{
+    position: absolute;
     top: f.pxToRem(70px);
     right: f.pxToRem(10px);
   }
 }
 @media (max-width: 660px) {
-  .breadcrumbContainer{
+  .breadcrumbForNewsContainer{
     top: f.pxToRem(70px);
     right: f.pxToRem(10px);
   }
