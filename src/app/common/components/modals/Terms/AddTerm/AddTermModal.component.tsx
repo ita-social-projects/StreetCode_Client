@@ -8,6 +8,7 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import Modal from 'antd/es/modal/Modal';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useEffect } from 'react';
 
 interface Props {
     handleAdd: () => void;
