@@ -5,7 +5,7 @@ import Audio from '@models/media/audio.model';
 import Image, { ImageCreate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerCreateUpdate, PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
-import { SourceLink, StreetcodeCategoryContent } from '@models/sources/sources.model';
+import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
 import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
 import Toponym from '@models/toponyms/toponym.model';
@@ -14,7 +14,7 @@ import TransactionLink from '@models/transactions/transaction-link.model';
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
 import StatisticRecord from '../analytics/statisticrecord.model';
 
-import { Fact, FactCreate, FactUpdate, TextCreate } from './text-contents.model';
+import { Fact, FactUpdate, Text, TextCreate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -148,4 +148,6 @@ export interface StreetcodeUpdate {
     partners: PartnerUpdate[],
     streetcodeArts: ArtUpdate[];
     subtitles: Subtitle[],
+    text: Text | null,
+    streetcodeCategoryContents: StreetcodeCategoryContentUpdate[]
 }

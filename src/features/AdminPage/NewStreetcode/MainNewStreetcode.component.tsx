@@ -34,9 +34,9 @@ import { ArtCreate, ArtCreateDTO, ArtUpdate, ArtUpdateDTO } from '@/models/media
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import Partner, { PartnerCreateUpdate, PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
-import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
+import { SourceCategory, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
+import { Fact, Text, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem, { TimelineItemUpdate } from '@/models/timeline/chronology.model';
 
 import PageBar from '../PageBar/PageBar.component';
@@ -69,10 +69,10 @@ const NewStreetcode = () => {
 
     const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
-    const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
+    const [inputInfo, setInputInfo] = useState<Partial<Text>>();
     const [video, setVideo] = useState<Video>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
-    const [subTitle, setSubTitle] = useState<SubTitle>();
+    const [subTitle, setSubTitle] = useState<Partial<SubTitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
@@ -193,7 +193,13 @@ const NewStreetcode = () => {
                                 .sourceLinkCategoryId === newSource.sourceLinkCategoryId);
 
                         if (!existingSource) {
-                            sourceCreateUpdateStreetcode.addSourceCategoryContent(newSource);
+                            const persistedItem: StreetcodeCategoryContentUpdate = {
+                                ...newSource,
+                                isPersisted: true,
+                                modelState: ModelState.Updated,
+                            };
+
+                            sourceCreateUpdateStreetcode.addSourceCategoryContent(persistedItem);
                         }
                     });
                 });
@@ -223,18 +229,20 @@ const NewStreetcode = () => {
         }
         data.stopPropagation();
 
-        const subtitles: SubTitle[] = subTitle ? [subTitle] : [];
-        console.log(subtitles);
+        const subtitles: SubtitleCreate[] = subTitle?.subtitleText
+            ? [{ subtitleText: subTitle.subtitleText }]
+            : [];
 
-        const videos: VideoCreate[] = [
-            { url: inputInfo?.link || '' },
-        ];
+        const videos: VideoCreate[] = inputInfo?.link
+            ? [{ url: inputInfo?.link || '' }]
+            : [];
 
         const text: TextCreate = {
             title: inputInfo?.title,
-            textContent: inputInfo?.text,
+            textContent: inputInfo?.textContent,
             additionalText:
-                inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
+                inputInfo?.аdditionalText === '<p>Текст підготовлений спільно з</p>'
+                    ? '' : inputInfo?.аdditionalText,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art) => ({
@@ -342,7 +350,10 @@ const NewStreetcode = () => {
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
                 facts: factsStore.getFactArrayToUpdate,
                 partners: partnersUpdate,
-                subtitles,
+                subtitles: subTitle?.subtitleText ? [subTitle as SubTitle] : [],
+                text: (inputInfo?.title && inputInfo?.textContent) ? inputInfo as Text : null,
+                streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
+                streetcodeArts: [],
             };
 
             console.log(streetcodeUpdate);

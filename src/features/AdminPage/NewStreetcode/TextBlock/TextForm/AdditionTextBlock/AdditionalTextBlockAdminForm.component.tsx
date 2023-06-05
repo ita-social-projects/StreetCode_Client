@@ -6,17 +6,16 @@ import { Editor } from '@tinymce/tinymce-react';
 
 import FormItem from 'antd/es/form/FormItem';
 
-import TextInputInfo from '../../InputType/TextInputInfo.model';
+import { Text } from '@/models/streetcode/text-contents.model';
 
 interface Props {
-    inputInfo: Partial<TextInputInfo> | undefined;
-    setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+    inputInfo: Partial<Text> | undefined;
+    setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
 }
 
-const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
-    Props) => {
+const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
     const handleEditorChange = (content: string, editor: any) => {
-        setInputInfo({ ...inputInfo, additionalText: content });
+        setInputInfo({ ...inputInfo, аdditionalText: content });
     };
 
     return (
@@ -28,7 +27,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
 
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(inputInfo?.additionalText ?? 'Текст підготовлений спільно з');
+                        editor.setContent(inputInfo?.аdditionalText ?? 'Текст підготовлений спільно з');
                     },
                     plugins: [
                         'autolink',
@@ -43,11 +42,11 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
                 }}
 
                 onChange={(e, editor) => {
-                    setInputInfo({ ...inputInfo, additionalText: editor.getContent() });
+                    setInputInfo({ ...inputInfo, аdditionalText: editor.getContent() });
                 }}
             />
         </FormItem>
     );
-}
+};
 
 export default observer(AdditionalTextBlockAdminForm);

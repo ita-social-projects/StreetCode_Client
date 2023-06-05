@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
 
 import SourcesApi from '@/app/api/sources/sources.api';
-import { SourceCategoryName } from '@/models/sources/sources.model';
+import { ModelState } from '@/models/enums/model-state';
+import { SourceCategoryName, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
@@ -14,8 +15,9 @@ const ForFansBlock = () => {
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
 
     useEffect(() => {
-        SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => { });
+        SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => {});
     }, []);
+
     return (
         <div className="adminContainer-block">
             <h2>Для фанатів</h2>
@@ -29,16 +31,20 @@ const ForFansBlock = () => {
                 >
                     +
                 </button>
-                {sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((category, index) => (
-                    <ForFansAdminItem
-                        categoryName={categoriesSelect.find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
-                        index={index}
-                        onEditClick={() => {
-                            sourceCreateUpdateStreetcode.indexUpdate = index;
-                            setIsModalOpen(true);
-                        }}
-                    />
-                ))}
+                {sourceCreateUpdateStreetcode.streetcodeCategoryContents
+                    .filter((categoryContent) => (categoryContent as StreetcodeCategoryContentUpdate)
+                        .modelState !== ModelState.Deleted)
+                    .map((category, index) => (
+                        <ForFansAdminItem
+                            categoryName={categoriesSelect
+                                .find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
+                            index={index}
+                            onEditClick={() => {
+                                sourceCreateUpdateStreetcode.indexUpdate = index;
+                                setIsModalOpen(true);
+                            }}
+                        />
+                    ))}
             </div>
             <ForFansAdminModal
                 allCategories={categoriesSelect}

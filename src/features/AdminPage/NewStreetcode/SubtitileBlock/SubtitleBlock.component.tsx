@@ -5,8 +5,8 @@ import { Input } from 'antd';
 import Subtitle from '@/models/additional-content/subtitles.model';
 
 interface Props {
-    subTitle: Subtitle;
-    setSubTitle: React.Dispatch<React.SetStateAction<Subtitle>>;
+    subTitle: Partial<Subtitle> | undefined;
+    setSubTitle: React.Dispatch<React.SetStateAction<Partial<Subtitle | undefined>>>;
 }
 const SubtitleBlock = ({ subTitle, setSubTitle }: Props) => (
     <div className="adminContainer-block">

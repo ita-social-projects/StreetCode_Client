@@ -40,6 +40,7 @@ export interface Text {
   аdditionalText?: string;
   streetcodeId: number;
   streetcode?: Streetcode | undefined;
+  link: string | undefined;
 }
 
 export interface TextCreate {

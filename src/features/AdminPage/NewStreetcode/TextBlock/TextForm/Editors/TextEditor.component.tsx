@@ -2,18 +2,17 @@
 import { useState } from 'react';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
-import TermsApi from '@/app/api/streetcode/text-content/terms.api';
-import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
-import { Term } from '@/models/streetcode/text-contents.model';
-import { Form } from 'react-router-dom';
+
 import { AutoComplete, Button, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
+import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { Term, Text } from '@/models/streetcode/text-contents.model';
+
 interface Props {
-  inputInfo: Partial<TextInputInfo> | undefined;
-    setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+    inputInfo: Partial<Text> | undefined;
+    setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
 }
 
 const toolTipColor = '#8D1F16';
@@ -31,6 +30,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
             createRelatedTerm(selected, term?.id as number);
         }
     };
+
     const handleDeleteRelatedWord = () => {
         if (selected !== null) {
             const index = relatedTermStore.getRelatedTermsArray.findIndex((rt) => rt.word === selected);
@@ -49,6 +49,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     };
 
     useAsync(fetchTerms, []);
+
     return (
         <FormItem
             label="Основний текст"
@@ -59,7 +60,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     max_chars: 1000,
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(inputInfo?.textContent);
+                        editor.setContent(inputInfo?.textContent ?? '');
                     },
                     plugins: [
                         'autolink',
@@ -72,7 +73,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 }}
 
                 onChange={(e, editor) => {
-                    setInputInfo({ ...inputInfo, text: editor.getContent() });
+                    setInputInfo({ ...inputInfo, textContent: editor.getContent() });
                 }}
                 onSelectionChange={(e, editor) => {
                     setSelected(editor.selection.getContent());
@@ -98,7 +99,6 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 </AutoComplete>
             </FormItem>
 
-
             <div className="display-flex-row">
                 <Button
                     className="streetcode-custom-button button-margin-vertical button-margin-right"
@@ -115,7 +115,6 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     Видалити пов&#39;язаний термін
                 </Button>
             </div>
-
 
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>

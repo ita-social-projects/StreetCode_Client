@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
-import { StreetcodeCategoryContent } from '@/models/sources/sources.model';
+import { ModelState } from '@/models/enums/model-state';
+import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 
 export default class SourceCreateUpdateStreetcode {
     public streetcodeCategoryContents: StreetcodeCategoryContent[] = [];
@@ -19,7 +20,12 @@ export default class SourceCreateUpdateStreetcode {
     }
 
     public addSourceCategoryContent(category: StreetcodeCategoryContent) {
-        this.streetcodeCategoryContents.push(category);
+        const sourceCategoryContentToCreate: StreetcodeCategoryContentUpdate = {
+            ...category,
+            modelState: ModelState.Created,
+        };
+
+        this.streetcodeCategoryContents.push(sourceCategoryContentToCreate);
     }
 
     public updateElement(index:number, category: StreetcodeCategoryContent) {
@@ -27,6 +33,25 @@ export default class SourceCreateUpdateStreetcode {
     }
 
     public removeSourceCategoryContent(index:number) {
-        this.streetcodeCategoryContents.splice(index, 1);
+        const sourceCategoryContent = this.streetcodeCategoryContents[index] as StreetcodeCategoryContentUpdate;
+        if (sourceCategoryContent && sourceCategoryContent.isPersisted) {
+            const sourceCategoryContentToUpdate: StreetcodeCategoryContentUpdate = {
+                ...sourceCategoryContent,
+                modelState: ModelState.Deleted,
+            };
+            this.streetcodeCategoryContents[index] = sourceCategoryContentToUpdate;
+        } else {
+            this.streetcodeCategoryContents.splice(index, 1);
+        }
+    }
+
+    get getCategoryContentsArrayToUpdate() {
+        return (this.streetcodeCategoryContents as StreetcodeCategoryContentUpdate[])
+            .map((item: StreetcodeCategoryContentUpdate) => {
+                if (item.modelState === ModelState.Created) {
+                    return { ...item, id: 0 };
+                }
+                return item;
+            });
     }
 }

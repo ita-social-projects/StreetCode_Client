@@ -1,15 +1,18 @@
 import { observer } from 'mobx-react-lite';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useCallback, useState } from 'react';
-import { Modal } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx from '@stores/root-store';
+
+import { Modal } from 'antd';
 
 const ForFansAdminItem: React.FC<{
     index:number,
-    categoryName: string, onEditClick: () => void
+    categoryName: string,
+    onEditClick: () => void
 }> = ({ index, categoryName, onEditClick }) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const [visibleModal, setVisibleModal] = useState(false);
+
     const handleRemove = useCallback(() => {
         setVisibleModal(true);
     }, []);
@@ -17,13 +20,12 @@ const ForFansAdminItem: React.FC<{
     const handleCancelModalRemove = useCallback(() => {
         setVisibleModal(false);
     }, []);
+
     return (
         <div className="textBlockButton">
             <div className="item">
                 <div className="blockItem">
-
                     <EditOutlined onClick={onEditClick} />
-
                 </div>
                 <p>
                     {categoryName}
@@ -34,7 +36,9 @@ const ForFansAdminItem: React.FC<{
                 <Modal
                     title="Ви впевнені, що хочете видалити дану категорію?"
                     open={visibleModal}
-                    onOk={(e) => {sourceCreateUpdateStreetcode.removeSourceCategoryContent(index);setVisibleModal(false);}}
+                    onOk={(e) => {
+                        sourceCreateUpdateStreetcode.removeSourceCategoryContent(index); setVisibleModal(false);
+                    }}
                     onCancel={handleCancelModalRemove}
                 />
             </div>
