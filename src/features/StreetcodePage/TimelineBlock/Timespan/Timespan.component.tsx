@@ -5,12 +5,12 @@ import useMobx from '@stores/root-store';
 import TimelineSwiper from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiper.component';
 
 const settings = {
-    dots: "true",
+    dots: 'true',
 };
 
 const TimelineTimespan = () => {
     const { timelineItemStore } = useMobx();
-    const { getYearsArray, setActiveYear, activeYear } = timelineItemStore;
+    const { getYearsArray, setActiveYear } = timelineItemStore;
 
     return (
         <div className="timeSpanContainer">

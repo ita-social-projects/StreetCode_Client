@@ -16,7 +16,7 @@ export default class ToponymStore {
     private setToponyms = (newToponyms: Toponym[]) => {
         this.toponyms.splice(0, this.toponyms.length);
         newToponyms.forEach((t) => this.toponyms.push(t));
-    }
+    };
 
     public fetchToponymByStreetcodeId = async (streetcodeId: number)
     : Promise<Toponym[]> => {
