@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 module.exports = {
     mode: 'development',
     entry: {
@@ -22,7 +23,12 @@ module.exports = {
         chunkFilename: '[name].chunk.js',
         publicPath: '/'
     },
-    plugins: require('./webpack.plugins'),
+    plugins: [
+        ...require('./webpack.plugins'),
+        new Dotenv({
+            path: `./.env`
+        }),
+      ],
     optimization: {
         splitChunks: {
             chunks: 'all',

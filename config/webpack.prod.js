@@ -1,13 +1,9 @@
-module.exports = {
+const Dotenv = require('dotenv-webpack');
+
+module.exports = env => ({
     mode: 'production',
     entry: {
         main: './src/index.tsx',
-    },
-    devtool: 'cheap-module-source-map',
-    devServer: {
-        open: true,
-        port: "3000",
-        historyApiFallback: true,
     },
     module: {
         rules: require('./webpack.rules'),
@@ -22,13 +18,10 @@ module.exports = {
         chunkFilename: '[name].chunk.js',
         publicPath: '/'
     },
-    plugins: require('./webpack.plugins'),
-    optimization: {
-        splitChunks: {
-            chunks: 'all',
-        },
-    },
-    performance: {
-        hints: false,
-    },
-}
+    plugins: [
+        ...require('./webpack.plugins'),
+        new Dotenv({
+            path: `./.env.production`
+        }),
+      ],
+})
