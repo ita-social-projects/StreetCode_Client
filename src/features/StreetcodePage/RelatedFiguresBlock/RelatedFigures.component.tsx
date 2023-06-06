@@ -20,7 +20,7 @@ interface Props {
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
-    const { relatedFiguresStore, tagsStore } = useMobx();
+    const { relatedFiguresStore } = useMobx();
     const { getRelatedFiguresArray } = relatedFiguresStore;
 
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
@@ -115,7 +115,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                             <BlockSlider {...sliderProps}>
                                 {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
                             </BlockSlider>
-                            { (
+                            {getRelatedFiguresArray.length > 4 && (
                                 <div className="moreInfo">
                                     <p onClick={(e) => handleClick(e)}>
                                     Дивитися всіх
