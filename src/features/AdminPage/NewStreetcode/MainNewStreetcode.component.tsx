@@ -272,7 +272,7 @@ const NewStreetcode = () => {
             ].filter((idx) => idx !== null),
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
-            relatedFigures: figures,
+            relatedFigures: figures, // fix this
             text: (text.title && text.textContent) ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),

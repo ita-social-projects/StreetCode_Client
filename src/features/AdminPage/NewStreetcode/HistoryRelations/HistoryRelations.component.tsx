@@ -40,14 +40,11 @@ const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
 
     const getOptions = async () => {
         try {
-            const response = await axios.get<RelatedFigure[]>(
-                'https://localhost:5001/api/Streetcode/GetAll',
+            const response = await axios.get<RelatedFigureShort[]>(
+                'https://localhost:5001/api/Streetcode/GetAllShort',
             );
-            const allOptions: RelatedFigureShort[] = response.data.streetcodes.map((item) => ({
-                id: item.id,
-                title: item.title,
-            }));
-            setOptions(allOptions);
+
+            setOptions(response.data as RelatedFigureShort[]);
         } catch (error) { /* empty */ }
     };
 
