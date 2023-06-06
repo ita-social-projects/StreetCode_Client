@@ -80,7 +80,7 @@
         @include mut.sized($height: 28px);
         @include mut.flex-centered();
 
-        border: 2px solid c.$pure-white-color;
+        border: 1px solid c.$pure-white-color;
         background: none;
         @include mut.full-rounded($rad: 7.86px);
         @include mut.rem-padded($left: 9.5px, $top: 5.5px, $right: 9.5px, $bottom: 5.5px);

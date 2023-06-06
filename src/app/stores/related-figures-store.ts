@@ -14,8 +14,10 @@ export default class RelatedFiguresStore {
     };
 
     public set setInternalRelatedFiguresMap(relatedFigures: RelatedFigure[]) {
+        console.log(relatedFigures);
         this.relatedFiguresMap.clear();
         relatedFigures.forEach(this.setRelatedFigureItem);
+        console.log(this.relatedFiguresMap.values());
     }
 
     get getRelatedFiguresArray() {

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import './RelatedFigures.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -19,7 +20,7 @@ interface Props {
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
-    const { relatedFiguresStore } = useMobx();
+    const { relatedFiguresStore, tagsStore } = useMobx();
     const { getRelatedFiguresArray } = relatedFiguresStore;
 
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
@@ -37,6 +38,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 Promise.all([
                     RelatedFigureApi.getByStreetcodeId(getStreetCodeId)
                         .then((res) => {
+                            console.log(res[0].imageId);
                             Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
                                 res[index].image = img;
                             }))).then(() => {
@@ -113,11 +115,14 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                             <BlockSlider {...sliderProps}>
                                 {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
                             </BlockSlider>
-                            <div className="moreInfo">
-                                <p onClick={(e) => handleClick(e)}>
+                            { (
+                                <div className="moreInfo">
+                                    <p onClick={(e) => handleClick(e)}>
                                     Дивитися всіх
-                                </p>
-                            </div>
+                                    </p>
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>

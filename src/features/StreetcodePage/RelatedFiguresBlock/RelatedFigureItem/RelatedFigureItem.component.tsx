@@ -1,16 +1,16 @@
 /* eslint-disable complexity */
 import './RelatedFigureItem.styles.scss';
 
+import { useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx, { useModalContext } from '@stores/root-store';
 
+import ImagesApi from '@/app/api/media/images.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { relatedFiguresLeaveEvent, relatedFiguresTagsEvent } from '@/app/common/utils/googleAnalytics.unility';
-import { useState } from 'react';
 import Image from '@/models/media/image.model';
-import ImagesApi from '@/app/api/media/images.api';
 
 interface Props {
     relatedFigure: RelatedFigure;
@@ -21,8 +21,10 @@ interface Props {
 
 const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, hoverable = false }: Props) => {
     const {
-        id, imageId, title, tags, alias, url, image
+        id, imageId, title, tags, alias, url, image,
     } = relatedFigure;
+
+    console.log(tags);
 
     const { tagsStore: { getTagArray } } = useMobx();
     const { modalStore } = useModalContext();
@@ -63,14 +65,30 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 alias !== null ? (
                                     <p className="aliasText">
                                         (
-                                            {alias}
+                                        {alias}
                                         )
                                     </p>
                                 ) : undefined
                             }
                         </div>
+                        {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
+                            .map((tag) => (
+                                <button
+                                    type="button"
+                                    key={tag.id}
+                                    className="tag"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        relatedFiguresTagsEvent(tag.title);
+                                        setModal('tagsList');
+                                        setActiveTagId(tag.id);
+                                    }}
+                                >
+                                    <p>{tag.title}</p>
+                                </button>
+                            ))}
                         <div className={`relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}`}>
-                            {tags.filter((tag) => getTagArray.find((ti) => ti.id === tag.id || !filterTags))
+                            {tags
                                 .map((tag) => (
                                     <button
                                         type="button"
@@ -104,7 +122,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                                 alias !== null ? (
                                     <p className="aliasText">
                                         (
-                                            {alias}
+                                        {alias}
                                         )
                                     </p>
                                 ) : undefined
