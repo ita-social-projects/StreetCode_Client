@@ -57,9 +57,13 @@
         height: 90px;
         @include mut.rem-margined(5px, 0px, 0px, 0px);
         @include mut.rem-padded(0px, 5px, 0px, 0px);
-        line-height: 18px;
+       
         color: #1D1F23;
-        @include mut.with-font(ft.$roboto-font, $font-weight: 300, $font-size: 15px);
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 300;
+        font-size: 15px;
+        line-height: 18px;
     
         &::-webkit-scrollbar {
             display: none;
