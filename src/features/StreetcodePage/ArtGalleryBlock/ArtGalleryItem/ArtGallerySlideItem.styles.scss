@@ -4,6 +4,8 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+
+
 .slideArt {
     flex: pxToRem(80px);
 
@@ -117,5 +119,8 @@
 
     .imgImg {
         border-radius: pxToRem(30px);
+        height: 100%;
+        object-fit: cover;
+        width:100%;
     }
 }
