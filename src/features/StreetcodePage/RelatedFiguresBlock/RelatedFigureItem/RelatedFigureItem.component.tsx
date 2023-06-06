@@ -23,9 +23,6 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
     const {
         id, imageId, title, tags, alias, url, image,
     } = relatedFigure;
-
-    console.log(tags);
-
     const { tagsStore: { getTagArray } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { tagsList } } = modalStore;
