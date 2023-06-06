@@ -76,7 +76,8 @@
   },
   "scripts": {
     "start": "webpack serve --mode development --config config/webpack.dev.js",
-    "build": "webpack --mode development --config config/webpack.dev.js",
+    "start:prod": "webpack serve --mode development --config config/webpack.dev.js",
+    "build": "webpack --define-process-env-node-env production --config config/webpack.prod.js",
     "serve:w": "webpack --mode development --config config/webpack.dev.js --watch && serve ./dist/",
     "lint": "eslint --ext \".js,.ts,.tsx\" --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix"
