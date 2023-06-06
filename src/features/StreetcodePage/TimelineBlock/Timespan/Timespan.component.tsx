@@ -10,15 +10,13 @@ const settings = {
 
 const TimelineTimespan = () => {
     const { timelineItemStore } = useMobx();
-    const { getYearsArray, setActiveYear, getTimelineItemArray } = timelineItemStore;
+    const { getYearsArray, setActiveYear, activeYear } = timelineItemStore;
 
-    const middleIdx = Math.round((getYearsArray.length - 1) / 2);
     return (
         <div className="timeSpanContainer">
             <div className="timelineYearTicksContainer">
                 <TimelineSwiper
                     slidesPerView={5}
-                    initialSlide={middleIdx}
                     className="timelineYearTicksContainerSwiper"
                     {...settings}
                 >
