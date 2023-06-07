@@ -3,10 +3,7 @@ import './Streetcode.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import React, {
-    lazy, Suspense
-} from 'react';
-import { redirect, useLocation } from 'react-router-dom';
+import { redirect, useLocation,} from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
@@ -34,6 +31,7 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
+import { useMediaQuery } from 'react-responsive';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -48,7 +46,9 @@ const StreetcodeContent = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
-
+    const isMobile = useMediaQuery({
+        query: '(max-width: 4800px)',
+    });
     const checkExist = async (qrId: number) => {
         const exist = await StatisticRecordApi.existByQrId(qrId);
         return exist;
@@ -91,9 +91,13 @@ const StreetcodeContent = () => {
             {!pageLoadercontext.isPageLoaded && (
                 <div className="loader-container">
                     <img
+                     rel="preload"
                         className="spinner"
                         alt=""
-                        src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
+                        src={isMobile
+                            ? require('@images/gifs/Logo-animation_web.gif')
+                            : require('@images/gifs/Logo-animation_mob.gif')    
+                          }
                     />
                 </div>
             )}

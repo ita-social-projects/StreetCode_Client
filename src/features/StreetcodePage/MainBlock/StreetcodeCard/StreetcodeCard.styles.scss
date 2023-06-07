@@ -73,7 +73,10 @@
     @include mut.rem-padded(50px, 15px, 0px, 50px);
     .upper-info{
       @include mut.flexed(column, start, start, nowrap);
-      max-height: f.pxToRem(433px);
+      max-height: f.pxToRem(500px);
+    }
+    .tagContainer{
+      max-height: f.pxToRem(85px);
     }
 }
 .teaserBlock {
@@ -210,6 +213,9 @@
       @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 21px);
       .tagContainer{
         max-height: f.pxToRem(82px);
+      }
+      .upper-info{
+        max-height: f.pxToRem(433px);
       }
     }
     .teaserBlock {

@@ -30,7 +30,7 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
     };
 
-    const teaserText = truncateText(streetcode?.teaser || '', 283);
+    const teaserText = truncateText(streetcode?.teaser || '', 340);
 
     useEffect(() => {
         if (id) {
@@ -63,9 +63,6 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                 <div className="rightSlider">
                     <div className="streetcodeMainPageContainer">
                         <div>
-                            <div className="streetcodeMainPageText">
-                                {streetcode?.text}
-                            </div>
                             <h2 className="streercodeTitle">
                                 {streetcode?.title}
                             </h2>
