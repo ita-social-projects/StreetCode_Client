@@ -6,19 +6,13 @@ import './NewsSliderItem.styles.scss';
 import Image from '@/models/media/image.model';
 import ImagesApi from '@/app/api/media/images.api';
 import News from '@/models/news/news.model';
-
+import htmpReactParser from 'html-react-parser';
 
 interface Props {
     news: News;
 }
-
-
-
 const NewsSliderItem = ({ news }: Props) => {
-    const { imagesStore: { getImage, fetchImage } } = useMobx();
     const id = news?.id;
-    const { imageLoaderStore, modalStore: { setModal } } = useMobx();
-    const { handleImageLoad } = imageLoaderStore;
     const [image, setImage] = useState<Image>();
 
     useEffect(() => {
@@ -31,21 +25,21 @@ const NewsSliderItem = ({ news }: Props) => {
 
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
-          return text;
+            return text;
         }
-      
+
         let truncatedText = text.substr(0, maxLength);
-      
+
         if (news?.title.length < 41) {
-          truncatedText = truncatedText.substr(0, 450);
+            truncatedText = truncatedText.substr(0, 450);
         } else if (news?.title.length >= 40 && news?.title.length < 81) {
-          truncatedText = truncatedText.substr(0, 250);
+            truncatedText = truncatedText.substr(0, 250);
         } else {
-          truncatedText = truncatedText.substr(0, 75);
+            truncatedText = truncatedText.substr(0, 75);
         }
-      
+
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
-      };
+    };
 
     const newsText = truncateText(news?.text || '', 450);
 
@@ -63,17 +57,17 @@ const NewsSliderItem = ({ news }: Props) => {
                         src={base64ToUrl(image?.base64, image?.mimeType)}
                         className="newsPageImg"
                         alt={image?.alt}
-                        onLoad={handleImageLoad}
                     />
                 </div>
                 <div className="newsSlideText">
                     <div className="newsContainer">
                         <div>
                             <h2 className="newsTitle">
-                                {news?.title}
+                           {news?.title}
+                                
                             </h2>
                             <div className="newsText">
-                                {newsText}
+                            {htmpReactParser(newsText)}
                                 <a className="moreText" href={news.text} onClick={handleLinkClick}>
                                     До новини
                                 </a>

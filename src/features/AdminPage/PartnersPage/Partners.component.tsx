@@ -8,12 +8,13 @@ import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
 import ImageStore from '@stores/image-store';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 import axios from 'axios';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
+import PartnersApi from '@/app/api/partners/partners.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
@@ -25,8 +26,9 @@ import PartnerModal from './PartnerModal/PartnerModal.component';
 const LogoType = [twitter, instagram, facebook, youtube];
 
 const Partners:React.FC = observer(() => {
-    const { partnersStore, modalStore } = useMobx();
+    const { partnersStore } = useMobx();
 
+    const { modalStore } = useModalContext();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [partnerToEdit, setPartnerToedit] = useState<Partner>();
@@ -38,7 +40,7 @@ const Partners:React.FC = observer(() => {
             partnersStore?.PartnerMap.forEach((val, key) => {
                 ImageStore.getImageById(val.logoId).then((logo) => {
                     partnersStore.PartnerMap.set(
-                        key,
+                        val.id,
                         { ...val, logo },
                     );
                 });
@@ -132,9 +134,10 @@ const Partners:React.FC = observer(() => {
                           modalStore.setConfirmationModal(
                               'confirmation',
                               () => {
-                                  partnersStore.deletePartner(partner.id).then(() => {
-                                      partnersStore.PartnerMap.delete(partner.id);
-                                  }).catch((e) => {});
+                                  PartnersApi.delete(partner.id)
+                                      .then(() => {
+                                          partnersStore.PartnerMap.delete(partner.id);
+                                      }).catch((e) => {});
                                   modalStore.setConfirmationModal('confirmation');
                               },
                               'Ви впевнені, що хочете видалити цього партнера?',

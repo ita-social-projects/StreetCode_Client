@@ -1,23 +1,29 @@
-import { DeleteOutlined, EditOutlined, StarOutlined } from "@ant-design/icons";
-import { Button, Table } from "antd";
-import { ColumnsType } from "antd/es/table";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import base64ToUrl from "../../../app/common/utils/base64ToUrl.utility";
-import ImageStore from "../../../app/stores/image-store";
+import './TeamPage.styles.scss';
+
+import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
+import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import facebook from '@assets/images/partners/facebook.png';
 import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
-import useMobx from "../../../app/stores/root-store";
-import TeamMember, { LogoType, TeamMemberLink } from "../../../models/team/team.model";
-import PageBar from "../PageBar/PageBar.component";
-import Image from '@/models/media/image.model';
-import './TeamPage.styles.scss';
-import TeamModal from "./TeamModal/TeamModal.component";
-const TeamPage = () => {
 
-    const { teamStore, modalStore } = useMobx();
+import { Button, Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+
+import Image from '@/models/media/image.model';
+
+import base64ToUrl from '../../../app/common/utils/base64ToUrl.utility';
+import ImageStore from '../../../app/stores/image-store';
+import useMobx, { useModalContext } from '../../../app/stores/root-store';
+import TeamMember, { LogoType, TeamMemberLink } from '../../../models/team/team.model';
+import PageBar from '../PageBar/PageBar.component';
+
+import TeamModal from './TeamModal/TeamModal.component';
+
+const TeamPage = () => {
+    const { teamStore } = useMobx();
+    const { modalStore } = useModalContext();
     const LogoType = [twitter, instagram, facebook, youtube];
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
@@ -27,7 +33,7 @@ const TeamPage = () => {
         Promise.all([teamStore?.fetchTeamAll()]).then(() => {
             teamStore?.TeamMap.forEach((val, key) => {
                 ImageStore.getImageById(val.imageId).then((image) => {
-                    teamStore.TeamMap.set(key, { ...val, image });
+                    teamStore.TeamMap.set(val.id, { ...val, image });
                 });
             });
         }).then(() => teamStore.setInternalMap(teamStore.getTeamArray));
@@ -53,26 +59,33 @@ const TeamPage = () => {
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>{value} {record.firstName}</p>
+                        <p>
+                            {value}
+                            {' '}
+                            {record.firstName}
+                        </p>
                         {record.isMain ? <StarOutlined /> : ''}
                     </div>
                 );
             },
         },
         {
-            title: "Позиція",
+            title: 'Позиція',
             dataIndex: 'positions',
             key: 'positions',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>{record.positions.map(x => x.position + ' ')} </p>
+                        <p>
+                            {record.positions.map((x) => `${x.position} `)}
+                            {' '}
+                        </p>
                     </div>
                 );
             },
         },
         {
-            title: "Опис",
+            title: 'Опис',
             dataIndex: 'description',
             key: 'description',
             render(value, record) {
@@ -92,31 +105,29 @@ const TeamPage = () => {
             }),
             render: renderImageColumn,
         },
-        {
-            title: 'Соц. мережі',
-            dataIndex: 'teamMemberLinks',
-            key: 'teamMemberLinks',
-            width: '8%',
-            render: (links: TeamMemberLink[], team) => 
-                    <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
-                        {links.map((link) => (
-                            <a
-                                key={`${link.id}${link.targetUrl}`}
-                                rel="noreferrer"
-                                target="_blanc"
-                                className="teamLink"
-                                href={link.targetUrl}
-                            >
-                                <img
-                                    key={link.id * link.logoType}
-                                    src={LogoType[link.logoType]}
-                                    alt={link.targetUrl.title}
-                                />
-                            </a>
-                        ))}
-                    </div>
-            
-        },
+        { title: 'Соц. мережі',
+          dataIndex: 'teamMemberLinks',
+          key: 'teamMemberLinks',
+          width: '8%',
+          render: (links: TeamMemberLink[], team) => (
+              <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
+                  {links.map((link) => (
+                      <a
+                          key={`${link.id}${link.targetUrl}`}
+                          rel="noreferrer"
+                          target="_blanc"
+                          className="teamLink"
+                          href={link.targetUrl}
+                      >
+                          <img
+                              key={link.id * link.logoType}
+                              src={LogoType[link.logoType]}
+                              alt={link.targetUrl.title}
+                          />
+                      </a>
+                  ))}
+              </div>
+          ) },
         {
             title: 'Дії',
             dataIndex: 'action',
@@ -152,14 +163,14 @@ const TeamPage = () => {
                     />
 
                 </div>
-            )
+            ),
         },
     ];
-	return (
-		<div className='team-page'>
-			<PageBar />
+    return (
+        <div className="team-page">
+            <PageBar />
             <div className="team-page-container">
-                <div className='container-justify-end'>
+                <div className="container-justify-end">
                     <Button
                         className="streetcode-custom-button team-page-add-button"
                         onClick={() => setModalAddOpened(true)}
@@ -180,9 +191,9 @@ const TeamPage = () => {
                 open={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}
                 teamMember={teamToEdit}
-                
+
             />
-		</div>
-	);
-}
+        </div>
+    );
+};
 export default observer(TeamPage);

@@ -1,11 +1,11 @@
+import { useModalContext } from '@/app/stores/root-store';
 import './PartnersBtn.styles.scss';
 
-import useMobx from '@stores/root-store';
 
 import { becomePartnerEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 const PartnersBtn = () => {
-    const { modalStore: { setModal } } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
     const onBtnClick = () => {
         setModal('partners');
         becomePartnerEvent('partners_page');

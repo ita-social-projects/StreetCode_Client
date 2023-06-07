@@ -54,6 +54,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
      const closeAndCleanData = () => {
          form.resetFields();
          setIsModalOpen(false);
+         editorRef.current.setContent('');
      };
      dayjs.locale('uk');
      const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
@@ -139,7 +140,9 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                              <Form.Item
                                  name="url"
                                  label="Посилання: "
-                                 rules={[{ required: true, message: 'Введіть Посилання' }]}
+                                 rules={[{ required: true, message: 'Введіть Посилання' },
+                                     { pattern: /^[a-zA-Z-]+$/, message: 'Посилання має містити лише літерали' }
+                                 ]}
                              >
                                  <Input maxLength={200} showCount />
                              </Form.Item>
@@ -183,10 +186,14 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                                      uploadTo="image"
                                      onSuccessUpload={(image:Image) => {
                                          imageId.current = image.id;
-                                         newsItem.image = image;
+                                         if (newsItem) {
+                                             newsItem.image = image;
+                                         }
                                      }}
                                      onRemove={(image) => {
-                                         newsItem.image = undefined;
+                                         if (newsItem) {
+                                             newsItem.image = undefined;
+                                         }
                                      }}
                                      defaultFileList={(newsItem)
                                          ? [{ name: '',

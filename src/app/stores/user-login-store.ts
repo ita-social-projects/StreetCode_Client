@@ -87,6 +87,8 @@ export default class UserLoginStore {
                         this.callback();
                     }
                 }, expireForSeconds);
+                UserLoginStore.setExpiredDate((new Date(refreshToken.expireAt)).getTime().toString());
+                UserLoginStore.setToken(refreshToken.token);
                 return refreshToken;
             }));
 }

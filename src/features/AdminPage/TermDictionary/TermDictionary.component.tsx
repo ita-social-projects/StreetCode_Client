@@ -3,7 +3,7 @@ import './TermDictionary.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Space, Table } from 'antd';
 
@@ -15,7 +15,8 @@ import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
 import { Term } from '@/models/streetcode/text-contents.model';
 
 const TermDictionary = () => {
-    const { termsStore, modalStore } = useMobx();
+    const {termsStore } = useMobx();
+    const { modalStore } = useModalContext();
     const { fetchTerms } = termsStore;
     const { setModal } = modalStore;
     const [term, setTerm] = useState<Partial<Term>>();
@@ -33,6 +34,7 @@ const TermDictionary = () => {
     }, []);
 
     const handleAdd = () => {
+        
         const newTerm : Term = {
             id: 0,
             title: term?.title as string,
@@ -41,6 +43,7 @@ const TermDictionary = () => {
         termsStore.createTerm(newTerm).then(
             (response) => {
                 setData([...data || [], response ?? newTerm]);
+                setTerm({ title: '', description: '' }); 
             },
         );
     };
@@ -123,8 +126,13 @@ const TermDictionary = () => {
                 <div className="termDictionaryContainer">
                     <div className="dictionaryHeader">
                         <h1>Словник термінів</h1>
-                        <div className="controls">
-                            <Button onClick={() => setModal('addTerm')}>Новий термін</Button>
+                        <div>
+                            <Button
+                                className="streetcode-custom-button"
+                                onClick={() => setModal('addTerm')}
+                            >
+                                Новий термін
+                            </Button>
                         </div>
                     </div>
                     <div className="termTable">

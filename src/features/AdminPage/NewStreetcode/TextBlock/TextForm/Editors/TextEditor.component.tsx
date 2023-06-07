@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-multi-spaces */
 import { useState } from 'react';
-import useMobx from '@app/stores/root-store';
+import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 import TermsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
@@ -19,7 +19,8 @@ interface Props {
 const toolTipColor = '#8D1F16';
 
 const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
-    const { relatedTermStore, termsStore, modalStore: { setModal } } = useMobx();
+    const { relatedTermStore, termsStore } = useMobx();
+    const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
     const { createRelatedTerm, deleteRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();

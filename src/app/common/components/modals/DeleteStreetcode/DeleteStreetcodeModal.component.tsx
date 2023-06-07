@@ -2,12 +2,12 @@ import './DeleteStreetcodeModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
 
 const DeleteStreetcodeModal = () => {
-    const { modalStore: { setModal, modalsState: { deleteStreetcode } } } = useMobx();
+    const { modalStore: { setModal, modalsState: { deleteStreetcode } } } = useModalContext();
 
     const confirmHandler = () => {
         setModal('deleteStreetcode');
