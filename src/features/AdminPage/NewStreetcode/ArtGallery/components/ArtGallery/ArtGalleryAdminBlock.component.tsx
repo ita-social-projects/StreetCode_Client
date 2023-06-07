@@ -14,7 +14,11 @@ import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 const SECTION_AMOUNT = 6;
 
-const ArtGalleryAdminBlock: React.FC<{ arts: StreetcodeArtCreateUpdate[] }> = ({ arts }) => {
+interface Props {
+    arts: StreetcodeArtCreateUpdate[],
+}
+
+const ArtGalleryAdminBlock = ({ arts }: Props) => {
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
 
@@ -155,7 +159,6 @@ const ArtGalleryAdminBlock: React.FC<{ arts: StreetcodeArtCreateUpdate[] }> = ({
     const sliderProps = {
         className: 'artGallerySliderContainer',
         infinite: false,
-
         swipe: windowsize.width <= 1024,
         swipeOnClick: false,
         slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,

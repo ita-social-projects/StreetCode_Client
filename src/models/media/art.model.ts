@@ -6,7 +6,7 @@ export default interface Art {
     id: number;
     description?: string | undefined;
     streetcodes: Streetcode[];
-    title?: string;
+    title?: string | undefined;
     imageId: number;
     image: Image;
 }

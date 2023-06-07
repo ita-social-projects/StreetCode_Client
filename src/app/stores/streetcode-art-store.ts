@@ -6,6 +6,8 @@ import StreetcodeArt from '@/models/media/streetcode-art.model';
 export default class StreetcodeArtStore {
     public streetcodeArtMap = new Map<number, StreetcodeArt>();
 
+    public streetcodeArtToDelete = new Map<number, StreetcodeArt>();
+
     public constructor() {
         makeAutoObservable(this);
     }
@@ -14,12 +16,20 @@ export default class StreetcodeArtStore {
         this.streetcodeArtMap.set(art.artId, art);
     };
 
+    public setItemToDelete = (art: StreetcodeArt) => {
+        this.streetcodeArtToDelete.set(art.artId, art);
+    };
+
     private set setInternalStreetcodeArtMap(streetcodeArt: StreetcodeArt[]) {
         streetcodeArt.forEach(this.setItem);
     }
 
     get getStreetcodeArtArray() {
         return Array.from(this.streetcodeArtMap.values());
+    }
+
+    get getStreetcodeArtArrayToDelete() {
+        return Array.from(this.streetcodeArtToDelete.values());
     }
 
     public fetchStreetcodeArtsByStreetcodeId = async (streetcodeId: number) => {

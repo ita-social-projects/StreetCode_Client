@@ -2,10 +2,12 @@ import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 import DownloadBlock from './components/Download.component';
 
-const ArtGalleryBlock: React.FC<{
+interface Props {
     arts: StreetcodeArtCreateUpdate[],
-    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>
-}> = ({ arts, setArts }) => (
+    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
+}
+
+const ArtGalleryBlock = ({ arts, setArts }: Props) => (
     <div className="adminContainer-block">
         <h2>Арт—галерея</h2>
         <h3>Завантажити арти</h3>

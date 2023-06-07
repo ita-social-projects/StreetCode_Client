@@ -1,23 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import base64ToUrl from '@app/common/utils/base64ToUrl.utility';
 
 import { Modal } from 'antd';
 import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import useMobx from '@/app/stores/root-store';
 import { ModelState } from '@/models/enums/model-state';
-import { ArtCreate, ArtUpdate } from '@/models/media/art.model';
 import Image from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
-
-import base64ToUrl from '../../../../../app/common/utils/base64ToUrl.utility';
 
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
-const DownloadBlock: React.FC<{
+interface Props {
     arts: StreetcodeArtCreateUpdate[],
-    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>
-}> = ({ arts, setArts }) => {
+    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
+}
+
+const DownloadBlock = ({ arts, setArts }: Props) => {
+    const { streetcodeArtStore } = useMobx();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -28,14 +30,13 @@ const DownloadBlock: React.FC<{
 
     useEffect(() => {
         if (arts.length > 0) {
-            const newFileList = arts.filter((art) => art.modelState !== ModelState.Deleted)
-                .map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
-                    uid: `${streetcodeArt.index}`,
-                    name: streetcodeArt.art.image.title,
-                    status: 'done',
-                    thumbUrl: base64ToUrl(streetcodeArt.art.image.base64, streetcodeArt.art.image.mimeType) ?? '',
-                    type: streetcodeArt.art.image.mimeType,
-                }));
+            const newFileList = arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
+                uid: `${streetcodeArt.index}`,
+                name: streetcodeArt.art.image.title,
+                status: 'done',
+                thumbUrl: base64ToUrl(streetcodeArt.art.image.base64, streetcodeArt.art.image.mimeType) ?? '',
+                type: streetcodeArt.art.image.mimeType,
+            }));
 
             setFileList(newFileList);
             indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
@@ -78,6 +79,7 @@ const DownloadBlock: React.FC<{
                 id: 0,
                 description: 'description',
                 imageId: image.id,
+                title: 'title',
                 image: {
                     id: image.id,
                     title: 'title',
@@ -96,17 +98,19 @@ const DownloadBlock: React.FC<{
         const removedArtIndex = arts.findIndex((a) => `${a.index}` === file.uid);
 
         if (removedArtIndex >= 0) {
-            if (arts[removedArtIndex]?.isPersisted) {
-                arts[removedArtIndex].modelState = ModelState.Deleted;
-            } else {
-                arts.splice(removedArtIndex, 1);
-            }
+            const toRemove = arts[removedArtIndex] as StreetcodeArtCreateUpdate;
+            toRemove.modelState = ModelState.Deleted;
+            streetcodeArtStore.setItemToDelete(toRemove);
+
+            arts.splice(removedArtIndex, 1);
 
             // Decrement indexes of all elements after the removed element
-            for (let i = removedArtIndex; i < arts.length; i++) {
+            for (let i = removedArtIndex + 1; i < arts.length; i++) {
                 arts[i].index -= 1;
             }
+
             setArts([...arts]);
+
             // Decrement indexTmp.current if the removed element had the highest index
             if (removedArtIndex === arts.length && indexTmp.current > 0) {
                 indexTmp.current -= 1;
@@ -115,21 +119,6 @@ const DownloadBlock: React.FC<{
 
         setFileList(fileList.filter((x) => x.uid !== file.uid));
         setVisibleModal(false);
-    };
-
-    const handleSave = (streetcodeArt: StreetcodeArtCreateUpdate) => {
-        console.log(streetcodeArt);
-        const updated = arts.find((x) => x.art.imageId === streetcodeArt.art.imageId);
-
-        if (!updated) {
-            return;
-        }
-
-        updated.art.description = streetcodeArt.art.description;
-        updated.art.title = streetcodeArt.art.title;
-        console.log(updated);
-        setArts([...arts]);
-        setIsOpen(false);
     };
 
     return (
@@ -155,12 +144,13 @@ const DownloadBlock: React.FC<{
             {arts.length > 0 ? (
                 <>
                     <h4>Попередній перегляд</h4>
-                    <ArtGalleryAdminBlock arts={arts.filter((art) => art.modelState !== ModelState.Deleted)} />
+                    <ArtGalleryAdminBlock arts={arts} />
                     <PreviewImageModal
                         streetcodeArt={arts[fileList.indexOf(filePreview!)]}
-                        onSave={handleSave}
                         opened={isOpen}
                         setOpened={setIsOpen}
+                        arts={arts}
+                        setArts={setArts}
                     />
                 </>
             ) : null}

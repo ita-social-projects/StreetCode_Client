@@ -64,6 +64,7 @@ const NewStreetcode = () => {
         sourceCreateUpdateStreetcode,
         streetcodeCoordinatesStore,
         statisticRecordStore,
+        streetcodeArtStore,
     } = useMobx();
 
     const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
@@ -99,7 +100,7 @@ const NewStreetcode = () => {
                         ...streetcodeArt.art,
                         image: {
                             ...streetcodeArt.art.image,
-                            title: streetcodeArt.art.image.alt ?? '',
+                            title: streetcodeArt.art.title ?? '',
                         },
                     },
                     modelState: ModelState.Updated,
@@ -352,7 +353,7 @@ const NewStreetcode = () => {
                 subtitles: subTitle?.subtitleText ? [subTitle as SubTitle] : [],
                 text: (inputInfo?.title && inputInfo?.textContent) ? inputInfo as Text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
-                streetcodeArts: arts,
+                streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
             };
 
             console.log(streetcodeUpdate);
@@ -360,7 +361,6 @@ const NewStreetcode = () => {
                 alert('Cтріткод успішно оновленний');
             })
                 .catch((error2) => {
-                    console.log(error2);
                     alert('Виникла помилка при оновленні стріткоду');
                 });
         } else {

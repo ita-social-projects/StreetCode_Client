@@ -3,24 +3,21 @@ import './PreviewImageModal.styles.scss';
 import React, { useEffect, useState } from 'react';
 
 import { Button, Modal } from 'antd';
-import { RcFile } from 'antd/es/upload';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
-const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-});
-
-const PreviewFileModal: React.FC<{
+interface Props {
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
     streetcodeArt: StreetcodeArtCreateUpdate;
-    onSave: (art: StreetcodeArtCreateUpdate) => void
-}> = ({ opened, setOpened, onSave, streetcodeArt }) => {
+    arts: StreetcodeArtCreateUpdate[],
+    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
+}
+
+const PreviewFileModal = ({
+    opened, setOpened, streetcodeArt, arts, setArts,
+}: Props) => {
     const [fileProps, setFileProps] = useState<{
         previewImage: string, previewTitle: string
     }>({ previewImage: '', previewTitle: '' });
@@ -32,12 +29,14 @@ const PreviewFileModal: React.FC<{
     };
 
     const handleSave = () => {
-        streetcodeArt?.art.description = newDesc;
-        streetcodeArt?.art.title = newTitle;
+        const updated = arts.find((x) => x.art.imageId === streetcodeArt.art.imageId);
+        if (!updated) {
+            return;
+        }
+        updated.art.title = newTitle;
+        updated.art.description = newDesc;
 
-        console.log(streetcodeArt);
-
-        onSave(streetcodeArt);
+        setArts([...arts]);
         setOpened(false);
     };
 
