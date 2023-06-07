@@ -38,7 +38,6 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                 Promise.all([
                     RelatedFigureApi.getByStreetcodeId(getStreetCodeId)
                         .then((res) => {
-                            console.log(res[0].imageId);
                             Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
                                 res[index].image = img;
                             }))).then(() => {
@@ -122,7 +121,6 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                                     </p>
                                 </div>
                             )}
-
                         </div>
                     </div>
                 </div>
