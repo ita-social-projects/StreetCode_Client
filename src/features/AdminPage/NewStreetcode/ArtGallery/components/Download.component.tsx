@@ -118,6 +118,7 @@ const DownloadBlock: React.FC<{
     };
 
     const handleSave = (streetcodeArt: StreetcodeArtCreateUpdate) => {
+        console.log(streetcodeArt);
         const updated = arts.find((x) => x.art.imageId === streetcodeArt.art.imageId);
 
         if (!updated) {
@@ -125,8 +126,8 @@ const DownloadBlock: React.FC<{
         }
 
         updated.art.description = streetcodeArt.art.description;
-        updated.art.image.title = streetcodeArt.art.image.title;
-
+        updated.art.title = streetcodeArt.art.title;
+        console.log(updated);
         setArts([...arts]);
         setIsOpen(false);
     };

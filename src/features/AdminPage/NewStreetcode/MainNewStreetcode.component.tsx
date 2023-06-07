@@ -14,7 +14,7 @@ import FactsApi from '@app/api/streetcode/text-content/facts.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import Url from '@models/additional-content/url.model';
-import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureCreateUpdateShort, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -50,7 +50,6 @@ import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
 import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
-import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
@@ -93,6 +92,7 @@ const NewStreetcode = () => {
 
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
+                console.log(result);
                 const artToUpdate = result.map((streetcodeArt) => ({
                     ...streetcodeArt,
                     art: {
@@ -107,7 +107,6 @@ const NewStreetcode = () => {
                 }));
 
                 setArts([...artToUpdate]);
-                console.log(artToUpdate);
             });
             StreetcodesApi.getById(parseId).then((x) => {
                 if (x.lastName && x.firstName) {
@@ -246,11 +245,11 @@ const NewStreetcode = () => {
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art) => ({
-            imageId: art.imageId,
-            description: art.description,
+            imageId: art.art.imageId,
+            description: art.art.description ?? '',
             index: art.index,
-            title: art.title,
-            mimeType: art.mimeType,
+            title: art.art.image.title ?? '',
+            mimeType: art.art.image.mimeType,
         }));
 
         const streetcode: StreetcodeCreate = {
@@ -315,8 +314,10 @@ const NewStreetcode = () => {
             streetcode.lastName = form.getFieldValue('surname');
         }
         if (parseId) {
-            video.url = { href: inputInfo?.link };
-            const videosUpdate: Video[] = [video];
+            if (video) {
+                video.url = inputInfo?.link ?? '';
+            }
+            const videosUpdate: Video[] = video ? [video] : [];
 
             const relatedFiguresUpdate: RelatedFigureUpdate[] = figures.map((figure) => ({
                 observerId: parseId,
@@ -329,8 +330,6 @@ const NewStreetcode = () => {
                 partnerId: partner.id,
                 modelState: partner.modelState,
             }));
-
-            console.log(arts);
 
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
@@ -353,7 +352,7 @@ const NewStreetcode = () => {
                 subtitles: subTitle?.subtitleText ? [subTitle as SubTitle] : [],
                 text: (inputInfo?.title && inputInfo?.textContent) ? inputInfo as Text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
-                streetcodeArts: [],
+                streetcodeArts: arts,
             };
 
             console.log(streetcodeUpdate);

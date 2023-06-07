@@ -2,7 +2,6 @@
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
-import TextInputInfo from './InputType/TextInputInfo.model';
 import TextForm from './TextForm/TextForm.component';
 
 interface Props {

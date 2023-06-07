@@ -33,19 +33,22 @@ const PreviewFileModal: React.FC<{
 
     const handleSave = () => {
         streetcodeArt?.art.description = newDesc;
-        streetcodeArt?.art.image.title = newTitle;
+        streetcodeArt?.art.title = newTitle;
+
+        console.log(streetcodeArt);
+
         onSave(streetcodeArt);
         setOpened(false);
     };
 
     useEffect(() => {
-        setTitle(streetcodeArt?.art.image.title);
+        setTitle(streetcodeArt?.art.title);
         setDesc(streetcodeArt?.art.description);
         const url = base64ToUrl(streetcodeArt?.art.image.base64, streetcodeArt?.art.image.mimeType);
         async function uploadImageToModal() {
             setFileProps({
                 previewImage: url || '',
-                previewTitle: streetcodeArt?.art.image.title || '',
+                previewTitle: streetcodeArt?.art.title || '',
             });
         }
         uploadImageToModal();

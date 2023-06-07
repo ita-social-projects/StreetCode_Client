@@ -13,6 +13,7 @@ import TransactionLink from '@models/transactions/transaction-link.model';
 
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
 import StatisticRecord from '../analytics/statisticrecord.model';
+import { StreetcodeArtCreateUpdate } from '../media/streetcode-art.model';
 
 import { Fact, FactUpdate, Text, TextCreate } from './text-contents.model';
 
@@ -146,7 +147,7 @@ export interface StreetcodeUpdate {
     relatedFigures: RelatedFigureUpdate[],
     timelineItems: TimelineItemUpdate[],
     partners: PartnerUpdate[],
-    streetcodeArts: ArtUpdate[];
+    streetcodeArts: StreetcodeArtCreateUpdate[];
     subtitles: Subtitle[],
     text: Text | null,
     streetcodeCategoryContents: StreetcodeCategoryContentUpdate[]

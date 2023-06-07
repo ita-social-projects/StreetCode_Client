@@ -16,8 +16,8 @@ import TextPreview from './TextPreview/TextPreview.component';
 interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
-    video: Video | undefined;
-    setVideo: React.Dispatch<Video | undefined>;
+    video: Partial<Video> | undefined;
+    setVideo: React.Dispatch<Partial<Video> | undefined>;
 }
 const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const maxTitleLength = 50;

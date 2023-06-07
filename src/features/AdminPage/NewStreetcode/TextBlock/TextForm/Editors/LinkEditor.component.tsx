@@ -35,7 +35,7 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
 
     useEffect(() => {
-        setInputInfo((info) => ({ ...info, link: video?.url.href }));
+        setInputInfo((info) => ({ ...info, link: video?.url }));
     }, [video]);
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {

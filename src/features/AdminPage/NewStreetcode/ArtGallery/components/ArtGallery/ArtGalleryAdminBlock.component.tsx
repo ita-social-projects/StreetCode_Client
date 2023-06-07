@@ -28,7 +28,7 @@ const ArtGalleryAdminBlock: React.FC<{ arts: StreetcodeArtCreateUpdate[] }> = ({
                     const { width, height } = await getImageSize(url!);
                     const { index } = streetcodeArt;
                     const { description } = streetcodeArt.art;
-                    const { title } = streetcodeArt.art.image;
+                    const { title } = streetcodeArt.art;
 
                     newMap.push({
                         index,
