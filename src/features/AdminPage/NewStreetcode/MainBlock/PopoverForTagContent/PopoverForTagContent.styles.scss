@@ -4,15 +4,14 @@
 .laptop-version{
   .tagContainer{
     overflow: hidden;
-        max-height: f.pxToRem(95px);
+        max-height: f.pxToRem(85px);
   }
 }
 .mobile-version{
     .tagContainer {
-        @include mut.rem-padded(13px, 0, 13px, 3px);
         @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
         overflow: hidden;
-        max-height: f.pxToRem(90px);
+        max-height: f.pxToRem(78px);
         .tagItem {
           height: f.pxToRem(34px);
           @include mut.flex-centered();

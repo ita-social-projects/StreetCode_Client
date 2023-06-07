@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import React, {
-    lazy, Suspense, useEffect, useRef, useState,
+    lazy, Suspense
 } from 'react';
-import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { redirect, useLocation } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
@@ -64,19 +64,6 @@ const StreetcodeContent = () => {
     };
 
     useAsync(() => {
-        Promise.all([checkStreetcodeExist(streetcodeUrl.current)]).then(
-            (resp) => {
-                if (!resp.at(0)) {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
-                }
-                setCurrentStreetcodeId(streetcodeUrl.current).then((st) => {
-                    if (st?.status !== 1 && !location.pathname.includes(`${FRONTEND_ROUTES.ADMIN.BASE}`)) {
-                        navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
-                    }
-                });
-            },
-        );
-
         const idParam = searchParams.get('qrid');
         if (idParam !== null) {
             const tempId = +idParam;

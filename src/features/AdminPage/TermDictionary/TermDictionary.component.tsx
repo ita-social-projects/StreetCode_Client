@@ -34,6 +34,7 @@ const TermDictionary = () => {
     }, []);
 
     const handleAdd = () => {
+        
         const newTerm : Term = {
             id: 0,
             title: term?.title as string,
@@ -42,6 +43,7 @@ const TermDictionary = () => {
         termsStore.createTerm(newTerm).then(
             (response) => {
                 setData([...data || [], response ?? newTerm]);
+                setTerm({ title: '', description: '' }); 
             },
         );
     };

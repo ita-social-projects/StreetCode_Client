@@ -8,6 +8,7 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import Modal from 'antd/es/modal/Modal';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useEffect } from 'react';
 
 interface Props {
     handleAdd: () => void;
@@ -43,11 +44,11 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                 </div>
 
                 <FormItem label="Назва">
-                    <Input onChange={handleChangeTitle} />
+                    <Input value={term?.title} onChange={handleChangeTitle} />
                 </FormItem>
                 
                 <FormItem label="Визначення">
-                    <TextArea onChange={handleChangeDesc} />
+                    <TextArea value={term?.description} onChange={handleChangeDesc} />
                 </FormItem>
 
                 <div className='center'>

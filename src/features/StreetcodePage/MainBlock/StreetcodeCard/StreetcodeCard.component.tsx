@@ -97,7 +97,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             </div>
             <div className="rightSider">
                 <div className="headerContainer">
-                    <div>
+                    <div className="upper-info" >
                         <div className="streetcodeIndex">
                             Стріткод #
                             {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4) : streetcode?.index}
@@ -116,11 +116,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
-                        <div className={streetcode?.teaser.length > 450 ? 'teaserBlockContainer' : ''}>
                             <p className="teaserBlock">
                                 {streetcode?.teaser}
                             </p>
-                        </div>
                     </div>
 
                     <div className="cardFooter">

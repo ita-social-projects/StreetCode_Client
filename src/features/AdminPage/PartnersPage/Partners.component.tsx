@@ -14,6 +14,7 @@ import axios from 'axios';
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
+import PartnersApi from '@/app/api/partners/partners.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
@@ -39,7 +40,7 @@ const Partners:React.FC = observer(() => {
             partnersStore?.PartnerMap.forEach((val, key) => {
                 ImageStore.getImageById(val.logoId).then((logo) => {
                     partnersStore.PartnerMap.set(
-                        key,
+                        val.id,
                         { ...val, logo },
                     );
                 });
@@ -133,9 +134,10 @@ const Partners:React.FC = observer(() => {
                           modalStore.setConfirmationModal(
                               'confirmation',
                               () => {
-                                  partnersStore.deletePartner(partner.id).then(() => {
-                                      partnersStore.PartnerMap.delete(partner.id);
-                                  }).catch((e) => {});
+                                  PartnersApi.delete(partner.id)
+                                      .then(() => {
+                                          partnersStore.PartnerMap.delete(partner.id);
+                                      }).catch((e) => {});
                                   modalStore.setConfirmationModal('confirmation');
                               },
                               'Ви впевнені, що хочете видалити цього партнера?',
