@@ -2,12 +2,14 @@ import './StreetcodeCard.styles.scss';
 
 import { useEffect, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
+import ReactFreezeframe from '@components/FreezeFrame/ReactFreezeframe';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx, { useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
+import { Freeze } from 'freezeframe/types';
 
 import { Button } from 'antd';
 
@@ -61,7 +63,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
-                .catch((e) => {});
+                .catch((e) => { });
         }
     }, [streetcode]);
 
@@ -76,12 +78,19 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         infinite
                     >
                         {images.slice(0, 2).map((im) => (
-                            <img
+                            <ReactFreezeframe
                                 key={im.id}
-                                src={base64ToUrl(im.base64, im.mimeType)}
-                                className="streetcodeImg"
-                                alt={im.alt}
-                            />
+                                options={{
+                                    trigger: 'click',
+                                    overlay: false,
+                                }}
+                            >
+                                <img
+                                    src={base64ToUrl(im.base64, im.mimeType)}
+                                    className="streetcodeImg"
+                                    alt={im.alt}
+                                />
+                            </ReactFreezeframe>
                         ))}
                     </BlockSlider>
                 </div>
@@ -138,8 +147,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button className="animateFigureBtn"
-                         onClick={() => personLiveEvent(streetcode?.id ?? 0)}><a href="#QRBlock">Оживити картинку</a></Button>
+                        <Button
+                            className="animateFigureBtn"
+                            onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                        >
+                            <a href="#QRBlock">Оживити картинку</a>
+
+                        </Button>
                     </div>
                 </div>
             </div>
