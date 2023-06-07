@@ -18,9 +18,8 @@ const NewsPage = () => {
     const [newsImg, setNewsImg] = useState<HTMLImageElement | null>(null);
     const [newsValue, setValue] = useState<NewsWithUrl>();
     const { imagesStore } = useMobx();
-    const pppppText = newsValue?.news.text as string;
-    const parsedText = parse(newsValue?.news.text ?? "") as string;
-    const paragraphCount = (pppppText?.match(/<p\b[^>]*>/gi) || []).length;
+    const [parsedNewsText, setParsedNewsText] = useState<string>("");
+    const [paragraphsCount, setParCount] = useState<number>(0);
     const [width, setWidth] = useState(0);
     const windowSize = useWindowSize();
     const { getImage, addImage } = imagesStore;
@@ -30,6 +29,9 @@ const NewsPage = () => {
             NewsApi.getNewsAndLinksByUrl(newsUrl)
             .then(res => {
                 setValue(res)
+                const value = res as NewsWithUrl;
+                setParsedNewsText(parse(value.news.text ?? "") as string);
+                setParCount(((value.news.text as string)?.match(/<p\b[^>]*>/gi) || []).length);
             });            
         }, [newsUrl]);
 
@@ -63,7 +65,7 @@ const NewsPage = () => {
         },
         [newsValue?.news.imageId],
     );
-
+    
     return (<div>
         <div className="newsContainer">
             <div className="wrapper">
@@ -89,7 +91,7 @@ const NewsPage = () => {
                         />
                     ): ""}
                     <div className="newsTextArea">
-                        {paragraphCount >= 2 ? parsedText.slice(0, 3) : parsedText}
+                        {paragraphsCount >= 2 ? parsedNewsText.slice(0, 3) : parsedNewsText}
                     </div>
                     {newsImg != null && (windowSize.width < 1024) && (width > windowSize.width * 0.6) ? (  
                         <img
@@ -108,7 +110,7 @@ const NewsPage = () => {
                         />
                     ): ""}
                     <div className="newsTextArea">
-                    {paragraphCount >= 2 ? parsedText.slice(3) : ""}
+                    {paragraphsCount >= 2 ? parsedNewsText.slice(3) : ""}
                     </div>
                 </div>
                 <div className="newsLinks">
