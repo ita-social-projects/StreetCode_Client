@@ -18,9 +18,6 @@ ReactGA.initialize('G-2RHY04JKG0');
 const App = () => {
     const { pathname } = useLocation();
     const { modalStore: { isPageDimmed } } = useModalContext();
-
-    console.log(process.env.NODE_ENV);
-    
     console.log(process.env.REACT_APP_TEMPVAL);
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>

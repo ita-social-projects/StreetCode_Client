@@ -1,9 +1,13 @@
 const Dotenv = require('dotenv-webpack');
-
-module.exports = env => ({
+module.exports = {
     mode: 'production',
     entry: {
         main: './src/index.tsx',
+    },
+    devServer: {
+        open: true,
+        port: "3000",
+        historyApiFallback: true,
     },
     module: {
         rules: require('./webpack.rules'),
@@ -16,12 +20,10 @@ module.exports = env => ({
     output: {
         filename: '[name].js',
         chunkFilename: '[name].chunk.js',
-        publicPath: '/'
+        publicPath: '/',
     },
     plugins: [
         ...require('./webpack.plugins'),
-        new Dotenv({
-            path: `./.env.production`
-        }),
+        new Dotenv(),
       ],
-})
+}
