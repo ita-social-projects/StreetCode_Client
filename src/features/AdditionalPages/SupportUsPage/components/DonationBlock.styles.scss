@@ -27,7 +27,7 @@
     position: relative;
     display: flex;
     justify-content: center;
-    height: 53px;
+    height: f.pxToRem(53px);
     &::before {
       content: '';
       position: absolute;
@@ -197,7 +197,7 @@
 
     .donateInputContainerWrapper{
       @include mut.rem-margined($bottom: 20px);
-      height: 42px;
+      height: f.pxToRem(42px);
     }
     
     .amountInput {
