@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, FormOutlined, RollbackOutlined,
 } from '@ant-design/icons';
+import { NumberLiteralTypeAnnotation } from '@babel/types';
 
 import {
     Button, Dropdown, InputNumber, MenuProps, Pagination, Space,
@@ -26,9 +27,9 @@ const StreetcodesTable = () => {
     const [titleRequest, setTitleRequest] = useState<string | null>(null);
     const [statusRequest, setStatusRequest] = useState<string | null>(null);
     const [pageRequest, setPageRequest] = useState<number | null>(1);
-    const [amountRequest, setAmountRequest] = useState<number | null>(4);
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
+    const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
         Page: pageRequest,
@@ -225,9 +226,6 @@ const StreetcodesTable = () => {
     }
 
     useEffect(() => {
-        if (amountRequest === null) {
-            setAmountRequest(0);
-        }
         requestGetAll.Page = pageRequest;
         requestGetAll.Amount = amountRequest;
         const getAllStreetcodesResponse = StreetcodesApi.getAll(requestGetAll);
@@ -255,10 +253,9 @@ const StreetcodesTable = () => {
             });
 
             setMapedStreetCodes(mapedStreetCodesBuffer);
-            setTotalItems(amountRequest !== null
-                ? response[0].pages * amountRequest : 0);
+            setTotalItems(response[0].pages * amountRequest);
         });
-    }, [requestGetAll, amountRequest, pageRequest]);
+    }, [requestGetAll, pageRequest]);
 
     return (
         <div className="StreetcodeTableWrapper">
@@ -275,25 +272,13 @@ const StreetcodesTable = () => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
-                        <InputNumber
-                            className="pageAmountElement"
-                            min={1}
-                            max={20}
-                            defaultValue={amountRequest !== null ? amountRequest : 4}
-                            onChange={(value: number | null) => {
-                                setAmountRequest(value);
-                                setRequest();
-                            }}
-                        />
-                    </div>
-                    <div className="underTableElement">
                         <Pagination
                             className="pagenationElement"
                             simple
                             defaultCurrent={1}
                             current={currentPages}
                             total={totalItems}
-                            pageSize={amountRequest !== null ? amountRequest : 0}
+                            pageSize={amountRequest}
                             onChange={(value: any) => {
                                 setCurrentPages(value);
                                 setPageRequest(value);
