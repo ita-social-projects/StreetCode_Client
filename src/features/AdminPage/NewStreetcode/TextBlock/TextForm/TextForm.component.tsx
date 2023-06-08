@@ -1,7 +1,5 @@
 import './TextForm.styles.scss';
 
-import TextInputInfo from '@features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
-
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
@@ -16,8 +14,8 @@ import TextPreview from './TextPreview/TextPreview.component';
 interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
-    video: Partial<Video> | undefined;
-    setVideo: React.Dispatch<Partial<Video> | undefined>;
+    video: Video | undefined;
+    setVideo: React.Dispatch<Video | undefined>;
 }
 const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const maxTitleLength = 50;

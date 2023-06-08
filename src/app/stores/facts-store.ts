@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import factsApi from '@api/streetcode/text-content/facts.api';
-import { Fact, FactCreate, FactUpdate } from '@models/streetcode/text-contents.model';
+import { Fact, FactUpdate } from '@models/streetcode/text-contents.model';
+
 import { ModelState } from '@/models/enums/model-state';
 
 export default class FactsStore {

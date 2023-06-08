@@ -1,11 +1,13 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import tagsApi from '@api/additional-content/tags.api';
-import Tag from '@models/additional-content/tag.model';
+import Tag, { StreetcodeTagUpdate } from '@models/additional-content/tag.model';
 
 export default class TagsStore {
     public TagMap = new Map<number, Tag>();
 
     public TagCatalogMap = new Map<number, Tag>();
+
+    public TagToDeleteArray: StreetcodeTagUpdate[] = [];
 
     public constructor() {
         makeAutoObservable(this);
@@ -27,6 +29,18 @@ export default class TagsStore {
     private setCatalogItem = (tag: Tag) => {
         this.TagCatalogMap.set(tag.id, tag);
     };
+
+    public setItemToDelete = (tag: StreetcodeTagUpdate) => {
+        this.TagToDeleteArray.push(tag);
+    };
+
+    public deleteItemFromArrayToDelete = (title: string) => {
+        this.TagToDeleteArray = this.TagToDeleteArray.filter((t) => t.title !== title);
+    };
+
+    get getTagToDeleteArray() {
+        return this.TagToDeleteArray;
+    }
 
     get getTagArray() {
         return Array.from(this.TagMap.values());

@@ -2,6 +2,8 @@ import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import useMobx from '@app/stores/root-store';
+import { ModelState } from '@models/enums/model-state';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -10,9 +12,10 @@ import {
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
+
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
+import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
@@ -45,6 +48,7 @@ const MainBlockAdmin: React.FC<Props> = ({
         { width: 365, screenWidth: 768 },
         { width: 612, screenWidth: 1600 },
     ];
+    const { tagsStore } = useMobx();
     const [tags, setTags] = useState<Tag[]>([]);
     const [popoverProps, setPopoverProps] = useState<TagPreviewProps>(tagPreviewPropsList[0]);
     const name = useRef<InputRef>(null);
@@ -88,6 +92,7 @@ const MainBlockAdmin: React.FC<Props> = ({
             message.error('Поле порожнє');
         }
     };
+
     const onSwitchChange = (value: boolean) => {
         if (value) {
             setStreetcodeType(StreetcodeType.Event);
@@ -107,25 +112,32 @@ const MainBlockAdmin: React.FC<Props> = ({
             setIndexId(index);
         }
     };
-    const onSelectTag = (selectedValue: string) => {
-        let selected;
-        const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
-        if (selectedIndex < 0) {
-            let minId = Math.min(...selectedTags.map((t) => t.id));
-            if (minId < 0) {
-                minId -= 1;
-            } else {
-                minId = -1;
-            }
-            setSelectedTags([...selectedTags, { id: minId, title: selectedValue, isVisible: false }]);
-        } else {
-            selected = tags[selectedIndex];
 
-            setSelectedTags([...selectedTags, { ...selected, title: selectedValue, isVisible: false }]);
+    const onSelectTag = (selectedValue: string) => {
+        const deletedTag = tagsStore.getTagToDeleteArray.find((tag) => tag.title === selectedValue);
+        if (deletedTag) { // for case when delete persisted item and add it again
+            tagsStore.deleteItemFromArrayToDelete(selectedValue);
+            setSelectedTags([...selectedTags, deletedTag]);
+        } else {
+            const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
+
+            const newItem: StreetcodeTagUpdate = {
+                id: selectedIndex < 0 ? 0 : tags[selectedIndex].id,
+                title: selectedValue,
+                isVisible: false,
+                modelState: ModelState.Created,
+            };
+
+            setSelectedTags([...selectedTags, newItem]);
         }
     };
 
     const onDeselectTag = (deselectedValue: string) => {
+        const tag = selectedTags.find((t) => t.title === deselectedValue) as StreetcodeTagUpdate;
+        if (tag?.isPersisted) {
+            tag.modelState = ModelState.Deleted;
+            tagsStore.setItemToDelete(tag);
+        }
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -140,7 +152,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 initialValue={1}
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
-                        {pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
+                    { pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
                 name="streetcodeNumber"
             >
                 <div className="display-flex-row">
@@ -178,8 +190,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                         name="name"
                         className="people-title-input"
                         rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
-                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: "Ім'я має містити тільки літерали" },
-                        { max: 50, message: "Ім'я не може містити більше 50 символів" },
+                            { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: "Ім'я має містити тільки літерали" },
+                            { max: 50, message: "Ім'я не може містити більше 50 символів" },
                         ]}
                     >
                         <Input
@@ -195,8 +207,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                         label="Прізвище"
                         className="people-title-input"
                         rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
-                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: 'Прізвище має містити тільки літерали' },
-                        { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                            { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: 'Прізвище має містити тільки літерали' },
+                            { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
                         ]}
                     >
                         <Input
@@ -216,7 +228,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
                     { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' },
-                    { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
+                    { pattern: /^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
             >
                 <Input maxLength={100} showCount />
             </Form.Item>
@@ -250,7 +262,6 @@ const MainBlockAdmin: React.FC<Props> = ({
                 <Form.Item label="Теги">
                     <div className="tags-block-tagitems">
                         <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-
                         <Select
                             className="tags-select-input"
                             mode="tags"

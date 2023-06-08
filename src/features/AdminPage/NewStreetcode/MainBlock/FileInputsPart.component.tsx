@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -72,11 +73,7 @@ const FileInputsPart: React.FC = () => {
                         newStreetcodeInfoStore.audioId = result.id;
                         setAudios([newAudio]);
                     });
-                } catch (error) {
-
-                } finally {
-
-                }
+                } catch (error) { /* empty */ } finally { /* empty */ }
             };
             fetchData();
         }

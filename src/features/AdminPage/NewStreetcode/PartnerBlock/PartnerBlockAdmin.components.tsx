@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { ModelState } from '@models/enums/model-state';
 import PartnersStore from '@stores/partners-store';
 
 import { Button, Select } from 'antd';
 
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
-import { ModelState } from '@/models/enums/model-state';
 import { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partners.model';
 
 const PartnerBlockAdmin:React.FC<{ partners: PartnerCreateUpdateShort[],

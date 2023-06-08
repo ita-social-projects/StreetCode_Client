@@ -1,9 +1,7 @@
-/* eslint-disable import/extensions */
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
-
-import useMobx from '@/app/stores/root-store';
-import TimelineItem from '@/models/timeline/chronology.model';
+import { useState } from 'react';
+import useMobx from '@app/stores/root-store';
+import TimelineItem from '@models/timeline/chronology.model';
 
 import NewTimelineItem from './NewTimelineItem/NewTimelineItem.component';
 import NewTimelineModal from './NewTimelineModal/NewTimelineModal.component';

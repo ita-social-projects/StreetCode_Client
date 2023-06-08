@@ -1,19 +1,19 @@
 /* eslint-disable complexity */
 import './MainNewStreetcode.styles.scss';
 
-import React, { useEffect, useState } from 'react';
-import { redirect, useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
 import PartnersApi from '@app/api/partners/partners.api';
 import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
-import FactsApi from '@app/api/streetcode/text-content/facts.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
+import useMobx from '@app/stores/root-store';
+import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
-import Url from '@models/additional-content/url.model';
+import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
 import { Button, ConfigProvider, Form } from 'antd';
@@ -24,22 +24,17 @@ import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useMobx from '@/app/stores/root-store';
-import Subtitle, { SubtitleCreate, SubtitleCreateUpdate } from '@/models/additional-content/subtitles.model';
-import SubTitle from '@/models/additional-content/subtitles.model';
-import { StreetcodeTag } from '@/models/additional-content/tag.model';
+import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
+import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import { ModelState } from '@/models/enums/model-state';
-import { ArtCreate, ArtCreateDTO, ArtUpdate, ArtUpdateDTO } from '@/models/media/art.model';
+import { ArtCreateDTO } from '@/models/media/art.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
-import Partner, { PartnerCreateUpdate, PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
-import { SourceCategory, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
+import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
+import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreate } from '@/models/streetcode/text-contents.model';
-import TimelineItem, { TimelineItemUpdate } from '@/models/timeline/chronology.model';
-
-import PageBar from '../PageBar/PageBar.component';
+import TimelineItem from '@/models/timeline/chronology.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
@@ -65,6 +60,7 @@ const NewStreetcode = () => {
         streetcodeCoordinatesStore,
         statisticRecordStore,
         streetcodeArtStore,
+        tagsStore,
     } = useMobx();
 
     const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
@@ -72,7 +68,7 @@ const NewStreetcode = () => {
     const [inputInfo, setInputInfo] = useState<Partial<Text>>();
     const [video, setVideo] = useState<Video>();
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
-    const [subTitle, setSubTitle] = useState<Partial<SubTitle>>();
+    const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
@@ -93,7 +89,6 @@ const NewStreetcode = () => {
 
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                console.log(result);
                 const artToUpdate = result.map((streetcodeArt) => ({
                     ...streetcodeArt,
                     art: {
@@ -126,8 +121,14 @@ const NewStreetcode = () => {
                     setFirstDate(x.eventStartOrPersonBirthDate);
                     setSecondDate(x.eventEndOrPersonDeathDate);
                     setDateString(x.dateString);
-                    setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Person);
+
+                    const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
+                        ...tag,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                    }));
+                    setSelectedTags(tagsToUpdate);
                 } else {
                     form.setFieldsValue({
                         streetcodeNumber: parseId,
@@ -272,7 +273,7 @@ const NewStreetcode = () => {
             ].filter((idx) => idx !== null),
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
-            relatedFigures: figures, // fix this
+            relatedFigures: figures,
             text: (text.title && text.textContent) ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
@@ -350,10 +351,12 @@ const NewStreetcode = () => {
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
                 facts: factsStore.getFactArrayToUpdate,
                 partners: partnersUpdate,
-                subtitles: subTitle?.subtitleText ? [subTitle as SubTitle] : [],
+                subtitles: subTitle?.subtitleText ? [subTitle as Subtitle] : [],
                 text: (inputInfo?.title && inputInfo?.textContent) ? inputInfo as Text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
                 streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
+                tags: [...(selectedTags as StreetcodeTagUpdate[]).map((item) => ({ ...item, streetcodeId: parseId })),
+                    ...tagsStore.getTagToDeleteArray],
             };
 
             console.log(streetcodeUpdate);
