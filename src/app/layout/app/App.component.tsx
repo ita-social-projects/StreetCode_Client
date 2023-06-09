@@ -25,10 +25,10 @@ const App = () => {
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>
             <ToastContainer position="bottom-right" limit={3} />
-            <CopyWithCopyright copyrightText={CopyrightText}>
                 <ModalWrapper />
                 <HeaderBlock />
                 <div className="mainWrapper">
+                <CopyWithCopyright copyrightText={CopyrightText}>
                     <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
                     {(pathname !== FRONTEND_ROUTES.BASE) && (
                         <Outlet />
@@ -39,11 +39,11 @@ const App = () => {
                             <MainPage />
                         </>
                     )}
+                    </CopyWithCopyright>
                 </div>
                 <div className="footerWrapper">
                     <Footer />
                 </div>
-            </CopyWithCopyright>
         </div>
     );
 };
