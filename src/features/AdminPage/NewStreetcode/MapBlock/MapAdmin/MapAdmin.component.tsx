@@ -62,14 +62,13 @@ const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
             });
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
+                id: 0,
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0,
-                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size + 1,
-
             };
             const newStatisticRecord: StatisticRecord = {
-                id: statisticRecordStore.setStatisticRecordMap.size + 1,
+                id: statisticRecordStore.StatisticRecordMap.size + 1,
                 streetcodeCoordinate: newCoordinate,
                 coordinateId: newCoordinate.id,
                 qrId: newNumberAsNumber,

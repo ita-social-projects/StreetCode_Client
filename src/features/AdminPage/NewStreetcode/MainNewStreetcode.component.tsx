@@ -20,6 +20,7 @@ import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
+import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
@@ -205,9 +206,6 @@ const NewStreetcode = () => {
                     });
                 });
             });
-            StreetcodeCoordinateApi.getByStreetcodeId(parseId).then((result) => {
-                setCoordinates([...result]);
-            });
             TransactionLinksApi.getByStreetcodeId(parseId)
                 .then((res) => {
                     if (res) {
@@ -216,6 +214,7 @@ const NewStreetcode = () => {
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
+            statisticRecordStore.fetchStatisticRecordsByStreetcodeId(parseId);
         }
     }, []);
 
@@ -357,6 +356,12 @@ const NewStreetcode = () => {
                 streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
                 tags: [...(selectedTags as StreetcodeTagUpdate[]).map((item) => ({ ...item, streetcodeId: parseId })),
                     ...tagsStore.getTagToDeleteArray],
+                statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate,
+                imagesId: [
+                    newStreetcodeInfoStore.animationId,
+                    newStreetcodeInfoStore.blackAndWhiteId,
+                    newStreetcodeInfoStore.relatedFigureId,
+                ].filter((idx) => idx !== null),
             };
 
             console.log(streetcodeUpdate);

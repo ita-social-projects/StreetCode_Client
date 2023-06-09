@@ -12,7 +12,7 @@ import Toponym from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
 
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
-import StatisticRecord from '../analytics/statisticrecord.model';
+import StatisticRecord, { StatisticRecordUpdate } from '../analytics/statisticrecord.model';
 import { StreetcodeArtCreateUpdate } from '../media/streetcode-art.model';
 
 import { Fact, FactUpdate, Text, TextCreate } from './text-contents.model';
@@ -152,4 +152,6 @@ export interface StreetcodeUpdate {
     text: Text | null,
     streetcodeCategoryContents: StreetcodeCategoryContentUpdate[],
     tags: StreetcodeTagUpdate[],
+    statisticRecords: StatisticRecordUpdate[],
+    imagesId: Array<number | null>,
 }
