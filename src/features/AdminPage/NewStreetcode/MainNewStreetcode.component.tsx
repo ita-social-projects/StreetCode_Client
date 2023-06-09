@@ -195,6 +195,7 @@ const NewStreetcode = () => {
                 tempStatus = 1;
             }
         }
+        form.validateFields();
         data.stopPropagation();
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
@@ -322,7 +323,7 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock id={parseId ?? -1} />
                             <TimelineBlockAdmin />
-                            <MapBlockAdmin coordinates={coordinates} />
+                            {/*<MapBlockAdmin coordinates={coordinates} />*/}
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />
