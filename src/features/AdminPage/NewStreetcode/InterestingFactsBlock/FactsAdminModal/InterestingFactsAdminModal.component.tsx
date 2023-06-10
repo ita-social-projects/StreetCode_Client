@@ -17,6 +17,7 @@ import ImagesApi from '@/app/api/media/images.api';
 import FactsApi from '@/app/api/streetcode/text-content/facts.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import Image from '@/models/media/image.model';
 import { Fact } from '@/models/streetcode/text-contents.model';
 
@@ -68,7 +69,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
 
     const onSuccesfulSubmit = (inputedValues: any) => {
         const item: Fact = {
-            id: factsStore.factMap.size,
+            id: getNewMinNegativeId(factsStore.getFactArray.map((f) => f.id)),
             title: inputedValues.title,
             factContent: inputedValues.factContent,
             imageId: imageId.current,
@@ -124,7 +125,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             showCount
                         />
                     </Form.Item>
-
                     <FormItem
                         label="Зображення"
                         name="image"
@@ -162,7 +162,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                     <div className="center">
                         <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
                     </div>
-
                 </Form>
             </div>
         </Modal>

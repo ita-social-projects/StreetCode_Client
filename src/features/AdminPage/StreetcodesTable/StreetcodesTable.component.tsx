@@ -111,12 +111,8 @@ const StreetcodesTable = () => {
             dataIndex: 'name',
             width: 500,
             key: 'name',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
-                        {text}
-                    </div>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
@@ -124,54 +120,42 @@ const StreetcodesTable = () => {
             dataIndex: 'index',
             width: 150,
             key: 'index',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
-                        {text}
-                    </div>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <Dropdown menu={
-                        menuProps
-                    }
-                    >
-                        <Button onClick={() => setCurrentStreetcodeOption(record.key)}>
-                            <Space>
-                                {text}
-                                <DownOutlined />
-                            </Space>
-                        </Button>
-                    </Dropdown>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => setCurrentStreetcodeOption(record.key),
             }),
+            render: (text: string) => (
+                <Dropdown menu={menuProps}>
+                    <Button>
+                        <Space>
+                            {text}
+                            <DownOutlined />
+                        </Space>
+                    </Button>
+                </Dropdown>
+            ),
         },
         {
             title: 'Останні зміни',
             dataIndex: 'date',
             key: 'date',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
-                        {text}
-                    </div>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
-
         {
             title: 'Дії',
             dataIndex: 'action',
             width: 100,
             key: 'action',
-            render: (value: any, record: MapedStreetCode, index: any) => (
-                // eslint-disable-next-line react/jsx-no-useless-fragment
+            render: (value: any, record: MapedStreetCode) => (
                 <>
                     {record.status !== 'Видалений' ? (
                         <>
@@ -189,11 +173,13 @@ const StreetcodesTable = () => {
                                     modalStore.setConfirmationModal(
                                         'confirmation',
                                         () => {
-                                            StreetcodesApi.delete(record.key).then(() => {
-                                                updateState(record, 'Видалений');
-                                            }).catch((e) => {
-                                                console.log(e);
-                                            });
+                                            StreetcodesApi.delete(record.key)
+                                                .then(() => {
+                                                    updateState(record, 'Видалений');
+                                                })
+                                                .catch((e) => {
+                                                    console.log(e);
+                                                });
                                             modalStore.setConfirmationModal('confirmation');
                                         },
                                         'Ви впевнені, що хочете видалити цей стріткод?',
@@ -204,17 +190,17 @@ const StreetcodesTable = () => {
                                 <BarChartOutlined />
                             </Link>
                         </>
-                    )
-                        : (
-                            <RollbackOutlined
-                                className="actionButton"
-                                onClick={() => handleUndoDelete(record.key)}
-                            />
-                        )}
+                    ) : (
+                        <RollbackOutlined
+                            className="actionButton"
+                            onClick={() => handleUndoDelete(record.key)}
+                        />
+                    )}
                 </>
             ),
         },
     ];
+
     interface MapedStreetCode {
         key: number,
         index: number,

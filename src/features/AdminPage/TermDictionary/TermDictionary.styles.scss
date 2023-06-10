@@ -17,7 +17,7 @@
 
 .termDictionaryContainer {
     padding-top: f.pxToRem(100px);
-    display: flex;
+    flex-wrap:wrap;
     gap: f.pxToRem(10px);
 
     .dictionaryHeader {

@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import './MainNewStreetcode.styles.scss';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -15,7 +15,9 @@ import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
-import { Button, ConfigProvider, Form } from 'antd';
+import {
+    Button, ConfigProvider, Form, Modal
+} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -77,6 +79,14 @@ const NewStreetcode = () => {
     const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
+    const [visibleModal, setVisibleModal] = useState(false);
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
+
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
 
     const [funcName, setFuncName] = useState<string>('create');
     const parseId = id ? +id : null;
@@ -225,6 +235,7 @@ const NewStreetcode = () => {
                 tempStatus = 1;
             }
         }
+        form.validateFields();
         data.stopPropagation();
 
         const subtitles: SubtitleCreate[] = subTitle?.subtitleText
@@ -423,19 +434,26 @@ const NewStreetcode = () => {
                         onClick={
                             onFinish
                         }
-                        name={publish}
-                    >
-                        {publish}
-                    </Button>
-                    <Button
-                        className="streetcode-custom-button submit-button"
-                        onClick={
-                            onFinish
-                        }
                         name={draft}
                     >
                         {draft}
                     </Button>
+                    <Modal
+                        title="Ви впевнені, що хочете опублікувати цей стріткод?"
+                        open={visibleModal}
+                        onOk={onFinish}
+                        onCancel={handleCancelModalRemove}
+                    />
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={
+                            handleRemove
+                        }
+                        name={publish}
+                    >
+                        {publish}
+                    </Button>
+
                 </div>
             </ConfigProvider>
         </div>

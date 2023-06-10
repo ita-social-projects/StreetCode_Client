@@ -42,6 +42,7 @@ const StreetcodeCatalog = () => {
                         getCatalogStreetcodesArray.map(
                             (streetcode, index) => (
                                 <StreetcodeCatalogItem
+                                    key={streetcode.id}
                                     streetcode={streetcode}
                                     isLast={index === getCatalogStreetcodesArray.length - 1}
                                     handleNextScreen={handleSetNextScreen}

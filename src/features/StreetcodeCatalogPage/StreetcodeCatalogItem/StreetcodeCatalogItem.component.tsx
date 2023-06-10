@@ -24,7 +24,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const classSelector = 'catalogItem';
     const isOnScreen = useOnScreen(elementRef, classSelector);
 
-    useAsync(() => (isOnScreen && isLast ? () => handleNextScreen() : () => { }), [isOnScreen]);
+    useEffect(() => (isOnScreen && isLast ? () => handleNextScreen() : () => { }), [isOnScreen]);
 
     useEffect(() => {
         Promise.all([fetchImage(streetcode.imageId)]);

@@ -1,13 +1,9 @@
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, {
-    lazy, Suspense, useEffect, useEffect, useRef, useRef, useState,
-    useState,
-} from 'react';
-import {
-    redirect, useLocation, useNavigate, useNavigate, useSearchParams, useSearchParams,
-} from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
@@ -46,7 +42,9 @@ const StreetcodeContent = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
-
+    const isMobile = useMediaQuery({
+        query: '(max-width: 4800px)',
+    });
     const checkExist = async (qrId: number) => {
         const exist = await StatisticRecordApi.existByQrId(qrId);
         return exist;
@@ -62,19 +60,6 @@ const StreetcodeContent = () => {
     };
 
     useAsync(() => {
-        Promise.all([checkStreetcodeExist(streetcodeUrl.current)]).then(
-            (resp) => {
-                if (!resp.at(0)) {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
-                }
-                setCurrentStreetcodeId(streetcodeUrl.current).then((st) => {
-                    if (st?.status !== 1 && !location.pathname.includes(`${FRONTEND_ROUTES.ADMIN.BASE}`)) {
-                        navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
-                    }
-                });
-            },
-        );
-
         const idParam = searchParams.get('qrid');
         if (idParam !== null) {
             const tempId = +idParam;
@@ -104,7 +89,9 @@ const StreetcodeContent = () => {
                     <img
                         className="spinner"
                         alt=""
-                        src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
+                        src={isMobile
+                            ? require('@images/gifs/Logo-animation_web.gif')
+                            : require('@images/gifs/Logo-animation_mob.gif')}
                     />
                 </div>
             )}
