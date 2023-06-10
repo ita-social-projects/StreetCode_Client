@@ -23,6 +23,7 @@ export default class StreetcodeCoordinatesStore {
     }
 
     public addStreetcodeCoordinate = (streetcodeCoordinate: StreetcodeCoordinate) => {
+        console.log(streetcodeCoordinate);
         this.setItem(streetcodeCoordinate);
     };
 

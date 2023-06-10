@@ -7,15 +7,16 @@ import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import useMobx from '@app/stores/root-store';
 
 import {
-    Button, Form, Input, InputNumber, message, Modal, Table,
+    Button, Input, message, Modal, Table,
 } from 'antd';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import useMobx from '@/app/stores/root-store';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
-import StatisticRecord from '@/models/analytics/statisticrecord.model';
+import StatisticRecord, { StatisticRecordUpdate } from '@/models/analytics/statisticrecord.model';
+import { ModelState } from '@/models/enums/model-state';
 
 const containerStyle = {
     width: '100%',
@@ -26,10 +27,8 @@ const initialCenter: google.maps.LatLngLiteral = {
     lat: 50.44759739385438,
     lng: 30.522674496948543,
 };
-interface Props {
-    coordinates: StreetcodeCoordinate[];
-}
-const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
+
+const MapOSMAdmin = () => {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
     const [center, setCenter] = useState(initialCenter);
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
@@ -39,20 +38,6 @@ const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
     const [address, setAddress] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const newNumberAsNumber = parseInt(newNumber, 10);
-    useEffect(() => {
-        if (coordinates.length > 0) {
-            coordinates.forEach((x) => {
-                const newCoordinate: StreetcodeCoordinate = {
-                    latitude: x.latitude,
-                    longtitude: x.longtitude,
-                    streetcodeId: x.streetcodeId,
-                    id: x.id,
-                };
-                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
-                setStreetcodeCoordinates([]);
-            });
-        }
-    }, [coordinates]);
 
     const handleSaveButtonClick = () => {
         if (!newNumber || newNumber === '') {
@@ -62,7 +47,7 @@ const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
             });
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
-                id: 0,
+                id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size + 1,
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0,
@@ -78,20 +63,11 @@ const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
             statisticRecordStore.addStatisticRecord(newStatisticRecord);
             setStatisticRecord(newStatisticRecord);
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
-            coordinates?.map((x) => {
-                const newCoor: StreetcodeCoordinate = {
-                    latitude: x.latitude,
-                    longtitude: x.longtitude,
-                    streetcodeId: x.streetcodeId,
-                    id: x.id,
-                };
-                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoor);
-            });
-            setStreetcodeCoordinates([]);
         }
     };
 
     const handleDelete = (record: { id: any; }) => {
+        console.log(record);
         const { id } = record;
         streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
         statisticRecordStore.deleteStatisticRecordFromMap(id);
@@ -224,16 +200,16 @@ const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
         },
     ];
 
-    const data = statisticRecordStore.getStatisticRecordArray.map(
-        (item) => ({
+    const data = statisticRecordStore.getStatisticRecordArray
+        .filter((x) => (x as StatisticRecordUpdate).modelState !== ModelState.Deleted)
+        .map((item) => ({
             id: item.id,
             qrId: item.qrId,
             latitude: item.streetcodeCoordinate.latitude,
             longtitude: item.streetcodeCoordinate.longtitude,
             address: item.address,
             actions: item,
-        }),
-    );
+        }));
 
     const onCheckIndexClick = () => {
         if (newNumberAsNumber) {
@@ -330,8 +306,8 @@ const MapOSMAdmin: React.FC<Props> = ({ coordinates }) => {
                         key={item.id}
                         icon={{
                             url: StreetcodeMarker,
-                            scaledSize: new window.google.maps.Size(57, 45),
-                            origin: new window.google.maps.Point(0, 0),
+                            // scaledSize: new window.google.maps.Size(57, 45),
+                            // origin: new window.google.maps.Point(0, 0),
                         }}
                         position={{ lat: item.latitude, lng: item.longtitude }}
                         title={item.address}

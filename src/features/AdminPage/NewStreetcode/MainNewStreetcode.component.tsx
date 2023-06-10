@@ -3,7 +3,6 @@ import './MainNewStreetcode.styles.scss';
 
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
 import PartnersApi from '@app/api/partners/partners.api';
@@ -20,7 +19,6 @@ import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
-import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
@@ -411,7 +409,7 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock id={parseId ?? -1} />
                             <TimelineBlockAdmin />
-                            <MapBlockAdmin coordinates={coordinates} />
+                            <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />
