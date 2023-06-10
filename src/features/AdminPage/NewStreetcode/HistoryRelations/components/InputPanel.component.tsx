@@ -51,7 +51,7 @@ const InputPanel = ({ figures, options, handleAdd }: Props) => {
     };
 
     return (
-        <form className="input-container">
+        <div className="input-container">
             <AutoComplete
                 placeholder="Знайти стріткод..."
                 style={{ width: '100%' }}
@@ -63,7 +63,7 @@ const InputPanel = ({ figures, options, handleAdd }: Props) => {
             <Button onClick={handleAddItem} className="streetcode-custom-button button-margin-left" type="primary">
         Додати
             </Button>
-        </form>
+        </div>
     );
 };
 

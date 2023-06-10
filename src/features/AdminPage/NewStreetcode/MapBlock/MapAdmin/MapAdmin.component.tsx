@@ -206,6 +206,7 @@ const MapOSMAdmin = () => {
     const data = statisticRecordStore.getStatisticRecordArray
         .filter((x) => (x as StatisticRecordUpdate).modelState !== ModelState.Deleted)
         .map((item) => ({
+            key: item.id,
             id: item.id,
             qrId: item.qrId,
             latitude: item.streetcodeCoordinate.latitude,

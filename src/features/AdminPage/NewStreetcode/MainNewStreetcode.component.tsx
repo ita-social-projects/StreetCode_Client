@@ -15,9 +15,7 @@ import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
-import {
-    Button, ConfigProvider, Form, Modal
-} from 'antd';
+import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -52,7 +50,7 @@ import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
-    const [form] = useForm();
+    const [form] = useForm(); // causes warning
     const {
         factsStore,
         timelineItemStore,
@@ -71,15 +69,18 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [coordinates, setCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [firstDate, setFirstDate] = useState<Date>();
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
+    const [funcName, setFuncName] = useState<string>('create');
     const [status, setStatus] = useState<number>();
-    const { id } = useParams<any>();
-    const navigate = useNavigate();
     const [visibleModal, setVisibleModal] = useState(false);
+
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
+    const navigate = useNavigate();
+
     const handleRemove = useCallback(() => {
         setVisibleModal(true);
     }, []);
@@ -87,9 +88,6 @@ const NewStreetcode = () => {
     const handleCancelModalRemove = useCallback(() => {
         setVisibleModal(false);
     }, []);
-
-    const [funcName, setFuncName] = useState<string>('create');
-    const parseId = id ? +id : null;
 
     useEffect(() => {
         if (ukUA.DatePicker) {
@@ -185,9 +183,11 @@ const NewStreetcode = () => {
 
                 setPartners(persistedPartners);
             });
-            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
-                setSubTitle(result);
-            });
+            SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
+                .then((result) => {
+                    setSubTitle(result);
+                })
+                .catch((error) => {});
             SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
                 const id = result.map((x) => x.id);
                 id.map((x) => {
@@ -228,7 +228,7 @@ const NewStreetcode = () => {
 
     const onFinish = (data: any) => {
         let tempStatus = 0;
-
+        console.log('finish');
         if (data.target.getAttribute('name') as string) {
             const buttonName = data.target.getAttribute('name') as string;
             if (buttonName.includes(publish)) {
@@ -431,9 +431,7 @@ const NewStreetcode = () => {
                     </div>
                     <Button
                         className="streetcode-custom-button submit-button"
-                        onClick={
-                            onFinish
-                        }
+                        onClick={onFinish}
                         name={draft}
                     >
                         {draft}
@@ -446,9 +444,7 @@ const NewStreetcode = () => {
                     />
                     <Button
                         className="streetcode-custom-button submit-button"
-                        onClick={
-                            handleRemove
-                        }
+                        onClick={handleRemove}
                         name={publish}
                     >
                         {publish}

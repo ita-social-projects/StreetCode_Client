@@ -32,7 +32,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
                     plugins: [
                         'autolink',
                         'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                        'insertdatetime', 'wordcount', 'link', 'lists', /* 'formatselect', */
                     ],
                     toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                         + 'formats blockformats align | removeformat strikethrough ',

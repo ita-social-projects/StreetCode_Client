@@ -141,7 +141,7 @@ const FileInputsPart = () => {
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
                             newStreetcodeInfoStore.relatedFigureId = file.id;
-                            setBlackAndWhite([convertFileToUploadFile(file)]);
+                            setRelatedFigure([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
                             setRelatedFigure((prev) => prev.filter((x) => x.uid !== file.uid));

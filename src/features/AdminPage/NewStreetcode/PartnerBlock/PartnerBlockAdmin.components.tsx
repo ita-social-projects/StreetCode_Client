@@ -56,8 +56,7 @@ const PartnerBlockAdmin = React.memo(({ partners, setPartners }: Props) => {
                         .map((x) => x.id)}
                     onDeselect={onPartnerDeselect}
                 >
-                    {allPartnersShort
-                        .map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
+                    {allPartnersShort.map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
                 </Select>
 
                 <Button

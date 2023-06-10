@@ -240,7 +240,6 @@ const MainBlockAdmin = React.memo(({
                     secondDate.current = newDate;
                 }}
             />
-
             <div className="tags-block">
                 <Form.Item label="Теги">
                     <div className="tags-block-tagitems">
@@ -252,7 +251,7 @@ const MainBlockAdmin = React.memo(({
                             onDeselect={onDeselectTag}
                             value={selectedTags.map((x) => x.title)}
                         >
-                            {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
+                            {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
                         </Select>
                     </div>
                 </Form.Item>
@@ -271,6 +270,7 @@ const MainBlockAdmin = React.memo(({
                         >
                             {tagPreviewPropsList.map((el) => (
                                 <p
+                                    key={el.screenWidth}
                                     className="device-size"
                                     onMouseEnter={() => setPopoverProps(el)}
                                 >
@@ -295,7 +295,6 @@ const MainBlockAdmin = React.memo(({
                     />
                 </Form.Item>
             </div>
-
             <FileInputsPart />
         </div>
     );

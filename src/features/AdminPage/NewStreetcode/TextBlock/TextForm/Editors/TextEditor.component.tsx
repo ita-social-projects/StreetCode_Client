@@ -65,7 +65,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                     plugins: [
                         'autolink',
                         'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'insertdatetime', 'wordcount', 'charcount',
+                        'insertdatetime', 'wordcount', /* 'charcount', */
                     ],
                     toolbar: 'undo redo | bold italic | '
                         + 'removeformat',

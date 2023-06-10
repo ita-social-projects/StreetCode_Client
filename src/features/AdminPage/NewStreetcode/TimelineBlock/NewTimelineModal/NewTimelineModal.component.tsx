@@ -46,6 +46,7 @@ const NewTimelineModal: React.FC<{
             selectedContext.current = [];
         }
     }, [timelineItem, open, form]);
+
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
@@ -180,11 +181,10 @@ const NewTimelineModal: React.FC<{
                             maxLength={20}
                         >
                             {historicalContextStore.historicalContextArray
-                                .map((cntx, index) => (
-                                    <Option
-                                        key={`${cntx.id + index}`}
-                                        value={cntx.title}
-                                    />
+                                .map((cntx) => (
+                                    <Select.Option key={cntx.id} value={cntx.title}>
+                                        {cntx.title}
+                                    </Select.Option>
                                 ))}
                         </Select>
                     </Form.Item>
