@@ -154,4 +154,5 @@ export interface StreetcodeUpdate {
     tags: StreetcodeTagUpdate[],
     statisticRecords: StatisticRecordUpdate[],
     imagesId: Array<number | null>,
+    audioId: number | null,
 }

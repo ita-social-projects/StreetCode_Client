@@ -23,6 +23,11 @@ import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.co
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 
+interface TagPreviewProps {
+    width: number;
+    screenWidth: number;
+}
+
 interface Props {
     form: FormInstance<any>,
     selectedTags: StreetcodeTag[];
@@ -31,17 +36,9 @@ interface Props {
     setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
 }
 
-interface TagPreviewProps {
-    width: number;
-    screenWidth: number;
-}
-const MainBlockAdmin: React.FC<Props> = ({
-    form,
-    selectedTags,
-    setSelectedTags,
-    streetcodeType,
-    setStreetcodeType,
-}) => {
+const MainBlockAdmin = React.memo(({
+    form, selectedTags, setSelectedTags, streetcodeType, setStreetcodeType,
+}: Props) => {
     const teaserMaxCharCount = 520;
     const tagPreviewPropsList:TagPreviewProps[] = [
         { width: 360, screenWidth: 360 },
@@ -316,5 +313,5 @@ const MainBlockAdmin: React.FC<Props> = ({
             <FileInputsPart />
         </div>
     );
-};
+});
 export default MainBlockAdmin;

@@ -1,3 +1,6 @@
+import IModelState from "../interfaces/IModelState";
+import IPersisted from "../interfaces/IPersisted";
+
 export default interface Image {
     id: number;
     alt?: string | undefined;
@@ -13,4 +16,8 @@ export interface ImageCreate {
     baseFormat: string;
     mimeType: string;
     extension: string;
+}
+
+export interface ImageUpdate extends Image, IModelState, IPersisted {
+
 }

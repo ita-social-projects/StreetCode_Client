@@ -7,8 +7,12 @@ import { Button, Select } from 'antd';
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
 import { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partners.model';
 
-const PartnerBlockAdmin:React.FC<{ partners: PartnerCreateUpdateShort[],
-setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>> }> = ({ partners, setPartners }) => {
+interface Props {
+    partners: PartnerCreateUpdateShort[],
+    setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>>
+}
+
+const PartnerBlockAdmin = React.memo(({ partners, setPartners }: Props) => {
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
 
@@ -78,5 +82,5 @@ setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>> }>
             />
         </div>
     );
-};
+});
 export default PartnerBlockAdmin;

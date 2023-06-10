@@ -8,7 +8,7 @@ interface Props {
     subTitle: Partial<Subtitle> | undefined;
     setSubTitle: React.Dispatch<React.SetStateAction<Partial<Subtitle | undefined>>>;
 }
-const SubtitleBlock = ({ subTitle, setSubTitle }: Props) => (
+const SubtitleBlock = React.memo(({ subTitle, setSubTitle }: Props) => (
     <div className="adminContainer-block">
         <h2>Бігуча стрічка</h2>
         <Input
@@ -21,6 +21,6 @@ const SubtitleBlock = ({ subTitle, setSubTitle }: Props) => (
             })}
         />
     </div>
-);
+));
 
 export default SubtitleBlock;

@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
+import React, { useEffect, useState } from 'react';
+import { ModelState } from '@models/enums/model-state';
+import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
 import axios from 'axios';
-
-import { ModelState } from '@/models/enums/model-state';
 
 import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
@@ -12,7 +11,7 @@ interface Props {
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigureCreateUpdate[]>>;
 }
 
-const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
+const RelatedFiguresBlock = React.memo(({ figures, setFigures }: Props) => {
     const [options, setOptions] = useState<RelatedFigureShort[]>([]);
 
     const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
@@ -59,6 +58,6 @@ const RelatedFiguresBlock = ({ figures, setFigures }: Props) => {
             <RelationsList figures={figures} handleDelete={handleDelete} />
         </div>
     );
-};
+});
 
 export default RelatedFiguresBlock;

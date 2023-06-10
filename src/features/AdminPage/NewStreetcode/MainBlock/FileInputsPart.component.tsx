@@ -1,46 +1,51 @@
 /* eslint-disable complexity */
 import './MainBlockAdmin.style.scss';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { Form, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
+import useMobx from '@app/stores/root-store';
+import Image from '@models/media/image.model';
 
-import { Image, UploadFile } from 'antd';
+import { UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import Upload from 'antd/es/upload/Upload';
 
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
-import useMobx from '@/app/stores/root-store';
-import Audio from '@/models/media/audio.model';
-import Image from '@/models/media/image.model';
-
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import Audio from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 
-const FileInputsPart: React.FC = () => {
+const convertFileToUploadFile = (file: Image | Audio) => {
+    const newFileList: UploadFile = {
+        uid: `${file.id}`,
+        name: 'alt' in file ? file.alt ?? '' : 'description' in file ? file.description ?? '' : '',
+        status: 'done',
+        thumbUrl: base64ToUrl(file.base64, file.mimeType) ?? '',
+        type: file.mimeType,
+    };
+    return newFileList;
+};
+
+const FileInputsPart = () => {
     const { newStreetcodeInfoStore } = useMobx();
+
+    const [images, setImages] = useState<Image[]>([]);
+    const [audio, setAudio] = useState<UploadFile[]>([]);
+    const [animation, setAnimation] = useState<UploadFile[]>([]);
+    const [blackAndWhite, setBlackAndWhite] = useState<UploadFile[]>([]);
+    const [relatedFigure, setRelatedFigure] = useState<UploadFile[]>([]);
+
     const [previewOpen, setPreviewOpen] = useState(false);
-    const [images, setImages] = useState<UploadFile[]>([]);
-    const [image1, setImage1] = useState<UploadFile>();
-    const [image2, setImage2] = useState<UploadFile>();
-    const [image3, setImage3] = useState<UploadFile>();
-    const [audios, setAudios] = useState<UploadFile[]>([]);
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
         setPreviewOpen(true);
     };
-    const afterBlackAndWhiteUpload = (image: Image) => {
-        newStreetcodeInfoStore.BlackAndWhiteId = image.id;
-    };
-    const afterAnimationUpload = (image: Image) => {
-        newStreetcodeInfoStore.AnimationId = image.id;
-    };
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
@@ -49,29 +54,13 @@ const FileInputsPart: React.FC = () => {
             const fetchData = async () => {
                 try {
                     await ImagesApi.getByStreetcodeId(parseId).then((result) => {
-                        const newFileList = result.map((art: Image) => ({
-                            uid: art.id,
-                            name: art.alt,
-                            status: 'done',
-                            thumbUrl: base64ToUrl(art.base64, art.mimeType) ?? '',
-                            type: art.mimeType,
-                        }));
-
-                        newStreetcodeInfoStore.AnimationId = result[0] ? result[0].id : -1;
-                        newStreetcodeInfoStore.BlackAndWhiteId = result[1] ? result[1].id : -1;
-                        newStreetcodeInfoStore.relatedFigureId = result[2] ? result[2].id : null;
-                        setImages([...newFileList]);
+                        setImages(result);
+                        setAnimation([convertFileToUploadFile(result[0])]);
+                        setBlackAndWhite([convertFileToUploadFile(result[1])]);
+                        setRelatedFigure([convertFileToUploadFile(result[2])]);
                     });
                     await AudiosApi.getByStreetcodeId(parseId).then((result) => {
-                        const newAudio: UploadFile = {
-                            uid: `${result.id}`,
-                            name: 'audio',
-                            status: 'done',
-                            thumbUrl: base64ToUrl(result.base64, result.mimeType) ?? '',
-                            type: result.mimeType,
-                        };
-                        newStreetcodeInfoStore.audioId = result.id;
-                        setAudios([newAudio]);
+                        setAudio([convertFileToUploadFile(result)]);
                     });
                 } catch (error) { /* empty */ } finally { /* empty */ }
             };
@@ -85,18 +74,24 @@ const FileInputsPart: React.FC = () => {
                 <FormItem
                     name="animations"
                     label="Анімація"
-                    rules={[{ required: !(parseId && images.length > 0), message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
+                    rules={[{ required: !(parseId && images.length > 1),
+                              message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
                 >
                     <FileUploader
                         accept=".gif"
                         listType="picture-card"
                         multiple={false}
                         maxCount={1}
+                        fileList={animation}
                         onPreview={handlePreview}
                         uploadTo="image"
-                        onSuccessUpload={afterAnimationUpload}
+                        onSuccessUpload={(file: Image) => {
+                            newStreetcodeInfoStore.AnimationId = file.id;
+                            setAnimation([convertFileToUploadFile(file)]);
+                        }}
                         onRemove={(file) => {
-                            ImagesApi.delete(newStreetcodeInfoStore.animationId!);
+                            setAnimation((prev) => prev.filter((x) => x.uid !== file.uid));
+                            // ImagesApi.delete(newStreetcodeInfoStore.animationId!);
                         }}
                     >
                         <InboxOutlined />
@@ -107,18 +102,24 @@ const FileInputsPart: React.FC = () => {
                 <FormItem
                     name="pictureBlackWhite"
                     label="Чорнобіле"
-                    rules={[{ required: !(parseId && images.length > 1), message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
+                    rules={[{ required: !(parseId && images.length > 1),
+                              message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
                 >
                     <FileUploader
                         multiple={false}
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
+                        fileList={blackAndWhite}
                         onPreview={handlePreview}
                         uploadTo="image"
-                        onSuccessUpload={afterBlackAndWhiteUpload}
+                        onSuccessUpload={(file: Image) => {
+                            newStreetcodeInfoStore.BlackAndWhiteId = file.id;
+                            setBlackAndWhite([convertFileToUploadFile(file)]);
+                        }}
                         onRemove={(file) => {
-                            ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
+                            setBlackAndWhite((prev) => prev.filter((x) => x.uid !== file.uid));
+                            // ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
                         }}
                     >
                         <InboxOutlined />
@@ -135,13 +136,16 @@ const FileInputsPart: React.FC = () => {
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
+                        {...(relatedFigure[0] ? { fileList: relatedFigure } : null)}
                         onPreview={handlePreview}
                         uploadTo="image"
-                        onSuccessUpload={(image:Image) => {
-                            newStreetcodeInfoStore.relatedFigureId = image.id;
+                        onSuccessUpload={(file: Image) => {
+                            newStreetcodeInfoStore.relatedFigureId = file.id;
+                            setBlackAndWhite([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
+                            setRelatedFigure((prev) => prev.filter((x) => x.uid !== file.uid));
+                            // ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
                         }}
                     >
                         <InboxOutlined />
@@ -159,15 +163,16 @@ const FileInputsPart: React.FC = () => {
                         maxCount={1}
                         listType="picture-card"
                         uploadTo="audio"
+                        onSuccessUpload={(file: Audio) => {
+                            newStreetcodeInfoStore.audioId = file.id;
+                            setAudio([convertFileToUploadFile(file)]);
+                        }}
                         onRemove={(file) => {
                             AudiosApi.delete(newStreetcodeInfoStore.audioId!);
                         }}
-                        onSuccessUpload={(audio:Audio) => {
-                            newStreetcodeInfoStore.audioId = audio.id;
-                        }}
                     >
                         <InboxOutlined />
-                        <p className="ant-upload-text">{parseId && audios.length > 0 ? 'Змінити' : '+ Додати'}</p>
+                        <p className="ant-upload-text">{parseId && audio.length > 0 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
                 </FormItem>
             </div>

@@ -362,6 +362,7 @@ const NewStreetcode = () => {
                     newStreetcodeInfoStore.blackAndWhiteId,
                     newStreetcodeInfoStore.relatedFigureId,
                 ].filter((idx) => idx !== null),
+                audioId: newStreetcodeInfoStore.audioId,
             };
 
             console.log(streetcodeUpdate);

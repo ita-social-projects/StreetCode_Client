@@ -138,8 +138,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button className="animateFigureBtn"
-                         onClick={() => personLiveEvent(streetcode?.id ?? 0)}><a href="#QRBlock">Оживити картинку</a></Button>
+                        <Button
+                            className="animateFigureBtn"
+                            onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                        >
+                            <a href="#QRBlock">Оживити картинку</a>
+
+                        </Button>
                     </div>
                 </div>
             </div>
