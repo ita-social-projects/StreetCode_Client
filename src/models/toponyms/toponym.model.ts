@@ -17,7 +17,7 @@ export default interface Toponym {
 }
 
 export interface ToponymCreateUpdate extends IModelState, IPersisted {
-    id: number;
     streetName?: string;
+    toponymId: number;
     streetcodeId?: number | undefined;
 }

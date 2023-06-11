@@ -53,10 +53,11 @@ const StatisticsToponymsComponentAdmin = () => {
             ToponymsApi.getByStreetcodeId(parseId).then((result) => {
                 setMustChecked(result.map((x) => x.streetName));
                 const persistedItems: ToponymCreateUpdate[] = result.map((toponym) => ({
-                    id: toponym.id,
+                    toponymId: toponym.id,
                     streetName: toponym.streetName,
                     isPersisted: true,
                     modelState: ModelState.Updated,
+                    streetcodeId: parseId,
                 }));
                 newStreetcodeInfoStore.SelectedToponyms = persistedItems;
             });
@@ -74,13 +75,14 @@ const StatisticsToponymsComponentAdmin = () => {
                 <Checkbox
                     defaultChecked={mustChecked?.includes(text)}
                     onChange={(e: CheckboxChangeEvent) => {
-                        const toponym = newStreetcodeInfoStore.selectedToponyms.find((x) => x.id === record.key);
+                        const toponym = newStreetcodeInfoStore.selectedToponyms.find((x) => x.toponymId === record.key);
+                        console.log(toponym);
                         if (e.target.checked) {
                             if (toponym) {
                                 toponym.modelState = ModelState.Updated;
                             } else {
                                 const newToponym: ToponymCreateUpdate = {
-                                    id: record.key,
+                                    toponymId: record.key,
                                     streetName: text,
                                     streetcodeId: parseId ?? 0,
                                     modelState: ModelState.Created,
@@ -89,6 +91,8 @@ const StatisticsToponymsComponentAdmin = () => {
                             }
                         } else if (toponym?.isPersisted) {
                             toponym.modelState = ModelState.Deleted;
+                            console.log(toponym);
+                            console.log(newStreetcodeInfoStore.selectedToponyms);
                         } else {
                             newStreetcodeInfoStore.selectedToponyms = newStreetcodeInfoStore
                                 .selectedToponyms.filter((t) => t !== text);

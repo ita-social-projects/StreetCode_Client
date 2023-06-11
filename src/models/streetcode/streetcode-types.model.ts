@@ -125,7 +125,7 @@ export interface StreetcodeCreate {
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
     streetcodeArts: ArtCreateDTO[],
-    toponyms: string[],
+    toponyms: ToponymCreateUpdate[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
     coordinates: StreetcodeCoordinate[],
     statisticRecords: StatisticRecord[],

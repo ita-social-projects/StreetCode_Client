@@ -11,7 +11,6 @@ import {
     Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
-import { Option } from 'antd/es/mentions';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';

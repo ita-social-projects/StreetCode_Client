@@ -137,6 +137,7 @@ const NewStreetcode = () => {
                         ...tag,
                         isPersisted: true,
                         modelState: ModelState.Updated,
+                        streetcodeId: parseId,
                     }));
                     setSelectedTags(tagsToUpdate);
                 } else {
@@ -231,7 +232,6 @@ const NewStreetcode = () => {
 
     const onFinish = (data: any) => {
         let tempStatus = 0;
-        console.log('finish');
         if (data.target.getAttribute('name') as string) {
             const buttonName = data.target.getAttribute('name') as string;
             if (buttonName.includes(publish)) {
@@ -366,8 +366,11 @@ const NewStreetcode = () => {
                 text: (inputInfo?.title && inputInfo?.textContent) ? inputInfo as Text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
                 streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
-                tags: [...(selectedTags as StreetcodeTagUpdate[]).map((item) => ({ ...item, streetcodeId: parseId })),
-                    ...tagsStore.getTagToDeleteArray],
+                tags: [...(selectedTags as StreetcodeTagUpdate[])
+                    .map((item) => ({ ...item,
+                                      id: item.modelState === ModelState.Created ? 0 : item.id,
+                                      streetcodeId: parseId })),
+                ...tagsStore.getTagToDeleteArray],
                 statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate,
                 imagesId: [
                     newStreetcodeInfoStore.animationId,
