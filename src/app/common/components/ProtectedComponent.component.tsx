@@ -14,9 +14,9 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => 
     if (!UserLoginStore.isLoggedIn) {
         const token = UserLoginStore.getToken();
         if (token && token !== '') {
-            userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+            // userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
         } else {
-            navigate(FRONTEND_ROUTES.ADMIN.LOGIN);
+            // navigate(FRONTEND_ROUTES.ADMIN.LOGIN);
         }
     }
     if (!Array.isArray(children)) return <>{children}</>;

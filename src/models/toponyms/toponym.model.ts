@@ -1,4 +1,6 @@
-import { ToponymCoordinate } from "@models/additional-content/coordinate.model";
+import { ToponymCoordinate } from '@models/additional-content/coordinate.model';
+import IModelState from '@models/interfaces/IModelState';
+import IPersisted from '@models/interfaces/IPersisted';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 
 export default interface Toponym {
@@ -12,4 +14,10 @@ export default interface Toponym {
     streetType?: string | undefined;
     coordinate: ToponymCoordinate;
     streetcodes: Streetcode[];
+}
+
+export interface ToponymCreateUpdate extends IModelState, IPersisted {
+    id: number;
+    streetName?: string;
+    streetcodeId?: number | undefined;
 }

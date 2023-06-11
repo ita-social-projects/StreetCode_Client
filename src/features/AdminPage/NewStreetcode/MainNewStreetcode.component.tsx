@@ -9,7 +9,7 @@ import PartnersApi from '@app/api/partners/partners.api';
 import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
-import useMobx from '@app/stores/root-store';
+import useMobx, { useToponymContext } from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
@@ -60,7 +60,10 @@ const NewStreetcode = () => {
         statisticRecordStore,
         streetcodeArtStore,
         tagsStore,
+        toponymStore,
     } = useMobx();
+
+    const toponymContext = useToponymContext();
 
     const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
@@ -372,6 +375,7 @@ const NewStreetcode = () => {
                     newStreetcodeInfoStore.relatedFigureId,
                 ].filter((idx) => idx !== null),
                 audioId: newStreetcodeInfoStore.audioId,
+                toponyms: newStreetcodeInfoStore.selectedToponyms,
             };
 
             console.log(streetcodeUpdate);

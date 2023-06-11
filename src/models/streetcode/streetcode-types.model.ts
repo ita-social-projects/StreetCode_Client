@@ -8,7 +8,7 @@ import StreetcodePartner, { PartnerCreateUpdate, PartnerShort, PartnerUpdate } f
 import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
 import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
-import Toponym from '@models/toponyms/toponym.model';
+import Toponym, { ToponymCreateUpdate } from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
 
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
@@ -155,4 +155,5 @@ export interface StreetcodeUpdate {
     statisticRecords: StatisticRecordUpdate[],
     imagesId: Array<number | null>,
     audioId: number | null,
+    toponyms: ToponymCreateUpdate[],
 }

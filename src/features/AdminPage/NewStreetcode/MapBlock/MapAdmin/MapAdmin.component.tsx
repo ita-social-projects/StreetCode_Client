@@ -7,17 +7,17 @@ import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
+import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
+import { ModelState } from '@models/enums/model-state';
 
 import {
     Button, Input, message, Modal, Table,
 } from 'antd';
 
-import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import StatisticRecord, { StatisticRecordUpdate } from '@/models/analytics/statisticrecord.model';
-import { ModelState } from '@/models/enums/model-state';
-import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 
 const containerStyle = {
     width: '100%',
@@ -42,12 +42,11 @@ const MapOSMAdmin = () => {
     const [isExist, setIsExist] = useState(false);
 
     const handleSaveButtonClick = () => {
-        if (!newNumber || newNumber === "" || isExist) {
+        if (!newNumber || newNumber === '' || isExist) {
             message.error({
                 content: 'Будь ласка введіть значення номеру фізичного стіткоду для збереження',
                 style: { marginTop: '400vh' },
             });
-
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
                 id: getNewMinNegativeId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
@@ -67,7 +66,7 @@ const MapOSMAdmin = () => {
             setStatisticRecord(newStatisticRecord);
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
         }
-    }
+    };
 
     const handleDelete = (record: { id: any; }) => {
         console.log(record);
@@ -269,7 +268,7 @@ const MapOSMAdmin = () => {
                     />
                     {isExist && (
                         <span className="notification red">
-                            Даний номер таблички вже використовується 
+                            Даний номер таблички вже використовується
                         </span>
                     )}
                     <Button

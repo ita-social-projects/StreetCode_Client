@@ -104,7 +104,7 @@ const NewTimelineModal: React.FC<{
 
     const onContextDeselect = (value:string) => {
         const historicalContext = selectedContext.current.find((x) => x.title === value) as HistoricalContextUpdate;
-        if (historicalContext && historicalContext.isPersisted) {
+        if (historicalContext?.isPersisted) {
             historicalContext.modelState = ModelState.Deleted;
         } else {
             selectedContext.current = selectedContext.current.filter((s) => s.title !== value);

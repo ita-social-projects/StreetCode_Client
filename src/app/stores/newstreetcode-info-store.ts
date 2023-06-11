@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
+import { ToponymCreateUpdate } from '@/models/toponyms/toponym.model';
+
 export default class NewStreetcodeInfoStore {
     public animationId: number | null = null;
 
@@ -11,7 +13,7 @@ export default class NewStreetcodeInfoStore {
 
     public arUrl: string | null = null;
 
-    public selectedToponyms:string[] = [];
+    public selectedToponyms: ToponymCreateUpdate[] = [];
 
     public constructor() {
         makeAutoObservable(this);
@@ -25,7 +27,7 @@ export default class NewStreetcodeInfoStore {
         this.blackAndWhiteId = id;
     }
 
-    set SelectedToponyms(toponyms:string[]) {
+    set SelectedToponyms(toponyms: ToponymCreateUpdate[]) {
         this.selectedToponyms = toponyms;
     }
 }

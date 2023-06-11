@@ -60,6 +60,7 @@ interface Store {
     newsStore: NewsStore,
     streetcodeMainPageStore: StreetcodesMainPageStore,
     relatedByTag: StreetcodesByTagStore,
+    toponymStore: ToponymStore,
 }
 
 export interface StreetcodeDataStore {
@@ -97,6 +98,7 @@ export const store: Store = {
     newsStore: new NewsStore(),
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
     relatedByTag: new StreetcodesByTagStore(),
+    toponymStore: new ToponymStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),
