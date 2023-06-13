@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
+import { AudioUpdate } from '@/models/media/audio.model';
+import { ImageCreateUpdate, ImageUpdate } from '@/models/media/image.model';
 import { ToponymCreateUpdate } from '@/models/toponyms/toponym.model';
 
 export default class NewStreetcodeInfoStore {
@@ -15,16 +17,12 @@ export default class NewStreetcodeInfoStore {
 
     public selectedToponyms: ToponymCreateUpdate[] = [];
 
+    public imagesUpdate: ImageUpdate[] = [];
+
+    public audioDelete: AudioUpdate[] = [];
+
     public constructor() {
         makeAutoObservable(this);
-    }
-
-    set AnimationId(id:number) {
-        this.animationId = id;
-    }
-
-    set BlackAndWhiteId(id:number) {
-        this.blackAndWhiteId = id;
     }
 
     set SelectedToponyms(toponyms: ToponymCreateUpdate[]) {

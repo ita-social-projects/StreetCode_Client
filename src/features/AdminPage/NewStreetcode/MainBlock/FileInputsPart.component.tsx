@@ -4,8 +4,10 @@ import './MainBlockAdmin.style.scss';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
+import CreateUpdateMediaStore from '@app/stores/create-update-media-store';
 import useMobx from '@app/stores/root-store';
-import Image from '@models/media/image.model';
+import { ModelState } from '@models/enums/model-state';
+import Image, { ImageUpdate } from '@models/media/image.model';
 
 import { UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -14,7 +16,7 @@ import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import Audio from '@/models/media/audio.model';
+import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 
@@ -30,7 +32,7 @@ const convertFileToUploadFile = (file: Image | Audio) => {
 };
 
 const FileInputsPart = () => {
-    const { newStreetcodeInfoStore } = useMobx();
+    const { createUpdateMediaStore } = useMobx();
 
     const [images, setImages] = useState<Image[]>([]);
     const [audio, setAudio] = useState<UploadFile[]>([]);
@@ -49,6 +51,28 @@ const FileInputsPart = () => {
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
+    const handleFileUpload = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>(
+        fileId: V,
+        propertyName: K,
+        arrayName: keyof CreateUpdateMediaStore,
+    ) => {
+        const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
+        if (createUpdateMediaStore[propertyName]) {
+            const item = array.find((x) => x.id === createUpdateMediaStore[propertyName]);
+            if (item) {
+                item.modelState = ModelState.Deleted;
+            }
+        }
+
+        createUpdateMediaStore[propertyName] = fileId;
+        array.push({ id: fileId as number, streetcodeId: parseId, modelState: ModelState.Created });
+    };
+
+    const handleFileRemove = (fileId: number, arrayName:keyof CreateUpdateMediaStore) => {
+        const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
+        array.push({ id: fileId, streetcodeId: parseId, modelState: ModelState.Deleted });
+    };
+
     useEffect(() => {
         if (parseId) {
             const fetchData = async () => {
@@ -57,10 +81,25 @@ const FileInputsPart = () => {
                         setImages(result);
                         setAnimation([convertFileToUploadFile(result[0])]);
                         setBlackAndWhite([convertFileToUploadFile(result[1])]);
-                        setRelatedFigure([convertFileToUploadFile(result[2])]);
+                        setRelatedFigure(result[2] ? [convertFileToUploadFile(result[2])] : []);
+
+                        createUpdateMediaStore.animationId = result[0].id;
+                        createUpdateMediaStore.blackAndWhiteId = result[1].id;
+                        createUpdateMediaStore.relatedFigureId = result[2]?.id;
+
+                        createUpdateMediaStore.imagesUpdate = [
+                            { id: result[0].id, streetcodeId: parseId, modelState: ModelState.Updated },
+                            { id: result[1].id, streetcodeId: parseId, modelState: ModelState.Updated },
+                        ];
+                        if (result[2]?.id) {
+                            createUpdateMediaStore.imagesUpdate.push(
+                                { id: result[2].id, streetcodeId: parseId, modelState: ModelState.Updated },
+                            );
+                        }
                     });
                     await AudiosApi.getByStreetcodeId(parseId).then((result) => {
-                        setAudio([convertFileToUploadFile(result)]);
+                        setAudio(result ? [convertFileToUploadFile(result)] : []);
+                        createUpdateMediaStore.audioId = result?.id;
                     });
                 } catch (error) { /* empty */ } finally { /* empty */ }
             };
@@ -86,12 +125,12 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            newStreetcodeInfoStore.AnimationId = file.id;
+                            handleFileUpload(file.id, 'animationId', 'imagesUpdate');
                             setAnimation([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
+                            handleFileRemove(+file.uid, 'imagesUpdate');
                             setAnimation((prev) => prev.filter((x) => x.uid !== file.uid));
-                            // ImagesApi.delete(newStreetcodeInfoStore.animationId!);
                         }}
                     >
                         <InboxOutlined />
@@ -114,12 +153,12 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            newStreetcodeInfoStore.BlackAndWhiteId = file.id;
+                            handleFileUpload(file.id, 'blackAndWhiteId', 'imagesUpdate');
                             setBlackAndWhite([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
+                            handleFileRemove(+file.uid, 'imagesUpdate');
                             setBlackAndWhite((prev) => prev.filter((x) => x.uid !== file.uid));
-                            // ImagesApi.delete(newStreetcodeInfoStore.blackAndWhiteId!);
                         }}
                     >
                         <InboxOutlined />
@@ -140,12 +179,12 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            newStreetcodeInfoStore.relatedFigureId = file.id;
+                            handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
+                            handleFileRemove(+file.uid, 'imagesUpdate');
                             setRelatedFigure((prev) => prev.filter((x) => x.uid !== file.uid));
-                            // ImagesApi.delete(newStreetcodeInfoStore.relatedFigureId!);
                         }}
                     >
                         <InboxOutlined />
@@ -162,13 +201,15 @@ const FileInputsPart = () => {
                         accept=".mp3"
                         maxCount={1}
                         listType="picture-card"
+                        {...(audio ? { fileList: audio } : null)} // TODO: check whether display on the page
                         uploadTo="audio"
                         onSuccessUpload={(file: Audio) => {
-                            newStreetcodeInfoStore.audioId = file.id;
+                            handleFileUpload(file.id, 'audioId', 'audioUpdate');
                             setAudio([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            AudiosApi.delete(newStreetcodeInfoStore.audioId!);
+                            handleFileRemove(+file.uid, 'audioUpdate');
+                            setAudio((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >
                         <InboxOutlined />

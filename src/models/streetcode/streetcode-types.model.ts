@@ -1,8 +1,8 @@
 import Subtitle, { SubtitleCreate, SubtitleCreateUpdate } from '@models/additional-content/subtitles.model';
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-content/tag.model';
 import Art, { ArtCreateDTO, ArtUpdate, IndexedArt } from '@models/media/art.model';
-import Audio from '@models/media/audio.model';
-import Image, { ImageCreate } from '@models/media/image.model';
+import Audio, { AudioUpdate } from '@models/media/audio.model';
+import Image, { ImageCreate, ImageUpdate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerCreateUpdate, PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
@@ -153,7 +153,7 @@ export interface StreetcodeUpdate {
     streetcodeCategoryContents: StreetcodeCategoryContentUpdate[],
     tags: StreetcodeTagUpdate[],
     statisticRecords: StatisticRecordUpdate[],
-    imagesId: Array<number | null>,
-    audioId: number | null,
     toponyms: ToponymCreateUpdate[],
+    images: ImageUpdate[],
+    audios: AudioUpdate[],
 }

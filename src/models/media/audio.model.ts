@@ -1,4 +1,4 @@
-import Url from '@models/additional-content/url.model';
+import IModelState from '@models/interfaces/IModelState';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 
 export default interface Audio {
@@ -15,4 +15,9 @@ export interface AudioCreate {
     baseFormat: string;
     mimeType: string;
     extension: string;
+}
+
+export interface AudioUpdate extends IModelState {
+    id: number;
+    streetcode?: number | null;
 }

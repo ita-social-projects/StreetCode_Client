@@ -9,7 +9,7 @@ import PartnersApi from '@app/api/partners/partners.api';
 import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
-import useMobx, { useToponymContext } from '@app/stores/root-store';
+import useMobx from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
@@ -57,13 +57,11 @@ const NewStreetcode = () => {
         newStreetcodeInfoStore,
         sourceCreateUpdateStreetcode,
         streetcodeCoordinatesStore,
+        createUpdateMediaStore,
         statisticRecordStore,
         streetcodeArtStore,
         tagsStore,
-        toponymStore,
     } = useMobx();
-
-    const toponymContext = useToponymContext();
 
     const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
@@ -278,10 +276,10 @@ const NewStreetcode = () => {
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                 ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
             imagesId: [
-                newStreetcodeInfoStore.animationId,
-                newStreetcodeInfoStore.blackAndWhiteId,
-                newStreetcodeInfoStore.relatedFigureId,
-            ].filter((idx) => idx !== null),
+                createUpdateMediaStore.animationId,
+                createUpdateMediaStore.blackAndWhiteId,
+                createUpdateMediaStore.relatedFigureId,
+            ].filter(Boolean),
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
             relatedFigures: figures,
@@ -327,11 +325,6 @@ const NewStreetcode = () => {
             streetcode.lastName = form.getFieldValue('surname');
         }
         if (parseId) {
-            if (video) {
-                video.url = inputInfo?.link ?? '';
-            }
-            const videosUpdate: Video[] = video ? [video] : [];
-
             const relatedFiguresUpdate: RelatedFigureUpdate[] = figures.map((figure) => ({
                 observerId: parseId,
                 targetId: figure.id,
@@ -343,6 +336,16 @@ const NewStreetcode = () => {
                 partnerId: partner.id,
                 modelState: partner.modelState,
             }));
+
+            const videosUpdate: Video[] = video
+                ? [{ ...video, url: inputInfo?.link ?? '' }]
+                : [];
+
+            const tags = [...(selectedTags as StreetcodeTagUpdate[])
+                .map((item) => ({ ...item,
+                                  id: item.modelState === ModelState.Created ? 0 : item.id,
+                                  streetcodeId: parseId })),
+            ...tagsStore.getTagToDeleteArray];
 
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
@@ -366,19 +369,11 @@ const NewStreetcode = () => {
                 text: (inputInfo?.title && inputInfo?.textContent) ? inputInfo as Text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
                 streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
-                tags: [...(selectedTags as StreetcodeTagUpdate[])
-                    .map((item) => ({ ...item,
-                                      id: item.modelState === ModelState.Created ? 0 : item.id,
-                                      streetcodeId: parseId })),
-                ...tagsStore.getTagToDeleteArray],
+                tags,
                 statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate,
-                imagesId: [
-                    newStreetcodeInfoStore.animationId,
-                    newStreetcodeInfoStore.blackAndWhiteId,
-                    newStreetcodeInfoStore.relatedFigureId,
-                ].filter((idx) => idx !== null),
-                audioId: newStreetcodeInfoStore.audioId,
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
+                images: createUpdateMediaStore.imagesUpdate.filter((x) => x.modelState !== ModelState.Updated),
+                audios: createUpdateMediaStore.audioUpdate.filter((x) => x.modelState !== ModelState.Updated),
             };
 
             console.log(streetcodeUpdate);

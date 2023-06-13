@@ -19,6 +19,7 @@ import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
+import CreateUpdateMediaStore from './create-update-media-store';
 import NewsStore from './news-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
@@ -60,6 +61,7 @@ interface Store {
     newsStore: NewsStore,
     streetcodeMainPageStore: StreetcodesMainPageStore,
     relatedByTag: StreetcodesByTagStore,
+    createUpdateMediaStore: CreateUpdateMediaStore,
 }
 
 export interface StreetcodeDataStore {
@@ -97,6 +99,7 @@ export const store: Store = {
     newsStore: new NewsStore(),
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
     relatedByTag: new StreetcodesByTagStore(),
+    createUpdateMediaStore: new CreateUpdateMediaStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),
