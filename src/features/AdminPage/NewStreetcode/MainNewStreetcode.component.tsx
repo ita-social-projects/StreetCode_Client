@@ -322,7 +322,8 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock id={parseId ?? -1} />
                             <TimelineBlockAdmin />
-                            <MapBlockAdmin coordinates={coordinates} />
+                            {process.env.NODE_ENV === 'production'
+                                ? <MapBlockAdmin coordinates={coordinates} /> : <></>}
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />

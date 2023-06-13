@@ -1,6 +1,5 @@
 const Dotenv = require('dotenv-webpack');
 module.exports = {
-    mode: 'production',
     entry: {
         main: './src/index.tsx',
     },

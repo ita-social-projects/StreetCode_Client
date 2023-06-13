@@ -77,8 +77,8 @@
     "yet-another-react-lightbox": "^2.2.7"
   },
   "scripts": {
-    "start": "webpack serve --mode development --config config/webpack.dev.js",
-    "start:prod": "npm run serve -s build -l 4000",
+    "start": "webpack serve --define-process-env-node-env development --config config/webpack.dev.js",
+    "start:prod": "webpack serve --define-process-env-node-env production --config config/webpack.prod.js --env cmdval=formwow --env webpackvaluecmd=vale",
     "build": "webpack --define-process-env-node-env production --config config/webpack.prod.js",
     "serve:w": "webpack --mode development --config config/webpack.dev.js --watch && serve ./dist/",
     "lint": "eslint --ext \".js,.ts,.tsx\" --ignore-path .gitignore .",

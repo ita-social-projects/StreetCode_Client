@@ -9,7 +9,7 @@ import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import MainPage from '@features/MainPage/MainPage.component';
 import HeaderBlock from '@layout/header/HeaderBlock.component';
 import ModalWrapper from '@layout/ModalWrapper.component';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
 import Footer from '../footer/Footer.component';
 
@@ -18,7 +18,8 @@ ReactGA.initialize('G-2RHY04JKG0');
 const App = () => {
     const { pathname } = useLocation();
     const { modalStore: { isPageDimmed } } = useModalContext();
-    console.log(process.env.REACT_APP_TEMPVAL);
+    console.log(process.env.cmdval);
+    console.log(process.env.webpackvaluecmd);
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>
             <ToastContainer position="bottom-right" limit={3} />

@@ -11,29 +11,33 @@ axios.defaults.baseURL = 'https://localhost:5001/api';
 axios.interceptors.response.use(
     async (response) => response,
     ({ response, message }: AxiosError) => {
-        if (message === 'Network Error') {
+        if (message === 'Network Error' && process.env.NODE_ENV !== 'production') {
             toast.error(message);
         }
+        let messageError = '';
 
         switch (response?.status) {
         case StatusCodes.INTERNAL_SERVER_ERROR:
-            toast.error(ReasonPhrases.INTERNAL_SERVER_ERROR);
+            messageError = ReasonPhrases.INTERNAL_SERVER_ERROR;
             break;
         case StatusCodes.UNAUTHORIZED:
-            toast.error(ReasonPhrases.UNAUTHORIZED);
+            messageError = (ReasonPhrases.UNAUTHORIZED);
             redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
             break;
         case StatusCodes.NOT_FOUND:
-            toast.error(ReasonPhrases.NOT_FOUND);
+            messageError = (ReasonPhrases.NOT_FOUND);
             break;
         case StatusCodes.BAD_REQUEST:
-            toast.error(ReasonPhrases.BAD_REQUEST);
+            messageError = ReasonPhrases.BAD_REQUEST;
             break;
         case StatusCodes.FORBIDDEN:
-            toast.error(ReasonPhrases.FORBIDDEN);
+            messageError = ReasonPhrases.FORBIDDEN;
             break;
         default:
             break;
+        }
+        if (messageError !== '' && process.env.NODE_ENV !== 'production') {
+            toast.error(messageError);
         }
 
         return Promise.reject(message);
