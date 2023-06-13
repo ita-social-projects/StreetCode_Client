@@ -1,6 +1,6 @@
 import './MainNewStreetcode.styles.scss';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { redirect, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
@@ -14,7 +14,7 @@ import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
-import { Button, ConfigProvider, Form } from 'antd';
+import { Button, ConfigProvider, Form, UploadFile } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -48,7 +48,7 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-
+import { Modal } from 'antd';
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
@@ -77,6 +77,14 @@ const NewStreetcode = () => {
     const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
+    const [visibleModal, setVisibleModal] = useState(false);
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
+
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
 
     const [funcName, setFuncName] = useState<string>('create');
     const parseId = id ? +id : null;
@@ -195,6 +203,7 @@ const NewStreetcode = () => {
                 tempStatus = 1;
             }
         }
+        form.validateFields();
         data.stopPropagation();
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
@@ -322,7 +331,7 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock id={parseId ?? -1} />
                             <TimelineBlockAdmin />
-                            <MapBlockAdmin coordinates={coordinates} />
+                            {/*<MapBlockAdmin coordinates={coordinates} />*/}
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />
@@ -336,19 +345,26 @@ const NewStreetcode = () => {
                         onClick={
                             onFinish
                         }
-                        name={publish}
-                    >
-                        {publish}
-                    </Button>
-                    <Button
-                        className="streetcode-custom-button submit-button"
-                        onClick={
-                            onFinish
-                        }
                         name={draft}
                     >
                         {draft}
                     </Button>
+                    <Modal
+                        title="Ви впевнені, що хочете опублікувати цей стріткод?"
+                        open={visibleModal}
+                        onOk={onFinish}
+                        onCancel={handleCancelModalRemove}
+                    />
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={
+                            handleRemove
+                        }
+                        name={publish}
+                    >
+                        {publish}
+                    </Button>
+
                 </div>
             </ConfigProvider>
         </div>

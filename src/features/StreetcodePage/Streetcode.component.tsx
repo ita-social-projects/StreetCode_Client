@@ -3,10 +3,7 @@ import './Streetcode.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import React, {
-    lazy, Suspense, useEffect, useRef, useState,
-} from 'react';
-import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { redirect, useLocation,} from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
@@ -34,6 +31,7 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
+import { useMediaQuery } from 'react-responsive';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -48,7 +46,9 @@ const StreetcodeContent = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
-
+    const isMobile = useMediaQuery({
+        query: '(max-width: 4800px)',
+    });
     const checkExist = async (qrId: number) => {
         const exist = await StatisticRecordApi.existByQrId(qrId);
         return exist;
@@ -64,19 +64,6 @@ const StreetcodeContent = () => {
     };
 
     useAsync(() => {
-        Promise.all([checkStreetcodeExist(streetcodeUrl.current)]).then(
-            (resp) => {
-                if (!resp.at(0)) {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
-                }
-                setCurrentStreetcodeId(streetcodeUrl.current).then((st) => {
-                    if (st?.status !== 1 && !location.pathname.includes(`${FRONTEND_ROUTES.ADMIN.BASE}`)) {
-                        navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
-                    }
-                });
-            },
-        );
-
         const idParam = searchParams.get('qrid');
         if (idParam !== null) {
             const tempId = +idParam;
@@ -104,9 +91,13 @@ const StreetcodeContent = () => {
             {!pageLoadercontext.isPageLoaded && (
                 <div className="loader-container">
                     <img
+                     rel="preload"
                         className="spinner"
                         alt=""
-                        src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
+                        src={isMobile
+                            ? require('@images/gifs/Logo-animation_web.gif')
+                            : require('@images/gifs/Logo-animation_mob.gif')    
+                          }
                     />
                 </div>
             )}

@@ -13,10 +13,11 @@ import {
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
+import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import useMobx from '@/app/stores/root-store';
 import TimelineItem, {
     dateTimePickerTypes,
-    HistoricalContext, selectDateOptions,
+    HistoricalContext, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 
 const NewTimelineModal: React.FC<{
@@ -57,11 +58,11 @@ const NewTimelineModal: React.FC<{
         } else {
             const newTimeline: TimelineItem = {
                 date: formValues.date,
-                id: timelineItemStore.timelineItemMap.size,
+                id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
                 title: formValues.title,
                 description: formValues.description,
                 historicalContexts: selectedContext.current,
-                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType)
+                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType),
             };
             timelineItemStore.addTimeline(newTimeline);
         }
@@ -117,7 +118,7 @@ const NewTimelineModal: React.FC<{
                     <Form.Item label="Дата:">
                         <div className="data-container">
                             <Select
-                                options={selectDateOptions}
+                                options={selectDateOptionsforTimeline}
                                 defaultValue={dateTimePickerType}
                                 onChange={(val) => {
                                     setDateTimePickerType(val);

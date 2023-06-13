@@ -3,8 +3,6 @@ import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.co
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import Footer from '@layout/footer/Footer.component';
-import useMobx from '@stores/root-store';
 import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import SlickSlider from './../../SlickSlider/SlickSlider.component';
@@ -19,8 +17,6 @@ const shuffleArray = (array: any) => {
 };
 
 const StreetcodeSlider = () => {
-    const { streetcodeMainPageStore } = useMobx();
-    const { fetchStreetcodesMainPageAll, getStreetcodesArray } = streetcodeMainPageStore;
     const [streetcode, setStreetcode] = useState<StreetcodeMainPage[]>([]);
     const shuffledStreetcode = shuffleArray(streetcode);
 
