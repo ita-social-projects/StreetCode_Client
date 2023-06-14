@@ -1,0 +1,49 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+
+.activeLink {
+  font-weight: 600;
+}
+
+.breadcrumbForNewsContainer {
+  @include mut.with-font($font-weight: 500, $font-size:12px);
+  position:relative;
+  ol {
+    justify-content: flex-end;
+  }
+  > * {
+    color: c.$dark-red-color;
+    text-transform: uppercase;
+  }
+}
+
+.ant-breadcrumb .ant-breadcrumb-separator  {
+  margin-inline: 5px !important;
+}
+
+.ant-breadcrumb a {
+  color: c.$dark-red-color;
+}
+
+.separator {
+  @include mut.sized(4px, 4px);
+  display: inline-block;
+
+  background-color: c.$dark-red-color;
+  margin-bottom: f.pxToRem(2px);
+}
+@media (max-width: 1024px) {
+  .breadcrumbForNewsContainer{
+    position: absolute;
+    top: f.pxToRem(70px);
+    right: f.pxToRem(10px);
+  }
+}
+@media (max-width: 660px) {
+  .breadcrumbForNewsContainer{
+    top: f.pxToRem(70px);
+    right: f.pxToRem(10px);
+  }
+}
