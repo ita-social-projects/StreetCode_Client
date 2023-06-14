@@ -2,6 +2,7 @@ import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
@@ -10,6 +11,7 @@ import {
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
+
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
@@ -140,7 +142,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 initialValue={1}
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
-                        {pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
+                    { pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
                 name="streetcodeNumber"
             >
                 <div className="display-flex-row">
@@ -178,8 +180,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                         name="name"
                         className="people-title-input"
                         rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
-                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: "Ім'я має містити тільки літерали" },
-                        { max: 50, message: "Ім'я не може містити більше 50 символів" },
+                            { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: "Ім'я має містити тільки літерали" },
+                            { max: 50, message: "Ім'я не може містити більше 50 символів" },
                         ]}
                     >
                         <Input
@@ -195,8 +197,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                         label="Прізвище"
                         className="people-title-input"
                         rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
-                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: 'Прізвище має містити тільки літерали' },
-                        { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                            { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: 'Прізвище має містити тільки літерали' },
+                            { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
                         ]}
                     >
                         <Input
@@ -216,7 +218,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
                     { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' },
-                    { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
+                    { pattern: /^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
             >
                 <Input maxLength={100} showCount />
             </Form.Item>
@@ -247,7 +249,20 @@ const MainBlockAdmin: React.FC<Props> = ({
             />
 
             <div className="tags-block">
-                <Form.Item label="Теги">
+                <Form.Item label={(
+                    <div className="label-tags-block">
+                        <p>Теги</p>
+                        <Popover
+                            className="info-container"
+                            placement="topLeft"
+                            content={'При обиранні теги є невидимими для користувача (фон тегу сірий), тобто він не відображається на головній картці стріткоду. '
+                            + 'Якщо натиснути на тег, його стан зміниться на видимий (фон - білий). Нижче є розширення наводячи на які, можна побачити, які теги будуть вміщатись на головній картці стріткоду. '}
+                        >
+                            <InfoCircleOutlined className="info-icon" />
+                        </Popover>
+                    </div>
+                )}
+                >
                     <div className="tags-block-tagitems">
                         <DragableTags setTags={setSelectedTags} tags={selectedTags} />
 
