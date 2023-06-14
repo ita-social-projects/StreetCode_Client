@@ -62,21 +62,15 @@
                 display: none;
             }
         }
-
-        @media screen and (max-width: 1024px) {
-            .sourcesSliderContainer {
-                .slick-track {
-                    @include mut.flexed($justify-content: flex-start, $align-items: flex-start, $gap: 10px);
-                    margin: 0 10px;
-                }
-            }
-        }     
     }
 }
 
 @media screen and (max-width: 780px) {
     .sourcesWrapper .sourcesContainer {
         margin-bottom: 0;
+    }
+    .sourcesWrapper .sliderClass .slick-track {
+        gap: 10px;
     }
 }
 
