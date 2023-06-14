@@ -6,7 +6,7 @@ interface Props {
   copyrightText: string;
 }
 
-const MIN_LENGTH = 50;
+const MIN_LENGTH = 20;
 
 const CopyWithCopyright = ({ children, copyrightText }: Props) => {
   const textRef = useRef<HTMLDivElement>(null);
