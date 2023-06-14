@@ -1,4 +1,5 @@
 const Dotenv = require('dotenv-webpack');
+const Webpack = require('webpack');
 module.exports = {
     entry: {
         main: './src/index.tsx',
@@ -25,7 +26,7 @@ module.exports = {
     plugins: [
         ...require('./webpack.plugins'),
         new Dotenv({
-            path: `./.env`
+            path: `./.env`,
         }),
       ],
     optimization: {

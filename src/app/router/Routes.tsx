@@ -1,6 +1,4 @@
-import {
-    createBrowserRouter, createRoutesFromElements, Link, Navigate, Route,
-} from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import App from '@layout/app/App.component';
@@ -22,8 +20,8 @@ import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 
-const router = createBrowserRouter(createRoutesFromElements(
-    <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
+const router = createHashRouter(createRoutesFromElements(
+    <Route path="" element={<App />}>
         <Route
             index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
