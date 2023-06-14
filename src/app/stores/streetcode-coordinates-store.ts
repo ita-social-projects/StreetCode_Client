@@ -38,6 +38,7 @@ export default class StreetcodeCoordinatesStore {
 
     public fetchStreetcodeCoordinatesByStreetcodeId = async (streetcodeId: number) => {
         try {
+            this.setStreetcodeCoordinateMap.clear();
             this.setInternalStreetcodeCoordinateMap = await StreetcodeCoordinatesApi.getByStreetcodeId(streetcodeId);
         } catch (error: unknown) {}
     };

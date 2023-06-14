@@ -24,6 +24,7 @@ export default class StreetcodeArtStore {
 
     public fetchStreetcodeArtsByStreetcodeId = async (streetcodeId: number) => {
         try {
+            this.streetcodeArtMap.clear();
             this.setInternalStreetcodeArtMap = await StreetcodeArtApi
                 .getStreetcodeArtsByStreetcodeId(streetcodeId);
         } catch (error: unknown) {}

@@ -23,6 +23,7 @@ export default class SourcesStore {
 
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
+            this.srcCategoriesMap.clear();
             this.setInternalCategoriesMap = await sourcesApi.getCategoriesByStreetcodeId(streetcodeId);
         } catch (error: unknown) {}
     };

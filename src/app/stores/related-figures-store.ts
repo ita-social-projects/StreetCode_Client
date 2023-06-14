@@ -24,12 +24,14 @@ export default class RelatedFiguresStore {
 
     public fetchRelatedFiguresByStreetcodeId = async (streetcodeId: number) => {
         try {
+            this.relatedFiguresMap.clear();
             this.setInternalRelatedFiguresMap = await relatedFiguresApi.getByStreetcodeId(streetcodeId);
         } catch (error: unknown) {}
     };
 
     public fetchRelatedFiguresByTagId = async (tagId: number) => {
         try {
+            this.relatedFiguresMap.clear();
             this.setInternalRelatedFiguresMap = await relatedFiguresApi.getByTagId(tagId);
         } catch (error: unknown) {}
     };

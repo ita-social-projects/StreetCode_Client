@@ -48,6 +48,7 @@ export default class PartnersStore {
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {
+            this.PartnerMap.clear();
             this.setInternalMap(await partnersApi.getByStreetcodeId(streetcodeId));
         } catch (error: unknown) {}
     };

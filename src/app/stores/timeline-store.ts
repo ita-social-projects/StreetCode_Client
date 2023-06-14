@@ -48,6 +48,7 @@ export default class TimelineStore {
 
     public fetchTimelineItemsByStreetcodeId = async (streetcodeId: number) => {
         try {
+            this.timelineItemMap.clear();
             const timelineItems = await timelineApi.getByStreetcodeId(streetcodeId);
             this.setInternalMap(timelineItems);
         } catch (error: unknown) {}
