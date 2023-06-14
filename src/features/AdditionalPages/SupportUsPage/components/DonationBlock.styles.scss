@@ -23,16 +23,17 @@
   }
 
    .donateInputContainerWrapper{
+    @include mut.rem-margined($bottom: 35px);
     position: relative;
     display: flex;
     justify-content: center;
+    height: f.pxToRem(53px);
     &::before {
       content: '';
       position: absolute;
       bottom: 0;
       width: 100%;
-      border-bottom: 3px solid c.$darkish-gray-color;
-      transform: translateY(-40px);
+      border-bottom: solid c.$darkish-gray-color;
     }
     &.active::before {
       content: none;
@@ -40,10 +41,9 @@
   }
 
   .amountInput {
-    @include mut.rem-margined($bottom: 35px);
     @include mut.with-font(ft.$closer-text-font, $font-size: 40px, $font-weight: 500);
     text-align: right;
-    --input-width: 42px;
+    --input-width: f.pxToRem(42px);
     color: c.$darkish-gray-color;
     border: none;
     padding: 0;
@@ -60,6 +60,7 @@
   }
 
   .GryvnaSymbol{
+    @include mut.flex-centered();
     width: fit-content;
   }
 
@@ -195,18 +196,15 @@
     }
 
     .donateInputContainerWrapper{
-      &::before {
-        transform: translateY(-24px);
-      }
+      @include mut.rem-margined($bottom: 20px);
+      height: f.pxToRem(42px);
     }
     
     .amountInput {
       @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
-      @include mut.rem-margined($bottom: 20px);
-
       display: flex;
       align-items: center;
-      height: 42px;
+      height: f.pxToRem(42px);
       max-width: 100%;
     }
 
