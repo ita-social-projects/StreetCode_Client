@@ -25,6 +25,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
      const { newsStore } = useMobx();
      const [previewOpen, setPreviewOpen] = useState(false);
      const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+     const [image, setImage] = useState<Image>();
      const imageId = useRef<number>(0);
      const editorRef = useRef<TinyMCEEditor>();
      const handlePreview = async (file: UploadFile) => {
@@ -67,6 +68,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
              url: formValues.url,
              title: formValues.title,
              text: editorRef.current.getContent(),
+             image,
              creationDate: formValues.creationDate,
          };
 
@@ -186,11 +188,13 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
                                      uploadTo="image"
                                      onSuccessUpload={(image:Image) => {
                                          imageId.current = image.id;
+                                         setImage(image);
                                          if (newsItem) {
                                              newsItem.image = image;
                                          }
                                      }}
                                      onRemove={(image) => {
+                                         setImage(undefined);
                                          if (newsItem) {
                                              newsItem.image = undefined;
                                          }
