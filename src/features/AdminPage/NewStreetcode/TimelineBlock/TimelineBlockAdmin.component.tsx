@@ -20,6 +20,7 @@ const TimelineBlockAdmin = () => {
             <h2>Хронологія</h2>
             <div className="textBlockButton-container">
                 <button
+                    type="button"
                     className="buttonWithPlus"
                     onClick={showModal}
                 >

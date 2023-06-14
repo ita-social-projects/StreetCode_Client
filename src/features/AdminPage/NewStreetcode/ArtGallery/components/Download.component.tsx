@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import base64ToUrl from '@app/common/utils/base64ToUrl.utility';
+import useMobx from '@app/stores/root-store';
+import { ModelState } from '@models/enums/model-state';
 
 import { Modal } from 'antd';
 import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
-import useMobx from '@/app/stores/root-store';
-import { ModelState } from '@/models/enums/model-state';
 import Image from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 

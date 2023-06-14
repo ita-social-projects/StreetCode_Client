@@ -22,7 +22,7 @@ const InterestingFactsBlock = () => {
                 >
                     +
                 </button>
-                {factsStore.getFactArray.map((f) => <InterestingFactAdminItem fact={f} />)}
+                {factsStore.getFactArray.map((f) => <InterestingFactAdminItem key={f.id} fact={f} />)}
             </div>
             <div>
                 <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} />

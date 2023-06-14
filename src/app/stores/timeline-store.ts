@@ -74,13 +74,15 @@ export default class TimelineStore {
     }
 
     get getTimelineItemArrayToUpdate() {
-        return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[])
-            .map((item: TimelineItemUpdate) => {
-                if (item.modelState === ModelState.Created) {
-                    return { ...item, id: 0 };
-                }
-                return item;
-            });
+        return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[]).map((item) => {
+            const updatedItem = { ...item };
+
+            if (item.modelState === ModelState.Created) {
+                updatedItem.id = 0;
+            }
+            updatedItem.historicalContexts = item.historicalContexts.map((h) => ({ ...h, timelineId: updatedItem.id }));
+            return updatedItem;
+        });
     }
 
     get getYearsArray() {

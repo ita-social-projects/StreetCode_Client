@@ -170,10 +170,10 @@ const ArtGalleryAdminBlock = ({ arts }: Props) => {
             <div className="artGalleryContainerAdmin">
                 <div className="artGalleryContentContainerAdmin">
                     <div className="artGallerySliderContainerAdmin">
-                        <SlickSlider
-                            {...sliderProps}
-                        >
-                            {slideOfArtList}
+                        <SlickSlider {...sliderProps}>
+                            {slideOfArtList.map((slide, index) => (
+                                <div key={index}>{slide}</div>
+                            ))}
                         </SlickSlider>
                     </div>
                 </div>

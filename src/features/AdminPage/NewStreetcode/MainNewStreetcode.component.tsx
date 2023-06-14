@@ -418,7 +418,7 @@ const NewStreetcode = () => {
                                 video={video}
                                 setVideo={setVideo}
                             />
-                            <InterestingFactsBlock id={parseId ?? -1} />
+                            <InterestingFactsBlock />
                             <TimelineBlockAdmin />
                             <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} />

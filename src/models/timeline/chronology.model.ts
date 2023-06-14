@@ -1,9 +1,6 @@
+import IModelState from '@models/interfaces/IModelState';
+import IPersisted from '@models/interfaces/IPersisted';
 import dayjs, { Dayjs } from 'dayjs';
-
-import { ModelState } from '../enums/model-state';
-import IModelState from '../interfaces/IModelState';
-import IChanged from '../interfaces/IModelState';
-import IPersisted from '../interfaces/IPersisted';
 
 export interface HistoricalContext {
     id: number;
@@ -11,7 +8,7 @@ export interface HistoricalContext {
 }
 
 export interface HistoricalContextUpdate extends HistoricalContext, IModelState, IPersisted {
-
+    timelineId: number;
 }
 
 export enum DateViewPattern {
@@ -62,7 +59,7 @@ export const selectDateOptions = [{
 }, {
     value: 'season-year',
     label: 'Рік-пора',
-    }];
+}];
 
 export const selectDateOptionsforTimeline = [{
     value: 'date',

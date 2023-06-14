@@ -29,8 +29,6 @@ const initialCenter: google.maps.LatLngLiteral = {
     lng: 30.522674496948543,
 };
 
-const getMaxId = (array: number[]): number => array.reduce((max, item) => (item > max ? item : max), 0);
-
 const MapOSMAdmin = () => {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
     const [center, setCenter] = useState(initialCenter);

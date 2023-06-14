@@ -4,7 +4,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
-import getNewMinNegativeId from '@app/common/utils/newIdForStore';
+import getMaxId from '@app/common/utils/getMaxId';
 import useMobx from '@app/stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
@@ -15,7 +15,6 @@ import {
     DatePicker, Form, Input, Modal, Select,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { Option } from 'antd/es/mentions';
 
 import TimelineItem, {
     dateTimePickerTypes,
@@ -62,7 +61,7 @@ const NewTimelineModal: React.FC<{
             }
         } else {
             const newTimeline: TimelineItem = { date: formValues.date,
-                                                id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
+                                                id: getMaxId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
                                                 title: formValues.title,
                                                 description: formValues.description,
                                                 historicalContexts: selectedContext.current,
