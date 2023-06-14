@@ -11,6 +11,7 @@ import SlickSlider from '../../SlickSlider/SlickSlider.component';
 import Heading from '../Heading/Heading.component';
 
 import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const NewsSlider = () => {
     const { streetcodeMainPageStore, newsStore } = useMobx();
@@ -28,13 +29,15 @@ const NewsSlider = () => {
         fetchNewsAll();
     }, []);
 
+    const windowSize = useWindowSize();
+
     const props = {
 
         touchAction: 'pan-y',
         touchThreshold: 25,
         transform: 'translateZ(0)',
         arrows: false,
-        dots: false,
+        dots:windowSize.width < 1024,
         infinite: true,
         variableWidth: true,
         slidesToShow: 1,
