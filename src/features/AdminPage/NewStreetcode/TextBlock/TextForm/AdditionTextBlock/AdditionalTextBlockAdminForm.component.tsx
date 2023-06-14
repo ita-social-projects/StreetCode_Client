@@ -15,7 +15,7 @@ interface Props {
 
 const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
     const handleEditorChange = (content: string, editor: any) => {
-        setInputInfo({ ...inputInfo, аdditionalText: content });
+        setInputInfo({ ...inputInfo, additionalText: content });
     };
 
     return (
@@ -27,7 +27,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
 
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(inputInfo?.аdditionalText ?? 'Текст підготовлений спільно з');
+                        editor.setContent(inputInfo?.additionalText ?? 'Текст підготовлений спільно з');
                     },
                     plugins: [
                         'autolink',
@@ -42,7 +42,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
                 }}
 
                 onChange={(e, editor) => {
-                    setInputInfo({ ...inputInfo, аdditionalText: editor.getContent() });
+                    setInputInfo({ ...inputInfo, additionalText: editor.getContent() });
                 }}
             />
         </FormItem>

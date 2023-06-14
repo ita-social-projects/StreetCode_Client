@@ -1,8 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import factsApi from '@api/streetcode/text-content/facts.api';
+import { ModelState } from '@models/enums/model-state';
 import { Fact, FactUpdate } from '@models/streetcode/text-contents.model';
-
-import { ModelState } from '@/models/enums/model-state';
 
 export default class FactsStore {
     public factMap = new Map<number, Fact>();
@@ -13,9 +12,10 @@ export default class FactsStore {
 
     private setInternalMap = (facts: Fact[]) => {
         facts.forEach((item) => {
-            const updatedItem = {
+            const updatedItem: FactUpdate = {
                 ...item,
                 isPersisted: true,
+                modelState: ModelState.Updated,
             };
 
             this.setItem(updatedItem);
@@ -58,6 +58,7 @@ export default class FactsStore {
     }
 
     get getFactArrayToUpdate() {
+        console.log((Array.from(this.factMap.values()) as FactUpdate[]));
         return (Array.from(this.factMap.values()) as FactUpdate[])
             .map((item: FactUpdate) => {
                 if (item.modelState === ModelState.Created) {
@@ -80,7 +81,7 @@ export default class FactsStore {
         try {
             await factsApi.create(fact);
             this.setItem(fact);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public updateFact = async (fact: Fact) => {
@@ -93,7 +94,7 @@ export default class FactsStore {
                 };
                 this.setItem(updatedFact as Fact);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public deleteFact = async (factId: number) => {
@@ -102,6 +103,6 @@ export default class FactsStore {
             runInAction(() => {
                 this.factMap.delete(factId);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 }

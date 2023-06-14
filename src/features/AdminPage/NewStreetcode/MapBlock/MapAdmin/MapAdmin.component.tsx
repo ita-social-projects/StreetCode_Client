@@ -29,6 +29,8 @@ const initialCenter: google.maps.LatLngLiteral = {
     lng: 30.522674496948543,
 };
 
+const getMaxId = (array: number[]): number => array.reduce((max, item) => (item > max ? item : max), 0);
+
 const MapOSMAdmin = () => {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
     const [center, setCenter] = useState(initialCenter);
@@ -49,13 +51,13 @@ const MapOSMAdmin = () => {
             });
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
-                id: getNewMinNegativeId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
+                id: getMaxId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0,
             };
             const newStatisticRecord: StatisticRecord = {
-                id: getNewMinNegativeId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
+                id: getMaxId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
                 streetcodeCoordinate: newCoordinate,
                 coordinateId: newCoordinate.id,
                 qrId: newNumberAsNumber,
@@ -201,7 +203,7 @@ const MapOSMAdmin = () => {
             ),
         },
     ];
-
+    console.log(statisticRecordStore.getStatisticRecordArray);
     const data = statisticRecordStore.getStatisticRecordArray
         .filter((x) => (x as StatisticRecordUpdate).modelState !== ModelState.Deleted)
         .map((item) => ({

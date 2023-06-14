@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
+import { ModelState } from '@models/enums/model-state';
 
-import { ModelState } from '@/models/enums/model-state';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 
 export default class SourceCreateUpdateStreetcode {
@@ -26,6 +26,10 @@ export default class SourceCreateUpdateStreetcode {
         };
 
         this.streetcodeCategoryContents.push(sourceCategoryContentToCreate);
+    }
+
+    public setItem(category: StreetcodeCategoryContent) {
+        this.streetcodeCategoryContents.push(category);
     }
 
     public updateElement(index:number, category: StreetcodeCategoryContent) {

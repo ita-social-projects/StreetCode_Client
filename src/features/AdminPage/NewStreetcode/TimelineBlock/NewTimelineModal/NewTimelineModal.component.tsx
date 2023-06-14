@@ -61,12 +61,12 @@ const NewTimelineModal: React.FC<{
                 item.historicalContexts = selectedContext.current;
             }
         } else {
-            const newTimeline:TimelineItem = { date: formValues.date,
-                                               id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
-                                               title: formValues.title,
-                                               description: formValues.description,
-                                               historicalContexts: selectedContext.current,
-                                               dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType) };
+            const newTimeline: TimelineItem = { date: formValues.date,
+                                                id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
+                                                title: formValues.title,
+                                                description: formValues.description,
+                                                historicalContexts: selectedContext.current,
+                                                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType) };
 
             timelineItemStore.addTimeline(newTimeline);
         }

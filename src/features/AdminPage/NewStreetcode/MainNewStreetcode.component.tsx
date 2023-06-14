@@ -32,7 +32,9 @@ import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import { Fact, Text, TextCreate } from '@/models/streetcode/text-contents.model';
+import {
+    Fact, Text, TextCreate, TextCreateUpdate, TextUpdate,
+} from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -113,47 +115,37 @@ const NewStreetcode = () => {
                 setArts([...artToUpdate]);
             });
             StreetcodesApi.getById(parseId).then((x) => {
+                form.setFieldsValue({
+                    streetcodeNumber: x.index,
+                    title: x.title,
+                    alias: x.alias,
+                    streetcodeUrlName: x.transliterationUrl,
+                    firstDate: x.eventStartOrPersonBirthDate,
+                    secondDate: x.eventEndOrPersonDeathDate,
+                    teaser: x.teaser,
+                    video,
+                });
+
+                setFirstDate(x.eventStartOrPersonBirthDate);
+                setSecondDate(x.eventEndOrPersonDeathDate);
+                setDateString(x.dateString);
+
+                const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
+                    ...tag,
+                    isPersisted: true,
+                    modelState: ModelState.Updated,
+                    streetcodeId: parseId,
+                }));
+
+                setSelectedTags(tagsToUpdate as StreetcodeTag[]);
+
                 if (x.lastName && x.firstName) {
                     form.setFieldsValue({
                         surname: x.lastName,
                         name: x.firstName,
-                        streetcodeNumber: x.index,
-                        title: x.title,
-                        alias: x.alias,
-                        streetcodeUrlName: x.transliterationUrl,
-                        firstDate: x.eventStartOrPersonBirthDate,
-                        secondDate: x.eventEndOrPersonDeathDate,
-                        teaser: x.teaser,
-                        video,
                     });
-                    setFirstDate(x.eventStartOrPersonBirthDate);
-                    setSecondDate(x.eventEndOrPersonDeathDate);
-                    setDateString(x.dateString);
                     setStreetcodeType(StreetcodeType.Person);
-
-                    const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
-                        ...tag,
-                        isPersisted: true,
-                        modelState: ModelState.Updated,
-                        streetcodeId: parseId,
-                    }));
-                    setSelectedTags(tagsToUpdate);
                 } else {
-                    form.setFieldsValue({
-                        streetcodeNumber: parseId,
-                        title: x.title,
-                        alias: x.alias,
-                        streetcodeUrlName: x.transliterationUrl,
-                        firstDate: x.eventStartOrPersonBirthDate,
-                        secondDate: x.eventEndOrPersonDeathDate,
-
-                        teaser: x.teaser,
-                        video: 'asdasd',
-                    });
-                    setFirstDate(x.eventStartOrPersonBirthDate);
-                    setSecondDate(x.eventEndOrPersonDeathDate);
-                    setDateString(x.dateString);
-                    setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
 
@@ -172,7 +164,7 @@ const NewStreetcode = () => {
                     isPersisted: true,
                     modelState: ModelState.Updated,
                 }));
-
+                console.log(persistedFigures);
                 setFigures(persistedFigures);
             });
             PartnersApi.getToUpdateByStreetcodeId(parseId).then((result) => {
@@ -211,7 +203,7 @@ const NewStreetcode = () => {
                                 modelState: ModelState.Updated,
                             };
 
-                            sourceCreateUpdateStreetcode.addSourceCategoryContent(persistedItem);
+                            sourceCreateUpdateStreetcode.setItem(persistedItem);
                         }
                     });
                 });
@@ -247,12 +239,13 @@ const NewStreetcode = () => {
             ? [{ url: inputInfo?.link || '' }]
             : [];
 
-        const text: TextCreate = {
+        const text: TextCreateUpdate = {
+            id: inputInfo?.id || 0,
             title: inputInfo?.title,
             textContent: inputInfo?.textContent,
-            additionalText:
-                inputInfo?.аdditionalText === '<p>Текст підготовлений спільно з</p>'
-                    ? '' : inputInfo?.аdditionalText,
+            additionalText: inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>'
+                ? '' : inputInfo?.additionalText,
+            streetcodeId: parseId,
         };
 
         const streetcodeArts: ArtCreateDTO[] = arts.map((art) => ({
@@ -283,7 +276,7 @@ const NewStreetcode = () => {
             audioId: newStreetcodeInfoStore.audioId,
             tags: selectedTags,
             relatedFigures: figures,
-            text: (text.title && text.textContent) ? text : null,
+            text: text.title && text.textContent ? text : null,
             timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
                 .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
@@ -342,14 +335,16 @@ const NewStreetcode = () => {
                 : [];
 
             const tags = [...(selectedTags as StreetcodeTagUpdate[])
-                .map((item) => ({ ...item,
-                                  id: item.modelState === ModelState.Created ? 0 : item.id,
-                                  streetcodeId: parseId })),
+                .map((item) => ({ ...item, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
+
+            console.log(tags);
 
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
+                firstName: null,
+                lastName: null,
                 title: form.getFieldValue('title'),
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
@@ -363,10 +358,10 @@ const NewStreetcode = () => {
                 videos: videosUpdate,
                 relatedFigures: relatedFiguresUpdate,
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
-                facts: factsStore.getFactArrayToUpdate,
+                facts: factsStore.getFactArrayToUpdate.map((item) => ({ ...item, streetcodeId: parseId })),
                 partners: partnersUpdate,
                 subtitles: subTitle?.subtitleText ? [subTitle as Subtitle] : [],
-                text: (inputInfo?.title && inputInfo?.textContent) ? inputInfo as Text : null,
+                text: text.title && text.textContent ? text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
                 streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
                 tags,
@@ -375,7 +370,10 @@ const NewStreetcode = () => {
                 images: createUpdateMediaStore.imagesUpdate.filter((x) => x.modelState !== ModelState.Updated),
                 audios: createUpdateMediaStore.audioUpdate.filter((x) => x.modelState !== ModelState.Updated),
             };
-
+            if (streetcodeType === StreetcodeType.Person) {
+                streetcodeUpdate.firstName = form.getFieldValue('name');
+                streetcodeUpdate.lastName = form.getFieldValue('surname');
+            }
             console.log(streetcodeUpdate);
             StreetcodesApi.update(streetcodeUpdate).then((response) => {
                 alert('Cтріткод успішно оновленний');

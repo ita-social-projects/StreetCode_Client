@@ -68,7 +68,9 @@ const FileInputsPart = () => {
         array.push({ id: fileId as number, streetcodeId: parseId, modelState: ModelState.Created });
     };
 
-    const handleFileRemove = (fileId: number, arrayName:keyof CreateUpdateMediaStore) => {
+    const handleFileRemove = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>
+        (fileId: number, propertyName: K, arrayName:keyof CreateUpdateMediaStore) => {
+        createUpdateMediaStore[propertyName] = null as V;
         const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
         array.push({ id: fileId, streetcodeId: parseId, modelState: ModelState.Deleted });
     };
@@ -129,7 +131,7 @@ const FileInputsPart = () => {
                             setAnimation([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'imagesUpdate');
+                            handleFileRemove(+file.uid, 'animationId', 'imagesUpdate');
                             setAnimation((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >
@@ -157,7 +159,7 @@ const FileInputsPart = () => {
                             setBlackAndWhite([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'imagesUpdate');
+                            handleFileRemove(+file.uid, 'blackAndWhiteId', 'imagesUpdate');
                             setBlackAndWhite((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >
@@ -183,7 +185,7 @@ const FileInputsPart = () => {
                             setRelatedFigure([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'imagesUpdate');
+                            handleFileRemove(+file.uid, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >
@@ -208,7 +210,7 @@ const FileInputsPart = () => {
                             setAudio([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'audioUpdate');
+                            handleFileRemove(+file.uid, 'audioId', 'audioUpdate');
                             setAudio((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >

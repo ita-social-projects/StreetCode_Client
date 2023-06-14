@@ -15,7 +15,7 @@ import StreetcodeCoordinate from '../additional-content/coordinate.model';
 import StatisticRecord, { StatisticRecordUpdate } from '../analytics/statisticrecord.model';
 import { StreetcodeArtCreateUpdate } from '../media/streetcode-art.model';
 
-import { Fact, FactUpdate, Text, TextCreate } from './text-contents.model';
+import { Fact, FactUpdate, Text, TextCreate, TextCreateUpdate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -134,6 +134,8 @@ export interface StreetcodeCreate {
 export interface StreetcodeUpdate {
     id: number,
     index: number,
+    firstName: string | null,
+    lastName: string | null,
     title: string,
     teaser: string,
     alias?: string,
@@ -149,7 +151,7 @@ export interface StreetcodeUpdate {
     partners: PartnerUpdate[],
     streetcodeArts: StreetcodeArtCreateUpdate[];
     subtitles: Subtitle[],
-    text: Text | null,
+    text: TextCreateUpdate | null,
     streetcodeCategoryContents: StreetcodeCategoryContentUpdate[],
     tags: StreetcodeTagUpdate[],
     statisticRecords: StatisticRecordUpdate[],
