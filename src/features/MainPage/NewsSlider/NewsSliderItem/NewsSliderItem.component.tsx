@@ -7,6 +7,7 @@ import Image from '@/models/media/image.model';
 import ImagesApi from '@/app/api/media/images.api';
 import News from '@/models/news/news.model';
 import htmlReactParser, { domToReact } from 'html-react-parser';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 interface Props {
     news: News;
@@ -24,6 +25,8 @@ const NewsSliderItem = ({ news }: Props) => {
         }
     }, [news]);
 
+    const screenSize = useWindowSize();
+
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
             return text;
@@ -39,6 +42,12 @@ const NewsSliderItem = ({ news }: Props) => {
             truncatedText = truncatedText.substr(0, 75);
         }
 
+        if(screenSize.width<=649 && screenSize.width>768){
+            truncatedText = truncatedText.substr(0, 200);
+        }
+
+        
+        
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
     };
 
@@ -61,6 +70,7 @@ const NewsSliderItem = ({ news }: Props) => {
         e.preventDefault();
         window.location.href = news.url.toString();
     };
+
 
     return (
         <div className="newsSliderItem">

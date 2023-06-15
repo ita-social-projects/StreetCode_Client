@@ -23,6 +23,7 @@ import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.c
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 
+
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
         <Route
@@ -92,6 +93,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.NEWS} element={<NewsPage />} />
         <Route index path="/:id" element={<StreetcodeContent />} />
+        <Route index path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`} element={<NewsPage />} />
     </Route>,
 ));
 
