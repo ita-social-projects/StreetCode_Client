@@ -84,7 +84,7 @@ const NewsPage = () => {
                     <h1 className=''>{newsValue?.news.title}</h1>
                 </div>
                 <div className={`newsWithImageWrapper`}>
-                    {newsImg != null && (windowSize.width > 1024) && (width < wrapperWidth * 0.6) ? (  
+                    {newsImg != null && (windowSize.width >= 1024) && (width < wrapperWidth * 0.6) ? (  
                         <img
                             className={"newsImage"}
                             key={newsValue?.news.id}
@@ -103,7 +103,7 @@ const NewsPage = () => {
                     <div className="newsTextArea">
                         {paragraphsCount >= 2 ? parsedNewsText.slice(0, 3) : parsedNewsText}
                     </div>
-                    {newsImg != null && (windowSize.width < 1024) && (width > wrapperWidth * 0.6) ? (  
+                    {newsImg != null && (windowSize.width <= 1024) && (width >= wrapperWidth * 0.6) ? (  
                         <img
                             className={"newsGoodImageClass Full"}
                             key={newsValue?.news.id}
@@ -111,7 +111,7 @@ const NewsPage = () => {
                             alt={newsValue?.news.title}
                         />
                     ): ""}
-                    {newsImg != null && (windowSize.width > 1024) && (width > wrapperWidth * 0.6) ? (  
+                    {newsImg != null && (windowSize.width > 1024) && (width >= wrapperWidth * 0.6) ? (  
                         <img
                             className={"newsGoodImageClass Full"}
                             key={newsValue?.news.id}
