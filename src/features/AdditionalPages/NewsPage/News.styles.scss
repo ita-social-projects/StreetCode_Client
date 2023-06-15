@@ -123,7 +123,7 @@
 
 @media screen and (max-width: 1024px) {
     .newsContainer{
-        @include mut.rem-padded($bottom: 20px, $top: 94px);
+        @include mut.rem-padded($bottom: 20px, $top: 94px, $left: 10px, $right: 10px);
 
         .wrapper {
             .NewsHeader {
