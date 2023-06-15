@@ -5,18 +5,20 @@ import useMobx from '@stores/root-store';
 import TimelineSwiper from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiper.component';
 
 const settings = {
-    dots: 'true',
+    dots: "true",
 };
 
 const TimelineTimespan = () => {
     const { timelineItemStore } = useMobx();
-    const { getYearsArray, setActiveYear } = timelineItemStore;
+    const { getYearsArray, setActiveYear, getTimelineItemArray } = timelineItemStore;
 
+    const middleIdx = Math.round((getYearsArray.length - 1) / 2);
     return (
         <div className="timeSpanContainer">
             <div className="timelineYearTicksContainer">
                 <TimelineSwiper
                     slidesPerView={5}
+                    initialSlide={middleIdx}
                     className="timelineYearTicksContainerSwiper"
                     {...settings}
                 >

@@ -11,7 +11,7 @@ import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.compon
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
-    const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray, activeYear } = timelineItemStore;
+    const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
 
     useAsync(
@@ -19,7 +19,7 @@ const TimelineBlock = () => {
             if (getStreetCodeId !== errorStreetCodeId) {
                 fetchTimelineItemsByStreetcodeId(getStreetCodeId).then(() => {
                     const years = timelineItemStore.getYearsArray;
-                    timelineItemStore.setActiveYear(years[Math.floor(years.length / 2)]);
+                    timelineItemStore.setActiveYear(years[years.length / 2]);
                 });
             }
         },

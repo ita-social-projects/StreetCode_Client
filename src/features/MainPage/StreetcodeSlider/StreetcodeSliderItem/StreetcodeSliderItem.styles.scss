@@ -61,8 +61,8 @@
   }
 
     .streercodeTitle {
-        @include mut.rem-padded($top: 18px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 34px);
+        
         color: #1D1F23;
         line-height: f.pxToRem(40px);
     }
@@ -74,6 +74,12 @@
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded(28px, 0px, 0px, 0px);
     }
+
+    .streetcodeMainPageText {
+      @include mut.rem-padded($top: 7px, $right: 0px, $bottom: 14px, $left: 0px);
+      color: c.$dark-red-color;
+      line-height: f.pxToRem(18px);
+  }
   
     .streetcodeTeaser {
         width: 100%;

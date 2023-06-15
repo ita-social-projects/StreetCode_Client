@@ -66,6 +66,10 @@ const MainBlockAdmin: React.FC<Props> = ({
         }
     }, [form, streetcodeTitle]);
 
+    const onNameSurnameChange = () => {
+        const curSurname = surname.current?.input?.value;
+        setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
+    };
     const onCheckIndexClick = () => {
         const number = form.getFieldValue('streetcodeNumber') as number;
         if (number) {
@@ -166,16 +170,6 @@ const MainBlockAdmin: React.FC<Props> = ({
                 </div>
             </Form.Item>
 
-            <Form.Item
-                name="title"
-                label="Назва стріткоду"
-                className="maincard-item"
-                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
-                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
-            >
-                <Input maxLength={100} showCount />
-            </Form.Item>
-
             {streetcodeType === StreetcodeType.Person ? (
                 <Input.Group
                     compact
@@ -185,10 +179,14 @@ const MainBlockAdmin: React.FC<Props> = ({
                         label="Ім'я"
                         name="name"
                         className="people-title-input"
-                        rules={[{ max: 50, message: "Ім'я не може містити більше 50 символів" }]}
+                        rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
+                            { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: "Ім'я має містити тільки літерали" },
+                            { max: 50, message: "Ім'я не може містити більше 50 символів" },
+                        ]}
                     >
                         <Input
                             ref={name}
+                            onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
@@ -198,12 +196,14 @@ const MainBlockAdmin: React.FC<Props> = ({
                         name="surname"
                         label="Прізвище"
                         className="people-title-input"
-                        rules={[
+                        rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
+                            { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: 'Прізвище має містити тільки літерали' },
                             { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
                         ]}
                     >
                         <Input
                             ref={surname}
+                            onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
@@ -211,6 +211,17 @@ const MainBlockAdmin: React.FC<Props> = ({
                 </Input.Group>
             )
                 : ('')}
+
+            <Form.Item
+                name="title"
+                label="Назва стріткоду"
+                className="maincard-item"
+                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
+                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' },
+                    { pattern: /^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
+            >
+                <Input maxLength={100} showCount />
+            </Form.Item>
 
             <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
                 <Input maxLength={33} showCount />

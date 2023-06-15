@@ -13,16 +13,11 @@ export default class ToponymStore {
         makeAutoObservable(this);
     }
 
-    private setToponyms = (newToponyms: Toponym[]) => {
-        this.toponyms.splice(0, this.toponyms.length);
-        newToponyms.forEach((t) => this.toponyms.push(t));
-    };
-
-    public fetchToponymByStreetcodeId = async (streetcodeId: number)
+    public fetchToponymByStreetcodeId = (streetcodeId: number)
     : Promise<Toponym[]> => {
         this.loaded = true;
         return ToponymsApi.getByStreetcodeId(streetcodeId).then((res) => {
-            this.setToponyms(res);
+            this.toponyms = (res);
             return res;
         });
     };

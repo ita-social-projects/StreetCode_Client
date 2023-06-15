@@ -11,7 +11,6 @@ import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import useMobx from '@/app/stores/root-store';
 import { Modal } from 'antd';
-import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 
 const containerStyle = {
     width: '100%',
@@ -38,8 +37,6 @@ const MapOSMAdmin: React.FC<Props> = ({
     const [address, setAddress] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const newNumberAsNumber = parseInt(newNumber, 10);
-    const [isExist, setIsExist] = useState(false);
-
     useEffect(() => {
         if (coordinates.length > 0) {
 
@@ -57,7 +54,7 @@ const MapOSMAdmin: React.FC<Props> = ({
     }, [coordinates]);
 
     const handleSaveButtonClick = () => {
-        if (!newNumber || newNumber === "" || isExist) {
+        if (!newNumber || newNumber === "") {
             message.error({
                 content: 'Будь ласка введіть значення номеру фізичного стіткоду для збереження',
                 style: { marginTop: '400vh' },
@@ -68,19 +65,17 @@ const MapOSMAdmin: React.FC<Props> = ({
                     latitude: streetcodeCoordinates[0].latitude,
                     longtitude: streetcodeCoordinates[0].longtitude,
                     streetcodeId: 0,
-                    id: getNewMinNegativeId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
+                    id: streetcodeCoordinatesStore.setStreetcodeCoordinateMap.size + 1,
 
                 };
                 const newStatisticRecord: StatisticRecord = {
-                    id: getNewMinNegativeId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
+                    id: statisticRecordStore.setStatisticRecordMap.size + 1,
                     streetcodeCoordinate: newCoordinate,
                     coordinateId: newCoordinate.id,
                     qrId: newNumberAsNumber,
                     count: 0,
                     address: address,
                 };
-
-
                 statisticRecordStore.addStatisticRecord(newStatisticRecord);
                 setStatisticRecord(newStatisticRecord);
                 streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
@@ -241,17 +236,29 @@ const MapOSMAdmin: React.FC<Props> = ({
         }),
     );
 
-    const onCheckIndexClick = (value: any) => {
-        if (value) {
-            StatisticRecordApi.existByQrId(value)
+    const onCheckIndexClick = () => {
+        if (newNumberAsNumber) {
+            StatisticRecordApi.existByQrId(newNumberAsNumber)
                 .then((exist) => {
-                    setIsExist(exist);
+
+                    if (exist) {
+                        message.error({
+                            content: 'Даний номер таблички вже використовується. Використайте інший, будь ласка.',
+                            style: { marginTop: '400vh' },
+                        });
+                    } else {
+                        message.success({
+                            content: 'Такій номер таблички вільний. Можете з впевненістю його використовувати',
+                            style: { marginTop: '400vh' },
+                        });
+
+                    }
                 })
                 .catch(() => {
                     message.error('Сервер не відповідає');
                 });
         } else {
-            setIsExist(false);
+            message.error('Поле порожнє');
         }
     };
 
@@ -285,19 +292,17 @@ const MapOSMAdmin: React.FC<Props> = ({
 
                     <Input
                         type="number"
-                        className={`input-stnumber ${isExist ? 'red' : 'green'}`}
+                        className="input-streets"
                         placeholder="введіть номер таблички стріткоду"
-                        onChange={(e) => {
-                            handleNewNumberChange(e);
-                            onCheckIndexClick(e.target.value);
-                        }}
+                        onChange={handleNewNumberChange}
                         value={newNumber}
+
                     />
-                    {isExist && (
-                        <span className="notification red">
-                            Даний номер таблички вже використовується 
-                        </span>
-                    )}
+
+
+                    <Button className="onMapbtn" onClick={onCheckIndexClick}>
+                        <a>Перевірити айді</a>
+                    </Button>
 
                     <Button
                         className="onMapbtn"

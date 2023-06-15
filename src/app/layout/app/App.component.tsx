@@ -12,11 +12,8 @@ import ModalWrapper from '@layout/ModalWrapper.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import Footer from '../footer/Footer.component';
-import CopyWithCopyright from '@/app/common/components/CopyWithCopyright.component';
 
 ReactGA.initialize('G-2RHY04JKG0');
-
-const CopyrightText = `© ${new Date().getFullYear()} ГО “Історична Платформа”. При використанні матеріалів сайту посилання на джерело обов’язкове.`;
 
 const App = () => {
     const { pathname } = useLocation();
@@ -25,25 +22,23 @@ const App = () => {
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>
             <ToastContainer position="bottom-right" limit={3} />
-                <ModalWrapper />
-                <HeaderBlock />
-                <div className="mainWrapper">
-                <CopyWithCopyright copyrightText={CopyrightText}>
-                    <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
-                    {(pathname !== FRONTEND_ROUTES.BASE) && (
+            <ModalWrapper />
+            <HeaderBlock />
+            <div className="mainWrapper">
+                <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
+                {(pathname !== FRONTEND_ROUTES.BASE) && (
+                    <Outlet />
+                )}
+                {(pathname === FRONTEND_ROUTES.BASE) && (
+                    <>
                         <Outlet />
-                    )}
-                    {(pathname === FRONTEND_ROUTES.BASE) && (
-                        <>
-                            <Outlet />
-                            <MainPage />
-                        </>
-                    )}
-                    </CopyWithCopyright>
-                </div>
-                <div className="footerWrapper">
-                    <Footer />
-                </div>
+                        <MainPage />
+                    </>
+                )}
+            </div>
+            <div className="footerWrapper">
+                <Footer />
+            </div>
         </div>
     );
 };

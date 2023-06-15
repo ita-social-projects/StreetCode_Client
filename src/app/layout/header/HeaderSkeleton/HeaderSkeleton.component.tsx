@@ -24,49 +24,43 @@ const HeaderSkeleton = () => {
     }), [setIsPageDimmed]);
      */
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearchQuery(value);
-        if (value.length > 0) {
-            handlePopoverVisibleChange(true);
-        }
-        else
-            handlePopoverVisibleChange(false);
-    };
 
-    const handlePopoverVisibleChange = (visible: boolean) => {
-        setIsPopoverVisible(visible);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
     };
 
     return (
-        <>
-            <Popover
-                trigger="click"
-                placement="bottomLeft"
-                visible={isPopoverVisible}
-                content={
-                    <div className="headerPopupSkeleton">
+        <Popover
+            trigger="click"
+            placement="bottomLeft"
+            content={(
+                <div className="headerPopupSkeleton">
+                    {searchQuery.length > 0 ? (
                         <SearchBlock searchQuery={searchQuery} />
-                    </div>
-                }
-            >
-                <Input
-                    onChange={handleInputChange}
-                    placeholder="Пошук..."
-                    prefix={<MagnifyingGlass />}
-                />
-            </Popover>
-        </>
+                    )
+                        : (
+                            <>
+                                <div className="leftSide">
+                                    <HeaderContentBlock title="Рекомендації" />
+                                    <h2 className="textHeader">Пошук по тегам</h2>
+                                    <TagList tags={tags} />
+                                </div>
+                                <div className="rightSide">
+                                    <HeaderContentBlock title="Новини" numberOfEls={4} />
+                                </div>
+
+                            </>
+                        )}
+                </div>
+            )}
+        >
+            <Input
+                onChange={handleInputChange}
+                placeholder="Пошук..."
+                prefix={<MagnifyingGlass />}
+            />
+        </Popover>
     );
 };
 
 export default HeaderSkeleton;
-                                //<div className="leftSide">
-                                //    <HeaderContentBlock title="Рекомендації" />
-                                //    <h2 className="textHeader">Пошук по тегам</h2>
-                                //    <TagList tags={tags} />
-                                //</div>
-                                //<div className="rightSide">
-                                //    <HeaderContentBlock title="Новини" numberOfEls={4} />
-                                //</div>

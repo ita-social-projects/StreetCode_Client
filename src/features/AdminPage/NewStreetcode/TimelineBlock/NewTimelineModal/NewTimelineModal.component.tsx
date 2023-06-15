@@ -29,8 +29,6 @@ const NewTimelineModal: React.FC<{
     const selectedContext = useRef<HistoricalContext[]>([]);
     const [dateTimePickerType, setDateTimePickerType] = useState<
         'date' | 'month' | 'year' | 'season-year'>('date');
-    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
-
     useEffect(() => {
         if (timelineItem && open) {
             form.setFieldsValue({
@@ -52,14 +50,14 @@ const NewTimelineModal: React.FC<{
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
-                item.date = new Date(formValues.date - localOffset);
+                item.date = new Date(formValues.date);
                 item.title = formValues.title;
                 item.description = formValues.description;
                 item.historicalContexts = selectedContext.current;
             }
         } else {
             const newTimeline: TimelineItem = {
-                date: new Date(formValues.date - localOffset),
+                date: formValues.date,
                 id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
                 title: formValues.title,
                 description: formValues.description,
