@@ -1,6 +1,6 @@
 import './MainNewStreetcode.styles.scss';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { redirect, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import StreetcodeCoordinateApi from '@app/api/additional-content/streetcode-cooridnates.api';
@@ -14,7 +14,7 @@ import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
-import { Button, ConfigProvider, Form } from 'antd';
+import { Button, ConfigProvider, Form, UploadFile } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -48,7 +48,7 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-
+import { Modal } from 'antd';
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
@@ -61,6 +61,8 @@ const NewStreetcode = () => {
         streetcodeCoordinatesStore,
         statisticRecordStore,
     } = useMobx();
+
+    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
 
     const [partners, setPartners] = useState<Partner[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
@@ -77,6 +79,14 @@ const NewStreetcode = () => {
     const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
+    const [visibleModal, setVisibleModal] = useState(false);
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
+
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
 
     const [funcName, setFuncName] = useState<string>('create');
     const parseId = id ? +id : null;
@@ -195,6 +205,7 @@ const NewStreetcode = () => {
                 tempStatus = 1;
             }
         }
+        form.validateFields();
         data.stopPropagation();
         const subtitles: SubtitleCreate[] = [{
             subtitleText: subTitle,
@@ -209,6 +220,10 @@ const NewStreetcode = () => {
             additionalText: inputInfo?.additionalText == '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
         };
 
+        const firstDateCreate = form.getFieldValue('streetcodeFirstDate') ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null);
+
+        const secondDateCreate = form.getFieldValue('streetcodeSecondDate') ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null);
+
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
             imageId: art.imageId,
             description: art.description,
@@ -216,6 +231,7 @@ const NewStreetcode = () => {
             title: art.title,
             mimeType: art.mimeType,
         }));
+
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -224,10 +240,8 @@ const NewStreetcode = () => {
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
-            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate')
-                ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null),
-            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
-                ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
+            eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
+            eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
             imagesId: [
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
@@ -272,6 +286,7 @@ const NewStreetcode = () => {
                         },
                     }
                 )),
+
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');
@@ -322,7 +337,7 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock id={parseId ?? -1} />
                             <TimelineBlockAdmin />
-                            <MapBlockAdmin coordinates={coordinates} />
+                            {/*<MapBlockAdmin coordinates={coordinates} />*/}
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />
@@ -336,19 +351,26 @@ const NewStreetcode = () => {
                         onClick={
                             onFinish
                         }
-                        name={publish}
-                    >
-                        {publish}
-                    </Button>
-                    <Button
-                        className="streetcode-custom-button submit-button"
-                        onClick={
-                            onFinish
-                        }
                         name={draft}
                     >
                         {draft}
                     </Button>
+                    <Modal
+                        title="Ви впевнені, що хочете опублікувати цей стріткод?"
+                        open={visibleModal}
+                        onOk={onFinish}
+                        onCancel={handleCancelModalRemove}
+                    />
+                    <Button
+                        className="streetcode-custom-button submit-button"
+                        onClick={
+                            handleRemove
+                        }
+                        name={publish}
+                    >
+                        {publish}
+                    </Button>
+
                 </div>
             </ConfigProvider>
         </div>

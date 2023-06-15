@@ -51,14 +51,17 @@ const DonationBlock = () => {
 
     const handlePost = async () => {
         const donation: Donation = {
-            Amount: donateAmount,
-            PageUrl: window.location.href,
+            amount: donateAmount, 
+            pageUrl: window.location.href
         };
 
         if (isCheckboxChecked) {
             try {
-                const response = await DonationApi.create(donation);
-                window.location.assign(response.PageUrl);
+                Promise.all([DonationApi.create(donation)])
+            .then(response => {
+                window.location.assign(response[0].pageUrl);
+            })
+            .catch();
             } catch (err) {}
         }
     };
