@@ -6,7 +6,9 @@
     top: 100px !important;
     width: f.pxToRem(400px) ;
   }
-
+.label-tags-block-info-container-content{
+    width: f.pxToRem(500px);
+}
 
 .mainblock-add-form{   
         .p-margin{ 
@@ -60,7 +62,7 @@
             $justify-content: center,
             $wrap: nowrap,
             $gap: 10px);
-            .ant-popover-content{
+            .ant-popover-content, .ant-popover{
                 width: f.pxToRem(500px);
             }
             .info-icon{
