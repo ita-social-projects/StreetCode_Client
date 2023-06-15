@@ -54,6 +54,19 @@
          .ant-select-selector{
             box-shadow: none !important;
         }
+        .label-tags-block{
+            @include mut.flexed( $direction: row,
+            $align-items: center,
+            $justify-content: center,
+            $wrap: nowrap,
+            $gap: 10px);
+            .ant-popover-content{
+                width: f.pxToRem(500px);
+            }
+            .info-icon{
+                @include mut.sized(40px,40px);
+            }
+        }
        
         .tags-block-tagitems{
             width: 100%;
