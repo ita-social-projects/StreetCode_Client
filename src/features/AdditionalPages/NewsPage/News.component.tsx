@@ -2,7 +2,7 @@ import './News.styles.scss';
 
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useMobx from '@/app/stores/root-store';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import NewsApi from '@/app/api/news/news.api';
 import News from '@/models/news/news.model';
@@ -22,6 +22,8 @@ const NewsPage = () => {
     const [paragraphsCount, setParCount] = useState<number>(0);
     const [width, setWidth] = useState(0);
     const windowSize = useWindowSize();
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const [wrapperWidth, setWrapperWidth] = useState<number>(0);
     const { getImage, addImage } = imagesStore;
 
     useEffect(
@@ -41,7 +43,15 @@ const NewsPage = () => {
         },
         [newsValue?.news.url],
     );
-
+    
+    useEffect(
+        () => {
+            if(wrapperRef.current) {
+                setWrapperWidth(wrapperRef.current.offsetWidth)
+            }
+        },
+        [windowSize]
+    )
     useEffect(
         () => {
             if(newsValue)
@@ -68,13 +78,13 @@ const NewsPage = () => {
     
     return (<div>
         <div className="newsContainer">
-            <div className="wrapper">
+            <div className="wrapper" ref={wrapperRef}>
                 <BreadCrumbForNews separator={<div className="separator" />} news={newsValue?.news} />
                 <div className='NewsHeader'>
                     <h1 className=''>{newsValue?.news.title}</h1>
                 </div>
                 <div className={`newsWithImageWrapper`}>
-                    {newsImg != null && (windowSize.width > 1024) && (width < windowSize.width * 0.6) ? (  
+                    {newsImg != null && (windowSize.width > 1024) && (width < wrapperWidth * 0.6) ? (  
                         <img
                             className={"newsImage"}
                             key={newsValue?.news.id}
@@ -82,7 +92,7 @@ const NewsPage = () => {
                             alt={newsValue?.news.title}
                         />
                     ): ""}
-                    {newsImg != null && (windowSize.width < 1024) && (width < windowSize.width * 0.6) ? (  
+                    {newsImg != null && (windowSize.width < 1024) && (width < wrapperWidth * 0.6) ? (  
                         <img
                             className={"newsImage"}
                             key={newsValue?.news.id}
@@ -93,7 +103,7 @@ const NewsPage = () => {
                     <div className="newsTextArea">
                         {paragraphsCount >= 2 ? parsedNewsText.slice(0, 3) : parsedNewsText}
                     </div>
-                    {newsImg != null && (windowSize.width < 1024) && (width > windowSize.width * 0.6) ? (  
+                    {newsImg != null && (windowSize.width < 1024) && (width > wrapperWidth * 0.6) ? (  
                         <img
                             className={"newsGoodImageClass Full"}
                             key={newsValue?.news.id}
@@ -101,7 +111,7 @@ const NewsPage = () => {
                             alt={newsValue?.news.title}
                         />
                     ): ""}
-                    {newsImg != null && (windowSize.width > 1024) && (width > windowSize.width * 0.6) ? (  
+                    {newsImg != null && (windowSize.width > 1024) && (width > wrapperWidth * 0.6) ? (  
                         <img
                             className={"newsGoodImageClass Full"}
                             key={newsValue?.news.id}
