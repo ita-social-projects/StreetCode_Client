@@ -47,7 +47,7 @@ const Newss: React.FC = observer(() => {
             key: 'title',
             render(value, record) {
                 return (
-                    <div /* onClick={() => window.open(`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/${record.url}`, '_blank')}*/>
+                    <div onClick={() => window.open(`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/${record.url}`, '_blank')}>
                         {value}
                     </div>
                 );

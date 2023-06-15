@@ -19,6 +19,7 @@ const FRONTEND_ROUTES = {
         CONTACT_US: '/contact-us',
         PARTNERS: '/partners-page',
         SUPPORT_US: '/support-us',
+        NEWS: '/news'
     },
 };
 

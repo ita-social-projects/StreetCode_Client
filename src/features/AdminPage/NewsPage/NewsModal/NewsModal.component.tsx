@@ -56,6 +56,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
          setIsModalOpen(false);
          editorRef.current.setContent('');
      };
+     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
      dayjs.locale('uk');
      const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
      ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
@@ -67,7 +68,7 @@ const NewsModal:React.FC<{ newsItem?:News, open:boolean,
              url: formValues.url,
              title: formValues.title,
              text: editorRef.current.getContent(),
-             creationDate: formValues.creationDate,
+             creationDate: new Date(formValues.creationDate - localOffset),
          };
 
          let success = false;
