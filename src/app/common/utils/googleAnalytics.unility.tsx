@@ -1,6 +1,6 @@
 import ReactGA from 'react-ga4';
 
-export const instagramClickEvent = (from: string) => ReactGA.event('instabutton_click', {
+export const instagramOnStreetcodeClickEvent = (from: string) => ReactGA.event('instabutton_click', {
     method: `${from}`,
 });
 export const relatedFiguresLeaveEvent = () => ReactGA.event('relatedfigures_leave', {
@@ -27,8 +27,14 @@ export const becomePartnerEvent = (from: string) => ReactGA.event('become_partne
 export const catalogItem = (streetcodeId : number) => ReactGA.event('catalog_item_click', {
     streetcodeId: `${streetcodeId}`,
 });
+export const toArticleRedirect = (articleName: string) => ReactGA.event('to_article', {
+    article: `${articleName}`,
+});
 export const partnersClickEvent = () => ReactGA.event('partners_button_click');
 export const submitModalPartnersClickEvent = () => ReactGA.event('submit_become_parter');
-export const joinToStreetcode = () => ReactGA.event('join_to_comunity_button_click');
-export const copyBankNumber = () => ReactGA.event('copy_bank_number');
-export const moreTextEvent = () => ReactGA.event('text_more');
+export const joinToStreetcodeClickEvent = () => ReactGA.event('join_to_comunity_button_click');
+export const copyBankNumberEvent = () => ReactGA.event('copy_bank_number_button_click');
+export const moreTextEvent = () => ReactGA.event('text_more_button_click');
+export const nextArticleClickEvent = () => ReactGA.event('next_article_button_click');
+export const prevArticleClickEvent = () => ReactGA.event('prev_article_button_click');
+export const alsoReadArticleClickEvent = () => ReactGA.event('also_read_news_page_button_click');

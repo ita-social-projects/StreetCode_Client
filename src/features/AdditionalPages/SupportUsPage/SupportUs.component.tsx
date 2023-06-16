@@ -2,7 +2,7 @@ import './SupportUs.styles.scss';
 import '../ContactUsPage/Title/Title.styles.scss';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import { copyBankNumber, donateEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { copyBankNumberEvent, donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Footer from '@/app/layout/footer/Footer.component';
 import { useModalContext } from '@/app/stores/root-store';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
@@ -24,7 +24,7 @@ const SupportUs = () => {
 
     const handleCopy = async () => {
         try {
-            copyBankNumber();
+            copyBankNumberEvent();
             await navigator.clipboard.writeText(BANK_ACCOUNT);
         } catch {
             alert("No permission to copy bank account to the clipboard!");
