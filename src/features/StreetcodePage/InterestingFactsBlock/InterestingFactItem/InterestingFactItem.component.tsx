@@ -23,7 +23,7 @@ const InterestingFactItem = ({
     const { modalStore } = useModalContext();
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
     const timeout = useRef<NodeJS.Timeout>();
-    const [descriptionVisible, setDescriptionVisible] = useState<boolean>(true);
+    const [descriptionVisible, setDescriptionVisible] = useState<boolean>(false);
 
     const elementRef = useRef<HTMLDivElement>(null);
     const isOnScreen = useIsVisible(elementRef);
@@ -33,7 +33,7 @@ const InterestingFactItem = ({
         mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
     useEffect(() => {
-        if (image && isOnScreen) {
+        if (image?.alt && isOnScreen) {
             setDescriptionVisible(true);
             timeout.current = setTimeout(() => {
                 setDescriptionVisible(false);
@@ -42,28 +42,21 @@ const InterestingFactItem = ({
         }
     }, [image, isOnScreen]);
 
-    const showDescription = () => {
-        setDescriptionVisible(true);
-    };
-    const hideDescription = () => {
-        if (!timeout.current) {
-            setDescriptionVisible(false);
-        }
-    };
     return (
         <div className="interestingFactSlide" ref={elementRef}>
             <div
                 className="slideImage"
-                onMouseEnter={showDescription}
-                onMouseLeave={hideDescription}
             >
                 <img
                     src={base64ToUrl(image?.base64, image?.mimeType)}
                     alt=""
                 />
-                {(descriptionVisible && image?.alt) ? (
-                    <div className="description-popup">{image?.alt}</div>
+                {image?.alt ? (
+                    <div className={`description-popup ${descriptionVisible ? 'description-popup-visible' : ''}`}>
+                        {image?.alt}
+                    </div>
                 ) : null}
+
             </div>
             <div className="slideText">
                 <p className="heading">

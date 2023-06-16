@@ -24,11 +24,19 @@
       object-fit: cover;
     }
     .description-popup{
+      visibility: hidden;
       position: absolute;
       background-color: rgba(0, 0, 0, .15);
       @include mut.sized(100%, 50px);
       bottom: 0;
     }
+    .description-popup-visible, &:hover>.description-popup{
+      @if((&:content !=undefined) and (&:content !='')){
+        visibility: visible;
+      }
+
+    }
+    
   }
 
   .slideText {
