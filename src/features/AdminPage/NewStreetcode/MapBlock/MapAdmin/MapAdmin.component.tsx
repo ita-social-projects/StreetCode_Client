@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
+import getMaxId from '@app/common/utils/getMaxId';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
@@ -49,7 +50,7 @@ const MapOSMAdmin = () => {
             });
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
-                id: getMaxId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
+                id: 0,
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0,
@@ -57,7 +58,6 @@ const MapOSMAdmin = () => {
             const newStatisticRecord: StatisticRecord = {
                 id: getMaxId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
                 streetcodeCoordinate: newCoordinate,
-                coordinateId: newCoordinate.id,
                 qrId: newNumberAsNumber,
                 count: 0,
                 address,
@@ -201,7 +201,7 @@ const MapOSMAdmin = () => {
             ),
         },
     ];
-    console.log(statisticRecordStore.getStatisticRecordArray);
+
     const data = statisticRecordStore.getStatisticRecordArray
         .filter((x) => (x as StatisticRecordUpdate).modelState !== ModelState.Deleted)
         .map((item) => ({
@@ -233,18 +233,13 @@ const MapOSMAdmin = () => {
     };
 
     return (
-        <LoadScript
-            googleMapsApiKey="AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M"
-            language="uk"
-            libraries={['places']}
-        >
+        <>
             <GoogleMap
                 ref={mapRef}
                 mapContainerStyle={containerStyle}
                 center={center}
                 zoom={14}
                 onClick={handleMapClick}
-
             >
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
@@ -268,7 +263,7 @@ const MapOSMAdmin = () => {
                     />
                     {isExist && (
                         <span className="notification red">
-                            Даний номер таблички вже використовується
+                        Даний номер таблички вже використовується
                         </span>
                     )}
                     <Button
@@ -296,22 +291,21 @@ const MapOSMAdmin = () => {
                         title={`Marker ${marker.latitude}, ${marker.longtitude}`}
                     />
                 ))}
-                {data.map((item) => (
+                {data.map((item, index) => (
                     <Marker
-                        key={item.id}
+                        key={index}
                         icon={{
                             url: StreetcodeMarker,
-                            // scaledSize: new window.google.maps.Size(57, 45),
-                            // origin: new window.google.maps.Point(0, 0),
+                            scaledSize: new window.google.maps.Size(57, 45),
+                            origin: new window.google.maps.Point(0, 0),
                         }}
                         position={{ lat: item.latitude, lng: item.longtitude }}
-                        title={item.address}
+                        title={`${item.address}`}
                     />
                 ))}
             </GoogleMap>
-
             <Table columns={columns} dataSource={data} />
-        </LoadScript>
+        </>
 
     );
 };

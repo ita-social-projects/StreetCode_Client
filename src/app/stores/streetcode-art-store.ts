@@ -36,6 +36,6 @@ export default class StreetcodeArtStore {
         try {
             this.setInternalStreetcodeArtMap = await StreetcodeArtApi
                 .getStreetcodeArtsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 }

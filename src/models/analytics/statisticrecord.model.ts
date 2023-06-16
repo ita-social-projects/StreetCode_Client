@@ -5,12 +5,11 @@ import IPersisted from '@models/interfaces/IPersisted';
 export default interface StatisticRecord {
     id: number,
     streetcodeCoordinate: StreetcodeCoordinate,
-    coordinateId: number,
     qrId: number,
     count: number,
     address: string,
 }
 
 export interface StatisticRecordUpdate extends StatisticRecord, IModelState, IPersisted {
-
+    streetcodeId?: number,
 }

@@ -13,7 +13,7 @@ export default class StatisticRecordStore {
 
     private setInternalMap = (statisticRecords: StatisticRecord[]) => {
         statisticRecords.forEach((item) => {
-            this.setItem({ ...item, isPersisted: true } as StatisticRecordUpdate);
+            this.setItem({ ...item, isPersisted: true, modelState: ModelState.Updated } as StatisticRecordUpdate);
         });
     };
 
@@ -25,7 +25,8 @@ export default class StatisticRecordStore {
         return (Array.from(this.StatisticRecordMap.values()) as StatisticRecordUpdate[])
             .map((item: StatisticRecordUpdate) => {
                 if (item.modelState === ModelState.Created) {
-                    return { ...item, id: 0 };
+                    return { ...item,
+                             id: 0 };
                 }
                 return item;
             });
@@ -52,7 +53,7 @@ export default class StatisticRecordStore {
         }
     };
 
-    private setItem = (statisticRecordItem: StatisticRecord) => {
+    public setItem = (statisticRecordItem: StatisticRecord) => {
         this.StatisticRecordMap.set(statisticRecordItem.id, {
             ...statisticRecordItem,
         } as StatisticRecord);

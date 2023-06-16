@@ -248,13 +248,13 @@ const NewStreetcode = () => {
             streetcodeId: parseId,
         };
 
-        const streetcodeArts: ArtCreateDTO[] = arts.map((art) => ({
-            imageId: art.art.imageId,
-            description: art.art.description ?? '',
-            index: art.index,
-            title: art.art.image.title ?? '',
-            mimeType: art.art.image.mimeType,
-        }));
+        // const streetcodeArts: ArtCreateDTO[] = arts.map((art) => ({
+        //     imageId: art.art.imageId,
+        //     description: art.art.description ?? '',
+        //     index: art.index,
+        //     title: art.art.image.title ?? '',
+        //     mimeType: art.art.image.mimeType,
+        // }));
 
         const streetcode: StreetcodeCreate = {
             id: parseId,
@@ -288,7 +288,7 @@ const NewStreetcode = () => {
             viewCount: 0,
             createdAt: new Date().toISOString(),
             dateString: form.getFieldValue('dateString') ?? dateString,
-            streetcodeArts,
+            streetcodeArts: arts,
             subtitles,
             firstName: null,
             lastName: null,
@@ -334,11 +334,16 @@ const NewStreetcode = () => {
                 ? [{ ...video, url: inputInfo?.link ?? '' }]
                 : [];
 
+            const subtitleUpdate: Subtitle[] = subTitle
+                ? [{ ...subTitle,
+                     subtitleText: subTitle.subtitleText ?? '',
+                     id: subTitle.id || 0,
+                     streetcodeId: parseId }]
+                : [];
+
             const tags = [...(selectedTags as StreetcodeTagUpdate[])
                 .map((item) => ({ ...item, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
-
-            console.log(tags);
 
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
@@ -360,12 +365,13 @@ const NewStreetcode = () => {
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
                 facts: factsStore.getFactArrayToUpdate.map((item) => ({ ...item, streetcodeId: parseId })),
                 partners: partnersUpdate,
-                subtitles: subTitle?.subtitleText ? [subTitle as Subtitle] : [],
+                subtitles: subtitleUpdate,
                 text: text.title && text.textContent ? text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
                 streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
                 tags,
-                statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate,
+                statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
+                    .map((record) => ({ ...record, streetcodeId: parseId })),
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 images: createUpdateMediaStore.imagesUpdate.filter((x) => x.modelState !== ModelState.Updated),
                 audios: createUpdateMediaStore.audioUpdate.filter((x) => x.modelState !== ModelState.Updated),

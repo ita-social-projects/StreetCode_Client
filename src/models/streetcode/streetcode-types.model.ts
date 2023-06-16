@@ -124,7 +124,7 @@ export interface StreetcodeCreate {
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
-    streetcodeArts: ArtCreateDTO[],
+    streetcodeArts: StreetcodeArtCreateUpdate[],
     toponyms: ToponymCreateUpdate[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
     coordinates: StreetcodeCoordinate[],
