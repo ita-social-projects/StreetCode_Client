@@ -19,10 +19,10 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import Image from '@/models/media/image.model';
-import { Fact } from '@/models/streetcode/text-contents.model';
+import { FactCreate } from '@/models/streetcode/text-contents.model';
 
 interface Props {
-    fact?: Fact,
+    fact?: FactCreate,
     open: boolean,
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -68,11 +68,12 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
     }, [fact, open, form]);
 
     const onSuccesfulSubmit = (inputedValues: any) => {
-        const item: Fact = {
+        const item: FactCreate = {
             id: getNewMinNegativeId(factsStore.getFactArray.map((f) => f.id)),
             title: inputedValues.title,
             factContent: inputedValues.factContent,
             imageId: imageId.current,
+            imageDescription: inputedValues.imageDescription,
         };
         if (fact) {
             item.id = fact.id;
@@ -157,6 +158,19 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             </div>
                         </FileUploader>
                     </FormItem>
+
+                    <Form.Item
+                        name="imageDescription"
+                        label="Підпис фото: "
+                    >
+                        <TextArea
+                            value="Type"
+                            maxLength={100}
+                            showCount
+                        />
+                    </Form.Item>
+
+
                     <div className="center">
                         <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
                     </div>

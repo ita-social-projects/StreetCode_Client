@@ -53,7 +53,6 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
                                      extension: uplFile.name.substring(uplFile.name
                                          .lastIndexOf('.') + 1, uplFile.name.length),
                                      mimeType: uplFile.type!,
-                                     alt: uplFile.name,
                                      title: uplFile.name };
         return ImagesApi.create(image);
     };

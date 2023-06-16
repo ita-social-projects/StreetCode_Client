@@ -9,10 +9,8 @@ export interface Fact {
   image?: Image;
   imageId: number;
 }
-export interface FactCreate {
-  title: string;
-  factContent: string;
-  image: ImageCreate;
+export interface FactCreate extends Fact {
+  imageDescription?: string
 }
 
 export interface Term {
