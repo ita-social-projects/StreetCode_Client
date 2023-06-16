@@ -26,7 +26,7 @@ const InstagramBlock = () => {
         variableWidth: true,
         swipeOnClick: false,
         slidesToShow: 4,
-        dots: false,
+        dots: windowSize.width < 1024,
         arrows: windowSize.width > 1024,
         slidesToScroll: 1
     };
