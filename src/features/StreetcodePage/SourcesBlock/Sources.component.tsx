@@ -23,15 +23,16 @@ const SourcesComponent = () => {
     const sliderProps = {
         className: 'heightContainer',
         infinite: true,
-        swipe: windowsize.width <= 1024,
+        swipe: windowsize.width <= 1200,
         dots: windowsize.width <= 1024,
-        variableWidth: windowsize.width <= 1024,
+        variableWidth: windowsize.width <= 1200,
         swipeOnClick: false,
-        slidesToShow: windowsize.width >= 1024 ? undefined : windowsize.width < 1024 ? 1 : 2,
-        slidesToScroll: windowsize.width >= 1024 ? undefined : windowsize.width < 1024 ? 1 : 2,
+        slidesToShow: windowsize.width >= 1200 ? undefined : windowsize.width < 1200 ? 1 : 2,
+        slidesToScroll: windowsize.width >= 1200 ? undefined : windowsize.width < 1200 ? 1 : 2,
         rows: 1,
         initialSlide: 1,
-        centerMode: windowsize.width < 1024,
+        centerMode: windowsize.width < 1200,
+        centerPadding: windowsize.width < 768 ? '10px' : '30px',
     };
     return (sourcesStore.getSrcCategoriesArray.length > 0
         ? (

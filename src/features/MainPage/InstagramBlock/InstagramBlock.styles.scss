@@ -18,7 +18,7 @@
 
             .slick-prev {
                 left: 20px !important;
-
+                
                 &::before {
                     content: url("@assets/images/utils/LeftSmallSliderArrow.svg");
                     opacity: 0.9;
@@ -37,8 +37,9 @@
         
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 20px);
-            @include mut.rem-padded($bottom: 5px);
+            @include mut.rem-padded($bottom: 20px);
             @include mut.rem-margined($left: 20px);
+
         }
     }
 }

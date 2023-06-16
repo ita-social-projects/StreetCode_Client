@@ -15,6 +15,27 @@
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         background-color: c.$pure-white-color;
         margin-left: 20px;
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            width: 96vw;
+            height: f.pxToRem(462px);
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+
+        @media (min-width: 360px) and (max-width: 767px){
+            width: 94vw;
+            height: f.pxToRem(550px);
+            margin: 0 f.pxToRem(20px);
+        }
+
+        @media (min-width: 614px) and (max-width: 715px){
+            height: f.pxToRem(600px);;
+        }
+
+        @media (min-width: 715px) and (max-width: 768px){
+            height: f.pxToRem(625px);
+        }
     }
 
     .newsSlideText {
@@ -24,17 +45,40 @@
         @include mut.sized(840px, 193px);
         @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
         background-color: c.$pure-white-color;
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            height: 161px;
+            top: 301px;
+            width: 96vw;
+        }
+
+        @media (min-width: 360px) and (max-width: 767px){
+            position: relative;
+            top: 1px;
+            width: 100%;
+            height: 100%;
+        }
     }
 
     .newsPageImgContainer {
         position: relative;
         z-index: 1;
         @include mut.rem-padded($top: 5px, $right: 5px, $bottom: 5px, $left: 5px);
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            margin-top: 0;
+            height: 100%;
+        }
         .newsPageImg {
             position: relative;
             width: 100%;
             height: auto;
             @include mut.full-rounded(30px);
+
+            @media (min-width: 768px) and (max-width: 1024px){
+                margin-top: 0;
+                height: 100%;
+            }
         }
     }
 
@@ -44,12 +88,32 @@
         height: 100%;
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            @include mut.rem-padded($top: 20px, $right: 20px, $bottom: 20px, $left: 20px);
+        }
+
+        @media (min-width: 360px) and (max-width: 767px){
+            @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 15px, $left: 15px);
+        }
     }
 
     .newsTitle {
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
         color: #1D1F23;
         line-height: f.pxToRem(48px);
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            font-style: bold;
+            line-height: f.pxToRem(26.4px);
+        }
+
+        @media (min-width: 360px) and (max-width: 767px){
+            @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            font-style: bold;
+            line-height: f.pxToRem(26.4px);
+        }
     }
 
     .newsText {
@@ -58,13 +122,11 @@
         @include mut.rem-margined(5px, 0px, 0px, 0px);
         @include mut.rem-padded(0px, 5px, 0px, 0px);
        
-        color: #1D1F23;
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 300;
-        font-size: 15px;
-        line-height: 18px;
+        color: c.$lighter-black-color;
+        
     
+        @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
+        line-height: 18px;
         &::-webkit-scrollbar {
             display: none;
         }
@@ -80,7 +142,14 @@
                 text-decoration: underline;
             }
         }
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            top: 301px;
+            width: 93vw;
+        }
+
+        @media (min-width: 360px) and (max-width: 767px){
+            width: 100%;
+        }
     }
-
-
 }
