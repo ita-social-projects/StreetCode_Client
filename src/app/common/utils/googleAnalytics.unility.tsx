@@ -24,12 +24,27 @@ export const supportEvent = (from: string) => ReactGA.event('support_button_clic
 export const becomePartnerEvent = (from: string) => ReactGA.event('become_partner_button_click', {
     method: `${from}`,
 });
-export const catalogItem = (streetcodeId : number) => ReactGA.event('catalog_item_click', {
-    streetcodeId: `${streetcodeId}`,
-});
-export const toArticleRedirect = (articleName: string) => ReactGA.event('to_article', {
-    article: `${articleName}`,
-});
+export const toArticleRedirectClickEvent = (articleName: string, from: string) => ReactGA.event(
+    'to_article_redirect_click',
+    {
+        article: `${articleName}`,
+        from: `${from}`,
+    },
+);
+export const toStreetcodeRedirectClickEvent = (streetcodeName: string, from: string) => ReactGA.event(
+    'to_streetcode_redirect_click',
+    {
+        streetcode: `${streetcodeName}`,
+        from: `${from}`,
+    },
+);
+export const toInstaPostRedirectClickEvent = (streetcodeName: string, from: string) => ReactGA.event(
+    '',
+    {
+        article: `${streetcodeName}`,
+        from: `${from}`,
+    },
+);
 export const partnersClickEvent = () => ReactGA.event('partners_button_click');
 export const submitModalPartnersClickEvent = () => ReactGA.event('submit_become_parter');
 export const joinToStreetcodeClickEvent = () => ReactGA.event('join_to_comunity_button_click');
