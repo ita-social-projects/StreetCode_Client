@@ -72,7 +72,8 @@
 .relatedTagList {
     @include mut.sized($width: 100%);
     visibility: hidden;
-
+    overflow: hidden;
+    max-height: 71px;
     @include mut.flexed($align-items: center, $gap: 5px, $wrap: wrap);
     padding: 7px 23px 0px;
 
