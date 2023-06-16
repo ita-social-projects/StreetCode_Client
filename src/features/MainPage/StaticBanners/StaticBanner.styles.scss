@@ -71,8 +71,8 @@
     &.support {
         height: f.pxToRem(312px);
     }
-    
-    @media screen and (max-width: 1493px) {
+
+    @media screen and (max-width: 1518px) {
         @include mut.flexed($direction: center, $justify-content: center, $align-items: center);
 
         .mainContainer {
@@ -96,18 +96,13 @@
             }
         }
     }
-    
+
     @media screen and (max-width: 1200px) {
         &.catalog {
-            @include mut.flexed($direction: center, $justify-content: center, $align-items: center);
             height: auto;
-
-            .mainContainer {
-                @include mut.rem-margined($top: 30px, $right: 30px, $bottom: 30px, $left: 30px);
-            }
         }
     }
-    
+
     @media screen and (max-width: 1151px) {
 
         .left,
@@ -119,8 +114,6 @@
             @include mut.flexed($direction: column, $justify-content: center, $align-items: center);
 
             .mainContainer {
-                @include mut.rem-margined($top: 30px, $right: 30px, $bottom: 30px, $left: 30px);
-
                 .textContainer {
                     p.title {
                         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 28px);
@@ -132,7 +125,6 @@
                 }
 
                 .redirectButton {
-                    @include mut.flexed($direction: center, $justify-content: center, $align-items: center);
                     @include mut.sized($width: 223px, $height: 59px);
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 17px);
                     min-width: f.pxToRem(223px);
@@ -140,7 +132,7 @@
             }
         }
     }
-    
+
     @media screen and (max-width: 980px) {
         &.support {
             height: auto;
@@ -155,7 +147,7 @@
             }
         }
     }
-    
+
     @media screen and (max-width: 800px) {
         &.catalog {
             .mainContainer {
@@ -167,18 +159,18 @@
             }
         }
     }
-    
+
     @media screen and (max-width: 768px) {
         &.catalog {
-            margin: f.pxToRem(50px) f.pxToRem(10px);
             @include mut.sized($height: 133px);
             @include mut.full-rounded(20px);
+            @include mut.rem-margined($top: 50px, $right: 10px, $bottom: 50px, $left: 10px);
             padding: 0;
 
             .mainContainer {
                 @include mut.flexed($justify-content: center, $align-items: flex-end);
+                @include mut.rem-padded($top: 20px, $right: 44px, $bottom: 20px, $left: 20px);
                 margin: 0;
-                padding: f.pxToRem(20px) f.pxToRem(44px) f.pxToRem(20px) f.pxToRem(20px);
 
                 .textContainer {
                     max-width: 494px;
@@ -201,7 +193,6 @@
                     @include mut.sized($width: 180px, $height: 46px);
                     @include mut.full-rounded(10px);
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
-                    @include mut.flexed($direction: center, $justify-content: center, $align-items: center);
                     min-width: f.pxToRem(180px);
                     line-height: 16.41px;
 
@@ -245,7 +236,7 @@
         }
 
     }
-    
+
     @media screen and (max-width: 716px) {
         &.catalog {
             height: auto;
@@ -269,12 +260,11 @@
             height: auto;
 
             .mainContainer {
-                @include mut.flexed($direction: column, $align-items: center);
                 @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
             }
         }
     }
-    
+
     @media screen and (max-width: 360px) {
         padding: 0;
 
@@ -285,7 +275,6 @@
             filter: none;
 
             .mainContainer {
-                @include mut.flexed($direction: column, $align-items: center);
                 margin: 0;
                 padding: 0;
 
@@ -293,7 +282,6 @@
                     text-align: left;
 
                     p.title {
-                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
                         @include mut.rem-margined($bottom: 17px);
                     }
 
@@ -308,8 +296,6 @@
                 .redirectButton {
                     @include mut.rem-margined($left: 0);
                     @include mut.sized($width: 340px, $height: 46px);
-                    @include mut.full-rounded(10px);
-                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
                     @include mut.flexed($justify-content: center, $align-items: center);
                     line-height: 16.41px;
                     padding: 0;
@@ -326,14 +312,12 @@
 
             .mainContainer {
                 @include mut.rem-margined($top: 30px, $right: 10px, $bottom: 30px, $left: 10px);
-                @include mut.flexed($direction: column, $align-items: center);
                 padding: 0;
 
                 .textContainer {
                     text-align: left;
 
                     p.title {
-                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
                         @include mut.rem-margined($bottom: 17px);
                     }
 
@@ -347,8 +331,6 @@
                     @include mut.rem-margined($left: 0);
                     @include mut.rem-margined($top: 20px);
                     @include mut.sized($width: 340px, $height: 46px);
-                    @include mut.full-rounded(10px);
-                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
                     @include mut.flexed($justify-content: center, $align-items: center);
                     line-height: 16.41px;
                     padding: 0;
