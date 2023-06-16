@@ -3,8 +3,6 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-$factImg: "@assets/images/interesting-facts/WowFacts1.png";
-
 .modalContainer {
 
     &.ant-modal {
