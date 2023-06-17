@@ -1,23 +1,18 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
+import { ModelState } from '@models/enums/model-state';
 
-import StreetcodeArt from '@/models/media/streetcode-art.model';
+import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 export default class StreetcodeArtStore {
     public streetcodeArtMap = new Map<number, StreetcodeArt>();
-
-    public streetcodeArtToDelete = new Map<number, StreetcodeArt>();
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-    private setItem = (art: StreetcodeArt) => {
-        this.streetcodeArtMap.set(art.artId, art);
-    };
-
-    public setItemToDelete = (art: StreetcodeArt) => {
-        this.streetcodeArtToDelete.set(art.artId, art);
+    public setItem = (art: StreetcodeArt) => {
+        this.streetcodeArtMap.set(art.art.id, art);
     };
 
     private set setInternalStreetcodeArtMap(streetcodeArt: StreetcodeArt[]) {
@@ -28,8 +23,9 @@ export default class StreetcodeArtStore {
         return Array.from(this.streetcodeArtMap.values());
     }
 
-    get getStreetcodeArtArrayToDelete() {
-        return Array.from(this.streetcodeArtToDelete.values());
+    get getStreetcodeArtsToDelete() {
+        return (Array.from(this.streetcodeArtMap.values()) as StreetcodeArtCreateUpdate[])
+            .filter((art) => art.modelState === ModelState.Deleted);
     }
 
     public fetchStreetcodeArtsByStreetcodeId = async (streetcodeId: number) => {

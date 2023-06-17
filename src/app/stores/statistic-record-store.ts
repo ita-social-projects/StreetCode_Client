@@ -26,7 +26,8 @@ export default class StatisticRecordStore {
             .map((item: StatisticRecordUpdate) => {
                 if (item.modelState === ModelState.Created) {
                     return { ...item,
-                             id: 0 };
+                             id: 0,
+                             streetcodeCoordinate: { ...item.streetcodeCoordinate, id: 0 } };
                 }
                 return item;
             });

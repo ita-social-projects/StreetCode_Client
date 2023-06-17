@@ -114,7 +114,7 @@ export interface StreetcodeCreate {
     eventEndOrPersonDeathDate: Date,
     dateString: string,
     tags: StreetcodeTag[],
-    imagesId: Array<number | null>,
+    images: Image[],
     audioId: number | null,
     streetcodeType: StreetcodeType,
     text: TextCreate | null,

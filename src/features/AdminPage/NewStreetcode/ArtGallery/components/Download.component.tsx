@@ -8,7 +8,7 @@ import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import Image from '@/models/media/image.model';
-import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
+import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
@@ -78,16 +78,8 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
             art: {
                 id: 0,
                 description: 'description',
-                imageId: image.id,
+                image,
                 title: 'title',
-                image: {
-                    id: image.id,
-                    title: 'title',
-                    base64: image.base64,
-                    mimeType: image.mimeType,
-                    blobName: '',
-                },
-                streetcodes: [],
             },
         };
 
@@ -99,13 +91,15 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
 
         if (removedArtIndex >= 0) {
             const toRemove = arts[removedArtIndex] as StreetcodeArtCreateUpdate;
-            toRemove.modelState = ModelState.Deleted;
-            streetcodeArtStore.setItemToDelete(toRemove);
+            if (arts[removedArtIndex].isPersisted) {
+                toRemove.modelState = ModelState.Deleted;
+                streetcodeArtStore.setItem(toRemove as StreetcodeArt);
+            }
 
             arts.splice(removedArtIndex, 1);
 
             // Decrement indexes of all elements after the removed element
-            for (let i = removedArtIndex + 1; i < arts.length; i++) {
+            for (let i = removedArtIndex; i < arts.length; i++) {
                 arts[i].index -= 1;
             }
 

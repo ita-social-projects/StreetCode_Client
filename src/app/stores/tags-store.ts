@@ -39,7 +39,6 @@ export default class TagsStore {
     };
 
     get getTagToDeleteArray() {
-        console.log(this.TagToDeleteArray);
         return this.TagToDeleteArray;
     }
 

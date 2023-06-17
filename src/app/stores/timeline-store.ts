@@ -1,8 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import timelineApi from '@api/timeline/timeline.api';
+import { ModelState } from '@models/enums/model-state';
 import TimelineItem, { HistoricalContextUpdate, TimelineItemUpdate } from '@models/timeline/chronology.model';
-
-import { ModelState } from '@/models/enums/model-state';
 
 export default class TimelineStore {
     public timelineItemMap = new Map<number, TimelineItem>();

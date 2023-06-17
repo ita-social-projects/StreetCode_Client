@@ -8,7 +8,7 @@ export interface HistoricalContext {
 }
 
 export interface HistoricalContextUpdate extends HistoricalContext, IModelState, IPersisted {
-    timelineId: number;
+    timelineId?: number;
 }
 
 export enum DateViewPattern {

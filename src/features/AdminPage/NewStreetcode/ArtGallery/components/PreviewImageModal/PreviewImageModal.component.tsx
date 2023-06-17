@@ -21,15 +21,15 @@ const PreviewFileModal = ({
     const [fileProps, setFileProps] = useState<{
         previewImage: string, previewTitle: string
     }>({ previewImage: '', previewTitle: '' });
-    const [newTitle, setTitle] = useState<string>();
-    const [newDesc, setDesc] = useState<string>();
+    const [newTitle, setTitle] = useState<string>('');
+    const [newDesc, setDesc] = useState<string>('');
 
     const handleCancel = () => {
         setOpened(false);
     };
 
     const handleSave = () => {
-        const updated = arts.find((x) => x.art.imageId === streetcodeArt.art.imageId);
+        const updated = arts.find((x) => x.art.image.id === streetcodeArt.art.image.id);
         if (!updated) {
             return;
         }
@@ -41,8 +41,8 @@ const PreviewFileModal = ({
     };
 
     useEffect(() => {
-        setTitle(streetcodeArt?.art.title);
-        setDesc(streetcodeArt?.art.description);
+        setTitle(streetcodeArt?.art.title ?? '');
+        setDesc(streetcodeArt?.art.description ?? '');
         const url = base64ToUrl(streetcodeArt?.art.image.base64, streetcodeArt?.art.image.mimeType);
         async function uploadImageToModal() {
             setFileProps({

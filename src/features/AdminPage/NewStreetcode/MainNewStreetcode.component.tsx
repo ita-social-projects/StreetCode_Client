@@ -26,14 +26,13 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import { ArtCreateDTO } from '@/models/media/art.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import {
-    Fact, Text, TextCreate, TextCreateUpdate, TextUpdate,
+    Fact, Text, TextCreateUpdate,
 } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
@@ -111,7 +110,6 @@ const NewStreetcode = () => {
                     modelState: ModelState.Updated,
                     isPersisted: true,
                 }));
-
                 setArts([...artToUpdate]);
             });
             StreetcodesApi.getById(parseId).then((x) => {
@@ -164,7 +162,6 @@ const NewStreetcode = () => {
                     isPersisted: true,
                     modelState: ModelState.Updated,
                 }));
-                console.log(persistedFigures);
                 setFigures(persistedFigures);
             });
             PartnersApi.getToUpdateByStreetcodeId(parseId).then((result) => {
@@ -231,13 +228,9 @@ const NewStreetcode = () => {
         form.validateFields();
         data.stopPropagation();
 
-        const subtitles: SubtitleCreate[] = subTitle?.subtitleText
-            ? [{ subtitleText: subTitle.subtitleText }]
-            : [];
+        const subtitles: SubtitleCreate[] = [{ subtitleText: subTitle?.subtitleText || '' }];
 
-        const videos: VideoCreate[] = inputInfo?.link
-            ? [{ url: inputInfo?.link || '' }]
-            : [];
+        const videos: VideoCreate[] = [{ url: inputInfo?.link || '' }];
 
         const text: TextCreateUpdate = {
             id: inputInfo?.id || 0,
@@ -247,14 +240,6 @@ const NewStreetcode = () => {
                 ? '' : inputInfo?.additionalText,
             streetcodeId: parseId,
         };
-
-        // const streetcodeArts: ArtCreateDTO[] = arts.map((art) => ({
-        //     imageId: art.art.imageId,
-        //     description: art.art.description ?? '',
-        //     index: art.index,
-        //     title: art.art.image.title ?? '',
-        //     mimeType: art.art.image.mimeType,
-        // }));
 
         const streetcode: StreetcodeCreate = {
             id: parseId,
@@ -268,12 +253,8 @@ const NewStreetcode = () => {
                 ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                 ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
-            imagesId: [
-                createUpdateMediaStore.animationId,
-                createUpdateMediaStore.blackAndWhiteId,
-                createUpdateMediaStore.relatedFigureId,
-            ].filter(Boolean),
-            audioId: newStreetcodeInfoStore.audioId,
+            images: createUpdateMediaStore.imagesUpdate,
+            audioId: createUpdateMediaStore.audioId,
             tags: selectedTags,
             relatedFigures: figures,
             text: text.title && text.textContent ? text : null,
@@ -330,16 +311,9 @@ const NewStreetcode = () => {
                 modelState: partner.modelState,
             }));
 
-            const videosUpdate: Video[] = video
-                ? [{ ...video, url: inputInfo?.link ?? '' }]
-                : [];
+            const videosUpdate: Video[] = [{ ...video, url: inputInfo?.link ?? '' } as Video];
 
-            const subtitleUpdate: Subtitle[] = subTitle
-                ? [{ ...subTitle,
-                     subtitleText: subTitle.subtitleText ?? '',
-                     id: subTitle.id || 0,
-                     streetcodeId: parseId }]
-                : [];
+            const subtitleUpdate: Subtitle[] = [{ ...subTitle, subtitleText: subTitle?.subtitleText ?? ''} as Subtitle];
 
             const tags = [...(selectedTags as StreetcodeTagUpdate[])
                 .map((item) => ({ ...item, streetcodeId: parseId })),
@@ -368,13 +342,14 @@ const NewStreetcode = () => {
                 subtitles: subtitleUpdate,
                 text: text.title && text.textContent ? text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
-                streetcodeArts: [...arts, ...streetcodeArtStore.getStreetcodeArtArrayToDelete],
+                streetcodeArts: [...arts.map((art) => ({ ...art, streetcodeId: parseId })),
+                    ...streetcodeArtStore.getStreetcodeArtsToDelete],
                 tags,
                 statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                     .map((record) => ({ ...record, streetcodeId: parseId })),
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
-                images: createUpdateMediaStore.imagesUpdate.filter((x) => x.modelState !== ModelState.Updated),
-                audios: createUpdateMediaStore.audioUpdate.filter((x) => x.modelState !== ModelState.Updated),
+                images: createUpdateMediaStore.imagesUpdate,
+                audios: createUpdateMediaStore.audioUpdate,
             };
             if (streetcodeType === StreetcodeType.Person) {
                 streetcodeUpdate.firstName = form.getFieldValue('name');

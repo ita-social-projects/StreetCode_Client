@@ -50,7 +50,7 @@ const MapOSMAdmin = () => {
             });
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
-                id: 0,
+                id: getMaxId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0,
@@ -206,13 +206,15 @@ const MapOSMAdmin = () => {
         .filter((x) => (x as StatisticRecordUpdate).modelState !== ModelState.Deleted)
         .map((item) => ({
             key: item.id,
-            id: item.id,
             qrId: item.qrId,
             latitude: item.streetcodeCoordinate.latitude,
             longtitude: item.streetcodeCoordinate.longtitude,
             address: item.address,
-            actions: item,
+            // actions: item,
         }));
+
+        console.log(data);
+
 
     const onCheckIndexClick = (value: any) => {
         if (value) {

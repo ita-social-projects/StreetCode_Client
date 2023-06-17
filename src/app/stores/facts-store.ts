@@ -58,7 +58,6 @@ export default class FactsStore {
     }
 
     get getFactArrayToUpdate() {
-        console.log((Array.from(this.factMap.values()) as FactUpdate[]));
         return (Array.from(this.factMap.values()) as FactUpdate[])
             .map((item: FactUpdate) => {
                 if (item.modelState === ModelState.Created) {

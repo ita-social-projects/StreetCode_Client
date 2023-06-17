@@ -52,7 +52,7 @@ const FileInputsPart = () => {
     const parseId = id ? +id : null;
 
     const handleFileUpload = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>(
-        fileId: V,
+        file: Audio | Image,
         propertyName: K,
         arrayName: keyof CreateUpdateMediaStore,
     ) => {
@@ -64,15 +64,18 @@ const FileInputsPart = () => {
             }
         }
 
-        createUpdateMediaStore[propertyName] = fileId;
-        array.push({ id: fileId as number, streetcodeId: parseId, modelState: ModelState.Created });
+        createUpdateMediaStore[propertyName] = file.id as V;
+        array.push({ ...file, streetcodeId: parseId, modelState: ModelState.Created });
     };
 
     const handleFileRemove = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>
-        (fileId: number, propertyName: K, arrayName:keyof CreateUpdateMediaStore) => {
-        createUpdateMediaStore[propertyName] = null as V;
+        (propertyName: K, arrayName:keyof CreateUpdateMediaStore) => {
         const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
-        array.push({ id: fileId, streetcodeId: parseId, modelState: ModelState.Deleted });
+        const item = array.find((x) => x.id === createUpdateMediaStore[propertyName]);
+        if (item) {
+            item.modelState = ModelState.Deleted;
+            createUpdateMediaStore[propertyName] = null as V;
+        }
     };
 
     useEffect(() => {
@@ -89,15 +92,11 @@ const FileInputsPart = () => {
                         createUpdateMediaStore.blackAndWhiteId = result[1].id;
                         createUpdateMediaStore.relatedFigureId = result[2]?.id;
 
-                        createUpdateMediaStore.imagesUpdate = [
-                            { id: result[0].id, streetcodeId: parseId, modelState: ModelState.Updated },
-                            { id: result[1].id, streetcodeId: parseId, modelState: ModelState.Updated },
-                        ];
-                        if (result[2]?.id) {
-                            createUpdateMediaStore.imagesUpdate.push(
-                                { id: result[2].id, streetcodeId: parseId, modelState: ModelState.Updated },
-                            );
-                        }
+                        createUpdateMediaStore.imagesUpdate = result.map((img) => ({
+                            ...img,
+                            streetcodeId: parseId,
+                            modelState: ModelState.Updated,
+                        }));
                     });
                     await AudiosApi.getByStreetcodeId(parseId).then((result) => {
                         setAudio(result ? [convertFileToUploadFile(result)] : []);
@@ -127,11 +126,11 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            handleFileUpload(file.id, 'animationId', 'imagesUpdate');
+                            handleFileUpload(file, 'animationId', 'imagesUpdate');
                             setAnimation([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'animationId', 'imagesUpdate');
+                            handleFileRemove('animationId', 'imagesUpdate');
                             setAnimation((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >
@@ -144,7 +143,7 @@ const FileInputsPart = () => {
                     name="pictureBlackWhite"
                     label="Чорнобіле"
                     rules={[{ required: !(parseId && images.length > 1),
-                              message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
+                              message: parseId ? 'Змінити' : '+ Додати' }]}
                 >
                     <FileUploader
                         multiple={false}
@@ -155,11 +154,11 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            handleFileUpload(file.id, 'blackAndWhiteId', 'imagesUpdate');
+                            handleFileUpload(file, 'blackAndWhiteId', 'imagesUpdate');
                             setBlackAndWhite([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'blackAndWhiteId', 'imagesUpdate');
+                            handleFileRemove('blackAndWhiteId', 'imagesUpdate');
                             setBlackAndWhite((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >
@@ -181,11 +180,11 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
+                            handleFileUpload(file, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'relatedFigureId', 'imagesUpdate');
+                            handleFileRemove('relatedFigureId', 'imagesUpdate');
                             setRelatedFigure((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >
@@ -203,14 +202,14 @@ const FileInputsPart = () => {
                         accept=".mp3"
                         maxCount={1}
                         listType="picture-card"
-                        {...(audio ? { fileList: audio } : null)} // TODO: check whether display on the page
+                        {...(audio ? { fileList: audio } : null)}
                         uploadTo="audio"
                         onSuccessUpload={(file: Audio) => {
-                            handleFileUpload(file.id, 'audioId', 'audioUpdate');
+                            handleFileUpload(file, 'audioId', 'audioUpdate');
                             setAudio([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove(+file.uid, 'audioId', 'audioUpdate');
+                            handleFileRemove('audioId', 'audioUpdate');
                             setAudio((prev) => prev.filter((x) => x.uid !== file.uid));
                         }}
                     >

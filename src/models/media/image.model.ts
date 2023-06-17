@@ -1,5 +1,4 @@
 import IModelState from '@models/interfaces/IModelState';
-import IPersisted from '@models/interfaces/IPersisted';
 
 export default interface Image {
     id: number;
@@ -18,7 +17,6 @@ export interface ImageCreate {
     extension: string;
 }
 
-export interface ImageUpdate extends IModelState {
-    id: number;
+export interface ImageUpdate extends Image, IModelState {
     streetcodeId?: number | null;
 }
