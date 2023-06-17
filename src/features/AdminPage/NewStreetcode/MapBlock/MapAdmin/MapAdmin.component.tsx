@@ -3,13 +3,12 @@ import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
 
 import StreetcodeMarker from '@images/footer/streetcode-marker.png';
 
-import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { Autocomplete, GoogleMap, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
 import getMaxId from '@app/common/utils/getMaxId';
-import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
 
@@ -36,11 +35,12 @@ const MapOSMAdmin = () => {
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const mapRef = useRef<GoogleMap | null>(null);
     const { streetcodeCoordinatesStore, statisticRecordStore } = useMobx();
-    const [statisticRecord, setStatisticRecord] = useState<StatisticRecord>();
+    const statisticRecordIdToDelete = useRef<number>(0);
     const [address, setAddress] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const newNumberAsNumber = parseInt(newNumber, 10);
     const [isExist, setIsExist] = useState(false);
+    const [visibleModal, setVisibleModal] = useState(false);
 
     const handleSaveButtonClick = () => {
         if (!newNumber || newNumber === '' || isExist) {
@@ -63,16 +63,8 @@ const MapOSMAdmin = () => {
                 address,
             };
             statisticRecordStore.addStatisticRecord(newStatisticRecord);
-            setStatisticRecord(newStatisticRecord);
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
         }
-    };
-
-    const handleDelete = (record: { id: any; }) => {
-        console.log(record);
-        const { id } = record;
-        streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
-        statisticRecordStore.deleteStatisticRecordFromMap(id);
     };
 
     const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
@@ -154,14 +146,21 @@ const MapOSMAdmin = () => {
             );
         }
     };
-    const [visibleModal, setVisibleModal] = useState(false);
-    const handleRemove = useCallback(() => {
+
+    const handleDelete = (id: number) => {
+        streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
+        statisticRecordStore.deleteStatisticRecordFromMap(id);
+    };
+
+    const handleRemove = useCallback((id: number) => {
+        statisticRecordIdToDelete.current = id;
         setVisibleModal(true);
     }, []);
 
     const handleCancelModalRemove = useCallback(() => {
         setVisibleModal(false);
     }, []);
+
     const columns = [
         {
             title: 'Номер таблички',
@@ -188,12 +187,12 @@ const MapOSMAdmin = () => {
             key: 'actions',
             render: (text: any, record: any) => (
                 <span>
-                    <DeleteOutlined onClick={() => handleRemove()} />
+                    <DeleteOutlined onClick={() => handleRemove(record.id)} />
                     <Modal
                         title="Ви впевнені, що хочете видалити дану точку?"
                         open={visibleModal}
                         onOk={(e) => {
-                            handleDelete(record); setVisibleModal(false);
+                            handleDelete(statisticRecordIdToDelete.current); setVisibleModal(false);
                         }}
                         onCancel={handleCancelModalRemove}
                     />
@@ -206,15 +205,13 @@ const MapOSMAdmin = () => {
         .filter((x) => (x as StatisticRecordUpdate).modelState !== ModelState.Deleted)
         .map((item) => ({
             key: item.id,
+            id: item.id,
             qrId: item.qrId,
             latitude: item.streetcodeCoordinate.latitude,
             longtitude: item.streetcodeCoordinate.longtitude,
             address: item.address,
-            // actions: item,
+            actions: item,
         }));
-
-        console.log(data);
-
 
     const onCheckIndexClick = (value: any) => {
         if (value) {

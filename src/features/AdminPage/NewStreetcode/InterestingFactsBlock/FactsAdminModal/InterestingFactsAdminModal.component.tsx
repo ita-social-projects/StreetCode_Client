@@ -3,9 +3,8 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
-import getNewMinNegativeId from '@app/common/utils/newIdForStore';
+import getMaxId from '@app/common/utils/getMaxId';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
 
 import {
@@ -13,14 +12,12 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import Item from 'antd/es/list/Item';
 
 import ImagesApi from '@/app/api/media/images.api';
-import FactsApi from '@/app/api/streetcode/text-content/facts.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
-import { Fact, FactUpdate } from '@/models/streetcode/text-contents.model';
+import { Fact } from '@/models/streetcode/text-contents.model';
 
 interface Props {
     fact?: Fact,
@@ -78,7 +75,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             }
         } else {
             const newFact: Fact = {
-                id: getNewMinNegativeId(factsStore.getFactArray.map((t) => t.id)),
+                id: getMaxId(factsStore.getFactArray.map((t) => t.id)),
                 title: formValues.title,
                 factContent: formValues.factContent,
                 imageId: imageId.current,

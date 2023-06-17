@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
+import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
 
 import SourcesApi from '@/app/api/sources/sources.api';
-import { ModelState } from '@/models/enums/model-state';
 import { SourceCategoryName, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
@@ -36,6 +36,7 @@ const ForFansBlock = () => {
                         .modelState !== ModelState.Deleted)
                     .map((category, index) => (
                         <ForFansAdminItem
+                            key={index}
                             categoryName={categoriesSelect
                                 .find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
                             index={index}

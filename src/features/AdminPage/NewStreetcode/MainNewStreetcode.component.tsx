@@ -31,9 +31,7 @@ import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import {
-    Fact, Text, TextCreateUpdate,
-} from '@/models/streetcode/text-contents.model';
+import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -313,7 +311,8 @@ const NewStreetcode = () => {
 
             const videosUpdate: Video[] = [{ ...video, url: inputInfo?.link ?? '' } as Video];
 
-            const subtitleUpdate: Subtitle[] = [{ ...subTitle, subtitleText: subTitle?.subtitleText ?? ''} as Subtitle];
+            const subtitleUpdate: Subtitle[] = [
+                { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
 
             const tags = [...(selectedTags as StreetcodeTagUpdate[])
                 .map((item) => ({ ...item, streetcodeId: parseId })),
@@ -341,7 +340,8 @@ const NewStreetcode = () => {
                 partners: partnersUpdate,
                 subtitles: subtitleUpdate,
                 text: text.title && text.textContent ? text : null,
-                streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate,
+                streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
+                    .map((content) => ({ ...content, streetcodeId: parseId })),
                 streetcodeArts: [...arts.map((art) => ({ ...art, streetcodeId: parseId })),
                     ...streetcodeArtStore.getStreetcodeArtsToDelete],
                 tags,
