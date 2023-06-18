@@ -11,10 +11,8 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import Item from 'antd/es/list/Item';
 
 import ImagesApi from '@/app/api/media/images.api';
-import FactsApi from '@/app/api/streetcode/text-content/facts.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
@@ -39,6 +37,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             form.setFieldsValue({
                 title: fact.title,
                 factContent: fact.factContent,
+                imageDescription: fact.imageDescription,
             });
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
@@ -51,7 +50,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             status: 'done',
                             type: image.mimeType,
                         }] : [],
-
                     });
                     setFileList(fact ? [{
                         name: '',
@@ -163,14 +161,11 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                         name="imageDescription"
                         label="Підпис фото: "
                     >
-                        <TextArea
-                            value="Type"
+                        <Input
                             maxLength={100}
                             showCount
                         />
                     </Form.Item>
-
-
                     <div className="center">
                         <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
                     </div>

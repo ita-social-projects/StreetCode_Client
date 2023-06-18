@@ -40,7 +40,7 @@ const InterestingFactsComponent = () => {
     );
 
     const setings = {
-        dots: facts.current.length > 2,
+        dots: facts.current.length > 3,
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
