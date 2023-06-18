@@ -20,7 +20,7 @@ import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 
-const router = createHashRouter(createRoutesFromElements(
+const router = createBrowserRouter(createRoutesFromElements(
     <Route path="" element={<App />}>
         <Route
             index
