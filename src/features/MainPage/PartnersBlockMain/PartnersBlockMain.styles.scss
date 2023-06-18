@@ -10,11 +10,10 @@
 
         .keyPartnersBlock {
             column-gap: 0;
-            row-gap: 0  ;
+            row-gap: 0;
 
             .partnersItem {
                 @include mut.rem-margined($top: 30px, $right: 10px, $bottom: 30px, $left: 10px);
-                 
             }
         }
     }
@@ -37,7 +36,6 @@
             }
         }
     }
-
 }
 
 @media screen and (max-width: 768px) {
@@ -46,11 +44,9 @@
             .partnersItem {
                 @include mut.rem-margined($top: 20px, $right: 15px, $bottom: 20px, $left: 15px);
                 @include mut.sized($width: 340px, $height: 98px);
-                  
             }
         }
     }
-
 }
 
 @media screen and (max-width: 720px) {
@@ -62,7 +58,6 @@
             }
         }
     }
-
 }
 
 @media screen and (max-width: 687px) {
@@ -74,7 +69,6 @@
             }
         }
     }
-
 }
 
 @media screen and (max-width: 620px) {
@@ -86,7 +80,6 @@
             }
         }
     }
-
 }
 
 @media screen and (max-width: 446px) {
@@ -98,7 +91,6 @@
             }
         }
     }
-
 }
 
 @media screen and (max-width: 382px) {
@@ -106,9 +98,8 @@
         .keyPartnersBlock {
             .partnersItem {
                 @include mut.rem-margined($top: 10px, $right: 10px, $bottom: 10px, $left: 10px);
-                @include mut.sized($width: 160px, $height: 46px);   
+                @include mut.sized($width: 160px, $height: 46px);
             }
         }
     }
-
 }
