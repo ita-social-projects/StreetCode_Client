@@ -1,5 +1,7 @@
 import './InstagramSliderItem.styles.scss';
 
+import { toInstaPostRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+
 interface Props {
     photoUrl: string | undefined,
     caption: string | undefined,
@@ -22,6 +24,7 @@ const InstagramSliderItem = ({ photoUrl, caption, permalink } : Props) => {
     };
 
     const handleOpenPost = () => {
+        toInstaPostRedirectClickEvent(permalink, 'main_page');
         window.open(permalink);
     }
 
