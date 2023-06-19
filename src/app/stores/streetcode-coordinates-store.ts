@@ -15,6 +15,7 @@ export default class StreetcodeCoordinatesStore {
     };
 
     private set setInternalStreetcodeCoordinateMap(streetcodeCoordinate: StreetcodeCoordinate[]) {
+        this.setStreetcodeCoordinateMap.clear();
         streetcodeCoordinate.forEach(this.setStreetcodeCoordinateItem);
     }
 

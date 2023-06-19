@@ -20,6 +20,7 @@ export default class TimelineStore {
     };
 
     private setInternalMap = (timelineItems: TimelineItem[]) => {
+        this.timelineItemMap.clear();
         timelineItems.forEach(this.setItem);
     };
 
