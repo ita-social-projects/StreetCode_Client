@@ -11,6 +11,7 @@ export default class FactsStore {
     }
 
     private setInternalMap = (facts: Fact[]) => {
+        this.factMap.clear();
         facts.forEach((item) => {
             const updatedItem: FactUpdate = {
                 ...item,
@@ -20,6 +21,8 @@ export default class FactsStore {
 
             this.setItem(updatedItem);
         });
+
+        facts.forEach(this.setItem);
     };
 
     public addFact = (fact: Fact) => {

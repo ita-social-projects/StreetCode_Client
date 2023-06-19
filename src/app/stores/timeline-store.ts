@@ -36,6 +36,7 @@ export default class TimelineStore {
     };
 
     private setInternalMap = (timelineItems: TimelineItem[]) => {
+        this.timelineItemMap.clear();
         timelineItems.forEach((item) => {
             const updatedContexts = item.historicalContexts.map((context) => {
                 const updatedContext = {

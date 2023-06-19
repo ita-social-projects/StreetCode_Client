@@ -18,7 +18,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { Button } from 'antd';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import { joinToStreetcode } from '@/app/common/utils/googleAnalytics.unility';
+import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 const HeaderBlock = () => {
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
@@ -92,7 +92,7 @@ const HeaderBlock = () => {
                             className="loginBtn"
                             onClick={() => {
                                 setModal('login');
-                                joinToStreetcode();
+                                joinToStreetcodeClickEvent();
                             }}
                             style={isPageDimmed ? { zIndex: '-1' } : undefined}
                         >

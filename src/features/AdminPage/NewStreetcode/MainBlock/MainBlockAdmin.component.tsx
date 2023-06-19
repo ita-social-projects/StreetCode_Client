@@ -2,6 +2,7 @@ import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
 import dayjs, { Dayjs } from 'dayjs';
@@ -11,6 +12,7 @@ import {
     Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
+import { Option } from 'antd/es/mentions';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
@@ -204,7 +206,9 @@ const MainBlockAdmin = React.memo(({
                         name="surname"
                         label="Прізвище"
                         className="people-title-input"
-                        rules={[{ max: 50, message: 'Прізвище не може містити більше 50 символів ' }]}
+                        rules={[
+                            { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                        ]}
                     >
                         <Input
                             ref={surname}
@@ -240,7 +244,25 @@ const MainBlockAdmin = React.memo(({
                 }}
             />
             <div className="tags-block">
-                <Form.Item label="Теги">
+                <Form.Item label={(
+                    <div className="label-tags-block">
+                        <p>Теги</p>
+                        <Popover
+                            className="info-container"
+                            placement="topLeft"
+                            content={(
+                                <p className="label-tags-block-info-container-content">
+При обиранні теги є невидимими для користувача (фон тегу сірий), тобто він не відображається на головній картці стріткоду.
+                            Якщо натиснути на тег, його стан зміниться на видимий (фон - білий). Нижче є розширення наводячи на які, можна побачити, які теги будуть вміщатись на головній картці стріткоду.
+                                    {' '}
+                                </p>
+                            )}
+                        >
+                            <InfoCircleOutlined className="info-icon" />
+                        </Popover>
+                    </div>
+                )}
+                >
                     <div className="tags-block-tagitems">
                         <DragableTags setTags={setSelectedTags} tags={selectedTags} />
                         <Select

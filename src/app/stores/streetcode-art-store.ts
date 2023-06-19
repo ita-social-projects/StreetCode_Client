@@ -16,6 +16,7 @@ export default class StreetcodeArtStore {
     };
 
     private set setInternalStreetcodeArtMap(streetcodeArt: StreetcodeArt[]) {
+        this.streetcodeArtMap.clear();
         streetcodeArt.forEach(this.setItem);
     }
 

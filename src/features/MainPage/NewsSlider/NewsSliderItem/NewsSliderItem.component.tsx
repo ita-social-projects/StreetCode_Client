@@ -8,6 +8,7 @@ import ImagesApi from '@/app/api/media/images.api';
 import News from '@/models/news/news.model';
 import htmlReactParser, { domToReact } from 'html-react-parser';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { toArticleRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface Props {
     news: News;
@@ -68,6 +69,7 @@ const NewsSliderItem = ({ news }: Props) => {
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
+        toArticleRedirectClickEvent(news.url.toString());
         window.location.href = news.url.toString();
     };
 

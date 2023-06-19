@@ -12,6 +12,7 @@ import BreadCrumbForNews from './BreadCrumbForNews/BreadCrumbForNews.component';
 import parse from 'html-react-parser';
 import { NewsWithUrl, RandomNews } from '@models/news/news.model';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { alsoReadArticleClickEvent, nextArticleClickEvent, prevArticleClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
@@ -115,11 +116,13 @@ const NewsPage = () => {
                 </div>
                 <div className="newsLinks">
                     <Link className={`Link ${newsValue?.prevNewsUrl === null ? 'toHide' : ''}`}
-                        to={`/news/${newsValue?.prevNewsUrl}`}>
+                        to={`/news/${newsValue?.prevNewsUrl}`}
+                        onClick={prevArticleClickEvent}>
                         Попередня новина
                     </Link>
                     <Link className={`Link ${newsValue?.nextNewsUrl === null ? 'toHide' : ''}`}
-                        to={`/news/${newsValue?.nextNewsUrl}`}>
+                        to={`/news/${newsValue?.nextNewsUrl}`}
+                        onClick={nextArticleClickEvent}>
                         Наступна новина
                     </Link>
                 </div>
@@ -131,8 +134,10 @@ const NewsPage = () => {
                         <div className="randomNewsTitleAndButtn">
                             {newsValue?.randomNews.title}
                             <div className="newsButtonContainer">
-                                <Link className={`Link ${newsValue?.news.url as unknown as string === newsValue?.randomNews.randomNewsUrl ? 'toHide' : ''}`} to={`/news/${newsValue?.randomNews.randomNewsUrl}`} >
-                                    <button >Перейти</button>
+                                <Link className={`Link ${newsValue?.news.url as unknown as string === newsValue?.randomNews.randomNewsUrl ? 'toHide' : ''}`} 
+                                to={`/news/${newsValue?.randomNews.randomNewsUrl}`} 
+                                onClick={alsoReadArticleClickEvent}>
+                                    <button>Перейти</button>
                                 </Link>
                             </div>
                         </div>
