@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import './ArtGalleryBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -20,7 +21,7 @@ const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore } = useMobx();
-    const { streetcodeStore:{getStreetCodeId, errorStreetCodeId} } = useStreetcodeDataContext();
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
@@ -44,16 +45,16 @@ const ArtGalleryBlock = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId).then(() => streecodePageLoaderContext.addBlockFetched());
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId)
+                    .then(() => streecodePageLoaderContext.addBlockFetched());
             }
         },
         [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
     );
 
-
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
+        getStreetcodeArtArray?.forEach(async ({ art: { description, image, title }, index }) => {
             try {
                 const url = base64ToUrl(image.base64, image.mimeType);
                 if (url) {
@@ -63,7 +64,7 @@ const ArtGalleryBlock = () => {
                         index,
                         description,
                         imageHref: url,
-                        title: image.alt,
+                        title,
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
@@ -176,10 +177,11 @@ const ArtGalleryBlock = () => {
     sortedArtsListSmall.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offset == 4) {
+        if (offset === 4) {
             offset = 1;
         }
-        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL && offsetSumForSlideSmall + offset <= SECTION_AMOUNT_SMALL) {
+        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL
+            && offsetSumForSlideSmall + offset <= SECTION_AMOUNT_SMALL) {
             offsetSumForSlideSmall += offset ?? 0;
             offsetSumSmall += offset ?? 0;
             sequenceNumberSmall = index - 1;

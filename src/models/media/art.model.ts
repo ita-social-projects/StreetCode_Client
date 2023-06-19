@@ -5,6 +5,7 @@ import Image from './image.model';
 export default interface Art {
     id: number;
     description?: string | undefined;
+    title?: string;
     streetcodes: Streetcode[];
     imageId: number;
     image: Image;
@@ -20,10 +21,10 @@ export interface IndexedArt {
 }
 export interface ArtCreate {
     imageId:number;
-    description: string;
+    description?: string;
     image: string;
     index: number;
-    title: string;
+    title?: string;
     mimeType:string;
     uidFile:string;
 }

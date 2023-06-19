@@ -1,3 +1,6 @@
+/* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable max-len */
 import './MainNewStreetcode.styles.scss';
 
 import React, { useCallback, useEffect, useState } from 'react';
@@ -14,7 +17,9 @@ import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
-import { Button, ConfigProvider, Form, UploadFile } from 'antd';
+import {
+    Button, ConfigProvider, Form, Modal, UploadFile,
+} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -48,7 +53,7 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from './TextBlock/InputType/TextInputInfo.model';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { Modal } from 'antd';
+
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
@@ -74,7 +79,6 @@ const NewStreetcode = () => {
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<ArtCreate[]>([]);
-    const [status, setStatus] = useState<number>();
     const { id } = useParams<any>();
     const navigate = useNavigate();
     const [visibleModal, setVisibleModal] = useState(false);
@@ -96,7 +100,7 @@ const NewStreetcode = () => {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
                 const newArts = result.map((x) => ({
                     description: x.art.description ?? '',
-                    title: x.art.image.alt ?? '',
+                    title: x.art.title ?? '',
                     imageId: x.art.imageId,
                     image: x.art.image.base64,
                     index: x.index,
@@ -297,7 +301,7 @@ const NewStreetcode = () => {
             StreetcodesApi.create(streetcode)
                 .then(() => {
                     if (tempStatus === 1) {
-                        navigate(`../${form.getFieldValue('streetcodeUrlName')}`, {replace: true});
+                        navigate(`../${form.getFieldValue('streetcodeUrlName')}`, { replace: true });
                     } else {
                         navigate(`${FRONTEND_ROUTES.ADMIN.BASE}/${form.getFieldValue('streetcodeUrlName')}`);
                     }
@@ -331,7 +335,7 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock id={parseId ?? -1} />
                             <TimelineBlockAdmin />
-                            {/*<MapBlockAdmin coordinates={coordinates} />*/}
+                            {/* <MapBlockAdmin coordinates={coordinates} /> */}
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />

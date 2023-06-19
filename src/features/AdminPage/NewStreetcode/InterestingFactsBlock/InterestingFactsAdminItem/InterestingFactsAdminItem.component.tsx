@@ -43,7 +43,7 @@ const InterestingFactAdminItem = ({ fact }: Props) => {
                 <Modal
                     title="Ви впевнені, що хочете видалити даний Wow-факт?"
                     open={visibleModal}
-                    onOk={(e) => {factsStore.deleteFactFromMap(fact.id);setVisibleModal(false);}}
+                    onOk={(e) => {factsStore.deleteFactFromMap(fact.id); setVisibleModal(false);}}
                     onCancel={handleCancelModalRemove}
                 />
             </div>

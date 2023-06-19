@@ -33,7 +33,7 @@ const InterestingFactItem = ({
         mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
     useEffect(() => {
-        if (image?.alt && isOnScreen) {
+        if (image?.imageDetails?.alt && isOnScreen) {
             setDescriptionVisible(true);
             timeout.current = setTimeout(() => {
                 setDescriptionVisible(false);
@@ -51,9 +51,9 @@ const InterestingFactItem = ({
                     src={base64ToUrl(image?.base64, image?.mimeType)}
                     alt=""
                 />
-                {image?.alt ? (
+                {image?.imageDetails?.alt ? (
                     <div className={`description-popup ${descriptionVisible ? 'description-popup-visible' : ''}`}>
-                        {image?.alt}
+                        <p>{image?.imageDetails?.alt}</p>
                     </div>
                 ) : null}
 

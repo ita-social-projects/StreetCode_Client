@@ -1,3 +1,8 @@
+/* eslint-disable complexity */
+/* eslint-disable brace-style */
+/* eslint-disable arrow-parens */
+/* eslint-disable @typescript-eslint/semi */
+/* eslint-disable react/prop-types */
 import './ArtGalleryAdminStyles.styles.scss';
 
 import { observer } from 'mobx-react-lite';

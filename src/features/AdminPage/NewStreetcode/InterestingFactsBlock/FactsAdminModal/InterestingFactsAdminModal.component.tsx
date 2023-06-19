@@ -37,7 +37,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             form.setFieldsValue({
                 title: fact.title,
                 factContent: fact.factContent,
-                imageDescription: fact.imageDescription,
             });
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
@@ -50,6 +49,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             status: 'done',
                             type: image.mimeType,
                         }] : [],
+                        imageDescription: image?.imageDetails?.alt,
                     });
                     setFileList(fact ? [{
                         name: '',

@@ -1,8 +1,8 @@
 import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
 import Tag, { StreetcodeTag } from '@models/additional-content/tag.model';
-import Art, { ArtCreateDTO, IndexedArt } from '@models/media/art.model';
+import Art from '@models/media/art.model';
 import Audio from '@models/media/audio.model';
-import Image, { ImageCreate } from '@models/media/image.model';
+import Image from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent } from '@models/sources/sources.model';
@@ -77,7 +77,7 @@ export interface StreetcodeShort {
     title: string;
 }
 
-export interface StreetcodeMainPage{
+export interface StreetcodeMainPage {
     id: number,
     title: string,
     teaser: string,
@@ -118,12 +118,12 @@ export interface StreetcodeCreate {
     streetcodeType: StreetcodeType,
     text: TextCreate | null,
     videos: VideoCreate[],
-    facts: Fact[],
+    facts: FactCreate[],
     timelineItems: TimelineItem[],
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigure[],
-    streetcodeArts: ArtCreateDTO[],
+    streetcodeArts: Art[],
     toponyms: string[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
     coordinates: StreetcodeCoordinate[],

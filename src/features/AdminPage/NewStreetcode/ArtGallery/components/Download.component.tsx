@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Modal } from 'antd';
 import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
 
 import ImagesApi from '@/app/api/media/images.api';
@@ -7,10 +8,10 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import { ArtCreate } from '@/models/media/art.model';
 import Image from '@/models/media/image.model';
 
+import base64ToUrl from '../../../../../app/common/utils/base64ToUrl.utility';
+
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
-import base64ToUrl from '../../../../../app/common/utils/base64ToUrl.utility';
-import { Modal } from 'antd';
 
 const DownloadBlock: React.FC<{
     arts: ArtCreate[],
@@ -29,12 +30,11 @@ const DownloadBlock: React.FC<{
                 uid: art.uidFile,
                 name: art.title,
                 status: 'done',
-                thumbUrl: base64ToUrl(art.image, art.mimeType) ?? "",
+                thumbUrl: base64ToUrl(art.image, art.mimeType) ?? '',
                 type: art.mimeType,
             }));
             setFileList(newFileList);
-            indexTmp.current = Math.max(...arts.map(x => x.index)) + 1;
-
+            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
         }
     }, [arts]);
 
@@ -46,12 +46,13 @@ const DownloadBlock: React.FC<{
     const handleCancelModalRemove = useCallback(() => {
         setVisibleModal(false);
     }, []);
-    
+
     const onChange = (uploadParams: UploadChangeParam<UploadFile<any>>) => {
         uidsFile.current = uploadParams.file.uid;
         const status = uploadParams.file.status ?? 'removed';
-        if(status != 'removed')
+        if (status !== 'removed') {
             setFileList(uploadParams.fileList.map((x) => x));
+        }
     };
 
     const onPreview = async (file: UploadFile) => {
@@ -59,10 +60,11 @@ const DownloadBlock: React.FC<{
         setIsOpen(true);
     };
     const onSuccessUpload = (image: Image) => {
-        if (arts.length > 0)
-            indexTmp.current = Math.max(...arts.map(x => x.index)) + 1;
-        else
+        if (arts.length > 0) {
+            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
+        } else {
             indexTmp.current += 1;
+        }
         const newArt: ArtCreate = {
             index: indexTmp.current,
             description: 'description',
@@ -77,7 +79,6 @@ const DownloadBlock: React.FC<{
     const onRemoveFile = (file: UploadFile) => {
         const removedArtIndex = arts.findIndex((a) => a.uidFile === file.uid);
         if (removedArtIndex >= 0) {
-            
             arts.splice(removedArtIndex, 1);
             // Decrement indexes of all elements after the removed element
             for (let i = removedArtIndex; i < arts.length; i++) {
