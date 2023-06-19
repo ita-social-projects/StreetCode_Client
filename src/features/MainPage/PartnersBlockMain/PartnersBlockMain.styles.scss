@@ -53,7 +53,6 @@
     .partnersBlock {
         .keyPartnersBlock {
             .partnersItem {
-                @include mut.rem-margined($top: 20px, $right: 15px, $bottom: 20px, $left: 15px);
                 @include mut.sized($width: 323px, $height: 93px);
             }
         }
@@ -75,7 +74,6 @@
     .partnersBlock {
         .keyPartnersBlock {
             .partnersItem {
-                @include mut.rem-margined($top: 15px, $right: 12px, $bottom: 15px, $left: 12px);
                 @include mut.sized($width: 203px, $height: 58px);
             }
         }
