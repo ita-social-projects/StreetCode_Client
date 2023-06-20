@@ -1,5 +1,5 @@
 
-// -------------------- ArtGalleryBlock -------------------- 
+// -------------------- ArtGalleryBlock --------------------
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
@@ -9,8 +9,9 @@
 .artGallerySliderContainer .sliderClass .slick-slider {
     width: 100%;
 }
+
 .artGalleryWrapperAdmin {
-     @include mut.sized(100%, 230px);
+    @include mut.sized(100%, 230px);
 
     @include wr.main-page-block-wrapper();
     margin-bottom: pxToRem(390px);
@@ -22,59 +23,65 @@
 
         .artGalleryContentContainerAdmin {
             @include mut.flex-centered();
-        }  
+        }
     }
+
     .artGallerySliderContainerAdmin {
         @include mut.sized(812px, 370px);
     }
 }
 
-// -------------------- ArtGallerySlide -------------------- 
+// -------------------- ArtGallerySlide --------------------
 
 .slideArtGalleryContainerAdmin {
-  @include mut.flex-centered();
-  margin-top: pxToRem(20px);
-  
-  .slideArtGallery {
-    @include mut.flex-centered($direction: column);
-    flex-wrap: wrap;
-    height: pxToRem(370px); //560
-    
-    &.width-1 {
-      width: pxToRem(535px); //810
+    @include mut.flex-centered();
+    margin-top: pxToRem(20px);
+
+    .slideArtGallery {
+        @include mut.flex-centered($direction: column);
+        flex-wrap: wrap;
+        height: pxToRem(370px); //560
+
+        &.width-1 {
+            width: pxToRem(535px); //810
+        }
+
+        &.width-2 {
+            width: pxToRem(800px); //1210
+        }
     }
-    
-    &.width-2 {
-      width: pxToRem(800px);//1210
-    }
-    
-  }
 }
 
-// -------------------- ArtGallerySlideItem -------------------- 
-
-
+// -------------------- ArtGallerySlideItem --------------------
 .slideArtAdmin {
-  flex: pxToRem(80px);
+    flex: pxToRem(80px);
 
-  .small{ 
-    width: 250px; //380
-    height: 165px;//250
+    .artContainer {
+        .small {
+            width: 250px; //380
+            height: 165px; //250
+        }
 
-  }
-  .medium{
-    width : 250px; //380
-    height: 353px;//535
 
-  }
-  .large{
-    width: 531px;//805
-    height: 353px;//535
-  }
+        .medium {
+            width: 250px; //380
+            height: 353px; //535
+        }
 
+        .large {
+            width: 531px; //805
+            height: 353px; //535
+        }
+
+        img {
+            height: 100%;
+            object-fit: cover;
+        }
+    }
 }
 
-.artImageWrapperAdmin{
+
+.artImageWrapperAdmin {
     position: relative;
 
     &:hover {
@@ -105,7 +112,7 @@
     }
 
     .imgDescription {
-      @include mut.with-font($font-size: 12px);
+        @include mut.with-font($font-size: 12px);
         @include mut.truncated();
     }
 

@@ -62,6 +62,8 @@ const NewStreetcode = () => {
         statisticRecordStore,
     } = useMobx();
 
+    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
+
     const [partners, setPartners] = useState<Partner[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<TextInputInfo>>();
@@ -218,6 +220,10 @@ const NewStreetcode = () => {
             additionalText: inputInfo?.additionalText == '<p>Текст підготовлений спільно з</p>' ? '' : inputInfo?.additionalText,
         };
 
+        const firstDateCreate = form.getFieldValue('streetcodeFirstDate') ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null);
+
+        const secondDateCreate = form.getFieldValue('streetcodeSecondDate') ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null);
+
         const streetcodeArts: ArtCreateDTO[] = arts.map((art: ArtCreate) => ({
             imageId: art.imageId,
             description: art.description,
@@ -225,6 +231,7 @@ const NewStreetcode = () => {
             title: art.title,
             mimeType: art.mimeType,
         }));
+
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -233,10 +240,8 @@ const NewStreetcode = () => {
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
-            eventStartOrPersonBirthDate: form.getFieldValue('streetcodeFirstDate')
-                ? form.getFieldValue('streetcodeFirstDate').toDate() : (parseId ? firstDate : null),
-            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
-                ? form.getFieldValue('streetcodeSecondDate').toDate() : (parseId ? secondDate : null),
+            eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
+            eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
             imagesId: [
                 newStreetcodeInfoStore.animationId,
                 newStreetcodeInfoStore.blackAndWhiteId,
@@ -281,6 +286,7 @@ const NewStreetcode = () => {
                         },
                     }
                 )),
+
         };
         if (streetcodeType === StreetcodeType.Person) {
             streetcode.firstName = form.getFieldValue('name');

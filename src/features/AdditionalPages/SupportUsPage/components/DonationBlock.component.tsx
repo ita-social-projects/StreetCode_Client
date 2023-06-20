@@ -55,8 +55,8 @@ const DonationBlock = () => {
 
     const handlePost = async () => {
         const donation: Donation = {
-            Amount: donateAmount,
-            PageUrl: window.location.href,
+            amount: donateAmount, 
+            pageUrl: window.location.href
         };
 
         if (isCheckboxChecked) {
