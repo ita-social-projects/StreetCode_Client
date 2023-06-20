@@ -29,7 +29,6 @@ const HeaderDrawerItem = ({
             to={link}
             className="headerItem"
             onClick={() => handleClick()}
-            style={{ textDecoration: 'none', color: 'inherit' }}
             id={isActive ? 'active' : ''}
         >
             {text}
