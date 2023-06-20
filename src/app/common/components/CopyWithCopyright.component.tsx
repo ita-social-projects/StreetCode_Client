@@ -1,39 +1,36 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
+import FRONTEND_ROUTES from "../constants/frontend-routes.constants";
 
 interface Props {
-    children: React.ReactNode;
-    copyrightText: string;
+  children: React.ReactNode;
+  copyrightText: string;
 }
 
-const CopyWithCopyright = ({ children, copyrightText } : Props) => {
-    const textRef = useRef<HTMLDivElement>(null);
+const MIN_LENGTH = 20;
 
-    useEffect(() => {
-        const handleCopy = (event: ClipboardEvent) => {
+const CopyWithCopyright = ({ children, copyrightText }: Props) => {
+  const textRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    if (!window.location.pathname.startsWith(FRONTEND_ROUTES.ADMIN.BASE)) {
+        if (!event.clipboardData) return;
+
+        const copiedText = window.getSelection()?.toString();
+        if (copiedText && copiedText.length >= MIN_LENGTH) {
             event.preventDefault();
-            if (!event.clipboardData) return;
-      
-            const copiedText = window.getSelection()?.toString();
-            if (copiedText) {
-                event.clipboardData.setData(
-                  'text/plain',
-                  `${copiedText} \n${copyrightText}`
-                );
-            }
+            event.clipboardData.setData(
+                'text/plain',
+                `${copiedText} \n${copyrightText}`
+            );
         }
+    }
+  };
 
-        if (textRef.current) {
-            textRef.current.addEventListener('copy', handleCopy);
-        }
-
-        return () => {
-            if (textRef.current) {
-              textRef.current.removeEventListener('copy', handleCopy);
-            }
-        };
-    }, [copyrightText]);
-      
-    return <div ref={textRef}>{children}</div>;
-}
+  return (
+    <div ref={textRef} onCopy={handleCopy}>
+      {children}
+    </div>
+  );
+};
 
 export default CopyWithCopyright;

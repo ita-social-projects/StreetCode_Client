@@ -10,6 +10,7 @@ export default class FactsStore {
     }
 
     private setInternalMap = (facts: Fact[]) => {
+        this.factMap.clear();
         facts.forEach(this.setItem);
     };
 

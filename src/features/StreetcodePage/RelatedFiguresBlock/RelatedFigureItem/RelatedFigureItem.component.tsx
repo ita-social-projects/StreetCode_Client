@@ -1,16 +1,12 @@
 /* eslint-disable complexity */
 import './RelatedFigureItem.styles.scss';
 
-import { useState } from 'react';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import ImagesApi from '@/app/api/media/images.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { relatedFiguresLeaveEvent, relatedFiguresTagsEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Image from '@/models/media/image.model';
 
 interface Props {
     relatedFigure: RelatedFigure;
@@ -26,7 +22,6 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
     const { tagsStore: { getTagArray } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { tagsList } } = modalStore;
-
     const windowsize = useWindowSize();
 
     const handleClick = () => {
@@ -34,9 +29,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             setModal('relatedFigureItem', id, true);
         }
     };
-
     const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
-
     return (
         <>
             {windowsize.width > 1024 && (

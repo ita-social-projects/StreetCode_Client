@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 
 import { Button } from 'antd';
 
-import { instagramClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { instagramOnStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 const QRMobile:React.FC<{ hrefLink:string }> = ({ hrefLink }) => {
     const isMobile = useMediaQuery({
@@ -24,7 +24,7 @@ const QRMobile:React.FC<{ hrefLink:string }> = ({ hrefLink }) => {
                         <a href={hrefLink} target="_blank" rel="noreferrer">
                             <Button
                                 className="goToInstaButton"
-                                onClick={() => instagramClickEvent('mobile')}
+                                onClick={() => instagramOnStreetcodeClickEvent('mobile')}
                             >
                             Перейти в Instagram
                             </Button>
@@ -41,7 +41,7 @@ const QRMobile:React.FC<{ hrefLink:string }> = ({ hrefLink }) => {
                             <a href={hrefLink} target="_blank" rel="noreferrer">
                                 <Button
                                     className="goToInstaButton"
-                                    onClick={() => instagramClickEvent('tablet')}
+                                    onClick={() => instagramOnStreetcodeClickEvent('tablet')}
                                 >
                                 Перейти в Instagram
                                 </Button>

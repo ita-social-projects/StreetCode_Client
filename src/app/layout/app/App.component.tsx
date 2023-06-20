@@ -16,7 +16,7 @@ import CopyWithCopyright from '@/app/common/components/CopyWithCopyright.compone
 
 ReactGA.initialize('G-2RHY04JKG0');
 
-const CopyrightText = `© ${new Date().getFullYear()} ГО “Історична Платформа”. При використанні матеріалів сайту посилання на джерело обов’язкове.`;
+const CopyrightText = `Джерело: «Стріткод: історія на кожному кроці» ${window.location.origin}`;
 
 const App = () => {
     const { pathname } = useLocation();
@@ -24,12 +24,14 @@ const App = () => {
 
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>
-            <ToastContainer position="bottom-right" limit={3} />
+            <ToastContainer position="bottom-right" limit={3}/>
+            <CopyWithCopyright copyrightText={CopyrightText}>
                 <ModalWrapper />
-                <HeaderBlock />
+            </CopyWithCopyright>
+            <HeaderBlock />
                 <div className="mainWrapper">
-                <CopyWithCopyright copyrightText={CopyrightText}>
                     <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
+                    <CopyWithCopyright copyrightText={CopyrightText}>
                     {(pathname !== FRONTEND_ROUTES.BASE) && (
                         <Outlet />
                     )}
@@ -41,9 +43,9 @@ const App = () => {
                     )}
                     </CopyWithCopyright>
                 </div>
-                <div className="footerWrapper">
-                    <Footer />
-                </div>
+            <div className="footerWrapper">
+                <Footer />
+            </div>
         </div>
     );
 };
