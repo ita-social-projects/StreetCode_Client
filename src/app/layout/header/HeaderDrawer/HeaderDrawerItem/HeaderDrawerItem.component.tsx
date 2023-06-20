@@ -25,16 +25,15 @@ const HeaderDrawerItem = ({
         }
     }, [id, parentActive]);
     return (
-        <div>
-            <button
-                className="headerItem"
-                onClick={handleClick}
-                type="button"
-                id={isActive ? 'active' : ''}
-            >
-                <Link to={link} style={{ textDecoration: 'none', color: 'inherit' }}>{text}</Link>
-            </button>
-        </div>
+        <Link
+            to={link}
+            className="headerItem"
+            onClick={() => handleClick()}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            id={isActive ? 'active' : ''}
+        >
+            {text}
+        </Link>
     );
 };
 export default HeaderDrawerItem;
