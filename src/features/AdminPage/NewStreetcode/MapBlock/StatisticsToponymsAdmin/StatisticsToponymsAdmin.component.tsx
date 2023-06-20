@@ -76,7 +76,6 @@ const StatisticsToponymsComponentAdmin = () => {
                     defaultChecked={mustChecked?.includes(text)}
                     onChange={(e: CheckboxChangeEvent) => {
                         const toponym = newStreetcodeInfoStore.selectedToponyms.find((x) => x.toponymId === record.key);
-                        console.log(toponym);
                         if (e.target.checked) {
                             if (toponym) {
                                 toponym.modelState = ModelState.Updated;
