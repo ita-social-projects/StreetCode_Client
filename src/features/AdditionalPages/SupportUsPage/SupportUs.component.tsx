@@ -24,7 +24,7 @@ const SupportUs = () => {
     
     const [isCopied, setIsCopied] = useState(false);
 
-    const handleCopy1 = () => {
+    const handleAfterCopy = () => {
         setIsCopied(true);
         setTimeout(() => {
             setIsCopied(false);
@@ -142,7 +142,7 @@ const SupportUs = () => {
                             </div>
                         </div>
                         <div>
-                            <button className="supportButton withSvg" onClick={() => {handleCopy(); handleCopy1();}}>
+                            <button className="supportButton withSvg" onClick={() => {handleCopy(); handleAfterCopy();}}>
                                 <span>Скопіювати рахунок UAH</span>
                                 <Copy />
                             </button>
