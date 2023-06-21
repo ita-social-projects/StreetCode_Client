@@ -33,6 +33,7 @@ import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/mo
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
+import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
@@ -73,8 +74,8 @@ const NewStreetcode = () => {
     const [dateString, setDateString] = useState<string>();
     const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
+    const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
-    const [status, setStatus] = useState<number>();
     const [visibleModal, setVisibleModal] = useState(false);
 
     const { id } = useParams<any>();
@@ -206,6 +207,7 @@ const NewStreetcode = () => {
             TransactionLinksApi.getByStreetcodeId(parseId)
                 .then((res) => {
                     if (res) {
+                        setArLink(res);
                         form.setFieldValue('arlink', res.qrCodeUrl.href);
                     }
                 });
@@ -318,6 +320,21 @@ const NewStreetcode = () => {
                 .map((item) => ({ ...item, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
+            const arUrl = form.getFieldValue('arlink');
+            const arLinkUpdated: TransactionLink = {
+                ...arLink,
+                id: arLink?.id ?? 0,
+                streetcodeId: parseId,
+                url: {
+                    ...arLink?.url,
+                    href: arUrl || '',
+                },
+                qrCodeUrl: {
+                    ...arLink?.url,
+                    href: arUrl || '',
+                },
+            };
+
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
@@ -350,6 +367,7 @@ const NewStreetcode = () => {
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 images: createUpdateMediaStore.imagesUpdate,
                 audios: createUpdateMediaStore.audioUpdate,
+                arLink: arLinkUpdated,
             };
             if (streetcodeType === StreetcodeType.Person) {
                 streetcodeUpdate.firstName = form.getFieldValue('name');

@@ -158,4 +158,5 @@ export interface StreetcodeUpdate {
     toponyms: ToponymCreateUpdate[],
     images: ImageUpdate[],
     audios: AudioUpdate[],
+    arLink: TransactionLink;
 }
