@@ -78,7 +78,7 @@
   },
   "scripts": {
     "start": "webpack serve --define-process-env-node-env development --config config/webpack.dev.js",
-    "start:prod": "webpack serve --define-process-env-node-env production --config config/webpack.prod.js --env cmdval=formwow --env webpackvaluecmd=vale",
+    "start:prod": "webpack serve --define-process-env-node-env production --config config/webpack.prod.js",
     "build": "webpack --define-process-env-node-env production --config config/webpack.prod.js",
     "serve:w": "webpack --mode development --config config/webpack.dev.js --watch && serve ./dist/",
     "lint": "eslint --ext \".js,.ts,.tsx\" --ignore-path .gitignore .",
