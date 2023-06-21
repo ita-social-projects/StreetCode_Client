@@ -90,8 +90,6 @@ const StatisticsToponymsComponentAdmin = () => {
                             }
                         } else if (toponym?.isPersisted) {
                             toponym.modelState = ModelState.Deleted;
-                            console.log(toponym);
-                            console.log(newStreetcodeInfoStore.selectedToponyms);
                         } else {
                             newStreetcodeInfoStore.selectedToponyms = newStreetcodeInfoStore
                                 .selectedToponyms.filter((t) => t !== text);
