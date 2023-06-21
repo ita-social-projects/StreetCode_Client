@@ -12,7 +12,7 @@ interface Props {
     setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>>
 }
 
-const PartnerBlockAdmin = React.memo(({ partners, setPartners }: Props) => {
+const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
 
@@ -27,6 +27,7 @@ const PartnerBlockAdmin = React.memo(({ partners, setPartners }: Props) => {
         const partnerPersisted = partners.find((x) => x.id === value);
         if (partnerPersisted) { // for case when delete persisted item and add it again
             partnerPersisted.modelState = ModelState.Updated;
+            setPartners([...partners]);
         } else {
             const partner = allPartnersShort.find((c) => c.id === value) as PartnerCreateUpdateShort;
             partner.modelState = ModelState.Created;
@@ -38,6 +39,7 @@ const PartnerBlockAdmin = React.memo(({ partners, setPartners }: Props) => {
         const partner = partners.find((x) => x.id === value);
         if (partner?.isPersisted) {
             partner.modelState = ModelState.Deleted;
+            setPartners([...partners]);
         } else {
             setPartners(partners.filter((c) => c.id !== value));
         }
@@ -79,5 +81,5 @@ const PartnerBlockAdmin = React.memo(({ partners, setPartners }: Props) => {
             />
         </div>
     );
-});
+};
 export default PartnerBlockAdmin;
