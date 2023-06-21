@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import SlickSlider from './../../SlickSlider/SlickSlider.component';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const shuffleArray = (array: any) => {
     const shuffledArray = [...array];
@@ -42,8 +43,15 @@ const StreetcodeSlider = () => {
         infinite: true,
         variableWidth: true,
         slidesToShow: 1,
-        swipeOnClick: false
+        swipeOnClick: false,
+        centerMode: false,
+        centerPadding: '-5px',
     };
+    const windowsize = useWindowSize();
+    if (windowsize.width <= 1024 && windowsize.width >= 768)
+        props.centerMode = true;
+    if (windowsize.width <= 1024)
+        props.dots = true;
 
     if (shuffledStreetcode.length > 0) {
         return (

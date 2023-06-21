@@ -4,6 +4,10 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .teamItemSlider {
+    @media (min-width: 768px) and (max-width: 1024px){
+       
+        margin-bottom:30px;
+    }
     .itemTeam {
         @include mut.flexed(row, center, center, wrap);
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
@@ -13,23 +17,59 @@
         line-height: f.pxToRem(23px);
         background-color: #FFFFFF;
         margin-left: 20px;
+        @media (min-width: 768px) and (max-width: 1024px) {
+            margin-top: 40px;
+                @include mut.sized(266px, 402px);
+                padding-bottom:20px;
+            }
+        @media screen and (max-width: 767px){
+            
+                @include mut.sized(310px, 475px);
+            }
     }
 
     .leftSlider {
         @include mut.full-rounded(53px);
         @include mut.sized(294px, 311px);
-        flex: 0 0 f.pxToRem(294px);
+        display: flex;
+        justify-content: center;
         background-color: #FFFFFF;
         justify-self: flex-start;
+        @media (min-width: 768px) and (max-width: 1024px) {
+             @include mut.sized(250px, 338px);
+        }
+        @media screen and (max-width: 767px) {
+             @include mut.sized(294px, 398px);
+        }
     }
 
     .leftSliderContent {
-        background-color: c.$accented-gray-color;
-        @include mut.border(c.$pure-white-color,22px,solid);
+        background-color: c.$pure-white-color;     
+        margin: 10px;
         @include mut.full-rounded(50px);
-        @include mut.parent-sized();
         @include mut.flex-centered();
+        @media (min-width: 768px) and (max-width: 1024px) {
+                @include mut.sized(100%, 338px);
+                margin: 0px;
+            }
+        @media screen and (max-width: 767px) {
+                @include mut.sized(100%, 398px);
+                margin: 8px;
+            }
     }
+        .teamImg {
+            @include mut.sized(100%, 100%);       
+            overflow: visible !important;
+            @media (min-width: 768px) and (max-width: 1024px) {
+                @include mut.sized(100%, 100%);
+                object-fit: cover;
+            }
+    
+            @media screen and (max-width: 767px) {
+                @include mut.sized(100%, 100%);
+                object-fit: cover;
+            }
+        }
 
     .rightSlider {
         box-sizing: border-box;
@@ -41,6 +81,9 @@
         padding-top: f.pxToRem(20px);
         flex: 1 1 auto;
         position: relative;
+        @media screen and (max-width: 1024px) {
+                padding-top: 0%;
+            }
     }
 
     .teamLinkItems {
@@ -57,6 +100,11 @@
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 34px);
         color: #1D1F23;
         line-height: f.pxToRem(40px);
+        @media screen and (max-width: 1024px) {
+            margin-top: 4px;
+            @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+            line-height: f.pxToRem(23px);
+        }
     }
 
     .headerTeamContainer {
@@ -65,6 +113,15 @@
         height: 100%;
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded(28px, 0px, 0px, 0px);
+        @media screen and (max-width: 1024px) {
+            .textContainer{
+                width: 100%;        
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            @include mut.rem-padded(0px, 0px, 0px, 0px);    
+        }
     }
 
     .descBlock {
@@ -86,11 +143,14 @@
         color: #6D6D6D;
         @include mut.rem-margined(9px, 0px, 0px, 0px);
         @include mut.with-font($font-weight: 500, $font-size: 20px);
+        @media screen and (max-width: 1024px) {
+            color: #ADADAD;
+            @include mut.with-font(ft.$roboto-font, $font-weight: 300, $font-size: 15px);
+            line-height: f.pxToRem(18px); 
+            @include mut.rem-margined(0px, 0px, 20px, 0px);
+        }
     }
 
 
-    .teamImg {
-        margin: auto;
-        @include mut.sized(284px, 301px);
-    }
+    
 }

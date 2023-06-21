@@ -13,6 +13,7 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 
 import TeamMember, { Positions } from '../../../../models/team/team.model';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const LogoType = [twitter, instagram, facebook, youtube];
 interface Props {
@@ -29,12 +30,12 @@ const TeamItemSlider = ({ team }: Props) => {
                 .catch((e) => { });
         }
     }, [team]);
-
-    return (
-        <div className="teamItemSlider">
-            <div className="itemTeam">
-                <div className="leftSlider">
-                    <div className="leftSliderContent">
+    const windowsize = useWindowSize();
+    return (       
+                <div className="teamItemSlider">
+                     <div className="itemTeam">
+                         <div className="leftSlider">
+                            <div className="leftSliderContent">
                         <img
                             key={image?.id}
                             src={base64ToUrl(image?.base64, image?.mimeType)}
@@ -45,7 +46,7 @@ const TeamItemSlider = ({ team }: Props) => {
                 </div>
                 <div className="rightSlider">
                     <div className="headerTeamContainer">
-                        <div>
+                        <div className='textContainer'>
                             <h2 className="teamTitle">
                                 {`${team?.firstName} ${team?.lastName}`}
                             </h2>
@@ -59,33 +60,33 @@ const TeamItemSlider = ({ team }: Props) => {
                                         </span>
                                     ))}
                             </div>
-                            <div>
-                                <p className="descBlock">
-                                    {team?.description}
-                                </p>
-                            </div>
-                            <div key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`} className="teamLinkItems">
-                                {team?.teamMemberLinks.map((link) => (
-                                    <a
-                                        key={`${link.id}${link.targetUrl}`}
-                                        rel="noreferrer"
-                                        target="_blank"
-                                        className="teamLinkItem"
-                                        href={link.targetUrl}
-                                    >
-                                        <img
-                                            key={link.id * link.logoType}
-                                            src={LogoType[link.logoType]}
-                                            alt={link.targetUrl}
-                                        />
-                                    </a>
-                                ))}
-                            </div>
+                            {windowsize.width > 1024 && (
+                            <><div>
+                                    <p className="descBlock">
+                                        {team?.description}
+                                    </p>
+                                </div><div key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`} className="teamLinkItems">
+                                        {team?.teamMemberLinks.map((link) => (
+                                            <a
+                                                key={`${link.id}${link.targetUrl}`}
+                                                rel="noreferrer"
+                                                target="_blank"
+                                                className="teamLinkItem"
+                                                href={link.targetUrl}
+                                            >
+                                                <img
+                                                    key={link.id * link.logoType}
+                                                    src={LogoType[link.logoType]}
+                                                    alt={link.targetUrl} />
+                                            </a>
+                                        ))}
+                                    </div></>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
     );
 };
 

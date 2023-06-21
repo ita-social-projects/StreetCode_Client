@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useState, useEffect } from 'react';
 import SlickSlider from './../../SlickSlider/SlickSlider.component'
 import Heading from '../Heading/Heading.component';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 const TeamComponent = () => {
     const [team, setTeam] = useState<TeamMember[]>([]);
 
@@ -27,13 +28,19 @@ const TeamComponent = () => {
         touchThreshold: 25,
         transform: 'translateZ(0)',
         arrows:false,
+        centerMode: false,
+        centerPadding: '-5px',
         dots:false,
         infinite:true,
         variableWidth: true,
         slidesToShow: 1,
-        swipeOnClick: false
+        swipeOnClick: false,
     }
-    
+    const windowsize = useWindowSize();
+    if (windowsize.width <=1024 && windowsize.width>= 768) 
+        props.centerMode  = true;
+    if(windowsize.width <= 1024)
+        props.dots = true;
     const handleClick = () => {
         window.location.assign('https://www.instagram.com/streetcodeua/');
     }

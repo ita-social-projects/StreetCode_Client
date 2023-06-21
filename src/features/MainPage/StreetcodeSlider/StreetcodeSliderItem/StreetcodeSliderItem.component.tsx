@@ -41,6 +41,8 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
 
     }, [streetcode]);
 
+    const windowsize = useWindowSize();
+
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         window.location.href = streetcode.transliterationUrl;
@@ -62,18 +64,21 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                 </div>
                 <div className="rightSlider">
                     <div className="streetcodeMainPageContainer">
-                        <div>
-                            <h2 className="streercodeTitle">
+                        <div className='textContainer'>
+                            {windowsize.width > 1024 && ( <h2 className="streercodeTitle">
                                 {streetcode?.title}
-                            </h2>
+                            </h2> 
+                            )}
                             <div className="streetcodeAlias">
                                 {streetcode?.alias}
                             </div>
+                            {windowsize.width > 1024 && (
                             <div>
                                 <p className="streetcodeTeaser">
                                     {teaserText}
                                 </p>
                             </div>
+                            )}
                             <div>
                                 <a className="streetcodeLink" href={streetcode.transliterationUrl} onClick={handleLinkClick}>
                                     До стріткоду
