@@ -11,3 +11,16 @@ export default interface News {
     image?: Image;
     creationDate: dayjs.Dayjs;
 }
+
+export interface RandomNews {
+    title: string;
+    randomNewsUrl: string;
+}
+
+export interface NewsWithUrl {
+    news: News;
+    prevNewsUrl: string;
+    nextNewsUrl: string;
+    randomNews: RandomNews;
+
+}

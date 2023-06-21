@@ -19,6 +19,8 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -71,13 +73,16 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
-        <Route path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
+        <Route path="*" element={<NotFound />} />
+        <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US} element={<ContactUs />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
-        <Route path="/:id" element={<StreetcodeContent />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.NEWS} element={<NewsPage />} />
+        <Route index path="/:id" element={<StreetcodeContent />} />
+        <Route index path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`} element={<NewsPage />} />
     </Route>,
 ));
 

@@ -8,20 +8,11 @@ export default class PartnersStore {
     public PartnerMap = new Map<number, Partner>();
 
     public constructor() {
-        makeAutoObservable(this, {
-            PartnerMap: observable,
-            fetchPartnersByStreetcodeId: action,
-            fetchPartnersAll: action,
-            getAll: action,
-            createPartner: action,
-            updatePartner: action,
-            deletePartner: action,
-            setInternalMap: action,
-            setItem: action,
-        });
+        makeAutoObservable(this);
     }
 
     public setInternalMap(partners: Partner[]) {
+        this.PartnerMap.clear();
         partners.forEach(this.setItem);
     }
 
