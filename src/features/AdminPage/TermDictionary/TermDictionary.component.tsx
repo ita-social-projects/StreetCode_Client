@@ -15,7 +15,7 @@ import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
 import { Term } from '@/models/streetcode/text-contents.model';
 
 const TermDictionary = () => {
-    const {termsStore } = useMobx();
+    const { termsStore } = useMobx();
     const { modalStore } = useModalContext();
     const { fetchTerms } = termsStore;
     const { setModal } = modalStore;
@@ -34,7 +34,6 @@ const TermDictionary = () => {
     }, []);
 
     const handleAdd = () => {
-        
         const newTerm : Term = {
             id: 0,
             title: term?.title as string,
@@ -43,7 +42,7 @@ const TermDictionary = () => {
         termsStore.createTerm(newTerm).then(
             (response) => {
                 setData([...data || [], response ?? newTerm]);
-                setTerm({ title: '', description: '' }); 
+                setTerm({ title: '', description: '' });
             },
         );
     };
