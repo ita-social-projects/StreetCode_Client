@@ -14,12 +14,22 @@ import QRCodeSmall from '@/assets/images/donates/donatesPage/qr-code-small.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 
 import DonationBlock from './components/DonationBlock.component';
+import { useState } from 'react';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useModalContext();
     const BANK_ACCOUNT = 'UA753057490000026003000018553';
 
     const windowSize = useWindowSize();
+    
+    const [isCopied, setIsCopied] = useState(false);
+
+    const handleCopy1 = () => {
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000 );
+    };
 
     const handleCopy = async () => {
         try {
@@ -39,7 +49,7 @@ const SupportUs = () => {
                 <div className="heading">
                     <div className="titleBig">
                         {' '}
-Підтримати
+                        Підтримати
                         {' '}
                         {windowSize.width >= 480 && <>нас</>}
                     </div>
@@ -98,20 +108,20 @@ const SupportUs = () => {
                 <div className="donateSubBlocks">
                     <div className="block qr">
                         <p className="heading">На карту</p>
-	                    <div className="content">
+                        <div className="content">
                             {
                                 windowSize.width > 1200 ? <QRCode />
                                     : windowSize.width > 480 ? <QRCodeSmall />
                                         : undefined
                             }
-                     </div>
+                        </div>
                         <button className="supportButton" onClick={handlePay}>Задонатити</button>
                     </div>
                     <div className="block forCompanies">
                         <p className="heading">Для компаній</p>
                         <div className="content">
                             <p>
-Сконтактуй з нашою командою щодо Стріткод—партнерства та внесків на
+                                Сконтактуй з нашою командою щодо Стріткод—партнерства та внесків на
                                 історію в просторі міст від юридичних осіб. Раді будемо запартнеритися
                                 із соціально—відповідальним бізнесом.
 
@@ -131,10 +141,14 @@ const SupportUs = () => {
                                 <p className="thickerText">{BANK_ACCOUNT}</p>
                             </div>
                         </div>
-                        <div className="supportButton withSvg" onClick={handleCopy}>
-                            <span>Скопіювати рахунок UAH</span>
-                            <Copy />
+                        <div>
+                            <button className="supportButton withSvg" onClick={() => {handleCopy(); handleCopy1();}}>
+                                <span>Скопіювати рахунок UAH</span>
+                                <Copy />
+                            </button>
+                            {isCopied && <div className='CoppyMessage'>Скопійовано  </div>}
                         </div>
+
                     </div>
                 </div>
                 <p className="bottomText">
