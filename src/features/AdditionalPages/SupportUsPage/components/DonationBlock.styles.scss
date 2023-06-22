@@ -43,7 +43,6 @@
   .amountInput {
     @include mut.with-font(ft.$closer-text-font, $font-size: 40px, $font-weight: 500);
     text-align: right;
-    --input-width: f.pxToRem(42px);
     color: c.$darkish-gray-color;
     border: none;
     padding: 0;
@@ -56,6 +55,10 @@
 
     &:focus {
       outline: none;
+    }
+
+    &::placeholder {
+      color: c.$darkish-gray-color;
     }
   }
 

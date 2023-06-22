@@ -46,7 +46,7 @@ const DonationBlock = () => {
     const zeroWidth = windowSize.width > 1400 ? 2 : 1;
 
     const count = (donateAmount.toString().match(/1/g) || []).length;
-    const zeroCount = (donateAmount.toString().match(/0/g) || []).length;
+    const zeroCount = (donateAmount.toString().match(/[069]/g) || []).length;
 
 
     const inputWidth =  donateAmount.toString().length * charWidth - count * firstWidth + zeroCount * zeroWidth;
@@ -98,8 +98,9 @@ const DonationBlock = () => {
                 <input
                     onChange={handleDonateInputChange}
                     style={{ ...style, width: 'var(--input-width)' }}
-                    maxLength={14}
-                    value={`${donateAmount.toString()}`}
+                    placeholder={'0'}
+                    type='number'
+                    value={donateAmount === 0 ? '' : donateAmount}
                     className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                 />
                 <div className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} GryvnaSymbol`}>₴</div>
