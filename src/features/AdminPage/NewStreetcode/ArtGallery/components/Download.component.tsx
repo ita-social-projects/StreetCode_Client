@@ -10,6 +10,8 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import Image from '@/models/media/image.model';
 import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
+import base64ToUrl from '../../../../../app/common/utils/base64ToUrl.utility';
+
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
@@ -32,7 +34,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
         if (arts.length > 0) {
             const newFileList = arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
                 uid: `${streetcodeArt.index}`,
-                name: streetcodeArt.art.image.title,
+                name: streetcodeArt.art.image.imageDetails?.alt,
                 status: 'done',
                 thumbUrl: base64ToUrl(streetcodeArt.art.image.base64, streetcodeArt.art.image.mimeType) ?? '',
                 type: streetcodeArt.art.image.mimeType,
@@ -55,7 +57,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
     const onChange = (uploadParams: UploadChangeParam<UploadFile<any>>) => {
         uidsFile.current = uploadParams.file.uid;
         const status = uploadParams.file.status ?? 'removed';
-        if (status != 'removed') {
+        if (status !== 'removed') {
             setFileList(uploadParams.fileList.map((x) => x));
         }
     };

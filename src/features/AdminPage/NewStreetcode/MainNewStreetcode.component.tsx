@@ -1,4 +1,6 @@
 /* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable max-len */
 import './MainNewStreetcode.styles.scss';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -15,7 +17,9 @@ import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 
-import { Button, ConfigProvider, Form, Modal } from 'antd';
+import {
+    Button, ConfigProvider, Form, Modal, UploadFile,
+} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -99,17 +103,14 @@ const NewStreetcode = () => {
 
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                const artToUpdate = result.map((streetcodeArt) => ({
-                    ...streetcodeArt,
-                    art: {
-                        ...streetcodeArt.art,
-                        image: {
-                            ...streetcodeArt.art.image,
-                            title: streetcodeArt.art.title ?? '',
-                        },
-                    },
-                    modelState: ModelState.Updated,
-                    isPersisted: true,
+                const newArts = result.map((x) => ({
+                    description: x.art.description ?? '',
+                    title: x.art.title ?? '',
+                    imageId: x.art.imageId,
+                    image: x.art.image.base64,
+                    index: x.index,
+                    mimeType: x.art.image.mimeType,
+                    uidFile: `${x.index}`,
                 }));
                 setArts([...artToUpdate]);
             });

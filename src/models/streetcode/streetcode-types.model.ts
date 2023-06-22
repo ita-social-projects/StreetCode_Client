@@ -1,10 +1,10 @@
-import Subtitle, { SubtitleCreate, SubtitleCreateUpdate } from '@models/additional-content/subtitles.model';
+import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-content/tag.model';
-import Art, { ArtCreateDTO, ArtUpdate, IndexedArt } from '@models/media/art.model';
+import Art from '@models/media/art.model';
 import Audio, { AudioUpdate } from '@models/media/audio.model';
-import Image, { ImageCreate, ImageUpdate } from '@models/media/image.model';
+import Image, { ImageUpdate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
-import StreetcodePartner, { PartnerCreateUpdate, PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
+import StreetcodePartner, { PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
 import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
@@ -15,7 +15,7 @@ import StreetcodeCoordinate from '../additional-content/coordinate.model';
 import StatisticRecord, { StatisticRecordUpdate } from '../analytics/statisticrecord.model';
 import { StreetcodeArtCreateUpdate } from '../media/streetcode-art.model';
 
-import { Fact, FactUpdate, Text, TextCreate, TextCreateUpdate } from './text-contents.model';
+import { Fact, FactCreate, FactUpdate, TextCreateUpdate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -117,9 +117,9 @@ export interface StreetcodeCreate {
     images: Image[],
     audioId: number | null,
     streetcodeType: StreetcodeType,
-    text: TextCreate | null,
+    text: TextCreateUpdate | null,
     videos: VideoCreate[],
-    facts: Fact[],
+    facts: FactCreate[],
     timelineItems: TimelineItem[],
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
