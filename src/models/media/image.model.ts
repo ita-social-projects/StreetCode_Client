@@ -2,19 +2,22 @@ import IModelState from '@models/interfaces/IModelState';
 
 export default interface Image {
     id: number;
-    alt?: string | undefined;
-    title?: string;
     base64: string;
     blobName: string;
     mimeType: string;
+    imageDetails?: ImageDetails;
 }
 
 export interface ImageCreate {
-    alt?: string ;
     title?: string ;
     baseFormat: string;
     mimeType: string;
     extension: string;
+}
+export interface ImageDetails {
+    id: number;
+    title: string;
+    alt: string;
 }
 
 export interface ImageUpdate extends Image, IModelState {

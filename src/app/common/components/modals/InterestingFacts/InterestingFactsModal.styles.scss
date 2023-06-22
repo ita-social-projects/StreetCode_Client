@@ -35,6 +35,25 @@
   .factsImgContainer {
     @include mut.flex-centered();
     @include mut.sizedImportant(100%, 400px);
+    position: relative;
+    .description-popup{
+      visibility: hidden;
+      position: absolute;
+      background-color: c.$hover-wow-fact-background;
+      color: c.$pure-white-color;
+      width:100%;
+      bottom: 0;
+      p{
+        @include mut.with-font( $font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px, $font-style: normal);
+        @include mut.rem-padded(13px, 13px, 13px, 13px);
+      }
+    }
+    .description-popup-visible, &:hover>.description-popup{
+      @if((&:content !=undefined) and (&:content !='')){
+        visibility: visible;
+      }
+
+    }
 
     img{
       @include mut.rounded(70px, 70px);
