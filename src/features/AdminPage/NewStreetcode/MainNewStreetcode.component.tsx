@@ -119,8 +119,8 @@ const NewStreetcode = () => {
                     title: x.title,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
-                    firstDate: x.eventStartOrPersonBirthDate,
-                    secondDate: x.eventEndOrPersonDeathDate,
+                    streetcodeFirstDate: x.eventStartOrPersonBirthDate,
+                    streetcodeSecondDate: x.eventEndOrPersonDeathDate,
                     teaser: x.teaser,
                     video,
                 });
@@ -243,11 +243,11 @@ const NewStreetcode = () => {
             streetcodeId: parseId,
         };
 
-        const firstDateCreate = form.getFieldValue('firstDate')
-            ? new Date(form.getFieldValue('firstDate').toString()) : (parseId ? firstDate : null);
+        const firstDateCreate = form.getFieldValue('streetcodeFirstDate')
+            ? new Date(form.getFieldValue('streetcodeFirstDate').toString()) : (parseId ? firstDate : null);
 
-        const secondDateCreate = form.getFieldValue('secondDate')
-            ? new Date(form.getFieldValue('secondDate').toString()) : (parseId ? secondDate : null);
+        const secondDateCreate = form.getFieldValue('streetcodeSecondDate')
+            ? new Date(form.getFieldValue('streetcodeSecondDate').toString()) : (parseId ? secondDate : null);
 
         const streetcode: StreetcodeCreate = {
             id: parseId,
@@ -257,8 +257,8 @@ const NewStreetcode = () => {
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
-            eventStartOrPersonBirthDate: new Date(firstDateCreate - localOffset),
-            eventEndOrPersonDeathDate: new Date(secondDateCreate - localOffset),
+            eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
+            eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
             images: createUpdateMediaStore.imagesUpdate,
             audioId: createUpdateMediaStore.audioId,
             tags: selectedTags,
