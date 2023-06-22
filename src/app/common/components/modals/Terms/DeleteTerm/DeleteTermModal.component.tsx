@@ -3,9 +3,9 @@ import './DeleteTermModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 
 import { Term } from '@/models/streetcode/text-contents.model';
 
@@ -23,18 +23,10 @@ const DeleteTermModal = ({ handleDelete, term } : Props) => {
             closeIcon={<CancelBtn />}
             open={deleteTerm.isOpen}
             onCancel={() => setModal('deleteTerm')}
-            footer={[
-                <Button onClick={() => setModal('deleteTerm')}>Відміна</Button>,
-                <Button
-                    className="submit"
-                    onClick={() => {
-                        handleDelete(term?.id as number);
-                        setModal('deleteTerm');
-                    }}
-                >
-                    Видалити
-                </Button>,
-            ]}
+            onOk={() => {
+                handleDelete(term?.id as number);
+                setModal('deleteTerm');
+            }}
         >
             <h2>Ви впевнені, що бажаєте видалити визначення?</h2>
             <p>

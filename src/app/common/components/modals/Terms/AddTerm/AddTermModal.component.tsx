@@ -1,67 +1,71 @@
-import '@features/AdminPage/AdminModal.styles.scss';
+import './AddTermModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-import { Term } from '@/models/streetcode/text-contents.model';
+
 import { observer } from 'mobx-react-lite';
-import { Button, Form, Input } from 'antd';
+import { useModalContext } from '@stores/root-store';
+
+import { Button, Form, Input, Modal } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import Modal from 'antd/es/modal/Modal';
-import useMobx, { useModalContext } from '@stores/root-store';
-import { useEffect } from 'react';
+
+import { Term } from '@/models/streetcode/text-contents.model';
 
 interface Props {
-    handleAdd: () => void;
+    handleAdd: (id: number, title: string, description: string | undefined) => void;
     term: Partial<Term> | undefined;
     setTerm: React.Dispatch<React.SetStateAction<Partial<Term> | undefined>>;
 }
 
 const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
     const { modalStore: { setModal, modalsState: { addTerm } } } = useModalContext();
-    const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTerm({ ...term, title: e.target.value });
-    };
-    
+    const [form] = Form.useForm();
     const handleChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTerm({ ...term, description: e.target.value });
     };
 
+    const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTerm({ ...term, title: e.target.value });
+    };
+
+    const onSuccessfulSubmit = () => {
+        handleAdd(term?.id as number, term?.title as string, term?.description);
+        setModal('addTerm');
+        form.resetFields();
+    };
+
+    const onCancel = () => {
+        form.resetFields();
+        setModal('addTerm');
+    };
+
     return (
         <Modal
-            className="modalContainer"
+            className="editModal"
             open={addTerm.isOpen}
-            onCancel={() => setModal('addTerm')}
-            footer={null}
+            onCancel={onCancel}
+            footer={[null]}
             closeIcon={<CancelBtn />}
         >
-            <Form 
-                layout="vertical"
-                id="myForm" 
-                onFinish={() => handleAdd}
+            <h2>Створення визначення</h2>
+            <Form form={form} onFinish={onSuccessfulSubmit} layout="vertical">
+                <FormItem
+                    name="title"
+                    label="Назва"
+                    rules={[{ required: true, message: 'Введіть назву' }]}
                 >
-                <div className='center'>
-                    <h2>Створення нового визначення</h2>
-                </div>
-
-                <FormItem label="Назва">
-                    <Input value={term?.title} onChange={handleChangeTitle} />
+                    <Input value={term?.title} onChange={handleChangeTitle} showCount maxLength={50} />
                 </FormItem>
-                
-                <FormItem label="Визначення">
+                <FormItem
+                    name="description"
+                    label="Визначення"
+                    rules={[{ required: true, message: 'Введіть опис' }]}
+                >
                     <TextArea value={term?.description} onChange={handleChangeDesc} />
                 </FormItem>
-
-                <div className='center'>
-                    <Button 
-                        className='streetcode-custom-button'
-                        onClick={() => {
-                            handleAdd();
-                            setModal('addTerm');
-                        }}
-                        >
-                        Зберегти
-                    </Button>
-                </div>
+                <Button className="streetcode-custom-button" onClick={() => form.submit()}>
+                    Зберегти
+                </Button>
             </Form>
         </Modal>
     );

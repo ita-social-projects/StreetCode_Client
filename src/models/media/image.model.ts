@@ -1,4 +1,4 @@
-import Url from '@models/additional-content/url.model';
+import IModelState from '@models/interfaces/IModelState';
 
 export default interface Image {
     id: number;
@@ -15,4 +15,8 @@ export interface ImageCreate {
     baseFormat: string;
     mimeType: string;
     extension: string;
+}
+
+export interface ImageUpdate extends Image, IModelState {
+    streetcodeId?: number | null;
 }

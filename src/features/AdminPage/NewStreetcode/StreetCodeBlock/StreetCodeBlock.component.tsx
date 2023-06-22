@@ -44,8 +44,6 @@ import TimelineBlockAdmin from '../TimelineBlock/TimelineBlockAdmin.component';
 import Video from '@/models/media/video.model';
 import { useParams } from 'react-router-dom';
 
-
-
 const streetCodeBlock = () => {
     const [form] = useForm();
     const { factsStore, timelineItemStore, newStreetcodeInfoStore, sourceCreateUpdateStreetcode } = useMobx();
@@ -85,7 +83,6 @@ const streetCodeBlock = () => {
             });
             StreetcodesApi.getById(parseId).then(x => {
                 if (x.lastName && x.firstName) {
-
                     form.setFieldsValue({
                         surname: x.lastName,
                         name: x.firstName,

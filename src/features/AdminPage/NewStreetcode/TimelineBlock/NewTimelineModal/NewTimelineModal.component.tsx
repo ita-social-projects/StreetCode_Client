@@ -1,9 +1,13 @@
+/* eslint-disable max-len */
 import './NewTimelineModal.style.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
+import getMaxId from '@app/common/utils/getMaxId';
+import useMobx from '@app/stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import { ModelState } from '@models/enums/model-state';
 import dayjs from 'dayjs';
 
 import {
@@ -11,13 +15,10 @@ import {
     DatePicker, Form, Input, Modal, Select,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { Option } from 'antd/es/mentions';
 
-import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
-import useMobx from '@/app/stores/root-store';
 import TimelineItem, {
     dateTimePickerTypes,
-    HistoricalContext, selectDateOptionsforTimeline,
+    HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 
 const NewTimelineModal: React.FC<{
@@ -37,13 +38,16 @@ const NewTimelineModal: React.FC<{
                 title: timelineItem.title,
                 description: timelineItem.description,
                 date: dayjs(timelineItem.date),
-                historicalContexts: timelineItem.historicalContexts.map((c) => c.title),
+                historicalContexts: timelineItem.historicalContexts
+                    .filter((x) => (x as HistoricalContextUpdate).modelState !== ModelState.Deleted)
+                    .map((c) => c.title),
             });
             selectedContext.current = timelineItem.historicalContexts;
         } else {
             selectedContext.current = [];
         }
     }, [timelineItem, open, form]);
+
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
@@ -58,20 +62,20 @@ const NewTimelineModal: React.FC<{
                 item.historicalContexts = selectedContext.current;
             }
         } else {
-            const newTimeline: TimelineItem = {
-                date: new Date(formValues.date - localOffset),
-                id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
-                title: formValues.title,
-                description: formValues.description,
-                historicalContexts: selectedContext.current,
-                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType),
-            };
+            const newTimeline: TimelineItem = { date: formValues.date,
+                                                id: getMaxId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
+                                                title: formValues.title,
+                                                description: formValues.description,
+                                                historicalContexts: selectedContext.current,
+                                                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType) };
+
             timelineItemStore.addTimeline(newTimeline);
         }
 
         setIsModalOpen(false);
         form.resetFields();
     };
+
     const onContextSelect = (value: string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
@@ -79,16 +83,35 @@ const NewTimelineModal: React.FC<{
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 return;
             }
-            const newItem = { id: 0, title: value };
+            const newItem: HistoricalContextUpdate = {
+                id: 0,
+                title: value,
+                modelState: ModelState.Created,
+            };
+
             historicalContextStore.addItemToArray(newItem);
             selectedContext.current.push(newItem);
         } else {
-            selectedContext.current.push(historicalContextStore.historicalContextArray[index]);
+            const persistedContext = selectedContext.current.find((x) => x.title === value) as HistoricalContextUpdate;
+            if (persistedContext) { // for case when delete persisted item and add it again
+                persistedContext.modelState = ModelState.Updated;
+            } else {
+                const historicalContext = historicalContextStore.historicalContextArray[index] as HistoricalContextUpdate;
+                historicalContext.modelState = ModelState.Created;
+                selectedContext.current.push(historicalContext);
+            }
         }
     };
-    const onContextDeselect = (value: string) => {
-        selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
+
+    const onContextDeselect = (value:string) => {
+        const historicalContext = selectedContext.current.find((x) => x.title === value) as HistoricalContextUpdate;
+        if (historicalContext?.isPersisted) {
+            historicalContext.modelState = ModelState.Deleted;
+        } else {
+            selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
+        }
     };
+
     return (
         <Modal
             className="modalContainer"
@@ -159,11 +182,10 @@ const NewTimelineModal: React.FC<{
                             maxLength={20}
                         >
                             {historicalContextStore.historicalContextArray
-                                .map((cntx, index) => (
-                                    <Option
-                                        key={`${cntx.id + index}`}
-                                        value={cntx.title}
-                                    />
+                                .map((cntx) => (
+                                    <Select.Option key={cntx.id} value={cntx.title}>
+                                        {cntx.title}
+                                    </Select.Option>
                                 ))}
                         </Select>
                     </Form.Item>
