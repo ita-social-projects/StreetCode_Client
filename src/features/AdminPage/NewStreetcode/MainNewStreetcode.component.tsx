@@ -14,6 +14,7 @@ import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+import dayjs from 'dayjs';
 
 import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -45,7 +46,6 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import dayjs from 'dayjs';
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
@@ -248,7 +248,7 @@ const NewStreetcode = () => {
             arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
             eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
-            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate') 
+            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                 ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
             images: createUpdateMediaStore.imagesUpdate,
             audioId: createUpdateMediaStore.audioId,
@@ -319,17 +319,10 @@ const NewStreetcode = () => {
 
             const arUrl = form.getFieldValue('arlink');
             const arLinkUpdated: TransactionLink = {
-                ...arLink,
                 id: arLink?.id ?? 0,
                 streetcodeId: parseId,
-                url: {
-                    ...arLink?.url,
-                    href: arUrl || '',
-                },
-                qrCodeUrl: {
-                    ...arLink?.url,
-                    href: arUrl || '',
-                },
+                url: arLink?.url ?? '',
+                urlTitle: arLink?.urlTitle ?? '',
             };
 
             const streetcodeUpdate: StreetcodeUpdate = {
@@ -414,7 +407,10 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock />
                             <TimelineBlockAdmin />
-                            <MapBlockAdmin />
+
+                            {process.env.NODE_ENV === 'production'
+                                ? <MapBlockAdmin coordinates={coordinates} /> : <></>}
+
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />

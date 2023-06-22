@@ -15,7 +15,7 @@ import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
 import { Term } from '@/models/streetcode/text-contents.model';
 
 const TermDictionary = () => {
-    const {termsStore } = useMobx();
+    const { termsStore } = useMobx();
     const { modalStore } = useModalContext();
     const { fetchTerms } = termsStore;
     const { setModal } = modalStore;
@@ -23,8 +23,8 @@ const TermDictionary = () => {
     const [data, setData] = useState<Term[]>();
 
     const setTableState = async () => {
-        await termsApi.getAll().then((responce) => {
-            setData(responce);
+        await termsApi.getAll().then((response) => {
+            setData(response);
         });
     };
 
@@ -34,7 +34,6 @@ const TermDictionary = () => {
     }, []);
 
     const handleAdd = () => {
-        
         const newTerm : Term = {
             id: 0,
             title: term?.title as string,
@@ -43,7 +42,7 @@ const TermDictionary = () => {
         termsStore.createTerm(newTerm).then(
             (response) => {
                 setData([...data || [], response ?? newTerm]);
-                setTerm({ title: '', description: '' }); 
+                setTerm({ title: '', description: '' });
             },
         );
     };
@@ -53,19 +52,16 @@ const TermDictionary = () => {
         setData((data?.filter((termId) => termId.id !== id)) || []);
     };
 
-    const handleEdit = (id: number, title: string, description: string | undefined) => {
-        const updatedTerm : Term = {
-            id,
-            title,
-            description,
-        };
-        termsStore.updateTerm(id, updatedTerm);
-        setData(data?.map(
-            (t) => (t.id === term?.id
-                ? { ...t,
-                    title: term?.title as string,
-                    description: term.description === undefined ? '' : term.description as string } : t),
-        ));
+    const handleEdit = (upd: Partial<Term>) => {
+        if (upd.id && upd) {
+            termsStore.updateTerm(upd.id, upd);
+            setData(data?.map(
+                (t) => (t.id === upd?.id
+                    ? { ...t,
+                        title: upd?.title as string,
+                        description: upd.description === undefined ? '' : upd.description as string } : t),
+            ));
+        }
     };
     const columns = [
         {
@@ -146,7 +142,7 @@ const TermDictionary = () => {
                 </div>
                 <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
                 <DeleteTermModal term={term} handleDelete={handleDelete} />
-                <EditTermModal term={term} setTerm={setTerm} handleEdit={handleEdit} />
+                <EditTermModal term={term} handleEdit={handleEdit} />
             </div>
         </div>
     );
