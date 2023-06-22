@@ -15,6 +15,7 @@ import ImagesApi from '@/app/api/media/images.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
+import { observer } from 'mobx-react-lite';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -147,4 +148,4 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     );
 };
 
-export default StreetcodeCard;
+export default observer(StreetcodeCard);

@@ -3,7 +3,8 @@ import Image from './image.model';
 export default interface Art {
     id: number;
     description?: string | undefined;
-    title?: string | undefined;
+    title?: string;
+    imageId: number;
     image: Image;
 }
 
@@ -18,4 +19,21 @@ export interface IndexedArt {
     offset: number;
     title: string;
     sequenceNumber: number;
+}
+export interface ArtCreate {
+    imageId:number;
+    description?: string;
+    image: string;
+    index: number;
+    title?: string;
+    mimeType:string;
+    uidFile:string;
+}
+
+export interface ArtCreateDTO {
+    imageId:number;
+    description: string;
+    index: number;
+    title: string;
+    mimeType:string;
 }

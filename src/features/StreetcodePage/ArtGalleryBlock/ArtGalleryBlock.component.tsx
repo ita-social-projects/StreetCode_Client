@@ -92,7 +92,7 @@ const ArtGalleryBlock = () => {
                 sequenceNumber,
             } as IndexedArt);
             if (artsData.length >= 2) {
-                if (artsData[0].offset === 1 && artsData[1].offset != 1) {
+                if (artsData[0].offset === 1 && artsData[1].offset !== 1) {
                     sortedArtsList.forEach((x) => {
                         if (x.index === artsData[0].index) x.offset = 4;
                     });
@@ -177,10 +177,11 @@ const ArtGalleryBlock = () => {
     sortedArtsListSmall.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offset == 4) {
+        if (offset === 4) {
             offset = 1;
         }
-        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL && offsetSumForSlideSmall + offset <= SECTION_AMOUNT_SMALL) {
+        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL
+            && offsetSumForSlideSmall + offset <= SECTION_AMOUNT_SMALL) {
             offsetSumForSlideSmall += offset ?? 0;
             offsetSumSmall += offset ?? 0;
             sequenceNumberSmall = index - 1;

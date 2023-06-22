@@ -20,10 +20,10 @@ const LightboxComponent = () => {
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
     const slides = useMemo(() => getStreetcodeArtArray.map(
-        ({ art: { image: { base64, mimeType, alt }, description }, index }) => ({
+        ({ art: { image: { base64, mimeType }, description, title }, index }) => ({
             src: base64ToUrl(base64, mimeType),
             title: `${index}/${getStreetcodeArtArray.length}`,
-            description: `${alt ?? ''}. \n\n${description ?? ''}`
+            description: `${title ?? ''}. \n\n${description ?? ''}`,
         }),
 
     ), [getStreetcodeArtArray]);
