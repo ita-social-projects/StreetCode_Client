@@ -249,9 +249,6 @@ const NewStreetcode = () => {
         const secondDateCreate = form.getFieldValue('secondDate')
             ? new Date(form.getFieldValue('secondDate').toString()) : (parseId ? secondDate : null);
 
-        console.log(firstDateCreate);
-        console.log(secondDateCreate);
-
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -354,7 +351,7 @@ const NewStreetcode = () => {
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
-                eventStartOrPersonBirthDate: firstDateCreate  ? new Date(firstDateCreate - localOffset) : null,
+                eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
                 eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
                 teaser: form.getFieldValue('teaser'),
                 dateString: form.getFieldValue('dateString') ?? dateString,
