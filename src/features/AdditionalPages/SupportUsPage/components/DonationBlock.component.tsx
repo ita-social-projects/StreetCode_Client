@@ -99,7 +99,7 @@ const DonationBlock = () => {
                     onChange={handleDonateInputChange}
                     style={{ ...style, width: 'var(--input-width)' }}
                     placeholder={'0'}
-                    type='number'
+                    maxLength={15}
                     value={donateAmount === 0 ? '' : donateAmount}
                     className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                 />
