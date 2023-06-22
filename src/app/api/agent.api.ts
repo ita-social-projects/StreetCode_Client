@@ -6,16 +6,16 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
 import UserLoginStore from '../stores/user-login-store';
 
-axios.defaults.baseURL = 'https://localhost:5001/api';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development'
+    ? 'https://localhost:5001/api' : 'http://185.230.138.173:5000';
 
 axios.interceptors.response.use(
     async (response) => response,
     ({ response, message }: AxiosError) => {
-        if (message === 'Network Error') {
-            toast.error(message);
-        }
         let errorMessage = '';
-
+        if (message === 'Network Error') {
+            errorMessage = message;
+        }
         switch (response?.status) {
         case StatusCodes.INTERNAL_SERVER_ERROR:
             errorMessage = ReasonPhrases.INTERNAL_SERVER_ERROR;
