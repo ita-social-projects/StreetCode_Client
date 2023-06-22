@@ -28,7 +28,7 @@ const DonationBlock = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        const newValue = target.value;
+        const newValue = target.value.replace(/\D/g, "");
         if (!newValue) {
             setDonateAmount(0);
         } else {
@@ -89,7 +89,7 @@ const DonationBlock = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, [donateAmount]);
-
+    
     return (
         <div className="donatesBlockContent">
             <h1>Підтримай проєкт</h1>
