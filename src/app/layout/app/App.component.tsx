@@ -9,10 +9,11 @@ import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import MainPage from '@features/MainPage/MainPage.component';
 import HeaderBlock from '@layout/header/HeaderBlock.component';
 import ModalWrapper from '@layout/ModalWrapper.component';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
+
+import CopyWithCopyright from '@/app/common/components/CopyWithCopyright.component';
 
 import Footer from '../footer/Footer.component';
-import CopyWithCopyright from '@/app/common/components/CopyWithCopyright.component';
 
 ReactGA.initialize('G-2RHY04JKG0');
 
@@ -21,17 +22,16 @@ const CopyrightText = `Джерело: «Стріткод: історія на �
 const App = () => {
     const { pathname } = useLocation();
     const { modalStore: { isPageDimmed } } = useModalContext();
-
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>
-            <ToastContainer position="bottom-right" limit={3}/>
+            <ToastContainer position="bottom-right" limit={3} />
             <CopyWithCopyright copyrightText={CopyrightText}>
                 <ModalWrapper />
             </CopyWithCopyright>
             <HeaderBlock />
-                <div className="mainWrapper">
-                    <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
-                    <CopyWithCopyright copyrightText={CopyrightText}>
+            <div className="mainWrapper">
+                <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
+                <CopyWithCopyright copyrightText={CopyrightText}>
                     {(pathname !== FRONTEND_ROUTES.BASE) && (
                         <Outlet />
                     )}
@@ -41,8 +41,8 @@ const App = () => {
                             <MainPage />
                         </>
                     )}
-                    </CopyWithCopyright>
-                </div>
+                </CopyWithCopyright>
+            </div>
             <div className="footerWrapper">
                 <Footer />
             </div>
