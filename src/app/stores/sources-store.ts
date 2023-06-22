@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
-import { SourceCategory, SourceCategoryAdmin } from '@models/sources/sources.model';
+import { SourceCategory } from '@models/sources/sources.model';
 
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();

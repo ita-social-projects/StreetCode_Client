@@ -10,7 +10,7 @@ const FRONTEND_ROUTES = {
         LOGIN: '/admin-panel/login',
         TEAM: '/admin-panel/team',
         ANALYTICS: '/admin-panel/analytics',
-        NEWS: '/admin-panel/news'
+        NEWS: '/admin-panel/news',
     },
     OTHER_PAGES: {
         CATALOG: '/catalog',

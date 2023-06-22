@@ -4,7 +4,7 @@ import Streetcode from '@models/streetcode/streetcode-types.model';
 export default interface Video {
     id: number;
     description?: string | undefined;
-    url: Url;
+    url: string;
     streetcode?: Streetcode | undefined;
     streetcodeId: number;
 }

@@ -1,19 +1,15 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import RelatedFigure from '@/models/streetcode/related-figure.model';
 import { useCallback, useState } from 'react';
+import { DeleteOutlined } from '@ant-design/icons';
+
 import { Modal } from 'antd';
+
+import { RelatedFigureCreateUpdate } from '@/models/streetcode/related-figure.model';
+
 interface Props {
-    relation: RelatedFigure;
-    relations: Array<RelatedFigure>;
-    setRelations: React.Dispatch<React.SetStateAction<Array<RelatedFigure>>>;
-    setFigures: React.Dispatch<React.SetStateAction<RelatedFigure[]>>;
+    figure: RelatedFigureCreateUpdate
+    handleDelete: (id: number) => void;
 }
-const RelatedItem = ({ relation, relations, setRelations, setFigures } : Props) => {
-    const deleteRelationHandle = async (id: number) => {
-        const newRelatedSCs = relations.filter((rel) => rel.id !== id);
-        setRelations(newRelatedSCs);
-        setFigures(newRelatedSCs);
-    };
+const RelatedItem = ({ figure, handleDelete } : Props) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const handleRemove = useCallback(() => {
         setVisibleModal(true);
@@ -25,18 +21,21 @@ const RelatedItem = ({ relation, relations, setRelations, setFigures } : Props) 
 
     return (
         <div className="relationItem">
-            <span className="text">{relation.title}</span>
+            <span className="text">{figure.title}</span>
             <div className="actions">
                 <span onClick={() => handleRemove()}>
                     <DeleteOutlined />
                 </span>
             </div>
             <Modal
-                    title="Ви впевнені, що хочете видалити даний Зв'язок історії?"
-                    open={visibleModal}
-                    onOk={(e) => {deleteRelationHandle(relation.id);setVisibleModal(false);}}
-                    onCancel={handleCancelModalRemove}
-                />
+                title="Ви впевнені, що хочете видалити даний Зв'язок історії?"
+                open={visibleModal}
+                onOk={(e) => {
+                    handleDelete(figure.id);
+                    setVisibleModal(false);
+                }}
+                onCancel={handleCancelModalRemove}
+            />
         </div>
     );
 };

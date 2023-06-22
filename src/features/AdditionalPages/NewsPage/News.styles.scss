@@ -24,38 +24,42 @@
         }
     }
     
-    .newsTextArea {
-        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-        overflow-wrap:break-word;
-
-        p {
-            padding-bottom: f.pxToRem(24px);
-
-            strong {
-                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500);
+    .newsWithImageWrapper {
+        overflow: auto;
+        
+        .newsTextArea {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+            overflow-wrap:break-word;
+    
+            p {
+                padding-bottom: f.pxToRem(24px);
+    
+                strong {
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500);
+                }
             }
         }
+    
+        .newsGoodImageClass.Full {
+            border: 6px solid c.$pure-white-color;
+            border-radius: f.pxToRem(30px);
+            margin-bottom: f.pxToRem(24px);
+            display: initial;
+            width: 100%;
+        }
+    
+        .newsImage {
+            margin-bottom: f.pxToRem(20px);
+            margin-left: f.pxToRem(20px);
+            height: 100%;
+            max-height: fit-content;
+            min-width: fit-content;
+            max-width: fit-content;
+            float: right;
+            border-radius: 24px;
+        }
     }
-
-    .newsGoodImageClass.Full {
-        border: 6px solid c.$pure-white-color;
-        border-radius: f.pxToRem(30px);
-        margin-bottom: f.pxToRem(24px);
-        display: initial;
-        width: 100%;
-    }
-
-    .newsImage {
-        margin-bottom: f.pxToRem(20px);
-        margin-left: f.pxToRem(20px);
-        height: 100%;
-        max-height: fit-content;
-        min-width:fit-content;
-        max-width: fit-content;
-        float: right;
-        border-radius: 24px;
-    }
-
+    
     .newsLinks {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         @include mut.flexed($justify-content:space-between, $align-items:center);
@@ -119,7 +123,7 @@
 
 @media screen and (max-width: 1024px) {
     .newsContainer{
-        @include mut.rem-padded($bottom: 20px, $top: 94px);
+        @include mut.rem-padded($bottom: 20px, $top: 94px, $left: 10px, $right: 10px);
 
         .wrapper {
             .NewsHeader {

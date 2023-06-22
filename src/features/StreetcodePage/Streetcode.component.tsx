@@ -2,8 +2,8 @@ import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { redirect, useLocation,} from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
@@ -17,11 +17,8 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
-
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
@@ -31,7 +28,6 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import { useMediaQuery } from 'react-responsive';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -91,13 +87,11 @@ const StreetcodeContent = () => {
             {!pageLoadercontext.isPageLoaded && (
                 <div className="loader-container">
                     <img
-                     rel="preload"
                         className="spinner"
                         alt=""
                         src={isMobile
                             ? require('@images/gifs/Logo-animation_web.gif')
-                            : require('@images/gifs/Logo-animation_mob.gif')    
-                          }
+                            : require('@images/gifs/Logo-animation_mob.gif')}
                     />
                 </div>
             )}
