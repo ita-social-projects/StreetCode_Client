@@ -119,7 +119,7 @@ const NewStreetcode = () => {
                     title: x.title,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
-                    streetcodeFirstDate: x.eventStartOrPersonBirthDate.toString(),
+                    // streetcodeFirstDate: x.eventStartOrPersonBirthDate,
                     // streetcodeSecondDate: x.eventEndOrPersonDeathDate,
                     teaser: x.teaser,
                     video,
@@ -163,6 +163,8 @@ const NewStreetcode = () => {
                     isPersisted: true,
                     modelState: ModelState.Updated,
                 }));
+                console.log(persistedFigures);
+
                 setFigures(persistedFigures);
             });
             PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then((result) => {
@@ -257,8 +259,10 @@ const NewStreetcode = () => {
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
-            eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
-            eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
+            // eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
+            // eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
+            eventStartOrPersonBirthDate: new Date().toISOString(),
+            eventEndOrPersonDeathDate: new Date().toISOString(),
             images: createUpdateMediaStore.imagesUpdate,
             audioId: createUpdateMediaStore.audioId,
             tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
@@ -273,7 +277,7 @@ const NewStreetcode = () => {
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
-            dateString: form.getFieldValue('dateString') ?? dateString,
+            dateString: new Date().toISOString(),
             streetcodeArts: arts,
             subtitles,
             firstName: null,
@@ -350,8 +354,10 @@ const NewStreetcode = () => {
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
-                eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
-                eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
+                // eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
+                // eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
+                eventStartOrPersonBirthDate: firstDate,
+                eventEndOrPersonDeathDate: secondDate,
                 teaser: form.getFieldValue('teaser'),
                 dateString: form.getFieldValue('dateString') ?? dateString,
                 videos: videosUpdate,

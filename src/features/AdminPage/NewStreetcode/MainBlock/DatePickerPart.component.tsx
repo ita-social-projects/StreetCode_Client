@@ -133,7 +133,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props)
                                         name="streetcodeFirstDate"
                                         className="my-picker"
                                     >
-                                        <DatePicker
+                                        {/* <DatePicker
                                             defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
                                             onChange={onChangeFirstDate}
                                             picker={(dateFirstTimePickerType !== 'season-year')
@@ -148,7 +148,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props)
                                                 : dateFirstTimePickerType === 'year'
                                                     ? 'yyyy'
                                                     : 'yyyy-mm')}
-                                        />
+                                        /> */}
                                     </FormItem>
                                 </div>
 
@@ -168,7 +168,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props)
                                         name="streetcodeSecondDate"
                                         className="my-picker"
                                     >
-                                        <DatePicker
+                                        {/* <DatePicker
                                             defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
                                             value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
                                             onChange={onChangeSecondDate}
@@ -184,7 +184,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props)
                                                 : dateSecondTimePickerType === 'year'
                                                     ? 'yyyy'
                                                     : 'yyyy-mm')}
-                                        />
+                                        /> */}
                                     </FormItem>
                                 </div>
                             </div>

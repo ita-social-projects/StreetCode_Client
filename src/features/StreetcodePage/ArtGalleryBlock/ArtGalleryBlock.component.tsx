@@ -251,9 +251,6 @@ const ArtGalleryBlock = () => {
         transform: 'translateZ(0)',
     };
 
-    console.log(slideOfArtList.length);
-    console.log(getStreetcodeArtArray.length);
-
     return (
         <div
             id="art-gallery"
