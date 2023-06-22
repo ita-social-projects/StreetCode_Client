@@ -3,6 +3,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
+import getMaxId from '@app/common/utils/getMaxId';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
@@ -17,7 +18,7 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import Image from '@/models/media/image.model';
-import { FactCreate } from '@/models/streetcode/text-contents.model';
+import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
 
 interface Props {
     fact?: FactCreate,
@@ -65,23 +66,27 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
         }
     }, [fact, open, form]);
 
-    const onSuccesfulSubmit = (inputedValues: any) => {
-        const item: FactCreate = {
-            id: getNewMinNegativeId(factsStore.getFactArray.map((f) => f.id)),
-            title: inputedValues.title,
-            factContent: inputedValues.factContent,
-            imageId: imageId.current,
-            imageDescription: inputedValues.imageDescription,
-        };
+    const onSuccesfulSubmit = (formValues: any) => {
         if (fact) {
-            item.id = fact.id;
-            factsStore.updateFactInMap(item);
+            const item = factsStore.factMap.get(fact.id);
+            if (item) {
+                item.title = formValues.title;
+                item.factContent = formValues.factContent;
+                item.imageId = imageId.current;
+            }
         } else {
-            factsStore.addFact(item);
+            const newFact: Fact = {
+                id: getNewMinNegativeId(factsStore.getFactArray.map((t) => t.id)),
+                title: formValues.title,
+                factContent: formValues.factContent,
+                imageId: imageId.current,
+            };
+
+            factsStore.addFact(newFact);
         }
 
-        form.resetFields();
         setModalOpen(false);
+        form.resetFields();
     };
 
     return (
@@ -124,7 +129,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             showCount
                         />
                     </Form.Item>
-
                     <FormItem
                         label="Зображення"
                         name="image"
@@ -149,6 +153,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             onSuccessUpload={(image: Image) => {
                                 imageId.current = image.id;
                             }}
+                            onRemove={(image) => {
+                                ImagesApi.delete(imageId.current);
+                            }}
                         >
                             <div>
                                 <InboxOutlined />
@@ -169,7 +176,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                     <div className="center">
                         <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
                     </div>
-
                 </Form>
             </div>
         </Modal>

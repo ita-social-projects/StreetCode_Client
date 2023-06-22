@@ -82,6 +82,7 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
 
         checkInfo();
     };
+
     return (
         <Upload
             {...uploadProps}

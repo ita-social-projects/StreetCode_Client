@@ -11,6 +11,7 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
+import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface Props {
     streetcode: StreetcodeCatalogRecord;
@@ -40,7 +41,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     return (
         <>
             {windowsize.width > 1024 && (
-                <Link {...LinkProps}>
+                <Link {...LinkProps} onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}>
                     <div ref={elementRef} className="catalogItemText">
                         <div className="heading">
                             <p>{streetcode.title}</p>

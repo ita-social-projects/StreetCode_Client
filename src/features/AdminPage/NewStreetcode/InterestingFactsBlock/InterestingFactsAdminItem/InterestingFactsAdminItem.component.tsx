@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';
+
 import { Modal } from 'antd';
 
 import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
@@ -43,7 +44,9 @@ const InterestingFactAdminItem = ({ fact }: Props) => {
                 <Modal
                     title="Ви впевнені, що хочете видалити даний Wow-факт?"
                     open={visibleModal}
-                    onOk={(e) => {factsStore.deleteFactFromMap(fact.id); setVisibleModal(false);}}
+                    onOk={(e) => {
+                        factsStore.deleteFactFromMap(fact.id); setVisibleModal(false);
+                    }}
                     onCancel={handleCancelModalRemove}
                 />
             </div>

@@ -5,41 +5,51 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { ArtCreate } from '@/models/media/art.model';
+import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
-const PreviewFileModal: React.FC<{
+interface Props {
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
-    art: ArtCreate;
-    onSave: (art: ArtCreate) => void
-}> = ({ opened, setOpened, onSave, art }) => {
+    streetcodeArt: StreetcodeArtCreateUpdate;
+    arts: StreetcodeArtCreateUpdate[],
+    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
+}
+
+const PreviewFileModal = ({
+    opened, setOpened, streetcodeArt, arts, setArts,
+}: Props) => {
     const [fileProps, setFileProps] = useState<{
         previewImage: string, previewTitle: string
     }>({ previewImage: '', previewTitle: '' });
-    const [newTitle, setTitle] = useState<string>();
-    const [newDesc, setDesc] = useState<string>();
+    const [newTitle, setTitle] = useState<string>('');
+    const [newDesc, setDesc] = useState<string>('');
 
     const handleCancel = () => {
         setOpened(false);
     };
+
     const handleSave = () => {
-        art.description = newDesc;
-        art.title = newTitle;
-        onSave(art);
+        const updated = arts.find((x) => x.art.image.id === streetcodeArt.art.image.id);
+        if (!updated) {
+            return;
+        }
+        updated.art.title = newTitle;
+        updated.art.description = newDesc;
+
+        setArts([...arts]);
         setOpened(false);
     };
+
     useEffect(() => {
-        if (opened) {
-            console.log(art);
-            setTitle(art?.title);
-            setDesc(art?.description);
-            const url = base64ToUrl(art?.image, art?.mimeType);
-            setFileProps({
-                previewImage: url || '',
-                previewTitle: art?.title || '',
-            });
-        }
+        setTitle(streetcodeArt?.art.title ?? '');
+        setDesc(streetcodeArt?.art.description ?? '');
+        const url = base64ToUrl(streetcodeArt?.art.image.base64, streetcodeArt?.art.image.mimeType);
+        setFileProps({
+            previewImage: url || '',
+            previewTitle: streetcodeArt?.art.title || '',
+        });
     }, [opened]);
+
     return (
         <Modal open={opened} title="Додаткові дані" style={{ top: 50 }} footer={null} onCancel={handleCancel}>
             <div className="artPreviewModal">

@@ -6,29 +6,38 @@
 import './ArtGalleryAdminStyles.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import { ArtCreate, IndexedArt } from '@models/media/art.model';
+import { IndexedArt } from '@models/media/art.model';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import ArtGallerySlide from '@/features/StreetcodePage/ArtGalleryBlock/ArtGalleryListOfItem/ArtGallerySlide.component';
+import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
-let SECTION_AMOUNT = 6;
+const SECTION_AMOUNT = 6;
 
-const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
+interface Props {
+    arts: StreetcodeArtCreateUpdate[],
+}
+
+const ArtGalleryAdminBlock = ({ arts }: Props) => {
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const isAdminPage = true;
+
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        arts!.forEach(async ({
-            description, image, index, title, mimeType,
-        }) => {
+
+        arts!.forEach(async (streetcodeArt) => {
             try {
-                if (image) {
-                    const url = base64ToUrl(image, mimeType);
+                if (streetcodeArt.art.image) {
+                    const url = base64ToUrl(streetcodeArt.art.image.base64, streetcodeArt.art.image.mimeType);
                     const { width, height } = await getImageSize(url!);
+                    const { index } = streetcodeArt;
+                    const { description } = streetcodeArt.art;
+                    const { title } = streetcodeArt.art;
+
                     newMap.push({
                         index,
                         description,
@@ -37,7 +46,8 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) {}
+            } catch (error: unknown) { /* empty */ }
+
             setIndexedArts(newMap);
         });
     }, [arts]);
@@ -68,7 +78,9 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
             } as IndexedArt);
             if (artsData.length >= 2) {
                 if (artsData[0].offset === 1 && artsData[1].offset != 1) {
-                    sortedArtsList.forEach(x => { if (x.index === artsData[0].index) x.offset = 4; })
+                    sortedArtsList.forEach((x) => {
+                        if (x.index === artsData[0].index) x.offset = 4;
+                    });
                     slideOfArtList.push(
                         <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
                     );
@@ -112,7 +124,7 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
 
     let offsetTmp = 0;
 
-    sortedArtsList.forEach(x => offsetTmp += x.offset);
+    sortedArtsList.forEach((x) => offsetTmp += x.offset);
 
     let offsetSlide = offsetTmp % 6;
 
@@ -138,18 +150,19 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
         }
     }
 
-    if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every(x => x.offset === 1)) {
+    if (offsetSlide === 3 && offsetSlide > 0 && lastSlide.every((x) => x.offset === 1)) {
         lastSlide[0].offset = 4;
     }
 
     if (offsetSlide < 3 && offsetSlide > 0) {
-        lastSlide.forEach(x => { if (x.offset === 1) x.offset = 4; })
+        lastSlide.forEach((x) => {
+            if (x.offset === 1) x.offset = 4;
+        });
     }
 
     const sliderProps = {
         className: 'artGallerySliderContainer',
         infinite: false,
-
         swipe: windowsize.width <= 1024,
         swipeOnClick: false,
         slidesToShow: windowsize.width >= 768 ? 1 : windowsize.width >= 480 ? 1 : undefined,
@@ -161,10 +174,10 @@ const ArtGalleryAdminBlock: React.FC<{ arts: ArtCreate[] }> = ({ arts }) => {
             <div className="artGalleryContainerAdmin">
                 <div className="artGalleryContentContainerAdmin">
                     <div className="artGallerySliderContainerAdmin">
-                        <SlickSlider
-                            {...sliderProps}
-                        >
-                            {slideOfArtList}
+                        <SlickSlider {...sliderProps}>
+                            {slideOfArtList.map((slide, index) => (
+                                <div key={index}>{slide}</div>
+                            ))}
                         </SlickSlider>
                     </div>
                 </div>

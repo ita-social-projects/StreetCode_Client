@@ -16,6 +16,7 @@ export default class RelatedTermsStore {
     };
 
     private set setRelatedTermMap(relatedTerms: RelatedTerm[]) {
+        this.storage.clear();
         relatedTerms.forEach((rt) => {
             this.setRelatedTermItem(rt);
         });

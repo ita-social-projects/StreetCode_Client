@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import timelineApi from '@api/timeline/timeline.api';
-import TimelineItem from '@models/timeline/chronology.model';
+import { ModelState } from '@models/enums/model-state';
+import TimelineItem, { HistoricalContextUpdate, TimelineItemUpdate } from '@models/timeline/chronology.model';
 
 export default class TimelineStore {
     public timelineItemMap = new Map<number, TimelineItem>();
@@ -12,22 +13,54 @@ export default class TimelineStore {
     }
 
     public addTimeline = (timelineItem: TimelineItem) => {
-        this.setItem(timelineItem);
+        const timelineitemToUpdate: TimelineItemUpdate = {
+            ...timelineItem,
+            modelState: ModelState.Created,
+            historicalContexts: timelineItem.historicalContexts as HistoricalContextUpdate[],
+        };
+
+        this.setItem(timelineitemToUpdate);
     };
 
     public deleteTimelineFromMap = (timelineItemId: number) => {
-        this.timelineItemMap.delete(timelineItemId);
+        const timelineItem = this.timelineItemMap.get(timelineItemId) as TimelineItemUpdate;
+        if (timelineItem && timelineItem.isPersisted) {
+            const timelineitemToUpdate: TimelineItemUpdate = {
+                ...timelineItem,
+                modelState: ModelState.Deleted,
+            };
+            this.setItem(timelineitemToUpdate);
+        } else {
+            this.timelineItemMap.delete(timelineItemId);
+        }
     };
 
     private setInternalMap = (timelineItems: TimelineItem[]) => {
-        timelineItems.forEach(this.setItem);
+        this.timelineItemMap.clear();
+        timelineItems.forEach((item) => {
+            const updatedContexts = item.historicalContexts.map((context) => {
+                const updatedContext = {
+                    ...context,
+                    isPersisted: true,
+                };
+                return updatedContext as HistoricalContextUpdate;
+            });
+
+            const updatedItem = {
+                ...item,
+                isPersisted: true,
+                historicalContexts: updatedContexts,
+            };
+
+            this.setItem(updatedItem);
+        });
     };
 
     private setItem = (timelineItem: TimelineItem) => {
         this.timelineItemMap.set(timelineItem.id, {
             ...timelineItem,
             date: new Date(timelineItem.date),
-        } as TimelineItem);
+        });
     };
 
     public setActiveYear = (year: number | null) => {
@@ -35,8 +68,21 @@ export default class TimelineStore {
     };
 
     get getTimelineItemArray() {
-        return Array.from(this.timelineItemMap.values())
+        return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[])
+            .filter((item: TimelineItemUpdate) => item.modelState !== ModelState.Deleted)
             .sort((prev, cur) => Number(prev.date) - Number(cur.date));
+    }
+
+    get getTimelineItemArrayToUpdate() {
+        return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[]).map((item) => {
+            const updatedItem = { ...item };
+
+            if (item.modelState === ModelState.Created) {
+                updatedItem.id = 0;
+            }
+            updatedItem.historicalContexts = item.historicalContexts.map((h) => ({ ...h, timelineId: updatedItem.id }));
+            return updatedItem;
+        });
     }
 
     get getYearsArray() {
@@ -50,14 +96,14 @@ export default class TimelineStore {
         try {
             const timelineItems = await timelineApi.getByStreetcodeId(streetcodeId);
             this.setInternalMap(timelineItems);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public createTimelineItem = async (timelineItem: TimelineItem) => {
         try {
             await timelineApi.create(timelineItem);
             this.setItem(timelineItem);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public updateTimelineItem = async (timelineItem: TimelineItem) => {
@@ -70,7 +116,7 @@ export default class TimelineStore {
                 };
                 this.setItem(updatedTimelineItem as TimelineItem);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public deleteTimelineItem = async (timelineItemId: number) => {
@@ -79,6 +125,6 @@ export default class TimelineStore {
             runInAction(() => {
                 this.timelineItemMap.delete(timelineItemId);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 }

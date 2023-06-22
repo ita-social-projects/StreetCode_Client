@@ -1,10 +1,16 @@
-import Streetcode from "../streetcode/streetcode-types.model";
-import Art from "./art.model";
+import IModelState from '@models/interfaces/IModelState';
+import IPersisted from '@models/interfaces/IPersisted';
+
+import Art, { ArtCreateUpdate } from './art.model';
 
 export default interface StreetcodeArt {
     index: number;
     streetcodeId: number;
-    streetcode: Streetcode;
-    artId: number;
     art: Art;
+}
+
+export interface StreetcodeArtCreateUpdate extends IModelState, IPersisted {
+    index: number;
+    art: ArtCreateUpdate;
+    streetcodeId?: number;
 }

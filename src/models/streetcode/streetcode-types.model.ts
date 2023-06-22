@@ -1,20 +1,21 @@
 import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
-import Tag, { StreetcodeTag } from '@models/additional-content/tag.model';
+import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-content/tag.model';
 import Art from '@models/media/art.model';
-import Audio from '@models/media/audio.model';
-import Image from '@models/media/image.model';
+import Audio, { AudioUpdate } from '@models/media/audio.model';
+import Image, { ImageUpdate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
-import StreetcodePartner, { PartnerShort } from '@models/partners/partners.model';
-import { SourceLink, StreetcodeCategoryContent } from '@models/sources/sources.model';
-import RelatedFigure from '@models/streetcode/related-figure.model';
-import TimelineItem from '@models/timeline/chronology.model';
-import Toponym from '@models/toponyms/toponym.model';
+import StreetcodePartner, { PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
+import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
+import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
+import Toponym, { ToponymCreateUpdate } from '@models/toponyms/toponym.model';
 import TransactionLink from '@models/transactions/transaction-link.model';
 
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
-import StatisticRecord from '../analytics/statisticrecord.model';
+import StatisticRecord, { StatisticRecordUpdate } from '../analytics/statisticrecord.model';
+import { StreetcodeArtCreateUpdate } from '../media/streetcode-art.model';
 
-import { Fact, FactCreate, TextCreate } from './text-contents.model';
+import { Fact, FactCreate, FactUpdate, TextCreateUpdate } from './text-contents.model';
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -113,19 +114,49 @@ export interface StreetcodeCreate {
     eventEndOrPersonDeathDate: Date,
     dateString: string,
     tags: StreetcodeTag[],
-    imagesId: Array<number | null>,
+    images: Image[],
     audioId: number | null,
     streetcodeType: StreetcodeType,
-    text: TextCreate | null,
+    text: TextCreateUpdate | null,
     videos: VideoCreate[],
     facts: FactCreate[],
     timelineItems: TimelineItem[],
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
-    relatedFigures: RelatedFigure[],
-    streetcodeArts: Art[],
-    toponyms: string[],
+    relatedFigures: RelatedFigureCreateUpdate[],
+    streetcodeArts: StreetcodeArtCreateUpdate[],
+    toponyms: ToponymCreateUpdate[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
     coordinates: StreetcodeCoordinate[],
     statisticRecords: StatisticRecord[],
+}
+
+export interface StreetcodeUpdate {
+    id: number,
+    index: number,
+    firstName: string | null,
+    lastName: string | null,
+    title: string,
+    teaser: string,
+    alias?: string,
+    transliterationUrl: string,
+    eventStartOrPersonBirthDate: Date | null,
+    eventEndOrPersonDeathDate: Date | null,
+    dateString: string,
+    streetcodeType: StreetcodeType,
+    videos: Video[],
+    facts: FactUpdate[],
+    relatedFigures: RelatedFigureUpdate[],
+    timelineItems: TimelineItemUpdate[],
+    partners: PartnerUpdate[],
+    streetcodeArts: StreetcodeArtCreateUpdate[];
+    subtitles: Subtitle[],
+    text: TextCreateUpdate | null,
+    streetcodeCategoryContents: StreetcodeCategoryContentUpdate[],
+    tags: StreetcodeTagUpdate[],
+    statisticRecords: StatisticRecordUpdate[],
+    toponyms: ToponymCreateUpdate[],
+    images: ImageUpdate[],
+    audios: AudioUpdate[],
+    arLink: TransactionLink;
 }

@@ -1,11 +1,13 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import tagsApi from '@api/additional-content/tags.api';
-import Tag from '@models/additional-content/tag.model';
+import Tag, { StreetcodeTagUpdate } from '@models/additional-content/tag.model';
 
 export default class TagsStore {
     public TagMap = new Map<number, Tag>();
 
     public TagCatalogMap = new Map<number, Tag>();
+
+    public TagToDeleteArray: StreetcodeTagUpdate[] = [];
 
     public constructor() {
         makeAutoObservable(this);
@@ -28,6 +30,18 @@ export default class TagsStore {
         this.TagCatalogMap.set(tag.id, tag);
     };
 
+    public setItemToDelete = (tag: StreetcodeTagUpdate) => {
+        this.TagToDeleteArray.push(tag);
+    };
+
+    public deleteItemFromArrayToDelete = (title: string) => {
+        this.TagToDeleteArray = this.TagToDeleteArray.filter((t) => t.title !== title);
+    };
+
+    get getTagToDeleteArray() {
+        return this.TagToDeleteArray;
+    }
+
     get getTagArray() {
         return Array.from(this.TagMap.values());
     }
@@ -39,20 +53,20 @@ export default class TagsStore {
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap = await tagsApi.getTagsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public fetchTagCatalogByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCatalog = await tagsApi.getTagsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public createTag = async (tag: Tag) => {
         try {
             await tagsApi.create(tag);
             this.setItem(tag);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public updateTag = async (tag: Tag) => {
@@ -65,7 +79,7 @@ export default class TagsStore {
                 };
                 this.setItem(updatedTag as Tag);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public deleteTag = async (tagId: number) => {
@@ -74,6 +88,6 @@ export default class TagsStore {
             runInAction(() => {
                 this.TagMap.delete(tagId);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 }

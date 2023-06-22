@@ -54,7 +54,7 @@ const ArtGalleryBlock = () => {
 
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        getStreetcodeArtArray?.forEach(async ({ art: { description, image, title }, index }) => {
+        getStreetcodeArtArray?.forEach(async ({ art: { description, title, image }, index }) => {
             try {
                 const url = base64ToUrl(image.base64, image.mimeType);
                 if (url) {
@@ -68,7 +68,7 @@ const ArtGalleryBlock = () => {
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) {}
+            } catch (error: unknown) { /* empty */ }
             setIndexedArts(newMap);
             setIndexedArtsSmall(newMap);
         });
@@ -92,7 +92,7 @@ const ArtGalleryBlock = () => {
                 sequenceNumber,
             } as IndexedArt);
             if (artsData.length >= 2) {
-                if (artsData[0].offset === 1 && artsData[1].offset != 1) {
+                if (artsData[0].offset === 1 && artsData[1].offset !== 1) {
                     sortedArtsList.forEach((x) => {
                         if (x.index === artsData[0].index) x.offset = 4;
                     });
@@ -251,6 +251,10 @@ const ArtGalleryBlock = () => {
         touchThreshold: 25,
         transform: 'translateZ(0)',
     };
+
+    console.log(slideOfArtList.length);
+    console.log(getStreetcodeArtArray.length);
+
     return (
         <div
             id="art-gallery"

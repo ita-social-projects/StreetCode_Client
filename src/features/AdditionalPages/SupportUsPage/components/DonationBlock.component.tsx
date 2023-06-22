@@ -6,6 +6,7 @@ import { Button, Checkbox } from 'antd';
 
 import DonationApi from '@/app/api/donates/donation.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Donation from '@/models/feedback/donation.model';
 
 const DonationBlock = () => {
@@ -54,13 +55,14 @@ const DonationBlock = () => {
 
     const handlePost = async () => {
         const donation: Donation = {
-            Amount: donateAmount,
-            PageUrl: window.location.href,
+            amount: donateAmount, 
+            pageUrl: window.location.href
         };
 
         if (isCheckboxChecked) {
             try {
                 const response = await DonationApi.create(donation);
+                donateEvent('support_us_page_donation_block');
                 window.location.assign(response.PageUrl);
             } catch (err) {}
         }

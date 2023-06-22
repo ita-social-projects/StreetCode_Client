@@ -1,14 +1,15 @@
-import Streetcode from '@models/streetcode/streetcode-types.model';
-
 import Image from './image.model';
 
 export default interface Art {
     id: number;
     description?: string | undefined;
     title?: string;
-    streetcodes: Streetcode[];
     imageId: number;
     image: Image;
+}
+
+export interface ArtCreateUpdate extends Art {
+
 }
 
 export interface IndexedArt {

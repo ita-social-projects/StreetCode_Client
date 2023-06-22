@@ -89,7 +89,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             </div>
             <div className="rightSider">
                 <div className="headerContainer">
-                    <div className="upper-info" >
+                    <div className="upper-info">
                         <div className="streetcodeIndex">
                             Стріткод #
                             {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4) : streetcode?.index}
@@ -98,19 +98,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             {streetcode?.title}
                         </h2>
                         <div className="streetcodeDate">
-                            {concatDates(
-                                streetcode?.eventStartOrPersonBirthDate,
-                                streetcode?.eventEndOrPersonDeathDate,
-                            )}
+                            {streetcode?.dateString}
                         </div>
                         <TagList
                             tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
-                            <p className="teaserBlock">
-                                {streetcode?.teaser}
-                            </p>
+                        <p className="teaserBlock">
+                            {streetcode?.teaser}
+                        </p>
                     </div>
 
                     <div className="cardFooter">
@@ -137,8 +134,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button className="animateFigureBtn"
-                         onClick={() => personLiveEvent(streetcode?.id ?? 0)}><a href="#QRBlock">Оживити картинку</a></Button>
+                        <Button
+                            className="animateFigureBtn"
+                            onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                        >
+                            <a href="#QRBlock">Оживити картинку</a>
+
+                        </Button>
                     </div>
                 </div>
             </div>

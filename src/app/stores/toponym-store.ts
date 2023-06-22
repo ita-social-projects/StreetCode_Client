@@ -1,8 +1,7 @@
 import { makeAutoObservable } from 'mobx';
+import ToponymsApi from '@api/map/toponyms.api';
 
 import Toponym from '@/models/toponyms/toponym.model';
-
-import ToponymsApi from '../api/map/toponyms.api';
 
 export default class ToponymStore {
     public toponyms: Toponym[] = [];
