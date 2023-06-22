@@ -44,13 +44,10 @@ const PreviewFileModal = ({
         setTitle(streetcodeArt?.art.title ?? '');
         setDesc(streetcodeArt?.art.description ?? '');
         const url = base64ToUrl(streetcodeArt?.art.image.base64, streetcodeArt?.art.image.mimeType);
-        async function uploadImageToModal() {
-            setFileProps({
-                previewImage: url || '',
-                previewTitle: streetcodeArt?.art.title || '',
-            });
-        }
-        uploadImageToModal();
+        setFileProps({
+            previewImage: url || '',
+            previewTitle: streetcodeArt?.art.title || '',
+        });
     }, [opened]);
 
     return (

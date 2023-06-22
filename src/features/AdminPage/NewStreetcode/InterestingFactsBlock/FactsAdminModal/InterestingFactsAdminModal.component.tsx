@@ -16,11 +16,12 @@ import TextArea from 'antd/es/input/TextArea';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import Image from '@/models/media/image.model';
-import { Fact } from '@/models/streetcode/text-contents.model';
+import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
 
 interface Props {
-    fact?: Fact,
+    fact?: FactCreate,
     open: boolean,
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -49,7 +50,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             status: 'done',
                             type: image.mimeType,
                         }] : [],
-
+                        imageDescription: image?.imageDetails?.alt,
                     });
                     setFileList(fact ? [{
                         name: '',
@@ -75,7 +76,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             }
         } else {
             const newFact: Fact = {
-                id: getMaxId(factsStore.getFactArray.map((t) => t.id)),
+                id: getNewMinNegativeId(factsStore.getFactArray.map((t) => t.id)),
                 title: formValues.title,
                 factContent: formValues.factContent,
                 imageId: imageId.current,
@@ -162,6 +163,16 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             </div>
                         </FileUploader>
                     </FormItem>
+
+                    <Form.Item
+                        name="imageDescription"
+                        label="Підпис фото: "
+                    >
+                        <Input
+                            maxLength={100}
+                            showCount
+                        />
+                    </Form.Item>
                     <div className="center">
                         <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
                     </div>
