@@ -32,7 +32,6 @@ import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partn
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
-import TimelineItem, { TimelineItemUpdate } from '@/models/timeline/chronology.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -46,6 +45,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import dayjs from 'dayjs';
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
@@ -72,9 +72,6 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [firstDate, setFirstDate] = useState<Date>();
-    const [dateString, setDateString] = useState<string>();
-    const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
@@ -119,15 +116,12 @@ const NewStreetcode = () => {
                     title: x.title,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
-                    // streetcodeFirstDate: x.eventStartOrPersonBirthDate,
-                    // streetcodeSecondDate: x.eventEndOrPersonDeathDate,
+                    streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
+                    streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
+                    dateString: x.dateString,
                     teaser: x.teaser,
                     video,
                 });
-
-                setFirstDate(x.eventStartOrPersonBirthDate);
-                setSecondDate(x.eventEndOrPersonDeathDate);
-                setDateString(x.dateString);
 
                 const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
                     ...tag,
@@ -245,12 +239,6 @@ const NewStreetcode = () => {
             streetcodeId: parseId,
         };
 
-        const firstDateCreate = form.getFieldValue('streetcodeFirstDate')
-            ? new Date(form.getFieldValue('streetcodeFirstDate').toString()) : (parseId ? firstDate : null);
-
-        const secondDateCreate = form.getFieldValue('streetcodeSecondDate')
-            ? new Date(form.getFieldValue('streetcodeSecondDate').toString()) : (parseId ? secondDate : null);
-
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -259,10 +247,9 @@ const NewStreetcode = () => {
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
-            // eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
-            // eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
-            eventStartOrPersonBirthDate: new Date().toISOString(),
-            eventEndOrPersonDeathDate: new Date().toISOString(),
+            eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
+            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate') 
+                ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
             images: createUpdateMediaStore.imagesUpdate,
             audioId: createUpdateMediaStore.audioId,
             tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
@@ -277,7 +264,7 @@ const NewStreetcode = () => {
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
-            dateString: new Date().toISOString(),
+            dateString: form.getFieldValue('dateString'),
             streetcodeArts: arts,
             subtitles,
             firstName: null,
@@ -354,12 +341,10 @@ const NewStreetcode = () => {
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
-                // eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
-                // eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
-                eventStartOrPersonBirthDate: firstDate,
-                eventEndOrPersonDeathDate: secondDate,
+                eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
+                eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
                 teaser: form.getFieldValue('teaser'),
-                dateString: form.getFieldValue('dateString') ?? dateString,
+                dateString: form.getFieldValue('dateString'),
                 videos: videosUpdate,
                 relatedFigures: relatedFiguresUpdate,
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,

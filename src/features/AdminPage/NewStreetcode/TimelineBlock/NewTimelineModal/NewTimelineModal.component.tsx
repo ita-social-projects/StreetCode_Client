@@ -63,7 +63,7 @@ const NewTimelineModal: React.FC<{
                 item.historicalContexts = selectedContext.current;
             }
         } else {
-            const newTimeline: TimelineItem = { date: formValues.date,
+            const newTimeline: TimelineItem = { date: new Date(formValues.date - localOffset),
                                                 id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
                                                 title: formValues.title,
                                                 description: formValues.description,
