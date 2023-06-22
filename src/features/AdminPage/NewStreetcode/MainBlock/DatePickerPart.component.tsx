@@ -44,7 +44,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props)
                     setDefaultFirtsDate(x.eventStartOrPersonBirthDate.toString() ?? '');
                     setDefaultSecondDate(x.eventEndOrPersonDeathDate.toString() ?? '');
                     setDefaultDate(x.dateString ?? '');
-                } catch (error) { } finally {
+                } catch (error) { /* empty */ } finally {
                     setIsLoading(false);
                 }
             };
@@ -136,7 +136,8 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props)
                                         <DatePicker
                                             defaultValue={defaultFirstDate ? dayjs(defaultFirstDate) : null}
                                             onChange={onChangeFirstDate}
-                                            picker={(dateFirstTimePickerType !== 'season-year') ? dateFirstTimePickerType : 'month'}
+                                            picker={(dateFirstTimePickerType !== 'season-year')
+                                                ? dateFirstTimePickerType : 'month'}
                                             format={(dateFirstTimePickerType === 'date'
                                                 ? 'D MMMM YYYY'
                                                 : dateFirstTimePickerType === 'year'
@@ -171,7 +172,8 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props)
                                             defaultValue={defaultSecondDate ? dayjs(defaultSecondDate) : null}
                                             value={defaultSecondDate ? dayjs(defaultSecondDate) : null}
                                             onChange={onChangeSecondDate}
-                                            picker={(dateSecondTimePickerType !== 'season-year') ? dateSecondTimePickerType : 'month'}
+                                            picker={(dateSecondTimePickerType !== 'season-year')
+                                                ? dateSecondTimePickerType : 'month'}
                                             format={(dateSecondTimePickerType === 'date'
                                                 ? 'D MMMM YYYY'
                                                 : dateSecondTimePickerType === 'year'

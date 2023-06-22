@@ -32,7 +32,7 @@ import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partn
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
-import TimelineItem from '@/models/timeline/chronology.model';
+import TimelineItem, { TimelineItemUpdate } from '@/models/timeline/chronology.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -119,8 +119,8 @@ const NewStreetcode = () => {
                     title: x.title,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
-                    firstDate: x.eventStartOrPersonBirthDate,
-                    secondDate: x.eventEndOrPersonDeathDate,
+                    streetcodeFirstDate: x.eventStartOrPersonBirthDate.toString(),
+                    // streetcodeSecondDate: x.eventEndOrPersonDeathDate,
                     teaser: x.teaser,
                     video,
                 });
@@ -165,7 +165,7 @@ const NewStreetcode = () => {
                 }));
                 setFigures(persistedFigures);
             });
-            PartnersApi.getToUpdateByStreetcodeId(parseId).then((result) => {
+            PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then((result) => {
                 const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
                     id: item.id,
                     title: item.title,
@@ -210,7 +210,7 @@ const NewStreetcode = () => {
                 .then((res) => {
                     if (res) {
                         setArLink(res);
-                        form.setFieldValue('arlink', res.qrCodeUrl.href);
+                        // form.setFieldValue('arlink', res.qrCodeUrl.href);
                     }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
@@ -243,11 +243,11 @@ const NewStreetcode = () => {
             streetcodeId: parseId,
         };
 
-        const firstDateCreate = form.getFieldValue('firstDate')
-            ? new Date(form.getFieldValue('firstDate').toString()) : (parseId ? firstDate : null);
+        const firstDateCreate = form.getFieldValue('streetcodeFirstDate')
+            ? new Date(form.getFieldValue('streetcodeFirstDate').toString()) : (parseId ? firstDate : null);
 
-        const secondDateCreate = form.getFieldValue('secondDate')
-            ? new Date(form.getFieldValue('secondDate').toString()) : (parseId ? secondDate : null);
+        const secondDateCreate = form.getFieldValue('streetcodeSecondDate')
+            ? new Date(form.getFieldValue('streetcodeSecondDate').toString()) : (parseId ? secondDate : null);
 
         const streetcode: StreetcodeCreate = {
             id: parseId,
@@ -261,11 +261,10 @@ const NewStreetcode = () => {
             eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
             images: createUpdateMediaStore.imagesUpdate,
             audioId: createUpdateMediaStore.audioId,
-            tags: selectedTags,
+            tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
             relatedFigures: figures,
             text: text.title && text.textContent ? text : null,
-            timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
-                .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
+            timelineItems: timelineItemStore.getTimelineItemArrayToCreate,
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
                 .map((fact: Fact) => ({ ...fact, id: 0 })),
             coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
@@ -324,7 +323,7 @@ const NewStreetcode = () => {
                 { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
 
             const tags = [...(selectedTags as StreetcodeTagUpdate[])
-                .map((item) => ({ ...item, streetcodeId: parseId })),
+                .map((tag) => ({ ...tag, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
             const arUrl = form.getFieldValue('arlink');

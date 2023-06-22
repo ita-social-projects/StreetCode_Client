@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useCallback, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
-import getMaxId from '@app/common/utils/getMaxId';
+import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
 
@@ -50,13 +50,13 @@ const MapOSMAdmin = () => {
             });
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
-                id: getMaxId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
+                id: getNewMinNegativeId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0,
             };
             const newStatisticRecord: StatisticRecord = {
-                id: getMaxId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
+                id: getNewMinNegativeId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
                 streetcodeCoordinate: newCoordinate,
                 qrId: newNumberAsNumber,
                 count: 0,

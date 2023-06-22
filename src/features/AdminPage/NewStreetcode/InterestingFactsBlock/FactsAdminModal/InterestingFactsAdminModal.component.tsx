@@ -3,7 +3,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
-import getMaxId from '@app/common/utils/getMaxId';
+import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
@@ -75,7 +75,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             }
         } else {
             const newFact: Fact = {
-                id: getMaxId(factsStore.getFactArray.map((t) => t.id)),
+                id: getNewMinNegativeId(factsStore.getFactArray.map((t) => t.id)),
                 title: formValues.title,
                 factContent: formValues.factContent,
                 imageId: imageId.current,
