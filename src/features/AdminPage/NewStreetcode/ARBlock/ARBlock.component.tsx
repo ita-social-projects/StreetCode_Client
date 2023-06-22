@@ -1,5 +1,6 @@
 import React from 'react';
-import useMobx from '@/app/stores/root-store';
+import useMobx from '@app/stores/root-store';
+
 import { Form, Input } from 'antd';
 
 const ARBlock:React.FC = () => {

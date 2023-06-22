@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Video from '@models/media/video.model';
 
 import { Button, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
-
-import Video from '../../../../../../models/media/video.model';
 
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
@@ -22,7 +21,7 @@ const linkConverter = (link: string) => {
         return link;
     }
     let fixedlink = link;
-    console.log(link);
+
     if (link.indexOf('&') >= 0) {
         const index = link.indexOf('&');
         fixedlink = link.slice(0, index);
@@ -34,15 +33,18 @@ const linkConverter = (link: string) => {
 
 const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
+
     useEffect(() => {
-        setInputInfo((info) => ({ ...info, link: video?.url.href }));
+        setInputInfo((info) => ({ ...info, link: video?.url }));
     }, [video]);
+
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputInfo({ ...inputInfo, link: e.target.value });
         setVideo(video);
     };
+
     const { id } = useParams<any>();
-    const parseId = id ? + id : null;
+    const parseId = id ? +id : null;
 
     return (
         <FormItem

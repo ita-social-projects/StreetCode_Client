@@ -6,7 +6,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
 import UserLoginStore from '../stores/user-login-store';
 
-axios.defaults.baseURL = 'http://4.236.132.55:5001/api';
+axios.defaults.baseURL = 'http://localhost:5000/api';
 
 axios.interceptors.response.use(
     async (response) => response,
