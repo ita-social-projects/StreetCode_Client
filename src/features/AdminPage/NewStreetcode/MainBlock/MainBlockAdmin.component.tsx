@@ -3,6 +3,7 @@ import './MainBlockAdmin.style.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
 import dayjs, { Dayjs } from 'dayjs';
@@ -116,7 +117,7 @@ const MainBlockAdmin = React.memo(({
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
 
             const newItem: StreetcodeTagUpdate = {
-                id: selectedIndex < 0 ? 0 : tags[selectedIndex].id,
+                id: selectedIndex < 0 ? getNewMinNegativeId(selectedTags.map((tag) => tag.id)) : tags[selectedIndex].id,
                 title: selectedValue,
                 isVisible: false,
                 modelState: ModelState.Created,

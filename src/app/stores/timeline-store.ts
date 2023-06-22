@@ -73,6 +73,15 @@ export default class TimelineStore {
             .sort((prev, cur) => Number(prev.date) - Number(cur.date));
     }
 
+    get getTimelineItemArrayToCreate() {
+        return Array.from(this.timelineItemMap.values()).map((item) => ({
+            ...item,
+            id: 0,
+            historicalContexts: item.historicalContexts
+                .map((h) => ({ ...h, id: h.id < 0 ? 0 : h.id })),
+        }));
+    }
+
     get getTimelineItemArrayToUpdate() {
         return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[]).map((item) => {
             const updatedItem = { ...item };
@@ -80,7 +89,8 @@ export default class TimelineStore {
             if (item.modelState === ModelState.Created) {
                 updatedItem.id = 0;
             }
-            updatedItem.historicalContexts = item.historicalContexts.map((h) => ({ ...h, timelineId: updatedItem.id }));
+            updatedItem.historicalContexts = item.historicalContexts
+                .map((h) => ({ ...h, id: h.id < 0 ? 0 : h.id, timelineId: updatedItem.id }));
             return updatedItem;
         });
     }
