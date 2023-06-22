@@ -6,7 +6,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
 import UserLoginStore from '../stores/user-login-store';
 
-axios.defaults.baseURL = 'http://4.236.132.55:5001/api';
+axios.defaults.baseURL = 'https://localhost:5001/api';
 
 axios.interceptors.response.use(
     async (response) => response,
@@ -14,26 +14,30 @@ axios.interceptors.response.use(
         if (message === 'Network Error') {
             toast.error(message);
         }
+        let errorMessage = '';
 
         switch (response?.status) {
         case StatusCodes.INTERNAL_SERVER_ERROR:
-            toast.error(ReasonPhrases.INTERNAL_SERVER_ERROR);
+            errorMessage = ReasonPhrases.INTERNAL_SERVER_ERROR;
             break;
         case StatusCodes.UNAUTHORIZED:
-            toast.error(ReasonPhrases.UNAUTHORIZED);
+            errorMessage = ReasonPhrases.UNAUTHORIZED;
             redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
             break;
         case StatusCodes.NOT_FOUND:
-            toast.error(ReasonPhrases.NOT_FOUND);
+            errorMessage = ReasonPhrases.NOT_FOUND;
             break;
         case StatusCodes.BAD_REQUEST:
-            toast.error(ReasonPhrases.BAD_REQUEST);
+            errorMessage = ReasonPhrases.BAD_REQUEST;
             break;
         case StatusCodes.FORBIDDEN:
-            toast.error(ReasonPhrases.FORBIDDEN);
+            errorMessage = ReasonPhrases.FORBIDDEN;
             break;
         default:
             break;
+        }
+        if (errorMessage !== '' && process.env.NODE_ENV === 'development') {
+            toast.error(errorMessage);
         }
 
         return Promise.reject(message);
