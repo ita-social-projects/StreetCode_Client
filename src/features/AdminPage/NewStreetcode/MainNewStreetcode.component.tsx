@@ -251,7 +251,7 @@ const NewStreetcode = () => {
             eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                 ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
-            images: createUpdateMediaStore.imagesUpdate,
+            images: createUpdateMediaStore.imagesUpdate.map((x) => ({ ...x, base64: '' })),
             audioId: createUpdateMediaStore.audioId,
             tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
             relatedFigures: figures,
