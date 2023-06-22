@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import './ArtGalleryBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -20,7 +21,7 @@ const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore } = useMobx();
-    const { streetcodeStore:{getStreetCodeId, errorStreetCodeId} } = useStreetcodeDataContext();
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
@@ -44,16 +45,16 @@ const ArtGalleryBlock = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId).then(() => streecodePageLoaderContext.addBlockFetched());
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId)
+                    .then(() => streecodePageLoaderContext.addBlockFetched());
             }
         },
         [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
     );
 
-
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
+        getStreetcodeArtArray?.forEach(async ({ art: { description, title, image }, index }) => {
             try {
                 const url = base64ToUrl(image.base64, image.mimeType);
                 if (url) {
@@ -63,11 +64,11 @@ const ArtGalleryBlock = () => {
                         index,
                         description,
                         imageHref: url,
-                        title: image.alt,
+                        title,
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) {}
+            } catch (error: unknown) { /* empty */ }
             setIndexedArts(newMap);
             setIndexedArtsSmall(newMap);
         });
@@ -249,6 +250,10 @@ const ArtGalleryBlock = () => {
         touchThreshold: 25,
         transform: 'translateZ(0)',
     };
+
+    console.log(slideOfArtList.length);
+    console.log(getStreetcodeArtArray.length);
+
     return (
         <div
             id="art-gallery"

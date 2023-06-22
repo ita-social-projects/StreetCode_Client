@@ -4,52 +4,54 @@ import { useEffect, useState } from 'react';
 
 import { AutoComplete, Button } from 'antd';
 
-import RelatedFigure from '@/models/streetcode/related-figure.model';
+import { ModelState } from '@/models/enums/model-state';
+import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@/models/streetcode/related-figure.model';
 
 interface Props {
-  relations: RelatedFigure[];
-  options: RelatedFigure[];
-  handleAdd: (relation: RelatedFigure) => void;
+    figures: RelatedFigureCreateUpdate[];
+    options: RelatedFigureShort[];
+    handleAdd: (relation: RelatedFigureCreateUpdate) => void;
 }
 
-const InputPanel = ({ relations, options, handleAdd }: Props) => {
+const InputPanel = ({ figures, options, handleAdd }: Props) => {
     const [relation, setRelation] = useState('');
-    const [filteredOptions, setFilteredOptions] = useState<RelatedFigure[]>(options);
+    const [filteredOptions, setFilteredOptions] = useState<RelatedFigureCreateUpdate[]>(options);
 
     useEffect(() => {
-        if (relations.length > 0) {
-            const filtered = options.filter(option => !relations.some(relation => relation.id === option.id));
+        if (figures.length > 0) {
+            const filtered = options.filter((option) => figures.some((figure) => figure.id === option.id
+                && figure.modelState === ModelState.Deleted)
+                || !figures.some((figure) => figure.id === option.id));
+
             setFilteredOptions(filtered);
-        }
-        else {
-            //const filtered = options.filter(option => relation => relation.id === option.id));
+        } else {
+            // const filtered = options.filter(option => relation => relation.id === option.id));
             setFilteredOptions(options);
         }
-    }, [options, relations]);
+    }, [options, figures]);
 
-
+    // TODO: fix search
     const handleSearch = (value: string) => {
-        if (relations.length > 0) {
-            const filtered = options.filter(option => !relations.some(relation => relation.id === option.id));
+        if (figures.length > 0) {
+            const filtered = options.filter((option) => !figures.some((figure) => figure.id === option.id));
             setFilteredOptions(filtered);
-        }
-        else {
+        } else {
             setFilteredOptions(options);
         }
     };
 
-    const handleAddItem = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleAddItem = (event: React.MouseEvent) => {
         event.preventDefault();
         const found = filteredOptions.find((rel) => rel.title === relation);
         if (found !== undefined) {
             handleAdd(found);
             setRelation('');
-            setFilteredOptions(options.filter((rel) => !relations.includes(rel) && rel.title != found.title));
+            setFilteredOptions(options.filter((figure) => !figures.includes(figure) && figure.title !== found.title));
         }
     };
 
     return (
-        <form className="input-container">
+        <div className="input-container">
             <AutoComplete
                 placeholder="Знайти стріткод..."
                 style={{ width: '100%' }}
@@ -58,10 +60,10 @@ const InputPanel = ({ relations, options, handleAdd }: Props) => {
                 onChange={(value) => setRelation(value)}
                 value={relation}
             />
-            <Button onClick={handleAddItem} className='streetcode-custom-button button-margin-left' type="primary">
+            <Button onClick={handleAddItem} className="streetcode-custom-button button-margin-left" type="primary">
         Додати
             </Button>
-        </form>
+        </div>
     );
 };
 

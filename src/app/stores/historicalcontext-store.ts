@@ -14,14 +14,21 @@ export default class HistoricalContextStore {
         });
     }
 
-    public fetchHistoricalContextAll = async () => {
-        HistoricalContextApi.getAll()
-            .then((value) => {
-                this.historicalContextArray = value as HistoricalContext[];
-            }).catch((error) => {});
+    private setInternalMap = (historicalcontext: HistoricalContext[]) => {
+        this.historicalContextArray = [];
+        historicalcontext.forEach((item) => {
+            this.addItemToArray(item);
+        });
     };
 
     public addItemToArray = (item: HistoricalContext) => {
         this.historicalContextArray.push(item);
+    };
+
+    public fetchHistoricalContextAll = async () => {
+        try {
+            const response = await HistoricalContextApi.getAll();
+            this.setInternalMap(response);
+        } catch (error) { /* empty */ }
     };
 }
