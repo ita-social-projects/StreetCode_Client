@@ -410,8 +410,7 @@ const NewStreetcode = () => {
                             <TimelineBlockAdmin />
 
                             {process.env.NODE_ENV === 'production'
-                                ? <MapBlockAdmin coordinates={coordinates} /> : <></>}
-
+                                ? <MapBlockAdmin /> : null}
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />
