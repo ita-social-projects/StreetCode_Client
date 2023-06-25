@@ -234,6 +234,10 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                      <Form.Item
                          name="url"
                          label="Посилання: "
+                         rules={[
+                            { required: true, message: 'Введіть Посилання' },
+                            { pattern: /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i, message: 'Введіть правильне посилання' }
+                          ]}
                      >
                          <Input maxLength={200} showCount />
                      </Form.Item>
@@ -262,6 +266,7 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                              }
                              return e?.fileList;
                          }}
+                         rules={[{ required: true, message: 'Завантажте лого' }]}
                      >
                          <FileUploader
                              multiple={false}
@@ -340,7 +345,10 @@ const PartnerModal:React.FC<{ partnerItem?:Partner, open:boolean, isStreetcodeVi
                          label="Посилання"
                          className="url-input"
                          name="url"
-                         rules={[{ required: true, message: 'Введіть посилання' }]}
+                         rules={[
+                            { required: true, message: 'Введіть Посилання' },
+                            { pattern: /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i, message: 'Введіть правильне посилання' }
+                          ]}
                      >
                          <Input min={1} max={255} showCount />
                      </Form.Item>
