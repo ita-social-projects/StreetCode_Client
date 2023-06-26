@@ -69,6 +69,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
     .slick-slide {
         width: unset !important;
+
         @media screen and (max-width: 767px) {
                 width: 100% !important;
             }
@@ -88,11 +89,10 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         @include mut.flexed($justify-content: center, $gap: 0px);
         @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
     }
+    
     .slick-center  {
         transform: scale(1.16);
         overflow: visible !important;
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-bottom: 20px;
+        @include mut.rem-padded(0px, 16px, 20px, 16px);
     }
 }
