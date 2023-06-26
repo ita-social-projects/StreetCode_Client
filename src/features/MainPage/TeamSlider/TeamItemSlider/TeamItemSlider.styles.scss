@@ -15,7 +15,7 @@
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         line-height: f.pxToRem(23px);
         background-color: c.$pure-white-color;
-        margin-left: 20px;
+        margin-left: f.pxToRem(20px);
 
         @media (min-width: 768px) and (max-width: 1024px) {
             margin-top: 40px;
@@ -47,18 +47,18 @@
 
     .leftSliderContent {
         background-color: c.$pure-white-color;     
-        margin: 10px;
+        margin: f.pxToRem(10px);
         @include mut.full-rounded(50px);
         @include mut.flex-centered();
 
         @media (min-width: 768px) and (max-width: 1024px) {
-                @include mut.sized(100%, 338px);
-                margin: 0px;
+            @include mut.sized(100%, 338px);
+            margin: 0px;
         }
 
         @media screen and (max-width: 767px) {
             @include mut.sized(100%, 398px);
-            margin: 8px;
+            margin: f.pxToRem(8px);
         }
     }
     .teamImg {
@@ -94,7 +94,7 @@
 
     .teamLinkItems {
         position: absolute;
-        bottom: 33.5px;
+        bottom: f.pxToRem(33.5px);
         display: flex;
         align-items: center;
 
@@ -109,7 +109,7 @@
         line-height: f.pxToRem(40px);
 
         @media screen and (max-width: 1024px) {
-            margin-top: 4px;
+            margin-top: f.pxToRem(4px);
             @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 20px);
             line-height: f.pxToRem(23px);
         }
@@ -136,7 +136,7 @@
         width: 100%;
         @include mut.rem-margined(12px, 3px, 0px, 0px);
         @include mut.rem-padded(0px, 5px, 0px, 0px);
-        line-height: 23px;
+        line-height: f.pxToRem(23px);
         max-height: f.pxToRem(214px);
         overflow: auto;
         color: c.$lighter-black-color;
