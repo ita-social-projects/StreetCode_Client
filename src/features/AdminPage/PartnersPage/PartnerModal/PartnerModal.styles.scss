@@ -40,3 +40,20 @@
             $gap: 5px)
     }
 }
+
+.custom-button {
+    background-color: rgba(227, 227, 222, 0.656);
+    margin-bottom: 20px; 
+    font-size: medium;
+    min-height: 43px;
+    color: rgb(89, 89, 89);
+  }
+.custom-button:hover {
+    color: red;
+    border-color: red;
+}
+
+.streetcode-custom-button{
+    min-height: 50px;
+}
+
