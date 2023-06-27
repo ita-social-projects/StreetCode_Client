@@ -5,6 +5,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import getMaxId from '@app/common/utils/getMaxId';
+import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
@@ -62,8 +63,8 @@ const NewTimelineModal: React.FC<{
                 item.historicalContexts = selectedContext.current;
             }
         } else {
-            const newTimeline: TimelineItem = { date: formValues.date,
-                                                id: getMaxId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
+            const newTimeline: TimelineItem = { date: new Date(formValues.date - localOffset),
+                                                id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
                                                 title: formValues.title,
                                                 description: formValues.description,
                                                 historicalContexts: selectedContext.current,
@@ -84,7 +85,7 @@ const NewTimelineModal: React.FC<{
                 return;
             }
             const newItem: HistoricalContextUpdate = {
-                id: 0,
+                id: getNewMinNegativeId(historicalContextStore.historicalContextArray.map((h) => h.id)),
                 title: value,
                 modelState: ModelState.Created,
             };

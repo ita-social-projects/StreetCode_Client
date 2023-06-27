@@ -16,6 +16,7 @@ import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+import dayjs from 'dayjs';
 
 import {
     Button, ConfigProvider, Form, Modal, UploadFile,
@@ -36,7 +37,6 @@ import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partn
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
-import TimelineItem from '@/models/timeline/chronology.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -76,9 +76,6 @@ const NewStreetcode = () => {
     const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [firstDate, setFirstDate] = useState<Date>();
-    const [dateString, setDateString] = useState<string>();
-    const [secondDate, setSecondDate] = useState<Date>();
     const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
@@ -120,15 +117,12 @@ const NewStreetcode = () => {
                     title: x.title,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
-                    streetcodeFirstDate: x.eventStartOrPersonBirthDate,
-                    streetcodeSecondDate: x.eventEndOrPersonDeathDate,
+                    streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
+                    streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
+                    dateString: x.dateString,
                     teaser: x.teaser,
                     video,
                 });
-
-                setFirstDate(x.eventStartOrPersonBirthDate);
-                setSecondDate(x.eventEndOrPersonDeathDate);
-                setDateString(x.dateString);
 
                 const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
                     ...tag,
@@ -164,9 +158,11 @@ const NewStreetcode = () => {
                     isPersisted: true,
                     modelState: ModelState.Updated,
                 }));
+                console.log(persistedFigures);
+
                 setFigures(persistedFigures);
             });
-            PartnersApi.getToUpdateByStreetcodeId(parseId).then((result) => {
+            PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then((result) => {
                 const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
                     id: item.id,
                     title: item.title,
@@ -211,7 +207,7 @@ const NewStreetcode = () => {
                 .then((res) => {
                     if (res) {
                         setArLink(res);
-                        form.setFieldValue('arlink', res.qrCodeUrl.href);
+                        // form.setFieldValue('arlink', res.qrCodeUrl.href);
                     }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
@@ -244,12 +240,6 @@ const NewStreetcode = () => {
             streetcodeId: parseId,
         };
 
-        const firstDateCreate = form.getFieldValue('streetcodeFirstDate')
-            ? new Date(form.getFieldValue('streetcodeFirstDate').toString()) : (parseId ? firstDate : null);
-
-        const secondDateCreate = form.getFieldValue('streetcodeSecondDate')
-            ? new Date(form.getFieldValue('streetcodeSecondDate').toString()) : (parseId ? secondDate : null);
-
         const streetcode: StreetcodeCreate = {
             id: parseId,
             index: form.getFieldValue('streetcodeNumber'),
@@ -258,15 +248,15 @@ const NewStreetcode = () => {
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             arBlockURL: form.getFieldValue('arlink'),
             streetcodeType,
-            eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
-            eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
-            images: createUpdateMediaStore.imagesUpdate,
+            eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
+            eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
+                ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
+            images: createUpdateMediaStore.imagesUpdate.map((x) => ({ ...x, base64: '' })),
             audioId: createUpdateMediaStore.audioId,
-            tags: selectedTags,
+            tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
             relatedFigures: figures,
             text: text.title && text.textContent ? text : null,
-            timelineItems: JSON.parse(JSON.stringify(timelineItemStore.getTimelineItemArray))
-                .map((timelineItem: TimelineItem) => ({ ...timelineItem, id: 0 })),
+            timelineItems: timelineItemStore.getTimelineItemArrayToCreate,
             facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
                 .map((fact: Fact) => ({ ...fact, id: 0 })),
             coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
@@ -275,7 +265,7 @@ const NewStreetcode = () => {
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
             createdAt: new Date().toISOString(),
-            dateString: form.getFieldValue('dateString') ?? dateString,
+            dateString: form.getFieldValue('dateString'),
             streetcodeArts: arts,
             subtitles,
             firstName: null,
@@ -325,22 +315,15 @@ const NewStreetcode = () => {
                 { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
 
             const tags = [...(selectedTags as StreetcodeTagUpdate[])
-                .map((item) => ({ ...item, streetcodeId: parseId })),
+                .map((tag) => ({ ...tag, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
             const arUrl = form.getFieldValue('arlink');
             const arLinkUpdated: TransactionLink = {
-                ...arLink,
                 id: arLink?.id ?? 0,
                 streetcodeId: parseId,
-                url: {
-                    ...arLink?.url,
-                    href: arUrl || '',
-                },
-                qrCodeUrl: {
-                    ...arLink?.url,
-                    href: arUrl || '',
-                },
+                url: arLink?.url ?? '',
+                urlTitle: arLink?.urlTitle ?? '',
             };
 
             const streetcodeUpdate: StreetcodeUpdate = {
@@ -352,10 +335,10 @@ const NewStreetcode = () => {
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
-                eventStartOrPersonBirthDate: firstDateCreate ? new Date(firstDateCreate - localOffset) : null,
-                eventEndOrPersonDeathDate: secondDateCreate ? new Date(secondDateCreate - localOffset) : null,
+                eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
+                eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
                 teaser: form.getFieldValue('teaser'),
-                dateString: form.getFieldValue('dateString') ?? dateString,
+                dateString: form.getFieldValue('dateString'),
                 videos: videosUpdate,
                 relatedFigures: relatedFiguresUpdate,
                 timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
@@ -427,8 +410,7 @@ const NewStreetcode = () => {
                             <TimelineBlockAdmin />
 
                             {process.env.NODE_ENV === 'production'
-                                ? <MapBlockAdmin coordinates={coordinates} /> : <></>}
-
+                                ? <MapBlockAdmin /> : null}
                             <ArtGalleryBlock arts={arts} setArts={setArts} />
                             <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
                             <ForFansBlock />

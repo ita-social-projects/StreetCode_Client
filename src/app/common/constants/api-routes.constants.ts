@@ -28,7 +28,7 @@ export const API_ROUTES = {
         GET_SPONSORS: 'partners/getSponsors',
         GET: 'partners/getById',
         GET_BY_STREETCODE_ID: 'partners/getByStreetcodeId',
-        GET_TO_UPDATE_BY_STREETCODE_ID: 'partners/getToUpdateByStreetcodeId',
+        GET_PARTNERS_TO_UPDATE_BY_STREETCODE_ID: 'partners/getPartnersToUpdateByStreetcodeId',
         CREATE: 'partners/create',
         UPDATE: 'partners/update',
         DELETE: 'partners/delete',

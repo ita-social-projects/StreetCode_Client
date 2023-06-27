@@ -18,8 +18,8 @@ const PartnersApi = {
         return Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_BY_STREETCODE_ID}/${streetcodeId}`);
     },
 
-    getToUpdateByStreetcodeId(streetcodeId: number) {
-        return Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_TO_UPDATE_BY_STREETCODE_ID}/${streetcodeId}`);
+    getPartnersToUpdateByStreetcodeId(streetcodeId: number) {
+        return Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_PARTNERS_TO_UPDATE_BY_STREETCODE_ID}/${streetcodeId}`);
     },
 
     create: (partner: PartnerCreateUpdate) => Agent.post<Partner>(`${API_ROUTES.PARTNERS.CREATE}`, partner),

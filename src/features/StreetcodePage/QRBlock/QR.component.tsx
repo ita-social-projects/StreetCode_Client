@@ -47,11 +47,11 @@ const QRComponent = () => {
             на ілюстрації та вітай нову реальність.
                                         </p>
                                         <p className="appealPrg">Скануй, щоб завіртуалити історію!</p>
-                                        <QRCode value={qrUrl.qrCodeUrl ? qrUrl.qrCodeUrl.href : ''} />
+                                        <QRCode value={qrUrl.url ?? ''} />
                                     </div>
                                 </div>
                             </div>
-                        ) : <QRMobile hrefLink={qrUrl.qrCodeUrl.href} />}
+                        ) : <QRMobile hrefLink={qrUrl.url} />}
 
                 </div>
             ) : <></>
