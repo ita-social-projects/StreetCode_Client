@@ -20,6 +20,7 @@ export interface ImageDetails {
     alt: string;
 }
 
-export interface ImageUpdate extends Image, IModelState {
+export interface ImageCreateUpdate extends IModelState {
+    id: number;
     streetcodeId?: number | null;
 }

@@ -2,7 +2,7 @@ import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.m
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-content/tag.model';
 import Art from '@models/media/art.model';
 import Audio, { AudioUpdate } from '@models/media/audio.model';
-import Image, { ImageUpdate } from '@models/media/image.model';
+import Image, { ImageCreateUpdate, ImageUpdate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
@@ -114,7 +114,7 @@ export interface StreetcodeCreate {
     eventEndOrPersonDeathDate: Date,
     dateString: string,
     tags: StreetcodeTag[],
-    images: Image[],
+    images: ImageCreateUpdate[],
     audioId: number | null,
     streetcodeType: StreetcodeType,
     text: TextCreateUpdate | null,
