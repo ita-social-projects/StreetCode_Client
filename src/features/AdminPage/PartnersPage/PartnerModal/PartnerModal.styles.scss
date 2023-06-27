@@ -48,12 +48,28 @@
     min-height: 43px;
     color: rgb(89, 89, 89);
   }
-.custom-button:hover {
-    color: red;
-    border-color: red;
-}
+  .custom-button:hover {
+    color: red; 
+    border-color: red; 
+  }
 
 .streetcode-custom-button{
     min-height: 50px;
 }
+.link-container{
+    padding:5px;
+    border: solid rgb(237, 231, 231) 2px ;
+    border-radius: 5px;
+}
+.button-container{
+    position: relative;
+}
+.close-button {
+    position: absolute;
+    top: -5;
+    right: 0;
+    background-color: rgb(217, 61, 61);
+    color:white;
+  }
+  
 

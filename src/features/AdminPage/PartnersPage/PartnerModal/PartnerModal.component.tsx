@@ -19,6 +19,7 @@ import FileUploader from "@/app/common/components/FileUploader/FileUploader.comp
 import base64ToUrl from "@/app/common/utils/base64ToUrl.utility";
 import PartnerLink from "@/features/AdminPage/PartnersPage/PartnerLink.component";
 import Image from "@/models/media/image.model";
+import { message } from "antd";
 import Partner, {
   LogoType,
   PartnerCreateUpdate,
@@ -122,6 +123,7 @@ const PartnerModal: React.FC<{
     const onSuccesfulSubmitLinks = (formValues: any) => {
       const url = formValues.url as string;
       const logotype = partnerLinksForm.getFieldValue("logotype");
+      console.log(url, logotype)
 
       let newId = Math.min(...partnerSourceLinks.map((item) => item.id));
       if (newId < 0) {
@@ -146,11 +148,24 @@ const PartnerModal: React.FC<{
       setShowSecondForm(true);
       setShowSecondFormButton(false);
     };
+    const handleHideSecondForm = () => {
+      setShowSecondForm(false);
+      setShowSecondFormButton(true);
+    };
     const onSuccesfulSubmitPartner = async (formValues: any) => {
-        if(showSecondForm && ( !partnerLinksForm.getFieldValue("logotype") || !partnerLinksForm.getFieldValue("url") ))
-        {
-            
+      
+      if (showSecondForm) {
+        try {
+          await partnerLinksForm.validateFields();
+          console.log(partnerLinksForm.getFieldsValue());
+          onSuccesfulSubmitLinks(partnerLinksForm.getFieldsValue());
+          console.log(5);
+        } catch (errorInfo) {
+          message.error("Будь ласка, заповніть всі обов'язкові поля");
+          return; // Exit the function here
         }
+      }
+      
       partnerSourceLinks.forEach((el, index) => {
         if (el.id < 0) {
           partnerSourceLinks[index].id = 0;
@@ -385,51 +400,59 @@ const PartnerModal: React.FC<{
           onFinish={onSuccesfulSubmitLinks}
         >
           {showSecondForm && (
-            <div className="link-container">
-              <FormItem
-                name="logotype"
-                label="Соціальна мережа"
-                rules={[{ required: true, message: "Виберіть соц. мережу" }]}
-              >
-                <Select options={selectSocialMediaOptions} />
-              </FormItem>
-              <Form.Item
-                label="Посилання"
-                className="url-input"
-                name="url"
-                rules={[
-                  { required: true, message: "Введіть Посилання" },
-                  {
-                    pattern:
-                      /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i,
-                    message: "Введіть правильне посилання",
-                  },
-                  {
-                    validator: (_, value) => {
-                      const logotype =
-                        partnerLinksForm.getFieldValue("logotype");
-                      if (
-                        !value ||
-                        !logotype ||
-                        value.toLowerCase().includes(logotype)
-                      ) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        "Посилання не співпадає з вибраним текстом"
-                      );
+            //Here
+            <div>
+              <div className="button-container">
+              <Button htmlType="submit" onClick={handleHideSecondForm} className="close-button">
+                Закрити
+              </Button>
+              </div>
+              <div className="link-container">
+                <FormItem
+                  name="logotype"
+                  label="Соціальна мережа"
+                  rules={[{ required: true, message: "Виберіть соц. мережу" }]}
+                >
+                  <Select options={selectSocialMediaOptions} />
+                </FormItem>
+                <Form.Item
+                  label="Посилання"
+                  className="url-input"
+                  name="url"
+                  rules={[
+                    { required: true, message: "Введіть Посилання" },
+                    {
+                      pattern:
+                        /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i,
+                      message: "Введіть правильне посилання",
                     },
-                  },
-                ]}
-              >
-                <Input min={1} max={255} showCount />
-              </Form.Item>
+                    {
+                      validator: (_, value) => {
+                        const logotype =
+                          partnerLinksForm.getFieldValue("logotype");
+                        if (
+                          !value ||
+                          !logotype ||
+                          value.toLowerCase().includes(logotype)
+                        ) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          "Посилання не співпадає з вибраним текстом"
+                        );
+                      },
+                    },
+                  ]}
+                >
+                  <Input min={1} max={255} showCount />
+                </Form.Item>
 
-              <Form.Item label=" ">
-                <Button htmlType="submit">
-                  <PlusOutlined />
-                </Button>
-              </Form.Item>
+                <Form.Item label=" ">
+                  <Button htmlType="submit">
+                    <PlusOutlined />
+                  </Button>
+                </Form.Item>
+              </div>
             </div>
           )}
         </Form>
@@ -438,9 +461,6 @@ const PartnerModal: React.FC<{
           <Button
             className="streetcode-custom-button"
             onClick={() => {
-              if (showSecondForm) {
-                partnerLinksForm.submit();
-              }
               form.submit();
             }}
           >
