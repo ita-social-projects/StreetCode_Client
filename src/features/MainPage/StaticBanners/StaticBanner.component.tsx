@@ -3,7 +3,7 @@ import OrnamentMobile from '@/assets/images/main-page/ornament_mobile.svg';
 import './StaticBanner.styles.scss';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 interface Props {
-    id: string;
+    id:  'catalog' | 'support';
     blockName: string,
     blockContent: string,
     buttonName: string,
