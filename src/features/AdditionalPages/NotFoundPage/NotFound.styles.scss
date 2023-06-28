@@ -50,7 +50,7 @@
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px) or (max-height: 900px) {
     .notFoundContainer {  
         height: calc(100vh - 102px);
         @include mut.rem-margined($top: 64px);
@@ -71,6 +71,16 @@
             padding: f.pxToRem(15px) 0;
         }
     }  
+}
+
+@media (min-width: 1024px) and (max-height: 900px) {
+    .notFoundContainer {
+        height: calc(100vh - 326px);
+
+        .content {
+            margin: 60px 10px 40px;
+        }
+    }
 }
 
 @media (max-width: 768px) {
