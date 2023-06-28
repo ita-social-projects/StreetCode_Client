@@ -16,7 +16,6 @@ import TextArea from 'antd/es/input/TextArea';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import Image from '@/models/media/image.model';
 import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
 
@@ -38,6 +37,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             form.setFieldsValue({
                 title: fact.title,
                 factContent: fact.factContent,
+                imageDescription: fact.imageDescription,
             });
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
