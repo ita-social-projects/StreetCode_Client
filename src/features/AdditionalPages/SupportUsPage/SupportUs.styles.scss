@@ -154,6 +154,7 @@
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         line-height: 23px;
         color: c.$pure-white-color;
+        cursor: pointer;
         text-align: center;
 
         &.withSvg {
