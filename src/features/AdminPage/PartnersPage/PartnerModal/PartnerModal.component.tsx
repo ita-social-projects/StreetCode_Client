@@ -19,7 +19,7 @@ import FileUploader from "@/app/common/components/FileUploader/FileUploader.comp
 import base64ToUrl from "@/app/common/utils/base64ToUrl.utility";
 import PartnerLink from "@/features/AdminPage/PartnersPage/PartnerLink.component";
 import Image from "@/models/media/image.model";
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import Partner, {
   LogoType,
   PartnerCreateUpdate,
@@ -123,7 +123,7 @@ const PartnerModal: React.FC<{
     const onSuccesfulSubmitLinks = (formValues: any) => {
       const url = formValues.url as string;
       const logotype = partnerLinksForm.getFieldValue("logotype");
-      console.log(url, logotype)
+      console.log(url, logotype);
 
       let newId = Math.min(...partnerSourceLinks.map((item) => item.id));
       if (newId < 0) {
@@ -153,7 +153,6 @@ const PartnerModal: React.FC<{
       setShowSecondFormButton(true);
     };
     const onSuccesfulSubmitPartner = async (formValues: any) => {
-      
       if (showSecondForm) {
         try {
           await partnerLinksForm.validateFields();
@@ -165,7 +164,7 @@ const PartnerModal: React.FC<{
           return; // Exit the function here
         }
       }
-      
+
       partnerSourceLinks.forEach((el, index) => {
         if (el.id < 0) {
           partnerSourceLinks[index].id = 0;
@@ -318,6 +317,7 @@ const PartnerModal: React.FC<{
               rules={[{ required: true, message: "Завантажте лого" }]}
             >
               <FileUploader
+                className="logo-uploader"
                 multiple={false}
                 accept=".jpeg,.png,.jpg"
                 listType="picture-card"
@@ -390,7 +390,7 @@ const PartnerModal: React.FC<{
           ))}
         </div>
         {showSecondFormButton && (
-          <Button onClick={handleShowSecondForm} className="custom-button">
+          <Button onClick={handleShowSecondForm} className="add-social-media-button">
             Додати соціальну мережу
           </Button>
         )}
@@ -400,18 +400,18 @@ const PartnerModal: React.FC<{
           onFinish={onSuccesfulSubmitLinks}
         >
           {showSecondForm && (
-            //Here
             <div>
               <div className="button-container">
-              <Button htmlType="submit" onClick={handleHideSecondForm} className="close-button">
-                Закрити
-              </Button>
+                <Button onClick={handleHideSecondForm} className="close-button">
+                  Закрити
+                </Button>
               </div>
               <div className="link-container">
                 <FormItem
                   name="logotype"
                   label="Соціальна мережа"
                   rules={[{ required: true, message: "Виберіть соц. мережу" }]}
+                  className="social-media-form-item"
                 >
                   <Select options={selectSocialMediaOptions} />
                 </FormItem>
@@ -448,9 +448,15 @@ const PartnerModal: React.FC<{
                 </Form.Item>
 
                 <Form.Item label=" ">
-                  <Button htmlType="submit">
-                    <PlusOutlined />
-                  </Button>
+                  <Tooltip
+                    title="Додати"
+                    placement="bottom"
+                    overlayClassName="custom-tooltip"
+                  >
+                    <Button htmlType="submit" className="plus-button">
+                      <PlusOutlined />
+                    </Button>
+                  </Tooltip>
                 </Form.Item>
               </div>
             </div>
@@ -458,14 +464,29 @@ const PartnerModal: React.FC<{
         </Form>
 
         <div className="center">
-          <Button
-            className="streetcode-custom-button"
-            onClick={() => {
-              form.submit();
-            }}
-          >
-            Зберегти
-          </Button>
+          {showSecondForm ? (
+            <Tooltip
+              title="Завершіть додавання соціальної мережі"
+              placement="bottom"
+              overlayClassName="custom-tooltip"
+            >
+              <span>
+                <Button disabled className="streetcode-custom-button save">
+                  Зберегти
+                </Button>
+              </span>
+            </Tooltip>
+          ) : (
+            <Button
+              disabled={showSecondForm}
+              className="streetcode-custom-button save"
+              onClick={() => {
+                form.submit();
+              }}
+            >
+              Зберегти
+            </Button>
+          )}
         </div>
       </Modal>
     );

@@ -39,37 +39,51 @@
             $wrap: nowrap,
             $gap: 5px)
     }
-}
-
-.custom-button {
-    background-color: rgba(227, 227, 222, 0.656);
-    margin-bottom: 20px; 
-    font-size: medium;
-    min-height: 43px;
-    color: rgb(89, 89, 89);
-  }
-  .custom-button:hover {
-    color: red; 
-    border-color: red; 
-  }
-
-.streetcode-custom-button{
+}  
+.save{
     min-height: 50px;
 }
 .link-container{
     padding:5px;
-    border: solid rgb(237, 231, 231) 2px ;
-    border-radius: 5px;
+    margin-bottom: 20px;
+    border: solid rgb(237, 231, 231) 1px ;
+    border-radius: 7px;
 }
-.button-container{
-    position: relative;
+.link-container:hover{
+    border-color: red ;
+}
+.social-media-form-item label {
+    white-space: nowrap;
+  }
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+.add-social-media-button{
+    margin-bottom: 15px;
+}
+.add-social-media-button:hover{
+    color:red!important;
+    border-color:red!important;
+}
+.plus-button:hover{
+    color: red!important;
+    border-color:red!important;
 }
 .close-button {
-    position: absolute;
     top: -5;
     right: 0;
     background-color: rgb(217, 61, 61);
     color:white;
+    height: 30px;
   }
-  
-
+.close-button:hover {
+    background-color: #891F16;
+    color:white!important;
+    border: none!important;
+}
+.custom-tooltip .ant-tooltip-inner {
+    background-color: rgba(148, 139, 139, 0.871);
+    color: white; 
+}
