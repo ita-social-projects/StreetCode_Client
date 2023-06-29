@@ -174,7 +174,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                         />
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
+                        <Button className="streetcode-custom-button" htmlType="submit"> Зберегти </Button>
                     </div>
                 </Form>
             </div>
