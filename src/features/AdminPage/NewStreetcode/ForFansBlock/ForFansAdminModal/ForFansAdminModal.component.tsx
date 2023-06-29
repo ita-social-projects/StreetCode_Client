@@ -119,6 +119,9 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                             max_chars: 800,
                             height: 300,
                             menubar: false,
+                            init_instance_callback(editor) {
+                                editor.setContent(categoryUpdate?.current?.text ?? '');
+                            },
                             plugins: [
                                 'autolink',
                                 'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
