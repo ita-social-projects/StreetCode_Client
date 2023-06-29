@@ -77,10 +77,10 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
             modelState: ModelState.Created,
             art: {
                 id: 0,
-                description: 'description',
+                description: '',
                 image,
                 imageId: image.id,
-                title: 'title',
+                title: '',
             },
         };
 
