@@ -84,7 +84,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
             },
         };
 
-        setArts([...arts, newArt]);
+        arts.push(newArt)
     };
 
     const onRemoveFile = (file: UploadFile) => {
@@ -119,6 +119,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
     return (
         <>
             <FileUploader
+                multiple
                 accept=".jpeg,.png,.jpg"
                 listType="picture-card"
                 fileList={fileList}
