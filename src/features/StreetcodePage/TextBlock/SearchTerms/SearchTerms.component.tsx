@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx from '@stores/root-store';
 import parse from 'html-react-parser';
 
 import { Popover } from 'antd';
@@ -12,79 +9,46 @@ interface Props {
 const keywordColoring = {
     color: '#8D1F16',
 };
-const parser = (input: string) => parse(input, {
-    replace: () => {
-        const newInput = input.split('<p>').pop();
-        const inputWithoutP = newInput?.replace('</p>', '');
-        return <>{parse(String(inputWithoutP))}</>;
-    },
-});
 
 const SearchTerms = ({ mainText }: Props) => {
-    const { termsStore, relatedTermStore } = useMobx();
-    const { fetchTerms, getTermArray } = termsStore;
-    const { fetchRelatedTermsByTermId, getRelatedTermsArray } = relatedTermStore;
-    const [currentTermId, setCurrentTermId] = useState(0);
-    useAsync(fetchTerms);
+    const splittedKeywordText = mainText.split(/(<Popover>.*?<\/Popover>)/g);
 
-    useEffect(() => {
-        getTermArray.forEach((term) => {
-            setCurrentTermId(term.id);
-            fetchRelatedTermsByTermId(term.id);
-        });
-    }, [currentTermId, fetchRelatedTermsByTermId, getTermArray]);
-
-    const searchTerms: string[] = [];
-    const descriptiveSearchTerms = new Map<string, string | undefined>();
-
-    getTermArray.forEach((term) => {
-        descriptiveSearchTerms.set(term.title, term.description);
-        getRelatedTermsArray
-            .filter((relatedTerm) => relatedTerm.termId === term.id)
-            .forEach((relatedTerm) => {
-                descriptiveSearchTerms.set(relatedTerm.word, term.description);
-                searchTerms.push(relatedTerm.word);
-            });
-        searchTerms.push(term.title);
+    const popoverParser = (input: string) => parse(input, {
+        // eslint-disable-next-line react/no-unstable-nested-components
+        replace: () => (
+            <Popover
+                key={input.match(/<Term>.*?<\/Term>/g)?.at(0)?.toString()}
+                style={keywordColoring}
+                overlayStyle={{ width: '300px' }}
+                content={parse(input.match(/<Desc>.*?<\/Desc>/g)?.at(0)?.toString() ?? '')}
+            >
+                <span style={{ cursor: 'pointer' }}>
+                    {parse(input.match(/<Term>.*?<\/Term>/g)?.at(0)?.toString() ?? '')}
+                </span>
+            </Popover>
+        ),
     });
 
-    const splittedKeywordText = mainText.split(
-        new RegExp(
-            `(${searchTerms.map((st) => st.toLocaleLowerCase()).join('|')}|<[^p>]*>[^>]*</[^p>]*>)`,
-            'gi',
-        ),
-    );
-    const checkMapping = (part: string) => {
-        if (searchTerms.includes(part)) {
-            const index = searchTerms.indexOf(part);
-            searchTerms.splice(index, 1);
-            return true;
-        }
-        return false;
-    };
-    const containsSearchTerm = searchTerms.some((term) => mainText.toLowerCase().includes(term.toLowerCase()));
     return (
         <div>
-            {containsSearchTerm ? splittedKeywordText.map((part) => (
-                <span
-                    style={searchTerms.includes(part) ? keywordColoring : undefined}
-                    key={part}
-                >
-                    {checkMapping(part) ? (
-                        <Popover
+            {splittedKeywordText.map((part) => (
+                <>
+                    {part.includes('Popover') ? (
+                        <span
+                            style={keywordColoring}
                             key={part}
-                            overlayStyle={{ width: '300px' }}
-                            content={descriptiveSearchTerms.get(part)}
                         >
-                            <span style={{ cursor: 'pointer' }}>{parser(`${part}`)}</span>
-                        </Popover>
+                            {popoverParser(`${part}`)}
+                        </span>
                     ) : (
-                        <>
-                            {parser(`${part}`)}
-                        </>
+                        <span
+                            key={part}
+                        >
+                            {parse(`${part}`)}
+                        </span>
                     )}
-                </span>
-            )) : parse(mainText)}
+                </>
+            ))}
         </div>
     );
 };
