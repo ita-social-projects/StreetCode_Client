@@ -18,9 +18,7 @@ import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
-import {
-    Button, ConfigProvider, Form, Modal,
-} from 'antd';
+import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -31,13 +29,13 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image from '@/models/media/image.model';
+import Image, { ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
+import { Fact, FactCreate, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -366,6 +364,7 @@ const NewStreetcode = () => {
                 images: createUpdateMediaStore.imagesUpdate,
                 audios: createUpdateMediaStore.audioUpdate,
                 arLink: arLinkUpdated,
+                imageDetailses: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []),
             };
             if (streetcodeType === StreetcodeType.Person) {
                 streetcodeUpdate.firstName = form.getFieldValue('name');
