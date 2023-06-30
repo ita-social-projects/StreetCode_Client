@@ -195,7 +195,7 @@
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
                     min-width: f.pxToRem(180px);
                     line-height: 16.41px;
-
+                    box-shadow: 0px 4px 4px 0px #DB34242E;
                 }
             }
         }
@@ -231,6 +231,7 @@
                     @include mut.flexed($direction: column, $align-items: center, $justify-content: center);
                     line-height: 16.41px;
                     padding: 0;
+                    box-shadow: 0px 4px 4px 0px #DB34242E;
                 }
             }
         }
@@ -299,6 +300,8 @@
                     @include mut.flexed($justify-content: center, $align-items: center);
                     line-height: 16.41px;
                     padding: 0;
+                    box-shadow: 0px 4px 4px 0px #DF3F312E;
+                    width: 100%;
                 }
             }
         }
@@ -334,6 +337,8 @@
                     @include mut.flexed($justify-content: center, $align-items: center);
                     line-height: 16.41px;
                     padding: 0;
+                    box-shadow: 0px 4px 4px 0px #DF3F312E;
+                    width: 100%;
                 }
             }
         }
