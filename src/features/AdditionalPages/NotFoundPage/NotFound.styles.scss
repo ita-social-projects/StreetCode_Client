@@ -78,7 +78,7 @@
         height: calc(100vh - 276px);
 
         .content {
-            margin: 60px 10px 40px;
+            margin: f.pxToRem(60px) f.pxToRem(10px) f.pxToRem(40px);
         }
     }
 }
@@ -88,7 +88,7 @@
         height: calc(100vh - 136px);
 
         .content {
-            padding: 0 10px 40px;
+            padding: 0 f.pxToRem(10px) f.pxToRem(40px);
         }
     }
 }
