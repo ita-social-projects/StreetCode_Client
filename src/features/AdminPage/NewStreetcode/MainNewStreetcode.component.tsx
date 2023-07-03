@@ -51,7 +51,6 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { Data } from '@react-google-maps/api';
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
