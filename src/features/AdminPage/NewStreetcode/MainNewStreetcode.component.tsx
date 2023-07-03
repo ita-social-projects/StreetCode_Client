@@ -51,6 +51,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import { Data } from '@react-google-maps/api';
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
@@ -81,6 +82,7 @@ const NewStreetcode = () => {
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
+    const [lastButton, setLastButton] = useState(null);
 
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
@@ -214,11 +216,12 @@ const NewStreetcode = () => {
     }, []);
 
     const onFinish = (data: any) => {
-        let tempStatus = 0;
-        if (data.target.getAttribute('name') as string) {
-            const buttonName = data.target.getAttribute('name') as string;
-            if (buttonName.includes(publish)) {
-                tempStatus = 1;
+        handleCancelModalRemove();
+        let tempStatus = 1;
+        const buttonName = data.target.innerText;
+        if (buttonName) {
+            if (buttonName.includes(draft)) {
+                tempStatus = 0;
             }
         }
         form.validateFields();
@@ -336,6 +339,7 @@ const NewStreetcode = () => {
                 lastName: null,
                 title: form.getFieldValue('title'),
                 alias: form.getFieldValue('alias'),
+                status: tempStatus,
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
                 eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
@@ -438,7 +442,7 @@ const NewStreetcode = () => {
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей стріткод?"
                         open={visibleModal}
-                        onOk={onFinish}
+                        onOk={onFinish}                    
                         onCancel={handleCancelModalRemove}
                     />
                     <Button
