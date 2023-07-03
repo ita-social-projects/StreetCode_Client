@@ -24,22 +24,22 @@
 }
 
 .partner-modal-container {
-    .line-form-item div{
-        @include mut.flexed($direction: row,
-            $align-items: center,
-            $justify-content: center,
-            $wrap: nowrap,
-            $gap: 0)
+    .line-form-item div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 0;
     }
+}
+.partner-source-list .partner-source-list-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-bottom: 5px;
+    gap: 8px;
+}
 
-    .partner-source-list .partner-source-list-item {
-        @include mut.flexed($direction: row,
-            $align-items: center,
-            $justify-content: center,
-            $wrap: nowrap,
-            $gap: 5px)
-    }
-}  
 .save{
     min-height: 50px;
 }
