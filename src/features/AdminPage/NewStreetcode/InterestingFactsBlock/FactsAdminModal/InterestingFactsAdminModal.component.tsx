@@ -106,7 +106,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                     onFinish={onSuccesfulSubmit}
                 >
                     <div className="center">
-                        <h2>Wow—Факт</h2>
+                        <h2>Wow-Факт</h2>
                     </div>
                     <Form.Item
                         name="title"
