@@ -19,7 +19,7 @@ import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetco
 import dayjs from 'dayjs';
 
 import {
-    Button, ConfigProvider, Form, Modal, UploadFile,
+    Button, ConfigProvider, Form, Modal,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
@@ -31,6 +31,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
+import Image from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
@@ -100,14 +101,10 @@ const NewStreetcode = () => {
 
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                const newArts = result.map((x) => ({
-                    description: x.art.description ?? '',
-                    title: x.art.title ?? '',
-                    imageId: x.art.imageId,
-                    image: x.art.image.base64,
-                    index: x.index,
-                    mimeType: x.art.image.mimeType,
-                    uidFile: `${x.index}`,
+                const artToUpdate = result.map((streetcodeArt) => ({
+                    ...streetcodeArt,
+                    modelState: ModelState.Updated,
+                    isPersisted: true,
                 }));
                 setArts([...artToUpdate]);
             });
@@ -251,7 +248,7 @@ const NewStreetcode = () => {
             eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                 ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
-            images: createUpdateMediaStore.imagesUpdate.map((x) => ({ ...x, base64: '' })),
+            imagesIds: createUpdateMediaStore.imagesUpdate.map((image) => image.id),
             audioId: createUpdateMediaStore.audioId,
             tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
             relatedFigures: figures,
@@ -266,7 +263,13 @@ const NewStreetcode = () => {
             viewCount: 0,
             createdAt: new Date().toISOString(),
             dateString: form.getFieldValue('dateString'),
-            streetcodeArts: arts,
+            streetcodeArts: arts.map((streetcodeArt) => ({
+                ...streetcodeArt,
+                art: {
+                    ...streetcodeArt.art,
+                    image: null,
+                },
+            })),
             subtitles,
             firstName: null,
             lastName: null,
@@ -348,8 +351,14 @@ const NewStreetcode = () => {
                 text: text.title && text.textContent ? text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                     .map((content) => ({ ...content, streetcodeId: parseId })),
-                streetcodeArts: [...arts.map((art) => ({ ...art, streetcodeId: parseId })),
-                    ...streetcodeArtStore.getStreetcodeArtsToDelete],
+                streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
+                    ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
+                    ...streetcodeArt,
+                    art: {
+                        ...streetcodeArt.art,
+                        image: null,
+                    },
+                })),
                 tags,
                 statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                     .map((record) => ({ ...record, streetcodeId: parseId })),

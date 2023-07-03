@@ -10,8 +10,6 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import Image from '@/models/media/image.model';
 import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
-import base64ToUrl from '../../../../../app/common/utils/base64ToUrl.utility';
-
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
@@ -34,10 +32,10 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
         if (arts.length > 0) {
             const newFileList = arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
                 uid: `${streetcodeArt.index}`,
-                name: streetcodeArt.art.image.imageDetails?.alt,
+                name: streetcodeArt.art.image?.imageDetails?.alt,
                 status: 'done',
-                thumbUrl: base64ToUrl(streetcodeArt.art.image.base64, streetcodeArt.art.image.mimeType) ?? '',
-                type: streetcodeArt.art.image.mimeType,
+                thumbUrl: base64ToUrl(streetcodeArt.art.image?.base64, streetcodeArt.art.image?.mimeType) ?? '',
+                type: streetcodeArt.art.image?.mimeType,
             }));
 
             setFileList(newFileList);
@@ -79,9 +77,10 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
             modelState: ModelState.Created,
             art: {
                 id: 0,
-                description: 'description',
+                description: '',
                 image,
-                title: 'title',
+                imageId: image.id,
+                title: '',
             },
         };
 
