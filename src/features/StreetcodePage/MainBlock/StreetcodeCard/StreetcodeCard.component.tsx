@@ -8,7 +8,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx, { useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
-
+import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
@@ -45,6 +45,8 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
+var arlink: string = "";
+
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
@@ -58,11 +60,15 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     }, [id]);
 
     const [images, setImages] = useState<Image[]>([]);
+
     useEffect(() => {
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
-                .catch((e) => {});
+                .catch((e) => { });
+            TransactionLinksApi.getById(id).then((x: any) => {
+                arlink = x.url;
+            });
         }
     }, [streetcode]);
 
@@ -134,13 +140,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button
-                            className="animateFigureBtn"
-                            onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                        >
-                            <a href="#QRBlock">Оживити картинку</a>
 
-                        </Button>
+                        {arlink.length > 1 ?
+                            (
+                                <Button
+                                    className="animateFigureBtn"
+                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}>
+                                    <a href="#QRBlock">Оживити картинку</a>
+                                </Button>
+                            )
+                            : <></>}
                     </div>
                 </div>
             </div>
