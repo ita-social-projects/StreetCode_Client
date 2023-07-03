@@ -45,13 +45,12 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-var arlink: string = "";
-
 const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
+    const [arlink, setArlink] = useState("");
 
     useAsync(() => {
         if (id && id > 0) {
@@ -67,11 +66,11 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                 .then((imgs) => setImages(imgs))
                 .catch((e) => { });
             TransactionLinksApi.getById(id).then((x: any) => {
-                arlink = x.url;
+                setArlink(x.url);
             });
         }
     }, [streetcode]);
-
+    
     return (
         <div className="card">
             <div className="leftSider">
