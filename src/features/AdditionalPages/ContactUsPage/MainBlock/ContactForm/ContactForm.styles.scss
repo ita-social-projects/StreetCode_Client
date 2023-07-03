@@ -4,6 +4,13 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .contactUsContainer{
+    
+    .ant-input-affix-wrapper, .ant-input-affix-wrapper-focused
+    {
+        border: none;
+        box-shadow: none !important;
+    }
+
     .formContainer{
         width: f.pxToRem(568px);
         padding: f.pxToRem(24px);
@@ -63,7 +70,7 @@
             }
         
             .ant-input:hover, .ant-input:focus{
-                border: 1px solid #D3CDCA;
+                border: 1px solid #D3CDCA !important; 
                 box-shadow: none;
             }
             .ant-form-item{

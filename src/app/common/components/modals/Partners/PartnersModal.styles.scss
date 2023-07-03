@@ -5,6 +5,12 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .partnersModal {
+
+    .ant-input-affix-wrapper, .ant-input-affix-wrapper-focused
+    {
+        border: none;
+        box-shadow: none !important;
+    }  
     width: f.pxToRem(1012px) !important;
     height: f.pxToRem(460px);
     
