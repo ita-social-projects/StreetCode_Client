@@ -4,9 +4,7 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .contactUsContainer{
-    
-    .ant-input-affix-wrapper, .ant-input-affix-wrapper-focused
-    {
+    .ant-input-affix-wrapper, .ant-input-affix-wrapper-focused{
         border: none;
         box-shadow: none !important;
     }
@@ -70,7 +68,7 @@
             }
         
             .ant-input:hover, .ant-input:focus{
-                border: 1px solid #D3CDCA !important; 
+                border: f.pxToRem(1px) solid #D3CDCA; 
                 box-shadow: none;
             }
             .ant-form-item{
