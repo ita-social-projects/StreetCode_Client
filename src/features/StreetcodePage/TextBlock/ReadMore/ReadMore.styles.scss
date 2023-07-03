@@ -18,6 +18,7 @@
 .mainTextContent {
     white-space: pre-line;
     @include mut.rem-margined($bottom: 35px);
+    display: inline;
 }
 
 .textShort {

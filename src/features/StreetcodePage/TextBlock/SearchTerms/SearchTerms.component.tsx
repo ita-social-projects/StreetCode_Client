@@ -1,3 +1,5 @@
+import './SearchTerms.styles.scss';
+
 import parse from 'html-react-parser';
 
 import { Popover } from 'antd';
@@ -32,7 +34,8 @@ const SearchTerms = ({ mainText }: Props) => {
     return (
         <div>
             {splittedKeywordText.map((part) => (
-                <>
+                // eslint-disable-next-line react/style-prop-object
+                <span className="textInline">
                     {part.includes('Popover') ? (
                         <span
                             style={keywordColoring}
@@ -41,13 +44,11 @@ const SearchTerms = ({ mainText }: Props) => {
                             {popoverParser(`${part}`)}
                         </span>
                     ) : (
-                        <span
-                            key={part}
-                        >
+                        <>
                             {parse(`${part}`)}
-                        </span>
+                        </>
                     )}
-                </>
+                </span>
             ))}
         </div>
     );
