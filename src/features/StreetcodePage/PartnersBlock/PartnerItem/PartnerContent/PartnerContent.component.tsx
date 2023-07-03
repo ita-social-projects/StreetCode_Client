@@ -56,9 +56,9 @@ const PartnerContent = ({ partner }: Props) => {
                     rel="noreferrer"
                     target="_blank"
                     className="mainLink"
-                    href={targetUrl.href}
+                    href={targetUrl?.href}
                 >
-                    {targetUrl.title ?? 'go to partner page'}
+                    {targetUrl?.title ?? 'до сторінки партнера'}
                 </a>
             </div>
             <div

@@ -18,9 +18,7 @@ import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
-import {
-    Button, ConfigProvider, Form, Modal,
-} from 'antd';
+import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -31,13 +29,13 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image from '@/models/media/image.model';
+import Image, { ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
+import { Fact, FactCreate, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -55,7 +53,7 @@ import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
-    const [form] = useForm(); // causes warning
+    const [form] = useForm();
     const {
         factsStore,
         timelineItemStore,
@@ -155,7 +153,6 @@ const NewStreetcode = () => {
                     isPersisted: true,
                     modelState: ModelState.Updated,
                 }));
-                console.log(persistedFigures);
 
                 setFigures(persistedFigures);
             });
@@ -204,7 +201,7 @@ const NewStreetcode = () => {
                 .then((res) => {
                     if (res) {
                         setArLink(res);
-                        // form.setFieldValue('arlink', res.qrCodeUrl.href);
+                        form.setFieldValue('arlink', res.url);
                     }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
@@ -214,11 +211,12 @@ const NewStreetcode = () => {
     }, []);
 
     const onFinish = (data: any) => {
-        let tempStatus = 0;
-        if (data.target.getAttribute('name') as string) {
-            const buttonName = data.target.getAttribute('name') as string;
-            if (buttonName.includes(publish)) {
-                tempStatus = 1;
+        handleCancelModalRemove();
+        let tempStatus = 1;
+        const buttonName = data.target.innerText;
+        if (buttonName) {
+            if (buttonName.includes(draft)) {
+                tempStatus = 0;
             }
         }
         form.validateFields();
@@ -321,14 +319,6 @@ const NewStreetcode = () => {
                 .map((tag) => ({ ...tag, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
-            const arUrl = form.getFieldValue('arlink');
-            const arLinkUpdated: TransactionLink = {
-                id: arLink?.id ?? 0,
-                streetcodeId: parseId,
-                url: arLink?.url ?? '',
-                urlTitle: arLink?.urlTitle ?? '',
-            };
-
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
@@ -336,6 +326,7 @@ const NewStreetcode = () => {
                 lastName: null,
                 title: form.getFieldValue('title'),
                 alias: form.getFieldValue('alias'),
+                status: tempStatus,
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
                 eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
@@ -365,14 +356,22 @@ const NewStreetcode = () => {
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 images: createUpdateMediaStore.imagesUpdate,
                 audios: createUpdateMediaStore.audioUpdate,
-                arLink: arLinkUpdated,
+                arLink: {
+                    id: arLink?.id ?? 0,
+                    streetcodeId: parseId,
+                    url: form.getFieldValue('arlink') ?? '',
+                    urlTitle: arLink?.urlTitle ?? '',
+                },
+                imageDetailses: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []),
             };
             if (streetcodeType === StreetcodeType.Person) {
                 streetcodeUpdate.firstName = form.getFieldValue('name');
                 streetcodeUpdate.lastName = form.getFieldValue('surname');
             }
             console.log(streetcodeUpdate);
-            StreetcodesApi.update(streetcodeUpdate).then((response) => {
+            StreetcodesApi.update(streetcodeUpdate).then(() => {
+                window.location.reload();
+            }).then(() => {
                 alert('Cтріткод успішно оновленний');
             })
                 .catch((error2) => {
@@ -438,7 +437,7 @@ const NewStreetcode = () => {
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей стріткод?"
                         open={visibleModal}
-                        onOk={onFinish}
+                        onOk={onFinish}                    
                         onCancel={handleCancelModalRemove}
                     />
                     <Button

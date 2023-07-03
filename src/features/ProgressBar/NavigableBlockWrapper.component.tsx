@@ -23,7 +23,7 @@ const NavigableBlockWrapper = ({ children, setBlocks, topDistance }: Props) => {
         const blocks: NamedBlock[] = [];
         Array.from(parentRef.current.children).forEach((child, idx) => {
             const headerBlock = Array.from(child.getElementsByTagName('h1'))
-                .find(({ className }) => className === 'blockHeadingText')
+                .find(({ className }) => className.trim() === 'blockHeadingText')
              ?? Array.from(child.getElementsByTagName('h2'))
                  .find(({ className }) => className === 'streetcodeTitle');
 

@@ -10,7 +10,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import {
     Button,
-    Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Switch,
+    Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Space, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
@@ -186,8 +186,7 @@ const MainBlockAdmin = React.memo(({
             </Form.Item>
 
             {streetcodeType === StreetcodeType.Person ? (
-                <Input.Group
-                    compact
+                <Space.Compact
                     className="display-flex-column"
                 >
                     <Form.Item
@@ -217,7 +216,7 @@ const MainBlockAdmin = React.memo(({
                             showCount
                         />
                     </Form.Item>
-                </Input.Group>
+                </Space.Compact>
             )
                 : ('')}
             <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
@@ -253,8 +252,12 @@ const MainBlockAdmin = React.memo(({
                             placement="topLeft"
                             content={(
                                 <p className="label-tags-block-info-container-content">
-При обиранні теги є невидимими для користувача (фон тегу сірий), тобто він не відображається на головній картці стріткоду.
-                            Якщо натиснути на тег, його стан зміниться на видимий (фон - білий). Нижче є розширення наводячи на які, можна побачити, які теги будуть вміщатись на головній картці стріткоду.
+                                    При обиранні теги є невидимими для користувача (фон тегу сірий),
+                                    тобто він не відображається
+                                    на головній картці стріткоду.
+                                    Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
+                                    Нижче є розширення наводячи на які, можна побачити, які теги
+                                    будуть вміщатись на головній картці стріткоду.
                                     {' '}
                                 </p>
                             )}

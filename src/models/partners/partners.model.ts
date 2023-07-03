@@ -14,7 +14,7 @@ export default interface Partner {
     description?: string | undefined;
     logoId: number;
     logo?:Image;
-    targetUrl: Url;
+    targetUrl?: Url;
     partnerSourceLinks: PartnerSourceLink[];
     streetcodes:StreetcodeShort[];
 }
@@ -50,14 +50,12 @@ export interface PartnerSourceLinkCreateUpdate {
     id: number;
     targetUrl: string;
     logoType: number;
-    title:string;
 }
 
 export interface PartnerSourceLink {
     id: number;
     targetUrl: Url;
     logoType: number;
-    title:string;
 }
 
 export enum LogoType {
