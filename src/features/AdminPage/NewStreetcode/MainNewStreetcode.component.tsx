@@ -214,11 +214,12 @@ const NewStreetcode = () => {
     }, []);
 
     const onFinish = (data: any) => {
-        let tempStatus = 0;
-        if (data.target.getAttribute('name') as string) {
-            const buttonName = data.target.getAttribute('name') as string;
-            if (buttonName.includes(publish)) {
-                tempStatus = 1;
+        handleCancelModalRemove();
+        let tempStatus = 1;
+        const buttonName = data.target.innerText;
+        if (buttonName) {
+            if (buttonName.includes(draft)) {
+                tempStatus = 0;
             }
         }
         form.validateFields();
@@ -336,6 +337,7 @@ const NewStreetcode = () => {
                 lastName: null,
                 title: form.getFieldValue('title'),
                 alias: form.getFieldValue('alias'),
+                status: tempStatus,
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
                 eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
@@ -438,7 +440,7 @@ const NewStreetcode = () => {
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей стріткод?"
                         open={visibleModal}
-                        onOk={onFinish}
+                        onOk={onFinish}                    
                         onCancel={handleCancelModalRemove}
                     />
                     <Button
