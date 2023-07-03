@@ -55,7 +55,7 @@ import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
-    const [form] = useForm(); // causes warning
+    const [form] = useForm();
     const {
         factsStore,
         timelineItemStore,
@@ -155,7 +155,6 @@ const NewStreetcode = () => {
                     isPersisted: true,
                     modelState: ModelState.Updated,
                 }));
-                console.log(persistedFigures);
 
                 setFigures(persistedFigures);
             });
