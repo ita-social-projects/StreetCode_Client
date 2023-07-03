@@ -18,9 +18,7 @@ import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
-import {
-    Button, ConfigProvider, Form, Modal,
-} from 'antd';
+import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -31,13 +29,13 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image from '@/models/media/image.model';
+import Image, { ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
+import { Fact, FactCreate, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -203,7 +201,7 @@ const NewStreetcode = () => {
                 .then((res) => {
                     if (res) {
                         setArLink(res);
-                        // form.setFieldValue('arlink', res.qrCodeUrl.href);
+                        form.setFieldValue('arlink', res.url);
                     }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
@@ -321,14 +319,6 @@ const NewStreetcode = () => {
                 .map((tag) => ({ ...tag, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
-            const arUrl = form.getFieldValue('arlink');
-            const arLinkUpdated: TransactionLink = {
-                id: arLink?.id ?? 0,
-                streetcodeId: parseId,
-                url: arLink?.url ?? '',
-                urlTitle: arLink?.urlTitle ?? '',
-            };
-
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
@@ -366,14 +356,22 @@ const NewStreetcode = () => {
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 images: createUpdateMediaStore.imagesUpdate,
                 audios: createUpdateMediaStore.audioUpdate,
-                arLink: arLinkUpdated,
+                arLink: {
+                    id: arLink?.id ?? 0,
+                    streetcodeId: parseId,
+                    url: form.getFieldValue('arlink') ?? '',
+                    urlTitle: arLink?.urlTitle ?? '',
+                },
+                imageDetailses: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []),
             };
             if (streetcodeType === StreetcodeType.Person) {
                 streetcodeUpdate.firstName = form.getFieldValue('name');
                 streetcodeUpdate.lastName = form.getFieldValue('surname');
             }
             console.log(streetcodeUpdate);
-            StreetcodesApi.update(streetcodeUpdate).then((response) => {
+            StreetcodesApi.update(streetcodeUpdate).then(() => {
+                window.location.reload();
+            }).then(() => {
                 alert('Cтріткод успішно оновленний');
             })
                 .catch((error2) => {
