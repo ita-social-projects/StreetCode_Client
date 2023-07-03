@@ -1,9 +1,6 @@
 import './PartnerItem.styles.scss';
 
-import { useCallback, useState } from 'react';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Partner from '@models/partners/partners.model';
-import useMobx from '@stores/root-store';
 
 import { Popover } from 'antd';
 

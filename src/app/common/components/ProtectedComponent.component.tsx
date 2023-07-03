@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { FC, ReactNode } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, redirect, useNavigate } from 'react-router-dom';
 
 import useMobx from '@/app/stores/root-store';
 import UserLoginStore from '@/app/stores/user-login-store';
@@ -13,10 +13,10 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => 
     const navigate = useNavigate();
     if (!UserLoginStore.isLoggedIn) {
         const token = UserLoginStore.getToken();
-        if (token && token !== '') {
+        if (token && UserLoginStore.isLoggedIn && token !== '') {
             userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
         } else {
-            navigate(FRONTEND_ROUTES.ADMIN.LOGIN);
+            return <Navigate to={FRONTEND_ROUTES.ADMIN.LOGIN} />;
         }
     }
     if (!Array.isArray(children)) return <>{children}</>;

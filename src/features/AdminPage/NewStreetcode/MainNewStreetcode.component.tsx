@@ -202,7 +202,7 @@ const NewStreetcode = () => {
                 .then((res) => {
                     if (res) {
                         setArLink(res);
-                        // form.setFieldValue('arlink', res.qrCodeUrl.href);
+                        form.setFieldValue('arlink', res.url);
                     }
                 });
             factsStore.fetchFactsByStreetcodeId(parseId);
@@ -319,14 +319,6 @@ const NewStreetcode = () => {
                 .map((tag) => ({ ...tag, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
-            const arUrl = form.getFieldValue('arlink');
-            const arLinkUpdated: TransactionLink = {
-                id: arLink?.id ?? 0,
-                streetcodeId: parseId,
-                url: arLink?.url ?? '',
-                urlTitle: arLink?.urlTitle ?? '',
-            };
-
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
@@ -363,7 +355,12 @@ const NewStreetcode = () => {
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 images: createUpdateMediaStore.imagesUpdate,
                 audios: createUpdateMediaStore.audioUpdate,
-                arLink: arLinkUpdated,
+                arLink: {
+                    id: arLink?.id ?? 0,
+                    streetcodeId: parseId,
+                    url: form.getFieldValue('arlink') ?? '',
+                    urlTitle: arLink?.urlTitle ?? '',
+                },
                 imageDetailses: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []),
             };
             if (streetcodeType === StreetcodeType.Person) {
@@ -371,7 +368,9 @@ const NewStreetcode = () => {
                 streetcodeUpdate.lastName = form.getFieldValue('surname');
             }
             console.log(streetcodeUpdate);
-            StreetcodesApi.update(streetcodeUpdate).then((response) => {
+            StreetcodesApi.update(streetcodeUpdate).then(() => {
+                window.location.reload();
+            }).then(() => {
                 alert('Cтріткод успішно оновленний');
             })
                 .catch((error2) => {
