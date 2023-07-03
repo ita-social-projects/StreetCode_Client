@@ -60,6 +60,13 @@ const StreetcodeContent = () => {
     };
 
     useAsync(() => {
+        Promise.all([checkStreetcodeExist(streetcodeUrl.current)])
+            .then((response) => {
+                if (!response[0]) {
+                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                }
+            });
+
         const idParam = searchParams.get('qrid');
         if (idParam !== null) {
             const tempId = +idParam;
