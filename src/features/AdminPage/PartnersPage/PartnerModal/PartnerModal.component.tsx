@@ -41,9 +41,12 @@ const PartnerModal: React.FC<{
     isStreetcodeVisible = true,
     afterSubmit,
   }) => {
+    const [form] = Form.useForm();
+    const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>("");
+    const [urlTitleValue, setUrlTitleValue] = useState<string>("");
     const [showSecondForm, setShowSecondForm] = useState(false);
     const [showSecondFormButton, setShowSecondFormButton] = useState(true);
-    const [form] = Form.useForm();
+
     const { partnersStore, streetcodeShortStore } = useMobx();
     const [partnerLinksForm] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -79,8 +82,8 @@ const PartnerModal: React.FC<{
         form.setFieldsValue({
           title: partnerItem.title,
           isKeyPartner: partnerItem.isKeyPartner,
-          url: partnerItem.targetUrl.href,
-          urlTitle: partnerItem.targetUrl.title,
+          url: partnerItem.targetUrl?.href,
+          urlTitle: partnerItem.targetUrl?.title,
           description: partnerItem.description,
           partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
           isVisibleEverywhere: partnerItem.isVisibleEverywhere,
@@ -96,19 +99,39 @@ const PartnerModal: React.FC<{
             },
           ],
         });
+        setUrlTitleEnabled(form.getFieldValue("url"));
+        setUrlTitleValue(form.getFieldValue("urlTitle"));
+
         selectedStreetcodes.current = partnerItem.streetcodes;
         setPartnersSourceLinks(
           partnerItem.partnerSourceLinks.map((l) => ({
             id: l.id,
             logoType: l.logoType,
             targetUrl: l.targetUrl.href,
-            title: l.title,
           }))
         );
       } else {
         imageId.current = 0;
       }
     }, [partnerItem, open, form]);
+
+    const scrollToInvalidField = () => {
+      const formElement = document.querySelector(".ant-form") as HTMLElement;
+      const firstInvalidField = formElement.querySelector(
+        ".ant-form-item-has-error"
+      ) as HTMLElement;
+      if (firstInvalidField) {
+        firstInvalidField.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+    const handleOk = async () => {
+      try {
+        const values = await form.validateFields();
+        form.submit();
+      } catch (error) {
+        scrollToInvalidField();
+      }
+    };
 
     const closeAndCleanData = () => {
       form.resetFields();
@@ -118,12 +141,13 @@ const PartnerModal: React.FC<{
       setIsModalOpen(false);
       setShowSecondForm(false);
       setShowSecondFormButton(true);
+      setUrlTitleEnabled("");
+      setUrlTitleValue("");
     };
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
       const url = formValues.url as string;
       const logotype = partnerLinksForm.getFieldValue("logotype");
-      console.log(url, logotype);
 
       let newId = Math.min(...partnerSourceLinks.map((item) => item.id));
       if (newId < 0) {
@@ -137,12 +161,26 @@ const PartnerModal: React.FC<{
           id: newId,
           logoType: Number(LogoType[logotype]),
           targetUrl: url,
-          title: "title",
         },
       ]);
       partnerLinksForm.resetFields();
       setShowSecondForm(false);
       setShowSecondFormButton(true);
+    };
+    const handleUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      try {
+        await form.validateFields(["url"]);
+        setUrlTitleEnabled(value);
+      } catch (error) {
+        setUrlTitleEnabled("");
+      }
+    };
+    const handleUrlTitleChange = async (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const { value } = e.target;
+      setUrlTitleValue(value);
     };
     const handleShowSecondForm = () => {
       setShowSecondForm(true);
@@ -153,34 +191,24 @@ const PartnerModal: React.FC<{
       setShowSecondFormButton(true);
     };
     const onSuccesfulSubmitPartner = async (formValues: any) => {
-      if (showSecondForm) {
-        try {
-          await partnerLinksForm.validateFields();
-          console.log(partnerLinksForm.getFieldsValue());
-          onSuccesfulSubmitLinks(partnerLinksForm.getFieldsValue());
-          console.log(5);
-        } catch (errorInfo) {
-          message.error("Будь ласка, заповніть всі обов'язкові поля");
-          return; // Exit the function here
-        }
-      }
-
       partnerSourceLinks.forEach((el, index) => {
         if (el.id < 0) {
           partnerSourceLinks[index].id = 0;
         }
-        partnerSourceLinks[index].title = "title";
       });
+      if (!form.getFieldValue("url")) {
+        formValues.urlTitle = null;
+      }
       const partner: PartnerCreateUpdate = {
         id: 0,
         isKeyPartner: formValues.isKeyPartner ?? false,
         logoId: imageId.current,
         partnerSourceLinks,
         streetcodes: selectedStreetcodes.current,
-        targetUrl: formValues.url ?? "",
+        targetUrl: formValues.url?.trim() || null,
         title: formValues.title,
-        description: formValues.description ?? "",
-        urlTitle: formValues.urlTitle ?? "",
+        description: formValues.description?.trim() || null,
+        urlTitle: formValues.urlTitle?.trim() || null,
         isVisibleEverywhere: formValues.isVisibleEverywhere ?? false,
       };
       if (partnerItem) {
@@ -285,7 +313,6 @@ const PartnerModal: React.FC<{
               name="url"
               label="Посилання: "
               rules={[
-                { required: true, message: "Введіть Посилання" },
                 {
                   pattern:
                     /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i,
@@ -293,12 +320,22 @@ const PartnerModal: React.FC<{
                 },
               ]}
             >
-              <Input maxLength={200} showCount />
+              <Input maxLength={200} showCount onChange={handleUrlChange} />
             </Form.Item>
 
-            <Form.Item name="urlTitle" label="Назва посилання: ">
-              <Input maxLength={100} showCount />
+            <Form.Item name="urlTitle" label="Назва посилання:">
+              <Input
+                maxLength={100}
+                showCount
+                disabled={!urlTitleEnabled}
+                onChange={handleUrlTitleChange}
+              />
             </Form.Item>
+            {urlTitleEnabled === "" && urlTitleValue && (
+              <p className="error-text">
+                Введіть правильне посилання для збереження назви посилання.
+              </p>
+            )}
 
             <Form.Item name="description" label="Опис: ">
               <TextArea showCount maxLength={450} />
@@ -390,7 +427,10 @@ const PartnerModal: React.FC<{
           ))}
         </div>
         {showSecondFormButton && (
-          <Button onClick={handleShowSecondForm} className="add-social-media-button">
+          <Button
+            onClick={handleShowSecondForm}
+            className="add-social-media-button"
+          >
             Додати соціальну мережу
           </Button>
         )}
@@ -481,7 +521,7 @@ const PartnerModal: React.FC<{
               disabled={showSecondForm}
               className="streetcode-custom-button save"
               onClick={() => {
-                form.submit();
+                handleOk();
               }}
             >
               Зберегти

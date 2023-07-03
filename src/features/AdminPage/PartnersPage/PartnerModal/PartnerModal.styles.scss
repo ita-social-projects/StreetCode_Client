@@ -50,40 +50,43 @@
     border-radius: 7px;
 }
 .link-container:hover{
-    border-color: red ;
+    border-color: c.$ant-menu-color;
 }
 .social-media-form-item label {
     white-space: nowrap;
-  }
+}
 .button-container {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
-  }
+}
 .add-social-media-button{
     margin-bottom: 15px;
 }
 .add-social-media-button:hover{
-    color:red!important;
-    border-color:red!important;
+    color:c.$text-red-color;
+    border-color:c.$ant-menu-color;
 }
 .plus-button:hover{
-    color: red!important;
-    border-color:red!important;
+    color: c.$text-red-color;
+    border-color:c.$ant-menu-color;
 }
 .close-button {
     top: -5;
     right: 0;
-    background-color: rgb(217, 61, 61);
-    color:white;
+    background-color: c.$ant-menu-color;
+    color:c.$pure-white-color;
     height: 30px;
-  }
+}
 .close-button:hover {
-    background-color: #891F16;
-    color:white!important;
+    background-color:c.$dark-red-color;
+    color:c.$pure-white-color;
     border: none!important;
 }
 .custom-tooltip .ant-tooltip-inner {
-    background-color: rgba(148, 139, 139, 0.871);
-    color: white; 
+    background-color: c.$darkish-gray-color;
+    color: c.$pure-white-color; 
+}
+.error-text {
+    color: c.$ant-menu-color;
 }
