@@ -3,17 +3,101 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.partnersBlockMainContainer{
-    .partnersBlock{
+.partnersBlockMainContainer {
+    .partnersBlock {
         max-width: 1920px;
         margin: 0 auto;
+
+        .keyPartnersBlock {
+            column-gap: 0;
+            row-gap: 0;
+
+            .partnersItem {
+                @include mut.rem-margined($top: 30px, $right: 10px, $bottom: 30px, $left: 10px);
+            }
+        }
     }
 
-    .otherPartnersBlock{
+    .otherPartnersBlock {
         display: none;
     }
 
-    .keyPartnersBlock{
+    .keyPartnersBlock {
         margin: 0;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .partnersBlock {
+        .keyPartnersBlock {
+            .partnersItem {
+                @include mut.rem-margined($top: 15px, $right: 10px, $bottom: 10px, $left: 15px);
+                @include mut.sized($width: 350px, $height: 106px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .partnersBlock {
+        .keyPartnersBlock {
+            .partnersItem {
+                @include mut.rem-margined($top: 20px, $right: 15px, $bottom: 20px, $left: 15px);
+                @include mut.sized($width: 340px, $height: 98px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .partnersBlock {
+        .keyPartnersBlock {
+            .partnersItem {
+                @include mut.sized($width: 323px, $height: 93px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 687px) {
+    .partnersBlock {
+        .keyPartnersBlock {
+            .partnersItem {
+                @include mut.rem-margined($top: 15px, $right: 12px, $bottom: 15px, $left: 12px);
+                @include mut.sized($width: 290px, $height: 83px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .partnersBlock {
+        .keyPartnersBlock {
+            .partnersItem {
+                @include mut.sized($width: 203px, $height: 58px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 446px) {
+    .partnersBlock {
+        .keyPartnersBlock {
+            .partnersItem {
+                @include mut.rem-margined($top: 13px, $right: 11px, $bottom: 13px, $left: 11px);
+                @include mut.sized($width: 171px, $height: 49px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 382px) {
+    .partnersBlock {
+        .keyPartnersBlock {
+            .partnersItem {
+                @include mut.rem-margined($top: 10px, $right: 10px, $bottom: 10px, $left: 10px);
+                @include mut.sized($width: 160px, $height: 46px);
+            }
+        }
     }
 }

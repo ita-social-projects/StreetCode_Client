@@ -11,7 +11,7 @@ const InterestingFactsBlock = () => {
 
     return (
         <div className="adminContainer-block">
-            <h2>Wow—факти</h2>
+            <h2>Wow-факти</h2>
             <div className="textBlockButton-container">
                 <button
                     type="button"

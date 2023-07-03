@@ -1,10 +1,14 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import factsApi from '@api/streetcode/text-content/facts.api';
 import { ModelState } from '@models/enums/model-state';
-import { Fact, FactUpdate } from '@models/streetcode/text-contents.model';
+import { Fact, FactCreate, FactUpdate } from '@models/streetcode/text-contents.model';
+
+import { ImageDetails } from '@/models/media/image.model';
 
 export default class FactsStore {
     public factMap = new Map<number, Fact>();
+
+    public factImageDetailsMap = new Map<number, ImageDetails>();
 
     public constructor() {
         makeAutoObservable(this);
@@ -20,6 +24,13 @@ export default class FactsStore {
 
             this.setItem(updatedItem);
         });
+    };
+
+    public setImageDetails = (fact: FactCreate, imageDetailId: number) => {
+        this.factImageDetailsMap.set(fact.imageId, { id: imageDetailId,
+                                                     imageId: fact.imageId,
+                                                     alt: fact.imageDescription,
+                                                     title: '' });
     };
 
     public addFact = (fact: Fact) => {
@@ -44,8 +55,12 @@ export default class FactsStore {
         }
     };
 
-    public updateFactInMap = (fact: Fact) => {
+    public updateFactInMap = (fact: FactUpdate) => {
         this.setItem(fact);
+        this.factImageDetailsMap.set(
+            fact.imageId,
+            { id: 0, imageId: fact.imageId, alt: fact.imageDescription, title: '' },
+        );
     };
 
     private setItem = (fact: Fact) => {
