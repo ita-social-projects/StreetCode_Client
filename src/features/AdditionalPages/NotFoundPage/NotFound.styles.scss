@@ -73,12 +73,12 @@
     }  
 }
 
-@media (min-width: 1024px) and (max-height: 900px) {
+@media (min-width: 1025px) and (max-height: 900px) {
     .notFoundContainer {
-        height: calc(100vh - 276px);
+        height: calc(100vh - 269px);
 
         .content {
-            margin: 60px 10px 40px;
+            margin: f.pxToRem(60px) f.pxToRem(10px) f.pxToRem(40px);
         }
     }
 }
@@ -88,7 +88,7 @@
         height: calc(100vh - 136px);
 
         .content {
-            padding: 0 10px 40px;
+            padding: 0 f.pxToRem(10px) f.pxToRem(40px);
         }
     }
 }
