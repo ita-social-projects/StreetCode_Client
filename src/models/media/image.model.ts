@@ -18,7 +18,7 @@ export interface ImageDetails {
     id: number;
     title?: string;
     alt?: string;
-    imageId:number;
+    imageId: number;
 }
 
 export interface ImageCreateUpdate extends IModelState {
