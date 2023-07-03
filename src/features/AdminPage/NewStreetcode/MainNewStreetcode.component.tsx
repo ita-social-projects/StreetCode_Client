@@ -82,7 +82,6 @@ const NewStreetcode = () => {
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
-    const [lastButton, setLastButton] = useState(null);
 
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
