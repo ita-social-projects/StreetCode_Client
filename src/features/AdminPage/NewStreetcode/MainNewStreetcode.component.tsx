@@ -29,7 +29,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image, { ImageDetails } from '@/models/media/image.model';
+import Image, { ImageAssigment, ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
@@ -246,7 +246,7 @@ const NewStreetcode = () => {
             eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
             eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                 ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
-            imagesIds: createUpdateMediaStore.imagesUpdate.map((image) => image.id),
+            imagesIds: createUpdateMediaStore.getImageIds(),
             audioId: createUpdateMediaStore.audioId,
             tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
             relatedFigures: figures,
@@ -291,6 +291,7 @@ const NewStreetcode = () => {
                         },
                     }
                 )),
+            imagesDetails: createUpdateMediaStore.getImageDetails(),
 
         };
         if (streetcodeType === StreetcodeType.Person) {
@@ -362,7 +363,7 @@ const NewStreetcode = () => {
                     url: form.getFieldValue('arlink') ?? '',
                     urlTitle: arLink?.urlTitle ?? '',
                 },
-                imageDetailses: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []),
+                imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
             };
             if (streetcodeType === StreetcodeType.Person) {
                 streetcodeUpdate.firstName = form.getFieldValue('name');
@@ -400,6 +401,15 @@ const NewStreetcode = () => {
                 <div className="adminContainer">
                     <div className="adminContainer-block">
                         <h2>Стріткод</h2>
+                        <Button onClick={() => {
+                            console.log(createUpdateMediaStore.getImageDetails());
+                            console.log(createUpdateMediaStore.getImageDetailsUpdate());
+                            console.log(createUpdateMediaStore.imagesUpdate);
+
+                        }}
+                        >
+check
+                        </Button>
                         <Form form={form} layout="vertical" onFinish={onFinish}>
                             <MainBlockAdmin
                                 form={form}
@@ -437,7 +447,7 @@ const NewStreetcode = () => {
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей стріткод?"
                         open={visibleModal}
-                        onOk={onFinish}                    
+                        onOk={onFinish}
                         onCancel={handleCancelModalRemove}
                     />
                     <Button

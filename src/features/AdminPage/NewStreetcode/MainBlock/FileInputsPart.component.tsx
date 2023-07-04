@@ -83,6 +83,7 @@ const FileInputsPart = () => {
             const fetchData = async () => {
                 try {
                     await ImagesApi.getByStreetcodeId(parseId).then((result) => {
+                        console.log(result)
                         setImages(result);
                         setAnimation([convertFileToUploadFile(result[0])]);
                         setBlackAndWhite([convertFileToUploadFile(result[1])]);
@@ -93,7 +94,7 @@ const FileInputsPart = () => {
                         createUpdateMediaStore.relatedFigureId = result[2]?.id;
 
                         createUpdateMediaStore.imagesUpdate = result.map((img) => ({
-                            id: img.id,
+                            ...img,
                             streetcodeId: parseId,
                             modelState: ModelState.Updated,
                         }));
@@ -176,7 +177,7 @@ const FileInputsPart = () => {
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
-                        fileList={relatedFigure}
+                        {...(relatedFigure[0] ? { fileList: relatedFigure } : null)}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
