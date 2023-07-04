@@ -83,7 +83,6 @@ const FileInputsPart = () => {
             const fetchData = async () => {
                 try {
                     await ImagesApi.getByStreetcodeId(parseId).then((result) => {
-                        console.log(result)
                         setImages(result);
                         setAnimation([convertFileToUploadFile(result[0])]);
                         setBlackAndWhite([convertFileToUploadFile(result[1])]);

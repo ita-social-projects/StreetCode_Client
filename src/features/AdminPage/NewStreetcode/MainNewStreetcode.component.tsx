@@ -401,15 +401,6 @@ const NewStreetcode = () => {
                 <div className="adminContainer">
                     <div className="adminContainer-block">
                         <h2>Стріткод</h2>
-                        <Button onClick={() => {
-                            console.log(createUpdateMediaStore.getImageDetails());
-                            console.log(createUpdateMediaStore.getImageDetailsUpdate());
-                            console.log(createUpdateMediaStore.imagesUpdate);
-
-                        }}
-                        >
-check
-                        </Button>
                         <Form form={form} layout="vertical" onFinish={onFinish}>
                             <MainBlockAdmin
                                 form={form}
