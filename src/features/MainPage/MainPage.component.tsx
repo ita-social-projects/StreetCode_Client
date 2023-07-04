@@ -1,10 +1,6 @@
 import './MainPage.styles.scss';
 
 import ScrollToTopBtn from '../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component';
-import Footer from '../../app/layout/footer/Footer.component';
-import ProgressBar from '../ProgressBar/ProgressBar.component';
-import DonateBtn from '../StreetcodePage/DonateBtn/DonateBtn.component';
-
 import InstagramBlock from './InstagramBlock/InstagramBlock.component';
 import PartnersBlockComponent from './PartnersBlockMain/PartnersBlockMain.component';
 import StaticBanner from './StaticBanners/StaticBanner.component';
@@ -27,9 +23,9 @@ const mainPageContent = () => (
                 }}
             />
             <NewsSliderComponent/>
-            <TeamComponent />
-            <PartnersBlockComponent />
-            <InstagramBlock />
+            <TeamComponent/>
+            <PartnersBlockComponent/>
+            <InstagramBlock/>
             <StaticBanner
                 id="support"
                 blockName="Слід в історії у кожного різний. У тебе може бути свій"
@@ -42,7 +38,7 @@ const mainPageContent = () => (
    
         <div className="sticky">
             <div className="sticky-content">
-                <ScrollToTopBtn />
+                <ScrollToTopBtn/>
             </div>
         </div>
     </div>
