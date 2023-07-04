@@ -8,7 +8,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx, { useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
-
+import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
@@ -50,6 +50,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
+    const [arlink, setArlink] = useState("");
 
     useAsync(() => {
         if (id && id > 0) {
@@ -58,14 +59,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     }, [id]);
 
     const [images, setImages] = useState<Image[]>([]);
+
     useEffect(() => {
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
-                .catch((e) => {});
+                .catch((e) => { });
+            TransactionLinksApi.getById(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
-
+    
     return (
         <div className="card">
             <div className="leftSider">
@@ -134,13 +137,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button
-                            className="animateFigureBtn"
-                            onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                        >
-                            <a href="#QRBlock">Оживити картинку</a>
 
-                        </Button>
+                        {arlink.length > 1 ?
+                            (
+                                <Button
+                                    className="animateFigureBtn"
+                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}>
+                                    <a href="#QRBlock">Оживити картинку</a>
+                                </Button>
+                            )
+                            : <></>}
                     </div>
                 </div>
             </div>
