@@ -65,9 +65,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
                 .catch((e) => { });
-            TransactionLinksApi.getById(id).then((x: any) => {
-                setArlink(x.url);
-            });
+            TransactionLinksApi.getById(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
     
