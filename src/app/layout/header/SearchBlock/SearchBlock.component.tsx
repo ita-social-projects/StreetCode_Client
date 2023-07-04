@@ -31,8 +31,8 @@ const SearchBlock = ({ searchQuery } : Props) => {
 
     return (
         <div className="searchResultsBlock" style={{ height: blockHeight }}>
-            {searchResult.map((searchResultItem: StreetcodeFilterResultDTO) => (
-                <SearchResultItem searchResultItem={searchResultItem} />
+            {searchResult.map((searchResultItem: StreetcodeFilterResultDTO, index) => (
+                <SearchResultItem key={index} searchResultItem={searchResultItem} />
             ))}
         </div>
     );

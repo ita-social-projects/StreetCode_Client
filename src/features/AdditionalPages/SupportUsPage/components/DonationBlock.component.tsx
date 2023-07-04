@@ -6,6 +6,7 @@ import { Button, Checkbox } from 'antd';
 
 import DonationApi from '@/app/api/donates/donation.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Donation from '@/models/feedback/donation.model';
 
 const DonationBlock = () => {
@@ -27,7 +28,7 @@ const DonationBlock = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        const newValue = target.value.replace('₴', '').trim();
+        const newValue = target.value;
         if (!newValue) {
             setDonateAmount(0);
         } else {
@@ -40,24 +41,28 @@ const DonationBlock = () => {
         }
     };
 
-    const charWidth = windowSize.width > 1024 ? 26 : 21;
-    const firstWidth = windowSize.width > 1024 ? 8 : 6;
+    const charWidth = windowSize.width > 1400 ? 26 : 21;
+    const firstWidth = windowSize.width > 1400 ? 8 : 6;
+    const zeroWidth = windowSize.width > 1400 ? 2 : 1;
 
     const count = (donateAmount.toString().match(/1/g) || []).length;
+    const zeroCount = (donateAmount.toString().match(/0/g) || []).length;
 
-    const inputWidth = 5 + donateAmount.toString().length * charWidth - count * firstWidth;
+
+    const inputWidth =  donateAmount.toString().length * charWidth - count * firstWidth + zeroCount * zeroWidth;
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
     const handlePost = async () => {
         const donation: Donation = {
-            Amount: donateAmount,
-            PageUrl: window.location.href,
+            amount: donateAmount, 
+            pageUrl: window.location.href
         };
 
         if (isCheckboxChecked) {
             try {
                 const response = await DonationApi.create(donation);
+                donateEvent('support_us_page_donation_block');
                 window.location.assign(response.PageUrl);
             } catch (err) {}
         }
@@ -103,8 +108,7 @@ const DonationBlock = () => {
                 {possibleDonateAmounts.map((amount, idx) => (
                     <Button
                         key={amount}
-                        className={(activeBtnIdx === idx
-                            && donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
+                        className={( donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
                         onClick={() => handleAmountBtnClick(idx)}
                     >
                         {amount}

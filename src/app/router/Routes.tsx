@@ -1,6 +1,4 @@
-import {
-    createBrowserRouter, createRoutesFromElements, Link, Navigate, Route,
-} from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import App from '@layout/app/App.component';
@@ -21,46 +19,40 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
+
 
 const router = createBrowserRouter(createRoutesFromElements(
-    <Route path={FRONTEND_ROUTES.BASE} element={<App />}>
+    <Route path="/" element={<App />}>
         <Route
-            index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
             element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route
-            index
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
             element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
         />
         <Route
-            index
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
             element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
-            index
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
             element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
-            index
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
             element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
         />
         <Route
-            index
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
             element={<ProtectedComponent><Partners /></ProtectedComponent>}
         />
         <Route
-            index
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
             element={<Analytics />}
         />
         <Route
-            index
             path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
             element={(
                 <ProtectedComponent>
@@ -69,13 +61,11 @@ const router = createBrowserRouter(createRoutesFromElements(
             )}
         />
         <Route
-            index
             path={FRONTEND_ROUTES.ADMIN.NEWS}
             element={<ProtectedComponent><News /></ProtectedComponent>}
         />
-        <Route index path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
         <Route
-            index
             path={FRONTEND_ROUTES.ADMIN.TEAM}
             element={(
                 <ProtectedComponent>
@@ -83,13 +73,16 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
+        <Route path="*" element={<NotFound />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US} element={<ContactUs />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
+        <Route path={FRONTEND_ROUTES.OTHER_PAGES.NEWS} element={<NewsPage />} />
         <Route index path="/:id" element={<StreetcodeContent />} />
+        <Route index path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`} element={<NewsPage />} />
     </Route>,
 ));
 

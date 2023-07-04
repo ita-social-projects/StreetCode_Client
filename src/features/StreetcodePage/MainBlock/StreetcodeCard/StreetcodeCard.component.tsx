@@ -8,13 +8,14 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx, { useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
-
+import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
+import { observer } from 'mobx-react-lite';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -49,6 +50,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
+    const [arlink, setArlink] = useState("");
 
     useAsync(() => {
         if (id && id > 0) {
@@ -57,14 +59,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     }, [id]);
 
     const [images, setImages] = useState<Image[]>([]);
+
     useEffect(() => {
         if (id) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
-                .catch((e) => {});
+                .catch((e) => { });
+            TransactionLinksApi.getById(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
-
+    
     return (
         <div className="card">
             <div className="leftSider">
@@ -88,7 +92,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             </div>
             <div className="rightSider">
                 <div className="headerContainer">
-                    <div className="upper-info" >
+                    <div className="upper-info">
                         <div className="streetcodeIndex">
                             Стріткод #
                             {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4) : streetcode?.index}
@@ -97,19 +101,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             {streetcode?.title}
                         </h2>
                         <div className="streetcodeDate">
-                            {concatDates(
-                                streetcode?.eventStartOrPersonBirthDate,
-                                streetcode?.eventEndOrPersonDeathDate,
-                            )}
+                            {streetcode?.dateString}
                         </div>
                         <TagList
                             tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
                             setActiveTagId={setActiveTagId}
                             setActiveTagBlock={setActiveBlock}
                         />
-                            <p className="teaserBlock">
-                                {streetcode?.teaser}
-                            </p>
+                        <p className="teaserBlock">
+                            {streetcode?.teaser}
+                        </p>
                     </div>
 
                     <div className="cardFooter">
@@ -136,8 +137,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-                        <Button className="animateFigureBtn"
-                         onClick={() => personLiveEvent(streetcode?.id ?? 0)}><a href="#QRBlock">Оживити картинку</a></Button>
+
+                        {arlink.length > 1 ?
+                            (
+                                <Button
+                                    className="animateFigureBtn"
+                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}>
+                                    <a href="#QRBlock">Оживити картинку</a>
+                                </Button>
+                            )
+                            : <></>}
                     </div>
                 </div>
             </div>
@@ -145,4 +154,4 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     );
 };
 
-export default StreetcodeCard;
+export default observer(StreetcodeCard);

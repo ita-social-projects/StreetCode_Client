@@ -1,9 +1,6 @@
 import './NotFound.styles.scss';
 
 import { useNavigate } from 'react-router-dom';
-import Footer from '@layout/footer/Footer.component';
-
-import Link from 'antd/es/typography/Link';
 
 const NotFound = () => {
     const navigate = useNavigate();

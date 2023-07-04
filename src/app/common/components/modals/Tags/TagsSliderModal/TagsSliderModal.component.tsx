@@ -38,7 +38,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagBlock, setActiveTagId }: Props
                         focusOnSelect
                     >
                         {getTagArray?.map((tag) => (
-                            <div>
+                            <div key={tag.id}>
                                 <Button
                                     className="tagModalItem"
                                     onClick={() => {
@@ -54,7 +54,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagBlock, setActiveTagId }: Props
                 ) : (
                     <div>
                         {getTagArray?.map((tag) => (
-                            <div>
+                            <div key={tag.id}>
                                 <Button
                                     className="tagModalItem"
                                     onClick={() => {

@@ -1,9 +1,16 @@
+import IModelState from '@models/interfaces/IModelState';
+import IPersisted from '@models/interfaces/IPersisted';
 import dayjs, { Dayjs } from 'dayjs';
 
 export interface HistoricalContext {
     id: number;
     title: string;
 }
+
+export interface HistoricalContextUpdate extends HistoricalContext, IModelState, IPersisted {
+    timelineId?: number;
+}
+
 export enum DateViewPattern {
     DateMonthYear,
     MonthYear,
@@ -18,6 +25,10 @@ export default interface TimelineItem {
     title: string;
     description?: string | undefined;
     historicalContexts: HistoricalContext[];
+}
+
+export interface TimelineItemUpdate extends TimelineItem, IModelState, IPersisted {
+    historicalContexts: HistoricalContextUpdate[];
 }
 
 export const getSeason = (date: Dayjs | null): string => {
@@ -48,7 +59,7 @@ export const selectDateOptions = [{
 }, {
     value: 'season-year',
     label: 'Рік-пора',
-    }];
+}];
 
 export const selectDateOptionsforTimeline = [{
     value: 'date',

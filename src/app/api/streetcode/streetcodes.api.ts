@@ -3,7 +3,7 @@ import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
 {
     EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord,
-    StreetcodeCreate, StreetcodeMainPage,
+    StreetcodeCreate, StreetcodeMainPage, StreetcodeUpdate,
 } from '@models/streetcode/streetcode-types.model';
 
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
@@ -51,8 +51,8 @@ const StreetcodesApi = {
     create: (streetcode: StreetcodeCreate) => Agent
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
-    update: (streetcode: StreetcodeCreate) => Agent
-        .put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}/${streetcode.id}`, streetcode),
+    update: (streetcode: StreetcodeUpdate) => Agent
+        .put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
     updateState: (id: number, stateId: number) => Agent.put<void>(
         `${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`,

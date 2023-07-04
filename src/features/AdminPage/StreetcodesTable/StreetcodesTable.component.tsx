@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, FormOutlined, RollbackOutlined,
 } from '@ant-design/icons';
+import { NumberLiteralTypeAnnotation } from '@babel/types';
 
 import {
     Button, Dropdown, InputNumber, MenuProps, Pagination, Space,
@@ -26,9 +27,9 @@ const StreetcodesTable = () => {
     const [titleRequest, setTitleRequest] = useState<string | null>(null);
     const [statusRequest, setStatusRequest] = useState<string | null>(null);
     const [pageRequest, setPageRequest] = useState<number | null>(1);
-    const [amountRequest, setAmountRequest] = useState<number | null>(4);
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
+    const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
         Page: pageRequest,
@@ -111,12 +112,8 @@ const StreetcodesTable = () => {
             dataIndex: 'name',
             width: 500,
             key: 'name',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
-                        {text}
-                    </div>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
@@ -124,54 +121,42 @@ const StreetcodesTable = () => {
             dataIndex: 'index',
             width: 150,
             key: 'index',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
-                        {text}
-                    </div>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <Dropdown menu={
-                        menuProps
-                    }
-                    >
-                        <Button onClick={() => setCurrentStreetcodeOption(record.key)}>
-                            <Space>
-                                {text}
-                                <DownOutlined />
-                            </Space>
-                        </Button>
-                    </Dropdown>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => setCurrentStreetcodeOption(record.key),
             }),
+            render: (text: string) => (
+                <Dropdown menu={menuProps}>
+                    <Button>
+                        <Space>
+                            {text}
+                            <DownOutlined />
+                        </Space>
+                    </Button>
+                </Dropdown>
+            ),
         },
         {
             title: 'Останні зміни',
             dataIndex: 'date',
             key: 'date',
-            render: (text: string, record: MapedStreetCode) => ({
-                children: (
-                    <div onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank')}>
-                        {text}
-                    </div>
-                ),
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
-
         {
             title: 'Дії',
             dataIndex: 'action',
             width: 100,
             key: 'action',
-            render: (value: any, record: MapedStreetCode, index: any) => (
-                // eslint-disable-next-line react/jsx-no-useless-fragment
+            render: (value: any, record: MapedStreetCode) => (
                 <>
                     {record.status !== 'Видалений' ? (
                         <>
@@ -189,11 +174,13 @@ const StreetcodesTable = () => {
                                     modalStore.setConfirmationModal(
                                         'confirmation',
                                         () => {
-                                            StreetcodesApi.delete(record.key).then(() => {
-                                                updateState(record, 'Видалений');
-                                            }).catch((e) => {
-                                                console.log(e);
-                                            });
+                                            StreetcodesApi.delete(record.key)
+                                                .then(() => {
+                                                    updateState(record, 'Видалений');
+                                                })
+                                                .catch((e) => {
+                                                    console.log(e);
+                                                });
                                             modalStore.setConfirmationModal('confirmation');
                                         },
                                         'Ви впевнені, що хочете видалити цей стріткод?',
@@ -204,17 +191,17 @@ const StreetcodesTable = () => {
                                 <BarChartOutlined />
                             </Link>
                         </>
-                    )
-                        : (
-                            <RollbackOutlined
-                                className="actionButton"
-                                onClick={() => handleUndoDelete(record.key)}
-                            />
-                        )}
+                    ) : (
+                        <RollbackOutlined
+                            className="actionButton"
+                            onClick={() => handleUndoDelete(record.key)}
+                        />
+                    )}
                 </>
             ),
         },
     ];
+
     interface MapedStreetCode {
         key: number,
         index: number,
@@ -225,9 +212,6 @@ const StreetcodesTable = () => {
     }
 
     useEffect(() => {
-        if (amountRequest === null) {
-            setAmountRequest(0);
-        }
         requestGetAll.Page = pageRequest;
         requestGetAll.Amount = amountRequest;
         const getAllStreetcodesResponse = StreetcodesApi.getAll(requestGetAll);
@@ -255,10 +239,9 @@ const StreetcodesTable = () => {
             });
 
             setMapedStreetCodes(mapedStreetCodesBuffer);
-            setTotalItems(amountRequest !== null
-                ? response[0].pages * amountRequest : 0);
+            setTotalItems(response[0].pages * amountRequest);
         });
-    }, [requestGetAll, amountRequest, pageRequest]);
+    }, [requestGetAll, pageRequest]);
 
     return (
         <div className="StreetcodeTableWrapper">
@@ -275,25 +258,13 @@ const StreetcodesTable = () => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
-                        <InputNumber
-                            className="pageAmountElement"
-                            min={1}
-                            max={20}
-                            defaultValue={amountRequest !== null ? amountRequest : 4}
-                            onChange={(value: number | null) => {
-                                setAmountRequest(value);
-                                setRequest();
-                            }}
-                        />
-                    </div>
-                    <div className="underTableElement">
                         <Pagination
                             className="pagenationElement"
                             simple
                             defaultCurrent={1}
                             current={currentPages}
                             total={totalItems}
-                            pageSize={amountRequest !== null ? amountRequest : 0}
+                            pageSize={amountRequest}
                             onChange={(value: any) => {
                                 setCurrentPages(value);
                                 setPageRequest(value);

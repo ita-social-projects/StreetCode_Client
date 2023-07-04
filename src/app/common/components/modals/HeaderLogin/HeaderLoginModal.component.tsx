@@ -4,12 +4,16 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
+import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import { useModalContext } from '@stores/root-store';
 
 import { Button, Modal } from 'antd';
 
-import { becomePartnerEvent, donateEvent, joinToStreetcode } from '@/app/common/utils/googleAnalytics.unility';
-import FRONTEND_ROUTES from '../../../constants/frontend-routes.constants';
+import {
+    becomePartnerEvent,
+    donateEvent,
+    joinToStreetcodeClickEvent,
+} from '@/app/common/utils/googleAnalytics.unility';
 
 const HeaderLoginModal = () => {
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
@@ -35,7 +39,14 @@ const HeaderLoginModal = () => {
                 <Button onClick={becomePartnerHandler}>
                     Стати партнером
                 </Button>
-                <Button onClick={() => { joinToStreetcode(); navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`); login.isOpen = false; }}>Долучитися до команди</Button>
+                <Button onClick={() => {
+                    joinToStreetcodeClickEvent();
+                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`);
+                    login.isOpen = false;
+                }}
+                >
+                        Долучитися до команди
+                </Button>
                 <Button onClick={() => {
                     setModal('donates');
                     setModal('login');

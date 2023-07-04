@@ -1,3 +1,5 @@
+import IModelState from '@models/interfaces/IModelState';
+import IPersisted from '@models/interfaces/IPersisted';
 import Image, { ImageCreate } from '@models/media/image.model';
 
 import Streetcode from './streetcode-types.model';
@@ -9,10 +11,11 @@ export interface Fact {
   image?: Image;
   imageId: number;
 }
-export interface FactCreate {
-  title: string;
-  factContent: string;
-  image: ImageCreate;
+export interface FactCreate extends Fact {
+  imageDescription?: string
+}
+export interface FactUpdate extends FactCreate, IModelState, IPersisted {
+    streetcodeId?: number;
 }
 
 export interface Term {
@@ -31,13 +34,16 @@ export interface Text {
   id: number;
   title: string;
   textContent: string;
-  аdditionalText?: string;
+  additionalText?: string;
   streetcodeId: number;
   streetcode?: Streetcode | undefined;
+  link: string | undefined;
 }
 
-export interface TextCreate {
+export interface TextCreateUpdate extends IModelState {
+  id: number;
   title: string | undefined;
   textContent: string | undefined;
-  additionalText: string | undefined;
+  additionalText?: string;
+  streetcodeId?: number | null;
 }

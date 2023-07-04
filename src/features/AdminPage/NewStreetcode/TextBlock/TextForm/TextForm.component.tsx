@@ -1,11 +1,10 @@
 import './TextForm.styles.scss';
 
-import TextInputInfo from '@features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
-
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import Video from '@/models/media/video.model';
+import { Text } from '@/models/streetcode/text-contents.model';
 
 import AdditionalTextBlockAdminForm from './AdditionTextBlock/AdditionalTextBlockAdminForm.component';
 import LinkEditor from './Editors/LinkEditor.component';
@@ -13,8 +12,8 @@ import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
 
 interface Props {
-    inputInfo: Partial<TextInputInfo> | undefined;
-    setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+    inputInfo: Partial<Text> | undefined;
+    setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     video: Video | undefined;
     setVideo: React.Dispatch<Video | undefined>;
 }

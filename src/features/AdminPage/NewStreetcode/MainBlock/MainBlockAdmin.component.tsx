@@ -2,23 +2,33 @@ import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import getNewMinNegativeId from '@app/common/utils/newIdForStore';
+import useMobx from '@app/stores/root-store';
+import { ModelState } from '@models/enums/model-state';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
     Button,
-    Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Switch,
+    Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Space, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import { Option } from 'antd/es/mentions';
+
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import Tag, { StreetcodeTag } from '@/models/additional-content/tag.model';
+import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
 import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
+
+interface TagPreviewProps {
+    width: number;
+    screenWidth: number;
+}
 
 interface Props {
     form: FormInstance<any>,
@@ -28,23 +38,16 @@ interface Props {
     setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
 }
 
-interface TagPreviewProps {
-    width: number;
-    screenWidth: number;
-}
-const MainBlockAdmin: React.FC<Props> = ({
-    form,
-    selectedTags,
-    setSelectedTags,
-    streetcodeType,
-    setStreetcodeType,
-}) => {
+const MainBlockAdmin = React.memo(({
+    form, selectedTags, setSelectedTags, streetcodeType, setStreetcodeType,
+}: Props) => {
     const teaserMaxCharCount = 520;
     const tagPreviewPropsList:TagPreviewProps[] = [
         { width: 360, screenWidth: 360 },
         { width: 365, screenWidth: 768 },
         { width: 612, screenWidth: 1600 },
     ];
+    const { tagsStore } = useMobx();
     const [tags, setTags] = useState<Tag[]>([]);
     const [popoverProps, setPopoverProps] = useState<TagPreviewProps>(tagPreviewPropsList[0]);
     const name = useRef<InputRef>(null);
@@ -64,10 +67,6 @@ const MainBlockAdmin: React.FC<Props> = ({
         }
     }, [form, streetcodeTitle]);
 
-    const onNameSurnameChange = () => {
-        const curSurname = surname.current?.input?.value;
-        setStreetcodeTitle(`${name.current?.input?.value}${curSurname ? ` ${curSurname}` : ''}`);
-    };
     const onCheckIndexClick = () => {
         const number = form.getFieldValue('streetcodeNumber') as number;
         if (number) {
@@ -88,6 +87,7 @@ const MainBlockAdmin: React.FC<Props> = ({
             message.error('Поле порожнє');
         }
     };
+
     const onSwitchChange = (value: boolean) => {
         if (value) {
             setStreetcodeType(StreetcodeType.Event);
@@ -107,25 +107,32 @@ const MainBlockAdmin: React.FC<Props> = ({
             setIndexId(index);
         }
     };
-    const onSelectTag = (selectedValue: string) => {
-        let selected;
-        const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
-        if (selectedIndex < 0) {
-            let minId = Math.min(...selectedTags.map((t) => t.id));
-            if (minId < 0) {
-                minId -= 1;
-            } else {
-                minId = -1;
-            }
-            setSelectedTags([...selectedTags, { id: minId, title: selectedValue, isVisible: false }]);
-        } else {
-            selected = tags[selectedIndex];
 
-            setSelectedTags([...selectedTags, { ...selected, title: selectedValue, isVisible: false }]);
+    const onSelectTag = (selectedValue: string) => {
+        const deletedTag = tagsStore.getTagToDeleteArray.find((tag) => tag.title === selectedValue);
+        if (deletedTag) { // for case when delete persisted item and add it again
+            tagsStore.deleteItemFromArrayToDelete(selectedValue);
+            setSelectedTags([...selectedTags, deletedTag]);
+        } else {
+            const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
+
+            const newItem: StreetcodeTagUpdate = {
+                id: selectedIndex < 0 ? getNewMinNegativeId(selectedTags.map((tag) => tag.id)) : tags[selectedIndex].id,
+                title: selectedValue,
+                isVisible: false,
+                modelState: ModelState.Created,
+            };
+
+            setSelectedTags([...selectedTags, newItem]);
         }
     };
 
     const onDeselectTag = (deselectedValue: string) => {
+        const tag = selectedTags.find((t) => t.title === deselectedValue) as StreetcodeTagUpdate;
+        if (tag?.isPersisted) {
+            tag.modelState = ModelState.Deleted;
+            tagsStore.setItemToDelete(tag);
+        }
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
@@ -140,7 +147,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                 initialValue={1}
                 label="Номер стріткоду"
                 rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
-                        {pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
+                    { pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
                 name="streetcodeNumber"
             >
                 <div className="display-flex-row">
@@ -168,23 +175,28 @@ const MainBlockAdmin: React.FC<Props> = ({
                 </div>
             </Form.Item>
 
+            <Form.Item
+                name="title"
+                label="Назва стріткоду"
+                className="maincard-item"
+                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
+                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
+            >
+                <Input maxLength={100} showCount />
+            </Form.Item>
+
             {streetcodeType === StreetcodeType.Person ? (
-                <Input.Group
-                    compact
+                <Space.Compact
                     className="display-flex-column"
                 >
                     <Form.Item
                         label="Ім'я"
                         name="name"
                         className="people-title-input"
-                        rules={[{ required: true, message: "Введіть iм'я, будь ласка" },
-                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: "Ім'я має містити тільки літерали" },
-                        { max: 50, message: "Ім'я не може містити більше 50 символів" },
-                        ]}
+                        rules={[{ max: 50, message: "Ім'я не може містити більше 50 символів" }]}
                     >
                         <Input
                             ref={name}
-                            onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
@@ -194,33 +206,19 @@ const MainBlockAdmin: React.FC<Props> = ({
                         name="surname"
                         label="Прізвище"
                         className="people-title-input"
-                        rules={[{ required: true, message: 'Введіть прізвище, будь ласка' },
-                        { pattern: /^[а-щА-ЩьюЮяЯіІїЇєЄґҐIVXLCDM\s]+$/u, message: 'Прізвище має містити тільки літерали' },
-                        { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                        rules={[
+                            { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
                         ]}
                     >
                         <Input
                             ref={surname}
-                            onChange={onNameSurnameChange}
                             maxLength={50}
                             showCount
                         />
                     </Form.Item>
-                </Input.Group>
+                </Space.Compact>
             )
                 : ('')}
-
-            <Form.Item
-                name="title"
-                label="Назва стріткоду"
-                className="maincard-item"
-                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
-                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' },
-                    { pattern:/^[а-яА-ЯіІ\s]+$/u, message: 'Назва стріткоду має містити тільки літерали' }]}
-            >
-                <Input maxLength={100} showCount />
-            </Form.Item>
-
             <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
                 <Input maxLength={33} showCount />
             </Form.Item>
@@ -245,12 +243,32 @@ const MainBlockAdmin: React.FC<Props> = ({
                     secondDate.current = newDate;
                 }}
             />
-
             <div className="tags-block">
-                <Form.Item label="Теги">
+                <Form.Item label={(
+                    <div className="label-tags-block">
+                        <p>Теги</p>
+                        <Popover
+                            className="info-container"
+                            placement="topLeft"
+                            content={(
+                                <p className="label-tags-block-info-container-content">
+                                    При обиранні теги є невидимими для користувача (фон тегу сірий),
+                                    тобто він не відображається
+                                    на головній картці стріткоду.
+                                    Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
+                                    Нижче є розширення наводячи на які, можна побачити, які теги
+                                    будуть вміщатись на головній картці стріткоду.
+                                    {' '}
+                                </p>
+                            )}
+                        >
+                            <InfoCircleOutlined className="info-icon" />
+                        </Popover>
+                    </div>
+                )}
+                >
                     <div className="tags-block-tagitems">
                         <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-
                         <Select
                             className="tags-select-input"
                             mode="tags"
@@ -258,7 +276,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                             onDeselect={onDeselectTag}
                             value={selectedTags.map((x) => x.title)}
                         >
-                            {tags.map((t) => <Option key={`${t.id}`} value={t.title} />)}
+                            {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
                         </Select>
                     </div>
                 </Form.Item>
@@ -277,6 +295,7 @@ const MainBlockAdmin: React.FC<Props> = ({
                         >
                             {tagPreviewPropsList.map((el) => (
                                 <p
+                                    key={el.screenWidth}
                                     className="device-size"
                                     onMouseEnter={() => setPopoverProps(el)}
                                 >
@@ -301,9 +320,8 @@ const MainBlockAdmin: React.FC<Props> = ({
                     />
                 </Form.Item>
             </div>
-
             <FileInputsPart />
         </div>
     );
-};
+});
 export default MainBlockAdmin;

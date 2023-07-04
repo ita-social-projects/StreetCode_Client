@@ -14,8 +14,8 @@
   
   background-color: c.$pure-white-color;
   box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, .25);
-  
   .slideImage {
+    position: relative;
     @include mut.sized(100%, 250px);
     @include mut.rounded(33px, 33px);
     img{
@@ -23,6 +23,25 @@
       height: 100%;
       object-fit: cover;
     }
+    .description-popup{
+      visibility: hidden;
+      position: absolute;
+      background-color: c.$hover-wow-fact-background;
+      color: c.$pure-white-color;
+      width:100%;
+      bottom: 0;
+      p{
+        @include mut.with-font( $font-family: ft.$roboto-font, $font-weight: 300, $font-size: 10px, $font-style: normal);
+        @include mut.rem-padded(5px, 5px, 5px, 5px);
+      }
+    }
+    .description-popup-visible, &:hover>.description-popup{
+      @if((&:content !=undefined) and (&:content !='')){
+        visibility: visible;
+      }
+
+    }
+    
   }
 
   .slideText {
