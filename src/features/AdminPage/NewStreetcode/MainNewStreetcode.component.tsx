@@ -4,7 +4,7 @@
 import './MainNewStreetcode.styles.scss';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { unstable_usePrompt as usePrompt, useNavigate, useParams } from 'react-router-dom';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
 import PartnersApi from '@app/api/partners/partners.api';
@@ -18,9 +18,7 @@ import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
-import {
-    Button, ConfigProvider, Form, Modal,
-} from 'antd';
+import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
@@ -31,7 +29,6 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
@@ -81,7 +78,33 @@ const NewStreetcode = () => {
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
+    const [confirmNavigation, setConfirmNavigation] = useState(false);
 
+    usePrompt(
+        confirmNavigation
+            ? { when: false, message: '' }
+            : { when: true, message: 'Ви впевнені, що хочете покинути сторінку? Ваші зміни не буде збережено' },
+    );
+
+    const handleTabClosing = () => {
+        console.log('Close tab');
+    };
+
+    const alertUser = (event: BeforeUnloadEvent) => {
+        event.preventDefault();
+        event.returnValue = '';
+    };
+
+    useEffect(() => {
+        if (!confirmNavigation) {
+            window.addEventListener('beforeunload', alertUser);
+            window.addEventListener('unload', handleTabClosing);
+            return () => {
+                window.removeEventListener('beforeunload', alertUser);
+                window.removeEventListener('unload', handleTabClosing);
+            };
+        }
+    });
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
     const navigate = useNavigate();
@@ -173,7 +196,7 @@ const NewStreetcode = () => {
                 .then((result) => {
                     setSubTitle(result);
                 })
-                .catch((error) => {});
+                .catch((error) => { });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
                 const id = result.map((x) => x.id);
                 id.map((x) => {
@@ -219,6 +242,9 @@ const NewStreetcode = () => {
             const buttonName = data.target.getAttribute('name') as string;
             if (buttonName.includes(publish)) {
                 tempStatus = 1;
+            }
+            if (buttonName.includes(publish) || buttonName.includes(draft)) {
+                setConfirmNavigation(true);
             }
         }
         form.validateFields();
@@ -352,7 +378,7 @@ const NewStreetcode = () => {
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                     .map((content) => ({ ...content, streetcodeId: parseId })),
                 streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                    ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
+                ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
                     ...streetcodeArt,
                     art: {
                         ...streetcodeArt.art,
@@ -448,7 +474,6 @@ const NewStreetcode = () => {
                     >
                         {publish}
                     </Button>
-
                 </div>
             </ConfigProvider>
         </div>
