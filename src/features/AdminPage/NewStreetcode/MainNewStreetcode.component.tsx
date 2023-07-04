@@ -319,6 +319,18 @@ const NewStreetcode = () => {
                 .map((tag) => ({ ...tag, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
+            const arUrl = form.getFieldValue('arlink');
+            const arLinkUpdated: TransactionLink = {
+                id: arLink?.id ?? 0,
+                streetcodeId: parseId,
+                url: arLink?.url ?? '',
+                urlTitle: arLink?.urlTitle ?? '',
+            };
+
+            if (text.id !== 0 && !(text.title && text.textContent && text.additionalText)) {
+                text.modelState = ModelState.Deleted;
+            }
+
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
@@ -339,7 +351,7 @@ const NewStreetcode = () => {
                 facts: factsStore.getFactArrayToUpdate.map((item) => ({ ...item, streetcodeId: parseId })),
                 partners: partnersUpdate,
                 subtitles: subtitleUpdate,
-                text: text.title && text.textContent ? text : null,
+                text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                     .map((content) => ({ ...content, streetcodeId: parseId })),
                 streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
