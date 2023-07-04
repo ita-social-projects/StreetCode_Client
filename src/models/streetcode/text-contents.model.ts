@@ -40,7 +40,7 @@ export interface Text {
   link: string | undefined;
 }
 
-export interface TextCreateUpdate {
+export interface TextCreateUpdate extends IModelState {
   id: number;
   title: string | undefined;
   textContent: string | undefined;
