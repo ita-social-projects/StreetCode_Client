@@ -6,8 +6,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
 .streetcodeMainPageWrapper {
     .streetcodeSliderComponent {
-        .streetcodeContainer .mainBlock {
-            @include mut.bg-image($bgImg, auto);
+        .streetcodeContainer {
             background-repeat: repeat-x;
             height: 500px;
         }

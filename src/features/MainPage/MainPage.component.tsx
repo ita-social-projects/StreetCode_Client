@@ -10,8 +10,9 @@ import TopCarouselComponent from './TopCarousel/TopCarousel.component';
 import NewsSliderComponent from './NewsSlider/NewsSlider.component';
 
 const mainPageContent = () => (
+    <>
+    <TopCarouselComponent/>
     <div className="mainPageContainer">
-          <TopCarouselComponent/>
             <StreetcodeSliderComponent/>
             <StaticBanner
                 id="catalog"
@@ -42,6 +43,7 @@ const mainPageContent = () => (
             </div>
         </div>
     </div>
+    </>
 );
 
 export default mainPageContent;

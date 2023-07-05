@@ -5,13 +5,11 @@
 @use "@sass/_utils.functions.scss" as f;
 @import 'react-toastify/dist/ReactToastify.css';
 
-$bgImg: '@assets/images/main-page/background.png';
+$bgImg: '@assets/images/catalog/background.png';
 
 .mainPageContainer {
     background: url($bgImg) no-repeat;
     width: 100%;
-    overflow: clip;
-    @include mut.rem-padded($top: 82px);
 }
 
 .sticky {
@@ -46,4 +44,3 @@ $bgImg: '@assets/images/main-page/background.png';
         background-image: none;
     }
 }
-
