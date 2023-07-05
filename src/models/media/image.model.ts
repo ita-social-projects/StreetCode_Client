@@ -16,10 +16,12 @@ export interface ImageCreate {
 }
 export interface ImageDetails {
     id: number;
-    title: string;
-    alt: string;
+    title?: string;
+    alt?: string;
+    imageId: number;
 }
 
-export interface ImageUpdate extends Image, IModelState {
+export interface ImageCreateUpdate extends IModelState {
+    id: number;
     streetcodeId?: number | null;
 }

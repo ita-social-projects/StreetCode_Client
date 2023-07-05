@@ -9,7 +9,7 @@
     height: 100%;
 
     background: url('@/assets/images/donates/donatesPage/background.svg') no-repeat center center / cover;
-      
+
     .heading {
         .titleBig {
             @include mut.rem-margined($bottom: 20px);
@@ -50,18 +50,18 @@
                 li {
                     @include mut.flexed($align-items: center, $direction: row, $gap: 13.33px);
                     @include mut.rem-margined($bottom: 12px);
-              
+
                     svg {
                         min-width: 29.33px;
                         @include mut.flexed($align-items: center, $justify-content: center);
                     }
-                
+
                     span {
                         display: block;
                         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
                     }
                 }
-            }              
+            }
 
             .purposeBottomText {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
@@ -77,12 +77,12 @@
             @include mut.sized($height: 525px, $width: 590px);
             vertical-align: top;
             background: c.$pure-white-color;
-            
+
             box-shadow: 0px 7px 17px 2px rgba(91, 91, 91, 0.25);
             @include mut.full-rounded(32px);
         }
     }
-    
+
     .donateSubBlocks {
         @include mut.sized($height: 351px, $width: 1200px);
         @include mut.flexed($justify-content: space-around, $align-items: center, $gap: 100px);
@@ -95,6 +95,7 @@
                 line-height: 48px;
                 text-align: center;
             }
+
             .content {
                 @include mut.sized($height: 230px);
                 @include mut.flexed($direction: column, $justify-content: center);
@@ -202,7 +203,7 @@
                             line-height: 16.41px;
                         }
                     }
-                }           
+                }
 
                 .purposeBottomText {
                     font-size: 16px;
@@ -350,7 +351,7 @@
             width: unset;
             flex-flow: column wrap;
             gap: f.pxToRem(32px);
-            
+
             .block {
                 @include mut.sizedImportant($width: 100%);
 
@@ -367,14 +368,48 @@
                 @include mut.sized($width: 100%);
                 @include mut.rem-padded($right: 0);
             }
+
             .donateWindow {
                 @include mut.flexed($justify-content: center);
                 margin: f.pxToRem(24px) auto 0;
             }
         }
+
         .bottomText {
             font-size: 14px;
             line-height: 18px;
         }
+    }
+}
+
+.CoppyMessage {
+    position: fixed;
+    height: f.pxToRem(40px);    
+    bottom: f.pxToRem(-40px);
+    left: f.pxToRem(20px);
+    background-color: rgba(0, 0, 0, 0.788);
+    color: #fff;
+    padding: f.pxToRem(10px);
+    border-radius: f.pxToRem(4px);
+    animation-name: slideAndReturn;
+    animation-duration: 2s;
+    animation-iteration-count: calc(1);
+}
+
+@keyframes slideAndReturn {
+    0% {
+        transform: translateY(f.pxToRem(0px));
+    }
+
+    10% {
+        transform: translateY(f.pxToRem(-60px));
+    }
+
+    90% {
+        transform: translateY(f.pxToRem(-60px));
+    }
+
+    100% {
+        transform: translateY(f.pxToRem(0));
     }
 }

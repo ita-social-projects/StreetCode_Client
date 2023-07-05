@@ -8,8 +8,8 @@ export default interface Art {
     image: Image;
 }
 
-export interface ArtCreateUpdate extends Art {
-
+export interface ArtCreateUpdate extends Omit<Art, 'image'> {
+    image: Image | null;
 }
 
 export interface IndexedArt {
