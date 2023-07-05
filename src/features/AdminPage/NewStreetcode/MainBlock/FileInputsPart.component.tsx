@@ -52,7 +52,7 @@ const FileInputsPart = () => {
     const parseId = id ? +id : null;
 
     const handleFileUpload = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>(
-        file: Audio | Image,
+        fileId: number,
         propertyName: K,
         arrayName: keyof CreateUpdateMediaStore,
     ) => {
@@ -64,8 +64,8 @@ const FileInputsPart = () => {
             }
         }
 
-        createUpdateMediaStore[propertyName] = file.id as V;
-        array.push({ ...file, streetcodeId: parseId, modelState: ModelState.Created });
+        createUpdateMediaStore[propertyName] = fileId as V;
+        array.push({ id: fileId, streetcodeId: parseId, modelState: ModelState.Created });
     };
 
     const handleFileRemove = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>
@@ -93,7 +93,7 @@ const FileInputsPart = () => {
                         createUpdateMediaStore.relatedFigureId = result[2]?.id;
 
                         createUpdateMediaStore.imagesUpdate = result.map((img) => ({
-                            ...img,
+                            id: img.id,
                             streetcodeId: parseId,
                             modelState: ModelState.Updated,
                         }));
@@ -126,7 +126,7 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            handleFileUpload(file, 'animationId', 'imagesUpdate');
+                            handleFileUpload(file.id, 'animationId', 'imagesUpdate');
                             setAnimation([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
@@ -154,7 +154,7 @@ const FileInputsPart = () => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            handleFileUpload(file, 'blackAndWhiteId', 'imagesUpdate');
+                            handleFileUpload(file.id, 'blackAndWhiteId', 'imagesUpdate');
                             setBlackAndWhite([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
@@ -176,11 +176,11 @@ const FileInputsPart = () => {
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
-                        {...(relatedFigure[0] ? { fileList: relatedFigure } : null)}
+                        fileList={relatedFigure}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
-                            handleFileUpload(file, 'relatedFigureId', 'imagesUpdate');
+                            handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
@@ -205,7 +205,7 @@ const FileInputsPart = () => {
                         {...(audio ? { fileList: audio } : null)}
                         uploadTo="audio"
                         onSuccessUpload={(file: Audio) => {
-                            handleFileUpload(file, 'audioId', 'audioUpdate');
+                            handleFileUpload(file.id, 'audioId', 'audioUpdate');
                             setAudio([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {

@@ -16,9 +16,8 @@ import TextArea from 'antd/es/input/TextArea';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import getNewMinNegativeId from '@/app/common/utils/newIdForStore';
 import Image from '@/models/media/image.model';
-import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
+import { Fact, FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model';
 
 interface Props {
     fact?: FactCreate,
@@ -41,6 +40,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
             });
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
+                    fact.image = image;
                     form.setFieldsValue({
                         image: fact ? [{
                             name: '',
@@ -50,7 +50,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             status: 'done',
                             type: image.mimeType,
                         }] : [],
-                        imageDescription: image?.imageDetails?.alt,
+                        imageDescription: image?.imageDetails?.alt ?? fact.imageDescription,
                     });
                     setFileList(fact ? [{
                         name: '',
@@ -68,23 +68,30 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
 
     const onSuccesfulSubmit = (formValues: any) => {
         if (fact) {
-            const item = factsStore.factMap.get(fact.id);
+            const item = factsStore.factMap.get(fact.id) as FactUpdate;
             if (item) {
                 item.title = formValues.title;
                 item.factContent = formValues.factContent;
                 item.imageId = imageId.current;
+                item.imageDescription = formValues.imageDescription
+            }
+            if (fact.image?.imageDetails || formValues.imageDescription) {
+                factsStore.setImageDetails(item, fact.image?.imageDetails?.id ?? 0);
             }
         } else {
-            const newFact: Fact = {
+            const newFact: FactCreate = {
                 id: getNewMinNegativeId(factsStore.getFactArray.map((t) => t.id)),
                 title: formValues.title,
                 factContent: formValues.factContent,
                 imageId: imageId.current,
+                imageDescription: formValues.imageDescription,
             };
+            if (formValues.imageDescription) {
+                factsStore.setImageDetails(newFact, 0);
+            }
 
             factsStore.addFact(newFact);
         }
-
         setModalOpen(false);
         form.resetFields();
     };
@@ -106,7 +113,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                     onFinish={onSuccesfulSubmit}
                 >
                     <div className="center">
-                        <h2>Wow—Факт</h2>
+                        <h2>Wow-Факт</h2>
                     </div>
                     <Form.Item
                         name="title"
@@ -153,9 +160,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             onSuccessUpload={(image: Image) => {
                                 imageId.current = image.id;
                             }}
-                            onRemove={(image) => {
-                                ImagesApi.delete(imageId.current);
-                            }}
                         >
                             <div>
                                 <InboxOutlined />
@@ -174,7 +178,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                         />
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" htmlType="submit">Зберегти</Button>
+                        <Button className="streetcode-custom-button" htmlType="submit"> Зберегти </Button>
                     </div>
                 </Form>
             </div>

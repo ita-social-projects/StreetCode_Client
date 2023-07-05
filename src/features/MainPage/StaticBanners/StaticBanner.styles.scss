@@ -6,12 +6,16 @@
 
 .mainPageBlockStaticBanner {
     @include mut.flexed($justify-content: space-between);
-    margin: f.pxToRem(50px) f.pxToRem(20px);
-    padding: 0 f.pxToRem(46.5px);
-
-    background-color: c.$pure-white-color;
     @include mut.full-rounded(50px);
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    margin: f.pxToRem(50px) f.pxToRem(20px);
+    padding: 0 f.pxToRem(46.5px);
+    background-color: c.$pure-white-color;
+
+    .left,
+    .right {
+        overflow: visible;
+    }
 
     .mainContainer {
         @include mut.flexed($align-items: flex-end, $justify-content: space-between);
@@ -37,7 +41,7 @@
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
             @include mut.rem-margined($left: 60px);
             padding: f.pxToRem(25px) 0;
-
+            min-width: f.pxToRem(267px);
             text-align: center;
             cursor: pointer;
             background-color: c.$accented-red-color;
@@ -66,5 +70,291 @@
 
     &.support {
         height: f.pxToRem(312px);
+    }
+
+    @media screen and (max-width: 1518px) {
+        @include mut.flexed($direction: center, $justify-content: center, $align-items: center);
+
+        .mainContainer {
+            @include mut.rem-margined($top: 30px, $right: 30px, $bottom: 30px, $left: 30px);
+
+            .textContainer {
+                p.title {
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 30px);
+                }
+
+                p.content {
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 20px);
+                }
+            }
+
+            .redirectButton {
+                @include mut.flexed($direction: center, $justify-content: center, $align-items: center);
+                @include mut.sized($width: 245px, $height: 66px);
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 17px);
+                min-width: f.pxToRem(245px);
+            }
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        &.catalog {
+            height: auto;
+        }
+    }
+
+    @media screen and (max-width: 1151px) {
+
+        .left,
+        .right {
+            display: none;
+        }
+
+        &.catalog {
+            @include mut.flexed($direction: column, $justify-content: center, $align-items: center);
+
+            .mainContainer {
+                .textContainer {
+                    p.title {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 28px);
+                    }
+
+                    p.content {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+                    }
+                }
+
+                .redirectButton {
+                    @include mut.sized($width: 223px, $height: 59px);
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 17px);
+                    min-width: f.pxToRem(223px);
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 980px) {
+        &.support {
+            height: auto;
+
+            .mainContainer {
+                @include mut.flexed($direction: column, $align-items: center);
+                @include mut.rem-margined($top: 30px, $bottom: 30px);
+
+                .redirectButton {
+                    @include mut.rem-margined($top: 20px);
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        &.catalog {
+            .mainContainer {
+                @include mut.flexed($direction: column, $justify-content: center, $align-items: center);
+
+                .redirectButton {
+                    @include mut.rem-margined($left: 0, $top: 20px);
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        &.catalog {
+            @include mut.sized($height: 133px);
+            @include mut.full-rounded(20px);
+            @include mut.rem-margined($top: 50px, $right: 10px, $bottom: 50px, $left: 10px);
+            padding: 0;
+
+            .mainContainer {
+                @include mut.flexed($justify-content: center, $align-items: flex-end);
+                @include mut.rem-padded($top: 20px, $right: 44px, $bottom: 20px, $left: 20px);
+                margin: 0;
+
+                .textContainer {
+                    max-width: 494px;
+
+                    p.title {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+                        @include mut.rem-margined($bottom: 10px);
+                        line-height: 26.4px;
+                    }
+
+                    p.content {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                        line-height: 18.75px;
+                    }
+                }
+
+                .redirectButton {
+                    @include mut.rem-margined($left: 0px);
+                    @include mut.rem-padded($left: 10px);
+                    @include mut.sized($width: 180px, $height: 46px);
+                    @include mut.full-rounded(10px);
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+                    min-width: f.pxToRem(180px);
+                    line-height: 16.41px;
+                    box-shadow: 0px 4px 4px 0px #DB34242E;
+                }
+            }
+        }
+
+        &.support {
+            height: f.pxToRem(239px);
+            @include mut.full-rounded(30px);
+
+            .mainContainer {
+                @include mut.flexed($direction: column, $align-items: center);
+                @include mut.rem-padded($top: 40px, $right: 0px, $bottom: 40px, $left: 0px);
+                margin: 0;
+
+                .textContainer {
+                    text-align: center;
+
+                    p.title {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+                        @include mut.rem-margined($bottom: 10px);
+                    }
+
+                    p.content {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                        line-height: 18.75px;
+                    }
+                }
+
+                .redirectButton {
+                    @include mut.rem-margined($left: 0, $top: 20px);
+                    @include mut.sized($width: 180px, $height: 46px);
+                    @include mut.full-rounded(10px);
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+                    @include mut.flexed($direction: column, $align-items: center, $justify-content: center);
+                    line-height: 16.41px;
+                    padding: 0;
+                    box-shadow: 0px 4px 4px 0px #DB34242E;
+                }
+            }
+        }
+
+    }
+
+    @media screen and (max-width: 716px) {
+        &.catalog {
+            height: auto;
+
+            .mainContainer {
+                @include mut.flexed($direction: column, $align-items: center);
+                @include mut.rem-padded($top: 20px, $right: 0px, $bottom: 20px, $left: 0px);
+
+                .textContainer {
+                    @include mut.flexed($direction: column, $align-items: center);
+                    text-align: center;
+                }
+
+                .redirectButton {
+                    @include mut.rem-margined($left: 0, $top: 20px);
+                }
+            }
+        }
+
+        &.support {
+            height: auto;
+
+            .mainContainer {
+                @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+            }
+        }
+    }
+
+    @media screen and (max-width: 360px) {
+        padding: 0;
+
+        &.catalog {
+            @include mut.full-rounded(0px);
+            @include mut.rem-margined($top: 30px, $right: 10px, $bottom: 0px, $left: 10px);
+            height: auto;
+            filter: none;
+
+            .mainContainer {
+                margin: 0;
+                padding: 0;
+
+                .textContainer {
+                    text-align: left;
+
+                    p.title {
+                        @include mut.rem-margined($bottom: 17px);
+                    }
+
+                    p.content {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                        @include mut.rem-margined($bottom: 20px);
+                        line-height: 18.75px;
+
+                    }
+                }
+
+                .redirectButton {
+                    @include mut.rem-margined($left: 0);
+                    @include mut.sized($width: 340px, $height: 46px);
+                    @include mut.flexed($justify-content: center, $align-items: center);
+                    line-height: 16.41px;
+                    padding: 0;
+                    box-shadow: 0px 4px 4px 0px #DF3F312E;
+                    width: 100%;
+                }
+            }
+        }
+
+        &.support {
+
+            @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+            filter: none;
+            @include mut.full-rounded(0px);
+            padding: 0;
+
+            .mainContainer {
+                @include mut.rem-margined($top: 30px, $right: 10px, $bottom: 30px, $left: 10px);
+                padding: 0;
+
+                .textContainer {
+                    text-align: left;
+
+                    p.title {
+                        @include mut.rem-margined($bottom: 17px);
+                    }
+
+                    p.content {
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                        line-height: 18.75px;
+                    }
+                }
+
+                .redirectButton {
+                    @include mut.rem-margined($left: 0);
+                    @include mut.rem-margined($top: 20px);
+                    @include mut.sized($width: 340px, $height: 46px);
+                    @include mut.flexed($justify-content: center, $align-items: center);
+                    line-height: 16.41px;
+                    padding: 0;
+                    box-shadow: 0px 4px 4px 0px #DF3F312E;
+                    width: 100%;
+                }
+            }
+        }
+
+    }
+}
+
+@media screen and (max-width: 360px) {
+
+    .top {
+        @include mut.flexed($direction: column, $align-items: center);
+        @include mut.rem-margined($top: 15px);
+    }
+
+    .bottom {
+        @include mut.flexed($direction: column, $align-items: center);
+        @include mut.rem-margined($bottom: 15px);
     }
 }
