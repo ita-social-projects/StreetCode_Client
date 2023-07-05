@@ -116,6 +116,7 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
                     <Editor
                         ref={editorRef}
                         init={{
+                            language: 'uk',
                             max_chars: 800,
                             height: 300,
                             menubar: false,
