@@ -140,6 +140,7 @@ export interface StreetcodeUpdate {
     teaser: string,
     alias?: string,
     transliterationUrl: string,
+    updatedAt: string,
     eventStartOrPersonBirthDate: Date | null,
     eventEndOrPersonDeathDate: Date | null,
     dateString: string,
