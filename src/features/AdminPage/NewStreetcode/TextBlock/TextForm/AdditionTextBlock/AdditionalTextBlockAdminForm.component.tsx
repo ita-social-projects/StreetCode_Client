@@ -23,6 +23,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
             <Editor
                 onEditorChange={handleEditorChange}
                 init={{
+                    language: 'uk',
                     height: 300,
 
                     menubar: false,
