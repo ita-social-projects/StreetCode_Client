@@ -342,6 +342,7 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
+                updatedAt: new Date().toLocaleString('uk-UA'),
                 eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
                 eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
                 teaser: form.getFieldValue('teaser'),
