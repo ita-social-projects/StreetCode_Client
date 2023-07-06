@@ -16,21 +16,16 @@ const TextPreview = ({ inputInfo } : Props) => {
 
     useEffect(() => {
         if (!disabled) {
-            // console.log('Input info: ');
-            // console.log(inputInfo?.textContent);
             let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
-            // console.log('Buffer: ');
-            // console.log(buffer);
+            console.log(buffer);
             TextsApi.getParsed(buffer as string).then((x) => {
                 buffer = x?.replaceAll('`', '"').toString();
-                console.log(buffer);
                 setText(buffer);
             }).catch(
                 (error) => {
                     console.log(error);
                 },
             );
-            // console.log('text was fetched');
         }
     }, [disabled]);
 

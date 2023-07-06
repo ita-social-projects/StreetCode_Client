@@ -45,21 +45,18 @@ export default class RelatedTermsStore {
                         this.setRelatedTermItem(response);
                     },
                 );
+            return true;
         } catch (error: unknown) {
-            toast("Таке слово вже пов'язано!");
+            return false;
         }
     };
 
-    public deleteRelatedTerm = async (id: number) => {
-        try {
-            await relatedTermApi.delete(id);
-            runInAction(() => {
-                this.storage.delete(id);
-            });
-        } catch (error) {
-            toast("Таке слово ні з чим не пов'язано. Його неможливо видалити");
-        }
-    };
+    // eslint-disable-next-line class-methods-use-this
+    public deleteRelatedTerm = async (word: string) => relatedTermApi.delete(word).then(
+        () => true,
+    ).catch(
+        () => false,
+    );
 
     public updateRelatedTerm = async (id: number, updatedTerm: RelatedTerm) => {
         try {

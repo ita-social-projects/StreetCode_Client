@@ -1,9 +1,9 @@
-/* eslint-disable react/jsx-props-no-multi-spaces */
+import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 
-import { AutoComplete, Button, Select } from 'antd';
+import { AutoComplete, Button, message, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
@@ -15,8 +15,6 @@ interface Props {
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
 }
 
-const toolTipColor = '#8D1F16';
-
 const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
@@ -25,27 +23,51 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
 
-    const handleAddRelatedWord = () => {
-        if (term !== null && selected !== null) {
-            createRelatedTerm(selected, term?.id as number);
+    const invokeMessage = (context: string, success: boolean) => {
+        const config = {
+            content: context,
+            style: { marginTop: '190vh' },
+        };
+        if (success) {
+            message.success(config);
+        } else {
+            message.error(config);
         }
     };
 
-    const handleDeleteRelatedWord = () => {
+    const handleAddRelatedWord = async () => {
+        if (term !== null && selected !== null) {
+            const result = await createRelatedTerm(selected, term?.id as number);
+            const resultMessage = result ? 'Слово було успішно прив`язано до терміну' : 'Слово вже було пов`язано';
+            invokeMessage(resultMessage, result);
+        }
+    };
+
+    const handleDeleteRelatedWord = async () => {
         if (selected !== null) {
             const index = relatedTermStore.getRelatedTermsArray.findIndex((rt) => rt.word === selected);
             const element = relatedTermStore.getRelatedTermsArray.at(index);
-            deleteRelatedTerm(element?.id as number);
+            const result = await deleteRelatedTerm(element?.id as number).catch(
+                () => {
+                    console.log('Expected message');
+                },
+            );
+            const resultMessage = result != null
+                ? 'Слово було успішно відв`язано від терміну' : 'Слово не було пов`язано';
+            invokeMessage(resultMessage, result != null);
         }
     };
 
-    const handleAddSimple = () => {
+    const handleAddSimple = async () => {
         const newTerm: Term = {
             id: 0,
             title: term?.title as string,
             description: term?.description,
         };
-        termsStore.createTerm(newTerm);
+        const result = await termsStore.createTerm(newTerm);
+        const resultMessage = result != null
+            ? 'Термін успішно додано' : 'Термін не було додано, спробуйте ще.';
+        invokeMessage(resultMessage, result != null);
     };
 
     useAsync(fetchTerms, []);
@@ -71,7 +93,6 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                         + 'removeformat',
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                 }}
-
                 onChange={(e, editor) => {
                     setInputInfo({ ...inputInfo, textContent: editor.getContent() });
                 }}
@@ -121,4 +142,4 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     );
 };
 
-export default TextEditor;
+export default observer(TextEditor);
