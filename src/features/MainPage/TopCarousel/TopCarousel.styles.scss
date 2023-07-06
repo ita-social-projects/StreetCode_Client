@@ -31,3 +31,9 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .top-carousel {
+    @include mut.rem-padded($top: 64px);
+  }
+}

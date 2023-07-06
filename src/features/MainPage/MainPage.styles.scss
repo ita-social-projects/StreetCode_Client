@@ -33,15 +33,3 @@ $bgImg: '@assets/images/main-page/background.png';
 .dimmed {
     @include mut.sized(100%, 5875px);
 }
-
-@media screen and (max-width: 1024px) {
-    .mainPageContainer {
-        @include mut.rem-padded($top: 64px);
-    }
-}
-
-@media screen and (max-width: 680px) {
-    .mainPageContainer {
-        background-image: none;
-    }
-}
