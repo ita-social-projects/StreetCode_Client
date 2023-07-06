@@ -5,10 +5,11 @@
 @use "@sass/_utils.functions.scss" as f;
 @import 'react-toastify/dist/ReactToastify.css';
 
-$bgImg: '@assets/images/catalog/background.png';
+$bgImg: '@assets/images/main-page/background.png';
 
 .mainPageContainer {
-    background: url($bgImg) no-repeat;
+    background: url($bgImg) no-repeat top / 100%;
+
     width: 100%;
 }
 
