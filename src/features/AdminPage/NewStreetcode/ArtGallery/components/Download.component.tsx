@@ -12,6 +12,7 @@ import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetc
 
 import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
+import DeleteButton from './DeleteButton/DeleteButtonAdminBlock.component';
 
 interface Props {
     arts: StreetcodeArtCreateUpdate[],
@@ -27,6 +28,11 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
     const indexTmp = useRef<number>(0);
     const [visibleModal, setVisibleModal] = useState(false);
     const [fileToRemove, setFileToRemove] = useState<UploadFile>();
+
+    const [visibleDeleteButton, setVisibleDeleteButton] = useState(false);
+
+    
+    const filesToRemove = useRef<UploadFile[]>([])
 
     useEffect(() => {
         if (arts.length > 0) {
@@ -44,8 +50,33 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
     }, [arts]);
 
     const handleRemove = useCallback((param: UploadFile) => {
-        setVisibleModal(true);
-        setFileToRemove(param);
+        const filesToRemoveIds = filesToRemove.current.map(file => file.uid);
+        console.log(`Incoming id: ${param.uid}`)
+
+        if(filesToRemoveIds.includes(param.uid)){
+            for(let i = 0; i < filesToRemoveIds.length; i++)
+            {
+                if(filesToRemove.current[i].uid == param.uid)
+                {
+                    filesToRemove.current.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        else{
+            filesToRemove.current.push(param);
+        }
+
+        if(filesToRemove.current.length > 0)
+        {
+            setVisibleDeleteButton(e => true)
+        }
+        else
+        {
+            setVisibleDeleteButton(e => false)
+        }
+        console.log(`filesToRemove.current`)
+        console.log(filesToRemove.current)
     }, []);
 
     const handleCancelModalRemove = useCallback(() => {
@@ -126,10 +157,11 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
                 uploadTo="image"
                 onChange={onChange}
                 onSuccessUpload={onSuccessUpload}
-                onRemove={(e) => handleRemove(e)}
+                onRemove={(e) => handleRemove(e)}   
             >
                 {fileList.length < 15 ? <p>+ Додати</p> : <></>}
             </FileUploader>
+            <DeleteButton filesToRemove={filesToRemove.current} visible={visibleDeleteButton} setVisibleModal={setVisibleModal}></DeleteButton>
             <Modal
                 title="Ви впевнені, що хочете видалити цей арт?"
                 open={visibleModal}
