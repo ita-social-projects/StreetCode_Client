@@ -19,13 +19,10 @@ const TextPreview = ({ inputInfo } : Props) => {
             let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
             console.log(buffer);
             TextsApi.getParsed(buffer as string).then((x) => {
+                console.log(buffer);
                 buffer = x?.replaceAll('`', '"').toString();
                 setText(buffer);
-            }).catch(
-                (error) => {
-                    console.log(error);
-                },
-            );
+            }).catch();
         }
     }, [disabled]);
 

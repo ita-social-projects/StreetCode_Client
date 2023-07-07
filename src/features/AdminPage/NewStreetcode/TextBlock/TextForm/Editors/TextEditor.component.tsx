@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
+import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 
@@ -19,7 +20,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
-    const { createRelatedTerm, deleteRelatedTerm } = relatedTermStore;
+    const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
 
@@ -44,17 +45,21 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
     };
 
     const handleDeleteRelatedWord = async () => {
-        if (selected !== null) {
-            const index = relatedTermStore.getRelatedTermsArray.findIndex((rt) => rt.word === selected);
-            const element = relatedTermStore.getRelatedTermsArray.at(index);
-            const result = await deleteRelatedTerm(element?.id as number).catch(
-                () => {
-                    console.log('Expected message');
+        const errorMessage = 'Слово не було пов`язано';
+        try {
+            if (selected == null || selected === undefined) {
+                invokeMessage('Будь ласка виділіть слово для видалення', false);
+                return;
+            }
+            await relatedTermApi.delete(selected).then(
+                (response) => {
+                    const resultMessage = response != null
+                        ? 'Слово було успішно відв`язано від терміну' : errorMessage;
+                    invokeMessage(resultMessage, response != null);
                 },
-            );
-            const resultMessage = result != null
-                ? 'Слово було успішно відв`язано від терміну' : 'Слово не було пов`язано';
-            invokeMessage(resultMessage, result != null);
+            ).catch(() => invokeMessage(errorMessage, false));
+        } catch {
+            invokeMessage(errorMessage, false);
         }
     };
 

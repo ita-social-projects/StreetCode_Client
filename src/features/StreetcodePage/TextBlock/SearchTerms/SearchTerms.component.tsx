@@ -44,9 +44,9 @@ const SearchTerms = ({ mainText }: Props) => {
                             {popoverParser(`${part}`)}
                         </span>
                     ) : (
-                        <>
+                        <span>
                             {parse(`${part}`)}
-                        </>
+                        </span>
                     )}
                 </span>
             ))}
