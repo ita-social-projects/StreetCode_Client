@@ -8,10 +8,10 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
-import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 import { Editor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { Editor as TinyMCEEditor } from 'tinymce/tinymce';
 
 import {
     Button,
@@ -44,7 +44,7 @@ const NewsModal: React.FC<{
     const [textIsPresent, setTextIsPresent] = useState<boolean>();
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
-    const editorRef = useRef<Editor>();
+    const editorRef = useRef<TinyMCEEditor>();
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
         setPreviewOpen(true);
@@ -61,6 +61,10 @@ const NewsModal: React.FC<{
 
     const checkUniqueURL = async (url: string): Promise<boolean> => {
         const newsList = await getNewsList();
+        if (newsItem) {
+            const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem.id);
+            return filteredNewsList.every((news: News) => news.url !== url);
+        }
         return newsList.every((news: News) => news.url !== url);
     };
 
@@ -93,6 +97,9 @@ const NewsModal: React.FC<{
     const closeAndCleanData = () => {
         form.resetFields();
         setIsModalOpen(false);
+        setTextIsPresent(false);
+        setTextIsChanged(false);
+        setImage(undefined);
         editorRef.current?.setContent('');
     };
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
@@ -101,7 +108,6 @@ const NewsModal: React.FC<{
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
     const handleTextChange = () => {
-        console.log('text changed');
         if (editorRef.current?.getContent() === '') {
             setTextIsPresent(false);
         } else {
@@ -117,14 +123,18 @@ const NewsModal: React.FC<{
             }, 50);
         });
 
-        const firstInvalidField = formElement.querySelector('.ant-form-item-has-error') as HTMLElement;
+        const firstInvalidField = formElement.querySelector(
+            '.ant-form-item-has-error',
+        ) as HTMLElement;
         if (firstInvalidField) {
             firstInvalidField.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
         if (!textIsPresent && textIsChanged) {
-            const editorField = formElement.querySelector('.required-text') as HTMLElement;
+            const editorField = formElement.querySelector(
+                '.required-text',
+            ) as HTMLElement;
 
             if (editorField) {
                 editorField.classList.add('ant-form-item-has-error');
@@ -135,10 +145,7 @@ const NewsModal: React.FC<{
 
     const handleOk = async () => {
         try {
-            if (editorRef.current?.getContent() === '') {
-                setTextIsPresent(false);
-                setTextIsChanged(true);
-            }
+            handleTextChange();
             await form.validateFields();
             if (textIsPresent) {
                 form.submit();
@@ -266,7 +273,7 @@ const NewsModal: React.FC<{
                             </div>
                             <Editor
                                 onEditorChange={handleTextChange}
-                                onInit={(editor) => {
+                                onInit={(evt, editor) => {
                                     editorRef.current = editor;
                                 }}
                                 initialValue={newsItem ? newsItem.text : ''}
@@ -326,20 +333,21 @@ const NewsModal: React.FC<{
                                         }
                                     }}
                                     defaultFileList={
-                                        newsItem
-                                            ? ([
+                                        imageId.current
+                                            ? [
                                                 {
                                                     name: '',
                                                     thumbUrl: base64ToUrl(
-                                                        newsItem.image?.base64,
-                                                        newsItem.image?.mimeType,
+                                                        newsItem?.image?.base64,
+                                                        newsItem?.image?.mimeType,
                                                     ),
-                                                    uid: newsItem.imageId?.toString() || '',
+                                                    uid: newsItem?.imageId?.toString() || '',
                                                     status: 'done',
                                                 },
-                                            ] as UploadFile<any>[])
+                                            ]
                                             : []
                                     }
+
                                 >
                                     <p>Виберіть чи перетягніть файл</p>
                                 </FileUploader>
