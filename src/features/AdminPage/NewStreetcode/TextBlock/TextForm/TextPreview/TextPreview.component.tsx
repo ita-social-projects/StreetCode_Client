@@ -17,10 +17,12 @@ const TextPreview = ({ inputInfo } : Props) => {
     useEffect(() => {
         if (!disabled) {
             let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
+            console.log('before back');
             console.log(buffer);
             TextsApi.getParsed(buffer as string).then((x) => {
-                console.log(buffer);
+                // console.log(buffer);
                 buffer = x?.replaceAll('`', '"').toString();
+                console.log(buffer);
                 setText(buffer);
             }).catch();
         }
