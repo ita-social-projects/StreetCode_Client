@@ -364,7 +364,7 @@ const NewStreetcode = () => {
                         image: null,
                     },
                 })),
-                tags,
+                tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                 statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                     .map((record) => ({ ...record, streetcodeId: parseId })),
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
