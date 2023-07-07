@@ -35,7 +35,7 @@ const SearchTerms = ({ mainText }: Props) => {
         <div>
             {splittedKeywordText.map((part) => (
                 // eslint-disable-next-line react/style-prop-object
-                <span className="textInline">
+                <span>
                     {part.includes('Popover') ? (
                         <span
                             style={keywordColoring}
