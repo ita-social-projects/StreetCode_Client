@@ -14,9 +14,13 @@ import { Term, Text } from '@/models/streetcode/text-contents.model';
 interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
+    onChange: (field: string, value: any) => void;
 }
 
-const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
+const toolTipColor = '#8D1F16';
+
+const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
+
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
@@ -100,6 +104,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                 }}
                 onChange={(e, editor) => {
                     setInputInfo({ ...inputInfo, textContent: editor.getContent() });
+                    onChange('textContent', editor.getContent());
                 }}
                 onSelectionChange={(e, editor) => {
                     setSelected(editor.selection.getContent());
@@ -118,6 +123,7 @@ const TextEditor = ({ inputInfo, setInputInfo } : Props) => {
                         setTerm({ id: option.key, title: value });
                     }}
                     disabled={selected === ''}
+                    onChange={onChange}
                 >
                     {getTermArray.map(
                         (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,

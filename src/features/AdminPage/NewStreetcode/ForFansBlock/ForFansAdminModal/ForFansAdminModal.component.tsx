@@ -26,9 +26,10 @@ interface Props {
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
     allCategories: SourceCategoryName[],
+    onChange: (field: string, value: any) => void,
 }
 
-const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
+const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
@@ -84,6 +85,7 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
         }
         setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
+        onChange('saved', null);
     };
 
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
