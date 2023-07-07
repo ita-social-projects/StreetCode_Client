@@ -35,7 +35,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "noEmit": false
+    "noEmit": false,
+    "lib": [
+      "ES2021.String"
+    ]
   },
   "files": [
     "./src/index.d.ts"

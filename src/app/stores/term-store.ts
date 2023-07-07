@@ -38,7 +38,9 @@ export default class TermStore {
                 },
             );
             return newData;
-        } catch (error: unknown) {}
+        } catch (error: unknown) {
+            return null;
+        }
     };
 
     public updateTerm = async (id: number, term: Term) => {

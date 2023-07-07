@@ -31,7 +31,7 @@ const convertFileToUploadFile = (file: Image | Audio) => {
     return newFileList;
 };
 
-const FileInputsPart = () => {
+const FileInputsPart = ({ onChange }) => {
     const { createUpdateMediaStore } = useMobx();
 
     const [images, setImages] = useState<Image[]>([]);
@@ -66,6 +66,8 @@ const FileInputsPart = () => {
 
         createUpdateMediaStore[propertyName] = fileId as V;
         array.push({ id: fileId, streetcodeId: parseId, modelState: ModelState.Created });
+
+        onChange(propertyName, fileId);
     };
 
     const handleFileRemove = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>
@@ -76,6 +78,7 @@ const FileInputsPart = () => {
             item.modelState = ModelState.Deleted;
             createUpdateMediaStore[propertyName] = null as V;
         }
+        onChange(propertyName, null);
     };
 
     useEffect(() => {
