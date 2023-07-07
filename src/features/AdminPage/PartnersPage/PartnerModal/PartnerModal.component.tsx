@@ -5,14 +5,12 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
-import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
 
 import {
-    Button,
-    Checkbox,
-    Form, Input, Modal, Select, UploadFile,
+    Button, Checkbox, Form, Input, message, Modal, Select, Tooltip, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -25,17 +23,18 @@ import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component
 import Image from '@/models/media/image.model';
 import Partner, {
     LogoType,
-    PartnerCreateUpdate, PartnerSourceLinkCreateUpdate,
+    PartnerCreateUpdate,
+    PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
-    partnerItem?: Partner;
-    open: boolean;
-    isStreetcodeVisible?: boolean;
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    afterSubmit?: (partner: Partner) => void;
-    onChange: (field: string, value: any) => void;
+  partnerItem?: Partner;
+  open: boolean;
+  isStreetcodeVisible?: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  afterSubmit?: (partner: Partner) => void;
+  onChange: (field: string, value: any) => void;
 }
 
 const PartnerModal: React.FC<Props> = observer(({
@@ -47,24 +46,34 @@ const PartnerModal: React.FC<Props> = observer(({
     onChange,
 }) => {
     const [form] = Form.useForm();
+    const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
+    const [urlTitleValue, setUrlTitleValue] = useState<string>('');
+    const [showSecondForm, setShowSecondForm] = useState(false);
+    const [showSecondFormButton, setShowSecondFormButton] = useState(true);
+
     const { partnersStore, streetcodeShortStore } = useMobx();
     const [partnerLinksForm] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
     const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
-    const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
+    const [partnerSourceLinks, setPartnersSourceLinks] = useState<
+    PartnerSourceLinkCreateUpdate[]
+  >([]);
     const imageId = useRef<number>(0);
     const handlePreview = (file: UploadFile) => {
         setFilePreview(file);
         setPreviewOpen(true);
     };
     const onStreetcodeSelect = (value: string) => {
-        const index = streetcodeShortStore.streetcodes.findIndex((c) => c.title === value);
+        const index = streetcodeShortStore.streetcodes.findIndex(
+            (c) => c.title === value,
+        );
         selectedStreetcodes.current.push(streetcodeShortStore.streetcodes[index]);
     };
     const onStreetcodeDeselect = (value: string) => {
-        selectedStreetcodes.current = selectedStreetcodes.current.filter((c) => c.title !== value);
+        selectedStreetcodes.current = selectedStreetcodes.current.filter(
+            (c) => c.title !== value,
+        );
     };
     useEffect(() => {
         if (isStreetcodeVisible) {
@@ -77,31 +86,56 @@ const PartnerModal: React.FC<Props> = observer(({
             form.setFieldsValue({
                 title: partnerItem.title,
                 isKeyPartner: partnerItem.isKeyPartner,
-                url: partnerItem.targetUrl.href,
-                urlTitle: partnerItem.targetUrl.title,
+                url: partnerItem.targetUrl?.href,
+                urlTitle: partnerItem.targetUrl?.title,
                 description: partnerItem.description,
                 partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
                 isVisibleEverywhere: partnerItem.isVisibleEverywhere,
                 logo: [
                     {
                         name: '',
-                        thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
+                        thumbUrl: base64ToUrl(
+                            partnerItem.logo?.base64,
+                            partnerItem.logo?.mimeType,
+                        ),
                         uid: partnerItem.logoId.toString(),
                         status: 'done',
-                    }],
+                    },
+                ],
             });
-            selectedStreetcodes.current = partnerItem.streetcodes;
-            setPartnersSourceLinks(partnerItem.partnerSourceLinks.map((l) => ({
-                id: l.id,
-                logoType: l.logoType,
-                targetUrl: l.targetUrl.href,
-                title: l.title,
+            setUrlTitleEnabled(form.getFieldValue('url'));
+            setUrlTitleValue(form.getFieldValue('urlTitle'));
 
-            })));
+            selectedStreetcodes.current = partnerItem.streetcodes;
+            setPartnersSourceLinks(
+                partnerItem.partnerSourceLinks.map((l) => ({
+                    id: l.id,
+                    logoType: l.logoType,
+                    targetUrl: l.targetUrl.href,
+                })),
+            );
         } else {
             imageId.current = 0;
         }
     }, [partnerItem, open, form]);
+
+    const scrollToInvalidField = () => {
+        const formElement = document.querySelector('.ant-form') as HTMLElement;
+        const firstInvalidField = formElement.querySelector(
+            '.ant-form-item-has-error',
+        ) as HTMLElement;
+        if (firstInvalidField) {
+            firstInvalidField.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+    const handleOk = async () => {
+        try {
+            const values = await form.validateFields();
+            form.submit();
+        } catch (error) {
+            scrollToInvalidField();
+        }
+    };
 
     const closeAndCleanData = () => {
         form.resetFields();
@@ -109,52 +143,83 @@ const PartnerModal: React.FC<Props> = observer(({
         selectedStreetcodes.current = [];
         partnerSourceLinks.splice(0);
         setIsModalOpen(false);
+        setShowSecondForm(false);
+        setShowSecondFormButton(true);
+        setUrlTitleEnabled('');
+        setUrlTitleValue('');
     };
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
         const logotype = partnerLinksForm.getFieldValue('logotype');
-        if (!url.toLocaleLowerCase().includes(logotype)) {
-            setCustomWarningVisible(true);
+
+        let newId = Math.min(...partnerSourceLinks.map((item) => item.id));
+        if (newId < 0) {
+            newId -= 1;
         } else {
-            setCustomWarningVisible(false);
-            let newId = Math.min(...partnerSourceLinks.map((item) => item.id));
-            if (newId < 0) {
-                newId -= 1;
-            } else {
-                newId = -1;
-            }
-            setPartnersSourceLinks([...partnerSourceLinks, {
+            newId = -1;
+        }
+        setPartnersSourceLinks([
+            ...partnerSourceLinks,
+            {
                 id: newId,
                 logoType: Number(LogoType[logotype]),
                 targetUrl: url,
-                title: 'title',
-            }]);
+            },
+        ]);
+        partnerLinksForm.resetFields();
+        setShowSecondForm(false);
+        setShowSecondFormButton(true);
+    };
+    const handleUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        try {
+            await form.validateFields(['url']);
+            setUrlTitleEnabled(value);
+        } catch (error) {
+            setUrlTitleEnabled('');
         }
+    };
+    const handleUrlTitleChange = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const { value } = e.target;
+        setUrlTitleValue(value);
+    };
+    const handleShowSecondForm = () => {
+        setShowSecondForm(true);
+        setShowSecondFormButton(false);
+    };
+    const handleHideSecondForm = () => {
+        setShowSecondForm(false);
+        setShowSecondFormButton(true);
     };
     const onSuccesfulSubmitPartner = async (formValues: any) => {
         partnerSourceLinks.forEach((el, index) => {
             if (el.id < 0) {
                 partnerSourceLinks[index].id = 0;
             }
-            partnerSourceLinks[index].title = 'title';
         });
+        if (!form.getFieldValue('url')) {
+            formValues.urlTitle = null;
+        }
         const partner: PartnerCreateUpdate = {
             id: 0,
             isKeyPartner: formValues.isKeyPartner ?? false,
             logoId: imageId.current,
             partnerSourceLinks,
             streetcodes: selectedStreetcodes.current,
-            targetUrl: formValues.url ?? '',
+            targetUrl: formValues.url?.trim() || null,
             title: formValues.title,
-            description: formValues.description ?? '',
-            urlTitle: formValues.urlTitle ?? '',
+            description: formValues.description?.trim() || null,
+            urlTitle: formValues.urlTitle?.trim() || null,
             isVisibleEverywhere: formValues.isVisibleEverywhere ?? false,
         };
         if (partnerItem) {
             partner.id = partnerItem.id;
             Promise.all([
-                partnersApi.update(partner)
+                partnersApi
+                    .update(partner)
                     .then((p) => {
                         if (afterSubmit) {
                             if (p) {
@@ -162,43 +227,48 @@ const PartnerModal: React.FC<Props> = observer(({
                             }
                         }
                         return p;
-                    }).then((p) => {
+                    })
+                    .then((p) => {
                         ImagesApi.getById(p.logoId).then((img) => {
                             partnersStore.setItem({ ...p, logo: img });
                         });
                     })
-                    .catch((e) => {
-                    }),
+                    .catch((e) => { }),
             ]);
         } else {
             Promise.all([
-                partnersStore.createPartner(partner)
+                partnersStore
+                    .createPartner(partner)
                     .then((p) => {
                         if (afterSubmit && p) {
                             afterSubmit(p);
                         }
                     })
-                    .catch((e) => {
-                    }),
+                    .catch((e) => { }),
             ]);
         }
         closeAndCleanData();
         onChange('partner', partner);
     };
 
-    const selectSocialMediaOptions = [{
-        value: 'twitter',
-        label: 'Twitter',
-    }, {
-        value: 'instagram',
-        label: 'Instagram',
-    }, {
-        value: 'facebook',
-        label: 'Facebook',
-    }, {
-        value: 'youtube',
-        label: 'Youtube',
-    }];
+    const selectSocialMediaOptions = [
+        {
+            value: 'twitter',
+            label: 'Twitter',
+        },
+        {
+            value: 'instagram',
+            label: 'Instagram',
+        },
+        {
+            value: 'facebook',
+            label: 'Facebook',
+        },
+        {
+            value: 'youtube',
+            label: 'Youtube',
+        },
+    ];
     return (
         <Modal
             open={open}
@@ -217,7 +287,7 @@ const PartnerModal: React.FC<Props> = observer(({
                         <h2>
                             {partnerItem ? 'Редагувати' : 'Додати'}
                             {' '}
-                            партнера
+партнера
                         </h2>
                     </div>
                     <div className="checkbox-container">
@@ -251,16 +321,30 @@ const PartnerModal: React.FC<Props> = observer(({
                     <Form.Item
                         name="url"
                         label="Посилання: "
+                        rules={[
+                            {
+                                pattern:
+                  /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i,
+                                message: 'Введіть правильне посилання',
+                            },
+                        ]}
                     >
-                        <Input maxLength={200} showCount />
+                        <Input maxLength={200} showCount onChange={handleUrlChange} />
                     </Form.Item>
 
-                    <Form.Item
-                        name="urlTitle"
-                        label="Назва посилання: "
-                    >
-                        <Input maxLength={100} showCount />
+                    <Form.Item name="urlTitle" label="Назва посилання:">
+                        <Input
+                            maxLength={100}
+                            showCount
+                            disabled={!urlTitleEnabled}
+                            onChange={handleUrlTitleChange}
+                        />
                     </Form.Item>
+                    {urlTitleEnabled === '' && urlTitleValue && (
+                        <p className="error-text">
+              Введіть правильне посилання для збереження назви посилання.
+                        </p>
+                    )}
 
                     <Form.Item
                         name="description"
@@ -279,8 +363,10 @@ const PartnerModal: React.FC<Props> = observer(({
                             }
                             return e?.fileList;
                         }}
+                        rules={[{ required: true, message: 'Завантажте лого' }]}
                     >
                         <FileUploader
+                            className="logo-uploader"
                             multiple={false}
                             accept=".jpeg,.png,.jpg"
                             listType="picture-card"
@@ -290,19 +376,30 @@ const PartnerModal: React.FC<Props> = observer(({
                             onSuccessUpload={(image: Image) => {
                                 imageId.current = image.id;
                             }}
-                            defaultFileList={(partnerItem)
-                                ? [{
-                                    name: '',
-                                    thumbUrl: base64ToUrl(partnerItem.logo?.base64, partnerItem.logo?.mimeType),
-                                    uid: partnerItem.logoId.toString(),
-                                    status: 'done',
-                                }]
-                                : []}
+                            defaultFileList={
+                                partnerItem
+                                    ? [
+                                        {
+                                            name: '',
+                                            thumbUrl: base64ToUrl(
+                                                partnerItem.logo?.base64,
+                                                partnerItem.logo?.mimeType,
+                                            ),
+                                            uid: partnerItem.logoId.toString(),
+                                            status: 'done',
+                                        },
+                                    ]
+                                    : []
+                            }
                         >
                             <p>Виберіть чи перетягніть файл</p>
                         </FileUploader>
                     </Form.Item>
-                    <PreviewFileModal opened={previewOpen} setOpened={setPreviewOpen} file={filePreview} />
+                    <PreviewFileModal
+                        opened={previewOpen}
+                        setOpened={setPreviewOpen}
+                        file={filePreview}
+                    />
 
                     {isStreetcodeVisible ? (
                         <Form.Item name="partnersStreetcodes" label="Стріткоди: ">
@@ -311,75 +408,135 @@ const PartnerModal: React.FC<Props> = observer(({
                                 onSelect={onStreetcodeSelect}
                                 onDeselect={onStreetcodeDeselect}
                             >
-                                {streetcodeShortStore.streetcodes
-                                    .map((s) => (
-                                        <Select.Option key={`${s.id}`} value={s.title}>
-                                            {s.title}
-                                        </Select.Option>
-                                    ))}
+                                {streetcodeShortStore.streetcodes.map((s) => (
+                                    <Select.Option key={`${s.id}`} value={s.title}>
+                                        {s.title}
+                                    </Select.Option>
+                                ))}
                             </Select>
                         </Form.Item>
-                    ) : ''}
-
+                    ) : (
+                        ''
+                    )}
                 </Form>
             </div>
-
+            <div className="partner-source-list">
+                {partnerSourceLinks.map((link) => (
+                    <div
+                        key={`${link.id}${link.logoType}`}
+                        className="partner-source-list-item"
+                    >
+                        <PartnerLink link={link} />
+                        <p>{link.targetUrl}</p>
+                        <DeleteOutlined
+                            onClick={() => setPartnersSourceLinks(
+                                partnerSourceLinks.filter((l) => l.id !== link.id),
+                            )}
+                        />
+                    </div>
+                ))}
+            </div>
+            {showSecondFormButton && (
+                <Button
+                    onClick={handleShowSecondForm}
+                    className="add-social-media-button"
+                >
+          Додати соціальну мережу
+                </Button>
+            )}
             <Form
                 layout="vertical"
                 form={partnerLinksForm}
                 onFinish={onSuccesfulSubmitLinks}
             >
-                <div className="partner-source-list">
-
-                    {partnerSourceLinks.map((link) => (
-                        <div
-                            key={`${link.id}${link.logoType}`}
-                            className="partner-source-list-item"
-                        >
-                            <PartnerLink link={link} />
-                            <p>{link.targetUrl}</p>
-                            <DeleteOutlined
-                                onClick={() => setPartnersSourceLinks(partnerSourceLinks
-                                    .filter((l) => l.id !== link.id))}
-                            />
+                {showSecondForm && (
+                    <div>
+                        <div className="button-container">
+                            <Button onClick={handleHideSecondForm} className="close-button">
+                Закрити
+                            </Button>
                         </div>
-                    ))}
-                </div>
-                <div className="link-container">
-                    <FormItem
-                        name="logotype"
-                        label="Соціальна мережа"
-                        rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
-                    >
-                        <Select
-                            options={selectSocialMediaOptions}
-                        />
-                    </FormItem>
-                    <Form.Item
-                        label="Посилання"
-                        className="url-input"
-                        name="url"
-                        rules={[{ required: true, message: 'Введіть посилання' }]}
-                    >
-                        <Input min={1} max={255} showCount />
-                    </Form.Item>
+                        <div className="link-container">
+                            <FormItem
+                                name="logotype"
+                                label="Соціальна мережа"
+                                rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
+                                className="social-media-form-item"
+                            >
+                                <Select options={selectSocialMediaOptions} />
+                            </FormItem>
+                            <Form.Item
+                                label="Посилання"
+                                className="url-input"
+                                name="url"
+                                rules={[
+                                    { required: true, message: 'Введіть Посилання' },
+                                    {
+                                        pattern:
+                      /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i,
+                                        message: 'Введіть правильне посилання',
+                                    },
+                                    {
+                                        validator: (_, value) => {
+                                            const logotype = partnerLinksForm.getFieldValue('logotype');
+                                            if (
+                                                !value
+                        || !logotype
+                        || value.toLowerCase().includes(logotype)
+                                            ) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(
+                                                'Посилання не співпадає з вибраним текстом',
+                                            );
+                                        },
+                                    },
+                                ]}
+                            >
+                                <Input min={1} max={255} showCount />
+                            </Form.Item>
 
-                    <Form.Item
-                        label=" "
-                    >
-                        <Button htmlType="submit">
-                            <UserAddOutlined />
-                        </Button>
-                    </Form.Item>
-                </div>
-                {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
-
-                <div className="center">
-                    <Button className="streetcode-custom-button" onClick={() => form.submit()}>
-                        Зберегти
-                    </Button>
-                </div>
+                            <Form.Item label=" ">
+                                <Tooltip
+                                    title="Додати"
+                                    placement="bottom"
+                                    overlayClassName="custom-tooltip"
+                                >
+                                    <Button htmlType="submit" className="plus-button">
+                                        <PlusOutlined />
+                                    </Button>
+                                </Tooltip>
+                            </Form.Item>
+                        </div>
+                    </div>
+                )}
             </Form>
+
+            <div className="center">
+                {showSecondForm ? (
+                    <Tooltip
+                        title="Завершіть додавання соціальної мережі"
+                        placement="bottom"
+                        overlayClassName="custom-tooltip"
+                    >
+                        <span>
+                            <Button disabled className="streetcode-custom-button save">
+                Зберегти
+                            </Button>
+                        </span>
+                    </Tooltip>
+                ) : (
+                    <Button
+                        disabled={showSecondForm}
+                        className="streetcode-custom-button save"
+                        onClick={() => {
+                            handleOk();
+                        }}
+                    >
+            Зберегти
+                    </Button>
+                )}
+            </div>
         </Modal>
     );
 });

@@ -179,7 +179,7 @@ const FileInputsPart = ({ onChange }) => {
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
-                        {...(relatedFigure[0] ? { fileList: relatedFigure } : null)}
+                        fileList={relatedFigure}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {

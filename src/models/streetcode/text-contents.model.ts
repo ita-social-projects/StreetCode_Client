@@ -14,7 +14,7 @@ export interface Fact {
 export interface FactCreate extends Fact {
   imageDescription?: string
 }
-export interface FactUpdate extends Fact, IModelState, IPersisted {
+export interface FactUpdate extends FactCreate, IModelState, IPersisted {
     streetcodeId?: number;
 }
 
@@ -40,7 +40,7 @@ export interface Text {
   link: string | undefined;
 }
 
-export interface TextCreateUpdate {
+export interface TextCreateUpdate extends IModelState {
   id: number;
   title: string | undefined;
   textContent: string | undefined;

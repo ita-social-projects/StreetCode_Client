@@ -2,7 +2,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
-import getMaxId from '@app/common/utils/getMaxId';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
@@ -53,10 +52,6 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
         if (categoryUpdate.current && open) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
-        } else {
-            categoryUpdate.current = null;
-            editorRef.current?.editor?.setContent('');
-            form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
         }
     }, [open]);
 
@@ -96,7 +91,6 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
             centered
             closeIcon={<CancelBtn />}
         >
-
             <Form
                 layout="vertical"
                 form={form}
@@ -127,10 +121,13 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
                             max_chars: 800,
                             height: 300,
                             menubar: false,
+                            init_instance_callback(editor) {
+                                editor.setContent(categoryUpdate?.current?.text ?? '');
+                            },
                             plugins: [
                                 'autolink',
                                 'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                                'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                                'insertdatetime', 'wordcount', 'link', 'lists',
                             ],
                             toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                      + 'formats blockformats align | removeformat strikethrough ',

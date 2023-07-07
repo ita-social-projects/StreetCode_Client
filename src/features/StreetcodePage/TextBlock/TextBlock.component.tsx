@@ -50,17 +50,23 @@ const TextComponent = () => {
                             <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                         </div>
                     </div>
-                    <div className="videoComponent">
-                        <VideoPlayer
-                            videoUrls={String(video?.url.href)}
-                            onReady={() => {
-                                if (video) {
-                                    streecodePageLoaderContext.addBlockFetched();
-                                }
-                            }}
-                        />
-                        {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
-                    </div>
+                    {video.url.length > 1
+                        ?
+                        (<div className="videoComponent">
+                            <VideoPlayer
+                                videoUrls={String(video?.url)}
+                                onReady={() => {
+                                    if (video) {
+                                        streecodePageLoaderContext.addBlockFetched();
+                                    }
+                                }}
+                            />
+                            {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
+                        </div>
+                        ) : <></>
+                    }
+
+
 
                 </div>
             ) : null
