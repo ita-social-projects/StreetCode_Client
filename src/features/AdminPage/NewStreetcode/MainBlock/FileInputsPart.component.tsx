@@ -96,7 +96,7 @@ const FileInputsPart = ({ onChange }) => {
                         createUpdateMediaStore.relatedFigureId = result[2]?.id;
 
                         createUpdateMediaStore.imagesUpdate = result.map((img) => ({
-                            id: img.id,
+                            ...img,
                             streetcodeId: parseId,
                             modelState: ModelState.Updated,
                         }));
@@ -179,7 +179,7 @@ const FileInputsPart = ({ onChange }) => {
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
-                        fileList={relatedFigure}
+                        {...(relatedFigure[0] ? { fileList: relatedFigure } : null)}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {

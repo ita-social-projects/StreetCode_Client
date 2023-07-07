@@ -42,10 +42,11 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
     const getOptions = async () => {
         try {
             const response = await axios.get<RelatedFigureShort[]>(
-                'https://localhost:5001/api/Streetcode/GetAllShort',
+                'https://localhost:5001/api/RelatedFigure/GetAllPublished',
             );
 
             setOptions(response.data as RelatedFigureShort[]);
+            console.log(response.data);
         } catch (error) { /* empty */ }
     };
 

@@ -25,6 +25,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo, onChange }: Pro
             <Editor
                 onEditorChange={handleEditorChange}
                 init={{
+                    language: 'uk',
                     height: 300,
 
                     menubar: false,
