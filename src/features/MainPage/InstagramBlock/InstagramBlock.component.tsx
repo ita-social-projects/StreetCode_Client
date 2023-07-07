@@ -53,6 +53,10 @@ const InstagramBlock = () => {
             <BlockSlider {...sliderProps}>
                     {sliderItems}
                 </BlockSlider>
+            {windowSize.width <= 480 &&( <div className='instagramButton'>
+                <p onClick={handleClick}>{'Перейти в інстаграм'}</p>
+            </div>
+            )}
             </div>
         </div>
     ) : <></>
