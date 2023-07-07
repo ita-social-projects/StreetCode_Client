@@ -1,5 +1,3 @@
-import './SearchTerms.styles.scss';
-
 import parse from 'html-react-parser';
 
 import { Popover } from 'antd';

@@ -51,17 +51,6 @@ export default class RelatedTermsStore {
         }
     };
 
-    // eslint-disable-next-line class-methods-use-this
-    public deleteRelatedTerm = async (word: string) => relatedTermApi.delete(word).then(
-        (response) => {
-            console.log('Responce from api call');
-            console.log(response);
-            return true;
-        },
-    ).catch(
-        () => false,
-    );
-
     public updateRelatedTerm = async (id: number, updatedTerm: RelatedTerm) => {
         try {
             await relatedTermApi.update(id, updatedTerm);
