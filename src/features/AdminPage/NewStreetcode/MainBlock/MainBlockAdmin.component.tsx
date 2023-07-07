@@ -36,13 +36,14 @@ interface Props {
     setSelectedTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>;
     streetcodeType: StreetcodeType;
     setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
+    onChange: (fieldName: string, value: any) => void;
 }
 
 const MainBlockAdmin = React.memo(({
-    form, selectedTags, setSelectedTags, streetcodeType, setStreetcodeType,
+    form, selectedTags, setSelectedTags, streetcodeType, setStreetcodeType, onChange,
 }: Props) => {
     const teaserMaxCharCount = 520;
-    const tagPreviewPropsList:TagPreviewProps[] = [
+    const tagPreviewPropsList: TagPreviewProps[] = [
         { width: 360, screenWidth: 360 },
         { width: 365, screenWidth: 768 },
         { width: 612, screenWidth: 1600 },
@@ -59,6 +60,11 @@ const MainBlockAdmin = React.memo(({
     const [indexId, setIndexId] = useState<number>(1);
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
+    const [fieldValues, setFieldValues] = useState({});
+
+    const handleInputChange = (fieldName: string, value: any) => {
+        onChange(fieldName, value);
+    };
 
     useEffect(() => {
         form.setFieldValue('title', streetcodeTitle);
@@ -101,7 +107,7 @@ const MainBlockAdmin = React.memo(({
         TagsApi.getAll().then((tgs) => setTags(tgs));
     }, []);
 
-    const setIndex = (index :number | null) => {
+    const setIndex = (index: number | null) => {
         if (index) {
             form.setFieldValue('streetcodeNumber', index);
             setIndexId(index);
@@ -182,7 +188,11 @@ const MainBlockAdmin = React.memo(({
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
                     { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
             >
-                <Input maxLength={100} showCount />
+                <Input
+                    maxLength={100}
+                    showCount
+                    onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
+                />
             </Form.Item>
 
             {streetcodeType === StreetcodeType.Person ? (
@@ -200,6 +210,7 @@ const MainBlockAdmin = React.memo(({
                             ref={name}
                             maxLength={50}
                             showCount
+                            onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
                         />
                     </Form.Item>
 
@@ -215,13 +226,18 @@ const MainBlockAdmin = React.memo(({
                             ref={surname}
                             maxLength={50}
                             showCount
+                            onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
                         />
                     </Form.Item>
                 </Input.Group>
             )
                 : ('')}
             <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
-                <Input maxLength={33} showCount />
+                <Input
+                    maxLength={33}
+                    showCount
+                    onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
+                />
             </Form.Item>
             <Form.Item
                 label="URL"
@@ -232,11 +248,13 @@ const MainBlockAdmin = React.memo(({
                 <Input
                     maxLength={100}
                     showCount
+                    onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
                 />
             </Form.Item>
 
             <DatePickerPart
                 form={form}
+                onChange={handleInputChange}
                 setFirstDate={(newDate: Dayjs | null) => {
                     firstDate.current = newDate;
                 }}
@@ -253,8 +271,8 @@ const MainBlockAdmin = React.memo(({
                             placement="topLeft"
                             content={(
                                 <p className="label-tags-block-info-container-content">
-При обиранні теги є невидимими для користувача (фон тегу сірий), тобто він не відображається на головній картці стріткоду.
-                            Якщо натиснути на тег, його стан зміниться на видимий (фон - білий). Нижче є розширення наводячи на які, можна побачити, які теги будуть вміщатись на головній картці стріткоду.
+                                    При обиранні теги є невидимими для користувача (фон тегу сірий), тобто він не відображається на головній картці стріткоду.
+                                    Якщо натиснути на тег, його стан зміниться на видимий (фон - білий). Нижче є розширення наводячи на які, можна побачити, які теги будуть вміщатись на головній картці стріткоду.
                                     {' '}
                                 </p>
                             )}
@@ -269,8 +287,14 @@ const MainBlockAdmin = React.memo(({
                         <Select
                             className="tags-select-input"
                             mode="tags"
-                            onSelect={onSelectTag}
-                            onDeselect={onDeselectTag}
+                            onSelect={(selectedValue, option) => {
+                                handleInputChange(option.key, selectedValue);
+                                onSelectTag(selectedValue);
+                            }}
+                            onDeselect={(deselectedValue, option) => {
+                                handleInputChange(option.key, deselectedValue);
+                                onDeselectTag(deselectedValue);
+                            }}
                             value={selectedTags.map((x) => x.title)}
                         >
                             {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
@@ -314,10 +338,11 @@ const MainBlockAdmin = React.memo(({
                         showCount
                         className="textarea-teaser"
                         maxLength={teaserMaxCharCount}
+                        onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
                     />
                 </Form.Item>
             </div>
-            <FileInputsPart />
+            <FileInputsPart onChange={handleInputChange} />
         </div>
     );
 });

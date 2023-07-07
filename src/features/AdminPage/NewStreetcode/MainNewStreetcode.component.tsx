@@ -78,25 +78,43 @@ const NewStreetcode = () => {
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
-    const [confirmNavigation, setConfirmNavigation] = useState(false);
+    const [savedChanges, setSavedChanges] = useState(true);
+    const navigationString = 'Покинути сторінку? Внесені зміни, можливо, не буде збережено.';
+    const [fieldChanges, setFieldChanges] = useState({});
+
+    const handleFieldChange = (fieldName, value) => {
+        setFieldChanges((prevChanges) => ({
+            ...prevChanges,
+            [fieldName]: value,
+        }));
+    };
+    const [isPageLoaded, setPageLoaded] = useState(false);
+
+    useEffect(() => {
+        if (isPageLoaded) {
+            const isAnyFieldChanged = Object.values(fieldChanges).some((value) => value !== undefined && value !== '');
+            setSavedChanges(!isAnyFieldChanged);
+        } else {
+            setPageLoaded(true);
+        }
+    }, [fieldChanges, isPageLoaded]);
 
     usePrompt(
-        confirmNavigation
+        savedChanges
             ? { when: false, message: '' }
-            : { when: true, message: 'Ви впевнені, що хочете покинути сторінку? Ваші зміни не буде збережено' },
+            : { when: true, message: navigationString },
     );
-
     const handleTabClosing = () => {
         console.log('Close tab');
     };
 
     const alertUser = (event: BeforeUnloadEvent) => {
         event.preventDefault();
-        event.returnValue = '';
+        event.returnValue = navigationString;
     };
 
     useEffect(() => {
-        if (!confirmNavigation) {
+        if (!savedChanges) {
             window.addEventListener('beforeunload', alertUser);
             window.addEventListener('unload', handleTabClosing);
             return () => {
@@ -244,7 +262,7 @@ const NewStreetcode = () => {
                 tempStatus = 1;
             }
             if (buttonName.includes(publish) || buttonName.includes(draft)) {
-                setConfirmNavigation(true);
+                setSavedChanges(true);
             }
         }
         form.validateFields();
@@ -434,24 +452,26 @@ const NewStreetcode = () => {
                                 setSelectedTags={setSelectedTags}
                                 streetcodeType={streetcodeType}
                                 setStreetcodeType={setStreetcodeType}
+                                onChange={handleFieldChange}
                             />
                             <TextBlock
                                 inputInfo={inputInfo}
                                 setInputInfo={setInputInfo}
                                 video={video}
                                 setVideo={setVideo}
+                                onChange={handleFieldChange}
                             />
-                            <InterestingFactsBlock />
-                            <TimelineBlockAdmin />
+                            <InterestingFactsBlock onChange={handleFieldChange} />
+                            <TimelineBlockAdmin onChange={handleFieldChange} />
 
                             {process.env.NODE_ENV === 'production'
                                 ? <MapBlockAdmin /> : null}
-                            <ArtGalleryBlock arts={arts} setArts={setArts} />
-                            <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
-                            <ForFansBlock />
-                            <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
-                            <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
-                            <ARBlock />
+                            <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
+                            <RelatedFiguresBlock figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
+                            <ForFansBlock onChange={handleFieldChange} />
+                            <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
+                            <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
+                            <ARBlock onChange={handleFieldChange} />
                         </Form>
                     </div>
                     <Button
