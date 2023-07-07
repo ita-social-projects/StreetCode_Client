@@ -99,8 +99,8 @@ const NewsModal: React.FC<{
         setIsModalOpen(false);
         setTextIsPresent(false);
         setTextIsChanged(false);
-        setImage(undefined);
         editorRef.current?.setContent('');
+        setImage(undefined);
     };
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
     dayjs.locale('uk');
@@ -321,7 +321,7 @@ const NewsModal: React.FC<{
                                     uploadTo="image"
                                     onSuccessUpload={(img: Image) => {
                                         imageId.current = img.id;
-                                        setImage(image);
+                                        setImage(img);
                                         if (newsItem) {
                                             newsItem.image = img;
                                         }
@@ -332,21 +332,22 @@ const NewsModal: React.FC<{
                                             newsItem.image = undefined;
                                         }
                                     }}
-                                    defaultFileList={
-                                        imageId.current
-                                            ? [
-                                                {
-                                                    name: '',
-                                                    thumbUrl: base64ToUrl(
-                                                        newsItem?.image?.base64,
-                                                        newsItem?.image?.mimeType,
-                                                    ),
-                                                    uid: newsItem?.imageId?.toString() || '',
-                                                    status: 'done',
-                                                },
-                                            ]
-                                            : []
-                                    }
+                                    // defaultFileList={
+                                    //     imageId.current
+                                    //         ? [
+                                    //             {
+                                    //                 name: '',
+                                    //                 thumbUrl: base64ToUrl(
+                                    //                     newsItem?.image?.base64,
+                                    //                     newsItem?.image?.mimeType,
+                                    //                 ),
+                                    //                 uid: newsItem?.imageId?.toString() || '',
+                                    //                 status: 'done',
+                                    //             },
+                                    //         ]
+                                    //         : []
+                                    // }
+                                    // defaultFileList={[]}
 
                                 >
                                     <p>Виберіть чи перетягніть файл</p>
