@@ -27,11 +27,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
     const uidsFile = useRef<string>('');
     const indexTmp = useRef<number>(0);
     const [visibleModal, setVisibleModal] = useState(false);
-    const [fileToRemove, setFileToRemove] = useState<UploadFile>();
-
     const [visibleDeleteButton, setVisibleDeleteButton] = useState(false);
-
-    
     const filesToRemove = useRef<UploadFile[]>([])
 
     useEffect(() => {
@@ -61,7 +57,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
       }
 
     const handleRemove = useCallback((param: UploadFile) => {
-        let divsList = document.getElementsByClassName("ant-upload-list-item-container");
+        let divsList = document.querySelectorAll(".with-multiple-delete .ant-upload-list-item-container");
         let elem = divsList[Number(param.uid) - 1];
 
         const filesToRemoveIds = filesToRemove.current.map(file => file.uid);
@@ -105,13 +101,22 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
         setIsOpen(true);
     };
 
+    function RemoveDeleteFrames()
+    {
+        let divsList = document.querySelectorAll(".with-multiple-delete .ant-upload-list-item-container");
+        divsList.forEach(element => {
+            element.classList.remove('delete-border')
+        });
+    }
+
     const onSuccessUpload = (image: Image) => {
+        console.log(`index temp after: ${indexTmp.current}`)
         if (arts.length > 0) {
             indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
         } else {
             indexTmp.current += 1;
         }
-
+        console.log(`index temp after: ${indexTmp.current}`)
         const newArt: StreetcodeArtCreateUpdate = {
             index: indexTmp.current,
             modelState: ModelState.Created,
@@ -153,9 +158,8 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
             }
         }
 
-        setFileList(fileList.filter((x) => x.uid !== file.uid));
+        setFileList(fileList => (fileList.filter((x) => x.uid !== file.uid)));
         setVisibleModal(false);
-        
     }
 
     const onRemoveFile = (files: UploadFile[]) => {
@@ -167,10 +171,16 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
             console.log('deleting file')
             console.log(element);
         });
+        if (arts.length > 0) {
+            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
+        } else {
+            indexTmp.current = 0;
+        }
         console.log('----onRemoveFile---')
         console.log(files);
         filesToRemove.current = [];
-        setVisibleDeleteButton(e => false)
+        setVisibleDeleteButton(false);
+        RemoveDeleteFrames();
     };
 
     return (
@@ -183,11 +193,12 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
                 uploadTo="image"
                 onChange={onChange}
                 onSuccessUpload={onSuccessUpload}
-                onRemove={(e) => handleRemove(e)}   
+                onRemove={(e) => handleRemove(e)}
+                className='with-multiple-delete'
             >
                 {fileList.length < 15 ? <p>+ Додати</p> : <></>}
             </FileUploader>
-            {filesToRemove.current.length > 0? <Button danger onClick={()=>setVisibleModal(true)}>Delete</Button>: <></>}
+            {visibleDeleteButton? <Button className="delete-arts-button" danger onClick={()=>setVisibleModal(true)}>Видалити</Button>: <></>}
             <Modal
                 title="Ви впевнені, що хочете видалити цей арт?"
                 open={visibleModal}
