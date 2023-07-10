@@ -2,7 +2,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
-import getMaxId from '@app/common/utils/getMaxId';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
@@ -15,8 +14,6 @@ import FormItem from 'antd/es/form/FormItem';
 import SourcesApi from '@/app/api/sources/sources.api';
 import AddSourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
 import {
-    SourceCategory,
-    SourceCategoryAdmin,
     SourceCategoryName,
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
@@ -28,13 +25,14 @@ interface Props {
     allCategories: SourceCategoryName[],
 }
 
-const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
+const ForFansModal = ({ allCategories, open, setOpen }: Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
 
     const [form] = Form.useForm();
+
     const getAvailableCategories = (): SourceCategoryName[] => {
         const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
             .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
@@ -44,9 +42,12 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
         const available = allCategories.filter((c) => !selectedIds.includes(c.id));
 
         if (categoryUpdate.current) {
-            available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate
-                .current?.sourceLinkCategoryId)]);
+            const foundCategory = allCategories.find((c) => c.id === categoryUpdate.current?.sourceLinkCategoryId);
+            if (foundCategory) {
+                available.push(foundCategory);
+            }
         }
+
         return available;
     };
 
@@ -55,32 +56,31 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
         setAvailableCategories(getAvailableCategories());
         if (categoryUpdate.current && open) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
-            form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
+            form.setFieldsValue({ category: categoryUpdate.current.sourceLinkCategoryId });
         } else {
             categoryUpdate.current = null;
             editorRef.current?.editor?.setContent('');
-            form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
+            form.setFieldsValue({ category: (availableCategories.length > 0 ? availableCategories[0].id : null) });
         }
     }, [open, sourceCreateUpdateStreetcode]);
 
-    const onSave = (values:any) => {
+    const onSave = (values: any) => {
         const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (elementToUpdate) {
-            sourceCreateUpdateStreetcode
-                .updateElement(
-                    sourceCreateUpdateStreetcode.indexUpdate,
-                    { ...elementToUpdate,
-                      sourceLinkCategoryId: values.category,
-                      text: editorRef.current?.editor?.getContent() ?? '' },
-                );
+            sourceCreateUpdateStreetcode.updateElement(sourceCreateUpdateStreetcode.indexUpdate, {
+                ...elementToUpdate,
+                sourceLinkCategoryId: values.category,
+                text: editorRef.current?.editor?.getContent() ?? '',
+            });
         } else {
-            sourceCreateUpdateStreetcode
-                .addSourceCategoryContent({
-                    id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
-                    sourceLinkCategoryId: values.category,
-                    text: editorRef.current?.editor?.getContent() ?? '',
-                    streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
-                });
+            sourceCreateUpdateStreetcode.addSourceCategoryContent({
+                id: getNewMinNegativeId(
+                    sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id),
+                ),
+                sourceLinkCategoryId: values.category,
+                text: editorRef.current?.editor?.getContent() ?? '',
+                streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
+            });
         }
         setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
@@ -88,25 +88,13 @@ const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
 
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
-    const newSources: SourceCategoryAdmin[] = [];
-    const sources: SourceCategory[] = [];
     const onClose = async () => {
         setAvailableCategories(getAvailableCategories());
         if (isAddModalVisible === false) {
-            const newSources: SourceCategoryAdmin[] = [];
             const categories = await SourcesApi.getAllCategories();
             sourcesAdminStore.setInternalSourceCategories(categories);
-            categories.forEach((x) => {
-                const newSource: SourceCategoryAdmin = {
-                    id: x.id,
-                    title: x.title,
-                    imageId: x.imageId,
-                    image: x.image,
-                };
-                newSources.push(newSource);
-            });
 
-            const sourceMas: SourceCategoryName[] = newSources.map((x) => ({
+            const sourceMas: SourceCategoryName[] = categories.map((x) => ({
                 id: x.id ?? 0,
                 title: x.title,
             }));
