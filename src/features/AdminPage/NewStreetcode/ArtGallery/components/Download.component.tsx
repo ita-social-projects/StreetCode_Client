@@ -17,9 +17,10 @@ import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 interface Props {
     arts: StreetcodeArtCreateUpdate[],
     setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
+    onChanges: (field: string, value: any) => void,
 }
 
-const DownloadBlock = ({ arts, setArts }: Props) => {
+const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
     const { streetcodeArtStore } = useMobx();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
@@ -52,7 +53,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
           return 1;
         }
         return 0;
-      }
+    };
 
     const handleRemove = useCallback((param: UploadFile) => {
         /* get query of all uploaded arts using DOM to later highlight them with a red frame if delete button is pressed(select),
@@ -93,6 +94,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
         const status = uploadParams.file.status ?? 'removed';
         if (status !== 'removed') {
             setFileList(uploadParams.fileList.map((x) => x));
+            onChanges('arts', uploadParams.fileList);
         }
     };
 
@@ -150,7 +152,8 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
 
         setFileList(fileList => (fileList.filter((x) => x.uid !== file.uid)));
         setVisibleModal(false);
-    }
+        onChanges('art', file);
+    };
 
     function RemoveDeleteFrames()
     {
@@ -158,7 +161,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
         artsContainersList.forEach(element => {
             element.classList.remove('delete-border')
         });
-    }
+    };
 
     const onRemoveFile = (files: UploadFile[]) => {
         files.forEach(element => {
@@ -209,6 +212,7 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
                         setOpened={setIsOpen}
                         arts={arts}
                         setArts={setArts}
+                        onChange={onChanges}
                     />
                 </>
             ) : null}

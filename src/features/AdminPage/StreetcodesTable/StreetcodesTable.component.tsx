@@ -9,7 +9,7 @@ import {
 import { NumberLiteralTypeAnnotation } from '@babel/types';
 
 import {
-    Button, Dropdown, InputNumber, MenuProps, Pagination, Space,
+    Button, Dropdown, InputNumber, MenuProps, Modal, Pagination, Space,
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
@@ -29,6 +29,7 @@ const StreetcodesTable = () => {
     const [pageRequest, setPageRequest] = useState<number | null>(1);
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
+    const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
@@ -69,6 +70,7 @@ const StreetcodesTable = () => {
     ];
 
     const updateState = (id: number, state: string) => {
+
         const updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
             if (item.key === id) {
                 return {
@@ -83,18 +85,46 @@ const StreetcodesTable = () => {
     };
 
     const handleMenuClick: MenuProps['onClick'] = async (e) => {
-        await StreetcodesApi.updateState(currentStreetcodeOption, +e.key);
-
-        let currentStatus;
-        switch (e.key) {
-        case '0': { currentStatus = 'Чернетка'; break; }
-        case '1': { currentStatus = 'Опублікований'; break; }
-        case '2': { currentStatus = 'Видалений'; break; }
-        default: { currentStatus = 'Чернетка'; break; }
+        try {
+          const selectedKey = +e.key;
+          let currentStatus: string;
+          
+          switch (selectedKey) {
+            case 0:
+              currentStatus = 'Чернетка';
+              break;
+            case 1:
+              currentStatus = 'Опублікований';
+              break;
+            case 2:
+              currentStatus = 'Видалений';
+              break;
+            default:
+              currentStatus = 'Чернетка';
+              break;
+          }
+          modalStore.setConfirmationModal(
+            'confirmation',
+            () => handleChangeStatusConfirmation(currentStatus, selectedKey),
+            'Ви впевнені, що хочете змінити статус цього стріткоду?',
+            isConfirmationModalVisible,
+            handleCancelConfirmation
+          );
+        
+        } catch (error) {
+          console.error('Error occurred:', error);
         }
-
-        updateState(currentStreetcodeOption, currentStatus);
-    };
+      };
+      
+      const handleChangeStatusConfirmation = async (status: string, e: number) => {
+        await StreetcodesApi.updateState(currentStreetcodeOption, e);
+        updateState(currentStreetcodeOption, status);
+        modalStore.setConfirmationModal('confirmation', undefined, '', false, undefined);
+      };
+      
+      const handleCancelConfirmation = () => {
+        setIsConfirmationModalVisible(false);
+      };
 
     const handleUndoDelete = async (id: number) => {
         await StreetcodesApi.updateState(id, 0);
@@ -130,19 +160,25 @@ const StreetcodesTable = () => {
             dataIndex: 'status',
             key: 'status',
             onCell: (record: MapedStreetCode) => ({
-                onClick: () => setCurrentStreetcodeOption(record.key),
+              onClick: () => {
+                setCurrentStreetcodeOption(record.key);
+                setIsConfirmationModalVisible(true);
+              },
             }),
-            render: (text: string) => (
-                <Dropdown menu={menuProps}>
-                    <Button>
-                        <Space>
-                            {text}
-                            <DownOutlined />
-                        </Space>
-                    </Button>
+          
+            render: (text: string, record: MapedStreetCode) => (
+              <>
+                <Dropdown menu={menuProps} trigger={['click']}>
+                  <Button>
+                    <Space>
+                      {text}
+                      <DownOutlined />
+                    </Space>
+                  </Button>
                 </Dropdown>
+              </>
             ),
-        },
+          },
         {
             title: 'Останні зміни',
             dataIndex: 'date',
