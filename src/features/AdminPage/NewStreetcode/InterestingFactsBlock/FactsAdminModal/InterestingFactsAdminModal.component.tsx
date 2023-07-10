@@ -22,10 +22,11 @@ import { Fact, FactCreate, FactUpdate } from '@/models/streetcode/text-contents.
 interface Props {
     fact?: FactCreate,
     open: boolean,
-    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    onChange: (field: string, value: any) => void
 }
 
-const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
+const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Props) => {
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
@@ -94,6 +95,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
         }
         setModalOpen(false);
         form.resetFields();
+        onChange('fact', formValues);
     };
 
     return (
@@ -122,7 +124,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             { max: 68, message: 'Заголовок не може містити більше 68 символів ' },
                         ]}
                     >
-                        <Input />
+                        <Input onChange={(e) => onChange('title', e.target.value)} />
                     </Form.Item>
 
                     <Form.Item
@@ -134,6 +136,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                             value="Type"
                             maxLength={600}
                             showCount
+                            onChange={(e) => onChange('factContent', e.target.value)}
                         />
                     </Form.Item>
                     <FormItem
@@ -175,6 +178,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen }: Props) => {
                         <Input
                             maxLength={100}
                             showCount
+                            onChange={(e) => onChange('imageDescription', e.target.value)}
                         />
                     </Form.Item>
                     <div className="center">

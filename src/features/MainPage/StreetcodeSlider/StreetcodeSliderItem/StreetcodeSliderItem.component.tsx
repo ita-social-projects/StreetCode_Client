@@ -12,24 +12,23 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
 import { StreetcodeCatalogRecord, StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
+
 interface Props {
     streetcode: StreetcodeMainPage;
 }
 
-
-
 const StreetcodeSliderItem = ({ streetcode }: Props) => {
     const { imagesStore } = useMobx();
-    const id = streetcode?.id;
-    const { handleImageLoad } = imagesStore;
     const [image, setImage] = useState<Image>();
+
+    const id = streetcode?.id;
 
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
             return text;
         }
-        const truncatedText = text.substr(0, maxLength);
-        return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
+        const truncatedText = text.substring(0, maxLength);
+        return truncatedText.substring(0, truncatedText.lastIndexOf(' ')) + '...';
     };
 
     const teaserText = truncateText(streetcode?.teaser || '', 340);
@@ -59,9 +58,7 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                         <img
                             key={image?.id}
                             src={base64ToUrl(image?.base64, image?.mimeType)}
-                            className="StreetcodeMainPageImg"
-                            alt={image?.alt}
-                            onLoad={handleImageLoad}
+                            className="streetcodeMainPageImg"
                         />
                     </div>
                 </div>
@@ -69,11 +66,13 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                     <div className="streetcodeMainPageContainer">
                         <div className='textContainer'>
                             {windowsize.width > 1024 && ( <h2 className="streercodeTitle">
+                        <div>
+                            <h2 className="streetcodeTitle">
                                 {streetcode?.title}
                             </h2> 
                             )}
                             <div className="streetcodeAlias">
-                                {streetcode?.alias}
+                                {streetcode?.text}
                             </div>
                             {windowsize.width > 1024 && (
                             <div>

@@ -5,7 +5,6 @@
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-
 .mainPageStreetCodeSlider {
     .itemStreetCodeMainPage {
         @include mut.flexed(row, center, center, wrap);
@@ -117,12 +116,11 @@
             text-decoration: underline;
       }
   }
-
-    .streercodeTitle {
+    .streetcodeTitle {
         @include mut.rem-padded($top: 18px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 34px);
         color: c.$lighter-black-color;
-        line-height: f.pxToRem(40px);        
+        line-height: f.pxToRem(40px);
     }
 
     .streetcodeMainPageContainer {
@@ -156,8 +154,8 @@
             text-align: center;
         }
     }
-
-    .StreetcodeMainPageImg {
+  
+    .streetcodeMainPageImg {
         margin: auto;
         @include mut.sized(225px, 307px);
 

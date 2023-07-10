@@ -13,10 +13,11 @@ interface Props {
     streetcodeArt: StreetcodeArtCreateUpdate;
     arts: StreetcodeArtCreateUpdate[],
     setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
+    onChange: (field: string, value: any) => void,
 }
 
 const PreviewFileModal = ({
-    opened, setOpened, streetcodeArt, arts, setArts,
+    opened, setOpened, streetcodeArt, arts, setArts, onChange,
 }: Props) => {
     const [fileProps, setFileProps] = useState<{
         previewImage: string, previewTitle: string
@@ -38,6 +39,7 @@ const PreviewFileModal = ({
 
         setArts([...arts]);
         setOpened(false);
+        onChange('art', updated.art);
     };
 
     useEffect(() => {
@@ -55,9 +57,9 @@ const PreviewFileModal = ({
             <div className="artPreviewModal">
                 <img alt="uploaded" src={fileProps.previewImage} />
                 <p>Title</p>
-                <input value={newTitle} placeholder='title' onChange={(e) => setTitle(e.target.value)} />
+                <input value={newTitle} placeholder="title" onChange={(e) => setTitle(e.target.value)} />
                 <p>Description</p>
-                <textarea value={newDesc} placeholder='description' onChange={(e) => setDesc(e.target.value)} />
+                <textarea value={newDesc} placeholder="description" onChange={(e) => setDesc(e.target.value)} />
                 <Button onClick={handleSave} className="saveButton">Зберегти</Button>
             </div>
         </Modal>
