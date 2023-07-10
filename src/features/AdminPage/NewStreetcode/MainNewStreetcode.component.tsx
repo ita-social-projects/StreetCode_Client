@@ -4,7 +4,7 @@
 import './MainNewStreetcode.styles.scss';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { unstable_usePrompt as usePrompt, useNavigate, useParams } from 'react-router-dom';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
 import PartnersApi from '@app/api/partners/partners.api';
@@ -79,7 +79,51 @@ const NewStreetcode = () => {
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
+    const [savedChanges, setSavedChanges] = useState(true);
+    const navigationString = 'Покинути сторінку? Внесені зміни, можливо, не буде збережено.';
+    const [fieldChanges, setFieldChanges] = useState({});
 
+    const handleFieldChange = (fieldName, value) => {
+        setFieldChanges((prevChanges) => ({
+            ...prevChanges,
+            [fieldName]: value,
+        }));
+    };
+    const [isPageLoaded, setPageLoaded] = useState(false);
+
+    useEffect(() => {
+        if (isPageLoaded) {
+            const isAnyFieldChanged = Object.values(fieldChanges).some((value) => value !== undefined && value !== '');
+            setSavedChanges(!isAnyFieldChanged);
+        } else {
+            setPageLoaded(true);
+        }
+    }, [fieldChanges, isPageLoaded]);
+
+    usePrompt(
+        savedChanges
+            ? { when: false, message: '' }
+            : { when: true, message: navigationString },
+    );
+    const handleTabClosing = () => {
+        console.log('Close tab');
+    };
+
+    const alertUser = (event: BeforeUnloadEvent) => {
+        event.preventDefault();
+        event.returnValue = navigationString;
+    };
+
+    useEffect(() => {
+        if (!savedChanges) {
+            window.addEventListener('beforeunload', alertUser);
+            window.addEventListener('unload', handleTabClosing);
+            return () => {
+                window.removeEventListener('beforeunload', alertUser);
+                window.removeEventListener('unload', handleTabClosing);
+            };
+        }
+    });
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
     const navigate = useNavigate();
@@ -170,7 +214,7 @@ const NewStreetcode = () => {
                 .then((result) => {
                     setSubTitle(result);
                 })
-                .catch((error) => {});
+                .catch((error) => { });
             SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
                 const id = result.map((x) => x.id);
                 id.map((x) => {
@@ -217,6 +261,9 @@ const NewStreetcode = () => {
         if (buttonName) {
             if (buttonName.includes(draft)) {
                 tempStatus = 0;
+            }
+            if (buttonName.includes(publish) || buttonName.includes(draft)) {
+                setSavedChanges(true);
             }
         }
         form.validateFields();
@@ -320,6 +367,18 @@ const NewStreetcode = () => {
                 .map((tag) => ({ ...tag, streetcodeId: parseId })),
             ...tagsStore.getTagToDeleteArray];
 
+            const arUrl = form.getFieldValue('arlink');
+            const arLinkUpdated: TransactionLink = {
+                id: arLink?.id ?? 0,
+                streetcodeId: parseId,
+                url: arLink?.url ?? '',
+                urlTitle: arLink?.urlTitle ?? '',
+            };
+
+            if (text.id !== 0 && !(text.title && text.textContent && text.additionalText)) {
+                text.modelState = ModelState.Deleted;
+            }
+
             const streetcodeUpdate: StreetcodeUpdate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
@@ -330,6 +389,7 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
+                updatedAt: new Date().toLocaleString('uk-UA'),
                 eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
                 eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
                 teaser: form.getFieldValue('teaser'),
@@ -340,18 +400,18 @@ const NewStreetcode = () => {
                 facts: factsStore.getFactArrayToUpdate.map((item) => ({ ...item, streetcodeId: parseId })),
                 partners: partnersUpdate,
                 subtitles: subtitleUpdate,
-                text: text.title && text.textContent ? text : null,
+                text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
                 streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                     .map((content) => ({ ...content, streetcodeId: parseId })),
                 streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                    ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
+                ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
                     ...streetcodeArt,
                     art: {
                         ...streetcodeArt.art,
                         image: null,
                     },
                 })),
-                tags,
+                tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                 statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                     .map((record) => ({ ...record, streetcodeId: parseId })),
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
@@ -408,24 +468,26 @@ const NewStreetcode = () => {
                                 setSelectedTags={setSelectedTags}
                                 streetcodeType={streetcodeType}
                                 setStreetcodeType={setStreetcodeType}
+                                onChange={handleFieldChange}
                             />
                             <TextBlock
                                 inputInfo={inputInfo}
                                 setInputInfo={setInputInfo}
                                 video={video}
                                 setVideo={setVideo}
+                                onChange={handleFieldChange}
                             />
-                            <InterestingFactsBlock />
-                            <TimelineBlockAdmin />
+                            <InterestingFactsBlock onChange={handleFieldChange} />
+                            <TimelineBlockAdmin onChange={handleFieldChange} />
 
                             {process.env.NODE_ENV === 'production'
                                 ? <MapBlockAdmin /> : null}
-                            <ArtGalleryBlock arts={arts} setArts={setArts} />
-                            <RelatedFiguresBlock figures={figures} setFigures={setFigures} />
-                            <ForFansBlock />
-                            <PartnerBlockAdmin partners={partners} setPartners={setPartners} />
-                            <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} />
-                            <ARBlock />
+                            <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
+                            <RelatedFiguresBlock figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
+                            <ForFansBlock onChange={handleFieldChange} />
+                            <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
+                            <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
+                            <ARBlock onChange={handleFieldChange} />
                         </Form>
                     </div>
                     <Button
@@ -448,7 +510,6 @@ const NewStreetcode = () => {
                     >
                         {publish}
                     </Button>
-
                 </div>
             </ConfigProvider>
         </div>

@@ -3,8 +3,15 @@ import useMobx from '@app/stores/root-store';
 
 import { Form, Input } from 'antd';
 
-const ARBlock:React.FC = () => {
+interface Props {
+    onChange: (field: string, value: any) => void;
+}
+
+const ARBlock: React.FC<Props> = ({ onChange }) => {
     const { newStreetcodeInfoStore } = useMobx();
+    const handleInputChange = (fieldName: string, value: any) => {
+        onChange(fieldName, value);
+    };
     return (
         <Form.Item
             name="arlink"
@@ -14,6 +21,7 @@ const ARBlock:React.FC = () => {
             <Input
                 maxLength={500}
                 showCount
+                onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
             />
         </Form.Item>
     );
