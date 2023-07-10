@@ -1,5 +1,6 @@
 import './StreetcodeCard.styles.scss';
 
+import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
@@ -8,14 +9,16 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import useMobx, { useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
-import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
+
 import { Button } from 'antd';
 
+import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
+import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
+import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
-import { observer } from 'mobx-react-lite';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -49,12 +52,17 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
-    const { audiosStore: { fetchAudioByStreetcodeId, audio } } = useMobx();
-    const [arlink, setArlink] = useState("");
+    const [audio, setAudio] = useState<Audio>();
+    const { audiosStore } = useMobx();
+    const [arlink, setArlink] = useState('');
 
     useAsync(() => {
         if (id && id > 0) {
-            fetchAudioByStreetcodeId(id).then(() => streecodePageLoaderContext.addBlockFetched());
+            AudiosApi.getByStreetcodeId(id).then((audioRes) => {setAudio(audioRes); console.log(audioRes)})
+                .then(() => {
+                    streecodePageLoaderContext.addBlockFetched(); audiosStore.setAudioId(audio?.id ?? -1);
+                })
+                .then(() => console.log(audio));
         }
     }, [id]);
 
@@ -65,10 +73,10 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => setImages(imgs))
                 .catch((e) => { });
-            TransactionLinksApi.getById(id).then((x) => setArlink(x.url));
+            TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
-    
+
     return (
         <div className="card">
             <div className="leftSider">
@@ -138,11 +146,12 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 </Button>
                             )}
 
-                        {arlink.length > 1 ?
-                            (
+                        {arlink
+                            ? (
                                 <Button
                                     className="animateFigureBtn"
-                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}>
+                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                                >
                                     <a href="#QRBlock">Оживити картинку</a>
                                 </Button>
                             )
@@ -154,4 +163,4 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     );
 };
 
-export default observer(StreetcodeCard);
+export default (StreetcodeCard);
