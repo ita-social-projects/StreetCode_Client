@@ -39,14 +39,12 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
                 thumbUrl: base64ToUrl(streetcodeArt.art.image?.base64, streetcodeArt.art.image?.mimeType) ?? '',
                 type: streetcodeArt.art.image?.mimeType,
             }));
-            console.log("-useEffect-");
-            console.log(arts);
             setFileList(newFileList);
             indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
         }
     }, [arts]);
 
-    function compare( a:UploadFile, b:UploadFile ) {
+    function compareFilesByUid( a:UploadFile, b:UploadFile ) {
         if ( a.uid < b.uid ){
           return -1;
         }
@@ -57,12 +55,14 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
       }
 
     const handleRemove = useCallback((param: UploadFile) => {
-        let divsList = document.querySelectorAll(".with-multiple-delete .ant-upload-list-item-container");
-        let elem = divsList[Number(param.uid) - 1];
+        /* get query of all uploaded arts using DOM to later highlight them with a red frame if delete button is pressed(select),
+        or remove this frame if art is already highlighted(unselect) */
+        let artsContainersList = document.querySelectorAll(".with-multiple-delete .ant-upload-list-item-container");
+        let currentArtContainer = artsContainersList[Number(param.uid) - 1];
 
         const filesToRemoveIds = filesToRemove.current.map(file => file.uid);
-        console.log(`Incoming id: ${param.uid}`)
 
+        // if file already in filesToRemove, remove it from this list
         if(filesToRemoveIds.includes(param.uid)){
             for(let i = 0; i < filesToRemoveIds.length; i++)
             {
@@ -72,16 +72,16 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
                     break;
                 }
             }
-            elem.classList.remove('delete-border')
+            currentArtContainer.classList.remove('delete-border')
         }
+         // if file is not in filesToRemove, add it to this list
         else{
-            elem.classList.add("delete-border");
+            currentArtContainer.classList.add("delete-border");
             filesToRemove.current.push(param);
         }
-        filesToRemove.current.sort(compare);
+        // sort filesToRemove to store them in ascending order by id
+        filesToRemove.current.sort(compareFilesByUid);
         filesToRemove.current.length > 0? setVisibleDeleteButton(true): setVisibleDeleteButton(false)
-        console.log(`filesToRemove.current`)
-        console.log(filesToRemove.current)
     }, []);
 
     const handleCancelModalRemove = useCallback(() => {
@@ -101,22 +101,12 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
         setIsOpen(true);
     };
 
-    function RemoveDeleteFrames()
-    {
-        let divsList = document.querySelectorAll(".with-multiple-delete .ant-upload-list-item-container");
-        divsList.forEach(element => {
-            element.classList.remove('delete-border')
-        });
-    }
-
     const onSuccessUpload = (image: Image) => {
-        console.log(`index temp after: ${indexTmp.current}`)
         if (arts.length > 0) {
             indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
         } else {
             indexTmp.current += 1;
         }
-        console.log(`index temp after: ${indexTmp.current}`)
         const newArt: StreetcodeArtCreateUpdate = {
             index: indexTmp.current,
             modelState: ModelState.Created,
@@ -162,22 +152,26 @@ const DownloadBlock = ({ arts, setArts }: Props) => {
         setVisibleModal(false);
     }
 
+    function RemoveDeleteFrames()
+    {
+        let artsContainersList = document.querySelectorAll(".with-multiple-delete .ant-upload-list-item-container");
+        artsContainersList.forEach(element => {
+            element.classList.remove('delete-border')
+        });
+    }
+
     const onRemoveFile = (files: UploadFile[]) => {
         files.forEach(element => {
+            // call remove single file function
             RemoveFile(element);
+            // after deleting file set all file's id
             files.forEach(file => {
                 file.uid = (Number(file.uid) - 1).toString();
             });
-            console.log('deleting file')
-            console.log(element);
         });
-        if (arts.length > 0) {
-            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
-        } else {
+        if (arts.length == 0) {
             indexTmp.current = 0;
         }
-        console.log('----onRemoveFile---')
-        console.log(files);
         filesToRemove.current = [];
         setVisibleDeleteButton(false);
         RemoveDeleteFrames();
