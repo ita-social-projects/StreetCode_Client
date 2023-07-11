@@ -59,7 +59,7 @@ const StreetcodeSlider = () => {
                 <div className="streetcodeMainPageWrapper">
                     <div id="streetcodeSliderContentBlock" className="streetcodeSliderComponent">
                         <div className="streetcodeSliderContainer">
-                            <div className="blockCentering">
+                            <div className="blockCenter">
                                 <div className="streetcodeSliderContent">
                                     <SlickSlider {...props}>
                                         {shuffledStreetcode.map((item) => (

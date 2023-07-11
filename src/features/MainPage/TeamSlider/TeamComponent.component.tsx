@@ -50,7 +50,7 @@ const TeamComponent = () => {
             <div id="mainBlock" className="teamComponent">
                 <Heading blockName='Команда' buttonName='Вся команда' setActionOnClick={handleClick}/>
                 <div className="mainContainer">
-                    <div className="blockCentering">
+                    <div className="blockCenter">
                         <div className="mainContent">
                             <SlickSlider
                                 {...props}

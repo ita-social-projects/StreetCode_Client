@@ -65,8 +65,7 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                 <div className="rightSlider">
                     <div className="streetcodeMainPageContainer">
                         <div className='textContainer'>
-                            {windowsize.width > 1024 && ( <h2 className="streercodeTitle">
-                        <div>
+                            {windowsize.width > 1024 && (
                             <h2 className="streetcodeTitle">
                                 {streetcode?.title}
                             </h2> 

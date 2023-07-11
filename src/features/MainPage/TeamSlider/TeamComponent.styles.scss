@@ -14,8 +14,8 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         background-repeat: repeat-x;
     }
 
-    .mainBlock,
-    .blockCentering {
+    .mainBlock
+    .blockCenter {
         @include mut.flex-centered();
     }
 
