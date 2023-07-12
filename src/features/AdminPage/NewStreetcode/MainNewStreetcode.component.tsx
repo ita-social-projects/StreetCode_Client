@@ -306,7 +306,6 @@ const NewStreetcode = () => {
             partners,
             teaser: form.getFieldValue('teaser'),
             viewCount: 0,
-            createdAt: new Date().toISOString(),
             dateString: form.getFieldValue('dateString'),
             streetcodeArts: arts.map((streetcodeArt) => ({
                 ...streetcodeArt,
@@ -389,7 +388,6 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 streetcodeType,
-                updatedAt: new Date().toLocaleString('uk-UA'),
                 eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
                 eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
                 teaser: form.getFieldValue('teaser'),

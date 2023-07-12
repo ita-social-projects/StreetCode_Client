@@ -109,7 +109,6 @@ export interface StreetcodeCreate {
     transliterationUrl: string,
     arBlockURL?: string,
     viewCount: number,
-    createdAt: string,
     eventStartOrPersonBirthDate: Date,
     eventEndOrPersonDeathDate: Date,
     dateString: string,
@@ -142,7 +141,6 @@ export interface StreetcodeUpdate {
     alias?: string,
     status: Status;
     transliterationUrl: string,
-    updatedAt: string,
     eventStartOrPersonBirthDate: Date | null,
     eventEndOrPersonDeathDate: Date | null,
     dateString: string,
