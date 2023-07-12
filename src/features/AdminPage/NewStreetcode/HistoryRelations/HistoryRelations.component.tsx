@@ -46,7 +46,6 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
             );
 
             setOptions(response.data as RelatedFigureShort[]);
-            console.log(response.data);
         } catch (error) { /* empty */ }
     };
 
