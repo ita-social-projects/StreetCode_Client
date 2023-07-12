@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
-import axios from 'axios';
 
 import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
+import useMobx from '@/app/stores/root-store';
 
 interface Props {
     figures: RelatedFigureCreateUpdate[];
@@ -14,6 +14,7 @@ interface Props {
 
 const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props) => {
     const [options, setOptions] = useState<RelatedFigureShort[]>([]);
+    const { streetcodeShortStore } = useMobx();
 
     const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
         const figurePersisted = figures.find((rel) => rel.id === relationToAdd.id);
@@ -40,14 +41,12 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
     };
 
     const getOptions = async () => {
-        try {
-            const response = await axios.get<RelatedFigureShort[]>(
-                'https://localhost:5001/api/RelatedFigure/GetAllPublished',
-            );
-
-            setOptions(response.data as RelatedFigureShort[]);
-            console.log(response.data);
-        } catch (error) { /* empty */ }
+        Promise.all([
+            streetcodeShortStore.fetchStreetcodesAll()
+        ])
+        .then(() => setOptions(
+            streetcodeShortStore.streetcodes))
+        .catch();
     };
 
     useEffect(() => {
