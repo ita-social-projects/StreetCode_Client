@@ -30,6 +30,7 @@ const StreetcodesTable = () => {
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
+    const [deleteStreetcode, deleteFormDB] = useState<number>(0);
     const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
@@ -130,7 +131,7 @@ const StreetcodesTable = () => {
         await StreetcodesApi.updateState(id, 0);
         updateState(id, 'Видалений');
     };
-
+    
     const menuProps = {
         items,
         onClick: handleMenuClick,
@@ -206,13 +207,13 @@ const StreetcodesTable = () => {
                             </Link>
                             <DeleteOutlined
                                 className="actionButton"
-                                onClick={(event) => {
+                                onClick={ (event) => {
                                     modalStore.setConfirmationModal(
                                         'confirmation',
                                         () => {
                                             StreetcodesApi.delete(record.key)
                                                 .then(() => {
-                                                    updateState(record, 'Видалений');
+                                                    updateState(record.key, 'Видалений');
                                                 })
                                                 .catch((e) => {
                                                     console.log(e);
@@ -221,6 +222,7 @@ const StreetcodesTable = () => {
                                         },
                                         'Ви впевнені, що хочете видалити цей стріткод?',
                                     );
+                                    deleteFormDB(record.key);
                                 }}
                             />
                             <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
@@ -277,7 +279,7 @@ const StreetcodesTable = () => {
             setMapedStreetCodes(mapedStreetCodesBuffer);
             setTotalItems(response[0].pages * amountRequest);
         });
-    }, [requestGetAll, pageRequest]);
+    }, [requestGetAll, pageRequest, deleteStreetcode]);
 
     return (
         <div className="StreetcodeTableWrapper">
