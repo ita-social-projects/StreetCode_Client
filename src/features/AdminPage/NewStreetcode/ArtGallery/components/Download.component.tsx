@@ -5,7 +5,7 @@ import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
 
 import { Button, Modal } from 'antd';
-import type { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
+import type { UploadChangeParam, UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import Image from '@/models/media/image.model';
@@ -35,10 +35,10 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
         if (arts.length > 0) {
             const newFileList = arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
                 uid: `${streetcodeArt.index}`,
-                name: streetcodeArt.art.image?.imageDetails?.alt,
-                status: 'done',
+                name: streetcodeArt.art.image?.imageDetails?.alt || '',
+                status: "done" as UploadFileStatus,
                 thumbUrl: base64ToUrl(streetcodeArt.art.image?.base64, streetcodeArt.art.image?.mimeType) ?? '',
-                type: streetcodeArt.art.image?.mimeType,
+                type: streetcodeArt.art.image?.mimeType || '',
             }));
             setFileList(newFileList);
             indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
@@ -80,7 +80,6 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
             currentArtContainer.classList.add("delete-border");
             filesToRemove.current.push(param);
         }
-        // sort filesToRemove to store them in ascending order by id
         filesToRemove.current.sort(compareFilesByUid);
         filesToRemove.current.length > 0? setVisibleDeleteButton(true): setVisibleDeleteButton(false)
     }, []);
@@ -165,9 +164,8 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
 
     const onRemoveFile = (files: UploadFile[]) => {
         files.forEach(element => {
-            // call remove single file function
             RemoveFile(element);
-            // after deleting file set all file's id
+            // after deleting file decrement file's to remove ids
             files.forEach(file => {
                 file.uid = (Number(file.uid) - 1).toString();
             });
