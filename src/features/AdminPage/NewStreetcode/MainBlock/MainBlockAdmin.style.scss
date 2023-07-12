@@ -46,6 +46,12 @@
             }
             .date-picker-group-item{
                 width: 100%; 
+                .streetcode-first-formitem-datepicker{
+                    .ant-row{
+                        //flex-direction: column;
+                        flex-flow: row nowrap;
+                    }
+                }
             }    
         }
     }
