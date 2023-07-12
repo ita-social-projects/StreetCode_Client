@@ -9,11 +9,10 @@ import { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partne
 
 interface Props {
     partners: PartnerCreateUpdateShort[],
-    setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>>,
-    onChange: (field: string, value: any) => void,
+    setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>>
 }
 
-const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
+const PartnerBlockAdmin = ({ partners, setPartners }: Props) => {
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
 
@@ -34,7 +33,6 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
             partner.modelState = ModelState.Created;
             setPartners([...partners, partner]);
         }
-        onChange('partner', value);
     };
 
     const onPartnerDeselect = (value:number) => {
@@ -45,7 +43,6 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
         } else {
             setPartners(partners.filter((c) => c.id !== value));
         }
-        onChange('partner', value);
     };
 
     return (
@@ -81,7 +78,6 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                                                     modelState: ModelState.Created }]);
                     }
                 }
-                onChange={onChange}
             />
         </div>
     );

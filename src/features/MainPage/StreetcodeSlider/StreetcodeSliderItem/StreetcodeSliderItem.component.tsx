@@ -12,23 +12,24 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
 import { StreetcodeCatalogRecord, StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
-
 interface Props {
     streetcode: StreetcodeMainPage;
 }
 
+
+
 const StreetcodeSliderItem = ({ streetcode }: Props) => {
     const { imagesStore } = useMobx();
-    const [image, setImage] = useState<Image>();
-
     const id = streetcode?.id;
+    const { handleImageLoad } = imagesStore;
+    const [image, setImage] = useState<Image>();
 
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
             return text;
         }
-        const truncatedText = text.substring(0, maxLength);
-        return truncatedText.substring(0, truncatedText.lastIndexOf(' ')) + '...';
+        const truncatedText = text.substr(0, maxLength);
+        return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
     };
 
     const teaserText = truncateText(streetcode?.teaser || '', 340);
@@ -56,18 +57,20 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                         <img
                             key={image?.id}
                             src={base64ToUrl(image?.base64, image?.mimeType)}
-                            className="streetcodeMainPageImg"
+                            className="StreetcodeMainPageImg"
+                            alt={image?.alt}
+                            onLoad={handleImageLoad}
                         />
                     </div>
                 </div>
                 <div className="rightSlider">
                     <div className="streetcodeMainPageContainer">
                         <div>
-                            <h2 className="streetcodeTitle">
+                            <h2 className="streercodeTitle">
                                 {streetcode?.title}
                             </h2>
                             <div className="streetcodeAlias">
-                                {streetcode?.text}
+                                {streetcode?.alias}
                             </div>
                             <div>
                                 <p className="streetcodeTeaser">

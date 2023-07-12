@@ -5,11 +5,7 @@ import useMobx from '@stores/root-store';
 import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
-interface Props {
-    onChange: (field: string, value: any) => void;
-}
-
-const InterestingFactsBlock = ({ onChange }: Props) => {
+const InterestingFactsBlock = () => {
     const [openModal, setModalOpen] = useState<boolean>(false);
     const { factsStore } = useMobx();
 
@@ -26,16 +22,10 @@ const InterestingFactsBlock = ({ onChange }: Props) => {
                 >
                     +
                 </button>
-                {factsStore.getFactArray.map((f) => (
-                    <InterestingFactAdminItem
-                        key={f.id}
-                        fact={f}
-                        onChange={onChange}
-                    />
-                ))}
+                {factsStore.getFactArray.map((f) => <InterestingFactAdminItem key={f.id} fact={f} />)}
             </div>
             <div>
-                <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} onChange={onChange} />
+                <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} />
             </div>
         </div>
     );

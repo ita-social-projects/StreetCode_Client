@@ -2,7 +2,7 @@ import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.m
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-content/tag.model';
 import Art from '@models/media/art.model';
 import Audio, { AudioUpdate } from '@models/media/audio.model';
-import Image, { ImageCreateUpdate, ImageDetails } from '@models/media/image.model';
+import Image, { ImageCreateUpdate, ImageDetails, ImageUpdate } from '@models/media/image.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
@@ -129,7 +129,6 @@ export interface StreetcodeCreate {
     streetcodeCategoryContents: StreetcodeCategoryContent[],
     coordinates: StreetcodeCoordinate[],
     statisticRecords: StatisticRecord[],
-    imagesDetails: ImageDetails[],
 }
 
 export interface StreetcodeUpdate {
@@ -142,7 +141,6 @@ export interface StreetcodeUpdate {
     alias?: string,
     status: Status;
     transliterationUrl: string,
-    updatedAt: string,
     eventStartOrPersonBirthDate: Date | null,
     eventEndOrPersonDeathDate: Date | null,
     dateString: string,
@@ -159,8 +157,8 @@ export interface StreetcodeUpdate {
     tags: StreetcodeTagUpdate[],
     statisticRecords: StatisticRecordUpdate[],
     toponyms: ToponymCreateUpdate[],
-    images: ImageCreateUpdate[],
+    images: ImageUpdate[],
     audios: AudioUpdate[],
-    imagesDetails: ImageDetails[],
+    imageDetailses: ImageDetails[],
     arLink: TransactionLink;
 }

@@ -12,7 +12,6 @@ interface Props {
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
     video: Video | undefined;
     setVideo: React.Dispatch<Video | undefined>;
-    onChange: (field: string, value: any) => void;
 }
 
 const videoPattern = 'https?://www.youtube.com/watch.+';
@@ -32,7 +31,7 @@ const linkConverter = (link: string) => {
         : fixedlink;
 };
 
-const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo, onChange }: Props) => {
+const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
 
     useEffect(() => {
@@ -40,11 +39,10 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo, onChange }: Prop
     }, [video]);
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setInputInfo({ ...inputInfo, link: value });
+        setInputInfo({ ...inputInfo, link: e.target.value });
         setVideo(video);
-        onChange('link', value);
     };
+
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
@@ -69,7 +67,7 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo, onChange }: Prop
                     className="streetcode-custom-button button-margin-vertical"
                     onClick={() => setShowPreview(!showPreview)}
                 >
-                    Попередній перегляд
+                        Попередній перегляд
                 </Button>
                 {
                     inputInfo?.link && showPreview && inputInfo.link.indexOf('watch') > -1 ? (

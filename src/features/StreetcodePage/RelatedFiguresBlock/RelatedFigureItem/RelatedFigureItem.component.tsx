@@ -29,7 +29,6 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
             setModal('relatedFigureItem', id, true);
         }
     };
-
     const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
     return (
         <>

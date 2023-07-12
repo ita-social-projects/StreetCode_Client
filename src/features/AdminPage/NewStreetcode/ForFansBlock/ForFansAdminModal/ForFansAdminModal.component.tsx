@@ -2,7 +2,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
-import getMaxId from '@app/common/utils/getMaxId';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
@@ -12,11 +11,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Button, Form, Modal, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
-import SourcesApi from '@/app/api/sources/sources.api';
-import AddSourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
 import {
-    SourceCategory,
-    SourceCategoryAdmin,
     SourceCategoryName,
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
@@ -26,11 +21,10 @@ interface Props {
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
     allCategories: SourceCategoryName[],
-    onChange: (field: string, value: any) => void,
 }
 
-const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
-    const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
+const ForFansModal = ({ open, setOpen, allCategories } : Props) => {
+    const { sourceCreateUpdateStreetcode } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
@@ -57,12 +51,8 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
         if (categoryUpdate.current && open) {
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
-        } else {
-            categoryUpdate.current = null;
-            editorRef.current?.editor?.setContent('');
-            form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
         }
-    }, [open, sourceCreateUpdateStreetcode]);
+    }, [open]);
 
     const onSave = (values:any) => {
         const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
@@ -85,47 +75,6 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
         }
         setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
-        onChange('saved', null);
-    };
-
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-
-    const newSources: SourceCategoryAdmin[] = [];
-    const sources: SourceCategory[] = [];
-    const onClose = async () => {
-        setAvailableCategories(getAvailableCategories());
-        if (isAddModalVisible === false) {
-            const newSources: SourceCategoryAdmin[] = [];
-            const categories = await SourcesApi.getAllCategories();
-            sourcesAdminStore.setInternalSourceCategories(categories);
-            categories.forEach((x) => {
-                const newSource: SourceCategoryAdmin = {
-                    id: x.id,
-                    title: x.title,
-                    imageId: x.imageId,
-                    image: x.image,
-                };
-                newSources.push(newSource);
-            });
-
-            const sourceMas: SourceCategoryName[] = newSources.map((x) => ({
-                id: x.id ?? 0,
-                title: x.title,
-            }));
-
-            setAvailableCategories(sourceMas);
-        }
-    };
-
-    const handleAdd = async (value: string) => {
-        if (value === 'addCategory') {
-            setIsAddModalVisible(true);
-            form.resetFields(['category']);
-        }
-    };
-
-    const handleAddCancel = () => {
-        setIsAddModalVisible(false);
     };
 
     return (
@@ -140,7 +89,6 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
             centered
             closeIcon={<CancelBtn />}
         >
-
             <Form
                 layout="vertical"
                 form={form}
@@ -157,33 +105,28 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
                     <Select
                         key="selectForFansCategory"
                         className="category-select-input"
-                        onChange={handleAdd}
-                        onDropdownVisibleChange={onClose}
                     >
-                        <Select.Option key="addCategory" value="addCategory">
-                            Додати нову категорію...
-                        </Select.Option>
                         {availableCategories
                             .map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
                     </Select>
                 </FormItem>
-                <AddSourceModal
-                    isAddModalVisible={isAddModalVisible}
-                    handleAddCancel={handleAddCancel}
-                />
                 <FormItem
                     label="Текст: "
                 >
                     <Editor
                         ref={editorRef}
                         init={{
+                            language: 'uk',
                             max_chars: 800,
                             height: 300,
                             menubar: false,
+                            init_instance_callback(editor) {
+                                editor.setContent(categoryUpdate?.current?.text ?? '');
+                            },
                             plugins: [
                                 'autolink',
                                 'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                                'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                                'insertdatetime', 'wordcount', 'link', 'lists',
                             ],
                             toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                      + 'formats blockformats align | removeformat strikethrough ',

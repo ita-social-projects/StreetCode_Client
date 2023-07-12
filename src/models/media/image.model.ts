@@ -8,12 +8,6 @@ export default interface Image {
     imageDetails?: ImageDetails;
 }
 
-export enum ImageAssigment {
-    animation,
-    blackandwhite,
-    relatedfigure,
-}
-
 export interface ImageCreate {
     title?: string ;
     baseFormat: string;
@@ -30,5 +24,4 @@ export interface ImageDetails {
 export interface ImageCreateUpdate extends IModelState {
     id: number;
     streetcodeId?: number | null;
-    imageDetails?: ImageDetails;
 }

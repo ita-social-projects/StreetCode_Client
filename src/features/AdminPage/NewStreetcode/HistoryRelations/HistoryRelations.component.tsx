@@ -11,12 +11,10 @@ import Streetcode from '@/models/streetcode/streetcode-types.model';
 interface Props {
     figures: RelatedFigureCreateUpdate[];
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigureCreateUpdate[]>>;
-    onChange: (field: string, value: any) => void;
 }
 
 const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props) => {
     const [options, setOptions] = useState<Streetcode[]>([]);
-    const { streetcodeShortStore } = useMobx();
 
     const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
         const figurePersisted = figures.find((rel) => rel.id === relationToAdd.id);
@@ -39,7 +37,6 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
             const newRelatedSCs = figures.filter((rel) => rel.id !== id);
             setFigures(newRelatedSCs);
         }
-        onChange('figures', figures);
     };
 
     const getOptions = async () => {
@@ -56,7 +53,7 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
     return (
         <div className="adminContainer-block">
             <h2>Зв&apos;язки історії(Стріткоди)</h2>
-            <InputPanel figures={figures} options={options} handleAdd={handleAdd} onChange={onChange} />
+            <InputPanel figures={figures} options={options} handleAdd={handleAdd} />
             <RelationsList figures={figures} handleDelete={handleDelete} />
         </div>
     );
