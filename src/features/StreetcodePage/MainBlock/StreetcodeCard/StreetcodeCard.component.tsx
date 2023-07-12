@@ -52,17 +52,12 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
-    const [audio, setAudio] = useState<Audio>();
     const { audiosStore } = useMobx();
     const [arlink, setArlink] = useState('');
 
     useAsync(() => {
         if (id && id > 0) {
-            AudiosApi.getByStreetcodeId(id).then((audioRes) => {setAudio(audioRes); console.log(audioRes)})
-                .then(() => {
-                    streecodePageLoaderContext.addBlockFetched(); audiosStore.setAudioId(audio?.id ?? -1);
-                })
-                .then(() => console.log(audio));
+            audiosStore.fetchAudioByStreetcodeId(id).then(() => streecodePageLoaderContext.addBlockFetched());
         }
     }, [id]);
 
@@ -92,7 +87,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 key={im.id}
                                 src={base64ToUrl(im.base64, im.mimeType)}
                                 className="streetcodeImg"
-                                alt={im.alt}
+                                alt={im.imageDetails?.alt}
                             />
                         ))}
                     </BlockSlider>
@@ -122,7 +117,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                     </div>
 
                     <div className="cardFooter">
-                        {audio?.base64
+                        {audiosStore.audio?.base64
                             ? (
                                 <Button
                                     type="primary"
@@ -163,4 +158,4 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     );
 };
 
-export default (StreetcodeCard);
+export default observer(StreetcodeCard);

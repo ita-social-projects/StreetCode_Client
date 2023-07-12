@@ -5,24 +5,18 @@ import Audio, { AudioCreate } from '@models/media/audio.model';
 export default class AudioStore {
     public audio: Audio | undefined;
 
-    public audioId = -1;
-
     public constructor() {
         makeAutoObservable(this);
     }
 
-    private setItem = (audio: Audio | undefined) => {
+    public setItem = (audio: Audio | undefined) => {
         this.audio = audio;
     };
 
-    public setAudioId = (audioId:number) => {
-        this.audioId = audioId;
-    };
-
-    public fetchAudioByStreetcodeId = async (streetcodeId: number) => {
+    public fetchAudioByStreetcodeId = async (streetcodeId: number):Promise<Audio | undefined> => {
         try {
-            await audiosApi.getByStreetcodeId(streetcodeId).then((audio) => {
-                this.setItem(audio); console.log(audio);
+            return await audiosApi.getByStreetcodeId(streetcodeId).then((audio) => {
+                this.setItem(audio); return audio;
             });
         } catch (error: unknown) {}
     };
