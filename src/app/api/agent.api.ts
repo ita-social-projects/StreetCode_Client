@@ -67,7 +67,8 @@ const Agent = {
 
     delete: async <T>(url: string) => {
         axios.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
-        axios.delete<T>(url).then(responseBody);
+        return axios.delete<T>(url)
+            .then(responseBody);
     },
 };
 

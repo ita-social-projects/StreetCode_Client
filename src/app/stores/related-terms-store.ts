@@ -45,19 +45,9 @@ export default class RelatedTermsStore {
                         this.setRelatedTermItem(response);
                     },
                 );
+            return true;
         } catch (error: unknown) {
-            toast("Таке слово вже пов'язано!");
-        }
-    };
-
-    public deleteRelatedTerm = async (id: number) => {
-        try {
-            await relatedTermApi.delete(id);
-            runInAction(() => {
-                this.storage.delete(id);
-            });
-        } catch (error) {
-            toast("Таке слово ні з чим не пов'язано. Його неможливо видалити");
+            return false;
         }
     };
 

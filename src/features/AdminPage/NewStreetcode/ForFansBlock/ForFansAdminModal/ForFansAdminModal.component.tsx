@@ -84,6 +84,7 @@ const ForFansModal = ({ allCategories, open, setOpen }: Props) => {
         }
         setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
+        onChange('saved', null);
     };
 
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);

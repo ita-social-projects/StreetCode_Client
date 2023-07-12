@@ -13,7 +13,7 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => 
     const navigate = useNavigate();
     if (!UserLoginStore.isLoggedIn) {
         const token = UserLoginStore.getToken();
-        if (token && UserLoginStore.isLoggedIn && token !== '') {
+        if (token && token !== '') {
             userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
         } else {
             return <Navigate to={FRONTEND_ROUTES.ADMIN.LOGIN} />;

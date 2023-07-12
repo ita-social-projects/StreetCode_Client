@@ -6,7 +6,11 @@ import TimelineItem from '@models/timeline/chronology.model';
 import NewTimelineItem from './NewTimelineItem/NewTimelineItem.component';
 import NewTimelineModal from './NewTimelineModal/NewTimelineModal.component';
 
-const TimelineBlockAdmin = () => {
+interface Props {
+    onChange: (field: string, value: any) => void;
+}
+
+const TimelineBlockAdmin = ({ onChange }: Props) => {
     const { timelineItemStore } = useMobx();
     const [isModalCreateOpen, setIsModalCreateOpen] = useState<boolean>(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState<boolean>(false);
@@ -34,18 +38,20 @@ const TimelineBlockAdmin = () => {
                             timelineItem={ti}
                             setModalOpened={setIsModalEditOpen}
                             setEditTimelineItem={setEditedTimeline}
+                            onChange={onChange}
                         />
                     ))}
             </div>
             <NewTimelineModal
                 setIsModalOpen={setIsModalCreateOpen}
                 open={isModalCreateOpen}
+                onChange={onChange}
             />
             <NewTimelineModal
                 setIsModalOpen={setIsModalEditOpen}
                 open={isModalEditOpen}
                 timelineItem={editedTimeline}
-
+                onChange={onChange}
             />
         </div>
     );

@@ -9,7 +9,11 @@ import { SourceCategoryName, StreetcodeCategoryContentUpdate } from '@/models/so
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
 
-const ForFansBlock = () => {
+interface Props {
+    onChange: (field: string, value: any) => void;
+}
+
+const ForFansBlock: React.FC<Props> = ({ onChange }) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
@@ -53,6 +57,7 @@ const ForFansBlock = () => {
                 allCategories={categoriesSelect}
                 open={isModalOpen}
                 setOpen={setIsModalOpen}
+                onChange={onChange}
             />
         </div>
     );
