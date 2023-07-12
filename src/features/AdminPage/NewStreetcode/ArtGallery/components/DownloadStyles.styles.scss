@@ -1,5 +1,7 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+
 .delete-border{
-    border: 0.25rem solid #DB3424;
+    border: 0.25rem solid c.$accented-red-color;
     border-radius: 11px;
 }
 
