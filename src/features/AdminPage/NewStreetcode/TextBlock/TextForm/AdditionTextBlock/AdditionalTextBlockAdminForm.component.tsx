@@ -11,13 +11,11 @@ import { Text } from '@/models/streetcode/text-contents.model';
 interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
-    onChange: (field: string, value: any) => void;
 }
 
-const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo, onChange }: Props) => {
+const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }: Props) => {
     const handleEditorChange = (content: string, editor: any) => {
         setInputInfo({ ...inputInfo, additionalText: content });
-        onChange('additionalText', content);
     };
 
     return (

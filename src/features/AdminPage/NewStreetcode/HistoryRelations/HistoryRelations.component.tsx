@@ -9,10 +9,9 @@ import RelationsList from './components/RelatedFigureList.component';
 interface Props {
     figures: RelatedFigureCreateUpdate[];
     setFigures: React.Dispatch<React.SetStateAction<RelatedFigureCreateUpdate[]>>;
-    onChange: (field: string, value: any) => void;
 }
 
-const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props) => {
+const RelatedFiguresBlock = React.memo(({ figures, setFigures }: Props) => {
     const [options, setOptions] = useState<RelatedFigureShort[]>([]);
 
     const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
@@ -36,17 +35,15 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
             const newRelatedSCs = figures.filter((rel) => rel.id !== id);
             setFigures(newRelatedSCs);
         }
-        onChange('figures', figures);
     };
 
     const getOptions = async () => {
         try {
             const response = await axios.get<RelatedFigureShort[]>(
-                'https://localhost:5001/api/RelatedFigure/GetAllPublished',
+                'https://localhost:5001/api/Streetcode/GetAllShort',
             );
 
             setOptions(response.data as RelatedFigureShort[]);
-            console.log(response.data);
         } catch (error) { /* empty */ }
     };
 
@@ -57,7 +54,7 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
     return (
         <div className="adminContainer-block">
             <h2>Зв&apos;язки історії(Стріткоди)</h2>
-            <InputPanel figures={figures} options={options} handleAdd={handleAdd} onChange={onChange} />
+            <InputPanel figures={figures} options={options} handleAdd={handleAdd} />
             <RelationsList figures={figures} handleDelete={handleDelete} />
         </div>
     );

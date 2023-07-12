@@ -3,52 +3,59 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 
 $bgImg: '@assets/images/streetcode-card/background.png';
+$bgImg: '@assets/images/catalog/background.png';
 
-.streetcodeMainPageWrapper {
-    .streetcodeSliderComponent {
-        .streetcodeContainer {
-            background-repeat: repeat-x;
-            height: 500px;
-        }
+.streetcodeMainPageWrapper{
+  background: url($bgImg) no-repeat center center / cover;
+  background-color: c.$accented-low-opasity-grayish-gray-color;
+  width: 100%;
+  
 
-        .streetcodeSliderContentBlock,
-        .blockCentering {
-            @include mut.flex-centered();
-        }
+.streetcodeSliderComponent {
+    .streetcodeContainer .mainBlock {
+        @include mut.bg-image($bgImg, auto);
+        background-repeat: repeat-x;
+        height: 500px;
+    }
 
-        .streetcodeSliderContainer {
-            width: 100%;
-            position: relative;
-        }
+    .streetcodeSliderContentBlock,
+    .blockCentering {
+        @include mut.flex-centered();
+    }
 
-        .streetcodeSliderContent {
-            width: 100%;
-            @include mut.flex-centered();
-            margin-top: f.pxToRem(20px);
-            padding-top: f.pxToRem(10px);
+    .streetcodeSliderContainer {
+        width: 100%;
+        position: relative;
+    }
 
-            ::-webkit-scrollbar {
-                width: f.pxToRem(5px);
-            }
-        }
+    .streetcodeSliderContent {
+        width: 100%;
+        @include mut.flex-centered();
+        margin-top: f.pxToRem(10px);
+        padding-top: f.pxToRem(10px);
 
-        .slick-slide {
-            width: unset !important;
-        }
-
-        .slick-initialized .slick-slide {
-            @include mut.flexed(row, center, center, wrap);
-            @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
-        }
-
-        .slick-track {
-            display: flex !important;
-            flex-wrap: nowrap !important;
-        }
-
-        .slick-initialized .slick-slide {
-            @include mut.flexed($justify-content: center, $gap: 0px);
-            @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+        ::-webkit-scrollbar {
+            width: f.pxToRem(5px);
         }
     }
+
+    .slick-slide {
+        width: unset !important;
+    }
+
+    .slick-initialized .slick-slide {
+        @include mut.flexed(row, center, center, wrap);
+        @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
+    }
+
+    .slick-track {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .slick-initialized .slick-slide {
+        @include mut.flexed($justify-content: center, $gap: 0px);
+        @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+    }
+}
 }

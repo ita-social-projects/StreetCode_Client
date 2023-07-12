@@ -82,13 +82,13 @@ const SourceItem = ({ srcCategory }: Props) => {
                 <Button icon={<DeleteOutlined />} onClick={handleDelete} />
             </div>
             <Modal
-                title="Ви впевнені, що хочете видалити дану категорію?"
+                title="Are you sure you want to delete this source?"
                 open={isModalDeleteVisible}
                 onOk={handleDeleteOk}
                 onCancel={handleDeleteCancel}
             />
             <Modal
-                title="Редагувати категорію"
+                title="Edit Source Category"
                 open={isModalEditVisible}
                 onOk={handleEditOk}
                 onCancel={handleEditCancel}

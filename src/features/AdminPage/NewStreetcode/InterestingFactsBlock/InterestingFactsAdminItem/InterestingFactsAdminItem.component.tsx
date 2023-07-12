@@ -12,9 +12,8 @@ import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdmin
 
 interface Props {
     fact: Fact,
-    onChange: (field: string, value: any) => void,
 }
-const InterestingFactAdminItem = ({ fact, onChange }: Props) => {
+const InterestingFactAdminItem = ({ fact }: Props) => {
     const { factsStore } = useMobx();
     const [openModal, setModalOpen] = useState<boolean>(false);
     const [visibleModal, setVisibleModal] = useState(false);
@@ -40,19 +39,13 @@ const InterestingFactAdminItem = ({ fact, onChange }: Props) => {
                     <DeleteOutlined onClick={() => handleRemove()} />
                 </div>
                 <div>
-                    <InterestingFactsAdminModal
-                        fact={fact}
-                        setModalOpen={setModalOpen}
-                        open={openModal}
-                        onChange={onChange}
-                    />
+                    <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} />
                 </div>
                 <Modal
                     title="Ви впевнені, що хочете видалити даний Wow-факт?"
                     open={visibleModal}
                     onOk={(e) => {
                         factsStore.deleteFactFromMap(fact.id); setVisibleModal(false);
-                        onChange('fact', fact);
                     }}
                     onCancel={handleCancelModalRemove}
                 />

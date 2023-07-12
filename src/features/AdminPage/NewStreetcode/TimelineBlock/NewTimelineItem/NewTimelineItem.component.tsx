@@ -6,19 +6,10 @@ import { Modal } from 'antd';
 
 import TimelineItem from '@/models/timeline/chronology.model';
 
-interface NewTimelineItemProps {
-    timelineItem: TimelineItem;
-    setModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
-    setEditTimelineItem: React.Dispatch<React.SetStateAction<TimelineItem | undefined>>;
-    onChange: (field: string, value: any) => void;
-}
-
-const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
-    timelineItem,
-    setModalOpened,
-    setEditTimelineItem,
-    onChange,
-}) => {
+const NewTimelineItem: React.FC<{
+    timelineItem: TimelineItem, setModalOpened: React.Dispatch<React.SetStateAction<boolean>>,
+    setEditTimelineItem: React.Dispatch<React.SetStateAction<TimelineItem | undefined>>
+}> = ({ timelineItem, setModalOpened, setEditTimelineItem }) => {
     const { timelineItemStore } = useMobx();
     const [visibleModal, setVisibleModal] = useState(false);
     const handleRemove = useCallback(() => {
@@ -53,7 +44,6 @@ const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
                     open={visibleModal}
                     onOk={(e) => {
                         timelineItemStore.deleteTimelineFromMap(timelineItem.id); setVisibleModal(false);
-                        onChange('timelineItem', timelineItem);
                     }}
                     onCancel={handleCancelModalRemove}
                 />

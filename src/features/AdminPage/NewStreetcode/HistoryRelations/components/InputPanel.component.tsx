@@ -11,10 +11,9 @@ interface Props {
     figures: RelatedFigureCreateUpdate[];
     options: RelatedFigureShort[];
     handleAdd: (relation: RelatedFigureCreateUpdate) => void;
-    onChange: (field: string, value: any) => void;
 }
 
-const InputPanel = ({ figures, options, handleAdd, onChange }: Props) => {
+const InputPanel = ({ figures, options, handleAdd }: Props) => {
     const [relation, setRelation] = useState('');
     const [filteredOptions, setFilteredOptions] = useState<RelatedFigureCreateUpdate[]>(options);
 
@@ -48,7 +47,6 @@ const InputPanel = ({ figures, options, handleAdd, onChange }: Props) => {
             handleAdd(found);
             setRelation('');
             setFilteredOptions(options.filter((figure) => !figures.includes(figure) && figure.title !== found.title));
-            onChange('figures', figures);
         }
     };
 

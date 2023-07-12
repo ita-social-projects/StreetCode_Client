@@ -16,19 +16,11 @@ interface Props {
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     video: Video | undefined;
     setVideo: React.Dispatch<Video | undefined>;
-    onChange: (fieldName: string, value: any) => void;
 }
-const TextForm = ({
-    inputInfo, setInputInfo, video, setVideo, onChange,
-}: Props) => {
+const TextForm = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
     const maxTitleLength = 50;
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setInputInfo((prevInputInfo) => ({
-            ...prevInputInfo,
-            title: value,
-        }));
-        onChange('title', value);
+        setInputInfo({ ...inputInfo, title: e.target.value });
     };
     return (
         <FormItem className="textForm">
@@ -45,20 +37,14 @@ const TextForm = ({
                 />
             </Form.Item>
             <Form.Item>
-                <TextEditor inputInfo={inputInfo} setInputInfo={setInputInfo} onChange={onChange} />
+                <TextEditor inputInfo={inputInfo} setInputInfo={setInputInfo} />
                 <TextPreview inputInfo={inputInfo} />
             </Form.Item>
             <Form.Item>
-                <AdditionalTextBlockAdminForm inputInfo={inputInfo} setInputInfo={setInputInfo} onChange={onChange} />
+                <AdditionalTextBlockAdminForm inputInfo={inputInfo} setInputInfo={setInputInfo} />
             </Form.Item>
             <Form.Item>
-                <LinkEditor
-                    inputInfo={inputInfo}
-                    setInputInfo={setInputInfo}
-                    video={video}
-                    setVideo={setVideo}
-                    onChange={onChange}
-                />
+                <LinkEditor inputInfo={inputInfo} setInputInfo={setInputInfo} video={video} setVideo={setVideo} />
             </Form.Item>
         </FormItem>
     );

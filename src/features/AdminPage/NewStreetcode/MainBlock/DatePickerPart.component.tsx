@@ -14,11 +14,10 @@ import { dateToString, selectDateOptions } from '@/models/timeline/chronology.mo
 interface Props {
     setFirstDate: (newDate: Dayjs | null) => void,
     setSecondDate: (newDate: Dayjs | null) => void,
-    form: FormInstance<any>,
-    onChange: (fieldName: string, value: any) => void;
+    form: FormInstance<any>
 }
 
-const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange }: Props) => {
+const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form }: Props) => {
     const [dateFirstTimePickerType, setFirstDateTimePickerType] = useState<
         'date' | 'month' | 'year' | 'season-year'>('date');
     const [dateSecondTimePickerType, setSecondDateTimePickerType] = useState<
@@ -47,7 +46,6 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                     capitalize(newString.concat(dateString.substring(index, dateString.length))),
                 );
             }
-            onChange('streetcodeFirstDate', date);
         }
     };
 
@@ -85,7 +83,6 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                         .concat(`${date ? ' — ' : ''} ${dateToString(dateSecondTimePickerType, date)}`),
                 );
             }
-            onChange('streetcodeSecondDate', date);
         }
     };
 

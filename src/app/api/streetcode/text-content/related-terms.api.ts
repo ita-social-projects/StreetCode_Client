@@ -13,7 +13,7 @@ const RelatedTermApi = {
         relatedTerm,
     ),
 
-    delete: (word: string) => Agent.delete<RelatedTerm>(`${API_ROUTES.RELATED_TERMS.DELETE}/${word}`),
+    delete: (id: number) => Agent.delete(`${API_ROUTES.RELATED_TERMS.DELETE}/${id}`),
 };
 
 export default RelatedTermApi;
