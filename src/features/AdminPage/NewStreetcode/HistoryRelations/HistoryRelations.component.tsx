@@ -5,6 +5,8 @@ import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcod
 import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
 import useMobx from '@/app/stores/root-store';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     figures: RelatedFigureCreateUpdate[];
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props) => {
-    const [options, setOptions] = useState<RelatedFigureShort[]>([]);
+    const [options, setOptions] = useState<Streetcode[]>([]);
     const { streetcodeShortStore } = useMobx();
 
     const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
@@ -42,10 +44,8 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
 
     const getOptions = async () => {
         Promise.all([
-            streetcodeShortStore.fetchStreetcodesAll()
+            StreetcodesApi.getAllShort().then((ops) => setOptions(ops))
         ])
-        .then(() => setOptions(
-            streetcodeShortStore.streetcodes))
         .catch();
     };
 
