@@ -124,6 +124,7 @@ const NewStreetcode = () => {
             };
         }
     });
+
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
     const navigate = useNavigate();
@@ -483,7 +484,7 @@ const NewStreetcode = () => {
                             {process.env.NODE_ENV === 'production'
                                 ? <MapBlockAdmin /> : null}
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
-                            <RelatedFiguresBlock figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
+                            <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
