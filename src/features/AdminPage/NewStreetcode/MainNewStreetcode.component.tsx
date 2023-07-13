@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 import './MainNewStreetcode.styles.scss';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { unstable_usePrompt as usePrompt, useNavigate, useParams } from 'react-router-dom';
 import SubtitlesApi from '@app/api/additional-content/subtitles.api';
 import VideosApi from '@app/api/media/videos.api';
@@ -29,7 +29,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image, { ImageAssigment, ImageDetails } from '@/models/media/image.model';
+import Image, { ImageAssigment, ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
@@ -72,7 +72,6 @@ const NewStreetcode = () => {
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
     const [inputInfo, setInputInfo] = useState<Partial<Text>>();
     const [video, setVideo] = useState<Video>();
-    const [streetcodeType, setStreetcodeType] = useState<StreetcodeType>(StreetcodeType.Person);
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
@@ -82,6 +81,7 @@ const NewStreetcode = () => {
     const [savedChanges, setSavedChanges] = useState(true);
     const navigationString = 'Покинути сторінку? Внесені зміни, можливо, не буде збережено.';
     const [fieldChanges, setFieldChanges] = useState({});
+    const streetcodeType = useRef<StreetcodeType>(StreetcodeType.Person);
 
     const handleFieldChange = (fieldName, value) => {
         setFieldChanges((prevChanges) => ({
@@ -151,6 +151,7 @@ const NewStreetcode = () => {
                 setArts([...artToUpdate]);
             });
             StreetcodesApi.getById(parseId).then((x) => {
+                streetcodeType.current = x.streetcodeType;
                 form.setFieldsValue({
                     streetcodeNumber: x.index,
                     title: x.title,
@@ -171,17 +172,6 @@ const NewStreetcode = () => {
                 }));
 
                 setSelectedTags(tagsToUpdate as StreetcodeTag[]);
-
-                if (x.lastName && x.firstName) {
-                    form.setFieldsValue({
-                        surname: x.lastName,
-                        name: x.firstName,
-                    });
-                    setStreetcodeType(StreetcodeType.Person);
-                } else {
-                    setStreetcodeType(StreetcodeType.Event);
-                }
-
                 setFuncName('update');
             });
             TextsApi.getByStreetcodeId(parseId).then((result) => {
@@ -290,7 +280,7 @@ const NewStreetcode = () => {
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 arBlockURL: form.getFieldValue('arlink'),
-                streetcodeType,
+                streetcodeType: streetcodeType.current,
                 eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
                 eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
                     ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
@@ -341,7 +331,7 @@ const NewStreetcode = () => {
                 imagesDetails: createUpdateMediaStore.getImageDetails(),
 
             };
-            if (streetcodeType === StreetcodeType.Person) {
+            if (streetcodeType.current === StreetcodeType.Person) {
                 streetcode.firstName = form.getFieldValue('name');
                 streetcode.lastName = form.getFieldValue('surname');
             }
@@ -388,7 +378,7 @@ const NewStreetcode = () => {
                     alias: form.getFieldValue('alias'),
                     status: tempStatus,
                     transliterationUrl: form.getFieldValue('streetcodeUrlName'),
-                    streetcodeType,
+                    streetcodeType: streetcodeType.current,
                     eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
                     eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
                     teaser: form.getFieldValue('teaser'),
@@ -414,7 +404,7 @@ const NewStreetcode = () => {
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
-                    images: createUpdateMediaStore.imagesUpdate,
+                    images: createUpdateMediaStore.imagesUpdate.map((img):ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
                     audios: createUpdateMediaStore.audioUpdate,
                     arLink: {
                         id: arLink?.id ?? 0,
@@ -424,7 +414,7 @@ const NewStreetcode = () => {
                     },
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
-                if (streetcodeType === StreetcodeType.Person) {
+                if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
                 }
@@ -472,7 +462,6 @@ const NewStreetcode = () => {
                                 selectedTags={selectedTags}
                                 setSelectedTags={setSelectedTags}
                                 streetcodeType={streetcodeType}
-                                setStreetcodeType={setStreetcodeType}
                                 onChange={handleFieldChange}
                             />
                             <TextBlock
