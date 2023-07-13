@@ -186,6 +186,10 @@ $navbar-hidden-innerwidth: 400px;
       }
     }
 
+    .ant-btn-primary {
+      box-shadow: none;
+    }
+
     .searchButton {
       @include mut.full-rounded(12px);
       @include mut.sized(90px, 45px);

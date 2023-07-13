@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
-import axios from 'axios';
 
 import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     figures: RelatedFigureCreateUpdate[];
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props) => {
-    const [options, setOptions] = useState<RelatedFigureShort[]>([]);
+    const [options, setOptions] = useState<Streetcode[]>([]);
 
     const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
         const figurePersisted = figures.find((rel) => rel.id === relationToAdd.id);
@@ -40,14 +41,10 @@ const RelatedFiguresBlock = React.memo(({ figures, setFigures, onChange }: Props
     };
 
     const getOptions = async () => {
-        try {
-            const response = await axios.get<RelatedFigureShort[]>(
-                'https://localhost:5001/api/RelatedFigure/GetAllPublished',
-            );
-
-            setOptions(response.data as RelatedFigureShort[]);
-            console.log(response.data);
-        } catch (error) { /* empty */ }
+        Promise.all([
+            StreetcodesApi.getAllShort().then((ops) => setOptions(ops))
+        ])
+        .catch();
     };
 
     useEffect(() => {
