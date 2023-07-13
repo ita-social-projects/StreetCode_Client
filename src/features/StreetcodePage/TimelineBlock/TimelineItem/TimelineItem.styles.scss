@@ -38,6 +38,7 @@
   .timelineItemDescription {
     @include mut.with-font($font-weight: 500);
     color: c.$dark-gray-color;
+    word-wrap: break-word;
   }
 }
 
