@@ -5,7 +5,7 @@ export default interface Audio {
     id: number;
     description?: string | undefined;
     blobName: string;
-    base64: string;
+    base64?: string;
     mimeType: string;
     streetcode?: Streetcode | undefined;
 }

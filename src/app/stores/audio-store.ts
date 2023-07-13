@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import audiosApi from '@api/media/audios.api';
-import Audio from '@models/media/audio.model';
+import Audio, { AudioCreate } from '@models/media/audio.model';
 
 export default class AudioStore {
     public audio: Audio | undefined;
@@ -9,25 +9,21 @@ export default class AudioStore {
         makeAutoObservable(this);
     }
 
-    private setItem = (audio: Audio | undefined) => {
+    public setItem = (audio: Audio | undefined) => {
         this.audio = audio;
     };
 
-    public fetchAudioByStreetcodeId = async (streetcodeId: number) => {
+    public fetchAudioByStreetcodeId = async (streetcodeId: number):Promise<Audio | undefined> => {
         try {
-            const audio = await audiosApi.getByStreetcodeId(streetcodeId);
-            runInAction(() => {
-                this.setItem(audio as Audio);
+            return await audiosApi.getByStreetcodeId(streetcodeId).then((audio) => {
+                this.setItem(audio); return audio;
             });
         } catch (error: unknown) {}
     };
 
-    public createAudio = async (audio: Audio) => {
+    public createAudio = async (audio: AudioCreate) => {
         try {
-            await audiosApi.create(audio);
-            runInAction(() => {
-                this.setItem(audio as Audio);
-            });
+            await audiosApi.create(audio).then((newAudio) => this.setItem(newAudio));
         } catch (error: unknown) { }
     };
 
