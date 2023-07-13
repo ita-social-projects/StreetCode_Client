@@ -254,15 +254,13 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onFinish = (data: any) => {
+    const onFinish = async (data: any) => {
         handleCancelModalRemove();
         let tempStatus = 1;
         const buttonName = data.target.innerText;
         if (buttonName) {
             if (buttonName.includes(draft)) {
                 tempStatus = 0;
-            }
-            if (buttonName.includes(publish) || buttonName.includes(draft)) {
                 setSavedChanges(true);
             }
         }
@@ -423,21 +421,21 @@ const NewStreetcode = () => {
                     url: form.getFieldValue('arlink') ?? '',
                     urlTitle: arLink?.urlTitle ?? '',
                 },
-                imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
+                imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
             };
             if (streetcodeType === StreetcodeType.Person) {
                 streetcodeUpdate.firstName = form.getFieldValue('name');
                 streetcodeUpdate.lastName = form.getFieldValue('surname');
             }
             console.log(streetcodeUpdate);
-            StreetcodesApi.update(streetcodeUpdate).then(() => {
+            try {
+                await StreetcodesApi.update(streetcodeUpdate);
+                setSavedChanges(true);
                 window.location.reload();
-            }).then(() => {
                 alert('Cтріткод успішно оновленний');
-            })
-                .catch((error2) => {
-                    alert('Виникла помилка при оновленні стріткоду');
-                });
+            } catch (error) {
+                alert('Виникла помилка при оновленні стріткоду');
+            }
         } else {
             console.log(streetcode);
             StreetcodesApi.create(streetcode)
@@ -452,6 +450,10 @@ const NewStreetcode = () => {
                     alert('Виникла помилка при створенні стріткоду');
                 });
         }
+    };
+    const handleModalOk = async (data: any) => {
+        setSavedChanges(true);
+        onFinish(data);
     };
 
     return (
@@ -500,7 +502,7 @@ const NewStreetcode = () => {
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей стріткод?"
                         open={visibleModal}
-                        onOk={onFinish}
+                        onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}
                     />
                     <Button
