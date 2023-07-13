@@ -59,7 +59,6 @@ const MainBlockAdmin = React.memo(({
     const handleInputChange = (fieldName: string, value: any) => {
         onChange(fieldName, value);
     };
-    console.log(streetcodeType);
 
     const onCheckIndexClick = () => {
         const number = form.getFieldValue('streetcodeNumber') as number;
@@ -83,7 +82,6 @@ const MainBlockAdmin = React.memo(({
     };
 
     const onSwitchChange = (value: boolean) => {
-        console.log(form.getFieldValue('streetcodeType'));
         if (value) {
             streetcodeType.current = StreetcodeType.Event;
         } else {
