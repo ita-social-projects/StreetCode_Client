@@ -212,8 +212,9 @@ const StreetcodesTable = () => {
                                         'confirmation',
                                         () => {
                                             StreetcodesApi.delete(record.key)
-                                                .then(() => {
-                                                    updateState(record.key, 'Видалений');
+                                                .then(() => {                                                    
+                                                    const newItems = mapedStreetCodes.filter((i) => i.key !== record.key);
+                                                    setMapedStreetCodes(newItems);
                                                 })
                                                 .catch((e) => {
                                                     console.log(e);
@@ -222,6 +223,7 @@ const StreetcodesTable = () => {
                                         },
                                         'Ви впевнені, що хочете видалити цей стріткод?',
                                     );
+                                    
                                     deleteFormDB(record.key);
                                 }}
                             />
@@ -280,7 +282,7 @@ const StreetcodesTable = () => {
             setTotalItems(response[0].pages * amountRequest);
         });
     }, [requestGetAll, pageRequest, deleteStreetcode]);
-
+    
     return (
         <div className="StreetcodeTableWrapper">
             <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest} />
