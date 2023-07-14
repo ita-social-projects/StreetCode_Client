@@ -40,7 +40,7 @@ const InterestingFactsComponent = () => {
     );
 
     const setings = {
-        dots: facts.current.length > 3,
+        dots: facts.current.length >= 2,
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
@@ -82,7 +82,7 @@ const InterestingFactsComponent = () => {
                         className={`container "interestingFactsWrapper"
                     ${facts.current.length === 1 ? 'single' : ''}`}
                     >
-                        <BlockHeading headingText="Wow-факти" />
+                        <BlockHeading headingText="Wow—факти" />
                         <div className={`interestingFactsContainer
                     ${facts.current.length === 1 ? 'singleFact' : ''}`}
                         >
