@@ -19,8 +19,10 @@ const ForFansBlock: React.FC<Props> = ({ onChange }) => {
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
 
     useEffect(() => {
-        SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => {});
-    }, []);
+        if (!isModalOpen) {
+            SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => {});
+        }
+    }, [isModalOpen]);
 
     return (
         <div className="adminContainer-block">
@@ -38,14 +40,14 @@ const ForFansBlock: React.FC<Props> = ({ onChange }) => {
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents
                     .filter((categoryContent) => (categoryContent as StreetcodeCategoryContentUpdate)
                         .modelState !== ModelState.Deleted)
-                    .map((category, index) => (
+                    .map((category) => (
                         <ForFansAdminItem
-                            key={index}
+                            key={category.id}
                             categoryName={categoriesSelect
                                 .find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
-                            index={index}
+                            index={sourceCreateUpdateStreetcode.streetcodeCategoryContents.indexOf(category)}
                             onEditClick={() => {
-                                sourceCreateUpdateStreetcode.indexUpdate = index;
+                                sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.indexOf(category);
                                 setIsModalOpen(true);
                             }}
                         />

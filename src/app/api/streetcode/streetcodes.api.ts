@@ -3,7 +3,7 @@ import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
 {
     EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord,
-    StreetcodeCreate, StreetcodeMainPage, StreetcodeUpdate,
+    StreetcodeCreate, StreetcodeMainPage, StreetcodeShort, StreetcodeUpdate,
 } from '@models/streetcode/streetcode-types.model';
 
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
@@ -22,6 +22,8 @@ const StreetcodesApi = {
 
     getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => Agent
         .get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
+
+    getAllPublished: () => Agent.get<StreetcodeShort[]>(`${API_ROUTES.STREETCODES.GET_ALL_PUBLISHED}`),
 
     getAllMainPage: () => Agent.get<StreetcodeMainPage[]>(`${API_ROUTES.STREETCODES.GET_ALL_MAINPAGE}`),
 

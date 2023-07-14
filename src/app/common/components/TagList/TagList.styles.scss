@@ -23,6 +23,10 @@
       color: c.$dark-red-color;
       border-color: c.$dark-red-color;
     }
+
+    @media (max-width: 768px) {
+      pointer-events: none;
+    }
   }
 }
 @media (max-width: 1024px) {
