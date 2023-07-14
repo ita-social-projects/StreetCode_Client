@@ -135,9 +135,10 @@ const MainBlockAdmin = React.memo(({
                     rules={[{ required: true, message: 'Введіть номер стріткоду від 1 до 10000, будь ласка' },
                         { max: 10000,
                           min: 0,
+                          pattern: /^\d+$/,
                           type: 'number',
                           message: 'Номер стріткоду може бути тільки від 1 до 10000' },
-                        { pattern: /^\d+$/, message: 'Поле може містити тільки числа від 1 до 10000' }]}
+                    ]}
                     name="streetcodeNumber"
                 >
                     <InputNumber defaultValue={1} />
