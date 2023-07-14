@@ -3,6 +3,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/_utils.functions.scss" as f;
 
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
@@ -70,7 +71,10 @@
         margin-bottom: 0;
     }
     .sourcesWrapper .sliderClass .slick-track {
-        gap: 10px;
+        gap: f.pxToRem(5px);
+    }
+    .sourcesWrapper .slick-dots{
+        left: f.pxToRem(1px);
     }
 }
 
