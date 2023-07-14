@@ -429,14 +429,14 @@ const NewStreetcode = () => {
                 streetcodeUpdate.lastName = form.getFieldValue('surname');
             }
             console.log(streetcodeUpdate);
-            try {
-                await StreetcodesApi.update(streetcodeUpdate);
-                setSavedChanges(true);
+            StreetcodesApi.update(streetcodeUpdate).then(() => {
                 window.location.reload();
+            }).then(() => {
                 alert('Cтріткод успішно оновленний');
-            } catch (error) {
-                alert('Виникла помилка при оновленні стріткоду');
-            }
+            })
+                .catch((error2) => {
+                    alert('Виникла помилка при оновленні стріткоду');
+                });
         } else {
             console.log(streetcode);
             StreetcodesApi.create(streetcode)
@@ -452,7 +452,7 @@ const NewStreetcode = () => {
                 });
         }
     };
-    const handleModalOk = async (data: any) => {
+    const handleModalOk = (data: any) => {
         setSavedChanges(true);
         onFinish(data);
     };
