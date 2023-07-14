@@ -36,6 +36,9 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [dateTimePickerType, setDateTimePickerType] = useState<
         'date' | 'month' | 'year' | 'season-year'>('date');
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [tagInput, setTagInput] = useState('');
+    const maxContextLength = 50;
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -73,7 +76,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                 title: formValues.title,
                 description: formValues.description,
                 historicalContexts: selectedContext.current,
-                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType)
+                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType),
             };
 
             timelineItemStore.addTimeline(newTimeline);
@@ -87,8 +90,9 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const onContextSelect = (value: string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
-            if (value.length > 50) {
+            if (value.length > maxContextLength) {
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
+                setErrorMessage('');
                 return;
             }
             const newItem: HistoricalContextUpdate = {
@@ -109,7 +113,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                 selectedContext.current.push(historicalContext);
             }
         }
+        setTagInput('');
+        setErrorMessage('');
         onChange('historicalContexts', selectedContext.current);
+        // onChange('historicalContexts', tagInput);
     };
 
     const onContextDeselect = (value: string) => {
@@ -120,6 +127,21 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
         }
         onChange('historicalContexts', selectedContext.current);
+    };
+
+    const [lastTagInput, setLastTagInput] = useState('');
+
+    const onContextKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        const { value } = event.currentTarget;
+        setTagInput(value);
+        setLastTagInput(value);
+
+        if (value.length + 1 > maxContextLength) {
+            setErrorMessage(`Довжина не повинна перевищувати ${maxContextLength} символів`);
+            setTagInput(lastTagInput);
+        } else {
+            setErrorMessage('');
+        }
     };
 
     return (
@@ -186,12 +208,15 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                     <Form.Item
                         name="historicalContexts"
                         label="Контекст: "
+                        validateStatus={errorMessage ? 'error' : ''}
+                        help={errorMessage}
                     >
                         <Select
                             mode="tags"
                             onSelect={onContextSelect}
                             onDeselect={onContextDeselect}
-                            maxLength={20}
+                            onInputKeyDown={onContextKeyDown}
+                            value={tagInput}
                             onChange={(e) => onChange('historicalContexts', e)}
                         >
                             {historicalContextStore.historicalContextArray
