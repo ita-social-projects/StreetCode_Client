@@ -30,7 +30,7 @@ import Partner, {
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
-const PartnerModal: React.FC<{
+interface Props {
   partnerItem?: Partner;
   open: boolean;
   isStreetcodeVisible?: boolean;
@@ -534,4 +534,5 @@ const PartnerModal: React.FC<{
         );
     },
 );
+
 export default PartnerModal;

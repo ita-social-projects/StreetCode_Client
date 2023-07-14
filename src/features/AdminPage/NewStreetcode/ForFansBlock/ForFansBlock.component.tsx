@@ -9,14 +9,20 @@ import { SourceCategoryName, StreetcodeCategoryContentUpdate } from '@/models/so
 import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
 
-const ForFansBlock = () => {
+interface Props {
+    onChange: (field: string, value: any) => void;
+}
+
+const ForFansBlock: React.FC<Props> = ({ onChange }) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
 
     useEffect(() => {
-        SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => {});
-    }, []);
+        if (!isModalOpen) {
+            SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => {});
+        }
+    }, [isModalOpen]);
 
     return (
         <div className="adminContainer-block">
@@ -34,14 +40,14 @@ const ForFansBlock = () => {
                 {sourceCreateUpdateStreetcode.streetcodeCategoryContents
                     .filter((categoryContent) => (categoryContent as StreetcodeCategoryContentUpdate)
                         .modelState !== ModelState.Deleted)
-                    .map((category, index) => (
+                    .map((category) => (
                         <ForFansAdminItem
-                            key={index}
+                            key={category.id}
                             categoryName={categoriesSelect
                                 .find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
-                            index={index}
+                            index={sourceCreateUpdateStreetcode.streetcodeCategoryContents.indexOf(category)}
                             onEditClick={() => {
-                                sourceCreateUpdateStreetcode.indexUpdate = index;
+                                sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.indexOf(category);
                                 setIsModalOpen(true);
                             }}
                         />
@@ -51,6 +57,7 @@ const ForFansBlock = () => {
                 allCategories={categoriesSelect}
                 open={isModalOpen}
                 setOpen={setIsModalOpen}
+                onChange={onChange}
             />
         </div>
     );

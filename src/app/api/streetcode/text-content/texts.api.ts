@@ -16,6 +16,11 @@ const TextsApi = {
     update: (text: Text) => Agent.put<Text>(`${API_ROUTES.TEXTS.UPDATE}`, text),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.TEXTS.DELETE}/${id}`),
+
+    getParsed: (text: string) => Agent.get<string>(
+        `${API_ROUTES.TEXTS.GET_PARSED}`,
+        new URLSearchParams({ text }),
+    ),
 };
 
 export default TextsApi;

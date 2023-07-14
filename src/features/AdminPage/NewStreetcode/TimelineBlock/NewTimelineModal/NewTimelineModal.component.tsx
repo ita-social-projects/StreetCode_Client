@@ -22,10 +22,14 @@ import TimelineItem, {
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 
-const NewTimelineModal: React.FC<{
-    timelineItem?: TimelineItem, open: boolean,
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}> = observer(({ timelineItem, open, setIsModalOpen }) => {
+interface NewTimelineModalProps {
+    timelineItem?: TimelineItem;
+    open: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    onChange: (field: string, value: any) => void;
+}
+
+const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineItem, open, setIsModalOpen, onChange }) => {
     const { timelineItemStore, historicalContextStore } = useMobx();
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
@@ -63,18 +67,21 @@ const NewTimelineModal: React.FC<{
                 item.historicalContexts = selectedContext.current;
             }
         } else {
-            const newTimeline: TimelineItem = { date: new Date(formValues.date - localOffset),
-                                                id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
-                                                title: formValues.title,
-                                                description: formValues.description,
-                                                historicalContexts: selectedContext.current,
-                                                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType) };
+            const newTimeline: TimelineItem = {
+                date: new Date(formValues.date - localOffset),
+                id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
+                title: formValues.title,
+                description: formValues.description,
+                historicalContexts: selectedContext.current,
+                dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType)
+            };
 
             timelineItemStore.addTimeline(newTimeline);
         }
 
         setIsModalOpen(false);
         form.resetFields();
+        onChange('timeline', formValues);
     };
 
     const onContextSelect = (value: string) => {
@@ -102,15 +109,17 @@ const NewTimelineModal: React.FC<{
                 selectedContext.current.push(historicalContext);
             }
         }
+        onChange('historicalContexts', selectedContext.current);
     };
 
-    const onContextDeselect = (value:string) => {
+    const onContextDeselect = (value: string) => {
         const historicalContext = selectedContext.current.find((x) => x.title === value) as HistoricalContextUpdate;
         if (historicalContext?.isPersisted) {
             historicalContext.modelState = ModelState.Deleted;
         } else {
             selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
         }
+        onChange('historicalContexts', selectedContext.current);
     };
 
     return (
@@ -136,9 +145,9 @@ const NewTimelineModal: React.FC<{
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву', max: 50 }]}
+                        rules={[{ required: true, message: 'Введіть назву', max: 26 }]}
                     >
-                        <Input maxLength={50} showCount />
+                        <Input maxLength={26} showCount onChange={(e) => onChange('title', e.target.value)} />
                     </Form.Item>
 
                     <Form.Item label="Дата:">
@@ -148,6 +157,7 @@ const NewTimelineModal: React.FC<{
                                 defaultValue={dateTimePickerType}
                                 onChange={(val) => {
                                     setDateTimePickerType(val);
+                                    onChange('date', val);
                                 }}
                             />
 
@@ -167,6 +177,7 @@ const NewTimelineModal: React.FC<{
                                         : dateTimePickerType === 'year'
                                             ? 'yyyy'
                                             : 'yyyy, mm')}
+                                    onChange={(value) => onChange('date', value)}
                                 />
                             </Form.Item>
                         </div>
@@ -181,6 +192,7 @@ const NewTimelineModal: React.FC<{
                             onSelect={onContextSelect}
                             onDeselect={onContextDeselect}
                             maxLength={20}
+                            onChange={(e) => onChange('historicalContexts', e)}
                         >
                             {historicalContextStore.historicalContextArray
                                 .map((cntx) => (
@@ -196,7 +208,7 @@ const NewTimelineModal: React.FC<{
                         label="Опис: "
                         rules={[{ required: true, message: 'Введіть опис' }]}
                     >
-                        <TextArea maxLength={400} showCount />
+                        <TextArea maxLength={400} showCount onChange={(e) => onChange('description', e.target.value)} />
                     </Form.Item>
                     <div className="center">
                         <Button className="streetcode-custom-button" type="primary" htmlType="submit">
