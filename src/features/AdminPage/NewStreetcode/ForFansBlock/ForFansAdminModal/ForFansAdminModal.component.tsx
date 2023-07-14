@@ -173,6 +173,7 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
                             ],
                             toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                      + 'formats blockformats align | removeformat strikethrough ',
+                            toolbar_mode: 'sliding',
                             content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                         }}
                     />
