@@ -12,8 +12,6 @@ interface Props {
     setActiveTagBlock: React.Dispatch<React.SetStateAction<number>>
 }
 
-const isMobileDevice = window.innerWidth < 769;
-
 const TagList = ({ tags, setActiveTagId, setActiveTagBlock }: Props) => {
     const { modalStore } = useModalContext();
     const { setModal } = modalStore;
@@ -22,7 +20,7 @@ const TagList = ({ tags, setActiveTagId, setActiveTagBlock }: Props) => {
             {tags?.map((tag, index) => (
                 <Button
                     className="tagItem"
-                    onClick={isMobileDevice ? null : () => {
+                    onClick={() => {
                         setActiveTagId(tag.id);
                         setModal('tagsList');
                         setActiveTagBlock(index);
