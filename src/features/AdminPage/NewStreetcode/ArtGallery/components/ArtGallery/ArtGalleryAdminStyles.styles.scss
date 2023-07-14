@@ -94,7 +94,7 @@
     }
 
     .imgData {
-        @include mut.sized(100%,87px);
+        @include mut.sized(100%);
         @include mut.positioned-as($position: absolute, $bottom: 0);
         @include mut.colored($color: c.$pure-white-color, $bg-color: rgba(0, 0, 0, 0.5));
         visibility: hidden;
