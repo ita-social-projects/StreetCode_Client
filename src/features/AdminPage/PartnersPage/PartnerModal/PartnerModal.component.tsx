@@ -11,7 +11,8 @@ import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/Previe
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Checkbox, Form, Input, Modal, Select, Tooltip, UploadFile,
+    Button, Checkbox, Form, Input, message,
+    Modal, Select, Tooltip, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -117,21 +118,19 @@ const PartnerModal: React.FC<{
             }
         }, [partnerItem, open, form]);
 
-        const scrollToInvalidField = () => {
-            const formElement = document.querySelector('.ant-form') as HTMLElement;
-            const firstInvalidField = formElement.querySelector(
-                '.ant-form-item-has-error',
-            ) as HTMLElement;
-            if (firstInvalidField) {
-                firstInvalidField.scrollIntoView({ behavior: 'smooth' });
-            }
-        };
         const handleOk = async () => {
             try {
                 const values = await form.validateFields();
                 form.submit();
             } catch (error) {
-                scrollToInvalidField();
+                message.config({
+                    top: 100,
+                    duration: 3,
+                    maxCount: 3,
+                    rtl: true,
+                    prefixCls: 'my-message',
+                });
+                message.error("Будь ласка, заповніть всі обов'язкові поля\r\nта перевірте валідність ваших даних");
             }
         };
 

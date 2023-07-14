@@ -19,7 +19,7 @@ import {
     DatePicker,
     Form,
     Input,
-    Modal,
+    message, Modal, notification,
     UploadFile,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
@@ -40,11 +40,11 @@ const NewsModal: React.FC<{
     const { newsStore } = useMobx();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [image, setImage] = useState<Image>();
-    const [textIsPresent, setTextIsPresent] = useState<boolean>();
+    const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const editorRef = useRef<TinyMCEEditor>();
+
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
         setPreviewOpen(true);
@@ -74,7 +74,7 @@ const NewsModal: React.FC<{
             form.setFieldsValue({
                 title: newsItem.title,
                 url: newsItem.url,
-                image: [
+                image: newsItem.image ? [
                     {
                         name: '',
                         thumbUrl: base64ToUrl(
@@ -84,7 +84,7 @@ const NewsModal: React.FC<{
                         uid: newsItem.imageId?.toString(),
                         status: 'done',
                     },
-                ],
+                ] : [],
             });
             if (editorRef.current) {
                 editorRef.current.setContent(newsItem.text);
@@ -93,6 +93,12 @@ const NewsModal: React.FC<{
             imageId.current = 0;
         }
     }, [newsItem, open, form]);
+    const removeImage = () => {
+        imageId.current = undefined;
+        if (newsItem) {
+            newsItem.image = undefined;
+        }
+    };
 
     const closeAndCleanData = () => {
         form.resetFields();
@@ -100,7 +106,6 @@ const NewsModal: React.FC<{
         setTextIsPresent(false);
         setTextIsChanged(false);
         editorRef.current?.setContent('');
-        setImage(undefined);
     };
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
     dayjs.locale('uk');
@@ -115,32 +120,15 @@ const NewsModal: React.FC<{
         }
         setTextIsChanged(true);
     };
-    const scrollToInvalidField = async () => {
-        const formElement = document.querySelector('.ant-form') as HTMLElement;
-        await new Promise<void>((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, 50);
+    const callErrorMessage = (messageText: string) => {
+        message.config({
+            top: 100,
+            duration: 1,
+            maxCount: 3,
+            rtl: true,
+            prefixCls: 'my-message',
         });
-
-        const firstInvalidField = formElement.querySelector(
-            '.ant-form-item-has-error',
-        ) as HTMLElement;
-        if (firstInvalidField) {
-            firstInvalidField.scrollIntoView({ behavior: 'smooth' });
-            return;
-        }
-
-        if (!textIsPresent && textIsChanged) {
-            const editorField = formElement.querySelector(
-                '.required-text',
-            ) as HTMLElement;
-
-            if (editorField) {
-                editorField.classList.add('ant-form-item-has-error');
-                editorField.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
+        message.error(messageText);
     };
 
     const handleOk = async () => {
@@ -150,10 +138,10 @@ const NewsModal: React.FC<{
             if (textIsPresent) {
                 form.submit();
             } else {
-                scrollToInvalidField();
+                callErrorMessage("Будь ласка, заповніть всі обов'язкові поля");
             }
         } catch (error) {
-            scrollToInvalidField();
+            callErrorMessage("Будь ласка, заповніть всі обов'язкові поля");
         }
     };
 
@@ -164,7 +152,7 @@ const NewsModal: React.FC<{
             url: formValues.url,
             title: formValues.title,
             text: editorRef.current?.getContent() ?? '',
-            image,
+            image: undefined,
             creationDate: dayjs(formValues.creationDate).subtract(
                 localOffset,
                 'milliseconds',
@@ -218,6 +206,7 @@ const NewsModal: React.FC<{
                 >
                     <div className="modalContainer-content">
                         <Form
+                            scrollToFirstError
                             form={form}
                             layout="vertical"
                             onFinish={onSuccessfulSubmitNews}
@@ -321,33 +310,26 @@ const NewsModal: React.FC<{
                                     uploadTo="image"
                                     onSuccessUpload={(img: Image) => {
                                         imageId.current = img.id;
-                                        setImage(img);
                                         if (newsItem) {
                                             newsItem.image = img;
                                         }
                                     }}
-                                    onRemove={() => {
-                                        setImage(undefined);
-                                        if (newsItem) {
-                                            newsItem.image = undefined;
-                                        }
-                                    }}
-                                    // defaultFileList={
-                                    //     imageId.current
-                                    //         ? [
-                                    //             {
-                                    //                 name: '',
-                                    //                 thumbUrl: base64ToUrl(
-                                    //                     newsItem?.image?.base64,
-                                    //                     newsItem?.image?.mimeType,
-                                    //                 ),
-                                    //                 uid: newsItem?.imageId?.toString() || '',
-                                    //                 status: 'done',
-                                    //             },
-                                    //         ]
-                                    //         : []
-                                    // }
-                                    // defaultFileList={[]}
+                                    onRemove={removeImage}
+                                    defaultFileList={
+                                        newsItem?.imageId != null
+                                            ? [
+                                                {
+                                                    name: '',
+                                                    thumbUrl: base64ToUrl(
+                                                        newsItem?.image?.base64,
+                                                        newsItem?.image?.mimeType,
+                                                    ),
+                                                    uid: newsItem?.imageId?.toString() || '',
+                                                    status: 'done',
+                                                },
+                                            ]
+                                            : []
+                                    }
 
                                 >
                                     <p>Виберіть чи перетягніть файл</p>
@@ -361,6 +343,10 @@ const NewsModal: React.FC<{
                                 setOpened={setPreviewOpen}
                                 file={filePreview}
                             />
+                            {/* {invalidFieldsPresent && (
+                                <p className="form-text">!! Заповніть всі обов&apos;язкові поля</p>
+                            )} */}
+
                             <div className="center">
                                 <Button
                                     className="streetcode-custom-button"
