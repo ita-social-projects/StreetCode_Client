@@ -1,6 +1,6 @@
 import './MainBlockAdmin.style.scss';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
@@ -34,8 +34,7 @@ interface Props {
     form: FormInstance<any>,
     selectedTags: StreetcodeTag[];
     setSelectedTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>;
-    streetcodeType: StreetcodeType;
-    setStreetcodeType: React.Dispatch<React.SetStateAction<StreetcodeType>>;
+    streetcodeType: MutableRefObject<StreetcodeType>;
     onChange: (fieldName: string, value: any) => void;
 }
 
@@ -53,25 +52,13 @@ const MainBlockAdmin = React.memo(({
     const [popoverProps, setPopoverProps] = useState<TagPreviewProps>(tagPreviewPropsList[0]);
     const name = useRef<InputRef>(null);
     const surname = useRef<InputRef>(null);
-    const [streetcodeTitle, setStreetcodeTitle] = useState<string>('');
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
-    const [indexId, setIndexId] = useState<number>(1);
-    const { id } = useParams<any>();
-    const parseId = id ? +id : null;
-    const [fieldValues, setFieldValues] = useState({});
 
     const handleInputChange = (fieldName: string, value: any) => {
         onChange(fieldName, value);
     };
-
-    useEffect(() => {
-        form.setFieldValue('title', streetcodeTitle);
-        if (parseId) {
-            StreetcodesApi.getById(parseId).then((x) => setIndexId(x.index));
-        }
-    }, [form, streetcodeTitle]);
 
     const onCheckIndexClick = () => {
         const number = form.getFieldValue('streetcodeNumber') as number;
@@ -82,7 +69,7 @@ const MainBlockAdmin = React.memo(({
                         message.error('Даний номер уже використовується стріткодом. Використайте інший, будь ласка.');
                     } else {
                         message.success(
-                            'Ще жодний стріткоду не має такого номеру. Можете з впевненістю його використовувати',
+                            'Ще жоден стріткод не має такого номеру. Можете з впевненістю його використовувати.',
                         );
                     }
                 })
@@ -96,9 +83,9 @@ const MainBlockAdmin = React.memo(({
 
     const onSwitchChange = (value: boolean) => {
         if (value) {
-            setStreetcodeType(StreetcodeType.Event);
+            streetcodeType.current = StreetcodeType.Event;
         } else {
-            setStreetcodeType(StreetcodeType.Person);
+            streetcodeType.current = StreetcodeType.Person;
         }
         setSwitchState(!switchState);
     };
@@ -106,13 +93,6 @@ const MainBlockAdmin = React.memo(({
     useEffect(() => {
         TagsApi.getAll().then((tgs) => setTags(tgs));
     }, []);
-
-    const setIndex = (index: number | null) => {
-        if (index) {
-            form.setFieldValue('streetcodeNumber', index);
-            setIndexId(index);
-        }
-    };
 
     const onSelectTag = (selectedValue: string) => {
         const deletedTag = tagsStore.getTagToDeleteArray.find((tag) => tag.title === selectedValue);
@@ -149,37 +129,40 @@ const MainBlockAdmin = React.memo(({
 
     return (
         <div className="mainblock-add-form">
-            <Form.Item
-                initialValue={1}
-                label="Номер стріткоду"
-                rules={[{ required: true, message: 'Введіть номер стріткоду, будь ласка' },
-                    { pattern: /^\d+$/, message: 'Введіть цифру, будь ласка' }]}
-                name="streetcodeNumber"
-            >
-                <div className="display-flex-row">
-                    <InputNumber
-                        min={0}
-                        max={10000}
-                        value={indexId}
-                        onChange={setIndex}
-                    />
-                    <Button
-                        className="button-margin-left streetcode-custom-button"
-                        onClick={onCheckIndexClick}
-                    >
-                        {' '}
-                        Перевірити
-                    </Button>
-                </div>
-            </Form.Item>
+            <div className="display-flex-row">
+                <Form.Item
+                    label="Номер стріткоду"
+                    rules={[{ required: true, message: 'Введіть номер стріткоду від 1 до 10000, будь ласка' },
+                        { max: 10000,
+                          min: 0,
+                          pattern: /^\d+$/,
+                          type: 'number',
+                          message: 'Номер стріткоду може бути тільки від 1 до 10000' },
+                    ]}
+                    name="streetcodeNumber"
+                >
+                    <InputNumber defaultValue={1} />
+                </Form.Item>
 
-            <Form.Item>
-                <div className="display-flex-row p-margin">
-                    <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
-                    <Switch className="person-event-switch" checked={!streetcodeType} onChange={onSwitchChange} />
-                    <p className={!switchState ? 'grey-text' : 'red-text'}>Подія</p>
-                </div>
-            </Form.Item>
+                <Button
+                    className="button-margin-left checknumber streetcode-custom-button"
+                    onClick={onCheckIndexClick}
+                >
+                    Перевірити
+                </Button>
+            </div>
+            <div className="display-flex-row p-margin">
+                <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
+                <Form.Item name="streetcodeType">
+                    <Switch
+                        className="person-event-switch"
+                        checked={streetcodeType.current === StreetcodeType.Event}
+                        onChange={onSwitchChange}
+                    />
+
+                </Form.Item>
+                <p className={!switchState ? 'grey-text' : 'red-text'}>Подія</p>
+            </div>
 
             <Form.Item
                 name="title"

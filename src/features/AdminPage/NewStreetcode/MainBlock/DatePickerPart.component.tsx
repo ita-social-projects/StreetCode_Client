@@ -112,9 +112,11 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                         <FormItem
                             rules={[{ required: !parseId, message: 'Введіть дату' }]}
                             name="streetcodeFirstDate"
-                            className="my-picker"
+                            className="streetcode-first-formitem-datepicker"
+                            label=" "
                         >
                             <DatePicker
+                                className="streetcode-first-datepicker"
                                 onChange={onChangeFirstDate}
                                 picker={(dateFirstTimePickerType !== 'season-year')
                                     ? dateFirstTimePickerType : 'month'}
