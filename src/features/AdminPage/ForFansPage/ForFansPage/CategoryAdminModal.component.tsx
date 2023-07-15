@@ -40,7 +40,7 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
     return (
         <Modal
             title="Додати категорію"
-            visible={isAddModalVisible}
+            open={isAddModalVisible}
             onCancel={handleAddCancel}
             footer={null}
         >

@@ -5,6 +5,10 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .donatesBlockContent {
+  .ant-checkbox-wrapper:focus-within .ant-checkbox-inner {
+    outline: none;
+  }
+
   @include mut.flex-centered($direction: column);
   @include mut.sized(590px, 525px);
   padding: auto 20px;
@@ -72,11 +76,10 @@
       @include mut.sized(130px, 58px);
       @include mut.full-rounded(11px);
       @include mut.flex-centered();
-  
+      
       border: 1px solid c.$dark-red-color;
       @include vnd.vendored(transition, 'background-color .75s ease');
       filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.19));
-  
       > span {
         @include vnd.vendored(transition, 'color .75s ease');
         @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
@@ -92,23 +95,27 @@
           font-weight: 500;
         }
       }
+
+      &:focus {
+        outline: none;
+      }
     }
   }
-  
+
   .donatesInputContainer {
     @include mut.sized($width: 100%);
     padding: f.pxToRem(32px) f.pxToRem(20px);
-    
     >.checkbox-borderline {
       border-radius: 0px !important;
       align-items: center;
+
       span {
         display: inline-block;
         overflow: visible;
-  
+
         &:last-child {
           @include mut.rem-padded($left: 16px);
-          @include mut.rem-margined($top: -4px);
+          @include mut.rem-margined($top: 6px);
           @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
           @include mut.sized($height: 15px);
           color: c.$checkbox-light-grey;
@@ -156,7 +163,6 @@
     background-color: c.$accented-red-color;
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
     border-radius: 15px;
-
     &:disabled {
       cursor: pointer;
       background-color: c.$lighter-gray-color;
@@ -176,10 +182,18 @@
     &:hover {
       background-color: c.$dark-red-color;
     }
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 
 @media screen and (max-width: 1400px) {
+  .ant-checkbox-wrapper:focus-within .ant-checkbox-inner {
+    outline: none;
+  }
+
   .donatesBlockContent {
     @include mut.sized(340px, 343px);
     padding: 16px 10px;
@@ -227,12 +241,15 @@
       @include mut.sized(320px, 46px);
       @include mut.rem-margined($top: 20px);
       @include mut.full-rounded(10px);
-
       > span {
         @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
         line-height: 16px;
         color: c.$pure-white-color;
         text-transform: none;
+      }
+
+      &:focus {
+        outline: none;
       }
     }
 
@@ -252,7 +269,7 @@
           &:last-child {
             @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
             @include mut.rem-padded($left: 8px);
-            @include mut.rem-margined($top: -3px);
+            @include mut.rem-margined($top: 5px);
             @include mut.sized($height: 12px);
           }
         }

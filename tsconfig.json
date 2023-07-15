@@ -37,7 +37,8 @@
     "isolatedModules": false,
     "noEmit": false,
     "lib": [
-      "ES2021.String"
+      "ES2021.String",
+      "DOM"
     ]
   },
   "files": [
