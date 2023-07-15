@@ -42,7 +42,7 @@ const StreetcodesTable = () => {
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
-    const [deleteStreetcode, deleteFormDB] = useState<number>(0);
+>>    const [deleteStreetcode, deleteFormDB] = useState<number>(0);
     const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
@@ -83,6 +83,7 @@ const StreetcodesTable = () => {
     ];
 
     const updateState = (id: number, state: string) => {
+
         const updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
             if (item.key === id) {
                 return {
@@ -136,7 +137,6 @@ const StreetcodesTable = () => {
     const handleCancelConfirmation = () => {
         setIsConfirmationModalVisible(false);
     };
-
     const handleUndoDelete = async (id: number) => {
         await StreetcodesApi.updateState(id, 0);
         updateState(id, 'Видалений');
@@ -188,7 +188,7 @@ const StreetcodesTable = () => {
                     </Button>
                 </Dropdown>
             ),
-        },
+          },
         {
             title: 'Останні зміни',
             dataIndex: 'date',
