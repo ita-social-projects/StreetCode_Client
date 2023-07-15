@@ -1,0 +1,12 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.delete-border{
+    border: 0.25rem solid c.$accented-red-color;
+    border-radius: 11px;
+}
+
+.delete-arts-button{
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}

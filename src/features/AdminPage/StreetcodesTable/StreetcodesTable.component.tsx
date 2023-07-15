@@ -42,6 +42,7 @@ const StreetcodesTable = () => {
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
+    const [deleteStreetcode, deleteFormDB] = useState<number>(0);
     const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
@@ -221,7 +222,10 @@ const StreetcodesTable = () => {
                                         'confirmation',
                                         () => {
                                             StreetcodesApi.delete(record.key)
-                                                .then(() => setMapedStreetCodes(mapedStreetCodes.filter((s) => s.key !== record.key)))
+                                                .then(() => {
+                                                    setMapedStreetCodes(mapedStreetCodes
+                                                        .filter((s) => s.key !== record.key));
+                                                })
                                                 .catch((e) => {
                                                     console.log(e);
                                                 });
@@ -229,6 +233,8 @@ const StreetcodesTable = () => {
                                         },
                                         'Ви впевнені, що хочете видалити цей стріткод?',
                                     );
+
+                                    deleteFormDB(record.key);
                                 }}
                             />
                             <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
@@ -288,7 +294,7 @@ const StreetcodesTable = () => {
             setMapedStreetCodes(mapedStreetCodesBuffer);
             setTotalItems(response[0].pages * amountRequest);
         });
-    }, [requestGetAll, pageRequest]);
+    }, [requestGetAll, pageRequest, deleteStreetcode]);
 
     return (
         <div className="StreetcodeTableWrapper">
