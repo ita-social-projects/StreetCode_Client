@@ -22,6 +22,7 @@ import partnersApi from '@/app/api/partners/partners.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
+import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import Partner, {
     LogoType,
@@ -30,7 +31,7 @@ import Partner, {
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
-interface Props {
+const PartnerModal: React.FC< {
   partnerItem?: Partner;
   open: boolean;
   isStreetcodeVisible?: boolean;
@@ -88,7 +89,7 @@ interface Props {
                     url: partnerItem.targetUrl?.href,
                     urlTitle: partnerItem.targetUrl?.title,
                     description: partnerItem.description,
-                    partnersStreetcodes: partnerItem.streetcodes.map((s) => s.title),
+                    partnersStreetcodes: partnerItem.streetcodes.map((s: { title: string; }) => s.title),
                     isVisibleEverywhere: partnerItem.isVisibleEverywhere,
                     logo: [
                         {
@@ -107,7 +108,7 @@ interface Props {
 
                 selectedStreetcodes.current = partnerItem.streetcodes;
                 setPartnersSourceLinks(
-                    partnerItem.partnerSourceLinks.map((l) => ({
+                    partnerItem.partnerSourceLinks.map((l: { id: any; logoType: any; targetUrl: { href: any; }; }) => ({
                         id: l.id,
                         logoType: l.logoType,
                         targetUrl: l.targetUrl.href,
@@ -130,7 +131,7 @@ interface Props {
                     rtl: true,
                     prefixCls: 'my-message',
                 });
-                message.error("Будь ласка, заповніть всі обов'язкові поля\r\nта перевірте валідність ваших даних");
+                message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
             }
         };
 
@@ -366,7 +367,7 @@ interface Props {
                                 maxCount={1}
                                 onPreview={handlePreview}
                                 uploadTo="image"
-                                onSuccessUpload={(image: Image) => {
+                                onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;
                                 }}
                                 defaultFileList={

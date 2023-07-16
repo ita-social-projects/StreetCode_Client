@@ -19,7 +19,7 @@ import {
     DatePicker,
     Form,
     Input,
-    message, Modal, notification,
+    message, Modal,
     UploadFile,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
@@ -27,6 +27,7 @@ import ukUA from 'antd/locale/uk_UA';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
@@ -308,10 +309,10 @@ const NewsModal: React.FC<{
                                     maxCount={1}
                                     onPreview={handlePreview}
                                     uploadTo="image"
-                                    onSuccessUpload={(img: Image) => {
+                                    onSuccessUpload={(img: Image | Audio) => {
                                         imageId.current = img.id;
                                         if (newsItem) {
-                                            newsItem.image = img;
+                                            newsItem.image = img as Image;
                                         }
                                     }}
                                     onRemove={removeImage}
@@ -343,9 +344,6 @@ const NewsModal: React.FC<{
                                 setOpened={setPreviewOpen}
                                 file={filePreview}
                             />
-                            {/* {invalidFieldsPresent && (
-                                <p className="form-text">!! Заповніть всі обов&apos;язкові поля</p>
-                            )} */}
 
                             <div className="center">
                                 <Button
