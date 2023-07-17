@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import YouTubePlayer from 'react-player/youtube';
 import { useParams } from 'react-router-dom';
 import Youtube from 'react-youtube';
 import Video from '@models/media/video.model';
@@ -17,9 +16,10 @@ interface Props {
     onChange: (field: string, value: any) => void;
 }
 
-const videoPattern = 'https?://www.youtube.com/watch.+';
-
-const insertYouTubeId = (videoId: string): string => `https://youtube.com/embed/watch?=${videoId}`;
+const insertYouTubeId = (videoId: string): string => `https://youtube.com/watch?=${videoId}`;
+// eslint-disable-next-line max-len
+const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+const youtubeIdRegex = /[?&]v=([^&]+)/;
 
 const LinkEditor = ({
     inputInfo, setInputInfo, video, setVideo, onChange,
@@ -28,10 +28,6 @@ const LinkEditor = ({
     const [youtubeId, setYoutubeId] = useState<string>('');
 
     const getYouTubeId = (url: string): string | null => {
-        // eslint-disable-next-line max-len
-        const youtubeRegex = /\b(?:https?:\/\/(?:www\.|m\.)?youtube\.com\/(?:watch\?(?=.*v=\w+)|embed\/|v\/|shorts\/)|https?:\/\/youtu\.be\/|www\.youtube\.com\/redirect\?(?=.*q=)(?=.*(?:v|url)=\w+))(?:[-\w]+(?:.[-\w]+)*\/)*(?:watch\?.*(?:[\?&](?:v|embed|list)=\w+|index=\w+)|[\w\d_-]{11})\b/;
-        const youtubeIdRegex = /[?&]v=([^&]+)/;
-
         const match = url.match(youtubeRegex) ?? url.match(youtubeIdRegex) ?? null;
 
         if (match) {
@@ -75,19 +71,20 @@ const LinkEditor = ({
         <FormItem
             name="video"
             label="Відео"
-            rules={[
-                { required: true, message: 'Введіть посилання на youtube.com.' }]}
+            // eslint-disable-next-line max-len
+            rules={[{ pattern: youtubeRegex, message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL' },
+                { required: true, message: 'Вставте, будь ласка, youtube.com посилання.' }]}
         >
             <div className="youtube-block">
                 <Input
                     title="video"
                     value={inputInfo?.link}
                     className="smallerInput"
-                    placeholder="Прик.: https://www.youtube.com/watch?"
-                    // pattern={youtubeRegex}
+                    placeholder="Прик.: https://youtube.com/watch?=v3siIQi4nCQ або https://youtu.be/v3siIQi4nCQ"
                     name="link"
                     required={!parseId}
                     onChange={handleLinkChange}
+                    onInput={() => setInputInfo((info) => ({ ...info, link: '' }))}
                 />
                 <Button
                     className="streetcode-custom-button button-margin-vertical"
