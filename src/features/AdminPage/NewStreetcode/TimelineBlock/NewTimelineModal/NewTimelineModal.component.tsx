@@ -116,7 +116,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         setTagInput('');
         setErrorMessage('');
         onChange('historicalContexts', selectedContext.current);
-        // onChange('historicalContexts', tagInput);
     };
 
     const onContextDeselect = (value: string) => {
@@ -129,18 +128,17 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         onChange('historicalContexts', selectedContext.current);
     };
 
-    const [lastTagInput, setLastTagInput] = useState('');
-
-    const onContextKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const { value } = event.currentTarget;
-        setTagInput(value);
-        setLastTagInput(value);
-
-        if (value.length + 1 > maxContextLength) {
-            setErrorMessage(`Довжина не повинна перевищувати ${maxContextLength} символів`);
-            setTagInput(lastTagInput);
-        } else {
-            setErrorMessage('');
+    const onContextKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const { value } = e.currentTarget;
+        if (e.key === 'Enter') {
+            if (value.length > maxContextLength) {
+                setErrorMessage(`Довжина не повинна перевищувати ${maxContextLength} символів`);
+                e.preventDefault();
+                e.stopPropagation();
+            } else {
+                setTagInput(value);
+                setErrorMessage('');
+            }
         }
     };
 
