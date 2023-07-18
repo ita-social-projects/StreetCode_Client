@@ -137,7 +137,7 @@ $articlesImg: "@assets/images/sources/Articles.png";
             color: c.$accented-red-color;
         }
          
-        .display-flex-row{
+        .display-flex-row div, .display-flex-row{
             display: flex;
             &-centered{
                 justify-content: center;
