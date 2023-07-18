@@ -39,6 +39,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
     const maxContextLength = 50;
+    const getErrorMessage = (maxLength: number = maxContextLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -92,7 +93,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         if (index < 0) {
             if (value.length > maxContextLength) {
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
-                setErrorMessage('');
+                setErrorMessage(getErrorMessage());
                 return;
             }
             const newItem: HistoricalContextUpdate = {
@@ -132,7 +133,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         const { value } = e.currentTarget;
         if (e.key === 'Enter') {
             if (value.length > maxContextLength) {
-                setErrorMessage(`Довжина не повинна перевищувати ${maxContextLength} символів`);
+                setErrorMessage(getErrorMessage());
                 e.preventDefault();
                 e.stopPropagation();
             } else {
