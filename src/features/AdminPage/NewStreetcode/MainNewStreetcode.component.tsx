@@ -245,7 +245,7 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onFinish = (data: any) => {
+    const onFinish = async (data: any) => {
         handleCancelModalRemove();
         console.log(form.getFieldValue('streetcodeNumber'));
         let tempStatus = 1;
@@ -253,8 +253,6 @@ const NewStreetcode = () => {
         if (buttonName) {
             if (buttonName.includes(draft)) {
                 tempStatus = 0;
-            }
-            if (buttonName.includes(publish) || buttonName.includes(draft)) {
                 setSavedChanges(true);
             }
         }
@@ -449,6 +447,10 @@ const NewStreetcode = () => {
             }
         });
     };
+    const handleModalOk = (data: any) => {
+        setSavedChanges(true);
+        onFinish(data);
+    };
 
     return (
         <div className="NewStreetcodeContainer">
@@ -496,7 +498,7 @@ const NewStreetcode = () => {
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей стріткод?"
                         open={visibleModal}
-                        onOk={onFinish}
+                        onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}
                     />
                     <Button
