@@ -34,7 +34,7 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
-
+    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [form] = Form.useForm();
     const getAvailableCategories = (): SourceCategoryName[] => {
         const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
@@ -88,27 +88,13 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
         onChange('saved', null);
     };
 
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-
-    const newSources: SourceCategoryAdmin[] = [];
-    const sources: SourceCategory[] = [];
     const onClose = async () => {
         setAvailableCategories(getAvailableCategories());
         if (isAddModalVisible === false) {
-            const newSources: SourceCategoryAdmin[] = [];
             const categories = await SourcesApi.getAllCategories();
             sourcesAdminStore.setInternalSourceCategories(categories);
-            categories.forEach((x) => {
-                const newSource: SourceCategoryAdmin = {
-                    id: x.id,
-                    title: x.title,
-                    imageId: x.imageId,
-                    image: x.image,
-                };
-                newSources.push(newSource);
-            });
 
-            const sourceMas: SourceCategoryName[] = newSources.map((x) => ({
+            const sourceMas: SourceCategoryName[] = categories.map((x) => ({
                 id: x.id ?? 0,
                 title: x.title,
             }));
@@ -187,6 +173,7 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
                             ],
                             toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                      + 'formats blockformats align | removeformat strikethrough ',
+                            toolbar_mode: 'sliding',
                             content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                         }}
                     />
