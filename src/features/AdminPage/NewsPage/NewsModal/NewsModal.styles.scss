@@ -1,0 +1,22 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.star{
+    display: inline-block;
+    margin-inline-end: f.pxToRem(4px);
+    color: c.$ant-menu-text-color;
+    font-size: f.pxToRem(18px);
+    font-family: SimSun,sans-serif;
+    line-height: 1;
+}
+.required-text{
+    cursor: default;
+    margin-bottom: f.pxToRem(10px);
+  }
+.form-text{
+    color: c.$ant-menu-text-color;
+    margin-bottom: f.pxToRem(5px);
+}
+.image-form-item{
+    margin-top: f.pxToRem(25px);
+}
