@@ -111,19 +111,12 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange }: Props) => {
 
                     if (selected.length >= clipboard_content.length) {
                         return;
-                    }
-
-                    if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset == previous_content.length) {
+                    } else if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset == previous_content.length) {
                         editor.setContent(previous_content + clipboard_content.substring(0, max_length - previous_content.length));
                         console.log(clipboard_content.substring(0, max_length - previous_content.length));
-
-                    }
-
-                    if (result_content.length <= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
+                    } else if (result_content.length <= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
                         return;
-                    }
-
-                    if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
+                    } else if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
                         e.preventDefault();
                     }
                 }}
@@ -134,7 +127,6 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange }: Props) => {
                         && editor.selection.getContent({ format: 'text' }).length == 0) {
                         e.preventDefault();
                     }
-                    console.log(editor.selection.getSel()?.anchorOffset);
                 }}
                 onChange={(e, editor) => {
                     setInputInfo({ ...inputInfo, textContent: editor.getContent() });
