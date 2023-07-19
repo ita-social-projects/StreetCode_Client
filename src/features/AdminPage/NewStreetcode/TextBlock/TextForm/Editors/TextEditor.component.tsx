@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
@@ -20,13 +20,22 @@ interface Props {
 const toolTipColor = '#8D1F16';
 
 const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
-
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
+
+    const [editor, setEditor] = useState(null);
+
+    useEffect(() => {
+        if (inputInfo?.textContent) {
+            if (editor) {
+                editor.setContent(inputInfo.textContent);
+            }
+        }
+    }, [inputInfo?.textContent, editor]);
 
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
@@ -91,6 +100,7 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
                     max_chars: 1000,
                     menubar: false,
                     init_instance_callback(editor) {
+                        setEditor(editor);
                         editor.setContent(inputInfo?.textContent ?? '');
                     },
                     plugins: [
