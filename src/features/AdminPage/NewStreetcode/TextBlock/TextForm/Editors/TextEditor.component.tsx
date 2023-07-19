@@ -10,6 +10,7 @@ import FormItem from 'antd/es/form/FormItem';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term, Text } from '@/models/streetcode/text-contents.model';
+import { element } from 'prop-types';
 
 interface Props {
     inputInfo: Partial<Text> | undefined;
@@ -19,7 +20,7 @@ interface Props {
 
 const toolTipColor = '#8D1F16';
 
-const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
+const TextEditor = ({ inputInfo, setInputInfo, onChange }: Props) => {
 
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
@@ -80,6 +81,7 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
     };
 
     useAsync(fetchTerms, []);
+    const max_length = 15000;
 
     return (
         <FormItem
@@ -101,6 +103,38 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
                     toolbar: 'undo redo | bold italic | '
                         + 'removeformat',
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                }}
+                onPaste={(e, editor) => {
+                    const previous_content = editor.getContent({ format: 'text' });
+                    const clipboard_content = e.clipboardData?.getData('text') || '';
+                    const result_content = previous_content + clipboard_content;
+
+                    if (selected.length >= clipboard_content.length) {
+                        return;
+                    }
+
+                    if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset == previous_content.length) {
+                        editor.setContent(previous_content + clipboard_content.substring(0, max_length - previous_content.length));
+                        console.log(clipboard_content.substring(0, max_length - previous_content.length));
+
+                    }
+
+                    if (result_content.length <= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
+                        return;
+                    }
+
+                    if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
+                        e.preventDefault();
+                    }
+                }}
+                onKeyDown={(e, editor) => {
+                    console.log(editor.selection.getSel()?.anchorOffset + " {} " + editor.getContent({ format: 'text' }).length);
+                    if (editor.getContent({ format: 'text' }).length >= max_length
+                        && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight'
+                        && editor.selection.getContent({ format: 'text' }).length == 0) {
+                        e.preventDefault();
+                    }
+                    console.log(editor.selection.getSel()?.anchorOffset);
                 }}
                 onChange={(e, editor) => {
                     setInputInfo({ ...inputInfo, textContent: editor.getContent() });
