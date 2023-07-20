@@ -13,6 +13,7 @@ import { Term, Text } from '@/models/streetcode/text-contents.model';
 import { element } from 'prop-types';
 
 interface Props {
+    character_limit?: number;
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     onChange: (field: string, value: any) => void;
@@ -20,7 +21,7 @@ interface Props {
 
 const toolTipColor = '#8D1F16';
 
-const TextEditor = ({ inputInfo, setInputInfo, onChange }: Props) => {
+const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
 
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
@@ -81,7 +82,7 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange }: Props) => {
     };
 
     useAsync(fetchTerms, []);
-    const max_length = 15000;
+    const max_length = character_limit || 10;
 
     return (
         <FormItem
