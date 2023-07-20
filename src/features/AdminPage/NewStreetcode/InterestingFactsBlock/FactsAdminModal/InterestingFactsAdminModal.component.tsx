@@ -198,5 +198,5 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         </div>
     );
 };
-//1
+
 export default observer(InterestingFactsAdminModal);
