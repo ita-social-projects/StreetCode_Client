@@ -125,10 +125,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             name="title"
                             label="Заголовок: "
                             rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
-                                { max: 68, message: 'Заголовок не може містити більше 68 символів ' },
                             ]}
                         >
-                            <Input onChange={(e) => onChange('title', e.target.value)} />
+                            <Input maxLength={68} showCount onChange={(e) => onChange('title', e.target.value)} />
                         </Form.Item>
 
                         <Form.Item
