@@ -45,7 +45,7 @@ const TextForm = ({
                 />
             </Form.Item>
             <Form.Item>
-                <TextEditor inputInfo={inputInfo} setInputInfo={setInputInfo} onChange={onChange} />
+                <TextEditor character_limit={15000} inputInfo={inputInfo} setInputInfo={setInputInfo} onChange={onChange} />
                 <TextPreview inputInfo={inputInfo} />
             </Form.Item>
             <Form.Item>
