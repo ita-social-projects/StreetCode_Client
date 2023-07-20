@@ -82,7 +82,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     };
 
     useAsync(fetchTerms, []);
-    const max_length = character_limit || 10;
+    const max_length = character_limit || 15000;
 
     return (
         <FormItem
