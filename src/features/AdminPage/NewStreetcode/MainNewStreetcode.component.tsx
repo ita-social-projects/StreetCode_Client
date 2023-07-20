@@ -83,7 +83,7 @@ const NewStreetcode = () => {
     const [fieldChanges, setFieldChanges] = useState({});
     const streetcodeType = useRef<StreetcodeType>(StreetcodeType.Person);
 
-    const handleFieldChange = (fieldName, value) => {
+    const handleFieldChange = (fieldName: any, value: any) => {
         setFieldChanges((prevChanges) => ({
             ...prevChanges,
             [fieldName]: value,
@@ -461,6 +461,7 @@ const NewStreetcode = () => {
                         <h2>Стріткод</h2>
                         <Form form={form} layout="vertical" onFinish={onFinish} scrollToFirstError>
                             <MainBlockAdmin
+                                Id={parseId}
                                 form={form}
                                 selectedTags={selectedTags}
                                 setSelectedTags={setSelectedTags}
