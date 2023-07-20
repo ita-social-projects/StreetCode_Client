@@ -176,7 +176,7 @@ const MainBlockAdmin = React.memo(({
             </div>
 
             <Form.Item
-                name="title"
+                name="mainTitle"
                 label="Назва стріткоду"
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
