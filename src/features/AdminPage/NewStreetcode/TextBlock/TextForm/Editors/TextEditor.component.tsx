@@ -113,7 +113,6 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange }: Props) => {
                         return;
                     } else if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset == previous_content.length) {
                         editor.setContent(previous_content + clipboard_content.substring(0, max_length - previous_content.length));
-                        console.log(clipboard_content.substring(0, max_length - previous_content.length));
                     } else if (result_content.length <= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
                         return;
                     } else if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
@@ -121,7 +120,6 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange }: Props) => {
                     }
                 }}
                 onKeyDown={(e, editor) => {
-                    console.log(editor.selection.getSel()?.anchorOffset + " {} " + editor.getContent({ format: 'text' }).length);
                     if (editor.getContent({ format: 'text' }).length >= max_length
                         && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight'
                         && editor.selection.getContent({ format: 'text' }).length == 0) {
