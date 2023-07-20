@@ -29,7 +29,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
-
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
             content: context,
@@ -124,7 +124,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                 }}
                 onKeyDown={(e, editor) => {
                     if (editor.getContent({ format: 'text' }).length >= max_length
-                        && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight'
+                        && !setOfKeys.has(e.key)
                         && editor.selection.getContent({ format: 'text' }).length == 0) {
                         e.preventDefault();
                     }
