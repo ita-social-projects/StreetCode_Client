@@ -82,7 +82,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     };
 
     useAsync(fetchTerms, []);
-    const max_length = character_limit || 15000;
+    const max_length = 10;
 
     return (
         <FormItem
@@ -109,14 +109,16 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     const previous_content = editor.getContent({ format: 'text' });
                     const clipboard_content = e.clipboardData?.getData('text') || '';
                     const result_content = previous_content + clipboard_content;
+                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previous_content.length;
 
                     if (selected.length >= clipboard_content.length) {
                         return;
-                    } else if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset == previous_content.length) {
+                    } else if (result_content.length >= max_length && isSelectionEnd) {
                         editor.setContent(previous_content + clipboard_content.substring(0, max_length - previous_content.length));
-                    } else if (result_content.length <= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
+                        e.preventDefault();
+                    } else if (result_content.length <= max_length && !isSelectionEnd) {
                         return;
-                    } else if (result_content.length >= max_length && editor.selection.getSel()?.anchorOffset !== previous_content.length) {
+                    } else if (result_content.length >= max_length && !isSelectionEnd) {
                         e.preventDefault();
                     }
                 }}
