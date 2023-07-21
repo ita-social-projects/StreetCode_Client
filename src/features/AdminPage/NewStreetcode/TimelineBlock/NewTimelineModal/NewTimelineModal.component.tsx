@@ -94,6 +94,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             if (value.length > maxContextLength) {
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 setErrorMessage(getErrorMessage());
+                setTagInput('');
                 return;
             }
             const newItem: HistoricalContextUpdate = {
@@ -145,7 +146,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
 
     const handleSearch = (value: string) => {
         if (value && value.length > maxContextLength) {
-            // value = value.substring(0, maxContextLength);
             setErrorMessage(getErrorMessage(maxContextLength));
         } else {
             setErrorMessage('');
@@ -213,6 +213,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             </Form.Item>
                         </div>
                     </Form.Item>
+
                     <div style={{ position: 'relative' }}>
                         <Form.Item
                             name="historicalContexts"
@@ -237,56 +238,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             </Select>
                         </Form.Item>
                         {tagInput && (
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    right: 1,
-                                    bottom: -18,
-                                    top: 57,
-                                    fontSize: '16.5px',
-                                    fontWeight: 'light',
-                                    color: 'rgba(154,154,154,255)',
-                                }}
-                            >
+                            <div className="tagInput-counter">
                                 {tagInput.length} / {maxContextLength}
                             </div>
                         )}
                     </div>
-                    {/* <div>
-                        <Form.Item
-                            name="historicalContexts"
-                            label="Контекст: "
-                            validateStatus={errorMessage ? 'error' : ''}
-                            help={errorMessage}
-                            style={tagInput ? { marginBottom: 0, paddingBottom: 0 } : {}}
-                        >
-                            <Select
-                                mode="tags"
-                                onSelect={onContextSelect}
-                                onDeselect={onContextDeselect}
-                                onInputKeyDown={onContextKeyDown}
-                                value={tagInput}
-                                onSearch={handleSearch}
-                                onChange={(e) => onChange('historicalContexts', e)}
-                            >
-                                {historicalContextStore.historicalContextArray
-                                    .map((cntx) => (
-                                        <Select.Option key={cntx.id} value={cntx.title}>
-                                            {cntx.title}
-                                        </Select.Option>
-                                    ))}
-                            </Select>
-                        </Form.Item>
-                        {tagInput && (
-                            <div style={{ fontSize: '16.5px', fontWeight: 'light', color: 'rgba(140,140,140,255)' }}>
-                                {tagInput.length}
-                                {' '}
-                                /
-                                {' '}
-                                {maxContextLength}
-                            </div>
-                        )}
-                    </div> */}
 
                     <Form.Item
                         name="description"
