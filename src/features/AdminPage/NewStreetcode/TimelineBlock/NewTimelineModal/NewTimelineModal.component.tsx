@@ -143,6 +143,16 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     };
 
+    const handleSearch = (value: string) => {
+        if (value && value.length > maxContextLength) {
+            // value = value.substring(0, maxContextLength);
+            setErrorMessage(getErrorMessage(maxContextLength));
+        } else {
+            setErrorMessage('');
+        }
+        setTagInput(value);
+    };
+
     return (
         <Modal
             className="modalContainer"
@@ -203,29 +213,80 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             </Form.Item>
                         </div>
                     </Form.Item>
-
-                    <Form.Item
-                        name="historicalContexts"
-                        label="Контекст: "
-                        validateStatus={errorMessage ? 'error' : ''}
-                        help={errorMessage}
-                    >
-                        <Select
-                            mode="tags"
-                            onSelect={onContextSelect}
-                            onDeselect={onContextDeselect}
-                            onInputKeyDown={onContextKeyDown}
-                            value={tagInput}
-                            onChange={(e) => onChange('historicalContexts', e)}
+                    <div style={{ position: 'relative' }}>
+                        <Form.Item
+                            name="historicalContexts"
+                            label="Контекст: "
+                            validateStatus={errorMessage ? 'error' : ''}
+                            help={errorMessage}
                         >
-                            {historicalContextStore.historicalContextArray
-                                .map((cntx) => (
+                            <Select
+                                mode="tags"
+                                onSelect={onContextSelect}
+                                onDeselect={onContextDeselect}
+                                onInputKeyDown={onContextKeyDown}
+                                value={tagInput}
+                                onSearch={handleSearch}
+                                onChange={(e) => onChange('historicalContexts', e)}
+                            >
+                                {historicalContextStore.historicalContextArray.map((cntx) => (
                                     <Select.Option key={cntx.id} value={cntx.title}>
                                         {cntx.title}
                                     </Select.Option>
                                 ))}
-                        </Select>
-                    </Form.Item>
+                            </Select>
+                        </Form.Item>
+                        {tagInput && (
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    right: 1,
+                                    bottom: -18,
+                                    top: 57,
+                                    fontSize: '16.5px',
+                                    fontWeight: 'light',
+                                    color: 'rgba(154,154,154,255)',
+                                }}
+                            >
+                                {tagInput.length} / {maxContextLength}
+                            </div>
+                        )}
+                    </div>
+                    {/* <div>
+                        <Form.Item
+                            name="historicalContexts"
+                            label="Контекст: "
+                            validateStatus={errorMessage ? 'error' : ''}
+                            help={errorMessage}
+                            style={tagInput ? { marginBottom: 0, paddingBottom: 0 } : {}}
+                        >
+                            <Select
+                                mode="tags"
+                                onSelect={onContextSelect}
+                                onDeselect={onContextDeselect}
+                                onInputKeyDown={onContextKeyDown}
+                                value={tagInput}
+                                onSearch={handleSearch}
+                                onChange={(e) => onChange('historicalContexts', e)}
+                            >
+                                {historicalContextStore.historicalContextArray
+                                    .map((cntx) => (
+                                        <Select.Option key={cntx.id} value={cntx.title}>
+                                            {cntx.title}
+                                        </Select.Option>
+                                    ))}
+                            </Select>
+                        </Form.Item>
+                        {tagInput && (
+                            <div style={{ fontSize: '16.5px', fontWeight: 'light', color: 'rgba(140,140,140,255)' }}>
+                                {tagInput.length}
+                                {' '}
+                                /
+                                {' '}
+                                {maxContextLength}
+                            </div>
+                        )}
+                    </div> */}
 
                     <Form.Item
                         name="description"
