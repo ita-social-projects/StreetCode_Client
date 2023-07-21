@@ -3,7 +3,6 @@ import { useState } from 'react';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
-import { element } from 'prop-types';
 
 import { AutoComplete, Button, message, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -11,6 +10,7 @@ import FormItem from 'antd/es/form/FormItem';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term, Text } from '@/models/streetcode/text-contents.model';
+import { element } from 'prop-types';
 
 interface Props {
     character_limit?: number;
@@ -22,13 +22,14 @@ interface Props {
 const toolTipColor = '#8D1F16';
 
 const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
+
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
             content: context,
@@ -81,7 +82,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     };
 
     useAsync(fetchTerms, []);
-    const maxLenght = character_limit || 15000;
+    const max_length = character_limit || 15000;
 
     return (
         <FormItem
@@ -105,24 +106,24 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                 }}
                 onPaste={(e, editor) => {
-                    const previousContent = editor.getContent({ format: 'text' });
-                    const clipboardContent = e.clipboardData?.getData('text') || '';
-                    const resultContent = previousContent + clipboardContent;
-                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
+                    const previous_content = editor.getContent({ format: 'text' });
+                    const clipboard_content = e.clipboardData?.getData('text') || '';
+                    const result_content = previous_content + clipboard_content;
+                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previous_content.length;
 
-                    if (selected.length >= clipboardContent.length) {
+                    if (selected.length >= clipboard_content.length) {
                         return;
-                    } else if (resultContent.length >= maxLenght && isSelectionEnd) {
-                        editor.setContent(previousContent + clipboardContent.substring(0, maxLenght - previousContent.length));
+                    } else if (result_content.length >= max_length && isSelectionEnd) {
+                        editor.setContent(previous_content + clipboard_content.substring(0, max_length - previous_content.length));
                         e.preventDefault();
-                    } else if (resultContent.length <= maxLenght && !isSelectionEnd) {
+                    } else if (result_content.length <= max_length && !isSelectionEnd) {
                         return;
-                    } else if (resultContent.length >= maxLenght && !isSelectionEnd) {
+                    } else if (result_content.length >= max_length && !isSelectionEnd) {
                         e.preventDefault();
                     }
                 }}
                 onKeyDown={(e, editor) => {
-                    if (editor.getContent({ format: 'text' }).length >= maxLenght
+                    if (editor.getContent({ format: 'text' }).length >= max_length
                         && !setOfKeys.has(e.key)
                         && editor.selection.getContent({ format: 'text' }).length == 0) {
                         e.preventDefault();
