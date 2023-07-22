@@ -23,16 +23,14 @@ const DonateBtn = () => {
     }, 500);
 
     const onBtnClick = () => {
-        setModal('donates');
-        showModalOnScroll.current = false;
-        donateEvent('floating_button');
+        window.open('https://forms.gle/eWwX5RP84X7dymLR6');
     };
     return (
         <div className="donateBtnContainer" onClick={onBtnClick}>
             <div className="donateBtnCircle">
                 <HandWithCoin />
             </div>
-            { windowSize.width > 1024 && <h2 className="donateBtnText">задонатити</h2> }
+            { windowSize.width > 1024 && <h2 className="donateBtnText">Залишити відгук</h2> }
         </div>
     );
 };
