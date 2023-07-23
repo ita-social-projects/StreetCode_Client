@@ -317,6 +317,8 @@ const MainBlockAdmin = React.memo(({
                                 onDeselectTag(deselectedValue);
                             }}
                             value={selectedTags.map((x) => x.title)}
+                            filterSort={(optionA, optionB) => (optionA?.value ?? '').toString().toLowerCase()
+                                .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
                         >
                             {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
                         </Select>
