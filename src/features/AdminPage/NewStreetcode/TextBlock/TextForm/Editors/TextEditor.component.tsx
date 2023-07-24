@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
@@ -21,6 +21,7 @@ interface Props {
 
 const toolTipColor = '#8D1F16';
 
+
 const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
 
     const { relatedTermStore, termsStore } = useMobx();
@@ -29,7 +30,18 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
+    const [editor, setEditor] = useState(null);
+
+    useEffect(() => {
+        if (inputInfo?.textContent) {
+            if (editor) {
+                editor.setContent(inputInfo.textContent);
+            }
+        }
+    }, [inputInfo?.textContent, editor]);
+
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
+
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
             content: context,
@@ -94,6 +106,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     max_chars: 1000,
                     menubar: false,
                     init_instance_callback(editor) {
+                        setEditor(editor);
                         editor.setContent(inputInfo?.textContent ?? '');
                     },
                     plugins: [
