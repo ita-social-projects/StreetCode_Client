@@ -10,8 +10,10 @@ import FormItem from 'antd/es/form/FormItem';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term, Text } from '@/models/streetcode/text-contents.model';
+import { element } from 'prop-types';
 
 interface Props {
+    character_limit?: number;
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     onChange: (field: string, value: any) => void;
@@ -19,14 +21,15 @@ interface Props {
 
 const toolTipColor = '#8D1F16';
 
-const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
+
+const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
+
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
-
     const [editor, setEditor] = useState(null);
 
     useEffect(() => {
@@ -36,6 +39,8 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
             }
         }
     }, [inputInfo?.textContent, editor]);
+
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
 
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
@@ -89,6 +94,7 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
     };
 
     useAsync(fetchTerms, []);
+    const max_length = character_limit || 15000;
 
     return (
         <FormItem
@@ -111,6 +117,30 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
                     toolbar: 'undo redo | bold italic | '
                         + 'removeformat',
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                }}
+                onPaste={(e, editor) => {
+                    const previous_content = editor.getContent({ format: 'text' });
+                    const clipboard_content = e.clipboardData?.getData('text') || '';
+                    const result_content = previous_content + clipboard_content;
+                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previous_content.length;
+
+                    if (selected.length >= clipboard_content.length) {
+                        return;
+                    } else if (result_content.length >= max_length && isSelectionEnd) {
+                        editor.setContent(previous_content + clipboard_content.substring(0, max_length - previous_content.length));
+                        e.preventDefault();
+                    } else if (result_content.length <= max_length && !isSelectionEnd) {
+                        return;
+                    } else if (result_content.length >= max_length && !isSelectionEnd) {
+                        e.preventDefault();
+                    }
+                }}
+                onKeyDown={(e, editor) => {
+                    if (editor.getContent({ format: 'text' }).length >= max_length
+                        && !setOfKeys.has(e.key)
+                        && editor.selection.getContent({ format: 'text' }).length == 0) {
+                        e.preventDefault();
+                    }
                 }}
                 onChange={(e, editor) => {
                     setInputInfo({ ...inputInfo, textContent: editor.getContent() });

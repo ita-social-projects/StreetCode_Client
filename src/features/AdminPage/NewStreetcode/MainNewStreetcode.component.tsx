@@ -83,7 +83,7 @@ const NewStreetcode = () => {
     const [fieldChanges, setFieldChanges] = useState({});
     const streetcodeType = useRef<StreetcodeType>(StreetcodeType.Person);
 
-    const handleFieldChange = (fieldName, value) => {
+    const handleFieldChange = (fieldName: any, value: any) => {
         setFieldChanges((prevChanges) => ({
             ...prevChanges,
             [fieldName]: value,
@@ -155,7 +155,7 @@ const NewStreetcode = () => {
                 streetcodeType.current = x.streetcodeType;
                 form.setFieldsValue({
                     streetcodeNumber: x.index,
-                    title: x.title,
+                    mainTitle: x.title,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
                     streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
@@ -275,7 +275,7 @@ const NewStreetcode = () => {
             const streetcode: StreetcodeCreate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
-                title: form.getFieldValue('title'),
+                title: form.getFieldValue('mainTitle'),
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 arBlockURL: form.getFieldValue('arlink'),
@@ -373,7 +373,7 @@ const NewStreetcode = () => {
                     index: form.getFieldValue('streetcodeNumber'),
                     firstName: null,
                     lastName: null,
-                    title: form.getFieldValue('title'),
+                    title: form.getFieldValue('mainTitle'),
                     alias: form.getFieldValue('alias'),
                     status: tempStatus,
                     transliterationUrl: form.getFieldValue('streetcodeUrlName'),
@@ -461,6 +461,7 @@ const NewStreetcode = () => {
                         <h2>Стріткод</h2>
                         <Form form={form} layout="vertical" onFinish={onFinish} scrollToFirstError>
                             <MainBlockAdmin
+                                Id={parseId}
                                 form={form}
                                 selectedTags={selectedTags}
                                 setSelectedTags={setSelectedTags}
