@@ -28,7 +28,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
             content: context,

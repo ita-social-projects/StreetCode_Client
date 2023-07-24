@@ -54,7 +54,12 @@ const TextForm = ({
                 <TextPreview inputInfo={inputInfo} />
             </Form.Item>
             <Form.Item>
-                <AdditionalTextBlockAdminForm inputInfo={inputInfo} setInputInfo={setInputInfo} onChange={onChange} />
+                <AdditionalTextBlockAdminForm
+                    character_limit={200}
+                    inputInfo={inputInfo}
+                    setInputInfo={setInputInfo}
+                    onChange={onChange}
+                />
             </Form.Item>
             <Form.Item>
                 <LinkEditor
