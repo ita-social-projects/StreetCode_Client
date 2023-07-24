@@ -187,7 +187,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             >
                                 <div>
                                     <InboxOutlined />
-                                    <p>{hasUploadedPhoto ? 'Змінити' : 'Додати'}</p>
+                                    <p>{hasUploadedPhoto ? 'Змінити' : '+ Додати'}</p>
                                 </div>
                             </FileUploader>
                         </FormItem>
