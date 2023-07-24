@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
+import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
@@ -50,7 +50,7 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
                     label="Назва: "
                     rules={[{ required: true, message: 'Введіть назву' }]}
                 >
-                    <Input placeholder="Title" />
+                    <Input placeholder="Title" maxLength={100} showCount />
                 </Form.Item>
                 <Form.Item
                     name="image"
@@ -62,9 +62,9 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
                         accept=".jpeg,.png,.jpg"
                         listType="picture-card"
                         maxCount={1}
-                        onSuccessUpload={(img: Image) => {
+                        onSuccessUpload={(img: Image | Audio) => {
                             imageId.current = img.id;
-                            setImage(img);
+                            setImage(img as Image);
                         }}
                         onRemove={() => {
                             ImagesApi.delete(imageId.current);
