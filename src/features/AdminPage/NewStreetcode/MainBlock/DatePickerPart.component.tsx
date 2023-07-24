@@ -76,15 +76,26 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
             if (index < 0) {
                 form.setFieldValue(
                     'dateString',
-                    dateString.concat(`${date ? ' — ' : ''} ${dateToString(dateSecondTimePickerType, date)}`),
+                    dateString
+                        .concat(` — ${dateToString(dateSecondTimePickerType, date)}`),
                 );
+            } else if (date === null || date === undefined) {
+                form.setFieldValue('dateString', dateString.substring(0, index));
             } else {
-                form.setFieldValue(
-                    'dateString',
-                    dateString.substring(0, index)
-                        .concat(`${date ? ' — ' : ''} ${dateToString(dateSecondTimePickerType, date)}`),
-                );
+                const newDateString = dateString
+                    .substring(0, index).concat(` — ${dateToString(dateSecondTimePickerType, date)}`);
+                form.setFieldValue('dateString', newDateString);
             }
+            onChange('streetcodeSecondDate', date);
+        } else {
+            form.setFieldValue('dateString', form.getFieldValue('dateString').split(' — ')[0]);
+            setSecondDate(date);
+            form.setFields([
+                {
+                    name: 'streetcodeSecondDate',
+                    errors: [],
+                },
+            ]);
             onChange('streetcodeSecondDate', date);
         }
     };
