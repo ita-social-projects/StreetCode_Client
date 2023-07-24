@@ -11,8 +11,6 @@ import {
     Button, Form, Input, Modal, UploadFile,
 } from 'antd';
 
-import Audio from '@/models/media/audio.model';
-
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 
 interface AddSourceModalProps {
