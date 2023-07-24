@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -50,12 +49,17 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
         setPreviewOpen(true);
     };
 
+    const handleCancel = () => {
+        handleAddCancel();
+        form.resetFields();
+    };
+
     return (
         <div>
             <Modal
                 title="Додати категорію"
                 open={isAddModalVisible}
-                onCancel={handleAddCancel}
+                onCancel={handleCancel}
                 footer={null}
             >
                 <Form form={form} layout="vertical" onFinish={onSubmit}>
