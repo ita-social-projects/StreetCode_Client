@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
+import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
@@ -68,7 +69,7 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" />
+                        <Input placeholder="Title" maxLength={100} showCount />
                     </Form.Item>
                     <Form.Item
                         name="image"
