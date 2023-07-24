@@ -4,7 +4,7 @@ import { Button } from 'antd';
 
 import TextsApi from '@/app/api/streetcode/text-content/texts.api';
 import ReadMore from '@/features/StreetcodePage/TextBlock/ReadMore/ReadMore.component';
-import { Text, TextPreview } from '@/models/streetcode/text-contents.model';
+import { Text, TextPreviewContent } from '@/models/streetcode/text-contents.model';
 
 interface Props {
     inputInfo: Partial<Text> | undefined;
@@ -19,7 +19,7 @@ const TextPreview = ({ inputInfo } : Props) => {
             let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
             console.log('before back');
             console.log(buffer);
-            const content : TextPreview = {
+            const content : TextPreviewContent = {
                 textContent: buffer ?? '',
             };
             TextsApi.getParsed(content).then((x) => {
