@@ -12,7 +12,7 @@ const StatisticsComponentAdmin = () => (
             placeholder="введіть вулицю"
             prefix={<EnvironmentOutlined  className="site-form-item-icon" />}
              />
-        <Button className="onMapbtn"><a>Обрати місце на мапі</a></Button>
+      
     </div>
 );
 export default StatisticsComponentAdmin;

@@ -13,11 +13,15 @@ import 'leaflet/dist/leaflet.css';
 
 import MapOSM from './Map/Map.component';
 
+import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
+
 const MapBlock = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const toponymContext = useToponymContext();
 
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
+    const [statisticRecord, setStatisticRecord] = useState<StatisticRecord[]>([]);
 
     useEffect(
         () => {
@@ -26,8 +30,7 @@ const MapBlock = () => {
                 if (!toponymContext.loaded) {
                     toponymContext.fetchToponymByStreetcodeId(streetcodeId);
                 }
-                StreetcodeCoordinatesApi
-                    .getByStreetcodeId(streetcodeId).then((res) => setStreetcodeCoordinates(res));
+                StatisticRecordApi.getAllByStreetcodeId(streetcodeId).then((resp)=>setStatisticRecord(resp));
             }
         },
         [getStreetCodeId],
@@ -37,7 +40,7 @@ const MapBlock = () => {
         <div className="mapBlockContainer container">
             <BlockHeading headingText="Мапа історії" />
             <CheckBoxComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponymContext.toponyms} />
-            <MapOSM streetcodeCoordinates={streetcodeCoordinates} toponyms={toponymContext.toponyms} />
+            <MapOSM statisticRecord={statisticRecord} toponyms={toponymContext.toponyms} />
         </div>
     );
 };

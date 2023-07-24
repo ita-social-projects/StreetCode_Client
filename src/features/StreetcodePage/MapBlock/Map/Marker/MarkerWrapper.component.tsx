@@ -7,24 +7,28 @@ interface Props {
     latitude: number, 
     longtitude: number,
     description: string,
-    title: string
+    title: string,
+    isStreetcode: boolean
 }
 
-const CustomMarker = ({ description, latitude, longtitude }: Props) => {
+const CustomMarker = ({ description, latitude, longtitude, isStreetcode }: Props) => {
+    const markerClassName = isStreetcode ? "markerCircle streetcodes" : "markerCircle";
+
     const myIcon = L.divIcon({
-        html: "<div class='markerCircle'></div>",
-        iconAnchor: [0,0],
+        html: `<div class="${markerClassName}"></div>`,
+        iconAnchor: [0, 0],
         className: 'my-custom-marker'
     });
 
     return (
         <>
-            {latitude && longtitude &&
-                <Marker position={[latitude, longtitude]} icon={myIcon} >
+            {latitude && longtitude && (
+                <Marker position={[latitude, longtitude]} icon={myIcon}>
                     <Popup>
                         {description}
                     </Popup>
-                </Marker>}
+                </Marker>
+            )}
         </>
     );
 };

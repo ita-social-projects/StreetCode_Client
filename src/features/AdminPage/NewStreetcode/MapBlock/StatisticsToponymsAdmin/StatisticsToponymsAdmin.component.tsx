@@ -36,8 +36,8 @@ const StatisticsToponymsComponentAdmin = () => {
         setRequestGetAll({
             Page: pageRequest,
             Amount: amountRequest,
-            Title: titleRequest === '' ? null : titleRequest,
-        });
+            Title: titleRequest === ' ' ? null : titleRequest,
+        })
     };
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedToponyms[]>([]);
     useEffect(() => {
@@ -59,7 +59,7 @@ const StatisticsToponymsComponentAdmin = () => {
             key: 'checkbox',
             width: 6,
 
-            render: (text, record, index) => (
+            render: (text) => (
                 <Checkbox defaultChecked={mustChecked?.includes(text) } onChange={(e: CheckboxChangeEvent) => {
                     const indexValue = newStreetcodeInfoStore.selectedToponyms.indexOf(text);
                     if (e.target.checked) {
@@ -92,12 +92,13 @@ const StatisticsToponymsComponentAdmin = () => {
     useEffect(() => {
         if (requestGetAll.Title === "" && parseId) {
             ToponymsApi.getByStreetcodeId(parseId).then((x) => setToponyms(x));
-        } else {
+        } else if (requestGetAll.Title !== "") {
             ToponymsApi.getAll(requestGetAll).then((response) =>
                 setToponyms(response.toponyms)
             );
         }
     }, [requestGetAll, parseId]);
+    
 
     useEffect(() => {
         const mappedStreetCodes: MapedToponyms[] = [];

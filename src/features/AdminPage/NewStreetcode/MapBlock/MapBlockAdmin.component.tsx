@@ -15,6 +15,7 @@ const MapBlockAdmin: React.FC<Props> = ({
         <div className="adminContainer-block mapBlockContainerr">  
         <h2>Мапа історії</h2>
             <MapOSMAdmin coordinates={coordinates} />
+            <h2>Додавання топонімів на шар вулиць</h2>
             <StatisticsToponymsComponentAdmin/>
         </div>
     );

@@ -39,6 +39,8 @@ const MapOSMAdmin: React.FC<Props> = ({
     const [newNumber, setNewNumber] = useState('');
     const newNumberAsNumber = parseInt(newNumber, 10);
     const [isExist, setIsExist] = useState(false);
+    const [isInvalidInput, setIsInvalidInput] = useState(false);
+    const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set());
 
     useEffect(() => {
         if (coordinates.length > 0) {
@@ -80,7 +82,7 @@ const MapOSMAdmin: React.FC<Props> = ({
                     address: address,
                 };
 
-
+                setUsedNumbers((prevUsedNumbers) => new Set(prevUsedNumbers).add(newNumberAsNumber));
                 statisticRecordStore.addStatisticRecord(newStatisticRecord);
                 setStatisticRecord(newStatisticRecord);
                 streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
@@ -99,12 +101,19 @@ const MapOSMAdmin: React.FC<Props> = ({
         }
     };
 
-    const handleDelete = (record: { id: any; }) => {
-        const { id } = record;
+    const handleDelete = (record: { id: any; qrId: any }) => {
+        const { id, qrId } = record;
         streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
         statisticRecordStore.deleteStatisticRecordFromMap(id);
-    };
+        removeFromUsedNumbers(qrId);
+      };
 
+      const removeFromUsedNumbers = (qrId: number) => {
+        const newUsedNumbers = new Set(usedNumbers);
+        newUsedNumbers.delete(qrId);
+        setUsedNumbers(newUsedNumbers);
+      };
+      
     const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
         setAutocomplete(autocomplete);
     };
@@ -218,14 +227,8 @@ const MapOSMAdmin: React.FC<Props> = ({
             key: 'actions',
             render: (text: any, record: any) => (
                 <span>
-                    <DeleteOutlined onClick={() => handleRemove()} />
-                    <Modal
-                    title="Ви впевнені, що хочете видалити дану точку?"
-                    open={visibleModal}
-                    onOk={(e) => {handleDelete(record); setVisibleModal(false);}}
-                    onCancel={handleCancelModalRemove}
-                />
-                </span>
+                <DeleteOutlined onClick={() => handleDelete(record)} />
+            </span>
             ),
         },
     ];
@@ -246,6 +249,11 @@ const MapOSMAdmin: React.FC<Props> = ({
             StatisticRecordApi.existByQrId(value)
                 .then((exist) => {
                     setIsExist(exist);
+                    if (usedNumbers.has(parseInt(value, 10))) {
+                        setIsExist(true);
+                    } else {
+                        setIsExist(exist);
+                    }
                 })
                 .catch(() => {
                     message.error('Сервер не відповідає');
@@ -256,8 +264,16 @@ const MapOSMAdmin: React.FC<Props> = ({
     };
 
     const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewNumber(event.target.value);
+    const inputNumber = event.target.value;
+    if (!Number.isNaN(inputNumber) && Number(inputNumber) >= 0) {
+      setNewNumber(inputNumber);
+      setIsInvalidInput(false);
+    } else {
+      setIsInvalidInput(true);
+    }
     };
+
+   
 
     return (
         <LoadScript
@@ -298,14 +314,19 @@ const MapOSMAdmin: React.FC<Props> = ({
                             Даний номер таблички вже використовується 
                         </span>
                     )}
-
-                    <Button
+                    { isInvalidInput && (
+                        <span className="notification red">
+                            Введіть додатнє число 
+                        </span>
+                    )}
+                    
+                    {/* <Button
                         className="onMapbtn"
                         onClick={handleMarkerCurrentPosition}
                     >
                         <a>Обрати місце на мапі</a>
-                    </Button>
-                    {streetcodeCoordinates.length > 0 && (
+                    </Button> */}
+                    {(streetcodeCoordinates.length > 0) && (!isExist)  && (!isInvalidInput) && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
                             <a>Зберегти стріткод</a>
                         </Button>

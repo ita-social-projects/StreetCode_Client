@@ -4,7 +4,7 @@
 @use '@sass/variables/variables.colors' as c;
 
 .statisticsContainerAdmin{
-  @include mut.sized(350px, 400px);
+  @include mut.sized(350px, 350px);
   @include mut.positioned-as(absolute, 150px, 0, 0, 100px);
   @include mut.rem-padded(5px, 5px, 5px, 5px);
   background: c.$pure-white-color;
