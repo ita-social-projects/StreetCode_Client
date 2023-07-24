@@ -1,0 +1,43 @@
+services:  
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+  frontend:
+    # awaiting a centralized Docker repo. Populate in deployment for now.
+    # Due to changes in frontend Dockerfile, saymolet/streetcode_client:1608 image can be used.
+    image: saymolet/streetcode_client:1608
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+  backend:
+    # awaiting a centralized Docker repo.
+    # Already existing image nazarsheremet/streetcode:1607 can be used for now. 
+    image: nazarsheremet/streetcode:1607
+    expose:
+      - "80"
+    ports:
+      - "5000:80"
+    environment:
+      STREETCODE_ConnectionStrings__DefaultConnection: Server=<populate_in_deployment>;Database=<populate_in_deployment>;User Id=<populate_in_deployment>;Password=<populate_in_deployment>;MultipleActiveResultSets=true;Trusted_Connection=False;Encrypt=True;TrustServerCertificate=True;
+      STREETCODE_Blob__BlobStorePath: /mnt/data/
+      STREETCODE_Instagram__InstagramID: <populate_in_deployment>
+      STREETCODE_Instagram__InstagramToken: <populate_in_deployment>
+    volumes:
+      - type: bind
+        source: /imagestorage
+        target: /mnt/data
+volumes:
+  backend:
+networks:
+  backend:
+    external:
+      name: backend
+  frontend:
+    external:
+      name: frontend

@@ -17,6 +17,8 @@
 # production
 /build
 /dist
+/certbot
+
 # misc
 .DS_Store
 .env.local
