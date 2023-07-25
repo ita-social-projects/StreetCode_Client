@@ -87,7 +87,7 @@ const streetCodeBlock = () => {
                         surname: x.lastName,
                         name: x.firstName,
                         streetcodeNumber: parseId,
-                        title: x.title,
+                        mainTitle: x.title,
                         alias: x.alias,
                         streetcodeUrlName: x.transliterationUrl,
                         firstDate: x.eventStartOrPersonBirthDate,
@@ -101,7 +101,7 @@ const streetCodeBlock = () => {
                 else {
                     form.setFieldsValue({
                         streetcodeNumber: parseId,
-                        title: x.title,
+                        mainTitle: x.title,
                         alias: x.alias,
                         streetcodeUrlName: x.transliterationUrl,
                         firstDate: x.eventStartOrPersonBirthDate,
@@ -181,7 +181,7 @@ const streetCodeBlock = () => {
 
         const streetcode: StreetcodeCreate = {
             index: form.getFieldValue('streetcodeNumber'),
-            title: form.getFieldValue('title'),
+            title: form.getFieldValue('mainTitle'),
             alias: form.getFieldValue('alias'),
             transliterationUrl: form.getFieldValue('streetcodeUrlName'),
             streetcodeType,

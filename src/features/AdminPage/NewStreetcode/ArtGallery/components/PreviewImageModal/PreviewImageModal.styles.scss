@@ -4,7 +4,6 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .artPreviewModal{
-    max-width: f.pxToRem(380px);
     @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
     color: c.$dark-red-color;
     align-items: center;
@@ -20,23 +19,18 @@
     input, textarea{
         @include mut.with-font(ft.$roboto-font, 300, 20px, normal) ;
     }
-    textarea{
-        width: f.pxToRem(380px);
-        height: f.pxToRem(180px);
-        resize: none;
-    }
     .saveButton{
         background-color: c.$pure-white-color;
         border-radius: 5px;
+        border: 2px solid c.$ant-menu-text-color;
         width: 30%;   
         justify-content: center;
         left: 33%;
         @include mut.with-font(ft.$roboto-font, 300, 15px, normal);
-        border-color: c.$dark-red-color;
-        color: c.$dark-red-color;
+        color: c.$ant-menu-text-color;
         &:hover{
             color: c.$pure-white-color;
-            background-color: c.$dark-red-color;
+            background-color: c.$ant-menu-color;
         }
       }
 }

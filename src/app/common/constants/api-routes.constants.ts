@@ -61,7 +61,7 @@ export const API_ROUTES = {
         CREATE: 'text/create',
         GET_BY_STREETCODE_ID: 'text/getByStreetcodeId',
         GET: 'text/getById',
-        GET_PARSED: 'text/getParsedtext',
+        UPDATE_PARSED: 'text/updateParsedtext',
         UPDATE: 'text/update',
         DELETE: 'text/delete',
     },

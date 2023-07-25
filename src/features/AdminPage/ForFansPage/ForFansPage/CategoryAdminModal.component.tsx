@@ -1,17 +1,21 @@
 import React, { useRef, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
+import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
-import { Button, Form, Input, Modal } from 'antd';
+import {
+    Button, Form, Input, Modal, UploadFile,
+} from 'antd';
+
+import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 
 interface AddSourceModalProps {
-  isAddModalVisible: boolean;
-  handleAddCancel: () => void;
+    isAddModalVisible: boolean;
+    handleAddCancel: () => void;
 }
 
 const AddSourceModal: React.FC<AddSourceModalProps> = ({
@@ -22,6 +26,8 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
     const [image, setImage] = useState<Image>();
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -37,49 +43,64 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
         form.resetFields();
     }
 
+    const handlePreview = async (file: UploadFile) => {
+        setFilePreview(file);
+        setPreviewOpen(true);
+    };
+
+    const handleCancel = () => {
+        handleAddCancel();
+        form.resetFields();
+    };
+
     return (
-        <Modal
-            title="Додати категорію"
-            open={isAddModalVisible}
-            onCancel={handleAddCancel}
-            footer={null}
-        >
-            <Form form={form} layout="vertical" onFinish={onSubmit}>
-                <Form.Item
-                    name="title"
-                    label="Назва: "
-                    rules={[{ required: true, message: 'Введіть назву' }]}
-                >
-                    <Input placeholder="Title" />
-                </Form.Item>
-                <Form.Item
-                    name="image"
-                    label="Картинка: "
-                    rules={[{ required: true, message: 'Додайте зображення' }]}
-                >
-                    <FileUploader
-                        multiple={false}
-                        accept=".jpeg,.png,.jpg"
-                        listType="picture-card"
-                        maxCount={1}
-                        onSuccessUpload={(img: Image) => {
-                            imageId.current = img.id;
-                            setImage(img);
-                        }}
-                        onRemove={() => {
-                            ImagesApi.delete(imageId.current);
-                        }}
+        <div>
+            <Modal
+                title="Додати категорію"
+                open={isAddModalVisible}
+                onCancel={handleCancel}
+                footer={null}
+            >
+                <Form form={form} layout="vertical" onFinish={onSubmit}>
+                    <Form.Item
+                        name="title"
+                        label="Назва: "
+                        rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <p>Виберіть чи перетягніть файл</p>
-                    </FileUploader>
-                </Form.Item>
-                <div className="center">
-                    <Button className="streetcode-custom-button" onClick={() => form.submit()}>
-            Зберегти
-                    </Button>
-                </div>
-            </Form>
-        </Modal>
+                        <Input placeholder="Title" maxLength={100} showCount />
+                    </Form.Item>
+                    <Form.Item
+                        name="image"
+                        label="Картинка: "
+                        rules={[{ required: true, message: 'Додайте зображення' }]}
+                    >
+                        <FileUploader
+                            multiple={false}
+                            accept=".jpeg,.png,.jpg"
+                            listType="picture-card"
+                            maxCount={1}
+                            uploadTo="image"
+                            onSuccessUpload={(img: Image | Audio) => {
+                                imageId.current = img.id;
+                                setImage(img as Image);
+                            }}
+                            onRemove={() => {
+                                ImagesApi.delete(imageId.current);
+                            }}
+                            onPreview={handlePreview}
+                        >
+                            <p>Виберіть чи перетягніть файл</p>
+                        </FileUploader>
+                    </Form.Item>
+                    <div className="center">
+                        <Button className="streetcode-custom-button" onClick={() => form.submit()}>
+                            Зберегти
+                        </Button>
+                    </div>
+                </Form>
+            </Modal>
+            <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
+        </div>
     );
 };
 
