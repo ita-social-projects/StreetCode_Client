@@ -5,7 +5,7 @@ import StreetcodeMarker from '@images/footer/streetcode-marker.png';
 
 import { Autocomplete, GoogleMap, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
@@ -42,7 +42,8 @@ const MapOSMAdmin = () => {
     const [isExist, setIsExist] = useState(false);
     const [isInvalidInput, setIsInvalidInput] = useState(false);
     const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set());
-    
+    const [showButton, setShowButton] = useState(false);
+
     const handleSaveButtonClick = () => {
         if (!newNumber || newNumber === '' || isExist) {
             message.error({
@@ -64,10 +65,14 @@ const MapOSMAdmin = () => {
                 address,
             };
             setUsedNumbers((prevUsedNumbers) => new Set(prevUsedNumbers).add(newNumberAsNumber));
+            setShowButton(false);
+            setNewNumber('');
             statisticRecordStore.addStatisticRecord(newStatisticRecord);
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
         }
     };
+
+   
 
     const handleDelete = (record: { id: any; qrId: any }) => {
         const { id, qrId } = record;
@@ -137,6 +142,7 @@ const MapOSMAdmin = () => {
     };
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
+        setShowButton(true);
         const lat = event.latLng?.lat();
         const lng = event.latLng?.lng();
         if (lat && lng) {
@@ -264,6 +270,7 @@ const MapOSMAdmin = () => {
                             handleNewNumberChange(e);
                             onCheckIndexClick(e.target.value);
                         }}
+                       
                         value={newNumber}
                     />
                     {isExist && (
@@ -284,7 +291,7 @@ const MapOSMAdmin = () => {
                         <a>Обрати місце на мапі</a>
                     </Button>  */}
 
-                    {(streetcodeCoordinates.length > 0) && (!isExist)  && (!isInvalidInput) && (
+                    {(streetcodeCoordinates.length > 0) && (!isExist)  && (!isInvalidInput) && (showButton) && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
                             <a>Зберегти стріткод</a>
                         </Button>

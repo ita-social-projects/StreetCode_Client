@@ -6,6 +6,7 @@ import TimelineSwiper from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwi
 
 const settings = {
     dots: 'true',
+    allowTouchMove: false,
 };
 
 const TimelineTimespan = () => {
@@ -16,7 +17,7 @@ const TimelineTimespan = () => {
         <div className="timeSpanContainer">
             <div className="timelineYearTicksContainer">
                 <TimelineSwiper
-                    slideToClickedSlide={true}
+                   
                     slidesPerView={5}
                     className="timelineYearTicksContainerSwiper"
                     {...settings}
