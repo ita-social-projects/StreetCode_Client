@@ -37,6 +37,7 @@ const FileInputsPart = ({ onChange }) => {
     const [images, setImages] = useState<Image[]>([]);
     const [audio, setAudio] = useState<UploadFile[]>([]);
     const [animation, setAnimation] = useState<UploadFile[]>([]);
+    const [fileValidationError, setFileValidationError] = useState<string | null>(null);
     const [blackAndWhite, setBlackAndWhite] = useState<UploadFile[]>([]);
     const [relatedFigure, setRelatedFigure] = useState<UploadFile[]>([]);
 
@@ -118,19 +119,28 @@ const FileInputsPart = ({ onChange }) => {
                     name="animations"
                     label="Анімація"
                     rules={[{ required: !(parseId && images.length > 1),
-                              message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
+                              message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' },
+                            ]}
                 >
                     <FileUploader
                         accept=".gif"
                         listType="picture-card"
-                        multiple={false}
+                        multiple={false}    
                         maxCount={1}
                         fileList={animation}
+                        beforeUpload={(file) => {
+                            const isGif = file.type === 'image/gif';
+                            if (!isGif) {
+                                setFileValidationError('Тільки файли .gif дозволені!');
+                            }
+                            return isGif;
+                        }}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
                             handleFileUpload(file.id, 'animationId', 'imagesUpdate');
                             setAnimation([convertFileToUploadFile(file)]);
+                            setFileValidationError(null)
                         }}
                         onRemove={(file) => {
                             handleFileRemove('animationId', 'imagesUpdate');
@@ -140,8 +150,9 @@ const FileInputsPart = ({ onChange }) => {
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && images.length > 0 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
+                    {fileValidationError && <div style={{ color: 'red' }}>{fileValidationError}</div>}
                 </FormItem>
-
+                
                 <FormItem
                     name="pictureBlackWhite"
                     label="Чорнобіле"
