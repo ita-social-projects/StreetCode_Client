@@ -156,6 +156,8 @@ const NewStreetcode = () => {
                 form.setFieldsValue({
                     streetcodeNumber: x.index,
                     mainTitle: x.title,
+                    name: x.firstName,
+                    surname: x.lastName,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
                     streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
