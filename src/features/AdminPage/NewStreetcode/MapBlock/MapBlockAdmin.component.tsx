@@ -10,10 +10,9 @@ import StatisticsToponymsComponentAdmin from './StatisticsToponymsAdmin/Statisti
 const MapBlockAdmin = React.memo(() => (
     <div className="adminContainer-block mapBlockContainerr">
         <h2>Мапа історії</h2>
-            <MapOSMAdmin coordinates={coordinates} />
-            <h2>Додавання топонімів на шар вулиць</h2>
-            <StatisticsToponymsComponentAdmin/>
-        </div>
-    );
-}
+        <MapOSMAdmin />
+        <h2>Додавання топонімів на шар вулиць</h2>
+        <StatisticsToponymsComponentAdmin />
+    </div>
+));
 export default MapBlockAdmin;

@@ -42,56 +42,45 @@ const MapOSMAdmin = () => {
     const [isExist, setIsExist] = useState(false);
     const [isInvalidInput, setIsInvalidInput] = useState(false);
     const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set());
-    const [visibleModal, setVisibleModal] = useState(false);
-
+    
     const handleSaveButtonClick = () => {
         if (!newNumber || newNumber === '' || isExist) {
             message.error({
                 content: 'Будь ласка введіть значення номеру фізичного стіткоду для збереження',
                 style: { marginTop: '400vh' },
             });
-        } else {
-            if (streetcodeCoordinates.length > 0) {
-                const newCoordinate: StreetcodeCoordinate = {
-                    latitude: streetcodeCoordinates[0].latitude,
-                    longtitude: streetcodeCoordinates[0].longtitude,
-                    streetcodeId: 0,
-                    id: getNewMinNegativeId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
-
-                };
-                const newStatisticRecord: StatisticRecord = {
-                    id: getNewMinNegativeId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
-                    streetcodeCoordinate: newCoordinate,
-                    coordinateId: newCoordinate.id,
-                    qrId: newNumberAsNumber,
-                    count: 0,
-                    address: address,
-                };
-
-
-                statisticRecordStore.addStatisticRecord(newStatisticRecord);
-                setStatisticRecord(newStatisticRecord);
-                streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
-                coordinates?.map(x => {
-                    const newCoor: StreetcodeCoordinate = {
-                        latitude: x.latitude,
-                        longtitude: x.longtitude,
-                        streetcodeId: x.streetcodeId,
-                        id: x.id,
-                    };
-                    streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoor);
-
-                });
-                setStreetcodeCoordinates([]);
-            }
+        } else if (streetcodeCoordinates.length > 0) {
+            const newCoordinate: StreetcodeCoordinate = {
+                id: getNewMinNegativeId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
+                latitude: streetcodeCoordinates[0].latitude,
+                longtitude: streetcodeCoordinates[0].longtitude,
+                streetcodeId: 0,
+            };
+            const newStatisticRecord: StatisticRecord = {
+                id: getNewMinNegativeId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
+                streetcodeCoordinate: newCoordinate,
+                qrId: newNumberAsNumber,
+                count: 0,
+                address,
+            };
+            setUsedNumbers((prevUsedNumbers) => new Set(prevUsedNumbers).add(newNumberAsNumber));
+            statisticRecordStore.addStatisticRecord(newStatisticRecord);
+            streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
         }
     };
 
-    const handleDelete = (record: { id: any; }) => {
-        const { id } = record;
+    const handleDelete = (record: { id: any; qrId: any }) => {
+        const { id, qrId } = record;
         streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
         statisticRecordStore.deleteStatisticRecordFromMap(id);
-    };
+        removeFromUsedNumbers(qrId);
+      };
+
+      const removeFromUsedNumbers = (qrId: number) => {
+        const newUsedNumbers = new Set(usedNumbers);
+        newUsedNumbers.delete(qrId);
+        setUsedNumbers(newUsedNumbers);
+      };
 
     const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
         setAutocomplete(autocomplete);
@@ -172,20 +161,6 @@ const MapOSMAdmin = () => {
             );
         }
     };
-
-    const handleDelete = (id: number) => {
-        streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
-        statisticRecordStore.deleteStatisticRecordFromMap(id);
-    };
-
-    const handleRemove = useCallback((id: number) => {
-        statisticRecordIdToDelete.current = id;
-        setVisibleModal(true);
-    }, []);
-
-    const handleCancelModalRemove = useCallback(() => {
-        setVisibleModal(false);
-    }, []);
 
     const columns = [
         {
@@ -293,16 +268,22 @@ const MapOSMAdmin = () => {
                     />
                     {isExist && (
                         <span className="notification red">
-                        Даний номер таблички вже використовується
+                            Даний номер таблички вже використовується 
+                        </span>
+                    )}
+                    { isInvalidInput && (
+                        <span className="notification red">
+                            Введіть додатнє число 
                         </span>
                     )}
 
-                    <Button
+                    {/* <Button
                         className="onMapbtn"
                         onClick={handleMarkerCurrentPosition}
                     >
                         <a>Обрати місце на мапі</a>
-                    </Button> */}
+                    </Button>  */}
+
                     {(streetcodeCoordinates.length > 0) && (!isExist)  && (!isInvalidInput) && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
                             <a>Зберегти стріткод</a>
