@@ -119,13 +119,12 @@ const FileInputsPart = ({ onChange }) => {
                     name="animations"
                     label="Анімація"
                     rules={[{ required: !(parseId && images.length > 1),
-                              message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' },
-                            ]}
+                        message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
                 >
                     <FileUploader
                         accept=".gif"
                         listType="picture-card"
-                        multiple={false}    
+                        multiple={false}
                         maxCount={1}
                         fileList={animation}
                         beforeUpload={(file) => {
