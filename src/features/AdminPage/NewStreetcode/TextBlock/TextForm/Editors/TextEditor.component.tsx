@@ -21,7 +21,6 @@ interface Props {
 
 const toolTipColor = '#8D1F16';
 
-
 const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
@@ -95,7 +94,6 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     max_chars: 1000,
                     menubar: false,
                     init_instance_callback(editor) {
-                        setEditor(editor);
                         editor.setContent(inputInfo?.textContent ?? '');
                     },
                     plugins: [
