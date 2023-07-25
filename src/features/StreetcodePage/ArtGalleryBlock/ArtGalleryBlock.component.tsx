@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import './ArtGalleryBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -20,7 +21,7 @@ const SECTION_AMOUNT_SMALL = 2;
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore } = useMobx();
-    const { streetcodeStore:{getStreetCodeId, errorStreetCodeId} } = useStreetcodeDataContext();
+    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
@@ -44,16 +45,16 @@ const ArtGalleryBlock = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId).then(() => streecodePageLoaderContext.addBlockFetched());
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId)
+                    .then(() => streecodePageLoaderContext.addBlockFetched());
             }
         },
         [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
     );
 
-
     useEffect(() => {
         const newMap: IndexedArt[] = [];
-        getStreetcodeArtArray?.forEach(async ({ art: { description, image }, index }) => {
+        getStreetcodeArtArray?.forEach(async ({ art: { description, title, image }, index }) => {
             try {
                 const url = base64ToUrl(image.base64, image.mimeType);
                 if (url) {
@@ -63,11 +64,11 @@ const ArtGalleryBlock = () => {
                         index,
                         description,
                         imageHref: url,
-                        title: image.alt,
+                        title,
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) {}
+            } catch (error: unknown) { /* empty */ }
             setIndexedArts(newMap);
             setIndexedArtsSmall(newMap);
         });
@@ -91,7 +92,7 @@ const ArtGalleryBlock = () => {
                 sequenceNumber,
             } as IndexedArt);
             if (artsData.length >= 2) {
-                if (artsData[0].offset === 1 && artsData[1].offset != 1) {
+                if (artsData[0].offset === 1 && artsData[1].offset !== 1) {
                     sortedArtsList.forEach((x) => {
                         if (x.index === artsData[0].index) x.offset = 4;
                     });
@@ -176,10 +177,11 @@ const ArtGalleryBlock = () => {
     sortedArtsListSmall.forEach(({
         index, offset, imageHref, description, title,
     }) => {
-        if (offset == 4) {
+        if (offset === 4) {
             offset = 1;
         }
-        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL && offsetSumForSlideSmall + offset <= SECTION_AMOUNT_SMALL) {
+        if (offsetSumForSlideSmall !== SECTION_AMOUNT_SMALL
+            && offsetSumForSlideSmall + offset <= SECTION_AMOUNT_SMALL) {
             offsetSumForSlideSmall += offset ?? 0;
             offsetSumSmall += offset ?? 0;
             sequenceNumberSmall = index - 1;
@@ -249,6 +251,7 @@ const ArtGalleryBlock = () => {
         touchThreshold: 25,
         transform: 'translateZ(0)',
     };
+
     return (
         <div
             id="art-gallery"

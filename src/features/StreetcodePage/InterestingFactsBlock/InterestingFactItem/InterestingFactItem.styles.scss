@@ -11,31 +11,57 @@
   cursor: pointer;
   position: relative;
   @include vnd.vendored(transition, '.5s ease');
-  
+
   background-color: c.$pure-white-color;
   box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, .25);
-  
+
   .slideImage {
+    position: relative;
     @include mut.sized(100%, 250px);
     @include mut.rounded(33px, 33px);
-    img{
+
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
+    .description-popup {
+      visibility: hidden;
+      position: absolute;
+      background-color: c.$hover-wow-fact-background;
+      color: c.$pure-white-color;
+      width: 100%;
+      bottom: 0;
+
+      p {
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 10px, $font-style: normal);
+        @include mut.rem-padded(5px, 5px, 5px, 5px);
+      }
+    }
+
+    .description-popup-visible,
+    &:hover>.description-popup {
+      @if((&:content !=undefined) and (&:content !='')) {
+        visibility: visible;
+      }
+
+    }
+
   }
 
   .slideText {
     @include mut.sized(100%, 167px);
     @include mut.rounded($bottom-right: 33px, $bottom-left: 33px);
+
     .heading {
       @include mut.rem-padded(8px, 20px, 7px, 20px);
       color: c.$accented-red-color;
-      
+
       @include mut.with-font($font-weight: 500, $font-size: 17px);
       line-height: f.pxToEm(20px);
     }
-    
+
     .mainText {
       @include mut.rem-padded(0, 20px, 0px, 20px);
       color: c.$lighter-black-color;
@@ -45,7 +71,8 @@
       line-height: f.pxToEm(18px);
 
     }
-    .lineSpecifier{
+
+    .lineSpecifier {
       @include mut.truncated($line-num: 5);
     }
   }
@@ -65,66 +92,66 @@
   cursor: pointer;
   color: c.$dark-red-color;
   @include mut.with-font(ft.$roboto-font, 300, 13px, normal);
-  
+
   &:hover {
     color: c.$accented-red-color;
   }
 }
 
-@media screen and (max-width: 1450px){
+@media screen and (max-width: 1450px) {
   .interestingFactSlide {
-    @include mut.sized(280px,305px);
+    @include mut.sized(280px, 305px);
   }
 
   .interestingFactsSliderContainer {
     .slick-track {
       @include mut.flexed($align-items: flex-start, $gap: 10px);
     }
-  }    
+  }
 
   .interestingFactSlide {
     @include mut.full-rounded(20px);
-    
-     .slideImage {
-       @include mut.sized(100%, 142px);
-       @include mut.rounded(20px, 20px);
-     }
 
-     .slideText {
-        @include mut.sized(100%, 145px);
-        @include mut.rounded(0);
+    .slideImage {
+      @include mut.sized(100%, 142px);
+      @include mut.rounded(20px, 20px);
+    }
 
-       .heading {
-          @include mut.rem-padded(7px, 20px, 6px, 12px);
-          @include mut.with-font($font-weight: 500, $font-size: 12px);
-          line-height: f.pxToEm(12px);
-        }
+    .slideText {
+      @include mut.sized(100%, 145px);
+      @include mut.rounded(0);
 
-        .mainText {
-          @include mut.rem-padded(0, 12px, 0px, 12px);
-          @include mut.with-font($font-weight: 300, $font-size: 10px);
-          line-height: f.pxToEm(16px);
-       }
-     } 
-  
-     .readMoreParagraph {
-        @include mut.rem-padded(6px, 20px, 0px, 12px);
-        @include mut.with-font(ft.$roboto-font, 300, 10px, normal);        
-     }
-  } 
-}
+      .heading {
+        @include mut.rem-padded(7px, 20px, 6px, 12px);
+        @include mut.with-font($font-weight: 500, $font-size: 12px);
+        line-height: f.pxToEm(12px);
+      }
 
-@media screen and (max-width: 1200px){
-  .interestingFactSlide {
-    @include mut.sized(250px,285px);
+      .mainText {
+        @include mut.rem-padded(0, 12px, 0px, 12px);
+        @include mut.with-font($font-weight: 300, $font-size: 10px);
+        line-height: f.pxToEm(16px);
+      }
+    }
+
+    .readMoreParagraph {
+      @include mut.rem-padded(6px, 20px, 0px, 12px);
+      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);
+    }
   }
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 1200px) {
   .interestingFactSlide {
-    @include mut.sized(205px,240px);
+    @include mut.sized(250px, 285px);
   }
-  
+}
+
+@media screen and (max-width: 1024px) {
+  .interestingFactSlide {
+    @include mut.sized(205px, 240px);
+  }
+
   .interestingFactsSliderContainer {
     .slick-dots {
       text-align: center;
@@ -133,18 +160,20 @@
       margin: 0;
       list-style: none;
       text-align: center;
-      
+
     }
-    li{
+
+    li {
       text-align: center;
       justify-content: center;
       list-style: none;
       text-align: center;
       @include mut.sized(8px, 8px);
-    
+
     }
-    li button{
-      text-align: center; 
+
+    li button {
+      text-align: center;
       justify-content: center;
       padding: 0;
 
@@ -152,38 +181,41 @@
       text-align: center;
       @include mut.sized(8px, 8px);
     }
-    li button:before {
-      text-align: center; 
-      justify-content: center;
-      left: -20% !important;
 
-      @include mut.rem-margined($right:5px, $left:5px);
+    li button:before {
+      text-align: center;
+      justify-content: center;
+      left: -50% !important;
+
+      @include mut.rem-margined($right: 5px, $left: 5px);
 
       list-style: none;
       text-align: center;
       @include mut.sized(8px, 8px);
     }
-  }  
+  }
 
   .interestingFactSlide {
     @include mut.full-rounded(20px);
-     .slideImage {
-       @include mut.sized(100%, 132px);
-     }
-     .slideText {
-       @include mut.sized(100%, 105px);
-     } 
-  } 
+
+    .slideImage {
+      @include mut.sized(100%, 132px);
+    }
+
+    .slideText {
+      @include mut.sized(100%, 105px);
+    }
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1000px) {
-  .interestingFactsSliderContainer{
+  .interestingFactsSliderContainer {
     @include mut.sized(100%);
   }
 
   .interestingFactSlide {
     @include mut.full-rounded(20px);
-    
+
     .slideImage {
       @include mut.sized(100%, 132px);
       @include mut.rounded(20px, 20px);
@@ -191,11 +223,15 @@
 
     .slideText {
       @include mut.sized(100%, 103px);
-    } 
-  } 
+    }
+  }
 }
 
-@media screen and (max-width: 480px){ 
+@media screen and (max-width: 768px) {
+  .interestingFactsSliderContainer .slick-track {
+    gap: f.pxToRem(2px);
+  }
+
   .interestingFactSlide {
     @include mut.full-rounded(20px);
     overflow: visible;
@@ -208,6 +244,6 @@
     .slideText {
       @include mut.full-rounded(0px);
       overflow: visible;
-    } 
+    }
   }
 }

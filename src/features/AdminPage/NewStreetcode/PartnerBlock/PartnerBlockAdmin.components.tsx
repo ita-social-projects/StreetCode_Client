@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { ModelState } from '@models/enums/model-state';
 import PartnersStore from '@stores/partners-store';
 
 import { Button, Select } from 'antd';
 
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
-import { PartnerShort } from '@/models/partners/partners.model';
+import { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partners.model';
 
-const PartnerBlockAdmin:React.FC<{ partners: PartnerShort[],
-setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>> }> = ({ partners, setPartners }) => {
+interface Props {
+    partners: PartnerCreateUpdateShort[],
+    setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>>,
+    onChange: (field: string, value: any) => void,
+}
+
+const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
     const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
 
@@ -19,12 +25,29 @@ setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>> }> = ({ partne
     }, []);
 
     const onPartnerSelect = (value:number) => {
-        const index = allPartnersShort.findIndex((c) => c.id === value);
-        setPartners([...partners, allPartnersShort[index]]);
+        const partnerPersisted = partners.find((x) => x.id === value);
+        if (partnerPersisted) { // for case when delete persisted item and add it again
+            partnerPersisted.modelState = ModelState.Updated;
+            setPartners([...partners]);
+        } else {
+            const partner = allPartnersShort.find((c) => c.id === value) as PartnerCreateUpdateShort;
+            partner.modelState = ModelState.Created;
+            setPartners([...partners, partner]);
+        }
+        onChange('partner', value);
     };
+
     const onPartnerDeselect = (value:number) => {
-        setPartners(partners.filter((c) => c.id !== value));
+        const partner = partners.find((x) => x.id === value);
+        if (partner?.isPersisted) {
+            partner.modelState = ModelState.Deleted;
+            setPartners([...partners]);
+        } else {
+            setPartners(partners.filter((c) => c.id !== value));
+        }
+        onChange('partner', value);
     };
+
     return (
         <div className="adminContainer-block">
             <h2>Партнери</h2>
@@ -32,11 +55,11 @@ setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>> }> = ({ partne
                 <Select
                     mode="multiple"
                     onSelect={onPartnerSelect}
-                    value={partners.map((x) => x.id)}
+                    value={partners.filter((x) => (x as PartnerCreateUpdateShort).modelState !== ModelState.Deleted)
+                        .map((x) => x.id)}
                     onDeselect={onPartnerDeselect}
                 >
-                    {allPartnersShort
-                        .map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
+                    {allPartnersShort.map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
                 </Select>
 
                 <Button
@@ -53,9 +76,12 @@ setPartners: React.Dispatch<React.SetStateAction<PartnerShort[]>> }> = ({ partne
                 afterSubmit={
                     (partner) => {
                         setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }]);
-                        setPartners([...partners, { id: partner.id, title: partner.title }]);
+                        setPartners([...partners, { id: partner.id,
+                                                    title: partner.title,
+                                                    modelState: ModelState.Created }]);
                     }
                 }
+                onChange={onChange}
             />
         </div>
     );

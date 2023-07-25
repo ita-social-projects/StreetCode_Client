@@ -24,19 +24,69 @@
 }
 
 .partner-modal-container {
-    .line-form-item div{
-        @include mut.flexed($direction: row,
-            $align-items: center,
-            $justify-content: center,
-            $wrap: nowrap,
-            $gap: 0)
+    .line-form-item div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 0;
     }
+}
+.partner-source-list .partner-source-list-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-bottom: 5px;
+    gap: 8px;
+}
 
-    .partner-source-list .partner-source-list-item {
-        @include mut.flexed($direction: row,
-            $align-items: center,
-            $justify-content: center,
-            $wrap: nowrap,
-            $gap: 5px)
-    }
+.save{
+    min-height: 50px;
+}
+.link-container{
+    padding:5px;
+    margin-bottom: 20px;
+    border: solid c.$lighter-gray-color 1px ;
+    border-radius: 7px;
+}
+.link-container:hover{
+    border-color: c.$ant-menu-color;
+}
+.social-media-form-item label {
+    white-space: nowrap;
+}
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.add-social-media-button{
+    margin-bottom: 15px;
+}
+.add-social-media-button:hover{
+    color:c.$text-red-color;
+    border-color:c.$ant-menu-color;
+}
+.plus-button:hover{
+    color: c.$text-red-color;
+    border-color:c.$ant-menu-color;
+}
+.close-button {
+    top: -5;
+    right: 0;
+    background-color: c.$ant-menu-color;
+    color:c.$pure-white-color;
+    height: 30px;
+}
+.close-button:hover {
+    background-color:c.$dark-red-color;
+    color:c.$pure-white-color;
+    border: none!important;
+}
+.custom-tooltip .ant-tooltip-inner {
+    background-color: c.$darkish-gray-color;
+    color: c.$pure-white-color; 
+}
+.error-text {
+    color: c.$ant-menu-color;
 }

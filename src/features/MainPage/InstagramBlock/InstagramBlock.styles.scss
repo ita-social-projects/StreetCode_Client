@@ -3,6 +3,7 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
+@use '@assets/sass/mixins/_utils.mixins.scss' as ut;
 
 .InstagramBlock {
     .sliderContainer {
@@ -18,7 +19,7 @@
 
             .slick-prev {
                 left: 20px !important;
-
+                
                 &::before {
                     content: url("@assets/images/utils/LeftSmallSliderArrow.svg");
                     opacity: 0.9;
@@ -37,8 +38,27 @@
         
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 20px);
-            @include mut.rem-padded($bottom: 5px);
+            @include mut.rem-padded($bottom: 30px);
             @include mut.rem-margined($left: 20px);
+
         }
+
+        .instagramButton {
+                    height: f.pxToRem(46px);
+                    @include mut.full-rounded(14px);
+                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+                    @include mut.rem-margined($left: 10px, $right: 10px, $top: 40px);
+                    padding: f.pxToRem(25px) 0;
+                    min-width: f.pxToRem(267px);
+                    text-align: center;
+                    @include ut.flex-centered();
+                    cursor: pointer;
+                    background-color: c.$accented-red-color;
+                    color: c.$pure-white-color;
+        
+                    &:hover {
+                        background-color: c.$dark-red-color;
+                    }
+                }
     }
 }

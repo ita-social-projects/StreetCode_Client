@@ -3,6 +3,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/_utils.functions.scss" as f;
 
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
@@ -62,21 +63,18 @@
                 display: none;
             }
         }
-
-        @media screen and (max-width: 1024px) {
-            .sourcesSliderContainer {
-                .slick-track {
-                    @include mut.flexed($justify-content: flex-start, $align-items: flex-start, $gap: 10px);
-                    margin: 0 10px;
-                }
-            }
-        }     
     }
 }
 
 @media screen and (max-width: 780px) {
     .sourcesWrapper .sourcesContainer {
         margin-bottom: 0;
+    }
+    .sourcesWrapper .sliderClass .slick-track {
+        gap: f.pxToRem(5px);
+    }
+    .sourcesWrapper .slick-dots{
+        left: f.pxToRem(1px);
     }
 }
 

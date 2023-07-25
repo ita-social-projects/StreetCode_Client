@@ -21,7 +21,7 @@ const InterestingFactsComponent = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId && getStreetCodeId > 0) {
-                factsStore.fetchFactsByStreetcodeId(getStreetCodeId).then(() =>{
+                factsStore.fetchFactsByStreetcodeId(getStreetCodeId).then(() => {
                     const res = factsStore.getFactArray;
                     Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
                         res[index].image = img;
@@ -40,7 +40,7 @@ const InterestingFactsComponent = () => {
     );
 
     const setings = {
-        dots: sliderArray.length >= 2,
+        dots: facts.current.length >= 2,
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
@@ -74,47 +74,48 @@ const InterestingFactsComponent = () => {
         ],
     };
     return (
-        facts.current.length > 0
-            ? (
-                <div
-                    id="wow-facts"
-                    className={`container "interestingFactsWrapper"
-                    ${facts.current.length === 1 ? 'single' : ''} 
-                    ${facts.current.length ? '' : 'display-none'}`}
-                >
-                    <BlockHeading headingText="Wow—факти" />
-                    <div className={`interestingFactsContainer
-                    ${facts.current.length === 1 ? 'singleFact' : ''}`}
+        <div>
+            {facts.current.length > 0
+                ? (
+                    <div
+                        id="wow-facts"
+                        className={`container "interestingFactsWrapper"
+                    ${facts.current.length === 1 ? 'single' : ''}`}
                     >
-                        <div className="interestingFactsSliderContainer">
-                            <div style={{ height: '100%' }}>
-                                {(facts.current.length === 1) ? (
-                                    <div className="singleSlideContainer">
-                                        <InterestingFactItem
-                                            numberOfSlides={1}
-                                            fact={facts.current[0]}
-                                        />
-                                    </div>
-                                ) : (
-                                    <BlockSlider
-                                        className="heightContainer"
-                                        {...setings}
-                                    >
-                                        {sliderArray.map((fact) => (
+                        <BlockHeading headingText="Wow—факти" />
+                        <div className={`interestingFactsContainer
+                    ${facts.current.length === 1 ? 'singleFact' : ''}`}
+                        >
+                            <div className="interestingFactsSliderContainer">
+                                <div style={{ height: '100%' }}>
+                                    {(facts.current.length === 1) ? (
+                                        <div className="singleSlideContainer">
                                             <InterestingFactItem
-                                                key={fact.id}
-                                                fact={fact}
-                                                numberOfSlides={sliderArray.length}
+                                                numberOfSlides={1}
+                                                fact={facts.current[0]}
                                             />
-                                        ))}
-                                    </BlockSlider>
-                                )}
+                                        </div>
+                                    ) : (
+                                        <BlockSlider
+                                            className="heightContainer"
+                                            {...setings}
+                                        >
+                                            {sliderArray.map((fact) => (
+                                                <InterestingFactItem
+                                                    key={fact.id}
+                                                    fact={fact}
+                                                    numberOfSlides={sliderArray.length}
+                                                />
+                                            ))}
+                                        </BlockSlider>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )
-            : <></>
+                )
+                : <></>}
+        </div>
     );
 };
 

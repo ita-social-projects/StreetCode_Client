@@ -1,24 +1,31 @@
 import './StatisticsToponymsAdmin.styles.scss';
 
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import useMobx from '@app/stores/root-store';
+import { ModelState } from '@models/enums/model-state';
+import GetAllToponymsResponse from '@models/toponyms/getAllToponyms.response';
+import Toponym, { ToponymCreateUpdate } from '@models/toponyms/toponym.model';
 
 import { Button, Checkbox, InputNumber, Pagination } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import Table from 'antd/es/table/Table';
 
 import ToponymsApi from '@/app/api/map/toponyms.api';
-import useMobx from '@/app/stores/root-store';
 import GetAllToponyms from '@/models/toponyms/getAllToponyms.request';
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
-import { useParams } from 'react-router-dom';
 
 import SearchMenu from './SearchMenu.component';
-import GetAllToponymsResponse from '../../../../../models/toponyms/getAllToponyms.response';
-import Toponym from '../../../../../models/toponyms/toponym.model';
+
+interface MapedToponyms {
+    key: number | undefined,
+    streetName: string | undefined,
+    checked: boolean | false
+}
 
 const StatisticsToponymsComponentAdmin = () => {
     const { newStreetcodeInfoStore } = useMobx();
-    const [titleRequest, setTitleRequest] = useState<string | "">("");
+    const [titleRequest, setTitleRequest] = useState<string | ''>('');
     const [pageRequest, setPageRequest] = useState<number | null>(null);
     const [amountRequest, setAmountRequest] = useState<number | null>(null);
     const [mustChecked, setMustChecked] = useState<(string | undefined)[]>();
@@ -27,7 +34,7 @@ const StatisticsToponymsComponentAdmin = () => {
     const [toponyms, setToponyms] = useState<Toponym[]>();
 
     const requestDefault: GetAllToponymsRequest = {
-        Title: "",
+        Title: '',
         Page: null,
         Amount: null,
     };
@@ -40,18 +47,23 @@ const StatisticsToponymsComponentAdmin = () => {
         })
     };
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedToponyms[]>([]);
+
     useEffect(() => {
         if (parseId) {
-            ToponymsApi.getByStreetcodeId(parseId).then(result => {
-                setMustChecked(result.map(x => { return x.streetName; }));
-
+            ToponymsApi.getByStreetcodeId(parseId).then((result) => {
+                setMustChecked(result.map((x) => x.streetName));
+                const persistedItems: ToponymCreateUpdate[] = result.map((toponym) => ({
+                    toponymId: toponym.id,
+                    streetName: toponym.streetName,
+                    isPersisted: true,
+                    modelState: ModelState.Updated,
+                    streetcodeId: parseId,
+                }));
+                newStreetcodeInfoStore.SelectedToponyms = persistedItems;
             });
         }
-    }, [])
-    useEffect(() => {
-        mustChecked?.map(result => newStreetcodeInfoStore.selectedToponyms.push(result??""))
+    }, []);
 
-    }, [mustChecked]);
     const columnsNames = [
         {
             title: ' ',
@@ -59,43 +71,47 @@ const StatisticsToponymsComponentAdmin = () => {
             key: 'checkbox',
             width: 6,
 
-            render: (text) => (
-                <Checkbox defaultChecked={mustChecked?.includes(text) } onChange={(e: CheckboxChangeEvent) => {
-                    const indexValue = newStreetcodeInfoStore.selectedToponyms.indexOf(text);
-                    if (e.target.checked) {
-                        if (indexValue < 0) {
-                            newStreetcodeInfoStore.selectedToponyms.push(text);
+            render: (text, record, index) => (
+                <Checkbox
+                    defaultChecked={mustChecked?.includes(text)}
+                    onChange={(e: CheckboxChangeEvent) => {
+                        const toponym = newStreetcodeInfoStore.selectedToponyms.find((x) => x.toponymId === record.key);
+                        if (e.target.checked) {
+                            if (toponym) {
+                                toponym.modelState = ModelState.Updated;
+                            } else {
+                                const newToponym: ToponymCreateUpdate = {
+                                    toponymId: record.key,
+                                    streetName: text,
+                                    streetcodeId: parseId ?? 0,
+                                    modelState: ModelState.Created,
+                                };
+                                newStreetcodeInfoStore.selectedToponyms.push(newToponym);
+                            }
+                        } else if (toponym?.isPersisted) {
+                            toponym.modelState = ModelState.Deleted;
+                        } else {
+                            newStreetcodeInfoStore.selectedToponyms = newStreetcodeInfoStore
+                                .selectedToponyms.filter((t) => t !== text);
                         }
-                    } else if (indexValue >= 0) {
-                        newStreetcodeInfoStore.SelectedToponyms = newStreetcodeInfoStore
-                            .selectedToponyms.filter((t) => t !== text);
-                    }
-
-                }}
+                    }}
                 />
             ),
         },
         {
             title: 'Топонім',
             dataIndex: 'streetName',
-            width: 150,
+            width: 120,
             key: 'streetName',
         },
 
     ];
-    interface MapedToponyms {
-        key: number | undefined,
-        streetName: string | undefined,
-        checked: boolean | false
-    }
 
     useEffect(() => {
-        if (requestGetAll.Title === "" && parseId) {
+        if (requestGetAll.Title === '' && parseId) {
             ToponymsApi.getByStreetcodeId(parseId).then((x) => setToponyms(x));
-        } else if (requestGetAll.Title !== "") {
-            ToponymsApi.getAll(requestGetAll).then((response) =>
-                setToponyms(response.toponyms)
-            );
+        } else {
+            ToponymsApi.getAll(requestGetAll).then((response) => setToponyms(response.toponyms));
         }
     }, [requestGetAll, parseId]);
     
@@ -113,7 +129,6 @@ const StatisticsToponymsComponentAdmin = () => {
         setMapedStreetCodes(mappedStreetCodes);
     }, [toponyms, mustChecked]);
 
-
     return (
         <div className="ToponymsTableWrapper">
             <SearchMenu setTitle={setTitleRequest} setRequest={setRequest} />
@@ -129,4 +144,3 @@ const StatisticsToponymsComponentAdmin = () => {
     );
 };
 export default StatisticsToponymsComponentAdmin;
-

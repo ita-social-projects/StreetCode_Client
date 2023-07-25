@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Video from '@models/media/video.model';
 
 import { Button, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 
-import Video from '../../../../../../models/media/video.model';
-
 interface Props {
     inputInfo: Partial<TextInputInfo> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
     video: Video | undefined;
     setVideo: React.Dispatch<Video | undefined>;
+    onChange: (field: string, value: any) => void;
 }
 
 const videoPattern = 'https?://www.youtube.com/watch.+';
@@ -22,7 +22,7 @@ const linkConverter = (link: string) => {
         return link;
     }
     let fixedlink = link;
-    console.log(link);
+
     if (link.indexOf('&') >= 0) {
         const index = link.indexOf('&');
         fixedlink = link.slice(0, index);
@@ -32,17 +32,21 @@ const linkConverter = (link: string) => {
         : fixedlink;
 };
 
-const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
+const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo, onChange }: Props) => {
     const [showPreview, setShowPreview] = useState(false);
+
     useEffect(() => {
-        setInputInfo((info) => ({ ...info, link: video?.url.href }));
+        setInputInfo((info) => ({ ...info, link: video?.url }));
     }, [video]);
+
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputInfo({ ...inputInfo, link: e.target.value });
+        const { value } = e.target;
+        setInputInfo({ ...inputInfo, link: value });
         setVideo(video);
+        onChange('link', value);
     };
     const { id } = useParams<any>();
-    const parseId = id ? + id : null;
+    const parseId = id ? +id : null;
 
     return (
         <FormItem
@@ -65,7 +69,7 @@ const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo }: Props) => {
                     className="streetcode-custom-button button-margin-vertical"
                     onClick={() => setShowPreview(!showPreview)}
                 >
-                        Попередній перегляд
+                    Попередній перегляд
                 </Button>
                 {
                     inputInfo?.link && showPreview && inputInfo.link.indexOf('watch') > -1 ? (

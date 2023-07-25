@@ -6,34 +6,38 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
 import UserLoginStore from '../stores/user-login-store';
 
-axios.defaults.baseURL = 'https://localhost:5001/api';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development'
+    ? 'https://localhost:5001/api' : 'http://185.230.138.173:5000/api';
 
 axios.interceptors.response.use(
     async (response) => response,
     ({ response, message }: AxiosError) => {
+        let errorMessage = '';
         if (message === 'Network Error') {
-            toast.error(message);
+            errorMessage = message;
         }
-
         switch (response?.status) {
         case StatusCodes.INTERNAL_SERVER_ERROR:
-            toast.error(ReasonPhrases.INTERNAL_SERVER_ERROR);
+            errorMessage = ReasonPhrases.INTERNAL_SERVER_ERROR;
             break;
         case StatusCodes.UNAUTHORIZED:
-            toast.error(ReasonPhrases.UNAUTHORIZED);
+            errorMessage = ReasonPhrases.UNAUTHORIZED;
             redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
             break;
         case StatusCodes.NOT_FOUND:
-            toast.error(ReasonPhrases.NOT_FOUND);
+            errorMessage = ReasonPhrases.NOT_FOUND;
             break;
         case StatusCodes.BAD_REQUEST:
-            toast.error(ReasonPhrases.BAD_REQUEST);
+            errorMessage = ReasonPhrases.BAD_REQUEST;
             break;
         case StatusCodes.FORBIDDEN:
-            toast.error(ReasonPhrases.FORBIDDEN);
+            errorMessage = ReasonPhrases.FORBIDDEN;
             break;
         default:
             break;
+        }
+        if (errorMessage !== '' && process.env.NODE_ENV === 'development') {
+            toast.error(errorMessage);
         }
 
         return Promise.reject(message);
@@ -63,7 +67,8 @@ const Agent = {
 
     delete: async <T>(url: string) => {
         axios.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
-        axios.delete<T>(url).then(responseBody);
+        return axios.delete<T>(url)
+            .then(responseBody);
     },
 };
 

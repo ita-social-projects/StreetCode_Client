@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useCallback, useState } from 'react';
+import useMobx from '@app/stores/root-store';
+
 import { Modal } from 'antd';
-// eslint-disable-next-line import/extensions
-import useMobx from '@/app/stores/root-store';
+
 import TimelineItem from '@/models/timeline/chronology.model';
 
-const NewTimelineItem: React.FC<{
-    timelineItem: TimelineItem, setModalOpened: React.Dispatch<React.SetStateAction<boolean>>,
-    setEditTimelineItem: React.Dispatch<React.SetStateAction<TimelineItem | undefined>>
-}> = ({ timelineItem, setModalOpened, setEditTimelineItem }) => {
+interface NewTimelineItemProps {
+    timelineItem: TimelineItem;
+    setModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
+    setEditTimelineItem: React.Dispatch<React.SetStateAction<TimelineItem | undefined>>;
+    onChange: (field: string, value: any) => void;
+}
+
+const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
+    timelineItem,
+    setModalOpened,
+    setEditTimelineItem,
+    onChange,
+}) => {
     const { timelineItemStore } = useMobx();
     const [visibleModal, setVisibleModal] = useState(false);
     const handleRemove = useCallback(() => {
@@ -42,7 +51,10 @@ const NewTimelineItem: React.FC<{
                 <Modal
                     title="Ви впевнені, що хочете видалити цей таймлайн?"
                     open={visibleModal}
-                    onOk={(e) => { timelineItemStore.deleteTimelineFromMap(timelineItem.id); setVisibleModal(false); }}
+                    onOk={(e) => {
+                        timelineItemStore.deleteTimelineFromMap(timelineItem.id); setVisibleModal(false);
+                        onChange('timelineItem', timelineItem);
+                    }}
                     onCancel={handleCancelModalRemove}
                 />
             </div>

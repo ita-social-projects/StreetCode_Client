@@ -74,7 +74,7 @@ const ContactForm = () => {
                 <div className="captchaBlock ">
                     <ReCAPTCHA
                         className="required-input"
-                        sitekey="6LdB8FklAAAAANYoDp7OKxhl2QmgKOf-guyklyYK"
+                        sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
                         onChange={handleVerify}
                     />
                 </div>

@@ -6,17 +6,18 @@ import { Editor } from '@tinymce/tinymce-react';
 
 import FormItem from 'antd/es/form/FormItem';
 
-import TextInputInfo from '../../InputType/TextInputInfo.model';
+import { Text } from '@/models/streetcode/text-contents.model';
 
 interface Props {
-    inputInfo: Partial<TextInputInfo> | undefined;
-    setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
+    inputInfo: Partial<Text> | undefined;
+    setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
+    onChange: (field: string, value: any) => void;
 }
 
-const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
-    Props) => {
+const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo, onChange }: Props) => {
     const handleEditorChange = (content: string, editor: any) => {
         setInputInfo({ ...inputInfo, additionalText: content });
+        onChange('additionalText', content);
     };
 
     return (
@@ -24,6 +25,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
             <Editor
                 onEditorChange={handleEditorChange}
                 init={{
+                    language: 'uk',
                     height: 300,
 
                     menubar: false,
@@ -33,7 +35,7 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
                     plugins: [
                         'autolink',
                         'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                        'insertdatetime', 'wordcount', 'link', 'lists', /* 'formatselect', */
                     ],
                     toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                         + 'formats blockformats align | removeformat strikethrough ',
@@ -48,6 +50,6 @@ const AdditionalTextBlockAdminForm = ({ inputInfo, setInputInfo }:
             />
         </FormItem>
     );
-}
+};
 
 export default observer(AdditionalTextBlockAdminForm);

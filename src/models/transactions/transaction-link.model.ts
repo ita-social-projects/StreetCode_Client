@@ -1,10 +1,8 @@
 import Url from '@models/additional-content/url.model';
-import Streetcode from '@models/streetcode/streetcode-types.model';
 
 export default interface TransactionLink {
     id: number;
-    url: Url;
-    qrCodeUrl: Url;
+    url: string;
+    urlTitle: string;
     streetcodeId: number;
-    streetcode?: Streetcode | undefined;
 }

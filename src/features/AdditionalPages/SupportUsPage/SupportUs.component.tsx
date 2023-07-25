@@ -2,6 +2,7 @@ import './SupportUs.styles.scss';
 import '../ContactUsPage/Title/Title.styles.scss';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { copyBankNumberEvent, donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Footer from '@/app/layout/footer/Footer.component';
 import { useModalContext } from '@/app/stores/root-store';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
@@ -14,15 +15,26 @@ import QRCodeSmall from '@/assets/images/donates/donatesPage/qr-code-small.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 
 import DonationBlock from './components/DonationBlock.component';
+import { useState } from 'react';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useModalContext();
     const BANK_ACCOUNT = 'UA753057490000026003000018553';
 
     const windowSize = useWindowSize();
+    
+    const [isCopied, setIsCopied] = useState(false);
+
+    const handleAfterCopy = () => {
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000 );
+    };
 
     const handleCopy = async () => {
         try {
+            copyBankNumberEvent();
             await navigator.clipboard.writeText(BANK_ACCOUNT);
         } catch {
             alert("No permission to copy bank account to the clipboard!");
@@ -30,6 +42,7 @@ const SupportUs = () => {
     };
 
     const handlePay = () => {
+        donateEvent('support_us_page');
         window.location.assign('https://pay.mbnk.biz/IyAdn53wljbN');
     };
 
@@ -39,7 +52,7 @@ const SupportUs = () => {
                 <div className="heading">
                     <div className="titleBig">
                         {' '}
-Підтримати
+                        Підтримати
                         {' '}
                         {windowSize.width >= 480 && <>нас</>}
                     </div>
@@ -98,20 +111,20 @@ const SupportUs = () => {
                 <div className="donateSubBlocks">
                     <div className="block qr">
                         <p className="heading">На карту</p>
-	                    <div className="content">
+                        <div className="content">
                             {
                                 windowSize.width > 1200 ? <QRCode />
                                     : windowSize.width > 480 ? <QRCodeSmall />
                                         : undefined
                             }
-                     </div>
+                        </div>
                         <button className="supportButton" onClick={handlePay}>Задонатити</button>
                     </div>
                     <div className="block forCompanies">
                         <p className="heading">Для компаній</p>
                         <div className="content">
                             <p>
-Сконтактуй з нашою командою щодо Стріткод—партнерства та внесків на
+                                Сконтактуй з нашою командою щодо Стріткод—партнерства та внесків на
                                 історію в просторі міст від юридичних осіб. Раді будемо запартнеритися
                                 із соціально—відповідальним бізнесом.
 
@@ -131,10 +144,14 @@ const SupportUs = () => {
                                 <p className="thickerText">{BANK_ACCOUNT}</p>
                             </div>
                         </div>
-                        <div className="supportButton withSvg" onClick={handleCopy}>
-                            <span>Скопіювати рахунок UAH</span>
-                            <Copy />
+                        <div>
+                            <button className="supportButton withSvg" onClick={() => {handleCopy(); handleAfterCopy();}}>
+                                <span>Скопіювати рахунок UAH</span>
+                                <Copy />
+                            </button>
+                            {isCopied && <div className='CoppyMessage'>Скопійовано  </div>}
                         </div>
+
                     </div>
                 </div>
                 <p className="bottomText">

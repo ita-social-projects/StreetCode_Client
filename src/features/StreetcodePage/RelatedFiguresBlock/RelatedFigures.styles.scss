@@ -29,8 +29,8 @@ $moreInfo-width: 150px;
 
 .moreInfo {
     position: absolute;
-    bottom: 0;
-    left: f.pxToRem(15px);
+    right: 0;
+    top: -90px;
 
     width: $moreInfo-width;
     p {

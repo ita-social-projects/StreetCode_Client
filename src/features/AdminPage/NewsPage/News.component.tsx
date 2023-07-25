@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -12,8 +13,8 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
-import PageBar from '../PageBar/PageBar.component';
 import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
+import PageBar from '../PageBar/PageBar.component';
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -47,7 +48,7 @@ const Newss: React.FC = observer(() => {
             key: 'title',
             render(value, record) {
                 return (
-                    <div /* onClick={() => window.open(`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/${record.url}`, '_blank')}*/>
+                    <div onClick={() => window.open(`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/${record.url}`, '_blank')}>
                         {value}
                     </div>
                 );
@@ -118,7 +119,7 @@ const Newss: React.FC = observer(() => {
                     />
 
                 </div>
-            )
+            ),
         },
     ];
     return (

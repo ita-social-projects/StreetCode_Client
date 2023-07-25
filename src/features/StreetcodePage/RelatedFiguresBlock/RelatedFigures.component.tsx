@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import './RelatedFigures.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -113,11 +114,13 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                             <BlockSlider {...sliderProps}>
                                 {windowsize.width > 480 ? sliderItems : sliderItemsMobile}
                             </BlockSlider>
-                            <div className="moreInfo">
-                                <p onClick={(e) => handleClick(e)}>
+                            {getRelatedFiguresArray.length > 4 && (
+                                <div className="moreInfo">
+                                    <p onClick={(e) => handleClick(e)}>
                                     Дивитися всіх
-                                </p>
-                            </div>
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

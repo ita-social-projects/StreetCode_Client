@@ -27,8 +27,7 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
         } else {
             const file = uploadParams.file.originFileObj as RcFile;
             if (file) {
-                const blob = new Blob([file], { type: file.type });
-                reader.readAsDataURL(blob);
+                reader.readAsDataURL(file);
             }
         }
         if (uploadProps.onChange) {
@@ -53,7 +52,6 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
                                      extension: uplFile.name.substring(uplFile.name
                                          .lastIndexOf('.') + 1, uplFile.name.length),
                                      mimeType: uplFile.type!,
-                                     alt: uplFile.name,
                                      title: uplFile.name };
         return ImagesApi.create(image);
     };
@@ -83,6 +81,7 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
 
         checkInfo();
     };
+
     return (
         <Upload
             {...uploadProps}
