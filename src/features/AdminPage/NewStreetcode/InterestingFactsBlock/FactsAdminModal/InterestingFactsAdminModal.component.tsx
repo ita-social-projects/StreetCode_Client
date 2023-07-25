@@ -182,7 +182,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             label="Підпис фото: "
                         >
                             <Input
-                                maxLength={100}
+                                maxLength={200}
                                 showCount
                                 onChange={(e) => onChange('imageDescription', e.target.value)}
                             />

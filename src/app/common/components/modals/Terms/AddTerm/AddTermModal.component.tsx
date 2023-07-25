@@ -61,7 +61,12 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                     label="Визначення"
                     rules={[{ required: true, message: 'Введіть опис' }]}
                 >
-                    <TextArea value={term?.description} onChange={handleChangeDesc} />
+                    <TextArea
+                        value={term?.description}
+                        onChange={handleChangeDesc}
+                        showCount
+                        maxLength={500}
+                    />
                 </FormItem>
                 <Button className="streetcode-custom-button" onClick={() => form.submit()}>
                     Зберегти
