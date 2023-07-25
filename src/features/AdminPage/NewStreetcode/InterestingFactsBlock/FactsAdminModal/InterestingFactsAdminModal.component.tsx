@@ -16,8 +16,9 @@ import TextArea from 'antd/es/input/TextArea';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
-import { Fact, FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model';
+import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model';
 
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
 
@@ -34,9 +35,11 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const imageId = useRef<number>(0);
     const [fileList, setFileList] = useState<UploadFile[]>();
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
     useEffect(() => {
         if (fact && open) {
+            setHasUploadedPhoto(true);
             imageId.current = fact.imageId;
             form.setFieldsValue({
                 title: fact.title,
@@ -65,8 +68,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         type: image.mimeType,
                     }] : []);
                 });
-        } else {
-            setFileList([]);
         }
     }, [fact, open, form]);
 
@@ -98,7 +99,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         }
         setModalOpen(false);
         form.resetFields();
+        setHasUploadedPhoto(false);
         onChange('fact', formValues);
+        setFileList([]);
     };
 
     return (
@@ -106,11 +109,19 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
             <Modal
                 className="modalContainer"
                 open={open}
-                onCancel={() => setModalOpen(false)}
+                onCancel={() => {
+                    setModalOpen(false);
+                }}
                 footer={null}
                 maskClosable
                 centered
-                closeIcon={<CancelBtn />}
+                closeIcon={(
+                    <CancelBtn onClick={() => {
+                        setFileList([]);
+                        form.resetFields();
+                    }}
+                    />
+                )}
             >
                 <div className="modalContainer-content">
                     <Form
@@ -125,10 +136,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             name="title"
                             label="Заголовок: "
                             rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
-                                { max: 68, message: 'Заголовок не може містити більше 68 символів ' },
                             ]}
                         >
-                            <Input onChange={(e) => onChange('title', e.target.value)} />
+                            <Input maxLength={68} showCount onChange={(e) => onChange('title', e.target.value)} />
                         </Form.Item>
 
                         <Form.Item
@@ -164,16 +174,20 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 listType="picture-card"
                                 maxCount={1}
                                 fileList={fileList}
-                                onSuccessUpload={(image: Image) => {
+                                onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;
+                                    setHasUploadedPhoto(true);
                                 }}
-                                onPreview={(file) => {
+                                onRemove={() => {
+                                    setHasUploadedPhoto(false);
+                                }}
+                                onPreview={() => {
                                     setPreviewOpen(true);
                                 }}
                             >
                                 <div>
                                     <InboxOutlined />
-                                    <p>+додати</p>
+                                    <p>{hasUploadedPhoto ? 'Змінити' : '+ Додати'}</p>
                                 </div>
                             </FileUploader>
                         </FormItem>
@@ -183,7 +197,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             label="Підпис фото: "
                         >
                             <Input
-                                maxLength={100}
+                                maxLength={200}
                                 showCount
                                 onChange={(e) => onChange('imageDescription', e.target.value)}
                             />

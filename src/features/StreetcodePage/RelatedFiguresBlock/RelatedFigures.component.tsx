@@ -19,7 +19,6 @@ interface Props {
 
 const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
     const { modalStore: { setModal } } = useModalContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { relatedFiguresStore } = useMobx();
     const { getRelatedFiguresArray } = relatedFiguresStore;
 
@@ -42,7 +41,6 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                                 res[index].image = img;
                             }))).then(() => {
                                 relatedFiguresStore.setInternalRelatedFiguresMap = res;
-                                streecodePageLoaderContext.addBlockFetched();
                             });
                         })]);
             }

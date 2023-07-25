@@ -1,7 +1,5 @@
 import './AdminPage.styles.scss';
 
-import { useState } from 'react';
-
 import PageBar from './PageBar/PageBar.component';
 import StreetcodesTable from './StreetcodesTable/StreetcodesTable.component';
 

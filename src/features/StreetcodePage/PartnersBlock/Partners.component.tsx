@@ -14,7 +14,6 @@ import PartnerItem from './PartnerItem/PartnerItem.component';
 
 const PartnersComponent = () => {
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const [partners, setPartners] = useState<Partner[]>([]);
 
     useAsync(
@@ -27,7 +26,7 @@ const PartnersComponent = () => {
                             .then((img) => {
                                 res[index].logo = img;
                             }))).then(() => {
-                            setPartners(res); streecodePageLoaderContext.addBlockFetched();
+                            setPartners(res);
                         });
                     });
             }

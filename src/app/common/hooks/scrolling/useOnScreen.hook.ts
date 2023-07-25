@@ -11,7 +11,7 @@ const useOnScreen = (ref: RefObject<HTMLElement>, classSelector: string) => {
             threshold: 1.0,
         };
         observerRef.current = new IntersectionObserver(([entry]) => {
-            setIsOnScreen(entry.intersectionRatio >= 0.5);
+            setIsOnScreen(entry.intersectionRatio <= 0.7);
         }, options);
     }, []);
 

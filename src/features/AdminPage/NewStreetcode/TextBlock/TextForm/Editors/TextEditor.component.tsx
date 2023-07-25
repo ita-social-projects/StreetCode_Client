@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
+import { element } from 'prop-types';
 
 import { AutoComplete, Button, message, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -12,6 +13,7 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term, Text } from '@/models/streetcode/text-contents.model';
 
 interface Props {
+    character_limit?: number;
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     onChange: (field: string, value: any) => void;
@@ -19,14 +21,14 @@ interface Props {
 
 const toolTipColor = '#8D1F16';
 
-const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
-
+const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
 
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
@@ -80,6 +82,7 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
     };
 
     useAsync(fetchTerms, []);
+    const maxLength = character_limit || 15000;
 
     return (
         <FormItem
@@ -101,6 +104,34 @@ const TextEditor = ({ inputInfo, setInputInfo, onChange } : Props) => {
                     toolbar: 'undo redo | bold italic | '
                         + 'removeformat',
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                }}
+                onPaste={(e, editor) => {
+                    const previousContent = editor.getContent({ format: 'text' });
+                    const clipboardContent = e.clipboardData?.getData('text') || '';
+                    const resultContent = previousContent + clipboardContent;
+                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
+
+                    if (selected.length >= clipboardContent.length) {
+                        return;
+                    }
+                    if (resultContent.length >= maxLength && isSelectionEnd) {
+                        // eslint-disable-next-line max-len
+                        editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
+                        e.preventDefault();
+                    }
+                    if (resultContent.length <= maxLength && !isSelectionEnd) {
+                        return;
+                    }
+                    if (resultContent.length >= maxLength && !isSelectionEnd) {
+                        e.preventDefault();
+                    }
+                }}
+                onKeyDown={(e, editor) => {
+                    if (editor.getContent({ format: 'text' }).length >= maxLength
+                        && !setOfKeys.has(e.key)
+                        && editor.selection.getContent({ format: 'text' }).length == 0) {
+                        e.preventDefault();
+                    }
                 }}
                 onChange={(e, editor) => {
                     setInputInfo({ ...inputInfo, textContent: editor.getContent() });

@@ -11,7 +11,7 @@ import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.compon
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
-    const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray, activeYear } = timelineItemStore;
+    const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
 
     useAsync(
