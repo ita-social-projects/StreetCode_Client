@@ -11,7 +11,7 @@ const TextsApi = {
         `${API_ROUTES.TEXTS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
     ),
 
-    getParsed: (text: TextPreviewContent) => Agent.post<string>(`${API_ROUTES.TEXTS.GET_PARSED}`, text),
+    updateParsed: (text: TextPreviewContent) => Agent.post<string>(`${API_ROUTES.TEXTS.UPDATE_PARSED}`, text),
 
     create: (text: Text) => Agent.post<Text>(`${API_ROUTES.TEXTS.CREATE}`, text),
 
