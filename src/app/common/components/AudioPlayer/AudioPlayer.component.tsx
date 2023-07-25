@@ -4,12 +4,12 @@ import PauseBtn from '@images/audio-player/PauseBtn.png';
 import PlayBtn from '@images/audio-player/PlayBtn.png';
 
 import React, { useEffect, useRef, useState } from 'react';
-import useMobx from '@stores/root-store';
+import { useAudioContext } from '@stores/root-store';
 
 import base64ToUrl from '../../utils/base64ToUrl.utility';
 
 const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay }) => {
-    const { audiosStore: { audio } } = useMobx();
+    const { audio } = useAudioContext();
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
     const audioPlayer = useRef<HTMLMediaElement>(null);

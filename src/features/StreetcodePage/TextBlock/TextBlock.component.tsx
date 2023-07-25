@@ -29,6 +29,7 @@ const TextComponent = () => {
                 .then(([textResult, videoResult]) => {
                     setText(textResult);
                     setVideo(videoResult);
+                    streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((error) => {
                     console.error(error);
