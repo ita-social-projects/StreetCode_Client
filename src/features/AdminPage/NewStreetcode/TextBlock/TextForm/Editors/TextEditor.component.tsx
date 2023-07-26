@@ -29,7 +29,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
     const [editor, setEditor] = useState(null);
-    console.log(inputInfo?.textContent);
+
     useEffect(() => {
         if (inputInfo?.textContent) {
             if (editor) {
