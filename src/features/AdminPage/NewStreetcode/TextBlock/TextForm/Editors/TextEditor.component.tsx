@@ -28,6 +28,16 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
+    const [editor, setEditor] = useState(null);
+    console.log(inputInfo?.textContent);
+    useEffect(() => {
+        if (inputInfo?.textContent) {
+            if (editor) {
+                editor.setContent(inputInfo.textContent);
+            }
+        }
+    }, [inputInfo?.textContent, editor]);
+
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
 
     const invokeMessage = (context: string, success: boolean) => {
@@ -94,6 +104,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     max_chars: 1000,
                     menubar: false,
                     init_instance_callback(editor) {
+                        setEditor(editor);
                         editor.setContent(inputInfo?.textContent ?? '');
                     },
                     plugins: [
