@@ -14,6 +14,7 @@ import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import Toponym from '@/models/toponyms/toponym.model';
 
 import CustomMarkerCluster from './MarkerCluster/MarkerClusterWrapper.component';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 
 const centerOfUkraine = {
     latitude: 48.4501,
@@ -21,21 +22,22 @@ const centerOfUkraine = {
 };
 
 interface Props {
-    streetcodeCoordinates: StreetcodeCoordinate[],
+    statisticRecord: StatisticRecord[],
     toponyms: Toponym[]
 }
 
-const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
+const MapOSM = ({  statisticRecord, toponyms }: Props) => {
     const { checkboxStore } = useMobx();
     const { checkBoxesState: { streetcodes, streets } } = checkboxStore;
     const [defaultZoom, setDefaultZoom] = useState(6.4);
+
     const mapOptions = {
         gestureHandling: true,
     };
     useEffect(() => {
         function handleResize() {
             if (window.innerWidth <= 480) {
-                setDefaultZoom(4.95);
+                setDefaultZoom(4.9);
             } else if (window.innerWidth <= 1024) {
                 setDefaultZoom(5.5);
             } else {
@@ -47,6 +49,7 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
     L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
+    
     // if you need to use the previous second map
     // return (
     //     <div className="mapCentered">
@@ -78,7 +81,7 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
                 center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]}
                 zoom={defaultZoom}
                 maxZoom={20}
-                minZoom={1}
+                minZoom={2}
                 zoomControl={false}
                 className="mapContainer"
                 scrollWheelZoom
@@ -90,12 +93,12 @@ const MapOSM = ({ streetcodeCoordinates, toponyms }: Props) => {
 
                 {streetcodes?.isActive && (
                     <CustomMarkerCluster>
-                        {streetcodeCoordinates?.map((sc) => <CustomMarker key={sc.id} latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)} />)}
+                        {statisticRecord?.map((sc) => <CustomMarker key={sc.id} latitude={sc.streetcodeCoordinate.latitude} longtitude={sc.streetcodeCoordinate.longtitude} title={String(sc.id)} description={sc.address} isStreetcode={true} />)}
                     </CustomMarkerCluster>
                 )}
                 {streets?.isActive && (
                     <CustomMarkerCluster>
-                        {toponyms?.map((t) => <CustomMarker key={t.id} latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`} />)}
+                        {toponyms?.map((t) => <CustomMarker key={t.id} latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`} isStreetcode={false} />)}
                     </CustomMarkerCluster>
                 )}
 

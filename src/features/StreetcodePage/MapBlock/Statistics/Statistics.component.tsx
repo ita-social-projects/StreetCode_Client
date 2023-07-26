@@ -37,7 +37,7 @@ const [headingText, setHeadingText] = useState('цього стріткоду');
     const countByStreetTypeMap = countByStreetType(toponyms);
     return (
         <div className="statisticsContainer">
-          <h1>В Україні іменем "{headingText}" названі:</h1>
+          <h1>В Україні іменем «{headingText}» названі:</h1>
           <div className="streetsBlock" style={{ display: 'flex', flexWrap: 'wrap' }}>
             {countByStreetTypeMap &&
               [...countByStreetTypeMap.entries()].map(([streetType, count]) => (
