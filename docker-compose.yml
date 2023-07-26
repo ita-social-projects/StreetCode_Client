@@ -15,7 +15,7 @@ services:
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
-    health_check:
+    healthcheck:
       test: curl --fail http://localhost || exit 1
       interval: 30s
       timeout: 10s
@@ -37,7 +37,7 @@ services:
       - type: bind
         source: /imagestorage
         target: /mnt/data
-    health_check:
+    healthcheck:
       test: curl --fail http://localhost/api/partners/getAll || exit 1
       interval: 30s
       timeout: 10s
