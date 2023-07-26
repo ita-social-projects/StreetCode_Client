@@ -156,6 +156,8 @@ const NewStreetcode = () => {
                 form.setFieldsValue({
                     streetcodeNumber: x.index,
                     mainTitle: x.title,
+                    name: x.firstName,
+                    surname: x.lastName,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
                     streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
@@ -478,8 +480,8 @@ const NewStreetcode = () => {
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
 
-                            {process.env.NODE_ENV === 'production'
-                                ? <MapBlockAdmin /> : null}
+                            
+                            <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />

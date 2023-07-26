@@ -70,7 +70,11 @@ const EditTermModal = ({ handleEdit, term } : Props) => {
                     label="Визначення"
                     rules={[{ required: true, message: 'Введіть опис' }]}
                 >
-                    <TextArea value={term?.description} />
+                    <TextArea
+                        value={term?.description}
+                        showCount
+                        maxLength={500}
+                    />
                 </FormItem>
                 <Button className="streetcode-custom-button" onClick={() => form.submit()}>
                     Зберегти

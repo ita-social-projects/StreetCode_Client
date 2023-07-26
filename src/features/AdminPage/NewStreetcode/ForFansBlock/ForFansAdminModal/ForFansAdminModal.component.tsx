@@ -20,19 +20,23 @@ import {
 } from '@/models/sources/sources.model';
 
 interface Props {
+    character_limit?: number;
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
     allCategories: SourceCategoryName[],
     onChange: (field: string, value: any) => void,
 }
 
-const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
+const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange } : Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [form] = Form.useForm();
+    const [selectedText, setSelected] = useState('');
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
+    const maxLength = character_limit || 1000;
     const getAvailableCategories = (): SourceCategoryName[] => {
         const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
             .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
@@ -171,7 +175,39 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
                             toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
                      + 'formats blockformats align | removeformat strikethrough ',
                             toolbar_mode: 'sliding',
+                            language: "uk",
                             content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                        }}
+                        onPaste={(e, editor) => {
+                            const previousContent = editor.getContent({ format: 'text' });
+                            const clipboardContent = e.clipboardData?.getData('text') || '';
+                            const resultContent = previousContent + clipboardContent;
+                            const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
+
+                            if (selectedText.length >= clipboardContent.length) {
+                                return;
+                            }
+                            if (resultContent.length >= maxLength && isSelectionEnd) {
+                                // eslint-disable-next-line max-len
+                                editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
+                                e.preventDefault();
+                            }
+                            if (resultContent.length <= maxLength && !isSelectionEnd) {
+                                return;
+                            }
+                            if (resultContent.length >= maxLength && !isSelectionEnd) {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyDown={(e, editor) => {
+                            if (editor.getContent({ format: 'text' }).length >= maxLength
+                                && !setOfKeys.has(e.key)
+                                && editor.selection.getContent({ format: 'text' }).length == 0) {
+                                e.preventDefault();
+                            }
+                        }}
+                        onSelectionChange={(e, editor) => {
+                            setSelected(editor.selection.getContent());
                         }}
                     />
                 </FormItem>

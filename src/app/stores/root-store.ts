@@ -110,17 +110,20 @@ export const modalDataStore:ModalDataStore = {
 };
 
 export const toponymDataStore:ToponymStore = new ToponymStore();
-export const streecodePageLoaderStore = new StreetcodePageLoaderStore();
+export const streecodePageLoaderStore:StreetcodePageLoaderStore = new StreetcodePageLoaderStore();
+export const audioDataStore: AudioStore = new AudioStore();
 
 const streecodePageLoaderContext = createContext(streecodePageLoaderStore);
 const streetcodeContext = createContext(streetcodeDataStore);
 const modalContext = createContext(modalDataStore);
 const toponymContext = createContext(toponymDataStore);
+const audioContext = createContext(audioDataStore);
 
 export const useStreetcodeDataContext = () => useContext(streetcodeContext);
 export const useModalContext = () => useContext(modalContext);
 export const useToponymContext = () => useContext(toponymContext);
 export const useStreecodePageLoaderContext = () => useContext(streecodePageLoaderContext);
+export const useAudioContext = () => useContext(audioContext);
 
 const StoreContext = createContext(store);
 

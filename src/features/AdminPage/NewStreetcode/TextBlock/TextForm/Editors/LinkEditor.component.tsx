@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Youtube from 'react-youtube';
 import Video from '@models/media/video.model';
 
 import { Button, Input } from 'antd';
@@ -15,73 +16,87 @@ interface Props {
     onChange: (field: string, value: any) => void;
 }
 
-const videoPattern = 'https?://www.youtube.com/watch.+';
+const insertYouTubeId = (videoId: string): string => `https://youtube.com/watch?=${videoId}`;
+// eslint-disable-next-line max-len
+const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+const youtubeIdRegex = /[?&]v=([^&]+)/;
 
-const linkConverter = (link: string) => {
-    if (!link) {
-        return link;
-    }
-    let fixedlink = link;
-
-    if (link.indexOf('&') >= 0) {
-        const index = link.indexOf('&');
-        fixedlink = link.slice(0, index);
-    }
-    return fixedlink?.includes('/watch?v=')
-        ? fixedlink.replace('/watch?v=', '/embed/')
-        : fixedlink;
-};
-
-const LinkEditor = ({ inputInfo, setInputInfo, video, setVideo, onChange }: Props) => {
+const LinkEditor = ({
+    inputInfo, setInputInfo, video, setVideo, onChange,
+}: Props) => {
     const [showPreview, setShowPreview] = useState(false);
+    const [youtubeId, setYoutubeId] = useState<string>('');
+
+    const getYouTubeId = (url: string): string | null => {
+        const match = url.match(youtubeRegex) ?? url.match(youtubeIdRegex) ?? null;
+
+        if (match) {
+            const videoId = match[0].match(/[\w\d_-]{11}/);
+            if (videoId) {
+                setYoutubeId(videoId[0]);
+                return videoId[0];
+            }
+        }
+        return null;
+    };
 
     useEffect(() => {
         setInputInfo((info) => ({ ...info, link: video?.url }));
     }, [video]);
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setInputInfo({ ...inputInfo, link: value });
-        setVideo(video);
-        onChange('link', value);
+        const { value } = (e.target as HTMLInputElement);
+        if (value) {
+            const id = getYouTubeId(value);
+            if (id) {
+                const url = insertYouTubeId(id);
+                setInputInfo({ ...inputInfo, link: url });
+                setVideo(video);
+                onChange('link', inputInfo?.link);
+            }
+        }
     };
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
+
+    const opts = {
+        height: '390',
+        width: '640',
+        playerVars: {
+            autoplay: 1,
+        },
+    };
 
     return (
         <FormItem
             name="video"
             label="Відео"
+            // eslint-disable-next-line max-len
+            rules={[{ pattern: youtubeRegex, message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL' },
+                { required: true, message: 'Вставте, будь ласка, youtube.com посилання.' }]}
         >
             <div className="youtube-block">
                 <Input
                     title="video"
-                    value={inputInfo?.link ?? ''}
+                    value={inputInfo?.link}
                     className="smallerInput"
-                    placeholder="ex. https://www.youtube.com"
-                    pattern={videoPattern}
+                    placeholder="Прик.: https://youtube.com/watch?=v3siIQi4nCQ або https://youtu.be/v3siIQi4nCQ"
                     name="link"
                     required={!parseId}
                     onChange={handleLinkChange}
+                    onInput={() => setInputInfo((info) => ({ ...info, link: '' }))}
                 />
                 <Button
-                    // disabled={!inputInfo?.link?.includes('watch')}
                     className="streetcode-custom-button button-margin-vertical"
                     onClick={() => setShowPreview(!showPreview)}
                 >
                     Попередній перегляд
                 </Button>
                 {
-                    inputInfo?.link && showPreview && inputInfo.link.indexOf('watch') > -1 ? (
+                    inputInfo?.link && showPreview ? (
                         <div>
                             <h4>Попередній перегляд</h4>
-                            <iframe
-                                title="video-preview"
-                                src={
-                                    linkConverter(inputInfo?.link ?? '')
-                                }
-                                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                            />
+                            <Youtube opts={opts} videoId={youtubeId} />
                         </div>
                     ) : (
                         <div />

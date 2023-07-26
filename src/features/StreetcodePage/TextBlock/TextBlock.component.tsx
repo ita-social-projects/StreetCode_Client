@@ -29,6 +29,7 @@ const TextComponent = () => {
                 .then(([textResult, videoResult]) => {
                     setText(textResult);
                     setVideo(videoResult);
+                    streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((error) => {
                     console.error(error);
@@ -51,23 +52,18 @@ const TextComponent = () => {
                         </div>
                     </div>
                     {video.url.length > 1
-                        ?
-                        (<div className="videoComponent">
-                            <VideoPlayer
-                                videoUrls={String(video?.url)}
-                                onReady={() => {
-                                    if (video) {
-                                        streecodePageLoaderContext.addBlockFetched();
-                                    }
-                                }}
-                            />
-                            {/* <Video videoUrls={"f55dHPEY-0U"}/> */}
-                        </div>
-                        ) : <></>
-                    }
-
-
-
+                        ? (
+                            <div className="videoComponent">
+                                <VideoPlayer
+                                    videoUrls={String(video?.url)}
+                                    onReady={() => {
+                                        if (video) {
+                                            streecodePageLoaderContext.addBlockFetched();
+                                        }
+                                    }}
+                                />
+                            </div>
+                        ) : <></>}
                 </div>
             ) : null
     );
