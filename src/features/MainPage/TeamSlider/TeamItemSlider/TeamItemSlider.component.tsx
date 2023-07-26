@@ -11,7 +11,7 @@ import useMobx from '@stores/root-store';
 import ImagesApi from '@/app/api/media/images.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
-
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import TeamMember, { Positions } from '../../../../models/team/team.model';
 
 const LogoType = [twitter, instagram, facebook, youtube];
@@ -29,7 +29,7 @@ const TeamItemSlider = ({ team }: Props) => {
                 .catch((e) => { });
         }
     }, [team]);
-
+    const windowsize = useWindowSize();
     return (
         <div className="teamItemSlider">
             <div className="itemTeam">
@@ -45,7 +45,7 @@ const TeamItemSlider = ({ team }: Props) => {
                 </div>
                 <div className="rightSlider">
                     <div className="headerTeamContainer">
-                        <div>
+                        <div className='textContainer'>
                             <h2 className="teamTitle">
                                 {`${team?.firstName} ${team?.lastName}`}
                             </h2>
@@ -59,7 +59,8 @@ const TeamItemSlider = ({ team }: Props) => {
                                         </span>
                                     ))}
                             </div>
-                            <div>
+                            {windowsize.width > 1024 && (
+                            <><div>
                                 <p className="descBlock">
                                     {team?.description}
                                 </p>
@@ -80,7 +81,8 @@ const TeamItemSlider = ({ team }: Props) => {
                                         />
                                     </a>
                                 ))}
-                            </div>
+                            </div></>
+                            )}
                         </div>
                     </div>
                 </div>
