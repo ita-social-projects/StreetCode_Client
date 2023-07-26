@@ -5,7 +5,7 @@ import StreetcodeMarker from '@images/footer/streetcode-marker.png';
 
 import { Autocomplete, GoogleMap, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
@@ -40,7 +40,9 @@ const MapOSMAdmin = () => {
     const [newNumber, setNewNumber] = useState('');
     const newNumberAsNumber = parseInt(newNumber, 10);
     const [isExist, setIsExist] = useState(false);
-    const [visibleModal, setVisibleModal] = useState(false);
+    const [isInvalidInput, setIsInvalidInput] = useState(false);
+    const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set());
+    const [showButton, setShowButton] = useState(false);
 
     const handleSaveButtonClick = () => {
         if (!newNumber || newNumber === '' || isExist) {
@@ -62,10 +64,28 @@ const MapOSMAdmin = () => {
                 count: 0,
                 address,
             };
+            setUsedNumbers((prevUsedNumbers) => new Set(prevUsedNumbers).add(newNumberAsNumber));
+            setShowButton(false);
+            setNewNumber('');
             statisticRecordStore.addStatisticRecord(newStatisticRecord);
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
         }
     };
+
+   
+
+    const handleDelete = (record: { id: any; qrId: any }) => {
+        const { id, qrId } = record;
+        streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
+        statisticRecordStore.deleteStatisticRecordFromMap(id);
+        removeFromUsedNumbers(qrId);
+      };
+
+      const removeFromUsedNumbers = (qrId: number) => {
+        const newUsedNumbers = new Set(usedNumbers);
+        newUsedNumbers.delete(qrId);
+        setUsedNumbers(newUsedNumbers);
+      };
 
     const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
         setAutocomplete(autocomplete);
@@ -122,6 +142,7 @@ const MapOSMAdmin = () => {
     };
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
+        setShowButton(true);
         const lat = event.latLng?.lat();
         const lng = event.latLng?.lng();
         if (lat && lng) {
@@ -146,20 +167,6 @@ const MapOSMAdmin = () => {
             );
         }
     };
-
-    const handleDelete = (id: number) => {
-        streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
-        statisticRecordStore.deleteStatisticRecordFromMap(id);
-    };
-
-    const handleRemove = useCallback((id: number) => {
-        statisticRecordIdToDelete.current = id;
-        setVisibleModal(true);
-    }, []);
-
-    const handleCancelModalRemove = useCallback(() => {
-        setVisibleModal(false);
-    }, []);
 
     const columns = [
         {
@@ -187,16 +194,8 @@ const MapOSMAdmin = () => {
             key: 'actions',
             render: (text: any, record: any) => (
                 <span>
-                    <DeleteOutlined onClick={() => handleRemove(record.id)} />
-                    <Modal
-                        title="Ви впевнені, що хочете видалити дану точку?"
-                        open={visibleModal}
-                        onOk={(e) => {
-                            handleDelete(statisticRecordIdToDelete.current); setVisibleModal(false);
-                        }}
-                        onCancel={handleCancelModalRemove}
-                    />
-                </span>
+                <DeleteOutlined onClick={() => handleDelete(record)} />
+            </span>
             ),
         },
     ];
@@ -218,6 +217,11 @@ const MapOSMAdmin = () => {
             StatisticRecordApi.existByQrId(value)
                 .then((exist) => {
                     setIsExist(exist);
+                    if (usedNumbers.has(parseInt(value, 10))) {
+                        setIsExist(true);
+                    } else {
+                        setIsExist(exist);
+                    }
                 })
                 .catch(() => {
                     message.error('Сервер не відповідає');
@@ -228,8 +232,16 @@ const MapOSMAdmin = () => {
     };
 
     const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewNumber(event.target.value);
+    const inputNumber = event.target.value;
+    if (!Number.isNaN(inputNumber) && Number(inputNumber) >= 0) {
+      setNewNumber(inputNumber);
+      setIsInvalidInput(false);
+    } else {
+      setIsInvalidInput(true);
+    }
     };
+
+   
 
     return (
         <>
@@ -258,20 +270,28 @@ const MapOSMAdmin = () => {
                             handleNewNumberChange(e);
                             onCheckIndexClick(e.target.value);
                         }}
+                       
                         value={newNumber}
                     />
                     {isExist && (
                         <span className="notification red">
-                        Даний номер таблички вже використовується
+                            Даний номер таблички вже використовується 
                         </span>
                     )}
-                    <Button
+                    { isInvalidInput && (
+                        <span className="notification red">
+                            Введіть додатнє число 
+                        </span>
+                    )}
+
+                    {/* <Button
                         className="onMapbtn"
                         onClick={handleMarkerCurrentPosition}
                     >
                         <a>Обрати місце на мапі</a>
-                    </Button>
-                    {streetcodeCoordinates.length > 0 && (
+                    </Button>  */}
+
+                    {(streetcodeCoordinates.length > 0) && (!isExist)  && (!isInvalidInput) && (showButton) && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
                             <a>Зберегти стріткод</a>
                         </Button>

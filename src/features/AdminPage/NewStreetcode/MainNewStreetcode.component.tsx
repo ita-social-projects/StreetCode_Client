@@ -480,8 +480,8 @@ const NewStreetcode = () => {
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
 
-                            {process.env.NODE_ENV === 'production'
-                                ? <MapBlockAdmin /> : null}
+                            
+                            <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />

@@ -18,9 +18,7 @@ const SearchMenu = ({ setTitle, setRequest }: IProps) => {
 
     return (
         <div className="searchMenuToponyms">
-            <div className="searchMenuElement">
-                <Button className="streetcode-custom-button" onClick={() => setRequest()}>Пошук Топонімів</Button>
-            </div>
+         
             <div className="searchMenuElement">
                 <Input
                     className="searchMenuElementInput"
@@ -29,7 +27,9 @@ const SearchMenu = ({ setTitle, setRequest }: IProps) => {
                     placeholder="Назва топоніму"
                 />
             </div>
-
+            <div className="searchMenuElement">
+                <Button className="streetcode-custom-button" onClick={() => setRequest()}>Пошук Топонімів</Button>
+            </div>
         </div>
     );
 };
