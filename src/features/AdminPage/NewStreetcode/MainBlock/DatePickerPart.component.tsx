@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import './MainBlockAdmin.style.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 
@@ -29,9 +29,18 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
         }
         return text[0].toLocaleUpperCase() + text.substring(1, text.length);
     };
-
+    const [disableInput, setDisableInput] = useState(true);
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
+
+    useEffect(() => {
+        const dateEntered = form.getFieldValue('streetcodeFirstDate');
+        if (dateEntered !== null && dateEntered !== undefined && dateEntered !== '') {
+            setDisableInput(false);
+        } else {
+            setDisableInput(true);
+        }
+    });
 
     const onChangeFirstDate = (date: Dayjs | null | undefined) => {
         if (date) {
@@ -47,6 +56,20 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                     capitalize(newString.concat(dateString.substring(index, dateString.length))),
                 );
             }
+            onChange('streetcodeFirstDate', date);
+        } else {
+            const dateString = form.getFieldValue('dateString') ?? '';
+            const index = dateString.indexOf(' — ');
+            if (index > 0) {
+                form.setFieldValue('dateString', dateString.substring(index));
+            }
+            setFirstDate(null);
+            form.setFields([
+                {
+                    name: 'streetcodeSecondDate',
+                    errors: [],
+                },
+            ]);
             onChange('streetcodeFirstDate', date);
         }
     };
@@ -105,7 +128,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
             <div className="date-picker-container">
                 <div>
                     <FormItem name="dateString">
-                        <Input disabled />
+                        <Input disabled={disableInput} />
                     </FormItem>
                 </div>
 
