@@ -54,7 +54,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             status: 'done',
                             type: image.mimeType,
                         }] : [],
-                        imageDescription: image?.imageDetails?.alt ?? fact.imageDescription,
+                        imageDescription: fact.imageDescription ?? image?.imageDetails?.alt,
                     });
                     setFileList(fact ? [{
                         name: '',
