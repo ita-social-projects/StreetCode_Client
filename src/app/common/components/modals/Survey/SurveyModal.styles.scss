@@ -47,7 +47,6 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
 .surveyModalContent {
   @include mut.flex-centered($direction: column);
   @include mut.rem-margined(80px, 20px, 40px, 20px);
-  
   text-align: center;
   
   > h1 {
@@ -99,34 +98,20 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
       }
     }
 
-    .donatesModalContent {
-      > h1{
+    .surveyModalContent {
+      > h1 {
+        color: c.$pure-black-color;
         @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-        line-height: 26px;
-        text-align: center;
-        letter-spacing: 0.005em;
+      }
+    
+      > h3 {
+        @include mut.with-font(ft.$roboto-font, $font-size: 8px, $font-weight: 300);
+      }
       }
 
-      > h3{
-        @include mut.with-font($font-size: 14px, $font-weight: 300);
-        @include mut.rem-margined($top: 10px, $bottom: 10px);
-      }
-
-      
-   
-      }
-
-      .donatesDonateBtn {
+      .surveyModalBtnContainer {
         @include mut.sized(100%, 46px);
-        @include mut.full-rounded(10px);
 
-        > span{
-          @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
-          line-height: 16px;
-          color: #FFFFFF;
-          text-transform: none;
-          border-radius: 10px !important;
-        }
       }
 
  
@@ -135,12 +120,23 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
 }
 
 @media screen and (max-width: 480px) {
-  .donatesModal .donatesModalContent .donatesBtnContainer {
+  .surveyModal .surveyModalBtnContainer {
     @include mut.sized(308px, 100%);
-    @include mut.flexed($direction: row-reverse, $justify-content: space-between, $gap: 4px);
-
     > * {
       width: f.pxToRem(100px) !important;
+    
     }
   }
+  .surveyModalContent {
+    padding-bottom: 0%;
+    > h1 {
+      color: c.$pure-black-color;
+      @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+    }
+  
+    > h3 {
+      @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
+    }
+    }
+
 }
