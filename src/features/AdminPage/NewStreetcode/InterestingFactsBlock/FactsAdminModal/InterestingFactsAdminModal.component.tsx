@@ -1,7 +1,7 @@
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
@@ -34,6 +34,22 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const imageId = useRef<number>(0);
     const [fileList, setFileList] = useState<UploadFile[]>();
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [visibleModal, setVisibleModal] = useState(false);
+
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
+
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
+
+    const clearModal=() =>{
+        form.resetFields();
+        handleCancelModalRemove();
+        setModalOpen(false);
+        console.log(onChange);
+    }
 
     useEffect(() => {
         if (fact && open) {
@@ -106,7 +122,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
             <Modal
                 className="modalContainer"
                 open={open}
-                onCancel={() => setModalOpen(false)}
+                onCancel={() => handleRemove()}
                 footer={null}
                 maskClosable
                 centered
@@ -195,7 +211,14 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 </div>
             </Modal>
             <PreviewFileModal file={fileList?.at(0) ?? null} opened={previewOpen} setOpened={setPreviewOpen} />
+            <Modal
+                title={`Ви впевнені, що хочете видалити даний елемент?`}
+                open={visibleModal}
+                onOk={clearModal}
+                onCancel={handleCancelModalRemove}
+            />
         </div>
+        
     );
 };
 
