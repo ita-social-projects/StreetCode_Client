@@ -46,24 +46,21 @@ const LinkEditor = ({
 
     useEffect(() => {
         setInputInfo((info) => ({ ...info, link: video?.url }));
-    }, [video]);
-
-    useEffect(() => {
         const id = getYouTubeId(inputInfo?.link || '');
         if (id) {
             setYoutubeId(id);
         }
-    }, [inputInfo?.link]);
+    }, [video, inputInfo?.link]);
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = (e.target as HTMLInputElement);
+        const { value } = e.target as HTMLInputElement;
         if (value) {
             const id = getYouTubeId(value);
             if (id) {
                 const url = insertYouTubeId(id);
-                setInputInfo({ ...inputInfo, link: url });
+                setInputInfo((info) => ({ ...info, link: value }));
                 setVideo(video);
-                onChange('link', inputInfo?.link);
+                onChange('link', value);
             }
         }
     };
