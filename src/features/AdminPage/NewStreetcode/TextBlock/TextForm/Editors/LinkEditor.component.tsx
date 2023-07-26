@@ -31,7 +31,6 @@ const LinkEditor = ({
         if (typeof url !== 'string') {
             return null;
         }
-
         const match = url.match(youtubeRegex) ?? url.match(youtubeIdRegex) ?? null;
 
         if (match) {
@@ -46,11 +45,7 @@ const LinkEditor = ({
 
     useEffect(() => {
         setInputInfo((info) => ({ ...info, link: video?.url }));
-        const id = getYouTubeId(inputInfo?.link || '');
-        if (id) {
-            setYoutubeId(id);
-        }
-    }, [video, inputInfo?.link]);
+    }, [video]);
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target as HTMLInputElement;
@@ -64,6 +59,15 @@ const LinkEditor = ({
             }
         }
     };
+
+    const setShowPreviewState = (value: boolean) => {
+        setShowPreview(value);
+        const id = getYouTubeId(inputInfo?.link || '');
+        if (id) {
+            setYoutubeId(id);
+        }
+    };
+
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
@@ -96,7 +100,7 @@ const LinkEditor = ({
                 />
                 <Button
                     className="streetcode-custom-button button-margin-vertical"
-                    onClick={() => setShowPreview(!showPreview)}
+                    onClick={() => setShowPreviewState(!showPreview)}
                 >
                     Попередній перегляд
                 </Button>
