@@ -42,6 +42,7 @@ const MapOSMAdmin = () => {
     const [isExist, setIsExist] = useState(false);
     const [isInvalidInput, setIsInvalidInput] = useState(false);
     const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set());
+    const [deletedNumbers, setDeletedNumbers] = useState<Set<number>>(new Set());
     const [showButton, setShowButton] = useState(false);
 
     const handleSaveButtonClick = () => {
@@ -79,6 +80,7 @@ const MapOSMAdmin = () => {
         streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
         statisticRecordStore.deleteStatisticRecordFromMap(id);
         removeFromUsedNumbers(qrId);
+        setDeletedNumbers((prevDeletedNumbers) => new Set(prevDeletedNumbers).add(qrId));
       };
 
       const removeFromUsedNumbers = (qrId: number) => {
@@ -219,6 +221,8 @@ const MapOSMAdmin = () => {
                     setIsExist(exist);
                     if (usedNumbers.has(parseInt(value, 10))) {
                         setIsExist(true);
+                    }else if(deletedNumbers.has(parseInt(value, 10))){
+                        setIsExist(false);
                     } else {
                         setIsExist(exist);
                     }
@@ -226,7 +230,7 @@ const MapOSMAdmin = () => {
                 .catch(() => {
                     message.error('Сервер не відповідає');
                 });
-        } else {
+        } else {     
             setIsExist(false);
         }
     };
