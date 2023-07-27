@@ -28,6 +28,9 @@ const LinkEditor = ({
     const [youtubeId, setYoutubeId] = useState<string>('');
 
     const getYouTubeId = (url: string): string | null => {
+        if (typeof url !== 'string') {
+            return null;
+        }
         const match = url.match(youtubeRegex) ?? url.match(youtubeIdRegex) ?? null;
 
         if (match) {
@@ -45,17 +48,26 @@ const LinkEditor = ({
     }, [video]);
 
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = (e.target as HTMLInputElement);
+        const { value } = e.target as HTMLInputElement;
         if (value) {
             const id = getYouTubeId(value);
             if (id) {
                 const url = insertYouTubeId(id);
-                setInputInfo({ ...inputInfo, link: url });
+                setInputInfo((info) => ({ ...info, link: value }));
                 setVideo(video);
-                onChange('link', inputInfo?.link);
+                onChange('link', value);
             }
         }
     };
+
+    const setShowPreviewState = (value: boolean) => {
+        setShowPreview(value);
+        const id = getYouTubeId(inputInfo?.link || '');
+        if (id) {
+            setYoutubeId(id);
+        }
+    };
+
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
@@ -73,7 +85,7 @@ const LinkEditor = ({
             label="Відео"
             // eslint-disable-next-line max-len
             rules={[{ pattern: youtubeRegex, message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL' },
-                { required: true, message: 'Вставте, будь ласка, youtube.com посилання.' }]}
+                { required: !parseId && !inputInfo?.link, message: 'Вставте, будь ласка, youtube.com посилання.' }]}
         >
             <div className="youtube-block">
                 <Input
@@ -88,7 +100,7 @@ const LinkEditor = ({
                 />
                 <Button
                     className="streetcode-custom-button button-margin-vertical"
-                    onClick={() => setShowPreview(!showPreview)}
+                    onClick={() => setShowPreviewState(!showPreview)}
                 >
                     Попередній перегляд
                 </Button>
