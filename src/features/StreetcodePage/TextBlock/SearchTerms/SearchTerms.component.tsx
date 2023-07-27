@@ -13,8 +13,6 @@ const keywordColoring = {
 const SearchTerms = ({ mainText }: Props) => {
     const splittedKeywordText = mainText.split(/(<Popover>.*?<\/Popover>)/g);
 
-    console.log(splittedKeywordText);
-
     const popoverParser = (input: string) => parse(input, {
         // eslint-disable-next-line react/no-unstable-nested-components
         replace: () => (
@@ -35,7 +33,7 @@ const SearchTerms = ({ mainText }: Props) => {
         <div>
             {splittedKeywordText.map((part) => (
                 // eslint-disable-next-line react/style-prop-object
-                <span>
+                <>
                     {part.includes('Popover') ? (
                         <span
                             style={keywordColoring}
@@ -48,7 +46,7 @@ const SearchTerms = ({ mainText }: Props) => {
                             {parse(`${part}`)}
                         </>
                     )}
-                </span>
+                </>
             ))}
         </div>
     );
