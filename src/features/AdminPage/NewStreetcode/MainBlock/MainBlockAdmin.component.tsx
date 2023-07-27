@@ -15,6 +15,7 @@ import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
@@ -58,6 +59,12 @@ const MainBlockAdmin = React.memo(({
     const [tagInput, setTagInput] = useState('');
     const maxTagLength = 50;
     const getErrorMessage = (maxLength: number = maxTagLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const { onContextKeyDown, handleSearch } = createTagValidator(
+        maxTagLength,
+        getErrorMessage,
+        setTagInput,
+        setErrorMessage,
+    );
 
     const handleInputChange = (fieldName: string, value: unknown) => {
         onChange(fieldName, value);
@@ -136,29 +143,6 @@ const MainBlockAdmin = React.memo(({
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
-    const onContextKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const { value } = e.currentTarget;
-        if (e.key === 'Enter') {
-            if (value.length > maxTagLength) {
-                setErrorMessage(getErrorMessage());
-                e.preventDefault();
-                e.stopPropagation();
-            } else {
-                setTagInput(value);
-                setErrorMessage('');
-            }
-        }
-    };
-
-    const handleSearch = (value: string) => {
-        if (value && value.length > maxTagLength) {
-            setErrorMessage(getErrorMessage(maxTagLength));
-        } else {
-            setErrorMessage('');
-        }
-        setTagInput(value);
-    };
-
     return (
         <div className="mainblock-add-form">
 
@@ -214,7 +198,7 @@ const MainBlockAdmin = React.memo(({
                 label="Назва стріткоду"
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
-                { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
+                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
             >
                 <Input
                     maxLength={100}

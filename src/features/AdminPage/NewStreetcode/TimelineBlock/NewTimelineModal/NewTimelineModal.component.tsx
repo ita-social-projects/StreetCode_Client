@@ -4,7 +4,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
-import getMaxId from '@app/common/utils/getMaxId';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
@@ -17,6 +16,7 @@ import {
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
+import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
     dateTimePickerTypes,
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
@@ -40,6 +40,12 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [tagInput, setTagInput] = useState('');
     const maxContextLength = 50;
     const getErrorMessage = (maxLength: number = maxContextLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const { onContextKeyDown, handleSearch } = createTagValidator(
+        maxContextLength,
+        getErrorMessage,
+        setTagInput,
+        setErrorMessage,
+    );
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -128,29 +134,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
         }
         onChange('historicalContexts', selectedContext.current);
-    };
-
-    const onContextKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const { value } = e.currentTarget;
-        if (e.key === 'Enter') {
-            if (value.length > maxContextLength) {
-                setErrorMessage(getErrorMessage());
-                e.preventDefault();
-                e.stopPropagation();
-            } else {
-                setTagInput(value);
-                setErrorMessage('');
-            }
-        }
-    };
-
-    const handleSearch = (value: string) => {
-        if (value && value.length > maxContextLength) {
-            setErrorMessage(getErrorMessage(maxContextLength));
-        } else {
-            setErrorMessage('');
-        }
-        setTagInput(value);
     };
 
     return (
