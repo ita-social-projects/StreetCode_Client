@@ -11,7 +11,7 @@ import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
 
-import AddSourceModal from './CategoryAdminModal.component';
+import SourceModal from './CategoryAdminModal.component';
 
 const ForFansPage = () => {
     const { sourcesAdminStore } = useMobx();
@@ -46,9 +46,9 @@ const ForFansPage = () => {
                     <SourceItem srcCategory={srcCategory} key={srcCategory.id} />
                 ))}
             </BlockSlider>
-            <AddSourceModal
-                isAddModalVisible={isAddModalVisible}
-                handleAddCancel={handleAddCancel}
+            <SourceModal
+                isModalVisible={isAddModalVisible}
+                onCancel={handleAddCancel}
             />
             <Button icon={<PlusOutlined />} className="streetcode-custom-button" onClick={handleAdd}>
         Додати нову категорію
