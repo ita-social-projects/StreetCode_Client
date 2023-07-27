@@ -2,7 +2,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
-import getMaxId from '@app/common/utils/getMaxId';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
@@ -13,10 +12,8 @@ import { Button, Form, Modal, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
-import AddSourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
+import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
 import {
-    SourceCategory,
-    SourceCategoryAdmin,
     SourceCategoryName,
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
@@ -157,9 +154,9 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                             .map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
                     </Select>
                 </FormItem>
-                <AddSourceModal
-                    isAddModalVisible={isAddModalVisible}
-                    handleAddCancel={handleAddCancel}
+                <SourceModal
+                    isModalVisible={isAddModalVisible}
+                    onCancel={handleAddCancel}
                 />
                 <FormItem
                     label="Текст: "
