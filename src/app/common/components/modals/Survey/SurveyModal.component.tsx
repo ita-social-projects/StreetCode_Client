@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useModalContext } from '@/app/stores/root-store';
 
 const SurveyModal = () => {
+    const SURVEY_LINK = "https://forms.gle/eWwX5RP84X7dymLR6";
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { survey } } = modalStore;
 
@@ -34,7 +35,7 @@ const SurveyModal = () => {
                         <br />
                         <h3>Зазнач в опитуванні електронну пошту, і ми подякуємо тобі креативним стікерпаком для сториз!</h3>
                         <br />
-        <Button className="surveyModalBtnContainer" onClick={() => window.location.href = "https://forms.gle/eWwX5RP84X7dymLR6"}>
+        <Button className="surveyModalBtnContainer" onClick={() => open(SURVEY_LINK)}>
         <a>Пройти опитування</a>
         </Button>
         </div>
