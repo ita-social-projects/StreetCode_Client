@@ -24,18 +24,18 @@
         }
 
         @media (min-width: 360px) and (max-width: 767px){
-            width: 94vw;
+            width: f.pxToRem(340px);
             height: f.pxToRem(550px);
             margin: 0 f.pxToRem(20px);
         }
 
-        @media (min-width: 614px) and (max-width: 715px){
-            height: f.pxToRem(600px);;
-        }
+        // @media (min-width: 614px) and (max-width: 715px){
+        //     height: f.pxToRem(600px);;
+        // }
 
-        @media (min-width: 715px) and (max-width: 768px){
-            height: f.pxToRem(625px);
-        }
+        // @media (min-width: 715px) and (max-width: 768px){
+        //     height: f.pxToRem(625px);
+        // }
     }
 
     .newsSlideText {
@@ -55,8 +55,7 @@
         @media (min-width: 360px) and (max-width: 767px){
             position: relative;
             top: 1px;
-            width: 100%;
-            height: 100%;
+            @include mut.sized(100%, 304px);
         }
     }
 
@@ -64,18 +63,21 @@
         position: relative;
         z-index: 1;
         @include mut.rem-padded($top: 5px, $right: 5px, $bottom: 5px, $left: 5px);
-
+        
         @media (min-width: 768px) and (max-width: 1024px){
             margin-top: 0;
             height: 100%;
+        }
+        @media screen and (max-width: 767px) {
+            height: f.pxToRem(229px);
         }
         .newsPageImg {
             position: relative;
             width: 100%;
             height: auto;
             @include mut.full-rounded(30px);
-
-            @media (min-width: 768px) and (max-width: 1024px){
+            object-fit: cover;
+            @media (max-width: 1024px){
                 margin-top: 0;
                 height: 100%;
             }
@@ -149,6 +151,7 @@
         }
 
         @media (min-width: 360px) and (max-width: 767px){
+            height: 100%;
             width: 100%;
         }
     }

@@ -37,7 +37,7 @@ const NewsSliderItem = ({ news }: Props) => {
 
         if (news?.title.length < 41) {
             truncatedText = truncatedText.substr(0, 400);
-        } else if (news?.title.length >= 40 && news?.title.length < 81) {
+        } else if (news?.title.length >= 41 && news?.title.length < 81) {
             truncatedText = truncatedText.substr(0, 250);
         } else {
             truncatedText = truncatedText.substr(0, 75);
