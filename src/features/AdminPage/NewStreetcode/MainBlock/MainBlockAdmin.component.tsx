@@ -54,6 +54,10 @@ const MainBlockAdmin = React.memo(({
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [tagInput, setTagInput] = useState('');
+    const maxTagLength = 50;
+    const getErrorMessage = (maxLength: number = maxTagLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
 
     const handleInputChange = (fieldName: string, value: unknown) => {
         onChange(fieldName, value);
@@ -99,7 +103,12 @@ const MainBlockAdmin = React.memo(({
             setSelectedTags([...selectedTags, deletedTag]);
         } else {
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
-
+            if (selectedValue.length > maxTagLength) {
+                form.setFieldValue('tags', selectedValue);
+                setErrorMessage(getErrorMessage());
+                setTagInput('');
+                return;
+            }
             const newItem: StreetcodeTagUpdate = {
                 id: selectedIndex < 0 ? getNewMinNegativeId(selectedTags.map((tag) => tag.id)) : tags[selectedIndex].id,
                 title: selectedValue,
@@ -108,6 +117,8 @@ const MainBlockAdmin = React.memo(({
             };
 
             setSelectedTags([...selectedTags, newItem]);
+            setTagInput('');
+            setErrorMessage('');
         }
     };
 
@@ -124,6 +135,29 @@ const MainBlockAdmin = React.memo(({
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
+
+    const onContextKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const { value } = e.currentTarget;
+        if (e.key === 'Enter') {
+            if (value.length > maxTagLength) {
+                setErrorMessage(getErrorMessage());
+                e.preventDefault();
+                e.stopPropagation();
+            } else {
+                setTagInput(value);
+                setErrorMessage('');
+            }
+        }
+    };
+
+    const handleSearch = (value: string) => {
+        if (value && value.length > maxTagLength) {
+            setErrorMessage(getErrorMessage(maxTagLength));
+        } else {
+            setErrorMessage('');
+        }
+        setTagInput(value);
+    };
 
     return (
         <div className="mainblock-add-form">
@@ -180,7 +214,7 @@ const MainBlockAdmin = React.memo(({
                 label="Назва стріткоду"
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
-                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
+                { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
             >
                 <Input
                     maxLength={100}
@@ -280,50 +314,63 @@ const MainBlockAdmin = React.memo(({
                 }}
             />
             <div className="tags-block">
-                <Form.Item label={(
-                    <div className="label-tags-block">
-                        <p>Теги</p>
-                        <Popover
-                            className="info-container"
-                            placement="topLeft"
-                            content={(
-                                <p className="label-tags-block-info-container-content">
-                                    При обиранні теги є невидимими для користувача (фон тегу сірий),
-                                    тобто він не відображається
-                                    на головній картці стріткоду.
-                                    Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
-                                    Нижче є розширення наводячи на які, можна побачити, які теги
-                                    будуть вміщатись на головній картці стріткоду.
-                                    {' '}
-                                </p>
-                            )}
-                        >
-                            <InfoCircleOutlined className="info-icon" />
-                        </Popover>
-                    </div>
-                )}
-                >
-                    <div className="tags-block-tagitems">
-                        <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                        <Select
-                            className="tags-select-input"
-                            mode="tags"
-                            onSelect={(selectedValue, option) => {
-                                handleInputChange(option.key, selectedValue);
-                                onSelectTag(selectedValue);
-                            }}
-                            onDeselect={(deselectedValue, option) => {
-                                handleInputChange(option.key, deselectedValue);
-                                onDeselectTag(deselectedValue);
-                            }}
-                            value={selectedTags.map((x) => x.title)}
-                            filterSort={(optionA, optionB) => (optionA?.value ?? '').toString().toLowerCase()
-                                .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
-                        >
-                            {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
-                        </Select>
-                    </div>
-                </Form.Item>
+                <div style={{ position: 'relative' }}>
+                    <Form.Item
+                        validateStatus={errorMessage ? 'error' : ''}
+                        help={errorMessage}
+                        name="tags"
+                        label={(
+                            <div className="label-tags-block">
+                                <p>Теги</p>
+                                <Popover
+                                    className="info-container"
+                                    placement="topLeft"
+                                    content={(
+                                        <p className="label-tags-block-info-container-content">
+                                            При обиранні теги є невидимими для користувача (фон тегу сірий),
+                                            тобто він не відображається
+                                            на головній картці стріткоду.
+                                            Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
+                                            Нижче є розширення наводячи на які, можна побачити, які теги
+                                            будуть вміщатись на головній картці стріткоду.
+                                            {' '}
+                                        </p>
+                                    )}
+                                >
+                                    <InfoCircleOutlined className="info-icon" />
+                                </Popover>
+                            </div>
+                        )}
+                    >
+                        <div className="tags-block-tagitems">
+                            <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+                            <Select
+                                className="tags-select-input"
+                                mode="tags"
+                                onSelect={(selectedValue, option) => {
+                                    handleInputChange(option.key, selectedValue);
+                                    onSelectTag(selectedValue);
+                                }}
+                                onDeselect={(deselectedValue, option) => {
+                                    handleInputChange(option.key, deselectedValue);
+                                    onDeselectTag(deselectedValue);
+                                }}
+                                value={selectedTags.map((x) => x.title)}
+                                onInputKeyDown={onContextKeyDown}
+                                onSearch={handleSearch}
+                                filterSort={(optionA, optionB) => (optionA?.value ?? '').toString().toLowerCase()
+                                    .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
+                            >
+                                {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
+                            </Select>
+                        </div>
+                    </Form.Item>
+                    {tagInput && (
+                        <div className="tagInput-counter">
+                            {tagInput.length} / {maxTagLength}
+                        </div>
+                    )}
+                </div>
                 <div className="device-sizes-list">
                     <Form.Item label="Розширення">
                         <Popover
