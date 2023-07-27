@@ -27,6 +27,7 @@
 
         @media screen and (max-width: 767px) {
             @include mut.sized(310px, 475px);
+            margin-left: f.pxToRem(0px);
         }
     }
 
