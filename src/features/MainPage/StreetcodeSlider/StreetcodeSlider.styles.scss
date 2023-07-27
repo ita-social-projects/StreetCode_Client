@@ -12,7 +12,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         }
 
         .streetcodeSliderContentBlock,
-        .blockCentering {
+        .blockCenter {
             @include mut.flex-centered();
         }
 
@@ -34,6 +34,10 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
         .slick-slide {
             width: unset !important;
+            
+            @media screen and (max-width: 767px) {
+                    width: 100% !important;
+            }
         }
 
         .slick-initialized .slick-slide {
@@ -49,6 +53,13 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         .slick-initialized .slick-slide {
             @include mut.flexed($justify-content: center, $gap: 0px);
             @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+        }
+
+        .slick-center {
+            transform: scale(1.16);
+            padding-left: f.pxToRem(16px);
+            padding-right: f.pxToRem(16px);
+            padding-bottom: f.pxToRem(20px);
         }
     }
 }

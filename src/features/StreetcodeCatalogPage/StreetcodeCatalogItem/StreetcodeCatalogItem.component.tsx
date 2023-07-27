@@ -7,11 +7,10 @@ import { Link } from 'react-router-dom';
 import useMobx from '@stores/root-store';
 
 import useOnScreen from '@/app/common/hooks/scrolling/useOnScreen.hook';
-import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
 import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     streetcode: StreetcodeCatalogRecord;
@@ -35,7 +34,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
         className: classSelector,
         style: { backgroundImage: `url(${base64ToUrl(getImage(streetcode.imageId)?.base64, getImage(streetcode.imageId)?.mimeType)})` },
         to: `../${streetcode.url}`,
-    }
+    };
     const windowsize = useWindowSize();
 
     return (
@@ -46,10 +45,8 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
                         <div className="heading">
                             <p>{streetcode.title}</p>
                             {
-                                streetcode.alias !== null ? (
-                                    <p className="aliasText">
-                                        ({streetcode.alias})
-                                    </p>
+                                streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
+                                    <p className="aliasText">({streetcode.alias})</p>
                                 ) : undefined
                             }
                         </div>
@@ -63,10 +60,8 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
                         <div className="heading">
                             <p>{streetcode.title}</p>
                             {
-                                streetcode.alias !== null ? (
-                                    <p className="aliasText">
-                                        ({streetcode.alias})
-                                    </p>
+                                streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
+                                    <p className="aliasText">({streetcode.alias})</p>
                                 ) : undefined
                             }
                         </div>
