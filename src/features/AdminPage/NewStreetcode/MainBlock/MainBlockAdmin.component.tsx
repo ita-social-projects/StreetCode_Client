@@ -1,7 +1,7 @@
+/* eslint-disable no-param-reassign */
 import './MainBlockAdmin.style.scss';
 
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
@@ -9,14 +9,13 @@ import { ModelState } from '@models/enums/model-state';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
-    Button,
-    Form, FormInstance, Input, InputNumber, InputRef, message, Popover, Select, Space, Switch,
+    Form, FormInstance, Input, InputNumber, InputRef, Popover, Select, Space, Switch,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
-import { Option } from 'antd/es/mentions';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
@@ -31,15 +30,16 @@ interface TagPreviewProps {
 }
 
 interface Props {
-    form: FormInstance<any>,
+    Id?: number | null;
+    form: FormInstance<unknown>,
     selectedTags: StreetcodeTag[];
     setSelectedTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>;
     streetcodeType: MutableRefObject<StreetcodeType>;
-    onChange: (fieldName: string, value: any) => void;
+    onChange: (fieldName: string, value: unknown) => void;
 }
 
 const MainBlockAdmin = React.memo(({
-    form, selectedTags, setSelectedTags, streetcodeType, setStreetcodeType, onChange,
+    Id, form, selectedTags, setSelectedTags, streetcodeType, onChange,
 }: Props) => {
     const teaserMaxCharCount = 520;
     const tagPreviewPropsList: TagPreviewProps[] = [
@@ -55,29 +55,38 @@ const MainBlockAdmin = React.memo(({
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [tagInput, setTagInput] = useState('');
+    const maxTagLength = 50;
+    const getErrorMessage = (maxLength: number = maxTagLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const { onContextKeyDown, handleSearch } = createTagValidator(
+        maxTagLength,
+        getErrorMessage,
+        setTagInput,
+        setErrorMessage,
+    );
 
-    const handleInputChange = (fieldName: string, value: any) => {
+    const handleInputChange = (fieldName: string, value: unknown) => {
         onChange(fieldName, value);
     };
 
-    const onCheckIndexClick = () => {
-        const number = form.getFieldValue('streetcodeNumber') as number;
-        if (number) {
-            StreetcodesApi.existWithIndex(number)
-                .then((exist) => {
-                    if (exist) {
-                        message.error('Даний номер уже використовується стріткодом. Використайте інший, будь ласка.');
-                    } else {
-                        message.success(
-                            'Ще жоден стріткод не має такого номеру. Можете з впевненістю його використовувати.',
-                        );
-                    }
-                })
-                .catch(() => {
-                    message.error('Сервер не відповідає');
-                });
-        } else {
-            message.error('Поле порожнє');
+    const checkUniqueURL = async (url: string): Promise<boolean> => {
+        try {
+            const exists = await StreetcodesApi.existWithUrl(url);
+            return !exists;
+        } catch (error) {
+            console.error('Error while checking URL uniqueness:', error);
+            return true;
+        }
+    };
+
+    const checkUniqueIndex = async (index: number): Promise<boolean> => {
+        try {
+            const exists = await StreetcodesApi.existWithIndex(index);
+            return !exists;
+        } catch (error) {
+            console.error('Error while checking Index uniqueness:', error);
+            return true;
         }
     };
 
@@ -101,7 +110,12 @@ const MainBlockAdmin = React.memo(({
             setSelectedTags([...selectedTags, deletedTag]);
         } else {
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
-
+            if (selectedValue.length > maxTagLength) {
+                form.setFieldValue('tags', selectedValue);
+                setErrorMessage(getErrorMessage());
+                setTagInput('');
+                return;
+            }
             const newItem: StreetcodeTagUpdate = {
                 id: selectedIndex < 0 ? getNewMinNegativeId(selectedTags.map((tag) => tag.id)) : tags[selectedIndex].id,
                 title: selectedValue,
@@ -110,6 +124,8 @@ const MainBlockAdmin = React.memo(({
             };
 
             setSelectedTags([...selectedTags, newItem]);
+            setTagInput('');
+            setErrorMessage('');
         }
     };
 
@@ -129,28 +145,41 @@ const MainBlockAdmin = React.memo(({
 
     return (
         <div className="mainblock-add-form">
-            <div className="display-flex-row">
-                <Form.Item
-                    label="Номер стріткоду"
-                    rules={[{ required: true, message: 'Введіть номер стріткоду від 1 до 10000, будь ласка' },
-                        { max: 10000,
-                          min: 0,
-                          pattern: /^\d+$/,
-                          type: 'number',
-                          message: 'Номер стріткоду може бути тільки від 1 до 10000' },
-                    ]}
-                    name="streetcodeNumber"
-                >
-                    <InputNumber defaultValue={1} />
-                </Form.Item>
 
-                <Button
-                    className="button-margin-left checknumber streetcode-custom-button"
-                    onClick={onCheckIndexClick}
-                >
-                    Перевірити
-                </Button>
-            </div>
+            <Form.Item
+                label="Номер стріткоду"
+                rules={[
+                    {
+                        required: true,
+                        type: 'number',
+                        min: 1,
+                        max: 9999,
+                        message: 'Введіть номер стріткоду від 1 до 9999, будь ласка',
+                    },
+                    {
+                        validator: async (_, value) => {
+                            if (value && /^\d+$/.test(value)) {
+                                if (Id) {
+                                    const streetcode = await StreetcodesApi.getById(Id);
+                                    if (streetcode.index === value) {
+                                        return Promise.resolve();
+                                    }
+                                }
+                                const isUnique = checkUniqueIndex(value);
+
+                                if (await isUnique) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Цей номер вже зайнятий'));
+                            }
+                        },
+                    },
+                ]}
+                name="streetcodeNumber"
+            >
+                <InputNumber />
+            </Form.Item>
+
             <div className="display-flex-row p-margin">
                 <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
                 <Form.Item name="streetcodeType">
@@ -165,7 +194,7 @@ const MainBlockAdmin = React.memo(({
             </div>
 
             <Form.Item
-                name="title"
+                name="mainTitle"
                 label="Назва стріткоду"
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
@@ -178,7 +207,7 @@ const MainBlockAdmin = React.memo(({
                 />
             </Form.Item>
 
-            {streetcodeType === StreetcodeType.Person ? (
+            {streetcodeType.current === StreetcodeType.Person ? (
                 <Space.Compact
                     className="display-flex-column"
                 >
@@ -225,7 +254,31 @@ const MainBlockAdmin = React.memo(({
                 label="URL"
                 name="streetcodeUrlName"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть літерал для стріткоду', max: 100, pattern: /^[a-z-]+$/ }]}
+                rules={[
+                    { required: true, message: 'Введіть Посилання', max: 100 },
+                    {
+                        pattern: /^[a-z0-9-]+$/,
+                        message: 'Посилання має містити лише малі латинські літери, цифри та дефіс',
+                    },
+                    {
+                        validator: async (_, value) => {
+                            if (value && /^[a-z0-9-]+$/.test(value)) {
+                                if (Id) {
+                                    const streetcode = await StreetcodesApi.getById(Id);
+                                    if (streetcode.transliterationUrl === value) {
+                                        return Promise.resolve();
+                                    }
+                                }
+                                const isUnique = checkUniqueURL(value);
+
+                                if (await isUnique) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Посилання вже існує'));
+                            }
+                        },
+                    },
+                ]}
             >
                 <Input
                     maxLength={100}
@@ -245,48 +298,63 @@ const MainBlockAdmin = React.memo(({
                 }}
             />
             <div className="tags-block">
-                <Form.Item label={(
-                    <div className="label-tags-block">
-                        <p>Теги</p>
-                        <Popover
-                            className="info-container"
-                            placement="topLeft"
-                            content={(
-                                <p className="label-tags-block-info-container-content">
-                                    При обиранні теги є невидимими для користувача (фон тегу сірий),
-                                    тобто він не відображається
-                                    на головній картці стріткоду.
-                                    Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
-                                    Нижче є розширення наводячи на які, можна побачити, які теги
-                                    будуть вміщатись на головній картці стріткоду.
-                                    {' '}
-                                </p>
-                            )}
-                        >
-                            <InfoCircleOutlined className="info-icon" />
-                        </Popover>
-                    </div>
-                )}
-                >
-                    <div className="tags-block-tagitems">
-                        <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                        <Select
-                            className="tags-select-input"
-                            mode="tags"
-                            onSelect={(selectedValue, option) => {
-                                handleInputChange(option.key, selectedValue);
-                                onSelectTag(selectedValue);
-                            }}
-                            onDeselect={(deselectedValue, option) => {
-                                handleInputChange(option.key, deselectedValue);
-                                onDeselectTag(deselectedValue);
-                            }}
-                            value={selectedTags.map((x) => x.title)}
-                        >
-                            {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
-                        </Select>
-                    </div>
-                </Form.Item>
+                <div style={{ position: 'relative' }}>
+                    <Form.Item
+                        validateStatus={errorMessage ? 'error' : ''}
+                        help={errorMessage}
+                        name="tags"
+                        label={(
+                            <div className="label-tags-block">
+                                <p>Теги</p>
+                                <Popover
+                                    className="info-container"
+                                    placement="topLeft"
+                                    content={(
+                                        <p className="label-tags-block-info-container-content">
+                                            При обиранні теги є невидимими для користувача (фон тегу сірий),
+                                            тобто він не відображається
+                                            на головній картці стріткоду.
+                                            Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
+                                            Нижче є розширення наводячи на які, можна побачити, які теги
+                                            будуть вміщатись на головній картці стріткоду.
+                                            {' '}
+                                        </p>
+                                    )}
+                                >
+                                    <InfoCircleOutlined className="info-icon" />
+                                </Popover>
+                            </div>
+                        )}
+                    >
+                        <div className="tags-block-tagitems">
+                            <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+                            <Select
+                                className="tags-select-input"
+                                mode="tags"
+                                onSelect={(selectedValue, option) => {
+                                    handleInputChange(option.key, selectedValue);
+                                    onSelectTag(selectedValue);
+                                }}
+                                onDeselect={(deselectedValue, option) => {
+                                    handleInputChange(option.key, deselectedValue);
+                                    onDeselectTag(deselectedValue);
+                                }}
+                                value={selectedTags.map((x) => x.title)}
+                                onInputKeyDown={onContextKeyDown}
+                                onSearch={handleSearch}
+                                filterSort={(optionA, optionB) => (optionA?.value ?? '').toString().toLowerCase()
+                                    .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
+                            >
+                                {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
+                            </Select>
+                        </div>
+                    </Form.Item>
+                    {tagInput && (
+                        <div className="tagInput-counter">
+                            {tagInput.length} / {maxTagLength}
+                        </div>
+                    )}
+                </div>
                 <div className="device-sizes-list">
                     <Form.Item label="Розширення">
                         <Popover

@@ -70,7 +70,7 @@ const NewsSliderItem = ({ news }: Props) => {
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         toArticleRedirectClickEvent(news.url.toString());
-        window.location.href = news.url.toString();
+        window.location.href = "news/" + news.url.toString();
     };
 
 

@@ -20,6 +20,7 @@ interface Props {
 const StreetcodeSliderItem = ({ streetcode }: Props) => {
     const { imagesStore } = useMobx();
     const [image, setImage] = useState<Image>();
+    const windowsize = useWindowSize();
 
     const id = streetcode?.id;
 
@@ -62,18 +63,21 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
                 </div>
                 <div className="rightSlider">
                     <div className="streetcodeMainPageContainer">
-                        <div>
-                            <h2 className="streetcodeTitle">
+                        <div className='textContainer'>
+                            {windowsize.width > 1024 && ( <h2 className="streercodeTitle">
                                 {streetcode?.title}
                             </h2>
+                            )}
                             <div className="streetcodeAlias">
                                 {streetcode?.text}
                             </div>
+                            {windowsize.width > 1024 && (
                             <div>
                                 <p className="streetcodeTeaser">
                                     {teaserText}
                                 </p>
                             </div>
+                            )}
                             <div>
                                 <a className="streetcodeLink" href={streetcode.transliterationUrl} onClick={handleLinkClick}>
                                     До стріткоду

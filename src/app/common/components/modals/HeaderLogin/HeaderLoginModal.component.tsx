@@ -16,6 +16,7 @@ import {
 } from '@/app/common/utils/googleAnalytics.unility';
 
 const HeaderLoginModal = () => {
+    const SURVEY_LINK = "https://forms.gle/eWwX5RP84X7dymLR6";
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
     const navigate = useNavigate();
 
@@ -36,6 +37,9 @@ const HeaderLoginModal = () => {
             closeIcon={<CancelBtn />}
         >
             <div className="loginModalContent">
+                <Button onClick={() => open(SURVEY_LINK)}>
+                    Пройти опитування
+                </Button>
                 <Button onClick={becomePartnerHandler}>
                     Стати партнером
                 </Button>

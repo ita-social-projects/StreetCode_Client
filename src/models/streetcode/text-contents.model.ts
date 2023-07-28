@@ -3,6 +3,7 @@ import IPersisted from '@models/interfaces/IPersisted';
 import Image, { ImageCreate } from '@models/media/image.model';
 
 import Streetcode from './streetcode-types.model';
+import { Interface } from 'readline';
 
 export interface Fact {
   id: number;
@@ -28,6 +29,10 @@ export interface RelatedTerm {
   id: number;
   word: string;
   termId: number;
+}
+
+export interface TextPreviewContent {
+  textContent: string;
 }
 
 export interface Text {

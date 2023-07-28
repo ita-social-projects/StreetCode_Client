@@ -83,7 +83,7 @@ const NewStreetcode = () => {
     const [fieldChanges, setFieldChanges] = useState({});
     const streetcodeType = useRef<StreetcodeType>(StreetcodeType.Person);
 
-    const handleFieldChange = (fieldName, value) => {
+    const handleFieldChange = (fieldName: any, value: any) => {
         setFieldChanges((prevChanges) => ({
             ...prevChanges,
             [fieldName]: value,
@@ -155,7 +155,9 @@ const NewStreetcode = () => {
                 streetcodeType.current = x.streetcodeType;
                 form.setFieldsValue({
                     streetcodeNumber: x.index,
-                    title: x.title,
+                    mainTitle: x.title,
+                    name: x.firstName,
+                    surname: x.lastName,
                     alias: x.alias,
                     streetcodeUrlName: x.transliterationUrl,
                     streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
@@ -245,7 +247,7 @@ const NewStreetcode = () => {
         }
     }, []);
 
-    const onFinish = (data: any) => {
+    const onFinish = async (data: any) => {
         handleCancelModalRemove();
         console.log(form.getFieldValue('streetcodeNumber'));
         let tempStatus = 1;
@@ -253,8 +255,6 @@ const NewStreetcode = () => {
         if (buttonName) {
             if (buttonName.includes(draft)) {
                 tempStatus = 0;
-            }
-            if (buttonName.includes(publish) || buttonName.includes(draft)) {
                 setSavedChanges(true);
             }
         }
@@ -277,7 +277,7 @@ const NewStreetcode = () => {
             const streetcode: StreetcodeCreate = {
                 id: parseId,
                 index: form.getFieldValue('streetcodeNumber'),
-                title: form.getFieldValue('title'),
+                title: form.getFieldValue('mainTitle'),
                 alias: form.getFieldValue('alias'),
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 arBlockURL: form.getFieldValue('arlink'),
@@ -366,7 +366,7 @@ const NewStreetcode = () => {
                     urlTitle: arLink?.urlTitle ?? '',
                 };
 
-                if (text.id !== 0 && !(text.title && text.textContent && text.additionalText)) {
+                if (text.id !== 0 && !(text.title && text.textContent)) {
                     text.modelState = ModelState.Deleted;
                 }
 
@@ -375,7 +375,7 @@ const NewStreetcode = () => {
                     index: form.getFieldValue('streetcodeNumber'),
                     firstName: null,
                     lastName: null,
-                    title: form.getFieldValue('title'),
+                    title: form.getFieldValue('mainTitle'),
                     alias: form.getFieldValue('alias'),
                     status: tempStatus,
                     transliterationUrl: form.getFieldValue('streetcodeUrlName'),
@@ -415,6 +415,7 @@ const NewStreetcode = () => {
                     },
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
+
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
@@ -449,6 +450,10 @@ const NewStreetcode = () => {
             }
         });
     };
+    const handleModalOk = (data: any) => {
+        setSavedChanges(true);
+        onFinish(data);
+    };
 
     return (
         <div className="NewStreetcodeContainer">
@@ -459,6 +464,7 @@ const NewStreetcode = () => {
                         <h2>Стріткод</h2>
                         <Form form={form} layout="vertical" onFinish={onFinish} scrollToFirstError>
                             <MainBlockAdmin
+                                Id={parseId}
                                 form={form}
                                 selectedTags={selectedTags}
                                 setSelectedTags={setSelectedTags}
@@ -475,8 +481,8 @@ const NewStreetcode = () => {
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
 
-                            {process.env.NODE_ENV === 'production'
-                                ? <MapBlockAdmin /> : null}
+                            
+                            <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />
@@ -496,7 +502,7 @@ const NewStreetcode = () => {
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей стріткод?"
                         open={visibleModal}
-                        onOk={onFinish}
+                        onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}
                     />
                     <Button

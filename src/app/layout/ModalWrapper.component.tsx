@@ -9,6 +9,7 @@ import PartnersModal from '@components/modals/Partners/PartnersModal.component';
 import RelatedFigureItemModal from '@components/modals/RelatedFigures/RelatedFigureItemModal.component';
 import RelatedFiguresModal from '@components/modals/RelatedFigures/RelatedFiguresModal.component';
 import SourcesModal from '@components/modals/Sources/SourcesModal.component';
+import SurveyModal from '@components/modals/Survey/SurveyModal.component';
 
 const ModalWrapper = () => (
     <>
@@ -23,6 +24,7 @@ const ModalWrapper = () => (
         <ConfirmationModal />
         <RelatedFigureItemModal />
         <StatisticsModal />
+        <SurveyModal/>
     </>
 );
 

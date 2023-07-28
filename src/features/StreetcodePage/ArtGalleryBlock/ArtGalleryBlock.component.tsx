@@ -22,7 +22,6 @@ const SECTION_AMOUNT_SMALL = 2;
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [indexedArtsSmall, setIndexedArtsSmall] = useState<IndexedArt[]>([]);
@@ -45,8 +44,7 @@ const ArtGalleryBlock = () => {
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId)
-                    .then(() => streecodePageLoaderContext.addBlockFetched());
+                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId);
             }
         },
         [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],

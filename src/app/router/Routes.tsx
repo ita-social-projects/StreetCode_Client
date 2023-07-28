@@ -6,6 +6,7 @@ import StreetcodeContent from '@streetcode/Streetcode.component';
 
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
 import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
+import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
 import PartnersPage from '@/features/AdditionalPages/PartnersPage/Partners.component';
 import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivatePolicy.component';
@@ -19,13 +20,11 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
-import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
-
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
-            path={`${FRONTEND_ROUTES.ADMIN.BASE}`}
+            path={FRONTEND_ROUTES.ADMIN.BASE}
             element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route

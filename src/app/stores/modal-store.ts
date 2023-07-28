@@ -35,6 +35,7 @@ interface ModalList {
     confirmation: ModalState;
     adminFacts: ModalState;
     statistics: ModalState;
+    survey: ModalState;
 }
 
 export default class ModalStore {
@@ -56,6 +57,7 @@ export default class ModalStore {
         confirmation: DefaultModalState,
         adminFacts: DefaultModalState,
         statistics: DefaultModalState,
+        survey: DefaultModalState,
     };
 
     public isPageDimmed = false;
