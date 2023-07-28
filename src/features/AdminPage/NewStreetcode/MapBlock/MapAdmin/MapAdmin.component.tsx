@@ -73,21 +73,19 @@ const MapOSMAdmin = () => {
         }
     };
 
-   
-
     const handleDelete = (record: { id: any; qrId: any }) => {
         const { id, qrId } = record;
         streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
         statisticRecordStore.deleteStatisticRecordFromMap(id);
         removeFromUsedNumbers(qrId);
         setDeletedNumbers((prevDeletedNumbers) => new Set(prevDeletedNumbers).add(qrId));
-      };
+    };
 
-      const removeFromUsedNumbers = (qrId: number) => {
+    const removeFromUsedNumbers = (qrId: number) => {
         const newUsedNumbers = new Set(usedNumbers);
         newUsedNumbers.delete(qrId);
         setUsedNumbers(newUsedNumbers);
-      };
+    };
 
     const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
         setAutocomplete(autocomplete);
@@ -196,8 +194,8 @@ const MapOSMAdmin = () => {
             key: 'actions',
             render: (text: any, record: any) => (
                 <span>
-                <DeleteOutlined onClick={() => handleDelete(record)} />
-            </span>
+                    <DeleteOutlined onClick={() => handleDelete(record)} />
+                </span>
             ),
         },
     ];
@@ -221,7 +219,7 @@ const MapOSMAdmin = () => {
                     setIsExist(exist);
                     if (usedNumbers.has(parseInt(value, 10))) {
                         setIsExist(true);
-                    }else if(deletedNumbers.has(parseInt(value, 10))){
+                    } else if (deletedNumbers.has(parseInt(value, 10))) {
                         setIsExist(false);
                     } else {
                         setIsExist(exist);
@@ -230,22 +228,20 @@ const MapOSMAdmin = () => {
                 .catch(() => {
                     message.error('Сервер не відповідає');
                 });
-        } else {     
+        } else {
             setIsExist(false);
         }
     };
 
     const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputNumber = event.target.value;
-    if (!Number.isNaN(inputNumber) && Number(inputNumber) >= 0) {
-      setNewNumber(inputNumber);
-      setIsInvalidInput(false);
-    } else {
-      setIsInvalidInput(true);
-    }
+        const inputNumber = event.target.value;
+        if (!Number.isNaN(inputNumber) && Number(inputNumber) >= 0) {
+            setNewNumber(inputNumber);
+            setIsInvalidInput(false);
+        } else {
+            setIsInvalidInput(true);
+        }
     };
-
-   
 
     return (
         <>
@@ -274,17 +270,17 @@ const MapOSMAdmin = () => {
                             handleNewNumberChange(e);
                             onCheckIndexClick(e.target.value);
                         }}
-                       
+
                         value={newNumber}
                     />
                     {isExist && (
                         <span className="notification red">
-                            Даний номер таблички вже використовується 
+                            Даний номер таблички вже використовується
                         </span>
                     )}
                     { isInvalidInput && (
                         <span className="notification red">
-                            Введіть додатнє число 
+                            Введіть додатнє число
                         </span>
                     )}
 
@@ -295,7 +291,7 @@ const MapOSMAdmin = () => {
                         <a>Обрати місце на мапі</a>
                     </Button>  */}
 
-                    {(streetcodeCoordinates.length > 0) && (!isExist)  && (!isInvalidInput) && (showButton) && (
+                    {(streetcodeCoordinates.length > 0) && (!isExist) && (!isInvalidInput) && (showButton) && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
                             <a>Зберегти стріткод</a>
                         </Button>
@@ -323,7 +319,7 @@ const MapOSMAdmin = () => {
                             origin: new window.google.maps.Point(0, 0),
                         }}
                         position={{ lat: item.latitude, lng: item.longtitude }}
-                        title={`${item.address}`}
+                        title={item.address}
                     />
                 ))}
             </GoogleMap>

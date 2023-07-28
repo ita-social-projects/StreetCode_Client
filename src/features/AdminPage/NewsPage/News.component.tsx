@@ -13,8 +13,8 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
-import FRONTEND_ROUTES from '../../../app/common/constants/frontend-routes.constants';
-import PageBar from '../PageBar/PageBar.component';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import PageBar from '@/PageBar/PageBar.component';
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();

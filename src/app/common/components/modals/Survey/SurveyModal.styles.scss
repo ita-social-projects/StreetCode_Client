@@ -113,8 +113,6 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
         @include mut.sized(100%, 46px);
 
       }
-
- 
     }
   }
 }
@@ -138,5 +136,4 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
       @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
     }
     }
-
 }

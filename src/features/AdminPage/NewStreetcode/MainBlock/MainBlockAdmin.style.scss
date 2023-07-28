@@ -129,7 +129,7 @@
         position: absolute;
         right: f.pxToRem(2px);
         bottom: f.pxToRem(2px);
-        font-size: 17px;
+        font-size: f.pxToRem(17px);
         font-weight: light;
         color: rgba(154, 154, 154, 255);
     }

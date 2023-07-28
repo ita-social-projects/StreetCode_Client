@@ -19,6 +19,7 @@ import { Button, Popover } from 'antd';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+
 import SearchBlock from './SearchBlock/SearchBlock.component';
 
 const HeaderBlock = () => {
@@ -31,8 +32,6 @@ const HeaderBlock = () => {
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
 
     const windowSize = useWindowSize();
-
-
 
     const handlePopoverVisibleChange = (visible: boolean) => {
         setIsPopoverVisible(visible);
@@ -69,14 +68,13 @@ const HeaderBlock = () => {
     const onMagnifyingGlassClick = () => {
         setIsPageDimmed();
         toggle();
-
     };
 
     return (
         <div className="HeaderBlock">
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div onClick={() => window.location.href = `/`}>
+                    <div onClick={() => window.location.href = '/'}>
                         {windowSize.width > 1024
                             ? <StreetcodeSvg />
                             : <StreetcodeSvgMobile />}
@@ -90,7 +88,7 @@ const HeaderBlock = () => {
                                 <SearchBlock searchQuery={searchQuery} />
                             </div>
                         )}
-                    ></Popover>
+                    />
                     <input
                         onChange={handleInputChange}
                         placeholder="Пошук..."
@@ -139,7 +137,7 @@ const HeaderBlock = () => {
                         placeholder="Що ти шукаєш?"
                         ref={inputRef}
                     />
-                    <Button type="primary" className="searchButton" >
+                    <Button type="primary" className="searchButton">
                         Пошук
                     </Button>
                 </div>
