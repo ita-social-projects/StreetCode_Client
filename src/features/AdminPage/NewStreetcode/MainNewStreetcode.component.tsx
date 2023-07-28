@@ -366,7 +366,7 @@ const NewStreetcode = () => {
                     urlTitle: arLink?.urlTitle ?? '',
                 };
 
-                if (text.id !== 0 && !(text.title && text.textContent && text.additionalText)) {
+                if (text.id !== 0 && !(text.title && text.textContent)) {
                     text.modelState = ModelState.Deleted;
                 }
 
@@ -415,6 +415,7 @@ const NewStreetcode = () => {
                     },
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
+
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
