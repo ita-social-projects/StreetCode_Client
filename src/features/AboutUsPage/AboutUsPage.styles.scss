@@ -1,13 +1,14 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+
 .aboutUsPageContainer {
     background: url('../../assets/images/streetcode-card/background.png') no-repeat center center / cover;
     min-height: 75vh;
-    //padding: 82px;
+    width: 100vw;
+
+    padding-top: f.pxToRem(82px);
 
     .contentContainer {
-        //height: 100vh;
-        width: 100%;
-
-        //background-color: red;
+        margin: f.pxToRem(40px) f.pxToRem(155px) f.pxToRem(146px);
         display: flex;
         flex-direction: column;
     }
