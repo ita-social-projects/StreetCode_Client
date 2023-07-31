@@ -74,7 +74,7 @@ const HeaderBlock = () => {
         <div className="HeaderBlock">
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div onClick={() => window.location.href = '/'}>
+                    <div className='logoContainer' onClick={() => window.location.href = '/'}>
                         {windowSize.width > 1024
                             ? <StreetcodeSvg />
                             : <StreetcodeSvgMobile />}
@@ -89,13 +89,13 @@ const HeaderBlock = () => {
                             </div>
                         )}
                     />
-                    <input
-                        onChange={handleInputChange}
-                        placeholder="Пошук..."
-                        ref={inputRef}
-                        className={`ant-input css-dev-only-do-not-override-26rdvq
-                            hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
-                    />
+                            <input
+                            onChange={handleInputChange}
+                            placeholder="Пошук..."
+                            ref={inputRef}
+                            className={`ant-input 
+                                hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                        />
                     <HeaderSkeleton />
                 </div>
                 <div className="rightPartContainer">
