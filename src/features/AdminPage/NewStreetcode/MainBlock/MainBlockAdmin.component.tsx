@@ -365,7 +365,7 @@ const MainBlockAdmin = React.memo(({
                     />
                 </Form.Item>
             </div>
-            <FileInputsPart onChange={handleInputChange} />
+            <FileInputsPart form={form} onChange={handleInputChange} />
         </div>
     );
 });
