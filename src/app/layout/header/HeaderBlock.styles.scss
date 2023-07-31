@@ -134,17 +134,13 @@ $navbar-hidden-innerwidth: 400px;
     
     .leftPartContainer {
         .logoContainer {
-            height: 34px;
+            height: f.pxToRem(34px);
             svg
             {
                 width: 100%;
                 height: f.pxToRem(34px);
             }}
             
-      .ant-input {
-        width: 90% !important;
-        margin: 300px;
-      }
     }
 
     .rightPartContainer {
