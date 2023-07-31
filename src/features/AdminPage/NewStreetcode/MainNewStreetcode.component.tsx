@@ -407,11 +407,12 @@ const NewStreetcode = () => {
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
                     images: createUpdateMediaStore.imagesUpdate.map((img):ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
                     audios: createUpdateMediaStore.audioUpdate,
-                    arLink: {
+                    transactionLink: {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
                         url: form.getFieldValue('arlink') ?? '',
-                        urlTitle: arLink?.urlTitle ?? '',
+                        qrCodeUrl: arLink?.urlTitle ?? '',
+                        modelState: 0,
                     },
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
