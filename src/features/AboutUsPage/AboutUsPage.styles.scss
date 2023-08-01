@@ -2,7 +2,7 @@
 
 .aboutUsPageContainer {
     background: url('../../assets/images/streetcode-card/background.png') no-repeat center center / cover;
-    min-height: 75vh;
+    min-height: 78vh;
     width: 100vw;
 
     padding-top: f.pxToRem(82px);
@@ -11,5 +11,13 @@
         margin: f.pxToRem(40px) f.pxToRem(155px) f.pxToRem(146px);
         display: flex;
         flex-direction: column;
+    }
+
+    @media screen and (max-width: 1024px) {
+        padding-top: f.pxToRem(64px);
+
+        .contentContainer {
+            margin: f.pxToRem(40px) f.pxToRem(10px) 0;
+        }
     }
 }
