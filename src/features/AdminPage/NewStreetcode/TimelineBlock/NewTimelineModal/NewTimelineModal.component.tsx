@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 
 import {
     Button,
-    DatePicker, Form, Input, Modal, Select,
+    DatePicker, Form, Input, Modal, Popover, Select,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -40,6 +40,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [tagInput, setTagInput] = useState('');
     const maxContextLength = 50;
     const getErrorMessage = (maxLength: number = maxContextLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const clearModal = () => {
+        form.resetFields();
+        setIsModalOpen(false);
+    }
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -142,7 +146,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             }
         }
     };
-
+    
     return (
         <Modal
             className="modalContainer"
@@ -151,7 +155,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                 setIsModalOpen(false);
             }}
             footer={null}
-            closeIcon={<CancelBtn />}
+            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                <div className='iconSize'>
+                    <CancelBtn onClick={clearModal} />
+                </div>
+            </Popover>}
         >
             <div className="modalContainer-content">
                 <Form

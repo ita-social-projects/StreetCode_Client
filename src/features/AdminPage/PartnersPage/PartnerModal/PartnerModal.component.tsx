@@ -12,7 +12,7 @@ import useMobx from '@stores/root-store';
 
 import {
     Button, Checkbox, Form, Input, message,
-    Modal, Select, Tooltip, UploadFile,
+    Modal, Popover, Select, Tooltip, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -147,6 +147,10 @@ const PartnerModal: React.FC< {
             setUrlTitleValue('');
         };
 
+        const closeModal =() => {
+            setIsModalOpen(false);
+        }
+
         const onSuccesfulSubmitLinks = (formValues: any) => {
             const url = formValues.url as string;
             const logotype = partnerLinksForm.getFieldValue('logotype');
@@ -269,10 +273,14 @@ const PartnerModal: React.FC< {
         return (
             <Modal
                 open={open}
-                onCancel={closeAndCleanData}
+                onCancel={closeModal}
                 className="modalContainer"
                 footer={null}
-                closeIcon={<CancelBtn />}
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                    <div className='iconSize'>
+                        <CancelBtn onClick={closeAndCleanData} />
+                    </div>
+                </Popover>}
             >
                 <div className="modalContainer-content">
                     <Form

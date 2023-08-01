@@ -5,7 +5,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import { useModalContext } from '@stores/root-store';
 
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal, Popover } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -45,7 +45,11 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
             open={addTerm.isOpen}
             onCancel={onCancel}
             footer={[null]}
-            closeIcon={<CancelBtn />}
+            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                <div className='iconSize'>
+                    <CancelBtn />
+                </div>
+            </Popover>}
         >
             <h2>Створення визначення</h2>
             <Form form={form} onFinish={onSuccessfulSubmit} layout="vertical">

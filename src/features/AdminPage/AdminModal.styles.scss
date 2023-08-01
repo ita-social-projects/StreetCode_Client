@@ -80,5 +80,14 @@
                 box-shadow: inset 0 0 0 2px white !important;
             }
         }
-    } 
+    }
+    
+    .iconSize {
+        width: 80px;
+        height: 76px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
+

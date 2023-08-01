@@ -6,8 +6,9 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
+import CancelBtn from '@images/utils/Cancel_btn.svg';
 
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal, Popover } from 'antd';
 
 interface AddSourceModalProps {
   isAddModalVisible: boolean;
@@ -22,6 +23,11 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
     const [image, setImage] = useState<Image>();
+
+    const clearModal = () => {
+        form.resetFields();
+        handleAddCancel;
+    }
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -42,6 +48,12 @@ const AddSourceModal: React.FC<AddSourceModalProps> = ({
             title="Додати категорію"
             open={isAddModalVisible}
             onCancel={handleAddCancel}
+
+            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                <div>
+                    <CancelBtn onClick={clearModal} />
+                </div>
+            </Popover>}
             footer={null}
         >
             <Form form={form} layout="vertical" onFinish={onSubmit}>

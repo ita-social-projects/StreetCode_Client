@@ -9,7 +9,7 @@ import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { Button, Form, Modal, Select } from 'antd';
+import { Button, Form, Modal, Popover, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
@@ -50,6 +50,10 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
         }
         return available;
     };
+    const clearModal = () => {
+        form.resetFields();
+        setOpen(false);
+    }
 
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
@@ -124,7 +128,11 @@ const ForFansModal = ({ open, setOpen, allCategories, onChange } : Props) => {
             footer={null}
             maskClosable
             centered
-            closeIcon={<CancelBtn />}
+            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                <div className='iconSize'>
+                    <CancelBtn onClick={clearModal} />
+                </div>
+            </Popover>}
         >
 
             <Form

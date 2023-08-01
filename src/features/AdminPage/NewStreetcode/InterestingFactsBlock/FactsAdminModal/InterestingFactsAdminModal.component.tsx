@@ -8,7 +8,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, UploadFile,
+    Button, Form, Input, Modal, Popover, UploadFile, 
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -20,6 +20,8 @@ import Image from '@/models/media/image.model';
 import { Fact, FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model';
 
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
+
+
 
 interface Props {
     fact?: FactCreate,
@@ -34,21 +36,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const imageId = useRef<number>(0);
     const [fileList, setFileList] = useState<UploadFile[]>();
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
-    const [visibleModal, setVisibleModal] = useState(false);
-
-    const handleRemove = useCallback(() => {
-        setVisibleModal(true);
-    }, []);
-
-    const handleCancelModalRemove = useCallback(() => {
-        setVisibleModal(false);
-    }, []);
 
     const clearModal=() =>{
         form.resetFields();
-        handleCancelModalRemove();
         setModalOpen(false);
-        console.log(onChange);
     }
 
     useEffect(() => {
@@ -122,11 +113,17 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
             <Modal
                 className="modalContainer"
                 open={open}
-                onCancel={() => handleRemove()}
+                onCancel={() => {
+                    setModalOpen(false);
+                }}
                 footer={null}
                 maskClosable
                 centered
-                closeIcon={<CancelBtn />}
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                    <div className='iconSize'>
+                        <CancelBtn onClick={clearModal} />
+                    </div>
+                </Popover>}
             >
                 <div className="modalContainer-content">
                     <Form
@@ -210,13 +207,8 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                     </Form>
                 </div>
             </Modal>
+            <Popover content="popupContent" trigger='hover'></Popover>
             <PreviewFileModal file={fileList?.at(0) ?? null} opened={previewOpen} setOpened={setPreviewOpen} />
-            <Modal
-                title={`Ви впевнені, що хочете видалити даний елемент?`}
-                open={visibleModal}
-                onOk={clearModal}
-                onCancel={handleCancelModalRemove}
-            />
         </div>
         
     );
