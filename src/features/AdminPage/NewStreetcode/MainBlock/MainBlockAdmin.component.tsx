@@ -15,6 +15,7 @@ import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
@@ -54,6 +55,16 @@ const MainBlockAdmin = React.memo(({
     const firstDate = useRef<Dayjs | null>(null);
     const secondDate = useRef<Dayjs | null>(null);
     const [switchState, setSwitchState] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [tagInput, setTagInput] = useState('');
+    const maxTagLength = 50;
+    const getErrorMessage = (maxLength: number = maxTagLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const { onContextKeyDown, handleSearch } = createTagValidator(
+        maxTagLength,
+        getErrorMessage,
+        setTagInput,
+        setErrorMessage,
+    );
 
     const handleInputChange = (fieldName: string, value: unknown) => {
         onChange(fieldName, value);
@@ -99,7 +110,12 @@ const MainBlockAdmin = React.memo(({
             setSelectedTags([...selectedTags, deletedTag]);
         } else {
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
-
+            if (selectedValue.length > maxTagLength) {
+                form.setFieldValue('tags', selectedValue);
+                setErrorMessage(getErrorMessage());
+                setTagInput('');
+                return;
+            }
             const newItem: StreetcodeTagUpdate = {
                 id: selectedIndex < 0 ? getNewMinNegativeId(selectedTags.map((tag) => tag.id)) : tags[selectedIndex].id,
                 title: selectedValue,
@@ -108,6 +124,8 @@ const MainBlockAdmin = React.memo(({
             };
 
             setSelectedTags([...selectedTags, newItem]);
+            setTagInput('');
+            setErrorMessage('');
         }
     };
 
@@ -176,7 +194,7 @@ const MainBlockAdmin = React.memo(({
             </div>
 
             <Form.Item
-                name="title"
+                name="mainTitle"
                 label="Назва стріткоду"
                 className="maincard-item"
                 rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
@@ -280,48 +298,63 @@ const MainBlockAdmin = React.memo(({
                 }}
             />
             <div className="tags-block">
-                <Form.Item label={(
-                    <div className="label-tags-block">
-                        <p>Теги</p>
-                        <Popover
-                            className="info-container"
-                            placement="topLeft"
-                            content={(
-                                <p className="label-tags-block-info-container-content">
-                                    При обиранні теги є невидимими для користувача (фон тегу сірий),
-                                    тобто він не відображається
-                                    на головній картці стріткоду.
-                                    Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
-                                    Нижче є розширення наводячи на які, можна побачити, які теги
-                                    будуть вміщатись на головній картці стріткоду.
-                                    {' '}
-                                </p>
-                            )}
-                        >
-                            <InfoCircleOutlined className="info-icon" />
-                        </Popover>
-                    </div>
-                )}
-                >
-                    <div className="tags-block-tagitems">
-                        <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                        <Select
-                            className="tags-select-input"
-                            mode="tags"
-                            onSelect={(selectedValue, option) => {
-                                handleInputChange(option.key, selectedValue);
-                                onSelectTag(selectedValue);
-                            }}
-                            onDeselect={(deselectedValue, option) => {
-                                handleInputChange(option.key, deselectedValue);
-                                onDeselectTag(deselectedValue);
-                            }}
-                            value={selectedTags.map((x) => x.title)}
-                        >
-                            {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
-                        </Select>
-                    </div>
-                </Form.Item>
+                <div style={{ position: 'relative' }}>
+                    <Form.Item
+                        validateStatus={errorMessage ? 'error' : ''}
+                        help={errorMessage}
+                        name="tags"
+                        label={(
+                            <div className="label-tags-block">
+                                <p>Теги</p>
+                                <Popover
+                                    className="info-container"
+                                    placement="topLeft"
+                                    content={(
+                                        <p className="label-tags-block-info-container-content">
+                                            При обиранні теги є невидимими для користувача (фон тегу сірий),
+                                            тобто він не відображається
+                                            на головній картці стріткоду.
+                                            Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
+                                            Нижче є розширення наводячи на які, можна побачити, які теги
+                                            будуть вміщатись на головній картці стріткоду.
+                                            {' '}
+                                        </p>
+                                    )}
+                                >
+                                    <InfoCircleOutlined className="info-icon" />
+                                </Popover>
+                            </div>
+                        )}
+                    >
+                        <div className="tags-block-tagitems">
+                            <DragableTags setTags={setSelectedTags} tags={selectedTags} />
+                            <Select
+                                className="tags-select-input"
+                                mode="tags"
+                                onSelect={(selectedValue, option) => {
+                                    handleInputChange(option.key, selectedValue);
+                                    onSelectTag(selectedValue);
+                                }}
+                                onDeselect={(deselectedValue, option) => {
+                                    handleInputChange(option.key, deselectedValue);
+                                    onDeselectTag(deselectedValue);
+                                }}
+                                value={selectedTags.map((x) => x.title)}
+                                onInputKeyDown={onContextKeyDown}
+                                onSearch={handleSearch}
+                                filterSort={(optionA, optionB) => (optionA?.value ?? '').toString().toLowerCase()
+                                    .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
+                            >
+                                {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
+                            </Select>
+                        </div>
+                    </Form.Item>
+                    {tagInput && (
+                        <div className="tagInput-counter">
+                            {tagInput.length} / {maxTagLength}
+                        </div>
+                    )}
+                </div>
                 <div className="device-sizes-list">
                     <Form.Item label="Розширення">
                         <Popover

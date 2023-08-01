@@ -282,7 +282,7 @@ const StreetcodesTable = () => {
                     status: currentStatus,
                     date: format(
                         convertUTCDateToLocalDate(new Date(streetcode.updatedAt)),
-                        'dd.mm.yyyy HH:MM:SS ',
+                        'dd.MM.yyyy HH:mm:SS ',
                         { locale: uk },
                     ),
                     name: streetcode.title,

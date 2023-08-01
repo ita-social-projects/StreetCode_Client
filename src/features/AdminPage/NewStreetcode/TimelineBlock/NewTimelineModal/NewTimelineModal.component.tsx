@@ -4,7 +4,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
-import getMaxId from '@app/common/utils/getMaxId';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
@@ -17,6 +16,7 @@ import {
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
+import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
     dateTimePickerTypes,
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
@@ -40,10 +40,19 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [tagInput, setTagInput] = useState('');
     const maxContextLength = 50;
     const getErrorMessage = (maxLength: number = maxContextLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+
     const clearModal = () => {
         form.resetFields();
         setIsModalOpen(false);
     }
+
+    const { onContextKeyDown, handleSearch } = createTagValidator(
+        maxContextLength,
+        getErrorMessage,
+        setTagInput,
+        setErrorMessage,
+    );
+
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -98,6 +107,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             if (value.length > maxContextLength) {
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 setErrorMessage(getErrorMessage());
+                setTagInput('');
                 return;
             }
             const newItem: HistoricalContextUpdate = {
@@ -212,28 +222,35 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         </div>
                     </Form.Item>
 
-                    <Form.Item
-                        name="historicalContexts"
-                        label="Контекст: "
-                        validateStatus={errorMessage ? 'error' : ''}
-                        help={errorMessage}
-                    >
-                        <Select
-                            mode="tags"
-                            onSelect={onContextSelect}
-                            onDeselect={onContextDeselect}
-                            onInputKeyDown={onContextKeyDown}
-                            value={tagInput}
-                            onChange={(e) => onChange('historicalContexts', e)}
+                    <div style={{ position: 'relative' }}>
+                        <Form.Item
+                            name="historicalContexts"
+                            label="Контекст: "
+                            validateStatus={errorMessage ? 'error' : ''}
+                            help={errorMessage}
                         >
-                            {historicalContextStore.historicalContextArray
-                                .map((cntx) => (
+                            <Select
+                                mode="tags"
+                                onSelect={onContextSelect}
+                                onDeselect={onContextDeselect}
+                                onInputKeyDown={onContextKeyDown}
+                                value={tagInput}
+                                onSearch={handleSearch}
+                                onChange={(e) => onChange('historicalContexts', e)}
+                            >
+                                {historicalContextStore.historicalContextArray.map((cntx) => (
                                     <Select.Option key={cntx.id} value={cntx.title}>
                                         {cntx.title}
                                     </Select.Option>
                                 ))}
-                        </Select>
-                    </Form.Item>
+                            </Select>
+                        </Form.Item>
+                        {tagInput && (
+                            <div className="tagInput-counter">
+                                {tagInput.length} / {maxContextLength}
+                            </div>
+                        )}
+                    </div>
 
                     <Form.Item
                         name="description"

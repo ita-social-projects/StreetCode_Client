@@ -3,7 +3,7 @@ import './InterestingFacts.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useRef, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
-import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
@@ -13,7 +13,6 @@ import { Fact } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { factsStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const [sliderArray, setSliderArray] = useState<Fact[]>([]);
@@ -23,11 +22,10 @@ const InterestingFactsComponent = () => {
             if (getStreetCodeId !== errorStreetCodeId && getStreetCodeId > 0) {
                 factsStore.fetchFactsByStreetcodeId(getStreetCodeId).then(() => {
                     const res = factsStore.getFactArray;
+                    facts.current = res;
                     Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
                         res[index].image = img;
                     }))).then(() => {
-                        facts.current = res;
-                        streecodePageLoaderContext.addBlockFetched();
                         setSliderArray(res.length === 3
                             || res.length === 2
                             ? res.concat(res)
@@ -40,7 +38,7 @@ const InterestingFactsComponent = () => {
     );
 
     const setings = {
-        dots: facts.current.length >= 2,
+        dots: facts.current.length > 3,
         swipeOnClick: false,
         rtl: false,
         centerMode: true,
@@ -68,7 +66,6 @@ const InterestingFactsComponent = () => {
                     centerPadding: '-27.5px',
                     arrows: false,
                     swipe: true,
-                    dots: true,
                 },
             },
         ],
@@ -82,7 +79,7 @@ const InterestingFactsComponent = () => {
                         className={`container "interestingFactsWrapper"
                     ${facts.current.length === 1 ? 'single' : ''}`}
                     >
-                        <BlockHeading headingText="Wow—факти" />
+                        <BlockHeading headingText="Wow-факти" />
                         <div className={`interestingFactsContainer
                     ${facts.current.length === 1 ? 'singleFact' : ''}`}
                         >

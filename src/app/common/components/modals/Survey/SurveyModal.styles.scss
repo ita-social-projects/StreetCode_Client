@@ -1,0 +1,139 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+$StbgImg: '@assets/images/donates/bgStrLogo.png';
+
+.surveyModal {
+  width: f.pxToRem(832px) !important;
+  height: f.pxToRem(414px);
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.ant-modal {
+    .ant-modal-content {
+      height: inherit;
+      @include mut.flex-centered($direction: column);
+      @include mut.full-rounded(30px, $overflow: visible);
+      
+      @include mut.bg-image($StbgImg, 18%, no-repeat);
+      background-position: center;
+      padding: 0 !important;
+      box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    .ant-modal-close {
+      display: none;
+      @include mut.positioned-as(absolute, $left: 94%, $top: -27px);
+      @include mut.circular(80px, c.$pure-white-color);
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+      &:hover {
+        background-color: c.$modal-hover-color;
+      }
+
+      .ant-modal-close-x {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.surveyModalContent {
+  @include mut.flex-centered($direction: column);
+  @include mut.rem-margined(80px, 20px, 40px, 20px);
+  text-align: center;
+  
+  > h1 {
+    color: c.$pure-black-color;
+    @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
+  }
+
+  > h3 {
+    @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
+  }
+
+
+  .surveyModalBtnContainer {
+    @include mut.sized(220px, 55px);
+    @include mut.rem-margined(16px, 0, 15px, 15px);
+    @include mut.full-rounded(14px);
+    background-color: c.$accented-red-color;
+    a {
+      @include mut.with-font($font-weight: 400);
+      border-width: 3px;
+      border-color: c.$pure-white-color;
+      color: c.$pure-white-color;
+    }
+    &:hover {
+      filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
+      border-color: c.$accented-red-color;
+    }
+  }
+
+
+@media screen and (max-width: 1024px) {
+  .surveyModal {
+    @include mut.sizedImportant(340px, 316px);
+    display: flex;
+    justify-content: center;
+
+    &.ant-modal {
+      .ant-modal-content {
+        @include mut.full-rounded(16px, $overflow: visible);
+
+        .ant-modal-body{
+          width: 100%;
+          padding: f.pxToRem(16px);
+        }
+      }
+
+      .ant-modal-close{
+        display: none;
+      }
+    }
+
+    .surveyModalContent {
+      > h1 {
+        color: c.$pure-black-color;
+        @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+      }
+    
+      > h3 {
+        @include mut.with-font(ft.$roboto-font, $font-size: 8px, $font-weight: 300);
+      }
+      }
+
+      .surveyModalBtnContainer {
+        @include mut.sized(100%, 46px);
+
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .surveyModal .surveyModalBtnContainer {
+    @include mut.sized(308px, 100%);
+    > * {
+      width: f.pxToRem(100px) !important;
+    
+    }
+  }
+  .surveyModalContent {
+    padding-bottom: 0%;
+    > h1 {
+      color: c.$pure-black-color;
+      @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+    }
+  
+    > h3 {
+      @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
+    }
+    }
+}

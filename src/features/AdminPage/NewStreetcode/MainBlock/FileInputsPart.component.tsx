@@ -7,7 +7,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import CreateUpdateMediaStore from '@app/stores/create-update-media-store';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
-import Image, { ImageCreateUpdate } from '@models/media/image.model';
+import Image, { ImageUpdate } from '@models/media/image.model';
 
 import { UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -19,6 +19,9 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
+
+import { Modal } from 'antd';
+import { useCallback, useState } from 'react'
 
 const convertFileToUploadFile = (file: Image | Audio) => {
     const newFileList: UploadFile = {
@@ -37,11 +40,16 @@ const FileInputsPart = ({ onChange }) => {
     const [images, setImages] = useState<Image[]>([]);
     const [audio, setAudio] = useState<UploadFile[]>([]);
     const [animation, setAnimation] = useState<UploadFile[]>([]);
+    const [fileValidationError, setFileValidationError] = useState<string | null>(null);
     const [blackAndWhite, setBlackAndWhite] = useState<UploadFile[]>([]);
     const [relatedFigure, setRelatedFigure] = useState<UploadFile[]>([]);
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [fileHandle, setFileHandler] = useState<any>();
+    const [idHandle, setIdHandler] = useState<any>();
 
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
@@ -51,12 +59,54 @@ const FileInputsPart = ({ onChange }) => {
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
+    const fileHandler = (file: UploadFile, id: string) => {
+        setFileHandler(file);
+        setIdHandler(id);
+        handleRemove();
+    };
+    const handleRemove = useCallback(() => {
+        setVisibleModal(true);
+    }, []);
+
+    const handleCancelModalRemove = useCallback(() => {
+        setVisibleModal(false);
+    }, []);
+
+    const typeDef = () => {
+        switch (idHandle) {
+            case 'gif': {
+                handleFileRemove('animationId', 'imagesUpdate');
+                setAnimation((prev) => prev.filter((x) => x.uid !== fileHandle.uid));
+                handleCancelModalRemove();
+                break;
+            }
+            case 'blackAndWhite': {
+                handleFileRemove('blackAndWhiteId', 'imagesUpdate');
+                setBlackAndWhite((prev) => prev.filter((x) => x.uid !== fileHandle.uid));
+                handleCancelModalRemove();
+                break;
+            }
+            case 'relatedFigure': {
+                handleFileRemove('relatedFigureId', 'imagesUpdate');
+                setRelatedFigure((prev) => prev.filter((x) => x.uid !== fileHandle.uid));
+                handleCancelModalRemove();
+                break;
+            }
+            case 'audio': {
+                handleFileRemove('audioId', 'audioUpdate');
+                setAudio((prev) => prev.filter((x) => x.uid !== fileHandle.uid));
+                handleCancelModalRemove();
+                break;
+            }
+        }
+    };
+
     const handleFileUpload = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>(
         fileId: number,
         propertyName: K,
         arrayName: keyof CreateUpdateMediaStore,
     ) => {
-        const array = createUpdateMediaStore[arrayName] as (ImageCreateUpdate | AudioUpdate)[];
+        const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
         if (createUpdateMediaStore[propertyName]) {
             const item = array.find((x) => x.id === createUpdateMediaStore[propertyName]);
             if (item) {
@@ -71,8 +121,8 @@ const FileInputsPart = ({ onChange }) => {
     };
 
     const handleFileRemove = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>
-        (propertyName: K, arrayName:keyof CreateUpdateMediaStore) => {
-        const array = createUpdateMediaStore[arrayName] as (ImageCreateUpdate | AudioUpdate)[];
+        (propertyName: K, arrayName: keyof CreateUpdateMediaStore) => {
+        const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
         const item = array.find((x) => x.id === createUpdateMediaStore[propertyName]);
         if (item) {
             item.modelState = ModelState.Deleted;
@@ -117,8 +167,10 @@ const FileInputsPart = ({ onChange }) => {
                 <FormItem
                     name="animations"
                     label="Анімація"
-                    rules={[{ required: !(parseId && images.length > 1),
-                              message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію' }]}
+                    rules={[{
+                        required: !(parseId && images.length > 1),
+                        message: parseId ? 'Змінити анімацію' : 'Завантажте анімацію'
+                    }]}
                 >
                     <FileUploader
                         accept=".gif"
@@ -126,27 +178,37 @@ const FileInputsPart = ({ onChange }) => {
                         multiple={false}
                         maxCount={1}
                         fileList={animation}
+                        beforeUpload={(file) => {
+                            const isGif = file.type === 'image/gif';
+                            if (!isGif) {
+                                setFileValidationError('Тільки файли .gif дозволені!');
+                            }
+                            return isGif;
+                        }}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image) => {
                             handleFileUpload(file.id, 'animationId', 'imagesUpdate');
                             setAnimation([convertFileToUploadFile(file)]);
+                            setFileValidationError(null)
                         }}
                         onRemove={(file) => {
-                            handleFileRemove('animationId', 'imagesUpdate');
-                            setAnimation((prev) => prev.filter((x) => x.uid !== file.uid));
+                            fileHandler(file, "gif")
                         }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && images.length > 0 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
+                    {fileValidationError && <div style={{ color: 'red' }}>{fileValidationError}</div>}
                 </FormItem>
-
+                
                 <FormItem
                     name="pictureBlackWhite"
                     label="Чорнобіле"
-                    rules={[{ required: !(parseId && images.length > 1),
-                              message: parseId ? 'Змінити' : '+ Додати' }]}
+                    rules={[{
+                        required: !(parseId && images.length > 1),
+                        message: parseId ? 'Змінити' : '+ Додати'
+                    }]}
                 >
                     <FileUploader
                         multiple={false}
@@ -161,8 +223,7 @@ const FileInputsPart = ({ onChange }) => {
                             setBlackAndWhite([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove('blackAndWhiteId', 'imagesUpdate');
-                            setBlackAndWhite((prev) => prev.filter((x) => x.uid !== file.uid));
+                            fileHandler(file, "blackAndWhite")
                         }}
                     >
                         <InboxOutlined />
@@ -187,8 +248,7 @@ const FileInputsPart = ({ onChange }) => {
                             setRelatedFigure([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove('relatedFigureId', 'imagesUpdate');
-                            setRelatedFigure((prev) => prev.filter((x) => x.uid !== file.uid));
+                            fileHandler(file, "relatedFigure");
                         }}
                     >
                         <InboxOutlined />
@@ -212,14 +272,21 @@ const FileInputsPart = ({ onChange }) => {
                             setAudio([convertFileToUploadFile(file)]);
                         }}
                         onRemove={(file) => {
-                            handleFileRemove('audioId', 'audioUpdate');
-                            setAudio((prev) => prev.filter((x) => x.uid !== file.uid));
+                            fileHandler(file, "audio")
                         }}
                     >
                         <InboxOutlined />
                         <p className="ant-upload-text">{parseId && audio.length > 0 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
                 </FormItem>
+                <Modal
+                    title={`Ви впевнені, що хочете видалити даний елемент?`}
+                    open={visibleModal}
+                    onOk={(e) => {
+                        typeDef();
+                    }}
+                    onCancel={handleCancelModalRemove}
+                />
             </div>
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>

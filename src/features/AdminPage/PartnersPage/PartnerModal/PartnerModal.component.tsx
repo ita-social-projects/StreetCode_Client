@@ -45,6 +45,7 @@ const PartnerModal: React.FC< {
         isStreetcodeVisible = true,
         afterSubmit,
     }) => {
+        const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
         const [form] = Form.useForm();
         const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
         const [urlTitleValue, setUrlTitleValue] = useState<string>('');
@@ -328,8 +329,7 @@ const PartnerModal: React.FC< {
                             label="Посилання: "
                             rules={[
                                 {
-                                    pattern:
-                    /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i,
+                                    pattern: URL_REGEX_VALIDATION_PATTERN,
                                     message: 'Введіть правильне посилання',
                                 },
                             ]}
@@ -474,8 +474,7 @@ const PartnerModal: React.FC< {
                                     rules={[
                                         { required: true, message: 'Введіть Посилання' },
                                         {
-                                            pattern:
-                        /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([/?].*)?$/i,
+                                            pattern: URL_REGEX_VALIDATION_PATTERN,
                                             message: 'Введіть правильне посилання',
                                         },
                                         {
@@ -495,7 +494,7 @@ const PartnerModal: React.FC< {
                                         },
                                     ]}
                                 >
-                                    <Input min={1} max={255} showCount />
+                                    <Input min={1} maxLength={255} showCount />
                                 </Form.Item>
 
                                 <Form.Item label=" ">
