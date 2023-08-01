@@ -8,34 +8,34 @@
 p,
 span,
 div {
-  font-family: ft.$roboto-font;
+    font-family: ft.$roboto-font;
 }
 
 @for $index from 1 through 6 {
-  h#{$index} {
-    font-family: ft.$closer-text-font;
-  }
+    h#{$index} {
+        font-family: ft.$closer-text-font;
+    }
 }
 
 .App {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 .dimmed {
-  position: fixed;
-  background: rgba(0, 0, 0, .45);
-  @include mut.parent-sized();
+    position: fixed;
+    background: rgba(0, 0, 0, .45);
+    @include mut.parent-sized();
 
-  @include vnd.vendored(transition, 'background .5s ease');
-  z-index: 5;
+    @include vnd.vendored(transition, 'background .5s ease');
+    z-index: 5;
 }
 
-.mainBlockWrapper{
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.mainBlockWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-.mainWrapper{
-  flex: 1 1 auto;
+.mainWrapper {
+    flex: 1 1 auto;
 }
