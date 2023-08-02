@@ -8,17 +8,15 @@ $navbar-innerwidth: 500px;
 $navbar-hidden-innerwidth: 400px;
 
 .navBarContainer {
-  @include mut.flexed($justify-content: space-between, $align-items: center);
+  @include mut.flexed($justify-content: space-between);
   @include mut.sized(100%, 82px);
-  @include mut.rem-padded(21px, 32px, 21px, 32px);
+  @include mut.rem-padded(30px, 20px, 30px, 20px);
 
   background-color: c.$pure-white-color;
   position: fixed;
   z-index: 7;
 
   svg {
-    @include mut.rem-margined($right: 34px);
-
     &:hover {
       cursor: pointer;
     }
@@ -54,7 +52,14 @@ $navbar-hidden-innerwidth: 400px;
   }
 }
 
-.leftPartContainer,
+.leftPartContainer
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: f.pxToRem(15px);
+}
+
 .rightPartContainer {
   @include mut.flexed($justify-content: space-between, $align-items: center);
 }
@@ -120,7 +125,7 @@ $navbar-hidden-innerwidth: 400px;
 @media screen and (max-width: 1024px) { 
   .navBarContainer {
     @include mut.sized($width: 100%, $height: 64px);
-    @include mut.rem-padded(15px, 0, 15px, 0);
+    @include mut.rem-padded(15px, 12px, 15px, 12px);
 
     .ant-input-affix-wrapper,
     .loginBtn {
@@ -128,9 +133,14 @@ $navbar-hidden-innerwidth: 400px;
     }
     
     .leftPartContainer {
-      svg {
-        @include mut.rem-margined($left: 12px);
-      }
+        .logoContainer {
+            height: f.pxToRem(34px);
+            svg
+            {
+                width: 100%;
+                height: f.pxToRem(34px);
+            }}
+            
     }
 
     .rightPartContainer {
