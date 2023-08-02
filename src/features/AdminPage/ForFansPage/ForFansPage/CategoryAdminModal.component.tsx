@@ -7,11 +7,9 @@ import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-
 import {
     Button, Form, Input, Modal, UploadFile, Popover
 } from 'antd';
-
 import { UploadFileStatus } from 'antd/es/upload/interface';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -37,11 +35,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const isEditing = !!initialData;
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-
-    const clearModal = () => {
-        form.resetFields();
-        handleAddCancel;
-    }
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -124,48 +117,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     return (
-        <Modal
-            title="Додати категорію"
-            open={isAddModalVisible}
-            onCancel={handleAddCancel}
-
-            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                <div>
-                    <CancelBtn onClick={clearModal} />
-                </div>
-            </Popover>}
-            footer={null}
-        >
-            <Form form={form} layout="vertical" onFinish={onSubmit}>
-                <Form.Item
-                    name="title"
-                    label="Назва: "
-                    rules={[{ required: true, message: 'Введіть назву' }]}
-                >
-                    <Input placeholder="Title" />
-                </Form.Item>
-                <Form.Item
-                    name="image"
-                    label="Картинка: "
-                    rules={[{ required: true, message: 'Додайте зображення' }]}
-                >
-                    <FileUploader
-                        multiple={false}
-                        accept=".jpeg,.png,.jpg"
-                        listType="picture-card"
-                        maxCount={1}
-                        onSuccessUpload={(img: Image) => {
-                            imageId.current = img.id;
-                            setImage(img);
-                        }}
-                        onRemove={() => {
-                            ImagesApi.delete(imageId.current);
-                        }}
         <div>
             <Modal
                 title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
-                onCancel={handleCancel}
+                onCancel={onCancel}
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                    <div>
+                        <CancelBtn onClick={handleCancel} />
+                    </div>
+                </Popover>}
                 footer={null}
             >
                 <Form form={form} layout="vertical" onFinish={onSubmit} initialValues={initialData}>

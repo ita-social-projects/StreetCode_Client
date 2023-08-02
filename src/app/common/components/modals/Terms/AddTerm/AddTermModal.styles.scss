@@ -38,10 +38,7 @@
     }
 }
 
-.iconSize {
-    width: 80px;
-    height: 76px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+ .iconSize {
+     @include mut.sized(80px, 78px);
+     @include mut.flex-centered();
+ }

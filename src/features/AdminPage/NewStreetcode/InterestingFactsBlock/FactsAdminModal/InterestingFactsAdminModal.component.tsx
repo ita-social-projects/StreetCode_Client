@@ -127,6 +127,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                     <div className='iconSize'>
                         <CancelBtn onClick={clearModal} />
                     </div>
+                </Popover>}
             >
                 <div className="modalContainer-content">
                     <Form

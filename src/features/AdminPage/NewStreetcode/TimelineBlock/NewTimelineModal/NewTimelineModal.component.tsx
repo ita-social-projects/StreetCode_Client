@@ -40,12 +40,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [tagInput, setTagInput] = useState('');
     const maxContextLength = 50;
     const getErrorMessage = (maxLength: number = maxContextLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
-
-    const clearModal = () => {
-        form.resetFields();
-        setIsModalOpen(false);
-    }
-
     const { onContextKeyDown, handleSearch } = createTagValidator(
         maxContextLength,
         getErrorMessage,
@@ -53,6 +47,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         setErrorMessage,
     );
 
+    const clearModal= () =>{
+        form.resetFields();
+        setIsModalOpen(false);
+    }
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -143,20 +141,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         onChange('historicalContexts', selectedContext.current);
     };
 
-    const onContextKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const { value } = e.currentTarget;
-        if (e.key === 'Enter') {
-            if (value.length > maxContextLength) {
-                setErrorMessage(getErrorMessage());
-                e.preventDefault();
-                e.stopPropagation();
-            } else {
-                setTagInput(value);
-                setErrorMessage('');
-            }
-        }
-    };
-    
     return (
         <Modal
             className="modalContainer"
@@ -165,6 +149,9 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                 setIsModalOpen(false);
             }}
             footer={null}
+            maskClosable
+            centered
+
             closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
                 <div className='iconSize'>
                     <CancelBtn onClick={clearModal} />
