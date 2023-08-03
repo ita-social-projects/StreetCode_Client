@@ -54,7 +54,7 @@ const ForFansBlock: React.FC<Props> = ({ onChange }) => {
                     ))}
             </div>
             <ForFansAdminModal
-                character_limit={1000}
+                character_limit={4000}
                 allCategories={categoriesSelect}
                 open={isModalOpen}
                 setOpen={setIsModalOpen}
