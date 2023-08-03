@@ -28,17 +28,6 @@
 }
 
 .addModal .ant-modal-close {
-    @include mut.positioned-as(absolute, $left: 94%, $top: -25px);
-    @include mut.circular(80px, c.$pure-white-color);
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    border: none;
-
-    &:hover {
-      background-color: c.$modal-hover-color;
-    }
+    @include mut.sized(40px, 40px);
 }
 
- .iconSize {
-     @include mut.sized(80px, 78px);
-     @include mut.flex-centered();
- }

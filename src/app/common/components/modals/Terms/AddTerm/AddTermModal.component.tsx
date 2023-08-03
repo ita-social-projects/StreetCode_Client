@@ -35,8 +35,11 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
     };
 
     const onCancel = () => {
+        addTerm.isOpen = false;
+    };
+     const onClear = () => {
+        addTerm.isOpen = false;
         form.resetFields();
-        setModal('addTerm');
     };
 
     return (
@@ -46,9 +49,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
             onCancel={onCancel}
             footer={[null]}
             closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                <div className='iconSize'>
-                    <CancelBtn />
-                </div>
+                    <CancelBtn onClick={onClear}/>
             </Popover>}
         >
             <h2>Створення визначення</h2>

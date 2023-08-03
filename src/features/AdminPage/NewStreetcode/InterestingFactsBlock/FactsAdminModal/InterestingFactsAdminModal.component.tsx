@@ -123,10 +123,8 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 maskClosable
                 centered
 
-                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <div className='iconSize'>
-                        <CancelBtn onClick={clearModal} />
-                    </div>
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>               
+                        <CancelBtn  onClick={clearModal} />      
                 </Popover>}
             >
                 <div className="modalContainer-content">
