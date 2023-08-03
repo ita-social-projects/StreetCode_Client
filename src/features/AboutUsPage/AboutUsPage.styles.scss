@@ -2,6 +2,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
 
 .aboutUsPageContainer {
     // background: url('../../assets/images/streetcode-card/background.png') no-repeat center center / cover;
@@ -39,11 +40,28 @@
         }
     }
 
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: s.$tablet) {
         padding-top: f.pxToRem(64px);
 
         .contentContainer {
             margin: f.pxToRem(40px) f.pxToRem(10px) 0;
+            .aboutUsBlockContainer {
+                margin-bottom: f.pxToRem(50px) !important;
+                
+                h1 {
+                    margin-bottom: f.pxToRem(30px) !important;
+                    text {
+                        font-size: 24px !important;
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: s.$phone) {
+        .contentContainer {
+            h1 {
+                margin-bottom: f.pxToRem(20px) !important;
+            }
         }
     }
 }

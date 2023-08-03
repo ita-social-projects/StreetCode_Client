@@ -2,6 +2,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
 
 .founderCard {
     margin: auto 0;
@@ -44,7 +45,7 @@
         gap: 14px;
     }
 
-    @media screen and (max-width: 1400px)
+    @media screen and (max-width: s.$smallDesctop)
     {
         max-width: f.pxToRem(258px);
         

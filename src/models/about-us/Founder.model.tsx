@@ -5,4 +5,6 @@ interface FounderProps
     founderInstagram: string,
     founderFacebook: string,
     founderImage: any,
+    founderText: string,
+    order: boolean
 }

@@ -1,7 +1,6 @@
 import './FounderCard.styles.scss'
 import Instagram from '@/assets/images/about-us/instagram.png'
 import Facebook from '@/assets/images/about-us/facebook.png'
-import Inna from '@assets/images/about-us/Inna.png'
 
 const FounderCard = (founder: FounderProps) => {
     return (
