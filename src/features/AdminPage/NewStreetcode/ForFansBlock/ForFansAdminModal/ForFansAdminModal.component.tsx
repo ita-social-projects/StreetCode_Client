@@ -36,7 +36,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
     const [form] = Form.useForm();
     const [selectedText, setSelected] = useState('');
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
-    const maxLength = character_limit || 4000;
+    const maxLength = character_limit || 10000;
     const getAvailableCategories = (): SourceCategoryName[] => {
         const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
             .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId

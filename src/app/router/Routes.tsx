@@ -25,8 +25,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
-          //  element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
-            element={<AdminPage />}
+            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
@@ -34,18 +33,15 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-           // element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
-            element={<NewStreetcode />}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-          //  element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
-          element={<NewStreetcode />}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-          //  element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
-            element={<ForFansMainPage />}
+            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
