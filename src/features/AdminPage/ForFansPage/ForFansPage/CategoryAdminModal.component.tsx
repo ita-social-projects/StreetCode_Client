@@ -15,6 +15,7 @@ import { UploadFileStatus } from 'antd/es/upload/interface';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import '@features/AdminPage/AdminModal.styles.scss';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -122,10 +123,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
                 onCancel={onCancel}
+                className="modalContainer"
                 closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <div>
-                        <CancelBtn onClick={handleCancel} />
-                    </div>
+                        <CancelBtn className='iconSize' onClick={handleCancel} />
                 </Popover>}
                 footer={null}
             >

@@ -44,12 +44,12 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
 
     return (
         <Modal
-            className="editModal"
+            className="addModal"
             open={addTerm.isOpen}
             onCancel={onCancel}
             footer={[null]}
             closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <CancelBtn onClick={onClear}/>
+                <CancelBtn className='iconSize' onClick={onClear}/>
             </Popover>}
         >
             <h2>Створення визначення</h2>

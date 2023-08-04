@@ -152,7 +152,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             maskClosable
             centered
             closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <CancelBtn onClick={clearModal} />
+                <CancelBtn className='iconSize' onClick={clearModal} />
             </Popover>}
         >
             <div className="modalContainer-content">

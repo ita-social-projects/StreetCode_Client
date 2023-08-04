@@ -278,9 +278,7 @@ const PartnerModal: React.FC< {
                 className="modalContainer"
                 footer={null}
                 closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <div className='iconSize'>
-                        <CancelBtn onClick={closeAndCleanData} />
-                    </div>
+                    <CancelBtn className='iconSize' onClick={closeAndCleanData} />
                 </Popover>}
             >
                 <div className="modalContainer-content">

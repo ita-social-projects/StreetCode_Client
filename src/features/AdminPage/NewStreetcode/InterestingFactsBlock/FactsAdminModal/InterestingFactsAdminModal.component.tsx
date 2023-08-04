@@ -124,7 +124,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 centered
 
                 closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>               
-                        <CancelBtn  onClick={clearModal} />      
+                    <CancelBtn className='iconSize'  onClick={clearModal} />      
                 </Popover>}
             >
                 <div className="modalContainer-content">

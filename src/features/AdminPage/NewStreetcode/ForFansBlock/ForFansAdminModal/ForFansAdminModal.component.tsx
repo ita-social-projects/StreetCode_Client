@@ -130,7 +130,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
             maskClosable
             centered
             closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <CancelBtn onClick={clearModal} />
+                <CancelBtn className='iconSize' onClick={clearModal} />
             </Popover>}
         >
 
