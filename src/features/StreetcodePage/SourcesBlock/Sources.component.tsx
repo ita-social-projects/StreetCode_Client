@@ -1,7 +1,7 @@
 import './Sources.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -14,26 +14,29 @@ const SourcesComponent = () => {
     const { sourcesStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const windowsize = useWindowSize();
+
     useEffect(() => {
         const streetcodeId = getStreetCodeId;
         if (streetcodeId > 0) {
             sourcesStore.fetchSrcCategoriesByStreetcodeId(streetcodeId);
         }
     }, [getStreetCodeId]);
+
     const sliderProps = {
         className: 'heightContainer',
-        infinite: true,
-        swipe: windowsize.width <= 1200,
+        infinite: false,
+        swipe: true,
         dots: windowsize.width <= 1024,
-        variableWidth: windowsize.width <= 1200,
+        variableWidth: true,
         swipeOnClick: false,
-        slidesToShow: windowsize.width >= 1200 ? undefined : windowsize.width < 1200 ? 1 : 2,
-        slidesToScroll: windowsize.width >= 1200 ? undefined : windowsize.width < 1200 ? 1 : 2,
+        slidesToShow: 1,
+        slidesToScroll: 1,
         rows: 1,
         initialSlide: 1,
-        centerMode: windowsize.width < 1200,
+        centerMode: true,
         centerPadding: windowsize.width < 768 ? '10px' : '30px',
     };
+
     return (sourcesStore.getSrcCategoriesArray.length > 0
         ? (
             <div className="sourcesWrapper container">
