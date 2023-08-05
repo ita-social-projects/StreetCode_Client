@@ -34,7 +34,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
     const [dateTimePickerType, setDateTimePickerType] = useState<
-        'date' | 'month' | 'year' | 'season-year'>('date');
+        'date' | 'month' | 'year' | 'season-year'>(timelineItem == undefined || timelineItem.dateViewPattern === 0 ? 'date' : timelineItem.dateViewPattern === 1? 'month': timelineItem.dateViewPattern === 2? 'season-year': 'year');
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
@@ -63,33 +63,63 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     }, [timelineItem, open, form]);
 
+    useEffect(()=>{
+        if(timelineItem)
+        {
+            setDateTimePickerType(timelineItem.dateViewPattern === 0 ? 'date' : timelineItem.dateViewPattern === 1? 'month': timelineItem.dateViewPattern === 2? 'season-year': 'year');
+        }
+    }, [open])
+
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
+
+    const GetDateBasedOnFormat = (date: Date) =>{
+        let year = date.getFullYear();
+        let month = date.getMonth();
+        let day = date.getDate();
+        switch(dateTimePickerType){
+            case 'date':
+                return new Date(year, month, day, 0, 0, 0, 0);
+            case 'month':
+            case 'season-year':
+                return new Date(year, month, 1);
+            case 'year':
+                return new Date(year, 0, 1);
+            default:
+                throw new Error('Invalid dateTimePickerType');
+        }
+    }
 
     const onSuccesfulSubmit = (formValues: any) => {
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
-                item.date = new Date(formValues.date - localOffset);
+                item.date = GetDateBasedOnFormat(new Date(formValues.date));
+                console.log("item date");
+                console.log(item.date);
+
                 item.title = formValues.title;
                 item.description = formValues.description;
                 item.historicalContexts = selectedContext.current;
+                item.dateViewPattern = dateTimePickerTypes.indexOf(dateTimePickerType);
             }
         } else {
             const newTimeline: TimelineItem = {
-                date: new Date(formValues.date - localOffset),
+                date: GetDateBasedOnFormat(new Date(formValues.date)),
                 id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
                 title: formValues.title,
                 description: formValues.description,
                 historicalContexts: selectedContext.current,
                 dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType),
             };
-
+            console.log("item date");
+            console.log(newTimeline.date);
             timelineItemStore.addTimeline(newTimeline);
         }
 
         setIsModalOpen(false);
+        setDateTimePickerType('date')
         form.resetFields();
         onChange('timeline', formValues);
     };
@@ -142,6 +172,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             open={open}
             onCancel={() => {
                 setIsModalOpen(false);
+                setDateTimePickerType('date');
             }}
             footer={null}
             closeIcon={<CancelBtn />}
@@ -168,7 +199,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         <div className="data-container">
                             <Select
                                 options={selectDateOptionsforTimeline}
-                                defaultValue={dateTimePickerType}
+                                value={dateTimePickerType}
                                 onChange={(val) => {
                                     setDateTimePickerType(val);
                                     onChange('date', val);
@@ -180,6 +211,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 rules={[{ required: true, message: 'Введіть дату' }]}
                             >
                                 <DatePicker
+                                    allowClear = {false}
                                     picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
                                     format={(dateTimePickerType === 'date'
                                         ? 'YYYY, D MMMM'
