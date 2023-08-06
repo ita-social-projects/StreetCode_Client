@@ -152,7 +152,6 @@ const Partners:React.FC = observer(() => {
                           setModalEditOpened(true);
                       }}
                   />
-
               </div>
           ) },
     ];

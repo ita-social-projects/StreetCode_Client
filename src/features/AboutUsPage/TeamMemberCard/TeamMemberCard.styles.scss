@@ -1,0 +1,47 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
+.cardContainer
+{
+    display: flex;
+    flex-direction: column;
+    gap: f.pxToRem(30px);
+
+    border-radius: 50px;
+    box-shadow: 0px 7px 17px 2px #5b5b5b40;
+    max-width: f.pxToRem(310px);
+
+    padding: f.pxToRem(20px);
+
+    .photoContainer{
+        img{
+            border-radius: 50px;
+            width: 100%;
+        }
+    }
+    
+    .textContainer {
+        display: flex;
+        flex-direction: column;
+        gap: f.pxToRem(10px);
+
+        padding: 0 f.pxToRem(8px);
+        text-align: center;
+        h2 {
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 23px);
+        }
+        p {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 19px);
+            color: c.$sliders-text-grey-color;
+        }
+        .linksContainer {
+            display: flex;
+            justify-content: center;
+            gap: f.pxToRem(10px);
+        }
+    }
+  
+}

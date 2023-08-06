@@ -1,7 +1,7 @@
 import './AboutUsHeaderText.styles.scss'
 
 const AboutUsHeaderText = () => (
-    <div className="aboutUsHeaderContainer">
+    <div className="aboutUsBlockContainer">
         <div className="headerTitle">ПРО НАС</div>
 
         <div className='contentWrapper'>

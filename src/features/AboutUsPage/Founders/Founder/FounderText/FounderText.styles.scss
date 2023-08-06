@@ -1,0 +1,22 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
+
+.foundersTextContainer {
+    margin: f.pxToRem(40px);
+        
+    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 30px);
+    @media screen and (max-width: s.$smallDesctop) {
+        font-size: 20px ;
+    }
+    @media screen and (max-width: s.$smallTablet) {
+        font-size: 16px !important;
+    }
+}
+
+.borderRadiusBig {
+    border-radius: 50px;
+}
