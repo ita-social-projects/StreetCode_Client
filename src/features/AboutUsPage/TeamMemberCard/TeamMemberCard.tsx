@@ -1,7 +1,7 @@
 import './TeamMemberCard.styles.scss'
 import Instagram from '@/assets/images/about-us/instagram.png'
 import Facebook from '@/assets/images/about-us/facebook.png'
-import Photo from '@/assets/images/about-us/InnaSmall.jpg'
+import Photo from '@/assets/images/about-us/pictureWIthBG.png'
 
 const TeamMemberCard = (founder : FounderProps) => (
     <div className='cardContainer'>

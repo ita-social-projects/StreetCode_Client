@@ -21,6 +21,7 @@ import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import AboutUsPage from '@/features/AboutUsPage/AboutUsPage.component';
+import JobPage from '@/features/AdminPage/JobsPage/JobsPage.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -73,6 +74,7 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
+        <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element = {<JobPage />}/>
         <Route path="*" element={<NotFound />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />

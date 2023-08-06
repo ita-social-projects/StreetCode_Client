@@ -218,4 +218,9 @@ export const API_ROUTES = {
         UPDATE: 'statisticRecord/update',
         DELETE: 'statisticRecord/delete',
     },
+    JOB:{
+        GET_ALL_SHORT: 'job/getAllShort',
+        DELETE: 'job/delete',
+        CHANGE_STATUS: 'job/changeJobStatus'
+    }
 };
