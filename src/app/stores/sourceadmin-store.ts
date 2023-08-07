@@ -22,6 +22,7 @@ export default class SourcesAdminStore {
     };
 
     public setInternalSourceCategories(src: SourceCategoryAdmin[]) {
+        this.srcSourcesMap.clear();
         src.forEach(this.setSource);
     }
 
