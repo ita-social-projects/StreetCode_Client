@@ -6,15 +6,16 @@ import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
-
+import CancelBtn from '@images/utils/Cancel_btn.svg';
 import {
-    Button, Form, Input, Modal, UploadFile,
+    Button, Form, Input, Modal, UploadFile, Popover
 } from 'antd';
 import { UploadFileStatus } from 'antd/es/upload/interface';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import '@features/AdminPage/AdminModal.styles.scss';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -121,7 +122,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
             <Modal
                 title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
-                onCancel={handleCancel}
+                onCancel={onCancel}
+                className="modalContainer"
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                        <CancelBtn className='iconSize' onClick={handleCancel} />
+                </Popover>}
                 footer={null}
             >
                 <Form form={form} layout="vertical" onFinish={onSubmit} initialValues={initialData}>

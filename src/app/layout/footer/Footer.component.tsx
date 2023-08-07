@@ -60,7 +60,7 @@ const Footer = () => {
                                 </a>
                             </li>
                             <li>
-                                <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
+                                <a href="https://www.youtube.com/@streetcodeua" target="_blank" rel="noreferrer">
                                     <img src={Youtube} alt="" />
                                 </a>
                             </li>

@@ -21,6 +21,7 @@ import {
     Input,
     message, Modal,
     UploadFile,
+    Popover
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
@@ -108,6 +109,10 @@ const NewsModal: React.FC<{
         setTextIsChanged(false);
         editorRef.current?.setContent('');
     };
+
+    const closeModal =() => {
+        setIsModalOpen(false);
+    }
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
     dayjs.locale('uk');
   const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
@@ -200,10 +205,12 @@ const NewsModal: React.FC<{
             <ConfigProvider locale={ukUA}>
                 <Modal
                     open={open}
-                    onCancel={closeAndCleanData}
+                    onCancel={closeModal}
                     className="modalContainer"
-                    closeIcon={<CancelBtn />}
                     footer={null}
+                    closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                        <CancelBtn className='iconSize' onClick={closeAndCleanData} />
+                    </Popover>}
                 >
                     <div className="modalContainer-content">
                         <Form

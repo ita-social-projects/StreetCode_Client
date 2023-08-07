@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 import {
     Button,
-    DatePicker, Form, Input, Modal, Select,
+    DatePicker, Form, Input, Modal, Popover, Select,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -46,6 +46,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         setTagInput,
         setErrorMessage,
     );
+
+    const clearModal= () =>{
+        form.resetFields();
+        setIsModalOpen(false);
+    }
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -144,7 +149,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                 setIsModalOpen(false);
             }}
             footer={null}
-            closeIcon={<CancelBtn />}
+            maskClosable
+            centered
+            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                <CancelBtn className='iconSize' onClick={clearModal} />
+            </Popover>}
         >
             <div className="modalContainer-content">
                 <Form

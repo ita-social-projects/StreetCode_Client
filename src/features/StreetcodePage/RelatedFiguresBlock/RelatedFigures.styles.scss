@@ -53,7 +53,7 @@ $moreInfo-width: 150px;
 .relatedFiguresSliderContainer {
     position: relative;
 
-    @include mut.sized($width: 1216px, $height: 450px);
+    @include mut.sized($width: 1216px);
     margin: 0 auto;
 
     .slick-arrow {

@@ -14,6 +14,7 @@ export default class ImageStore {
     };
 
     private setInternalMap = (images: Image[]) => {
+        this.ImageMap.clear();
         images.forEach(this.setItem);
     };
 

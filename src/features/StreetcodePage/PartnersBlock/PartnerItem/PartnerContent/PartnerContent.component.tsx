@@ -19,7 +19,7 @@ const PartnerContent = ({ partner }: Props) => {
     const {
         id, title, targetUrl, partnerSourceLinks, description,
     } = partner;
-
+    
     return (
         <div className="partnerContent">
             <div className="header">
@@ -52,14 +52,14 @@ const PartnerContent = ({ partner }: Props) => {
                         </a>
                     ))}
                 </div>
-                <a
+                {partner.targetUrl?.href !== null ? <a
                     rel="noreferrer"
                     target="_blank"
                     className="mainLink"
                     href={targetUrl?.href}
                 >
                     {targetUrl?.title ?? 'до сторінки партнера'}
-                </a>
+                </a> : <></>}                
             </div>
             <div
                 className="description"
