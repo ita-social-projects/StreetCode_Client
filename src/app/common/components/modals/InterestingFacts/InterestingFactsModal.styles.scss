@@ -2,9 +2,10 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
 
 .interestingFactsModal {
-  @include mut.sizedImportant(823px, 700px);
+  @include mut.sizedImportant(823px, auto);
 
   &.ant-modal {
     .ant-modal-content {
@@ -32,10 +33,13 @@
 }
 
 .factsModalContainer{
+  max-height: 88vh;
+
   .factsImgContainer {
     @include mut.flex-centered();
-    @include mut.sizedImportant(100%, 400px);
+    @include mut.sizedImportant(100%, 100%);
     position: relative;
+
     .description-popup{
       visibility: hidden;
       position: absolute;
@@ -44,7 +48,7 @@
       width:100%;
       bottom: 0;
       p{
-        @include mut.with-font( $font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px, $font-style: normal);
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px, $font-style: normal);
         @include mut.rem-padded(13px, 13px, 13px, 13px);
       }
     }
@@ -56,6 +60,7 @@
     }
 
     img{
+      max-height: 62vh;
       @include mut.rounded(70px, 70px);
       height: 100%;
       width: 100%;
@@ -65,6 +70,7 @@
 
   .factsContentContainer {
     @include mut.rem-padded(29px, 42px, 42px, 42px);
+    max-height: 26vh;
 
     h1 {
       @include mut.with-font(ft.$roboto-font, 500, 26px, normal);
@@ -73,7 +79,10 @@
       color: c.$accented-red-color;
     }
 
-    .factsTextContainer {
+    .factsTextContainer {      
+      overflow-y: auto;      
+      max-height: 16vh;
+
       @include mut.flexed($direction: column, $gap: 10px);
       @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
 
