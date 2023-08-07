@@ -155,12 +155,12 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                                 picker={(dateFirstTimePickerType !== 'season-year')
                                     ? dateFirstTimePickerType : 'month'}
                                 format={(dateFirstTimePickerType === 'date'
-                                    ? 'D MMMM YYYY'
+                                    ? 'D-MMMM-YYYY'
                                     : dateFirstTimePickerType === 'year'
                                         ? 'YYYY'
                                         : 'YYYY-MMMM')}
                                 placeholder={(dateFirstTimePickerType === 'date'
-                                    ? 'dd mm yyyy'
+                                    ? 'dd-mm-yyyy'
                                     : dateFirstTimePickerType === 'year'
                                         ? 'yyyy'
                                         : 'yyyy-mm')}
@@ -188,12 +188,12 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                                 picker={(dateSecondTimePickerType !== 'season-year')
                                     ? dateSecondTimePickerType : 'month'}
                                 format={(dateSecondTimePickerType === 'date'
-                                    ? 'D MMMM YYYY'
+                                    ? 'D-MMMM-YYYY'
                                     : dateSecondTimePickerType === 'year'
                                         ? 'YYYY'
                                         : 'YYYY-MMMM')}
                                 placeholder={(dateSecondTimePickerType === 'date'
-                                    ? 'dd mm yyyy'
+                                    ? 'dd-mm-yyyy'
                                     : dateSecondTimePickerType === 'year'
                                         ? 'yyyy'
                                         : 'yyyy-mm')}
