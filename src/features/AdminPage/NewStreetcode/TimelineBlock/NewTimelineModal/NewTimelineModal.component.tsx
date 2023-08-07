@@ -66,6 +66,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     useEffect(()=>{
         if(timelineItem)
         {
+            console.log(timelineItem.date);
             setDateTimePickerType(timelineItem.dateViewPattern === 0 ? 'date' : timelineItem.dateViewPattern === 1? 'month': timelineItem.dateViewPattern === 2? 'season-year': 'year');
         }
     }, [open])
@@ -80,12 +81,12 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         let day = date.getDate();
         switch(dateTimePickerType){
             case 'date':
-                return new Date(year, month, day, 0, 0, 0, 0);
+                return new Date(year, month, day, 0) ;
             case 'month':
             case 'season-year':
-                return new Date(year, month, 1);
+                return new Date(year, month, 1, 0);
             case 'year':
-                return new Date(year, 0, 1);
+                return new Date(year, 0, 1, 0);
             default:
                 throw new Error('Invalid dateTimePickerType');
         }
