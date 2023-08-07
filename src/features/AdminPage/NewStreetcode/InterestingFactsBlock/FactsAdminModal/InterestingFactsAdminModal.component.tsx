@@ -42,6 +42,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const clearModal=() =>{
         form.resetFields();
         setModalOpen(false);
+        setFileList([]);
     }
 
     useEffect(() => {
