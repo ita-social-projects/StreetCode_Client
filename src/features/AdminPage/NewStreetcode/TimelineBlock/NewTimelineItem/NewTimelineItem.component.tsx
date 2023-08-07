@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx from '@app/stores/root-store';
 
@@ -21,6 +21,9 @@ const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
 }) => {
     const { timelineItemStore } = useMobx();
     const [visibleModal, setVisibleModal] = useState(false);
+
+    useEffect(() => {timelineItem.date.setHours(timelineItem.dateViewPattern === 0? 3 : 2);});
+    
     const handleRemove = useCallback(() => {
         setVisibleModal(true);
     }, []);
