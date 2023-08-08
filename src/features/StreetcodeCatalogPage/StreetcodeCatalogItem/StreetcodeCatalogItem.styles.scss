@@ -54,7 +54,7 @@
     }
 
     &.mobile {
-        min-width: pxToRem(65px);
+        min-height: pxToRem(65px);
         @include mut.sized($width: 165px, $height: auto);
         background-color: transparent !important;
         line-height: pxToRem(18.48px);
