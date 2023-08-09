@@ -57,6 +57,7 @@ const JobsTable = () => {
                                 mappedJobsShort.map( job=> {
                                         if(job.id == curentId) {
                                             job.status = currentStatus;
+                                            console.log(job);
                                         }
                                     }
                                 )
@@ -102,7 +103,7 @@ const JobsTable = () => {
                 <Dropdown menu={menuProps} trigger={['click']}>
                     <Button onClick={()=>setCurentId(job.id)}>
                         <Space>
-                            { job.status == false ? `Не активна`: 'Активна' }
+                            { status === false ? `Не активна`: 'Активна' }
                             <DownOutlined />
                         </Space>
                     </Button>
@@ -151,7 +152,6 @@ const JobsTable = () => {
                 dataSource={mappedJobsShort}
                 rowKey="id"
                 >
-
             </Table>
         </div>
     )

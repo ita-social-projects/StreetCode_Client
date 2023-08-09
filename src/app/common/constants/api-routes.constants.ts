@@ -221,6 +221,7 @@ export const API_ROUTES = {
     JOB:{
         GET_ALL_SHORT: 'job/getAllShort',
         DELETE: 'job/delete',
-        CHANGE_STATUS: 'job/changeJobStatus'
+        CHANGE_STATUS: 'job/changeJobStatus',
+        GET_ACTIVE:'Job/GetActiveJobs'
     }
 };

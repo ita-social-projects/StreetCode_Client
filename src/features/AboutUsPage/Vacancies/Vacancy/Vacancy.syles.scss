@@ -20,6 +20,7 @@
     }
     p {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+        word-break: break-all; 
     }
     
     label { 
