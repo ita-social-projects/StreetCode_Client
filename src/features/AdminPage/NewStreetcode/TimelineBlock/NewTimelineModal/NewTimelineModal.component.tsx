@@ -78,23 +78,19 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const GetLocalHoursOffset = (date: Date) => {return -1 * date.getTimezoneOffset() / 60;}
 
     const GetDateBasedOnFormat = (date: Date) =>{
-        console.log(`GetDateBasedOnFormat ${date}`);
         switch(dateTimePickerType){
             case 'date':
                 date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
-                console.log(`newDate: ${date.toISOString()}`);
                 return date.toISOString();
             case 'month':
             case 'season-year':
                 date.setDate(1);
                 date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
-                console.log(`newDate: ${date.toISOString()}`);
                 return date.toISOString();
             case 'year':
                 date.setMonth(0);
                 date.setDate(1);
                 date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
-                console.log(`newDate: ${date.toISOString()}`);
                 return date.toISOString();
             default:
                 throw new Error('Invalid date.');
@@ -102,7 +98,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     }
 
     const onSuccesfulSubmit = (formValues: any) => {
-        console.log(`formValues.date: ${formValues.date}`);
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
