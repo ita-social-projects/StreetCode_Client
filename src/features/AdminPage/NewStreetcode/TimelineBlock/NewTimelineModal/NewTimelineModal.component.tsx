@@ -19,6 +19,7 @@ import TextArea from 'antd/es/input/TextArea';
 import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
     dateTimePickerTypes,
+    DateViewPatternToDatePickerType,
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 
@@ -34,8 +35,8 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
     const [dateTimePickerType, setDateTimePickerType] = useState<
-        'date' | 'month' | 'year' | 'season-year'>(timelineItem == undefined || timelineItem.dateViewPattern === 0 ? 'date' : timelineItem.dateViewPattern === 1? 'month': timelineItem.dateViewPattern === 2? 'season-year': 'year');
-    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
+        'date' | 'month' | 'year' | 'season-year'>(timelineItem == undefined ? 'date' : DateViewPatternToDatePickerType(timelineItem.dateViewPattern));
+
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
     const maxContextLength = 50;
@@ -66,7 +67,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     useEffect(()=>{
         if(timelineItem)
         {
-            setDateTimePickerType(timelineItem.dateViewPattern === 0 ? 'date' : timelineItem.dateViewPattern === 1? 'month': timelineItem.dateViewPattern === 2? 'season-year': 'year');
+            setDateTimePickerType(DateViewPatternToDatePickerType(timelineItem.dateViewPattern));
         }
     }, [open])
 
