@@ -23,6 +23,7 @@ export default class NewsStore {
     }
 
     public setInternalMap(news: News[]) {
+        this.NewsMap.clear();
         news.forEach(this.setItem);
     }
 

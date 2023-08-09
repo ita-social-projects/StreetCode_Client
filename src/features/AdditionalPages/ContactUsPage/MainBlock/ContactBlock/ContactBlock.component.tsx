@@ -39,7 +39,7 @@ const ContactBlock = () => (
                 <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
                     <img className="icon" src={TikTok} alt="TikTok-logo" />
                 </a>
-                <a href="https://youtube.com/streetcodeua" target="_blank" rel="noreferrer">
+                <a href="https://www.youtube.com/@streetcodeua" target="_blank" rel="noreferrer">
                     <img className="icon" src={YouTube} alt="YouTube-logo" />
                 </a>
             </div>

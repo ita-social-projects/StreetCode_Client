@@ -251,33 +251,35 @@ const ArtGalleryBlock = () => {
     };
 
     return (
-        <div
-            id="art-gallery"
-            className={`artGalleryWrapper 
-            ${getStreetcodeArtArray.length ? '' : 'display-none'}`}
-        >
-            <div className="artGalleryContainer container">
-                <BlockHeading headingText="Арт-галерея" />
-                <div className="artGalleryContentContainer">
-                    <div className="artGallerySliderContainer">
-                        {windowsize.width >= 1025 && (
-                            <SlickSlider
-                                {...sliderProps}
-                            >
-                                {slideOfArtList}
-                            </SlickSlider>
-                        )}
-                        {windowsize.width <= 1024 && (
-                            <SlickSlider
+        <div>
+            {getStreetcodeArtArray.length > 0 && <div
+                id="art-gallery"
+                className="artGalleryWrapper" 
+            >
+                <div className="artGalleryContainer container">
+                    <BlockHeading headingText="Арт-галерея" />
+                    <div className="artGalleryContentContainer">
+                        <div className="artGallerySliderContainer">
+                            {windowsize.width >= 1025 && (
+                                <SlickSlider
+                                    {...sliderProps}
+                                >
+                                    {slideOfArtList}
+                                </SlickSlider>
+                            )}
+                            {windowsize.width <= 1024 && (
+                                <SlickSlider
 
-                                {...sliderPropsSmall}
-                            >
-                                {slideOfArtListSmall}
-                            </SlickSlider>
-                        )}
+                                    {...sliderPropsSmall}
+                                >
+                                    {slideOfArtListSmall}
+                                </SlickSlider>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
+            }
         </div>
     );
 };

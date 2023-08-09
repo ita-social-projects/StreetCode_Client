@@ -8,15 +8,15 @@ $navbar-innerwidth: 500px;
 $navbar-hidden-innerwidth: 400px;
 
 .navBarContainer {
-  @include mut.flexed($justify-content: space-between);
+  @include mut.flexed($justify-content: space-between, $align-items: center);
   @include mut.sized(100%, 82px);
-  @include mut.rem-padded(30px, 20px, 30px, 20px);
+  @include mut.rem-padded(21px, 32px, 21px, 32px);
 
   background-color: c.$pure-white-color;
   position: fixed;
   z-index: 7;
   svg {
-
+    
     &:hover {
       cursor: pointer;
     }

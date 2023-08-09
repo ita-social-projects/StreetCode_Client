@@ -96,6 +96,7 @@ const HeaderBlock = () => {
                             className={`ant-input  
                                 hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
                         />
+
                     <HeaderSkeleton />
                 </div>
                 <div className="rightPartContainer">

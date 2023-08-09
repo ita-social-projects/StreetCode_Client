@@ -2,6 +2,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/variables/_variables.fonts.scss" as ft;
 
 .progressBarContainer,
 .progressBarContainer svg,
@@ -53,4 +54,9 @@
   @media screen and (max-width: 1448px) {
     display: none;
   }
+}
+
+.ant-popover.progressBarSectionPopover p {
+  @include mut.with-font(ft.$closer-text-font, $font-size: 11px, $font-weight: 500);
+  contain: content;
 }

@@ -1,8 +1,15 @@
-import Url from '@models/additional-content/url.model';
+import IModelState from '@models/interfaces/IModelState';
 
-export default interface TransactionLink {
+export interface TransactionLink {
     id: number;
     url: string;
     urlTitle: string;
+    streetcodeId: number;
+}
+
+export interface TransactionLinkUpdate extends IModelState {
+    id: number;
+    url: string;
+    qrCodeUrl: string;
     streetcodeId: number;
 }

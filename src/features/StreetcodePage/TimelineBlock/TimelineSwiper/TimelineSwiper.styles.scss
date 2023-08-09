@@ -4,11 +4,12 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.swiper-wrapper, .swiperClass{
+.swiper-wrapper, .swiperClass {
     width: 100%;
     margin: 0 auto;
-    max-width: 1600px;
+    max-width: fit-content;
 }
+
 .swiper-horizontal {
   overflow: visible;
   @include mut.parent-sized();
@@ -17,7 +18,6 @@
     visibility: hidden;
   }
   
-
   .swiper-slide {
     align-self: center;
     justify-content: center;
@@ -50,7 +50,6 @@
     }
   }
 }
-
 
 @media screen and (max-width: 1024px) {
   .swiper-pagination {

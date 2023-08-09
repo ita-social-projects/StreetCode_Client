@@ -1,14 +1,14 @@
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, UploadFile,
+    Button, Form, Input, Modal, Popover, UploadFile, 
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -21,6 +21,8 @@ import Image from '@/models/media/image.model';
 import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model';
 
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
+
+
 
 interface Props {
     fact?: FactCreate,
@@ -36,6 +38,12 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [fileList, setFileList] = useState<UploadFile[]>();
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
+
+    const clearModal=() =>{
+        form.resetFields();
+        setModalOpen(false);
+        setFileList([]);
+    }
 
     useEffect(() => {
         if (fact && open) {
@@ -115,13 +123,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 footer={null}
                 maskClosable
                 centered
-                closeIcon={(
-                    <CancelBtn onClick={() => {
-                        setFileList([]);
-                        form.resetFields();
-                    }}
-                    />
-                )}
+
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>               
+                    <CancelBtn className='iconSize'  onClick={clearModal} />      
+                </Popover>}
             >
                 <div className="modalContainer-content">
                     <Form
@@ -208,8 +213,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                     </Form>
                 </div>
             </Modal>
+            <Popover content="popupContent" trigger='hover'></Popover>
             <PreviewFileModal file={fileList?.at(0) ?? null} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
+        
     );
 };
 
