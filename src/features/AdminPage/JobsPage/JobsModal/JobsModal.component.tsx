@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 
 import {
-    Button, Form, Input, Modal, Select,
+    Button, Form, Input, Modal, Popover,
+    Select,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -27,6 +28,14 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
 
     const [current, setCurrent] = useState<Job>();
     const [form] = Form.useForm();
+    const [storedJob, setStoredJob] = useState<Job>();
+    const emptyJob : Job = {
+        title: form.getFieldValue('title'),
+        description: form.getFieldValue('description'),
+        status: form.getFieldValue('status'),
+        id: 0,
+        salary: form.getFieldValue('salary'),
+    };
 
     useEffect(() => {
         const fetchJobData = async () => {
@@ -43,12 +52,13 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 } catch (error) {
                     console.log(error);
                 }
-            } else {
+            } else if (currentId === 0) {
+                setStoredJob(emptyJob);
                 form.setFieldsValue({
-                    title: '',
-                    status: '',
-                    description: '',
-                    salary: '',
+                    title: storedJob?.title,
+                    status: storedJob?.status ? 'setActive' : 'setInactive',
+                    description: storedJob?.description,
+                    salary: storedJob?.salary,
                 });
             }
         };
@@ -81,6 +91,11 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
         }
     };
 
+    const clearModal = () => {
+        form.resetFields();
+        setOpen(false);
+    };
+
     return (
         <Modal
             className="modalContainer"
@@ -91,7 +106,11 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             footer={null}
             maskClosable
             centered
-            closeIcon={<CancelBtn />}
+            closeIcon={(
+                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <CancelBtn className="iconSize" onClick={clearModal} />
+                </Popover>
+            )}
         >
             <div className="center">
                 <h2>Вакакансії</h2>
