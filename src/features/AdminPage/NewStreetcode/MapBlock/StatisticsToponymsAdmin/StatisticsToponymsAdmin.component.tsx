@@ -34,7 +34,7 @@ const StatisticsToponymsComponentAdmin = () => {
     const [toponyms, setToponyms] = useState<Toponym[]>();
 
     const requestDefault: GetAllToponymsRequest = {
-        Title: parseId ? "" : 'q',
+        Title: '',
         Page: null,
         Amount: null,
     };
