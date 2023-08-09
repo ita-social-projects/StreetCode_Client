@@ -45,7 +45,6 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
             } else if (file.preview) {
                 imageToPreview = file.preview;
             } else if (file.url) {
-                console.log('here');
                 imageToPreview = file.url;
             }
 
