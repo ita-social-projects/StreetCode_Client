@@ -19,28 +19,37 @@ interface Props {
 }
 
 const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
-    const [previewImage, setPreviewImage] = useState<string>();
+    const [previewImage, setPreviewImage] = useState<string | undefined>();
 
     useEffect(() => {
         const loadPreviewImage = async () => {
-            if (!file) return;
+            if (!file) {
+                setPreviewImage(undefined);
+                return;
+            }
+
+            let imageToPreview = file.url ?? file.thumbUrl;
 
             if (!file.preview) {
                 const originFileObj = file.originFileObj as RcFile;
                 if (originFileObj instanceof Blob) {
                     try {
                         const result = await getBase64(originFileObj);
-                        setPreviewImage(result);
+                        imageToPreview = result;
                     } catch (error) {
                         message.error('Помилка при перегляді фото');
+                        setPreviewImage(undefined);
+                        return;
                     }
                 }
-            } else {
-                setPreviewImage(file.preview);
+            } else if (file.preview) {
+                imageToPreview = file.preview;
+            } else if (file.url) {
+                console.log('here');
+                imageToPreview = file.url;
             }
-            if (file.url) {
-                setPreviewImage(file.url);
-            }
+
+            setPreviewImage(imageToPreview);
         };
 
         loadPreviewImage();
@@ -58,4 +67,5 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
         </Modal>
     );
 };
+
 export default PreviewFileModal;
