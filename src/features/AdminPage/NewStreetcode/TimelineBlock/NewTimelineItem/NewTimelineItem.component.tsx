@@ -22,7 +22,6 @@ const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
     const { timelineItemStore } = useMobx();
     const [visibleModal, setVisibleModal] = useState(false);
 
-    useEffect(() => {timelineItem.date.setHours(timelineItem.dateViewPattern === 0? 3 : 2);});
     
     const handleRemove = useCallback(() => {
         setVisibleModal(true);

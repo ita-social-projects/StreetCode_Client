@@ -29,7 +29,7 @@ const TimelineSwiperEdgeBtn = ({
         const slideToCardIdx = isLeftEdge ? 0 : getTimelineItemArray.length - 1;
 
         swiper.slideTo((isLeftEdge ? 0 : lastTickIdx), swipeSpeed);
-        setActiveYear(getTimelineItemArray[slideToCardIdx].date.getFullYear());
+        setActiveYear(Number(getTimelineItemArray[slideToCardIdx].date.substring(0, 4)));
     };
 
     const positionStyles = isLeftEdge ? { left: -sideMargin } : { right: -sideMargin };

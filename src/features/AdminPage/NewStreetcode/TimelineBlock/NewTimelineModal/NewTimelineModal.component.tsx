@@ -66,7 +66,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     useEffect(()=>{
         if(timelineItem)
         {
-            console.log(timelineItem.date);
             setDateTimePickerType(timelineItem.dateViewPattern === 0 ? 'date' : timelineItem.dateViewPattern === 1? 'month': timelineItem.dateViewPattern === 2? 'season-year': 'year');
         }
     }, [open])
@@ -75,31 +74,38 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
 
+    const GetLocalHoursOffset = (date: Date) => {return -1 * date.getTimezoneOffset() / 60;}
+
     const GetDateBasedOnFormat = (date: Date) =>{
-        let year = date.getFullYear();
-        let month = date.getMonth();
-        let day = date.getDate();
+        console.log(`GetDateBasedOnFormat ${date}`);
         switch(dateTimePickerType){
             case 'date':
-                return new Date(year, month, day, 0) ;
+                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+                console.log(`newDate: ${date.toISOString()}`);
+                return date.toISOString();
             case 'month':
             case 'season-year':
-                return new Date(year, month, 1, 0);
+                date.setDate(1);
+                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+                console.log(`newDate: ${date.toISOString()}`);
+                return date.toISOString();
             case 'year':
-                return new Date(year, 0, 1, 0);
+                date.setMonth(0);
+                date.setDate(1);
+                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+                console.log(`newDate: ${date.toISOString()}`);
+                return date.toISOString();
             default:
-                throw new Error('Invalid dateTimePickerType');
+                throw new Error('Invalid date.');
         }
     }
 
     const onSuccesfulSubmit = (formValues: any) => {
+        console.log(`formValues.date: ${formValues.date}`);
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
                 item.date = GetDateBasedOnFormat(new Date(formValues.date));
-                console.log("item date");
-                console.log(item.date);
-
                 item.title = formValues.title;
                 item.description = formValues.description;
                 item.historicalContexts = selectedContext.current;
@@ -114,8 +120,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                 historicalContexts: selectedContext.current,
                 dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType),
             };
-            console.log("item date");
-            console.log(newTimeline.date);
             timelineItemStore.addTimeline(newTimeline);
         }
 
@@ -224,7 +228,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                         : dateTimePickerType === 'year'
                                             ? 'yyyy'
                                             : 'yyyy, mm')}
-                                    onChange={(value) => onChange('date', value)}
+                                    onChange={(value) => onChange('date', value?.toString())}
                                 />
                             </Form.Item>
                         </div>

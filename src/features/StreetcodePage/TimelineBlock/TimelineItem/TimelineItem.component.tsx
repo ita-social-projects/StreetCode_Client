@@ -31,7 +31,7 @@ const TimelineSlideCard = ({
     <div className="timelineItem">
         <div className="timelineItemContent">
             <p className="timelineItemMetadata">
-                {FromDateToString(date, dateViewPattern)}
+                {FromDateToString(new Date(date), dateViewPattern)}
                 {historicalContexts.map(({ id, title: ctxTitle }) => (
                     <span key={id} className="historicalContext">
                         {`. ${ctxTitle}`}

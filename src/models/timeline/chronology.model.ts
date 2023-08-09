@@ -20,7 +20,7 @@ export enum DateViewPattern {
 
 export default interface TimelineItem {
     id: number;
-    date: Date;
+    date: string;
     dateViewPattern:DateViewPattern,
     title: string;
     description?: string | undefined;

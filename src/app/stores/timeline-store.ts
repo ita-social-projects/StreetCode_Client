@@ -59,7 +59,7 @@ export default class TimelineStore {
     private setItem = (timelineItem: TimelineItem) => {
         this.timelineItemMap.set(timelineItem.id, {
             ...timelineItem,
-            date: new Date(timelineItem.date),
+            date: timelineItem.date,
         });
     };
 
@@ -98,7 +98,7 @@ export default class TimelineStore {
     get getYearsArray() {
         return [...new Set(
             Array.from(this.timelineItemMap.values())
-                .map((timelineItem) => timelineItem.date.getFullYear()),
+                .map((timelineItem) => Number(timelineItem.date.substring(0, 4))),
         )].sort();
     }
 
