@@ -98,7 +98,7 @@ export default class TimelineStore {
     get getYearsArray() {
         return [...new Set(
             Array.from(this.timelineItemMap.values())
-                .map((timelineItem) => Number(timelineItem.date.substring(0, 4))),
+                .map((timelineItem) => new Date(timelineItem.date).getFullYear()),
         )].sort();
     }
 
