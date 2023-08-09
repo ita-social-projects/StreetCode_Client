@@ -4,3 +4,7 @@ interface JobShort {
     salary: string,
     status: boolean
 }
+
+interface Job extends JobShort {
+    description: string
+}
