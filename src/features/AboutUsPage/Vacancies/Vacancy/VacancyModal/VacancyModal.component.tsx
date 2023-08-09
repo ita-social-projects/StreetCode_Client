@@ -27,8 +27,11 @@ const VacancyModal = ({isOpen, setOpen, job}: Props) => {
         if(window.innerWidth > SCREEN_SIZES.smallTablet){
             return 600
         }
+        if(window.innerWidth > SCREEN_SIZES.phone){
+            return 400
+        }
         if(window.innerWidth > SCREEN_SIZES.smallPhone){
-            return 450
+            return 310
         }
             return 270
     }
