@@ -218,10 +218,13 @@ export const API_ROUTES = {
         UPDATE: 'statisticRecord/update',
         DELETE: 'statisticRecord/delete',
     },
-    JOB:{
+    JOB: {
         GET_ALL_SHORT: 'job/getAllShort',
         DELETE: 'job/delete',
         CHANGE_STATUS: 'job/changeJobStatus',
         GET_ACTIVE:'Job/GetActiveJobs'
-    }
+        GET_BY_ID: 'job/getById',
+        UPDATE: 'job/update',
+        CREATE: 'job/create',
+    },
 };
