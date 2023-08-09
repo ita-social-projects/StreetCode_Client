@@ -74,10 +74,10 @@ const HeaderBlock = () => {
         <div className="HeaderBlock">
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div className='logoContainer' onClick={() => window.location.href = '/'}>
-                        {windowSize.width > 1024
+                    <div className='logoContainer' onClick={() => window.location.href = '/'}> 
+                        { windowSize.width > 1024
                             ? <StreetcodeSvg />
-                            : <StreetcodeSvgMobile />}
+                            : <StreetcodeSvgMobile /> }
                     </div>
                     <Popover
                         trigger="click"
@@ -93,9 +93,10 @@ const HeaderBlock = () => {
                             onChange={handleInputChange}
                             placeholder="Пошук..."
                             ref={inputRef}
-                            className={`ant-input 
+                            className={`ant-input  
                                 hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
                         />
+
                     <HeaderSkeleton />
                 </div>
                 <div className="rightPartContainer">
