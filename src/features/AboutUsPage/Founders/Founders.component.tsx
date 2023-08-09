@@ -2,7 +2,7 @@ import './Founders.styles.scss'
 import Inna from '@assets/images/about-us/Inna.png'
 import Natalia from '@assets/images/about-us/Nata.png'
 import Founder from './Founder/Founder.component'
-import TeamMemberCard from '../TeamMemberCard/TeamMemberCard'
+import TeamMemberCard from '../TeamMemberCard/TeamMemberCard.component'
 
 
 const FounderInna: FounderProps =

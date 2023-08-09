@@ -55,7 +55,6 @@ const JobsTable = () => {
         try {
             const selectedKey = +opt.key;
             const currentStatus: boolean = opt.key === '0';
-
             modalStore.setConfirmationModal(
                 'confirmation',
                 async () => {
