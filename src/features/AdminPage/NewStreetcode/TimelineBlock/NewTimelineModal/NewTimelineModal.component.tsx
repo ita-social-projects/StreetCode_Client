@@ -19,6 +19,7 @@ import TextArea from 'antd/es/input/TextArea';
 import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
     dateTimePickerTypes,
+    DateViewPatternToDatePickerType,
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 
@@ -34,8 +35,8 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
     const [dateTimePickerType, setDateTimePickerType] = useState<
-        'date' | 'month' | 'year' | 'season-year'>('date');
-    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
+        'date' | 'month' | 'year' | 'season-year'>(timelineItem == undefined ? 'date' : DateViewPatternToDatePickerType(timelineItem.dateViewPattern));
+
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
     const maxContextLength = 50;
@@ -68,33 +69,63 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     }, [timelineItem, open, form]);
 
+    useEffect(()=>{
+        if(timelineItem)
+        {
+            setDateTimePickerType(DateViewPatternToDatePickerType(timelineItem.dateViewPattern));
+        }
+    }, [open])
+
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
+
+    const GetLocalHoursOffset = (date: Date) => {return -1 * date.getTimezoneOffset() / 60;}
+
+    const GetDateBasedOnFormat = (date: Date) =>{
+        switch(dateTimePickerType){
+            case 'date':
+                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+                return date.toISOString();
+            case 'month':
+            case 'season-year':
+                date.setDate(1);
+                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+                return date.toISOString();
+            case 'year':
+                date.setMonth(0);
+                date.setDate(1);
+                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+                return date.toISOString();
+            default:
+                throw new Error('Invalid date.');
+        }
+    }
 
     const onSuccesfulSubmit = (formValues: any) => {
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
-                item.date = new Date(formValues.date - localOffset);
+                item.date = GetDateBasedOnFormat(new Date(formValues.date));
                 item.title = formValues.title;
                 item.description = formValues.description;
                 item.historicalContexts = selectedContext.current;
+                item.dateViewPattern = dateTimePickerTypes.indexOf(dateTimePickerType);
             }
         } else {
             const newTimeline: TimelineItem = {
-                date: new Date(formValues.date - localOffset),
+                date: GetDateBasedOnFormat(new Date(formValues.date)),
                 id: getNewMinNegativeId(timelineItemStore.getTimelineItemArray.map((t) => t.id)),
                 title: formValues.title,
                 description: formValues.description,
                 historicalContexts: selectedContext.current,
                 dateViewPattern: dateTimePickerTypes.indexOf(dateTimePickerType),
             };
-
             timelineItemStore.addTimeline(newTimeline);
         }
 
         setIsModalOpen(false);
+        setDateTimePickerType('date')
         form.resetFields();
         onChange('timeline', formValues);
     };
@@ -147,6 +178,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             open={open}
             onCancel={() => {
                 setIsModalOpen(false);
+                setDateTimePickerType('date');
             }}
             footer={null}
             maskClosable
@@ -177,7 +209,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         <div className="data-container">
                             <Select
                                 options={selectDateOptionsforTimeline}
-                                defaultValue={dateTimePickerType}
+                                value={dateTimePickerType}
                                 onChange={(val) => {
                                     setDateTimePickerType(val);
                                     onChange('date', val);
@@ -189,6 +221,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 rules={[{ required: true, message: 'Введіть дату' }]}
                             >
                                 <DatePicker
+                                    allowClear = {false}
                                     picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
                                     format={(dateTimePickerType === 'date'
                                         ? 'YYYY, D MMMM'
@@ -200,7 +233,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                         : dateTimePickerType === 'year'
                                             ? 'yyyy'
                                             : 'yyyy, mm')}
-                                    onChange={(value) => onChange('date', value)}
+                                    onChange={(value) => onChange('date', value?.toString())}
                                 />
                             </Form.Item>
                         </div>

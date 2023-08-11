@@ -15,7 +15,7 @@ const DonateBtn = () => {
     const windowSize = useWindowSize();
     useScrollPosition(({ currentPos: { y } }) => {
         if (showModalOnScroll.current) {
-            if (Math.abs(y) > document.documentElement.scrollHeight * 0.8) {
+            if (Math.abs(y) > document.documentElement.scrollHeight * 0.83) {
                 setModal('survey', undefined, true);
                 showModalOnScroll.current = false;
             }
