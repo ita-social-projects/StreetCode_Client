@@ -192,3 +192,7 @@
     }      
 } 
   
+.iconSize {
+    @include mut.sized(80px, 78px);
+    padding: 31%;
+}
