@@ -1,3 +1,5 @@
+const EMAIL = 'streetcodeua@gmail.com';
+
 const SectionSeventh = () => (
     <section>
         <div className="title">7. Зміна політики конфіденційності</div>
@@ -10,7 +12,7 @@ const SectionSeventh = () => (
             <br />
             З питань щодо політики конфіденційності (в т.ч. видалення персональних даних), Користувач може
             зв&apos;язатися з нами, використовуючи e—mail:
-            <a className="link" href="streetcodeua@gmail.com"> streetcodeua@gmail.com</a>
+            <a className="link" href={`mailto:${EMAIL}`}> {EMAIL}</a>
             .
         </div>
     </section>
