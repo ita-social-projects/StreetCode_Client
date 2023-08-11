@@ -97,3 +97,9 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         @include mut.sized(100%,100%);
     }
 }
+@media (min-width: 360px) and (max-width: 767px){
+    .spinner{
+        pointer-events: none;
+        scroll-behavior: none;
+    }
+}

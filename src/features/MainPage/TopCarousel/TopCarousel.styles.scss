@@ -25,6 +25,22 @@
     margin: 0 f.pxToRem(8px);
   }
 
+  @media screen and (max-width: 480px) {
+    .carousel-image {
+      height: auto;
+     
+    }
+    .slick-dots {
+      bottom: f.pxToRem(-20px);
+    }
+  }
+
+  @media (min-width: 481px) and (max-width: 1024px) {
+    .carousel-image {
+      height: auto;
+    }
+  }
+
   @media screen and (min-width: 1800px) {
     .carousel-image {
       height: f.pxToRem(830px);

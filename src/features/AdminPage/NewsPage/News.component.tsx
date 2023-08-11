@@ -14,6 +14,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
+import dayjs from 'dayjs';
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -30,7 +31,7 @@ const Newss: React.FC = observer(() => {
                     ImageStore.getImageById(val.imageId!).then((image) => {
                         newsStore.NewsMap.set(
                             key,
-                            { ...val, image },
+                            { ...val, image},
                         );
                     });
                 }
@@ -79,7 +80,7 @@ const Newss: React.FC = observer(() => {
             }),
             render: (value: string, record) => (
                 <div key={value} className="partner-table-item-name">
-                    <p>{value ? value.substring(0, 10) : ''}</p>
+                    <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
                 </div>
             ),
         },
