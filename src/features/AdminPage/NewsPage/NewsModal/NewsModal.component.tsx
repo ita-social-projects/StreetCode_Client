@@ -46,7 +46,6 @@ const NewsModal: React.FC<{
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const editorRef = useRef<TinyMCEEditor>();
-    const localOffset = new Date().getTimezoneOffset() / 60; // Offset in milliseconds
 
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
@@ -97,13 +96,6 @@ const NewsModal: React.FC<{
             imageId.current = 0;
         }
     }, [newsItem, open, form]);
-
-    useEffect(() =>{
-        if(newsItem){
-            console.log(`useEffect: ${dayjs(newsItem.creationDate)}`);
-            console.log(`offset: ${localOffset}`);
-        }
-    }, [open]);
 
     const removeImage = () => {
         imageId.current = undefined;
@@ -162,7 +154,6 @@ const NewsModal: React.FC<{
     };
 
     const onSuccessfulSubmitNews = async (formValues: any) => {
-        console.log(`onSuccessfulSubmitNews: ${dayjs(formValues.creationDate)}`);
         const news: News = {
             id: 0,
             imageId: imageId.current,
