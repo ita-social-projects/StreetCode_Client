@@ -137,7 +137,7 @@ const HeaderBlock = () => {
                         placeholder="Що ти шукаєш?"
                         ref={inputRef}
                     />
-                    <Button type="primary" className="searchButton">
+                    <Button type="primary" className="searchButton" >
                         Пошук
                     </Button>
                 </div>
