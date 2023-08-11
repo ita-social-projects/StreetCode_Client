@@ -46,6 +46,7 @@ const NewsModal: React.FC<{
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const editorRef = useRef<TinyMCEEditor>();
+    const localOffset = new Date().getTimezoneOffset() / 60; // Offset in milliseconds
 
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
@@ -76,6 +77,7 @@ const NewsModal: React.FC<{
             form.setFieldsValue({
                 title: newsItem.title,
                 url: newsItem.url,
+                creationDate: dayjs(newsItem.creationDate),
                 image: newsItem.image ? [
                     {
                         name: '',
@@ -95,6 +97,14 @@ const NewsModal: React.FC<{
             imageId.current = 0;
         }
     }, [newsItem, open, form]);
+
+    useEffect(() =>{
+        if(newsItem){
+            console.log(`useEffect: ${dayjs(newsItem.creationDate)}`);
+            console.log(`offset: ${localOffset}`);
+        }
+    }, [open]);
+
     const removeImage = () => {
         imageId.current = undefined;
         if (newsItem) {
@@ -113,9 +123,9 @@ const NewsModal: React.FC<{
     const closeModal =() => {
         setIsModalOpen(false);
     }
-    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
+
     dayjs.locale('uk');
-  const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
+    const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
     const handleTextChange = () => {
@@ -152,6 +162,7 @@ const NewsModal: React.FC<{
     };
 
     const onSuccessfulSubmitNews = async (formValues: any) => {
+        console.log(`onSuccessfulSubmitNews: ${dayjs(formValues.creationDate)}`);
         const news: News = {
             id: 0,
             imageId: imageId.current,
@@ -159,10 +170,7 @@ const NewsModal: React.FC<{
             title: formValues.title,
             text: editorRef.current?.getContent() ?? '',
             image: undefined,
-            creationDate: dayjs(formValues.creationDate).subtract(
-                localOffset,
-                'milliseconds',
-            ),
+            creationDate: dayjs(formValues.creationDate),
         };
 
         let success = false;
@@ -221,7 +229,7 @@ const NewsModal: React.FC<{
                             initialValues={{
                                 title: newsItem?.title,
                                 url: newsItem?.url,
-                                creationDate: newsItem ? dayjs(newsItem.creationDate) : dayjs(),
+                                creationDate: newsItem ? dayjs(newsItem.creationDate) : undefined,
                             }}
                         >
                             <div className="center">
@@ -344,7 +352,7 @@ const NewsModal: React.FC<{
                                 </FileUploader>
                             </Form.Item>
                             <Form.Item name="creationDate" label="Дата створення: ">
-                                <DatePicker />
+                                <DatePicker showTime={true} allowClear={false}/>
                             </Form.Item>
                             <PreviewFileModal
                                 opened={previewOpen}

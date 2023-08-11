@@ -30,7 +30,7 @@ const Newss: React.FC = observer(() => {
                     ImageStore.getImageById(val.imageId!).then((image) => {
                         newsStore.NewsMap.set(
                             key,
-                            { ...val, image },
+                            { ...val, image},
                         );
                     });
                 }
@@ -79,7 +79,7 @@ const Newss: React.FC = observer(() => {
             }),
             render: (value: string, record) => (
                 <div key={value} className="partner-table-item-name">
-                    <p>{value ? value.substring(0, 10) : ''}</p>
+                    <p>{value ? value.toString() : ''}</p>
                 </div>
             ),
         },
