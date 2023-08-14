@@ -21,12 +21,14 @@ interface SourceModalProps {
     isModalVisible: boolean;
     onCancel: () => void;
     initialData?: SourceCategoryAdmin;
+    isNewCategory:(data: boolean) => void;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
     isModalVisible,
     onCancel,
     initialData,
+    isNewCategory,
 }) => {
     const { sourcesAdminStore } = useMobx();
     const [form] = Form.useForm();
@@ -93,6 +95,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         } else {
             await sourcesAdminStore.addSourceCategory(currentSource);
         }
+        isNewCategory(true);
         onCancel();
         form.resetFields();
     };
