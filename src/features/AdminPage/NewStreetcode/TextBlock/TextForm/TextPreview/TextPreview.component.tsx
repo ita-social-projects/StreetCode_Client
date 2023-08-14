@@ -1,3 +1,5 @@
+import './TextPreview.styles.scss';
+
 import { useEffect, useState } from 'react';
 
 import { Button } from 'antd';
@@ -10,20 +12,24 @@ interface Props {
     inputInfo: Partial<Text> | undefined;
 }
 
-const TextPreview = ({ inputInfo } : Props) => {
+const TextPreview = ({ inputInfo }: Props) => {
     const [disabled, setDisabled] = useState(true);
     const [text, setText] = useState<string>();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setText(undefined);
         if (!disabled) {
+            setLoading(true);
             let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
-            const content : TextPreviewContent = {
+            const content: TextPreviewContent = {
                 textContent: buffer ?? '',
             };
             TextsApi.updateParsed(content).then((x) => {
                 buffer = x?.replaceAll('`', '"').toString();
                 setText(buffer);
-            }).catch();
+            }).catch()
+                .finally(() => setLoading(false));
         }
     }, [disabled]);
 
@@ -34,17 +40,25 @@ const TextPreview = ({ inputInfo } : Props) => {
                 onClick={() => setDisabled(!disabled)}
                 className="streetcode-custom-button"
             >
-            Попередній перегляд тексту
+                Попередній перегляд тексту
             </Button>
-            { inputInfo !== undefined && !disabled ? (
-                <div className="textComponent">
-                    <div className="TextContainer">
-                        <ReadMore text={String(text)} />
+            {loading ? (
+                <div className="loadingText">
+                    <div className="text">
+                        Текст завантажується...
                     </div>
                 </div>
             ) : (
-                <div style={{ width: '0' }} />
-            ) }
+                inputInfo !== undefined && !disabled && text !== undefined ? (
+                    <div className="textComponent">
+                        <div className="TextContainer">
+                            <ReadMore text={String(text)} />
+                        </div>
+                    </div>
+                ) : (
+                    <div style={{ width: '0' }} />
+                )
+            )}
         </div>
     );
 };
