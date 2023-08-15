@@ -23,7 +23,7 @@ const StaticBanner = ({ id, blockName, blockContent, buttonName, setActionOnClic
                         <p className='title'>{blockName}</p>
                         <p className='content'>{blockContent}</p>
                     </div>
-                    <div className='redirectButton' onClick={setActionOnClick}>
+                    <div onClick={setActionOnClick} className='redirectButton'>
                         <p>{buttonName}</p>
                     </div>
                 </div>
