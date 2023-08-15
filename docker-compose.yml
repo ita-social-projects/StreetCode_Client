@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: saymolet/streetcode_client:latest
+    image: streetcode_client:${DOCKER_TAG_FRONTEND}
     pull_policy: always
     ports:
       - "80:3000"
@@ -14,7 +14,7 @@ services:
     environment:
       API_URL: ${ENV_API_BACKEND}
   backend:
-    image: saymolet/streetcode:latest
+    image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
     pull_policy: always
     expose:
       - "80"
