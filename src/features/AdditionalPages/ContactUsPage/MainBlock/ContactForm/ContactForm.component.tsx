@@ -13,6 +13,7 @@ const MAX_SYMBOLS = 500;
 const ContactForm = () => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
+    const messageLength = formData.message.length | 0;
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handleVerify = () => {
@@ -50,12 +51,15 @@ const ContactForm = () => {
                     <Input.TextArea
                         className="textarea"
                         name="message"
-                        showCount
                         autoSize={{ minRows: 4, maxRows: 4 }}
                         placeholder="Наші серця, очі та вуха відкриті до твоїх креативних повідомлень!"
                         maxLength={MAX_SYMBOLS}
                         onChange={handleChange}
                     />
+                    <p className="custom-character-counter">
+                        {messageLength} 
+                        / {MAX_SYMBOLS}
+                    </p>
                 </Form.Item>
                 <Form.Item
                     name="email"

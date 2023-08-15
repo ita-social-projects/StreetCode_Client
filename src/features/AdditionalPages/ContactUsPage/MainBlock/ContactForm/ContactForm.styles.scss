@@ -37,7 +37,14 @@
     
         .contactForm{
             @include mut.flexed($direction: column, $gap: 24px);
-       
+            
+            .custom-character-counter{
+                margin-bottom: -12px;
+                text-align: right;
+                font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+                font-size: 16px;
+                color: #00000073;
+            }
             textarea{
                 resize: none;
                 outline: none;     
