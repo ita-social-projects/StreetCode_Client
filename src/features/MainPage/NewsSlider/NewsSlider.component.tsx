@@ -37,7 +37,7 @@ const NewsSlider = () => {
         touchThreshold: 25,
         transform: 'translateZ(0)',
         arrows: false,
-        dots:windowSize.width < 1024,
+        dots: windowSize.width < 1024,
         infinite: true,
         variableWidth: true,
         slidesToShow: 1,
@@ -72,6 +72,7 @@ const NewsSlider = () => {
                                 </div>
                             </div>
                         </div>
+                        <button className='redirectButton' onClick={handleClick}>Побачити всю команду</button>
                     </div>
                 </div>
             ) : <></>
