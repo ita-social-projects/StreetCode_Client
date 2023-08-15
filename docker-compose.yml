@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: streetcode_client:${DOCKER_TAG_FRONTEND}
+    image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
     pull_policy: always
     ports:
       - "80:3000"
