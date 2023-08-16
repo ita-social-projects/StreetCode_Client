@@ -65,14 +65,14 @@ const ForFansModal = ({
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
         setAvailableCategories(getAvailableCategories());
         if (categoryUpdate.current && open) {
-            // editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
-            // form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
             setEditorContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
-            editorRef.current?.editor?.setContent('');
+            setEditorContent('');
             form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
+            // editorRef.current?.editor?.setContent('');
+            // form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
         }
     }, [open, sourceCreateUpdateStreetcode]);
 
@@ -175,6 +175,7 @@ const ForFansModal = ({
                 />
                 <FormItem
                     label="Текст: "
+                    rules={[{ required: true, message: 'Введіть текст' }]}
                 >
                     <Editor
                         ref={editorRef}
