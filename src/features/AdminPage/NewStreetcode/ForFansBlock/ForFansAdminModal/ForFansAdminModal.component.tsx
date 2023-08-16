@@ -115,10 +115,6 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
         }
     };
 
-    const handleAddCancel = () => {
-        setIsAddModalVisible(false);
-    };
-
     return (
         <Modal
             className="modalContainer"
@@ -162,7 +158,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                 </FormItem>
                 <SourceModal
                     isModalVisible={isAddModalVisible}
-                    onCancel={handleAddCancel}
+                    setIsModalOpen={setIsAddModalVisible}
                 />
                 <FormItem
                     label="Текст: "
