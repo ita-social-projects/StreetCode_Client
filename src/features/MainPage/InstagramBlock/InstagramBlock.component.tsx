@@ -9,13 +9,13 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 const InstagramBlock = () => {
     const [posts, setPosts] = useState<InstagramPost[]>([]);
-     
+
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await InstagramApi.getAll();
-            setPosts(response);     
-        };     
-      fetchPosts();
+            setPosts(response);
+        };
+        fetchPosts();
     }, []);
 
     const windowSize = useWindowSize();
@@ -43,24 +43,24 @@ const InstagramBlock = () => {
     const handleClick = () => {
         window.location.assign('https://www.instagram.com/streetcodeua/');
     }
-    
+
     return (
         (posts.length > 0)
             ? (
-        <div className='InstagramBlock'>
-            <Heading blockName='Ми в Інсті' buttonName='Зацінити інстаграм' setActionOnClick={handleClick}/>
-            <div className='sliderContainer'>
-            <BlockSlider {...sliderProps}>
-                    {sliderItems}
-                </BlockSlider>
-            {windowSize.width <= 480 && ( 
-            <div className='instagramButton'>
-                <p onClick={handleClick}>{'Перейти в інстаграм'}</p>
-            </div>
-            )}
-            </div>
-        </div>
-    ) : <></>
+                <div className='InstagramBlock'>
+                    <Heading blockName='Ми в Інсті' buttonName='Зацінити інстаграм' setActionOnClick={handleClick} />
+                    <div className='sliderContainer'>
+                        <BlockSlider {...sliderProps}>
+                            {sliderItems}
+                        </BlockSlider>
+                        {windowSize.width <= 480 && (
+                            <div className='instagramButton' onClick={handleClick}>
+                                <p >{'Перейти в інстаграм'}</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            ) : <></>
     );
 }
 

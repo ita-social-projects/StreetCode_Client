@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -19,13 +19,13 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 interface SourceModalProps {
     isModalVisible: boolean;
-    onCancel: () => void;
+    setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     initialData?: SourceCategoryAdmin;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
     isModalVisible,
-    onCancel,
+    setIsModalOpen,
     initialData,
 }) => {
     const { sourcesAdminStore } = useMobx();
@@ -78,6 +78,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
         setImage(img as Image);
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
@@ -93,7 +97,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         } else {
             await sourcesAdminStore.addSourceCategory(currentSource);
         }
-        onCancel();
+        closeModal();
         form.resetFields();
     };
 
@@ -103,7 +107,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     const handleCancel = () => {
-        onCancel();
+        closeModal();
         form.resetFields();
         setFileList([]);
     };
@@ -122,10 +126,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
             <Modal
                 title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
-                onCancel={onCancel}
+                onCancel={closeModal}
                 className="modalContainer"
                 closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                        <CancelBtn className='iconSize' onClick={handleCancel} />
+                    <CancelBtn className='iconSize' onClick={handleCancel} />
                 </Popover>}
                 footer={null}
             >

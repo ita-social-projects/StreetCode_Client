@@ -10,12 +10,13 @@ interface Props {
     isBlockActive: boolean;
 }
 
-const CurrentClick = (e: any) => {
-    e.stopPropagation();
-}
+const ProgressBarSection = ({ idx, block: { title, height }, isBlockActive }: Props) => {
+    const CurrentClick = (e: any) => {
+        e.stopPropagation();
+        window.scrollTo(0, height);
+    }
 
-const ProgressBarSection = ({ idx, block: { title, height }, isBlockActive }: Props) => (
-    <Popover
+    return(<Popover
         overlayClassName="progressBarSectionPopover"
         align={{ offset: [0, 1] }}
         content={<p>{title}</p>}
@@ -25,11 +26,11 @@ const ProgressBarSection = ({ idx, block: { title, height }, isBlockActive }: Pr
             className={`progressBarSection ${isBlockActive ? 'active' : ''}`}
             onClick={CurrentClick}
         >
-            <span onClick={() => window.scrollTo(0, height)}>
+            <span>
                 {idx + 1}
             </span>
         </div>
-    </Popover>
-);
+    </Popover>);
+};
 
 export default ProgressBarSection;
