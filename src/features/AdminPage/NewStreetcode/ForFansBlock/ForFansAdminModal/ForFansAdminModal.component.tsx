@@ -145,11 +145,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
             form.resetFields(['category']);
         }
     };
-
-    const handleAddCancel = () => {
-        setIsAddModalVisible(false);
-    };
-
+    
     const handleDisabled = (categoryId: number) => {
         return !availableCategories.some(c => c.id === categoryId);
     };
@@ -197,8 +193,8 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                 </FormItem>
                 <SourceModal
                     isModalVisible={isAddModalVisible}
-                    onCancel={handleAddCancel}
                     isNewCategory={onUpdateStates}
+                    setIsModalOpen={setIsAddModalVisible}
                 />
                 <FormItem
                     label="Текст: "

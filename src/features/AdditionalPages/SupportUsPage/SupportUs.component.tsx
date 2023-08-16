@@ -50,6 +50,9 @@ const SupportUs = () => {
         <div className="supportUsPage">
             <div className="supportUsPageWrapper">
                 <div className="heading">
+                    <div className="donateLogoSmall">
+                        Підтримати
+                    </div>
                     <div className="titleBig">
                         {' '}
                         Підтримати

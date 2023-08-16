@@ -5,6 +5,7 @@ import './MainBlockAdmin.style.scss';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
+import { type } from 'os';
 
 import { DatePicker, FormInstance, Input, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -123,12 +124,33 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
         }
     };
 
+    const [dateString, setDateString] = useState('');
+
     return (
         <FormItem label="Роки">
             <div className="date-picker-container">
                 <div>
-                    <FormItem name="dateString">
-                        <Input disabled={disableInput} />
+                    <FormItem
+                        name="dateString"
+                        validateFirst
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Поле не може бути порожнім',
+                            },
+                            {
+                                pattern: /^[-0-9()а-яА-Яі— ]+$/u,
+                                message: 'Поле може містити лише літери кирилиці, цифри, дефіс та дужки',
+                            },
+                        ]}
+                    >
+                        <Input
+                            disabled={disableInput}
+                            showCount
+                            maxLength={50}
+                            onChange={(e) => setDateString(e.target.value)}
+                            value={dateString}
+                        />
                     </FormItem>
                 </div>
 
