@@ -9,7 +9,7 @@ const TeamMemberCard = (member : TeamMember) => (
             <img src={base64ToUrl(member.image?.base64,'png')}/>
         </div>
         <div className='textContainer'>
-            <h2>{member.firstName + ' ' + member.lastName}</h2>
+            <h2>{member.name}</h2>
             <p>{member.description}</p>
             <div className='linksContainer'>
                 {member.teamMemberLinks.map(

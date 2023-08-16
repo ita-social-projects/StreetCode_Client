@@ -13,8 +13,7 @@ const TeamMembers = () => {
         {
             id: 0,
             isMain: false,
-            firstName: 'Roman',
-            lastName: 'LAST',
+            name: 'Roman',
             description: 'Description',
             imageId: 1,
             image: {
