@@ -77,6 +77,7 @@ export const API_ROUTES = {
         GET_ALL: 'team/getAll',
         GET_ALL_MAIN: 'team/getAllMain',
         GET: 'team/getById',
+        GET_BY_ROLE_ID:'team/getByRoleId',
         CREATE: 'team/create',
         UPDATE: 'team/update',
         DELETE: 'team/delete',
