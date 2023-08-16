@@ -1,19 +1,22 @@
 import './TeamMemberCard.styles.scss'
-import Instagram from '@/assets/images/about-us/instagram.png'
-import Facebook from '@/assets/images/about-us/facebook.png'
-import Photo from '@/assets/images/about-us/pictureWIthBG.png'
+import TeamMember from '@/models/team/team.model';
+import TeamMemberLinks from './TeamMemberLinks/TeamMemberLinks.component';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
-const TeamMemberCard = (founder : FounderProps) => (
+const TeamMemberCard = (member : TeamMember) => (
     <div className='cardContainer'>
         <div className='photoContainer'>
-            <img src={Photo}/>
+            <img src={base64ToUrl(member.image?.base64,'png')}/>
         </div>
         <div className='textContainer'>
-            <h2>{founder.founderName}</h2>
-            <p>{founder.founderRole}</p>
+            <h2>{member.firstName + ' ' + member.lastName}</h2>
+            <p>{member.description}</p>
             <div className='linksContainer'>
-                <a href={founder.founderFacebook}><img src={Facebook} /></a>
-                <a href={founder.founderInstagram}><img src={Instagram} /></a>
+                {member.teamMemberLinks.map(
+                    (link)=>(
+                        <TeamMemberLinks {...link}/>
+                    )
+                )}
             </div>
         </div>
     </div>
