@@ -2,6 +2,11 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 
+@mixin hoverStyles {
+    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.612));
+    cursor: pointer;
+}
+
 .contactUsContainer{
     .contactBlock{
         position: relative;
@@ -25,6 +30,10 @@
         .emailBlock{
             @include mut.flexed($align-items: center);
             margin-bottom: f.pxToRem(20px);
+
+            .icon:hover{
+                @include hoverStyles;
+            }
         }
     
         .socials{
@@ -33,8 +42,7 @@
                 margin-right: f.pxToRem(30px);
             }
             .icon:hover{
-                filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.612));
-                cursor: pointer;
+                @include hoverStyles;
             }
         }
          

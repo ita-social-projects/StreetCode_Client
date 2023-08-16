@@ -1,6 +1,7 @@
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import newsApi from '@api/news/news.api';
 import News from '@models/news/news.model';
+import dayjs from 'dayjs';
 
 export default class NewsStore {
     public NewsMap = new Map<number, News>();
@@ -23,8 +24,13 @@ export default class NewsStore {
     }
 
     public setInternalMap(news: News[]) {
+         // Offset in hours
+        const localOffset = new Date().getTimezoneOffset() / 60;
         this.NewsMap.clear();
         news.forEach(this.setItem);
+
+        // as date is saved in UTC+0, add local offset to actualize date
+        news.forEach(n => n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours'));
     }
 
     public set setNews(news: News) {

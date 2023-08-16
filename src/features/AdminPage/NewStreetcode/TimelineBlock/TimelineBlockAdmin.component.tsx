@@ -34,7 +34,7 @@ const TimelineBlockAdmin = ({ onChange }: Props) => {
                     .getTimelineItemArray
                     .map((ti) => (
                         <NewTimelineItem
-                            key={`${ti.id}${ti.date.getFullYear}`}
+                            key={`${ti.id}${new Date(ti.date).getFullYear()}`}
                             timelineItem={ti}
                             setModalOpened={setIsModalEditOpen}
                             setEditTimelineItem={setEditedTimeline}

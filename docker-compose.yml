@@ -1,0 +1,52 @@
+services:
+  frontend:
+    image: saymolet/streetcode_client:latest
+    pull_policy: always
+    ports:
+      - "80:3000"
+    expose:
+      - "3000"
+    healthcheck:
+      test: curl --fail http://localhost || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      API_URL: ${ENV_API_BACKEND}
+  backend:
+    image: saymolet/streetcode:latest
+    pull_policy: always
+    expose:
+      - "80"
+    ports:
+    - "5000:80"
+    environment:
+      STREETCODE_ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
+      STREETCODE_Blob__BlobStoreKey: ${BLOB_STORAGE_KEY}
+      STREETCODE_Blob__BlobStorePath: /mnt/data/
+      STREETCODE_Instagram__InstagramID: ${INSTAGRAM_ID}
+      STREETCODE_Instagram__InstagramToken: ${INSTAGRAM_TOKEN}
+      STREETCODE_Payment__Token: ${PAYMENT_TOKEN}
+      STREETCODE_CORS__AllowedOrigins: '["*"]'
+      STREETCODE_CORS__AllowedHeaders: '["*"]'
+      STREETCODE_CORS__AllowedMethods: '["*"]'
+      STREETCODE_CORS__PreflightMaxAge: 1
+      STREETCODE_IPRATELIMITING__GENERALRULES__0__LIMIT: 500
+    volumes:
+      - type: bind
+        source: /imagestorage
+        target: /mnt/data
+    healthcheck:
+      test: curl --fail http://localhost/api/partners/getAll || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+volumes:
+  backend:
+networks:
+  backend:
+    external:
+      name: backend
+  frontend:
+    external:
+      name: frontend

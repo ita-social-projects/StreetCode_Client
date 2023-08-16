@@ -1,0 +1,10 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+@use '@assets/sass/variables/_variables.fonts.scss' as ft;
+
+.loadingText {
+    @include mut.sized(1200px, auto);
+    @include mut.with-font($font-weight: 300, $font-size:17px);
+    @include mut.flexed($wrap: wrap);
+    text-align: justify;
+}
