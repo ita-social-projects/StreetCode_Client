@@ -21,7 +21,7 @@ interface SourceModalProps {
     isModalVisible: boolean;
     onCancel: () => void;
     initialData?: SourceCategoryAdmin;
-    isNewCategory:(data: boolean) => void;
+    isNewCategory?:(data: boolean) => void;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
@@ -95,7 +95,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
         } else {
             await sourcesAdminStore.addSourceCategory(currentSource);
         }
-        isNewCategory(true);
+        
+        if (isNewCategory != undefined)
+        {
+            isNewCategory(true);
+        }
         onCancel();
         form.resetFields();
     };
