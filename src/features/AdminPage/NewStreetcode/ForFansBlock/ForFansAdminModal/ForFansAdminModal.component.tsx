@@ -71,8 +71,6 @@ const ForFansModal = ({
             categoryUpdate.current = null;
             setEditorContent('');
             form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
-            // editorRef.current?.editor?.setContent('');
-            // form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
         }
     }, [open, sourceCreateUpdateStreetcode]);
 
@@ -200,7 +198,7 @@ const ForFansModal = ({
                             const previousContent = editor.getContent({ format: 'text' });
                             const clipboardContent = e.clipboardData?.getData('text') || '';
                             const resultContent = previousContent + clipboardContent;
-                            const isSelectionEnd = editor.selection.getSel()?.anchorOffset === previousContent.length;
+                            const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
 
                             if (selectedText.length >= clipboardContent.length) {
                                 return;
