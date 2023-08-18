@@ -15,19 +15,37 @@ import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
+import SearchBlock from './SearchBlock/SearchBlock.component';
+
 const HeaderBlock = () => {
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
 
     const windowSize = useWindowSize();
+
+    const handlePopoverVisibleChange = (visible: boolean) => {
+        setIsPopoverVisible(visible);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setSearchQuery(value);
+        if (value.length > 0) {
+            handlePopoverVisibleChange(true);
+        } else {
+            handlePopoverVisibleChange(false);
+        }
+    };
 
     const onDimCancel = useCallback((e?: Event) => {
         e?.stopPropagation();
@@ -56,17 +74,29 @@ const HeaderBlock = () => {
         <div className="HeaderBlock">
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div onClick={() => window.location.href=`/`}>
-                    {windowSize.width > 1024
-                        ? <StreetcodeSvg />
-                            : <StreetcodeSvgMobile />}
+                    <div className='logoContainer' onClick={() => window.location.href = '/'}> 
+                        { windowSize.width > 1024
+                            ? <StreetcodeSvg />
+                            : <StreetcodeSvgMobile /> }
                     </div>
-                    <input
-                        placeholder="Пошук..."
-                        ref={inputRef}
-                        className={`ant-input css-dev-only-do-not-override-26rdvq
-                            hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                    <Popover
+                        trigger="click"
+                        placement="bottomLeft"
+                        open={isPopoverVisible}
+                        content={(
+                            <div className="headerPopupSkeleton">
+                                <SearchBlock searchQuery={searchQuery} />
+                            </div>
+                        )}
                     />
+                            <input
+                            onChange={handleInputChange}
+                            placeholder="Пошук..."
+                            ref={inputRef}
+                            className={`ant-input  
+                                hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                        />
+
                     <HeaderSkeleton />
                 </div>
                 <div className="rightPartContainer">
@@ -108,8 +138,8 @@ const HeaderBlock = () => {
                         placeholder="Що ти шукаєш?"
                         ref={inputRef}
                     />
-                    <Button type="primary" className="searchButton">
-                    Пошук
+                    <Button type="primary" className="searchButton" >
+                        Пошук
                     </Button>
                 </div>
             )}

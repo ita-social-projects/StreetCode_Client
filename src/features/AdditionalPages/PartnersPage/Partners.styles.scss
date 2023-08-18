@@ -3,10 +3,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.partnersSticky .sticky-content{
-    right: 30px;
-}
-
 .partnersContainer{
     position: relative;
     

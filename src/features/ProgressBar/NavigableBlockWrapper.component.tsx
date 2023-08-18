@@ -2,8 +2,8 @@ import useResizeObserver from '@react-hook/resize-observer';
 import { useRef } from 'react';
 
 export type NamedBlock = {
-    title: string,
-    height: number,
+    title: string;
+    height: number;
 };
 
 interface Props {
@@ -27,10 +27,13 @@ const NavigableBlockWrapper = ({ children, setBlocks, topDistance }: Props) => {
              ?? Array.from(child.getElementsByTagName('h2'))
                  .find(({ className }) => className === 'streetcodeTitle');
 
-            blocks.push({
-                title: headerBlock?.textContent ?? `Секція №${idx + 1}`,
-                height: (child as HTMLElement).offsetTop - topDistance,
-            } as NamedBlock);
+            // Перевіряємо наявність блоку перед додаванням його в масив
+            if (headerBlock) {
+                blocks.push({
+                    title: headerBlock.textContent ?? `Секція №${idx + 1}`,
+                    height: (child as HTMLElement).offsetTop - topDistance,
+                });
+            }
         });
 
         setBlocks(blocks);

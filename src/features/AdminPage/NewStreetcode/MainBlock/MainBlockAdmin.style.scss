@@ -125,5 +125,11 @@
         justify-content: space-between;
     } 
  
-    
-    
+    .tagInput-counter {
+        position: absolute;
+        right: f.pxToRem(2px);
+        bottom: f.pxToRem(2px);
+        font-size: f.pxToRem(17px);
+        font-weight: light;
+        color: rgba(154, 154, 154, 255);
+    }

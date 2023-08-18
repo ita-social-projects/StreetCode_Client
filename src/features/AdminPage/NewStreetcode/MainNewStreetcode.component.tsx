@@ -247,9 +247,24 @@ const NewStreetcode = () => {
         }
     }, []);
 
+    const scrollToErrors = () => {
+        const errors = form.getFieldsError();
+        const firstErrorIndex = errors.findIndex((e) => e.errors.length > 0);
+        if (firstErrorIndex !== -1) {
+            const firstErrorName = String(errors[firstErrorIndex].name);
+            if (firstErrorName === 'animations' || firstErrorName === 'pictureBlackWhite') {
+                const containerElement = document.querySelector('.scrollable-container');
+                if (containerElement) {
+                    containerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                form.scrollToField(firstErrorName, { block: 'center' });
+            }
+        }
+    };
+
     const onFinish = async (data: any) => {
         handleCancelModalRemove();
-        console.log(form.getFieldValue('streetcodeNumber'));
         let tempStatus = 1;
         const buttonName = data.target.innerText;
         if (buttonName) {
@@ -366,7 +381,7 @@ const NewStreetcode = () => {
                     urlTitle: arLink?.urlTitle ?? '',
                 };
 
-                if (text.id !== 0 && !(text.title && text.textContent && text.additionalText)) {
+                if (text.id !== 0 && !(text.title && text.textContent)) {
                     text.modelState = ModelState.Deleted;
                 }
 
@@ -407,19 +422,20 @@ const NewStreetcode = () => {
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
                     images: createUpdateMediaStore.imagesUpdate.map((img):ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
                     audios: createUpdateMediaStore.audioUpdate,
-                    arLink: {
+                    transactionLink: {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
                         url: form.getFieldValue('arlink') ?? '',
-                        urlTitle: arLink?.urlTitle ?? '',
+                        qrCodeUrl: arLink?.urlTitle ?? '',
+                        modelState: 0,
                     },
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
+
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
                 }
-                console.log(streetcodeUpdate);
                 StreetcodesApi.update(streetcodeUpdate).then(() => {
                     window.location.reload();
                 }).then(() => {
@@ -445,7 +461,7 @@ const NewStreetcode = () => {
         }).catch(() => {
             const name = form.getFieldsError().find((e) => e.errors.length > 0)?.name;
             if (name) {
-                form.scrollToField(name, { block: 'center' });
+                scrollToErrors();
             }
         });
     };
@@ -480,7 +496,6 @@ const NewStreetcode = () => {
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
 
-                            
                             <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />

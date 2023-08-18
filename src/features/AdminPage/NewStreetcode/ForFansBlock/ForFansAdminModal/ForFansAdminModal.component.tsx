@@ -8,7 +8,7 @@ import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { Button, Form, Modal, Select } from 'antd';
+import { Button, Form, Modal, Popover, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
@@ -36,7 +36,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
     const [form] = Form.useForm();
     const [selectedText, setSelected] = useState('');
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
-    const maxLength = character_limit || 1000;
+    const maxLength = character_limit || 10000;
     const getAvailableCategories = (): SourceCategoryName[] => {
         const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
             .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
@@ -51,6 +51,10 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
         }
         return available;
     };
+    const clearModal = () => {
+        form.resetFields();
+        setOpen(false);
+    }
 
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
@@ -111,10 +115,6 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
         }
     };
 
-    const handleAddCancel = () => {
-        setIsAddModalVisible(false);
-    };
-
     return (
         <Modal
             className="modalContainer"
@@ -125,7 +125,9 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
             footer={null}
             maskClosable
             centered
-            closeIcon={<CancelBtn />}
+            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                <CancelBtn className='iconSize' onClick={clearModal} />
+            </Popover>}
         >
 
             <Form
@@ -156,7 +158,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                 </FormItem>
                 <SourceModal
                     isModalVisible={isAddModalVisible}
-                    onCancel={handleAddCancel}
+                    setIsModalOpen={setIsAddModalVisible}
                 />
                 <FormItem
                     label="Текст: "

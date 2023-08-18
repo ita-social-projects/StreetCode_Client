@@ -1,3 +1,5 @@
+const EMAIL = 'streetcodeua@gmail.com';
+
 const SectionFifth = () => (
     <section id="fifth" data-block-id="fifth">
         <div className="title">5. Використання файлів Cookie</div>
@@ -103,7 +105,7 @@ const SectionFifth = () => (
             </ul>
                 Щоб звернутися до Організації з приводу використання файлів cookie, відправте повідомлення
                 електронною поштою на адресу&nbsp;
-            <a className="link" href="streetcodeua@gmail.com">streetcodeua@gmail.com</a>
+            <a className="link" href={`mailto:${EMAIL}`}>{EMAIL}</a>
                 .
             <br />
                 Якщо користувач не включає використання файлів cookie або навмисно видаляє всі файли cookie

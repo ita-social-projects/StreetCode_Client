@@ -21,6 +21,7 @@ import {
     Input,
     message, Modal,
     UploadFile,
+    Popover
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
@@ -75,6 +76,7 @@ const NewsModal: React.FC<{
             form.setFieldsValue({
                 title: newsItem.title,
                 url: newsItem.url,
+                creationDate: dayjs(newsItem.creationDate),
                 image: newsItem.image ? [
                     {
                         name: '',
@@ -94,6 +96,7 @@ const NewsModal: React.FC<{
             imageId.current = 0;
         }
     }, [newsItem, open, form]);
+
     const removeImage = () => {
         imageId.current = undefined;
         if (newsItem) {
@@ -108,9 +111,13 @@ const NewsModal: React.FC<{
         setTextIsChanged(false);
         editorRef.current?.setContent('');
     };
-    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
+
+    const closeModal =() => {
+        setIsModalOpen(false);
+    }
+
     dayjs.locale('uk');
-  const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
+    const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
     const handleTextChange = () => {
@@ -154,10 +161,7 @@ const NewsModal: React.FC<{
             title: formValues.title,
             text: editorRef.current?.getContent() ?? '',
             image: undefined,
-            creationDate: dayjs(formValues.creationDate).subtract(
-                localOffset,
-                'milliseconds',
-            ),
+            creationDate: dayjs(formValues.creationDate),
         };
 
         let success = false;
@@ -200,10 +204,12 @@ const NewsModal: React.FC<{
             <ConfigProvider locale={ukUA}>
                 <Modal
                     open={open}
-                    onCancel={closeAndCleanData}
+                    onCancel={closeModal}
                     className="modalContainer"
-                    closeIcon={<CancelBtn />}
                     footer={null}
+                    closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                        <CancelBtn className='iconSize' onClick={closeAndCleanData} />
+                    </Popover>}
                 >
                     <div className="modalContainer-content">
                         <Form
@@ -214,7 +220,7 @@ const NewsModal: React.FC<{
                             initialValues={{
                                 title: newsItem?.title,
                                 url: newsItem?.url,
-                                creationDate: newsItem ? dayjs(newsItem.creationDate) : dayjs(),
+                                creationDate: newsItem ? dayjs(newsItem.creationDate) : undefined,
                             }}
                         >
                             <div className="center">
@@ -337,7 +343,7 @@ const NewsModal: React.FC<{
                                 </FileUploader>
                             </Form.Item>
                             <Form.Item name="creationDate" label="Дата створення: ">
-                                <DatePicker />
+                                <DatePicker showTime={true} allowClear={false}/>
                             </Form.Item>
                             <PreviewFileModal
                                 opened={previewOpen}

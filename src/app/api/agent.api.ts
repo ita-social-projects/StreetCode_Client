@@ -7,7 +7,7 @@ import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
 import UserLoginStore from '../stores/user-login-store';
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'development'
-    ? 'https://localhost:5001/api' : 'http://185.230.138.173:5000/api';
+    ? 'https://localhost:5001/api' : window._env_.API_URL;
 
 axios.interceptors.response.use(
     async (response) => response,

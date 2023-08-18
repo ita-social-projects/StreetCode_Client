@@ -11,6 +11,15 @@
     background: url('@/assets/images/donates/donatesPage/background.svg') no-repeat center center / cover;
 
     .heading {
+        .donateLogoSmall{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
+            line-height: 14px;
+            text-transform: uppercase;
+            color: #891F16;
+    
+            text-align: right; 
+        }
+
         .titleBig {
             @include mut.rem-margined($bottom: 20px);
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);

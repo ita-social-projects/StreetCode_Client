@@ -8,16 +8,21 @@ import TikTok from '@images/contact-us/TikTok.png';
 import Twitter from '@images/contact-us/Twitter.png';
 import YouTube from '@images/contact-us/Youtube.png';
 
+const EMAIL = 'streetcodeua@gmail.com';
+
 const ContactBlock = () => (
     <div className="contactBlock">
         <img className="contactLogo" src={Logo} alt="" />
         <div className="contactCover">
             <div className="emailBlock">
-                <img className="icon" src={Email} alt="email-logo" />
+                <a href={`mailto:${EMAIL}`} className="emailLink">
+                    <img className="icon" src={Email} alt="email-logo" />
+                </a>
                 <span className="email">
-                    streetcodeua@gmail.com
+                    {EMAIL}
                 </span>
             </div>
+
             <div className="socials">
                 <a
                     href="https://www.facebook.com/streetcodeua"
@@ -39,7 +44,7 @@ const ContactBlock = () => (
                 <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
                     <img className="icon" src={TikTok} alt="TikTok-logo" />
                 </a>
-                <a href="https://youtube.com/streetcodeua" target="_blank" rel="noreferrer">
+                <a href="https://www.youtube.com/@streetcodeua" target="_blank" rel="noreferrer">
                     <img className="icon" src={YouTube} alt="YouTube-logo" />
                 </a>
             </div>

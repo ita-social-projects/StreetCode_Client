@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal, Popover } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
@@ -17,14 +17,20 @@ const MAX_SYMBOLS = 500;
 const PartnersModal = () => {
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { partners } } = modalStore;
-
+    const [form] = Form.useForm();
     const [formData, setFormData] = useState({ email: '', message: '' });
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const newEmail: Email = { from: formData.email, content: formData.message };
     const onFinish = () => EmailApi.send(newEmail);
 
-    const handleModalClose = () => setModal('partners');
+    const onClear = () => {
+        partners.isOpen = false;
+        form.resetFields();
+    };
+    const onCancel = () => {
+        partners.isOpen = false;
+    }
 
     return (
         <Modal
@@ -33,8 +39,9 @@ const PartnersModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={handleModalClose}
-            closeIcon={<CancelBtn />}
+            onCancel={onCancel}
+            closeIcon={<Popover><CancelBtn className='iconSize' onClick={onClear} />
+            </Popover>}
         >
             <div className="partnersModalContent">
                 <div className="formContainer">
@@ -43,7 +50,7 @@ const PartnersModal = () => {
                         <br />
                         Ми відкриті до найсміливіших пропозицій та найкреативніших ідей!
                     </div>
-                    <Form
+                    <Form form={form}
                         className="contactForm"
                         onFinish={onFinish}
                         validateMessages={{}}

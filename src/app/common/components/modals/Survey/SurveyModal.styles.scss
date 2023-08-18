@@ -26,7 +26,7 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
     }
 
     .ant-modal-close {
-      display: none;
+      
       @include mut.positioned-as(absolute, $left: 94%, $top: -27px);
       @include mut.circular(80px, c.$pure-white-color);
       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -42,7 +42,7 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
       }
     }
   }
-}
+
 
 .surveyModalContent {
   @include mut.flex-centered($direction: column);
@@ -75,37 +75,37 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
       border-color: c.$accented-red-color;
     }
   }
-
+}
+}
 
 @media screen and (max-width: 1024px) {
   .surveyModal {
-    @include mut.sizedImportant(340px, 316px);
+    @include mut.sizedImportant(90%, 498px);
     display: flex;
     justify-content: center;
 
     &.ant-modal {
-      .ant-modal-content {
-        @include mut.full-rounded(16px, $overflow: visible);
+      
 
-        .ant-modal-body{
-          width: 100%;
-          padding: f.pxToRem(16px);
+      .ant-modal-close {
+        @include mut.sizedImportant(60px, 60px);       
+        @include mut.circular(65px, c.$pure-white-color);
+
+        .ant-modal-close-x svg{
+          transform: scale(0.9);
         }
-      }
-
-      .ant-modal-close{
-        display: none;
       }
     }
 
     .surveyModalContent {
+      padding-bottom: 0%;
       > h1 {
         color: c.$pure-black-color;
-        @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+        @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
       }
     
       > h3 {
-        @include mut.with-font(ft.$roboto-font, $font-size: 8px, $font-weight: 300);
+        @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
       }
       }
 
@@ -113,20 +113,29 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
         @include mut.sized(100%, 46px);
 
       }
-
- 
     }
   }
-}
+
 
 @media screen and (max-width: 480px) {
-  .surveyModal .surveyModalBtnContainer {
-    @include mut.sized(308px, 100%);
-    > * {
-      width: f.pxToRem(100px) !important;
-    
+  .surveyModal {
+    @include mut.sized(308px, 498px);
+    &.ant-modal {
+      .ant-modal-content {      
+        @include mut.bg-image($StbgImg, 35%, no-repeat);
+      }
+
+      .ant-modal-close {
+        @include mut.positioned-as($position: absolute, $left: 92.36%, $top: -13px);
+        @include mut.sizedImportant(40px, 40px);       
+        @include mut.circular(65px, c.$pure-white-color);
+
+        .ant-modal-close-x svg{
+          transform: scale(0.6);
+        }
+      }
     }
-  }
+  
   .surveyModalContent {
     padding-bottom: 0%;
     > h1 {
@@ -138,5 +147,12 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
       @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
     }
     }
+    .surveyModalBtnContainer {
+      @include mut.sized(200px, 46px);
+      a {
+        @include mut.with-font($font-size: 16px, $font-weight: 400);
+      }
 
+    }
+  }
 }

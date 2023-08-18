@@ -12,7 +12,7 @@ import useMobx from '@stores/root-store';
 
 import {
     Button, Checkbox, Form, Input, message,
-    Modal, Select, Tooltip, UploadFile,
+    Modal, Popover, Select, Tooltip, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -45,7 +45,7 @@ const PartnerModal: React.FC< {
         isStreetcodeVisible = true,
         afterSubmit,
     }) => {
-        const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+        const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,256}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
         const [form] = Form.useForm();
         const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
         const [urlTitleValue, setUrlTitleValue] = useState<string>('');
@@ -147,6 +147,10 @@ const PartnerModal: React.FC< {
             setUrlTitleEnabled('');
             setUrlTitleValue('');
         };
+
+        const closeModal =() => {
+            setIsModalOpen(false);
+        }
 
         const onSuccesfulSubmitLinks = (formValues: any) => {
             const url = formValues.url as string;
@@ -270,10 +274,12 @@ const PartnerModal: React.FC< {
         return (
             <Modal
                 open={open}
-                onCancel={closeAndCleanData}
+                onCancel={closeModal}
                 className="modalContainer"
                 footer={null}
-                closeIcon={<CancelBtn />}
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                    <CancelBtn className='iconSize' onClick={closeAndCleanData} />
+                </Popover>}
             >
                 <div className="modalContainer-content">
                     <Form

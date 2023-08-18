@@ -36,10 +36,10 @@ const getYScrollPercentage = (curPos: number, minValue?: number, maxValue?: numb
 
 const ProgressBar: FC<Props> = ({
     children,
-    waitMsOnRender = 300,
+    waitMsOnRender = 100,
     topDistance = 82,
-    visibleBefore = 1600,
-    hidingDelay = 10e3,
+    visibleBefore = 3000,
+    hidingDelay = 10000,
 }) => {
     const wasScrolled = useRef(false);
     const scrollPercentage = useRef(0);
@@ -96,17 +96,11 @@ const ProgressBar: FC<Props> = ({
     }), [hidingDelay]);
 
     const onActiveBlockSelection = (activeIdx: number) => {
-        const blockPercentage = 100 / Math.max((blocks.length - 1), 1);
-
-        const blockDifPercentage = getYScrollPercentage(
-            scrollPosition,
-            blocks[activeIdx].height,
-            blocks[activeIdx + 1]?.height,
-        );
-
-        scrollPercentage.current = (activeIdx * blockPercentage)
-            + (blockDifPercentage * (blockPercentage / 100));
-    };
+        const firstBlockHeight = blocks[0]?.height ?? 0;
+        const lastBlockHeight = blocks[blocks.length - 1]?.height ?? 1;
+    
+        scrollPercentage.current = getYScrollPercentage(scrollPosition, firstBlockHeight, lastBlockHeight);
+    };    
 
     const onProgressBarCallerClick = () => {
         toggle();
