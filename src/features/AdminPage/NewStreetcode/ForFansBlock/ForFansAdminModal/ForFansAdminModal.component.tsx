@@ -48,7 +48,6 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
             title: x.title,
         }));
         const justAddedCategory = sourceMas[sourceMas.length - 1]
-        console.log("getAvailableCat method");
         const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
             .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
                 && (srcCatContent as StreetcodeCategoryContentUpdate).modelState !== ModelState.Deleted);     
@@ -60,7 +59,6 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                 .current?.sourceLinkCategoryId)]);
         }
         if (isNewCat){
-            console.log("true str");
             available.push(justAddedCategory);
         }
         return available;
@@ -77,11 +75,9 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
     }
 
     useEffect(() => {
-        console.log("use effect");
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
         setCategories(allCategories);
         if (categoryUpdate.current && open) {
-            console.log(categoryUpdate.current.text);
             editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
@@ -117,7 +113,6 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
     };
 
     const onDropDownChange = async () => {
-        console.log("onDropDownChange"); 
         if (isAddModalVisible === false) {
             const categories = await SourcesApi.getAllCategories();
             sourcesAdminStore.setInternalSourceCategories(categories);
@@ -131,8 +126,6 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
         }
     }
     const onUpdateStates = async (isNewCatAdded: boolean) => {
-        console.log("onUpdateStates");        
-        console.log(isNewCatAdded);
         if(isNewCatAdded === true) {
             const AvailableCats = await getAvailableCategories(true);
             setAvailableCategories(AvailableCats);
@@ -198,8 +191,6 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                 />
                 <FormItem
                     label="Текст: "
-                    name="text"
-                    rules={[{ required: true, message: 'Введіть Текст' }]}
                 >
                     <Editor
                         ref={editorRef}
