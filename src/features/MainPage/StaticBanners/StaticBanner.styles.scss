@@ -210,7 +210,7 @@
                 margin: 0;
 
                 .textContainer {
-                    text-align: center;
+                    text-align: left;
 
                     p.title {
                         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
@@ -247,8 +247,8 @@
                 @include mut.rem-padded($top: 20px, $right: 0px, $bottom: 20px, $left: 0px);
 
                 .textContainer {
-                    @include mut.flexed($direction: column, $align-items: center);
-                    text-align: center;
+                    @include mut.flexed($direction: column, $align-items: left);
+                    text-align: left;
                 }
 
                 .redirectButton {
