@@ -13,15 +13,27 @@
     }
 
     p {
-        margin-left: 5px;
+        margin-left: f.pxToRem(5px);
     }
 }
 
 .link-container {
-    gap: 5px;
+    gap: f.pxToRem(5px);
     display: flex;
     align-items: center;
 }
+
+.team-source-list{
+    .link-container{
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        word-break: break-all;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        padding: 10px 20px;
+    }
+}
+
 .positions-block {
     display: flex;
     flex-direction: column;
@@ -40,7 +52,7 @@
 
     .device-sizes-list {
         p {
-            margin-bottom: 2px;
+            margin-bottom: f.pxToRem(2px);
         }
 
         display: flex;
