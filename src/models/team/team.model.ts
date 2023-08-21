@@ -4,7 +4,8 @@ import Image from '@models/media/image.model';
 export default interface TeamMember {
     id: number;
     isMain: boolean;
-    name: string;
+    firstName: string;
+    lastName: string;
     description?: string | undefined;
     imageId: number;
     image?: Image;
@@ -14,7 +15,8 @@ export default interface TeamMember {
 export interface TeamCreateUpdate {
     id: number;
     isMain: boolean;
-    name: string;
+    firstName: string;
+    lastName: string;
     description?: string | undefined;
     imageId: number;
     teamMemberLinks: TeamMemberLinkCreateUpdate[];

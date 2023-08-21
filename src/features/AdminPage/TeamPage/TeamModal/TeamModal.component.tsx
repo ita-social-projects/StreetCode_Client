@@ -16,8 +16,7 @@ import useMobx from '@stores/root-store';
 import {
     Button,
     Checkbox,
-    Form, Input, Modal, Popover,
-    Select, UploadFile,
+    Form, Input, Modal, Select, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -44,11 +43,10 @@ const TeamModal: React.FC<{
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
     const imageId = useRef<number>(0);
+
     useEffect(() => {
-        if (open) {
-            PositionsApi.getAll().then((pos) => setPositions(pos));
-        }
-    }, [open]);
+        PositionsApi.getAll().then((pos) => setPositions(pos));
+    }, []);
 
     const onPositionSelect = (selectedValue: string) => {
         let selected;
@@ -76,7 +74,8 @@ const TeamModal: React.FC<{
         if (teamMember && open) {
             imageId.current = teamMember.imageId;
             form.setFieldsValue({
-                name: teamMember.name,
+                firstName: teamMember.firstName,
+                lastName: teamMember.lastName,
                 isMain: teamMember.isMain,
                 description: teamMember.description,
                 positions: teamMember.positions.map((s) => s.position),
@@ -139,7 +138,8 @@ const TeamModal: React.FC<{
             isMain,
             imageId: imageId.current,
             teamMemberLinks: teamSourceLinks,
-            name: formValues.name,
+            firstName: formValues.firstName,
+            lastName: formValues.lastName,
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
@@ -199,11 +199,7 @@ const TeamModal: React.FC<{
             onCancel={closeAndCleanData}
             className="modalContainer"
             footer={null}
-            closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                    <CancelBtn className="iconSize" onClick={closeAndCleanData} />
-                </Popover>
-            )}
+            closeIcon={<CancelBtn />}
         >
             <div className="modalContainer-content">
                 <Form
@@ -227,13 +223,20 @@ const TeamModal: React.FC<{
                     </div>
 
                     <Form.Item
-                        name="name"
-                        label="Прізвище та ім'я: "
-                        rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
+                        name="lastName"
+                        label="Прізвище: "
+                        rules={[{ required: true, message: 'Введіть прізвище:' }]}
                     >
-                        <Input maxLength={42} showCount />
+                        <Input maxLength={100} showCount />
                     </Form.Item>
 
+                    <Form.Item
+                        name="firstName"
+                        label="Ім'я: "
+                        rules={[{ required: true, message: "Введіть ім'я:" }]}
+                    >
+                        <Input maxLength={100} showCount />
+                    </Form.Item>
                     <Form.Item label="Позиції">
                         <div className="tags-block-positionitems">
 
@@ -252,7 +255,7 @@ const TeamModal: React.FC<{
                         name="description"
                         label="Опис: "
                     >
-                        <TextArea showCount maxLength={48} />
+                        <TextArea showCount maxLength={450} />
                     </Form.Item>
 
                     <Form.Item
@@ -304,7 +307,6 @@ const TeamModal: React.FC<{
 
                     {teamSourceLinks.map((link) => (
                         <div
-                            className="link-container"
                             key={`${link.id}${link.logoType}`}
                         >
                             <TeamLink link={link} />
