@@ -189,7 +189,6 @@
 
                 .redirectButton {
                     @include mut.rem-margined($left: 0px);
-                    @include mut.rem-padded($left: 10px);
                     @include mut.sized($width: 180px, $height: 46px);
                     @include mut.full-rounded(10px);
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
