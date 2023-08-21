@@ -41,7 +41,7 @@ const NewsSliderItem = ({ news }: Props) => {
 
         if (news?.title.length < 41) {
             truncatedText = truncatedText.substr(0, 400);
-        } else if (news?.title.length >= 40 && news?.title.length < 81) {
+        } else if (news?.title.length >= 42 && news?.title.length < 81) {
             truncatedText = truncatedText.substr(0, 250);
         } else {
             truncatedText = truncatedText.substr(0, 75);
@@ -51,7 +51,7 @@ const NewsSliderItem = ({ news }: Props) => {
             truncatedText = truncatedText.substr(0, 200);
         }
 
-        return `${truncatedText.substr(0, truncatedText.lastIndexOf(' '))}...`;
+        return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
     };
 
     const newsText = truncateText(news?.text || '', 400);

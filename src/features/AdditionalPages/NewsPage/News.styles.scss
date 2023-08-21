@@ -8,38 +8,38 @@
     @include mut.rem-padded(150px, 10px, 100px, 10px);
     background: c.$accented-grayish-gray-color;
     display: flex;
-    justify-content: center;    
+    justify-content: center;
 
-    .wrapper{
+    .wrapper {
         max-width: 1200px;
         width: 100%;
         display: block;
 
         .NewsHeader {
-            margin-bottom: f.pxToRem(40px) !important ;
+            margin-bottom: f.pxToRem(40px) !important;
 
             h1 {
-                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px); 
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
             }
         }
     }
-    
+
     .newsWithImageWrapper {
         overflow: auto;
-        
+
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
-            overflow-wrap:break-word;
-    
+            overflow-wrap: break-word;
+
             p {
                 padding-bottom: f.pxToRem(24px);
-    
+
                 strong {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500);
                 }
             }
         }
-    
+
         .newsGoodImageClass.Full {
             border: 6px solid c.$pure-white-color;
             border-radius: f.pxToRem(30px);
@@ -47,7 +47,7 @@
             display: initial;
             width: 100%;
         }
-    
+
         .newsImage {
             margin-bottom: f.pxToRem(20px);
             margin-left: f.pxToRem(20px);
@@ -59,20 +59,20 @@
             border-radius: 24px;
         }
     }
-    
+
     .newsLinks {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-        @include mut.flexed($justify-content:space-between, $align-items:center);
+        @include mut.flexed($justify-content: space-between, $align-items: center);
         line-height: f.pxToRem(14px);
         text-align: center;
         text-decoration: underline;
         text-decoration-color: c.$dark-red-color;
     }
-    
+
     .newsLinks {
         .Link {
             color: c.$dark-red-color;
-      
+
             &.toHide {
                 visibility: hidden;
             }
@@ -96,33 +96,37 @@
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
                 @include mut.flexed($justify-content: space-between, $align-items: flex-start);
                 color: c.$lighter-black-color;
-                
+
                 .newsButtonContainer {
                     max-height: f.pxToRem(73px);
 
+                    button:hover {
+                        background: #891F16;
+                    }
+
                     button {
-                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px); 
-                        padding:f.pxToRem(25px)  f.pxToRem(93px);
-                        background: c.$accented-red-color;
+                        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+                        padding: f.pxToRem(25px) f.pxToRem(93px);
+                        background: #E04031;
                         border-radius: 14px;
-                        color: c.$pure-white-color; 
+                        color: c.$pure-white-color;
                     }
 
                     button:focus {
                         outline: none;
-                    }                                            
+                    }
                 }
             }
         }
     }
-    
+
     .randomNewsBlock.toHide {
         display: none;
     }
 }
 
 @media screen and (max-width: 1024px) {
-    .newsContainer{
+    .newsContainer {
         @include mut.rem-padded($bottom: 20px, $top: 94px, $left: 10px, $right: 10px);
 
         .wrapper {
@@ -130,7 +134,7 @@
                 margin-bottom: f.pxToRem(24px) !important;
 
                 h1 {
-                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px); 
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
                 }
             }
         }
@@ -138,7 +142,7 @@
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
         }
-    
+
         .newsMainTextArea {
             p {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
@@ -148,14 +152,14 @@
         .randomNewsBlock {
             .randomNewsLink {
                 padding: f.pxToRem(40px);
-    
+
                 .additionalNewsText {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
                 }
 
                 .randomNewsTitleAndButtn {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
-                    
+
                     .newsButtonContainer {
                         button {
                             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
@@ -168,13 +172,13 @@
 }
 
 @media screen and (max-width: 770px) {
-    .newsContainer{
+    .newsContainer {
         .wrapper {
             .NewsHeader {
                 margin-bottom: f.pxToRem(24px) !important;
 
                 h1 {
-                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px); 
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
                 }
             }
         }
@@ -182,7 +186,7 @@
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
         }
-    
+
         .newsMainTextArea {
             p {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
@@ -192,7 +196,7 @@
         .newsWithImageWrapper {
             flex-wrap: wrap;
         }
-    
+
         .newsImage {
             width: 100%;
         }
@@ -200,7 +204,7 @@
         .newsGoodImageClass.Full {
             border-radius: f.pxToRem(24px);
         }
-        
+
         .randomNewsBlock {
             .randomNewsLink {
                 .additionalNewsText {
@@ -209,12 +213,12 @@
 
                 .randomNewsTitleAndButtn {
                     @include mut.with-font($font-size: 20px, $font-family: ft.$closer-text-font, $font-weight: 500);
-                    
+
                     .newsButtonContainer {
                         padding-left: f.pxToRem(10px);
 
                         button {
-                            @include mut.with-font($font-size: 14px, $font-weight: 500); 
+                            @include mut.with-font($font-size: 14px, $font-weight: 500);
                             @include mut.sized($width: 180px, $height: 46px);
                             padding: 0;
                         }
@@ -226,11 +230,11 @@
 }
 
 @media screen and (max-width: 480px) {
-    .newsContainer{
+    .newsContainer {
         .wrapper {
             .NewsHeader {
                 h1 {
-                    @include mut.with-font($font-size: 20px, $font-family: ft.$closer-text-font, $font-weight: 500); 
+                    @include mut.with-font($font-size: 20px, $font-family: ft.$closer-text-font, $font-weight: 500);
                 }
             }
 
@@ -243,7 +247,7 @@
                 .Link {
                     @include mut.with-font($font-size: 14px, $font-weight: 500);
                     color: c.$accented-red-color;
-                    padding: f.pxToRem(14px)  f.pxToRem(50px);
+                    padding: f.pxToRem(14px) f.pxToRem(50px);
                     border: 2px solid c.$accented-red-color;
                     border-radius: 10px;
                     width: 100%;
@@ -253,7 +257,7 @@
             }
 
             .newsLinks .Link.toHide {
-                display:none;
+                display: none;
             }
 
             .randomNewsBlock {
@@ -268,7 +272,7 @@
 
                     .randomNewsTitleAndButtn {
                         display: flex;
-                        flex-wrap:wrap;
+                        flex-wrap: wrap;
 
                         .newsButtonContainer {
                             min-width: 100%;
@@ -277,7 +281,7 @@
 
                             button {
                                 height: f.pxToRem(46px);
-                                padding: f.pxToRem(0px)  f.pxToRem(0px);
+                                padding: f.pxToRem(0px) f.pxToRem(0px);
                                 min-width: 100%;
                                 box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
                             }

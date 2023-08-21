@@ -40,12 +40,13 @@
       
       
         .contactUsBtnContainer {
-          @include mut.sized(220px, 55px);
-          @include mut.full-rounded(14px);
+          @include mut.sized(180px, 46px);
+          @include mut.full-rounded(10px);
+          
           margin-top: 10px;
           background-color: c.$accented-red-color;
           a {
-            @include mut.with-font($font-weight: 400);
+            @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
             border-width: 3px;
             border-color: c.$pure-white-color;
             color: c.$pure-white-color;
