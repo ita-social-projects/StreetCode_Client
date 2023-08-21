@@ -52,6 +52,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
     const [fileHandle, setFileHandler] = useState<any>();
     const [idHandle, setIdHandler] = useState<any>();
     const [visibleErrorRelatedFigure, setVisibleErrorRelatedFigure] = useState<boolean>(false);
+    const [visibleErrorAudio, setVisibleErrorAudio] = useState<boolean>(false);
 
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
@@ -351,6 +352,27 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="audio"
                     label="Аудіо"
+                    rules={[
+                        {
+                            validator: (_, file) => {
+                                if (file) {
+                                    let name = '';
+                                    if (file.file) {
+                                        name = file.file.name.toLowerCase();
+                                    } else if (file.name) {
+                                        name = file.name.toLowerCase();
+                                    }
+                                    if (name.endsWith('.mp3') || name === '') {
+                                        setVisibleErrorAudio(false);
+                                        return Promise.resolve();
+                                    }
+                                    setVisibleErrorAudio(true);
+                                    return Promise.resolve();
+                                }
+                                return Promise.resolve();
+                            },
+                        },
+                    ]}
                 >
                     <FileUploader
                         accept=".mp3"
@@ -363,8 +385,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                             setAudio([convertFileToUploadFile(file)]);
                         }}
                         beforeUpload={(file) => {
-                            const isValid = (file.type === 'image/jpeg' || file.type === 'image/png'
-                            || file.type === 'image/jpg');
+                            const isValid = (file.type === 'audio/mpeg');
                             if (!isValid) {
                                 return Promise.reject();
                             }
@@ -377,6 +398,11 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         <InboxOutlined />
                         <p className="ant-upload-text">{audio.length === 1 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
+                    {visibleErrorAudio && (
+                        <p className="error-text">
+                            Тільки файли з розширенням mp3 дозволені!
+                        </p>
+                    )}
                 </FormItem>
 
                 <Modal

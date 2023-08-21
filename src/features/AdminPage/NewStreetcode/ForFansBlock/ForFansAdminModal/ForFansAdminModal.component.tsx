@@ -8,7 +8,9 @@ import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { Button, Form, Modal, Popover, Select } from 'antd';
+import {
+    Button, Form, Modal, Popover, Select,
+} from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
@@ -27,7 +29,9 @@ interface Props {
     onChange: (field: string, value: any) => void,
 }
 
-const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange } : Props) => {
+const ForFansModal = ({
+    character_limit, open, setOpen, allCategories, onChange,
+} : Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
@@ -36,7 +40,8 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [selectedText, setSelected] = useState('');
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
+    const [editorContent, setEditorContent] = useState('');
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const maxLength = character_limit || 10000;
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
@@ -67,7 +72,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
     const clearModal = () => {
         form.resetFields();
         setOpen(false);
-    }
+    };
 
     async function fetchData() {
         const AvailableCats = await getAvailableCategories(false);
@@ -78,11 +83,11 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
         setCategories(allCategories);
         if (categoryUpdate.current && open) {
-            editorRef.current?.editor?.setContent(categoryUpdate.current.text ?? '');
+            setEditorContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
-            editorRef.current?.editor?.setContent('');
+            setEditorContent('');
             form.setFieldValue('category', '');
         }
         fetchData();
@@ -153,9 +158,11 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
             footer={null}
             maskClosable
             centered
-            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                <CancelBtn className='iconSize' onClick={clearModal} />
-            </Popover>}
+            closeIcon={(
+                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <CancelBtn className="iconSize" onClick={clearModal} />
+                </Popover>
+            )}
         >
 
             <Form
@@ -191,9 +198,12 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                 />
                 <FormItem
                     label="Текст: "
+                    rules={[{ required: true, message: 'Введіть текст' }]}
                 >
                     <Editor
                         ref={editorRef}
+                        value={editorContent}
+                        onEditorChange={setEditorContent}
                         init={{
                             max_chars: 800,
                             height: 300,
@@ -204,9 +214,9 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                                 'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
                             ],
                             toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
-                     + 'formats blockformats align | removeformat strikethrough ',
+                        + 'formats blockformats align | removeformat strikethrough ',
                             toolbar_mode: 'sliding',
-                            language: "uk",
+                            language: 'uk',
                             content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                         }}
                         onPaste={(e, editor) => {
@@ -233,7 +243,7 @@ const ForFansModal = ({ character_limit, open, setOpen, allCategories, onChange 
                         onKeyDown={(e, editor) => {
                             if (editor.getContent({ format: 'text' }).length >= maxLength
                                 && !setOfKeys.has(e.key)
-                                && editor.selection.getContent({ format: 'text' }).length == 0) {
+                                && editor.selection.getContent({ format: 'text' }).length === 0) {
                                 e.preventDefault();
                             }
                         }}

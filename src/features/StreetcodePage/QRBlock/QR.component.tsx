@@ -1,6 +1,5 @@
 import './QR.styles.scss';
 
-import QRCodeImg from '@images/qr-block/QR.png';
 import IPhoneImg from '@images/qr-block/QR_Iphone.png';
 
 import { useEffect, useState } from 'react';
@@ -10,7 +9,7 @@ import { QRCode } from 'antd';
 
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import { useStreetcodeDataContext } from '@/app/stores/root-store';
-import TransactionLink from '@/models/transactions/transaction-link.model';
+import { TransactionLink } from '@/models/transactions/transaction-link.model';
 
 import QRMobile from './QRMobile/QRMobile.component';
 
@@ -27,8 +26,7 @@ const QRComponent = () => {
     }, [getStreetCodeId]);
 
     return (
-
-        qrUrl
+        qrUrl?.url
             ? (
                 <div id="QRBlock" className="QRBlockContainer container">
                     {isDesktop
@@ -41,10 +39,9 @@ const QRComponent = () => {
                                     <div className="QRBlockTextContainer">
                                         <h1>AR-історія в Інсті!</h1>
                                         <p>
-
-            Переходь за QR-кодом, фокусуй камеру
+                                            Переходь за QR-кодом, фокусуй камеру
                                             <br />
-            на ілюстрації та вітай нову реальність.
+                                            на ілюстрації та вітай нову реальність.
                                         </p>
                                         <p className="appealPrg">Скануй, щоб завіртуалити історію!</p>
                                         <QRCode value={qrUrl.url ?? ''} />
@@ -52,9 +49,8 @@ const QRComponent = () => {
                                 </div>
                             </div>
                         ) : <QRMobile hrefLink={qrUrl.url} />}
-
                 </div>
-            ) : <></>
+            ) : null
     );
 };
 

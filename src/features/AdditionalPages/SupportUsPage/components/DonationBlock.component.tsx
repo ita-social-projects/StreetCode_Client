@@ -29,6 +29,9 @@ const DonationBlock = () => {
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
         const newValue = target.value;
+        if(newValue.includes('-')){
+            return;
+        }
         if (!newValue) {
             setDonateAmount(0);
         } else {

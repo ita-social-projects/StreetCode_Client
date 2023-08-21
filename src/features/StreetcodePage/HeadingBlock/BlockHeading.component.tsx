@@ -12,7 +12,7 @@ interface Props {
 
 const BlockHeading = ({ headingText }: Props) => {
     const isMobile = useMediaQuery({
-        query: '(max-width: 786px)',
+        query: '(max-width: 768px)',
     });
 
     return (
@@ -20,8 +20,7 @@ const BlockHeading = ({ headingText }: Props) => {
             <div className="blockHeadingContainer">
                 {!isMobile
                     && <Rhombus />}
-                {isMobile
-                    && <RhombusMobile />}
+                {isMobile && <RhombusMobile />}
                 <h1 className={`blockHeadingText 
                     ${headingText.length >= 30
                         && window.screen.width < 640 ? 'bigTextComponent' : ''} `}
