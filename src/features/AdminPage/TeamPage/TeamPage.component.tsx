@@ -54,14 +54,15 @@ const TeamPage = () => {
     const columns: ColumnsType<TeamMember> = [
         {
             title: "Прізвище та ім'я",
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'lastName',
+            key: 'lastName',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
                         <p>
                             {value}
-                            {record.Name}
+                            {' '}
+                            {record.firstName}
                         </p>
                         {record.isMain ? <StarOutlined /> : ''}
                     </div>
