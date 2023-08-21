@@ -27,7 +27,7 @@ const NewsSliderItem = ({ news }: Props) => {
     }, [news]);
 
     const screenSize = useWindowSize();
-
+    
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
             return text;
@@ -37,17 +37,15 @@ const NewsSliderItem = ({ news }: Props) => {
 
         if (news?.title.length < 41) {
             truncatedText = truncatedText.substr(0, 400);
-        } else if (news?.title.length >= 40 && news?.title.length < 81) {
+        } else if (news?.title.length >= 42 && news?.title.length < 81) {
             truncatedText = truncatedText.substr(0, 250);
         } else {
             truncatedText = truncatedText.substr(0, 75);
         }
 
-        if(screenSize.width<=649 && screenSize.width>768){
+        if (screenSize.width <= 649 && screenSize.width > 768) {
             truncatedText = truncatedText.substr(0, 200);
         }
-
-        
         
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
     };
@@ -56,16 +54,16 @@ const NewsSliderItem = ({ news }: Props) => {
 
     const options: any = {
         replace: (domNode: { type: string; name: string; children: any; }) => {
-          if (domNode.type === 'tag') {
-            if (domNode.name === 'p') {
-                return <span className="newsText">{domToReact(domNode.children, options)}</span>;
-            } else if (domNode.name === 'strong') {
-              return <span className="newsText">{domToReact(domNode.children, options)}</span>;
+            if (domNode.type === 'tag') {
+                if (domNode.name === 'p') {
+                    return <span className="newsText">{domToReact(domNode.children, options)}</span>;
+                } else if (domNode.name === 'strong') {
+                    return <span className="newsText">{domToReact(domNode.children, options)}</span>;
+                }
             }
-          }
         },
-      };
-      
+    };
+
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
