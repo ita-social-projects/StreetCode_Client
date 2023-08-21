@@ -52,10 +52,15 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
+    const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useAsync(() => {
         if (id && id > 0) {
-            fetchAudioByStreetcodeId(id).then(() => streecodePageLoaderContext.addBlockFetched());
+            fetchAudioByStreetcodeId(id).then(() => {
+                streecodePageLoaderContext.addBlockFetched();
+                setAudioIsLoaded(true)
+            });
         }
     }, [id]);
 
@@ -65,7 +70,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs); streecodePageLoaderContext.addBlockFetched();
+                    setImages(imgs); 
+                    // streecodePageLoaderContext.addBlockFetched();
+                    setLoading(true);
                 })
                 .catch((e) => { });
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
@@ -77,6 +84,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             <div className="card">
                 <div className="leftSider">
                     <div className="leftSiderContent">
+                        { loading?
                         <BlockSlider
                             arrows={false}
                             slidesToShow={1}
@@ -91,7 +99,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     alt={im.imageDetails?.alt}
                                 />
                             ))}
-                        </BlockSlider>
+                        </BlockSlider>: <>"LOADING!!!!"</>
+                        }
                     </div>
                 </div>
                 <div className="rightSider">
@@ -122,8 +131,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             {audio?.base64
                                 ? (
                                     <Button
+                                        disabled = {!audioIsLoaded}
                                         type="primary"
-                                        className="audioBtn audioBtnActive"
+                                        className= {audioIsLoaded ? "audioBtn audioBtnActive": "audioBtn"}
                                         onClick={() => {
                                             setModal('audio');
                                             audioClickEvent(streetcode?.id ?? 0);

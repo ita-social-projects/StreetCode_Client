@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx';
 export default class StreetcodePageLoaderStore {
     public loadedBlocks = 0;
 
-    public readonly allBlocks = 3;
+    public readonly allBlocks = 1;
 
     public constructor() {
         makeAutoObservable(this);
