@@ -114,6 +114,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     ],
                     toolbar: 'undo redo | bold italic | '
                         + 'removeformat',
+                    entity_encoding: 'raw',
                     content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                 }}
                 onPaste={(e, editor) => {

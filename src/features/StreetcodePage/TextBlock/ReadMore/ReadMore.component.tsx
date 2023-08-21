@@ -1,29 +1,55 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import './ReadMore.styles.scss';
 
+import { useEffect, useRef, useState } from 'react';
 import useToggle from '@hooks/stateful/useToggle.hook';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
+import lineHeight from 'line-height';
 
 import { moreTextEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface Props {
-  text: string;
-  maxTextLength?: number;
+    text: string;
 }
 
-const ReadMore = ({ text, maxTextLength = 2e3 }: Props) => {
+const ReadMore = ({ text }: Props) => {
     const {
         toggleState: isReadMore,
         handlers: { toggle },
     } = useToggle(true);
 
+    const [isOverflowed, setIsOverflowed] = useState(false);
+    const textRef = useRef<HTMLDivElement>(null);
+    const VISIBLE_LINES = 25;
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (textRef.current) {
+                const container = textRef.current;
+                const containerHeight = container.clientHeight;
+                const foundLineHeight = lineHeight(container);
+                const lines = Math.ceil(containerHeight / foundLineHeight);
+                setIsOverflowed(lines > VISIBLE_LINES);
+            }
+        };
+
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <>
-            {(text.length > maxTextLength) ? (
+            {isOverflowed ? (
                 <div className="text">
                     <div
                         className={isReadMore ? 'textShort' : undefined}
                         style={{ whiteSpace: 'pre-line' }}
+                        ref={textRef}
                     >
                         <SearchTerms mainText={text} />
                     </div>
@@ -40,7 +66,7 @@ const ReadMore = ({ text, maxTextLength = 2e3 }: Props) => {
                     </div>
                 </div>
             ) : (
-                <div className="mainTextContent">
+                <div className="mainTextContent" ref={textRef}>
                     <SearchTerms mainText={text} />
                 </div>
             )}

@@ -351,6 +351,25 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="audio"
                     label="Аудіо"
+                    rules={[
+                        {
+                            validator: (_, file) => {
+                                if (file) {
+                                    let name = '';
+                                    if (file.file) {
+                                        name = file.file.name.toLowerCase();
+                                    } else if (file.name) {
+                                        name = file.name.toLowerCase();
+                                    }
+                                    if (name.endsWith('.mp3') || name === '') {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(Error('Тільки файли з розширенням .mp3 дозволені!'));
+                                }
+                                return Promise.reject();
+                            },
+                        },
+                    ]}
                 >
                     <FileUploader
                         accept=".mp3"
@@ -363,8 +382,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                             setAudio([convertFileToUploadFile(file)]);
                         }}
                         beforeUpload={(file) => {
-                            const isValid = (file.type === 'image/jpeg' || file.type === 'image/png'
-                            || file.type === 'image/jpg');
+                            const isValid = (file.type === 'audio/mpeg');
                             if (!isValid) {
                                 return Promise.reject();
                             }
