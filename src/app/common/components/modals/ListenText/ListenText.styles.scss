@@ -41,7 +41,7 @@
 }
 @media screen and (max-width: 1200px) {
     .modal{
-        @include mut.sized(95%, 46px);
+        @include mut.sized(90%, 46px);
 
       .audioPlayer {
         @include mut.sizedImportant(100%, 30px);
@@ -61,10 +61,8 @@
   
 }
 @media screen and (max-width: 1024px){
-    .closeModal{
-        display:none;
-    }
+   
     .buttonContainer {
-        margin-right: f.pxToRem(5px);
-      }
+        margin-right: f.pxToRem(15px);
+    }
 }
