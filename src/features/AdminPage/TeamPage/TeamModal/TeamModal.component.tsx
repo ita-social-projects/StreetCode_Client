@@ -265,6 +265,12 @@ const TeamModal: React.FC<{
                             }
                             return e?.fileList;
                         }}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Будь ласка, завантажте фото',
+                            },
+                        ]}
                     >
                         <FileUploader
                             multiple={false}
@@ -320,7 +326,6 @@ const TeamModal: React.FC<{
                     <FormItem
                         name="logotype"
                         label="Соціальна мережа"
-                        rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
                     >
                         <Select
                             options={selectSocialMediaOptions}
@@ -330,7 +335,6 @@ const TeamModal: React.FC<{
                         label=" "
                         className="url-input"
                         name="url"
-                        rules={[{ required: true, message: 'Введіть посилання' }]}
                     >
                         <Input min={1} max={255} showCount />
                     </Form.Item>
