@@ -41,7 +41,7 @@ const TeamPage = () => {
 
     useEffect(() => {
         updatedTeam();
-    }, []);
+    }, [modalEditOpened, modalAddOpened]);
 
     const renderImageColumn = (image: Image, record: { id: any; }) => (
         <img
