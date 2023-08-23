@@ -228,4 +228,7 @@ export const API_ROUTES = {
         UPDATE: 'job/update',
         CREATE: 'job/create',
     },
+    ABOUT_US: {
+        GET_TICKER_STRING: 'tickerString/getNameTickerString',
+    },
 };
