@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import '@features/AdminPage/AdminModal.styles.scss';
+
+import CancelBtn from '@images/utils/Cancel_btn.svg';
+
+import React, {
+    Dispatch, SetStateAction, useEffect, useRef, useState,
+} from 'react';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -6,16 +12,16 @@ import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
-import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import {
-    Button, Form, Input, Modal, UploadFile, Popover
+    Button, Form, Input, Modal, Popover,
+    UploadFile,
 } from 'antd';
 import { UploadFileStatus } from 'antd/es/upload/interface';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
-import '@features/AdminPage/AdminModal.styles.scss';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -82,7 +88,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
-    }
+    };
 
     const onSubmit = async (formData: any) => {
         await form.validateFields();
@@ -99,9 +105,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
         } else {
             await sourcesAdminStore.addSourceCategory(currentSource);
         }
-        
-        if (isNewCategory != undefined)
-        {
+
+        if (isNewCategory !== undefined) {
             isNewCategory(true);
         }
         closeModal();
@@ -135,9 +140,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 open={isModalVisible}
                 onCancel={closeModal}
                 className="modalContainer"
-                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <CancelBtn className='iconSize' onClick={handleCancel} />
-                </Popover>}
+                closeIcon={(
+                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                        <CancelBtn className="iconSize" onClick={handleCancel} />
+                    </Popover>
+                )}
                 footer={null}
             >
                 <Form form={form} layout="vertical" onFinish={onSubmit} initialValues={initialData}>
