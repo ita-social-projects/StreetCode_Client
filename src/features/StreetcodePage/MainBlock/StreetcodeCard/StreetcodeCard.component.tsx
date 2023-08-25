@@ -53,12 +53,10 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
 
     useAsync(() => {
         if (id && id > 0) {
             fetchAudioByStreetcodeId(id).then(() => {
-                streecodePageLoaderContext.addBlockFetched();
                 setAudioIsLoaded(true)
             });
         }
@@ -71,8 +69,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
                     setImages(imgs); 
-                    // streecodePageLoaderContext.addBlockFetched();
-                    setLoading(true);
+                    streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((e) => { });
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
@@ -84,7 +81,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             <div className="card">
                 <div className="leftSider">
                     <div className="leftSiderContent">
-                        { loading?
                         <BlockSlider
                             arrows={false}
                             slidesToShow={1}
@@ -99,8 +95,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     alt={im.imageDetails?.alt}
                                 />
                             ))}
-                        </BlockSlider>: <>"LOADING!!!!"</>
-                        }
+                        </BlockSlider>
                     </div>
                 </div>
                 <div className="rightSider">
@@ -128,12 +123,11 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         </div>
 
                         <div className="cardFooter">
-                            {audio?.base64
+                            {audio?.base64 && audioIsLoaded
                                 ? (
                                     <Button
-                                        disabled = {!audioIsLoaded}
                                         type="primary"
-                                        className= {audioIsLoaded ? "audioBtn audioBtnActive": "audioBtn"}
+                                        className= {"audioBtn audioBtnActive"}
                                         onClick={() => {
                                             setModal('audio');
                                             audioClickEvent(streetcode?.id ?? 0);
