@@ -14,6 +14,13 @@
 
   .slick-dots li button {
     @include mut.sized(12px, 12px);
+
+    @media screen and (min-width: 481px) {
+      &::after, &::before {
+        background: #fff;
+        inset: 0px;
+      }
+    }
   }
 
   .slick-dots {
