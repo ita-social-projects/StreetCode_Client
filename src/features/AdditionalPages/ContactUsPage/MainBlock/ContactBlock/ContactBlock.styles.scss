@@ -1,9 +1,11 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 @mixin hoverStyles {
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.612);
+    transform: translate3d(0, 0, 0); //required to make safari use gpu for render filter:drop-shadow
+    @include vnd.vendored(filter, 'drop-shadow(0 0 10px rgba(255, 0, 0, 0.612))');
     cursor: pointer;
 }
 
