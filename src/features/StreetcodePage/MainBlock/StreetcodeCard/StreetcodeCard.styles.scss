@@ -97,7 +97,7 @@
     position: relative;
     height: f.pxToRem(214px);
 
-    
+
 }
 
 .cardFooter {
@@ -153,7 +153,7 @@
     color: c.$accented-red-color;
   }
   &:hover {
-    filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
+    box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
   }
 }
 .streetcodeImg {

@@ -12,7 +12,7 @@
   border: 3px solid #787878;
   box-shadow: 0px 7px 11px 2px rgba(0, 0, 0, 0.25);
   border-radius: 23px;
-  
+
   .input-id{
     @include mut.sized(300px, 40px);
     @include mut.full-rounded(10px);
@@ -26,10 +26,10 @@
     border: 3px solid #787878;
     border-radius: 23px;
     &:hover {
-      filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
+      box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
       border-color: c.$accented-red-color;
     }
-    
+
   }
 
   .input-stnumber{
@@ -39,19 +39,19 @@
     border: 3px solid #787878;
     border-radius: 23px;
     &:hover {
-      filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
+      box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);(0px 4px 4px rgba(219, 52, 36, 0.1));
       border-color: c.$accented-red-color;
     }
-    
+
   }
   .red {
     border-color: red;
   }
-  
+
   .green {
     border-color: green;
   }
-  
+
   .notification {
     @include mut.with-font(ft.$roboto-font, 500, 13px, normal);
     line-height: 20px;
@@ -69,11 +69,11 @@
       color: c.$accented-red-color;
     }
     &:hover {
-      filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
+      box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);(0px 4px 4px rgba(219, 52, 36, 0.1));
       border-color: c.$accented-red-color;
     }
   }
-  
+
   h1{
     @include mut.with-font(ft.$roboto-font, 500, 22px, normal);
     line-height: 26px;
@@ -84,7 +84,7 @@
   .streetsBlock{
     @include mut.rem-padded($top:10px);
     width:100%;
-    
+
     p{
       @include mut.flexed($direction:row, $gap:5px);
       @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
@@ -92,7 +92,7 @@
       color: c.$lighter-black-color;
       padding-left: f.pxToRem(20px);
     }
-    
+
     span{
       @include mut.with-font($font-weight:500, $font-size:22px);
       color: c.$accented-red-color;

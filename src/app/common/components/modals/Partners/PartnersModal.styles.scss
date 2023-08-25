@@ -8,10 +8,10 @@
     .ant-input-affix-wrapper, .ant-input-affix-wrapper-focused{
         border: none;
         box-shadow: none !important;
-    }  
+    }
     width: f.pxToRem(1012px) !important;
     height: f.pxToRem(460px);
-    
+
     &.ant-modal {
       .ant-modal-content {
         @include mut.full-rounded(20px, $overflow: visible);
@@ -19,12 +19,12 @@
         padding: f.pxToRem(24px)  f.pxToRem(40px);
         box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
       }
-  
+
       .ant-modal-close {
         @include mut.positioned-as(absolute, $left: 94%, $top: -25px);
         @include mut.circular(80px, c.$pure-white-color);
-        
-        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);(0px 4px 4px rgba(0, 0, 0, 0.25));
         .ant-modal-close-x{
           font-size: 24px;
         }
@@ -35,7 +35,7 @@
     }
 
     .partnersModalContent{
-        .formContainer{    
+        .formContainer{
             text-align: center;
 
             .formTitle{
@@ -46,14 +46,14 @@
 
             margin-bottom: f.pxToRem(32px);
             }
-            
+
             .contactForm{
                 @include mut.flexed($direction: column, $gap: 24px);
-        
+
                 textarea{
                     resize: none;
-                    outline: none;     
-                    height: f.pxToRem(140px);     
+                    outline: none;
+                    height: f.pxToRem(140px);
                 }
                 textarea, input:focus{
                     outline: none;
@@ -62,14 +62,14 @@
                     width: 100%;
                     padding: f.pxToRem(12px) f.pxToRem(24px);
                     border: 1px solid #D3CDCA;
-                    @include mut.full-rounded(14px); 
+                    @include mut.full-rounded(14px);
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
                     line-height: 27px;
-                    
+
                     overflow: auto !important;
                     // color: #C4C4C4;
                 }
-            
+
                 .textareaBlock{
                     position: relative;
                     .amountSymbols{
@@ -79,7 +79,7 @@
                         color: #C4C4C4;
                     }
                 }
-            
+
                 .ant-input:hover, .ant-input:focus{
                     border: 1px solid #D3CDCA;
                     box-shadow: none;
@@ -101,24 +101,24 @@
                 .ant-form-item .ant-form-item-explain-error {
                     display: none;
                 }
-        
+
                 button{
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
                     line-height: 23px;
-                    color: #FFFFFF; 
-            
+                    color: #FFFFFF;
+
                     padding: f.pxToRem(25px) f.pxToRem(56px);
                     height: 100%;
                     background-color: #E04031;
                     box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
                     @include mut.full-rounded(14px);
-                    border: none; 
-                    cursor: pointer;      
+                    border: none;
+                    cursor: pointer;
                 }
-        
+
                 .required-input {
                     position: relative;
-                }         
+                }
                 .required-input::before {
                     content: '*';
                     position: absolute;
@@ -128,17 +128,17 @@
                     color: red;
                     font-size: 20px;
                 }
-                
+
                 .captchaBlock{
-                    @include mut.flexed($direction: column, $justify-content: center, $align-items: center);     
-                } 
+                    @include mut.flexed($direction: column, $justify-content: center, $align-items: center);
+                }
             }
         }
     }
 }
 
 @media screen and (max-width: 1024px){
-    .partnersModal {       
+    .partnersModal {
         &.ant-modal {
             .ant-modal-content {
                 @include mut.full-rounded(24px, $overflow: visible);
@@ -154,7 +154,7 @@
     .partnersModalContent{
         .formContainer{
             width: 100%;
-            
+
             .formTitle{
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
                 text-align: left;
@@ -172,7 +172,7 @@
                     width: 100%;
                     padding: f.pxToRem(15px) 0 !important;
                 }
-        
+
                 textarea, input{
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
                     line-height: 21px;
@@ -182,16 +182,16 @@
                     top: f.pxToRem(110px);
                 }
             }
-        }  
-    } 
-}  
+        }
+    }
+}
 
 @media screen and (max-width: 480px) {
     .formTitle{
-        text-align: center; 
-    }      
-} 
-  
+        text-align: center;
+    }
+}
+
 .iconSize {
     @include mut.sized(80px, 78px);
     padding: 31%;
