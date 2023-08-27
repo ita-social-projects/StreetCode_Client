@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import './ReadMore.styles.scss';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
 
 interface Props {
@@ -11,12 +11,9 @@ interface Props {
 
 const ReadMore = ({ text, maxLines = 25 }: Props) => {
     const [expanded, setExpanded] = useState(false);
-    const textRef = useRef<HTMLDivElement | null>(null);
+    const readMoreRef = useRef<HTMLSpanElement | null>(null);
 
     const toggleExpanded = () => {
-        if (textRef.current && expanded) {
-            textRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
         setExpanded(!expanded);
     };
 
@@ -27,13 +24,25 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
         overflow: 'hidden',
     };
 
+    useEffect(() => {
+        if (!expanded && readMoreRef.current) {
+            const screenHeight = window.innerHeight;
+
+            const rect = readMoreRef.current.getBoundingClientRect();
+            const elementTop = rect.top;
+
+            const scrollPosition = window.scrollY + elementTop - screenHeight;
+
+            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+        }
+    }, [expanded]);
+
     return (
         <>
             <div className="text">
                 <div
                     className={!expanded ? 'textShort' : undefined}
                     style={textContainerStyle}
-                    ref={textRef}
                 >
                     <SearchTerms mainText={text} />
                 </div>
@@ -41,6 +50,7 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
                     <span
                         className="readMore"
                         onClick={toggleExpanded}
+                        ref={readMoreRef}
                     >
                         {!expanded ? 'Трохи ще' : 'Дещо менше'}
                     </span>
