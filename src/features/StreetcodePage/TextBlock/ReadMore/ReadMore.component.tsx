@@ -1,49 +1,51 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import './ReadMore.styles.scss';
 
-import useToggle from '@hooks/stateful/useToggle.hook';
+import { useRef, useState } from 'react';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
-
-import { moreTextEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface Props {
   text: string;
-  maxTextLength?: number;
+  maxLines?: number;
 }
 
-const ReadMore = ({ text, maxTextLength = 2e3 }: Props) => {
-    const {
-        toggleState: isReadMore,
-        handlers: { toggle },
-    } = useToggle(true);
+const ReadMore = ({ text, maxLines = 25 }: Props) => {
+    const [expanded, setExpanded] = useState(false);
+    const textRef = useRef<HTMLDivElement | null>(null);
+
+    const toggleExpanded = () => {
+        if (textRef.current && expanded) {
+            textRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+        setExpanded(!expanded);
+    };
+
+    const textContainerStyle = {
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical' as const,
+        WebkitLineClamp: expanded ? 'unset' : maxLines,
+        overflow: 'hidden',
+    };
 
     return (
         <>
-            {(text.length > maxTextLength) ? (
-                <div className="text">
-                    <div
-                        className={isReadMore ? 'textShort' : undefined}
-                        style={{ whiteSpace: 'pre-line' }}
-                    >
-                        <SearchTerms mainText={text} />
-                    </div>
-                    <div className="readMoreContainer">
-                        <span
-                            className="readMore"
-                            onClick={() => {
-                                toggle();
-                                moreTextEvent();
-                            }}
-                        >
-                            {isReadMore ? 'Трохи ще' : 'Дещо менше'}
-                        </span>
-                    </div>
-                </div>
-            ) : (
-                <div className="mainTextContent">
+            <div className="text">
+                <div
+                    className={!expanded ? 'textShort' : undefined}
+                    style={textContainerStyle}
+                    ref={textRef}
+                >
                     <SearchTerms mainText={text} />
                 </div>
-            )}
+                <div className="readMoreContainer">
+                    <span
+                        className="readMore"
+                        onClick={toggleExpanded}
+                    >
+                        {!expanded ? 'Трохи ще' : 'Дещо менше'}
+                    </span>
+                </div>
+            </div>
         </>
     );
 };
