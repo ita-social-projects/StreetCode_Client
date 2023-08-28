@@ -39,6 +39,7 @@
     content: '';
     @include mut.sized(12px, 12px);
     background: c.$slider-base-dot-color;
+    opacity: 1;
     transition: .5s;
 }
 

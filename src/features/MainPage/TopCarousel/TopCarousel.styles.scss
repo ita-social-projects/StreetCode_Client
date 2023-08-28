@@ -12,23 +12,31 @@
   @include mut.rem-padded($top: 82px);
 
   .carousel-image {
-      width: 100%;
-      height: f.pxToRem(737px);
+    width: 100%;
+    height: f.pxToRem(737px);
   }
 
   .slick-dots li button {
     @include mut.sized(12px, 12px);
+    background: c.$slider-base-dot-color;
 
     @media screen and (min-width: 481px) {
-      &::after, &::before {
-        background: #fff;
+
+      &::after,
+      &::before {
+        background: c.$pure-white-color;
         inset: 0px;
       }
+    }
+
+    @media screen and (max-width: 480px) {
+      opacity: 1;
     }
   }
 
   .slick-dots {
-    bottom: f.pxToRem(30px);;
+    bottom: f.pxToRem(30px);
+    ;
     top: auto;
   }
 
@@ -39,8 +47,9 @@
   @media screen and (max-width: 480px) {
     .carousel-image {
       height: auto;
-     
+
     }
+
     .slick-dots {
       bottom: f.pxToRem(-20px);
     }
