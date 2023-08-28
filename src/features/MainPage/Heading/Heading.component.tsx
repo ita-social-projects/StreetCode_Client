@@ -7,10 +7,11 @@ import Squares from '@/assets/images/main-page/heading-squares.component.svg';
 
 interface Props {
 	blockName: string,
+    buttonName?: string | undefined,
 	setActionOnClick: React.MouseEventHandler<HTMLParagraphElement> | undefined
 }
 
-const Heading = ({ blockName, setActionOnClick }: Props) => {
+const Heading = ({ blockName, buttonName, setActionOnClick }: Props) => {
     const windowSize = useWindowSize();
     return (
         <>
