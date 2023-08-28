@@ -44,5 +44,5 @@ export enum LogoType {
     linkedin = 4,
     tiktok = 5,
     behance = 6,
-    link = 7,
+    https = 7,
 }

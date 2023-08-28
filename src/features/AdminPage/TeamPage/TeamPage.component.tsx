@@ -5,7 +5,10 @@ import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import behance from '@assets/images/partners/behance.png';
 import facebook from '@assets/images/partners/facebook.png';
+import https from '@assets/images/partners/https.png';
 import instagram from '@assets/images/partners/instagram.png';
+import linkedin from '@assets/images/partners/linkedin.png';
+import tiktok from '@assets/images/partners/tiktok.png';
 import twitter from '@assets/images/partners/twitter.png';
 import youtube from '@assets/images/partners/youtube.png';
 
@@ -25,7 +28,7 @@ import TeamModal from './TeamModal/TeamModal.component';
 const TeamPage = () => {
     const { teamStore } = useMobx();
     const { modalStore } = useModalContext();
-    const LogoType = [twitter, instagram, facebook, youtube, behance];
+    const LogoType = [twitter, instagram, facebook, youtube, linkedin, tiktok, behance, https];
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();

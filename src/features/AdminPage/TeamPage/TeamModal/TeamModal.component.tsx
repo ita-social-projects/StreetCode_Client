@@ -189,7 +189,7 @@ const TeamModal: React.FC<{
         value: 'youtube',
         label: 'Youtube',
     }, {
-        value: 'linkedIn',
+        value: 'linkedin',
         label: 'LinkedIn',
     }, {
         value: 'tiktok',
@@ -198,7 +198,7 @@ const TeamModal: React.FC<{
         value: 'behance',
         label: 'Behance',
     }, {
-        value: 'link',
+        value: 'https',
         label: 'Ваш сайт',
     }];
 
