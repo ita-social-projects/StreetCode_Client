@@ -30,7 +30,6 @@
       @include mut.sized(21px, 21px);
     }
   }
-  
 }
 
 .tickContainer {
@@ -89,9 +88,14 @@
   }
 
   .swiper-pagination {
-    @include mut.flexed();
+    @include mut.flexed(
+      $wrap: wrap,
+      $gap: 10px,
+      $justify-content: center
+    );
     position: absolute;
     top: f.pxToRem(350px);
+    padding: 0 f.pxToRem(20px);
   }
 
   .swiper-pagination-bullet {
