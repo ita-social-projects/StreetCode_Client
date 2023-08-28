@@ -1,15 +1,18 @@
-import './TopCarousel.styles.scss'
-import { observer } from 'mobx-react-lite';
-import { Carousel } from 'antd';
+import './TopCarousel.styles.scss';
+
 import StreetcodeMarker from '@images/footer/main-page.png';
+import StreetcodeMarker6 from '@images/footer/main-page-mob.png';
+import StreetcodeMarker7 from '@images/footer/main-page-mob2.png';
+import StreetcodeMarker8 from '@images/footer/main-page-mob3.png';
 import StreetcodeMarker2 from '@images/footer/main-page2.png';
 import StreetcodeMarker3 from '@images/footer/main-page3.png';
 import StreetcodeMarker4 from '@images/footer/main-page4.png';
 import StreetcodeMarker5 from '@images/footer/main-page5.png';
-import StreetcodeMarker6 from '@images/footer/main-page-mob.png';
-import StreetcodeMarker7 from '@images/footer/main-page-mob2.png';
-import StreetcodeMarker8 from '@images/footer/main-page-mob3.png';
+
+import { observer } from 'mobx-react-lite';
 import { useMediaQuery } from 'react-responsive';
+
+import { Carousel } from 'antd';
 
 const content = [
     {
@@ -26,7 +29,7 @@ const content = [
     },
     {
         image: StreetcodeMarker5,
-    }
+    },
 ];
 
 const contentMobile = [
@@ -38,7 +41,7 @@ const contentMobile = [
     },
     {
         image: StreetcodeMarker8,
-    }
+    },
 
 ];
 
@@ -47,34 +50,33 @@ const TopCarouselBlock = () => {
         query: '(max-width: 480px)',
     });
 
+    const PLAY_SPEED = 4000;
+
     return (
-        <>
-            {isMobile
-                ? (
-
-                    <Carousel className="top-carousel" autoplay autoplaySpeed={3000}>
-                        {contentMobile.map(item => (
-                            <div key={item.image}>
-                                <img src={item.image}
-                                    className="carousel-image"
-                                />
-                            </div>
-                        ))}
-                    </Carousel>
-
-                ) : (
-                    <Carousel className="top-carousel" autoplay autoplaySpeed={3000}>
-                        {content.map(item => (
-                            <div key={item.image}>
-                                <img src={item.image}
-                                    className="carousel-image"
-                                />
-                            </div>
-                        ))}
-                    </Carousel>
-                )}
-
-        </>
+        isMobile
+            ? (
+                <Carousel className="top-carousel" autoplay autoplaySpeed={PLAY_SPEED}>
+                    {contentMobile.map((item) => (
+                        <div key={item.image}>
+                            <img
+                                src={item.image}
+                                className="carousel-image"
+                            />
+                        </div>
+                    ))}
+                </Carousel>
+            ) : (
+                <Carousel className="top-carousel" autoplay autoplaySpeed={PLAY_SPEED}>
+                    {content.map((item) => (
+                        <div key={item.image}>
+                            <img
+                                src={item.image}
+                                className="carousel-image"
+                            />
+                        </div>
+                    ))}
+                </Carousel>
+            )
     );
 };
 

@@ -52,10 +52,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
+    const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
 
     useAsync(() => {
         if (id && id > 0) {
-            fetchAudioByStreetcodeId(id).then(() => streecodePageLoaderContext.addBlockFetched());
+            fetchAudioByStreetcodeId(id).then(() => {
+                setAudioIsLoaded(true)
+            });
         }
     }, [id]);
 
@@ -65,7 +68,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs); streecodePageLoaderContext.addBlockFetched();
+                    setImages(imgs); 
+                    streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((e) => { });
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
@@ -119,11 +123,11 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         </div>
 
                         <div className="cardFooter">
-                            {audio?.base64
+                            {audio?.base64 && audioIsLoaded
                                 ? (
                                     <Button
                                         type="primary"
-                                        className="audioBtn audioBtnActive"
+                                        className= {"audioBtn audioBtnActive"}
                                         onClick={() => {
                                             setModal('audio');
                                             audioClickEvent(streetcode?.id ?? 0);

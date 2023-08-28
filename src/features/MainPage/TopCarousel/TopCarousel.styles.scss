@@ -4,6 +4,10 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+.ant-carousel .slick-dots li.slick-active {
+  width: none;
+}
+
 .top-carousel {
   @include mut.rem-padded($top: 82px);
 
@@ -14,6 +18,13 @@
 
   .slick-dots li button {
     @include mut.sized(12px, 12px);
+
+    @media screen and (min-width: 481px) {
+      &::after, &::before {
+        background: #fff;
+        inset: 0px;
+      }
+    }
   }
 
   .slick-dots {

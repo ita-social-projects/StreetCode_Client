@@ -72,7 +72,6 @@ const NewsSlider = () => {
                                 </div>
                             </div>
                         </div>
-                        {windowSize.width <= 480 && <button className='redirectButton' onClick={handleClick}>Побачити всю команду</button>}
                     </div>
                 </div>
             ) : <></>

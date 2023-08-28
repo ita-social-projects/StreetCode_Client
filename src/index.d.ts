@@ -6,7 +6,3 @@ declare module '*.svg' {
 }
 declare module '*.css';
 declare module '*.jpeg';
-declare module 'line-height' {
-    function lineHeight(container: HTMLElement): number;
-    export default lineHeight;
-}

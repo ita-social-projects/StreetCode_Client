@@ -21,10 +21,10 @@ $modal-width: 278px;
             background-color: c.$accented-gray-color;
 
             display: block;
-        
+
             @include vnd.vendored(transition, 'all .5s ease');
 
-            .figureSlideImage {    
+            .figureSlideImage {
                 @include mut.sized($width: $modal-width - 6px, $height: 273px);
                 background-size: 100%;
                 background-repeat: no-repeat;
@@ -33,25 +33,25 @@ $modal-width: 278px;
             .figureSlideText {
                 @include mut.sized($width: $modal-width, $height: 69px);
                 @include mut.rounded($bottom-left: 29px, $bottom-right: 29px);
-            
+
                 background-color: c.$dark-red-color;
-            
+
                 .heading {
                     @include mut.sized($width: 100%, $height: 69px);
-                    
+
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    
+
                     .aliasText {
                         line-height: pxToRem(13.2px);
                         font-size: 10px;
                     }
-            
+
                     p {
                         @include mut.truncated($line-num: 2);
                         @include mut.rem-padded($left: 0px, $right: 0px, $top: 0px);
-            
+
                         @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
                         line-height: pxToRem(18.48px);
                         font-size: 14px;
@@ -91,7 +91,7 @@ $modal-width: 278px;
             @include mut.positioned-as(absolute, $left: 88%, $top: -15px);
             @include mut.circular(40px, c.$pure-white-color);
 
-            filter: drop-shadow(0px 2.0241px 2.0241px rgba(0, 0, 0, 0.25));
+            box-shadow: 0px 2.03px 2.03px rgba(0, 0, 0, 0.25);
             display: inline;
 
             &:hover {
