@@ -4,6 +4,10 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+.ant-carousel .slick-dots li.slick-active {
+  width: none;
+}
+
 .top-carousel {
   @include mut.rem-padded($top: 82px);
 
