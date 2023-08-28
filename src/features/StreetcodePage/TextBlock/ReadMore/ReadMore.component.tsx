@@ -2,74 +2,60 @@
 import './ReadMore.styles.scss';
 
 import { useEffect, useRef, useState } from 'react';
-import useToggle from '@hooks/stateful/useToggle.hook';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
-import lineHeight from 'line-height';
-
-import { moreTextEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface Props {
-    text: string;
+  text: string;
+  maxLines?: number;
 }
 
-const ReadMore = ({ text }: Props) => {
-    const {
-        toggleState: isReadMore,
-        handlers: { toggle },
-    } = useToggle(true);
+const ReadMore = ({ text, maxLines = 25 }: Props) => {
+    const [expanded, setExpanded] = useState(false);
+    const readMoreRef = useRef<HTMLSpanElement | null>(null);
 
-    const [isOverflowed, setIsOverflowed] = useState(false);
-    const textRef = useRef<HTMLDivElement>(null);
-    const VISIBLE_LINES = 25;
+    const toggleExpanded = () => {
+        setExpanded(!expanded);
+    };
+
+    const textContainerStyle = {
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical' as const,
+        WebkitLineClamp: expanded ? 'unset' : maxLines,
+        overflow: 'hidden',
+    };
 
     useEffect(() => {
-        const handleResize = () => {
-            if (textRef.current) {
-                const container = textRef.current;
-                const containerHeight = container.clientHeight;
-                const foundLineHeight = lineHeight(container);
-                const lines = Math.ceil(containerHeight / foundLineHeight);
-                setIsOverflowed(lines > VISIBLE_LINES);
-            }
-        };
+        if (!expanded && readMoreRef.current) {
+            const screenHeight = window.innerHeight;
 
-        handleResize();
+            const rect = readMoreRef.current.getBoundingClientRect();
+            const elementTop = rect.top;
 
-        window.addEventListener('resize', handleResize);
+            const scrollPosition = window.scrollY + elementTop - screenHeight;
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+        }
+    }, [expanded]);
 
     return (
         <>
-            {isOverflowed ? (
-                <div className="text">
-                    <div
-                        className={isReadMore ? 'textShort' : undefined}
-                        style={{ whiteSpace: 'pre-line' }}
-                        ref={textRef}
-                    >
-                        <SearchTerms mainText={text} />
-                    </div>
-                    <div className="readMoreContainer">
-                        <span
-                            className="readMore"
-                            onClick={() => {
-                                toggle();
-                                moreTextEvent();
-                            }}
-                        >
-                            {isReadMore ? 'Трохи ще' : 'Дещо менше'}
-                        </span>
-                    </div>
-                </div>
-            ) : (
-                <div className="mainTextContent" ref={textRef}>
+            <div className="text">
+                <div
+                    className={!expanded ? 'textShort' : undefined}
+                    style={textContainerStyle}
+                >
                     <SearchTerms mainText={text} />
                 </div>
-            )}
+                <div className="readMoreContainer">
+                    <span
+                        className="readMore"
+                        onClick={toggleExpanded}
+                        ref={readMoreRef}
+                    >
+                        {!expanded ? 'Трохи ще' : 'Дещо менше'}
+                    </span>
+                </div>
+            </div>
         </>
     );
 };
