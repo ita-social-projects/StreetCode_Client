@@ -138,6 +138,7 @@ export const API_ROUTES = {
     },
     ARTS: {
         GET_ALL: 'arts/getAll',
+        GET_PAGE_BY_STREETCODE_ID: 'art/getPageByStreetcodeId',
         GET: 'arts/getById',
         CREATE: 'arts/create',
         UPDATE: 'arts/update',
