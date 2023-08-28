@@ -27,10 +27,10 @@ const HeaderBlock = () => {
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
-
     const inputRef = useRef<HTMLInputElement>(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
-
+    const searchButtonRef = useRef(null);
+    const dimWrapperRef = useRef(null);
     const windowSize = useWindowSize();
 
     const handlePopoverVisibleChange = (visible: boolean) => {
@@ -40,19 +40,29 @@ const HeaderBlock = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setSearchQuery(value);
-        if (value.length > 0) {
+        if (value.length > 0 && windowSize.width > 1024) {
             handlePopoverVisibleChange(true);
         } else {
             handlePopoverVisibleChange(false);
         }
     };
 
-    const onDimCancel = useCallback((e?: Event) => {
-        e?.stopPropagation();
 
-        off();
-        setIsPageDimmed(false);
-    }, [setIsPageDimmed, off]);
+    const onDimCancel = useCallback((e?: Event) => {
+        if (
+            (!searchButtonRef.current || !searchButtonRef.current.contains(e?.target)) &&
+            dimWrapperRef.current && !dimWrapperRef.current.contains(e?.target)
+        ) {
+
+            setTimeout(() => {
+                off();
+                setIsPageDimmed(false);
+                setIsPopoverVisible(false);
+
+            }, 100);
+
+        }
+    }, [setIsPageDimmed, setIsPopoverVisible, off]);
 
     useEventListener('scroll', () => {
         setIsHeaderHidden(window.scrollY > 100);
@@ -71,31 +81,33 @@ const HeaderBlock = () => {
     };
 
     return (
-        <div className="HeaderBlock">
+        <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div className='logoContainer' onClick={() => window.location.href = '/'}> 
-                        { windowSize.width > 1024
+                    <div className='logoContainer' onClick={() => window.location.href = '/'}>
+                        {windowSize.width > 1024
                             ? <StreetcodeSvg />
-                            : <StreetcodeSvgMobile /> }
+                            : <StreetcodeSvgMobile />}
                     </div>
-                    <Popover
-                        trigger="click"
-                        placement="bottomLeft"
-                        open={isPopoverVisible}
-                        content={(
-                            <div className="headerPopupSkeleton">
-                                <SearchBlock searchQuery={searchQuery} />
-                            </div>
-                        )}
-                    />
-                            <input
-                            onChange={handleInputChange}
-                            placeholder="Пошук..."
-                            ref={inputRef}
-                            className={`ant-input  
-                                hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                    {windowSize.width > 1024 && (
+                        <Popover
+                            trigger="click"
+                            open={isPopoverVisible}
+                            placement="bottomLeft"
+                            content={(
+                                <div className="headerPopupSkeleton">
+                                    <SearchBlock searchQuery={searchQuery} />
+                                </div>
+                            )}
                         />
+                    )}
+                    <input
+                        onChange={handleInputChange}
+                        placeholder="Пошук..."
+                        ref={inputRef}
+                        className={`ant-input  
+                                hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                    />
 
                     <HeaderSkeleton />
                 </div>
@@ -133,12 +145,33 @@ const HeaderBlock = () => {
             </div>
             {windowSize.width <= 1024 && (
                 <div className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
+                    <Popover
+                        trigger="click"
+                        open={isPopoverVisible}
+                        arrow={false}
+                        overlayClassName="searchMobPopover"
+                        content={(
+                            <div className="headerPopupSkeleton">
+                                <SearchBlock searchQuery={searchQuery} />
+                            </div>
+                        )}
+                    />
                     <input
+                        onChange={handleInputChange}
                         className="ant-input css-dev-only-do-not-override-26rdvq"
                         placeholder="Що ти шукаєш?"
                         ref={inputRef}
+
                     />
-                    <Button type="primary" className="searchButton" >
+
+                    <Button
+                        type="primary"
+                        className="searchButton"
+                        onClick={() => {
+                            handlePopoverVisibleChange(true);
+                        }}
+                        ref={searchButtonRef}
+                    >
                         Пошук
                     </Button>
                 </div>
