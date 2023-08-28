@@ -97,8 +97,8 @@ const StreetcodeContent = () => {
                         className="spinner"
                         alt=""
                         src={isMobile
-                            ? require('@images/gifs/Logo-animation_web.gif')
-                            : require('@images/gifs/Logo-animation_mob.gif')}
+                            ? require('@images/gifs/Logo-animation_web.webp')
+                            : require('@images/gifs/Logo-animation_mob.webp')}
                     />
                 </div>
             )}
