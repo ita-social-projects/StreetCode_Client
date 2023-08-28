@@ -1,4 +1,5 @@
 import React from 'react';
+import behance from '@assets/images/partners/behance.png';
 import facebook from '@assets/images/partners/facebook.png';
 import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
@@ -6,7 +7,7 @@ import youtube from '@assets/images/partners/youtube.png';
 
 import { TeamMemberLinkCreateUpdate } from '@/models/team/team.model';
 
-const LogoType = [twitter, instagram, facebook, youtube];
+const LogoType = [twitter, instagram, facebook, youtube, behance];
 const TeamLink: React.FC<{ link: TeamMemberLinkCreateUpdate }> = ({ link }) => (
     <a
         rel="noreferrer"

@@ -3,6 +3,7 @@ import './TeamPage.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
+import behance from '@assets/images/partners/behance.png';
 import facebook from '@assets/images/partners/facebook.png';
 import instagram from '@assets/images/partners/instagram.png';
 import twitter from '@assets/images/partners/twitter.png';
@@ -24,7 +25,7 @@ import TeamModal from './TeamModal/TeamModal.component';
 const TeamPage = () => {
     const { teamStore } = useMobx();
     const { modalStore } = useModalContext();
-    const LogoType = [twitter, instagram, facebook, youtube];
+    const LogoType = [twitter, instagram, facebook, youtube, behance];
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
