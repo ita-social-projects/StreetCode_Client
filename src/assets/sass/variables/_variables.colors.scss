@@ -37,7 +37,7 @@ $base-arrow-filter-color: invert(97%) sepia(66%) saturate(423%)
   hue-rotate(212deg) brightness(113%) contrast(90%) !important;
 $selected-arrow-filter-color: invert(87%) sepia(0%) saturate(479%)
   hue-rotate(143deg) brightness(95%) contrast(81%) !important;
-$hovered-btn-filter-color: drop-shadow(0 2px 15px rgba(61, 0, 0, .25)) !important;
+$hovered-btn-box-shadow: 0 2px 15px rgba(61, 0, 0, .25) !important;
 
 $card-scrollbar-track-color: #DEDCDC !important;
 $modal-hover-color: #ECE9E9 !important;
