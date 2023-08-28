@@ -27,7 +27,6 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
                 setPreviewImage(undefined);
                 return;
             }
-
             let imageToPreview = file.url ?? file.thumbUrl;
 
             if (!file.preview) {
@@ -42,12 +41,9 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
                         return;
                     }
                 }
-            } else if (file.preview) {
+            } else {
                 imageToPreview = file.preview;
-            } else if (file.url) {
-                imageToPreview = file.url;
             }
-
             setPreviewImage(imageToPreview);
         };
 
