@@ -46,16 +46,14 @@ export default class StreetcodeArtStore {
     };
 
     public fetchNextPageOfArtsByStreetcodeId = async (streetcodeId: number) => {
-        try {
-            const arrayOfArts = await StreetcodeArtApi
-                .getPageOfArtsByStreetcodeId(streetcodeId, this.page, this.pageSize);
+        const arrayOfArts = await StreetcodeArtApi
+            .getPageOfArtsByStreetcodeId(streetcodeId, this.page, this.pageSize);
 
-            if (arrayOfArts.length !== 0) {
-                this.setNextPageToArtMap = arrayOfArts;
-                this.page += 1;
-            } else {
-                throw new Error('No more arts to load');
-            }
-        } catch (error: unknown) { console.log(error); }
+        if (arrayOfArts.length !== 0) {
+            this.setNextPageToArtMap = arrayOfArts;
+            this.page += 1;
+        } else {
+            throw new Error('No more arts to load');
+        }
     };
 }

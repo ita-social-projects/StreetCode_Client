@@ -11,7 +11,7 @@ const StreetcodeArtApi = {
     ),
 
     getPageOfArtsByStreetcodeId: (streetcodeId: number, page: number, pageSize: number) => Agent.get<StreetcodeArt[]>(
-        `${API_ROUTES.ARTS.GET_PAGE_BY_STREETCODE_ID}/${streetcodeId}`,
+        `${API_ROUTES.STREETCODE_ARTS.GET_PAGE_BY_STREETCODE_ID}/${streetcodeId}`,
         new URLSearchParams(Object.entries({ page: page.toString(), pageSize: pageSize.toString() })),
     ),
 };
