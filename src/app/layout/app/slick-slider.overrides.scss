@@ -1,5 +1,10 @@
 .slick-dots {
-    width: 100vw!important;
-    left: 50%!important;
-    transform: translate(-50%, 0)!important;
+    width: 100vw !important;
+    left: 50% !important;
+    transform: translate(-50%, 0) !important;
+}
+
+.sliderClass .slick-dots {
+    padding: 0 1rem !important;
+    bottom: unset !important;
 }
