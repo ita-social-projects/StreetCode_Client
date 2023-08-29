@@ -96,4 +96,11 @@ li.slick-active button:before {
     .slick-prev {
         visibility: hidden;
     }
+
+    .sliderClass .slick-dots li,
+    .sliderClass .slick-dots li button,
+    .sliderClass .slick-dots li button::before,
+    .sliderClass .slick-dots li button::after {
+        @include mut.sized(8px, 8px);
+    }
 }

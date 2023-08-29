@@ -90,7 +90,7 @@
   .swiper-pagination {
     @include mut.flexed(
       $wrap: wrap,
-      $gap: 10px,
+      $gap: 0px,
       $justify-content: center
     );
     position: absolute;
