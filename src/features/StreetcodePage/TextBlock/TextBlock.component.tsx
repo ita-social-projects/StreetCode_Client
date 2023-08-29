@@ -62,11 +62,6 @@ const TextComponent = () => {
                             <div className="videoComponent">
                                 <VideoPlayer
                                     videoUrls={String(video?.url)}
-                                    onReady={() => {
-                                        if (video) {
-                                            streecodePageLoaderContext.addBlockFetched();
-                                        }
-                                    }}
                                 />
                             </div>
                         ) : <></>}
