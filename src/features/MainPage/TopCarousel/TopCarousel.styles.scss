@@ -28,15 +28,10 @@
         inset: 0px;
       }
     }
-
-    @media screen and (max-width: 480px) {
-      opacity: 1;
-    }
   }
 
   .slick-dots {
     bottom: f.pxToRem(30px);
-    ;
     top: auto;
   }
 
@@ -47,7 +42,6 @@
   @media screen and (max-width: 480px) {
     .carousel-image {
       height: auto;
-
     }
 
     .slick-dots {
