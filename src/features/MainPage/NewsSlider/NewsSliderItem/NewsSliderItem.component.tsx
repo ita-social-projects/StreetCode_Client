@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import useMobx from '@stores/root-store';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { StreetcodeCatalogRecord, StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 import './NewsSliderItem.styles.scss';
-import Image from '@/models/media/image.model';
-import ImagesApi from '@/app/api/media/images.api';
-import News from '@/models/news/news.model';
+
+import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import htmlReactParser, { domToReact } from 'html-react-parser';
+
+import ImagesApi from '@/app/api/media/images.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toArticleRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+import Image from '@/models/media/image.model';
+import News from '@/models/news/news.model';
 
 interface Props {
     news: News;
@@ -17,6 +18,9 @@ interface Props {
 const NewsSliderItem = ({ news }: Props) => {   
     const id = news?.id;
     const [image, setImage] = useState<Image>();
+    const isMobile = useMediaQuery({
+        query: '(max-width: 480px)',
+    });
 
     useEffect(() => {
         if (id) {
@@ -43,6 +47,7 @@ const NewsSliderItem = ({ news }: Props) => {
          if(screenSize.width <= 768){
             truncatedText = truncatedText.substr(0, 500);
         }
+
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
     };
 
@@ -50,33 +55,31 @@ const NewsSliderItem = ({ news }: Props) => {
 
     const options: any = {
         replace: (domNode: { type: string; name: string; children: any; }) => {
-          if (domNode.type === 'tag') {
-            if (domNode.name === 'p') {
-                return <span className="newsText">{domToReact(domNode.children, options)}</span>;
-            } else if (domNode.name === 'strong') {
-              return <span className="newsText">{domToReact(domNode.children, options)}</span>;
+            if (domNode.type === 'tag') {
+                if (domNode.name === 'p' || domNode.name === 'strong') {
+                    return <span className="newsText">{domToReact(domNode.children, options)}</span>;
+                }
             }
-          }
         },
-      };
-      
-
-    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        toArticleRedirectClickEvent(news.url.toString());
-        window.location.href = "news/" + news.url.toString();
     };
 
+    const handleClickRedirect = () => {
+        toArticleRedirectClickEvent(news.url.toString(), 'main_page');
+        window.location.href = `news/${news.url.toString()}`;
+    };
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        handleClickRedirect();
+    };
 
     return (
         <div className="newsSliderItem">
-            <div className="newsMainPage">
+            <div className="newsMainPage" onClick={isMobile ? handleClickRedirect : undefined}>
                 <div className="newsPageImgContainer">
                     <img
                         key={image?.id}
                         src={base64ToUrl(image?.base64, image?.mimeType)}
                         className="newsPageImg"
-                        alt={image?.alt}
                     />
                 </div>
                 <div className="newsSlideText">

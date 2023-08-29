@@ -52,6 +52,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
     const [fileHandle, setFileHandler] = useState<any>();
     const [idHandle, setIdHandler] = useState<any>();
     const [visibleErrorRelatedFigure, setVisibleErrorRelatedFigure] = useState<boolean>(false);
+    const [visibleErrorAudio, setVisibleErrorAudio] = useState<boolean>(false);
 
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
@@ -88,6 +89,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
 
     const typeDef = () => {
         switch (idHandle) {
+        case 'webp':
         case 'gif': {
             handleFileRemove('animationId', 'imagesUpdate');
             setAnimation((prev) => prev.filter((x) => x.uid !== fileHandle.uid));
@@ -192,10 +194,10 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     } else if (file.name) {
                                         name = file.name.toLowerCase();
                                     }
-                                    if (name.endsWith('.gif') || name === '') {
+                                    if (name.endsWith('.gif') || name.endsWith('.webp') || name === '') {
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject(Error('Тільки файли з розширенням .gif дозволені!'));
+                                    return Promise.reject(Error('Тільки файли з розширенням .gif та .webp дозволені!'));
                                 }
                                 return Promise.reject();
                             },
@@ -203,13 +205,13 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     ]}
                 >
                     <FileUploader
-                        accept=".gif"
+                        accept=".gif,.webp"
                         listType="picture-card"
                         multiple={false}
                         maxCount={1}
                         fileList={animation}
                         beforeUpload={(file) => {
-                            const isGif = file.type === 'image/gif';
+                            const isGif = file.type === 'image/gif' || file.type === 'image/webp';
                             if (!isGif) {
                                 return Promise.reject();
                             }
@@ -362,11 +364,13 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                         name = file.name.toLowerCase();
                                     }
                                     if (name.endsWith('.mp3') || name === '') {
+                                        setVisibleErrorAudio(false);
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject(Error('Тільки файли з розширенням .mp3 дозволені!'));
+                                    setVisibleErrorAudio(true);
+                                    return Promise.resolve();
                                 }
-                                return Promise.reject();
+                                return Promise.resolve();
                             },
                         },
                     ]}
@@ -395,6 +399,11 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         <InboxOutlined />
                         <p className="ant-upload-text">{audio.length === 1 ? 'Змінити' : '+ Додати'}</p>
                     </FileUploader>
+                    {visibleErrorAudio && (
+                        <p className="error-text">
+                            Тільки файли з розширенням mp3 дозволені!
+                        </p>
+                    )}
                 </FormItem>
 
                 <Modal

@@ -18,7 +18,7 @@
 
     &:hover {
       cursor: pointer;
-      @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
+      box-shadow: c.$hovered-btn-box-shadow;
       color: c.$dark-red-color;
     }
   }

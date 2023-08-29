@@ -15,7 +15,7 @@
     border: 2px solid #DB3424;
 
     z-index: 1000;
-    @include vnd.vendored(filter, 'drop-shadow(0 2px 15px rgba(163, 163, 163, 0.25))');
+    box-shadow: 0 2px 15px rgba(163, 163, 163, 0.25);
 }
 
 .fadeInAnimation {
@@ -58,10 +58,10 @@
           }
       }
     }
-  
+
 }
 @media screen and (max-width: 1024px){
-   
+
     .buttonContainer {
         margin-right: f.pxToRem(15px);
     }

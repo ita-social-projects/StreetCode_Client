@@ -2,51 +2,73 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 
-.NewsWrapper{
-  width: 100%;
-.newsSliderComponent {
-    .newsSliderContentBlock,
-    .blockCentering {
-        @include mut.flex-centered();
-    }
+.NewsWrapper {
+    width: 100%;
 
-    .newsSliderContainer {
-        width: 100%;
-        position: relative;
-    }
+    .newsSliderComponent {
+        margin-bottom: f.pxToRem(30px);
 
-    .newsSliderContent {
-        width: 100%;
-        @include mut.flex-centered();
-        margin-top: f.pxToRem(10px);
-        padding-top: f.pxToRem(10px);
-
-        ::-webkit-scrollbar {
-            width: f.pxToRem(5px);
+        .newsSliderContentBlock,
+        .blockCentering {
+            @include mut.flex-centered();
         }
-    }
+
+        .newsSliderContainer {
+            width: 100%;
+            position: relative;
+        }
+
 
     .slick-slide {
         width: unset !important;
         
         @media screen and (max-width: 767px) {
-                width: 100% !important;
+            width: 100% !important;
+        }
+    }
+        .newsSliderContent {
+            width: 100%;
+            @include mut.flex-centered();
+            margin-top: f.pxToRem(10px);
+            padding-top: f.pxToRem(10px);
+
+            ::-webkit-scrollbar {
+                width: f.pxToRem(5px);
             }
+        }
+
+        .slick-initialized .slick-slide {
+            @include mut.flexed(row, center, center, wrap);
+            @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
+        }
+
+        .slick-track {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+        }
+
+        .slick-initialized .slick-slide {
+            @include mut.flexed($justify-content: center, $gap: 0px);
+            @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
+        }
     }
 
-    .slick-initialized .slick-slide {
-        @include mut.flexed(row, center, center, wrap);
-        @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
-    }
+    .redirectButton {
+        @include mut.sized($width: 100%, $height: 46px);
+        @include mut.full-rounded(10px);
+        @include mut.rem-margined($left: 10px, $right: 10px);
+        text-align: center;
+        cursor: pointer;
+        background-color: c.$accented-red-color;
+        color: c.$pure-white-color;
+        font-family: Roboto;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
 
-    .slick-track {
-        display: flex !important;
-        flex-wrap: nowrap !important;
+        &:hover {
+            background-color: c.$dark-red-color;
+        }
     }
-
-    .slick-initialized .slick-slide {
-        @include mut.flexed($justify-content: center, $gap: 0px);
-        @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
-    }
-}
 }
