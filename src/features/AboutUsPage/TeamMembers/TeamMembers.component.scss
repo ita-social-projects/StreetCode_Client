@@ -1,4 +1,21 @@
-.teamMemberSliderContainer { 
-    border: 20px solid red;
-    margin: 1000px;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.positionSliderComponent{
+    display: flex;
+    align-items: center !important;
+    width: 100%;
+    //vertical-align: middle;
+    h1{
+        font-size: 20px;
+        font-weight: 500;
+        font-family: ft.$closer-text-font;
+        color: c.$copyright-section-color;
+    }
+    .square{
+
+        background-color: c.$copyright-section-color;
+        height: 8px;
+        width: 8px;
+    }
 }
