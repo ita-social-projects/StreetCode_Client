@@ -301,9 +301,9 @@
       .donatesDonateBtn {
         @include mut.sized(100%, 46px);
         @include mut.full-rounded(10px);
+        @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
 
         > span{
-          @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
           line-height: 16px;
           color: #FFFFFF;
           text-transform: none;
