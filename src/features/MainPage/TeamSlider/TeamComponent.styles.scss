@@ -26,6 +26,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
     .mainContent {
         width: 100%;
+        margin-bottom: f.pxToRem(30px);
         @include mut.flex-centered();
         margin-top: f.pxToRem(1px);
         padding-top: f.pxToRem(1px);
@@ -98,7 +99,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         padding-right: f.pxToRem(16px);
         padding-bottom: f.pxToRem(20px);
     }
-    
+
     .redirectButton {
         @include mut.sized($width: 95%, $height: 46px);
         @include mut.full-rounded(10px);
