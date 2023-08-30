@@ -1,25 +1,21 @@
 import './TeamMembers.component.scss';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LeftSliderArrow from '@assets/images/utils/LeftDefaultSliderArrow.svg';
 import RightSliderArrow from '@assets/images/utils/RightDefaultSliderArrow.svg';
-import SwiperCore, {
-    A11y,
-    EffectFade,
-    Navigation,
-    Pagination,
-    Scrollbar,
-} from 'swiper';
+import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import PositionsApi from '@/app/api/team/positions.api';
 import TeamApi from '@/app/api/team/team.api';
-import Picture from '@/assets/images/about-us/pictureWithBg2.png';
+import { SCREEN_SIZES } from '@/app/common/constants/screen-sizes.constants';
 import TeamMember, { Positions } from '@/models/team/team.model';
 
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/css/pagination';
 import 'swiper/css';
+
+import TeamMemberCard from '../TeamMemberCard/TeamMemberCard.component';
 
 import TeamMemberList from './TeamMembersList/TeamMemberList.component';
 
@@ -27,11 +23,12 @@ const TeamMembers = () => {
     const [positions, setPositions] = useState<Positions[]>([]);
 
     const [team, setTeam] = useState<TeamMember[]>([]);
+
     useEffect(
         () => {
             TeamApi.getByRoleId(1).then(
                 (result) => setTeam(result),
-            );
+            ).then();
         },
         [],
     );
@@ -62,13 +59,32 @@ const TeamMembers = () => {
         </div>
     ));
 
+    const getSliderData = () => {
+        if (team.length > 0) {
+            return (
+                <Swiper
+                    slidesPerView="auto"
+                    centeredSlides
+                    spaceBetween={20}
+                    slideToClickedSlide
+                    pagination={window.innerWidth < SCREEN_SIZES.phone}
+                    loop
+                >
+                    {team.map(
+                        (member) => (
+                            <SwiperSlide>
+                                <TeamMemberCard {...member} />
+                            </SwiperSlide>
+                        ),
+                    )}
+                </Swiper>
+            );
+        }
+        return (<></>);
+    };
+
     return (
         <div className="aboutUsBlockContainer">
-            <h1>
-                <div />
-                <text>тут буде слайдер</text>
-                <div />
-            </h1>
             <div className="topSliderContainer">
                 <LeftSliderArrow className="slider-arrow" alt="Previous" onClick={() => handlePreviousSlide()} />
                 <div className="topSlider">
@@ -100,7 +116,15 @@ const TeamMembers = () => {
                 </div>
                 <RightSliderArrow className="slider-arrow" alt="Next" onClick={() => handleNextSlide()} />
             </div>
-            <TeamMemberList teamMembers={team} />
+            { window.innerWidth <= SCREEN_SIZES.tablet
+                ? (
+                    <div className="teamMembersSlider">
+                        {
+                            getSliderData()
+                        }
+                    </div>
+                )
+                : <TeamMemberList teamMembers={team} />}
         </div>
     );
 };

@@ -12,11 +12,9 @@ interface Props {
 }
 
 const TeamMemberLinks = (link: TeamMemberLinkCreateUpdate) => (
-    <div className='linksContainer'>
-                <a href={link.targetUrl}>
-                    <img key={link.id}src={LogoType[link.logoType]} />
-                </a>
-    </div>
+            <a href={link.targetUrl}>
+                <img key={link.id}src={LogoType[link.logoType]} />
+            </a>
 );
 
 export default TeamMemberLinks;

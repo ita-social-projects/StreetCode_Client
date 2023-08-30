@@ -3,6 +3,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+
     overflow: hidden;
 
     h1{
@@ -43,3 +44,13 @@
 .squareParent{
     position: relative;
 }
+.teamMembersSlider {
+    .swiper {
+        .swiper-slide{
+            width: fit-content;
+            height: auto;
+            border: 2px solid green;
+        }
+    }
+}
+
