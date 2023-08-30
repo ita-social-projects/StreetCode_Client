@@ -76,6 +76,7 @@ $loadImg: '@assets/images/qr-block/must_be_gif.png';
     .QRMobileContainer{
         display: flex;
         flex-direction: column-reverse;
+        padding-left: 0;
     }
     .QRMobileGif{
         display: flex;
