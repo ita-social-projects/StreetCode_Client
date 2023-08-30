@@ -37,11 +37,6 @@
     .blockHeadingWrapper{
         margin-left: f.pxToRem(40px);
     }
-
-    .blockHeadingText {
-        @include mut.positioned-as(relative, $left: -91px, $top: 43px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
-    }
 }
 
 @media (max-width: 768px) {
@@ -49,6 +44,7 @@
         margin-left: f.pxToRem(45px);
     }
     .blockHeadingText {
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
         @include mut.positioned-as(relative, $left: -81px, $top: 35px);
     }
 }

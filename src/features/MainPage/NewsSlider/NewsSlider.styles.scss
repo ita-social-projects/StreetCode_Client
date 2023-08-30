@@ -2,18 +2,21 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 
-.NewsWrapper{
-  width: 100%;
-.newsSliderComponent {
-    .newsSliderContentBlock,
-    .blockCentering {
-        @include mut.flex-centered();
-    }
+.NewsWrapper {
+    width: 100%;
 
-    .newsSliderContainer {
-        width: 100%;
-        position: relative;
-    }
+    .newsSliderComponent {
+        margin-bottom: f.pxToRem(30px);
+
+        .newsSliderContentBlock,
+        .blockCentering {
+            @include mut.flex-centered();
+        }
+
+        .newsSliderContainer {
+            width: 100%;
+            position: relative;
+        }
 
     .newsSliderContent {
         width: 100%;
@@ -21,37 +24,24 @@
         margin-top: f.pxToRem(10px);
         padding-top: f.pxToRem(10px);
 
-        ::-webkit-scrollbar {
-            width: f.pxToRem(5px);
+            ::-webkit-scrollbar {
+                width: f.pxToRem(5px);
+            }
         }
-    }
 
-    .slick-slide {
-        width: unset !important;
-        
-        @media screen and (max-width: 767px) {
-            width: 100% !important;
+        .slick-initialized .slick-slide {
+            @include mut.flexed(row, center, center, wrap);
+            @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
         }
-    }
 
-    .slick-initialized .slick-slide {
-        @include mut.flexed(row, center, center, wrap);
-        @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
-    }
-
-    .slick-track {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-    }
+        .slick-track {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+        }
 
     .slick-initialized .slick-slide {
         @include mut.flexed($justify-content: center, $gap: 0px);
         @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
-    }
-
-    .newsSliderContentBlock,
-    .blockCenter {
-        @include mut.flex-centered();
     }
 }
 }

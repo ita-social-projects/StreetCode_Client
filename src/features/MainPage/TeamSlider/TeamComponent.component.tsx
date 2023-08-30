@@ -46,6 +46,9 @@ const TeamComponent = () => {
     const handleClick = () => {
         window.location.assign('https://www.instagram.com/streetcodeua/');
     }
+    const handleButtonClick = () => {
+        window.location.assign('https://www.instagram.com/streetcodeua/');
+    };
         return (
             (team.length > 0)
             ? (
@@ -65,6 +68,7 @@ const TeamComponent = () => {
                             </SlickSlider>
                         </div>
                     </div>
+               {windowsize.width <= 480 && <button className='redirectButton' onClick={handleButtonClick}>Побачити всю команду</button>}
                 </div>
             </div >
            ) : <></>

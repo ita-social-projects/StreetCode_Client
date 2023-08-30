@@ -17,7 +17,7 @@
         background-color: c.$pure-white-color;
         margin-left: 20px;
 
-        @media (min-width: 768px) and (max-width: 1024px){
+        @media (min-width: 768px) and (max-width: 1024px) {
             width: 96vw;
             height: f.pxToRem(462px);
             margin-right: 20px;
@@ -42,9 +42,9 @@
 
         @media (min-width: 768px) and (max-width: 1024px){
             top: 320px;
-        }
+      }
 
-        @media (min-width: 360px) and (max-width: 767px){
+        @media (min-width: 360px) and (max-width: 767px) {
             position: relative;
             top: 1px;
         }
@@ -55,13 +55,16 @@
         z-index: 1;
         @include mut.rem-padded($top: 5px, $right: 5px, $bottom: 5px, $left: 5px);
 
-        @media (min-width: 768px) and (max-width: 1024px){
+        @media (min-width: 768px) and (max-width: 1024px) {
             margin-top: 0;
             height: 100%;
         }
+      
         @media screen and (max-width: 767px) {
             height: f.pxToRem(229px);
         }
+
+
         .newsPageImg {
             position: relative;
             width: 100%;
@@ -86,9 +89,8 @@
         @media (min-width: 768px) and (max-width: 1024px){
             @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
             height: 141px;
-        }
 
-        @media (min-width: 360px) and (max-width: 767px){
+        @media (min-width: 360px) and (max-width: 767px) {
             @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 15px, $left: 15px);
             height: 300px;
         }
@@ -103,13 +105,18 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
 
-        @media (min-width: 768px) and (max-width: 1024px){
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+
+        @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             font-style: bold;
             line-height: f.pxToRem(26.4px);
         }
 
-        @media (min-width: 360px) and (max-width: 767px){
+        @media (min-width: 360px) and (max-width: 767px) {
             @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             font-style: bold;
             line-height: f.pxToRem(26.4px);
@@ -128,17 +135,18 @@
         word-break: break-all;
         @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
         line-height: 18px;
+
         &::-webkit-scrollbar {
             display: none;
         }
-    
+
         .moreText {
             display: inline-block;
             margin-left: 4px;
             @include mut.with-font(ft.$roboto-font, $font-weight: bolder, $font-size: 15px);
             color: c.$dark-red-color;
             text-decoration: none;
-    
+
             &:hover {
                 text-decoration: underline;
             }

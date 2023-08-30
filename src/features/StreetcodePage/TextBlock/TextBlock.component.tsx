@@ -48,7 +48,7 @@ const TextComponent = () => {
             ? (
                 <div
                     id="text"
-                    className="textComponentContainer container"
+                    className="textComponentContainer"
                 >
                     <BlockHeading headingText={String(text?.title)} />
                     <div className="textComponent">
@@ -62,11 +62,6 @@ const TextComponent = () => {
                             <div className="videoComponent">
                                 <VideoPlayer
                                     videoUrls={String(video?.url)}
-                                    onReady={() => {
-                                        if (video) {
-                                            streecodePageLoaderContext.addBlockFetched();
-                                        }
-                                    }}
                                 />
                             </div>
                         ) : <></>}

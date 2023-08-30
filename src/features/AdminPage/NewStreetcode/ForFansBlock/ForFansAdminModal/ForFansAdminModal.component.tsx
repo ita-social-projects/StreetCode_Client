@@ -36,42 +36,61 @@ const ForFansModal = ({
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
+    const [Categories, setCategories] = useState<SourceCategoryName[]>([]);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [selectedText, setSelected] = useState('');
     const [editorContent, setEditorContent] = useState('');
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const maxLength = character_limit || 10000;
-    const getAvailableCategories = (): SourceCategoryName[] => {
+
+    const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
+        const categories = await SourcesApi.getAllCategories();
+        sourcesAdminStore.setInternalSourceCategories(categories);
+
+        const sourceMas: SourceCategoryName[] = categories.map((x) => ({
+            id: x.id ?? 0,
+            title: x.title,
+        }));
+        const justAddedCategory = sourceMas[sourceMas.length - 1]
         const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
             .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
-                && (srcCatContent as StreetcodeCategoryContentUpdate).modelState !== ModelState.Deleted);
+                && (srcCatContent as StreetcodeCategoryContentUpdate).modelState !== ModelState.Deleted);     
 
-        const selectedIds = selected.map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
-        const available = allCategories.filter((c) => !selectedIds.includes(c.id));
-
+        const selected_Ids = selected.map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
+        const available = allCategories.filter((c) => !selected_Ids.includes(c.id));
         if (categoryUpdate.current) {
             available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate
                 .current?.sourceLinkCategoryId)]);
         }
+        if (isNewCat){
+            available.push(justAddedCategory);
+        }
         return available;
     };
+
     const clearModal = () => {
         form.resetFields();
         setOpen(false);
     };
 
+    async function fetchData() {
+        const AvailableCats = await getAvailableCategories(false);
+        setAvailableCategories(AvailableCats);
+    }
+
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
-        setAvailableCategories(getAvailableCategories());
+        setCategories(allCategories);
         if (categoryUpdate.current && open) {
             setEditorContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
             setEditorContent('');
-            form.setFieldValue('category', (availableCategories.length > 0 ? availableCategories[0].id : undefined));
+            form.setFieldValue('category', '');
         }
+        fetchData();
     }, [open, sourceCreateUpdateStreetcode]);
 
     const onSave = (values:any) => {
@@ -98,8 +117,7 @@ const ForFansModal = ({
         onChange('saved', null);
     };
 
-    const onClose = async () => {
-        setAvailableCategories(getAvailableCategories());
+    const onDropDownChange = async () => {
         if (isAddModalVisible === false) {
             const categories = await SourcesApi.getAllCategories();
             sourcesAdminStore.setInternalSourceCategories(categories);
@@ -109,7 +127,13 @@ const ForFansModal = ({
                 title: x.title,
             }));
 
-            setAvailableCategories(sourceMas);
+            setCategories(sourceMas);
+        }
+    }
+    const onUpdateStates = async (isNewCatAdded: boolean) => {
+        if(isNewCatAdded === true) {
+            const AvailableCats = await getAvailableCategories(true);
+            setAvailableCategories(AvailableCats);
         }
     };
 
@@ -118,6 +142,10 @@ const ForFansModal = ({
             setIsAddModalVisible(true);
             form.resetFields(['category']);
         }
+    };
+    
+    const handleDisabled = (categoryId: number) => {
+        return !availableCategories.some(c => c.id === categoryId);
     };
 
     return (
@@ -154,17 +182,18 @@ const ForFansModal = ({
                         key="selectForFansCategory"
                         className="category-select-input"
                         onChange={handleAdd}
-                        onDropdownVisibleChange={onClose}
+                        onDropdownVisibleChange={onDropDownChange}
                     >
                         <Select.Option key="addCategory" value="addCategory">
                             Додати нову категорію...
                         </Select.Option>
-                        {availableCategories
-                            .map((c) => <Select.Option key={`${c.id}`} value={c.id}>{c.title}</Select.Option>)}
+                        {Categories
+                            .map((c) => <Select.Option key={`${c.id}`} value={c.id} disabled={handleDisabled(c.id)}>{c.title}</Select.Option>)}
                     </Select>
                 </FormItem>
                 <SourceModal
                     isModalVisible={isAddModalVisible}
+                    isNewCategory={onUpdateStates}
                     setIsModalOpen={setIsAddModalVisible}
                 />
                 <FormItem
