@@ -12,7 +12,8 @@ interface Props {
 const ReadMore = ({ text, maxLines = 25 }: Props) => {
     const [expanded, setExpanded] = useState(false);
     const readMoreRef = useRef<HTMLSpanElement | null>(null);
-
+    const firstRender = useRef(true);
+    
     const toggleExpanded = () => {
         setExpanded(!expanded);
     };
@@ -25,15 +26,18 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
     };
 
     useEffect(() => {
-        if (!expanded && readMoreRef.current) {
+        if (!expanded && readMoreRef.current && !firstRender.current) {
             const screenHeight = window.innerHeight;
-
+    
             const rect = readMoreRef.current.getBoundingClientRect();
             const elementTop = rect.top;
-
+    
             const scrollPosition = window.scrollY + elementTop - screenHeight;
-
+    
             window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+        }
+        if (firstRender.current) {
+            firstRender.current = false;
         }
     }, [expanded]);
 
