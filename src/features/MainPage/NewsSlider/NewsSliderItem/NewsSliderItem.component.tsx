@@ -15,7 +15,7 @@ interface Props {
     news: News;
 }
 
-const NewsSliderItem = ({ news }: Props) => {   
+const NewsSliderItem = ({ news }: Props) => {
     const id = news?.id;
     const [image, setImage] = useState<Image>();
     const isMobile = useMediaQuery({
@@ -31,27 +31,27 @@ const NewsSliderItem = ({ news }: Props) => {
     }, [news]);
 
     const screenSize = useWindowSize();
+
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
             return text;
         }
-        
+
         let truncatedText = text.substr(0, maxLength);
-        if (screenSize.width >= 768){
+        if (screenSize.width > 768){
             if (news?.title.length < 41) {
                 truncatedText = truncatedText.substr(0, 400);
             } else {
-                truncatedText = truncatedText.substr(0, 280);
+                truncatedText = truncatedText.substr(0, 300);
             }
         }
-         if(screenSize.width < 768){
+         if(screenSize.width <= 768){
             truncatedText = truncatedText.substr(0, 500);
         }
-
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
     };
 
-    const newsText = truncateText(news?.text || '', 500);
+    const newsText = truncateText(news?.text || '', 400);
 
     const options: any = {
         replace: (domNode: { type: string; name: string; children: any; }) => {
