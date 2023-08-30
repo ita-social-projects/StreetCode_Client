@@ -7,7 +7,8 @@
 
 
 .newsSliderItem {
-
+    display: flex;
+    flex-direction: column;
     .newsMainPage {
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.sized(840px, 567px);
@@ -21,43 +22,32 @@
             height: f.pxToRem(462px);
             margin-right: 20px;
             margin-left: 20px;
+            overflow: hidden;
         }
 
-        @media (min-width: 360px) and (max-width: 767px) {
-            width: 94vw;
-            height: f.pxToRem(550px);
+        @media (min-width: 360px) and (max-width: 767px){
+            width: f.pxToRem(340px);
+            height: fit-content;
             margin: f.pxToRem(-5px) f.pxToRem(20px) 0 f.pxToRem(20px);
-        }
 
-        @media (min-width: 614px) and (max-width: 715px) {
-            height: f.pxToRem(600px);
-            ;
-        }
-
-        @media (min-width: 715px) and (max-width: 768px) {
-            height: f.pxToRem(625px);
-        }
     }
 
     .newsSlideText {
         position: absolute;
+        height: fit-content;
         top: 374px;
         z-index: 2;
-        @include mut.sized(840px, 193px);
         @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
         background-color: c.$pure-white-color;
 
-        @media (min-width: 768px) and (max-width: 1024px) {
-            height: 161px;
-            top: 301px;
-            width: 96vw;
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            top: 320px;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
             position: relative;
             top: 1px;
-            width: 100%;
-            height: 100%;
         }
     }
 
@@ -71,13 +61,18 @@
             height: 100%;
         }
 
+        @media screen and (max-width: 767px) {
+            height: f.pxToRem(229px);
+        }
+
         .newsPageImg {
             position: relative;
             width: 100%;
             height: auto;
             @include mut.full-rounded(30px);
 
-            @media (min-width: 768px) and (max-width: 1024px) {
+            object-fit: cover;
+            @media (max-width: 1024px){
                 margin-top: 0;
                 height: 100%;
             }
@@ -87,16 +82,19 @@
     .newsContainer {
         box-sizing: border-box;
         width: 100%;
-        height: 100%;
+        word-break: break-all;
+        height: 193px;
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
 
-        @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.rem-padded($top: 20px, $right: 20px, $bottom: 20px, $left: 20px);
+        @media (min-width: 768px) and (max-width: 1024px){
+            @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
+            height: 141px;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
             @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 15px, $left: 15px);
+            height: 300px;
         }
     }
 
@@ -104,7 +102,6 @@
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
         color: #1D1F23;
         line-height: f.pxToRem(48px);
-
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
@@ -120,20 +117,13 @@
             @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             font-style: bold;
             line-height: f.pxToRem(26.4px);
+            -webkit-line-clamp: 1;
         }
     }
 
     .newsText {
-        width: 780px;
-        height: 90px;
-        @include mut.rem-margined(5px, 0px, 0px, 0px);
-        @include mut.rem-padded(0px, 5px, 0px, 0px);
-
-        color: c.$lighter-black-color;
-        
-
-        @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
-        line-height: 18px;
+        position: relative;
+        display: contents;
 
         &::-webkit-scrollbar {
             display: none;
@@ -151,13 +141,28 @@
             }
         }
 
+        @media (min-width: 768px) and (max-width: 1024px){
+            width: 93vw;
+        }
+    }
+    .text{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        @include mut.rem-margined(5px, 0px, 0px, 0px);
+        @include mut.rem-padded(0px, 5px, 0px, 0px);
+        color: c.$lighter-black-color;
+        word-break: break-all;
+        @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
+        line-height: 18px;
         @media (min-width: 768px) and (max-width: 1024px) {
-            top: 301px;
+            -webkit-line-clamp: 2;
             width: 93vw;
         }
 
-        @media (min-width: 360px) and (max-width: 767px) {
-            width: 100%;
+        @media (max-width: 767px) {
+            -webkit-line-clamp: 11;
         }
     }
 }

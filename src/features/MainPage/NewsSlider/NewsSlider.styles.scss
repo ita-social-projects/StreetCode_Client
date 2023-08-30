@@ -30,6 +30,13 @@
             position: relative;
         }
 
+        .slick-slide {
+        width: unset !important;
+        
+        @media screen and (max-width: 767px) {
+                width: 100% !important;
+            }
+       }
         .newsSliderContent {
             width: 100%;
             @include mut.flex-centered();
@@ -40,10 +47,6 @@
             ::-webkit-scrollbar {
                 width: f.pxToRem(5px);
             }
-        }
-
-        .slick-slide {
-            width: unset !important;
         }
 
         .slick-initialized .slick-slide {

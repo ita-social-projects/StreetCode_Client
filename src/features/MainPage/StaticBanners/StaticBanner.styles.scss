@@ -259,14 +259,15 @@
         }
     }
 
-    @media screen and (max-width: 360px) {
+    @media screen and (max-width: 480px) {
         padding: 0;
 
         &.catalog {
             @include mut.full-rounded(0px);
-            @include mut.rem-margined($top: 30px, $right: 10px, $bottom: 0px, $left: 10px);
+            @include mut.rem-margined($top: 5px, $right: 10px, $bottom: 0px, $left: 10px);
             height: auto;
             filter: none;
+            box-shadow: none;
 
             .mainContainer {
                 margin: 0;
@@ -276,7 +277,8 @@
                     text-align: left;
 
                     p.title {
-                        @include mut.rem-margined($bottom: 17px);
+                        @include mut.rem-margined($top: -20px, $bottom: 17px);
+                        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
                     }
 
                     p.content {
@@ -315,6 +317,7 @@
 
                     p.title {
                         @include mut.rem-margined($bottom: 17px);
+                        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
                     }
 
                     p.content {

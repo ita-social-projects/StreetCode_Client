@@ -92,6 +92,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     key={im.id}
                                     src={base64ToUrl(im.base64, im.mimeType)}
                                     className="streetcodeImg"
+                                    style={{objectFit: 'contain'}}
                                     alt={im.imageDetails?.alt}
                                 />
                             ))}
