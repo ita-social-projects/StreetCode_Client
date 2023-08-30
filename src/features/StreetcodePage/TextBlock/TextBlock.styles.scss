@@ -11,6 +11,7 @@
     @include mut.sized(1200px, auto);
     @include mut.with-font($font-weight: 300, $font-size:20px);
     text-align: justify;
+    justify-content: flex-end;
     display: flex;
     flex-wrap: wrap;
 }
