@@ -164,12 +164,12 @@
         @include mut.sized(225px, 307px);
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(200px, 261px);
-            object-fit: cover;
+            object-fit: contain;
         }
         
         @media screen and (max-width: 767px) {
             @include mut.sized(240px, 312px);
-            object-fit: cover;
+            object-fit: contain;
         }
     }
 }

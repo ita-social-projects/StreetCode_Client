@@ -53,12 +53,11 @@
     }
 
     &.mobile{
-        @include mut.sized($width: 165px, $height: 65px);
+        @include mut.sized($width: 165px, $height: auto);
         background-color: c.$pure-white-color;
 
         .heading {
             @include mut.sized($width: 100%);
-            max-height: 65px;
         }
 
         p {
