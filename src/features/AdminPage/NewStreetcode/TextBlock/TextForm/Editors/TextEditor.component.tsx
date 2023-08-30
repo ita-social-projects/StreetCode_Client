@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 import useMobx, { useModalContext } from '@app/stores/root-store';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
@@ -28,15 +28,8 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState('');
-    const [editor, setEditor] = useState(null);
-
-    useEffect(() => {
-        if (inputInfo?.textContent) {
-            if (editor) {
-                editor.setContent(inputInfo.textContent);
-            }
-        }
-    }, [inputInfo?.textContent, editor]);
+    const editorRef = useRef<TinyMCEEditor | null>(null);
+    const [editorContent, setEditorContent] = useState('');
 
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
 
@@ -95,63 +88,70 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const maxLength = character_limit || 15000;
 
     return (
-        <FormItem
-            label="Основний текст"
-        >
-            <TinyMCEEditor
-                init={{
-                    height: 300,
-                    max_chars: 1000,
-                    menubar: false,
-                    init_instance_callback(editor) {
-                        setEditor(editor);
-                        editor.setContent(inputInfo?.textContent ?? '');
-                    },
-                    plugins: [
-                        'autolink',
-                        'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                        'insertdatetime', 'wordcount', /* 'charcount', */
-                    ],
-                    toolbar: 'undo redo | bold italic | '
+        <>
+            <FormItem
+                label="Основний текст"
+            >
+                <TinyMCEEditor
+                    ref={editorRef}
+                    value={editorContent}
+                    onEditorChange={(e, editor) => {
+                        setEditorContent(editor.getContent());
+                        setInputInfo({ ...inputInfo, textContent: editor.getContent() });
+                        onChange('textContent', editor.getContent());
+                    }}
+                    init={{
+                        max_chars: 1000,
+                        height: 300,
+                        menubar: false,
+                        init_instance_callback(editor) {
+                            setEditorContent(inputInfo?.textContent ?? '');
+                            editor.setContent(inputInfo?.textContent ?? '');
+                        },
+                        plugins: [
+                            'autolink',
+                            'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                            'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                        ],
+                        toolbar: 'undo redo | bold italic | '
                         + 'removeformat',
-                    content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                }}
-                onPaste={(e, editor) => {
-                    const previousContent = editor.getContent({ format: 'text' });
-                    const clipboardContent = e.clipboardData?.getData('text') || '';
-                    const resultContent = previousContent + clipboardContent;
-                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
+                        toolbar_mode: 'sliding',
+                        language: 'uk',
+                        content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                    }}
+                    onPaste={(e, editor) => {
+                        const previousContent = editor.getContent({ format: 'text' });
+                        const clipboardContent = e.clipboardData?.getData('text') || '';
+                        const resultContent = previousContent + clipboardContent;
+                        const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
 
-                    if (selected.length >= clipboardContent.length) {
-                        return;
-                    }
-                    if (resultContent.length >= maxLength && isSelectionEnd) {
-                        // eslint-disable-next-line max-len
-                        editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
-                        e.preventDefault();
-                    }
-                    if (resultContent.length <= maxLength && !isSelectionEnd) {
-                        return;
-                    }
-                    if (resultContent.length >= maxLength && !isSelectionEnd) {
-                        e.preventDefault();
-                    }
-                }}
-                onKeyDown={(e, editor) => {
-                    if (editor.getContent({ format: 'text' }).length >= maxLength
-                        && !setOfKeys.has(e.key)
-                        && editor.selection.getContent({ format: 'text' }).length == 0) {
-                        e.preventDefault();
-                    }
-                }}
-                onChange={(e, editor) => {
-                    setInputInfo({ ...inputInfo, textContent: editor.getContent() });
-                    onChange('textContent', editor.getContent());
-                }}
-                onSelectionChange={(e, editor) => {
-                    setSelected(editor.selection.getContent());
-                }}
-            />
+                        if (selected.length >= clipboardContent.length) {
+                            return;
+                        }
+                        if (resultContent.length >= maxLength && isSelectionEnd) {
+                            // eslint-disable-next-line max-len
+                            editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
+                            e.preventDefault();
+                        }
+                        if (resultContent.length <= maxLength && !isSelectionEnd) {
+                            return;
+                        }
+                        if (resultContent.length >= maxLength && !isSelectionEnd) {
+                            e.preventDefault();
+                        }
+                    }}
+                    onKeyDown={(e, editor) => {
+                        if (editor.getContent({ format: 'text' }).length >= maxLength
+                                && !setOfKeys.has(e.key)
+                                && editor.selection.getContent({ format: 'text' }).length === 0) {
+                            e.preventDefault();
+                        }
+                    }}
+                    onSelectionChange={(e, editor) => {
+                        setSelected(editor.selection.getContent());
+                    }}
+                />
+            </FormItem>
             <Button
                 className="streetcode-custom-button button-margin-vertical"
                 onClick={() => setModal('addTerm')}
@@ -172,7 +172,6 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     )}
                 </AutoComplete>
             </FormItem>
-
             <div className="display-flex-row">
                 <Button
                     className="streetcode-custom-button button-margin-vertical button-margin-right"
@@ -189,9 +188,9 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     Видалити пов&#39;язаний термін
                 </Button>
             </div>
-
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
-        </FormItem>
+
+        </>
     );
 };
 
