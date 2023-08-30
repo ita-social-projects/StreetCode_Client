@@ -6,6 +6,7 @@
     align-items: center !important;
     width: 100%;
     //vertical-align: middle;
+    
     h1{
         font-size: 20px;
         font-weight: 500;
@@ -13,9 +14,17 @@
         color: c.$copyright-section-color;
     }
     .square{
-
         background-color: c.$copyright-section-color;
         height: 8px;
         width: 8px;
+    }
+}
+.teamMembersSlider {
+    .swiper {
+        .swiper-slide{
+            width: fit-content;
+            height: auto;
+            border: 2px solid green;
+        }
     }
 }
