@@ -39,6 +39,21 @@ const NewsSliderItem = ({ news }: Props) => {
         handleClickRedirect();
     };
 
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = news?.text;
+
+    const strongElements = tempElement.querySelectorAll('strong');
+
+    strongElements.forEach(strongElement => {
+        const parent = strongElement.parentNode;
+        while (strongElement.firstChild) {
+            parent.insertBefore(strongElement.firstChild, strongElement);
+        }
+        parent.removeChild(strongElement);
+    });
+
+    const cleanText = tempElement.innerHTML;
+
     return (
         <div className="newsSliderItem">
             <div className="newsMainPage" onClick={isMobile ? handleClickRedirect : undefined}>
@@ -56,7 +71,7 @@ const NewsSliderItem = ({ news }: Props) => {
                                 {news?.title}
                             </h2>
                             <div className="newsText">
-                                <span className="text">{htmlReactParser(news?.text)}</span>
+                                <span className="text">{htmlReactParser(cleanText)}</span>
                                 <a className="moreText" href={news.text} onClick={handleLinkClick}>
                                     До новини
                                 </a>
