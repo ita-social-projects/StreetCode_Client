@@ -59,7 +59,7 @@ const NewsSlider = () => {
                         <Heading blockName="Новини" buttonName="Всі новини" setActionOnClick={handleClick} />
                         <div id="newsSliderContentBlock" className="newsSliderComponent">
                             <div className="newsSliderContainer">
-                                <div className="blockCentering">
+                                <div className="blockCenter">
                                     <div className="newsSliderContent">
                                         <SlickSlider {...props}>
                                             {news.map((item) => (

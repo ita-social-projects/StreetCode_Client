@@ -33,14 +33,14 @@ const NewsSliderItem = ({ news }: Props) => {
         }
         
         let truncatedText = text.substr(0, maxLength);
-        if (screenSize.width > 768){
+        if (screenSize.width >= 768){
             if (news?.title.length < 41) {
                 truncatedText = truncatedText.substr(0, 400);
             } else {
-                truncatedText = truncatedText.substr(0, 300);
+                truncatedText = truncatedText.substr(0, 280);
             }
         }
-         if(screenSize.width <= 768){
+         if(screenSize.width < 768){
             truncatedText = truncatedText.substr(0, 500);
         }
         return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
