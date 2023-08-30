@@ -1,6 +1,8 @@
 import './TeamMembers.component.scss';
 
 import React, { useEffect, useState } from 'react';
+import LeftSliderArrow from '@assets/images/utils/LeftDefaultSliderArrow.svg';
+import RightSliderArrow from '@assets/images/utils/RightDefaultSliderArrow.svg';
 import SwiperCore, {
     A11y,
     EffectFade,
@@ -49,13 +51,26 @@ const TeamMembers = () => {
         [],
     );
 
+    const [swiper, setSwiper] = useState(null);
+
+    const handlePreviousSlide = () => {
+        if (swiper) {
+            swiper.slidePrev();
+        }
+    };
+
+    const handleNextSlide = () => {
+        if (swiper) {
+            swiper.slideNext();
+        }
+    };
+
     const stringsArray: string[] = ['розробники', 'Історики', 'Керівники напрямів', 'Адміністратори', 'Засновники'];
 
     const sliderItems = stringsArray.map((string, index) => (
-        <React.Fragment key={index}>
+        <div>
             <div>{string}</div>
-            <div className="square" />
-        </React.Fragment>
+        </div>
     ));
 
     return (
@@ -66,22 +81,35 @@ const TeamMembers = () => {
                 <div />
             </h1>
             <div className="topSliderContainer">
+                <LeftSliderArrow className="slider-arrow" alt="Previous" onClick={() => handlePreviousSlide()} />
                 <div className="topSlider">
-                    <button className="arrow-right arrow">Prev</button>
                     <Swiper
+                        className='squareParent'
+                        onSwiper={(swiper) => setSwiper(swiper)}
                         slidesPerView={5}
                         spaceBetween={30}
                         centeredSlides
                         loop
                         navigation={{ nextEl: '.arrow-left', prevEl: '.arrow-right' }}
                         modules={[Navigation]}
+                        breakpoints={{
+                            360: {
+                                slidesPerView: 1,
+                            },
+                            425: {
+                                slidesPerView: 3,
+                            },
+                            768: {
+                                slidesPerView: 5,
+                            },
+                        }}
                     >
-                        {stringsArray.map((item, index) => (
-                            <SwiperSlide key={index}>{item}</SwiperSlide>
+                        {sliderItems.map((item, index) => (
+                            <SwiperSlide className='square' key={index}>{item}</SwiperSlide>
                         ))}
                     </Swiper>
-                    <button className="arrow-left arrow">Next</button>
                 </div>
+                <RightSliderArrow className="slider-arrow" alt="Next" onClick={() => handleNextSlide()} />
             </div>
             <TeamMemberList teamMembers={team} />
         </div>

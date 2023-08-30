@@ -1,75 +1,52 @@
-@use "@assets/sass/variables/_variables.fonts.scss" as ft;
-@use "@sass/variables/_variables.colors.scss" as c;
-
-.positionSliderComponent{
-    display: flex;
-    align-items: center !important;
-    width: 100%;
-    //vertical-align: middle;
-    h1{
-        font-size: 20px;
-        font-weight: 500;
-        font-family: ft.$closer-text-font;
-        color: c.$copyright-section-color;
-    }
-}
-
-.square{
-    background-color: red;
-    height: 8px;
-    width: 8px;
-}
-
 .topSlider {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+    overflow: hidden;
 
-    .swiper-slide{
+    h1{
+        font-weight: 500;
+        font-size: 30px;
+    }
+
+    .swiper-slide {
         text-align: center;
         width: fit-content;
         border: 2px solid green;
-        &-active{
+        position:unset;
+
+        &-active {
             border: 2px solid red;
         }
+    }
+}
+
+.swiper{
+    justify-content: center;
+}
+
+.square::after{
+    content: ' '; position: absolute; width: 8px; height: 8px; right: 10px; background: red;
+}
+
+.topSliderContainer .square:first-child::before{
+    content: ' '; position: absolute; width: 8px; height: 8px; left: 10px; background: red;
+}
+
+.slider-arrow {
+    &:hover {
+      fill: #000000;
     }
 }
 
 .topSliderContainer {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; 
+    margin: 0 auto;
 }
 
-.swiper-buttons {
-    display: flex;
-    align-items: center;
-}
-
-.arrow {
-    margin: 0 10px;
-}
-
-.arrow-left {
-    background-color: #007bff; /* Змініть цей колір на ваш власний */
-    color: #fff; /* Колір тексту */
-    border: none; /* Видалення границі */
-    padding: 10px 20px; /* Внутрішні відступи кнопки */
-    border-radius: 5px; /* Закруглені кути */
-    cursor: pointer; /* Курсор при наведенні */
-}
-
-.arrow-right {
-    background-color: #007bff; /* Змініть цей колір на ваш власний */
-    color: #fff; /* Колір тексту */
-    border: none; /* Видалення границі */
-    padding: 10px 20px; /* Внутрішні відступи кнопки */
-    border-radius: 5px; /* Закруглені кути */
-    cursor: pointer; /* Курсор при наведенні */
-}
-
-.swiper-slide {
-    white-space: normal;
-    word-wrap: break-word;
+.squareParent{
+    position: relative;
 }
