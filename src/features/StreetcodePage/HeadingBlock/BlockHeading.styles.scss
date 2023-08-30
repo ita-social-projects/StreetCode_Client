@@ -21,10 +21,14 @@
 .blockHeadingText {
     @include mut.positioned-as(relative, $left: -62px, $top: 41px);
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+    padding-right: 10px;
 }
 
 .blockHeadingText::first-letter {
     text-transform: uppercase;
+}
+.rhombus{
+    min-height: 110px;
 }
 
 @media (max-width: 1350px) {

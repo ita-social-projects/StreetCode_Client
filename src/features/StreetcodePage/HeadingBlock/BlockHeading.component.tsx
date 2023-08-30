@@ -18,9 +18,11 @@ const BlockHeading = ({ headingText }: Props) => {
     return (
         <div className="blockHeadingWrapper">
             <div className="blockHeadingContainer">
-                {!isMobile
-                    && <Rhombus />}
-                {isMobile && <RhombusMobile />}
+                <div className="rhombus">
+                    {!isMobile
+                        && <Rhombus />}
+                    {isMobile && <RhombusMobile />}
+                </div>
                 <h1 className={`blockHeadingText 
                     ${headingText.length >= 30
                         && window.screen.width < 640 ? 'bigTextComponent' : ''} `}
