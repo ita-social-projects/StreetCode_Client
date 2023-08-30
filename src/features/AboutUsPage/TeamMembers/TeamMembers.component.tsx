@@ -12,9 +12,10 @@ import SwiperCore, {
 } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import PositionsApi from '@/app/api/team/positions.api';
 import TeamApi from '@/app/api/team/team.api';
 import Picture from '@/assets/images/about-us/pictureWithBg2.png';
-import TeamMember from '@/models/team/team.model';
+import TeamMember, { Positions } from '@/models/team/team.model';
 
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/css/pagination';
@@ -23,23 +24,7 @@ import 'swiper/css';
 import TeamMemberList from './TeamMembersList/TeamMemberList.component';
 
 const TeamMembers = () => {
-    const teamMemberRoles1: TeamMember[] = [
-        {
-            id: 0,
-            isMain: false,
-            name: 'Roman',
-            description: 'Description',
-            imageId: 1,
-            image: {
-                id: 1,
-                blobName: 'hueta',
-                mimeType: 'popa',
-                base64: Picture,
-            },
-            teamMemberLinks: [],
-            positions: [],
-        },
-    ];
+    const [positions, setPositions] = useState<Positions[]>([]);
 
     const [team, setTeam] = useState<TeamMember[]>([]);
     useEffect(
@@ -50,6 +35,12 @@ const TeamMembers = () => {
         },
         [],
     );
+
+    useEffect(() => {
+        PositionsApi.getAll().then((pos) => {
+            setPositions(pos);
+        });
+    }, []);
 
     const [swiper, setSwiper] = useState(null);
 
@@ -65,11 +56,9 @@ const TeamMembers = () => {
         }
     };
 
-    const stringsArray: string[] = ['розробники', 'Історики', 'Керівники напрямів', 'Адміністратори', 'Засновники'];
-
-    const sliderItems = stringsArray.map((string, index) => (
-        <div>
-            <div>{string}</div>
+    const sliderItems = positions.map((position, index) => (
+        <div key={index}>
+            <div>{position.position}</div>
         </div>
     ));
 
@@ -84,10 +73,10 @@ const TeamMembers = () => {
                 <LeftSliderArrow className="slider-arrow" alt="Previous" onClick={() => handlePreviousSlide()} />
                 <div className="topSlider">
                     <Swiper
-                        className='squareParent'
+                        className="squareParent"
                         onSwiper={(swiper) => setSwiper(swiper)}
                         slidesPerView={5}
-                        spaceBetween={30}
+                        spaceBetween={0}
                         centeredSlides
                         loop
                         navigation={{ nextEl: '.arrow-left', prevEl: '.arrow-right' }}
@@ -105,7 +94,7 @@ const TeamMembers = () => {
                         }}
                     >
                         {sliderItems.map((item, index) => (
-                            <SwiperSlide className='square' key={index}>{item}</SwiperSlide>
+                            <SwiperSlide className="square" key={index}>{item}</SwiperSlide>
                         ))}
                     </Swiper>
                 </div>

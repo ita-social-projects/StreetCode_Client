@@ -17,21 +17,14 @@
         position:unset;
 
         &-active {
-            border: 2px solid red;
+            font-weight: 500;
+            font-size: 20px;
         }
     }
 }
 
 .swiper{
     justify-content: center;
-}
-
-.square::after{
-    content: ' '; position: absolute; width: 8px; height: 8px; right: 10px; background: red;
-}
-
-.topSliderContainer .square:first-child::before{
-    content: ' '; position: absolute; width: 8px; height: 8px; left: 10px; background: red;
 }
 
 .slider-arrow {
