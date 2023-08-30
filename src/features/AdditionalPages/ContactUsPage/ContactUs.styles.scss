@@ -25,33 +25,34 @@
     .contactUsContent {
         text-align: center;
         @include mut.rem-margined(80px, 20px, 40px, 0px);
-     
-        
+
+
         > h1 {
         text-align: left;
           color: c.$pure-black-color;
           @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
         }
-      
+
         > h3 {
         text-align: left;
           @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
         }
-      
-      
+
+
         .contactUsBtnContainer {
-          @include mut.sized(220px, 55px);
-          @include mut.full-rounded(14px);
+          @include mut.sized(180px, 46px);
+          @include mut.full-rounded(10px);
+
           margin-top: 10px;
           background-color: c.$accented-red-color;
           a {
-            @include mut.with-font($font-weight: 400);
+            @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
             border-width: 3px;
             border-color: c.$pure-white-color;
             color: c.$pure-white-color;
           }
           &:hover {
-            filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
+            box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
             border-color: c.$accented-red-color;
           }
         }
@@ -60,15 +61,15 @@
 
 @media screen and (max-width: 1024px) {
     .contactUsContainer{
-        padding: f.pxToRem(94px) f.pxToRem(10px) 0 f.pxToRem(10px);   
+        padding: f.pxToRem(94px) f.pxToRem(10px) 0 f.pxToRem(10px);
 
         .titleBlock{
-            margin-bottom: f.pxToRem(80px);    
+            margin-bottom: f.pxToRem(80px);
         }
         .contactUsContent {
             display: none;
         }
-    } 
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -79,6 +80,6 @@
         .contactUsContent {
             display: none;
         }
-    } 
+    }
 }
 

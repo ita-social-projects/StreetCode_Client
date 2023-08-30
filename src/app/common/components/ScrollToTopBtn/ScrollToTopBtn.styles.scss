@@ -13,7 +13,7 @@
 
   &:hover {
     cursor: pointer;
-    @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
+    box-shadow: c.$hovered-btn-box-shadow;
   }
 }
 
@@ -33,13 +33,13 @@
 
   @include vnd.vendored(animation, 'btnOpacity 1s ease-in-out');
   @include vnd.vendored(transition, 'filter .5s ease');
-  
+
   z-index: 4;
   border: 3px solid c.$accented-red-color;
 
   &:hover {
     cursor: pointer;
-    @include vnd.vendored(filter, '#{c.$hovered-btn-filter-color}');
+    box-shadow: c.$hovered-btn-box-shadow;
   }
 }
 

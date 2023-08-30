@@ -1,5 +1,6 @@
 import './App.styles.scss';
 import './ant-styles.overrides.scss';
+import './slick-slider.overrides.scss';
 
 import { observer } from 'mobx-react-lite';
 import ReactGA from 'react-ga4';

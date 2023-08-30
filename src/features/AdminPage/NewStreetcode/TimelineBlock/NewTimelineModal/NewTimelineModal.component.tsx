@@ -48,10 +48,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         setErrorMessage,
     );
 
-    const clearModal= () =>{
+    const clearModal = () => {
         form.resetFields();
         setIsModalOpen(false);
-    }
+    };
 
     useEffect(() => {
         if (timelineItem && open) {
@@ -69,38 +69,37 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     }, [timelineItem, open, form]);
 
-    useEffect(()=>{
-        if(timelineItem)
-        {
+    useEffect(() => {
+        if (timelineItem) {
             setDateTimePickerType(DateViewPatternToDatePickerType(timelineItem.dateViewPattern));
         }
-    }, [open])
+    }, [open]);
 
     useEffect(() => {
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
 
-    const GetLocalHoursOffset = (date: Date) => {return -1 * date.getTimezoneOffset() / 60;}
+    const GetLocalHoursOffset = (date: Date) => -1 * date.getTimezoneOffset() / 60;
 
-    const GetDateBasedOnFormat = (date: Date) =>{
-        switch(dateTimePickerType){
-            case 'date':
-                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
-                return date.toISOString();
-            case 'month':
-            case 'season-year':
-                date.setDate(1);
-                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
-                return date.toISOString();
-            case 'year':
-                date.setMonth(0);
-                date.setDate(1);
-                date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
-                return date.toISOString();
-            default:
-                throw new Error('Invalid date.');
+    const GetDateBasedOnFormat = (date: Date) => {
+        switch (dateTimePickerType) {
+        case 'date':
+            date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+            return date.toISOString();
+        case 'month':
+        case 'season-year':
+            date.setDate(1);
+            date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+            return date.toISOString();
+        case 'year':
+            date.setMonth(0);
+            date.setDate(1);
+            date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
+            return date.toISOString();
+        default:
+            throw new Error('Invalid date.');
         }
-    }
+    };
 
     const onSuccesfulSubmit = (formValues: any) => {
         if (timelineItem) {
@@ -125,7 +124,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
 
         setIsModalOpen(false);
-        setDateTimePickerType('date')
+        setDateTimePickerType('date');
         form.resetFields();
         onChange('timeline', formValues);
     };
@@ -183,9 +182,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             footer={null}
             maskClosable
             centered
-            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                <CancelBtn className='iconSize' onClick={clearModal} />
-            </Popover>}
+            closeIcon={(
+                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <CancelBtn className="iconSize" onClick={clearModal} />
+                </Popover>
+            )}
         >
             <div className="modalContainer-content">
                 <Form
@@ -221,7 +222,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 rules={[{ required: true, message: 'Введіть дату' }]}
                             >
                                 <DatePicker
-                                    allowClear = {false}
+                                    allowClear={false}
                                     picker={(dateTimePickerType !== 'season-year') ? dateTimePickerType : 'month'}
                                     format={(dateTimePickerType === 'date'
                                         ? 'YYYY, D MMMM'

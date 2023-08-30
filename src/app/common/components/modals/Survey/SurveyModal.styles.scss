@@ -8,7 +8,7 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
 .surveyModal {
   width: f.pxToRem(832px) !important;
   height: f.pxToRem(414px);
- 
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +18,7 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
       height: inherit;
       @include mut.flex-centered($direction: column);
       @include mut.full-rounded(30px, $overflow: visible);
-      
+
       @include mut.bg-image($StbgImg, 18%, no-repeat);
       background-position: center;
       padding: 0 !important;
@@ -26,10 +26,10 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
     }
 
     .ant-modal-close {
-      
+
       @include mut.positioned-as(absolute, $left: 94%, $top: -27px);
       @include mut.circular(80px, c.$pure-white-color);
-      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
       &:hover {
         background-color: c.$modal-hover-color;
@@ -48,7 +48,7 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
   @include mut.flex-centered($direction: column);
   @include mut.rem-margined(80px, 20px, 40px, 20px);
   text-align: center;
-  
+
   > h1 {
     color: c.$pure-black-color;
     @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
@@ -71,7 +71,7 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
       color: c.$pure-white-color;
     }
     &:hover {
-      filter: drop-shadow(0px 4px 4px rgba(219, 52, 36, 0.1));
+      box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
       border-color: c.$accented-red-color;
     }
   }
@@ -85,10 +85,10 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
     justify-content: center;
 
     &.ant-modal {
-      
+
 
       .ant-modal-close {
-        @include mut.sizedImportant(60px, 60px);       
+        @include mut.sizedImportant(60px, 60px);
         @include mut.circular(65px, c.$pure-white-color);
 
         .ant-modal-close-x svg{
@@ -103,7 +103,7 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
         color: c.$pure-black-color;
         @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
       }
-    
+
       > h3 {
         @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
       }
@@ -121,13 +121,13 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
   .surveyModal {
     @include mut.sized(308px, 498px);
     &.ant-modal {
-      .ant-modal-content {      
+      .ant-modal-content {
         @include mut.bg-image($StbgImg, 35%, no-repeat);
       }
 
       .ant-modal-close {
         @include mut.positioned-as($position: absolute, $left: 92.36%, $top: -13px);
-        @include mut.sizedImportant(40px, 40px);       
+        @include mut.sizedImportant(40px, 40px);
         @include mut.circular(65px, c.$pure-white-color);
 
         .ant-modal-close-x svg{
@@ -135,14 +135,14 @@ $StbgImg: '@assets/images/donates/bgStrLogo.png';
         }
       }
     }
-  
+
   .surveyModalContent {
     padding-bottom: 0%;
     > h1 {
       color: c.$pure-black-color;
       @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
     }
-  
+
     > h3 {
       @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
     }

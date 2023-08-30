@@ -7,4 +7,14 @@
     width: 100%;
     overflow-y: scroll;
     @include mut.flexed($direction: column);
+    
+}
+
+@media screen and (max-width: 1024px) {
+    .searchResultsBlock{ 
+        width: 100vw;
+        overflow-y: hidden;
+        
+    }
+
 }
