@@ -166,8 +166,9 @@ $navbar-hidden-innerwidth: 400px;
     @include mut.sized(100%, 70px);
     @include mut.flexed($justify-content: space-between, $align-items: center);
     @include mut.rem-padded(0, 15px, 15px, 15px);
+    
 
-    position: fixed;
+    position: absolute;
     z-index: 6;
     background-color: c.$pure-white-color;
     transform: translateY(f.pxToRem(-200px));
@@ -206,4 +207,11 @@ $navbar-hidden-innerwidth: 400px;
       background-color: c.$accented-red-color;
     }
   }
+
+  .searchMobPopover {
+    .ant-popover-inner {
+      margin-top: 35px;
+   
+    }
+}
 }

@@ -26,6 +26,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
     .mainContent {
         width: 100%;
+        margin-bottom: f.pxToRem(30px);
         @include mut.flex-centered();
         margin-top: f.pxToRem(1px);
         padding-top: f.pxToRem(1px);
@@ -97,5 +98,24 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         padding-left: f.pxToRem(16px);
         padding-right: f.pxToRem(16px);
         padding-bottom: f.pxToRem(20px);
+    }
+
+    .redirectButton {
+        @include mut.sized($width: 95%, $height: 46px);
+        @include mut.full-rounded(10px);
+        @include mut.rem-margined($left: 10px, $right: 10px);
+        text-align: center;
+        cursor: pointer;
+        background-color: c.$accented-red-color;
+        color: c.$pure-white-color;
+        font-family: Roboto;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+
+        &:hover {
+            background-color: c.$dark-red-color;
+        }
     }
 }

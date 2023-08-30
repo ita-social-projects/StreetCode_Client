@@ -14,6 +14,7 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
     const [showButtons, setShowButtons] = useState(true);
     const readMoreRef = useRef<HTMLSpanElement | null>(null);
     const textContainerRef = useRef<HTMLDivElement | null>(null);
+    const firstRender = useRef(true);
 
     const toggleExpanded = () => {
         setExpanded(!expanded);
@@ -42,7 +43,7 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
     }, [text]);
 
     useEffect(() => {
-        if (!expanded && readMoreRef.current) {
+        if (!expanded && readMoreRef.current && !firstRender.current) {
             const screenHeight = window.innerHeight;
 
             const rect = readMoreRef.current.getBoundingClientRect();
@@ -51,6 +52,9 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
             const scrollPosition = window.scrollY + elementTop - screenHeight;
 
             window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+        }
+        if (firstRender.current) {
+            firstRender.current = false;
         }
     }, [expanded]);
 

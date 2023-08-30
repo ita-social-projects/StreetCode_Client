@@ -56,7 +56,7 @@ const NewsSlider = () => {
             ? (
                 <div>
                     <div className="NewsWrapper">
-                        <Heading blockName="Новини" buttonName="Всі новини" setActionOnClick={handleClick} />
+                        <Heading blockName="Новини" setActionOnClick={handleClick} />
                         <div id="newsSliderContentBlock" className="newsSliderComponent">
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
@@ -72,7 +72,6 @@ const NewsSlider = () => {
                                 </div>
                             </div>
                         </div>
-                        {windowSize.width <= 480 && <button className='redirectButton' onClick={handleClick}>Побачити всю команду</button>}
                     </div>
                 </div>
             ) : <></>
