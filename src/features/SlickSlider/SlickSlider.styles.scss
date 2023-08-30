@@ -60,7 +60,7 @@ li.slick-active button:before {
     .slider-item-container {
         display: flex !important;
         position: relative;
-        flex-direction: row;
+        flex-direction: column;
 
         .left {
             position: absolute;
