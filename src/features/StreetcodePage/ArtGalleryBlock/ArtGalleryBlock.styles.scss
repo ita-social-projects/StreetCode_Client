@@ -12,8 +12,8 @@
     width: 100%;
 
     .slick-dots {
-        padding-right: pxToRem(16px);
-        margin-top: pxToRem(-60px);
+        padding: 0 pxToRem(16px);
+        bottom: pxToRem(-40px);
     }
 }
 

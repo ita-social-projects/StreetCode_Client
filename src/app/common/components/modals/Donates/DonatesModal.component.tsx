@@ -1,19 +1,17 @@
 import './DonatesModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-import { Button, Modal } from 'antd';
-import {
-    ChangeEvent, useEffect, useState,
-} from 'react';
 
-import { Checkbox } from 'antd';
 import { observer } from 'mobx-react-lite';
-import useMobx, { useModalContext } from '@stores/root-store';
-import Donation from '@/models/feedback/donation.model';
-import DonationApi from '@/app/api/donates/donation.api';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useModalContext } from '@stores/root-store';
 
-import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { Button, Checkbox, Modal } from 'antd';
+
+import DonationApi from '@/app/api/donates/donation.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
+import Donation from '@/models/feedback/donation.model';
 
 const possibleDonateAmounts = [500, 100, 50];
 
@@ -40,7 +38,10 @@ const DonatesModal = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        let newValue = target.value.replace('₴', '').trim();
+        const newValue = target.value.replace('₴', '').trim();
+        if (newValue.includes('-')) {
+            return;
+        }
         if (!newValue) {
             setDonateAmount(0);
         } else {
@@ -52,32 +53,32 @@ const DonatesModal = () => {
             }
         }
     };
-    
+
     const charWidth = windowSize.width > 1024 ? 42 : 21;
     const firstWidth = windowSize.width > 1024 ? 13 : 6;
     const baseValWidth = windowSize.width > 1024 ? 3 : 4;
-    const count = (donateAmount.toString().match(/1/g) || []).length; 
-    
-    var inputWidth = baseValWidth + donateAmount.toString().length * charWidth - count * firstWidth;
+    const count = (donateAmount.toString().match(/1/g) || []).length;
 
-    const style = { "--input-width": `${inputWidth}px` } as React.CSSProperties;
+    const inputWidth = baseValWidth + donateAmount.toString().length * charWidth - count * firstWidth;
+
+    const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
     const handlePost = async () => {
-        const donation: Donation = { 
-            amount: donateAmount, 
-            pageUrl: window.location.href
+        const donation: Donation = {
+            amount: donateAmount,
+            pageUrl: window.location.href,
         };
 
         if (isCheckboxChecked) {
             supportEvent('submit_donate_from_modal');
-            
+
             Promise.all([DonationApi.create(donation)])
-            .then(response => {
-                window.location.assign(response[0].pageUrl);
-            })
-            .catch();
+                .then((response) => {
+                    window.location.assign(response[0].pageUrl);
+                })
+                .catch();
         }
-    }
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -118,7 +119,7 @@ const DonatesModal = () => {
                 <div className={`donateInputContainerWrapper ${(donateAmount !== 0) ? 'active' : ''} `}>
                     <input
                         onChange={handleDonateInputChange}
-                        style={{ ...style, width: `var(--input-width)` }}
+                        style={{ ...style, width: 'var(--input-width)' }}
                         maxLength={14}
                         value={`${donateAmount.toString()}`}
                         className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
@@ -139,7 +140,13 @@ const DonatesModal = () => {
                     ))}
                 </div>
                 <div className="donatesInputContainer">
-                    <Checkbox className={"checkbox-borderline"} checked={isCheckboxChecked} onChange={(e) => setIsCheckboxChecked(e.target.checked)}>Я даю згоду на обробку моїх персональних даних</Checkbox>
+                    <Checkbox
+                        className="checkbox-borderline"
+                        checked={isCheckboxChecked}
+                        onChange={(e) => setIsCheckboxChecked(e.target.checked)}
+                    >
+                        Я даю згоду на обробку моїх персональних даних
+                    </Checkbox>
                 </div>
                 <button
                     onClick={handlePost}
