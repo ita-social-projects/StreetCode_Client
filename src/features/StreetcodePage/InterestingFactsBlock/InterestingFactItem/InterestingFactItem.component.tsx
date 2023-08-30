@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { Fact } from '@models/streetcode/text-contents.model';
 import { useModalContext } from '@stores/root-store';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import useIsVisible from '@/app/common/hooks/stateful/useIsVisible';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -19,6 +20,7 @@ const InterestingFactItem = ({
     maxTextLength = 250,
     numberOfSlides,
 }: Props) => {
+    const windowSize = useWindowSize();
     const millisecondsToHideAfterOpening = 4000;
     const { modalStore } = useModalContext();
     const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
@@ -43,7 +45,10 @@ const InterestingFactItem = ({
     }, [image, isOnScreen]);
 
     return (
-        <div className="interestingFactSlide" ref={elementRef}>
+        <div className="interestingFactSlide" ref={elementRef}
+        onClick={(e) => {
+            {windowSize.width > 1024 && e.stopPropagation()}
+        }}>
             <div
                 className="slideImage"
             >

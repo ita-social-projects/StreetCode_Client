@@ -9,20 +9,27 @@
     .sliderContainer {
         .slick-slider {
             .slick-arrow {
+                top: 43%;
                 @include mut.sized(68px, 101px);
             }
 
-            .slick-prev, .slick-next {
+            .slick-prev,
+            .slick-next {
                 z-index: 9999;
                 filter: none !important;
             }
 
             .slick-prev {
                 left: 20px !important;
-                
+
                 &::before {
                     content: url("@assets/images/utils/LeftSmallSliderArrow.svg");
-                    opacity: 0.9;
+                    opacity: 0.8;
+                    filter: none;
+                }
+
+                &:hover::before {
+                    opacity: 1.0;
                 }
             }
 
@@ -31,11 +38,16 @@
 
                 &::before {
                     content: url("@assets/images/utils/RightSmallSliderArrow.svg");
-                    opacity: 0.9;
+                    opacity: 0.8;
+                    filter: none;
+                }
+
+                &:hover::before {
+                    opacity: 1.0;
                 }
             }
         }
-        
+
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 20px);
             @include mut.rem-padded($bottom: 30px);
@@ -44,21 +56,21 @@
         }
 
         .instagramButton {
-                    height: f.pxToRem(46px);
-                    @include mut.full-rounded(14px);
-                    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
-                    @include mut.rem-margined($left: 10px, $right: 10px, $top: 40px);
-                    padding: f.pxToRem(25px) 0;
-                    min-width: f.pxToRem(267px);
-                    text-align: center;
-                    @include ut.flex-centered();
-                    cursor: pointer;
-                    background-color: c.$accented-red-color;
-                    color: c.$pure-white-color;
-        
-                    &:hover {
-                        background-color: c.$dark-red-color;
-                    }
-                }
+            height: f.pxToRem(46px);
+            @include mut.full-rounded(14px);
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+            @include mut.rem-margined($left: 10px, $right: 10px, $top: 40px);
+            padding: f.pxToRem(25px) 0;
+            min-width: f.pxToRem(267px);
+            text-align: center;
+            @include ut.flex-centered();
+            cursor: pointer;
+            background-color: c.$accented-red-color;
+            color: c.$pure-white-color;
+
+            &:hover {
+                background-color: c.$dark-red-color;
+            }
+        }
     }
 }

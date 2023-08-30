@@ -20,10 +20,6 @@
     @include mut.rem-margined($bottom: 35px);
 }
 
-.textShort {
-    @include mut.truncated($line-num: 25);
-}
-
 .text {
     white-space: pre-line;
     margin-right: f.pxToRem(10px);

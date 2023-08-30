@@ -8,7 +8,6 @@
   @include mut.sized(387px);
   @include mut.full-rounded(33px);
   z-index: 0;
-  cursor: pointer;
   position: relative;
   @include vnd.vendored(transition, '.5s ease');
 
