@@ -201,9 +201,9 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву', max: 26 }]}
+                        rules={[{ required: true, message: 'Введіть назву', max: 28 }]}
                     >
-                        <Input maxLength={26} showCount onChange={(e) => onChange('title', e.target.value)} />
+                        <Input maxLength={28} showCount onChange={(e) => onChange('title', e.target.value)} />
                     </Form.Item>
 
                     <Form.Item label="Дата:">
