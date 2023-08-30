@@ -26,16 +26,18 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
         WebkitLineClamp: expanded ? 'unset' : maxLines,
         overflow: 'hidden',
     };
-    function decodeHtmlEntities(html: string) {
-        const txt = document.createElement('textarea');
-        txt.innerHTML = html;
-        return txt.value;
-    }
+
     useEffect(() => {
         const container = textContainerRef.current;
-        const displayedText = container?.textContent || '';
-        const cleanedText = decodeHtmlEntities(text).replace(/<[^>]+>/g, ''); // Видаляє всі HTML-теги
-        if (displayedText.length < cleanedText.length) {
+        let lineHeight = 0;
+        let textHeight = 0;
+        console.log(text);
+        if (container) {
+            lineHeight = parseFloat(getComputedStyle(container).lineHeight);
+            textHeight = container.offsetHeight;
+        }
+        const expectedHeight = maxLines * lineHeight;
+        if (textHeight < expectedHeight) {
             setShowButtons(false);
         } else {
             setShowButtons(true);
