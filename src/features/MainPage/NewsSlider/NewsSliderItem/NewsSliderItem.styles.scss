@@ -9,6 +9,7 @@
 .newsSliderItem {
     display: flex;
     flex-direction: column;
+
     .newsMainPage {
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.sized(840px, 567px);
@@ -25,11 +26,11 @@
             overflow: hidden;
         }
 
-        @media (min-width: 360px) and (max-width: 767px){
+        @media (min-width: 360px) and (max-width: 767px) {
             width: f.pxToRem(340px);
             height: fit-content;
             margin: f.pxToRem(-5px) f.pxToRem(20px) 0 f.pxToRem(20px);
-
+        }
     }
 
     .newsSlideText {
