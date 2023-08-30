@@ -21,7 +21,7 @@ const TeamMembers = () => {
     const [positions, setPositions] = useState<Positions[]>([]);
 
     const [team, setTeam] = useState<TeamMember[]>([]);
-    const [positionId, setPositionId] = useState<number>(-1);
+    const [positionId, setPositionId] = useState<number>(1);
 
     useEffect(
         () => {

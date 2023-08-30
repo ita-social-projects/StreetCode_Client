@@ -44,8 +44,8 @@ const SliderComponents = ({ sliderItems }) => {
                         },
                     }}
                 >
-                    {sliderItems.map((item, index) => (
-                        <SwiperSlide className="square" key={index}>{item}</SwiperSlide>
+                    {sliderItems.map((item) => (
+                        <SwiperSlide className="square" key={item.id}>{item}</SwiperSlide>
                     ))}
                 </Swiper>
             </div>
