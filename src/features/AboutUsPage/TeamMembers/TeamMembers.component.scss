@@ -1,23 +1,48 @@
-@use "@assets/sass/variables/_variables.fonts.scss" as ft;
-@use "@sass/variables/_variables.colors.scss" as c;
-
-.positionSliderComponent{
+.topSlider {
     display: flex;
-    align-items: center !important;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    //vertical-align: middle;
-    
+
+    overflow: hidden;
+
     h1{
-        font-size: 20px;
         font-weight: 500;
-        font-family: ft.$closer-text-font;
-        color: c.$copyright-section-color;
+        font-size: 30px;
     }
-    .square{
-        background-color: c.$copyright-section-color;
-        height: 8px;
-        width: 8px;
+
+    .swiper-slide {
+        text-align: center;
+        width: fit-content;
+        border: 2px solid green;
+        position:unset;
+
+        &-active {
+            font-weight: 500;
+            font-size: 20px;
+        }
     }
+}
+
+.swiper{
+    justify-content: center;
+}
+
+.slider-arrow {
+    &:hover {
+      fill: #000000;
+    }
+}
+
+.topSliderContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    margin: 0 auto;
+}
+
+.squareParent{
+    position: relative;
 }
 .teamMembersSlider {
     .swiper {
@@ -28,3 +53,4 @@
         }
     }
 }
+

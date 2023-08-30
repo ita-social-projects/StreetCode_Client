@@ -8,7 +8,7 @@
     // background: url('../../assets/images/streetcode-card/background.png') no-repeat center center / cover;
     min-height: 78vh;
     width: 100vw;
-
+    overflow: hidden;
     padding-top: f.pxToRem(82px);
 
     .contentContainer {

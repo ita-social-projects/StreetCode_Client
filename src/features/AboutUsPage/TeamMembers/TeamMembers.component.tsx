@@ -1,64 +1,62 @@
-import { useEffect,  useRef,  useState } from "react";
-import './TeamMembers.component.scss'
-import TeamMemberCard from "../TeamMemberCard/TeamMemberCard.component";
-import TeamMember from "@/models/team/team.model";
-import TeamMemberList from "./TeamMembersList/TeamMemberList.component";
-import TeamApi from "@/app/api/team/team.api";
-import '@/app/common/constants/screen-sizes.constants'
+import './TeamMembers.component.scss';
 
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useEffect, useState } from 'react';
 
-import 'swiper/css';
+import PositionsApi from '@/app/api/team/positions.api';
+import TeamApi from '@/app/api/team/team.api';
+import { SCREEN_SIZES } from '@/app/common/constants/screen-sizes.constants';
+import TeamMember, { Positions } from '@/models/team/team.model';
+
+import 'swiper/swiper-bundle.min.css';
 import 'swiper/css/pagination';
-import { SCREEN_SIZES } from "@/app/common/constants/screen-sizes.constants";
+import 'swiper/css';
 
-const TeamMembers = () => { 
-    const [team, setTeam] = useState<TeamMember[]>([]); 
-    
+import TeamMemberCard from '../TeamMemberCard/TeamMemberCard.component';
+
+import TeamMemberList from './TeamMembersList/TeamMemberList.component';
+import TeamMemberSlider from './TeamPositionsSlider/TeamMembersSlider.component';
+import SliderComponents from './TeamPositionsSlider/TeamPostionSlider.component';
+
+const TeamMembers = () => {
+    const [positions, setPositions] = useState<Positions[]>([]);
+
+    const [team, setTeam] = useState<TeamMember[]>([]);
+    const [positionId, setPositionId] = useState<number>(1);
+
     useEffect(
-        ()=>{
-            TeamApi.getByRoleId(1).then(
-                result => setTeam(result)
-            ).then();
+        () => {
+            if (positionId > 0) {
+                TeamApi.getByRoleId(positionId).then(
+                    (result) => setTeam(result),
+                );
+            }
         },
-        []
+        [positionId],
     );
 
-    const getSliderData = () => {
-        if(team.length > 0){
-            return(
-                <Swiper
-                    slidesPerView = "auto"
-                    centeredSlides
-                    spaceBetween={20}
-                    slideToClickedSlide
-                    pagination = {window.innerWidth < SCREEN_SIZES.phone}
-                    loop = {true}
-                    >
-                        {team.map(
-                        (member) => (                    
-                            <SwiperSlide >
-                                <TeamMemberCard {...member}/>
-                            </SwiperSlide>
-                ))}
-                </Swiper>
-            )
-        }
-        return (<></>);
-    };
+    useEffect(() => {
+        PositionsApi.getAll().then((pos) => {
+            setPositions(pos);
+        });
+    }, []);
+
+    const sliderItems = positions.map((position, index) => (
+        <div key={index}>
+            <div>{position.position}</div>
+        </div>
+    ));
 
     return (
-        <div className='aboutUsBlockContainer'>
-            { window.innerWidth < SCREEN_SIZES.tablet
-                ? 
-                    <div className="teamMembersSlider">
-                        {
-                            getSliderData()
-                        }    
-                    </div>
-                : <TeamMemberList teamMembers = {team}/>
-            }
-    </div>
+        <div className="aboutUsBlockContainer">
+            <SliderComponents
+                sliderItems={sliderItems}
+            />
+            {window.innerWidth <= SCREEN_SIZES.tablet ? (
+                <TeamMemberSlider team={team} />
+            ) : (
+                <TeamMemberList teamMembers={team} />
+            )}
+        </div>
     );
-}
-export default TeamMembers; 
+};
+export default TeamMembers;
