@@ -53,7 +53,7 @@ ul, ol {
   .ant-btn{
     color:#fff;
     &:hover{
-      color:c.$pure-white-color ;
+      color: c.$pure-white-color ;
     }
   }
   button{
@@ -64,7 +64,7 @@ ul, ol {
   }
   
   &:hover{
-    color:c.$pure-white-color ;
+    color: c.$pure-white-color ;
     background-color: c.$dark-red-color;
     border-color: c.$dark-red-color;
   }
@@ -76,22 +76,6 @@ ul, ol {
     background-color: c.$lighter-gray-color;
     border-color: c.$lighter-gray-color;
   }
-}
-::-webkit-scrollbar {
-  width: f.pxToRem(15px);
-}
-
-::-webkit-scrollbar-thumb,
-::-webkit-scrollbar-track {
-  @include ut.full-rounded(15px);
-}
-
-::-webkit-scrollbar-thumb {
-  background: c.$card-scrollbar-track-color;
-}
-
-::-webkit-scrollbar-track {
-  background: c.$accented-gray-color;
 }
 
 .ant-checkbox-checked::after {

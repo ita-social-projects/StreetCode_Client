@@ -5,6 +5,7 @@
 $bgImg: '@assets/images/streetcode-card/background.png';
 
 .teamComponent {
+    margin-bottom: f.pxToRem(22px);
     .margin-82px {
         margin-top: f.pxToRem(82px);
     }
@@ -22,14 +23,23 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     .mainContainer {
         width: 100%;
         position: relative;
+        margin-top: f.pxToRem(10px);
     }
 
     .mainContent {
         width: 100%;
-        margin-bottom: f.pxToRem(30px);
         @include mut.flex-centered();
-        margin-top: f.pxToRem(1px);
         padding-top: f.pxToRem(1px);
+
+        margin-top: f.pxToRem(21px);
+        margin-bottom: f.pxToRem(85px);
+
+        @media screen and (max-width: 768px) {
+            margin-top: f.pxToRem(2px);
+            margin-bottom: f.pxToRem(35px);
+        }
+
+
 
         ::-webkit-scrollbar {
             width: f.pxToRem(5px);
@@ -75,6 +85,11 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         @media screen and (max-width: 767px) {
             width: 100% !important;
         }
+    }
+
+    @media screen and (max-width: 360px) {
+        margin-top: f.pxToRem(2px);
+        margin-bottom: f.pxToRem(30px);
     }
 
     .slick-initialized .slick-slide {

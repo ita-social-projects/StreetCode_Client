@@ -26,7 +26,7 @@
         @media (min-width: 360px) and (max-width: 767px) {
             width: 94vw;
             height: f.pxToRem(550px);
-            margin: 0 f.pxToRem(20px);
+            margin: f.pxToRem(-5px) f.pxToRem(20px) 0 f.pxToRem(20px);
         }
 
         @media (min-width: 614px) and (max-width: 715px) {
