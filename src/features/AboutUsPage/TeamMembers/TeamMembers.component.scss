@@ -12,10 +12,64 @@
         font-family: ft.$closer-text-font;
         color: c.$copyright-section-color;
     }
-    .square{
+}
 
-        background-color: c.$copyright-section-color;
-        height: 8px;
-        width: 8px;
+.square{
+    background-color: red;
+    height: 8px;
+    width: 8px;
+}
+
+.topSlider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .swiper-slide{
+        text-align: center;
+        width: fit-content;
+        border: 2px solid green;
+        &-active{
+            border: 2px solid red;
+        }
     }
+}
+
+.topSliderContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swiper-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    margin: 0 10px;
+}
+
+.arrow-left {
+    background-color: #007bff; /* Змініть цей колір на ваш власний */
+    color: #fff; /* Колір тексту */
+    border: none; /* Видалення границі */
+    padding: 10px 20px; /* Внутрішні відступи кнопки */
+    border-radius: 5px; /* Закруглені кути */
+    cursor: pointer; /* Курсор при наведенні */
+}
+
+.arrow-right {
+    background-color: #007bff; /* Змініть цей колір на ваш власний */
+    color: #fff; /* Колір тексту */
+    border: none; /* Видалення границі */
+    padding: 10px 20px; /* Внутрішні відступи кнопки */
+    border-radius: 5px; /* Закруглені кути */
+    cursor: pointer; /* Курсор при наведенні */
+}
+
+.swiper-slide {
+    white-space: normal;
+    word-wrap: break-word;
 }
