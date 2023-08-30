@@ -18,11 +18,12 @@ import ArtGallerySlideSmall from './ArtGalleryListOfItem/ArtGallerySlide.compone
 
 const SECTION_AMOUNT = 6;
 const SECTION_AMOUNT_SMALL = 2;
+const MAX_SLIDES_AMOUNT = 30;
 
 const ArtGalleryBlock = () => {
     const { streetcodeArtStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-    const { fetchStreetcodeArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
+    const { fetchNextPageOfArtsByStreetcodeId, getStreetcodeArtArray } = streetcodeArtStore;
     const [indexedArts, setIndexedArts] = useState<IndexedArt[]>([]);
     const [indexedArtsSmall, setIndexedArtsSmall] = useState<IndexedArt[]>([]);
     const windowsize = useWindowSize();
@@ -42,12 +43,23 @@ const ArtGalleryBlock = () => {
     let artsDataSmall: IndexedArt[] = [];
 
     useAsync(
-        () => {
+        async () => {
             if (getStreetCodeId !== errorStreetCodeId) {
-                fetchStreetcodeArtsByStreetcodeId(getStreetCodeId);
+                let currentSlide = 0;
+
+                while (currentSlide < MAX_SLIDES_AMOUNT) {
+                    try {
+                        // eslint-disable-next-line no-await-in-loop
+                        await fetchNextPageOfArtsByStreetcodeId(getStreetCodeId);
+                        currentSlide += 1;
+                    } catch (error: unknown) {
+                        console.log(`%c Loading of ART gallery completed. ${currentSlide + 1} slides of images were downloaded`, 'color: #1BD760');
+                        currentSlide = MAX_SLIDES_AMOUNT;
+                    }
+                }
             }
         },
-        [getStreetCodeId, fetchStreetcodeArtsByStreetcodeId],
+        [getStreetCodeId],
     );
 
     useEffect(() => {
@@ -254,7 +266,7 @@ const ArtGalleryBlock = () => {
         <div>
             {getStreetcodeArtArray.length > 0 && <div
                 id="art-gallery"
-                className="artGalleryWrapper" 
+                className="artGalleryWrapper"
             >
                 <div className="artGalleryContainer container">
                     <BlockHeading headingText="Арт-галерея" />
