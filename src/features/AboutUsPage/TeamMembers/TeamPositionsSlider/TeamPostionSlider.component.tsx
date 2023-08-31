@@ -4,7 +4,14 @@ import RightSliderArrow from '@assets/images/utils/RightDefaultSliderArrow.svg';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-const SliderComponents = ({ sliderItems }) => {
+import { Positions } from '@/models/team/team.model';
+
+interface Props {
+    positions: Positions[],
+    setActive: React.Dispatch<React.SetStateAction<number>>,
+}
+
+const SliderComponents = (props: Props) => {
     const [swiper, setSwiper] = useState(null);
 
     const handlePreviousSlide = () => {
@@ -19,17 +26,23 @@ const SliderComponents = ({ sliderItems }) => {
         }
     };
 
+    const getActive = (swiper) => {
+        const { realIndex } = swiper;
+        const activePosition = props.positions[realIndex];
+        const activePositionId = activePosition.id;
+        props.setActive(activePositionId);
+    };
+
     return (
         <div className="topSliderContainer">
             <LeftSliderArrow className="slider-arrow" alt="Previous" onClick={handlePreviousSlide} />
             <div className="topSlider">
                 <Swiper
-                    className="squareParent"
-                    onSwiper={(swiper) => setSwiper(swiper)}
                     slidesPerView={5}
-                    spaceBetween={0}
                     centeredSlides
                     loop
+                    onSwiper={(swiper) => setSwiper(swiper)}
+                    onSlideChange={(swiper) => getActive(swiper)}
                     navigation={{ nextEl: '.arrow-left', prevEl: '.arrow-right' }}
                     modules={[Navigation]}
                     breakpoints={{
@@ -44,8 +57,12 @@ const SliderComponents = ({ sliderItems }) => {
                         },
                     }}
                 >
-                    {sliderItems.map((item) => (
-                        <SwiperSlide className="square" key={item.id}>{item}</SwiperSlide>
+                    {props.positions.map((position) => (
+                        <SwiperSlide className="square" key={position.id}>
+                            <div key={props.positions}>
+                                <div>{position.position}</div>
+                            </div>
+                        </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
