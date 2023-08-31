@@ -21,7 +21,7 @@ const TeamMembers = () => {
     const [positions, setPositions] = useState<Positions[]>([]);
 
     const [team, setTeam] = useState<TeamMember[]>([]);
-    const [positionId, setPositionId] = useState<number>(1);
+    const [positionId, setPositionId] = useState<number>(-1);
 
     useEffect(
         () => {
@@ -37,6 +37,9 @@ const TeamMembers = () => {
     useEffect(() => {
         PositionsApi.getAllWithTeamMembers().then((pos) => {
             setPositions(pos);
+            if (pos.length > 0) {
+                setPositionId(pos[0].id);
+            }
         });
     }, []);
 
