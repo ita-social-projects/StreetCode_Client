@@ -6,6 +6,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
 .teamComponent {
     margin-bottom: f.pxToRem(22px);
+
     .margin-82px {
         margin-top: f.pxToRem(82px);
     }
@@ -23,7 +24,9 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     .mainContainer {
         width: 100%;
         position: relative;
-        margin-top: f.pxToRem(10px);
+        @media screen and (max-width: 360px) {
+            margin-top: f.pxToRem(-50px);
+        }
     }
 
     .mainContent {
@@ -36,10 +39,13 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
         @media screen and (max-width: 768px) {
             margin-top: f.pxToRem(2px);
-            margin-bottom: f.pxToRem(35px);
+            margin-bottom: f.pxToRem(32px);
         }
 
-
+        @media screen and (max-width: 360px) {
+            //margin-top: f.pxToRem(200000px);
+            margin-bottom: f.pxToRem(32px);
+        }
 
         ::-webkit-scrollbar {
             width: f.pxToRem(5px);
@@ -60,6 +66,11 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         }
     }
 
+    @media screen and (max-width: 768px) {
+        margin-top: f.pxToRem(-31px);
+        padding-top: f.pxToRem(-30px);
+    }
+
     @media screen and (max-width: 680px) {
         .mainContainer {
             height: unset;
@@ -70,8 +81,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
                 }
 
                 height: unset;
-                margin-top: f.pxToRem(10px);
-                padding-top: f.pxToRem(10px);
+
             }
         }
 
