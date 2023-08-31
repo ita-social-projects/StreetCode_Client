@@ -24,7 +24,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     .mainContainer {
         width: 100%;
         position: relative;
-        @media screen and (max-width: 360px) {
+        @media screen and (max-width: 480px) {
             margin-top: f.pxToRem(-50px);
         }
     }
@@ -42,8 +42,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
             margin-bottom: f.pxToRem(32px);
         }
 
-        @media screen and (max-width: 360px) {
-            //margin-top: f.pxToRem(200000px);
+        @media screen and (max-width: 480px) {
             margin-bottom: f.pxToRem(32px);
         }
 
@@ -97,7 +96,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
         }
     }
 
-    @media screen and (max-width: 360px) {
+    @media screen and (max-width: 480px) {
         margin-top: f.pxToRem(2px);
         margin-bottom: f.pxToRem(30px);
     }

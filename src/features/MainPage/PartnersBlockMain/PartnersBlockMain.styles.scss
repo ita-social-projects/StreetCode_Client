@@ -17,7 +17,7 @@
                 @media screen and (max-width: 768px) {
                     @include mut.rem-margined($top: 50px, $right: 10px, $bottom: 30px, $left: 10px);
                 }
-                @media screen and (max-width: 360px) {
+                @media screen and (max-width: 480px) {
                     @include mut.rem-margined($top: 50px, $right: 10px, $bottom: 30px, $left: 10px);
                 }
             }
