@@ -84,8 +84,10 @@ export const API_ROUTES = {
     },
     POSITIONS: {
         GET_ALL: 'position/getAll',
+        GET: 'position/getById',
         CREATE: 'position/create',
-        GET_ALL_WITH_MEMBERS: 'Position/GetAllWithTeamMembers',
+        UPDATE: 'position/update',
+        DELETE: 'position/delete',
     },
     TOPONYMS: {
         GET_ALL: 'toponym/getAll',
