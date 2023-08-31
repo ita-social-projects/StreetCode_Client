@@ -35,21 +35,16 @@ const TeamMembers = () => {
     );
 
     useEffect(() => {
-        PositionsApi.getAll().then((pos) => {
+        PositionsApi.getAllWithTeamMembers().then((pos) => {
             setPositions(pos);
         });
     }, []);
 
-    const sliderItems = positions.map((position, index) => (
-        <div key={index}>
-            <div>{position.position}</div>
-        </div>
-    ));
-
     return (
         <div className="aboutUsBlockContainer">
             <SliderComponents
-                sliderItems={sliderItems}
+                positions={positions}
+                setActive={setPositionId}
             />
             {window.innerWidth <= SCREEN_SIZES.tablet ? (
                 <TeamMemberSlider team={team} />
