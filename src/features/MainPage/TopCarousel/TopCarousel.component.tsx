@@ -6,8 +6,6 @@ import StreetcodeMarker7 from '@images/footer/main-page-mob2.png';
 import StreetcodeMarker8 from '@images/footer/main-page-mob3.png';
 import StreetcodeMarker2 from '@images/footer/main-page2.png';
 import StreetcodeMarker3 from '@images/footer/main-page3.png';
-import StreetcodeMarker4 from '@images/footer/main-page4.png';
-import StreetcodeMarker5 from '@images/footer/main-page5.png';
 
 import { observer } from 'mobx-react-lite';
 import { useMediaQuery } from 'react-responsive';
@@ -23,12 +21,6 @@ const content = [
     },
     {
         image: StreetcodeMarker3,
-    },
-    {
-        image: StreetcodeMarker4,
-    },
-    {
-        image: StreetcodeMarker5,
     },
 ];
 
