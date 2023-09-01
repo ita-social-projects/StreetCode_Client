@@ -12,6 +12,10 @@ const PartnersApi = {
 
     getAll: () => Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_ALL}`),
 
+    getAllByIsKeyPartner: (isKeyPartner : boolean) => Agent.get<Partner[]>(
+        `${API_ROUTES.PARTNERS.GET_ALL_BY_IS_KEY_PARTNERS}/${isKeyPartner}`,
+    ),
+
     getAllShort: () => Agent.get<PartnerShort[]>(`${API_ROUTES.PARTNERS.GET_ALL_SHORT}`),
 
     getByStreetcodeId(streetcodeId: number) {
