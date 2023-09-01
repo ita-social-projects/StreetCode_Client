@@ -88,71 +88,73 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     const maxLength = character_limit || 15000;
 
     return (
-        <>
-            <FormItem
-                label="Основний текст"
-            >
-                <TinyMCEEditor
-                    ref={editorRef}
-                    value={editorContent}
-                    onEditorChange={(e, editor) => {
-                        setEditorContent(editor.getContent());
-                        setInputInfo({ ...inputInfo, textContent: editor.getContent() });
-                        onChange('textContent', editor.getContent());
-                    }}
-                    init={{
-                        max_chars: 1000,
-                        height: 300,
-                        menubar: false,
-                        init_instance_callback(editor) {
-                            setEditorContent(inputInfo?.textContent ?? '');
-                            editor.setContent(inputInfo?.textContent ?? '');
-                        },
-                        plugins: [
-                            'autolink',
-                            'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                            'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
-                        ],
-                        toolbar: 'undo redo | bold italic | '
+        <FormItem
+            label="Основний текст"
+        >
+            <TinyMCEEditor
+                ref={editorRef}
+                value={editorContent}
+                onChange={(e, editor) => {
+                    setInputInfo({ ...inputInfo, textContent: editor.getContent() });
+                    onChange('textContent', editor.getContent());
+                }}
+                onEditorChange={(e, editor) => {
+                    setEditorContent(editor.getContent());
+                    setInputInfo({ ...inputInfo, textContent: editor.getContent() });
+                    onChange('textContent', editor.getContent());
+                }}
+                init={{
+                    max_chars: 1000,
+                    height: 300,
+                    menubar: false,
+                    init_instance_callback(editor) {
+                        setEditorContent(inputInfo?.textContent ?? '');
+                        editor.setContent(inputInfo?.textContent ?? '');
+                    },
+                    plugins: [
+                        'autolink',
+                        'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                        'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                    ],
+                    toolbar: 'undo redo | bold italic | '
                         + 'removeformat',
-                        toolbar_mode: 'sliding',
-                        language: 'uk',
-                        entity_encoding: 'raw',
-                        content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                    }}
-                    onPaste={(e, editor) => {
-                        const previousContent = editor.getContent({ format: 'text' });
-                        const clipboardContent = e.clipboardData?.getData('text') || '';
-                        const resultContent = previousContent + clipboardContent;
-                        const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
+                    toolbar_mode: 'sliding',
+                    language: 'uk',
+                    entity_encoding: 'raw',
+                    content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                }}
+                onPaste={(e, editor) => {
+                    const previousContent = editor.getContent({ format: 'text' });
+                    const clipboardContent = e.clipboardData?.getData('text') || '';
+                    const resultContent = previousContent + clipboardContent;
+                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
 
-                        if (selected.length >= clipboardContent.length) {
-                            return;
-                        }
-                        if (resultContent.length >= maxLength && isSelectionEnd) {
-                            // eslint-disable-next-line max-len
-                            editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
-                            e.preventDefault();
-                        }
-                        if (resultContent.length <= maxLength && !isSelectionEnd) {
-                            return;
-                        }
-                        if (resultContent.length >= maxLength && !isSelectionEnd) {
-                            e.preventDefault();
-                        }
-                    }}
-                    onKeyDown={(e, editor) => {
-                        if (editor.getContent({ format: 'text' }).length >= maxLength
+                    if (selected.length >= clipboardContent.length) {
+                        return;
+                    }
+                    if (resultContent.length >= maxLength && isSelectionEnd) {
+                        // eslint-disable-next-line max-len
+                        editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
+                        e.preventDefault();
+                    }
+                    if (resultContent.length <= maxLength && !isSelectionEnd) {
+                        return;
+                    }
+                    if (resultContent.length >= maxLength && !isSelectionEnd) {
+                        e.preventDefault();
+                    }
+                }}
+                onKeyDown={(e, editor) => {
+                    if (editor.getContent({ format: 'text' }).length >= maxLength
                                 && !setOfKeys.has(e.key)
                                 && editor.selection.getContent({ format: 'text' }).length === 0) {
-                            e.preventDefault();
-                        }
-                    }}
-                    onSelectionChange={(e, editor) => {
-                        setSelected(editor.selection.getContent());
-                    }}
-                />
-            </FormItem>
+                        e.preventDefault();
+                    }
+                }}
+                onSelectionChange={(e, editor) => {
+                    setSelected(editor.selection.getContent());
+                }}
+            />
             <Button
                 className="streetcode-custom-button button-margin-vertical"
                 onClick={() => setModal('addTerm')}
@@ -190,8 +192,7 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                 </Button>
             </div>
             <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
-
-        </>
+        </FormItem>
     );
 };
 
