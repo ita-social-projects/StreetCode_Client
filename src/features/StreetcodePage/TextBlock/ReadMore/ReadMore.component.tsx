@@ -1,8 +1,10 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import './ReadMore.styles.scss';
 
-import { useEffect, useRef, useState } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
+import classnames from 'classnames';
+import * as lodash from 'lodash';
 
 interface Props {
   text: string;
@@ -10,42 +12,50 @@ interface Props {
 }
 
 const ReadMore = ({ text, maxLines = 25 }: Props) => {
-    const [expanded, setExpanded] = useState(false);
+    const [clamped, setClamped] = useState(true);
     const [showButtons, setShowButtons] = useState(true);
+    const containerRef = useRef<HTMLDivElement | null>(null);
     const readMoreRef = useRef<HTMLSpanElement | null>(null);
-    const textContainerRef = useRef<HTMLDivElement | null>(null);
     const firstRender = useRef(true);
 
-    const toggleExpanded = () => {
-        setExpanded(!expanded);
-    };
+    const handleClick = () => setClamped(!clamped);
 
-    const textContainerStyle = {
+    useEffect(() => {
+        const hasClamping = (el: HTMLDivElement) => {
+            const { clientHeight, scrollHeight } = el;
+            return clientHeight !== scrollHeight;
+        };
+
+        const checkButtonAvailability = () => {
+            if (containerRef.current) {
+                const hadClampClass = containerRef.current.classList.contains('clamp');
+                if (!hadClampClass) containerRef.current.classList.add('clamp');
+                setShowButtons(hasClamping(containerRef.current));
+                if (!hadClampClass) containerRef.current.classList.remove('clamp');
+            }
+        };
+
+        const debouncedCheck = lodash.debounce(checkButtonAvailability, 50);
+
+        checkButtonAvailability();
+        window.addEventListener('resize', debouncedCheck);
+
+        return () => {
+            window.removeEventListener('resize', debouncedCheck);
+        };
+    }, [containerRef]);
+
+    const textContainerStyle: CSSProperties = {
         display: '-webkit-box',
         WebkitBoxOrient: 'vertical' as const,
-        WebkitLineClamp: expanded ? 'unset' : maxLines,
+        WebkitLineClamp: maxLines,
         overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        overflowWrap: 'normal',
     };
 
     useEffect(() => {
-        const container = textContainerRef.current;
-        let lineHeight = 0;
-        let textHeight = 0;
-        console.log(text);
-        if (container) {
-            lineHeight = parseFloat(getComputedStyle(container).lineHeight);
-            textHeight = container.offsetHeight;
-        }
-        const expectedHeight = maxLines * lineHeight;
-        if (textHeight < expectedHeight) {
-            setShowButtons(false);
-        } else {
-            setShowButtons(true);
-        }
-    }, [text]);
-
-    useEffect(() => {
-        if (!expanded && readMoreRef.current && !firstRender.current) {
+        if (clamped && readMoreRef.current && !firstRender.current) {
             const screenHeight = window.innerHeight;
 
             const rect = readMoreRef.current.getBoundingClientRect();
@@ -58,15 +68,16 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
         if (firstRender.current) {
             firstRender.current = false;
         }
-    }, [expanded]);
+    }, [clamped]);
+    const className = classnames('long-text', clamped && 'clamp');
 
     return (
         <>
             <div className="text">
                 <div
-                    className="textMain"
-                    style={textContainerStyle}
-                    ref={textContainerRef}
+                    ref={containerRef}
+                    className={className}
+                    style={className.includes('clamp') ? textContainerStyle : undefined}
                 >
                     <SearchTerms mainText={text} />
                 </div>
@@ -74,10 +85,10 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
                     <div className="readMoreContainer">
                         <span
                             className="readMore"
-                            onClick={toggleExpanded}
+                            onClick={handleClick}
                             ref={readMoreRef}
                         >
-                            {!expanded ? 'Трохи ще' : 'Дещо менше'}
+                            {clamped ? 'Трохи ще' : 'Дещо менше'}
                         </span>
                     </div>
                 )}
