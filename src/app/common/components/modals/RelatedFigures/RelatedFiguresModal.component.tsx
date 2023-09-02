@@ -2,7 +2,7 @@ import './RelatedFiguresModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import ModalBg from '@assets/images/utils/ModalBg.png';
+import ModalBg from '@assets/images/utils/ModalBg.webp';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx, { useModalContext } from '@stores/root-store';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';

@@ -3,7 +3,7 @@ import './TagsModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import ModalBg from '@assets/images/utils/ModalBg.png';
+import ModalBg from '@assets/images/utils/ModalBg.webp';
 import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 
 import { Modal } from 'antd';

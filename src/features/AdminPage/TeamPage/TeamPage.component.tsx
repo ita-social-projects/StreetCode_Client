@@ -3,10 +3,10 @@ import './TeamPage.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
-import facebook from '@assets/images/partners/facebook.png';
-import instagram from '@assets/images/partners/instagram.png';
-import twitter from '@assets/images/partners/twitter.png';
-import youtube from '@assets/images/partners/youtube.png';
+import facebook from '@assets/images/partners/facebook.webp';
+import instagram from '@assets/images/partners/instagram.webp';
+import twitter from '@assets/images/partners/twitter.webp';
+import youtube from '@assets/images/partners/youtube.webp';
 
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';

@@ -1,10 +1,10 @@
 import './SocialMediaLinks.styles.scss';
 
-import FaceBook from '@images/header-drawer/Facebook.png';
-import Instagram from '@images/header-drawer/Instagram.png';
-import TikTok from '@images/header-drawer/TikTok.png';
-import Twitter from '@images/header-drawer/Twitter.png';
-import Youtube from '@images/header-drawer/Youtube.png';
+import FaceBook from '@images/header-drawer/Facebook.webp';
+import Instagram from '@images/header-drawer/Instagram.webp';
+import TikTok from '@images/header-drawer/TikTok.webp';
+import Twitter from '@images/header-drawer/Twitter.webp';
+import Youtube from '@images/header-drawer/Youtube.webp';
 
 const SocialMediaLinks = () => (
     <ul className="socialIconHeaderContainer">

@@ -3,7 +3,7 @@
 @use "@sass/variables/_variables.fonts.scss" as fonts;
 @use "@sass/variables/_variables.colors.scss" as colors;
 
-$QRBgImg: "/src/assets/images/qr-block/QRbackground.png";
+$QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
 
 .QRBlockContainer {
     @include mut.sized(100%, 779px);

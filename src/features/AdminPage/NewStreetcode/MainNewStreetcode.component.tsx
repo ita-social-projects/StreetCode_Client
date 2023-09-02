@@ -91,6 +91,10 @@ const NewStreetcode = () => {
     };
     const [isPageLoaded, setPageLoaded] = useState(false);
 
+    useEffect(() =>{
+        
+    });
+
     useEffect(() => {
         if (isPageLoaded) {
             const isAnyFieldChanged = Object.values(fieldChanges).some((value) => value !== undefined && value !== '');
@@ -140,7 +144,8 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
-        }
+        }   
+
 
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
