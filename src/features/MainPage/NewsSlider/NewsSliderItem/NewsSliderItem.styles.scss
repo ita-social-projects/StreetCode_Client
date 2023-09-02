@@ -86,7 +86,7 @@
         height: 193px;
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
-
+        
         @media (min-width: 768px) and (max-width: 1024px){
             @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
             height: 141px;
@@ -122,17 +122,9 @@
     }
 
     .newsText {
-
         position: relative;
         display: contents;
-        height: fit-content;
-        @include mut.rem-margined(5px, 0px, 0px, 0px);
-        @include mut.rem-padded(0px, 5px, 0px, 0px);
-        color: c.$lighter-black-color;
-        word-break: break-all;
-        @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
-        line-height: 18px;
-
+    
         &::-webkit-scrollbar {
             display: none;
         }
@@ -149,9 +141,28 @@
             }
         }
 
-
         @media (min-width: 768px) and (max-width: 1024px){
             width: 93vw;
+        }
+    }
+    .text{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        @include mut.rem-margined(5px, 0px, 0px, 0px);
+        @include mut.rem-padded(0px, 5px, 0px, 0px);
+        color: c.$lighter-black-color;
+        word-break: break-all;
+        @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
+        line-height: 18px;
+        @media (min-width: 768px) and (max-width: 1024px) {
+            -webkit-line-clamp: 2;
+            width: 93vw;
+        }
+            
+        @media (max-width: 767px) {
+            -webkit-line-clamp: 11;
         }
     }
 }

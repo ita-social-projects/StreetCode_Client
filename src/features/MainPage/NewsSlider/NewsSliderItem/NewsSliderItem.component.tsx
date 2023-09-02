@@ -30,39 +30,6 @@ const NewsSliderItem = ({ news }: Props) => {
         }
     }, [news]);
 
-    const screenSize = useWindowSize();
-    const truncateText = (text: string, maxLength: number) => {
-        if (text.length <= maxLength) {
-            return text;
-        }
-        
-        let truncatedText = text.substr(0, maxLength);
-
-        if (screenSize.width >= 768){
-            if (news?.title.length < 41) {
-                truncatedText = truncatedText.substr(0, 400);
-            } else {
-                truncatedText = truncatedText.substr(0, 280);
-            }
-        }
-         if(screenSize.width < 768){
-            truncatedText = truncatedText.substr(0, 500);
-        }
-        return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
-    };
-
-    const newsText = truncateText(news?.text || '', 500);
-
-    const options: any = {
-        replace: (domNode: { type: string; name: string; children: any; }) => {
-            if (domNode.type === 'tag') {
-                if (domNode.name === 'p' || domNode.name === 'strong') {
-                    return <span className="newsText">{domToReact(domNode.children, options)}</span>;
-                }
-            }
-        },
-    };
-
     const handleClickRedirect = () => {
         toArticleRedirectClickEvent(news.url.toString(), 'main_page');
         window.location.href = `news/${news.url.toString()}`;
@@ -71,6 +38,21 @@ const NewsSliderItem = ({ news }: Props) => {
         e.preventDefault();
         handleClickRedirect();
     };
+
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = news?.text;
+
+    const strongElements = tempElement.querySelectorAll('strong');
+
+    strongElements.forEach(strongElement => {
+        const parent = strongElement.parentNode;
+        while (strongElement.firstChild) {
+            parent.insertBefore(strongElement.firstChild, strongElement);
+        }
+        parent.removeChild(strongElement);
+    });
+
+    const cleanText = tempElement.innerHTML;
 
     return (
         <div className="newsSliderItem">
@@ -89,7 +71,7 @@ const NewsSliderItem = ({ news }: Props) => {
                                 {news?.title}
                             </h2>
                             <div className="newsText">
-                                {htmlReactParser(newsText, options)}
+                                <span className="text">{htmlReactParser(cleanText)}</span>
                                 <a className="moreText" href={news.text} onClick={handleLinkClick}>
                                     До новини
                                 </a>
