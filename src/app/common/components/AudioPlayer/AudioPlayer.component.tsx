@@ -1,7 +1,7 @@
 import './AudioPlayer.styles.scss';
 
-import PauseBtn from '@images/audio-player/PauseBtn.png';
-import PlayBtn from '@images/audio-player/PlayBtn.png';
+import PauseBtn from '@images/audio-player/PauseBtn.webp';
+import PlayBtn from '@images/audio-player/PlayBtn.webp';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useAudioContext } from '@stores/root-store';

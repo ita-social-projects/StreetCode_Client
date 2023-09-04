@@ -1,7 +1,7 @@
 @use '@sass/mixins/_utils.mixins.scss' as mut;
 @use '@sass/_utils.functions.scss' as ut;
 
-$articlesImg: "@assets/images/sources/Articles.png";
+$articlesImg: "@assets/images/sources/Articles.webp";
 
 .sourcesSliderItem {
   @include mut.sizedImportant(380px, 250px);

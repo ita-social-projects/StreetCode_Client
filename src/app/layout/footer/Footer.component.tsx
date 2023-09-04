@@ -1,11 +1,11 @@
 import './Footer.styles.scss';
 
-import FaceBook from '@images/footer/Facebook.png';
-import Instagram from '@images/footer/Instagram.png';
-import StreetcodeFooter from '@images/footer/streetcode-footer.png';
-import TikTok from '@images/footer/TikTok.png';
-import Twitter from '@images/footer/Twitter.png';
-import Youtube from '@images/footer/Youtube.png';
+import FaceBook from '@images/footer/Facebook.webp';
+import Instagram from '@images/footer/Instagram.webp';
+import StreetcodeFooter from '@images/footer/streetcode-footer.webp';
+import TikTok from '@images/footer/TikTok.webp';
+import Twitter from '@images/footer/Twitter.webp';
+import Youtube from '@images/footer/Youtube.webp';
 
 import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 

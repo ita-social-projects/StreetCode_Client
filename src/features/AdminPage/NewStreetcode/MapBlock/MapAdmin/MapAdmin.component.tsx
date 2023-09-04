@@ -1,7 +1,7 @@
 import './MapAdmin.styles.scss';
 import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
 
-import StreetcodeMarker from '@images/footer/streetcode-marker.png';
+import StreetcodeMarker from '@images/footer/streetcode-marker.webp';
 
 import { Autocomplete, GoogleMap, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
