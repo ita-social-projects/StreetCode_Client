@@ -20,10 +20,6 @@ const monthsMap = new Map([
     ["грудня", "грудень"]
 ]);
 
-const months = ["січня", "лютого", "березня", "квітня",
-    "травня", "червня", "липня", "серпня",
-    "вересня", "жовтня", "листопада", "грудня"];
-
 const truncateCharString = (str?: string, symbolCount = 400): string | undefined => str && (
     str.length <= symbolCount ? str : `${str.substring(0, symbolCount - 3)}...`
 );
