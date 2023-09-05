@@ -119,7 +119,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
             },
         };
 
-        setArts([...arts, newArt]);
+        setArts((prev) => [...prev, newArt]);
     };
 
     function RemoveFile(file: UploadFile) {

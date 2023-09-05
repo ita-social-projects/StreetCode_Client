@@ -84,6 +84,7 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
 
     return (
         <Upload
+            multiple
             {...uploadProps}
             customRequest={customRequest}
             onChange={onUploadChange}
