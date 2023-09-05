@@ -27,6 +27,7 @@ services:
       STREETCODE_Instagram__InstagramID: ${INSTAGRAM_ID}
       STREETCODE_Instagram__InstagramToken: ${INSTAGRAM_TOKEN}
       STREETCODE_Payment__Token: ${PAYMENT_TOKEN}
+      STREETCODE_EMAILCONFIGURATION__PASSWORD: ${EMAIL_PASSWORD}
       STREETCODE_CORS__AllowedOrigins: '["*"]'
       STREETCODE_CORS__AllowedHeaders: '["*"]'
       STREETCODE_CORS__AllowedMethods: '["*"]'
