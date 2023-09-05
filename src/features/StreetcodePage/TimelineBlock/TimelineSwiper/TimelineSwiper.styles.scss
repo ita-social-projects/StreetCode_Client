@@ -4,7 +4,8 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.swiper-wrapper, .swiperClass {
+.timeline-swiper{
+    .swiper-wrapper, .swiperClass{
     width: 100%;
     margin: 0 auto;
     max-width: fit-content;
@@ -110,4 +111,5 @@
     background-color: #891F16;
     width: f.pxToRem(28px) !important;
   }
+}
 }

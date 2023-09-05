@@ -1,0 +1,67 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
+.aboutUsPageContainer {
+    // background: url('../../assets/images/streetcode-card/background.png') no-repeat center center / cover;
+    min-height: 78vh;
+    width: 100vw;
+    overflow: hidden;
+    padding-top: f.pxToRem(82px);
+
+    .contentContainer {
+        margin: f.pxToRem(40px) f.pxToRem(155px) f.pxToRem(0px);
+        display: flex;
+        flex-direction: column;
+
+        .aboutUsBlockContainer {
+            margin-bottom: f.pxToRem(110px);
+
+            h1 {
+                display: flex;
+                justify-content: center;
+                vertical-align: middle;
+                gap: f.pxToRem(20px);
+                margin-bottom: f.pxToRem(50px);
+
+                div {
+                    height: f.pxToRem(11px);
+                    width: f.pxToRem(11px);
+                    background-color: c.$accented-red-color;
+                    margin: auto 0;
+                }
+
+                text {
+                    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: s.$tablet) {
+        padding-top: f.pxToRem(64px);
+
+        .contentContainer {
+            margin: f.pxToRem(40px) f.pxToRem(10px) 0;
+            .aboutUsBlockContainer {
+                margin-bottom: f.pxToRem(50px) !important;
+                
+                h1 {
+                    margin-bottom: f.pxToRem(30px) !important;
+                    text {
+                        font-size: 24px !important;
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: s.$phone) {
+        .contentContainer {
+            h1 {
+                margin-bottom: f.pxToRem(20px) !important;
+            }
+        }
+    }
+}

@@ -124,7 +124,7 @@ const StreetcodeContent = () => {
                     <DonateBtn />
                 </div>
             </div>
-            <TickerBlock />
+            <TickerBlock type="subtitle" />
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}

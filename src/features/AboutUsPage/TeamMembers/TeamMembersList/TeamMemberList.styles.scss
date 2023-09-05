@@ -1,0 +1,14 @@
+.teamMemberListContainer {
+    justify-self: center;
+    border:2px solid red;
+    display: flex;
+    flex-wrap: wrap;
+    gap:20px;
+    justify-content: center;
+    margin-top: 100px;
+    .teamMemberCardContainer {
+        display: flex;
+        justify-content: center;
+        //width: calc(25% - 20px);
+    }
+}

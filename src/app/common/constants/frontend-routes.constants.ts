@@ -11,6 +11,7 @@ const FRONTEND_ROUTES = {
         TEAM: '/admin-panel/team',
         ANALYTICS: '/admin-panel/analytics',
         NEWS: '/admin-panel/news',
+        JOBS: '/admin-panel/job'
     },
     OTHER_PAGES: {
         CATALOG: '/catalog',
@@ -20,6 +21,7 @@ const FRONTEND_ROUTES = {
         PARTNERS: '/partners-page',
         SUPPORT_US: '/support-us',
         NEWS: '/news',
+        ABOUT_US: 'about-us'
     },
 };
 

@@ -8,6 +8,7 @@
     display: flex;
     float: left;
     width: 100%;
+    padding-left: 10px;
     @include mut.with-font();
     .dimmed {
         @include mut.sized(100%);
@@ -27,6 +28,6 @@
 
 .adminPageContainer {
     @include mut.sized(100%);
-    min-height: 400px;
+    min-height: 78vh;
     overflow: hidden;
 }

@@ -24,7 +24,8 @@
             padding: 0
         }
         .partner-page-actions{
-            @include mut.flexed(row, start,space-between);
+            display: flex;
+            gap: f.pxToRem(30px);
         }
         .partner-links{
             @include mut.flexed(row, start,space-between, wrap, 4px);
