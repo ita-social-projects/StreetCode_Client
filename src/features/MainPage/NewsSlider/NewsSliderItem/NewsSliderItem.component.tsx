@@ -2,10 +2,9 @@ import './NewsSliderItem.styles.scss';
 
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import htmlReactParser, { domToReact } from 'html-react-parser';
+import htmlReactParser from 'html-react-parser';
 
 import ImagesApi from '@/app/api/media/images.api';
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toArticleRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
@@ -15,7 +14,7 @@ interface Props {
     news: News;
 }
 
-const NewsSliderItem = ({ news }: Props) => {   
+const NewsSliderItem = ({ news }: Props) => {
     const id = news?.id;
     const [image, setImage] = useState<Image>();
     const isMobile = useMediaQuery({
@@ -44,7 +43,7 @@ const NewsSliderItem = ({ news }: Props) => {
 
     const strongElements = tempElement.querySelectorAll('strong');
 
-    strongElements.forEach(strongElement => {
+    strongElements.forEach((strongElement) => {
         const parent = strongElement.parentNode;
         while (strongElement.firstChild) {
             parent.insertBefore(strongElement.firstChild, strongElement);
@@ -72,7 +71,7 @@ const NewsSliderItem = ({ news }: Props) => {
                             </h2>
                             <div className="newsText">
                                 <span className="text">{htmlReactParser(cleanText)}</span>
-                                <a className="moreText" href={news.text} onClick={handleLinkClick}>
+                                <a className="moreText" href={news.url} onClick={handleLinkClick}>
                                     До новини
                                 </a>
                             </div>
