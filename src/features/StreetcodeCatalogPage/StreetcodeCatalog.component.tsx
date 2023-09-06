@@ -1,7 +1,7 @@
 import './StreetcodeCatalog.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Footer from '@layout/footer/Footer.component';
 import useMobx from '@stores/root-store';
 
@@ -15,20 +15,29 @@ const StreetcodeCatalog = () => {
     const { fetchCatalogStreetcodes, getCatalogStreetcodesArray } = streetcodeCatalogStore;
     const [loading, setLoading] = useState(false);
     const [screen, setScreen] = useState(1);
+    const [noMoreStreetcodes, setNoMoreStreetcodes] = useState(false);
 
     const handleSetNextScreen = () => {
         setScreen(screen + 1);
     };
+    useEffect(() => {
+        if (screen > 1) {
+            setLoading(true);
+        }
+    }, [screen]);
 
     useAsync(async () => {
         const count = await StreetcodesApi.getCount();
         if (count === getCatalogStreetcodesArray.length) {
             return;
         }
-        setLoading(true);
+        //setLoading(true);
         setTimeout(() => {
-            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then(() => {
+            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then((result) => {
                 setLoading(false);
+                if (result[0].length < 8) {
+                    setNoMoreStreetcodes(true);
+                }
             });
         }, 1000);
     }, [screen]);
@@ -53,7 +62,7 @@ const StreetcodeCatalog = () => {
                 </div>
             </div>
             {
-                loading && (
+                loading && !noMoreStreetcodes && (
                     <div className="loadingWrapper">
                         <div id="loadingGif" />
                     </div>
