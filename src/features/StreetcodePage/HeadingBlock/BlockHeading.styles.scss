@@ -3,7 +3,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .blockHeadingWrapper {
-    @include mut.sized(100%, 124px);
+    @include mut.sized(100%, 128px);
     @include mut.flex-centered();
     margin-bottom: f.pxToRem(26px);
 
