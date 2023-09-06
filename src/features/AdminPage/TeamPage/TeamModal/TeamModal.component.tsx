@@ -277,7 +277,7 @@ const TeamModal: React.FC<{
                     >
                         <FileUploader
                             multiple={false}
-                            accept=".jpeg,.png,.jpg"
+                            accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
                             onPreview={(e) => {

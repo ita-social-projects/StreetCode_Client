@@ -2,7 +2,7 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-$bgImg: '@assets/images/streetcode-card/background.png';
+$bgImg: '@assets/images/streetcode-card/background.webp';
 
 .container {
     margin-top: f.pxToRem(110px);

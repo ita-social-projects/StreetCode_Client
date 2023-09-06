@@ -3,7 +3,7 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
-$StbgImg: '@assets/images/donates/bgStrLogo.png';
+$StbgImg: '@assets/images/donates/bgStrLogo.webp';
 
 .surveyModal {
   width: f.pxToRem(832px) !important;

@@ -5,7 +5,6 @@ import './MainBlockAdmin.style.scss';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
-import { type } from 'os';
 
 import { DatePicker, FormInstance, Input, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -47,7 +46,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
         if (date) {
             setFirstDate(date);
             const dateString = form.getFieldValue('dateString') ?? '';
-            const index = dateString.indexOf(' — ');
+            const index = dateString.indexOf(' – ');
             if (index < 0) {
                 form.setFieldValue('dateString', capitalize(dateToString(dateFirstTimePickerType, date)));
             } else {
@@ -60,7 +59,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
             onChange('streetcodeFirstDate', date);
         } else {
             const dateString = form.getFieldValue('dateString') ?? '';
-            const index = dateString.indexOf(' — ');
+            const index = dateString.indexOf(' – ');
             if (index > 0) {
                 form.setFieldValue('dateString', dateString.substring(index));
             }
@@ -96,23 +95,23 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
             }
 
             const dateString = form.getFieldValue('dateString') ?? '';
-            const index = dateString.indexOf(' — ');
+            const index = dateString.indexOf(' – ');
             if (index < 0) {
                 form.setFieldValue(
                     'dateString',
                     dateString
-                        .concat(` — ${dateToString(dateSecondTimePickerType, date)}`),
+                        .concat(` – ${dateToString(dateSecondTimePickerType, date)}`),
                 );
             } else if (date === null || date === undefined) {
                 form.setFieldValue('dateString', dateString.substring(0, index));
             } else {
                 const newDateString = dateString
-                    .substring(0, index).concat(` — ${dateToString(dateSecondTimePickerType, date)}`);
+                    .substring(0, index).concat(` – ${dateToString(dateSecondTimePickerType, date)}`);
                 form.setFieldValue('dateString', newDateString);
             }
             onChange('streetcodeSecondDate', date);
         } else {
-            form.setFieldValue('dateString', form.getFieldValue('dateString').split(' — ')[0]);
+            form.setFieldValue('dateString', form.getFieldValue('dateString').split(' – ')[0]);
             setSecondDate(date);
             form.setFields([
                 {
@@ -139,8 +138,8 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                                 message: 'Поле не може бути порожнім',
                             },
                             {
-                                pattern: /^[-0-9()а-яА-Яі— ]+$/u,
-                                message: 'Поле може містити лише літери кирилиці, цифри, дефіс та дужки',
+                                pattern: /^[0-9()а-яА-Яі– ]+$/u,
+                                message: 'Поле може містити лише літери кирилиці, цифри, тире (–) та дужки',
                             },
                         ]}
                     >

@@ -1,12 +1,12 @@
 import './ContactBlock.styles.scss';
 
-import Email from '@images/contact-us/email.png';
-import Facebook from '@images/contact-us/Facebook.png';
-import Instagram from '@images/contact-us/Instagram.png';
-import Logo from '@images/contact-us/Logo-2.png';
-import TikTok from '@images/contact-us/TikTok.png';
-import Twitter from '@images/contact-us/Twitter.png';
-import YouTube from '@images/contact-us/Youtube.png';
+import Email from '@images/contact-us/email.webp';
+import Facebook from '@images/contact-us/Facebook.webp';
+import Instagram from '@images/contact-us/Instagram.webp';
+import Logo from '@images/contact-us/Logo-2.webp';
+import TikTok from '@images/contact-us/TikTok.webp';
+import Twitter from '@images/contact-us/Twitter.webp';
+import YouTube from '@images/contact-us/Youtube.webp';
 
 const EMAIL = 'streetcodeua@gmail.com';
 

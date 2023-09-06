@@ -175,7 +175,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 }}
                                 uploadTo="image"
                                 multiple={false}
-                                accept=".jpeg,.png,.jpg"
+                                accept=".jpeg,.png,.jpg,.webp"
                                 listType="picture-card"
                                 maxCount={1}
                                 fileList={fileList}

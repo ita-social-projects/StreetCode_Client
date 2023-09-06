@@ -1,13 +1,11 @@
 import './TopCarousel.styles.scss';
 
-import StreetcodeMarker from '@images/footer/main-page.png';
-import StreetcodeMarker6 from '@images/footer/main-page-mob.png';
-import StreetcodeMarker7 from '@images/footer/main-page-mob2.png';
-import StreetcodeMarker8 from '@images/footer/main-page-mob3.png';
-import StreetcodeMarker2 from '@images/footer/main-page2.png';
-import StreetcodeMarker3 from '@images/footer/main-page3.png';
-import StreetcodeMarker4 from '@images/footer/main-page4.png';
-import StreetcodeMarker5 from '@images/footer/main-page5.png';
+import StreetcodeMarker from '@images/footer/main-page.webp';
+import StreetcodeMarker6 from '@images/footer/main-page-mob.webp';
+import StreetcodeMarker7 from '@images/footer/main-page-mob2.webp';
+import StreetcodeMarker8 from '@images/footer/main-page-mob3.webp';
+import StreetcodeMarker2 from '@images/footer/main-page2.webp';
+import StreetcodeMarker3 from '@images/footer/main-page3.webp';
 
 import { observer } from 'mobx-react-lite';
 import { useMediaQuery } from 'react-responsive';
@@ -23,12 +21,6 @@ const content = [
     },
     {
         image: StreetcodeMarker3,
-    },
-    {
-        image: StreetcodeMarker4,
-    },
-    {
-        image: StreetcodeMarker5,
     },
 ];
 

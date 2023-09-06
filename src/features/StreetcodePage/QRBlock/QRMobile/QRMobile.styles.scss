@@ -3,7 +3,7 @@
 @use "@sass/variables/_variables.fonts.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 
-$loadImg: '@assets/images/qr-block/must_be_gif.png';
+$loadImg: '@assets/images/qr-block/must_be_gif.webp';
 
 .QRMobileContainer{
     width: 100%;
@@ -76,6 +76,7 @@ $loadImg: '@assets/images/qr-block/must_be_gif.png';
     .QRMobileContainer{
         display: flex;
         flex-direction: column-reverse;
+        padding-left: 0;
     }
     .QRMobileGif{
         display: flex;

@@ -248,12 +248,12 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                 } else if (file.name) {
                                     name = file.name.toLowerCase();
                                 }
-                                if (name.endsWith('.jpeg') || name.endsWith('.png')
+                                if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
                                 || name.endsWith('.jpg') || name === '') {
                                     return Promise.resolve();
                                 }
 
-                                return Promise.reject(Error('Тільки файли з розширенням jpeg, png, jpg дозволені!'));
+                                return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
                             }
                             return Promise.reject();
                         },
@@ -262,14 +262,14 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 >
                     <FileUploader
                         multiple={false}
-                        accept=".jpeg,.png,.jpg"
+                        accept=".jpeg,.png,.jpg,.webp"
                         listType="picture-card"
                         maxCount={1}
                         fileList={blackAndWhite}
                         onPreview={handlePreview}
                         uploadTo="image"
                         beforeUpload={(file) => {
-                            const isValid = (file.type === 'image/jpeg')
+                            const isValid = (file.type === 'image/jpeg') || (file.type === 'image/webp')
                             || (file.type === 'image/png') || (file.type === 'image/jpg');
                             if (!isValid) {
                                 return Promise.reject();
@@ -302,7 +302,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     } else if (file.name) {
                                         name = file.name.toLowerCase();
                                     }
-                                    if (name.endsWith('.jpeg') || name.endsWith('.png')
+                                    if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
                                     || name.endsWith('.jpg') || name === '') {
                                         setVisibleErrorRelatedFigure(false);
                                         return Promise.resolve();
@@ -317,7 +317,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 >
                     <FileUploader
                         multiple={false}
-                        accept=".jpeg,.png,.jpg"
+                        accept=".jpeg,.png,.jpg,.webp"
                         listType="picture-card"
                         maxCount={1}
                         fileList={relatedFigure}
@@ -325,7 +325,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         uploadTo="image"
                         beforeUpload={(file) => {
                             const isValid = (file.type === 'image/jpeg')
-                            || (file.type === 'image/png') || (file.type === 'image/jpg');
+                            || (file.type === 'image/png') || (file.type === 'image/jpg' || (file.type === 'image/webp'));
                             if (!isValid) {
                                 return Promise.reject();
                             }
@@ -344,7 +344,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     </FileUploader>
                     {visibleErrorRelatedFigure && (
                         <p className="error-text">
-                Тільки файли з розширенням jpeg, png, jpg дозволені!
+                Тільки файли з розширенням webp, jpeg, png, jpg дозволені!
                         </p>
                     )}
                 </FormItem>

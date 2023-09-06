@@ -1,6 +1,6 @@
 import './QR.styles.scss';
 
-import IPhoneImg from '@images/qr-block/QR_Iphone.png';
+import IPhoneImg from '@images/qr-block/QR_Iphone.webp';
 
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
