@@ -24,20 +24,23 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
         ]);
     }, []);
 
-    const onPartnerSelect = (value:number) => {
-        const partnerPersisted = partners.find((x) => x.id === value);
-        if (partnerPersisted) { // for case when delete persisted item and add it again
-            partnerPersisted.modelState = ModelState.Updated;
-            setPartners([...partners]);
+    const onPartnerSelect = (value: number) => {
+        const existingPartner = partners.find((p) => p.id === value);
+        const updatedPartners = partners.filter((p) => p.id !== value);
+
+        if (existingPartner) {
+            existingPartner.modelState = ModelState.Updated;
+            setPartners([...updatedPartners, existingPartner]);
         } else {
             const partner = allPartnersShort.find((c) => c.id === value) as PartnerCreateUpdateShort;
             partner.modelState = ModelState.Created;
-            setPartners([...partners, partner]);
+            setPartners([...updatedPartners, partner]);
         }
+
         onChange('partner', value);
     };
 
-    const onPartnerDeselect = (value:number) => {
+    const onPartnerDeselect = (value: number) => {
         const partner = partners.find((x) => x.id === value);
         if (partner?.isPersisted) {
             partner.modelState = ModelState.Deleted;
@@ -47,6 +50,11 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
         }
         onChange('partner', value);
     };
+
+    const alphabeticalSorting = (partnersItems: PartnerShort[]) => partnersItems.slice()
+        .sort((a, b) => a.title.localeCompare(b.title));
+
+    const sortedPartners = alphabeticalSorting(allPartnersShort);
 
     return (
         <div className="adminContainer-block">
@@ -59,14 +67,14 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                         .map((x) => x.id)}
                     onDeselect={onPartnerDeselect}
                 >
-                    {allPartnersShort.map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
+                    {sortedPartners.map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
                 </Select>
 
                 <Button
                     className="streetcode-custom-button button-margin-left"
                     onClick={() => setModalAddOpened(true)}
                 >
-                     Додати
+                    Додати
                 </Button>
             </div>
             <PartnerModal
@@ -76,9 +84,11 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                 afterSubmit={
                     (partner) => {
                         setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }]);
-                        setPartners([...partners, { id: partner.id,
-                                                    title: partner.title,
-                                                    modelState: ModelState.Created }]);
+                        setPartners([...partners, {
+                            id: partner.id,
+                            title: partner.title,
+                            modelState: ModelState.Created,
+                        }]);
                     }
                 }
                 onChange={onChange}
