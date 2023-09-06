@@ -31,7 +31,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const [visibleDeleteButton, setVisibleDeleteButton] = useState(false);
     const filesToRemove = useRef<UploadFile[]>([]);
-
+    const isIndexTmpNeedToBeUpdated = useRef<boolean>(true);
     useEffect(() => {
         if (arts.length > 0) {
             const newFileList = arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
@@ -41,8 +41,11 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
                 thumbUrl: base64ToUrl(streetcodeArt.art.image?.base64, streetcodeArt.art.image?.mimeType) ?? '',
                 type: streetcodeArt.art.image?.mimeType || '',
             }));
+            if(isIndexTmpNeedToBeUpdated.current){
+                indexTmp.current = Math.max(...arts.map((x) => x.index));
+                isIndexTmpNeedToBeUpdated.current = false;
+            }
             setFileList(newFileList);
-            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
         }
     }, [arts]);
 
@@ -102,11 +105,8 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
     };
 
     const onSuccessUpload = (image: Image) => {
-        if (arts.length > 0) {
-            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
-        } else {
-            indexTmp.current += 1;
-        }
+        indexTmp.current += 1;
+
         const newArt: StreetcodeArtCreateUpdate = {
             index: indexTmp.current,
             modelState: ModelState.Created,
@@ -160,6 +160,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
     }
 
     const onRemoveFile = (files: UploadFile[]) => {
+        console.log(files)
         files.forEach((element) => {
             RemoveFile(element);
             // after deleting file decrement file's to remove ids
@@ -173,6 +174,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
         filesToRemove.current = [];
         setVisibleDeleteButton(false);
         RemoveDeleteFrames();
+        isIndexTmpNeedToBeUpdated.current = true;
     };
 
     return (
