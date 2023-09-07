@@ -53,7 +53,21 @@ const HeaderDrawer = () => {
     });
 
     useEffect(() => {
-        const optionId = menuOptions.indexOf(location.pathname);
+        const currentPath = location.pathname;
+        let optionId = menuOptions.indexOf(currentPath);
+
+        const isExcluded = currentPath !== FRONTEND_ROUTES.BASE
+            && menuOptions
+                .filter((option, index) => index !== 0)
+                .some((option) => currentPath.startsWith(option));
+
+        if (currentPath && !isExcluded) {
+            if (currentPath !== FRONTEND_ROUTES.BASE) {
+                optionId = 1;
+            }
+            setActive(optionId + 1);
+        }
+
         if (isSmall) {
             setScalingCooficient(scaleMobile);
             setOptions(mobileOptions);
@@ -132,28 +146,28 @@ const HeaderDrawer = () => {
                             />
                         </div>
                         {isSmall
-                        && (
-                            <>
-                                <br />
-                                <div className="headerDrawerContainer">
-                                    <HeaderDrawerItem
-                                        id={7}
-                                        parentActive={active}
-                                        toggleState={toggle}
-                                        text="Політика конфіденційності"
-                                        link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
-                                    />
-                                    <HeaderDrawerItem
-                                        id={8}
-                                        parentActive={active}
-                                        toggleState={toggle}
-                                        text="Зворотний зв'язок"
-                                        link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
-                                    />
-                                </div>
-                                <SocialMediaLinks />
-                            </>
-                        )}
+                            && (
+                                <>
+                                    <br />
+                                    <div className="headerDrawerContainer">
+                                        <HeaderDrawerItem
+                                            id={7}
+                                            parentActive={active}
+                                            toggleState={toggle}
+                                            text="Політика конфіденційності"
+                                            link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
+                                        />
+                                        <HeaderDrawerItem
+                                            id={8}
+                                            parentActive={active}
+                                            toggleState={toggle}
+                                            text="Зворотний зв'язок"
+                                            link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
+                                        />
+                                    </div>
+                                    <SocialMediaLinks />
+                                </>
+                            )}
                     </div>
                 </div>
             </Drawer>
