@@ -1,28 +1,22 @@
 import './StreetcodeSlider.styles.scss';
-import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
-import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
+import { useState } from 'react';
+import ImagesApi from '@api/media/images.api';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
+import Image from '@models/media/image.model';
+
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import SlickSlider from './../../SlickSlider/SlickSlider.component';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
+
+import SlickSlider from '../../SlickSlider/SlickSlider.component';
+
+import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
 
 const StreetcodeSlider = () => {
-    const [streetcode, setStreetcode] = useState<StreetcodeMainPage[]>([]);
-
-    useEffect(() => {
-        const fetchStreetcodesMainPageAll = async () => {
-            try {
-                const response = await StreetcodesApi.getAllMainPage();
-                setStreetcode(response);
-            } catch (error) {
-            }
-        };
-        fetchStreetcodesMainPageAll();
-    }, []);
-
-
+    const [streetcodes, setStreetcodes] = useState<StreetcodeMainPage[]>([]);
+    const [images, setImages] = useState<Image[]>([]);
 
     const props = {
         touchAction: 'pan-y',
@@ -39,12 +33,26 @@ const StreetcodeSlider = () => {
     };
 
     const windowsize = useWindowSize();
-    if (windowsize.width <= 1024 && windowsize.width >= 768)
-        props.centerMode = true;
-    if (windowsize.width <= 1024)
-        props.dots = true;
+    if (windowsize.width <= 1024 && windowsize.width >= 768) props.centerMode = true;
+    if (windowsize.width <= 1024) props.dots = true;
 
-    if (streetcode.length > 0) {
+    useAsync(async () => {
+        try {
+            const response = await StreetcodesApi.getAllMainPage();
+            setStreetcodes(response);
+
+            const newImages : Image[] = [];
+            for (const streetcode of response) {
+                await ImagesApi.getById(streetcode.imageId)
+                    .then((img) => newImages.push(img));
+            }
+            setImages(newImages);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    if (streetcodes.length > 0) {
         return (
             <div>
                 <div className="streetcodeMainPageWrapper">
@@ -53,9 +61,9 @@ const StreetcodeSlider = () => {
                             <div className="blockCenter">
                                 <div className="streetcodeSliderContent">
                                     <SlickSlider {...props}>
-                                        {streetcode.map((item) => (
+                                        {streetcodes.map((item, index) => (
                                             <div key={item.id} className="slider-item">
-                                                <StreetcodeSliderItem streetcode={item} />
+                                                <StreetcodeSliderItem streetcode={item} image={images[index]} />
                                             </div>
                                         ))}
                                     </SlickSlider>
