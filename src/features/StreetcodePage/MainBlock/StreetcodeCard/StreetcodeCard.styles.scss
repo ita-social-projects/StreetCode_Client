@@ -51,19 +51,19 @@
 .streetcodeIndex {
     @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 14px, $left: 0px);
     color: c.$dark-red-color;
-    @include mut.with-font($font-weight: bolder);
-    line-height: f.pxToRem(18px);
+    @include mut.with-font($font-weight: 500);
+    line-height: f.pxToRem(23.44px);
 }
 .streetcodeTitle {
   @include mut.rem-padded(0px, 10px, 7px, 0px);
   @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
   color: c.$lighter-black-color;
-  line-height: f.pxToRem(42px);
+  line-height: f.pxToRem(47.52px);
 }
 .streetcodeDate {
   @include mut.rem-padded(7px, 10px, 13px, 0px);
   font-size: f.pxToRem(20px);
-  line-height: f.pxToRem(23px);
+  line-height: f.pxToRem(23.44px);
 }
 .headerContainer {
     box-sizing: border-box;
@@ -80,6 +80,7 @@
     }
 }
 .teaserBlock {
+  @include mut.with-font($font-weight: 300, $font-size: 20px);
   width: 100%;
   @include mut.rem-margined(25px, 3px, 0px, 0px);
   @include mut.rem-padded(0px, 5px, 0px, 0px);
