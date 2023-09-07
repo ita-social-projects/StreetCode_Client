@@ -12,10 +12,9 @@ import StreetcodeCatalogItem from './StreetcodeCatalogItem/StreetcodeCatalogItem
 
 const StreetcodeCatalog = () => {
     const { streetcodeCatalogStore } = useMobx();
-    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray } = streetcodeCatalogStore;
+    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray} = streetcodeCatalogStore;
     const [loading, setLoading] = useState(false);
     const [screen, setScreen] = useState(1);
-    const [noMoreStreetcodes, setNoMoreStreetcodes] = useState(false);
 
     const handleSetNextScreen = () => {
         setScreen(screen + 1);
@@ -31,13 +30,13 @@ const StreetcodeCatalog = () => {
         if (count === getCatalogStreetcodesArray.length) {
             return;
         }
-        //setLoading(true);
+        setLoading(true);
         setTimeout(() => {
-            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then((result) => {
-                setLoading(false);
-                if (result[0].length < 8) {
-                    setNoMoreStreetcodes(true);
+            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then(() => {
+                if (getCatalogStreetcodesArray.length % 8 !== 0) { // Check if last fetch met the condition)
+                    setLoading(false); // Set loading to false
                 }
+                setLoading(false);
             });
         }, 1000);
     }, [screen]);
@@ -62,7 +61,7 @@ const StreetcodeCatalog = () => {
                 </div>
             </div>
             {
-                loading && !noMoreStreetcodes && (
+                loading && (
                     <div className="loadingWrapper">
                         <div id="loadingGif" />
                     </div>

@@ -13,10 +13,14 @@ export default class StreetcodesCatalogStore {
     public fetchCatalogStreetcodes = async (page: number, count = 8) => {
         try {
             const array = await StreetcodesApi.getAllCatalog(page, count);
-            if (this.catalog.length === 0
-                || !array.some((item) => item.id === this.catalog.at(0)?.id)) {
+            console.log('Fetch_ARRAY:', array);
+            if (
+                this.catalog.length === 0
+                || !array.some((item) => item.id === this.catalog.at(0)?.id)
+            ) {
                 this.catalog = this.catalog.concat(array);
             }
+            console.log('CATALOG:', this.catalog);
         } catch (error) {}
     };
 
