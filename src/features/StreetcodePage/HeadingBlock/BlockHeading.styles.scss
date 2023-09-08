@@ -3,7 +3,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .blockHeadingWrapper {
-    @include mut.sized(100%, 128px);
+    @include mut.sized(100%, 124px);
     @include mut.flex-centered();
     margin-bottom: f.pxToRem(26px);
 
@@ -28,7 +28,7 @@
     text-transform: uppercase;
 }
 .rhombus{
-    min-height: 110px;
+    height: 124px;
 }
 
 @media (max-width: 1350px) {
@@ -40,6 +40,9 @@
 @media (max-width: 1024px) {
     .blockHeadingWrapper{
         margin-left: f.pxToRem(40px);
+    }
+    .rhombus{
+        height: 110px;
     }
 }
 
