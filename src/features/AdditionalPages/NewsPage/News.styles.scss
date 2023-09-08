@@ -27,6 +27,11 @@
     .newsWithImageWrapper {
         overflow: auto;
 
+        ul, ol {
+            list-style: auto;
+            padding-inline-start: revert;
+          }
+
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             overflow-wrap: break-word;
