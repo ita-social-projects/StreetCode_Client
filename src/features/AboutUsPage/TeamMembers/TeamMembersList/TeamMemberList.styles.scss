@@ -1,11 +1,16 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
 .teamMemberListContainer {
     justify-self: center;
-    border:2px solid red;
     display: flex;
     flex-wrap: wrap;
     gap:20px;
     justify-content: center;
-    margin-top: 100px;
+    margin-top: f.pxToRem(30px);
     .teamMemberCardContainer {
         display: flex;
         justify-content: center;
