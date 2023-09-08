@@ -1,25 +1,32 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
 .topSlider {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-
     overflow: hidden;
-
-    h1{
-        font-weight: 500;
-        font-size: 30px;
-    }
 
     .swiper-slide {
         text-align: center;
         width: fit-content;
-        border: 2px solid green;
         position:unset;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 21px;
+        letter-spacing: 0em;
+        color: #C4C4C4;
 
         &-active {
+            font-size: 24px;
             font-weight: 500;
-            font-size: 20px;
+            line-height: 32px;
+            letter-spacing: 0em;
+            color: #1D1F23;
         }
     }
 }
@@ -45,11 +52,11 @@
     position: relative;
 }
 .teamMembersSlider {
+    margin-top: f.pxToRem(30px);
     .swiper {
         .swiper-slide{
             width: fit-content;
             height: auto;
-            border: 2px solid green;
         }
     }
 }

@@ -19,7 +19,7 @@ const TeamMemberSlider: React.FC<TeamMemberSliderProps> = ({ team }) => {
                     centeredSlides
                     spaceBetween={20}
                     slideToClickedSlide
-                    pagination={window.innerWidth < SCREEN_SIZES.phone}
+                    //pagination={window.innerWidth < SCREEN_SIZES.phone}
                     loop
                 >
                     {team.map((member) => (
