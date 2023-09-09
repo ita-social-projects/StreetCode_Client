@@ -18,6 +18,7 @@
     position: relative;
     @include mut.sized(100%, 250px);
     @include mut.rounded(33px, 33px);
+    @include mut.border($border-width: 4px, $color: c.$pure-white-color, $type: solid);
 
     img {
       width: 100%;
