@@ -85,7 +85,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             } else {
                 await JobApi.update(newJob);
             }
-            setOpen(false);
+            clearModal();
         } catch (error) {
             console.log(error);
         }
