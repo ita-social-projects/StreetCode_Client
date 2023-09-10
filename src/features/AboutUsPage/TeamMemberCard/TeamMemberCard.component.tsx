@@ -14,7 +14,7 @@ const TeamMemberCard = (member : TeamMember) => (
             <div className='linksContainer'>
                 {member.teamMemberLinks.map(
                     (link)=>(
-                        <TeamMemberLinks {...link}/>
+                        <TeamMemberLinks key = {link.id} {...link}/>
                     )
                 )}
             </div>

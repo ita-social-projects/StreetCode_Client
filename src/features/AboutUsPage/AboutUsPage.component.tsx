@@ -10,10 +10,10 @@ import Vacancies from './Vacancies/Vacancies.component';
 const AboutUsPage = () => (
     <div className="aboutUsPageContainer">
         <div className="contentContainer">
-            <AboutUsHeaderText />
-            <Founders />
-            <TeamMembers />
-            <Vacancies />
+            {<AboutUsHeaderText />}
+            {<Founders />}
+            {/*<TeamMembers />*/}
+            {<Vacancies />}
         </div>
         <TickerComponent type="teamMembers" />
     </div>

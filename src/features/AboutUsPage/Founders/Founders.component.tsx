@@ -90,9 +90,9 @@ const TeamMemberCardNatalia: TeamMember =
 const Founders = () => {
     return (
         <div className='aboutUsBlockContainer'>
-            <h1><div /><text>Засновниці</text><div /></h1>
+            <h1><div /><span>Засновниці</span><div /></h1>
             <div className='foundersBlock'>
-                {window.innerWidth > 600 ? <Founder {...FounderInna}/> : <TeamMemberCard {...TeamMemberCardInna}/>}
+                {window.innerWidth > 600 ? <Founder {...FounderInna}/> : <TeamMemberCard  {...TeamMemberCardInna}/>}
                 {window.innerWidth > 600 ? <Founder {...FounderNatalia}/> : <TeamMemberCard {...TeamMemberCardNatalia}/>}
             </div>
         </div>

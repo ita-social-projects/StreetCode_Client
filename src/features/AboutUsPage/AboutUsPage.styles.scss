@@ -33,7 +33,7 @@
                     margin: auto 0;
                 }
 
-                text {
+                span {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
                 }
             }
@@ -50,7 +50,7 @@
                 
                 h1 {
                     margin-bottom: f.pxToRem(30px) !important;
-                    text {
+                    span {
                         font-size: 24px !important;
                     }
                 }
