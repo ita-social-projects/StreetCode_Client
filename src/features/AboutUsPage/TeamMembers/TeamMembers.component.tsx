@@ -44,6 +44,7 @@ const TeamMembers = () => {
     }, []);
 
     return (
+        positions.length ? 
         <div className="aboutUsBlockContainer">
             <SliderComponents
                 positions={positions}
@@ -55,6 +56,7 @@ const TeamMembers = () => {
                 <TeamMemberList teamMembers={team} />
             )}
         </div>
+        :<></>
     );
 };
 export default TeamMembers;

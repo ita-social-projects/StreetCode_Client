@@ -12,7 +12,7 @@ const AboutUsPage = () => (
         <div className="contentContainer">
             {<AboutUsHeaderText />}
             {<Founders />}
-            {/*<TeamMembers />*/}
+            {<TeamMembers />}
             {<Vacancies />}
         </div>
         <TickerComponent type="teamMembers" />

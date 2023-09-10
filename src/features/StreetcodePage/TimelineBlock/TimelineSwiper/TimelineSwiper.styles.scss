@@ -5,6 +5,7 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .timeline-swiper{
+    height: 100%;
     .swiper-wrapper, .swiperClass{
     width: 100%;
     margin: 0 auto;

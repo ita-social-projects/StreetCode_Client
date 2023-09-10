@@ -59,7 +59,7 @@ const SliderComponents = (props: Props) => {
                 >
                     {props.positions.map((position) => (
                         <SwiperSlide className="square" key={position.id}>
-                            <div key={props.positions}>
+                            <div key={position.position}>
                                 <div>{position.position}</div>
                             </div>
                         </SwiperSlide>

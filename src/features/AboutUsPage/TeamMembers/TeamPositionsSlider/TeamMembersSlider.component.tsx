@@ -22,8 +22,9 @@ const TeamMemberSlider: React.FC<TeamMemberSliderProps> = ({ team }) => {
                     //pagination={window.innerWidth < SCREEN_SIZES.phone}
                     loop
                 >
-                    {team.map((member) => (
-                        <SwiperSlide>
+                    {
+                    team.map((member) => (
+                        <SwiperSlide key = {member.id} >
                             <TeamMemberCard {...member} />
                         </SwiperSlide>
                     ))}
