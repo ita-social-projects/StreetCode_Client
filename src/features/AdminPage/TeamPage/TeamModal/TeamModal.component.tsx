@@ -235,7 +235,7 @@ const TeamModal: React.FC<{
                         label="Прізвище та ім'я: "
                         rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
                     >
-                        <Input maxLength={42} showCount />
+                        <Input maxLength={41} showCount />
                     </Form.Item>
 
                     <Form.Item label="Позиції">
