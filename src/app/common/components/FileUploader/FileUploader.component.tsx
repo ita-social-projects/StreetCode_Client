@@ -10,6 +10,7 @@ import Image, { ImageCreate } from '@/models/media/image.model';
 type UploaderWithoutChildren = Omit<UploadProps, 'children'>;
 
 interface Props extends UploaderWithoutChildren {
+    multiple?: boolean;
     children: JSX.Element[] | JSX.Element;
     edgeSwipe?: boolean;
     uploadTo:'image' | 'audio';
@@ -83,7 +84,6 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
 
     return (
         <Upload
-            multiple
             {...uploadProps}
             customRequest={customRequest}
             onChange={onUploadChange}

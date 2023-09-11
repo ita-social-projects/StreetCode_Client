@@ -182,6 +182,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
             <FileUploader
                 accept=".jpeg,.png,.jpg"
                 listType="picture-card"
+                multiple={true}
                 fileList={fileList}
                 onPreview={onPreview}
                 uploadTo="image"
