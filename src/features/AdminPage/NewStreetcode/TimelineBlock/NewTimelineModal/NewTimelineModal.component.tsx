@@ -170,7 +170,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
 
     const handleOk =() =>{
         form.submit();
-        message.success("Новину успішно додано!", 2);
+        alert('Хронологію успішно додано!');
     }
 
     return (

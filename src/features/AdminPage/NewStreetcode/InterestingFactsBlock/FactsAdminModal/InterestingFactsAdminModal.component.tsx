@@ -110,7 +110,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
 
     const handleOk = () => {
         form.submit();
-        message.success("Новину успішно додано!");
+        alert('Wow-факт успішно додано!');
     }
 
     return (

@@ -327,7 +327,7 @@ const PartnerModal: React.FC< {
                             label="Посилання: "
                             rules={[
                                 {
-                                    pattern:  /^[a-z-]+$/ ,
+                                    pattern: URL_REGEX_VALIDATION_PATTERN ,
                                     message: 'Введіть правильне посилання',
                                 },
                             ]}

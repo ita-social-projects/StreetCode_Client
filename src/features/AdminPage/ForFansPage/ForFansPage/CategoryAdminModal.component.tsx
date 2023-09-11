@@ -133,7 +133,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const handleOk =() =>{
         form.submit();
-        message.success("Категорію успішно додано!", 2)
+        message.success("Категорію успішно додано!", 2);
     }
 
     return (
@@ -189,7 +189,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => handleOk()}>
+                        <Button className="streetcode-custom-button" onClick={() => handleOk() }>
                             Зберегти
                         </Button>
                     </div>
