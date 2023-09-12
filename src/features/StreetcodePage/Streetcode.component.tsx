@@ -22,7 +22,7 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
-import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
+import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
@@ -112,7 +112,7 @@ const StreetcodeContent = () => {
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlock />
-                <ArtGalleryBlockComponent />
+                <ArtGallery />
                 <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />
             </ProgressBar>

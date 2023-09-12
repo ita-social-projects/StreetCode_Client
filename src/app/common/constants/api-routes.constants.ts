@@ -147,7 +147,9 @@ export const API_ROUTES = {
     STREETCODE_ARTS: {
         GET_ALL: 'streetcodeArt/getAll',
         GET_BY_STREETCODE_ID: 'streetcodeArt/getByStreetcodeId',
-        GET_PAGE_BY_STREETCODE_ID: 'streetcodeArt/getPageByStreetcodeId',
+    },
+    STREETCODE_ART_SLIDES: {
+        GET_SLIDES_BY_STREETCODE_ID: 'streetcodeArtSlide/getPageByStreetcodeId',
     },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',

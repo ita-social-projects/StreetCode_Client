@@ -16,10 +16,9 @@ export interface IndexedArt {
     index: number;
     description: string;
     imageHref: string;
-    offset: number;
     title: string;
-    sequenceNumber: number;
 }
+
 export interface ArtCreate {
     imageId:number;
     description?: string;

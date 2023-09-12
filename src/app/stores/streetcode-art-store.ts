@@ -1,57 +1,39 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
-import { ModelState } from '@models/enums/model-state';
-
 import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
-import Art from "@models/media/art.model"
+import StreetcodeArtSlide, {StreetcodeArtSlideCreateUpdate} from "@models/media/streetcode-art-slide.model"
 
 export default class StreetcodeArtStore {
-    public streetcodeArtMap = new Map<number, StreetcodeArt>();
+    public streetcodeArtSlides: StreetcodeArtSlide[] = new Array<StreetcodeArtSlide>();
 
-    private page = 1;
+    private startFromSlide = 1;
 
-    private readonly pageSize = 6;
+    private readonly amountOfSlides = 1;
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-    public setItem = (art: StreetcodeArt) => {
-        this.streetcodeArtMap.set(art.art.id, art);
-    };
-
-    private set setInternalStreetcodeArtMap(streetcodeArt: StreetcodeArt[]) {
-        this.streetcodeArtMap.clear();
-        streetcodeArt.forEach(this.setItem);
+    get getStreetcodeArtArray(): StreetcodeArt[]{
+        const arts:StreetcodeArt[]  = []
+        this.streetcodeArtSlides.forEach(slide => {
+            arts.push(...slide.streetcodeArts)
+        })
+        return arts
     }
-
-    private set setNextPageToArtMap(streetcodeArt: StreetcodeArt[]) {
-        streetcodeArt.forEach(this.setItem);
-    }
-
-    get getStreetcodeArtArray() {
-        return Array.from(this.streetcodeArtMap.values());
-    }
-
     get getStreetcodeArtsToDelete() {
-        return (Array.from(this.streetcodeArtMap.values()) as StreetcodeArtCreateUpdate[])
-            .filter((art) => art.modelState === ModelState.Deleted);
+        // return (this.streetcodeArtSlides as StreetcodeArtSlideCreateUpdate[])
+        //     .filter((art) => art.modelState === ModelState.Deleted);
+        return [];
     }
 
-    public fetchStreetcodeArtsByStreetcodeId = async (streetcodeId: number) => {
-        try {
-            this.setInternalStreetcodeArtMap = await StreetcodeArtApi
-                .getStreetcodeArtsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) { /* empty */ }
-    };
-
-    public fetchNextPageOfArtsByStreetcodeId = async (streetcodeId: number) => {
-        const arrayOfArts = await StreetcodeArtApi
-            .getPageOfArtsByStreetcodeId(streetcodeId, this.page, this.pageSize);
-
-        if (arrayOfArts.length !== 0) {
-            this.setNextPageToArtMap = arrayOfArts;
-            this.page += 1;
+    public fetchNextArtSlidesByStreetcodeId = async (streetcodeId: number) => {
+        const arrayOfArtSlides = await StreetcodeArtApi
+            .getArtSlidesByStreetcodeId(streetcodeId, this.startFromSlide, this.amountOfSlides);
+        console.log("slides: ", arrayOfArtSlides);
+        if (arrayOfArtSlides.length !== 0) {
+            this.streetcodeArtSlides.push(...arrayOfArtSlides)
+            this.startFromSlide += 1;
         } else {
             throw new Error('No more arts to load');
         }
