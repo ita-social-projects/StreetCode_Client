@@ -5,7 +5,6 @@
 
 .textComponentContainer {
     @include mut.sized(100%, auto);
-    margin-top: f.pxToRem(110px);
 }
 
 .TextContainer {
