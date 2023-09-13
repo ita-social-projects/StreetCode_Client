@@ -57,7 +57,7 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
     return (
         <Modal open={opened} footer={null} onCancel={handleCancel}>
             <div className="modal-item-image">
-                {previewImage && <img alt="uploaded" src={previewImage} />}
+                {previewImage && <img style={{ filter: 'grayscale(100%)' }} alt="uploaded" src={previewImage} />}
             </div>
         </Modal>
     );

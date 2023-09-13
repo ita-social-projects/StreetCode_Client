@@ -160,8 +160,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Картинка: "
                         rules={[{ required: true, message: 'Додайте зображення' }]}
                         getValueFromEvent={getValueFromEvent}
+                        style={{ filter: 'grayscale(100%)' }}
                     >
                         <FileUploader
+                            greyFilterForImage
                             onChange={(param) => {
                                 setFileList(param.fileList);
                             }}
