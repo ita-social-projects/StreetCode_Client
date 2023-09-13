@@ -27,7 +27,7 @@ const PartnerContent = ({ partner, image }: Props) => {
                 <div className="partnerContentLogo">
                     <img
                         key={id}
-                        src={base64ToUrl(image?.base64, image.mimeType)}
+                        src={base64ToUrl(image?.base64, image?.mimeType)}
                         alt={title}
                     />
                 </div>
