@@ -13,7 +13,6 @@ interface Props {
 }
 
 const PartnersBlock = ({ onlyKeyPartners }: Props) => {
-
     const [keyPartners, setKeyPartners] = useState<Partner[]>([]);
     const [otherPartners, setOtherPartners] = useState<Partner[]>([]);
 
@@ -21,23 +20,13 @@ const PartnersBlock = ({ onlyKeyPartners }: Props) => {
         () => {
             PartnersApi.getAllByIsKeyPartner(true)
                 .then((res) => {
-                    Promise.all(res.map((p, index) => ImagesApi.getById(p.logoId)
-                        .then((img) => {
-                            res[index].logo = img;
-                        }))).then(() => {
-                        setKeyPartners(res);
-                    });
+                    setKeyPartners(res);
                 });
 
             if (!onlyKeyPartners) {
                 PartnersApi.getAllByIsKeyPartner(false)
                     .then((result) => {
-                        Promise.all(result.map((p, index) => ImagesApi.getById(p.logoId)
-                            .then((img) => {
-                                result[index].logo = img;
-                            }))).then(() => {
-                            setOtherPartners(result);
-                        });
+                        setOtherPartners(result);
                     });
             }
         },

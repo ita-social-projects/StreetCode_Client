@@ -41,6 +41,17 @@ const menuOptions = [
     FRONTEND_ROUTES.OTHER_PAGES.ERROR404,
 ];
 
+const MENU_ID = {
+    HOME: 1,
+    CATALOG: 2,
+    ABOUT: 3,
+    PARTNERS: 4,
+    DONATE: 5,
+    CONTACTS: 6,
+    PRIVACY_POLICY: 7,
+    FEEDBACK: 8,
+};
+
 const HeaderDrawer = () => {
     const { toggleState: drawerState, handlers: { toggle } } = useToggle();
     const [active, setActive] = useState(1);
@@ -52,8 +63,26 @@ const HeaderDrawer = () => {
         query: '(max-width: 1024px)',
     });
 
+    const setCatalogForStreetcodePage = (currentPath: string) => {
+        let optionId = menuOptions.indexOf(currentPath);
+
+        const isExcluded = currentPath !== FRONTEND_ROUTES.BASE
+            && menuOptions
+                .filter((option, index) => index !== 0)
+                .some((option) => currentPath.startsWith(option));
+
+        if (currentPath && !isExcluded) {
+            if (currentPath !== FRONTEND_ROUTES.BASE) {
+                optionId = 1;
+            }
+        }
+        return optionId;
+    };
+
     useEffect(() => {
-        const optionId = menuOptions.indexOf(location.pathname);
+        const currentPath = location.pathname;
+        const optionId = setCatalogForStreetcodePage(currentPath);
+
         if (isSmall) {
             setScalingCooficient(scaleMobile);
             setOptions(mobileOptions);
@@ -89,42 +118,42 @@ const HeaderDrawer = () => {
                     <div>
                         <div className="headerDrawerContainer">
                             <HeaderDrawerItem
-                                id={1}
+                                id={MENU_ID.HOME}
                                 parentActive={active}
                                 text="Головна"
                                 link={FRONTEND_ROUTES.BASE}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
-                                id={2}
+                                id={MENU_ID.CATALOG}
                                 parentActive={active}
                                 text="Стріткоди"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
-                                id={3}
+                                id={MENU_ID.ABOUT}
                                 parentActive={active}
                                 text="Про нас"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
-                                id={4}
+                                id={MENU_ID.PARTNERS}
                                 parentActive={active}
                                 text="Партнери"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
-                                id={5}
+                                id={MENU_ID.DONATE}
                                 parentActive={active}
                                 text="Донати"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
-                                id={6}
+                                id={MENU_ID.CONTACTS}
                                 parentActive={active}
                                 text="Контакти"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}
@@ -132,28 +161,28 @@ const HeaderDrawer = () => {
                             />
                         </div>
                         {isSmall
-                        && (
-                            <>
-                                <br />
-                                <div className="headerDrawerContainer">
-                                    <HeaderDrawerItem
-                                        id={7}
-                                        parentActive={active}
-                                        toggleState={toggle}
-                                        text="Політика конфіденційності"
-                                        link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
-                                    />
-                                    <HeaderDrawerItem
-                                        id={8}
-                                        parentActive={active}
-                                        toggleState={toggle}
-                                        text="Зворотний зв'язок"
-                                        link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
-                                    />
-                                </div>
-                                <SocialMediaLinks />
-                            </>
-                        )}
+                            && (
+                                <>
+                                    <br />
+                                    <div className="headerDrawerContainer">
+                                        <HeaderDrawerItem
+                                            id={MENU_ID.PRIVACY_POLICY}
+                                            parentActive={active}
+                                            toggleState={toggle}
+                                            text="Політика конфіденційності"
+                                            link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
+                                        />
+                                        <HeaderDrawerItem
+                                            id={MENU_ID.FEEDBACK}
+                                            parentActive={active}
+                                            toggleState={toggle}
+                                            text="Зворотний зв'язок"
+                                            link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
+                                        />
+                                    </div>
+                                    <SocialMediaLinks />
+                                </>
+                            )}
                     </div>
                 </div>
             </Drawer>
