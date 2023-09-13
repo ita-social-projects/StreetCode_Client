@@ -1,0 +1,86 @@
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.headerTitle {
+    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
+    line-height: 14px;
+    text-align: right;
+    color: c.$dark-red-color;
+
+    margin-bottom: f.pxToRem(50px);
+}
+
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    width: inherit !important;
+    gap: f.pxToRem(40px);
+
+    .headerBigText {
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+
+        .redText {
+            color: c.$accented-red-color;
+        }
+    }
+
+    .headerList {
+        display: flex;
+        gap: f.pxToRem(60px);
+        justify-content: space-between;
+
+        .listItem {
+            display: flex;
+
+            .redLine {
+                background-color: c.$accented-red-color;
+                max-height: f.pxToRem(78px);
+                min-width: f.pxToRem(4px);
+                margin-right: f.pxToRem(20px);
+            }
+
+            .listText {
+                max-width: f.pxToRem(372px);
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            }
+        }
+    }
+
+    .headerSmallText {
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+        color: c.$text-red-color;
+    }
+
+}
+
+@media screen and (max-width: 1024px) {
+    .headerTitle {
+        display: none;
+    }
+
+    .headerBigText {
+        font-size: 20px !important;
+    }
+
+    .headerList {
+        flex-direction: column;
+        gap: f.pxToRem(20px) !important;
+
+        .redLine {
+            height: auto;
+        }
+
+        .listText {
+            max-width: fit-content !important;
+            font-size: 16px !important;
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .contentWrapper {
+        gap: f.pxToRem(30px);
+    }
+}
