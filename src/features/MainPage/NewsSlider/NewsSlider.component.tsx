@@ -48,7 +48,7 @@ const NewsSlider = () => {
     };
 
     return (
-        (news.length >= 0)
+        (news.length > 0)
             ? (
                 <div>
                     <div className="NewsWrapper">
