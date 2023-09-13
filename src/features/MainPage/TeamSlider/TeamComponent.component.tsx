@@ -55,12 +55,12 @@ const TeamComponent = () => {
             const newImages : Image[] = [];
             for (const teammate of response) {
                 await ImagesApi.getById(teammate.imageId)
-                    .then((img) => newImages.push(img));
+                    .then((img) => {
+                        newImages.push(img);
+                        setImages(newImages);
+                    });
             }
-            setImages(newImages);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     });
 
     return (

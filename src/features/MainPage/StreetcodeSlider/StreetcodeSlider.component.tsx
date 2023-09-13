@@ -44,12 +44,12 @@ const StreetcodeSlider = () => {
             const newImages : Image[] = [];
             for (const streetcode of response) {
                 await ImagesApi.getById(streetcode.imageId)
-                    .then((img) => newImages.push(img));
+                    .then((img) => {
+                        newImages.push(img);
+                        setImages(newImages);
+                    });
             }
-            setImages(newImages);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     });
 
     if (streetcodes.length > 0) {

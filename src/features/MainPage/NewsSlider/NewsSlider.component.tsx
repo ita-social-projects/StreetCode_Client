@@ -54,13 +54,13 @@ const NewsSlider = () => {
             for (const newsInfo of response) {
                 if (newsInfo.imageId != null) {
                     await ImagesApi.getById(newsInfo.imageId)
-                        .then((img) => newImages.push(img));
+                        .then((img) => {
+                            newImages.push(img);
+                            setImages(newImages);
+                        });
                 }
             }
-            setImages(newImages);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     });
 
     return (
