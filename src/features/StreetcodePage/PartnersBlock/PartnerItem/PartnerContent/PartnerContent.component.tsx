@@ -5,28 +5,29 @@ import instagram from '@assets/images/partners/instagram.webp';
 import twitter from '@assets/images/partners/twitter.webp';
 import youtube from '@assets/images/partners/youtube.webp';
 import useMobx from '@stores/root-store';
-
+import Image from '@models/media/image.model';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Partner from '@/models/partners/partners.model';
 
 interface Props {
     partner: Partner
+    image: Image | undefined;
 }
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
-const PartnerContent = ({ partner }: Props) => {
+const PartnerContent = ({ partner, image }: Props) => {
     const {
         id, title, targetUrl, partnerSourceLinks, description,
     } = partner;
-    
+
     return (
         <div className="partnerContent">
             <div className="header">
                 <div className="partnerContentLogo">
                     <img
                         key={id}
-                        src={base64ToUrl(partner.logo?.base64, partner.logo?.mimeType)}
+                        src={base64ToUrl(image?.base64, image.mimeType)}
                         alt={title}
                     />
                 </div>
@@ -52,14 +53,16 @@ const PartnerContent = ({ partner }: Props) => {
                         </a>
                     ))}
                 </div>
-                {partner.targetUrl?.href !== null ? <a
-                    rel="noreferrer"
-                    target="_blank"
-                    className="mainLink"
-                    href={targetUrl?.href}
-                >
-                    {targetUrl?.title ?? 'до сторінки партнера'}
-                </a> : <></>}                
+                {partner.targetUrl?.href !== null ? (
+                    <a
+                        rel="noreferrer"
+                        target="_blank"
+                        className="mainLink"
+                        href={targetUrl?.href}
+                    >
+                        {targetUrl?.title ?? 'до сторінки партнера'}
+                    </a>
+                ) : <></>}
             </div>
             <div
                 className="description"
