@@ -38,7 +38,7 @@ const PartnersItem = ({ partner }: Props) => {
         <div className="partnersItem">
             <Popover
                 overlayClassName="partnerPopover"
-                content={<PartnerContent partner={partner} />}
+                content={<PartnerContent partner={partner} image={getImage(partner.logoId)} />}
                 trigger={trigger}
             >
                 <img

@@ -10,6 +10,8 @@ const TeamApi = {
 
     getAllMain: () => Agent.get<TeamMember[]>(`${API_ROUTES.TEAM.GET_ALL_MAIN}`),
 
+    getByRoleId: (id:number) => Agent.get<TeamMember[]>(`${API_ROUTES.TEAM.GET_BY_ROLE_ID}/${id}`),
+
     create: (team: TeamCreateUpdate) => Agent.post<TeamMember>(`${API_ROUTES.TEAM.CREATE}`, team),
 
     update: (team: TeamCreateUpdate) => Agent.put<TeamMember>(`${API_ROUTES.TEAM.UPDATE}`, team),

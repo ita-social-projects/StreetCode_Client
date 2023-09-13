@@ -10,6 +10,10 @@
   box-sizing: border-box;
 }
 
+.ant-message {
+  position: fixed !important;
+}
+
 body {
   font-family: ft.$body-tag-font;
   @include ut.antialiased();

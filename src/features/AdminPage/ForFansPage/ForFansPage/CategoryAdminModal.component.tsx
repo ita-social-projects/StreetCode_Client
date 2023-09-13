@@ -14,7 +14,7 @@ import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, Popover,
+    Button, Form, Input, message, Modal, Popover,
     UploadFile,
 } from 'antd';
 import { UploadFileStatus } from 'antd/es/upload/interface';
@@ -109,8 +109,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
         if (isNewCategory !== undefined) {
             isNewCategory(true);
         }
-        closeModal();
-        form.resetFields();
     };
 
     const handlePreview = async (file: UploadFile) => {
@@ -132,6 +130,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
         return [];
     };
+
+    const handleOk =() =>{
+        form.submit();
+        message.success("Категорію успішно додано!", 2);
+    }
 
     return (
         <div>
@@ -160,8 +163,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Картинка: "
                         rules={[{ required: true, message: 'Додайте зображення' }]}
                         getValueFromEvent={getValueFromEvent}
+                        style={{ filter: 'grayscale(100%)' }}
                     >
                         <FileUploader
+                            greyFilterForImage
                             onChange={(param) => {
                                 setFileList(param.fileList);
                             }}
@@ -186,7 +191,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => form.submit()}>
+                        <Button className="streetcode-custom-button" onClick={() => handleOk() }>
                             Зберегти
                         </Button>
                     </div>

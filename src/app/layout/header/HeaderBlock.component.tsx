@@ -59,7 +59,7 @@ const HeaderBlock = () => {
                 setIsPageDimmed(false);
                 setIsPopoverVisible(false);
 
-            }, 100);
+            }, 500);
 
         }
     }, [setIsPageDimmed, setIsPopoverVisible, off]);
