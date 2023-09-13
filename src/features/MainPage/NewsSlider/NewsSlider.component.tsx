@@ -41,10 +41,6 @@ const NewsSlider = () => {
 
     };
 
-    const handleClick = () => {
-        window.location.assign('https://www.instagram.com/streetcodeua/');
-    };
-
     useAsync(async () => {
         try {
             const response = await NewsApi.getAllSortedNews();
@@ -68,7 +64,7 @@ const NewsSlider = () => {
             ? (
                 <div>
                     <div className="NewsWrapper">
-                        <Heading blockName="Новини" setActionOnClick={handleClick} />
+                        <Heading blockName="Новини" buttonName={undefined} setActionOnClick={undefined} />
                         <div id="newsSliderContentBlock" className="newsSliderComponent">
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
