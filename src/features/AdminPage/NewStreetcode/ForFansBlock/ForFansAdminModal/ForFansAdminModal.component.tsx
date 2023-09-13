@@ -112,11 +112,14 @@ const ForFansModal = ({
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
                 });
         }
-        setOpen(false);
+        //setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
         onChange('saved', null);
     };
-
+    const handleOk = () => {
+        form.submit();
+        alert('Категорію для фанатів успішно додано!');
+    }
     const onDropDownChange = async () => {
         if (isAddModalVisible === false) {
             const categories = await SourcesApi.getAllCategories();
@@ -134,6 +137,7 @@ const ForFansModal = ({
         if(isNewCatAdded === true) {
             const AvailableCats = await getAvailableCategories(true);
             setAvailableCategories(AvailableCats);
+            alert('Категорію успішно додано до списку!');
         }
     };
 
@@ -253,7 +257,10 @@ const ForFansModal = ({
                     />
                 </FormItem>
                 <div className="center">
-                    <Button className="streetcode-custom-button" htmlType="submit">
+                    <Button
+                        className="streetcode-custom-button"
+                        onClick={() => handleOk()}
+                    >
                         Зберегти
                     </Button>
                 </div>

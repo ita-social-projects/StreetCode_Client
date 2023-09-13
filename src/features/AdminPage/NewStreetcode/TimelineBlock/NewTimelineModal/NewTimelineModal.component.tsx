@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 import {
     Button,
-    DatePicker, Form, Input, Modal, Popover, Select,
+    DatePicker, Form, Input, message, Modal, Popover, Select,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -123,9 +123,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             timelineItemStore.addTimeline(newTimeline);
         }
 
-        setIsModalOpen(false);
-        setDateTimePickerType('date');
-        form.resetFields();
         onChange('timeline', formValues);
     };
 
@@ -170,6 +167,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
         onChange('historicalContexts', selectedContext.current);
     };
+
+    const handleOk =() =>{
+        form.submit();
+        alert('Хронологію успішно додано!');
+    }
 
     return (
         <Modal
@@ -278,7 +280,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         <TextArea maxLength={400} showCount onChange={(e) => onChange('description', e.target.value)} />
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" type="primary" htmlType="submit">
+                        <Button
+                            className="streetcode-custom-button"
+                            onClick={() => handleOk()}
+                        >
                             Зберегти
                         </Button>
                     </div>

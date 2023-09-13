@@ -16,8 +16,7 @@ import useMobx from '@stores/root-store';
 import {
     Button,
     Checkbox,
-    Form, Input, Modal, Popover,
-    Select, UploadFile,
+    Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -131,6 +130,10 @@ const TeamModal: React.FC<{
             }]);
         }
     };
+    const handleOk = async () => {
+        form.submit();
+        message.success("Члена команди успішно додано!", 2)
+    };
     const onSuccesfulSubmitPosition = async (formValues: any) => {
         teamSourceLinks.forEach((el, index) => {
             if (el.id < 0) {
@@ -173,7 +176,6 @@ const TeamModal: React.FC<{
                     }),
             ]);
         }
-        closeAndCleanData();
     };
 
     const selectSocialMediaOptions = [{
@@ -354,7 +356,7 @@ const TeamModal: React.FC<{
                 {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
 
                 <div className="center">
-                    <Button className="streetcode-custom-button" onClick={() => form.submit()}>
+                    <Button className="streetcode-custom-button" onClick={handleOk}>
                         Зберегти
                     </Button>
                 </div>
