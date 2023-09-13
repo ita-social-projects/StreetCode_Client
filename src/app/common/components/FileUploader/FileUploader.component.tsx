@@ -30,14 +30,14 @@ const FileUploader:React.FC<Props> = ({
                 img.src = imageDataAsURL.current;
                 if (img.height > 0 && img.width > 0) {
                     const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    if (ctx !== null) {
+                    const context = canvas.getContext('2d');
+                    if (context !== null) {
                         canvas.width = img.width;
                         canvas.height = img.height;
 
-                        ctx.drawImage(img, 0, 0);
+                        context.drawImage(img, 0, 0);
 
-                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
                         const { data } = imageData;
 
                         for (let i = 0; i < data.length; i += 4) {
@@ -52,7 +52,7 @@ const FileUploader:React.FC<Props> = ({
                             data[i + 2] = grayscale;
                         }
 
-                        ctx.putImageData(imageData, 0, 0);
+                        context.putImageData(imageData, 0, 0);
 
                         imageDataAsURL.current = canvas.toDataURL('image/png');
                     }
