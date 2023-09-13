@@ -17,10 +17,13 @@ const Heading = ({ blockName, buttonName, setActionOnClick }: Props) => {
         <>
             {windowSize.width > 480
                 ? (
-                    <div className="mainPageBlockHeading">
+                   <div className="mainPageBlockHeading">
                         <div className="leftPart">
                             <Squares />
                             <p className="blockName">{blockName}</p>
+                        </div>
+                        <div className="headingButton">
+                            <p onClick={setActionOnClick}>{buttonName}</p>
                         </div>
                     </div>
                 )
