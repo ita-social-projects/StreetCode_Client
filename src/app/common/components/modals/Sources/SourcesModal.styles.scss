@@ -66,6 +66,11 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
     font-weight: 300;
     font-size: 15px;
 
+    ul, ol {
+      list-style: auto;
+      padding-inline-start: revert;
+    }
+
     >h1 {
       @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 24px, $font-style: light);
       line-height: pxToRem(26.4px);
