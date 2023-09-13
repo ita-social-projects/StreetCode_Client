@@ -11,8 +11,6 @@ import 'swiper/swiper-bundle.min.css';
 import 'swiper/css/pagination';
 import 'swiper/css';
 
-import TeamMemberCard from '../TeamMemberCard/TeamMemberCard.component';
-
 import TeamMemberList from './TeamMembersList/TeamMemberList.component';
 import TeamMemberSlider from './TeamPositionsSlider/TeamMembersSlider.component';
 import SliderComponents from './TeamPositionsSlider/TeamPostionSlider.component';
@@ -22,17 +20,22 @@ const TeamMembers = () => {
 
     const [team, setTeam] = useState<TeamMember[]>([]);
     const [positionId, setPositionId] = useState<number>(-1);
-
-    useEffect(
-        () => {
-            if (positionId > 0) {
+    const [allTeams, setAllTeams] = useState<Map<number, TeamMember[]>>();
+    useEffect(() => {
+        if (positionId > 0) {
+            const fetchedTeam = allTeams?.get(positionId);
+            if (!fetchedTeam) {
                 TeamApi.getByRoleId(positionId).then(
-                    (result) => setTeam(result),
+                    (result) => {
+                        setTeam(result);
+                        setAllTeams((prevState) => new Map(prevState).set(positionId, result));
+                    },
                 );
+            } else {
+                setTeam(fetchedTeam);
             }
-        },
-        [positionId],
-    );
+        }
+    }, [positionId]);
 
     useEffect(() => {
         PositionsApi.getAllWithTeamMembers().then((pos) => {
@@ -44,19 +47,20 @@ const TeamMembers = () => {
     }, []);
 
     return (
-        positions.length ? 
-        <div className="aboutUsBlockContainer">
-            <SliderComponents
-                positions={positions}
-                setActive={setPositionId}
-            />
-            {window.innerWidth <= SCREEN_SIZES.tablet ? (
-                <TeamMemberSlider team={team} />
-            ) : (
-                <TeamMemberList teamMembers={team} />
-            )}
-        </div>
-        :<></>
+        positions.length
+        && (
+            <div className="aboutUsBlockContainer">
+                <SliderComponents
+                    positions={positions}
+                    setActive={setPositionId}
+                />
+                {window.innerWidth <= SCREEN_SIZES.tablet ? (
+                    <TeamMemberSlider team={team} />
+                ) : (
+                    <TeamMemberList teamMembers={team} />
+                )}
+            </div>
+        )
     );
 };
 export default TeamMembers;
