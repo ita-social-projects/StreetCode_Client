@@ -79,7 +79,7 @@ const StreetcodeContent = () => {
                 },
             ).catch(
                 () => {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                    navigate(`${FRONTEND_ROUTES.BASE}/${streetcodeUrl.current}`, { replace: true });
                 },
             );
         }

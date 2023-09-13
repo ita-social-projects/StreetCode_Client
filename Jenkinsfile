@@ -7,7 +7,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
-                        sh "docker build -t ${username}/streetcode_client:latest ."
+                        sh "docker build --no-cache -t ${username}/streetcode_client:latest ."
                     }
                 }
             }
