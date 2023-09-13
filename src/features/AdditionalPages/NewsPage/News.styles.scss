@@ -21,6 +21,11 @@
             h1 {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
             }
+            .news-date {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 15px);
+                color: c.$darkish-gray-color;
+                margin-top: f.pxToRem(8px);
+            }
         }
     }
 
@@ -58,8 +63,7 @@
             margin-left: f.pxToRem(20px);
             height: 100%;
             max-height: fit-content;
-            min-width: fit-content;
-            max-width: fit-content;
+            max-width: f.pxToRem(600px);
             float: right;
             border-radius: 24px;
         }
