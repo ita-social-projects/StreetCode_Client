@@ -39,9 +39,20 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
         addTerm.isOpen = false;
         form.resetFields();
     };
-    const handleOk= () =>{
-        form.submit();
-        message.success("Термін успішно додано!", 2)
+    const handleOk= async () =>{
+        try {
+            form.submit();
+            message.success("Партнера успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
     }
 
     return (
