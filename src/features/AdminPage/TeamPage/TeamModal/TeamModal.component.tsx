@@ -43,10 +43,11 @@ const TeamModal: React.FC<{
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
     const imageId = useRef<number>(0);
-
     useEffect(() => {
-        PositionsApi.getAll().then((pos) => setPositions(pos));
-    }, []);
+        if (open) {
+            PositionsApi.getAll().then((pos) => setPositions(pos));
+        }
+    }, [open]);
 
     const onPositionSelect = (selectedValue: string) => {
         let selected;
@@ -74,8 +75,7 @@ const TeamModal: React.FC<{
         if (teamMember && open) {
             imageId.current = teamMember.imageId;
             form.setFieldsValue({
-                firstName: teamMember.firstName,
-                lastName: teamMember.lastName,
+                name: teamMember.name,
                 isMain: teamMember.isMain,
                 description: teamMember.description,
                 positions: teamMember.positions.map((s) => s.position),
@@ -146,8 +146,7 @@ const TeamModal: React.FC<{
             isMain,
             imageId: imageId.current,
             teamMemberLinks: teamSourceLinks,
-            firstName: formValues.firstName,
-            lastName: formValues.lastName,
+            name: formValues.name,
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
@@ -206,9 +205,11 @@ const TeamModal: React.FC<{
             onCancel={closeModal}
             className="modalContainer"
             footer={null}
-            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                <CancelBtn className='iconSize' onClick={closeAndCleanData} />
-            </Popover>}
+            closeIcon={(
+                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <CancelBtn className="iconSize" onClick={closeAndCleanData} />
+                </Popover>
+            )}
         >
             <div className="modalContainer-content">
                 <Form
@@ -232,20 +233,13 @@ const TeamModal: React.FC<{
                     </div>
 
                     <Form.Item
-                        name="lastName"
-                        label="Прізвище: "
-                        rules={[{ required: true, message: 'Введіть прізвище:' }]}
+                        name="name"
+                        label="Прізвище та ім'я: "
+                        rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
                     >
-                        <Input maxLength={100} showCount />
+                        <Input maxLength={41} showCount />
                     </Form.Item>
 
-                    <Form.Item
-                        name="firstName"
-                        label="Ім'я: "
-                        rules={[{ required: true, message: "Введіть ім'я:" }]}
-                    >
-                        <Input maxLength={100} showCount />
-                    </Form.Item>
                     <Form.Item label="Позиції">
                         <div className="tags-block-positionitems">
 
@@ -264,7 +258,7 @@ const TeamModal: React.FC<{
                         name="description"
                         label="Опис: "
                     >
-                        <TextArea showCount maxLength={450} />
+                        <TextArea showCount maxLength={48} />
                     </Form.Item>
 
                     <Form.Item
@@ -277,10 +271,16 @@ const TeamModal: React.FC<{
                             }
                             return e?.fileList;
                         }}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Будь ласка, завантажте фото',
+                            },
+                        ]}
                     >
                         <FileUploader
                             multiple={false}
-                            accept=".jpeg,.png,.jpg"
+                            accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
                             onPreview={(e) => {
@@ -316,6 +316,7 @@ const TeamModal: React.FC<{
 
                     {teamSourceLinks.map((link) => (
                         <div
+                            className="link-container"
                             key={`${link.id}${link.logoType}`}
                         >
                             <TeamLink link={link} />
@@ -331,7 +332,6 @@ const TeamModal: React.FC<{
                     <FormItem
                         name="logotype"
                         label="Соціальна мережа"
-                        rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
                     >
                         <Select
                             options={selectSocialMediaOptions}
@@ -341,7 +341,6 @@ const TeamModal: React.FC<{
                         label=" "
                         className="url-input"
                         name="url"
-                        rules={[{ required: true, message: 'Введіть посилання' }]}
                     >
                         <Input min={1} max={255} showCount />
                     </Form.Item>

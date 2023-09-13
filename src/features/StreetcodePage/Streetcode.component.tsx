@@ -79,7 +79,7 @@ const StreetcodeContent = () => {
                 },
             ).catch(
                 () => {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                    navigate(`${FRONTEND_ROUTES.BASE}/${streetcodeUrl.current}`, { replace: true });
                 },
             );
         }
@@ -124,7 +124,7 @@ const StreetcodeContent = () => {
                     <DonateBtn />
                 </div>
             </div>
-            <TickerBlock />
+            <TickerBlock type="subtitle" />
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}

@@ -1,0 +1,7 @@
+@use "@sass/_utils.functions.scss" as f;
+
+.textWrapper{
+    .ant-input{
+        min-height: f.pxToRem(300px);
+    }
+}

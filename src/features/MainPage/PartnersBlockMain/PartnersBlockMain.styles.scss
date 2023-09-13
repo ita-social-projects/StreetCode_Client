@@ -13,7 +13,13 @@
             row-gap: 0;
 
             .partnersItem {
-                @include mut.rem-margined($top: 30px, $right: 10px, $bottom: 30px, $left: 10px);
+                @include mut.rem-margined($top: 87px, $right: 10px, $bottom: 30px, $left: 10px);
+                @media screen and (max-width: 768px) {
+                    @include mut.rem-margined($top: 50px, $right: 10px, $bottom: 30px, $left: 10px);
+                }
+                @media screen and (max-width: 480px) {
+                    @include mut.rem-margined($top: 50px, $right: 10px, $bottom: 30px, $left: 10px);
+                }
             }
         }
     }
@@ -42,7 +48,6 @@
     .partnersBlock {
         .keyPartnersBlock {
             .partnersItem {
-                @include mut.rem-margined($top: 20px, $right: 15px, $bottom: 20px, $left: 15px);
                 @include mut.sized($width: 340px, $height: 98px);
             }
         }
