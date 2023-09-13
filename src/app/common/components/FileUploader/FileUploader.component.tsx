@@ -54,7 +54,7 @@ const FileUploader:React.FC<Props> = ({
 
                         context.putImageData(imageData, 0, 0);
 
-                        imageDataAsURL.current = canvas.toDataURL('image/png');
+                        imageDataAsURL.current = canvas.toDataURL('image/webp');
                     }
                 }
             }
