@@ -33,7 +33,7 @@ const menuPositionsMobile = [
 const menuOptions = [
     FRONTEND_ROUTES.BASE,
     FRONTEND_ROUTES.OTHER_PAGES.CATALOG,
-    FRONTEND_ROUTES.OTHER_PAGES.ERROR404,
+    FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US,
     FRONTEND_ROUTES.OTHER_PAGES.PARTNERS,
     FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US,
     FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US,
@@ -106,7 +106,7 @@ const HeaderDrawer = () => {
                                 id={3}
                                 parentActive={active}
                                 text="Про нас"
-                                link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
+                                link={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem
