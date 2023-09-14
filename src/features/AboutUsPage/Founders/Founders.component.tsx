@@ -5,7 +5,7 @@ import TeamMember from '@/models/team/team.model'
 import Inna from '@assets/images/about-us/Inna.png'
 import Natalia from '@assets/images/about-us/Nata.png'
 import InnaSmall from '@assets/images/about-us/InnaWithBg.png'
-import NataliaSmall from '@assets/images/about-us/NataliaWithBg.png'
+import NataliaSmall from '@assets/images/about-us/NataliaWithBG.png'
 
 // тут лежить хардкод
 const FounderInna: FounderProps =
