@@ -181,6 +181,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: $text-overflow;
+  word-break: break-word;
 
   @supports (-webkit-line-clamp: $line-num) {
     overflow: hidden;

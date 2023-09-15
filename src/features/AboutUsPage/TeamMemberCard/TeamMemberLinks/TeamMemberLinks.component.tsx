@@ -6,11 +6,13 @@ import youtube from '@assets/images/partners/youtube.webp';
 import { TeamMemberLinkCreateUpdate } from '@/models/team/team.model';
 
 const LogoType = [twitter, instagram, facebook, youtube];
-
-const TeamMemberLinks = (link: TeamMemberLinkCreateUpdate) => (
-            <a href={link.targetUrl}>
-                <img key={link.id}src={LogoType[link.logoType]} />
-            </a>
+type Props = {
+    link: TeamMemberLinkCreateUpdate
+};
+const TeamMemberLinks = ({ link }: Props) => (
+    <a href={link.targetUrl}>
+        <img key={link.id} src={LogoType[link.logoType]} alt="social media icon" />
+    </a>
 );
 
 export default TeamMemberLinks;

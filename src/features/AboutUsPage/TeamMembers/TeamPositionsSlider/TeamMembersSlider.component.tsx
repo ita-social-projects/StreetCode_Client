@@ -14,21 +14,25 @@ const TeamMemberSlider: React.FC<TeamMemberSliderProps> = ({ team }) => {
     const getSliderData = () => {
         if (team.length > 0) {
             return (
-                <Swiper
-                    slidesPerView="auto"
-                    centeredSlides
-                    spaceBetween={20}
-                    slideToClickedSlide
-                    //pagination={window.innerWidth < SCREEN_SIZES.phone}
-                    loop
-                >
-                    {
-                    team.map((member) => (
-                        <SwiperSlide key = {member.id} >
-                            <TeamMemberCard {...member} />
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+                team.length === 1
+                    ? <TeamMemberCard person={team[0]} isSingleCard />
+                    : (
+                        <Swiper
+                            slidesPerView="auto"
+                            centeredSlides
+                            spaceBetween={20}
+                            slideToClickedSlide
+                            loop
+                        >
+                            {
+                                team.map((member) => (
+                                    <SwiperSlide key={member.id}>
+                                        <TeamMemberCard person={member} />
+                                    </SwiperSlide>
+                                ))
+                            }
+                        </Swiper>
+                    )
             );
         }
         return <></>;
