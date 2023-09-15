@@ -61,7 +61,7 @@
   line-height: f.pxToRem(47.52px);
 }
 .streetcodeDate {
-  @include mut.rem-padded(7px, 10px, 13px, 0px);
+  @include mut.rem-padded(7px, 10px, 12px, 0px);
   font-size: f.pxToRem(20px);
   line-height: f.pxToRem(23.44px);
 }
@@ -220,8 +220,10 @@
       }
     }
     .teaserBlock {
-      line-height: f.pxToRem(19px);
-      max-height: f.pxToRem(214px);
+      line-height: f.pxToRem(18.75px);
+      font-size: f.pxToRem(16px);
+      max-height: f.pxToRem(200px);
+      @include mut.rem-margined(15px, 3px, 0px, 0px);
       @include mut.with-font($font-weight: 300, $font-size: 16px);
     }
     .card {
@@ -251,7 +253,7 @@
         @include mut.withLineHeight(42px);
       }
       .streetcodeDate {
-        @include mut.rem-padded(0px, 5px, 0px, 0px);
+        @include mut.rem-padded(0px, 5px, 2px, 0px);
         @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
         @include mut.withLineHeight(23px);
       }
@@ -287,9 +289,12 @@
         width: 100%;
         height: unset ;
       }
+      .streetcodeIndex {
+        @include mut.rem-padded($bottom: 10px);
+      }
       .cardFooter{
         margin-top: f.pxToRem(39px) !important;
-        @include mut.rem-padded(0px, 0px, 5px, 0px);
+        @include mut.rem-padded(0px, 0px, 0px, 0px);
         .audioBtn{
           width: 100%;
         }

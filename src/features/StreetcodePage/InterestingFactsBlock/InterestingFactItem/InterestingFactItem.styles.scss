@@ -150,6 +150,7 @@
 @media screen and (max-width: 1024px) {
   .interestingFactSlide {
     @include mut.sized(205px, 240px);
+    margin-bottom: f.pxToRem(0px);
   }
 
   .interestingFactsSliderContainer {
