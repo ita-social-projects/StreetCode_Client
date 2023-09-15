@@ -9,6 +9,7 @@
 .newsSliderItem {
     display: flex;
     flex-direction: column;
+
     .newsMainPage {
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.sized(840px, 567px);
@@ -25,10 +26,10 @@
             overflow: hidden;
         }
 
-        @media (min-width: 360px) and (max-width: 767px){
+        @media (min-width: 360px) and (max-width: 767px) {
             width: f.pxToRem(340px);
             height: fit-content;
-            margin: 0 f.pxToRem(20px);
+            margin: f.pxToRem(-5px) f.pxToRem(20px) 0 f.pxToRem(20px);
         }
     }
 
@@ -86,7 +87,7 @@
         height: 193px;
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
-        
+
         @media (min-width: 768px) and (max-width: 1024px){
             @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
             height: 141px;
@@ -124,7 +125,7 @@
     .newsText {
         position: relative;
         display: contents;
-    
+
         &::-webkit-scrollbar {
             display: none;
         }
@@ -160,7 +161,7 @@
             -webkit-line-clamp: 2;
             width: 93vw;
         }
-            
+
         @media (max-width: 767px) {
             -webkit-line-clamp: 11;
         }

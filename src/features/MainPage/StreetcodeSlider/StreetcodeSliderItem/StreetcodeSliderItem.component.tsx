@@ -1,9 +1,7 @@
 import './StreetcodeSliderItem.styles.scss';
 
-import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-import ImagesApi from '@/app/api/media/images.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
@@ -12,10 +10,10 @@ import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     streetcode: StreetcodeMainPage;
+    image : Image
 }
 
-const StreetcodeSliderItem = ({ streetcode }: Props) => {
-    const [image, setImage] = useState<Image>();
+const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
     const windowsize = useWindowSize();
     const isMobile = useMediaQuery({
         query: '(max-width: 480px)',
@@ -32,14 +30,6 @@ const StreetcodeSliderItem = ({ streetcode }: Props) => {
     };
 
     const teaserText = truncateText(streetcode?.teaser || '', 340);
-
-    useEffect(() => {
-        if (id) {
-            ImagesApi.getById(streetcode.imageId)
-                .then((imgs) => setImage(imgs))
-                .catch((e) => { });
-        }
-    }, [streetcode]);
 
     const handleClickRedirect = () => {
         toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'main_page');

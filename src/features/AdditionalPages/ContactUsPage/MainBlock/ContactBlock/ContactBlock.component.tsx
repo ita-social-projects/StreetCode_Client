@@ -3,7 +3,7 @@ import './ContactBlock.styles.scss';
 import Email from '@images/contact-us/email.webp';
 import Facebook from '@images/contact-us/Facebook.webp';
 import Instagram from '@images/contact-us/Instagram.webp';
-import Logo from '@images/contact-us/Logo-2.webp';
+import Logo from '@images/contact-us/logo-2.webp';
 import TikTok from '@images/contact-us/TikTok.webp';
 import Twitter from '@images/contact-us/Twitter.webp';
 import YouTube from '@images/contact-us/Youtube.webp';

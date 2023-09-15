@@ -276,6 +276,13 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .streetcodeDate {
+    margin-top: f.pxToRem(5px);
+  }
+}
+
 @media screen and (max-width: 680px) {
   .blockCentering{
     .card{
@@ -303,5 +310,11 @@
 
       }
     }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .streetcodeDate {
+    margin-top: f.pxToRem(10px);
   }
 }

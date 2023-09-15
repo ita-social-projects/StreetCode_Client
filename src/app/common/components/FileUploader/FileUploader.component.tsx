@@ -4,8 +4,8 @@ import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd
 
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
-import Audio, {AudioCreate, AudioUpdate} from '@/models/media/audio.model'
-import Image, { ImageCreate } from '@/models/media/image.model';
+import Audio, { AudioCreate, AudioUpdate } from '@/models/media/audio.model';
+import ImageCustom, { ImageCreate } from '@/models/media/image.model';
 
 type UploaderWithoutChildren = Omit<UploadProps, 'children'>;
 
@@ -14,15 +14,52 @@ interface Props extends UploaderWithoutChildren {
     children: JSX.Element[] | JSX.Element;
     edgeSwipe?: boolean;
     uploadTo:'image' | 'audio';
-    onSuccessUpload?:(value:Image | Audio)=>void;
+    greyFilterForImage: boolean;
+    onSuccessUpload?:(value:ImageCustom | Audio)=>void;
 }
-const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...uploadProps }) => {
+const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, greyFilterForImage = false, children, ...uploadProps }) => {
     const imageOrAudioDataAsURL = useRef<any[]>([]);
+    const imageDataAsURL = useRef<any | null>(null);
     const onUploadChange = (uploadParams: UploadChangeParam<UploadFile<any>>) => {
         if(!imageOrAudioDataAsURL.current.find(el => el.uid === uploadParams.file.uid)){
             const reader = new FileReader();
             reader.onloadend = (obj) => {
-                imageOrAudioDataAsURL.current.push({base64: obj.target?.result, name: uploadParams.file.name, uid: uploadParams.file.uid});
+                let base64 = obj.target?.result;
+
+                if (greyFilterForImage && base64) {
+                    const img = new Image();
+                    img.src = base64;
+                    if (img.height > 0 && img.width > 0) {
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        if (context !== null) {
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+
+                            context.drawImage(img, 0, 0);
+
+                            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                            const {data} = imageData;
+
+                            for (let i = 0; i < data.length; i += 4) {
+                                const red = data[i];
+                                const green = data[i + 1];
+                                const blue = data[i + 2];
+
+                                const grayscale = (red + green + blue) / 3;
+
+                                data[i] = grayscale;
+                                data[i + 1] = grayscale;
+                                data[i + 2] = grayscale;
+                            }
+
+                            context.putImageData(imageData, 0, 0);
+
+                            base64 = canvas.toDataURL('image/webp');
+                        }
+                    }
+                }
+                imageOrAudioDataAsURL.current.push({base64: base64, name: uploadParams.file.name, uid: uploadParams.file.uid});
             };
             if (uploadParams.fileList.length === 0) {
                 imageOrAudioDataAsURL.current = [];
@@ -38,8 +75,8 @@ const FileUploader:React.FC<Props> = ({ onSuccessUpload, uploadTo, children, ...
         }
     };
     const onFileUpload = (uploadType:'image' | 'audio', uplFile:UploadFile)
-    :Promise< Image | Audio> => {
-        let imageOrAudioData = imageOrAudioDataAsURL.current.filter((el: any) => el.name === uplFile.name)[0]?.base64;
+    :Promise< ImageCustom | Audio> => {
+        const imageOrAudioData = imageOrAudioDataAsURL.current.filter((el: any) => el.name === uplFile.name)[0]?.base64;
 
         const imageOrAudio: ImageCreate = {
             baseFormat: imageOrAudioData?.substring(imageOrAudioData?.indexOf(',') + 1, imageOrAudioData?.length),

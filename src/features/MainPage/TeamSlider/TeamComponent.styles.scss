@@ -5,6 +5,8 @@
 $bgImg: '@assets/images/streetcode-card/background.webp';
 
 .teamComponent {
+    margin-bottom: f.pxToRem(22px);
+
     .margin-82px {
         margin-top: f.pxToRem(82px);
     }
@@ -22,14 +24,27 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
     .mainContainer {
         width: 100%;
         position: relative;
+        @media screen and (max-width: 480px) {
+            margin-top: f.pxToRem(-50px);
+        }
     }
 
     .mainContent {
         width: 100%;
-        margin-bottom: f.pxToRem(30px);
         @include mut.flex-centered();
-        margin-top: f.pxToRem(1px);
         padding-top: f.pxToRem(1px);
+
+        margin-top: f.pxToRem(21px);
+        margin-bottom: f.pxToRem(85px);
+
+        @media screen and (max-width: 768px) {
+            margin-top: f.pxToRem(2px);
+            margin-bottom: f.pxToRem(32px);
+        }
+
+        @media screen and (max-width: 480px) {
+            margin-bottom: f.pxToRem(32px);
+        }
 
         ::-webkit-scrollbar {
             width: f.pxToRem(5px);
@@ -50,6 +65,11 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
         }
     }
 
+    @media screen and (max-width: 768px) {
+        margin-top: f.pxToRem(-31px);
+        padding-top: f.pxToRem(-30px);
+    }
+
     @media screen and (max-width: 680px) {
         .mainContainer {
             height: unset;
@@ -60,8 +80,7 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
                 }
 
                 height: unset;
-                margin-top: f.pxToRem(10px);
-                padding-top: f.pxToRem(10px);
+
             }
         }
 
@@ -75,6 +94,11 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
         @media screen and (max-width: 767px) {
             width: 100% !important;
         }
+    }
+
+    @media screen and (max-width: 480px) {
+        margin-top: f.pxToRem(2px);
+        margin-bottom: f.pxToRem(30px);
     }
 
     .slick-initialized .slick-slide {

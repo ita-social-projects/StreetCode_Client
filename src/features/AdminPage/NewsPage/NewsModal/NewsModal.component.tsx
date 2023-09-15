@@ -145,6 +145,7 @@ const NewsModal: React.FC<{
             await form.validateFields();
             if (textIsPresent) {
                 form.submit();
+                message.success("Новину успішно додано!", 2)
             } else {
                 callErrorMessage("Будь ласка, заповніть всі обов'язкові поля");
             }
@@ -193,7 +194,6 @@ const NewsModal: React.FC<{
                     }),
             ]);
         }
-        closeAndCleanData();
         if (success && afterSubmit) {
             afterSubmit(news);
         }
@@ -310,7 +310,7 @@ const NewsModal: React.FC<{
                             >
                                 <FileUploader
                                     multiple={false}
-                                    accept=".jpeg,.png,.jpg"
+                                    accept=".jpeg,.png,.jpg,.webp"
                                     listType="picture-card"
                                     maxCount={1}
                                     onPreview={handlePreview}

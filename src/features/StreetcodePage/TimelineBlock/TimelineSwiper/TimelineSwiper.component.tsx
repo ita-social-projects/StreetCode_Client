@@ -47,46 +47,48 @@ const TimelineSwiper: React.FC<Props> = ({
     }), [activeSlide, children.length]);
 
     return (
-        <Swiper
-            className="swiperClass"
-            pagination={{ clickable: true }}
-            centeredSlides
-            ref={swiperRef}
-            {...swiperProps}
-            {...(!edgeSwipe ? onNextSwipeProps : undefined)}
-            onSlideChange={({ activeIndex }) => {
-                setActiveSlide(activeIndex);
-                setActiveYear(yearsArray[activeIndex]);
-            }}
-        >
-            {
-                yearsArray.indexOf(activeYear!) > 2 ? (
-                    <TimelineSwiperEdgeBtn
-                        lastTickIdx={children.length - 1}
-                        side="left"
-                        year={yearsArray[0]}
-                    />
-                ) : ''
-            }
+        <div className="timeline-swiper">
+            <Swiper
+                className="swiperClass"
+                //pagination={{ clickable: true }}
+                centeredSlides
+                ref={swiperRef}
+                {...swiperProps}
+                {...(!edgeSwipe ? onNextSwipeProps : undefined)}
+                onSlideChange={({ activeIndex }) => {
+                    setActiveSlide(activeIndex);
+                    setActiveYear(yearsArray[activeIndex]);
+                }}
+            >
+                {
+                    yearsArray.indexOf(activeYear!) > 2 ? (
+                        <TimelineSwiperEdgeBtn
+                            lastTickIdx={children.length - 1}
+                            side="left"
+                            year={yearsArray[0]}
+                        />
+                    ) : ''
+                }
 
-            {children.map((child, idx) => (
-                <SwiperSlide key={idx}>
-                    <div className={`tickContainer ${(idx === activeSlide) ? 'active' : ''}`}>
-                        {child}
-                    </div>
-                </SwiperSlide>
-            ))}
-            {
-                yearsArray.indexOf(activeYear!) < yearsArray.length - 3 ? (
-                    <TimelineSwiperEdgeBtn
-                        lastTickIdx={children.length - 1}
-                        side="right"
-                        year={yearsArray[yearsArray.length - 1]}
-                    />
-                ) : ''
-            }
+                {children.map((child, idx) => (
+                    <SwiperSlide key={idx}>
+                        <div className={`tickContainer ${(idx === activeSlide) ? 'active' : ''}`}>
+                            {child}
+                        </div>
+                    </SwiperSlide>
+                ))}
+                {
+                    yearsArray.indexOf(activeYear!) < yearsArray.length - 3 ? (
+                        <TimelineSwiperEdgeBtn
+                            lastTickIdx={children.length - 1}
+                            side="right"
+                            year={yearsArray[yearsArray.length - 1]}
+                        />
+                    ) : ''
+                }
 
-        </Swiper>
+            </Swiper>
+        </div>
     );
 };
 

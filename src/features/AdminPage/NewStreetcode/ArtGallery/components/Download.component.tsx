@@ -180,7 +180,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
     return (
         <>
             <FileUploader
-                accept=".jpeg,.png,.jpg"
+                accept=".jpeg,.png,.jpg,.webp"
                 listType="picture-card"
                 multiple={true}
                 fileList={fileList}

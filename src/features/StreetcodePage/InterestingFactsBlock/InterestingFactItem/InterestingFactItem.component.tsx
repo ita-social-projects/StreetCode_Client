@@ -4,21 +4,25 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { Fact } from '@models/streetcode/text-contents.model';
 import { useModalContext } from '@stores/root-store';
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import useIsVisible from '@/app/common/hooks/stateful/useIsVisible';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 interface Props {
     fact: Fact;
     maxTextLength?: number;
     numberOfSlides: number;
+    index?: number;
+    middleFactIndex?: number;
 }
 
 const InterestingFactItem = ({
     fact: { factContent, title, id, image },
     maxTextLength = 250,
     numberOfSlides,
+    index,
+    middleFactIndex,
 }: Props) => {
     const windowSize = useWindowSize();
     const millisecondsToHideAfterOpening = 4000;
@@ -35,20 +39,22 @@ const InterestingFactItem = ({
         mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
     }
     useEffect(() => {
-        if (image?.imageDetails?.alt && isOnScreen) {
+        if (index === middleFactIndex && image?.imageDetails?.alt && isOnScreen) {
             setDescriptionVisible(true);
             timeout.current = setTimeout(() => {
                 setDescriptionVisible(false);
-                timeout.current = undefined;
             }, millisecondsToHideAfterOpening);
         }
-    }, [image, isOnScreen]);
+    }, [index, middleFactIndex, image, isOnScreen]);
 
     return (
-        <div className="interestingFactSlide" ref={elementRef}
-        onClick={(e) => {
-            {windowSize.width > 1024 && e.stopPropagation()}
-        }}>
+        <div
+            className="interestingFactSlide"
+            ref={elementRef}
+            onClick={(e) => {
+                { windowSize.width > 1024 && e.stopPropagation(); }
+            }}
+        >
             <div
                 className="slideImage"
             >
@@ -56,7 +62,7 @@ const InterestingFactItem = ({
                     src={base64ToUrl(image?.base64, image?.mimeType)}
                     alt=""
                 />
-                {image?.imageDetails?.alt ? (
+                {index === middleFactIndex && image?.imageDetails?.alt ? (
                     <div className={`description-popup ${descriptionVisible ? 'description-popup-visible' : ''}`}>
                         <p>{image?.imageDetails?.alt}</p>
                     </div>
