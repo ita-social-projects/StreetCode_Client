@@ -1,0 +1,16 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+
+.oneToFourSlide{
+    @include mut.flex-centered();
+
+    height: pxToRem(536px);
+    gap: pxToRem(20px);
+
+    img{
+        border-radius: 50px;
+        height: 100%;
+        width: 30%;
+        object-fit: cover;
+    }
+}
