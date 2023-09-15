@@ -1,25 +1,40 @@
-import './TeamMemberCard.styles.scss'
-import TeamMember from '@/models/team/team.model';
-import TeamMemberLinks from './TeamMemberLinks/TeamMemberLinks.component';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import './TeamMemberCard.styles.scss';
 
-const TeamMemberCard = (member : TeamMember) => (
-    <div className='cardContainer'>
-        <div className='photoContainer'>
-            <img src = { member.id > 0 ? base64ToUrl(member.image?.base64, member.image?.mimeType) : member.image?.base64}/>
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import TeamMember from '@/models/team/team.model';
+
+import TeamMemberLinks from './TeamMemberLinks/TeamMemberLinks.component';
+
+type Props = {
+    person: TeamMember,
+    isSingleCard?: boolean
+};
+
+const TeamMemberCard = ({ person, isSingleCard }: Props) => (
+    <div className={`cardContainer ${isSingleCard && 'cardContainer_single'}`}>
+        <div className="photoContainer">
+            <img
+                src={person.id > 0
+                    ? base64ToUrl(person.image?.base64, person.image?.mimeType)
+                    : person.image?.base64}
+                alt="team person"
+            />
         </div>
-        <div className='textContainer'>
-            <h2>{member.name}</h2>
-            <p>{member.description}</p>
-            <div className='linksContainer'>
-                {member.teamMemberLinks.map(
-                    (link)=>(
-                        <TeamMemberLinks key = {link.id} {...link}/>
-                    )
+        <div className="content">
+            <div className="textContainer">
+                <h2>{person.name}</h2>
+                <p>{person.description}</p>
+            </div>
+
+            <div className="linksContainer">
+                {person.teamMemberLinks.map(
+                    (link) => (
+                        <TeamMemberLinks key={link.id} link={link} />
+                    ),
                 )}
             </div>
         </div>
     </div>
 );
 
-export default TeamMemberCard
+export default TeamMemberCard;
