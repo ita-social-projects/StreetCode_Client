@@ -19,7 +19,7 @@
 
   .carousel-image {
     width: 100%;
-    height: f.pxToRem(737px);
+    height: 100%;
   }
 
   .slick-dots li button {
@@ -63,7 +63,7 @@
 
   @media screen and (min-width: 1800px) {
     .carousel-image {
-      height: f.pxToRem(830px);
+      height: auto;
     }
   }
 }
