@@ -13,6 +13,7 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
@@ -140,7 +141,7 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
-        }   
+        }
 
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
@@ -177,9 +178,7 @@ const NewStreetcode = () => {
                 setSelectedTags(tagsToUpdate as StreetcodeTag[]);
                 setFuncName('update');
             });
-            TextsApi.getByStreetcodeId(parseId).then((result) => {
-                setInputInfo(result);
-            });
+
             VideosApi.getByStreetcodeId(parseId).then((result) => {
                 setVideo(result);
             });
@@ -246,6 +245,16 @@ const NewStreetcode = () => {
             statisticRecordStore.fetchStatisticRecordsByStreetcodeId(parseId);
         }
     }, []);
+
+    useAsync(async () => {
+        if (parseId !== null) {
+            await TextsApi.getByStreetcodeId(parseId).then((result) => {
+                setInputInfo(result);
+            });
+        } else {
+            console.log('Parse id is null');
+        }
+    }, [parseId]);
 
     const scrollToErrors = () => {
         const errors = form.getFieldsError();
