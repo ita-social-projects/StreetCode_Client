@@ -17,11 +17,12 @@ interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     onChange: (field: string, value: any) => void;
+    text : string | undefined;
 }
 
 const toolTipColor = '#8D1F16';
 
-const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
+const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange, text }: Props) => {
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
@@ -108,8 +109,8 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     height: 300,
                     menubar: false,
                     init_instance_callback(editor) {
-                        setEditorContent(inputInfo?.textContent ?? '');
-                        editor.setContent(inputInfo?.textContent ?? '');
+                        setEditorContent(text ?? '');
+                        editor.setContent(text ?? '');
                     },
                     plugins: [
                         'autolink',
