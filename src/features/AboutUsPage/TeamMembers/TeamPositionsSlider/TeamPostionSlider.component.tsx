@@ -11,7 +11,7 @@ interface Props {
     setActive: React.Dispatch<React.SetStateAction<number>>,
 }
 
-const SliderComponents = (props: Props) => {
+const SliderComponents = ({ positions, setActive }: Props) => {
     const [swiper, setSwiper] = useState(null);
 
     const handlePreviousSlide = () => {
@@ -28,9 +28,9 @@ const SliderComponents = (props: Props) => {
 
     const getActive = (swiper) => {
         const { realIndex } = swiper;
-        const activePosition = props.positions[realIndex];
+        const activePosition = positions[realIndex];
         const activePositionId = activePosition.id;
-        props.setActive(activePositionId);
+        setActive(activePositionId);
     };
 
     return (
@@ -57,7 +57,7 @@ const SliderComponents = (props: Props) => {
                         },
                     }}
                 >
-                    {props.positions.map((position) => (
+                    {positions.map((position) => (
                         <SwiperSlide className="square" key={position.id}>
                             <div key={position.position}>
                                 <div>{position.position}</div>
