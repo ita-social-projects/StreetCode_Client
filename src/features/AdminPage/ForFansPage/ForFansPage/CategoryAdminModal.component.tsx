@@ -43,7 +43,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const isEditing = !!initialData;
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -74,10 +73,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     form.setFieldsValue({
                         image: createFileListData(img),
                     });
-                    setFileList(createFileListData(img));
                 });
-        } else {
-            setFileList([]);
         }
     }, [initialData, isModalVisible, form]);
 
@@ -119,7 +115,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleCancel = () => {
         closeModal();
         form.resetFields();
-        setFileList([]);
     };
 
     const getValueFromEvent = (e: any) => {
@@ -131,10 +126,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
         return [];
     };
 
-    const handleOk =() =>{
+    const handleOk = () => {
         form.submit();
-        message.success("Категорію успішно додано!", 2);
-    }
+        message.success('Категорію успішно додано!', 2);
+    };
 
     return (
         <div>
@@ -167,15 +162,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     >
                         <FileUploader
                             greyFilterForImage
-                            onChange={(param) => {
-                                setFileList(param.fileList);
-                            }}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
                             uploadTo="image"
-                            fileList={fileList}
                             onSuccessUpload={handleImageChange}
                             onPreview={handlePreview}
                             defaultFileList={initialData
@@ -191,13 +182,13 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => handleOk() }>
+                        <Button className="streetcode-custom-button" onClick={() => handleOk()}>
                             Зберегти
                         </Button>
                     </div>
                 </Form>
             </Modal>
-            <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
+            <PreviewFileModal greyFilterForImage file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
     );
 };
