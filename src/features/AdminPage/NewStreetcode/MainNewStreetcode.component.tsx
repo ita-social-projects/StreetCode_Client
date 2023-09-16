@@ -144,6 +144,9 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
+            TextsApi.getByStreetcodeId(parseId).then((result) => {
+                setInputInfo(result);
+            });
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
                 const artToUpdate = result.map((streetcodeArt) => ({
                     ...streetcodeArt,
@@ -245,16 +248,6 @@ const NewStreetcode = () => {
             statisticRecordStore.fetchStatisticRecordsByStreetcodeId(parseId);
         }
     }, []);
-
-    useAsync(async () => {
-        if (parseId !== null) {
-            await TextsApi.getByStreetcodeId(parseId).then((result) => {
-                setInputInfo(result);
-            });
-        } else {
-            console.log('Parse id is null');
-        }
-    }, [parseId]);
 
     const scrollToErrors = () => {
         const errors = form.getFieldsError();
