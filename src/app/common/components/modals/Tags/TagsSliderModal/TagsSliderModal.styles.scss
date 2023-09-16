@@ -7,10 +7,6 @@
 
   @include mut.flex-centered();
   
-  .sliderClass{
-    height: f.pxToRem(80px);
-  }
-  
   .slick-list {
     padding: f.pxToRem(20px);
   }

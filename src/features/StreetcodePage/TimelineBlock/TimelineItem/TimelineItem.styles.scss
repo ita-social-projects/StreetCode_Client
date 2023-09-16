@@ -10,11 +10,9 @@
   @include mut.sized(604px, 366px);
 
   @include vnd.vendored(transition, 'backdrop-filter 300ms ease-in');
-  backdrop-filter: blur(2px);
 
   &:hover {
     cursor: pointer;
-    backdrop-filter: blur(2px) brightness(110%);
   }
 }
 

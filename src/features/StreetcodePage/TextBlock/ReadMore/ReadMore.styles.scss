@@ -29,12 +29,14 @@
 @media screen and (max-width: 1024px) {
     .text {
         font-size: f.pxToRem(16px);
-        @include mut.rem-margined($top: 10px, $right: 10px, $left: 10px  );
+        @include mut.rem-margined($top: -10px, $right: 10px, $left: 10px  );
         line-height: f.pxToRem(21px);
     }
     .readMore{
         font-size: f.pxToRem(16px);
         line-height: f.pxToRem(18.75px);
+        display: flex;
+        align-items: center;
     }
     .readMoreContainer {
         @include mut.rem-margined($top: 20px);
