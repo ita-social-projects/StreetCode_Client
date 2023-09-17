@@ -49,6 +49,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import { AudioUpdate } from '@/models/media/audio.model';
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
@@ -140,7 +141,7 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
-        }   
+        }
 
         if (parseId) {
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
@@ -328,10 +329,10 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 streetcodeCategoryContents:
-                JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
-                    .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
-                        { ...streetcodeCategoryContent, id: 0 }
-                    )),
+                    JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
+                        .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
+                            { ...streetcodeCategoryContent, id: 0 }
+                        )),
                 statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                     .map((statisticRecord: StatisticRecord) => (
                         {
@@ -367,7 +368,7 @@ const NewStreetcode = () => {
                 const videosUpdate: Video[] = [{ ...video, url: inputInfo?.link ?? '' } as Video];
 
                 const subtitleUpdate: Subtitle[] = [
-                { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
+                    { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
 
                 const tags = [...(selectedTags as StreetcodeTagUpdate[])
                     .map((tag) => ({ ...tag, streetcodeId: parseId })),
@@ -420,7 +421,8 @@ const NewStreetcode = () => {
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
-                    images: createUpdateMediaStore.imagesUpdate.map((img):ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
+                    images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
+                    audioId: createUpdateMediaStore.audioId,
                     audios: createUpdateMediaStore.audioUpdate,
                     transactionLink: {
                         id: arLink?.id ?? 0,
@@ -429,12 +431,17 @@ const NewStreetcode = () => {
                         qrCodeUrl: arLink?.urlTitle ?? '',
                         modelState: 0,
                     },
-                    imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
+                    imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
 
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
+                    console.log(`Image ${createUpdateMediaStore.imagesUpdate[2]}`);
+                    console.log(`Audio ${createUpdateMediaStore.audioUpdate}`);
+                    console.log(`ImageID ${createUpdateMediaStore.getImageIds()[2]}`);
+                    console.log(`AudioID ${createUpdateMediaStore.audioId}`);
+                    console.log(`streetcodeUpdate ${streetcodeUpdate.audios}`);
                 }
                 StreetcodesApi.update(streetcodeUpdate).then(() => {
                     window.location.reload();
