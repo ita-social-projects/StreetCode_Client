@@ -13,7 +13,6 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
@@ -144,9 +143,6 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
-            TextsApi.getByStreetcodeId(parseId).then((result) => {
-                setInputInfo(result);
-            });
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
                 const artToUpdate = result.map((streetcodeArt) => ({
                     ...streetcodeArt,
@@ -181,7 +177,6 @@ const NewStreetcode = () => {
                 setSelectedTags(tagsToUpdate as StreetcodeTag[]);
                 setFuncName('update');
             });
-
             VideosApi.getByStreetcodeId(parseId).then((result) => {
                 setVideo(result);
             });
@@ -281,7 +276,6 @@ const NewStreetcode = () => {
             const subtitles: SubtitleCreate[] = [{ subtitleText: subTitle?.subtitleText || '' }];
 
             const videos: VideoCreate[] = [{ url: inputInfo?.link || '' }];
-
             const text: TextCreateUpdate = {
                 id: inputInfo?.id || 0,
                 title: inputInfo?.title,
@@ -489,6 +483,7 @@ const NewStreetcode = () => {
                                 onChange={handleFieldChange}
                             />
                             <TextBlock
+                                parseId={parseId}
                                 inputInfo={inputInfo}
                                 setInputInfo={setInputInfo}
                                 video={video}
