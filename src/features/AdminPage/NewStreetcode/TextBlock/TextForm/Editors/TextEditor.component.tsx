@@ -22,7 +22,9 @@ interface Props {
 
 const toolTipColor = '#8D1F16';
 
-const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange, text }: Props) => {
+const TextEditor = ({
+    character_limit, inputInfo, setInputInfo, onChange, text,
+}: Props) => {
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
@@ -87,6 +89,10 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange, text }
 
     useAsync(fetchTerms, []);
     const maxLength = character_limit || 15000;
+
+    useEffect(() => {
+        console.log(inputInfo);
+    }, [inputInfo]);
 
     return (
         <FormItem
