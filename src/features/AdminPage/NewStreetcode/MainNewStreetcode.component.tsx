@@ -438,11 +438,6 @@ const NewStreetcode = () => {
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
-                    console.log(`Image ${createUpdateMediaStore.imagesUpdate[2]}`);
-                    console.log(`Audio ${createUpdateMediaStore.audioUpdate}`);
-                    console.log(`ImageID ${createUpdateMediaStore.getImageIds()[2]}`);
-                    console.log(`AudioID ${createUpdateMediaStore.audioId}`);
-                    console.log(`streetcodeUpdate ${streetcodeUpdate.audios}`);
                 }
                 StreetcodesApi.update(streetcodeUpdate).then(() => {
                     window.location.reload();
