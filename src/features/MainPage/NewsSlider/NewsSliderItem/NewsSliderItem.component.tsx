@@ -14,7 +14,6 @@ interface Props {
 }
 
 const NewsSliderItem = ({ news, image }: Props) => {
-
     const isMobile = useMediaQuery({
         query: '(max-width: 480px)',
     });
@@ -55,7 +54,7 @@ const NewsSliderItem = ({ news, image }: Props) => {
                 </div>
                 <div className="newsSlideText">
                     <div className="newsContainer">
-                        <div>
+                        <div className="subContainer">
                             <h2 className="newsTitle">
                                 {news?.title}
                             </h2>
