@@ -490,6 +490,7 @@ const NewStreetcode = () => {
                                 onChange={handleFieldChange}
                             />
                             <TextBlock
+                                parseId={parseId}
                                 inputInfo={inputInfo}
                                 setInputInfo={setInputInfo}
                                 video={video}
