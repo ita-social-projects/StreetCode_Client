@@ -41,7 +41,7 @@ const TeamItemSlider = ({ team, image }: Props) => {
                     <div className="headerTeamContainer">
                         <div className="textContainer">
                             <h2 className="teamTitle">
-                                {`${team?.firstName} ${team?.lastName}`}
+                                {`${team?.name}`}
                             </h2>
                             <div className="teamPosition">
                                 {team?.positions
