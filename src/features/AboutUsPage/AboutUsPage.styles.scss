@@ -4,8 +4,12 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.sizes.scss" as s;
 
+$bgImg: '@assets/images/catalog/background.webp';
 .aboutUsPageContainer {
-    // background: url('../../assets/images/streetcode-card/background.png') no-repeat center center / cover;
+    background: url($bgImg) no-repeat center / 100%;
+    background-position: center top;
+    background-attachment: scroll;
+    
     min-height: 78vh;
     width: 100vw;
     overflow: hidden;
