@@ -69,8 +69,8 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
 }
 
 @media screen and (max-width: 680px) {
-    .streetcodeContainer{
-        background-image: none;
+    .streetcodeContainer, .mainBlock{
+        background-image: none !important;
     }   
     .sticky{
         bottom: f.pxToRem(50px);

@@ -197,7 +197,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </div>
                 </Form>
             </Modal>
-            <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
+            <PreviewFileModal greyFilterForImage file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
     );
 };

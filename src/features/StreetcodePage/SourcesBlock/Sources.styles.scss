@@ -16,7 +16,6 @@
         }
         .sourceContentContainer {
             @include mut.flex-centered();
-            margin-top: pxToRem(24px);
             .slick-slide {
                 .slider-item-container {
                     .left, .right {
@@ -27,7 +26,7 @@
         }
 
         > .blockHeadingWrapper {
-            margin-top: pxToRem(30px);
+            margin-top: pxToRem(0px);
         }
     }
 
@@ -41,7 +40,7 @@
 
     .sliderClass {
         .slick-list {
-            @include mut.rem-padded($bottom: 4px);
+            @include mut.rem-padded($bottom: 23px);
         }
 
         .slick-track {
