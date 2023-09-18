@@ -50,6 +50,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import { AudioUpdate } from '@/models/media/audio.model';
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
@@ -329,10 +330,10 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 streetcodeCategoryContents:
-                    JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
-                        .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
-                            { ...streetcodeCategoryContent, id: 0 }
-                        )),
+                        JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
+                            .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
+                                { ...streetcodeCategoryContent, id: 0 }
+                            )),
                 statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                     .map((statisticRecord: StatisticRecord) => (
                         {
@@ -437,6 +438,11 @@ const NewStreetcode = () => {
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
+                    console.log(`Image ${createUpdateMediaStore.imagesUpdate[2]}`);
+                    console.log(`Audio ${createUpdateMediaStore.audioUpdate}`);
+                    console.log(`ImageID ${createUpdateMediaStore.getImageIds()[2]}`);
+                    console.log(`AudioID ${createUpdateMediaStore.audioId}`);
+                    console.log(`streetcodeUpdate ${streetcodeUpdate.audios}`);
                 }
                 StreetcodesApi.update(streetcodeUpdate).then(() => {
                     window.location.reload();
