@@ -30,13 +30,14 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image, { ImageAssigment, ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
+import { AudioUpdate } from '@/models/media/audio.model';
+import { ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import { Fact, FactCreate, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
+import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -50,6 +51,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import { AudioUpdate } from '@/models/media/audio.model';
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
@@ -331,10 +333,10 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 streetcodeCategoryContents:
-                JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
-                    .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
-                        { ...streetcodeCategoryContent, id: 0 }
-                    )),
+                        JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
+                            .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
+                                { ...streetcodeCategoryContent, id: 0 }
+                            )),
                 statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                     .map((statisticRecord: StatisticRecord) => (
                         {
@@ -370,7 +372,7 @@ const NewStreetcode = () => {
                 const videosUpdate: Video[] = [{ ...video, url: inputInfo?.link ?? '' } as Video];
 
                 const subtitleUpdate: Subtitle[] = [
-                { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
+                    { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
 
                 const tags = [...(selectedTags as StreetcodeTagUpdate[])
                     .map((tag) => ({ ...tag, streetcodeId: parseId })),
@@ -423,8 +425,9 @@ const NewStreetcode = () => {
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
-                    images: createUpdateMediaStore.imagesUpdate.map((img):ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
-                    audios: createUpdateMediaStore.audioUpdate,
+                    images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
+                    audioId: createUpdateMediaStore.audioId,
+                    audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
                     transactionLink: {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
@@ -432,7 +435,7 @@ const NewStreetcode = () => {
                         qrCodeUrl: arLink?.urlTitle ?? '',
                         modelState: 0,
                     },
-                    imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
+                    imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
 
                 if (streetcodeType.current === StreetcodeType.Person) {

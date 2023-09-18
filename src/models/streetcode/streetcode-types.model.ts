@@ -158,6 +158,7 @@ export interface StreetcodeUpdate {
     statisticRecords: StatisticRecordUpdate[],
     toponyms: ToponymCreateUpdate[],
     images: ImageCreateUpdate[],
+    audioId: number | null,
     audios: AudioUpdate[],
     imagesDetails: ImageDetails[],
     transactionLink: TransactionLinkUpdate;
