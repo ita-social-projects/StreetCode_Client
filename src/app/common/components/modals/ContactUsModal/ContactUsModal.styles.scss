@@ -1,0 +1,24 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.headerItem{
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+}
+
+.headerItem:hover {    
+    cursor: pointer;
+    color: c.$dark-red-color;
+}
+
+.headerItem:after {
+    content: '';
+    background-color: c.$dark-red-color;
+    color: c.$dark-red-color;
+
+    @include mut.sized(100%, 2px);
+    @include mut.positioned-as(absolute, $bottom: 0, $left: 0);
+}

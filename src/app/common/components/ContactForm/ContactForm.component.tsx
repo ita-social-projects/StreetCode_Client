@@ -10,12 +10,12 @@ import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
 
-const ContactForm = () => {
+const ContactForm = ({ customClass = "" }) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
     const messageLength = formData.message.length | 0;
 
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (e: { target: { name: any; value: any; }; }) => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handleVerify = () => {
         setIsVerified(true);
     };
@@ -28,7 +28,7 @@ const ContactForm = () => {
     };
 
     return (
-        <div className="formContainer">
+        <div className={`formWrapper ${customClass}`}>
             <div className="formTitleContainer">
                 <div className="formTitle">Форма зворотного зв’язку</div>
                 <div className="formSubTitle">
@@ -44,9 +44,11 @@ const ContactForm = () => {
                 <Form.Item
                     className="textareaBlock required-input"
                     name="message"
-                    rules={[{ required: true,
-                              min: 1,
-                              max: MAX_SYMBOLS }]}
+                    rules={[{
+                        required: true,
+                        min: 1,
+                        max: MAX_SYMBOLS
+                    }]}
                 >
                     <Input.TextArea
                         className="textarea"
@@ -57,15 +59,17 @@ const ContactForm = () => {
                         onChange={handleChange}
                     />
                     <p className="custom-character-counter">
-                        {messageLength} 
+                        {messageLength}
                         / {MAX_SYMBOLS}
                     </p>
                 </Form.Item>
                 <Form.Item
                     name="email"
                     rules={[
-                        { required: false,
-                          type: 'email' },
+                        {
+                            required: false,
+                            type: 'email'
+                        },
                     ]}
                 >
                     <Input

@@ -15,6 +15,8 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
 
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
+import Modal from 'antd/es/modal/Modal';
+import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
 
 const mobileOptions = 8;
 const desktopOptions = 6;
@@ -132,28 +134,24 @@ const HeaderDrawer = () => {
                             />
                         </div>
                         {isSmall
-                        && (
-                            <>
-                                <br />
-                                <div className="headerDrawerContainer">
-                                    <HeaderDrawerItem
-                                        id={7}
-                                        parentActive={active}
-                                        toggleState={toggle}
-                                        text="Політика конфіденційності"
-                                        link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
-                                    />
-                                    <HeaderDrawerItem
-                                        id={8}
-                                        parentActive={active}
-                                        toggleState={toggle}
-                                        text="Зворотний зв'язок"
-                                        link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
-                                    />
-                                </div>
-                                <SocialMediaLinks />
-                            </>
-                        )}
+                            && (
+                                <>
+                                    <br />
+                                    <div className="headerDrawerContainer">
+                                        <HeaderDrawerItem
+                                            id={7}
+                                            parentActive={active}
+                                            toggleState={toggle}
+                                            text="Політика конфіденційності"
+                                            link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
+                                        />
+                                        <ContactUsModal
+                                            toggleState={toggle}
+                                            text="Зворотний зв'язок" />
+                                    </div>
+                                    <SocialMediaLinks />
+                                </>
+                            )}
                     </div>
                 </div>
             </Drawer>
