@@ -10,6 +10,7 @@ import Youtube from '@images/footer/Youtube.webp';
 import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
 
 const Footer = () => {
     const windowSize = useWindowSize();
@@ -36,7 +37,7 @@ const Footer = () => {
                         </ul>
                         <ul className="usefulLinksColumn supportLinks">
                             <li><a href={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}>Політика конфіденційності</a></li>
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Зворотний зв&apos;язок</a></li>
+                            <li><ContactUsModal toggleState={() => { }} text="Зворотний зв&apos;язок" /></li>
                         </ul>
                         <ul className="socialIconContainer">
                             <li>
