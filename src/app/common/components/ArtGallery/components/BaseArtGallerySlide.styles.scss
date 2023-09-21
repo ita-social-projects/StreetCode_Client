@@ -1,0 +1,16 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+
+.base-art{
+    &-slide{
+        height: pxToRem(536px);
+        gap: pxToRem(20px);
+    }
+
+    &-image{
+        border-radius: 50px;
+        object-fit: cover;
+    }
+}
+
+

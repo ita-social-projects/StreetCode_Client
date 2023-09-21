@@ -12,9 +12,10 @@ import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
+import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
+import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
@@ -23,6 +24,7 @@ import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
+import StreetcodeArtSlideApi from '@/app/api/media/streetcode-art-slide.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -75,6 +77,7 @@ const NewStreetcode = () => {
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
+    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlide[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
@@ -140,9 +143,12 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
-        }   
+        }
 
         if (parseId) {
+            StreetcodeArtApi.getArtSlidesByStreetcodeId(parseId, 1, 100).then((result) => {
+                setArtsSlides(result);
+            });
             StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
                 const artToUpdate = result.map((streetcodeArt) => ({
                     ...streetcodeArt,
@@ -498,6 +504,7 @@ const NewStreetcode = () => {
 
                             <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
+                            <ArtGallery adminArtSlides={artSlides} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
