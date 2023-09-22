@@ -128,7 +128,7 @@ const ForFansMainPage: React.FC = observer(() => {
                     pagination={{ pageSize: 10 }}
                     className="partners-table"
                     columns={columns}
-                    dataSource={sourcesStore?.getSrcCategoriesArray}
+                   dataSource={sourcesStore?.getSrcCategoriesArray}
                     rowKey="id"
                 />
             </div>
