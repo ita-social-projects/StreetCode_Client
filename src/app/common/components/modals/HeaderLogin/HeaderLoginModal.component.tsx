@@ -3,6 +3,7 @@ import './HeaderLoginModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import { useModalContext } from '@stores/root-store';
@@ -15,8 +16,8 @@ import {
     joinToStreetcodeClickEvent,
 } from '@/app/common/utils/googleAnalytics.unility';
 
-const HeaderLoginModal = () => {
-    const SURVEY_LINK = "https://forms.gle/eWwX5RP84X7dymLR6";
+const HeaderLoginModal = ({ hasVacancies }) => {
+    const SURVEY_LINK = 'https://forms.gle/eWwX5RP84X7dymLR6';
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
     const navigate = useNavigate();
 
@@ -24,6 +25,14 @@ const HeaderLoginModal = () => {
         login.isOpen = false;
         setModal('partners');
         becomePartnerEvent('modal');
+    };
+
+    const joinToTeamHandler = () => {
+        console.log('hasVacancies', hasVacancies);
+        if (hasVacancies) {
+            navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}#Vacancies`);
+            login.isOpen = false;
+        }
     };
 
     return (
@@ -43,14 +52,15 @@ const HeaderLoginModal = () => {
                 <Button onClick={becomePartnerHandler}>
                     Стати партнером
                 </Button>
-                <Button onClick={() => {
-                    joinToStreetcodeClickEvent();
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`);
-                    login.isOpen = false;
-                }}
-                >
+                {hasVacancies && (
+                    <Button onClick={() => {
+                        joinToStreetcodeClickEvent();
+                        joinToTeamHandler();
+                    }}
+                    >
                         Долучитися до команди
-                </Button>
+                    </Button>
+                )}
                 <Button onClick={() => {
                     setModal('donates');
                     setModal('login');

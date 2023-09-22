@@ -1,12 +1,12 @@
 import './Vacancies.styles.scss';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import JobApi from '@/app/api/job/Job.api';
 
 import Vacancy from './Vacancy/Vacancy.component';
 
-const Vacancies = () => {
+const Vacancies = ({ setHasVacancies }) => {
     const [jobs, setJobs] = useState<Job[]>([]);
 
     useEffect(() => {
@@ -14,6 +14,7 @@ const Vacancies = () => {
             .then(
                 (result) => {
                     setJobs(result);
+                    setHasVacancies(result.length > 0);
                 },
             )
             .catch(
