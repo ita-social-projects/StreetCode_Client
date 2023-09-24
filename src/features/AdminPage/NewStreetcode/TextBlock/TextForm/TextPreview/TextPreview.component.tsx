@@ -24,12 +24,9 @@ const TextPreview = ({ inputInfo }: Props) => {
             let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
             const content: TextPreviewContent = {
                 textContent: buffer ?? '',
-            };
-            TextsApi.updateParsed(content).then((x) => {
-                buffer = x?.replaceAll('`', '"').toString();
-                setText(buffer);
-            }).catch()
-                .finally(() => setLoading(false));
+            }; 
+               setText(buffer);
+               setLoading(false);
         }
     }, [disabled]);
 

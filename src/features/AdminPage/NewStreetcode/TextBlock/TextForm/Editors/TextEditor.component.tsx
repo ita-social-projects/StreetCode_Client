@@ -226,43 +226,6 @@ const TextEditor = ({
                     setSelected(editor.selection.getContent());
                 }}
             />
-            <Button
-                className="streetcode-custom-button button-margin-vertical"
-                onClick={() => setModal('addTerm')}
-            >
-                Додати новий термін
-            </Button>
-            <FormItem label="Оберіть пов'язаний термін">
-                <AutoComplete
-                    filterOption
-                    onSelect={(value, option) => {
-                        setTerm({ id: option.key, title: value });
-                    }}
-                    disabled={selected === ''}
-                    onChange={onChange}
-                >
-                    {getTermArray.map(
-                        (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
-                    )}
-                </AutoComplete>
-            </FormItem>
-            <div className="display-flex-row">
-                <Button
-                    className="streetcode-custom-button button-margin-vertical button-margin-right"
-                    onClick={handleAddRelatedWord}
-                    disabled={selected === '' || term === undefined}
-                >
-                    Пов&#39;язати
-                </Button>
-                <Button
-                    onClick={handleDeleteRelatedWord}
-                    disabled={selected === '' || term === undefined}
-                    className="streetcode-custom-button button-margin-vertical"
-                >
-                    Видалити пов&#39;язаний термін
-                </Button>
-            </div>
-            <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>
     );
 };
