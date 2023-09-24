@@ -50,7 +50,7 @@ const HeaderSkeleton = () => {
                 setIsPageDimmed(false);
                 setIsPopoverVisible(false);
 
-            }, 200);
+            }, 0);
 
         }
     }, [setIsPageDimmed, setIsPopoverVisible, off]);
