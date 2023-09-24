@@ -12,15 +12,16 @@ import Vacancies from './Vacancies/Vacancies.component';
 
 const AboutUsPage = () => {
     const [hasVacancies, setHasVacancies] = useState(false);
+    console.log('hasVacancies AboutUs', hasVacancies);
+
     return (
         <div className="aboutUsPageContainer">
             <div className="contentContainer">
                 <AboutUsHeaderText />
                 <Founders />
                 <TeamMembers />
-                <div id="Vacancies">
-                    <Vacancies setHasVacancies={setHasVacancies} />
-                </div>
+                <Vacancies setHasVacancies={setHasVacancies} />
+                <HeaderLoginModal hasVacancies={hasVacancies} />
             </div>
             {hasVacancies && <TickerComponent type="teamMembers" />}
             <HeaderLoginModal hasVacancies={hasVacancies} />

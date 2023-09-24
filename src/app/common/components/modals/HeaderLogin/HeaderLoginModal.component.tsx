@@ -16,7 +16,7 @@ import {
     joinToStreetcodeClickEvent,
 } from '@/app/common/utils/googleAnalytics.unility';
 
-const HeaderLoginModal = ({ hasVacancies }) => {
+const HeaderLoginModal = ({ hasVacancies }: { hasVacancies:boolean }) => {
     const SURVEY_LINK = 'https://forms.gle/eWwX5RP84X7dymLR6';
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
     const navigate = useNavigate();
@@ -28,13 +28,13 @@ const HeaderLoginModal = ({ hasVacancies }) => {
     };
 
     const joinToTeamHandler = () => {
-        console.log('hasVacancies', hasVacancies);
+        console.log('hasVacancies HeaderLoginModal in const', hasVacancies);
         if (hasVacancies) {
             navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}#Vacancies`);
             login.isOpen = false;
         }
     };
-
+    console.log('hasVacancies HeaderLoginModal', hasVacancies);
     return (
         <Modal
             className="loginModal"

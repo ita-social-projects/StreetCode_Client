@@ -6,7 +6,7 @@ import JobApi from '@/app/api/job/Job.api';
 
 import Vacancy from './Vacancy/Vacancy.component';
 
-const Vacancies = ({ setHasVacancies }) => {
+const Vacancies = ({ setHasVacancies } : { setHasVacancies: (hasVacancies: boolean) => void }) => {
     const [jobs, setJobs] = useState<Job[]>([]);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const Vacancies = ({ setHasVacancies }) => {
                 <div className="aboutUsBlockContainer">
                     <h1>
                         <div />
-                        <span>Вакансії</span>
+                        <span id="Vacancies">Вакансії</span>
                         <div />
                     </h1>
                     <div className="vacanciesBlock">
