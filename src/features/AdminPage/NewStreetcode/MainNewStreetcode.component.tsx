@@ -13,6 +13,7 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
@@ -145,104 +146,106 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
-            StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                const artToUpdate = result.map((streetcodeArt) => ({
-                    ...streetcodeArt,
-                    modelState: ModelState.Updated,
-                    isPersisted: true,
-                }));
-                setArts([...artToUpdate]);
-            });
-            StreetcodesApi.getById(parseId).then((x) => {
-                streetcodeType.current = x.streetcodeType;
-                form.setFieldsValue({
-                    streetcodeNumber: x.index,
-                    mainTitle: x.title,
-                    name: x.firstName,
-                    surname: x.lastName,
-                    alias: x.alias,
-                    streetcodeUrlName: x.transliterationUrl,
-                    streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
-                    streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
-                    dateString: x.dateString,
-                    teaser: x.teaser,
-                    video,
-                });
-
-                const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
-                    ...tag,
-                    isPersisted: true,
-                    modelState: ModelState.Updated,
-                    streetcodeId: parseId,
-                }));
-
-                setSelectedTags(tagsToUpdate as StreetcodeTag[]);
-                setFuncName('update');
-            });
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-            });
-            VideosApi.getByStreetcodeId(parseId).then((result) => {
-                setVideo(result);
-            });
-            RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
-                const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
-                    id: item.id,
-                    title: item.title,
-                    isPersisted: true,
-                    modelState: ModelState.Updated,
-                }));
+                StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
+                    const artToUpdate = result.map((streetcodeArt) => ({
+                        ...streetcodeArt,
+                        modelState: ModelState.Updated,
+                        isPersisted: true,
+                    }));
+                    setArts([...artToUpdate]);
+                });
+                StreetcodesApi.getById(parseId).then((x) => {
+                    streetcodeType.current = x.streetcodeType;
+                    form.setFieldsValue({
+                        streetcodeNumber: x.index,
+                        mainTitle: x.title,
+                        name: x.firstName,
+                        surname: x.lastName,
+                        alias: x.alias,
+                        streetcodeUrlName: x.transliterationUrl,
+                        streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
+                        streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
+                        dateString: x.dateString,
+                        teaser: x.teaser,
+                        video,
+                    });
 
-                setFigures(persistedFigures);
-            });
-            PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then((result) => {
-                const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
-                    id: item.id,
-                    title: item.title,
-                    isPersisted: true,
-                    modelState: ModelState.Updated,
-                }));
+                    const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
+                        ...tag,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                        streetcodeId: parseId,
+                    }));
 
-                setPartners(persistedPartners);
-            });
-            SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
-                .then((result) => {
-                    setSubTitle(result);
-                })
-                .catch((error) => { });
-            SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
-                const id = result.map((x) => x.id);
-                id.map((x) => {
-                    SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then((x) => {
-                        const newSource: StreetcodeCategoryContent = {
-                            sourceLinkCategoryId: x.sourceLinkCategoryId,
-                            streetcodeId: x.streetcodeId,
-                            id: x.id,
-                            text: x.text,
-                        };
-                        const existingSource = sourceCreateUpdateStreetcode
-                            .streetcodeCategoryContents.find((s) => s
-                                .sourceLinkCategoryId === newSource.sourceLinkCategoryId);
+                    setSelectedTags(tagsToUpdate as StreetcodeTag[]);
+                    setFuncName('update');
+                });
 
-                        if (!existingSource) {
-                            const persistedItem: StreetcodeCategoryContentUpdate = {
-                                ...newSource,
-                                isPersisted: true,
-                                modelState: ModelState.Updated,
+                VideosApi.getByStreetcodeId(parseId).then((result) => {
+                    setVideo(result);
+                });
+                RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
+                    const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
+                        id: item.id,
+                        title: item.title,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                    }));
+
+                    setFigures(persistedFigures);
+                });
+                PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then((result) => {
+                    const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
+                        id: item.id,
+                        title: item.title,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                    }));
+
+                    setPartners(persistedPartners);
+                });
+                SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
+                    .then((result) => {
+                        setSubTitle(result);
+                    })
+                    .catch((error) => { });
+                SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
+                    const id = result.map((x) => x.id);
+                    id.map((x) => {
+                        SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then((x) => {
+                            const newSource: StreetcodeCategoryContent = {
+                                sourceLinkCategoryId: x.sourceLinkCategoryId,
+                                streetcodeId: x.streetcodeId,
+                                id: x.id,
+                                text: x.text,
                             };
+                            const existingSource = sourceCreateUpdateStreetcode
+                                .streetcodeCategoryContents.find((s) => s
+                                    .sourceLinkCategoryId === newSource.sourceLinkCategoryId);
 
-                            sourceCreateUpdateStreetcode.setItem(persistedItem);
-                        }
+                            if (!existingSource) {
+                                const persistedItem: StreetcodeCategoryContentUpdate = {
+                                    ...newSource,
+                                    isPersisted: true,
+                                    modelState: ModelState.Updated,
+                                };
+
+                                sourceCreateUpdateStreetcode.setItem(persistedItem);
+                            }
+                        });
                     });
                 });
+                TransactionLinksApi.getByStreetcodeId(parseId)
+                    .then((res) => {
+                        if (res) {
+                            setArLink(res);
+                            form.setFieldValue('arlink', res.url);
+                        }
+                    });
             });
-            TransactionLinksApi.getByStreetcodeId(parseId)
-                .then((res) => {
-                    if (res) {
-                        setArLink(res);
-                        form.setFieldValue('arlink', res.url);
-                    }
-                });
+
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
             statisticRecordStore.fetchStatisticRecordsByStreetcodeId(parseId);
@@ -490,6 +493,7 @@ const NewStreetcode = () => {
                                 onChange={handleFieldChange}
                             />
                             <TextBlock
+                                parseId={parseId}
                                 inputInfo={inputInfo}
                                 setInputInfo={setInputInfo}
                                 video={video}
