@@ -17,7 +17,7 @@ interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
+const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
     const { modalStore: { setModal } } = useModalContext();
     const { relatedFiguresStore } = useMobx();
     const { getRelatedFiguresArray } = relatedFiguresStore;
@@ -68,12 +68,15 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
 
         const sliderItem = (
             <div className="TwoRowSlide" key={i}>
-                <RelatedFigureItem
-                    relatedFigure={figureOnTopRow}
-                    filterTags
-                    hoverable
-                    setActiveTagId={setActiveTagId}
-                />
+                <div className="FirstItem">
+                    <RelatedFigureItem
+                        relatedFigure={figureOnTopRow}
+                        filterTags
+                        hoverable
+                        setActiveTagId={setActiveTagId}
+                    />
+                </div>
+                <div className="SecondItem">
                 {hasBottomRow && (
                     <RelatedFigureItem
                         relatedFigure={figureOnBottomRow}
@@ -82,6 +85,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                         setActiveTagId={setActiveTagId}
                     />
                 )}
+                </div>
             </div>
         );
 
@@ -115,7 +119,7 @@ const RelatedFiguresComponent = ({ setActiveTagId } : Props) => {
                             {getRelatedFiguresArray.length > 4 && (
                                 <div className="moreInfo">
                                     <p onClick={(e) => handleClick(e)}>
-                                    Дивитися всіх
+                                        Дивитися всіх
                                     </p>
                                 </div>
                             )}

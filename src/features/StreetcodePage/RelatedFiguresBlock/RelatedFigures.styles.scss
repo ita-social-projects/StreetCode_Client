@@ -12,7 +12,6 @@ $moreInfo-width: 150px;
 .smallWrapper {
     .slick-track {
         @include mut.rem-margined();
-
         .slick-cloned {
             display: none;
         }
@@ -70,6 +69,15 @@ $moreInfo-width: 150px;
 }
 
 @media screen and (max-width: 481px) {
+    .TwoRowSlide{
+        display: flex;
+        flex-direction: column;
+        height: 470px;
+    }
+    .SecondItem{
+       position: absolute;
+       margin-top: 250px;
+    }
     .relatedFiguresWrapper {
         .slick-dots {
             bottom: f.pxToRem(-30px);

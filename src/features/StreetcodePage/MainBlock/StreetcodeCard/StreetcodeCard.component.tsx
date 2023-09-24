@@ -100,65 +100,65 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                     </div>
                 </div>
                 <div className="rightSider">
-                    <div className="headerContainer">
-                        <div className="upper-info">
-                            <div className="streetcodeIndex">
-                            Стріткод #
-                                {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
-                                    : streetcode?.index}
-                            </div>
-                            <h2 className="streetcodeTitle">
-                                {streetcode?.title}
-                            </h2>
-                            <div className="streetcodeDate">
-                                {streetcode?.dateString}
-                            </div>
-                            <TagList
-                                tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
-                                setActiveTagId={setActiveTagId}
-                                setActiveTagBlock={setActiveBlock}
-                            />
-                            <p className="teaserBlock">
-                                {streetcode?.teaser}
-                            </p>
-                        </div>
+                    <div className="streetcodeIndex">
+                        Стріткод #
+                        {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
+                            : streetcode?.index}
+                    </div>
+                    <h2 className="streetcodeTitle">
+                        {streetcode?.title}
+                    </h2>
+                    <div className="streetcodeDate">
+                        {streetcode?.dateString}
+                    </div>
+                    <div className="tagListWrapper">
+                        <TagList
+                            tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
+                            setActiveTagId={setActiveTagId}
+                            setActiveTagBlock={setActiveBlock}
+                        />
+                    </div>
+                    <p className="teaserBlock">
+                        {streetcode?.teaser}
+                        {streetcode?.teaser}
+                        {streetcode?.teaser}
+                    </p>
 
-                        <div className="cardFooter">
-                            {audio?.base64 && audioIsLoaded
-                                ? (
-                                    <Button
-                                        type="primary"
-                                        className= {"audioBtn audioBtnActive"}
-                                        onClick={() => {
-                                            setModal('audio');
-                                            audioClickEvent(streetcode?.id ?? 0);
-                                        }}
-                                    >
-                                        <PlayCircleFilled className="playCircle" />
-                                        <span>Прослухати текст</span>
-                                    </Button>
-                                )
-                                : (
-                                    <Button
-                                        disabled
-                                        type="primary"
-                                        className="audioBtn"
-                                    >
-                                        <span>Аудіо на підході</span>
-                                    </Button>
-                                )}
+                    <div className="cardFooter">
+                        {audio?.base64 && audioIsLoaded
+                            ? (
+                                <Button
+                                    type="primary"
+                                    className={"audioBtn audioBtnActive"}
+                                    onClick={() => {
+                                        setModal('audio');
+                                        audioClickEvent(streetcode?.id ?? 0);
+                                    }}
+                                >
+                                    <PlayCircleFilled className="playCircle" />
+                                    <span>Прослухати текст</span>
+                                </Button>
+                            )
+                            : (
+                                <Button
+                                    disabled
+                                    type="primary"
+                                    className="audioBtn"
+                                >
+                                    <span>Аудіо на підході</span>
+                                </Button>
+                            )}
 
-                            {arlink
-                                ? (
-                                    <Button
-                                        className="animateFigureBtn"
-                                        onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                                    >
-                                        <a href="#QRBlock">Оживити картинку</a>
-                                    </Button>
-                                )
-                                : <></>}
-                        </div>
+                        {arlink
+                            ? (
+                                <Button
+                                    className="animateFigureBtn"
+                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                                >
+                                    <a href="#QRBlock">Оживити картинку</a>
+                                </Button>
+                            )
+                            : <></>}
                     </div>
                 </div>
             </div>
