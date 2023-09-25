@@ -44,6 +44,7 @@
 
         @media (min-width: 768px) and (max-width: 1024px){
             top: 320px;
+            width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
@@ -82,15 +83,17 @@
 
     .newsContainer {
         box-sizing: border-box;
-        width: 100%;
         word-break: break-word;
         height: 193px;
+        width: f.pxToRem(840px);
+
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
 
         @media (min-width: 768px) and (max-width: 1024px){
             @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
             height: 141px;
+            width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
@@ -123,6 +126,7 @@
             font-style: bold;
             line-height: f.pxToRem(26.4px);
             -webkit-line-clamp: 1;
+            width: f.pxToRem(310px);
         }
     }
 
@@ -145,9 +149,8 @@
                 text-decoration: underline;
             }
         }
-
-        @media (min-width: 768px) and (max-width: 1024px){
-            width: 93vw;
+        @media (min-width: 768px) and (max-width: 1024px) {
+            width: 96vw;
         }
     }
     .text{
@@ -163,11 +166,12 @@
         line-height: 18px;
         @media (min-width: 768px) and (max-width: 1024px) {
             -webkit-line-clamp: 2;
-            width: 93vw;
+            width: 96vw;
         }
 
         @media (max-width: 767px) {
             -webkit-line-clamp: 11;
+            width: f.pxToRem(320px);
         }
     }
 }
