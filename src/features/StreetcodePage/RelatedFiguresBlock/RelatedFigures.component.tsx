@@ -67,7 +67,7 @@ const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
         const hasBottomRow = figureOnBottomRow !== undefined;
 
         const sliderItem = (
-            <div className="TwoRowSlide" key={i}>
+            <div className={hasBottomRow ?"TwoRowSlide" : "OneRowSlide"} key={i}>
                 <div className="FirstItem">
                     <RelatedFigureItem
                         relatedFigure={figureOnTopRow}
@@ -76,16 +76,16 @@ const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
                         setActiveTagId={setActiveTagId}
                     />
                 </div>
-                <div className="SecondItem">
                 {hasBottomRow && (
+                    <div className="SecondItem">
                     <RelatedFigureItem
                         relatedFigure={figureOnBottomRow}
                         filterTags
                         hoverable
                         setActiveTagId={setActiveTagId}
                     />
+                    </div>
                 )}
-                </div>
             </div>
         );
 

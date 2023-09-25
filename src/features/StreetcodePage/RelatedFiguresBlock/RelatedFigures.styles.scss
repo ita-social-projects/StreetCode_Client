@@ -69,10 +69,14 @@ $moreInfo-width: 150px;
 }
 
 @media screen and (max-width: 481px) {
+    .OneRowSlide{
+        display: flex;
+        flex-direction: column;
+    }
     .TwoRowSlide{
         display: flex;
         flex-direction: column;
-        height: 470px;
+        height: f.pxToRem(500px);
     }
     .SecondItem{
        position: absolute;

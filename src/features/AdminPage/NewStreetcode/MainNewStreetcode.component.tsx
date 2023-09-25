@@ -53,6 +53,16 @@ import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import { AudioUpdate } from '@/models/media/audio.model';
 
+function reindex(list:Array<StreetcodeTag>):Array<StreetcodeTag> {
+    const result = Array.from(list);
+
+    for (let i = 0; i < result.length; i += 1) {
+        result[i].index = i;
+    }
+
+    return result;
+}
+
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
@@ -307,7 +317,7 @@ const NewStreetcode = () => {
                     ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
                 imagesIds: createUpdateMediaStore.getImageIds(),
                 audioId: createUpdateMediaStore.audioId,
-                tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
+                tags: reindex(selectedTags).map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                 relatedFigures: figures,
                 text: text.title && text.textContent ? text : null,
                 timelineItems: timelineItemStore.getTimelineItemArrayToCreate,
@@ -374,7 +384,7 @@ const NewStreetcode = () => {
                 const subtitleUpdate: Subtitle[] = [
                     { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
 
-                const tags = [...(selectedTags as StreetcodeTagUpdate[])
+                const tags = [...(reindex(selectedTags) as StreetcodeTagUpdate[])
                     .map((tag) => ({ ...tag, streetcodeId: parseId })),
                 ...tagsStore.getTagToDeleteArray];
 
