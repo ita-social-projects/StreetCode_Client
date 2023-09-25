@@ -3,6 +3,8 @@ import './DownloadStyles.styles.scss';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import base64ToUrl from '@app/common/utils/base64ToUrl.utility';
 import useMobx from '@app/stores/root-store';
+import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
+import Draggable from '@components/Draggable/Draggable';
 import { ModelState } from '@models/enums/model-state';
 
 import { Button, Modal } from 'antd';
@@ -187,8 +189,13 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
                 onSuccessUpload={onSuccessUpload}
                 onRemove={(e) => handleRemove(e)}
                 className="with-multiple-delete"
+                itemRender={(element, file) => (
+                    <Draggable id={file.uid}>
+                        {element}
+                    </Draggable>
+                )}
             >
-                {<p>+ Додати</p>}
+                <p>+ Додати</p>
             </FileUploader>
             {visibleDeleteButton ? (
                 <Button
@@ -205,10 +212,11 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
                 onOk={(e) => onRemoveFile(filesToRemove.current)}
                 onCancel={handleCancelModalRemove}
             />
+
             {arts.length > 0 ? (
                 <>
                     <h4>Попередній перегляд</h4>
-                    <ArtGalleryAdminBlock arts={arts} />
+                    <ArtGallery isConfigurationGallery />
                     <PreviewImageModal
                         streetcodeArt={arts[fileList.indexOf(filePreview!)]}
                         opened={isOpen}

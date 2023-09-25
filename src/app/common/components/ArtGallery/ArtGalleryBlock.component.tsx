@@ -1,6 +1,7 @@
 import './ArtGalleryBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import ALL_SLIDES_TEMPLATES from '@components/ArtGallery/constants/allSlidesTemplates';
 import SLIDER_PROPS from '@components/ArtGallery/constants/sliderProps';
 import convertSlidesToTemplates from '@components/ArtGallery/utils/convertSlidesToTemplates';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
@@ -13,9 +14,10 @@ const MAX_SLIDES_AMOUNT = 30;
 
 type Props = {
     adminArtSlides?: StreetcodeArtSlide[]
+    isConfigurationGallery?: boolean
 };
 
-const ArtGallery = ({ adminArtSlides } : Props) => {
+const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
     const { streetcodeArtStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides } = streetcodeArtStore;
@@ -43,7 +45,7 @@ const ArtGallery = ({ adminArtSlides } : Props) => {
 
     return (
         <div>
-            {(streetcodeArtSlides.length > 0 || adminArtSlides?.length > 0) && (
+            {(streetcodeArtSlides.length > 0 || adminArtSlides?.length > 0 || isConfigurationGallery) && (
                 <div
                     id="art-gallery"
                     className="artGalleryWrapper"
@@ -53,7 +55,10 @@ const ArtGallery = ({ adminArtSlides } : Props) => {
                         <div className="artGalleryContentContainer">
                             <div className="artGallerySliderContainer">
                                 <SlickSlider {...SLIDER_PROPS}>
-                                    {convertSlidesToTemplates(adminArtSlides || streetcodeArtSlides)}
+                                    {isConfigurationGallery
+                                        ? convertSlidesToTemplates(ALL_SLIDES_TEMPLATES, true)
+                                        : convertSlidesToTemplates(adminArtSlides || streetcodeArtSlides)}
+
                                 </SlickSlider>
                             </div>
                         </div>

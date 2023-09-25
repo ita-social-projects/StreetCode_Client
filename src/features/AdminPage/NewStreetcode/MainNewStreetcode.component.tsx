@@ -13,6 +13,7 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
+import { DndContext } from '@dnd-kit/core';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import { ModelState } from '@models/enums/model-state';
 import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
@@ -24,7 +25,6 @@ import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
-import StreetcodeArtSlideApi from '@/app/api/media/streetcode-art-slide.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -146,17 +146,22 @@ const NewStreetcode = () => {
         }
 
         if (parseId) {
-            StreetcodeArtApi.getArtSlidesByStreetcodeId(parseId, 1, 100).then((result) => {
-                setArtsSlides(result);
+            StreetcodeArtApi.getArtSlidesByStreetcodeId(parseId, 1, 100).then((slides) => {
+                const artsFromSlides: StreetcodeArtCreateUpdate[] = [];
+
+                slides.forEach((slide) => {
+                    slide.streetcodeArts.forEach((art) => {
+                        if (!artsFromSlides.some((existingArt) => existingArt.art.id === art.art.id)) {
+                            artsFromSlides.push(art);
+                        }
+                    });
+                });
+
+                console.log(slides, artsFromSlides);
+                setArts(artsFromSlides);
+                setArtsSlides(slides);
             });
-            StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                const artToUpdate = result.map((streetcodeArt) => ({
-                    ...streetcodeArt,
-                    modelState: ModelState.Updated,
-                    isPersisted: true,
-                }));
-                setArts([...artToUpdate]);
-            });
+
             StreetcodesApi.getById(parseId).then((x) => {
                 streetcodeType.current = x.streetcodeType;
                 form.setFieldsValue({
@@ -477,66 +482,68 @@ const NewStreetcode = () => {
     };
 
     return (
-        <div className="NewStreetcodeContainer">
-            <PageBar />
-            <ConfigProvider locale={ukUA}>
-                <div className="adminContainer">
-                    <div className="adminContainer-block">
-                        <h2>Стріткод</h2>
-                        <Form form={form} layout="vertical" onFinish={onFinish} scrollToFirstError>
-                            <MainBlockAdmin
-                                Id={parseId}
-                                form={form}
-                                selectedTags={selectedTags}
-                                setSelectedTags={setSelectedTags}
-                                streetcodeType={streetcodeType}
-                                onChange={handleFieldChange}
-                            />
-                            <TextBlock
-                                inputInfo={inputInfo}
-                                setInputInfo={setInputInfo}
-                                video={video}
-                                setVideo={setVideo}
-                                onChange={handleFieldChange}
-                            />
-                            <InterestingFactsBlock onChange={handleFieldChange} />
-                            <TimelineBlockAdmin onChange={handleFieldChange} />
+        <DndContext>
+            <div className="NewStreetcodeContainer">
+                <PageBar />
+                <ConfigProvider locale={ukUA}>
+                    <div className="adminContainer">
+                        <div className="adminContainer-block">
+                            <h2>Стріткод</h2>
+                            <Form form={form} layout="vertical" onFinish={onFinish} scrollToFirstError>
+                                <MainBlockAdmin
+                                    Id={parseId}
+                                    form={form}
+                                    selectedTags={selectedTags}
+                                    setSelectedTags={setSelectedTags}
+                                    streetcodeType={streetcodeType}
+                                    onChange={handleFieldChange}
+                                />
+                                <TextBlock
+                                    inputInfo={inputInfo}
+                                    setInputInfo={setInputInfo}
+                                    video={video}
+                                    setVideo={setVideo}
+                                    onChange={handleFieldChange}
+                                />
+                                <InterestingFactsBlock onChange={handleFieldChange} />
+                                <TimelineBlockAdmin onChange={handleFieldChange} />
 
-                            <MapBlockAdmin />
-                            <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
-                            <ArtGallery adminArtSlides={artSlides} />
-                            <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
-                            <ForFansBlock onChange={handleFieldChange} />
-                            <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
-                            <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
-                            <ARBlock onChange={handleFieldChange} />
-                        </Form>
+                                <MapBlockAdmin />
+                                <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
+                                <ArtGallery adminArtSlides={artSlides} />
+                                <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
+                                <ForFansBlock onChange={handleFieldChange} />
+                                <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
+                                <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
+                                <ARBlock onChange={handleFieldChange} />
+                            </Form>
+                        </div>
+                        <Button
+                            className="streetcode-custom-button submit-button"
+                            onClick={onFinish}
+                            name={draft}
+                            htmlType="submit"
+                        >
+                            {draft}
+                        </Button>
+                        <Modal
+                            title="Ви впевнені, що хочете опублікувати цей стріткод?"
+                            open={visibleModal}
+                            onOk={handleModalOk}
+                            onCancel={handleCancelModalRemove}
+                        />
+                        <Button
+                            htmlType="submit"
+                            className="streetcode-custom-button submit-button"
+                            onClick={handleRemove}
+                            name={publish}
+                        >
+                            {publish}
+                        </Button>
                     </div>
-                    <Button
-                        className="streetcode-custom-button submit-button"
-                        onClick={onFinish}
-                        name={draft}
-                        htmlType="submit"
-                    >
-                        {draft}
-                    </Button>
-                    <Modal
-                        title="Ви впевнені, що хочете опублікувати цей стріткод?"
-                        open={visibleModal}
-                        onOk={handleModalOk}
-                        onCancel={handleCancelModalRemove}
-                    />
-                    <Button
-                        htmlType="submit"
-                        className="streetcode-custom-button submit-button"
-                        onClick={handleRemove}
-                        name={publish}
-                    >
-                        {publish}
-                    </Button>
-                </div>
-            </ConfigProvider>
-        </div>
+                </ConfigProvider>
+            </div>
+        </DndContext>
     );
 };
 
