@@ -82,9 +82,10 @@
 
     .newsContainer {
         box-sizing: border-box;
-        width: 100%;
         word-break: break-word;
         height: 193px;
+        width: f.pxToRem(840px);
+
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
 
@@ -123,6 +124,7 @@
             font-style: bold;
             line-height: f.pxToRem(26.4px);
             -webkit-line-clamp: 1;
+            width: f.pxToRem(310px);
         }
     }
 
@@ -168,6 +170,7 @@
 
         @media (max-width: 767px) {
             -webkit-line-clamp: 11;
+            width: f.pxToRem(320px);
         }
     }
 }
