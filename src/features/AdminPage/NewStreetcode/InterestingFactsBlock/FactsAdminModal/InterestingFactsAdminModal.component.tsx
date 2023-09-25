@@ -80,6 +80,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     }, [fact, open, form]);
 
     const onSuccesfulSubmit = (formValues: any) => {
+        factsStore.getFactArray.map((t) => t).forEach(t => {
+            if (formValues.title == t.title || formValues.factContent == t.factContent || imageId.current == t.imageId)
+                fact = t;
+        });
         if (fact) {
             const item = factsStore.factMap.get(fact.id) as FactUpdate;
             if (item) {

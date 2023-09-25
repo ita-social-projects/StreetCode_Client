@@ -32,7 +32,7 @@ interface Props {
 const ForFansModal = ({
     character_limit, open, setOpen, allCategories, onChange,
 } : Props) => {
-    const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
+    const {sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);

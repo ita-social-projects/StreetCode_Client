@@ -102,6 +102,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     };
 
     const onSuccesfulSubmit = (formValues: any) => {
+        timelineItemStore.getTimelineItemArray.map((t) => t).forEach(t => {
+            if (formValues.title == t.title || formValues.description == t.description)
+                timelineItem = t;
+        });
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {

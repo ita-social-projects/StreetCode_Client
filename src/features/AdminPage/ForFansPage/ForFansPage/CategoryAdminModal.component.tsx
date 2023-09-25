@@ -99,6 +99,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
             imageId: imageId.current,
             image,
         };
+        sourcesAdminStore.getSourcesAdmin.map((t) => t).forEach(t => {
+            if (formData.title == t.title ||  imageId.current == t.imageId)
+                initialData = t;
+            console.log(initialData);
+        });
 
         if (initialData) {
             await sourcesAdminStore.updateSourceCategory(currentSource);

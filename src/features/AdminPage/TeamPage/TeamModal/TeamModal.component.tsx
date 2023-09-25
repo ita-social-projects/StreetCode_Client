@@ -150,6 +150,10 @@ const TeamModal: React.FC<{
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
+        teamStore.getTeamArray.map((t) => t).forEach(t => {
+        if (formValues.name == t.name  || imageId.current == t.imageId)
+            teamMember = t;
+        });
         if (teamMember) {
             team.id = teamMember.id;
             Promise.all([
