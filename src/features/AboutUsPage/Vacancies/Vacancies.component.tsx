@@ -32,7 +32,7 @@ const Vacancies = ({ setHasVacancies } : { setHasVacancies: (hasVacancies: boole
                         <span>Вакансії</span>
                         <div />
                     </h1>
-                    <div id="Vacancies" className="vacanciesBlock">
+                    <div id="vacancies" className="vacanciesBlock">
                         <div className="textBlock">
                             <h2>Приєднуйся до команди найактивніших стріткодерів, небайдужих до власної історії</h2>
                             <h3>

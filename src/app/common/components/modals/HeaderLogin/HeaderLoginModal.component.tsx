@@ -4,7 +4,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import { useModalContext } from '@stores/root-store';
 
@@ -46,7 +46,7 @@ const HeaderLoginModal = () => {
     const joinToTeamHandler = () => {
         console.log('hasVacancies HeaderLoginModal in const', hasVacancies);
         if (hasVacancies) {
-            navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}#Vacancies`);
+            window.location.href = `${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}#vacancies`;
             login.isOpen = false;
         }
     };
