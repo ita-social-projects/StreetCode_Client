@@ -23,17 +23,16 @@ const Vacancies = ({ setHasVacancies } : { setHasVacancies: (hasVacancies: boole
                 },
             );
     }, []);
-
     return (
         jobs.length
             ? (
                 <div className="aboutUsBlockContainer">
                     <h1>
                         <div />
-                        <span id="Vacancies">Вакансії</span>
+                        <span>Вакансії</span>
                         <div />
                     </h1>
-                    <div className="vacanciesBlock">
+                    <div id="Vacancies" className="vacanciesBlock">
                         <div className="textBlock">
                             <h2>Приєднуйся до команди найактивніших стріткодерів, небайдужих до власної історії</h2>
                             <h3>

@@ -1,7 +1,6 @@
 import './AboutUsPage.styles.scss';
 
 import React, { useState } from 'react';
-import HeaderLoginModal from '@components/modals/HeaderLogin/HeaderLoginModal.component';
 
 import TickerComponent from '../StreetcodePage/TickerBlock/Ticker.component';
 
@@ -21,10 +20,8 @@ const AboutUsPage = () => {
                 <Founders />
                 <TeamMembers />
                 <Vacancies setHasVacancies={setHasVacancies} />
-                <HeaderLoginModal hasVacancies={hasVacancies} />
             </div>
             {hasVacancies && <TickerComponent type="teamMembers" />}
-            <HeaderLoginModal hasVacancies={hasVacancies} />
         </div>
     );
 };
