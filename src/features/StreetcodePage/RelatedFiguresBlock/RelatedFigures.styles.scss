@@ -76,7 +76,7 @@ $moreInfo-width: 150px;
     .TwoRowSlide{
         display: flex;
         flex-direction: column;
-        height: 470px;
+        height: f.pxToRem(500px);
     }
     .SecondItem{
        position: absolute;
