@@ -44,6 +44,7 @@
 
         @media (min-width: 768px) and (max-width: 1024px){
             top: 320px;
+            width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
@@ -92,6 +93,7 @@
         @media (min-width: 768px) and (max-width: 1024px){
             @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
             height: 141px;
+            width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
@@ -147,9 +149,8 @@
                 text-decoration: underline;
             }
         }
-
-        @media (min-width: 768px) and (max-width: 1024px){
-            width: 93vw;
+        @media (min-width: 768px) and (max-width: 1024px) {
+            width: 96vw;
         }
     }
     .text{
@@ -165,7 +166,7 @@
         line-height: 18px;
         @media (min-width: 768px) and (max-width: 1024px) {
             -webkit-line-clamp: 2;
-            width: 93vw;
+            width: 96vw;
         }
 
         @media (max-width: 767px) {
