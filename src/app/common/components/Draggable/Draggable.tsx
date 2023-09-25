@@ -1,3 +1,5 @@
+import './Draggable.styles.scss';
+
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
@@ -19,6 +21,7 @@ const Draggable: React.FC<Props> = ({ children, id }: Props) => {
             style={style}
             {...listeners}
             {...attributes}
+            className="draggable"
         >
             {children}
         </div>
