@@ -15,6 +15,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
 
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
+import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
 
 const mobileOptions = 8;
 const desktopOptions = 6;
@@ -172,13 +173,9 @@ const HeaderDrawer = () => {
                                             text="Політика конфіденційності"
                                             link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
                                         />
-                                        <HeaderDrawerItem
-                                            id={MENU_ID.FEEDBACK}
-                                            parentActive={active}
+                                        <ContactUsModal
                                             toggleState={toggle}
-                                            text="Зворотний зв'язок"
-                                            link={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
-                                        />
+                                            text="Зворотний зв'язок" />
                                     </div>
                                     <SocialMediaLinks />
                                 </>
