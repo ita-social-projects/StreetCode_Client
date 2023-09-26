@@ -25,11 +25,7 @@ const Footer = () => {
                     setHasVacancies(result.length > 0);
                 },
             )
-            .catch(
-                (e) => {
-                    console.log(e);
-                },
-            );
+            .catch();
     }, []);
     return (
         <>
