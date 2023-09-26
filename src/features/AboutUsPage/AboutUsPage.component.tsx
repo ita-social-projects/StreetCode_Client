@@ -3,8 +3,6 @@ import './AboutUsPage.styles.scss';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import TickerComponent from '../StreetcodePage/TickerBlock/Ticker.component';
-
 import AboutUsHeaderText from './AboutUsHeaderText/AboutUsHeaderText.component';
 import Founders from './Founders/Founders.component';
 import TeamMembers from './TeamMembers/TeamMembers.component';
@@ -41,7 +39,6 @@ const AboutUsPage = () => {
                     <Vacancies setHasVacancies={setHasVacancies} />
                 </div>
             </div>
-            {hasVacancies && <TickerComponent type="teamMembers" />}
         </div>
     );
 };
