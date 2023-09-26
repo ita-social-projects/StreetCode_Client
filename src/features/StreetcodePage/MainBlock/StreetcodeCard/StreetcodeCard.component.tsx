@@ -120,6 +120,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                     </div>
                     <p className="teaserBlock">
                         {streetcode?.teaser}
+...
                     </p>
 
                     <div className="cardFooter">
