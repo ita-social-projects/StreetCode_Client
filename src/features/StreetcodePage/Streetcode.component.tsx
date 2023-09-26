@@ -111,7 +111,6 @@ const StreetcodeContent = () => {
                 <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
-                <MapBlock />
                 <ArtGalleryBlockComponent />
                 <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />

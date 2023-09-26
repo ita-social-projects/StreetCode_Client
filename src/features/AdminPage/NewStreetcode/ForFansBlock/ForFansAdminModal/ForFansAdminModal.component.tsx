@@ -45,28 +45,32 @@ const ForFansModal = ({
     const maxLength = character_limit || 10000;
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
-        const categories = await SourcesApi.getAllCategories();
-        sourcesAdminStore.setInternalSourceCategories(categories);
+        try {
+            const categories = await SourcesApi.getAllCategories();
+            sourcesAdminStore.setInternalSourceCategories(categories);
 
-        const sourceMas: SourceCategoryName[] = categories.map((x) => ({
-            id: x.id ?? 0,
-            title: x.title,
-        }));
-        const justAddedCategory = sourceMas[sourceMas.length - 1]
-        const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
-            .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
-                && (srcCatContent as StreetcodeCategoryContentUpdate).modelState !== ModelState.Deleted);     
+            const sourceMas: SourceCategoryName[] = categories.map((x) => ({
+                id: x.id ?? 0,
+                title: x.title,
+            }));
+            const justAddedCategory = sourceMas[sourceMas.length - 1];
+            const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
+                .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
+                    && (srcCatContent as StreetcodeCategoryContentUpdate).modelState !== ModelState.Deleted);
 
-        const selected_Ids = selected.map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
-        const available = allCategories.filter((c) => !selected_Ids.includes(c.id));
-        if (categoryUpdate.current) {
-            available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate
-                .current?.sourceLinkCategoryId)]);
+            const selectedIds = selected.map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
+            const available = allCategories.filter((c) => !selectedIds.includes(c.id));
+            if (categoryUpdate.current) {
+                // eslint-disable-next-line max-len
+                available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate.current?.sourceLinkCategoryId)]);
+            }
+            if (isNewCat) {
+                available.push(justAddedCategory);
+            }
+            return available;
+        } catch (error) {
+            console.error('Error fetching categories:', error);
         }
-        if (isNewCat){
-            available.push(justAddedCategory);
-        }
-        return available;
     };
 
     const clearModal = () => {
@@ -112,14 +116,14 @@ const ForFansModal = ({
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
                 });
         }
-        //setOpen(false);
+        // setOpen(false);
         sourceCreateUpdateStreetcode.indexUpdate = -1;
         onChange('saved', null);
     };
     const handleOk = () => {
         form.submit();
         alert('Категорію для фанатів успішно додано!');
-    }
+    };
     const onDropDownChange = async () => {
         if (isAddModalVisible === false) {
             const categories = await SourcesApi.getAllCategories();
@@ -132,9 +136,9 @@ const ForFansModal = ({
 
             setCategories(sourceMas);
         }
-    }
+    };
     const onUpdateStates = async (isNewCatAdded: boolean) => {
-        if(isNewCatAdded === true) {
+        if (isNewCatAdded === true) {
             const AvailableCats = await getAvailableCategories(true);
             setAvailableCategories(AvailableCats);
             alert('Категорію успішно додано до списку!');
@@ -147,10 +151,8 @@ const ForFansModal = ({
             form.resetFields(['category']);
         }
     };
-    
-    const handleDisabled = (categoryId: number) => {
-        return !availableCategories.some(c => c.id === categoryId);
-    };
+
+    const handleDisabled = (categoryId: number) => !availableCategories.some((c) => c.id === categoryId);
 
     return (
         <Modal

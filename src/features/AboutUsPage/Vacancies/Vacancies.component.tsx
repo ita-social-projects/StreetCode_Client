@@ -1,12 +1,12 @@
 import './Vacancies.styles.scss';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import JobApi from '@/app/api/job/Job.api';
 
 import Vacancy from './Vacancy/Vacancy.component';
 
-const Vacancies = () => {
+const Vacancies = ({ setHasVacancies } : { setHasVacancies: (hasVacancies: boolean) => void }) => {
     const [jobs, setJobs] = useState<Job[]>([]);
 
     useEffect(() => {
@@ -14,6 +14,7 @@ const Vacancies = () => {
             .then(
                 (result) => {
                     setJobs(result);
+                    setHasVacancies(result.length > 0);
                 },
             )
             .catch(
@@ -22,11 +23,10 @@ const Vacancies = () => {
                 },
             );
     }, []);
-
     return (
         jobs.length
             ? (
-                <div className="aboutUsBlockContainer">
+                <div id="vacancies" className="aboutUsBlockContainer">
                     <h1>
                         <div />
                         <span>Вакансії</span>

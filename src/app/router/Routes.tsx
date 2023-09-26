@@ -1,10 +1,16 @@
-import { createBrowserRouter, createHashRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import {
+    createBrowserRouter, createHashRouter, createRoutesFromElements, Route, Routes, useParams,
+} from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
+
+import AboutUsPage from '@/features/AboutUsPage/AboutUsPage.component';
+import Vacancies from '@/features/AboutUsPage/Vacancies/Vacancies.component';
+
 import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
@@ -86,6 +92,10 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route index path="/:id" element={<StreetcodeContent />} />
         <Route index path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`} element={<NewsPage />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US} element={<AboutUsPage />} />
+        <Route
+            path={`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}/:section`}
+            element={<AboutUsPage />}
+        />
     </Route>,
 ));
 

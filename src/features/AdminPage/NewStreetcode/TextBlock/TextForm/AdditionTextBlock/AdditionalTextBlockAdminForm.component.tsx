@@ -14,9 +14,10 @@ interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     onChange: (field: string, value: any) => void;
+    text : string | undefined;
 }
 
-const AdditionalTextBlockAdminForm = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
+const AdditionalTextBlockAdminForm = ({ character_limit, inputInfo, setInputInfo, onChange, text }: Props) => {
     const handleEditorChange = (content: string, editor: any) => {
         setInputInfo({ ...inputInfo, additionalText: content });
         onChange('additionalText', content);
@@ -35,7 +36,7 @@ const AdditionalTextBlockAdminForm = ({ character_limit, inputInfo, setInputInfo
 
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(inputInfo?.additionalText ?? 'Текст підготовлений спільно з');
+                        editor.setContent(text ?? 'Текст підготовлений спільно з');
                     },
                     plugins: [
                         'autolink',

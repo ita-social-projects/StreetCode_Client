@@ -17,11 +17,14 @@ interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     onChange: (field: string, value: any) => void;
+    text : string | undefined;
 }
 
 const toolTipColor = '#8D1F16';
 
-const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Props) => {
+const TextEditor = ({
+    character_limit, inputInfo, setInputInfo, onChange, text,
+}: Props) => {
     const { relatedTermStore, termsStore } = useMobx();
     const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
@@ -87,6 +90,74 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
     useAsync(fetchTerms, []);
     const maxLength = character_limit || 15000;
 
+    useEffect(() => {
+        editorRef.current = (<TinyMCEEditor
+            ref={editorRef}
+            value={editorContent}
+            onChange={(e, editor) => {
+                setInputInfo({ ...inputInfo, textContent: editor.getContent() });
+                onChange('textContent', editor.getContent());
+            }}
+            onEditorChange={(e, editor) => {
+                setEditorContent(editor.getContent());
+                setInputInfo({ ...inputInfo, textContent: editor.getContent() });
+                onChange('textContent', editor.getContent());
+            }}
+            init={{
+                max_chars: 1000,
+                height: 300,
+                menubar: false,
+                init_instance_callback(editor) {
+                    setEditorContent(text ?? '');
+                    editor.setContent(text ?? '');
+                },
+                plugins: [
+                    'autolink',
+                    'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                    'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
+                ],
+                toolbar: 'undo redo | bold italic | '
+                    + 'removeformat',
+                toolbar_mode: 'sliding',
+                language: 'uk',
+                entity_encoding: 'raw',
+                content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+            }}
+            onPaste={(e, editor) => {
+                const previousContent = editor.getContent({ format: 'text' });
+                const clipboardContent = e.clipboardData?.getData('text') || '';
+                const resultContent = previousContent + clipboardContent;
+                const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
+
+                if (selected.length >= clipboardContent.length) {
+                    return;
+                }
+                if (resultContent.length >= maxLength && isSelectionEnd) {
+                    // eslint-disable-next-line max-len
+                    editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
+                    e.preventDefault();
+                }
+                if (resultContent.length <= maxLength && !isSelectionEnd) {
+                    return;
+                }
+                if (resultContent.length >= maxLength && !isSelectionEnd) {
+                    e.preventDefault();
+                }
+            }}
+            onKeyDown={(e, editor) => {
+                if (editor.getContent({ format: 'text' }).length >= maxLength
+                    && !setOfKeys.has(e.key)
+                    && editor.selection.getContent({ format: 'text' }).length === 0) {
+                    e.preventDefault();
+                }
+            }}
+            onSelectionChange={(e, editor) => {
+                setSelected(editor.selection.getContent());
+            }}
+        />);
+        console.log(editorRef);
+    }, [text, inputInfo, setInputInfo, onChange]);
+
     return (
         <FormItem
             label="Основний текст"
@@ -108,8 +179,8 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     height: 300,
                     menubar: false,
                     init_instance_callback(editor) {
-                        setEditorContent(inputInfo?.textContent ?? '');
-                        editor.setContent(inputInfo?.textContent ?? '');
+                        setEditorContent(text ?? '');
+                        editor.setContent(text ?? '');
                     },
                     plugins: [
                         'autolink',
@@ -155,43 +226,6 @@ const TextEditor = ({ character_limit, inputInfo, setInputInfo, onChange }: Prop
                     setSelected(editor.selection.getContent());
                 }}
             />
-            <Button
-                className="streetcode-custom-button button-margin-vertical"
-                onClick={() => setModal('addTerm')}
-            >
-                Додати новий термін
-            </Button>
-            <FormItem label="Оберіть пов'язаний термін">
-                <AutoComplete
-                    filterOption
-                    onSelect={(value, option) => {
-                        setTerm({ id: option.key, title: value });
-                    }}
-                    disabled={selected === ''}
-                    onChange={onChange}
-                >
-                    {getTermArray.map(
-                        (t) => <Select.Option key={t.id} value={t.title}>{t.title}</Select.Option>,
-                    )}
-                </AutoComplete>
-            </FormItem>
-            <div className="display-flex-row">
-                <Button
-                    className="streetcode-custom-button button-margin-vertical button-margin-right"
-                    onClick={handleAddRelatedWord}
-                    disabled={selected === '' || term === undefined}
-                >
-                    Пов&#39;язати
-                </Button>
-                <Button
-                    onClick={handleDeleteRelatedWord}
-                    disabled={selected === '' || term === undefined}
-                    className="streetcode-custom-button button-margin-vertical"
-                >
-                    Видалити пов&#39;язаний термін
-                </Button>
-            </div>
-            <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>
     );
 };
