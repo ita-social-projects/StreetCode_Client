@@ -57,7 +57,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     useAsync(() => {
         if (id && id > 0) {
             fetchAudioByStreetcodeId(id).then(() => {
-                setAudioIsLoaded(true)
+                setAudioIsLoaded(true);
             });
         }
     }, [id]);
@@ -68,7 +68,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs); 
+                    setImages(imgs);
                     streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((e) => { });
@@ -92,7 +92,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     key={im.id}
                                     src={base64ToUrl(im.base64, im.mimeType)}
                                     className="streetcodeImg"
-                                    style={{objectFit: 'contain'}}
+                                    style={{ objectFit: 'contain' }}
                                     alt={im.imageDetails?.alt}
                                 />
                             ))}
@@ -120,8 +120,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                     </div>
                     <p className="teaserBlock">
                         {streetcode?.teaser}
-                        {streetcode?.teaser}
-                        {streetcode?.teaser}
                     </p>
 
                     <div className="cardFooter">
@@ -129,7 +127,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             ? (
                                 <Button
                                     type="primary"
-                                    className={"audioBtn audioBtnActive"}
+                                    className="audioBtn audioBtnActive"
                                     onClick={() => {
                                         setModal('audio');
                                         audioClickEvent(streetcode?.id ?? 0);
