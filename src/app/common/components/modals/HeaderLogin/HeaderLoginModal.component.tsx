@@ -4,9 +4,10 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { HashLink as Link } from 'react-router-hash-link';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import { useModalContext } from '@stores/root-store';
+import scrollWithOffset from '@utils/window.utility';
 
 import { Button, Modal } from 'antd';
 
@@ -21,7 +22,6 @@ const HeaderLoginModal = () => {
     const [hasVacancies, setHasVacancies] = useState(false);
     const SURVEY_LINK = 'https://forms.gle/eWwX5RP84X7dymLR6';
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
-    const navigate = useNavigate();
 
     useEffect(() => {
         JobApi.getActive()
@@ -44,13 +44,9 @@ const HeaderLoginModal = () => {
     };
 
     const joinToTeamHandler = () => {
-        console.log('hasVacancies HeaderLoginModal in const', hasVacancies);
-        if (hasVacancies) {
-            window.location.href = `${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}#vacancies`;
-            login.isOpen = false;
-        }
+        login.isOpen = false;
     };
-    console.log('hasVacancies HeaderLoginModal', hasVacancies);
+
     return (
         <Modal
             className="loginModal"
@@ -74,7 +70,12 @@ const HeaderLoginModal = () => {
                         joinToTeamHandler();
                     }}
                     >
-                        Долучитися до команди
+                        <Link
+                            to={`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}#vacancies`}
+                            scroll={(el:any) => scrollWithOffset(el, 100)}
+                        >
+                            Долучитися до команди
+                        </Link>
                     </Button>
                 )}
                 <Button onClick={() => {

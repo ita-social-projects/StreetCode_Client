@@ -26,13 +26,13 @@ const Vacancies = ({ setHasVacancies } : { setHasVacancies: (hasVacancies: boole
     return (
         jobs.length
             ? (
-                <div className="aboutUsBlockContainer">
+                <div id="vacancies" className="aboutUsBlockContainer">
                     <h1>
                         <div />
                         <span>Вакансії</span>
                         <div />
                     </h1>
-                    <div id="vacancies" className="vacanciesBlock">
+                    <div className="vacanciesBlock">
                         <div className="textBlock">
                             <h2>Приєднуйся до команди найактивніших стріткодерів, небайдужих до власної історії</h2>
                             <h3>
