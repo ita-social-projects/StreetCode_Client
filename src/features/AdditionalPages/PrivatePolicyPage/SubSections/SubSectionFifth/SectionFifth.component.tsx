@@ -1,4 +1,4 @@
-const EMAIL = 'streetcodeua@gmail.com';
+import EMAIL from '@constants/email.constants';
 
 const SectionFifth = () => (
     <section id="fifth" data-block-id="fifth">
@@ -105,7 +105,7 @@ const SectionFifth = () => (
             </ul>
                 Щоб звернутися до Організації з приводу використання файлів cookie, відправте повідомлення
                 електронною поштою на адресу&nbsp;
-            <a className="link" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <a className="link" href={`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}`}>{EMAIL}</a>
                 .
             <br />
                 Якщо користувач не включає використання файлів cookie або навмисно видаляє всі файли cookie
