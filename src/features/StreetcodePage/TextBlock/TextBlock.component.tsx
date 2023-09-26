@@ -30,12 +30,6 @@ const TextComponent = () => {
                     setText(textResult);
                     setVideo(videoResult);
                     streecodePageLoaderContext.addBlockFetched();
-                    Promise.all([textsApi.updateParsed(textResult)])
-                        .then(([parsedTextResult]) => {
-                            setText({
-                                ...textResult, textContent: parsedTextResult,
-                            });
-                        });
                 })
                 .catch((error) => {
                     console.error(error);

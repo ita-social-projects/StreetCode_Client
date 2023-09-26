@@ -90,7 +90,7 @@ const StreetcodeContent = () => {
     }, []);
 
     return (
-        <div className="streetcodeContainer">
+        <div className={`streetcodeContainer ${!pageLoadercontext.isPageLoaded ? 'no-scroll' : ''}`}>
             {!pageLoadercontext.isPageLoaded && (
                 <div className="loader-container">
                     <img
@@ -111,7 +111,6 @@ const StreetcodeContent = () => {
                 <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
-                <MapBlock />
                 <ArtGalleryBlockComponent />
                 <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />
