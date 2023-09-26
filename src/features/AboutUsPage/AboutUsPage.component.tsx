@@ -1,7 +1,5 @@
 import './AboutUsPage.styles.scss';
 
-import TickerComponent from '../StreetcodePage/TickerBlock/Ticker.component';
-
 import AboutUsHeaderText from './AboutUsHeaderText/AboutUsHeaderText.component';
 import Founders from './Founders/Founders.component';
 import TeamMembers from './TeamMembers/TeamMembers.component';
@@ -15,7 +13,6 @@ const AboutUsPage = () => (
             {<TeamMembers />}
             {<Vacancies />}
         </div>
-        <TickerComponent type="teamMembers" />
     </div>
 );
 
