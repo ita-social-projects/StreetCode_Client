@@ -58,6 +58,7 @@ const Footer = () => {
                         <ul className="usefulLinksColumn supportLinks">
                             <li><a href={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}>Політика конфіденційності</a></li>
                             <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Зворотний зв&apos;язок</a></li>
+                            <li><a href="https://drive.google.com/drive/folders/11Ef4y_6ZHyqT5eDxD5Cn-aWhr-kThh3A?usp=drive_link" target="_blank" rel="noreferrer">Звітність ГО «Історична Платформа»</a></li>
                         </ul>
                         <ul className="socialIconContainer">
                             <li>
