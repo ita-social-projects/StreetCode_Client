@@ -1,4 +1,4 @@
-import EMAIL from '@constants/email.constants';
+import { EMAIL_INFO } from '@constants/email.constants';
 
 const SectionFifth = () => (
     <section id="fifth" data-block-id="fifth">
@@ -105,7 +105,7 @@ const SectionFifth = () => (
             </ul>
                 Щоб звернутися до Організації з приводу використання файлів cookie, відправте повідомлення
                 електронною поштою на адресу&nbsp;
-            <a className="link" href={`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}`}>{EMAIL}</a>
+            <a className="link" href={EMAIL_INFO.WRITE_EMAIL_TO_US}>{EMAIL_INFO.EMAIL}</a>
                 .
             <br />
                 Якщо користувач не включає використання файлів cookie або навмисно видаляє всі файли cookie

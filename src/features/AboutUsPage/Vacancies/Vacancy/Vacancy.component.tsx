@@ -22,7 +22,7 @@ const Vacancy = (job: Job) => {
                             onClick={ () => {setIsModalOpen(true)}}> Трохи ще
                         </label>
                     </p>
-                    : <p><div dangerouslySetInnerHTML={{ __html: job.description.substring(0, maxLength) }} />...
+                    : <p><div dangerouslySetInnerHTML={{ __html: `${job?.description.substring(0, maxLength).split(' ').slice(0, -1).join(' ')}...` }} />
                         <label
                             onClick={ () => {setIsModalOpen(true)}}>
                                 Трохи ще

@@ -8,18 +8,18 @@ import TikTok from '@images/contact-us/TikTok.webp';
 import Twitter from '@images/contact-us/Twitter.webp';
 import YouTube from '@images/contact-us/Youtube.webp';
 
-import EMAIL from '@constants/email.constants';
+import { EMAIL_INFO } from '@constants/email.constants';
 
 const ContactBlock = () => (
     <div className="contactBlock">
         <img className="contactLogo" src={Logo} alt="" />
         <div className="contactCover">
             <div className="emailBlock">
-                <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}`} className="emailLink">
+                <a href={EMAIL_INFO.WRITE_EMAIL_TO_US} className="emailLink">
                     <img className="icon" src={Email} alt="email-logo" />
                 </a>
                 <span className="email">
-                    {EMAIL}
+                    {EMAIL_INFO.EMAIL}
                 </span>
             </div>
 

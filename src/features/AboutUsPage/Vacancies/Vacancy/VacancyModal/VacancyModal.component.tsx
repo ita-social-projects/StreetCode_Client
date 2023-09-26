@@ -3,7 +3,7 @@ import './VacancyModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import React from 'react';
-import EMAIL from '@constants/email.constants';
+import { EMAIL_INFO } from '@constants/email.constants';
 
 import { Button, Modal } from 'antd';
 
@@ -17,10 +17,10 @@ interface Props {
 
 const VacancyModal = ({ isOpen, setOpen, job }: Props) => {
     const descriptionLines = job.description.split('\n').map((line, index) => (
-        <React.Fragment key={index}>
+        <>
             <div dangerouslySetInnerHTML={{ __html: line }} />
             <br />
-        </React.Fragment>
+        </>
     ));
 
     const getWidth = () => {
@@ -61,7 +61,7 @@ const VacancyModal = ({ isOpen, setOpen, job }: Props) => {
                     <Button
                         className="vacancyModalButton streetcode-custom-button"
                         onClick={(e) => {
-                            window.location.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}`;
+                            window.location.href = EMAIL_INFO.WRITE_EMAIL_TO_US;
                             e.preventDefault();
                         }}
                     >

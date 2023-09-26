@@ -1,4 +1,4 @@
-import EMAIL from '@constants/email.constants';
+import { EMAIL_INFO } from '@constants/email.constants';
 
 const SectionSeventh = () => (
     <section>
@@ -12,7 +12,7 @@ const SectionSeventh = () => (
             <br />
             З питань щодо політики конфіденційності (в т.ч. видалення персональних даних), Користувач може
             зв&apos;язатися з нами, використовуючи e—mail:
-            <a className="link" href={`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}`}>{EMAIL}</a>
+            <a className="link" href={EMAIL_INFO.WRITE_EMAIL_TO_US}>{EMAIL_INFO.EMAIL}</a>
             .
         </div>
     </section>
