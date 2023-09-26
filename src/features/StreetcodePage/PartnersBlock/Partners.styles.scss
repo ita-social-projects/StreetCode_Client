@@ -12,10 +12,12 @@
 
         .slick-slide{
             @include mut.flex-centered();
+            width: auto;
         }
 
         .partnerItem {
-            @include mut.sized($width: 380px, $height: 121px);
+            @include mut.sized($height: 121px, $width: "auto");
+            @include mut.rem-margined($top: 0, $right: 10px, $bottom: 0, $left: 10px);
             @include mut.flex-centered();
         }
     }
