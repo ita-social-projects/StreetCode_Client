@@ -5,6 +5,7 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
 import classnames from 'classnames';
 import * as lodash from 'lodash';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 interface Props {
   text: string;
@@ -17,7 +18,8 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const readMoreRef = useRef<HTMLSpanElement | null>(null);
     const firstRender = useRef(true);
-
+    const windowSize = useWindowSize();
+    
     const handleClick = () => setClamped(!clamped);
 
     useEffect(() => {
@@ -81,7 +83,7 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
                 >
                     <SearchTerms mainText={text} />
                 </div>
-                {showButtons && (
+                {showButtons && windowSize.width > 480 && (
                     <div className="readMoreContainer">
                         <span
                             className="readMore"
@@ -90,6 +92,23 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
                         >
                             {clamped ? 'Трохи ще' : 'Дещо менше'}
                         </span>
+                    </div>
+                )}
+                {showButtons && windowSize.width <= 480 && (
+                    <div className="readMoreContainer">
+                        {clamped ? <span
+                            className="readMore"
+                            onClick={handleClick}
+                            ref={readMoreRef}
+                        >
+                            Трохи ще
+                        </span> : 
+                        <input type='button' className="readLess" onClick={handleClick} value={'Згорнути'}></input>
+                        // <button className="readLess" onClick={handleClick}>
+                        //     <p>Згорнути</p>
+                        // </button>
+                        }
+                        
                     </div>
                 )}
             </div>
