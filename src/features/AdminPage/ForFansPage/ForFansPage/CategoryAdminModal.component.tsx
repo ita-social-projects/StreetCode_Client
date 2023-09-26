@@ -27,7 +27,7 @@ interface SourceModalProps {
     isModalVisible: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     initialData?: SourceCategoryAdmin;
-    isNewCategory?:(data: boolean) => void;
+    isNewCategory?: (data: boolean) => void;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
@@ -131,7 +131,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         return [];
     };
 
-    const handleOk =() =>{
+    const handleOk = () => {
         form.submit();
         message.success("Категорію успішно додано!", 2);
     }
@@ -156,7 +156,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" maxLength={100} showCount />
+                        <Input placeholder="Title" maxLength={23} showCount />
                     </Form.Item>
                     <Form.Item
                         name="image"
@@ -191,7 +191,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => handleOk() }>
+                        <Button className="streetcode-custom-button" onClick={() => handleOk()}>
                             Зберегти
                         </Button>
                     </div>
