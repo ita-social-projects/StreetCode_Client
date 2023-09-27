@@ -43,6 +43,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                     slidesPerView={5}
                     centeredSlides
                     loop
+                    slideToClickedSlide
                     onSwiper={(swiper) => setSwiper(swiper)}
                     onSlideChange={(swiper) => getActive(swiper)}
                     navigation={{ nextEl: '.arrow-left', prevEl: '.arrow-right' }}
@@ -63,13 +64,6 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                         <SwiperSlide
                             className="square"
                             key={position.id}
-                            onClick={() => {
-                                if (swiper) {
-                                    if (swiper.loopedSlides !== 1) {
-                                        swiper.slideTo(index + swiper.loopedSlides);
-                                    }
-                                }
-                            }}
                         >
                             <div key={position.position}>
                                 <div className="positionText">{position.position}</div>
