@@ -181,7 +181,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 <FormItem
                     label="Заробітня плата"
                     name="salary"
-                    rules={[{ required: false, message: 'Введіть заробітню плату' }]}
+                    rules={[{ required: true, message: 'Введіть заробітню плату' }]}
                 >
                     <Input
                         showCount
