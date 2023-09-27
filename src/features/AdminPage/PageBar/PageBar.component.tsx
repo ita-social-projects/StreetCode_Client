@@ -7,7 +7,6 @@ const PageBar = () => (
     <div className="PageBarContainer">
         <div className="BarContainer">
             <Link className='Link' to={FRONTEND_ROUTES.ADMIN.BASE}>Стріткоди</Link>
-            <Link className='Link' to={FRONTEND_ROUTES.ADMIN.DICTIONARY}>Словник</Link>
             <Link className='Link' to={FRONTEND_ROUTES.ADMIN.PARTNERS}>Партнери</Link>
             <Link className='Link' to={FRONTEND_ROUTES.ADMIN.FOR_FANS}>Категорії для фанатів</Link>
             <Link className='Link' to={`${FRONTEND_ROUTES.ADMIN.TEAM}`}>Команда</Link>

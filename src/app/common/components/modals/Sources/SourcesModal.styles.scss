@@ -66,8 +66,13 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
     font-weight: 300;
     font-size: 15px;
 
-    ul, ol {
-      list-style: auto;
+    ul {
+      list-style-type: disc;
+      padding-inline-start: revert;
+    }
+    
+    ol {
+      list-style-type: decimal;
       padding-inline-start: revert;
     }
 

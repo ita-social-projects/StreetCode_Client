@@ -10,7 +10,7 @@ const Vacancy = (job: Job) => {
 
     const ChangeStatus = () => {
         setIsModalOpen(!isModalOpen);
-    }
+    };
     return (
         <div className='vacancyContainer'>
             <h2>{job?.title}</h2>
@@ -31,7 +31,7 @@ const Vacancy = (job: Job) => {
             }
             <VacancyModal isOpen={isModalOpen} setOpen={ChangeStatus} job = {job}/>
         </div>
-    )
+    );
 };
 
-export default Vacancy
+export default Vacancy;

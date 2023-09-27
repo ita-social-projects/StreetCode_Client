@@ -66,6 +66,12 @@
     a{
       color: c.$pure-white-color;
     }
+
+    li{
+      .ant-typography.text-white{
+        color: white;
+      }
+    }
   }
 
   .socialIconContainer {
