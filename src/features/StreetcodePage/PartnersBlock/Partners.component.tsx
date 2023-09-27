@@ -26,8 +26,8 @@ const PartnersComponent = () => {
                             .then((img) => {
                                 res[index].logo = img;
                             }))).then(() => {
-                                setPartners(res);
-                            });
+                            setPartners(res);
+                        });
                     });
             }
         },
@@ -55,6 +55,7 @@ const PartnersComponent = () => {
         draggable: true,
         swipe: true,
         slidesToShow: 3,
+        variableWidth: true,
         responsive: [responsiveSettingsTablet, responsiveSettingsMobile, responsiveSettingsDesktop],
     };
 
