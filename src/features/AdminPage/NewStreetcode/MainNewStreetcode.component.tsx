@@ -15,6 +15,7 @@ import useMobx from '@app/stores/root-store';
 import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
 import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { ModelState } from '@models/enums/model-state';
 import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
@@ -140,28 +141,21 @@ const NewStreetcode = () => {
         setVisibleModal(false);
     }, []);
 
+    useAsync(() => {
+        if (parseId && streetcodeArtStore.streetcodeArtSlides.length === 0) {
+            streetcodeArtStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
+                setArts(streetcodeArtStore.getStreetcodeArtArray);
+                setArtsSlides(streetcodeArtStore.streetcodeArtSlides);
+            });
+        }
+    });
+
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
         }
 
         if (parseId) {
-            StreetcodeArtApi.getArtSlidesByStreetcodeId(parseId, 1, 100).then((slides) => {
-                const artsFromSlides: StreetcodeArtCreateUpdate[] = [];
-
-                slides.forEach((slide) => {
-                    slide.streetcodeArts.forEach((art) => {
-                        if (!artsFromSlides.some((existingArt) => existingArt.art.id === art.art.id)) {
-                            artsFromSlides.push(art);
-                        }
-                    });
-                });
-
-                console.log(slides, artsFromSlides);
-                setArts(artsFromSlides);
-                setArtsSlides(slides);
-            });
-
             StreetcodesApi.getById(parseId).then((x) => {
                 streetcodeType.current = x.streetcodeType;
                 form.setFieldsValue({

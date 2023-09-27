@@ -1,6 +1,7 @@
 import './ArtGalleryBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import ALL_SLIDES_TEMPLATES from '@components/ArtGallery/constants/allSlidesTemplates';
 import SLIDER_PROPS from '@components/ArtGallery/constants/sliderProps';
 import convertSlidesToTemplates from '@components/ArtGallery/utils/convertSlidesToTemplates';
@@ -18,9 +19,13 @@ type Props = {
 };
 
 const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
-    const { streetcodeArtStore } = useMobx();
+    const { streetcodeArtStore, artGalleryTemplateStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides } = streetcodeArtStore;
+
+    useEffect(() => {
+        console.log('CHANGE DEPENDENCY', artGalleryTemplateStore.streetcodeArtSlides);
+    }, [artGalleryTemplateStore.streetcodeArtSlides]);
 
     useAsync(
         async () => {
@@ -56,7 +61,7 @@ const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
                             <div className="artGallerySliderContainer">
                                 <SlickSlider {...SLIDER_PROPS}>
                                     {isConfigurationGallery
-                                        ? convertSlidesToTemplates(ALL_SLIDES_TEMPLATES, true)
+                                        ? convertSlidesToTemplates(artGalleryTemplateStore.streetcodeArtSlides, true)
                                         : convertSlidesToTemplates(adminArtSlides || streetcodeArtSlides)}
 
                                 </SlickSlider>

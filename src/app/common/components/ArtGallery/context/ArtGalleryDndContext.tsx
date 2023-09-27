@@ -2,12 +2,15 @@ import React, { HTMLProps, ReactNode } from 'react';
 import {
     DndContext, DragEndEvent, PointerSensor, useSensor, useSensors,
 } from '@dnd-kit/core';
+import useMobx from '@stores/root-store';
 
 type Props = {
     children: ReactNode;
 } & HTMLProps<HTMLDivElement>;
 
 const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
+    const { streetcodeArtStore, artGalleryTemplateStore } = useMobx();
+
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -24,10 +27,16 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
     );
 
     function onDragEnd(event: DragEndEvent): void {
-        const droppableId = event?.over?.id || null;
-        const draggbleId = event.active.id;
-
+        const draggbleId = event?.over?.id || null;
+        const droppableId = event.active.id;
         console.log(droppableId, draggbleId);
+
+        const art = streetcodeArtStore.getStreetcodeArtArray.find((sArt) => sArt.art.id == draggbleId);
+        if (art) {
+            artGalleryTemplateStore.setArtInSlide(draggbleId, 1, art.art);
+        } else {
+            console.log('No art Found');
+        }
     }
 };
 

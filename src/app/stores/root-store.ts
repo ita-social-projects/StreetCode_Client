@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import ArtGalleryTemplateStore from '@stores/art-gallery-template-store';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
@@ -62,6 +63,7 @@ interface Store {
     streetcodeMainPageStore: StreetcodesMainPageStore,
     relatedByTag: StreetcodesByTagStore,
     createUpdateMediaStore: CreateUpdateMediaStore,
+    artGalleryTemplateStore: ArtGalleryTemplateStore,
 }
 
 export interface StreetcodeDataStore {
@@ -100,6 +102,7 @@ export const store: Store = {
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
     relatedByTag: new StreetcodesByTagStore(),
     createUpdateMediaStore: new CreateUpdateMediaStore(),
+    artGalleryTemplateStore: new ArtGalleryTemplateStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),
