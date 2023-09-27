@@ -16,7 +16,7 @@ import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Image, { ImageAssigment } from '@/models/media/image.model';
+import Image from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -87,8 +87,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             swipeOnClick
                             infinite
                         >
-                            {images.filter((image) => (image.imageDetails?.alt === ImageAssigment.animation.toString()
-                            || image.imageDetails?.alt === ImageAssigment.blackandwhite.toString())).map((im) => (
+                            {images.slice(0, 2).map((im) => (
                                 <img
                                     key={im.id}
                                     src={base64ToUrl(im.base64, im.mimeType)}
