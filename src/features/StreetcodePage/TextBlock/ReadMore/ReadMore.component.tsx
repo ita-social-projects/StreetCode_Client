@@ -14,7 +14,7 @@ interface Props {
 
 const ReadMore = ({ text, maxLines = 25 }: Props) => {
     const [clamped, setClamped] = useState(true);
-    const [showButtons, setShowButtons] = useState(true);
+    const [showButtons, setShowButtons] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const readMoreRef = useRef<HTMLSpanElement | null>(null);
     const firstRender = useRef(true);
@@ -32,7 +32,9 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
             if (containerRef.current) {
                 const hadClampClass = containerRef.current.classList.contains('clamp');
                 if (!hadClampClass) containerRef.current.classList.add('clamp');
-                setShowButtons(hasClamping(containerRef.current));
+                if (hasClamping(containerRef.current)) {
+                    setShowButtons(hasClamping(containerRef.current));
+                }
                 if (!hadClampClass) containerRef.current.classList.remove('clamp');
             }
         };
@@ -95,20 +97,14 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
                     </div>
                 )}
                 {showButtons && windowSize.width <= 480 && (
-                    <div className="readMoreContainer">
-                        {clamped ? <span
-                            className="readMore"
+                    <div className={clamped ? "readMoreContainer" : "readLessContainer"}>
+                        <span
+                            className={clamped ? "readMore" : "readLess"}
                             onClick={handleClick}
                             ref={readMoreRef}
                         >
-                            Трохи ще
-                        </span> : 
-                        <input type='button' className="readLess" onClick={handleClick} value={'Згорнути'}></input>
-                        // <button className="readLess" onClick={handleClick}>
-                        //     <p>Згорнути</p>
-                        // </button>
-                        }
-                        
+                            {clamped ? 'Трохи ще' : 'Згорнути текст'}
+                        </span>
                     </div>
                 )}
             </div>

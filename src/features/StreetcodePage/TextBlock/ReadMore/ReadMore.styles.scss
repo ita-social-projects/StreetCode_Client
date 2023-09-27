@@ -50,6 +50,11 @@
         justify-content: center;
     }
 
+    .readLessContainer{
+        position: sticky;
+        bottom: 40px;
+    }
+
     .readLess {
         display: flex;
         justify-content: center;
@@ -57,17 +62,13 @@
         height: 46px;
         background-color: white;
         border-radius: 8px;
-        border-color: #A3A3A3;
         border-style: solid;
-        width: 100%;
-        color: #A3A3A3;
-        // p {
-        //     // width: 60px;
-        //     // height: 16px;
-        //     size: 14px;
-        //     font-family: Roboto;
-        // }
-        // padding: 18px, 26px, 18px, 26px;
+        border-width: 2px;
+        width: 252px;
+        color: #E04031;
+        margin: auto;
+        font-size: 14px;
+        font-weight: 500;
     }
 }
 
