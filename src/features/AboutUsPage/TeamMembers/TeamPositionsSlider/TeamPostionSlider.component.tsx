@@ -1,3 +1,5 @@
+import './TeamPositionSlider.styles.scss';
+
 import { useState } from 'react';
 import LeftSliderArrow from '@assets/images/utils/LeftDefaultSliderArrow.svg';
 import RightSliderArrow from '@assets/images/utils/RightDefaultSliderArrow.svg';
@@ -57,10 +59,20 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                         },
                     }}
                 >
-                    {positions.map((position) => (
-                        <SwiperSlide className="square" key={position.id}>
+                    {positions.map((position, index) => (
+                        <SwiperSlide
+                            className="square"
+                            key={position.id}
+                            onClick={() => {
+                                if (swiper) {
+                                    if (swiper.loopedSlides !== 1) {
+                                        swiper.slideTo(index + swiper.loopedSlides);
+                                    }
+                                }
+                            }}
+                        >
                             <div key={position.position}>
-                                <div>{position.position}</div>
+                                <div className="positionText">{position.position}</div>
                             </div>
                         </SwiperSlide>
                     ))}
