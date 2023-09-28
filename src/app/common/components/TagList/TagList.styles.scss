@@ -5,8 +5,8 @@
 .tagContainer {
   @include mut.rem-margined(13px, 0, 0px, 0px);
   @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+  max-height: f.pxToRem(82px);
   overflow: hidden;
-  max-height: f.pxToRem(100px);
 
   .tagItem {
     height: f.pxToRem(38px);

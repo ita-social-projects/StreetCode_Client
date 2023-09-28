@@ -59,7 +59,7 @@ const HeaderBlock = () => {
                 setIsPageDimmed(false);
                 setIsPopoverVisible(false);
 
-            }, 500);
+            }, 200);
 
         }
     }, [setIsPageDimmed, setIsPopoverVisible, off]);
@@ -143,15 +143,16 @@ const HeaderBlock = () => {
                     </div>
                 </div>
             </div>
+            <div >
             {windowSize.width <= 1024 && (
                 <div className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
                     <Popover
                         trigger="click"
                         open={isPopoverVisible}
-                        arrow={false}
+                        arrow={true}
                         overlayClassName="searchMobPopover"
                         content={(
-                            <div className="headerPopupSkeleton">
+                            <div >
                                 <SearchBlock searchQuery={searchQuery} />
                             </div>
                         )}
@@ -176,6 +177,7 @@ const HeaderBlock = () => {
                     </Button>
                 </div>
             )}
+            </div>
         </div>
     );
 };

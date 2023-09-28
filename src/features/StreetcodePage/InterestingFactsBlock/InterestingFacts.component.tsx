@@ -48,7 +48,7 @@ const InterestingFactsComponent = () => {
         swipe: false,
         centerPadding: '-5px',
         afterChange: (index: number) => {
-            const totalFacts = facts.current.length;
+            const totalFacts = sliderArray.length;
             if (totalFacts > 1) {
                 setMiddleFactIndex((index) % totalFacts);
             }
