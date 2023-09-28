@@ -1,12 +1,12 @@
 /* eslint-disable no-restricted-imports */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import TextsApi from '@api/streetcode/text-content/texts.api';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
 import TextForm from './TextForm/TextForm.component';
-import {useAsync} from "@hooks/stateful/useAsync.hook";
-import TextsApi from "@api/streetcode/text-content/texts.api";
 
 interface Props {
     inputInfo: Partial<Text> | undefined;
@@ -21,10 +21,19 @@ const TextBlock = React.memo(({
     inputInfo, setInputInfo, video, setVideo, onChange, parseId,
 }: Props) => {
     const [inputInfoAsync, setInputInfoAsync] = useState<Partial<Text>>();
-    useAsync(() => {
-        if(parseId != null) {
-            TextsApi.getByStreetcodeId(parseId).then((result) => {
+    const [textForm, setTextForm] = useState<Element>();
+
+    useAsync(async () => {
+        if (parseId != null) {
+            await TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfoAsync(result);
+                setTextForm(<TextForm
+                    inputInfo={result}
+                    setInputInfo={setInputInfoAsync}
+                    video={video}
+                    setVideo={setVideo}
+                    onChange={onChange}
+                />);
             });
         }
     }, [parseId]);
@@ -34,17 +43,9 @@ const TextBlock = React.memo(({
     }, [inputInfoAsync]);
 
     return (
-        inputInfoAsync !== null
-            ? (
-                <TextForm
-                    inputInfo={inputInfoAsync}
-                    setInputInfo={setInputInfoAsync}
-                    video={video}
-                    setVideo={setVideo}
-                    onChange={onChange}
-                />
-            )
-            : <></>
+        <>
+            {textForm}
+        </>
     );
 });
 
