@@ -139,14 +139,26 @@
         }
 
         .moreText {
-            display: inline-block;
-            margin-left: 4px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            height: f.pxToRem(54px);
+            padding-top: f.pxToRem(18px);
+            padding-left: f.pxToRem(30px);
+
             @include mut.with-font(ft.$roboto-font, $font-weight: bolder, $font-size: 15px);
             color: c.$dark-red-color;
+            background-color: c.$accented-grayish-gray-color;
             text-decoration: none;
 
             &:hover {
                 text-decoration: underline;
+            }
+
+            @media (max-width: 1025px) {
+                padding-left: f.pxToRem(20px);
             }
         }
         @media (min-width: 768px) and (max-width: 1024px) {
