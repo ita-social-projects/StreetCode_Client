@@ -28,13 +28,21 @@ const TextBlock = React.memo(({
             await TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfoAsync(result);
                 setTextForm(<TextForm
-                    inputInfo={result}
+                    inputInfo={result ?? ''}
                     setInputInfo={setInputInfoAsync}
                     video={video}
                     setVideo={setVideo}
                     onChange={onChange}
                 />);
             });
+        } else {
+            setTextForm(<TextForm
+                inputInfo={inputInfoAsync}
+                setInputInfo={setInputInfoAsync}
+                video={video}
+                setVideo={setVideo}
+                onChange={onChange}
+            />);
         }
     }, [parseId]);
 
