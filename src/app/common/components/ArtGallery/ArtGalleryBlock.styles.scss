@@ -28,6 +28,11 @@
         width: pxToRem(1230px);
     }
 }
+
+.configurationGalleryControls{
+    @include mut.flex-center();
+}
+
 @media screen and (max-width:1450px) {
     .artGalleryWrapper {
         .artGalleryContainer {

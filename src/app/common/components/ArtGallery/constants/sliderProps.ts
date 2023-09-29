@@ -1,10 +1,12 @@
-const SLIDER_PROPS = {
+import { Settings as SliderSettings } from 'react-slick';
+
+const SLIDER_PROPS: Partial<SliderSettings> = {
     className: 'artGallerySliderContainer',
     infinite: false,
-    touchAction: 'pan-y',
+    arrows: true,
+    dots: true,
+    draggable: true,
     touchThreshold: 25,
-    transform: 'translateZ(0)',
-    swipeOnClick: false,
     slidesToShow: 1,
     slidesToScroll: 1,
     centerPadding: '0px',

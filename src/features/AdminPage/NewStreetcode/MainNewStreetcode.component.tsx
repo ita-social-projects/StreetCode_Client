@@ -67,6 +67,7 @@ const NewStreetcode = () => {
         statisticRecordStore,
         streetcodeArtStore,
         tagsStore,
+        streetcodeArtSlideStore,
     } = useMobx();
 
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
@@ -141,21 +142,28 @@ const NewStreetcode = () => {
         setVisibleModal(false);
     }, []);
 
-    useAsync(() => {
-        if (parseId && streetcodeArtStore.streetcodeArtSlides.length === 0) {
-            streetcodeArtStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
-                setArts(streetcodeArtStore.getStreetcodeArtArray);
-                setArtsSlides(streetcodeArtStore.streetcodeArtSlides);
-            });
-        }
-    });
-
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
         }
 
         if (parseId) {
+            if (streetcodeArtSlideStore.streetcodeArtSlides.length === 0) {
+                streetcodeArtSlideStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
+                    setArtsSlides(streetcodeArtSlideStore.streetcodeArtSlides);
+                });
+            }
+            if (streetcodeArtStore.getStreetcodeArtArray.length === 0) {
+                streetcodeArtStore.fetchStreetcodeArtsByStreetcodeId(parseId).then(() => {
+                    const artToUpdate = streetcodeArtStore.getStreetcodeArtArray.map((streetcodeArt) => ({
+                        ...streetcodeArt,
+                        modelState: ModelState.Updated,
+                        isPersisted: true,
+                    }));
+                    setArts([...artToUpdate]);
+                });
+            }
+
             StreetcodesApi.getById(parseId).then((x) => {
                 streetcodeType.current = x.streetcodeType;
                 form.setFieldsValue({

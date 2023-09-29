@@ -1,13 +1,10 @@
 import './OneToTwoAndThreeToFourAndFiveToSixSlide.styles.scss';
 
 import BaseArtGallerySlide from '@components/ArtGallery/components/BaseArtGallerySlide.component';
-import StreetcodeArt from '@models/media/streetcode-art.model';
+import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 
-type Props = {
-    streetcodeArts: StreetcodeArt[]
-};
-const OneToTwoAndThreeToFourAndFiveToSixSlide = ({ streetcodeArts }: Props) => (
-    <BaseArtGallerySlide streetcodeArts={streetcodeArts} className="OneToTwoAndThreeToFourAndFiveToSixSlide" />
+const OneToTwoAndThreeToFourAndFiveToSixSlide = (props: SlidePropsType) => (
+    <BaseArtGallerySlide {...props} className="OneToTwoAndThreeToFourAndFiveToSixSlide" />
 );
 
 export default OneToTwoAndThreeToFourAndFiveToSixSlide;

@@ -1,13 +1,10 @@
 import './OneToFourSlide.styles.scss';
 
 import BaseArtGallerySlide from '@components/ArtGallery/components/BaseArtGallerySlide.component';
-import StreetcodeArt from '@models/media/streetcode-art.model';
+import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 
-type Props = {
-    streetcodeArts: StreetcodeArt[]
-};
-const OneToFourSlide = ({ streetcodeArts }: Props) => (
-    <BaseArtGallerySlide streetcodeArts={streetcodeArts} className="oneToFourSlide" />
+const OneToFourSlide = (props: SlidePropsType) => (
+    <BaseArtGallerySlide {...props} className="oneToFourSlide" />
 );
 
 export default OneToFourSlide;

@@ -37,14 +37,14 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
     useEffect(() => {
         if (arts.length > 0) {
             const newFileList = arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
-                uid: `${streetcodeArt.index}`,
+                uid: `${streetcodeArt.art.id}`,
                 name: streetcodeArt.art.image?.imageDetails?.alt || '',
                 status: 'done' as UploadFileStatus,
                 thumbUrl: base64ToUrl(streetcodeArt.art.image?.base64, streetcodeArt.art.image?.mimeType) ?? '',
                 type: streetcodeArt.art.image?.mimeType || '',
             }));
             setFileList(newFileList);
-            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
+            indexTmp.current = Math.max(...arts.map((x) => x.art.id)) + 1;
         }
     }, [arts]);
 
@@ -105,7 +105,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
 
     const onSuccessUpload = (image: Image) => {
         if (arts.length > 0) {
-            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
+            indexTmp.current = Math.max(...arts.map((x) => x.art.id)) + 1;
         } else {
             indexTmp.current += 1;
         }
@@ -125,7 +125,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
     };
 
     function RemoveFile(file: UploadFile) {
-        const removedArtIndex = arts.findIndex((a) => `${a.index}` === file.uid);
+        const removedArtIndex = arts.findIndex((a) => `${a.art.id}` === file.uid);
 
         if (removedArtIndex >= 0) {
             const toRemove = arts[removedArtIndex] as StreetcodeArtCreateUpdate;
@@ -138,7 +138,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
 
             // Decrement indexes of all elements after the removed element
             for (let i = removedArtIndex; i < arts.length; i++) {
-                arts[i].index -= 1;
+                arts[i].art.id -= 1;
             }
 
             setArts([...arts]);

@@ -27,13 +27,17 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
     );
 
     function onDragEnd(event: DragEndEvent): void {
-        const draggbleId = event?.over?.id || null;
-        const droppableId = event.active.id;
-        console.log(droppableId, draggbleId);
+        const droppableComplexId = event?.over?.id.toString() || null;
+        const draggbleId = parseInt(event.active.id as string, 10);
 
-        const art = streetcodeArtStore.getStreetcodeArtArray.find((sArt) => sArt.art.id == draggbleId);
+        if (!draggbleId || !droppableComplexId) return;
+
+        const slideId = parseInt(droppableComplexId.split('-')[0], 10);
+        const artIndex = parseInt(droppableComplexId.split('-')[1], 10);
+
+        const art = streetcodeArtStore.getStreetcodeArtArray.find((sArt) => sArt.art.id === draggbleId);
         if (art) {
-            artGalleryTemplateStore.setArtInSlide(draggbleId, 1, art.art);
+            artGalleryTemplateStore.setArtInSlide(slideId, artIndex, art.art);
         } else {
             console.log('No art Found');
         }

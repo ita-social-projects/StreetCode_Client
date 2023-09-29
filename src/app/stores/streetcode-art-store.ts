@@ -1,51 +1,42 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
-import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
+import { ModelState } from '@models/enums/model-state';
 
 import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 export default class StreetcodeArtStore {
-    public streetcodeArtSlides: StreetcodeArtSlide[] = new Array<StreetcodeArtSlide>();
-
-    private startFromSlide = 1;
-
-    private readonly amountOfSlides = 100;
+    public streetcodeArtMap = new Map<number, StreetcodeArt>();
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-    get getStreetcodeArtArray(): StreetcodeArt[] {
-        const artsFromSlides: StreetcodeArtCreateUpdate[] = [];
+    public setItem = (art: StreetcodeArt) => {
+        this.streetcodeArtMap.set(art.art.id, art);
+    };
 
-        this.streetcodeArtSlides.forEach((slide) => {
-            slide.streetcodeArts.forEach((art) => {
-                if (!artsFromSlides.some((existingArt) => existingArt.art.id === art.art.id)) {
-                    artsFromSlides.push(art);
-                }
-            });
-        });
+    private set setInternalStreetcodeArtMap(streetcodeArt: StreetcodeArt[]) {
+        this.streetcodeArtMap.clear();
+        streetcodeArt.forEach(this.setItem);
+    }
 
-        return artsFromSlides;
+    private set setNextPageToArtMap(streetcodeArt: StreetcodeArt[]) {
+        streetcodeArt.forEach(this.setItem);
+    }
+
+    get getStreetcodeArtArray() {
+        return Array.from(this.streetcodeArtMap.values());
     }
 
     get getStreetcodeArtsToDelete() {
-        // return (this.streetcodeArtSlides as StreetcodeArtSlideCreateUpdate[])
-        //     .filter((art) => art.modelState === ModelState.Deleted);
-        return [];
+        return (Array.from(this.streetcodeArtMap.values()) as StreetcodeArtCreateUpdate[])
+            .filter((art) => art.modelState === ModelState.Deleted);
     }
 
-    public fetchNextArtSlidesByStreetcodeId = async (streetcodeId: number) => {
-        const arrayOfArtSlides = await StreetcodeArtApi
-            .getArtSlidesByStreetcodeId(streetcodeId, this.startFromSlide, this.amountOfSlides);
-        console.log('slides: ', arrayOfArtSlides);
-        if (arrayOfArtSlides.length !== 0) {
-            if (this.streetcodeArtSlides.length === 0) {
-                this.streetcodeArtSlides.push(...arrayOfArtSlides);
-                this.startFromSlide += 1;
-            }
-        } else {
-            throw new Error('No more arts to load');
-        }
+    public fetchStreetcodeArtsByStreetcodeId = async (streetcodeId: number) => {
+        try {
+            this.setInternalStreetcodeArtMap = await StreetcodeArtApi
+                .getStreetcodeArtsByStreetcodeId(streetcodeId);
+        } catch (error: unknown) { /* empty */ }
     };
 }

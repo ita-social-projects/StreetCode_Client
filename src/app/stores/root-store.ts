@@ -11,6 +11,7 @@ import RelatedFiguresStore from '@stores/related-figures-store';
 import RelatedTermsStore from '@stores/related-terms-store';
 import SourcesAdminStore from '@stores/sourceadmin-store';
 import SourcesStore from '@stores/sources-store';
+import StreetcodeArtSlideStore from '@stores/streetcode-art-slide-store';
 import StreetcodeArtStore from '@stores/streetcode-art-store';
 import StreetcodeStore from '@stores/streetcode-current-store';
 import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
@@ -47,6 +48,7 @@ interface Store {
     sourcesStore: SourcesStore,
     sourcesAdminStore: SourcesAdminStore
     streetcodeArtStore: StreetcodeArtStore,
+    streetcodeArtSlideStore: StreetcodeArtSlideStore,
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
@@ -103,6 +105,7 @@ export const store: Store = {
     relatedByTag: new StreetcodesByTagStore(),
     createUpdateMediaStore: new CreateUpdateMediaStore(),
     artGalleryTemplateStore: new ArtGalleryTemplateStore(),
+    streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),
