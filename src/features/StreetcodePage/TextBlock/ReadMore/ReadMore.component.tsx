@@ -1,75 +1,98 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import './ReadMore.styles.scss';
 
-import { useEffect, useRef, useState } from 'react';
-import useToggle from '@hooks/stateful/useToggle.hook';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
-import lineHeight from 'line-height';
-
-import { moreTextEvent } from '@/app/common/utils/googleAnalytics.unility';
+import classnames from 'classnames';
+import * as lodash from 'lodash';
 
 interface Props {
-    text: string;
+  text: string;
+  maxLines?: number;
 }
 
-const ReadMore = ({ text }: Props) => {
-    const {
-        toggleState: isReadMore,
-        handlers: { toggle },
-    } = useToggle(true);
+const ReadMore = ({ text, maxLines = 25 }: Props) => {
+    const [clamped, setClamped] = useState(true);
+    const [showButtons, setShowButtons] = useState(true);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const readMoreRef = useRef<HTMLSpanElement | null>(null);
+    const firstRender = useRef(true);
 
-    const [isOverflowed, setIsOverflowed] = useState(false);
-    const textRef = useRef<HTMLDivElement>(null);
-    const VISIBLE_LINES = 25;
+    const handleClick = () => setClamped(!clamped);
 
     useEffect(() => {
-        const handleResize = () => {
-            if (textRef.current) {
-                const container = textRef.current;
-                const containerHeight = container.clientHeight;
-                const foundLineHeight = lineHeight(container);
-                const lines = Math.ceil(containerHeight / foundLineHeight);
-                setIsOverflowed(lines > VISIBLE_LINES);
+        const hasClamping = (el: HTMLDivElement) => {
+            const { clientHeight, scrollHeight } = el;
+            return clientHeight !== scrollHeight;
+        };
+
+        const checkButtonAvailability = () => {
+            if (containerRef.current) {
+                const hadClampClass = containerRef.current.classList.contains('clamp');
+                if (!hadClampClass) containerRef.current.classList.add('clamp');
+                setShowButtons(hasClamping(containerRef.current));
+                if (!hadClampClass) containerRef.current.classList.remove('clamp');
             }
         };
 
-        handleResize();
+        const debouncedCheck = lodash.debounce(checkButtonAvailability, 50);
 
-        window.addEventListener('resize', handleResize);
+        checkButtonAvailability();
+        window.addEventListener('resize', debouncedCheck);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', debouncedCheck);
         };
-    }, []);
+    }, [containerRef]);
+
+    const textContainerStyle: CSSProperties = {
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical' as const,
+        WebkitLineClamp: maxLines,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        overflowWrap: 'normal',
+    };
+
+    useEffect(() => {
+        if (clamped && readMoreRef.current && !firstRender.current) {
+            const screenHeight = window.innerHeight;
+
+            const rect = readMoreRef.current.getBoundingClientRect();
+            const elementTop = rect.top;
+
+            const scrollPosition = window.scrollY + elementTop - screenHeight;
+
+            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+        }
+        if (firstRender.current) {
+            firstRender.current = false;
+        }
+    }, [clamped]);
+    const className = classnames('long-text', clamped && 'clamp');
 
     return (
         <>
-            {isOverflowed ? (
-                <div className="text">
-                    <div
-                        className={isReadMore ? 'textShort' : undefined}
-                        style={{ whiteSpace: 'pre-line' }}
-                        ref={textRef}
-                    >
-                        <SearchTerms mainText={text} />
-                    </div>
+            <div className="text">
+                <div
+                    ref={containerRef}
+                    className={className}
+                    style={className.includes('clamp') ? textContainerStyle : undefined}
+                >
+                    <SearchTerms mainText={text} />
+                </div>
+                {showButtons && (
                     <div className="readMoreContainer">
                         <span
                             className="readMore"
-                            onClick={() => {
-                                toggle();
-                                moreTextEvent();
-                            }}
+                            onClick={handleClick}
+                            ref={readMoreRef}
                         >
-                            {isReadMore ? 'Трохи ще' : 'Дещо менше'}
+                            {clamped ? 'Трохи ще' : 'Дещо менше'}
                         </span>
                     </div>
-                </div>
-            ) : (
-                <div className="mainTextContent" ref={textRef}>
-                    <SearchTerms mainText={text} />
-                </div>
-            )}
+                )}
+            </div>
         </>
     );
 };

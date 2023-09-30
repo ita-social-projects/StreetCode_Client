@@ -7,8 +7,8 @@
 @use "@sass/_utils.functions.scss" as f;
 
 
-$bookImg: "@assets/images/sources/Books_stretched.png";
-$articlesImg: "@assets/images/sources/Articles.png";
+$bookImg: "@assets/images/sources/Books_stretched.webp";
+$articlesImg: "@assets/images/sources/Articles.webp";
 
 .tagsModal {
   @include mut.sizedImportant(1000px, 698px);
@@ -40,7 +40,6 @@ $articlesImg: "@assets/images/sources/Articles.png";
       @include mut.sizedImportant(100%, 97px);
       position: sticky;
       @include mut.flex-centered();
-      height: pxToRem(97px);
       .tagsSliderWrappper{
          width: 90%;
       }

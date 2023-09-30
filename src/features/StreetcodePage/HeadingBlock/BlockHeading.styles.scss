@@ -5,6 +5,7 @@
 .blockHeadingWrapper {
     @include mut.sized(100%, 124px);
     @include mut.flex-centered();
+    margin-top: f.pxToRem(110px);
     margin-bottom: f.pxToRem(26px);
 
     svg {
@@ -21,10 +22,14 @@
 .blockHeadingText {
     @include mut.positioned-as(relative, $left: -62px, $top: 41px);
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+    padding-right: 10px;
 }
 
 .blockHeadingText::first-letter {
     text-transform: uppercase;
+}
+.rhombus{
+    height: 124px;
 }
 
 @media (max-width: 1350px) {
@@ -36,6 +41,12 @@
 @media (max-width: 1024px) {
     .blockHeadingWrapper{
         margin-left: f.pxToRem(40px);
+        @include mut.sized(100%, 110px);
+        margin-top: f.pxToRem(40px);
+        margin-bottom: f.pxToRem(20px);
+    }
+    .rhombus{
+        height: 110px;
     }
 }
 

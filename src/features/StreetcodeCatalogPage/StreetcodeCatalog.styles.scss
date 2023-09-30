@@ -4,8 +4,8 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@sass/variables/_variables.fonts.scss" as f;
 
-$bgImg: '@assets/images/catalog/background.png';
-$loadImg: '@assets/images/catalog/loading.gif';
+$bgImg: '@assets/images/catalog/background.webp';
+$loadImg: '@assets/images/catalog/loading.webp';
 
 .catalogPage{
     width: 100%;
@@ -30,7 +30,7 @@ $loadImg: '@assets/images/catalog/loading.gif';
     
         .steetcodeCatalogContainer {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(278px, 1fr));
+            grid-template-columns: repeat(auto-fit, 278px);
             grid-auto-rows: minmax(165px, 380px);
             column-gap: pxToRem(28px);
             row-gap: pxToRem(60px);
@@ -66,9 +66,9 @@ $loadImg: '@assets/images/catalog/loading.gif';
     
             .steetcodeCatalogContainer {
                 padding-top: pxToRem(20px);
-                row-gap: pxToRem(20px);
+                row-gap: pxToRem(39px);
                 grid-auto-rows: minmax(165px, 236px);
-                grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+                grid-template-columns: repeat(auto-fit, 165px);
                 justify-content: center;
             }
         }
@@ -80,6 +80,7 @@ $loadImg: '@assets/images/catalog/loading.gif';
         .streetcodeCatalogWrapper {
             .steetcodeCatalogContainer {
                 column-gap: pxToRem(10px);
+                row-gap: pxToRem(8px);
             }
         }
     }

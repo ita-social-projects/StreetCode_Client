@@ -5,8 +5,30 @@
 .NewsWrapper {
     width: 100%;
 
+    margin-top: f.pxToRem(117px);
+    margin-bottom: f.pxToRem(70px);
+
+    @media screen and (max-width: 768px) {
+        margin-top: f.pxToRem(-5px);
+        margin-bottom: f.pxToRem(85px);
+    }
+
+    @media screen and (max-width: 480px) {
+        margin-top: f.pxToRem(-25px);
+        margin-bottom: f.pxToRem(45px);
+    }
+
     .newsSliderComponent {
         margin-bottom: f.pxToRem(30px);
+
+        margin-top: f.pxToRem(32px);
+        @media screen and (max-width: 768px) {
+            margin-top: f.pxToRem(15px);
+        }
+
+        @media screen and (max-width: 480px) {
+            margin-top: f.pxToRem(-10px);
+        }
 
         .newsSliderContentBlock,
         .blockCentering {
@@ -18,6 +40,13 @@
             position: relative;
         }
 
+        .slick-slide {
+        width: unset !important;
+        
+        @media screen and (max-width: 767px) {
+                width: 100% !important;
+            }
+       }
         .newsSliderContent {
             width: 100%;
             @include mut.flex-centered();
@@ -27,10 +56,6 @@
             ::-webkit-scrollbar {
                 width: f.pxToRem(5px);
             }
-        }
-
-        .slick-slide {
-            width: unset !important;
         }
 
         .slick-initialized .slick-slide {

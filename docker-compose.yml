@@ -1,11 +1,27 @@
 services:
-  frontend:
-    image: saymolet/streetcode_client:latest
-    pull_policy: always
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - /etc/certbot/www/:/var/www/certbot/:rw
+      - /etc/certbot/conf/:/etc/letsencrypt/:rw
+
+  nginx:
+    image: nginx:latest
     ports:
-      - "80:3000"
+      - "80:80"
+      - "443:443"
+    environment:
+      FRONTEND_SERVER_NAME: ${FRONTEND_SERVER_NAME}
+      BACKEND_SERVER_NAME:  ${BACKEND_SERVER_NAME}
+    volumes:
+      - ./templates:/etc/nginx/templates
+      - /etc/certbot/www:/var/www/certbot/:ro
+      - /etc/certbot/conf:/etc/nginx/ssl/:ro
+  frontend:
+    image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
+    pull_policy: always
     expose:
-      - "3000"
+      - "80"
     healthcheck:
       test: curl --fail http://localhost || exit 1
       interval: 30s
@@ -13,13 +29,12 @@ services:
       retries: 5
     environment:
       API_URL: ${ENV_API_BACKEND}
+
   backend:
-    image: saymolet/streetcode:latest
+    image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
     pull_policy: always
     expose:
       - "80"
-    ports:
-    - "5000:80"
     environment:
       STREETCODE_ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
       STREETCODE_Blob__BlobStoreKey: ${BLOB_STORAGE_KEY}
@@ -27,6 +42,7 @@ services:
       STREETCODE_Instagram__InstagramID: ${INSTAGRAM_ID}
       STREETCODE_Instagram__InstagramToken: ${INSTAGRAM_TOKEN}
       STREETCODE_Payment__Token: ${PAYMENT_TOKEN}
+      STREETCODE_EMAILCONFIGURATION__PASSWORD: ${EMAIL_PASSWORD}
       STREETCODE_CORS__AllowedOrigins: '["*"]'
       STREETCODE_CORS__AllowedHeaders: '["*"]'
       STREETCODE_CORS__AllowedMethods: '["*"]'

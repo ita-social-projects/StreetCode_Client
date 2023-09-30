@@ -24,6 +24,7 @@ export const API_ROUTES = {
     },
     PARTNERS: {
         GET_ALL: 'partners/getAll',
+        GET_ALL_BY_IS_KEY_PARTNERS: 'partners/getPartnersByIsKeyPartner',
         GET_ALL_SHORT: 'partners/getAllShort',
         GET_SPONSORS: 'partners/getSponsors',
         GET: 'partners/getById',
@@ -77,16 +78,15 @@ export const API_ROUTES = {
         GET_ALL: 'team/getAll',
         GET_ALL_MAIN: 'team/getAllMain',
         GET: 'team/getById',
+        GET_BY_ROLE_ID:'team/getByRoleId',
         CREATE: 'team/create',
         UPDATE: 'team/update',
         DELETE: 'team/delete',
     },
     POSITIONS: {
         GET_ALL: 'position/getAll',
-        GET: 'position/getById',
         CREATE: 'position/create',
-        UPDATE: 'position/update',
-        DELETE: 'position/delete',
+        GET_ALL_WITH_MEMBERS: 'Position/GetAllWithTeamMembers',
     },
     TOPONYMS: {
         GET_ALL: 'toponym/getAll',
@@ -146,6 +146,7 @@ export const API_ROUTES = {
     STREETCODE_ARTS: {
         GET_ALL: 'streetcodeArt/getAll',
         GET_BY_STREETCODE_ID: 'streetcodeArt/getByStreetcodeId',
+        GET_PAGE_BY_STREETCODE_ID: 'streetcodeArt/getPageByStreetcodeId',
     },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',
@@ -217,5 +218,17 @@ export const API_ROUTES = {
         CREATE: 'statisticRecord/create',
         UPDATE: 'statisticRecord/update',
         DELETE: 'statisticRecord/delete',
+    },
+    JOB: {
+        GET_ALL_SHORT: 'job/getAllShort',
+        DELETE: 'job/delete',
+        CHANGE_STATUS: 'job/changeJobStatus',
+        GET_ACTIVE:'Job/GetActiveJobs',
+        GET_BY_ID: 'job/getById',
+        UPDATE: 'job/update',
+        CREATE: 'job/create',
+    },
+    ABOUT_US: {
+        GET_TICKER_STRING: 'tickerString/getNameTickerString',
     },
 };

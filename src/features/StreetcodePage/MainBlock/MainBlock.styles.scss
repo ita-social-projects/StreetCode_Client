@@ -1,7 +1,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
-$bgImg: '@assets/images/streetcode-card/background.png';
+$bgImg: '@assets/images/streetcode-card/background.webp';
 
 .margin-82px {
     margin-top: f.pxToRem(82px);
@@ -41,6 +41,12 @@ $bgImg: '@assets/images/streetcode-card/background.png';
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .mainContent {
+        padding-top: f.pxToRem(18px);
+    }
+}
+
 @media screen and (max-width: 680px) {
 
     .mainContainer {
@@ -53,7 +59,7 @@ $bgImg: '@assets/images/streetcode-card/background.png';
 
             height: unset;
             margin-top: f.pxToRem(34px);
-            padding-top: f.pxToRem(22px);
+            padding-top: f.pxToRem(20px);
         }
     }
 

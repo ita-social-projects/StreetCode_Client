@@ -10,7 +10,7 @@
     height: calc(100vh - 326px);
     @include mut.rem-margined($top: 82px);
 
-    background: url('../../../assets/images/streetcode-card/background.png') no-repeat center center / cover;
+    background: url('../../../assets/images/streetcode-card/background.webp') no-repeat center center / cover;
       
     .notFoundNumber {
         @include mut.with-font($font-weight: 500, $font-size: 220px);

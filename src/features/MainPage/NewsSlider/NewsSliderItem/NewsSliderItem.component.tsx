@@ -1,97 +1,68 @@
-import { useEffect, useRef, useState } from 'react';
-import useMobx from '@stores/root-store';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { StreetcodeCatalogRecord, StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 import './NewsSliderItem.styles.scss';
-import Image from '@/models/media/image.model';
-import ImagesApi from '@/app/api/media/images.api';
-import News from '@/models/news/news.model';
-import htmlReactParser, { domToReact } from 'html-react-parser';
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+
+import { useMediaQuery } from 'react-responsive';
+import htmlReactParser from 'html-react-parser';
+
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toArticleRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+import Image from '@/models/media/image.model';
+import News from '@/models/news/news.model';
 
 interface Props {
     news: News;
+    image: Image
 }
 
-const NewsSliderItem = ({ news }: Props) => {
-    const id = news?.id;
-    const [image, setImage] = useState<Image>();
+const NewsSliderItem = ({ news, image }: Props) => {
+    const isMobile = useMediaQuery({
+        query: '(max-width: 480px)',
+    });
 
-    useEffect(() => {
-        if (id) {
-            ImagesApi.getById(news.imageId)
-                .then((imgs) => setImage(imgs))
-                .catch((e) => { });
-        }
-    }, [news]);
-
-    const screenSize = useWindowSize();
-    
-    const truncateText = (text: string, maxLength: number) => {
-        if (text.length <= maxLength) {
-            return text;
-        }
-
-        let truncatedText = text.substr(0, maxLength);
-
-        if (news?.title.length < 41) {
-            truncatedText = truncatedText.substr(0, 400);
-        } else if (news?.title.length >= 42 && news?.title.length < 81) {
-            truncatedText = truncatedText.substr(0, 250);
-        } else {
-            truncatedText = truncatedText.substr(0, 75);
-        }
-
-        if (screenSize.width <= 649 && screenSize.width > 768) {
-            truncatedText = truncatedText.substr(0, 200);
-        }
-        
-        return truncatedText.substr(0, truncatedText.lastIndexOf(' ')) + '...';
+    const handleClickRedirect = () => {
+        toArticleRedirectClickEvent(news.url.toString(), 'main_page');
+        window.location.href = `news/${news.url.toString()}`;
     };
-
-    const newsText = truncateText(news?.text || '', 400);
-
-    const options: any = {
-        replace: (domNode: { type: string; name: string; children: any; }) => {
-            if (domNode.type === 'tag') {
-                if (domNode.name === 'p') {
-                    return <span className="newsText">{domToReact(domNode.children, options)}</span>;
-                } else if (domNode.name === 'strong') {
-                    return <span className="newsText">{domToReact(domNode.children, options)}</span>;
-                }
-            }
-        },
-    };
-
-
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        toArticleRedirectClickEvent(news.url.toString());
-        window.location.href = "news/" + news.url.toString();
+        handleClickRedirect();
     };
 
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = news?.text;
+
+    const strongElements = tempElement.querySelectorAll('strong');
+
+    strongElements.forEach((strongElement) => {
+        const parent = strongElement.parentNode;
+        while (strongElement.firstChild) {
+            parent.insertBefore(strongElement.firstChild, strongElement);
+        }
+        parent.removeChild(strongElement);
+    });
+
+    const cleanText = tempElement.innerHTML;
 
     return (
         <div className="newsSliderItem">
-            <div className="newsMainPage">
+            <div className="newsMainPage" onClick={isMobile ? handleClickRedirect : undefined}>
                 <div className="newsPageImgContainer">
                     <img
                         key={image?.id}
                         src={base64ToUrl(image?.base64, image?.mimeType)}
                         className="newsPageImg"
-                        alt={image?.alt}
                     />
                 </div>
                 <div className="newsSlideText">
                     <div className="newsContainer">
-                        <div>
+                        <div className="subContainer">
                             <h2 className="newsTitle">
                                 {news?.title}
                             </h2>
                             <div className="newsText">
-                                {htmlReactParser(newsText, options)}
-                                <a className="moreText" href={news.text} onClick={handleLinkClick}>
+                                <p className="text">
+                                    {htmlReactParser(cleanText?.substring(0, 800))}
+                                </p>
+                                <a className="moreText" href={`news/${news.url.toString()}`} onClick={handleLinkClick}>
                                     До новини
                                 </a>
                             </div>

@@ -16,6 +16,8 @@ const InterestingFactsComponent = () => {
     const { factsStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const [sliderArray, setSliderArray] = useState<Fact[]>([]);
+    const [middleFactIndex, setMiddleFactIndex] = useState(0);
+
     const facts = useRef<Fact[]>([]);
     useAsync(
         () => {
@@ -45,6 +47,12 @@ const InterestingFactsComponent = () => {
         infinite: sliderArray.length > 1,
         swipe: false,
         centerPadding: '-5px',
+        afterChange: (index: number) => {
+            const totalFacts = sliderArray.length;
+            if (totalFacts > 1) {
+                setMiddleFactIndex((index) % totalFacts);
+            }
+        },
         responsive: [
             {
                 breakpoint: 480,
@@ -97,11 +105,13 @@ const InterestingFactsComponent = () => {
                                             className="heightContainer"
                                             {...setings}
                                         >
-                                            {sliderArray.map((fact) => (
+                                            {sliderArray.map((fact, index) => (
                                                 <InterestingFactItem
                                                     key={fact.id}
                                                     fact={fact}
                                                     numberOfSlides={sliderArray.length}
+                                                    index={index}
+                                                    middleFactIndex={middleFactIndex}
                                                 />
                                             ))}
                                         </BlockSlider>

@@ -28,6 +28,7 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
+import React from 'react';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -79,7 +80,7 @@ const StreetcodeContent = () => {
                 },
             ).catch(
                 () => {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+                    navigate(`/${streetcodeUrl.current}`, { replace: true });
                 },
             );
         }
@@ -90,15 +91,15 @@ const StreetcodeContent = () => {
     }, []);
 
     return (
-        <div className="streetcodeContainer">
+        <div className={`streetcodeContainer ${!pageLoadercontext.isPageLoaded ? 'no-scroll' : ''}`}>
             {!pageLoadercontext.isPageLoaded && (
                 <div className="loader-container">
                     <img
                         className="spinner"
                         alt=""
                         src={isMobile
-                            ? require('@images/gifs/Logo-animation_web.gif')
-                            : require('@images/gifs/Logo-animation_mob.gif')}
+                            ? require('@images/gifs/Logo-animation_web.webp')
+                            : require('@images/gifs/Logo-animation_mob.webp')}
                     />
                 </div>
             )}
@@ -111,8 +112,11 @@ const StreetcodeContent = () => {
                 <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
-                <MapBlock />
-                <ArtGalleryBlockComponent />
+                {pageLoadercontext.isPageLoaded ? (
+                    <ArtGalleryBlockComponent />
+                ) : (
+                    <React.Fragment />
+                )}
                 <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />
             </ProgressBar>
@@ -124,7 +128,7 @@ const StreetcodeContent = () => {
                     <DonateBtn />
                 </div>
             </div>
-            <TickerBlock />
+            <TickerBlock type="subtitle" />
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}

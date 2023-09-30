@@ -1,0 +1,64 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name $FRONTEND_SERVER_NAME;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    return 301 https://$FRONTEND_SERVER_NAME;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name $BACKEND_SERVER_NAME;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+    
+    return 301 https://$BACKEND_SERVER_NAME;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name $FRONTEND_SERVER_NAME;
+
+    ssl_certificate /etc/nginx/ssl/live/$FRONTEND_SERVER_NAME/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/live/$FRONTEND_SERVER_NAME/privkey.pem;
+    ssl_trusted_certificate /etc/nginx/ssl/live/$FRONTEND_SERVER_NAME/fullchain.pem;
+
+    client_max_body_size 50M;
+
+    location / {
+        proxy_pass http://frontend;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name $BACKEND_SERVER_NAME;
+
+    ssl_certificate /etc/nginx/ssl/live/$BACKEND_SERVER_NAME/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/live/$BACKEND_SERVER_NAME/privkey.pem;
+    ssl_trusted_certificate /etc/nginx/ssl/live/$BACKEND_SERVER_NAME/fullchain.pem;
+
+    client_max_body_size 50M;
+
+    location / {
+        proxy_pass http://backend;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

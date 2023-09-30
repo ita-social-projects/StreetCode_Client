@@ -1,6 +1,6 @@
 import './PartnersBlock.styles.scss';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PartnersItem from '@features/AdditionalPages/PartnersPage/PartnersItem/PartnersItem.component';
 
 import ImagesApi from '@/app/api/media/images.api';
@@ -8,29 +8,28 @@ import PartnersApi from '@/app/api/partners/partners.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Partner from '@/models/partners/partners.model';
 
-const PartnersBlock = () => {
-    const [partners, setPartners] = useState<Partner[]>([]);
+interface Props {
+    onlyKeyPartners : boolean;
+}
+
+const PartnersBlock = ({ onlyKeyPartners }: Props) => {
+    const [keyPartners, setKeyPartners] = useState<Partner[]>([]);
+    const [otherPartners, setOtherPartners] = useState<Partner[]>([]);
 
     useAsync(
         () => {
-            PartnersApi.getAll()
+            PartnersApi.getAllByIsKeyPartner(true)
                 .then((res) => {
-                    Promise.all(res.map((p, index) => ImagesApi.getById(p.logoId)
-                        .then((img) => {
-                            res[index].logo = img;
-                        }))).then(() => {
-                        setPartners(res);
-                    });
+                    setKeyPartners(res);
                 });
-        },
-    );
 
-    const [keyPartners, otherPartners] = partners.reduce(
-        (acc: [Partner[], Partner[]], partner: Partner) => {
-            acc[partner.isKeyPartner ? 0 : 1].push(partner);
-            return acc;
+            if (!onlyKeyPartners) {
+                PartnersApi.getAllByIsKeyPartner(false)
+                    .then((result) => {
+                        setOtherPartners(result);
+                    });
+            }
         },
-        [[], []] as [Partner[], Partner[]],
     );
 
     const createPartnersItem = (partners: Partner[]) => partners.map((partner) => (
@@ -43,9 +42,14 @@ const PartnersBlock = () => {
             <div className="keyPartnersBlock">
                 {createPartnersItem(keyPartners)}
             </div>
-            <div className="otherPartnersBlock">
-                {createPartnersItem(otherPartners)}
-            </div>
+
+            {!onlyKeyPartners
+                ? (
+                    <div className="otherPartnersBlock">
+                        {createPartnersItem(otherPartners)}
+                    </div>
+                )
+                : (<></>)}
         </div>
     );
 };

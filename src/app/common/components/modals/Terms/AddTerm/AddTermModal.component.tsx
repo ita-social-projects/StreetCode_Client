@@ -5,7 +5,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import { useModalContext } from '@stores/root-store';
 
-import { Button, Form, Input, Modal, Popover } from 'antd';
+import { Button, Form, Input, message, Modal, Popover } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -30,8 +30,6 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
 
     const onSuccessfulSubmit = () => {
         handleAdd(term?.id as number, term?.title as string, term?.description);
-        setModal('addTerm');
-        form.resetFields();
     };
 
     const onCancel = () => {
@@ -41,6 +39,21 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
         addTerm.isOpen = false;
         form.resetFields();
     };
+    const handleOk= async () =>{
+        try {
+            form.submit();
+            message.success("Партнера успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
+    }
 
     return (
         <Modal
@@ -73,7 +86,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                         maxLength={500}
                     />
                 </FormItem>
-                <Button className="streetcode-custom-button" onClick={() => form.submit()}>
+                <Button className="streetcode-custom-button" onClick={() => handleOk()}>
                     Зберегти
                 </Button>
             </Form>

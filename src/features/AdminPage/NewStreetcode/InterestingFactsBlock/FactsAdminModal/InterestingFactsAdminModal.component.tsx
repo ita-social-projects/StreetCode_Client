@@ -8,7 +8,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, Popover, UploadFile, 
+    Button, Form, Input, message, Modal, Popover, UploadFile, 
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -102,15 +102,16 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
             if (formValues.imageDescription) {
                 factsStore.setImageDetails(newFact, 0);
             }
-
             factsStore.addFact(newFact);
         }
-        setModalOpen(false);
-        form.resetFields();
         setHasUploadedPhoto(false);
         onChange('fact', formValues);
-        setFileList([]);
     };
+
+    const handleOk = () => {
+        form.submit();
+        alert('Wow-факт успішно додано!');
+    }
 
     return (
         <div>
@@ -175,7 +176,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 }}
                                 uploadTo="image"
                                 multiple={false}
-                                accept=".jpeg,.png,.jpg"
+                                accept=".jpeg,.png,.jpg,.webp"
                                 listType="picture-card"
                                 maxCount={1}
                                 fileList={fileList}
@@ -208,7 +209,12 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             />
                         </Form.Item>
                         <div className="center">
-                            <Button className="streetcode-custom-button" htmlType="submit"> Зберегти </Button>
+                            <Button
+                                className="streetcode-custom-button"
+                                onClick={() => handleOk()}
+                            >
+                                Зберегти
+                            </Button>
                         </div>
                     </Form>
                 </div>

@@ -4,7 +4,9 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.swiper-wrapper, .swiperClass {
+.timeline-swiper{
+    height: 100%;
+    .swiper-wrapper, .swiperClass{
     width: 100%;
     margin: 0 auto;
     max-width: fit-content;
@@ -30,7 +32,6 @@
       @include mut.sized(21px, 21px);
     }
   }
-  
 }
 
 .tickContainer {
@@ -89,9 +90,14 @@
   }
 
   .swiper-pagination {
-    @include mut.flexed();
+    @include mut.flexed(
+      $wrap: wrap,
+      $gap: 5px,
+      $justify-content: center
+    );
     position: absolute;
-    top: f.pxToRem(350px);
+    top: f.pxToRem(355px);
+    padding: 0 f.pxToRem(20px);
   }
 
   .swiper-pagination-bullet {
@@ -106,4 +112,5 @@
     background-color: #891F16;
     width: f.pxToRem(28px) !important;
   }
+}
 }

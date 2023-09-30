@@ -16,9 +16,10 @@ interface Props {
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
     file: UploadFile | null,
+    greyFilterForImage: boolean
 }
 
-const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
+const PreviewFileModal = ({ opened, setOpened, file, greyFilterForImage = false }: Props) => {
     const [previewImage, setPreviewImage] = useState<string | undefined>();
 
     useEffect(() => {
@@ -27,7 +28,6 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
                 setPreviewImage(undefined);
                 return;
             }
-
             let imageToPreview = file.url ?? file.thumbUrl;
 
             if (!file.preview) {
@@ -42,12 +42,9 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
                         return;
                     }
                 }
-            } else if (file.preview) {
+            } else {
                 imageToPreview = file.preview;
-            } else if (file.url) {
-                imageToPreview = file.url;
             }
-
             setPreviewImage(imageToPreview);
         };
 
@@ -61,7 +58,10 @@ const PreviewFileModal = ({ opened, setOpened, file }: Props) => {
     return (
         <Modal open={opened} footer={null} onCancel={handleCancel}>
             <div className="modal-item-image">
-                {previewImage && <img alt="uploaded" src={previewImage} />}
+                {greyFilterForImage
+                    ? previewImage && <img style={{ filter: 'grayscale(100%)' }} alt="uploaded" src={previewImage} />
+                    : previewImage && <img alt="uploaded" src={previewImage} />}
+                {}
             </div>
         </Modal>
     );

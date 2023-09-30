@@ -4,13 +4,13 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import behance from '@assets/images/partners/behance.png';
-import facebook from '@assets/images/partners/facebook.png';
+import facebook from '@assets/images/partners/facebook.webp';
 import https from '@assets/images/partners/https.png';
-import instagram from '@assets/images/partners/instagram.png';
+import instagram from '@assets/images/partners/instagram.webp';
 import linkedin from '@assets/images/partners/linkedin.png';
 import tiktok from '@assets/images/partners/tiktok.png';
-import twitter from '@assets/images/partners/twitter.png';
-import youtube from '@assets/images/partners/youtube.png';
+import twitter from '@assets/images/partners/twitter.webp';
+import youtube from '@assets/images/partners/youtube.webp';
 
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
@@ -45,7 +45,7 @@ const TeamPage = () => {
 
     useEffect(() => {
         updatedTeam();
-    }, []);
+    }, [modalEditOpened, modalAddOpened]);
 
     const renderImageColumn = (image: Image, record: { id: any; }) => (
         <img
@@ -58,15 +58,13 @@ const TeamPage = () => {
     const columns: ColumnsType<TeamMember> = [
         {
             title: "Прізвище та ім'я",
-            dataIndex: 'lastName',
-            key: 'lastName',
+            dataIndex: 'name',
+            key: 'name',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>
-                            {value}
-                            {' '}
-                            {record.firstName}
+                        <p>         
+                            {record.name}
                         </p>
                         {record.isMain ? <StarOutlined /> : ''}
                     </div>

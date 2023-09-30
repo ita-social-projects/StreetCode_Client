@@ -1,0 +1,93 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
+
+.vacancyModal {
+    .ant-modal {
+        &-content{
+            border-radius: 60px;
+            height: 100%;
+            padding: f.pxToRem(50px) f.pxToRem(64px);
+            word-break: keep-all;
+            
+            @media screen and (max-width: s.$tablet) {
+                border-radius: 50px;
+                padding: f.pxToRem(40px) f.pxToRem(40px);
+             }
+            
+            .vacancyModalContainer{
+                display: flex;
+                flex-direction: column;
+                gap: f.pxToRem(30px);
+            
+                @media screen and (max-width: s.$tablet) {
+                    gap: f.pxToRem(20px);
+                    .textContainer {
+                        gap: f.pxToRem(10px);
+                    }
+                }
+                
+                
+                .textContainer{
+                    display: flex;
+                    flex-direction: column;
+                    gap: f.pxToRem(15px);
+            
+                    h2 {
+                        @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
+                    }
+                    h3 {
+                        @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+                        color: c.$lighter-gray-color;
+                    }
+                    p {
+                        @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+                    }
+
+                    @media screen and (max-width: s.$tablet) {
+                        h2 {
+                            font-size: 24px !important;
+                        }
+                        h3 {
+                            font-size: 16px !important;
+                        }
+                        p {
+                            font-size: 16px !important;
+                        }
+                    }
+                }
+                .buttonContainer{
+                    width: 100%;
+                    justify-content: center;
+                    .vacancyModalButton{
+                        width: fit-content;
+                        padding: f.pxToRem(18px) f.pxToRem(26px);
+                    }
+                }
+            }
+        }  
+    }
+
+    .ant-modal-close {
+        position: absolute !important;
+        top: -35px;
+        right: -35px;
+        @include mut.circular(80px, c.$pure-white-color);
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  
+        &:hover {
+          background-color: c.$modal-hover-color;
+        }
+
+        .ant-modal-close-x {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    
+}

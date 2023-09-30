@@ -100,7 +100,7 @@ const DonationBlock = () => {
             <div className={`donateInputContainerWrapper ${(donateAmount !== 0) ? 'active' : ''} `}>
                 <input
                     onChange={handleDonateInputChange}
-                    style={{ ...style, width: 'var(--input-width)' }}
+                    style={{ ...style, width: 'calc(var(--input-width) + 2px)' }}
                     maxLength={14}
                     value={`${donateAmount.toString()}`}
                     className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}

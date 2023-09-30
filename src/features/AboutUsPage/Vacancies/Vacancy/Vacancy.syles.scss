@@ -1,0 +1,55 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
+.vacancyContainer {
+    display: flex;
+    flex-direction: column;
+    padding: f.pxToRem(50px) f.pxToRem(74px);
+    gap: f.pxToRem(15px);
+    border-radius: 50px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    h2 {
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+        @include mut.truncated(1);
+    }
+
+    h3 {
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+        color: c.$lighter-gray-color;
+    }
+
+    p {
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+        word-break: break-word;
+    }
+
+    label {
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+        color: c.$dark-red-color;
+    }
+
+    @media screen and (max-width: s.$tablet) {
+        padding: f.pxToRem(40px);
+        gap: f.pxToRem(10px);
+
+        h2 {
+            font-size: 24px !important;
+        }
+
+        h3 {
+            font-size: 16px !important;
+        }
+
+        p {
+            font-size: 16px !important;
+        }
+
+        label {
+            font-size: 16px !important;
+        }
+    }
+}

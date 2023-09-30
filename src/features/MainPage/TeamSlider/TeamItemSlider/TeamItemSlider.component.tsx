@@ -3,13 +3,13 @@ import './TeamItemSlider.styles.scss';
 import { useEffect, useState } from 'react';
 import ImageStore from '@app/stores/image-store';
 import behance from '@assets/images/partners/behance.png';
-import facebook from '@assets/images/partners/facebook.png';
+import facebook from '@assets/images/partners/facebook.webp';
 import https from '@assets/images/partners/https.png';
-import instagram from '@assets/images/partners/instagram.png';
+import instagram from '@assets/images/partners/instagram.webp';
 import linkedin from '@assets/images/partners/linkedin.png';
 import tiktok from '@assets/images/partners/tiktok.png';
-import twitter from '@assets/images/partners/twitter.png';
-import youtube from '@assets/images/partners/youtube.png';
+import twitter from '@assets/images/partners/twitter.webp';
+import youtube from '@assets/images/partners/youtube.webp';
 import useMobx from '@stores/root-store';
 
 import ImagesApi from '@/app/api/media/images.api';
@@ -22,19 +22,12 @@ import TeamMember, { Positions } from '../../../../models/team/team.model';
 const LogoType = [twitter, instagram, facebook, youtube, linkedin, tiktok, behance, https];
 interface Props {
     team?: TeamMember;
+    image: Image
 }
 
-const TeamItemSlider = ({ team }: Props) => {
-    const id = team?.id;
-    const [image, setImage] = useState<Image>();
-    useEffect(() => {
-        if (id) {
-            ImagesApi.getById(team.imageId)
-                .then((imgs) => setImage(imgs))
-                .catch((e) => { });
-        }
-    }, [team]);
+const TeamItemSlider = ({ team, image }: Props) => {
     const windowsize = useWindowSize();
+
     return (
         <div className="teamItemSlider">
             <div className="itemTeam">
@@ -52,7 +45,7 @@ const TeamItemSlider = ({ team }: Props) => {
                     <div className="headerTeamContainer">
                         <div className="textContainer">
                             <h2 className="teamTitle">
-                                {`${team?.firstName} ${team?.lastName}`}
+                                {`${team?.name}`}
                             </h2>
                             <div className="teamPosition">
                                 {team?.positions
@@ -71,7 +64,10 @@ const TeamItemSlider = ({ team }: Props) => {
                                             {team?.description}
                                         </p>
                                     </div>
-                                    <div key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`} className="teamLinkItems">
+                                    <div
+                                        key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`}
+                                        className="teamLinkItems"
+                                    >
                                         {team?.teamMemberLinks.map((link) => (
                                             <a
                                                 key={`${link.id}${link.targetUrl}`}
@@ -88,7 +84,6 @@ const TeamItemSlider = ({ team }: Props) => {
                                             </a>
                                         ))}
                                     </div>
-
                                 </>
                             )}
                         </div>

@@ -5,7 +5,7 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .mainPageBlockHeading {
-    @include mut.sized($height: 145px, $width: 100%);
+    @include mut.sized($height: 40px, $width: 100%);
     @include mut.rem-padded($left: 25px, $right: 20px);
     @include mut.flexed($justify-content: space-between, $align-items: center);
 
@@ -30,6 +30,7 @@
         cursor: pointer;
     }
     @media screen and (max-width: 1024px){
+        @include mut.sized($height: 50px, $width: 100%);
         .leftPart {
             .blockName {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 24px);

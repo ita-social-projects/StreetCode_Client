@@ -1,0 +1,41 @@
+@use "@assets/sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.sizes.scss" as s;
+
+.vacanciesBlock{
+    display: flex;
+    flex-direction: column;
+
+    gap: f.pxToRem(50px);
+
+    .textBlock {
+        display: flex;
+        flex-direction: column;
+        gap: f.pxToRem(30px);
+
+        padding: 0 f.pxToRem(164px);
+
+        text-align: center;
+        h2 {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 36px);
+        }
+        h3 {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 24px);
+        }
+
+        @media screen and (max-width: s.$smallDesctop) {
+            padding: 0 f.pxToRem(78px);
+            h2 {
+                font-size: 20px !important;
+            }
+            h3 {
+                font-size: 16px !important;
+            }
+        }
+        @media screen and (max-width: s.$phone) {
+            padding: 0;
+        }
+    }
+}

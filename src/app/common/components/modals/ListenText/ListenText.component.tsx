@@ -1,6 +1,6 @@
 import './ListenText.styles.scss';
 
-import ExitBtn from '@images/audio-player/ExitBtn.png';
+import ExitBtn from '@images/audio-player/ExitBtn.webp';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';

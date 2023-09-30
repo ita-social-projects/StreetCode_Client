@@ -16,7 +16,7 @@ import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Image from '@/models/media/image.model';
+import Image, { ImageAssigment } from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -52,10 +52,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
+    const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
 
     useAsync(() => {
         if (id && id > 0) {
-            fetchAudioByStreetcodeId(id).then(() => streecodePageLoaderContext.addBlockFetched());
+            fetchAudioByStreetcodeId(id).then(() => {
+                setAudioIsLoaded(true);
+            });
         }
     }, [id]);
 
@@ -65,7 +68,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs); streecodePageLoaderContext.addBlockFetched();
+                    setImages(imgs);
+                    streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((e) => { });
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
@@ -83,11 +87,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                             swipeOnClick
                             infinite
                         >
-                            {images.slice(0, 2).map((im) => (
+                            {images.filter((image) => (image.imageDetails?.alt === ImageAssigment.animation.toString()
+                            || image.imageDetails?.alt === ImageAssigment.blackandwhite.toString())).map((im) => (
                                 <img
                                     key={im.id}
                                     src={base64ToUrl(im.base64, im.mimeType)}
                                     className="streetcodeImg"
+                                    style={{ objectFit: 'contain' }}
                                     alt={im.imageDetails?.alt}
                                 />
                             ))}
@@ -95,65 +101,63 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                     </div>
                 </div>
                 <div className="rightSider">
-                    <div className="headerContainer">
-                        <div className="upper-info">
-                            <div className="streetcodeIndex">
-                            Стріткод #
-                                {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
-                                    : streetcode?.index}
-                            </div>
-                            <h2 className="streetcodeTitle">
-                                {streetcode?.title}
-                            </h2>
-                            <div className="streetcodeDate">
-                                {streetcode?.dateString}
-                            </div>
-                            <TagList
-                                tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
-                                setActiveTagId={setActiveTagId}
-                                setActiveTagBlock={setActiveBlock}
-                            />
-                            <p className="teaserBlock">
-                                {streetcode?.teaser}
-                            </p>
-                        </div>
+                    <div className="streetcodeIndex">
+                        Стріткод #
+                        {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
+                            : streetcode?.index}
+                    </div>
+                    <h2 className="streetcodeTitle">
+                        {streetcode?.title}
+                    </h2>
+                    <div className="streetcodeDate">
+                        {streetcode?.dateString}
+                    </div>
+                    <div className="tagListWrapper">
+                        <TagList
+                            tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
+                            setActiveTagId={setActiveTagId}
+                            setActiveTagBlock={setActiveBlock}
+                        />
+                    </div>
+                    <p className="teaserBlock">
+                        {streetcode?.teaser}
+                    </p>
 
-                        <div className="cardFooter">
-                            {audio?.base64
-                                ? (
-                                    <Button
-                                        type="primary"
-                                        className="audioBtn audioBtnActive"
-                                        onClick={() => {
-                                            setModal('audio');
-                                            audioClickEvent(streetcode?.id ?? 0);
-                                        }}
-                                    >
-                                        <PlayCircleFilled className="playCircle" />
-                                        <span>Прослухати текст</span>
-                                    </Button>
-                                )
-                                : (
-                                    <Button
-                                        disabled
-                                        type="primary"
-                                        className="audioBtn"
-                                    >
-                                        <span>Аудіо на підході</span>
-                                    </Button>
-                                )}
+                    <div className="cardFooter">
+                        {audio?.base64 && audioIsLoaded
+                            ? (
+                                <Button
+                                    type="primary"
+                                    className="audioBtn audioBtnActive"
+                                    onClick={() => {
+                                        setModal('audio');
+                                        audioClickEvent(streetcode?.id ?? 0);
+                                    }}
+                                >
+                                    <PlayCircleFilled className="playCircle" />
+                                    <span>Прослухати текст</span>
+                                </Button>
+                            )
+                            : (
+                                <Button
+                                    disabled
+                                    type="primary"
+                                    className="audioBtn"
+                                >
+                                    <span>Аудіо на підході</span>
+                                </Button>
+                            )}
 
-                            {arlink
-                                ? (
-                                    <Button
-                                        className="animateFigureBtn"
-                                        onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                                    >
-                                        <a href="#QRBlock">Оживити картинку</a>
-                                    </Button>
-                                )
-                                : <></>}
-                        </div>
+                        {arlink
+                            ? (
+                                <Button
+                                    className="animateFigureBtn"
+                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                                >
+                                    <a href="#QRBlock">Оживити картинку</a>
+                                </Button>
+                            )
+                            : <></>}
                     </div>
                 </div>
             </div>
