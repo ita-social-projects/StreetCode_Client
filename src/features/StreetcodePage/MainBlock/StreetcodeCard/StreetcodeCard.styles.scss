@@ -66,6 +66,7 @@
   @include mut.rem-margined(13px, 0, 13px, 0);
 }
 .teaserBlock {
+  padding-bottom: f.pxToRem(20px);
   @include mut.with-font($font-weight: 300, $font-size: 20px);
   @include mut.rem-margined(25px, 0px, 0px, 0px);
   line-height: 23px;

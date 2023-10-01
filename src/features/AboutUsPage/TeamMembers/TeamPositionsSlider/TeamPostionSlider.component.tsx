@@ -1,3 +1,5 @@
+import './TeamPositionSlider.styles.scss';
+
 import { useState } from 'react';
 import LeftSliderArrow from '@assets/images/utils/LeftDefaultSliderArrow.svg';
 import RightSliderArrow from '@assets/images/utils/RightDefaultSliderArrow.svg';
@@ -41,6 +43,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                     slidesPerView={5}
                     centeredSlides
                     loop
+                    slideToClickedSlide
                     onSwiper={(swiper) => setSwiper(swiper)}
                     onSlideChange={(swiper) => getActive(swiper)}
                     navigation={{ nextEl: '.arrow-left', prevEl: '.arrow-right' }}
@@ -57,10 +60,13 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                         },
                     }}
                 >
-                    {positions.map((position) => (
-                        <SwiperSlide className="square" key={position.id}>
+                    {positions.map((position, index) => (
+                        <SwiperSlide
+                            className="square"
+                            key={position.id}
+                        >
                             <div key={position.position}>
-                                <div>{position.position}</div>
+                                <div className="positionText">{position.position}</div>
                             </div>
                         </SwiperSlide>
                     ))}
