@@ -5,15 +5,31 @@ import RhombusMobile from '@images/utils/rhombus_mobile.svg';
 
 import { useMediaQuery } from 'react-responsive';
 import { WindowsFilled } from '@ant-design/icons';
+import { useEffect, useRef } from 'react';
 
 interface Props {
     headingText: string;
 }
 
 const BlockHeading = ({ headingText }: Props) => {
+    const elementRef = useRef<HTMLHeadingElement | null>(null);
+
     const isMobile = useMediaQuery({
-        query: '(max-width: 768px)',
+        query: '(max-width: 1024px)',
     });
+
+    useEffect(() => {
+        const element = elementRef.current;
+        if (element) {
+            setTimeout(() => {
+                while (element.offsetHeight > 80 && isMobile){
+                    let fontSize = parseFloat(window.getComputedStyle(element).fontSize);
+                    element.style.fontSize = `${fontSize-2}px`;
+                }
+            }, 1000);
+        }
+    }
+    , []);
 
     return (
         <div className="blockHeadingWrapper">
@@ -23,12 +39,12 @@ const BlockHeading = ({ headingText }: Props) => {
                         && <Rhombus />}
                     {isMobile && <RhombusMobile />}
                 </div>
-                <h1 className={`blockHeadingText 
-                    ${headingText.length >= 30
-                        && window.screen.width < 640 ? 'bigTextComponent' : ''} `}
-                >
-                    {headingText}
-                </h1>
+                <div className="blockHeadingTextContainer">
+                    <h1 ref={elementRef}
+                        className="blockHeadingText">
+                        {headingText}
+                    </h1>
+                </div>
             </div>
         </div>
     );
