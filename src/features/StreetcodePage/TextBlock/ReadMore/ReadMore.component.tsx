@@ -5,6 +5,7 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
 import classnames from 'classnames';
 import * as lodash from 'lodash';
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 interface Props {
   text: string;
@@ -13,11 +14,12 @@ interface Props {
 
 const ReadMore = ({ text, maxLines = 25 }: Props) => {
     const [clamped, setClamped] = useState(true);
-    const [showButtons, setShowButtons] = useState(true);
+    const [showButtons, setShowButtons] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const readMoreRef = useRef<HTMLSpanElement | null>(null);
     const firstRender = useRef(true);
-
+    const windowSize = useWindowSize();
+    
     const handleClick = () => setClamped(!clamped);
 
     useEffect(() => {
@@ -30,7 +32,9 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
             if (containerRef.current) {
                 const hadClampClass = containerRef.current.classList.contains('clamp');
                 if (!hadClampClass) containerRef.current.classList.add('clamp');
-                setShowButtons(hasClamping(containerRef.current));
+                if (hasClamping(containerRef.current)) {
+                    setShowButtons(hasClamping(containerRef.current));
+                }
                 if (!hadClampClass) containerRef.current.classList.remove('clamp');
             }
         };
@@ -81,7 +85,7 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
                 >
                     <SearchTerms mainText={text} />
                 </div>
-                {showButtons && (
+                {showButtons && windowSize.width > 480 && (
                     <div className="readMoreContainer">
                         <span
                             className="readMore"
@@ -89,6 +93,17 @@ const ReadMore = ({ text, maxLines = 25 }: Props) => {
                             ref={readMoreRef}
                         >
                             {clamped ? 'Трохи ще' : 'Дещо менше'}
+                        </span>
+                    </div>
+                )}
+                {showButtons && windowSize.width <= 480 && (
+                    <div className={clamped ? "readMoreContainer" : "readLessContainer"}>
+                        <span
+                            className={clamped ? "readMore" : "readLess"}
+                            onClick={handleClick}
+                            ref={readMoreRef}
+                        >
+                            {clamped ? 'Трохи ще' : 'Згорнути текст'}
                         </span>
                     </div>
                 )}
