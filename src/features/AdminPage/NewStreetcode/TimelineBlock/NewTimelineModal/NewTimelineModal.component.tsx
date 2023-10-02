@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 import {
     Button,
-    DatePicker, Form, Input, Modal, Popover, Select,
+    DatePicker, Form, Input, message, Modal, Popover, Select,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -79,22 +79,26 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         historicalContextStore.fetchHistoricalContextAll();
     }, []);
 
-    const GetLocalHoursOffset = (date: Date) => -1 * date.getTimezoneOffset() / 60;
+    const GetLocalMinutesOffset = (date: Date) => -1 * date.getTimezoneOffset();
 
     const GetDateBasedOnFormat = (date: Date) => {
+        let seconds = 0;
+        // specific GMT+202 Ukraine timezone before 1/5/1924, where seconds are truncated by browser
+        if(GetLocalMinutesOffset(date) == 122)
+        {
+            seconds = 4;
+        }
+        date.setHours(0, GetLocalMinutesOffset(date), seconds, 0);
         switch (dateTimePickerType) {
         case 'date':
-            date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
             return date.toISOString();
         case 'month':
         case 'season-year':
             date.setDate(1);
-            date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
             return date.toISOString();
         case 'year':
             date.setMonth(0);
             date.setDate(1);
-            date.setHours(GetLocalHoursOffset(date), 0, 0, 0);
             return date.toISOString();
         default:
             throw new Error('Invalid date.');
@@ -123,9 +127,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             timelineItemStore.addTimeline(newTimeline);
         }
 
-        setIsModalOpen(false);
-        setDateTimePickerType('date');
-        form.resetFields();
         onChange('timeline', formValues);
     };
 
@@ -170,6 +171,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
         onChange('historicalContexts', selectedContext.current);
     };
+
+    const handleOk =() =>{
+        form.submit();
+        alert('Хронологію успішно додано!');
+    }
 
     return (
         <Modal
@@ -278,7 +284,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         <TextArea maxLength={400} showCount onChange={(e) => onChange('description', e.target.value)} />
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" type="primary" htmlType="submit">
+                        <Button
+                            className="streetcode-custom-button"
+                            onClick={() => handleOk()}
+                        >
                             Зберегти
                         </Button>
                     </div>

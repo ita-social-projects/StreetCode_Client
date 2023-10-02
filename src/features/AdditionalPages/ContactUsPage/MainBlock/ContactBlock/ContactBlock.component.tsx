@@ -3,23 +3,23 @@ import './ContactBlock.styles.scss';
 import Email from '@images/contact-us/email.webp';
 import Facebook from '@images/contact-us/Facebook.webp';
 import Instagram from '@images/contact-us/Instagram.webp';
-import Logo from '@images/contact-us/Logo-2.webp';
+import Logo from '@images/contact-us/logo-2.webp';
 import TikTok from '@images/contact-us/TikTok.webp';
 import Twitter from '@images/contact-us/Twitter.webp';
 import YouTube from '@images/contact-us/Youtube.webp';
 
-const EMAIL = 'streetcodeua@gmail.com';
+import { EMAIL_INFO } from '@constants/email.constants';
 
 const ContactBlock = () => (
     <div className="contactBlock">
         <img className="contactLogo" src={Logo} alt="" />
         <div className="contactCover">
             <div className="emailBlock">
-                <a href={`mailto:${EMAIL}`} className="emailLink">
+                <a href={EMAIL_INFO.WRITE_EMAIL_TO_US} className="emailLink">
                     <img className="icon" src={Email} alt="email-logo" />
                 </a>
                 <span className="email">
-                    {EMAIL}
+                    {EMAIL_INFO.EMAIL}
                 </span>
             </div>
 

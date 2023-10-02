@@ -4,51 +4,63 @@
 
 .blockHeadingWrapper {
     @include mut.sized(100%, 124px);
-    @include mut.flex-centered();
-    margin-bottom: f.pxToRem(26px);
-
-    svg {
-        z-index: 0;
-        margin-left: f.pxToRem(-62px);
-    }
+    @include mut.rem-margined($top: 110px, $right: 0, $bottom: 26px, $left: 0);
+    @include mut.flexed($justify-content: center);
 }
 
 .blockHeadingContainer {
-    width: f.pxToRem(1200px);
     @include mut.flexed($justify-content: flex-start);
+    max-width: f.pxToRem(1200px);
+    width: 100%;
+    position: relative;
+}
+
+.rhombus{
+    height: 100%;
+    z-index: 0;
+    position: absolute;
+    left: -62px;
+    .svg{
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.blockHeadingTextContainer{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
 }
 
 .blockHeadingText {
-    @include mut.positioned-as(relative, $left: -62px, $top: 41px);
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
-    padding-right: 10px;
 }
 
 .blockHeadingText::first-letter {
     text-transform: uppercase;
 }
-.rhombus{
-    min-height: 110px;
-}
 
 @media (max-width: 1350px) {
-    .blockHeadingWrapper{
-        margin-left: f.pxToRem(28px);
+    .rhombus{
+        left: -36px;
+    }
+    .blockHeadingTextContainer{
+        @include mut.rem-padded($right: 10px, $left: 10px);
     }
 }
 
 @media (max-width: 1024px) {
-    .blockHeadingWrapper{
-        margin-left: f.pxToRem(40px);
+    .blockHeadingWrapper {
+        @include mut.sized(100%, 110px);
+        @include mut.rem-margined($top: 40px, $right: 0, $bottom: 20px, $left: 0);
+        @include mut.flexed($justify-content: center);
     }
 }
 
 @media (max-width: 768px) {
-    .blockHeadingWrapper{
-        margin-left: f.pxToRem(45px);
-    }
     .blockHeadingText {
         @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
-        @include mut.positioned-as(relative, $left: -81px, $top: 35px);
     }
 }

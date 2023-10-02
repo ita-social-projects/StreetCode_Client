@@ -1,10 +1,10 @@
 import './Partners.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useState } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { useStreetcodeDataContext } from '@stores/root-store';
 
 import ImagesApi from '@/app/api/media/images.api';
 import PartnersApi from '@/app/api/partners/partners.api';
@@ -26,8 +26,8 @@ const PartnersComponent = () => {
                             .then((img) => {
                                 res[index].logo = img;
                             }))).then(() => {
-                            setPartners(res);
-                        });
+                                setPartners(res);
+                            });
                     });
             }
         },
@@ -49,19 +49,21 @@ const PartnersComponent = () => {
         dots: false,
         arrows: false,
         infinite: true,
-        autoplay: false,
+        autoplay: true,
+        autoplaySpeed: 2500,
+        speed: 500,
         draggable: true,
         swipe: true,
-        speed: 4000,
         slidesToShow: 3,
-        slidesToScroll: 1,
         responsive: [responsiveSettingsTablet, responsiveSettingsMobile, responsiveSettingsDesktop],
     };
 
     return (
         partners.length > 0 ? (
-            <div className="partnersWrapper ">
-                <div className="partnerContainer">
+            <div className="partnersWrapper">
+                <div
+                    className="partnerContainer"
+                >
                     <SlickSlider
                         className="heightContainer"
                         {...settings}

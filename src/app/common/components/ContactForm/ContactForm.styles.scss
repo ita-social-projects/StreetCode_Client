@@ -1,0 +1,215 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+
+.contactUsContainer {
+
+    .ant-input-affix-wrapper,
+    .ant-input-affix-wrapper-focused {
+        border: none;
+        box-shadow: none !important;
+    }
+}
+
+.formWrapper {
+    width: f.pxToRem(568px);
+    padding: f.pxToRem(24px);
+
+    background-color: #FFFFFF;
+    box-shadow: 0px 5.57966px 5.57966px rgba(0, 0, 0, 0.25);
+
+    @include mut.full-rounded(20px);
+    text-align: center;
+
+    &__modal {
+        box-shadow: none;
+        padding: 0%;
+    }
+
+    .formTitleContainer {
+        @include mut.flexed($direction: column, $gap: 24px);
+        margin-bottom: 24px;
+
+        .formTitle {
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            line-height: 26px;
+            color: #891F16;
+        }
+
+        .formSubTitle {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+            line-height: 23px;
+            color: c.$lighter-black-color;
+            text-align: left;
+        }
+    }
+
+    .contactForm {
+        @include mut.flexed($direction: column, $gap: 24px);
+
+        .custom-character-counter {
+            margin-bottom: -12px;
+            text-align: right;
+            font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+            font-size: 16px;
+            color: #00000073;
+        }
+
+        textarea {
+            resize: none;
+            outline: none;
+            height: f.pxToRem(140px);
+        }
+
+        textarea,
+        input:focus {
+            outline: none;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            padding: f.pxToRem(12px) f.pxToRem(24px);
+            border: 1px solid #D3CDCA;
+            @include mut.full-rounded(14px);
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+            line-height: 27px;
+
+            overflow: auto !important;
+        }
+
+        .textareaBlock {
+            position: relative;
+
+            .amountSymbols {
+                position: absolute;
+                bottom: f.pxToRem(10px);
+                right: f.pxToRem(10px);
+                color: #C4C4C4;
+            }
+        }
+
+        .ant-input:hover,
+        .ant-input:focus {
+            border: f.pxToRem(1px) solid #D3CDCA;
+            box-shadow: none;
+        }
+
+        .ant-form-item {
+            margin-bottom: 0;
+        }
+
+        .ant-form-item:focus {
+            outline: none;
+        }
+
+        .ant-input-textarea-show-count::after {
+            position: absolute;
+            top: f.pxToRem(134px);
+            right: f.pxToRem(10px);
+        }
+
+        .ant-btn-primary:not(:disabled):hover {
+            background-color: #E04031;
+        }
+
+        .ant-form-item .ant-form-item-explain-error {
+            display: none;
+        }
+
+        button {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+            line-height: 23px;
+            color: #FFFFFF;
+
+            padding: f.pxToRem(25px) f.pxToRem(56px);
+            height: 100%;
+            background-color: c.$accented-red-color;
+            box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
+            @include mut.full-rounded(14px);
+            border: none;
+            cursor: pointer;
+
+            &:hover {
+                background-color: c.$dark-red-color;
+            }
+        }
+
+        .required-input {
+            position: relative;
+        }
+
+        .required-input::before {
+            content: '*';
+            position: absolute;
+            top: 0;
+            left: f.pxToRem(-8px);
+            transform: translate(-50%, -50%);
+            color: red;
+            font-size: 20px;
+        }
+
+        .captchaBlock {
+            @include mut.flexed($direction: column, $justify-content: center, $align-items: center);
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .formWrapper {
+        width: 100%;
+
+        padding: f.pxToRem(16px);
+        margin-top: f.pxToRem(60px);
+
+        &__modal {
+            margin-top: 0;
+        }
+
+        .formTitleContainer {
+            @include mut.flexed($direction: column, $gap: 16px);
+            margin-bottom: f.pxToRem(16px);
+
+            .formTitle {
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
+                text-align: left;
+                line-height: 18px;
+            }
+
+            .formSubTitle {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 14px);
+                line-height: 16px;
+            }
+        }
+
+        .contactForm {
+            @include mut.flexed($direction: column, $gap: 16px);
+
+            button {
+                width: 100%;
+                padding: f.pxToRem(15px) 0;
+            }
+
+            textarea,
+            input {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+                line-height: 21px;
+            }
+
+            .ant-input-textarea-show-count::after {
+                top: f.pxToRem(110px);
+            }
+
+            .ant-input-textarea-show-count .ant-input-data-count {
+                margin-bottom: f.pxToRem(-18px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .contactUsContainer .formContainer .formTitleContainer .formTitle {
+        text-align: center;
+    }
+}

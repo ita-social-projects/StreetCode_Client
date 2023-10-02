@@ -44,6 +44,7 @@
 
         @media (min-width: 768px) and (max-width: 1024px){
             top: 320px;
+            width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
@@ -82,20 +83,26 @@
 
     .newsContainer {
         box-sizing: border-box;
-        width: 100%;
-        word-break: break-all;
+        word-break: break-word;
         height: 193px;
+        width: f.pxToRem(840px);
+
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
 
         @media (min-width: 768px) and (max-width: 1024px){
             @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
             height: 141px;
+            width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
             @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 15px, $left: 15px);
             height: 300px;
+        }
+
+        .subContainer{
+            max-width: 100%;
         }
     }
 
@@ -119,6 +126,7 @@
             font-style: bold;
             line-height: f.pxToRem(26.4px);
             -webkit-line-clamp: 1;
+            width: f.pxToRem(310px);
         }
     }
 
@@ -131,39 +139,51 @@
         }
 
         .moreText {
-            display: inline-block;
-            margin-left: 4px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            height: f.pxToRem(54px);
+            padding-top: f.pxToRem(18px);
+            padding-left: f.pxToRem(30px);
+
             @include mut.with-font(ft.$roboto-font, $font-weight: bolder, $font-size: 15px);
             color: c.$dark-red-color;
+            background-color: c.$accented-grayish-gray-color;
             text-decoration: none;
 
             &:hover {
                 text-decoration: underline;
             }
-        }
 
-        @media (min-width: 768px) and (max-width: 1024px){
-            width: 93vw;
+            @media (max-width: 1025px) {
+                padding-left: f.pxToRem(20px);
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1024px) {
+            width: 96vw;
         }
     }
     .text{
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
         overflow: hidden;
+        @include mut.truncated(2);
+        word-break: break-word;
+
         @include mut.rem-margined(5px, 0px, 0px, 0px);
         @include mut.rem-padded(0px, 5px, 0px, 0px);
+
         color: c.$lighter-black-color;
-        word-break: break-all;
         @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
         line-height: 18px;
+
         @media (min-width: 768px) and (max-width: 1024px) {
-            -webkit-line-clamp: 2;
             width: 93vw;
         }
 
         @media (max-width: 767px) {
-            -webkit-line-clamp: 11;
+            @include mut.truncated(11);
+            width: f.pxToRem(320px);
         }
     }
 }

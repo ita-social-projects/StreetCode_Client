@@ -66,6 +66,7 @@ const ForFansMainPage: React.FC = observer(() => {
                     key={`${record.id}${record.image?.id}}`}
                     className="partners-table-logo"
                     src={base64ToUrl(image?.base64, image?.mimeType ?? '')}
+                    style={{ filter: 'grayscale(100%)' }}
                 />
             ),
         },
@@ -127,7 +128,7 @@ const ForFansMainPage: React.FC = observer(() => {
                     pagination={{ pageSize: 10 }}
                     className="partners-table"
                     columns={columns}
-                    dataSource={sourcesStore?.getSrcCategoriesArray}
+                   dataSource={sourcesStore?.getSrcCategoriesArray}
                     rowKey="id"
                 />
             </div>

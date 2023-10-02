@@ -14,7 +14,7 @@ import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, Modal, Popover,
+    Button, Form, Input, message, Modal, Popover,
     UploadFile,
 } from 'antd';
 import { UploadFileStatus } from 'antd/es/upload/interface';
@@ -27,7 +27,7 @@ interface SourceModalProps {
     isModalVisible: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     initialData?: SourceCategoryAdmin;
-    isNewCategory?:(data: boolean) => void;
+    isNewCategory?: (data: boolean) => void;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
@@ -109,8 +109,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
         if (isNewCategory !== undefined) {
             isNewCategory(true);
         }
-        closeModal();
-        form.resetFields();
     };
 
     const handlePreview = async (file: UploadFile) => {
@@ -133,6 +131,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
         return [];
     };
 
+    const handleOk = () => {
+        form.submit();
+        message.success("Категорію успішно додано!", 2);
+    }
+
     return (
         <div>
             <Modal
@@ -153,15 +156,17 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" maxLength={100} showCount />
+                        <Input placeholder="Title" maxLength={23} showCount />
                     </Form.Item>
                     <Form.Item
                         name="image"
                         label="Картинка: "
                         rules={[{ required: true, message: 'Додайте зображення' }]}
                         getValueFromEvent={getValueFromEvent}
+                        style={{ filter: 'grayscale(100%)' }}
                     >
                         <FileUploader
+                            greyFilterForImage
                             onChange={(param) => {
                                 setFileList(param.fileList);
                             }}
@@ -186,13 +191,13 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => form.submit()}>
+                        <Button className="streetcode-custom-button" onClick={() => handleOk()}>
                             Зберегти
                         </Button>
                     </div>
                 </Form>
             </Modal>
-            <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
+            <PreviewFileModal greyFilterForImage file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
     );
 };

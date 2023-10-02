@@ -41,6 +41,12 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .mainContent {
+        padding-top: f.pxToRem(18px);
+    }
+}
+
 @media screen and (max-width: 680px) {
 
     .mainContainer {
@@ -53,7 +59,7 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
 
             height: unset;
             margin-top: f.pxToRem(34px);
-            padding-top: f.pxToRem(22px);
+            padding-top: f.pxToRem(20px);
         }
     }
 

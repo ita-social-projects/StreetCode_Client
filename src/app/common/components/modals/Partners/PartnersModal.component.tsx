@@ -6,10 +6,11 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button, Form, Input, Modal, Popover } from 'antd';
+import { Button, Form, Input, Modal, Popover, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+import ReCAPTCHA from 'react-google-recaptcha';
 import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
@@ -19,18 +20,51 @@ const PartnersModal = () => {
     const { setModal, modalsState: { partners } } = modalStore;
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({ email: '', message: '' });
+    const [messageApi, messageContextHolder] = message.useMessage();
+    const [isVerified, setIsVerified] = useState(false);
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const newEmail: Email = { from: formData.email, content: formData.message };
-    const onFinish = () => EmailApi.send(newEmail);
+    const onFinish = () => {
+        if(isVerified){
+            EmailApi.send(newEmail)
+            .then(() => {
+                onCancel();
+                successMessage();
+            })
+            .catch(e => {
+                onCancel();
+                errorMessage();
+            })
+        }
+    }
 
     const onClear = () => {
         partners.isOpen = false;
         form.resetFields();
     };
+
     const onCancel = () => {
         partners.isOpen = false;
     }
+
+    const handleVerify = () => {
+        setIsVerified(true);
+    };
+
+    const successMessage = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Лист успішно надісланий',
+        });
+    };
+
+    const errorMessage = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Щось пішло не так...',
+        });
+    };
 
     return (
         <Modal
@@ -43,6 +77,7 @@ const PartnersModal = () => {
             closeIcon={<Popover><CancelBtn className='iconSize' onClick={onClear} />
             </Popover>}
         >
+            {messageContextHolder}
             <div className="partnersModalContent">
                 <div className="formContainer">
                     <div className="formTitle">
@@ -58,9 +93,11 @@ const PartnersModal = () => {
                         <Form.Item
                             className="textareaBlock required-input"
                             name="message"
-                            rules={[{ required: true,
-                                      min: 1,
-                                      max: MAX_SYMBOLS }]}
+                            rules={[{
+                                required: true,
+                                min: 1,
+                                max: MAX_SYMBOLS
+                            }]}
                         >
                             <Input.TextArea
                                 className="textarea"
@@ -76,8 +113,10 @@ const PartnersModal = () => {
                             name="email"
                             className="required-input"
                             rules={[
-                                { required: true,
-                                  type: 'email' },
+                                {
+                                    required: true,
+                                    type: 'email'
+                                },
                             ]}
                         >
                             <Input
@@ -87,9 +126,16 @@ const PartnersModal = () => {
                                 onChange={handleChange}
                             />
                         </Form.Item>
+                        <div className="captchaBlock ">
+                            <ReCAPTCHA
+                                className="required-input"
+                                sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
+                                onChange={handleVerify}
+                            />
+                        </div>
                         <Form.Item>
                             <Button type="primary" htmlType="submit" onClick={() => partnersClickEvent()}>
-                            Відправити
+                                Відправити
                             </Button>
                         </Form.Item>
                     </Form>

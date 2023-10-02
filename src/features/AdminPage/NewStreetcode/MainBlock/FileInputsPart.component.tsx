@@ -7,8 +7,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import CreateUpdateMediaStore from '@app/stores/create-update-media-store';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
-import Image, { ImageUpdate } from '@models/media/image.model';
-import { parse } from 'path';
+import Image, { ImageAssigment, ImageUpdate } from '@models/media/image.model';
 
 import { FormInstance, Modal, UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -35,7 +34,7 @@ const convertFileToUploadFile = (file: Image | Audio) => {
 interface FileInputsPartProps {
     form: FormInstance<unknown>; // Explicitly define the type for the 'form' prop
     onChange: (propertyName: string, value: any) => void;
-  }
+}
 
 const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
     const { createUpdateMediaStore } = useMobx();
@@ -145,18 +144,25 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
             const fetchData = async () => {
                 try {
                     await ImagesApi.getByStreetcodeId(parseId).then((result) => {
-                        setAnimation([convertFileToUploadFile(result[0])]);
-                        setBlackAndWhite([convertFileToUploadFile(result[1])]);
-                        setRelatedFigure(result[2] ? [convertFileToUploadFile(result[2])] : []);
-                        form.setFieldsValue({
-                            animations: [convertFileToUploadFile(result[0])],
-                            pictureBlackWhite: [convertFileToUploadFile(result[1])],
-                            pictureRelations: result[2] ? [convertFileToUploadFile(result[2])] : [],
-                        });
+                        result.forEach((image) => {
+                            if (image.imageDetails?.alt === ImageAssigment.animation.toString()) {
+                                setAnimation([convertFileToUploadFile(image)]);
+                                form.setFieldsValue({ animations: [convertFileToUploadFile(image)] });
+                                createUpdateMediaStore.animationId = image.id;
+                            }
 
-                        createUpdateMediaStore.animationId = result[0].id;
-                        createUpdateMediaStore.blackAndWhiteId = result[1].id;
-                        createUpdateMediaStore.relatedFigureId = result[2]?.id;
+                            if (image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()) {
+                                setBlackAndWhite([convertFileToUploadFile(image)]);
+                                form.setFieldsValue({ pictureBlackWhite: [convertFileToUploadFile(image)] });
+                                createUpdateMediaStore.blackAndWhiteId = image.id;
+                            }
+
+                            if (image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()) {
+                                setRelatedFigure([convertFileToUploadFile(image)]);
+                                form.setFieldsValue({ pictureRelations: [convertFileToUploadFile(image)] });
+                                createUpdateMediaStore.relatedFigureId = image.id;
+                            }
+                        });
 
                         createUpdateMediaStore.imagesUpdate = result.map((img) => ({
                             ...img,
@@ -166,7 +172,20 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     });
                     await AudiosApi.getByStreetcodeId(parseId).then((result) => {
                         setAudio(result ? [convertFileToUploadFile(result)] : []);
+                        form.setFieldsValue({
+                            audio: result ? [convertFileToUploadFile(result)] : [],
+                        });
                         createUpdateMediaStore.audioId = result?.id;
+                        if (result) {
+                            const audioUpdate : AudioUpdate = {
+                                id: result.id,
+                                streetcodeId: parseId,
+                                modelState: ModelState.Updated,
+                            };
+                            createUpdateMediaStore.audioUpdate = [audioUpdate];
+                        } else {
+                            createUpdateMediaStore.audioUpdate = [];
+                        }
                     });
                 } catch (error) { /* empty */ } finally { /* empty */ }
             };
@@ -182,10 +201,6 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     label="Анімація"
                     rules={[
                         {
-                            required: true,
-                            message: 'Завантажте анімацію',
-                        },
-                        {
                             validator: (_, file) => {
                                 if (file) {
                                     let name = '';
@@ -199,7 +214,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     }
                                     return Promise.reject(Error('Тільки файли з розширенням .gif та .webp дозволені!'));
                                 }
-                                return Promise.reject();
+                                return Promise.resolve();
                             },
                         },
                     ]}
@@ -249,7 +264,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     name = file.name.toLowerCase();
                                 }
                                 if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
-                                || name.endsWith('.jpg') || name === '') {
+                                    || name.endsWith('.jpg') || name === '') {
                                     return Promise.resolve();
                                 }
 
@@ -270,7 +285,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         uploadTo="image"
                         beforeUpload={(file) => {
                             const isValid = (file.type === 'image/jpeg') || (file.type === 'image/webp')
-                            || (file.type === 'image/png') || (file.type === 'image/jpg');
+                                || (file.type === 'image/png') || (file.type === 'image/jpg');
                             if (!isValid) {
                                 return Promise.reject();
                             }
@@ -303,7 +318,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                         name = file.name.toLowerCase();
                                     }
                                     if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
-                                    || name.endsWith('.jpg') || name === '') {
+                                        || name.endsWith('.jpg') || name === '') {
                                         setVisibleErrorRelatedFigure(false);
                                         return Promise.resolve();
                                     }
@@ -325,7 +340,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         uploadTo="image"
                         beforeUpload={(file) => {
                             const isValid = (file.type === 'image/jpeg')
-                            || (file.type === 'image/png') || (file.type === 'image/jpg' || (file.type === 'image/webp'));
+                                || (file.type === 'image/png') || (file.type === 'image/jpg' || (file.type === 'image/webp'));
                             if (!isValid) {
                                 return Promise.reject();
                             }
@@ -344,7 +359,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     </FileUploader>
                     {visibleErrorRelatedFigure && (
                         <p className="error-text">
-                Тільки файли з розширенням webp, jpeg, png, jpg дозволені!
+                            Тільки файли з розширенням webp, jpeg, png, jpg дозволені!
                         </p>
                     )}
                 </FormItem>
@@ -376,10 +391,11 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     ]}
                 >
                     <FileUploader
+                        multiple={false}
                         accept=".mp3"
                         maxCount={1}
                         listType="picture-card"
-                        {...(audio ? { fileList: audio } : null)}
+                        fileList={audio}
                         uploadTo="audio"
                         onSuccessUpload={(file: Audio) => {
                             handleFileUpload(file.id, 'audioId', 'audioUpdate');

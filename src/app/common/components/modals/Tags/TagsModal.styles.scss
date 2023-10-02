@@ -40,7 +40,6 @@ $articlesImg: "@assets/images/sources/Articles.webp";
       @include mut.sizedImportant(100%, 97px);
       position: sticky;
       @include mut.flex-centered();
-      height: pxToRem(97px);
       .tagsSliderWrappper{
          width: 90%;
       }

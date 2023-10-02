@@ -3,19 +3,20 @@ import './ContactForm.styles.scss';
 import { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
 
-const ContactForm = () => {
+const ContactForm = ({ customClass = "" }) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
     const messageLength = formData.message.length | 0;
-
+    const [messageApi, messageContextHolder] = message.useMessage();
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
     const handleVerify = () => {
         setIsVerified(true);
     };
@@ -23,12 +24,29 @@ const ContactForm = () => {
     const onFinish = () => {
         if (isVerified) {
             const newEmail: Email = { from: formData.email, content: formData.message };
-            EmailApi.send(newEmail);
+            EmailApi.send(newEmail)
+                .then(successMessage)
+                .catch(errorMessage);
         }
     };
 
+    const successMessage = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Лист успішно надісланий',
+        });
+    };
+
+    const errorMessage = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Щось пішло не так...',
+        });
+    };
+
     return (
-        <div className="formContainer">
+        <div className={`formWrapper ${customClass}`}>
+            {messageContextHolder}
             <div className="formTitleContainer">
                 <div className="formTitle">Форма зворотного зв’язку</div>
                 <div className="formSubTitle">
@@ -44,11 +62,14 @@ const ContactForm = () => {
                 <Form.Item
                     className="textareaBlock required-input"
                     name="message"
-                    rules={[{ required: true,
-                              min: 1,
-                              max: MAX_SYMBOLS }]}
+                    rules={[{
+                        required: false,
+                        min: 1,
+                        max: MAX_SYMBOLS
+                    }]}
                 >
                     <Input.TextArea
+                        required={true}
                         className="textarea"
                         name="message"
                         autoSize={{ minRows: 4, maxRows: 4 }}
@@ -57,15 +78,17 @@ const ContactForm = () => {
                         onChange={handleChange}
                     />
                     <p className="custom-character-counter">
-                        {messageLength} 
+                        {messageLength}
                         / {MAX_SYMBOLS}
                     </p>
                 </Form.Item>
                 <Form.Item
                     name="email"
                     rules={[
-                        { required: false,
-                          type: 'email' },
+                        {
+                            required: true,
+                            type: 'email'
+                        },
                     ]}
                 >
                     <Input

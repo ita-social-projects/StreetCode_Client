@@ -41,7 +41,7 @@ const TeamPage = () => {
 
     useEffect(() => {
         updatedTeam();
-    }, []);
+    }, [modalEditOpened, modalAddOpened]);
 
     const renderImageColumn = (image: Image, record: { id: any; }) => (
         <img
@@ -54,15 +54,13 @@ const TeamPage = () => {
     const columns: ColumnsType<TeamMember> = [
         {
             title: "Прізвище та ім'я",
-            dataIndex: 'lastName',
-            key: 'lastName',
+            dataIndex: 'name',
+            key: 'name',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>
-                            {value}
-                            {' '}
-                            {record.firstName}
+                        <p>         
+                            {record.name}
                         </p>
                         {record.isMain ? <StarOutlined /> : ''}
                     </div>

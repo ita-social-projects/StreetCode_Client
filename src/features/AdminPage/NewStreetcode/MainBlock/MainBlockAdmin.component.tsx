@@ -107,6 +107,7 @@ const MainBlockAdmin = React.memo(({
         const deletedTag = tagsStore.getTagToDeleteArray.find((tag) => tag.title === selectedValue);
         if (deletedTag) { // for case when delete persisted item and add it again
             tagsStore.deleteItemFromArrayToDelete(selectedValue);
+            deletedTag.modelState = ModelState.Updated;
             setSelectedTags([...selectedTags, deletedTag]);
         } else {
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
@@ -133,6 +134,7 @@ const MainBlockAdmin = React.memo(({
         const tag = selectedTags.find((t) => t.title === deselectedValue) as StreetcodeTagUpdate;
         if (tag?.isPersisted) {
             tag.modelState = ModelState.Deleted;
+            tag.isVisible = false;
             tagsStore.setItemToDelete(tag);
         }
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
