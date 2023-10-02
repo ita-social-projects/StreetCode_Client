@@ -2,10 +2,10 @@ import { makeAutoObservable, observable } from 'mobx';
 import allSlidesTemplates, { TEMPLATE_IMAGE_BASE64 } from '@components/ArtGallery/constants/allSlidesTemplates';
 import { ArtSlideTemplateEnum } from '@models/enums/art-slide-template';
 import Art from '@models/media/art.model';
-import StreetcodeArtSlide from '@models/media/streetcode-art-slide.model';
+import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 
 export default class ArtGalleryTemplateStore {
-    public streetcodeArtSlides: StreetcodeArtSlide[] = [...allSlidesTemplates];
+    public streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[] = [...allSlidesTemplates];
 
     public isEdited = false;
 

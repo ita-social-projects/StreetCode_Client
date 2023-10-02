@@ -14,11 +14,11 @@ import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
 import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
+import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
@@ -41,7 +41,7 @@ import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partn
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
-import TransactionLink from '@/models/transactions/transaction-link.model';
+import { TransactionLink } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
@@ -91,7 +91,7 @@ const NewStreetcode = () => {
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
-    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlide[]>([]);
+    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlideCreateUpdate[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
@@ -162,37 +162,32 @@ const NewStreetcode = () => {
         if (parseId) {
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-            if (streetcodeArtSlideStore.streetcodeArtSlides.length === 0) {
-                streetcodeArtSlideStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
-                    setArtsSlides(streetcodeArtSlideStore.streetcodeArtSlides);
-                });
-            }
-            if (streetcodeArtStore.getStreetcodeArtArray.length === 0) {
-                streetcodeArtStore.fetchStreetcodeArtsByStreetcodeId(parseId).then(() => {
-                    const artToUpdate = streetcodeArtStore.getStreetcodeArtArray.map((streetcodeArt) => ({
-                        ...streetcodeArt,
-                        modelState: ModelState.Updated,
-                        isPersisted: true,
-                    }));
-                    setArts([...artToUpdate]);
-                });
-            }
+                if (streetcodeArtSlideStore.streetcodeArtSlides.length === 0) {
+                    streetcodeArtSlideStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
+                        setArtsSlides(streetcodeArtSlideStore.streetcodeArtSlides);
+                    });
+                }
+                if (streetcodeArtStore.getStreetcodeArtArray.length === 0) {
+                    streetcodeArtStore.fetchStreetcodeArtsByStreetcodeId(parseId).then(() => {
+                        setArts(streetcodeArtStore.getStreetcodeArtArray);
+                    });
+                }
 
-            StreetcodesApi.getById(parseId).then((x) => {
-                streetcodeType.current = x.streetcodeType;
-                form.setFieldsValue({
-                    streetcodeNumber: x.index,
-                    mainTitle: x.title,
-                    name: x.firstName,
-                    surname: x.lastName,
-                    alias: x.alias,
-                    streetcodeUrlName: x.transliterationUrl,
-                    streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
-                    streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
-                    dateString: x.dateString,
-                    teaser: x.teaser,
-                    video,
-                });
+                StreetcodesApi.getById(parseId).then((x) => {
+                    streetcodeType.current = x.streetcodeType;
+                    form.setFieldsValue({
+                        streetcodeNumber: x.index,
+                        mainTitle: x.title,
+                        name: x.firstName,
+                        surname: x.lastName,
+                        alias: x.alias,
+                        streetcodeUrlName: x.transliterationUrl,
+                        streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
+                        streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
+                        dateString: x.dateString,
+                        teaser: x.teaser,
+                        video,
+                    });
 
                     const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
                         ...tag,
@@ -443,6 +438,7 @@ const NewStreetcode = () => {
                             image: null,
                         },
                     })),
+                    streetcodeArtSlides: [...streetcodeArtSlideStore.streetcodeArtSlides],
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
@@ -459,7 +455,7 @@ const NewStreetcode = () => {
                     },
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
-
+                console.log(streetcodeUpdate.streetcodeArtSlides);
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');

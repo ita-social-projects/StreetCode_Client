@@ -1,11 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
-import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
+import { ModelState } from '@models/enums/model-state';
+import { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 
-import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
+import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 export default class StreetcodeArtSlideStore {
-    public streetcodeArtSlides: StreetcodeArtSlide[] = new Array<StreetcodeArtSlide>();
+    public streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[] = new Array<StreetcodeArtSlideCreateUpdate>();
 
     private startFromSlide = 1;
 
@@ -15,8 +16,8 @@ export default class StreetcodeArtSlideStore {
         makeAutoObservable(this);
     }
 
-    get getStreetcodeArtArray(): StreetcodeArt[] {
-        const artsFromSlides: StreetcodeArt[] = [];
+    get getStreetcodeArtArray(): StreetcodeArtCreateUpdate[] {
+        const artsFromSlides: StreetcodeArtCreateUpdate[] = [];
 
         this.streetcodeArtSlides.forEach((slide) => {
             slide.streetcodeArts.forEach((sArt) => {
@@ -35,7 +36,11 @@ export default class StreetcodeArtSlideStore {
 
         if (arrayOfArtSlides.length !== 0) {
             if (this.streetcodeArtSlides.length === 0) {
-                this.streetcodeArtSlides.push(...arrayOfArtSlides);
+                this.streetcodeArtSlides.push(...arrayOfArtSlides.map((slide) => ({
+                    ...slide,
+                    modelState: ModelState.Updated,
+                    isPersisted: true,
+                })));
                 this.startFromSlide += 1;
             }
         } else {

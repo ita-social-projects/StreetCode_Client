@@ -3,6 +3,7 @@ import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-cont
 import Art from '@models/media/art.model';
 import Audio, { AudioUpdate } from '@models/media/audio.model';
 import Image, { ImageCreateUpdate, ImageDetails } from '@models/media/image.model';
+import { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 import Video, { VideoCreate } from '@models/media/video.model';
 import StreetcodePartner, { PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
@@ -151,6 +152,7 @@ export interface StreetcodeUpdate {
     timelineItems: TimelineItemUpdate[],
     partners: PartnerUpdate[],
     streetcodeArts: StreetcodeArtCreateUpdate[];
+    streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
     subtitles: Subtitle[],
     text: TextCreateUpdate | null,
     streetcodeCategoryContents: StreetcodeCategoryContentUpdate[],
