@@ -40,6 +40,11 @@
 
 .slick-center .interestingFactSlide {
     transform: scale(1.52);
+    cursor: default !important;
+}
+
+.slick-list .interestingFactSlide {
+    cursor: pointer;
 }
 
 .singleSlideContainer{
