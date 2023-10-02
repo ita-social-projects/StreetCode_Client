@@ -118,7 +118,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             )}
         >
             <div className="center">
-                <h2>Вакакансії</h2>
+                <h2>Вакансії</h2>
             </div>
             <Form
                 layout="vertical"
