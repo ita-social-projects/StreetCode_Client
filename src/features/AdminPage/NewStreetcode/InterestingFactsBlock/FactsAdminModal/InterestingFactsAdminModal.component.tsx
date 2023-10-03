@@ -112,10 +112,22 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         onChange('fact', formValues);
     };
 
-    const handleOk = () => {
-        form.submit();
-        alert('Wow-факт успішно додано!');
-    }
+    const handleOk = async () => {
+        try {
+            await form.validateFields();
+            form.submit();
+            message.success("Wow-факт успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
+    };
 
     return (
         <div>

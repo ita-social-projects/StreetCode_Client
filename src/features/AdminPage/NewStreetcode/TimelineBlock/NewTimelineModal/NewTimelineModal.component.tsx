@@ -172,10 +172,22 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         onChange('historicalContexts', selectedContext.current);
     };
 
-    const handleOk =() =>{
-        form.submit();
-        alert('Хронологію успішно додано!');
-    }
+    const handleOk = async () => {
+        try {
+            await form.validateFields();
+            form.submit();
+            message.success("Хронологію успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
+    };
 
     return (
         <Modal

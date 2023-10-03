@@ -166,7 +166,7 @@ const NewsModal: React.FC<{
         };
 
         newsStore.getNewsArray.map((t) => t).forEach(t => {
-        if (formValues.title == t.title || formValues.url == t.url || imageId.current == t.imageId)
+        if (formValues.title == t.title || imageId.current == t.imageId)
             newsItem = t;
         });
         //need to fix when url is static because from didn't see ti when u press save button on second time

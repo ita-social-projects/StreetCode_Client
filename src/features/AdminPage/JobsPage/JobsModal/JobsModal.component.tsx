@@ -82,9 +82,9 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             const allJobs = await JobApi.getAllShort();
             allJobs.map((t) => t).forEach(t => {
                 if (values.title == t.title)
-                    currentId = t.id;
+                    newJob.id = t.id;
             });
-            if (currentId === 0) {
+            if (newJob.id === 0) {
                 await JobApi.create(newJob);
             } else {
                 await JobApi.update(newJob);
