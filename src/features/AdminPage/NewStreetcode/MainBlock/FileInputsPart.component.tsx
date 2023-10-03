@@ -7,7 +7,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import CreateUpdateMediaStore from '@app/stores/create-update-media-store';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
-import Image, { ImageUpdate } from '@models/media/image.model';
+import Image, { ImageAssigment, ImageUpdate } from '@models/media/image.model';
 
 import { FormInstance, Modal, UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -144,18 +144,25 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
             const fetchData = async () => {
                 try {
                     await ImagesApi.getByStreetcodeId(parseId).then((result) => {
-                        setAnimation([convertFileToUploadFile(result[0])]);
-                        setBlackAndWhite([convertFileToUploadFile(result[1])]);
-                        setRelatedFigure(result[2] ? [convertFileToUploadFile(result[2])] : []);
-                        form.setFieldsValue({
-                            animations: [convertFileToUploadFile(result[0])],
-                            pictureBlackWhite: [convertFileToUploadFile(result[1])],
-                            pictureRelations: result[2] ? [convertFileToUploadFile(result[2])] : [],
-                        });
+                        result.forEach((image) => {
+                            if (image.imageDetails?.alt === ImageAssigment.animation.toString()) {
+                                setAnimation([convertFileToUploadFile(image)]);
+                                form.setFieldsValue({ animations: [convertFileToUploadFile(image)] });
+                                createUpdateMediaStore.animationId = image.id;
+                            }
 
-                        createUpdateMediaStore.animationId = result[0].id;
-                        createUpdateMediaStore.blackAndWhiteId = result[1].id;
-                        createUpdateMediaStore.relatedFigureId = result[2]?.id;
+                            if (image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()) {
+                                setBlackAndWhite([convertFileToUploadFile(image)]);
+                                form.setFieldsValue({ pictureBlackWhite: [convertFileToUploadFile(image)] });
+                                createUpdateMediaStore.blackAndWhiteId = image.id;
+                            }
+
+                            if (image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()) {
+                                setRelatedFigure([convertFileToUploadFile(image)]);
+                                form.setFieldsValue({ pictureRelations: [convertFileToUploadFile(image)] });
+                                createUpdateMediaStore.relatedFigureId = image.id;
+                            }
+                        });
 
                         createUpdateMediaStore.imagesUpdate = result.map((img) => ({
                             ...img,
@@ -194,10 +201,6 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     label="Анімація"
                     rules={[
                         {
-                            required: true,
-                            message: 'Завантажте анімацію',
-                        },
-                        {
                             validator: (_, file) => {
                                 if (file) {
                                     let name = '';
@@ -211,7 +214,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     }
                                     return Promise.reject(Error('Тільки файли з розширенням .gif та .webp дозволені!'));
                                 }
-                                return Promise.reject();
+                                return Promise.resolve();
                             },
                         },
                     ]}

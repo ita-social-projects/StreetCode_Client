@@ -50,4 +50,25 @@
         justify-content: center;
     }
 
+    .readLessContainer{
+        position: sticky;
+        bottom: 40px;
+    }
+
+    .readLess {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 46px;
+        background-color: white;
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 2px;
+        width: 252px;
+        color: #E04031;
+        margin: auto;
+        font-size: 14px;
+        font-weight: 500;
+    }
 }
+

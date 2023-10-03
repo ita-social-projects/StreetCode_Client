@@ -12,7 +12,7 @@ import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
 import StatisticRecord from '@/models/analytics/analytics/statisticrecord.model';
-import Image from '@/models/media/image.model';
+import Image, { ImageAssigment } from '@/models/media/image.model';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface TableData {
@@ -79,7 +79,7 @@ const Analytics = () => {
 
     const setImages = async (streetcodeId: number) => {
         await ImagesApi.getByStreetcodeId(streetcodeId ?? 1).then((imgs) => {
-            setImage(imgs.at(0));
+            setImage(imgs.find((image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()));
         }).catch((e) => {
             console.log(e);
         });
