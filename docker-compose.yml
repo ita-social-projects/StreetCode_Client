@@ -1,11 +1,27 @@
 services:
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - /etc/certbot/www/:/var/www/certbot/:rw
+      - /etc/certbot/conf/:/etc/letsencrypt/:rw
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      FRONTEND_SERVER_NAME: ${FRONTEND_SERVER_NAME}
+      BACKEND_SERVER_NAME:  ${BACKEND_SERVER_NAME}
+    volumes:
+      - ./templates:/etc/nginx/templates
+      - /etc/certbot/www:/var/www/certbot/:ro
+      - /etc/certbot/conf:/etc/nginx/ssl/:ro
   frontend:
     image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
     pull_policy: always
-    ports:
-      - "80:3000"
     expose:
-      - "3000"
+      - "80"
     healthcheck:
       test: curl --fail http://localhost || exit 1
       interval: 30s
@@ -13,13 +29,12 @@ services:
       retries: 5
     environment:
       API_URL: ${ENV_API_BACKEND}
+
   backend:
     image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
     pull_policy: always
     expose:
       - "80"
-    ports:
-    - "5000:80"
     environment:
       STREETCODE_ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
       STREETCODE_Blob__BlobStoreKey: ${BLOB_STORAGE_KEY}

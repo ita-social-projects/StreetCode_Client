@@ -60,7 +60,7 @@ const NewsSliderItem = ({ news, image }: Props) => {
                             </h2>
                             <div className="newsText">
                                 <span className="text">{htmlReactParser(cleanText)}</span>
-                                <a className="moreText" href={news.url} onClick={handleLinkClick}>
+                                <a className="moreText" href={`news/${news.url.toString()}`} onClick={handleLinkClick}>
                                     До новини
                                 </a>
                             </div>

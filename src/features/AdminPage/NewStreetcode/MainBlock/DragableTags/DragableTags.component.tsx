@@ -33,7 +33,6 @@ const DragableTags = React.memo(({ tags, setTags }: Props) => {
             result.source.index,
             result.destination.index,
         );
-        console.log(items);
         setTags(items);
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
