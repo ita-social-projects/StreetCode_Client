@@ -30,7 +30,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
     const [form] = Form.useForm();
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const [storedJob, setStoredJob] = useState<Job>();
-    const [validateDescription, setValidateDescription] = useState(<></>);
+    const [validateDescription, setValidateDescription] = useState<boolean>();
     const emptyJob : Job = {
         title: form.getFieldValue('title'),
         description: form.getFieldValue('description'),
@@ -204,16 +204,16 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                             && !setOfKeys.has(e.key)
                             && editor.selection.getContent({ format: 'text' }).length === 0) {
                             e.preventDefault();
-                            setValidateDescription(<label className="validateLabelDescription">Занадто довгий опис</label>);
+                            setValidateDescription(false);
                         } else {
-                            setValidateDescription(<></>);
+                            setValidateDescription(true);
                         }
                     }}
                     onChange={(e, editor) => {
                         setCurrent({ ...current, description: editor.getContent() });
                     }}
                 />
-                {validateDescription}
+                {!validateDescription ? <label className="validateLabelDescription">Занадто довгий опис</label> : <></>}
                 <FormItem
                     label="Заробітня плата"
                     name="salary"
