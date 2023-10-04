@@ -44,14 +44,7 @@ const TeamItemSlider = ({ team, image }: Props) => {
                                 {`${team?.name}`}
                             </h2>
                             <div className="teamPosition">
-                                {team?.positions
-                                    .filter((position) => position.position)
-                                    .map((position) => (
-                                        <span key={position.id}>
-                                            {position.position}
-                                            {' '}
-                                        </span>
-                                    ))}
+                                {team?.description}
                             </div>
                             {windowsize.width > 1024 && (
                                 <>
