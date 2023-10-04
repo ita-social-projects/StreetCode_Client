@@ -19,5 +19,8 @@ $articlesImg: "@assets/images/sources/Articles.webp";
 @media screen and (max-width: 768px) {
   .sourcesSliderItem {
      @include mut.sizedImportant($width: 250px, $height: 165px);
+     h1 {
+      text-align: center;
+    }
   }
 }

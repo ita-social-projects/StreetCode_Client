@@ -3,6 +3,7 @@ import './JobsModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
 
 import {
     Button, Form, Input, Modal, Popover,
@@ -76,7 +77,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 id: currentId,
                 title,
                 status: isActive,
-                description,
+                description: current.description,
                 salary,
             };
 
@@ -96,6 +97,10 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
         setOpen(false);
     };
 
+    const handleEditorChange = (content: string, editor: any) => {
+        setCurrent({ ...current, description: content });
+    };
+
     return (
         <Modal
             className="modalContainer"
@@ -113,7 +118,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             )}
         >
             <div className="center">
-                <h2>Вакакансії</h2>
+                <h2>Вакансії</h2>
             </div>
             <Form
                 layout="vertical"
@@ -146,17 +151,33 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                         </Select.Option>
                     </Select>
                 </FormItem>
-                <FormItem
-                    label="Опис вакансії"
-                    name="description"
-                    rules={[{ required: true, message: 'Введіть опис вакансії' }]}
-                >
-                    <TextArea
-                        className="textWrapper"
-                        showCount
-                        maxLength={maxLengths.maxLenghtVacancyDesc}
-                    />
-                </FormItem>
+
+                <label>Опис вакансії</label>
+                <TinyMCEEditor
+                    className="textWrapper"
+                    onEditorChange={(event, editor) => {
+                        handleEditorChange(event, editor);
+                    }}
+                    init={{
+                        max_chars: maxLengths.maxLenghtVacancyDesc,
+                        language: 'uk',
+                        height: 300,
+                        menubar: false,
+                        init_instance_callback(editor) {
+                            editor.setContent(current?.description ?? '');
+                        },
+                        plugins: [
+                            'autolink', 'link',
+                        ],
+                        toolbar: 'link',
+                        content_style: 'body {font - family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                        link_title: false,
+                        link_target_list: false,
+                    }}
+                    onChange={(e, editor) => {
+                        setCurrent({ ...current, description: editor.getContent() });
+                    }}
+                />
                 <FormItem
                     label="Заробітня плата"
                     name="salary"

@@ -42,6 +42,7 @@ const InterestingFactsComponent = () => {
     const setings = {
         dots: facts.current.length > 3,
         swipeOnClick: false,
+        touchThreshold: 25,
         rtl: false,
         centerMode: true,
         infinite: sliderArray.length > 1,

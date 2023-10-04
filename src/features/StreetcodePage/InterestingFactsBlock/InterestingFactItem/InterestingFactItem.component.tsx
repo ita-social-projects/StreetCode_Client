@@ -51,9 +51,6 @@ const InterestingFactItem = ({
         <div
             className="interestingFactSlide"
             ref={elementRef}
-            onClick={(e) => {
-                { windowSize.width > 1024 && e.stopPropagation(); }
-            }}
         >
             <div
                 className="slideImage"

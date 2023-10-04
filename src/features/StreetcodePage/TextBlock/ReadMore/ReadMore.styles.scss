@@ -2,28 +2,30 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.readMore {
-    color: c.$dark-red-color;
-    cursor: pointer;
-    &:hover{
-        text-decoration: underline;
+@media screen and (min-width: 481px) {
+    .readMore {
+        color: c.$dark-red-color;
+        cursor: pointer;
+        &:hover{
+            text-decoration: underline;
+        }
     }
-}
 
-.readMoreContainer {
-    @include mut.rem-margined($top: 35px);
-    @include mut.with-font($font-weight: 500);
-}
+    .readMoreContainer {
+        @include mut.rem-margined($top: 35px);
+        @include mut.with-font($font-weight: 500);
+    }
 
-.mainTextContent {
-    white-space: pre-line;
-    @include mut.rem-margined($bottom: 35px);
-}
+    .mainTextContent {
+        white-space: pre-line;
+        @include mut.rem-margined($bottom: 35px);
+    }
 
-.text {
-    white-space: pre-line;
-    margin-right: f.pxToRem(10px);
-    margin-left: f.pxToRem(10px);
+    .text {
+        white-space: pre-line;
+        margin-right: f.pxToRem(10px);
+        margin-left: f.pxToRem(10px);
+    }
 }
 
 @media screen and (max-width: 1024px) {
@@ -46,8 +48,30 @@
 
 @media screen and (max-width: 480px){
     .readMore{
+        color: c.$dark-red-color;
         display: flex;
         justify-content: center;
     }
 
+    .readLessContainer{
+        position: sticky;
+        bottom: 40px;
+    }
+
+    .readLess {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 46px;
+        background-color: white;
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 2px;
+        width: 252px;
+        color: #E04031!important;
+        margin: auto;
+        font-size: 14px;
+        font-weight: 500;
+    }
 }
+
