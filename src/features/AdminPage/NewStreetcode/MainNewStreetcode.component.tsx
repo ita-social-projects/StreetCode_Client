@@ -336,12 +336,21 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                streetcodeArts: arts.map((streetcodeArt) => ({
-                    ...streetcodeArt,
-                    art: {
-                        ...streetcodeArt.art,
-                        image: null,
-                    },
+                arts: arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
+                    ...streetcodeArt.art,
+                    image: null,
+                    isPersisted: streetcodeArt.isPersisted,
+                    modelState: streetcodeArt.modelState,
+                })),
+                streetcodeArtSlides: streetcodeArtSlideStore.streetcodeArtSlides.map((slide) => ({
+                    ...slide,
+                    streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
+                        ...streetcodeArt,
+                        art: {
+                            ...streetcodeArt.art,
+                            image: null,
+                        },
+                    })),
                 })),
                 subtitles,
                 firstName: null,
@@ -369,6 +378,7 @@ const NewStreetcode = () => {
                 imagesDetails: createUpdateMediaStore.getImageDetails(),
 
             };
+            console.log(JSON.stringify(streetcode));
             if (streetcodeType.current === StreetcodeType.Person) {
                 streetcode.firstName = form.getFieldValue('name');
                 streetcode.lastName = form.getFieldValue('surname');

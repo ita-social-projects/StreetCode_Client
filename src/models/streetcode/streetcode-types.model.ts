@@ -1,6 +1,8 @@
 import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-content/tag.model';
-import Art from '@models/media/art.model';
+import IModelState from '@models/interfaces/IModelState';
+import IPersisted from '@models/interfaces/IPersisted';
+import Art, { ArtCreateUpdate } from '@models/media/art.model';
 import Audio, { AudioUpdate } from '@models/media/audio.model';
 import Image, { ImageCreateUpdate, ImageDetails } from '@models/media/image.model';
 import { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
@@ -124,7 +126,8 @@ export interface StreetcodeCreate {
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
-    streetcodeArts: StreetcodeArtCreateUpdate[],
+    arts: (ArtCreateUpdate & IPersisted & IModelState)[],
+    streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
     toponyms: ToponymCreateUpdate[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
     coordinates: StreetcodeCoordinate[],
@@ -151,7 +154,7 @@ export interface StreetcodeUpdate {
     relatedFigures: RelatedFigureUpdate[],
     timelineItems: TimelineItemUpdate[],
     partners: PartnerUpdate[],
-    streetcodeArts: StreetcodeArtCreateUpdate[];
+    arts: (ArtCreateUpdate & IPersisted & IModelState)[];
     streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
     subtitles: Subtitle[],
     text: TextCreateUpdate | null,
