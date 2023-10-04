@@ -56,6 +56,7 @@ const GenericSlider: FC<SliderProps> = ({
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
+                initialSlide={sliderProps.initialSlide}
                 beforeChange={(currentSlide, nextSlide) => setCurrentIndex(nextSlide)} // for handle dots click
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
