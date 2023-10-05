@@ -131,8 +131,20 @@ const TeamModal: React.FC<{
         }
     };
     const handleOk = async () => {
-        form.submit();
-        message.success("Члена команди успішно додано!", 2)
+        try {
+            await form.validateFields();
+            form.submit();
+            message.success("Нового члена команди успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
     };
     const onSuccesfulSubmitPosition = async (formValues: any) => {
         teamSourceLinks.forEach((el, index) => {
@@ -150,6 +162,10 @@ const TeamModal: React.FC<{
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
+        teamStore.getTeamArray.map((t) => t).forEach(t => {
+        if (formValues.name == t.name  || imageId.current == t.imageId)
+            teamMember = t;
+        });
         if (teamMember) {
             team.id = teamMember.id;
             Promise.all([

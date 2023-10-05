@@ -25,7 +25,7 @@ const ForFansAdminItem: React.FC<{
         <div className="textBlockButton">
             <div className="item">
                 <div className="blockItem">
-                    <EditOutlined onClick={onEditClick} />
+                    <EditOutlined onClick={() => onEditClick()} />
                 </div>
                 <p>
                     {categoryName}

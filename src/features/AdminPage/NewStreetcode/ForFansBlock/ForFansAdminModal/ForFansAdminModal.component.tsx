@@ -9,7 +9,7 @@ import useMobx from '@stores/root-store';
 import { Editor } from '@tinymce/tinymce-react';
 
 import {
-    Button, Form, Modal, Popover, Select,
+    Button, Form, message, Modal, Popover, Select,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
@@ -32,7 +32,7 @@ interface Props {
 const ForFansModal = ({
     character_limit, open, setOpen, allCategories, onChange,
 } : Props) => {
-    const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
+    const {sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
@@ -95,7 +95,7 @@ const ForFansModal = ({
     }, [open, sourceCreateUpdateStreetcode]);
 
     const onSave = (values:any) => {
-        const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
+        let elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (elementToUpdate) {
             sourceCreateUpdateStreetcode
                 .updateElement(
@@ -112,14 +112,25 @@ const ForFansModal = ({
                     text: editorRef.current?.editor?.getContent() ?? '',
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
                 });
+            sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length - 1;
         }
-        // setOpen(false);
-        sourceCreateUpdateStreetcode.indexUpdate = -1;
         onChange('saved', null);
     };
-    const handleOk = () => {
-        form.submit();
-        alert('Категорію для фанатів успішно додано!');
+    const handleOk = async () => {
+        try {
+            await form.validateFields();
+            form.submit();
+            message.success("Категорію для фанатів успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
     };
     const onDropDownChange = async () => {
         if (isAddModalVisible === false) {

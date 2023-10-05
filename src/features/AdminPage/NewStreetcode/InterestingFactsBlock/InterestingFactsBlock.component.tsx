@@ -4,12 +4,14 @@ import useMobx from '@stores/root-store';
 
 import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
+import { Fact } from '@/models/streetcode/text-contents.model';
 
 interface Props {
+    fact: Fact;
     onChange: (field: string, value: any) => void;
 }
 
-const InterestingFactsBlock = ({ onChange }: Props) => {
+const InterestingFactsBlock = ({ fact, onChange }: Props) => {
     const [openModal, setModalOpen] = useState<boolean>(false);
     const { factsStore } = useMobx();
 
@@ -35,7 +37,7 @@ const InterestingFactsBlock = ({ onChange }: Props) => {
                 ))}
             </div>
             <div>
-                <InterestingFactsAdminModal setModalOpen={setModalOpen} open={openModal} onChange={onChange} />
+                <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} onChange={onChange} />
             </div>
         </div>
     );
