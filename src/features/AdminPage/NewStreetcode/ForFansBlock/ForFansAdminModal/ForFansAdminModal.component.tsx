@@ -49,11 +49,6 @@ const ForFansModal = ({
             const categories = await SourcesApi.getAllCategories();
             sourcesAdminStore.setInternalSourceCategories(categories);
 
-            const sourceMas: SourceCategoryName[] = categories.map((x) => ({
-                id: x.id ?? 0,
-                title: x.title,
-            }));
-            const justAddedCategory = sourceMas[sourceMas.length - 1];
             const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
                 .filter((srcCatContent) => srcCatContent.sourceLinkCategoryId
                     && (srcCatContent as StreetcodeCategoryContentUpdate).modelState !== ModelState.Deleted);
@@ -65,7 +60,9 @@ const ForFansModal = ({
                 available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate.current?.sourceLinkCategoryId)]);
             }
             if (isNewCat) {
-                available.push(justAddedCategory);
+                const allCategoriesIds = allCategories.map((c) => c.id);
+                const newlyCreatedCategories = categories.filter((c) => !allCategoriesIds.includes(c.id));
+                available.push(...newlyCreatedCategories);
             }
             return available;
         } catch (error) {
