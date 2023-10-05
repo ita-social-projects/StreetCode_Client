@@ -24,7 +24,7 @@ const Newss: React.FC = observer(() => {
     const [newsToEdit, setNewsToEdit] = useState<News>();
     const updatedNews = () => {
         Promise.all([
-            newsStore.fetchNewsAll(),
+            newsStore.fetchNewsAllSortedByCreationDate(),
         ]).then(() => {
             newsStore?.NewsMap.forEach((val, key) => {
                 if (val.imageId !== null && val.imageId !== undefined) {
@@ -36,24 +36,12 @@ const Newss: React.FC = observer(() => {
                     });
                 }
             });
-        }).then(() => newsStore.setInternalMap(newsStore.getNewsArray.sort(NewsDateComparator)));
+        }).then(() => newsStore.setInternalMap(newsStore.getNewsArray));
     };
     useEffect(() => {
         updatedNews();
     }, [modalAddOpened, modalEditOpened]);
 
-    const NewsDateComparator = (news1: News, news2: News)=> 
-    {
-        if(news1.creationDate < news2.creationDate)
-        {
-            return -1;
-        }
-        if(news1.creationDate > news2.creationDate)
-        {
-            return 1;
-        }
-        return 0;
-    }
     const columns: ColumnsType<News> = [
         {
             title: 'Назва',
