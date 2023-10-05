@@ -190,6 +190,18 @@ const TeamModal: React.FC<{
     }, {
         value: 'youtube',
         label: 'Youtube',
+    }, {
+        value: 'linkedin',
+        label: 'LinkedIn',
+    }, {
+        value: 'tiktok',
+        label: 'TikTok',
+    }, {
+        value: 'behance',
+        label: 'Behance',
+    }, {
+        value: 'https',
+        label: 'Ваш сайт',
     }];
 
     useEffect(() => {

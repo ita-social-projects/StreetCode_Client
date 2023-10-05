@@ -1,21 +1,20 @@
 import './TeamItemSlider.styles.scss';
 
-import { useEffect, useState } from 'react';
-import ImageStore from '@app/stores/image-store';
-import facebook from '@assets/images/partners/facebook.webp';
-import instagram from '@assets/images/partners/instagram.webp';
-import twitter from '@assets/images/partners/twitter.webp';
-import youtube from '@assets/images/partners/youtube.webp';
-import useMobx from '@stores/root-store';
+import behance from '@assets/images/partners/behance.svg';
+import facebook from '@assets/images/partners/facebook.svg';
+import https from '@assets/images/partners/https.svg';
+import instagram from '@assets/images/partners/instagram.svg';
+import linkedin from '@assets/images/partners/linkedin.svg';
+import tiktok from '@assets/images/partners/tiktok.svg';
+import twitter from '@assets/images/partners/twitterNew.svg';
+import youtube from '@assets/images/partners/youtube.svg';
 
-import ImagesApi from '@/app/api/media/images.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 
-import TeamMember, { Positions } from '../../../../models/team/team.model';
+import TeamMember from '../../../../models/team/team.model';
 
-const LogoType = [twitter, instagram, facebook, youtube];
 interface Props {
     team?: TeamMember;
     image: Image
@@ -23,6 +22,7 @@ interface Props {
 
 const TeamItemSlider = ({ team, image }: Props) => {
     const windowsize = useWindowSize();
+    const LogoType = [twitter, instagram, facebook, youtube, linkedin, tiktok, behance, https];
 
     return (
         <div className="teamItemSlider">
@@ -57,21 +57,20 @@ const TeamItemSlider = ({ team, image }: Props) => {
                                         key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`}
                                         className="teamLinkItems"
                                     >
-                                        {team?.teamMemberLinks.map((link) => (
-                                            <a
-                                                key={`${link.id}${link.targetUrl}`}
-                                                rel="noreferrer"
-                                                target="_blank"
-                                                className="teamLinkItem"
-                                                href={link.targetUrl}
-                                            >
-                                                <img
-                                                    key={link.id * link.logoType}
-                                                    src={LogoType[link.logoType]}
-                                                    alt={link.targetUrl}
-                                                />
-                                            </a>
-                                        ))}
+                                        {team?.teamMemberLinks.map((link) => {
+                                            const LogoComponent = LogoType[link.logoType];
+                                            return (
+                                                <a
+                                                    key={`${link.id}${link.targetUrl}`}
+                                                    rel="noreferrer"
+                                                    target="_blank"
+                                                    className="teamLinkItem"
+                                                    href={link.targetUrl}
+                                                >
+                                                    <LogoComponent />
+                                                </a>
+                                            );
+                                        })}
                                     </div>
                                 </>
                             )}
