@@ -122,7 +122,7 @@ const PartnersModal = () => {
                             <Input
                                 className="input"
                                 name="email"
-                                placeholder="Твій e—mail"
+                                placeholder="Твій e-mail"
                                 onChange={handleChange}
                             />
                         </Form.Item>
