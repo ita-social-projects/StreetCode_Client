@@ -134,6 +134,7 @@ const ForFansModal = ({
                 title: x.title,
             }));
 
+            sourceMas.sort((a, b) => a.title.localeCompare(b.title));
             setCategories(sourceMas);
         }
     };
@@ -194,6 +195,7 @@ const ForFansModal = ({
                             Додати нову категорію...
                         </Select.Option>
                         {Categories
+                            // eslint-disable-next-line max-len
                             .map((c) => <Select.Option key={`${c.id}`} value={c.id} disabled={handleDisabled(c.id)}>{c.title}</Select.Option>)}
                     </Select>
                 </FormItem>
