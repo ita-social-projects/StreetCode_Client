@@ -1,11 +1,11 @@
 import './PartnerContent.styles.scss';
 
-import facebook from '@assets/images/partners/facebook.webp';
-import instagram from '@assets/images/partners/instagram.webp';
-import twitter from '@assets/images/partners/twitter.webp';
-import youtube from '@assets/images/partners/youtube.webp';
-import useMobx from '@stores/root-store';
+import facebook from '@assets/images/partners/facebook.svg';
+import instagram from '@assets/images/partners/instagram.svg';
+import twitter from '@assets/images/partners/twitterNew.svg';
+import youtube from '@assets/images/partners/youtube.svg';
 import Image from '@models/media/image.model';
+
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Partner from '@/models/partners/partners.model';
 
@@ -14,12 +14,12 @@ interface Props {
     image: Image | undefined;
 }
 
-const LogoType = [twitter, instagram, facebook, youtube];
 
 const PartnerContent = ({ partner, image }: Props) => {
     const {
         id, title, targetUrl, partnerSourceLinks, description,
     } = partner;
+    const LogoType = [twitter, instagram, facebook, youtube];
 
     return (
         <div className="partnerContent">
@@ -38,20 +38,19 @@ const PartnerContent = ({ partner, image }: Props) => {
                     className="sourceLinks"
                     style={{ display: partnerSourceLinks.length < 1 ? 'none' : ' ' }}
                 >
-                    {partnerSourceLinks.map((sl) => (
-                        <a
-                            rel="noreferrer"
-                            target="_blank"
-                            className="sourceLink"
-                            href={sl.targetUrl.href}
-                        >
-                            <img
-                                key={sl.id}
-                                src={LogoType[sl.logoType]}
-                                alt={sl.targetUrl.title}
-                            />
-                        </a>
-                    ))}
+                    {partnerSourceLinks.map((sl, index) => {
+                        const LogoComponent = LogoType[sl.logoType];
+                        return (
+                            <a
+                                key={index}
+                                rel="noreferrer"
+                                target="_blank"
+                                href={sl.targetUrl.href}
+                            >
+                                <LogoComponent />
+                            </a>
+                        );
+                    })}
                 </div>
                 {partner.targetUrl?.href !== null ? (
                     <a
