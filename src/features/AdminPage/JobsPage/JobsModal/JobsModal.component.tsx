@@ -6,7 +6,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
 
 import {
-    Button, Form, Input, Modal, Popover,
+    Button, Form, Input, message, Modal, Popover,
     Select,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -80,13 +80,17 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 description: current.description,
                 salary,
             };
-
-            if (currentId === 0) {
+            const allJobs = await JobApi.getAllShort();
+            allJobs.map((t) => t).forEach(t => {
+                if (values.title == t.title)
+                    newJob.id = t.id;
+            });
+            if (newJob.id === 0) {
                 await JobApi.create(newJob);
             } else {
                 await JobApi.update(newJob);
             }
-            clearModal();
+            message.success("Вакансію успішно додано!", 2)
         } catch (error) {
             console.log(error);
         }

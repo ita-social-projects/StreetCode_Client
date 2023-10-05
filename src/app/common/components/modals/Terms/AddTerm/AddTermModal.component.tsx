@@ -42,7 +42,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
     const handleOk= async () =>{
         try {
             form.submit();
-            message.success("Партнера успішно додано!", 2)
+            message.success("термін успішно додано!", 2)
         } catch (error) {
             message.config({
                 top: 100,

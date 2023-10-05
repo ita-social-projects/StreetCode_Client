@@ -12,7 +12,7 @@ import SliderProps, { defaultSliderProps } from './index';
 const GenericSlider: FC<SliderProps> = ({
     children,
     onClick,
-    swipeOnClick = false,
+    swipeOnClick = true,
     ...sliderProps
 }) => {
     const { modalStore: { setModal } } = useModalContext();

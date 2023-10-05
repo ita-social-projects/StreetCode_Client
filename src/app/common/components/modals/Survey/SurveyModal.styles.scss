@@ -6,8 +6,8 @@
 $StbgImg: '@assets/images/donates/bgStrLogo.webp';
 
 .surveyModal {
-  width: f.pxToRem(832px) !important;
-  height: f.pxToRem(414px);
+  width: f.pxToRem(748px) !important;
+  height: f.pxToRem(346px);
 
   display: flex;
   justify-content: center;
@@ -16,18 +16,17 @@ $StbgImg: '@assets/images/donates/bgStrLogo.webp';
   &.ant-modal {
     .ant-modal-content {
       height: inherit;
-      @include mut.flex-centered($direction: column);
+
       @include mut.full-rounded(30px, $overflow: visible);
 
-      @include mut.bg-image($StbgImg, 18%, no-repeat);
-      background-position: center;
-      padding: 0 !important;
+      @include mut.bg-image($StbgImg, f.pxToRem(128px), no-repeat);
+      background-position: left f.pxToRem(310px) top f.pxToRem(100px);
+      padding: f.pxToRem(40px) f.pxToRem(20px) !important;
       box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
     }
 
     .ant-modal-close {
-
-      @include mut.positioned-as(absolute, $left: 94%, $top: -27px);
+      @include mut.positioned-as(absolute, $left: 690px, $top: -25px);
       @include mut.circular(80px, c.$pure-white-color);
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
@@ -43,116 +42,122 @@ $StbgImg: '@assets/images/donates/bgStrLogo.webp';
     }
   }
 
+  .surveyModalContent {
+    @include mut.flex-centered($direction: column, $gap: 20px);
+    text-align: center;
+    line-height: normal;
 
-.surveyModalContent {
-  @include mut.flex-centered($direction: column);
-  @include mut.rem-margined(80px, 20px, 40px, 20px);
-  text-align: center;
-
-  > h1 {
-    color: c.$pure-black-color;
-    @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
-  }
-
-  > h3 {
-    @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
-  }
-
-
-  .surveyModalBtnContainer {
-    @include mut.sized(220px, 55px);
-    @include mut.rem-margined(16px, 0, 15px, 15px);
-    @include mut.full-rounded(14px);
-    background-color: c.$accented-red-color;
-    a {
-      @include mut.with-font($font-weight: 400);
-      border-width: 3px;
-      border-color: c.$pure-white-color;
-      color: c.$pure-white-color;
+    >h1 {
+      color: c.$pure-black-color;
+      height: f.pxToRem(26px);
+      @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
     }
-    &:hover {
-      box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
-      border-color: c.$accented-red-color;
+
+    >h3 {
+      height: f.pxToRem(38px);
+      @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
+    }
+
+    .surveyModalParagraph3 {
+      width: f.pxToRem(552px);
+    }
+
+    .surveyModalBtnContainer {
+      @include mut.sized(180px, 46px);
+      @include mut.full-rounded(10px);
+      background-color: c.$accented-red-color;
+      border: 0;
+
+      a {
+        @include mut.with-font($font-size: 14px, $font-weight: 500);
+        border-width: 3px;
+        border-color: c.$pure-white-color;
+        color: c.$pure-white-color;
+      }
+
+      &:hover {
+        box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
+        border-color: c.$accented-red-color;
+      }
     }
   }
-}
 }
 
 @media screen and (max-width: 1024px) {
   .surveyModal {
-    @include mut.sizedImportant(90%, 498px);
-    display: flex;
-    justify-content: center;
-
     &.ant-modal {
-
+      .ant-modal-content {
+        background-position: center;
+      }
 
       .ant-modal-close {
         @include mut.sizedImportant(60px, 60px);
+        @include mut.positioned-as(absolute, $left: 93.5%, $top: -25px);
         @include mut.circular(65px, c.$pure-white-color);
 
-        .ant-modal-close-x svg{
+        .ant-modal-close-x svg {
           transform: scale(0.9);
         }
       }
     }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .surveyModal {
+    height: auto;
 
     .surveyModalContent {
-      padding-bottom: 0%;
-      > h1 {
-        color: c.$pure-black-color;
-        @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
+      >h3 {
+        height: auto;
       }
 
-      > h3 {
-        @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
-      }
-      }
-
-      .surveyModalBtnContainer {
-        @include mut.sized(100%, 46px);
-
+      .surveyModalParagraph3 {
+        width: auto;
       }
     }
   }
-
+}
 
 @media screen and (max-width: 480px) {
   .surveyModal {
-    @include mut.sized(308px, 498px);
+    @include mut.sizedImportant(340px, 498px);
+    max-width: f.pxToRem(340px);
+
     &.ant-modal {
       .ant-modal-content {
         @include mut.bg-image($StbgImg, 35%, no-repeat);
+        background-position: left f.pxToRem(102px) top f.pxToRem(171px);
       }
 
       .ant-modal-close {
-        @include mut.positioned-as($position: absolute, $left: 92.36%, $top: -13px);
+        @include mut.positioned-as($position: absolute, $left: 309px, $top: -15px);
         @include mut.sizedImportant(40px, 40px);
         @include mut.circular(65px, c.$pure-white-color);
 
-        .ant-modal-close-x svg{
+        .ant-modal-close-x svg {
           transform: scale(0.6);
         }
       }
     }
 
-  .surveyModalContent {
-    padding-bottom: 0%;
-    > h1 {
-      color: c.$pure-black-color;
-      @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-    }
-
-    > h3 {
-      @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 300);
-    }
-    }
-    .surveyModalBtnContainer {
-      @include mut.sized(200px, 46px);
-      a {
-        @include mut.with-font($font-size: 16px, $font-weight: 400);
+    .surveyModalContent {
+      >h3 {
+        width: 97%;
       }
 
+      .surveyModalParagraph1 {
+        height: f.pxToRem(95px);
+      }
+
+      .surveyModalParagraph2 {
+        height: f.pxToRem(114px);
+      }
+
+      .surveyModalParagraph3 {
+        height: f.pxToRem(57px);
+        width: 97%;
+      }
     }
   }
 }
