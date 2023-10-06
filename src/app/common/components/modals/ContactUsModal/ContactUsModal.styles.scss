@@ -24,6 +24,39 @@
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .contactUsModal {
+        @include mut.sizedImportant(90%, 498px);
+        
+        &.ant-modal {
+            .ant-modal-close {
+                @include mut.sizedImportant(60px, 60px);
+                @include mut.circular(65px, c.$pure-white-color);
+
+                .ant-modal-close-x svg{
+                    transform: scale(0.9);
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .contactUsModal {
+        &.ant-modal {
+            .ant-modal-close {
+                @include mut.positioned-as($position: absolute, $left: 92.36%, $top: -13px);
+                @include mut.sizedImportant(40px, 40px);
+                @include mut.circular(65px, c.$pure-white-color);
+        
+                .ant-modal-close-x svg{
+                  transform: scale(0.6);
+                }
+              }
+        }
+    }
+}
+
 .headerItem {
     background-color: transparent;
     border: none;
