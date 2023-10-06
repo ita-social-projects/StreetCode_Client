@@ -126,7 +126,7 @@ export interface StreetcodeCreate {
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
-    arts: (ArtCreateUpdate & IPersisted & IModelState)[],
+    arts: ArtCreateUpdate[],
     streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
     toponyms: ToponymCreateUpdate[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
@@ -154,7 +154,7 @@ export interface StreetcodeUpdate {
     relatedFigures: RelatedFigureUpdate[],
     timelineItems: TimelineItemUpdate[],
     partners: PartnerUpdate[],
-    arts: (ArtCreateUpdate & IPersisted & IModelState)[];
+    arts: ArtCreateUpdate[];
     streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
     subtitles: Subtitle[],
     text: TextCreateUpdate | null,

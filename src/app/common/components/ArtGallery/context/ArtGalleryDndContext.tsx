@@ -2,6 +2,7 @@ import React, { HTMLProps, ReactNode } from 'react';
 import {
     DndContext, DragEndEvent, PointerSensor, useSensor, useSensors,
 } from '@dnd-kit/core';
+import Art from '@models/media/art.model';
 import useMobx from '@stores/root-store';
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 } & HTMLProps<HTMLDivElement>;
 
 const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
-    const { streetcodeArtStore, artGalleryTemplateStore } = useMobx();
+    const { artStore, artGalleryTemplateStore } = useMobx();
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -29,15 +30,16 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
     function onDragEnd(event: DragEndEvent): void {
         const droppableComplexId = event?.over?.id.toString() || null;
         const draggbleId = parseInt(event.active.id as string, 10);
-
+        debugger;
         if (!draggbleId || !droppableComplexId) return;
 
         const slideId = parseInt(droppableComplexId.split('-')[0], 10);
         const artIndex = parseInt(droppableComplexId.split('-')[1], 10);
 
-        const art = streetcodeArtStore.getStreetcodeArtArray.find((sArt) => sArt.art.id === draggbleId);
+        const art = artStore.getArtArray.find((art) => art.id === draggbleId);
+
         if (art) {
-            artGalleryTemplateStore.setArtInSlide(slideId, artIndex, art.art);
+            artGalleryTemplateStore.setArtInSlide(slideId, artIndex, art as Art);
         } else {
             console.log('No art Found');
         }

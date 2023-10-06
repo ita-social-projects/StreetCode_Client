@@ -7,26 +7,27 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import Lightbox from 'yet-another-react-lightbox';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
 
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const LightboxComponent = () => {
-    const { streetcodeArtStore: { getStreetcodeArtArray } } = useMobx();
+    const { artStore: { getArtArray } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
 
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
-    const slides = useMemo(() => getStreetcodeArtArray.map(
-        ({ art: { image: { base64, mimeType }, description, title }, index }) => ({
+    const slides = useMemo(() => getArtArray.map(
+        ({ image: { base64, mimeType }, description, title }) => ({
             src: base64ToUrl(base64, mimeType),
-            title: `${index}/${getStreetcodeArtArray.length}`,
+            title: `'REMOVED_INDEX'/${getArtArray.length}`,
             description: `${title ?? ''}. \n\n${description ?? ''}`,
         }),
 
-    ), [getStreetcodeArtArray]);
+    ), [getArtArray]);
 
     const onIdleTimerHandlers = useMemo(() => ({
         onIdle: () => setIsCaptionEnabled(false),

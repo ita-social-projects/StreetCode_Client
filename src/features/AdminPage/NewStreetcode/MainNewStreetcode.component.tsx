@@ -18,6 +18,7 @@ import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
+import { ArtCreateUpdate } from '@models/media/art.model';
 import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
@@ -77,7 +78,7 @@ const NewStreetcode = () => {
         streetcodeCoordinatesStore,
         createUpdateMediaStore,
         statisticRecordStore,
-        streetcodeArtStore,
+        artStore,
         tagsStore,
         streetcodeArtSlideStore,
     } = useMobx();
@@ -90,7 +91,6 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
     const [artSlides, setArtsSlides] = useState<StreetcodeArtSlideCreateUpdate[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
@@ -167,12 +167,6 @@ const NewStreetcode = () => {
                         setArtsSlides(streetcodeArtSlideStore.streetcodeArtSlides);
                     });
                 }
-                if (streetcodeArtStore.getStreetcodeArtArray.length === 0) {
-                    streetcodeArtStore.fetchStreetcodeArtsByStreetcodeId(parseId).then(() => {
-                        setArts(streetcodeArtStore.getStreetcodeArtArray);
-                    });
-                }
-
                 StreetcodesApi.getById(parseId).then((x) => {
                     streetcodeType.current = x.streetcodeType;
                     form.setFieldsValue({
@@ -336,12 +330,7 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                arts: arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
-                    ...streetcodeArt.art,
-                    image: null,
-                    isPersisted: streetcodeArt.isPersisted,
-                    modelState: streetcodeArt.modelState,
-                })),
+                arts: artStore.getArtArray,
                 streetcodeArtSlides: streetcodeArtSlideStore.streetcodeArtSlides.map((slide) => ({
                     ...slide,
                     streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
@@ -440,14 +429,7 @@ const NewStreetcode = () => {
                     text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
-                    streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                        ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
-                        ...streetcodeArt,
-                        art: {
-                            ...streetcodeArt.art,
-                            image: null,
-                        },
-                    })),
+                    arts: artStore.getArtArray,
                     streetcodeArtSlides: [...streetcodeArtSlideStore.streetcodeArtSlides],
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
@@ -531,7 +513,9 @@ const NewStreetcode = () => {
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
                             <ArtGalleryDndContext>
-                                <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
+                                <ArtGalleryBlock />
+                                <h4>Конфігурація гаралеї</h4>
+                                <ArtGallery isConfigurationGallery />
                                 <ArtGallery adminArtSlides={artSlides} />
                             </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
