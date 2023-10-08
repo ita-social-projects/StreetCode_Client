@@ -42,12 +42,13 @@ const TextComponent = () => {
         const element = document.getElementById(hash);
     
         setTimeout(() => {
-            element?.scrollIntoView({behavior: "smooth", block: "center"});
+            element?.scrollIntoView({behavior: "smooth", block: "start"});
         }, 1000);
     });
 
     return (
-        text
+        <div>
+            {text
             ? (
                 <div
                     id="text"
@@ -69,7 +70,8 @@ const TextComponent = () => {
                             </div>
                         ) : <></>}
                 </div>
-            ) : null
+            ) : <></>}
+        </div>
     );
 };
 
