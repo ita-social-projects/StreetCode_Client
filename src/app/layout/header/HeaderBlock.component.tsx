@@ -151,8 +151,9 @@ const HeaderBlock = () => {
                         open={isPopoverVisible}
                         arrow={true}
                         overlayClassName="searchMobPopover"
+                        placement='bottom'
                         content={(
-                            <div >
+                            <div>
                                 <SearchBlock searchQuery={searchQuery} />
                             </div>
                         )}
