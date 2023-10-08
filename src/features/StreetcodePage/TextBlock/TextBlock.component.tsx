@@ -37,6 +37,15 @@ const TextComponent = () => {
         }
     }, [getStreetCodeId]);
 
+    useEffect(() => {
+        const hash = location.hash.replace('#', '');
+        const element = document.getElementById(hash);
+    
+        setTimeout(() => {
+            element?.scrollIntoView({behavior: "smooth", block: "center"});
+        }, 1000);
+    });
+
     return (
         text
             ? (
