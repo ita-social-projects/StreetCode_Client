@@ -47,11 +47,10 @@ const TextComponent = () => {
     });
 
     return (
-        <div>
+        <div id="text">
             {text
             ? (
                 <div
-                    id="text"
                     className="textComponentContainer"
                 >
                     <BlockHeading headingText={String(text?.title)} />
