@@ -30,7 +30,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
     const [form] = Form.useForm();
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const [storedJob, setStoredJob] = useState<Job>();
-    const [validateDescription, setValidateDescription] = useState<boolean>();
+    const [validateDescription, setValidateDescription] = useState<boolean>(true);
     const emptyJob : Job = {
         title: form.getFieldValue('title'),
         description: form.getFieldValue('description'),
@@ -98,6 +98,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
 
     const clearModal = () => {
         form.resetFields();
+        setValidateDescription(true);
         setOpen(false);
     };
 
