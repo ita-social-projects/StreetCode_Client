@@ -219,6 +219,10 @@ const PartnerModal: React.FC< {
                 urlTitle: formValues.urlTitle?.trim() || null,
                 isVisibleEverywhere: formValues.isVisibleEverywhere ?? false,
             };
+            partnersStore.getPartnerArray.map((t) => t).forEach(t => {
+                if (formValues.title == t.title || formValues.description == t.description || imageId.current == t.logoId)
+                    partnerItem = t;
+            });
             if (partnerItem) {
                 partner.id = partnerItem.id;
                 Promise.all([

@@ -59,7 +59,9 @@ const NewsSliderItem = ({ news, image }: Props) => {
                                 {news?.title}
                             </h2>
                             <div className="newsText">
-                                <span className="text">{htmlReactParser(cleanText)}</span>
+                                <p className="text">
+                                    {htmlReactParser(cleanText?.substring(0, 800))}
+                                </p>
                                 <a className="moreText" href={`news/${news.url.toString()}`} onClick={handleLinkClick}>
                                     До новини
                                 </a>

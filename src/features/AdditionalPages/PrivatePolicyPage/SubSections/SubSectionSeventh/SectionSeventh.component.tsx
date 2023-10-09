@@ -1,4 +1,4 @@
-const EMAIL = 'streetcodeua@gmail.com';
+import { EMAIL_INFO } from '@constants/email.constants';
 
 const SectionSeventh = () => (
     <section>
@@ -11,8 +11,9 @@ const SectionSeventh = () => (
             в курсі будь-яких змін або доповнень.
             <br />
             З питань щодо політики конфіденційності (в т.ч. видалення персональних даних), Користувач може
-            зв&apos;язатися з нами, використовуючи e-mail:
-            <a className="link" href={`mailto:${EMAIL}`}> {EMAIL}</a>
+
+            зв&apos;язатися з нами, використовуючи e—mail:
+            <a className="link" href={EMAIL_INFO.WRITE_EMAIL_TO_US}>{EMAIL_INFO.EMAIL}</a>
             .
         </div>
     </section>

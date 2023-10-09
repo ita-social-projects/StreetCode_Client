@@ -24,7 +24,6 @@ const QRMobile: React.FC<{ hrefLink: string }> = ({ hrefLink }) => {
                         <p className="pressButtonText">
                             Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
                         </p>
-                        <div className="QRMobileGif" />
                         <a href={hrefLink} target="_blank" rel="noreferrer">
                             <Button
                                 className="goToInstaButton"
@@ -36,7 +35,6 @@ const QRMobile: React.FC<{ hrefLink: string }> = ({ hrefLink }) => {
                     </div>
                 ) : (
                     <>
-                        <div className="QRMobileGif" />
                         <div className="QRMobileContent">
                             <p className="arInstagram">AR-історія в Інсті!</p>
                             <p className="pressButtonText">

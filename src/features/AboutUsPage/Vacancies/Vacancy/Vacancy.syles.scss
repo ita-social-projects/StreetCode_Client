@@ -30,6 +30,7 @@
     label {
         @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
         color: c.$dark-red-color;
+        cursor: pointer;
     }
 
     @media screen and (max-width: s.$tablet) {

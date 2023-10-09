@@ -3,9 +3,10 @@ import './JobsModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
 
 import {
-    Button, Form, Input, Modal, Popover,
+    Button, Form, Input, message, Modal, Popover,
     Select,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -76,16 +77,20 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 id: currentId,
                 title,
                 status: isActive,
-                description,
+                description: current.description,
                 salary,
             };
-
-            if (currentId === 0) {
+            const allJobs = await JobApi.getAllShort();
+            allJobs.map((t) => t).forEach(t => {
+                if (values.title == t.title)
+                    newJob.id = t.id;
+            });
+            if (newJob.id === 0) {
                 await JobApi.create(newJob);
             } else {
                 await JobApi.update(newJob);
             }
-            clearModal();
+            message.success("Вакансію успішно додано!", 2)
         } catch (error) {
             console.log(error);
         }
@@ -94,6 +99,10 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
     const clearModal = () => {
         form.resetFields();
         setOpen(false);
+    };
+
+    const handleEditorChange = (content: string, editor: any) => {
+        setCurrent({ ...current, description: content });
     };
 
     return (
@@ -113,7 +122,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             )}
         >
             <div className="center">
-                <h2>Вакакансії</h2>
+                <h2>Вакансії</h2>
             </div>
             <Form
                 layout="vertical"
@@ -146,17 +155,33 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                         </Select.Option>
                     </Select>
                 </FormItem>
-                <FormItem
-                    label="Опис вакансії"
-                    name="description"
-                    rules={[{ required: true, message: 'Введіть опис вакансії' }]}
-                >
-                    <TextArea
-                        className="textWrapper"
-                        showCount
-                        maxLength={maxLengths.maxLenghtVacancyDesc}
-                    />
-                </FormItem>
+
+                <label>Опис вакансії</label>
+                <TinyMCEEditor
+                    className="textWrapper"
+                    onEditorChange={(event, editor) => {
+                        handleEditorChange(event, editor);
+                    }}
+                    init={{
+                        max_chars: maxLengths.maxLenghtVacancyDesc,
+                        language: 'uk',
+                        height: 300,
+                        menubar: false,
+                        init_instance_callback(editor) {
+                            editor.setContent(current?.description ?? '');
+                        },
+                        plugins: [
+                            'autolink', 'link',
+                        ],
+                        toolbar: 'link',
+                        content_style: 'body {font - family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                        link_title: false,
+                        link_target_list: false,
+                    }}
+                    onChange={(e, editor) => {
+                        setCurrent({ ...current, description: editor.getContent() });
+                    }}
+                />
                 <FormItem
                     label="Заробітня плата"
                     name="salary"
