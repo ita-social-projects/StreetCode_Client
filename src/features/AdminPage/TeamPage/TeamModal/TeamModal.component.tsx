@@ -258,7 +258,7 @@ const TeamModal: React.FC<{
                         name="description"
                         label="Опис: "
                     >
-                        <TextArea showCount maxLength={48} />
+                        <TextArea showCount maxLength={70} />
                     </Form.Item>
 
                     <Form.Item

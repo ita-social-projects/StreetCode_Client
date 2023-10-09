@@ -40,11 +40,8 @@ const TeamComponent = () => {
     if (windowsize.width <= 1024 && windowsize.width >= 768) props.centerMode = true;
     if (windowsize.width <= 1024) props.dots = true;
 
-    const handleClick = () => {
-        window.location.assign('https://www.instagram.com/streetcodeua/');
-    };
     const handleButtonClick = () => {
-        window.location.assign('https://www.instagram.com/streetcodeua/');
+        window.location.href = '../about-us';
     };
 
     useAsync(async () => {
@@ -67,7 +64,7 @@ const TeamComponent = () => {
         (team.length > 0)
             ? (
                 <div id="mainBlock" className="teamComponent">
-                    <Heading blockName="Команда" buttonName="Вся команда" setActionOnClick={handleClick} />
+                    <Heading blockName="Команда" buttonName="Вся команда" setActionOnClick={handleButtonClick} />
                     <div className="mainContainer">
                         <div className="blockCenter">
                             <div className="mainContent">

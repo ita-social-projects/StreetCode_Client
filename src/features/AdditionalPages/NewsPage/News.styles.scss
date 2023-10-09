@@ -32,8 +32,13 @@
     .newsWithImageWrapper {
         overflow: auto;
 
-        ul, ol {
-            list-style: auto;
+        ul {
+            list-style-type: disc;
+            padding-inline-start: revert;
+          }
+          
+          ol {
+            list-style-type: decimal;
             padding-inline-start: revert;
           }
 

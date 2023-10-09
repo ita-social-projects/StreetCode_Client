@@ -19,5 +19,5 @@ export interface AudioCreate {
 
 export interface AudioUpdate extends IModelState {
     id: number;
-    streetcode?: number | null;
+    streetcodeId?: number | null;
 }

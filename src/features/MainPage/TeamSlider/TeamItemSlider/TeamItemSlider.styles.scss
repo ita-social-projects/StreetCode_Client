@@ -42,7 +42,7 @@
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(250px, 338px);
         }
-        
+
         @media screen and (max-width: 767px) {
             @include mut.sized(294px, 398px);
         }
@@ -58,25 +58,24 @@
             @include mut.sized(100%, 338px);
             margin: 0px;
         }
-        
+
         @media screen and (max-width: 767px) {
             @include mut.sized(100%, 398px);
             margin: f.pxToRem(8px);
         }
     }
-       
+
     .teamImg {
         @include mut.sized(100%, 100%);
         overflow: visible !important;
-    
+        object-fit: cover;
+
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(100%, 100%);
-            object-fit: cover;
         }
-    
+
         @media screen and (max-width: 767px) {
             @include mut.sized(100%, 100%);
-            object-fit: cover;
         }
     }
 
@@ -104,7 +103,7 @@
         .teamLinkItem {
             @include mut.rem-margined(0px, 17px, 0px, 0px);
         }
-        
+
         @media screen and (max-width: 1024px) {
             margin-top: f.pxToRem(4px);
             @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 20px);
@@ -138,7 +137,7 @@
                 height: 100%;
                 text-align: center;
             }
-            
+
             @include mut.rem-padded(0px, 0px, 0px, 0px);
         }
     }

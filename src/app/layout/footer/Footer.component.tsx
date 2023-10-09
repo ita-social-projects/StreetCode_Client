@@ -24,9 +24,7 @@ const Footer = () => {
                         <ul className="usefulLinksColumn">
                             <li><a href={FRONTEND_ROUTES.BASE}>Головна</a></li>
                             <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>Стріткоди</a></li>
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}>Маршрути</a></li>
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}>Блог</a></li>
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}>Про проєкт</a></li>
+                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}>Про нас</a></li>
                             <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Контакти</a></li>
                         </ul>
                         <ul className="usefulLinksColumn">

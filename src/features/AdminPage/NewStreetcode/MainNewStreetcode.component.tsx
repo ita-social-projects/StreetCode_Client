@@ -13,6 +13,7 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
@@ -29,13 +30,14 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image, { ImageAssigment, ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
+import { AudioUpdate } from '@/models/media/audio.model';
+import { ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
-import { Fact, FactCreate, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
+import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
 import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
@@ -49,6 +51,17 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import { AudioUpdate } from '@/models/media/audio.model';
+
+function reindex(list:Array<StreetcodeTag>):Array<StreetcodeTag> {
+    const result = Array.from(list);
+
+    for (let i = 0; i < result.length; i += 1) {
+        result[i].index = i;
+    }
+
+    return result;
+}
 
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
@@ -140,107 +153,109 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
-        }   
+        }
 
         if (parseId) {
-            StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                const artToUpdate = result.map((streetcodeArt) => ({
-                    ...streetcodeArt,
-                    modelState: ModelState.Updated,
-                    isPersisted: true,
-                }));
-                setArts([...artToUpdate]);
-            });
-            StreetcodesApi.getById(parseId).then((x) => {
-                streetcodeType.current = x.streetcodeType;
-                form.setFieldsValue({
-                    streetcodeNumber: x.index,
-                    mainTitle: x.title,
-                    name: x.firstName,
-                    surname: x.lastName,
-                    alias: x.alias,
-                    streetcodeUrlName: x.transliterationUrl,
-                    streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
-                    streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
-                    dateString: x.dateString,
-                    teaser: x.teaser,
-                    video,
-                });
-
-                const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
-                    ...tag,
-                    isPersisted: true,
-                    modelState: ModelState.Updated,
-                    streetcodeId: parseId,
-                }));
-
-                setSelectedTags(tagsToUpdate as StreetcodeTag[]);
-                setFuncName('update');
-            });
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-            });
-            VideosApi.getByStreetcodeId(parseId).then((result) => {
-                setVideo(result);
-            });
-            RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
-                const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
-                    id: item.id,
-                    title: item.title,
-                    isPersisted: true,
-                    modelState: ModelState.Updated,
-                }));
+                StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
+                    const artToUpdate = result.map((streetcodeArt) => ({
+                        ...streetcodeArt,
+                        modelState: ModelState.Updated,
+                        isPersisted: true,
+                    }));
+                    setArts([...artToUpdate]);
+                });
+                StreetcodesApi.getById(parseId).then((x) => {
+                    streetcodeType.current = x.streetcodeType;
+                    form.setFieldsValue({
+                        streetcodeNumber: x.index,
+                        mainTitle: x.title,
+                        name: x.firstName,
+                        surname: x.lastName,
+                        alias: x.alias,
+                        streetcodeUrlName: x.transliterationUrl,
+                        streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
+                        streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
+                        dateString: x.dateString,
+                        teaser: x.teaser,
+                        video,
+                    });
 
-                setFigures(persistedFigures);
-            });
-            PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then((result) => {
-                const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
-                    id: item.id,
-                    title: item.title,
-                    isPersisted: true,
-                    modelState: ModelState.Updated,
-                }));
+                    const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
+                        ...tag,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                        streetcodeId: parseId,
+                    }));
 
-                setPartners(persistedPartners);
-            });
-            SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
-                .then((result) => {
-                    setSubTitle(result);
-                })
-                .catch((error) => { });
-            SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
-                const id = result.map((x) => x.id);
-                id.map((x) => {
-                    SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then((x) => {
-                        const newSource: StreetcodeCategoryContent = {
-                            sourceLinkCategoryId: x.sourceLinkCategoryId,
-                            streetcodeId: x.streetcodeId,
-                            id: x.id,
-                            text: x.text,
-                        };
-                        const existingSource = sourceCreateUpdateStreetcode
-                            .streetcodeCategoryContents.find((s) => s
-                                .sourceLinkCategoryId === newSource.sourceLinkCategoryId);
+                    setSelectedTags(tagsToUpdate as StreetcodeTag[]);
+                    setFuncName('update');
+                });
 
-                        if (!existingSource) {
-                            const persistedItem: StreetcodeCategoryContentUpdate = {
-                                ...newSource,
-                                isPersisted: true,
-                                modelState: ModelState.Updated,
+                VideosApi.getByStreetcodeId(parseId).then((result) => {
+                    setVideo(result);
+                });
+                RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
+                    const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
+                        id: item.id,
+                        title: item.title,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                    }));
+
+                    setFigures(persistedFigures);
+                });
+                PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then((result) => {
+                    const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
+                        id: item.id,
+                        title: item.title,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                    }));
+
+                    setPartners(persistedPartners);
+                });
+                SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
+                    .then((result) => {
+                        setSubTitle(result);
+                    })
+                    .catch((error) => { });
+                SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
+                    const id = result.map((x) => x.id);
+                    id.map((x) => {
+                        SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then((x) => {
+                            const newSource: StreetcodeCategoryContent = {
+                                sourceLinkCategoryId: x.sourceLinkCategoryId,
+                                streetcodeId: x.streetcodeId,
+                                id: x.id,
+                                text: x.text,
                             };
+                            const existingSource = sourceCreateUpdateStreetcode
+                                .streetcodeCategoryContents.find((s) => s
+                                    .sourceLinkCategoryId === newSource.sourceLinkCategoryId);
 
-                            sourceCreateUpdateStreetcode.setItem(persistedItem);
-                        }
+                            if (!existingSource) {
+                                const persistedItem: StreetcodeCategoryContentUpdate = {
+                                    ...newSource,
+                                    isPersisted: true,
+                                    modelState: ModelState.Updated,
+                                };
+
+                                sourceCreateUpdateStreetcode.setItem(persistedItem);
+                            }
+                        });
                     });
                 });
+                TransactionLinksApi.getByStreetcodeId(parseId)
+                    .then((res) => {
+                        if (res) {
+                            setArLink(res);
+                            form.setFieldValue('arlink', res.url);
+                        }
+                    });
             });
-            TransactionLinksApi.getByStreetcodeId(parseId)
-                .then((res) => {
-                    if (res) {
-                        setArLink(res);
-                        form.setFieldValue('arlink', res.url);
-                    }
-                });
+
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
             statisticRecordStore.fetchStatisticRecordsByStreetcodeId(parseId);
@@ -302,7 +317,7 @@ const NewStreetcode = () => {
                     ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
                 imagesIds: createUpdateMediaStore.getImageIds(),
                 audioId: createUpdateMediaStore.audioId,
-                tags: selectedTags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
+                tags: reindex(selectedTags).map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                 relatedFigures: figures,
                 text: text.title && text.textContent ? text : null,
                 timelineItems: timelineItemStore.getTimelineItemArrayToCreate,
@@ -328,10 +343,10 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 streetcodeCategoryContents:
-                JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
-                    .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
-                        { ...streetcodeCategoryContent, id: 0 }
-                    )),
+                        JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
+                            .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
+                                { ...streetcodeCategoryContent, id: 0 }
+                            )),
                 statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                     .map((statisticRecord: StatisticRecord) => (
                         {
@@ -367,9 +382,9 @@ const NewStreetcode = () => {
                 const videosUpdate: Video[] = [{ ...video, url: inputInfo?.link ?? '' } as Video];
 
                 const subtitleUpdate: Subtitle[] = [
-                { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
+                    { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
 
-                const tags = [...(selectedTags as StreetcodeTagUpdate[])
+                const tags = [...(reindex(selectedTags) as StreetcodeTagUpdate[])
                     .map((tag) => ({ ...tag, streetcodeId: parseId })),
                 ...tagsStore.getTagToDeleteArray];
 
@@ -420,8 +435,9 @@ const NewStreetcode = () => {
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
-                    images: createUpdateMediaStore.imagesUpdate.map((img):ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
-                    audios: createUpdateMediaStore.audioUpdate,
+                    images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
+                    audioId: createUpdateMediaStore.audioId,
+                    audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
                     transactionLink: {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
@@ -429,7 +445,7 @@ const NewStreetcode = () => {
                         qrCodeUrl: arLink?.urlTitle ?? '',
                         modelState: 0,
                     },
-                    imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails []).concat(createUpdateMediaStore.getImageDetailsUpdate()),
+                    imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
 
                 if (streetcodeType.current === StreetcodeType.Person) {
@@ -487,6 +503,7 @@ const NewStreetcode = () => {
                                 onChange={handleFieldChange}
                             />
                             <TextBlock
+                                parseId={parseId}
                                 inputInfo={inputInfo}
                                 setInputInfo={setInputInfo}
                                 video={video}
@@ -495,8 +512,6 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
-
-                            <MapBlockAdmin />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />

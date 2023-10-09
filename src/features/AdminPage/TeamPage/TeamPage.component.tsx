@@ -59,9 +59,8 @@ const TeamPage = () => {
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>
-                            {value}
-                            {record.Name}
+                        <p>         
+                            {record.name}
                         </p>
                         {record.isMain ? <StarOutlined /> : ''}
                     </div>

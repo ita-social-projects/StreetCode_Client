@@ -70,7 +70,7 @@ export default class TimelineStore {
     get getTimelineItemArray() {
         return (Array.from(this.timelineItemMap.values()) as TimelineItemUpdate[])
             .filter((item: TimelineItemUpdate) => item.modelState !== ModelState.Deleted)
-            .sort((prev, cur) => Number(prev.date) - Number(cur.date));
+            .sort((prev, cur) => new Date(prev.date).getTime() - new Date(cur.date).getTime());
     }
 
     get getTimelineItemArrayToCreate() {

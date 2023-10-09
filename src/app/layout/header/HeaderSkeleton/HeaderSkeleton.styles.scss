@@ -3,7 +3,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .headerPopupSkeleton {
-  width: f.pxToRem(915px);
+  width: auto;
   @include mut.flexed($justify-content: flex-start);
   transition: all 1s;
   overflow-x: auto;

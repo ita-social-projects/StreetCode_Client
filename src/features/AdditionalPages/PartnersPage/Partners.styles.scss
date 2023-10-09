@@ -12,7 +12,8 @@
     padding: f.pxToRem(112px) f.pxToRem(10px) f.pxToRem(110px) f.pxToRem(10px);
 
     @include mut.bg-image('@assets/images/partners/background.webp');
-    background-attachment: fixed;
+    background-size: contain;
+    background-position:bottom;
 
     .wrapper{
         max-width: f.pxToRem(1200px);

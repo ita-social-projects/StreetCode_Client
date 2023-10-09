@@ -50,6 +50,7 @@ const TextForm = ({
                     inputInfo={inputInfo}
                     setInputInfo={setInputInfo}
                     onChange={onChange}
+                    text={inputInfo?.textContent}
                 />
                 <TextPreview inputInfo={inputInfo} />
             </Form.Item>
@@ -59,6 +60,7 @@ const TextForm = ({
                     inputInfo={inputInfo}
                     setInputInfo={setInputInfo}
                     onChange={onChange}
+                    text={inputInfo?.additionalText}
                 />
             </Form.Item>
             <Form.Item>

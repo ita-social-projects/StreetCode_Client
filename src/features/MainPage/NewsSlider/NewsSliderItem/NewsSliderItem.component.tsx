@@ -14,7 +14,6 @@ interface Props {
 }
 
 const NewsSliderItem = ({ news, image }: Props) => {
-
     const isMobile = useMediaQuery({
         query: '(max-width: 480px)',
     });
@@ -55,13 +54,13 @@ const NewsSliderItem = ({ news, image }: Props) => {
                 </div>
                 <div className="newsSlideText">
                     <div className="newsContainer">
-                        <div>
+                        <div className="subContainer">
                             <h2 className="newsTitle">
                                 {news?.title}
                             </h2>
                             <div className="newsText">
                                 <span className="text">{htmlReactParser(cleanText)}</span>
-                                <a className="moreText" href={news.url} onClick={handleLinkClick}>
+                                <a className="moreText" href={`news/${news.url.toString()}`} onClick={handleLinkClick}>
                                     До новини
                                 </a>
                             </div>

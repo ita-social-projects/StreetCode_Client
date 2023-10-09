@@ -54,7 +54,7 @@ const StreetcodesApi = {
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
     update: (streetcode: StreetcodeUpdate) => Agent
-        .put<StreetcodeCreate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
+        .put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
     updateState: (id: number, stateId: number) => Agent.put<void>(
         `${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`,
