@@ -14,9 +14,6 @@ interface Props {
 }
 
 const NewsSliderItem = ({ news, image }: Props) => {
-    const isMobile = useMediaQuery({
-        query: '(max-width: 480px)',
-    });
 
     const handleClickRedirect = () => {
         toArticleRedirectClickEvent(news.url.toString(), 'main_page');
@@ -44,7 +41,7 @@ const NewsSliderItem = ({ news, image }: Props) => {
 
     return (
         <div className="newsSliderItem">
-            <div className="newsMainPage" onClick={isMobile ? handleClickRedirect : undefined}>
+            <div className="newsMainPage">
                 <div className="newsPageImgContainer">
                     <img
                         key={image?.id}

@@ -1,12 +1,13 @@
 import './NewsSlider.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
 import StreetcodesApi from '@api/streetcode/streetcodes.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Image from '@models/media/image.model';
 import useMobx from '@stores/root-store';
+import { toArticleRedirectClickEvent } from '@utils/googleAnalytics.unility';
 
 import NewsApi from '@/app/api/news/news.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
@@ -23,6 +24,10 @@ const NewsSlider = () => {
     const [news, setNews] = useState<News[]>([]);
     const [images, setImages] = useState<Image[]>([]);
 
+    const [coordinatesOnMouseDown, setCoordinatesOnMouseDown] = useState([0, 0]);
+    const [coordinatesOnMouseUp, setCoordinatesOnMouseUp] = useState([0, 0]);
+    const [clickedNewsUrl, setClickedNewsUrl] = useState();
+
     const windowSize = useWindowSize();
 
     const props = {
@@ -38,7 +43,14 @@ const NewsSlider = () => {
 
         swipeOnClick: false,
         centerMode: true,
+    };
 
+    const handleClickRedirect = (url : string) => {
+        if (coordinatesOnMouseDown[0] === coordinatesOnMouseUp[0]
+            && coordinatesOnMouseDown[1] === coordinatesOnMouseUp[1]) {
+            toArticleRedirectClickEvent(url, 'main_page');
+            window.location.href = `news/${url}`;
+        }
     };
 
     useAsync(async () => {
@@ -59,6 +71,12 @@ const NewsSlider = () => {
         } catch (error) {}
     });
 
+    useEffect(() => {
+        if (clickedNewsUrl !== undefined) {
+            handleClickRedirect(clickedNewsUrl);
+        }
+    }, [coordinatesOnMouseUp]);
+
     return (
         (news.length > 0)
             ? (
@@ -69,9 +87,21 @@ const NewsSlider = () => {
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
-                                        <SlickSlider {...props}>
+                                        <SlickSlider
+                                            {...props}
+                                        >
                                             {news.map((item, index) => (
-                                                <div key={item.id} className="slider-item">
+                                                <div
+                                                    key={item.id}
+                                                    className="slider-item"
+                                                    onMouseDown={(e) => {
+                                                        setCoordinatesOnMouseDown([e.screenX, e.screenY]);
+                                                    }}
+                                                    onMouseUp={(e) => {
+                                                        setCoordinatesOnMouseUp([e.screenX, e.screenY]);
+                                                        setClickedNewsUrl(item.url.toString());
+                                                    }}
+                                                >
                                                     <NewsSliderItem news={item} image={images[index]} />
                                                 </div>
                                             ))}
