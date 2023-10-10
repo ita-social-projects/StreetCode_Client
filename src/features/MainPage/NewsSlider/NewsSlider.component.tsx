@@ -69,6 +69,11 @@ const NewsSlider = () => {
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
+                                        {(news.length === 1) ? (
+                                            <div>
+                                                <NewsSliderItem news={news[0]} image={images[0]}/>
+                                            </div>
+                                        ) : (
                                         <SlickSlider {...props}>
                                             {news.map((item, index) => (
                                                 <div key={item.id} className="slider-item">
@@ -76,6 +81,7 @@ const NewsSlider = () => {
                                                 </div>
                                             ))}
                                         </SlickSlider>
+                                        )}
                                     </div>
                                 </div>
                             </div>
