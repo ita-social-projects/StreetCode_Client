@@ -70,8 +70,8 @@ const NewsSlider = () => {
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
                                         {(news.length === 1) ? (
-                                            <div>
-                                                <NewsSliderItem news={news[0]} image={images[0]}/>
+                                            <div key={news[0].id} className="slider-item">
+                                                <NewsSliderItem news={news[0]} image={images[0]} />
                                             </div>
                                         ) : (
                                         <SlickSlider {...props}>

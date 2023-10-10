@@ -36,7 +36,7 @@
     .newsSlideText {
         position: absolute;
         height: fit-content;
-        top: 374px;
+        bottom: 0;
         z-index: 2;
         @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
         background-color: c.$pure-white-color;
