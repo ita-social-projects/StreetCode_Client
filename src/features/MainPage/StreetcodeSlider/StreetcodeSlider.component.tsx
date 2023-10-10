@@ -13,8 +13,11 @@ import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 import SlickSlider from '../../SlickSlider/SlickSlider.component';
 
 import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
+import useMobx from '@/app/stores/root-store';
 
 const StreetcodeSlider = () => {
+    const { streetcodeMainPageStore } = useMobx();
+    const { fetchNextPageOfStreetcodesMainPage } = streetcodeMainPageStore;
     const [streetcodes, setStreetcodes] = useState<StreetcodeMainPage[]>([]);
     const [images, setImages] = useState<Image[]>([]);
 
@@ -37,19 +40,24 @@ const StreetcodeSlider = () => {
     if (windowsize.width <= 1024) props.dots = true;
 
     useAsync(async () => {
-        try {
-            const response = await StreetcodesApi.getAllMainPage();
-            setStreetcodes(response);
-
-            const newImages : Image[] = [];
-            for (const streetcode of response) {
-                await ImagesApi.getById(streetcode.imageId)
-                    .then((img) => {
-                        newImages.push(img);
-                        setImages(newImages);
-                    });
+        const newStreetcodes: StreetcodeMainPage[] = [];
+        const newImages: Image[] = [];
+        while (true) {
+            try {
+                const response = await fetchNextPageOfStreetcodesMainPage();
+                newStreetcodes.push(...response);
+                setStreetcodes(newStreetcodes);
+                for (const streetcode of response) {
+                    await ImagesApi.getById(streetcode.imageId)
+                        .then((img) => {
+                            newImages.push(img);
+                        });
+                }
+                setImages(newImages);
+            } catch (error: unknown) {
+                break;
             }
-        } catch (error) {}
+        }
     });
 
     if (streetcodes.length > 0) {
