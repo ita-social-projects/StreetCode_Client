@@ -1,9 +1,8 @@
 import './NewsSlider.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
-import StreetcodesApi from '@api/streetcode/streetcodes.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Image from '@models/media/image.model';
 import useMobx from '@stores/root-store';
