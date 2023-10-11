@@ -1,12 +1,10 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
 import { ModelState } from '@models/enums/model-state';
-import { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
-
-import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
+import { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
 
 export default class StreetcodeArtSlideStore {
-    public streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[] = new Array<StreetcodeArtSlideCreateUpdate>();
+    public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = new Array<StreetcodeArtSlideAdmin>();
 
     private startFromSlide = 1;
 
@@ -16,24 +14,9 @@ export default class StreetcodeArtSlideStore {
         makeAutoObservable(this);
     }
 
-    get getStreetcodeArtArray(): StreetcodeArtCreateUpdate[] {
-        const artsFromSlides: StreetcodeArtCreateUpdate[] = [];
-
-        this.streetcodeArtSlides.forEach((slide) => {
-            slide.streetcodeArts.forEach((sArt) => {
-                if (!artsFromSlides.some((existingArt) => existingArt.art.id === sArt.art.id)) {
-                    artsFromSlides.push(sArt);
-                }
-            });
-        });
-
-        return artsFromSlides;
-    }
-
     public hasArtWithId(id: string): boolean {
         if (this.streetcodeArtSlides.length === 0) return false;
         const isInSlides = this.streetcodeArtSlides.some((slide) => slide.streetcodeArts.some((sArt) => sArt.art.id == id));
-        console.log(`ID: ${id} IsInSlides: ${isInSlides}`);
         return isInSlides;
     }
 

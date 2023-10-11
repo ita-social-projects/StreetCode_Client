@@ -4,43 +4,28 @@ import { ModelState } from '@models/enums/model-state';
 import { ArtCreateUpdate } from '@models/media/art.model';
 
 export default class ArtStore {
-    public artMap = new Map<number, ArtCreateUpdate>();
+    public arts = new Array<ArtCreateUpdate>();
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-    public setItem = (art: ArtCreateUpdate) => {
-        this.artMap.set(art.id, {
-            ...art,
-            modelState: ModelState.Updated,
-            isPersisted: true,
-        });
-    };
-
-    private set setInternalArtMap(arts: ArtCreateUpdate[]) {
-        this.artMap.clear();
-        arts.forEach(this.setItem);
-    }
-
-    private set setNextPageToArtMap(arts: ArtCreateUpdate[]) {
-        arts.forEach(this.setItem);
-    }
-
-    get getArtArray() {
-        return Array.from(this.artMap.values());
-    }
-
     get getMaxArtId() {
-        return Math.max(...this.artMap.keys());
+        return Math.max(...this.arts.map((a) => a.id));
     }
 
     public fetchArtsByStreetcodeId = async (streetcodeId: number) => {
         try {
-            this.setInternalArtMap = await artsApi
+            this.setInternalArts = await artsApi
                 .getAllByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {
-            console.log('ERRRORRRRRR');/* empty */
-        }
+        } catch (error: unknown) { /* empty */ }
     };
+
+    private set setInternalArts(fetchedArts: ArtCreateUpdate[]) {
+        this.arts = fetchedArts.map((fArt) => ({
+            ...fArt,
+            modelState: ModelState.Updated,
+            isPersisted: true,
+        }));
+    }
 }

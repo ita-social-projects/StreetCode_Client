@@ -8,7 +8,6 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 interface Props {
     artIdx: number,
@@ -33,8 +32,8 @@ const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
         if (!artIdx) {
             return;
         }
-        artStore.getArtArray[artIdx].title = form.getFieldValue('title');
-        artStore.getArtArray[artIdx].description = form.getFieldValue('description');
+        artStore.arts[artIdx].title = form.getFieldValue('title');
+        artStore.arts[artIdx].description = form.getFieldValue('description');
 
         setOpened(false);
         form.resetFields();
@@ -43,23 +42,23 @@ const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
     useEffect(() => {
         if (artIdx && opened) {
             form.setFieldsValue({
-                title: artStore.getArtArray[artIdx]?.title ?? '',
-                description: artStore.getArtArray[artIdx]?.description ?? '',
+                title: artStore.arts[artIdx]?.title ?? '',
+                description: artStore.arts[artIdx]?.description ?? '',
             });
         }
         const url = base64ToUrl(
-            artStore.getArtArray[artIdx]?.image?.base64,
-            artStore.getArtArray[artIdx]?.image?.mimeType,
+            artStore.arts[artIdx]?.image?.base64,
+            artStore.arts[artIdx]?.image?.mimeType,
         );
         setFileProps({
             previewImage: url || '',
-            previewTitle: artStore.getArtArray[artIdx]?.title || '',
+            previewTitle: artStore.arts[artIdx]?.title || '',
         });
     }, [opened]);
 
     return (
         <Modal
-            key={artStore.getArtArray[artIdx]?.image?.id ?? 'preview-file-modal'}
+            key={artStore.arts[artIdx]?.image?.id ?? 'preview-file-modal'}
             open={opened}
             title="Додаткові дані"
             footer={null}

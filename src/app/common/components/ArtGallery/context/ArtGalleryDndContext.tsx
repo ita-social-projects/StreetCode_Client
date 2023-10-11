@@ -30,13 +30,13 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
     function onDragEnd(event: DragEndEvent): void {
         const droppableComplexId = event?.over?.id.toString() || null;
         const draggbleId = parseInt(event.active.id as string, 10);
-        debugger;
+
         if (!draggbleId || !droppableComplexId) return;
 
         const slideId = parseInt(droppableComplexId.split('-')[0], 10);
         const artIndex = parseInt(droppableComplexId.split('-')[1], 10);
 
-        const art = artStore.getArtArray.find((art) => art.id === draggbleId);
+        const art = artStore.arts.find((art) => art.id === draggbleId);
 
         if (art) {
             artGalleryTemplateStore.setArtInSlide(slideId, artIndex, art as Art);

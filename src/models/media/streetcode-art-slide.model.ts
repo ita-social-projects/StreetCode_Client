@@ -9,9 +9,16 @@ export default interface StreetcodeArtSlide {
     streetcodeArts: StreetcodeArt[];
 }
 
-export interface StreetcodeArtSlideCreateUpdate extends IModelState, IPersisted {
+export interface StreetcodeArtSlideAdmin extends IModelState, IPersisted {
     index: number;
     streetcodeArts: StreetcodeArtCreateUpdate[];
+    template: number;
+    streetcodeId?: number;
+}
+
+export interface StreetcodeArtSlideCreateUpdate extends IModelState, IPersisted {
+    index: number;
+    streetcodeArts: Array<{ artId: number, index: number }>;
     template: number;
     streetcodeId?: number;
 }

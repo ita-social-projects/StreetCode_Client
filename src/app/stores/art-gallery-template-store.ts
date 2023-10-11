@@ -2,10 +2,10 @@ import { makeAutoObservable, observable } from 'mobx';
 import allSlidesTemplates, { TEMPLATE_IMAGE_BASE64 } from '@components/ArtGallery/constants/allSlidesTemplates';
 import { ArtSlideTemplateEnum } from '@models/enums/art-slide-template';
 import Art from '@models/media/art.model';
-import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
+import { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
 
 export default class ArtGalleryTemplateStore {
-    public streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[] = [...allSlidesTemplates];
+    public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = [...allSlidesTemplates];
 
     public isEdited = false;
 
@@ -49,5 +49,11 @@ export default class ArtGalleryTemplateStore {
         this.clearTemplates();
 
         return { ...editedSlide };
+    }
+
+    public hasArtWithId(id: string): boolean {
+        if (this.streetcodeArtSlides.length === 0) return false;
+        const isInSlides = this.streetcodeArtSlides.some((slide) => slide.streetcodeArts.some((sArt) => sArt.art.id == id));
+        return isInSlides;
     }
 }

@@ -15,11 +15,9 @@ import useMobx from '@app/stores/root-store';
 import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
 import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
-import { ArtCreateUpdate } from '@models/media/art.model';
-import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
+import { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
@@ -91,7 +89,7 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlideCreateUpdate[]>([]);
+    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlideAdmin[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
@@ -330,15 +328,12 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                arts: artStore.getArtArray,
+                arts: artStore.arts.map((a) => ({ ...a, image: null })),
                 streetcodeArtSlides: streetcodeArtSlideStore.streetcodeArtSlides.map((slide) => ({
                     ...slide,
                     streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
-                        ...streetcodeArt,
-                        art: {
-                            ...streetcodeArt.art,
-                            image: null,
-                        },
+                        index: streetcodeArt.index,
+                        artId: streetcodeArt.art.id,
                     })),
                 })),
                 subtitles,
@@ -429,7 +424,7 @@ const NewStreetcode = () => {
                     text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
-                    arts: artStore.getArtArray,
+                    arts: artStore.arts,
                     streetcodeArtSlides: [...streetcodeArtSlideStore.streetcodeArtSlides],
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate

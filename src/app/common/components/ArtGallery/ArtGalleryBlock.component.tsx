@@ -2,14 +2,14 @@ import './ArtGalleryBlock.styles.scss';
 
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Settings as SliderSettings } from 'react-slick';
 import SLIDER_PROPS from '@components/ArtGallery/constants/sliderProps';
 import convertSlidesToTemplates from '@components/ArtGallery/utils/convertSlidesToTemplates';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import StreetcodeArtSlide, { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
+import StreetcodeArtSlide, { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
@@ -18,7 +18,7 @@ import { Button } from 'antd';
 const MAX_SLIDES_AMOUNT = 30;
 
 type Props = {
-    adminArtSlides?: StreetcodeArtSlideCreateUpdate[],
+    adminArtSlides?: StreetcodeArtSlideAdmin[],
     isConfigurationGallery?: boolean
 };
 

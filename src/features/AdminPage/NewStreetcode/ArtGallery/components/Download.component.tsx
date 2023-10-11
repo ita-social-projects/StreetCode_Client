@@ -1,5 +1,6 @@
 import './DownloadStyles.styles.scss';
 
+import { action } from 'mobx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import base64ToUrl from '@app/common/utils/base64ToUrl.utility';
@@ -10,7 +11,7 @@ import { ModelState } from '@models/enums/model-state';
 import { ArtCreateUpdate } from '@models/media/art.model';
 
 import { Button, Modal } from 'antd';
-import type { UploadChangeParam, UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
+import type { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import Image from '@/models/media/image.model';
@@ -21,23 +22,25 @@ const DownloadBlock = React.memo(() => {
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
-    const { artStore, streetcodeArtSlideStore } = useMobx();
+    const { artStore, streetcodeArtSlideStore, artGalleryTemplateStore } = useMobx();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [artPreviewIdx, setArtPreviewIdx] = useState<number>(0);
     const [isOpen, setIsOpen] = useState(false);
+    const [toggleMutatedArts, setToggleMutatedArts] = useState(false);
     const [visibleModal, setVisibleModal] = useState(false);
     const [visibleDeleteButton, setVisibleDeleteButton] = useState(false);
     const artsToRemoveIdxs = useRef<Set<string>>(new Set());
 
     useAsync(async () => {
-        if (artStore.getArtArray.length === 0 && parseId) {
+        if (artStore.arts.length === 0 && parseId) {
             await artStore.fetchArtsByStreetcodeId(parseId);
         }
     });
 
     useEffect(() => {
-        if (artStore.getArtArray.length > 0) {
-            const newFileList = artStore.getArtArray.map((art) => ({
+        console.log('MAPPING FROM ARTS');
+        if (artStore.arts.length > 0) {
+            const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
                 uid: `${art.id}`,
                 name: art.image?.imageDetails?.alt || '',
                 status: 'done' as UploadFileStatus,
@@ -46,10 +49,11 @@ const DownloadBlock = React.memo(() => {
             }));
             setFileList(newFileList);
         }
-    }, [artStore.getArtArray]);
+    }, [toggleMutatedArts, artStore.arts]);
 
     const handleRemove = useCallback((param: UploadFile) => {
-        if (streetcodeArtSlideStore.hasArtWithId(param.uid)) {
+        if (streetcodeArtSlideStore.hasArtWithId(param.uid)
+        || artGalleryTemplateStore.hasArtWithId(param.uid)) {
             return;
         }
         if (!artsToRemoveIdxs.current.has(param.uid)) {
@@ -66,14 +70,14 @@ const DownloadBlock = React.memo(() => {
     }, []);
 
     const onPreview = async (file: UploadFile) => {
-        const artIdx = artStore.getArtArray.findIndex((a) => a.id.toString() === file.uid);
+        const artIdx = artStore.arts.findIndex((a) => a.id.toString() === file.uid);
         if (artIdx !== -1) {
             setArtPreviewIdx(artIdx);
             setIsOpen(true);
         }
     };
 
-    const onSuccessUpload = (image: Image, file: UploadFile) => {
+    const onSuccessUpload = action((image: Image) => {
         const newId = artStore.getMaxArtId + 1;
 
         const newArt: ArtCreateUpdate = {
@@ -85,25 +89,24 @@ const DownloadBlock = React.memo(() => {
             imageId: image.id,
             title: '',
         };
-        file.uid = newId.toString();
-        setFileList((prevState) => [...prevState, file]);
-        artStore.setItem(newArt);
-    };
+
+        artStore.arts.push(newArt);
+        setToggleMutatedArts((toggle) => !toggle);
+    });
 
     function RemoveFile(id: string) {
-        const artToRemoveIndex = artStore.getArtArray.findIndex((art) => `${art.id}` === id);
+        const artToRemoveIndex = artStore.arts.findIndex((art) => `${art.id}` === id);
 
         if (artToRemoveIndex !== -1) {
-            const toRemove = artStore.getArtArray[artToRemoveIndex];
+            const toRemove = artStore.arts[artToRemoveIndex];
 
             if (toRemove.isPersisted) {
-                artStore.getArtArray[artToRemoveIndex].modelState = ModelState.Deleted;
+                artStore.arts[artToRemoveIndex].modelState = ModelState.Deleted;
             } else {
-                artStore.artMap.delete(toRemove.id);
+                artStore.arts = artStore.arts.filter((art) => art.id !== toRemove.id);
             }
+            console.log(artStore.arts);
         }
-
-        setFileList((fileList) => (fileList.filter((x) => x.uid !== id)));
         setVisibleModal(false);
     }
 
@@ -112,6 +115,7 @@ const DownloadBlock = React.memo(() => {
             RemoveFile(id);
         });
         artsToRemoveIdxs.current.clear();
+        setToggleMutatedArts((toggle) => !toggle);
         setVisibleDeleteButton(false);
     };
 

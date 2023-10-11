@@ -14,20 +14,20 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
 
 const LightboxComponent = () => {
-    const { artStore: { getArtArray } } = useMobx();
+    const { artStore: { arts } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
 
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
-    const slides = useMemo(() => getArtArray.map(
+    const slides = useMemo(() => arts.map(
         ({ image: { base64, mimeType }, description, title }) => ({
             src: base64ToUrl(base64, mimeType),
-            title: `'REMOVED_INDEX'/${getArtArray.length}`,
+            title: `'REMOVED_INDEX'/${arts.length}`,
             description: `${title ?? ''}. \n\n${description ?? ''}`,
         }),
 
-    ), [getArtArray]);
+    ), [arts]);
 
     const onIdleTimerHandlers = useMemo(() => ({
         onIdle: () => setIsCaptionEnabled(false),
