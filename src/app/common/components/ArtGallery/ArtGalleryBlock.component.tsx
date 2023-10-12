@@ -1,6 +1,6 @@
 import './ArtGalleryBlock.styles.scss';
 
-import { runInAction } from 'mobx';
+import { runInAction, toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -9,6 +9,7 @@ import SLIDER_PROPS from '@components/ArtGallery/constants/sliderProps';
 import convertSlidesToTemplates from '@components/ArtGallery/utils/convertSlidesToTemplates';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { ModelState } from '@models/enums/model-state';
 import StreetcodeArtSlide, { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -52,12 +53,14 @@ const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
     );
 
     useEffect(() => {
-        setSlickProps((prev) => ({
-            ...prev,
-            dots: !prev.dots,
-            arrows: !prev.arrows,
-            draggable: !prev.draggable,
-        }));
+        if (isConfigurationGallery) {
+            setSlickProps((prev) => ({
+                ...prev,
+                dots: !prev.dots,
+                arrows: !prev.arrows,
+                draggable: !prev.draggable,
+            }));
+        }
     }, [artGalleryTemplateStore.isEdited]);
 
     return (
@@ -74,7 +77,7 @@ const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
                                 <SlickSlider {...slickProps}>
                                     {isConfigurationGallery
                                         ? convertSlidesToTemplates(artGalleryTemplateStore.streetcodeArtSlides as StreetcodeArtSlide[], true)
-                                        : convertSlidesToTemplates(adminArtSlides as StreetcodeArtSlide[] || streetcodeArtSlides)}
+                                        : convertSlidesToTemplates(adminArtSlides?.filter((slide) => slide.modelState !== ModelState.Deleted) as StreetcodeArtSlide[] || streetcodeArtSlides, false, adminArtSlides?.length > 0)}
 
                                 </SlickSlider>
                             </div>
@@ -95,14 +98,21 @@ const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
 
     function handleAddNewSlide() {
         const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
+        if (newSlide.streetcodeId !== -1) {
+            runInAction(() => {
+                const oldSlideIdx = streetcodeArtSlideStore.streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
+                if (oldSlideIdx !== -1) {
+                    streetcodeArtSlideStore.streetcodeArtSlides[oldSlideIdx] = newSlide;
+                }
+            });
+        } else {
+            newSlide.index = streetcodeArtSlideStore.streetcodeArtSlides.length + 1;
+            newSlide.streetcodeId = parseId ?? -1;
 
-        newSlide.index = streetcodeArtSlideStore.streetcodeArtSlides.length + 1;
-        newSlide.streetcodeId = parseId ?? -1;
-
-        runInAction(() => {
-            streetcodeArtSlideStore.streetcodeArtSlides.push(newSlide);
-            console.log('Art slides: ', streetcodeArtSlideStore.streetcodeArtSlides);
-        });
+            runInAction(() => {
+                streetcodeArtSlideStore.streetcodeArtSlides.push(newSlide);
+            });
+        }
     }
 
     function handleClearSlideTemplate() {

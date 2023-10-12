@@ -8,12 +8,14 @@ import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 import { ArtSlideTemplateEnum } from '@models/enums/art-slide-template';
 import StreetcodeArtSlide from '@models/media/streetcode-art-slide.model';
 
-function getSlideTemplate(artSlide: StreetcodeArtSlide, isDroppable?: boolean) {
+function getSlideTemplate(artSlide: StreetcodeArtSlide, isDroppable?: boolean, isAdmin?: boolean) {
     const props: SlidePropsType = {
         key: artSlide.index.toString(),
+        slideIndex: artSlide.index,
         streetcodeArts: artSlide.streetcodeArts,
         artSlideId: artSlide.template,
         isDroppable: isDroppable || false,
+        isAdmin: isAdmin || false,
     };
 
     switch (artSlide.template) {
@@ -34,8 +36,6 @@ function getSlideTemplate(artSlide: StreetcodeArtSlide, isDroppable?: boolean) {
     }
 }
 
-export default function convertSlidesToTemplates(artSlides: StreetcodeArtSlide[], isDroppable?: boolean): JSX.Element[] {
-    return artSlides?.map((slide) => (isDroppable
-        ? getSlideTemplate(slide, isDroppable)
-        : getSlideTemplate(slide)));
+export default function convertSlidesToTemplates(artSlides: StreetcodeArtSlide[], isDroppable?: boolean, isAdmin?: boolean): JSX.Element[] {
+    return artSlides?.map((slide) => getSlideTemplate(slide, isDroppable, isAdmin));
 }

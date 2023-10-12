@@ -2,6 +2,8 @@
 @use "@sass/_utils.functions.scss" as *;
 
 .base-art{
+    position: relative;
+
     &-slide{
         height: pxToRem(536px);
         gap: pxToRem(20px);
@@ -13,4 +15,13 @@
     }
 }
 
+.admin-options-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+
+    .anticon-more{
+        font-size: 20px;
+    }
+}
 

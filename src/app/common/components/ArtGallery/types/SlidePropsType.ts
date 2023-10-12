@@ -6,6 +6,8 @@ type SlidePropsType = {
     streetcodeArts: StreetcodeArt[],
     artSlideId: ArtSlideTemplateEnum,
     isDroppable: boolean,
+    isAdmin?: boolean,
+    slideIndex: number,
 };
 
 export default SlidePropsType;
