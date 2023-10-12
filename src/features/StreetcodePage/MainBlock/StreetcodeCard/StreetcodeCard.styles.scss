@@ -3,21 +3,6 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/_utils.functions.scss" as f;
 
-@mixin blur($edge:0, $top:0, $height:0) {
-  position: relative;
-  &:after {
-    content: '';
-    position: absolute;
-    top: $top;
-    left: 0;
-    right: 0;
-    height: f.pxToRem($height);
-    background: linear-gradient($edge, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255, 255, 255, 0.664) 21%);
-    -webkit-text-fill-color: transparent;
-    z-index: 1;
-  }
-}
-
 .card {
   display: flex;
   flex-direction: row;
@@ -82,10 +67,10 @@
   @include mut.rem-margined(13px, 0, 13px, 0);
 }
 .blurTop{
-  @include blur($edge: 0deg, $top: 9px, $height: 16px);
+  @include mut.blur($edge: 0deg, $top: 9px, $height: 16px);
 }
 .blurBottom{
-  @include blur($edge: 180deg, $top: -20px, $height: 21px);
+  @include mut.blur($edge: 180deg, $top: -20px, $height: 21px);
 }
 .teaserBlock {
   @include mut.with-font($font-weight: 300, $font-size: 20px);
@@ -182,7 +167,7 @@
   .blockCentering {
     @include mut.rem-padded($top: 2px, $right: 10px, $bottom: 0px, $left: 10px);
     .blurTop{
-      @include blur($edge: 0deg, $top: 4px, $height: 11px);
+      @include mut.blur($edge: 0deg, $top: 4px, $height: 11px);
     }
     .teaserBlock {
       line-height: f.pxToRem(18.75px);
