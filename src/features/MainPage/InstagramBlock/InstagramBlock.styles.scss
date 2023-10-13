@@ -33,6 +33,10 @@
                 }
             }
 
+            .slick-dots {
+                bottom: f.pxToRem(3px) !important;
+            }
+
             .slick-next {
                 right: 20px !important;
 
@@ -51,7 +55,11 @@
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 20px);
             @include mut.rem-padded($bottom: 30px);
-            @include mut.rem-margined($left: 20px);
+            @include mut.rem-margined($top: 52px, $left: 20px);
+
+            @media screen and (max-width: 1024px) {
+                @include mut.rem-margined($top: 30px, $left: 20px);
+            }
 
         }
 
