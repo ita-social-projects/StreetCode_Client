@@ -91,6 +91,11 @@ const NewsSlider = () => {
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
+                                        {(news.length === 1) ? (
+                                            <div key={news[0].id} className="slider-item">
+                                                <NewsSliderItem news={news[0]} image={images[0]} />
+                                            </div>
+                                        ) : (
                                         <SlickSlider
                                             beforeChange={handleBeforeChange}
                                             afterChange={handleAfterChange}
@@ -108,6 +113,7 @@ const NewsSlider = () => {
                                                 </div>
                                             ))}
                                         </SlickSlider>
+                                        )}
                                     </div>
                                 </div>
                             </div>
