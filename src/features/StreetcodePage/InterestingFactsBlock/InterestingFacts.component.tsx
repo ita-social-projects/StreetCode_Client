@@ -1,7 +1,7 @@
 import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -10,6 +10,7 @@ import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFa
 import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Fact } from '@/models/streetcode/text-contents.model';
+import { useSearchParams } from 'react-router-dom';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -39,7 +40,21 @@ const InterestingFactsComponent = () => {
         [getStreetCodeId],
     );
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const factID = Number(searchParams.get('factId'));
+    const initialSlide = sliderArray.findIndex(fact => fact.id === factID) == -1 ? 0 : sliderArray.findIndex(fact => fact.id === factID);
+
+    useEffect(() => {
+        const hash = location.hash.replace('#', '');
+        const element = document.getElementById(hash);
+    
+        setTimeout(() => {
+            element?.scrollIntoView({behavior: "smooth", block: "center"});
+        }, 1000);
+    });
+
     const setings = {
+        initialSlide: initialSlide,
         dots: facts.current.length > 3,
         swipeOnClick: false,
         touchThreshold: 25,

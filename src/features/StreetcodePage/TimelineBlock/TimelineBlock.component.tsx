@@ -8,6 +8,7 @@ import TimelineSlideCard from '@streetcode/TimelineBlock/TimelineItem/TimelineIt
 import TimelineReelOutline from '@streetcode/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
 import TimelineSlider from '@streetcode/TimelineBlock/TimelineSlider.component';
 import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.component';
+import { useEffect, useRef } from 'react';
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
@@ -25,9 +26,19 @@ const TimelineBlock = () => {
         },
         [getStreetCodeId],
     );
+    
+    useEffect(() => {
+        const hash = location.hash.replace('#', '');
+        const element = document.getElementById(hash);
+    
+        setTimeout(() => {
+            element?.scrollIntoView({behavior: "smooth", block: "center"});
+        }, 1000);
+    });
 
     return (
-        (getTimelineItemArray.length > 0)
+        <div>
+            {(getTimelineItemArray.length > 0)
             ? (
                 <div
                     id="timeline"
@@ -35,7 +46,7 @@ const TimelineBlock = () => {
                 >
                     <BlockHeading headingText="Хронологія" />
                     <TimelineTimespan />
-                    <div className="timelineContentContainer">
+                    <div className="timelineContentContainer" >
                         <TimelineReelOutline />
                         <TimelineSlider
                             dots={false}
@@ -57,7 +68,8 @@ const TimelineBlock = () => {
                         <TimelineReelOutline />
                     </div>
                 </div>
-            ) : <></>
+            ) : <></>}
+        </div>
     );
 };
 

@@ -43,16 +43,27 @@ const TeamItemSlider = ({ team, image }: Props) => {
                             <h2 className="teamTitle">
                                 {`${team?.name}`}
                             </h2>
-                            <div className="teamPosition">
-                                {team?.description}
+                            {windowsize.width > 1024 && (
+                                <>
+                                    <div className="teamPosition">
+                                        {team?.positions
+                                            .filter((position) => position.position)
+                                            .map((position) => (
+                                                <span key={position.id}>
+                                                    {position.position}
+                                                    {' '}
+                                                </span>
+                                            ))}
+                                    </div>
+                                </>
+                            )}
+                            <div>
+                                <p className="descBlock">
+                                    {team?.description}
+                                </p>
                             </div>
                             {windowsize.width > 1024 && (
                                 <>
-                                    <div>
-                                        <p className="descBlock">
-                                            {team?.description}
-                                        </p>
-                                    </div>
                                     <div
                                         key={`${team?.teamMemberLinks.length}${team?.id}${team?.imageId}`}
                                         className="teamLinkItems"

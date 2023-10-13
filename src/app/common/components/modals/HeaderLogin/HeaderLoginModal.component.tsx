@@ -3,7 +3,7 @@ import './HeaderLoginModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import { useModalContext } from '@stores/root-store';
@@ -72,7 +72,8 @@ const HeaderLoginModal = () => {
                     >
                         <Link
                             to={`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}#vacancies`}
-                            scroll={(el:any) => scrollWithOffset(el, 100)}
+                            scroll={(el: any) => scrollWithOffset(el, 100)}
+                            className="linkInsideButton"
                         >
                             Долучитися до команди
                         </Link>
