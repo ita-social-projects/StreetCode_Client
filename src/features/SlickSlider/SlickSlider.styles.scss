@@ -19,7 +19,7 @@
     pointer-events: none;
 
     &:hover:before {
-        filter: brightness(50%);
+        filter: brightness(25%);
     }
 
     &:before {
@@ -78,6 +78,11 @@ li.slick-active button:before {
             opacity: 0;
         }
     }
+}
+
+.slick-arrow {
+    opacity: .4;
+    filter: c.$selected-arrow-filter-color;
 }
 
 .nonInfiniteSlider {
