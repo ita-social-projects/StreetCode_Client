@@ -17,6 +17,7 @@ services:
       - ./templates:/etc/nginx/templates
       - /etc/certbot/www:/var/www/certbot/:ro
       - /etc/certbot/conf:/etc/nginx/ssl/:ro
+      
   frontend:
     image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
     pull_policy: always
@@ -29,7 +30,8 @@ services:
       retries: 5
     environment:
       API_URL: ${ENV_API_BACKEND}
-
+      REACT_APP_GOOGLE_ANALYTICS: ${ENV_GOOGLE_ANALYTICS}
+      
   backend:
     image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
     pull_policy: always
