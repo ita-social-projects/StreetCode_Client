@@ -37,7 +37,7 @@
         }
 
         .subTitle{
-            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         }
     }
 }
