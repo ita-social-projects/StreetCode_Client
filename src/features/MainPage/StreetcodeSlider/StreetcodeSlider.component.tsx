@@ -47,13 +47,13 @@ const StreetcodeSlider = () => {
                 const response = await fetchNextPageOfStreetcodesMainPage();
                 newStreetcodes.push(...response);
                 setStreetcodes(newStreetcodes);
+                const promises = [];
+
                 for (const streetcode of response) {
-                    await ImagesApi.getById(streetcode.imageId)
-                        .then((img) => {
-                            newImages.push(img);
-                        });
+                    promises.push(ImagesApi.getById(streetcode.imageId).then((img) => { newImages.push(img); }))
                 }
-                setImages(newImages);
+
+                await Promise.all(promises).then(() => { setImages(newImages); });
             } catch (error: unknown) {
                 break;
             }
