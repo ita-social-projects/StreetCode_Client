@@ -21,10 +21,12 @@ const TextBlock = React.memo(({
     inputInfo, setInputInfo, video, setVideo, onChange, parseId,
 }: Props) => {
     const [inputInfoAsync, setInputInfoAsync] = useState<Partial<Text>>();
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
     useAsync(() => {
         if(parseId != null) {
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfoAsync(result);
+                setIsLoaded(true);
             });
         }
     }, [parseId]);
@@ -34,8 +36,7 @@ const TextBlock = React.memo(({
     }, [inputInfoAsync]);
 
     return (
-        inputInfoAsync !== null
-            ? (
+        isLoaded ? (
                 <TextForm
                     inputInfo={inputInfoAsync}
                     setInputInfo={setInputInfoAsync}
