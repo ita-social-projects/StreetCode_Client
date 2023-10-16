@@ -11,7 +11,8 @@ export default class ArtStore {
     }
 
     get getMaxArtId() {
-        return Math.max(...this.arts.map((a) => a.id));
+        const maxId = Math.max(...this.arts.map((a) => a.id));
+        return Math.max(maxId, 0);
     }
 
     public fetchArtsByStreetcodeId = async (streetcodeId: number) => {

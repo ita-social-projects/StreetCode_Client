@@ -29,7 +29,7 @@ const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
     };
 
     const handleSave = () => {
-        if (!artIdx) {
+        if (artIdx >= 0) {
             return;
         }
         artStore.arts[artIdx].title = form.getFieldValue('title');

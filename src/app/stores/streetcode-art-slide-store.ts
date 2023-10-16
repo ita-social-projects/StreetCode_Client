@@ -20,6 +20,16 @@ export default class StreetcodeArtSlideStore {
         return isInSlides;
     }
 
+    public findBySlideIndex(index: number) {
+        return this.streetcodeArtSlides.find((s) => (s.index === index));
+    }
+
+    public getVisibleSortedSlides() {
+        return this.streetcodeArtSlides
+            ?.filter((slide) => slide.modelState !== ModelState.Deleted)
+            ?.sort((a, b) => (a.index > b.index ? 1 : -1));
+    }
+
     public fetchNextArtSlidesByStreetcodeId = async (streetcodeId: number) => {
         const arrayOfArtSlides = await StreetcodeArtApi
             .getArtSlidesByStreetcodeId(streetcodeId, this.startFromSlide, this.amountOfSlides);

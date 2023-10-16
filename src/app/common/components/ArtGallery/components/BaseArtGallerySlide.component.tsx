@@ -14,9 +14,10 @@ const BaseArtGallerySlide = ({
     streetcodeArts, className, artSlideId, isDroppable, isAdmin, slideIndex,
 }: SlidePropsType & { className: string }) => {
     const { streetcodeArtSlideStore, artGalleryTemplateStore } = useMobx();
+    const { streetcodeArtSlides } = streetcodeArtSlideStore;
 
     function onEditSlideClick() {
-        const slide = streetcodeArtSlideStore.streetcodeArtSlides.find((s) => s.index === slideIndex);
+        const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
         if (slide) {
             const slideClone = JSON.parse(JSON.stringify(slide));
             artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
@@ -25,17 +26,46 @@ const BaseArtGallerySlide = ({
     }
 
     function onDeleteSlideClick() {
-        const slideIndexInArtsArray = streetcodeArtSlideStore.streetcodeArtSlides.findIndex((s) => s.index === slideIndex);
-        const slide = streetcodeArtSlideStore.streetcodeArtSlides.find((s) => s.index === slideIndex);
+        const slideIndexInArtsArray = streetcodeArtSlides.findIndex((s) => s.index === slideIndex);
+        const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
 
         if (slideIndex !== -1 && slide) {
             if (slide.isPersisted === false) {
-                streetcodeArtSlideStore.streetcodeArtSlides.splice(slideIndexInArtsArray, 1);
+                streetcodeArtSlides.splice(slideIndexInArtsArray, 1);
             } else {
-                streetcodeArtSlideStore.streetcodeArtSlides[slideIndexInArtsArray] = { ...slide, modelState: ModelState.Deleted };
+                streetcodeArtSlides[slideIndexInArtsArray] = { ...slide, modelState: ModelState.Deleted };
             }
         }
     }
+
+    function onMoveSlideBackward() {
+        const currentSlide = streetcodeArtSlides.find(
+            (s) => s.index === slideIndex,
+        );
+        const prevSlide = streetcodeArtSlides.find(
+            (s) => s.index === slideIndex - 1,
+        );
+
+        if (currentSlide && prevSlide) {
+            currentSlide?.index -= 1;
+            prevSlide?.index += 1;
+        }
+    }
+
+    function onMoveSlideForward() {
+        const currentSlide = streetcodeArtSlides.find(
+            (s) => s.index === slideIndex,
+        );
+        const nextSlide = streetcodeArtSlides.find(
+            (s) => s.index === slideIndex + 1,
+        );
+
+        if (currentSlide && nextSlide) {
+            currentSlide?.index += 1;
+            nextSlide?.index -= 1;
+        }
+    }
+
     const editDropdownOptions: MenuProps['items'] = [
         {
             label: <button onClick={onEditSlideClick}>Редагувати</button>,
@@ -46,8 +76,14 @@ const BaseArtGallerySlide = ({
             key: '1',
         },
         {
-            label: <button onClick={() => console.log('Second option')}>coming soon..</button>,
+            label: <button onClick={onMoveSlideForward}>Пересунути вперід</button>,
             key: '2',
+            disabled: (streetcodeArtSlideStore.findBySlideIndex(slideIndex)?.index || -1) >= streetcodeArtSlides.length - 1,
+        },
+        {
+            label: <button onClick={onMoveSlideBackward}>Пересунути назад</button>,
+            key: '3',
+            disabled: (streetcodeArtSlideStore.findBySlideIndex(slideIndex)?.index || -1) <= 1,
         },
     ];
 
@@ -75,11 +111,9 @@ const BaseArtGallerySlide = ({
                         className="admin-options-btn"
                         placement="bottom"
                     >
-                        <a onClick={(e) => e.preventDefault()}>
-                            <Space>
-                                <MoreOutlined />
-                            </Space>
-                        </a>
+                        <Space>
+                            <MoreOutlined />
+                        </Space>
                     </Dropdown>
                 )
                 : <></>}

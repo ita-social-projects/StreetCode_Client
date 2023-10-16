@@ -89,7 +89,6 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlideAdmin[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
@@ -160,11 +159,6 @@ const NewStreetcode = () => {
         if (parseId) {
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-                if (streetcodeArtSlideStore.streetcodeArtSlides.length === 0) {
-                    streetcodeArtSlideStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
-                        setArtsSlides(streetcodeArtSlideStore.streetcodeArtSlides);
-                    });
-                }
                 StreetcodesApi.getById(parseId).then((x) => {
                     streetcodeType.current = x.streetcodeType;
                     form.setFieldsValue({
@@ -511,7 +505,7 @@ const NewStreetcode = () => {
                                 <ArtGalleryBlock />
                                 <h4>Конфігурація гаралеї</h4>
                                 <ArtGallery isConfigurationGallery />
-                                <ArtGallery adminArtSlides={artSlides} />
+                                <ArtGallery isAdmin />
                             </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />

@@ -19,28 +19,29 @@ import { Button } from 'antd';
 const MAX_SLIDES_AMOUNT = 30;
 
 type Props = {
-    adminArtSlides?: StreetcodeArtSlideAdmin[],
     isConfigurationGallery?: boolean
+    isAdmin?: boolean
 };
 
-const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
+const ArtGallery = ({ isAdmin, isConfigurationGallery } : Props) => {
     const { streetcodeArtSlideStore, artGalleryTemplateStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides } = streetcodeArtSlideStore;
+    const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
     const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
 
     const { id } = useParams<any>();
-    const parseId = id ? +id : null;
+    const parseId = id ? +id : errorStreetCodeId;
 
     useAsync(
         async () => {
-            if (getStreetCodeId !== errorStreetCodeId && !adminArtSlides) {
+            if (getStreetCodeId !== errorStreetCodeId || parseId !== errorStreetCodeId) {
                 let currentSlide = 0;
 
                 while (currentSlide < MAX_SLIDES_AMOUNT) {
                     try {
                         // eslint-disable-next-line no-await-in-loop
-                        await fetchNextArtSlidesByStreetcodeId(getStreetCodeId);
+                        await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
                         currentSlide += 1;
                     } catch (error: unknown) {
                         console.log(`%c Loading of ART gallery completed. ${currentSlide} slides of images were downloaded`, 'color: #1BD760');
@@ -65,7 +66,7 @@ const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
 
     return (
         <div>
-            {(streetcodeArtSlides.length > 0 || adminArtSlides?.length > 0 || isConfigurationGallery) && (
+            {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
                 <div
                     id="art-gallery"
                     className="artGalleryWrapper"
@@ -76,9 +77,8 @@ const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
                             <div className="artGallerySliderContainer">
                                 <SlickSlider {...slickProps}>
                                     {isConfigurationGallery
-                                        ? convertSlidesToTemplates(artGalleryTemplateStore.streetcodeArtSlides as StreetcodeArtSlide[], true)
-                                        : convertSlidesToTemplates(adminArtSlides?.filter((slide) => slide.modelState !== ModelState.Deleted) as StreetcodeArtSlide[] || streetcodeArtSlides, false, adminArtSlides?.length > 0)}
-
+                                        ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
+                                        : convertSlidesToTemplates(streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[], false, isAdmin)}
                                 </SlickSlider>
                             </div>
                         </div>
@@ -98,19 +98,25 @@ const ArtGallery = ({ adminArtSlides, isConfigurationGallery } : Props) => {
 
     function handleAddNewSlide() {
         const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
+
+        if (!newSlide) {
+            alert('Увага, заповніть усі зображення щоб зберегти слайд');
+            return;
+        }
+
         if (newSlide.streetcodeId !== -1) {
             runInAction(() => {
-                const oldSlideIdx = streetcodeArtSlideStore.streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
+                const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
                 if (oldSlideIdx !== -1) {
-                    streetcodeArtSlideStore.streetcodeArtSlides[oldSlideIdx] = newSlide;
+                    streetcodeArtSlides[oldSlideIdx] = newSlide;
                 }
             });
         } else {
-            newSlide.index = streetcodeArtSlideStore.streetcodeArtSlides.length + 1;
+            newSlide.index = streetcodeArtSlides.length + 1;
             newSlide.streetcodeId = parseId ?? -1;
 
             runInAction(() => {
-                streetcodeArtSlideStore.streetcodeArtSlides.push(newSlide);
+                streetcodeArtSlides.push(newSlide);
             });
         }
     }
