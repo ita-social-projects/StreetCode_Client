@@ -31,7 +31,7 @@
     }
 
     .sourcesSliderContainer {
-        @include mut.sizedImportant(1230px, 100%);
+        @include mut.sizedImportant(auto, 100%);
         .slick-arrow {
             display: none;
             visibility: hidden;
