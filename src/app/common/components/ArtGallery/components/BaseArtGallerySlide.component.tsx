@@ -25,6 +25,7 @@ const BaseArtGallerySlide = ({
     }
 
     function onDeleteSlideClick() {
+        // eslint-disable-next-line max-len
         const slideIndexInArtsArray = streetcodeArtSlideStore.streetcodeArtSlides.findIndex((s) => s.index === slideIndex);
         const slide = streetcodeArtSlideStore.streetcodeArtSlides.find((s) => s.index === slideIndex);
 
@@ -32,6 +33,7 @@ const BaseArtGallerySlide = ({
             if (slide.isPersisted === false) {
                 streetcodeArtSlideStore.streetcodeArtSlides.splice(slideIndexInArtsArray, 1);
             } else {
+                // eslint-disable-next-line max-len
                 streetcodeArtSlideStore.streetcodeArtSlides[slideIndexInArtsArray] = { ...slide, modelState: ModelState.Deleted };
             }
         }
