@@ -12,10 +12,12 @@ import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
+import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
+import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
+import { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import dayjs from 'dayjs';
 
@@ -38,7 +40,7 @@ import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partn
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
-import TransactionLink from '@/models/transactions/transaction-link.model';
+import { TransactionLink } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
@@ -51,7 +53,6 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { AudioUpdate } from '@/models/media/audio.model';
 
 function reindex(list:Array<StreetcodeTag>):Array<StreetcodeTag> {
     const result = Array.from(list);
@@ -75,8 +76,9 @@ const NewStreetcode = () => {
         streetcodeCoordinatesStore,
         createUpdateMediaStore,
         statisticRecordStore,
-        streetcodeArtStore,
+        artStore,
         tagsStore,
+        streetcodeArtSlideStore,
     } = useMobx();
 
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
@@ -87,7 +89,7 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
+    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlideAdmin[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
@@ -158,14 +160,11 @@ const NewStreetcode = () => {
         if (parseId) {
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-                StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                    const artToUpdate = result.map((streetcodeArt) => ({
-                        ...streetcodeArt,
-                        modelState: ModelState.Updated,
-                        isPersisted: true,
-                    }));
-                    setArts([...artToUpdate]);
-                });
+                if (streetcodeArtSlideStore.streetcodeArtSlides.length === 0) {
+                    streetcodeArtSlideStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
+                        setArtsSlides(streetcodeArtSlideStore.streetcodeArtSlides);
+                    });
+                }
                 StreetcodesApi.getById(parseId).then((x) => {
                     streetcodeType.current = x.streetcodeType;
                     form.setFieldsValue({
@@ -329,12 +328,13 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                streetcodeArts: arts.map((streetcodeArt) => ({
-                    ...streetcodeArt,
-                    art: {
-                        ...streetcodeArt.art,
-                        image: null,
-                    },
+                arts: artStore.arts.map((a) => ({ ...a, image: null })),
+                streetcodeArtSlides: streetcodeArtSlideStore.streetcodeArtSlides.map((slide) => ({
+                    ...slide,
+                    streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
+                        index: streetcodeArt.index,
+                        artId: streetcodeArt.art.id,
+                    })),
                 })),
                 subtitles,
                 firstName: null,
@@ -362,6 +362,7 @@ const NewStreetcode = () => {
                 imagesDetails: createUpdateMediaStore.getImageDetails(),
 
             };
+            console.log(JSON.stringify(streetcode));
             if (streetcodeType.current === StreetcodeType.Person) {
                 streetcode.firstName = form.getFieldValue('name');
                 streetcode.lastName = form.getFieldValue('surname');
@@ -423,14 +424,8 @@ const NewStreetcode = () => {
                     text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
-                    streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                        ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
-                        ...streetcodeArt,
-                        art: {
-                            ...streetcodeArt.art,
-                            image: null,
-                        },
-                    })),
+                    arts: artStore.arts,
+                    streetcodeArtSlides: [...streetcodeArtSlideStore.streetcodeArtSlides],
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
@@ -447,7 +442,7 @@ const NewStreetcode = () => {
                     },
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
-
+                console.log(streetcodeUpdate.streetcodeArtSlides);
                 if (streetcodeType.current === StreetcodeType.Person) {
                     streetcodeUpdate.firstName = form.getFieldValue('name');
                     streetcodeUpdate.lastName = form.getFieldValue('surname');
@@ -512,7 +507,12 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
-                            <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
+                            <ArtGalleryDndContext>
+                                <ArtGalleryBlock />
+                                <h4>Конфігурація гаралеї</h4>
+                                <ArtGallery isConfigurationGallery />
+                                <ArtGallery adminArtSlides={artSlides} />
+                            </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />

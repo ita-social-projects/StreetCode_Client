@@ -1,0 +1,11 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+
+.OneToTwoAndThreeToFourAndFiveToSixSlide{
+    @include mut.flex-center();
+
+    img{
+        height: 100%;
+        width: 30%;
+    }
+}

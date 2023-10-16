@@ -1,26 +1,22 @@
 import './PreviewImageModal.styles.scss';
 
 import React, { useEffect, useState } from 'react';
+import useMobx from '@stores/root-store';
 
 import { Button, Form, Input, Modal } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
 interface Props {
+    artIdx: number,
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
-    streetcodeArt: StreetcodeArtCreateUpdate;
-    arts: StreetcodeArtCreateUpdate[],
-    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
-    onChange: (field: string, value: any) => void,
 }
 
-const PreviewFileModal = ({
-    opened, setOpened, streetcodeArt, arts, setArts, onChange,
-}: Props) => {
+const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
+    const { artStore } = useMobx();
     const [fileProps, setFileProps] = useState<{
       previewImage: string;
       previewTitle: string;
@@ -33,36 +29,36 @@ const PreviewFileModal = ({
     };
 
     const handleSave = () => {
-        const updated = arts.find((x) => x.art.image?.id === streetcodeArt.art.image?.id);
-        if (!updated) {
+        if (!artIdx) {
             return;
         }
-        updated.art.title = form.getFieldValue('title');
-        updated.art.description = form.getFieldValue('description');
+        artStore.arts[artIdx].title = form.getFieldValue('title');
+        artStore.arts[artIdx].description = form.getFieldValue('description');
 
-        setArts([...arts]);
         setOpened(false);
-        onChange('art', updated.art);
         form.resetFields();
     };
 
     useEffect(() => {
-        if (streetcodeArt && opened) {
+        if (artIdx && opened) {
             form.setFieldsValue({
-                title: streetcodeArt?.art.title ?? '',
-                description: streetcodeArt?.art.description ?? '',
+                title: artStore.arts[artIdx]?.title ?? '',
+                description: artStore.arts[artIdx]?.description ?? '',
             });
         }
-        const url = base64ToUrl(streetcodeArt?.art.image?.base64, streetcodeArt?.art.image?.mimeType);
+        const url = base64ToUrl(
+            artStore.arts[artIdx]?.image?.base64,
+            artStore.arts[artIdx]?.image?.mimeType,
+        );
         setFileProps({
             previewImage: url || '',
-            previewTitle: streetcodeArt?.art.title || '',
+            previewTitle: artStore.arts[artIdx]?.title || '',
         });
     }, [opened]);
 
     return (
         <Modal
-            key={streetcodeArt?.art.image?.id ?? 'preview-file-modal'}
+            key={artStore.arts[artIdx]?.image?.id ?? 'preview-file-modal'}
             open={opened}
             title="Додаткові дані"
             footer={null}

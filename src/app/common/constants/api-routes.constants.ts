@@ -78,7 +78,7 @@ export const API_ROUTES = {
         GET_ALL: 'team/getAll',
         GET_ALL_MAIN: 'team/getAllMain',
         GET: 'team/getById',
-        GET_BY_ROLE_ID:'team/getByRoleId',
+        GET_BY_ROLE_ID: 'team/getByRoleId',
         CREATE: 'team/create',
         UPDATE: 'team/update',
         DELETE: 'team/delete',
@@ -138,6 +138,7 @@ export const API_ROUTES = {
     },
     ARTS: {
         GET_ALL: 'arts/getAll',
+        GET_ALL_BY_STREETCODE_ID: 'art/getAllByStreetcodeId',
         GET: 'arts/getById',
         CREATE: 'arts/create',
         UPDATE: 'arts/update',
@@ -146,7 +147,9 @@ export const API_ROUTES = {
     STREETCODE_ARTS: {
         GET_ALL: 'streetcodeArt/getAll',
         GET_BY_STREETCODE_ID: 'streetcodeArt/getByStreetcodeId',
-        GET_PAGE_BY_STREETCODE_ID: 'streetcodeArt/getPageByStreetcodeId',
+    },
+    STREETCODE_ART_SLIDES: {
+        GET_SLIDES_BY_STREETCODE_ID: 'streetcodeArtSlide/getPageByStreetcodeId',
     },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',
@@ -223,7 +226,7 @@ export const API_ROUTES = {
         GET_ALL_SHORT: 'job/getAllShort',
         DELETE: 'job/delete',
         CHANGE_STATUS: 'job/changeJobStatus',
-        GET_ACTIVE:'Job/GetActiveJobs',
+        GET_ACTIVE: 'Job/GetActiveJobs',
         GET_BY_ID: 'job/getById',
         UPDATE: 'job/update',
         CREATE: 'job/create',

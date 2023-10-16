@@ -1,178 +1,122 @@
 import './DownloadStyles.styles.scss';
 
+import { action } from 'mobx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import base64ToUrl from '@app/common/utils/base64ToUrl.utility';
 import useMobx from '@app/stores/root-store';
+import Draggable from '@components/Draggable/Draggable';
+import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { ModelState } from '@models/enums/model-state';
+import { ArtCreateUpdate } from '@models/media/art.model';
 
 import { Button, Modal } from 'antd';
-import type { UploadChangeParam, UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
+import type { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import Image from '@/models/media/image.model';
-import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 
-import ArtGalleryAdminBlock from './ArtGallery/ArtGalleryAdminBlock.component';
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
-interface Props {
-    arts: StreetcodeArtCreateUpdate[],
-    setArts: React.Dispatch<React.SetStateAction<StreetcodeArtCreateUpdate[]>>,
-    onChanges: (field: string, value: any) => void,
-}
+const DownloadBlock = React.memo(() => {
+    const { id } = useParams<any>();
+    const parseId = id ? +id : null;
 
-const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
-    const { streetcodeArtStore } = useMobx();
+    const { artStore, streetcodeArtSlideStore, artGalleryTemplateStore } = useMobx();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
+    const [artPreviewIdx, setArtPreviewIdx] = useState<number>(0);
     const [isOpen, setIsOpen] = useState(false);
-    const uidsFile = useRef<string>('');
-    const indexTmp = useRef<number>(0);
+    const [toggleMutatedArts, setToggleMutatedArts] = useState(false);
     const [visibleModal, setVisibleModal] = useState(false);
     const [visibleDeleteButton, setVisibleDeleteButton] = useState(false);
-    const filesToRemove = useRef<UploadFile[]>([]);
+    const artsToRemoveIdxs = useRef<Set<string>>(new Set());
+
+    useAsync(async () => {
+        if (artStore.arts.length === 0 && parseId) {
+            await artStore.fetchArtsByStreetcodeId(parseId);
+        }
+    });
 
     useEffect(() => {
-        if (arts.length > 0) {
-            const newFileList = arts.map((streetcodeArt: StreetcodeArtCreateUpdate) => ({
-                uid: `${streetcodeArt.index}`,
-                name: streetcodeArt.art.image?.imageDetails?.alt || '',
+        console.log('MAPPING FROM ARTS');
+        if (artStore.arts.length > 0) {
+            const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
+                uid: `${art.id}`,
+                name: art.image?.imageDetails?.alt || '',
                 status: 'done' as UploadFileStatus,
-                thumbUrl: base64ToUrl(streetcodeArt.art.image?.base64, streetcodeArt.art.image?.mimeType) ?? '',
-                type: streetcodeArt.art.image?.mimeType || '',
+                thumbUrl: base64ToUrl(art.image?.base64, art.image?.mimeType) ?? '',
+                type: art.image?.mimeType || '',
             }));
             setFileList(newFileList);
-            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
         }
-    }, [arts]);
-
-    function compareFilesByUid(a:UploadFile, b:UploadFile) {
-        if (a.uid < b.uid) {
-            return -1;
-        }
-        if (a.uid > b.uid) {
-            return 1;
-        }
-        return 0;
-    }
+    }, [toggleMutatedArts, artStore.arts]);
 
     const handleRemove = useCallback((param: UploadFile) => {
-        /* get query of all uploaded arts using DOM to
-         later highlight them with a red frame if delete button is pressed(select),
-        or remove this frame if art is already highlighted(unselect) */
-        const artsContainersList = document.querySelectorAll('.with-multiple-delete .ant-upload-list-item-container');
-        const currentArtContainer = artsContainersList[Number(param.uid) - 1];
-
-        const filesToRemoveIds = filesToRemove.current.map((file) => file.uid);
-
-        // if file already in filesToRemove, remove it from this list
-        if (filesToRemoveIds.includes(param.uid)) {
-            for (let i = 0; i < filesToRemoveIds.length; i++) {
-                if (filesToRemove.current[i].uid == param.uid) {
-                    filesToRemove.current.splice(i, 1);
-                    break;
-                }
-            }
-            currentArtContainer.classList.remove('delete-border');
-        } else // if file is not in filesToRemove, add it to this list
-        {
-            currentArtContainer.classList.add('delete-border');
-            filesToRemove.current.push(param);
+        if (streetcodeArtSlideStore.hasArtWithId(param.uid)
+        || artGalleryTemplateStore.hasArtWithId(param.uid)) {
+            return;
         }
-        filesToRemove.current.sort(compareFilesByUid);
-        filesToRemove.current.length > 0 ? setVisibleDeleteButton(true) : setVisibleDeleteButton(false);
+        if (!artsToRemoveIdxs.current.has(param.uid)) {
+            artsToRemoveIdxs.current.add(param.uid);
+        } else {
+            artsToRemoveIdxs.current.delete(param.uid);
+        }
+
+        artsToRemoveIdxs.current.size > 0 ? setVisibleDeleteButton(true) : setVisibleDeleteButton(false);
     }, []);
 
     const handleCancelModalRemove = useCallback(() => {
         setVisibleModal(false);
     }, []);
 
-    const onChange = (uploadParams: UploadChangeParam<UploadFile<any>>) => {
-        uidsFile.current = uploadParams.file.uid;
-        const status = uploadParams.file.status ?? 'removed';
-        if (status !== 'removed') {
-            setFileList(uploadParams.fileList.map((x) => x));
-            onChanges('arts', uploadParams.fileList);
-        }
-    };
-
     const onPreview = async (file: UploadFile) => {
-        setFilePreview(file);
-        setIsOpen(true);
+        const artIdx = artStore.arts.findIndex((a) => a.id.toString() === file.uid);
+        if (artIdx !== -1) {
+            setArtPreviewIdx(artIdx);
+            setIsOpen(true);
+        }
     };
 
-    const onSuccessUpload = (image: Image) => {
-        if (arts.length > 0) {
-            indexTmp.current = Math.max(...arts.map((x) => x.index)) + 1;
-        } else {
-            indexTmp.current += 1;
-        }
-        const newArt: StreetcodeArtCreateUpdate = {
-            index: indexTmp.current,
+    const onSuccessUpload = action((image: Image) => {
+        const newId = artStore.getMaxArtId + 1;
+
+        const newArt: ArtCreateUpdate = {
             modelState: ModelState.Created,
-            art: {
-                id: 0,
-                description: '',
-                image,
-                imageId: image.id,
-                title: '',
-            },
+            isPersisted: false,
+            id: newId,
+            description: '',
+            image,
+            imageId: image.id,
+            title: '',
         };
 
-        setArts([...arts, newArt]);
-    };
+        artStore.arts.push(newArt);
+        setToggleMutatedArts((toggle) => !toggle);
+    });
 
-    function RemoveFile(file: UploadFile) {
-        const removedArtIndex = arts.findIndex((a) => `${a.index}` === file.uid);
+    function RemoveFile(id: string) {
+        const artToRemoveIndex = artStore.arts.findIndex((art) => `${art.id}` === id);
 
-        if (removedArtIndex >= 0) {
-            const toRemove = arts[removedArtIndex] as StreetcodeArtCreateUpdate;
-            if (arts[removedArtIndex].isPersisted) {
-                toRemove.modelState = ModelState.Deleted;
-                streetcodeArtStore.setItem(toRemove as StreetcodeArt);
+        if (artToRemoveIndex !== -1) {
+            const toRemove = artStore.arts[artToRemoveIndex];
+
+            if (toRemove.isPersisted) {
+                artStore.arts[artToRemoveIndex].modelState = ModelState.Deleted;
+            } else {
+                artStore.arts = artStore.arts.filter((art) => art.id !== toRemove.id);
             }
-
-            arts.splice(removedArtIndex, 1);
-
-            // Decrement indexes of all elements after the removed element
-            for (let i = removedArtIndex; i < arts.length; i++) {
-                arts[i].index -= 1;
-            }
-
-            setArts([...arts]);
-
-            // Decrement indexTmp.current if the removed element had the highest index
-            if (removedArtIndex === arts.length && indexTmp.current > 0) {
-                indexTmp.current -= 1;
-            }
+            console.log(artStore.arts);
         }
-
-        setFileList((fileList) => (fileList.filter((x) => x.uid !== file.uid)));
         setVisibleModal(false);
-        onChanges('art', file);
     }
 
-    function RemoveDeleteFrames() {
-        const artsContainersList = document.querySelectorAll('.with-multiple-delete .ant-upload-list-item-container');
-        artsContainersList.forEach((element) => {
-            element.classList.remove('delete-border');
+    const onRemoveArtsSubmit = () => {
+        artsToRemoveIdxs.current.forEach((id) => {
+            RemoveFile(id);
         });
-    }
-
-    const onRemoveFile = (files: UploadFile[]) => {
-        files.forEach((element) => {
-            RemoveFile(element);
-            // after deleting file decrement file's to remove ids
-            files.forEach((file) => {
-                file.uid = (Number(file.uid) - 1).toString();
-            });
-        });
-        if (arts.length === 0) {
-            indexTmp.current = 0;
-        }
-        filesToRemove.current = [];
+        artsToRemoveIdxs.current.clear();
+        setToggleMutatedArts((toggle) => !toggle);
         setVisibleDeleteButton(false);
-        RemoveDeleteFrames();
     };
 
     return (
@@ -183,12 +127,20 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
                 fileList={fileList}
                 onPreview={onPreview}
                 uploadTo="image"
-                onChange={onChange}
                 onSuccessUpload={onSuccessUpload}
                 onRemove={(e) => handleRemove(e)}
                 className="with-multiple-delete"
+                itemRender={(element, file) => (
+                    <Draggable id={file.uid}>
+                        <div className={`${artsToRemoveIdxs.current.has(file.uid) ? 'delete-border ' : ' '
+                        } `}
+                        >
+                            {element}
+                        </div>
+                    </Draggable>
+                )}
             >
-                {<p>+ Додати</p>}
+                <p>+ Додати</p>
             </FileUploader>
             {visibleDeleteButton ? (
                 <Button
@@ -202,25 +154,17 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
             <Modal
                 title="Ви впевнені, що хочете видалити цей арт?"
                 open={visibleModal}
-                onOk={(e) => onRemoveFile(filesToRemove.current)}
+                onOk={(e) => onRemoveArtsSubmit()}
                 onCancel={handleCancelModalRemove}
             />
-            {arts.length > 0 ? (
-                <>
-                    <h4>Попередній перегляд</h4>
-                    <ArtGalleryAdminBlock arts={arts} />
-                    <PreviewImageModal
-                        streetcodeArt={arts[fileList.indexOf(filePreview!)]}
-                        opened={isOpen}
-                        setOpened={setIsOpen}
-                        arts={arts}
-                        setArts={setArts}
-                        onChange={onChanges}
-                    />
-                </>
-            ) : null}
+
+            <PreviewImageModal
+                artIdx={artPreviewIdx}
+                opened={isOpen}
+                setOpened={setIsOpen}
+            />
         </>
     );
-};
+});
 
 export default DownloadBlock;

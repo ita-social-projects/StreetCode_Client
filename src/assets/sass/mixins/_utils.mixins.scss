@@ -82,6 +82,13 @@
   @include flexed($direction, center, center, nowrap, $gap);
 }
 
+@mixin flex-center($direction: row) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
 @mixin absolute-centered($axes: 'both') {
   position: absolute;
 
