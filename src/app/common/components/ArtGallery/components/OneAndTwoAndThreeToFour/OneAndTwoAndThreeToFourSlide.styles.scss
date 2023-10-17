@@ -1,0 +1,13 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+
+.OneAndTwoAndThreeToFourSlide{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+    img{
+        height: pxToRem(256px); // (height - row gap) / 2 rows
+        width: 100%;
+    }
+}

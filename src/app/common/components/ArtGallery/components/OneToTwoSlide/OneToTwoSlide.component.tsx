@@ -1,4 +1,4 @@
-import './OneToFourSlide.styles.scss';
+import './OneToTwoSlide.styles.scss';
 
 import BaseArtGallerySlide from '@components/ArtGallery/components/BaseArtGallerySlide.component';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
