@@ -1,14 +1,17 @@
 import './ContactBlock.styles.scss';
 
-import Email from '@images/contact-us/email.webp';
-import Facebook from '@images/contact-us/Facebook.webp';
-import Instagram from '@images/contact-us/Instagram.webp';
+import Email from '@images/contact-us/Email.svg';
+import Facebook from '@images/contact-us/Facebook.svg';
+import Instagram from '@images/contact-us/Instagram.svg';
 import Logo from '@images/contact-us/logo-2.webp';
-import TikTok from '@images/contact-us/TikTok.webp';
-import Twitter from '@images/contact-us/Twitter.webp';
-import YouTube from '@images/contact-us/Youtube.webp';
+import Telegram from '@images/contact-us/Telegram.svg';
+import TikTok from '@images/contact-us/TikTok.svg';
+import Twitter from '@images/contact-us/Twitter.svg';
+import YouTube from '@images/contact-us/Youtube.svg';
 
 import { EMAIL_INFO } from '@constants/email.constants';
+
+import SOCIAL_MEDIA from '@/app/common/constants/social.constants';
 
 const ContactBlock = () => (
     <div className="contactBlock">
@@ -16,7 +19,9 @@ const ContactBlock = () => (
         <div className="contactCover">
             <div className="emailBlock">
                 <a href={EMAIL_INFO.WRITE_EMAIL_TO_US} className="emailLink">
-                    <img className="icon" src={Email} alt="email-logo" />
+                    <div className="icon">
+                        <Email />
+                    </div>
                 </a>
                 <span className="email">
                     {EMAIL_INFO.EMAIL}
@@ -24,28 +29,35 @@ const ContactBlock = () => (
             </div>
 
             <div className="socials">
-                <a
-                    href="https://www.facebook.com/streetcodeua"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <img className="icon" src={Facebook} alt="Facebook-logo" />
+                <a href={SOCIAL_MEDIA.FACEBOOK} target="_blank" rel="noreferrer">
+                    <div className="icon">
+                        <Facebook />
+                    </div>
                 </a>
-                <a
-                    href="https://www.instagram.com/streetcodeua"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <img className="icon" src={Instagram} alt="Instagram-logo" />
+                <a href={SOCIAL_MEDIA.INSTAGRAM} target="_blank" rel="noreferrer">
+                    <div className="icon">
+                        <Instagram />
+                    </div>
                 </a>
-                <a href="https://twitter.com/streetcodeua" target="_blank" rel="noreferrer">
-                    <img className="icon" src={Twitter} alt="Twitter-logo" />
+                <a href={SOCIAL_MEDIA.TWITTER} target="_blank" rel="noreferrer">
+                    <div className="icon">
+                        <Twitter />
+                    </div>
                 </a>
-                <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
-                    <img className="icon" src={TikTok} alt="TikTok-logo" />
+                <a href={SOCIAL_MEDIA.TIKTOK} target="_blank" rel="noreferrer">
+                    <div className="icon">
+                        <TikTok />
+                    </div>
                 </a>
-                <a href="https://www.youtube.com/@streetcodeua" target="_blank" rel="noreferrer">
-                    <img className="icon" src={YouTube} alt="YouTube-logo" />
+                <a href={SOCIAL_MEDIA.TELEGRAM} target="_blank" rel="noreferrer">
+                    <div className="icon">
+                        <Telegram />
+                    </div>
+                </a>
+                <a href={SOCIAL_MEDIA.YOUTUBE} target="_blank" rel="noreferrer">
+                    <div className="icon">
+                        <YouTube />
+                    </div>
                 </a>
             </div>
         </div>
