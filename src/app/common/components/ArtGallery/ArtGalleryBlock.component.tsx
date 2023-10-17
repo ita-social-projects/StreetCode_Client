@@ -1,16 +1,15 @@
 import './ArtGalleryBlock.styles.scss';
 
-import { runInAction, toJS } from 'mobx';
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Settings as SliderSettings } from 'react-slick';
 import SLIDER_PROPS from '@components/ArtGallery/constants/sliderProps';
 import convertSlidesToTemplates from '@components/ArtGallery/utils/convertSlidesToTemplates';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { ModelState } from '@models/enums/model-state';
-import StreetcodeArtSlide, { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
+import StreetcodeArtSlide from '@models/media/streetcode-art-slide.model';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
@@ -26,31 +25,34 @@ type Props = {
 const ArtGallery = ({ isAdmin, isConfigurationGallery } : Props) => {
     const { streetcodeArtSlideStore, artGalleryTemplateStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-    const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides } = streetcodeArtSlideStore;
+    const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides } = streetcodeArtSlideStore;
     const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
     const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
+    const secondRender = useRef(false);
 
     const { id } = useParams<any>();
     const parseId = id ? +id : errorStreetCodeId;
 
     useAsync(
         async () => {
-            if (getStreetCodeId !== errorStreetCodeId || parseId !== errorStreetCodeId) {
+            if ((getStreetCodeId !== errorStreetCodeId || parseId !== errorStreetCodeId)
+                && !secondRender.current
+                && !isConfigurationGallery) {
+                secondRender.current = true;
                 let currentSlide = 0;
 
                 while (currentSlide < MAX_SLIDES_AMOUNT) {
                     try {
                         // eslint-disable-next-line no-await-in-loop
                         await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
-                        currentSlide += 1;
+                        currentSlide += amountOfSlides;
                     } catch (error: unknown) {
-                        console.log(`%c Loading of ART gallery completed. ${currentSlide} slides of images were downloaded`, 'color: #1BD760');
                         currentSlide = MAX_SLIDES_AMOUNT;
                     }
                 }
             }
         },
-        [getStreetCodeId],
+        [getStreetCodeId, parseId],
     );
 
     useEffect(() => {

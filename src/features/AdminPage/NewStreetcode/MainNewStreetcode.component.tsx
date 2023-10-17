@@ -323,13 +323,7 @@ const NewStreetcode = () => {
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
                 arts: artStore.arts.map((a) => ({ ...a, image: null })),
-                streetcodeArtSlides: streetcodeArtSlideStore.streetcodeArtSlides.map((slide) => ({
-                    ...slide,
-                    streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
-                        index: streetcodeArt.index,
-                        artId: streetcodeArt.art.id,
-                    })),
-                })),
+                streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                 subtitles,
                 firstName: null,
                 lastName: null,
@@ -419,7 +413,7 @@ const NewStreetcode = () => {
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
                     arts: artStore.arts,
-                    streetcodeArtSlides: [...streetcodeArtSlideStore.streetcodeArtSlides],
+                    streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
