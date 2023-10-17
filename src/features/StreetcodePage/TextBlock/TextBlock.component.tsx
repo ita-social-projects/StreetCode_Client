@@ -14,6 +14,7 @@ import { Text } from '@/models/streetcode/text-contents.model';
 
 import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
+import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 const TextComponent = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
@@ -22,6 +23,7 @@ const TextComponent = () => {
     const { getByStreetcodeId: getText } = textsApi;
     const [text, setText] = useState<Text>();
     const [video, setVideo] = useState<Video>();
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
     useEffect(() => {
         if (getStreetCodeId > 0) {
@@ -38,12 +40,17 @@ const TextComponent = () => {
     }, [getStreetCodeId]);
 
     useEffect(() => {
-        const hash = location.hash.replace('#', '');
-        const element = document.getElementById(hash);
+        if (!isScrolled){
+            const hash = getUrlHash(location);
+            const element = document.getElementById(hash);
     
-        setTimeout(() => {
-            element?.scrollIntoView({behavior: "smooth", block: "start"});
-        }, 1000);
+            setTimeout(() => {
+                if(element !== null) {
+                    element.scrollIntoView({behavior: "smooth", block: "start"});
+                    setIsScrolled(true);
+                }
+            }, 1000);
+        }
     });
 
     return (
