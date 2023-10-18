@@ -22,10 +22,11 @@ export default class StreetcodesMainPageStore {
     };
 
     public fetchNextPageOfStreetcodesMainPage = async () => {
-        const arrayOfStreetcodes = await StreetcodesApi.getPageMainPage(this.page, this.pageSize, this.shuffleSeed);
+        const currentPage = this.page;
+        const arrayOfStreetcodes = await StreetcodesApi.getPageMainPage(currentPage, this.pageSize, this.shuffleSeed);
 
         if (arrayOfStreetcodes.length !== 0) {
-            this.page += 1;
+            this.page = currentPage + 1;
             return arrayOfStreetcodes;
         }
         else {
