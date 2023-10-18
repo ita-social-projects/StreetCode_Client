@@ -5,6 +5,8 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     max-height: 100%;
+    gap: pxToRem(30px);    
+
 
     img{
         height: 100%;

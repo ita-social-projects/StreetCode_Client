@@ -3,11 +3,15 @@
 
 .OneToTwoAndThreeToFourSlide{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: pxToRem(380px) pxToRem(380px); 
+    grid-template-rows: 536px; 
+    max-height: 100%;
+    grid-column-gap: pxToRem(30px);
+    justify-content: center;
 
     img{
-        height: pxToRem(256px); // (height - row gap) / 2 rows
+        height: 100%;
         width: 100%;
+        max-height: 100%;
     }
 }
