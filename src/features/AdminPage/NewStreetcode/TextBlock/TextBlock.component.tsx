@@ -22,12 +22,12 @@ const TextBlock = React.memo(({
 }: Props) => {
     const [inputInfoAsync, setInputInfoAsync] = useState<Partial<Text>>();
     const [canLoad, setCanLoad] = useState<boolean>(parseId === null);
-    useAsync(() => {
+
+    useAsync(async () => {
         if(parseId != null) {
-            TextsApi.getByStreetcodeId(parseId).then((result) => {
-                setInputInfoAsync(result);
-                setCanLoad(true);
-            });
+            const result = await TextsApi.getByStreetcodeId(parseId);
+            setInputInfoAsync(result);
+            setCanLoad(true);
         }
     }, [parseId]);
 
