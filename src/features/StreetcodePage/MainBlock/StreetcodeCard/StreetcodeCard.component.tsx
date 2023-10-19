@@ -167,8 +167,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <Button
                                         className="animateFigureBtn"
                                         onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                                        href="#QRBlock"
                                     >
-                                        <a href="#QRBlock">Оживити картинку</a>
+                                        <a>Оживити картинку</a>
                                     </Button>
                                 )
                                 : <></>}
