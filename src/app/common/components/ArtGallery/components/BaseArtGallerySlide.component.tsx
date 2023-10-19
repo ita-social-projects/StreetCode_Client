@@ -59,7 +59,7 @@ const BaseArtGallerySlide = ({
                 const { image } = streetcodeArt.art;
                 const imageJSX = (
                     <img
-                        className="base-art-image"
+                        className={`base-art-image img${streetcodeArt.index}`}
                         src={base64ToUrl(image.base64, image.mimeType)}
                         alt={image.imageDetails?.title}
                     />
