@@ -40,8 +40,8 @@ const TextComponent = () => {
     }, [getStreetCodeId]);
 
     useEffect(() => {
-        if (!isScrolled){
-            const hash = getUrlHash(location);
+        const hash = getUrlHash(location);
+        if (!isScrolled && hash === 'text'){
             const element = document.getElementById(hash);
     
             setTimeout(() => {

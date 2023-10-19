@@ -30,13 +30,13 @@ const TimelineBlock = () => {
     );
     
     useEffect(() => {
-        if (!isScrolled){
-            const hash = getUrlHash(location);
+        const hash = getUrlHash(location);
+        if (!isScrolled && hash === 'timeline'){
             const element = document.getElementById(hash);
     
             setTimeout(() => {
                 if(element !== null) {
-                    element.scrollIntoView({behavior: "smooth", block: "center"});
+                    element.scrollIntoView({behavior: "smooth", block: "end"});
                     setIsScrolled(true);
                 }
             }, 1000);
