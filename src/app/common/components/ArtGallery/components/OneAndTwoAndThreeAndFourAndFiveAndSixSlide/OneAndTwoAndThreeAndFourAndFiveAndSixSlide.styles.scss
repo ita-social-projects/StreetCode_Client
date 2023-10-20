@@ -7,7 +7,7 @@
     grid-template-rows: repeat(3, 1fr);
 
     img{
-        height: pxToRem(256px); // (height - row gap) / 2 rows
+        height: pxToRem(256px);
         width: 100%;
     }
 }

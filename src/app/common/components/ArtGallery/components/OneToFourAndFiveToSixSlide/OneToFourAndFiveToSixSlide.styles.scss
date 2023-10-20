@@ -3,7 +3,8 @@
 
 .OneToFourAndFiveToSixSlide{
     display: grid;
-    grid-template-columns: pxToRem(790px) pxToRem(380px); 
+    justify-content: center;
+    grid-template-columns: 2fr 1fr; 
     grid-template-rows: pxToRem(536px); 
     max-height: 100%;
     grid-column-gap: pxToRem(30px);

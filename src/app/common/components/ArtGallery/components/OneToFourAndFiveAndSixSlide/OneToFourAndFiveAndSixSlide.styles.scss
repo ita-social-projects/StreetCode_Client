@@ -3,8 +3,9 @@
 
 .OneToFourAndFiveAndSixSlide{
     display: grid;
+    justify-content: center;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows: repeat(2, 30vh);
+    grid-template-rows: repeat(2, pxToRem(253px));
     grid-template-areas:
             "img1 img2"
             "img1 img3";

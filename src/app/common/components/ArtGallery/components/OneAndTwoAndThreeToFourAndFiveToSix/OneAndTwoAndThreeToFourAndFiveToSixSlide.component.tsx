@@ -4,7 +4,7 @@ import BaseArtGallerySlide from '@components/ArtGallery/components/BaseArtGaller
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 
 const OneAndTwoAndThreeToFourAndFiveToSixSlide = (props: SlidePropsType) => (
-    <BaseArtGallerySlide {...props} className="OneAndTwoAndThreeToFourAndFiveToSixSlide" />
+    <BaseArtGallerySlide {...props} className="OneAndTwoAndThreeToFourAndFiveToSix" />
 );
 
 export default OneAndTwoAndThreeToFourAndFiveToSixSlide;
