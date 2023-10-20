@@ -15,6 +15,7 @@ import Donation from '@/models/feedback/donation.model';
 
 const possibleDonateAmounts = [500, 100, 50];
 
+// eslint-disable-next-line complexity
 const DonatesModal = () => {
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { donates } } = modalStore;
@@ -38,7 +39,8 @@ const DonatesModal = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        const newValue = target.value.replace('₴', '').trim();
+        // const newValue = target.value.replace('₴', '').trim();
+        const newValue = target.value.replace(/\D/g, '');
         if (newValue.includes('-')) {
             return;
         }
@@ -58,8 +60,10 @@ const DonatesModal = () => {
     const firstWidth = windowSize.width > 1024 ? 13 : 6;
     const baseValWidth = windowSize.width > 1024 ? 3 : 4;
     const count = (donateAmount.toString().match(/1/g) || []).length;
+    const zeroCount = (donateAmount.toString().match(/[0689]/g) || []).length;
 
-    const inputWidth = baseValWidth + donateAmount.toString().length * charWidth - count * firstWidth;
+    const inputWidth = baseValWidth + donateAmount.toString().length
+     * charWidth - count * firstWidth + zeroCount * baseValWidth;
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
@@ -120,8 +124,9 @@ const DonatesModal = () => {
                     <input
                         onChange={handleDonateInputChange}
                         style={{ ...style, width: 'var(--input-width)' }}
-                        maxLength={14}
-                        value={`${donateAmount.toString()}`}
+                        placeholder="0"
+                        maxLength={15}
+                        value={donateAmount === 0 ? '' : donateAmount}
                         className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                     />
                     <div className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} GryvnaSymbol`}>₴</div>

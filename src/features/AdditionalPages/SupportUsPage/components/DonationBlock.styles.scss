@@ -61,6 +61,10 @@
     &:focus {
       outline: none;
     }
+
+    &::placeholder {
+      color: c.$darkish-gray-color;
+    }
   }
 
   .GryvnaSymbol{
