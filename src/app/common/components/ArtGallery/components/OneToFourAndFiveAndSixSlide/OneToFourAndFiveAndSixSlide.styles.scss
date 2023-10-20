@@ -4,9 +4,22 @@
 .OneToFourAndFiveAndSixSlide{
     display: grid;
     grid-template-columns: 2fr 1fr;
-    max-height: 100%;
-    gap: pxToRem(30px);    
+    grid-template-rows: repeat(2, 30vh);
+    grid-template-areas:
+            "img1 img2"
+            "img1 img3";
 
+    .img1, .droppable1 {
+        grid-area: img1;
+    }
+
+    .img2, .droppable2 {
+        grid-area: img2;
+    }
+
+    .img3, .droppable3 {
+        grid-area: img3;
+    }
 
     img{
         height: 100%;

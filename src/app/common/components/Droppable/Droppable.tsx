@@ -6,13 +6,18 @@ import { useDroppable } from '@dnd-kit/core';
 type Props = {
     children: ReactNode;
     id: string;
+    className?: string;
 } & HTMLProps<HTMLDivElement>;
 
-const Droppable: React.FC<Props> = ({ children, id, ...props }: Props) => {
+const Droppable: React.FC<Props> = ({ children, className, id, ...props }: Props) => {
     const { isOver, setNodeRef } = useDroppable({ id });
 
     return (
-        <div ref={setNodeRef} {...props} className="droppable">
+        <div
+            ref={setNodeRef}
+            className={`droppable ${className || ''}`}
+            {...props}
+        >
             {children}
         </div>
     );
