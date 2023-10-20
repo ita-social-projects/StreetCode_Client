@@ -12,7 +12,7 @@ import StreetcodeCatalogItem from './StreetcodeCatalogItem/StreetcodeCatalogItem
 
 const StreetcodeCatalog = () => {
     const { streetcodeCatalogStore } = useMobx();
-    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray, moreThenEight } = streetcodeCatalogStore;
+    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray, moreThenEight, fetchNumber } = streetcodeCatalogStore;
     const [loading, setLoading] = useState(false);
     const [screen, setScreen] = useState(1);
 
@@ -32,7 +32,7 @@ const StreetcodeCatalog = () => {
             return;
         }
         setTimeout(() => {
-            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then(() => {
+            Promise.all([fetchCatalogStreetcodes(screen, fetchNumber)]).then(() => {
                 setLoading(false);
             });
         }, 1000);

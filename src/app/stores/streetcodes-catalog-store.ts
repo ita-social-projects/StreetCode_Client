@@ -6,13 +6,15 @@ import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.mo
 export default class StreetcodesCatalogStore {
     public catalog = new Array<StreetcodeCatalogRecord>();
 
+    public fetchNumber = 8;
+
     public moreThenEight = false;
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    public fetchCatalogStreetcodes = async (page: number, count = 8) => {
+    public fetchCatalogStreetcodes = async (page: number, count = this.fetchNumber) => {
         try {
             const fetchedPublishCount = (await StreetcodesApi.getAllPublished())
                 .length;
@@ -21,7 +23,7 @@ export default class StreetcodesCatalogStore {
                 this.catalog.length === 0 || !array.some((item) => item.id === this.catalog.at(0)?.id)
             ) {
                 this.catalog = this.catalog.concat(array);
-                if (this.catalog.length === fetchedPublishCount || fetchedPublishCount <= 8) {
+                if (this.catalog.length === fetchedPublishCount || fetchedPublishCount <= this.fetchNumber) {
                     this.moreThenEight = false;
                 } else {
                     this.moreThenEight = true;
