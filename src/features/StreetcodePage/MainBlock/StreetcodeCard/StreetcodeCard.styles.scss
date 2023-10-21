@@ -273,3 +273,13 @@
     }
   }
 }
+
+@media screen and (max-width: 385px) {
+  .blockCentering {
+    .card {
+      .leftSider {
+        @include mut.sized(98%, 489px);
+      }
+    }
+  }
+}
