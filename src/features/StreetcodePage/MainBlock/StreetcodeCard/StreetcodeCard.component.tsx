@@ -133,10 +133,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 setActiveTagBlock={setActiveBlock}
                             />
                         </div>
+                        <div className="blurTop" />
+
                         <p className="teaserBlock">
                             {streetcode?.teaser}
                         </p>
 
+                        <div className="blurBottom" />
                         <div className="cardFooter">
                             {audio?.base64 && audioIsLoaded
                                 ? (
