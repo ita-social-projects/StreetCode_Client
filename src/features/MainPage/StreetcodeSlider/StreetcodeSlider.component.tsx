@@ -13,11 +13,9 @@ import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 import SlickSlider from '../../SlickSlider/SlickSlider.component';
 
 import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
-import useMobx from '@/app/stores/root-store';
+import { paginateRequest } from '@/app/common/utils/paginateRequest';
 
 const StreetcodeSlider = () => {
-    const { streetcodeMainPageStore } = useMobx();
-    const { fetchNextPageOfStreetcodesMainPage } = streetcodeMainPageStore;
     const [streetcodes, setStreetcodes] = useState<StreetcodeMainPage[]>([]);
     const [images, setImages] = useState<Image[]>([]);
 
@@ -40,17 +38,21 @@ const StreetcodeSlider = () => {
     if (windowsize.width <= 1024) props.dots = true;
 
     useAsync(async () => {
+        const shuffleSeed = Math.floor(Date.now() / 1000);
+        const { fetchNextPage } = paginateRequest(3, StreetcodesApi.getPageMainPage, {"shuffleSeed": shuffleSeed});
+
         const newStreetcodes: StreetcodeMainPage[] = [];
         const newImages: Image[] = [];
         while (true) {
             try {
-                const response = await fetchNextPageOfStreetcodesMainPage();
+                const response = await fetchNextPage();
                 newStreetcodes.push(...response);
                 setStreetcodes(newStreetcodes);
                 const promises = [];
 
-                for (const streetcode of response) {
-                    promises.push(ImagesApi.getById(streetcode.imageId).then((img) => { newImages.push(img); }))
+                for(let i = 0; i < response.length; i++){
+                    const currentPosition = newImages.length + i;
+                    promises.push(ImagesApi.getById(response[i].imageId).then((img) => {newImages[currentPosition] = img;}))
                 }
 
                 await Promise.all(promises).then(() => { setImages(newImages); });
