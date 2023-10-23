@@ -5,9 +5,11 @@ import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
 export default class StreetcodesMainPageStore {
     public streetcodes = new Array<StreetcodeMainPage>();
-    
+
     private page = 1;
+
     private readonly pageSize = 3;
+
     private shuffleSeed = Math.floor(Date.now() / 1000);
 
     constructor() {
@@ -17,7 +19,7 @@ export default class StreetcodesMainPageStore {
     public fetchStreetcodesMainPageAll = async () => {
         StreetcodesApi.getAllMainPage()
             .then((value) => {
-                this.streetcodes = value.map((s) => ({ id: s.id, title: s.title, teaser: s.teaser, alias: s.alias, text:s.text, imageId: s.imageId, transliterationUrl: s.transliterationUrl }));
+                this.streetcodes = value.map((s) => ({ id: s.id, title: s.title, teaser: s.teaser, alias: s.alias, text: s.text, imageId: s.imageId, transliterationUrl: s.transliterationUrl }));
             }).catch((error) => {});
     };
 
@@ -29,9 +31,8 @@ export default class StreetcodesMainPageStore {
             this.page = currentPage + 1;
             return arrayOfStreetcodes;
         }
-        else {
-            throw new Error('No more streetcodes to load');
-        }
+
+        throw new Error('No more streetcodes to load');
     };
 
     get getStreetcodesArray() {

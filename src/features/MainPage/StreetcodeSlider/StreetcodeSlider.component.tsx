@@ -1,23 +1,24 @@
 import './StreetcodeSlider.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Image from '@models/media/image.model';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import { paginateRequest } from '@/app/common/utils/paginateRequest';
 import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
 import SlickSlider from '../../SlickSlider/SlickSlider.component';
 
 import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
-import { paginateRequest } from '@/app/common/utils/paginateRequest';
 
 const StreetcodeSlider = () => {
     const [streetcodes, setStreetcodes] = useState<StreetcodeMainPage[]>([]);
     const [images, setImages] = useState<Image[]>([]);
+    const loading = useRef(false);
 
     const props = {
         touchAction: 'pan-y',
@@ -39,25 +40,33 @@ const StreetcodeSlider = () => {
 
     useAsync(async () => {
         const shuffleSeed = Math.floor(Date.now() / 1000);
-        const { fetchNextPage } = paginateRequest(3, StreetcodesApi.getPageMainPage, {"shuffleSeed": shuffleSeed});
+        const { fetchNextPage } = paginateRequest(3, StreetcodesApi.getPageMainPage, { shuffleSeed });
 
-        const newStreetcodes: StreetcodeMainPage[] = [];
-        const newImages: Image[] = [];
-        while (true) {
-            try {
-                const response = await fetchNextPage();
-                newStreetcodes.push(...response);
-                setStreetcodes(newStreetcodes);
-                const promises = [];
+        if (!loading.current) {
+            loading.current = true;
 
-                for(let i = 0; i < response.length; i++){
-                    const currentPosition = newImages.length + i;
-                    promises.push(ImagesApi.getById(response[i].imageId).then((img) => {newImages[currentPosition] = img;}))
+            const newStreetcodes: StreetcodeMainPage[] = [];
+            const newImages: Image[] = [];
+            while (true) {
+                try {
+                    const response = await fetchNextPage();
+                    newStreetcodes.push(...response);
+                    setStreetcodes(newStreetcodes);
+                    const promises = [];
+
+                    for (let i = 0; i < response.length; i++) {
+                        const currentPosition = newImages.length + i;
+                        promises.push(ImagesApi.getById(response[i].imageId).then((img) => {
+                            newImages[currentPosition] = img;
+                        }));
+                    }
+
+                    await Promise.all(promises).then(() => {
+                        setImages(newImages);
+                    });
+                } catch (error: unknown) {
+                    break;
                 }
-
-                await Promise.all(promises).then(() => { setImages(newImages); });
-            } catch (error: unknown) {
-                break;
             }
         }
     });
