@@ -41,42 +41,45 @@ const StreetcodeSlider = () => {
             const response = await StreetcodesApi.getAllMainPage();
             setStreetcodes(response);
 
-            const newImages : Image[] = [];
             for (const streetcode of response) {
-                await ImagesApi.getById(streetcode.imageId)
+                ImagesApi.getById(streetcode.imageId)
                     .then((img) => {
-                        newImages.push(img);
-                        setImages(newImages);
+                        setImages((prevState) => [...prevState, img]);
                     });
             }
         } catch (error) {}
     });
 
-    if (streetcodes.length > 0) {
-        return (
-            <div>
-                <div className="streetcodeMainPageWrapper">
-                    <div id="streetcodeSliderContentBlock" className="streetcodeSliderComponent">
-                        <div className="streetcodeSliderContainer">
-                            <div className="blockCenter">
-                                <div className="streetcodeSliderContent">
-                                    <SlickSlider {...props}>
-                                        {streetcodes.map((item, index) => (
-                                            <div key={item.id} className="slider-item">
-                                                <StreetcodeSliderItem streetcode={item} image={images[index]} />
-                                            </div>
-                                        ))}
-                                    </SlickSlider>
-                                </div>
+    return (
+        <div>
+            <div className="streetcodeMainPageWrapper">
+                <div id="streetcodeSliderContentBlock" className="streetcodeSliderComponent">
+                    <div className="streetcodeSliderContainer">
+                        <div className="blockCenter">
+                            <div className="streetcodeSliderContent">
+                                {
+                                    streetcodes.length > 0
+                                        ? (
+                                            <SlickSlider {...props}>
+                                                {streetcodes.map((item) => (
+                                                    <div key={item.id} className="slider-item">
+                                                        <StreetcodeSliderItem
+                                                            streetcode={item}
+                                                            image={images.find((i) => i.id === item.imageId)}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </SlickSlider>
+                                        )
+                                        : <></>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        );
-    }
-
-    return null;
+        </div>
+    );
 };
 
 export default observer(StreetcodeSlider);
