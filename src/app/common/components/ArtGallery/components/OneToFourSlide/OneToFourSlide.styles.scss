@@ -1,11 +1,15 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
+@use '@sass/variables/variables.sizes' as s;
 
 .oneToFourSlide{
     @include mut.flex-center();
 
     img{
-        height: 100%;
-        width: pxToRem(806px);
+        width: pxToRem(s.$art-gallery-img-size * 2.6);
+    }
+
+    .droppable{
+        width: auto;
     }
 }

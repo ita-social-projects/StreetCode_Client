@@ -2,33 +2,10 @@
 @use "@sass/_utils.functions.scss" as *;
 
 .OneAndTwoAndThreeToFourAndFiveToSix{
-    display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, pxToRem(253px));
+    @include mut.art-slide-grid($cols: 3, $rows: 2);
+    @include mut.images-grid-area($to:4);
+
     grid-template-areas:
             "img1 img3 img4"
             "img2 img3 img4";
-
-    .img1, .droppable1 {
-        grid-area: img1;
-    }
-
-    .img2, .droppable2 {
-        grid-area: img2;
-    }
-
-    .img3, .droppable3 {
-        grid-area: img3;
-    }
-
-    .img4, .droppable4 {
-        grid-area: img4;
-    }
-
-    img{
-        height: 100%;
-        width: 100%;
-        max-height: 100%;
-    }
 }
