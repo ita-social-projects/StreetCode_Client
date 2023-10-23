@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import './ArtGalleryBlock.styles.scss';
 
 import { runInAction } from 'mobx';
@@ -66,38 +67,6 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery } : Props) => {
         }
     }, [artGalleryTemplateStore.isEdited]);
 
-    return (
-        <div>
-            {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
-                <div
-                    id="art-gallery"
-                    className="artGalleryWrapper"
-                >
-                    <div className="artGalleryContainer container">
-                        <BlockHeading headingText="Арт-галерея" />
-                        <div className="artGalleryContentContainer">
-                            <div className="artGallerySliderContainer">
-                                <SlickSlider {...slickProps}>
-                                    {isConfigurationGallery
-                                        ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
-                                        : convertSlidesToTemplates(streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[], false, isAdmin)}
-                                </SlickSlider>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-            {artGalleryTemplateStore.isEdited && isConfigurationGallery
-                ? (
-                    <div className="configurationGalleryControls">
-                        <Button type="primary" onClick={handleAddNewSlide}>Додати</Button>
-                        <Button type="danger" onClick={handleClearSlideTemplate}>Скасувати</Button>
-                    </div>
-                )
-                : (<></>)}
-        </div>
-    );
-
     function handleAddNewSlide() {
         const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
 
@@ -126,6 +95,42 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery } : Props) => {
     function handleClearSlideTemplate() {
         artGalleryTemplateStore.clearTemplates();
     }
+
+    return (
+        <div>
+            {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
+                <div
+                    id="art-gallery"
+                    className="artGalleryWrapper"
+                >
+                    <div className="artGalleryContainer container">
+                        <BlockHeading headingText="Арт-галерея" />
+                        <div className="artGalleryContentContainer">
+                            <div className="artGallerySliderContainer">
+                                <SlickSlider {...slickProps}>
+                                    {isConfigurationGallery
+                                        ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
+                                        : convertSlidesToTemplates(
+                                            streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
+                                            false,
+                                            isAdmin,
+                                        )}
+                                </SlickSlider>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {artGalleryTemplateStore.isEdited && isConfigurationGallery
+                ? (
+                    <div className="configurationGalleryControls">
+                        <Button type="primary" onClick={handleAddNewSlide}>Додати</Button>
+                        <Button type="danger" onClick={handleClearSlideTemplate}>Скасувати</Button>
+                    </div>
+                )
+                : (<></>)}
+        </div>
+    );
 };
 
 export default observer(ArtGallery);

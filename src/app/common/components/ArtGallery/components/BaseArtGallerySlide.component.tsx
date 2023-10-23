@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import './BaseArtGallerySlide.styles.scss';
 
 import { MoreOutlined } from '@ant-design/icons';
@@ -47,8 +48,8 @@ const BaseArtGallerySlide = ({
         );
 
         if (currentSlide && prevSlide) {
-            currentSlide?.index -= 1;
-            prevSlide?.index += 1;
+            currentSlide.index -= 1;
+            prevSlide.index += 1;
         }
     }
 
@@ -61,8 +62,8 @@ const BaseArtGallerySlide = ({
         );
 
         if (currentSlide && nextSlide) {
-            currentSlide?.index += 1;
-            nextSlide?.index -= 1;
+            currentSlide.index += 1;
+            nextSlide.index -= 1;
         }
     }
 
@@ -78,7 +79,8 @@ const BaseArtGallerySlide = ({
         {
             label: <button onClick={onMoveSlideForward}>Пересунути вперід</button>,
             key: '2',
-            disabled: (streetcodeArtSlideStore.findBySlideIndex(slideIndex)?.index || -1) >= streetcodeArtSlides.length - 1,
+            disabled: (streetcodeArtSlideStore.findBySlideIndex(slideIndex)?.index || -1)
+                >= streetcodeArtSlides.length - 1,
         },
         {
             label: <button onClick={onMoveSlideBackward}>Пересунути назад</button>,
