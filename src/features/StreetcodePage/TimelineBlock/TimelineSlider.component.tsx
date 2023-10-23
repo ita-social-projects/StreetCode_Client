@@ -3,6 +3,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import SliderProps, { defaultSliderProps } from '@features/SlickSlider';
 import useMobx from '@stores/root-store';
+import { useSearchParams } from 'react-router-dom';
 
 const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sliderProps }) => {
     const sliderRef = useRef<Slider>(null);
@@ -12,8 +13,12 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
     const { timelineItemStore } = useMobx();
     const { getTimelineItemArray, activeYear, setActiveYear } = timelineItemStore;
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const timelineItemId = Number(searchParams.get('timelineItemId'));
+    const [timelineItemIndex, setTimelineItemIndex] = useState<number>(getTimelineItemArray.findIndex(timelineItem => timelineItem.id === timelineItemId));
+
     useEffect(() => {
-        if (sliderRef && sliderRef.current) {
+        if (sliderRef && sliderRef.current && timelineItemIndex < 0) {
             const sectionIdx = getTimelineItemArray
                 .findIndex(({ date }) => new Date(date).getFullYear() === activeYear);
             if (sectionIdx === 0) {
@@ -27,6 +32,11 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
                 sliderRef.current.slickGoTo(sectionIdx);
             }
             swiped.current = false;
+        }
+        else {
+            sliderRef?.current?.slickGoTo(timelineItemIndex);
+            setActiveYear(new Date(getTimelineItemArray[timelineItemIndex].date).getFullYear());
+            setTimelineItemIndex(-1);
         }
     }, [activeYear]);
 
@@ -53,7 +63,7 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
-                centerMode={centerMode}
+                centerMode={true}
                 afterChange={onAfterChange}
                 onSwipe={onSwipe}
                 slidesToShow={slideToShow}

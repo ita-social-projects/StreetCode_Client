@@ -99,8 +99,12 @@ const SourceModal: React.FC<SourceModalProps> = ({
             imageId: imageId.current,
             image,
         };
+        sourcesAdminStore.getSourcesAdmin.map((t) => t).forEach(t => {
+            if (formData.title == t.title ||  imageId.current == t.imageId)
+                currentSource.id = t.id;
+        });
 
-        if (initialData) {
+        if (currentSource.id) {
             await sourcesAdminStore.updateSourceCategory(currentSource);
         } else {
             await sourcesAdminStore.addSourceCategory(currentSource);
@@ -131,9 +135,22 @@ const SourceModal: React.FC<SourceModalProps> = ({
         return [];
     };
 
-    const handleOk = () => {
-        form.submit();
-        message.success("Категорію успішно додано!", 2);
+
+    const handleOk = async () => {
+        try {
+            await form.validateFields();
+            form.submit();
+            message.success("Категорію успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
     }
 
     return (

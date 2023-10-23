@@ -165,6 +165,11 @@ const NewsModal: React.FC<{
             creationDate: dayjs(formValues.creationDate),
         };
 
+        newsStore.getNewsArray.map((t) => t).forEach(t => {
+        if (formValues.title == t.title || imageId.current == t.imageId)
+            newsItem = t;
+        });
+        //need to fix when url is static because from didn't see ti when u press save button on second time
         let success = false;
         if (newsItem) {
             news.id = newsItem.id;

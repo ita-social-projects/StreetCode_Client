@@ -7,48 +7,66 @@
     transform: translate3d(0, 0, 0); //required to make safari use gpu for render filter:drop-shadow
     @include vnd.vendored(filter, 'drop-shadow(0 0 10px rgba(255, 0, 0, 0.612))');
     cursor: pointer;
+    transform: scale(1.7);
 }
 
-.contactUsContainer{
-    .contactBlock{
+.contactUsContainer {
+    .contactBlock {
         position: relative;
         bottom: f.pxToRem(50px);
 
-        .contactCover{
+        .contactCover {
             position: relative;
             z-index: 1;
         }
 
-        .contactLogo{
+        .contactLogo {
             position: absolute;
             top: f.pxToRem(-110px);
             left: f.pxToRem(-54px);
             z-index: 0;
         }
 
-        .emailBlock img,  .phonesBlock img{
-            margin-right: f.pxToRem(10px);
-        }
-        .emailBlock{
-            @include mut.flexed($align-items: center);
+        .emailBlock {
+            @include mut.flexed($align-items: baseline);
             margin-bottom: f.pxToRem(20px);
+            @media screen and (max-width: 1024px) {
+                @include mut.flexed($align-items: normal);
+            }
+            .icon {
+                transform: scale(1.7);
+                margin-right: f.pxToRem(20px);
+                @media screen and (max-width: 1024px) {
+                    transform: scale(1.025);
+                    margin-right: f.pxToRem(5px);
+                }
+            }
 
-            .icon:hover{
+            .icon:hover {
                 @include hoverStyles;
             }
         }
 
-        .socials{
-            .icon{
+        .socials {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .icon {
                 transition: all 0.2s ease;
-                margin-right: f.pxToRem(30px);
+                margin-right: f.pxToRem(35px);
+                transform: scale(1.7);
+                @media screen and (max-width: 1024px) {
+                    transform: scale(1.025);
+                }
             }
-            .icon:hover{
+
+            .icon:hover {
                 @include hoverStyles;
             }
         }
 
-        .email{
+        .email {
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
             line-height: 48px;
             color: #1D1F23;
@@ -57,14 +75,15 @@
 }
 
 @media screen and (max-width: 1024px) {
-    .contactUsContainer{
-        .contactBlock{
+    .contactUsContainer {
+        .contactBlock {
             bottom: 0;
-            .icon{
+
+            .icon {
                 transform: scale(0.6);
             }
 
-            .contactLogo{
+            .contactLogo {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
                 line-height: 71px;
                 width: f.pxToRem(140px);
@@ -74,11 +93,11 @@
                 left: f.pxToRem(220px);
             }
 
-            .socials .icon{
+            .socials .icon {
                 margin-right: f.pxToRem(20px);
             }
 
-            .email{
+            .email {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
                 line-height: 26px;
                 font-family: 'Closer Text';
@@ -87,4 +106,3 @@
         }
     }
 }
-

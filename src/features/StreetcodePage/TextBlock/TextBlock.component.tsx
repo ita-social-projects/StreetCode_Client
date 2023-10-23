@@ -37,11 +37,20 @@ const TextComponent = () => {
         }
     }, [getStreetCodeId]);
 
+    useEffect(() => {
+        const hash = location.hash.replace('#', '');
+        const element = document.getElementById(hash);
+    
+        setTimeout(() => {
+            element?.scrollIntoView({behavior: "smooth", block: "start"});
+        }, 1000);
+    });
+
     return (
-        text
+        <div id="text">
+            {text
             ? (
                 <div
-                    id="text"
                     className="textComponentContainer"
                 >
                     <BlockHeading headingText={String(text?.title)} />
@@ -60,7 +69,8 @@ const TextComponent = () => {
                             </div>
                         ) : <></>}
                 </div>
-            ) : null
+            ) : <></>}
+        </div>
     );
 };
 

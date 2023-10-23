@@ -3,6 +3,7 @@
 import './News.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { NewsWithUrl } from '@models/news/news.model';
 import dayjs from 'dayjs';
@@ -86,6 +87,15 @@ const NewsPage = () => {
 
     return (
         <div>
+            <Helmet>
+                <meta property="og:title" content={news?.title} />
+                <meta property="og:description" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
+                <meta name="twitter:card" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
+                <meta
+                    property="og:image"
+                    content={newsImg?.src || ''}
+                />
+            </Helmet>
             <div className="newsContainer">
                 <div className="wrapper" ref={wrapperRef}>
                     <BreadCrumbForNews separator={<div className="separator" />} news={newsValue?.news} />
