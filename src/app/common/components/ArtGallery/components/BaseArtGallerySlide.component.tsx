@@ -95,14 +95,21 @@ const BaseArtGallerySlide = ({
                 const { image } = streetcodeArt.art;
                 const imageJSX = (
                     <img
-                        className="base-art-image"
+                        className={`base-art-image img${streetcodeArt.index}`}
                         src={base64ToUrl(image.base64, image.mimeType)}
                         alt={image.imageDetails?.title}
                     />
                 );
 
                 return isDroppable
-                    ? <Droppable id={`${artSlideId}-${streetcodeArt.index}`}>{imageJSX}</Droppable>
+                    ? (
+                        <Droppable
+                            id={`${artSlideId}-${streetcodeArt.index}`}
+                            className={`droppable${streetcodeArt.index}`}
+                        >
+                            {imageJSX}
+                        </Droppable>
+                    )
                     : imageJSX;
             })}
             {isAdmin

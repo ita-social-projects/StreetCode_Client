@@ -2,13 +2,6 @@
 @use "@sass/_utils.functions.scss" as *;
 
 .OneToFourAndFiveToSixSlide{
-    display: grid;
+    @include mut.art-slide-grid();
     grid-template-columns: 2fr 1fr;
-    max-height: 100%;
-
-    img{
-        height: 100%;
-        width: 100%;
-        max-height: 100%;
-    }
 }

@@ -2,12 +2,5 @@
 @use "@sass/_utils.functions.scss" as *;
 
 .OneAndTwoAndThreeAndFourAndFiveAndSixSlide{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-
-    img{
-        height: pxToRem(256px); // (height - row gap) / 2 rows
-        width: 100%;
-    }
+    @include mut.art-slide-grid($cols: 3, $rows: 2);
 }

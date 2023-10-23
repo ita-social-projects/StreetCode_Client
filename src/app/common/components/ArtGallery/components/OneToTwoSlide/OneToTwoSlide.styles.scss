@@ -2,14 +2,10 @@
 @use "@sass/_utils.functions.scss" as *;
 @use '@sass/variables/variables.sizes' as s;
 
-.oneToFourSlide{
+.oneToTwoSlide{
     @include mut.flex-center();
 
     img{
-        width: pxToRem(s.$art-gallery-img-size * 2.6);
-    }
-
-    .droppable{
-        width: auto;
+        width: pxToRem(s.$art-gallery-img-size);
     }
 }

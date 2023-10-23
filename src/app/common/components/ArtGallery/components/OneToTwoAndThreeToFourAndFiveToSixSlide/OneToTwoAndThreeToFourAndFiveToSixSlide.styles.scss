@@ -2,10 +2,5 @@
 @use "@sass/_utils.functions.scss" as *;
 
 .OneToTwoAndThreeToFourAndFiveToSixSlide{
-    @include mut.flex-center();
-
-    img{
-        height: 100%;
-        width: 30%;
-    }
+    @include mut.art-slide-grid($cols:3);
 }

@@ -1,5 +1,6 @@
 @use '../variables/variables.fonts' as ft;
 @use '../variables/variables.colors' as c;
+@use '../variables/variables.sizes' as s;
 @use '../mixins/vendor.mixins' as vnd;
 @use '../utils.functions' as f;
 
@@ -273,4 +274,20 @@
     -webkit-text-fill-color: transparent;
     z-index: 100;
   }
+}
+
+// --------------------------Art gallery specific mixins---------------------------------
+@mixin images-grid-area($to: 6){
+  @for $i from 1 through $to {
+    .img#{$i}, .droppable#{$i} {
+      grid-area: img#{$i}
+    }
+  }
+}
+
+@mixin art-slide-grid($cols:1, $rows:1){
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat($cols, 1fr);
+  grid-template-rows: repeat($rows, f.pxToRem(calc(536px/$rows)));
 }
