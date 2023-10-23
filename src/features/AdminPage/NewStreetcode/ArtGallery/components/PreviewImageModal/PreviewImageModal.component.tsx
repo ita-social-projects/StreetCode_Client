@@ -29,7 +29,7 @@ const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
     };
 
     const handleSave = () => {
-        if (!artIdx) {
+        if (artIdx < 0) {
             return;
         }
         artStore.arts[artIdx].title = form.getFieldValue('title');
@@ -40,7 +40,7 @@ const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
     };
 
     useEffect(() => {
-        if (artIdx && opened) {
+        if (artIdx >= 0 && opened) {
             form.setFieldsValue({
                 title: artStore.arts[artIdx]?.title ?? '',
                 description: artStore.arts[artIdx]?.description ?? '',

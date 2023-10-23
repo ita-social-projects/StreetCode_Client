@@ -42,12 +42,16 @@ export default class ArtGalleryTemplateStore {
 
     public getEditedSlide() {
         const editedSlide = this.streetcodeArtSlides.find(
-            (slide) => slide.streetcodeArts.some(
+            (slide) => slide.streetcodeArts.every(
                 (sArt) => sArt.art.image.base64 !== TEMPLATE_IMAGE_BASE64,
             ),
         );
-        this.clearTemplates();
 
+        if (!editedSlide) {
+            return null;
+        }
+
+        this.clearTemplates();
         return { ...editedSlide };
     }
 

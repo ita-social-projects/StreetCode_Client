@@ -89,7 +89,6 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [artSlides, setArtsSlides] = useState<StreetcodeArtSlideAdmin[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
@@ -160,11 +159,6 @@ const NewStreetcode = () => {
         if (parseId) {
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-                if (streetcodeArtSlideStore.streetcodeArtSlides.length === 0) {
-                    streetcodeArtSlideStore.fetchNextArtSlidesByStreetcodeId(parseId).then(() => {
-                        setArtsSlides(streetcodeArtSlideStore.streetcodeArtSlides);
-                    });
-                }
                 StreetcodesApi.getById(parseId).then((x) => {
                     streetcodeType.current = x.streetcodeType;
                     form.setFieldsValue({
@@ -329,13 +323,7 @@ const NewStreetcode = () => {
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
                 arts: artStore.arts.map((a) => ({ ...a, image: null })),
-                streetcodeArtSlides: streetcodeArtSlideStore.streetcodeArtSlides.map((slide) => ({
-                    ...slide,
-                    streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
-                        index: streetcodeArt.index,
-                        artId: streetcodeArt.art.id,
-                    })),
-                })),
+                streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                 subtitles,
                 firstName: null,
                 lastName: null,
@@ -425,7 +413,7 @@ const NewStreetcode = () => {
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
                     arts: artStore.arts,
-                    streetcodeArtSlides: [...streetcodeArtSlideStore.streetcodeArtSlides],
+                    streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
@@ -511,7 +499,7 @@ const NewStreetcode = () => {
                                 <ArtGalleryBlock />
                                 <h4>Конфігурація гаралеї</h4>
                                 <ArtGallery isConfigurationGallery />
-                                <ArtGallery adminArtSlides={artSlides} />
+                                <ArtGallery isAdmin />
                             </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <ForFansBlock onChange={handleFieldChange} />

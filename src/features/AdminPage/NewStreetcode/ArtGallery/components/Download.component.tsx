@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import './DownloadStyles.styles.scss';
 
 import { action } from 'mobx';
@@ -62,6 +63,7 @@ const DownloadBlock = React.memo(() => {
             artsToRemoveIdxs.current.delete(param.uid);
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         artsToRemoveIdxs.current.size > 0 ? setVisibleDeleteButton(true) : setVisibleDeleteButton(false);
     }, []);
 
