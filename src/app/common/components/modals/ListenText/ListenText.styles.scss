@@ -8,7 +8,7 @@
     @include mut.sized(1200px, 46px);
     @include mut.flex-centered();
 
-    @include mut.positioned-as(fixed, $bottom: 4%);
+    @include mut.positioned-as(fixed, $bottom: 15px);
     @include mut.full-rounded(11px, $overflow: visible);
 
     background-color: c.$pure-white-color;
