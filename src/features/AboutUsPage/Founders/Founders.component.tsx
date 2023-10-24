@@ -74,12 +74,12 @@ const TeamMemberCardNatalia: TeamMember = {
     teamMemberLinks: [
         {
             id: -1,
-            targetUrl: FounderInna.founderFacebook,
+            targetUrl: FounderNatalia.founderFacebook,
             logoType: 2,
         },
         {
             id: -2,
-            targetUrl: FounderInna.founderInstagram,
+            targetUrl: FounderNatalia.founderInstagram,
             logoType: 1,
         },
     ],

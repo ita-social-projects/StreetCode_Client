@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import './SourceItem.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
 import { SourceCategory } from '@models/sources/sources.model';
 import { useModalContext } from '@stores/root-store';
 
@@ -17,17 +17,17 @@ const SourceItem = ({ srcCategory }: Props) => {
 
     const handleMouseDown = () => {
         setIsDragging(false);
-    }
+    };
 
     const handleMouseMove = () => {
         setIsDragging(true);
-    }
+    };
 
     const handleMouseUp = () => {
         if (!isDragging) {
             setModal('sources', srcCategory.id, true);
         }
-    }
+    };
 
     return (
         <div

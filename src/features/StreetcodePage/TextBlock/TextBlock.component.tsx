@@ -40,36 +40,36 @@ const TextComponent = () => {
     useEffect(() => {
         const hash = location.hash.replace('#', '');
         const element = document.getElementById(hash);
-    
+
         setTimeout(() => {
-            element?.scrollIntoView({behavior: "smooth", block: "start"});
+            element?.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 1000);
     });
 
     return (
         <div id="text">
             {text
-            ? (
-                <div
-                    className="textComponentContainer"
-                >
-                    <BlockHeading headingText={String(text?.title)} />
-                    <div className="textComponent">
-                        <div className="TextContainer">
-                            <ReadMore key={text?.title} text={String(text?.textContent)} />
-                            <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
-                        </div>
-                    </div>
-                    {video.url.length > 1
-                        ? (
-                            <div className="videoComponent">
-                                <VideoPlayer
-                                    videoUrls={String(video?.url)}
-                                />
+                ? (
+                    <div
+                        className="textComponentContainer"
+                    >
+                        <BlockHeading headingText={String(text?.title)} />
+                        <div className="textComponent">
+                            <div className="TextContainer">
+                                <ReadMore key={text?.title} text={String(text?.textContent)} />
+                                <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                             </div>
-                        ) : <></>}
-                </div>
-            ) : <></>}
+                        </div>
+                        {video.url.length > 1
+                            ? (
+                                <div className="videoComponent">
+                                    <VideoPlayer
+                                        videoUrls={String(video?.url)}
+                                    />
+                                </div>
+                            ) : <></>}
+                    </div>
+                ) : <></>}
         </div>
     );
 };
