@@ -125,7 +125,7 @@ const DonationBlock = () => {
                     checked={isCheckboxChecked} 
                     onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                 >
-                    Я даю згоду на обробку моїх персональних даних
+                    Я даю згоду на обробку моїх <a href='/privacy-policy'>персональних даних</a>
                 </Checkbox>
             </div>
             <button
