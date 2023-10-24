@@ -17,15 +17,14 @@ import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndCo
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
-import { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+import StreetcodeArtSlideStore from '@stores/streetcode-art-slide-store';
 import dayjs from 'dayjs';
 
 import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
-import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -447,6 +446,7 @@ const NewStreetcode = () => {
                 console.log(streetcode);
                 StreetcodesApi.create(streetcode)
                     .then(() => {
+                        streetcodeArtSlideStore.streetcodeArtSlides = [];
                         if (tempStatus === 1) {
                             navigate(`../${form.getFieldValue('streetcodeUrlName')}`, { replace: true });
                         } else {
