@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import './StreetcodeSlider.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -62,9 +63,6 @@ const StreetcodeSlider = () => {
                     await Promise.all(pomises).then(() => {
                         setImages((prevState) => [...prevState, ...newImages]);
                     });
-                    console.log(streetcodes);
-                    console.log(images);
-
                 } catch (error: unknown) {
                     break;
                 }
@@ -83,11 +81,11 @@ const StreetcodeSlider = () => {
                                     streetcodes.length > 0
                                         ? (
                                             <SlickSlider {...props}>
-                                                {streetcodes.map((item) => (
+                                                {streetcodes.map((item, index) => (
                                                     <div key={item.id} className="slider-item">
                                                         <StreetcodeSliderItem
                                                             streetcode={item}
-                                                            image={images.find((i) => i.id === item.imageId)}
+                                                            image={images[index]}
                                                         />
                                                     </div>
                                                 ))}
