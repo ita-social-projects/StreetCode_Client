@@ -27,7 +27,7 @@ interface SourceModalProps {
     isModalVisible: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     initialData?: SourceCategoryAdmin;
-    isNewCategory?:(data: boolean) => void;
+    isNewCategory?: (data: boolean) => void;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
@@ -99,8 +99,12 @@ const SourceModal: React.FC<SourceModalProps> = ({
             imageId: imageId.current,
             image,
         };
+        sourcesAdminStore.getSourcesAdmin.map((t) => t).forEach(t => {
+            if (formData.title == t.title ||  imageId.current == t.imageId)
+                currentSource.id = t.id;
+        });
 
-        if (initialData) {
+        if (currentSource.id) {
             await sourcesAdminStore.updateSourceCategory(currentSource);
         } else {
             await sourcesAdminStore.addSourceCategory(currentSource);
@@ -131,9 +135,22 @@ const SourceModal: React.FC<SourceModalProps> = ({
         return [];
     };
 
-    const handleOk =() =>{
-        form.submit();
-        message.success("Категорію успішно додано!", 2);
+
+    const handleOk = async () => {
+        try {
+            await form.validateFields();
+            form.submit();
+            message.success("Категорію успішно додано!", 2)
+        } catch (error) {
+            message.config({
+                top: 100,
+                duration: 3,
+                maxCount: 3,
+                rtl: true,
+                prefixCls: 'my-message',
+            });
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+        }
     }
 
     return (
@@ -156,7 +173,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" maxLength={100} showCount />
+                        <Input placeholder="Title" maxLength={23} showCount />
                     </Form.Item>
                     <Form.Item
                         name="image"
@@ -191,7 +208,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => handleOk() }>
+                        <Button className="streetcode-custom-button" onClick={() => handleOk()}>
                             Зберегти
                         </Button>
                     </div>

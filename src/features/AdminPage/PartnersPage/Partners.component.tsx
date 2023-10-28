@@ -3,13 +3,12 @@ import './Partners.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
-import facebook from '@assets/images/partners/facebook.webp';
-import instagram from '@assets/images/partners/instagram.webp';
-import twitter from '@assets/images/partners/twitter.webp';
-import youtube from '@assets/images/partners/youtube.webp';
+import facebook from '@assets/images/partners/facebook.svg';
+import instagram from '@assets/images/partners/instagram.svg';
+import twitter from '@assets/images/partners/twitterNew.svg';
+import youtube from '@assets/images/partners/youtube.svg';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
-import axios from 'axios';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
@@ -103,21 +102,20 @@ const Partners:React.FC = observer(() => {
             width: '12%',
             render: (links:PartnerSourceLink[], partner) => (
                 <div key={`${links.length}${partner.id}${partner.logoId}`} className="partner-links">
-                    {links.map((link) => (
-                        <a
-                            key={`${link.id}${link.targetUrl}`}
-                            rel="noreferrer"
-                            target="_blank"
-                            className="sourceLink"
-                            href={link.targetUrl.href}
-                        >
-                            <img
-                                key={link.id * link.logoType}
-                                src={LogoType[link.logoType]}
-                                alt={link.targetUrl.title}
-                            />
-                        </a>
-                    ))}
+                    {links.map((link) => {
+                        const LogoComponent = LogoType[link.logoType];
+                        return (
+                            <a
+                                key={`${link.id}${link.targetUrl}`}
+                                rel="noreferrer"
+                                target="_blank"
+                                className="sourceLink"
+                                href={link.targetUrl.href}
+                            >
+                                <LogoComponent />
+                            </a>
+                        );
+                    })}
                 </div>
             ),
         },

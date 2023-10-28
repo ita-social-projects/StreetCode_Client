@@ -2,13 +2,14 @@ import './StreetcodeCard.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
-import useMobx, { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
+import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 
@@ -16,7 +17,7 @@ import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Image from '@/models/media/image.model';
+import Image, { ImageAssigment } from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -57,7 +58,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     useAsync(() => {
         if (id && id > 0) {
             fetchAudioByStreetcodeId(id).then(() => {
-                setAudioIsLoaded(true)
+                setAudioIsLoaded(true);
             });
         }
     }, [id]);
@@ -68,7 +69,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs); 
+                    setImages(imgs);
                     streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((e) => { });
@@ -78,91 +79,107 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
 
     return (
         streecodePageLoaderContext.isPageLoaded ? (
-            <div className="card">
-                <div className="leftSider">
-                    <div className="leftSiderContent">
-                        <BlockSlider
-                            arrows={false}
-                            slidesToShow={1}
-                            swipeOnClick
-                            infinite
-                        >
-                            {images.slice(0, 2).map((im) => (
-                                <img
-                                    key={im.id}
-                                    src={base64ToUrl(im.base64, im.mimeType)}
-                                    className="streetcodeImg"
-                                    style={{objectFit: 'contain'}}
-                                    alt={im.imageDetails?.alt}
-                                />
-                            ))}
-                        </BlockSlider>
+            <>
+                <Helmet>
+                    <meta property="og:title" content={streetcode?.title} />
+                    <meta property="og:description" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
+                    <meta name="twitter:card" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
+                    <meta
+                        property="og:image"
+                        content={
+                            images.length > 1 ? base64ToUrl(images[1].base64, images[1].mimeType)
+                                : base64ToUrl(images[0].base64, images[0].mimeType)
+                        }
+                    />
+                </Helmet>
+                <div className="card">
+                    <div className="leftSider">
+                        <div className="leftSiderContent">
+                            <BlockSlider
+                                arrows={false}
+                                slidesToShow={1}
+                                swipeOnClick
+                                infinite
+                            >
+                                {images.filter((image) => (image.imageDetails?.alt === ImageAssigment.animation.toString()
+                                    || image.imageDetails?.alt === ImageAssigment.blackandwhite.toString())).map((im) => (
+                                    <img
+                                        key={im.id}
+                                        src={base64ToUrl(im.base64, im.mimeType)}
+                                        className="streetcodeImg"
+                                        style={{ objectFit: 'contain' }}
+                                        alt={im.imageDetails?.alt}
+                                    />
+                                ))}
+                            </BlockSlider>
+                        </div>
+                    </div>
+                    <div className="rightSider">
+                        <div className="streetcodeIndex">
+                            Стріткод #
+                            {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
+                                : streetcode?.index}
+                        </div>
+                        <h2 className="streetcodeTitle">
+                            {streetcode?.title}
+                        </h2>
+                        <div className="streetcodeDate">
+                            {streetcode?.dateString}
+                        </div>
+                        <div className="tagListWrapper">
+                            <TagList
+                                tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
+                                setActiveTagId={setActiveTagId}
+                                setActiveTagBlock={setActiveBlock}
+                            />
+                        </div>
+                        <div className="blurTop" />
+
+                        <p className="teaserBlock">
+                            {streetcode?.teaser}
+                        </p>
+
+                        <div className="blurBottom" />
+                        <div className="cardFooter">
+                            {audio?.base64 && audioIsLoaded
+                                ? (
+                                    <Button
+                                        type="primary"
+                                        className="audioBtn audioBtnActive"
+                                        onClick={() => {
+                                            setModal('audio');
+                                            audioClickEvent(streetcode?.id ?? 0);
+                                        }}
+                                    >
+                                        <PlayCircleFilled className="playCircle" />
+                                        <span>Прослухати текст</span>
+                                    </Button>
+                                )
+                                : (
+                                    <Button
+                                        disabled
+                                        type="primary"
+                                        className="audioBtn"
+                                    >
+                                        <span>Аудіо на підході</span>
+                                    </Button>
+                                )}
+
+                            {arlink
+                                ? (
+                                    <Button
+                                        className="animateFigureBtn"
+                                        onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                                    >
+                                        <a href="#QRBlock">Оживити картинку</a>
+                                    </Button>
+                                )
+                                : <></>}
+                        </div>
                     </div>
                 </div>
-                <div className="rightSider">
-                    <div className="streetcodeIndex">
-                        Стріткод #
-                        {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
-                            : streetcode?.index}
-                    </div>
-                    <h2 className="streetcodeTitle">
-                        {streetcode?.title}
-                    </h2>
-                    <div className="streetcodeDate">
-                        {streetcode?.dateString}
-                    </div>
-                    <div className="tagListWrapper">
-                        <TagList
-                            tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
-                            setActiveTagId={setActiveTagId}
-                            setActiveTagBlock={setActiveBlock}
-                        />
-                    </div>
-                    <p className="teaserBlock">
-                        {streetcode?.teaser}
-                        {streetcode?.teaser}
-                        {streetcode?.teaser}
-                    </p>
-
-                    <div className="cardFooter">
-                        {audio?.base64 && audioIsLoaded
-                            ? (
-                                <Button
-                                    type="primary"
-                                    className={"audioBtn audioBtnActive"}
-                                    onClick={() => {
-                                        setModal('audio');
-                                        audioClickEvent(streetcode?.id ?? 0);
-                                    }}
-                                >
-                                    <PlayCircleFilled className="playCircle" />
-                                    <span>Прослухати текст</span>
-                                </Button>
-                            )
-                            : (
-                                <Button
-                                    disabled
-                                    type="primary"
-                                    className="audioBtn"
-                                >
-                                    <span>Аудіо на підході</span>
-                                </Button>
-                            )}
-
-                        {arlink
-                            ? (
-                                <Button
-                                    className="animateFigureBtn"
-                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                                >
-                                    <a href="#QRBlock">Оживити картинку</a>
-                                </Button>
-                            )
-                            : <></>}
-                    </div>
-                </div>
-            </div>
-        ) : ''
+            </>
+        ) : <></>
     );
 };
 

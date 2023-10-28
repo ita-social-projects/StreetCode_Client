@@ -24,7 +24,7 @@ const Newss: React.FC = observer(() => {
     const [newsToEdit, setNewsToEdit] = useState<News>();
     const updatedNews = () => {
         Promise.all([
-            newsStore.fetchNewsAll(),
+            newsStore.fetchNewsAllSortedByCreationDate(),
         ]).then(() => {
             newsStore?.NewsMap.forEach((val, key) => {
                 if (val.imageId !== null && val.imageId !== undefined) {
@@ -40,7 +40,8 @@ const Newss: React.FC = observer(() => {
     };
     useEffect(() => {
         updatedNews();
-    }, [modalAddOpened]);
+    }, [modalAddOpened, modalEditOpened]);
+
     const columns: ColumnsType<News> = [
         {
             title: 'Назва',

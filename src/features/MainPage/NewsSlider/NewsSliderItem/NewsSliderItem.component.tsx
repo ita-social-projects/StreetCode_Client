@@ -14,8 +14,9 @@ interface Props {
 }
 
 const NewsSliderItem = ({ news, image }: Props) => {
-    const isMobile = useMediaQuery({
-        query: '(max-width: 480px)',
+
+    const isMobileOrTablet = useMediaQuery({
+        query: '(max-width: 1024px)',
     });
 
     const handleClickRedirect = () => {
@@ -44,7 +45,7 @@ const NewsSliderItem = ({ news, image }: Props) => {
 
     return (
         <div className="newsSliderItem">
-            <div className="newsMainPage" onClick={isMobile ? handleClickRedirect : undefined}>
+            <div className="newsMainPage" onClick={isMobileOrTablet ? handleClickRedirect : undefined}>
                 <div className="newsPageImgContainer">
                     <img
                         key={image?.id}
@@ -59,7 +60,9 @@ const NewsSliderItem = ({ news, image }: Props) => {
                                 {news?.title}
                             </h2>
                             <div className="newsText">
-                                <span className="text">{htmlReactParser(cleanText)}</span>
+                                <p className="text">
+                                    {htmlReactParser(cleanText?.substring(0, 800))}
+                                </p>
                                 <a className="moreText" href={`news/${news.url.toString()}`} onClick={handleLinkClick}>
                                     До новини
                                 </a>

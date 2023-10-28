@@ -75,6 +75,7 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
             height: unset;
 
             .mainContent {
+                margin-top: f.pxToRem(28px);
                 ::-webkit-scrollbar {
                     width: f.pxToRem(2px);
                 }

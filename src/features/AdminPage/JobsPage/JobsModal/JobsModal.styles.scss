@@ -1,5 +1,9 @@
 @use "@sass/_utils.functions.scss" as f;
 
+.validateLabelDescription{
+    color: red;
+    font-weight: bold;
+}
 .textWrapper{
     .ant-input{
         min-height: f.pxToRem(300px);

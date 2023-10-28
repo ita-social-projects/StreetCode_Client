@@ -26,6 +26,7 @@ const SourcesComponent = () => {
         className: 'heightContainer',
         infinite: false,
         swipe: true,
+        touchThreshold: 25,
         dots: windowsize.width <= 1024,
         variableWidth: true,
         swipeOnClick: false,

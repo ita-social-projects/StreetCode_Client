@@ -14,6 +14,7 @@
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.sized(840px, 567px);
         @include mut.full-rounded(30px);
+        cursor: pointer;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         background-color: c.$pure-white-color;
         margin-left: 20px;
@@ -36,7 +37,7 @@
     .newsSlideText {
         position: absolute;
         height: fit-content;
-        top: 374px;
+        bottom: 0;
         z-index: 2;
         @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
         background-color: c.$pure-white-color;
@@ -139,14 +140,26 @@
         }
 
         .moreText {
-            display: inline-block;
-            margin-left: 4px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            height: f.pxToRem(54px);
+            padding-top: f.pxToRem(18px);
+            padding-left: f.pxToRem(30px);
+
             @include mut.with-font(ft.$roboto-font, $font-weight: bolder, $font-size: 15px);
             color: c.$dark-red-color;
+            background-color: c.$accented-grayish-gray-color;
             text-decoration: none;
 
             &:hover {
                 text-decoration: underline;
+            }
+
+            @media (max-width: 1025px) {
+                padding-left: f.pxToRem(20px);
             }
         }
         @media (min-width: 768px) and (max-width: 1024px) {
@@ -154,23 +167,23 @@
         }
     }
     .text{
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
         overflow: hidden;
+        @include mut.truncated(2);
+        word-break: break-word;
+
         @include mut.rem-margined(5px, 0px, 0px, 0px);
         @include mut.rem-padded(0px, 5px, 0px, 0px);
+
         color: c.$lighter-black-color;
-        word-break: break-word;
         @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
         line-height: 18px;
+
         @media (min-width: 768px) and (max-width: 1024px) {
-            -webkit-line-clamp: 2;
             width: 93vw;
         }
 
         @media (max-width: 767px) {
-            -webkit-line-clamp: 11;
+            @include mut.truncated(11);
             width: f.pxToRem(320px);
         }
     }

@@ -66,6 +66,13 @@
     a{
       color: c.$pure-white-color;
     }
+
+    li{
+      .ant-typography.text-white{
+        color: white;
+        @include mut.with-font($font-weight: 300, $font-size: 15px);
+      }
+    }
   }
 
   .socialIconContainer {
@@ -77,9 +84,6 @@
     > * {
      @include mut.rem-margined($right: 14.62px);
     }
-      li:nth-child(5) {
-        @include mut.sized($height: 20px);
-      }
   }
 }
 @media screen and (max-width: 480px) {

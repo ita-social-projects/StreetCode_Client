@@ -44,26 +44,27 @@ const StreetcodeSlider = () => {
 
         if (!loading.current) {
             loading.current = true;
-
-            const newStreetcodes: StreetcodeMainPage[] = [];
-            const newImages: Image[] = [];
             while (true) {
                 try {
-                    const response = await fetchNextPage();
-                    newStreetcodes.push(...response);
-                    setStreetcodes(newStreetcodes);
-                    const promises = [];
+                    const newStreetcodes = await fetchNextPage();
+                    setStreetcodes((prevState) => [...prevState, ...newStreetcodes]);
 
-                    for (let i = 0; i < response.length; i++) {
+                    const newImages: Image[] = [];
+                    const pomises = [];
+
+                    for (let i = 0; i < newStreetcodes.length; i++) {
                         const currentPosition = newImages.length + i;
-                        promises.push(ImagesApi.getById(response[i].imageId).then((img) => {
+                        pomises.push(ImagesApi.getById(newStreetcodes[i].imageId).then((img) => {
                             newImages[currentPosition] = img;
                         }));
                     }
 
-                    await Promise.all(promises).then(() => {
-                        setImages(newImages);
+                    await Promise.all(pomises).then(() => {
+                        setImages((prevState) => [...prevState, ...newImages]);
                     });
+                    console.log(streetcodes);
+                    console.log(images);
+
                 } catch (error: unknown) {
                     break;
                 }
@@ -71,31 +72,36 @@ const StreetcodeSlider = () => {
         }
     });
 
-    if (streetcodes.length > 0) {
-        return (
-            <div>
-                <div className="streetcodeMainPageWrapper">
-                    <div id="streetcodeSliderContentBlock" className="streetcodeSliderComponent">
-                        <div className="streetcodeSliderContainer">
-                            <div className="blockCenter">
-                                <div className="streetcodeSliderContent">
-                                    <SlickSlider {...props}>
-                                        {streetcodes.map((item, index) => (
-                                            <div key={item.id} className="slider-item">
-                                                <StreetcodeSliderItem streetcode={item} image={images[index]} />
-                                            </div>
-                                        ))}
-                                    </SlickSlider>
-                                </div>
+    return (
+        <div>
+            <div className="streetcodeMainPageWrapper">
+                <div id="streetcodeSliderContentBlock" className="streetcodeSliderComponent">
+                    <div className="streetcodeSliderContainer">
+                        <div className="blockCenter">
+                            <div className="streetcodeSliderContent">
+                                {
+                                    streetcodes.length > 0
+                                        ? (
+                                            <SlickSlider {...props}>
+                                                {streetcodes.map((item) => (
+                                                    <div key={item.id} className="slider-item">
+                                                        <StreetcodeSliderItem
+                                                            streetcode={item}
+                                                            image={images.find((i) => i.id === item.imageId)}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </SlickSlider>
+                                        )
+                                        : <></>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        );
-    }
-
-    return null;
+        </div>
+    );
 };
 
 export default observer(StreetcodeSlider);

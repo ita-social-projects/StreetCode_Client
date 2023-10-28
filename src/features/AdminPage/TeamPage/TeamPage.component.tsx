@@ -3,10 +3,14 @@ import './TeamPage.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
-import facebook from '@assets/images/partners/facebook.webp';
-import instagram from '@assets/images/partners/instagram.webp';
-import twitter from '@assets/images/partners/twitter.webp';
-import youtube from '@assets/images/partners/youtube.webp';
+import behance from '@assets/images/partners/behance.svg';
+import facebook from '@assets/images/partners/facebook.svg';
+import https from '@assets/images/partners/https.svg';
+import instagram from '@assets/images/partners/instagram.svg';
+import linkedin from '@assets/images/partners/linkedin.svg';
+import tiktok from '@assets/images/partners/tiktok.svg';
+import twitter from '@assets/images/partners/twitterNew.svg';
+import youtube from '@assets/images/partners/youtube.svg';
 
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
@@ -16,7 +20,7 @@ import Image from '@/models/media/image.model';
 import base64ToUrl from '../../../app/common/utils/base64ToUrl.utility';
 import ImageStore from '../../../app/stores/image-store';
 import useMobx, { useModalContext } from '../../../app/stores/root-store';
-import TeamMember, { LogoType, TeamMemberLink } from '../../../models/team/team.model';
+import TeamMember, { TeamMemberLink } from '../../../models/team/team.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import TeamModal from './TeamModal/TeamModal.component';
@@ -24,7 +28,7 @@ import TeamModal from './TeamModal/TeamModal.component';
 const TeamPage = () => {
     const { teamStore } = useMobx();
     const { modalStore } = useModalContext();
-    const LogoType = [twitter, instagram, facebook, youtube];
+    const LogoType = [twitter, instagram, facebook, youtube, linkedin, tiktok, behance, https];
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
@@ -59,7 +63,7 @@ const TeamPage = () => {
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>         
+                        <p>
                             {record.name}
                         </p>
                         {record.isMain ? <StarOutlined /> : ''}
@@ -103,29 +107,30 @@ const TeamPage = () => {
             }),
             render: renderImageColumn,
         },
-        { title: 'Соц. мережі',
-          dataIndex: 'teamMemberLinks',
-          key: 'teamMemberLinks',
-          width: '8%',
-          render: (links: TeamMemberLink[], team) => (
-              <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
-                  {links.map((link) => (
-                      <a
-                          key={`${link.id}${link.targetUrl}`}
-                          rel="noreferrer"
-                          target="_blanc"
-                          className="teamLink"
-                          href={link.targetUrl}
-                      >
-                          <img
-                              key={link.id * link.logoType}
-                              src={LogoType[link.logoType]}
-                              alt={link.targetUrl.title}
-                          />
-                      </a>
-                  ))}
-              </div>
-          ) },
+        {
+            title: 'Соц. мережі',
+            dataIndex: 'teamMemberLinks',
+            key: 'teamMemberLinks',
+            width: '8%',
+            render: (links: TeamMemberLink[], team) => (
+                <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
+                    {links.map((link) => {
+                        const LogoComponent = LogoType[link.logoType];
+                        return (
+                            <a
+                                key={`${link.id}${link.targetUrl}`}
+                                rel="noreferrer"
+                                target="_blanc"
+                                className="teamLink"
+                                href={link.targetUrl}
+                            >
+                                <LogoComponent />
+                            </a>
+                        );
+                    })}
+                </div>
+            ),
+        },
         {
             title: 'Дії',
             dataIndex: 'action',

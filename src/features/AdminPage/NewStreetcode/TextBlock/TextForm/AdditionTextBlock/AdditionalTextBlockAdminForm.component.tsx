@@ -48,6 +48,7 @@ const AdditionalTextBlockAdminForm = ({ character_limit, inputInfo, setInputInfo
                     content_style: 'body {font - family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                     link_title: false,
                     link_target_list: false,
+                    link_default_target: '_blank',
                 }}
                 onPaste={(e, editor) => {
                     const previousContent = editor.getContent({ format: 'text' });

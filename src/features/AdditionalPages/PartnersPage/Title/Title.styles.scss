@@ -35,6 +35,10 @@
                 z-index: -1;
             }
         }
+
+        .subTitle{
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+        }
     }
 }
 

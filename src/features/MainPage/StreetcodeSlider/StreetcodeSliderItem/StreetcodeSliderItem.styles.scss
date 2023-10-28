@@ -5,6 +5,11 @@
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+@keyframes opacity-animation {
+    0%    { opacity: 0; }
+    100%  { opacity: 1; }
+}
+
 .mainPageStreetCodeSlider {
     .itemStreetCodeMainPage {
         @include mut.flexed(row, center, center, wrap);
@@ -20,7 +25,7 @@
             @include mut.sized(266px, 402px);
             margin-bottom: f.pxToRem(20px);
         }
-        
+
         @media screen and (max-width: 767px) {
             @include mut.sized(310px, 462px);
             margin-left: f.pxToRem(0px);
@@ -37,7 +42,7 @@
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(266px, 338px);
         }
-        
+
         @media screen and (max-width: 767px) {
             @include mut.sized(100%, 398px);
         }
@@ -54,7 +59,7 @@
             @include mut.sized(100%, 338px);
             border-bottom: 0px !important;
         }
-        
+
         @media screen and (max-width: 767px) {
             @include mut.sized(100%, 398px);
             border-bottom: 0px !important;
@@ -74,7 +79,7 @@
 
         @media screen and (max-width: 1024px) {
             height: fit-content;
-        
+
             .textContainer {
                 height: 100%;
                 width: 100%;
@@ -138,7 +143,7 @@
             @include mut.rem-padded(6px, 0px, 0px, 0px);
         }
     }
-  
+
     .streetcodeTeaser {
         width: 100%;
         @include mut.rem-margined(12px, 3px, 0px, 0px);
@@ -166,10 +171,14 @@
             @include mut.sized(200px, 261px);
             object-fit: contain;
         }
-        
+
         @media screen and (max-width: 767px) {
             @include mut.sized(240px, 312px);
             object-fit: contain;
         }
+    }
+
+    .imgVisible{
+        animation: opacity-animation .5s ease-in forwards;
     }
 }

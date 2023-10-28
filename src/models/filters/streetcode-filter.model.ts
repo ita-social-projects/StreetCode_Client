@@ -8,5 +8,7 @@ export interface StreetcodeFilterResultDTO {
     streetcodeIndex: number,
     blockName: string,
     content: string,
-    sourceName: string
+    sourceName: string,
+    factId: number,
+    timelineItemId: number,
 }

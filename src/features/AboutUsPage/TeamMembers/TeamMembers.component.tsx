@@ -48,19 +48,20 @@ const TeamMembers = () => {
 
     return (
         positions.length
-        && (
-            <div className="aboutUsBlockContainer">
-                <SliderComponents
-                    positions={positions}
-                    setActive={setPositionId}
-                />
-                {window.innerWidth <= SCREEN_SIZES.tablet ? (
-                    <TeamMemberSlider team={team} />
-                ) : (
-                    <TeamMemberList teamMembers={team} />
-                )}
-            </div>
-        )
+            ? (
+                <div className="aboutUsBlockContainer">
+                    <SliderComponents
+                        positions={positions}
+                        setActive={setPositionId}
+                    />
+                    {window.innerWidth <= SCREEN_SIZES.tablet ? (
+                        <TeamMemberSlider team={team} />
+                    ) : (
+                        <TeamMemberList teamMembers={team} />
+                    )}
+                </div>
+            )
+            : null
     );
 };
 export default TeamMembers;

@@ -12,7 +12,7 @@ import StreetcodeCatalogItem from './StreetcodeCatalogItem/StreetcodeCatalogItem
 
 const StreetcodeCatalog = () => {
     const { streetcodeCatalogStore } = useMobx();
-    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray, isNotEightorZero } = streetcodeCatalogStore;
+    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray, moreThenEight, fetchNumber } = streetcodeCatalogStore;
     const [loading, setLoading] = useState(false);
     const [screen, setScreen] = useState(1);
 
@@ -27,11 +27,12 @@ const StreetcodeCatalog = () => {
 
     useAsync(async () => {
         const count = await StreetcodesApi.getCount();
+
         if (count === getCatalogStreetcodesArray.length) {
             return;
         }
         setTimeout(() => {
-            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then(() => {
+            Promise.all([fetchCatalogStreetcodes(screen, fetchNumber)]).then(() => {
                 setLoading(false);
             });
         }, 1000);
@@ -57,7 +58,8 @@ const StreetcodeCatalog = () => {
                 </div>
             </div>
             {
-                loading && !isNotEightorZero && (
+                loading && (moreThenEight)
+                && (
                     <div className="loadingWrapper">
                         <div id="loadingGif" />
                     </div>

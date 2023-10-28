@@ -77,6 +77,14 @@ export default class NewsStore {
         }
     };
 
+    public fetchNewsAllSortedByCreationDate = async () => {
+        try {
+            this.setInternalMap(await newsApi.getAllSortedNews());
+        } catch (error: unknown) {
+            console.log(error);
+        }
+    };
+
     public createNews = async (news: News) => {
         try {
             await newsApi.create(news).then((created) => this.setItem(created));

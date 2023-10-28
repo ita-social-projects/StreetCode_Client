@@ -57,6 +57,7 @@ const PartnersModal = () => {
             type: 'success',
             content: 'Лист успішно надісланий',
         });
+        form.resetFields();
     };
 
     const errorMessage = () => {
@@ -74,7 +75,7 @@ const PartnersModal = () => {
             centered
             footer={null}
             onCancel={onCancel}
-            closeIcon={<Popover><CancelBtn className='iconSize' onClick={onClear} />
+            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'><CancelBtn className='iconSize' onClick={onClear} />
             </Popover>}
         >
             {messageContextHolder}
@@ -122,7 +123,7 @@ const PartnersModal = () => {
                             <Input
                                 className="input"
                                 name="email"
-                                placeholder="Твій e—mail"
+                                placeholder="Твій e-mail"
                                 onChange={handleChange}
                             />
                         </Form.Item>
