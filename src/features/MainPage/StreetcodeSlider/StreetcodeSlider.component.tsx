@@ -51,16 +51,16 @@ const StreetcodeSlider = () => {
                     setStreetcodes((prevState) => [...prevState, ...newStreetcodes]);
 
                     const newImages: Image[] = [];
-                    const pomises = [];
+                    const promises = [];
 
                     for (let i = 0; i < newStreetcodes.length; i++) {
                         const currentPosition = newImages.length + i;
-                        pomises.push(ImagesApi.getById(newStreetcodes[i].imageId).then((img) => {
+                        promises.push(ImagesApi.getById(newStreetcodes[i].imageId).then((img) => {
                             newImages[currentPosition] = img;
                         }));
                     }
 
-                    await Promise.all(pomises).then(() => {
+                    await Promise.all(promises).then(() => {
                         setImages((prevState) => [...prevState, ...newImages]);
                     });
                 } catch (error: unknown) {
