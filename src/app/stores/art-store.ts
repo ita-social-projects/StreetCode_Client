@@ -1,7 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 import artsApi from '@api/media/arts.api';
+import streetcodeArtApi from '@api/media/streetcode-art.api';
 import { ModelState } from '@models/enums/model-state';
 import { ArtCreateUpdate } from '@models/media/art.model';
+import { StreetcodeArtCreateUpdate } from '@models/media/streetcode-art.model';
 
 export default class ArtStore {
     public arts = new Array<ArtCreateUpdate>();
@@ -17,14 +19,14 @@ export default class ArtStore {
 
     public fetchArtsByStreetcodeId = async (streetcodeId: number) => {
         try {
-            this.setInternalArts = await artsApi
-                .getAllByStreetcodeId(streetcodeId);
+            this.setInternalArts = await streetcodeArtApi
+                .getStreetcodeArtsByStreetcodeId(streetcodeId);
         } catch (error: unknown) { /* empty */ }
     };
 
-    private set setInternalArts(fetchedArts: ArtCreateUpdate[]) {
-        this.arts = fetchedArts.map((fArt) => ({
-            ...fArt,
+    private set setInternalArts(fetchedArts: StreetcodeArtCreateUpdate[]) {
+        this.arts = fetchedArts.map((fStreetcodeArt) => ({
+            ...fStreetcodeArt.art,
             modelState: ModelState.Updated,
             isPersisted: true,
         }));
