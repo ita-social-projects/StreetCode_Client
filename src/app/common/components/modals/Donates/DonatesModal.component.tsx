@@ -74,7 +74,7 @@ const DonatesModal = () => {
 
             Promise.all([DonationApi.create(donation)])
                 .then((response) => {
-                    window.location.assign(response[0].pageUrl);
+                    window.open(response[0].pageUrl);
                 })
                 .catch();
         }
