@@ -36,7 +36,7 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
     position: sticky;
     display: flex;
     z-index: 4;
-    bottom: f.pxToRem(50px);
+    bottom: f.pxToRem(75px);
     justify-content: flex-end;
 }
 
@@ -71,10 +71,6 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
         @include mut.rem-padded($top: 64px);
     }
 
-    .sticky{
-        bottom: f.pxToRem(25px);
-    }
-
     .container{
         margin-top: f.pxToRem(44px);
     }
@@ -83,9 +79,6 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
 @media screen and (max-width: 680px) {
     .streetcodeContainer, .mainBlock{
         background-image: none !important;
-    }
-    .sticky{
-        bottom: f.pxToRem(50px);
     }
 }
 
