@@ -74,7 +74,7 @@ const DonatesModal = () => {
 
             Promise.all([DonationApi.create(donation)])
                 .then((response) => {
-                    window.location.assign(response[0].pageUrl);
+                    window.open(response[0].pageUrl);
                 })
                 .catch();
         }
@@ -145,7 +145,7 @@ const DonatesModal = () => {
                         checked={isCheckboxChecked}
                         onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                     >
-                        Я даю згоду на обробку моїх персональних даних
+                        Я даю згоду на обробку моїх <a className='privacyPolicy' href='/privacy-policy'>персональних даних</a>
                     </Checkbox>
                 </div>
                 <button

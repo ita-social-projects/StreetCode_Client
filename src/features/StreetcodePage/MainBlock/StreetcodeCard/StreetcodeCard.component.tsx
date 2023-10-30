@@ -133,10 +133,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 setActiveTagBlock={setActiveBlock}
                             />
                         </div>
+                        <div className="blurTop" />
+
                         <p className="teaserBlock">
                             {streetcode?.teaser}
                         </p>
 
+                        <div className="blurBottom" />
                         <div className="cardFooter">
                             {audio?.base64 && audioIsLoaded
                                 ? (
@@ -167,8 +170,9 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <Button
                                         className="animateFigureBtn"
                                         onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                                        href="#QRBlock"
                                     >
-                                        <a href="#QRBlock">Оживити картинку</a>
+                                        <a>Оживити картинку</a>
                                     </Button>
                                 )
                                 : <></>}

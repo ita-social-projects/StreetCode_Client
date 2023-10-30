@@ -21,7 +21,12 @@
     .newsSliderComponent {
         margin-bottom: f.pxToRem(30px);
 
-        margin-top: f.pxToRem(32px);
+        margin-top: f.pxToRem(20px);
+
+        @media screen and (min-width: 767px) and (max-width: 1024px) {
+            margin-top: f.pxToRem(15px);
+        }
+
         @media screen and (max-width: 768px) {
             margin-top: f.pxToRem(15px);
         }
@@ -41,12 +46,13 @@
         }
 
         .slick-slide {
-        width: unset !important;
-        
-        @media screen and (max-width: 767px) {
+            width: unset !important;
+
+            @media screen and (max-width: 767px) {
                 width: 100% !important;
             }
-       }
+        }
+
         .newsSliderContent {
             width: 100%;
             @include mut.flex-centered();
@@ -71,6 +77,13 @@
         .slick-initialized .slick-slide {
             @include mut.flexed($justify-content: center, $gap: 0px);
             @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
+        }
+    }
+
+    @media screen and (min-width: 767px) and (max-width: 1024px) {
+        .newsSliderContent {
+            margin-top: 0px !important;
+            padding-top: 0px !important;
         }
     }
 

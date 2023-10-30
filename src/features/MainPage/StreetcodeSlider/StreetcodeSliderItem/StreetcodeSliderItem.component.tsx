@@ -10,7 +10,7 @@ import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     streetcode: StreetcodeMainPage;
-    image : Image
+    image: Image | undefined
 }
 
 const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
@@ -18,8 +18,6 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
     const isMobile = useMediaQuery({
         query: '(max-width: 480px)',
     });
-
-    const id = streetcode?.id;
 
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
@@ -46,11 +44,15 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
             <div className="itemStreetCodeMainPage" onClick={isMobile ? handleClickRedirect : undefined}>
                 <div className="leftSlider">
                     <div className="leftSliderContent">
-                        <img
-                            key={image?.id}
-                            src={base64ToUrl(image?.base64, image?.mimeType)}
-                            className="streetcodeMainPageImg"
-                        />
+                        {image?.id
+                            ? (
+                                <img
+                                    key={image?.id}
+                                    alt={streetcode?.title}
+                                    src={base64ToUrl(image?.base64, image?.mimeType)}
+                                    className={`streetcodeMainPageImg ${image?.id ? 'imgVisible' : ''}`}
+                                />
+                            ) : <></>}
                     </div>
                 </div>
                 <div className="rightSlider">

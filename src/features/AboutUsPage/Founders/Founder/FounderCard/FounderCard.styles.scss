@@ -43,6 +43,9 @@
         justify-content: center;
         display: flex;
         gap: 14px;
+        @media screen and (min-width: 1024px) {
+        transform: scale(1.4);
+        }
     }
 
     @media screen and (max-width: s.$smallDesctop)
@@ -58,7 +61,7 @@
                 font-size: 24px !important;
             }
             p { 
-                word-break: break-all;
+                word-break: word-break;
                 font-size: 15px !important;
             }
         }
