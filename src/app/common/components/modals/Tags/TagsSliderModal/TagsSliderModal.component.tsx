@@ -36,6 +36,9 @@ const TagsSliderModal = ({ streetCodeid, activeTagBlock, setActiveTagId }: Props
                         slidesToScroll={1}
                         initialSlide={activeTagBlock}
                         focusOnSelect
+                        beforeChange={
+                            (currentSlide, nextSlide) => setActiveTagId(getTagArray[nextSlide].id)
+                        }
                     >
                         {getTagArray?.map((tag) => (
                             <div key={tag.id}>
