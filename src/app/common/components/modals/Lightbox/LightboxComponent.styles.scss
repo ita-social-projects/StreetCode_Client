@@ -45,16 +45,7 @@
 
     @media screen and (min-width:1025px) {
 
-        .yarl__slide_description_container {
-            @include mut.sized($height: 159px);
-        }
-
-        .yarl__slide_title_container {
-            @include mut.sized($height: 68px);
-        }
-
         .yarl__slide_description {
-            @include mut.sized($height: 129px);
             @include mut.rem-margined($top: 5px, $left: 50px);
             @include mut.with-font($font-weight: 300);
             @include mut.with-font();
@@ -86,13 +77,8 @@
 
     @media screen and (max-width:1025px) {
         .yarl__slide_description_container {
-            @include mut.sized($height: 128px);
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(26.5px);
-        }
-
-        .yarl__slide_title_container {
-            @include mut.sized($height: 45px);
         }
 
         .yarl__slide_description {
