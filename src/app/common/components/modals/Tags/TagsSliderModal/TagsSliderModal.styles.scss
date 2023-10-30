@@ -2,11 +2,15 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/_utils.functions.scss" as f;
 
+
 .tagModalContainer {
   width: 100%;
-
   @include mut.flex-centered();
   
+  .slick-slide{
+    margin-left: f.pxToRem(8px);
+    margin-right: f.pxToRem(8px);
+  }
   .slick-list {
     padding: f.pxToRem(20px);
   }
@@ -27,8 +31,6 @@
     
     height: f.pxToRem(38px);
     width: fit-content;
-    margin-left: f.pxToRem(8px);
-    margin-right: f.pxToRem(8px);
 
     color: c.$dark-red-color;
     border: 2px solid c.$dark-red-color;

@@ -41,7 +41,10 @@ const StreetcodeCatalog = () => {
     return (
         <div className="catalogPage">
             <div className="streetcodeCatalogWrapper">
-                <h1 className="streetcodeCatalogHeading">Стріткоди</h1>
+                <div className="streetcodeHeadingContainer">
+                    <div className="headingFlexItem"><h1 className="streetcodeCatalogHeading">Стріткоди</h1></div>
+                    <div className="headingFlexItem"><p className="streetcodeCatalogCaption">СТРІТКОДИ</p></div>
+                </div>
                 <div className="steetcodeCatalogContainer">
                     {
                         getCatalogStreetcodesArray.map(

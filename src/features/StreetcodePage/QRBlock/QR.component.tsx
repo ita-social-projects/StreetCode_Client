@@ -28,10 +28,10 @@ const QRComponent = () => {
     return (
         qrUrl?.url
             ? (
-                <div id="QRBlock" className="QRBlockContainer container">
+                <div className="QRBlockContainer container">
                     {isDesktop
                         ? (
-                            <div className="QRBlockContent">
+                            <div id="QRBlock" className="QRBlockContent">
                                 <div className="QRBlockImg">
                                     <img src={IPhoneImg} alt="" />
                                 </div>

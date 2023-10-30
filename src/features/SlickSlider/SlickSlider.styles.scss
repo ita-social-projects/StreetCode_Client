@@ -83,16 +83,9 @@ li.slick-active button:before {
 .slick-arrow {
     opacity: .4;
     filter: c.$selected-arrow-filter-color;
-}
 
-.nonInfiniteSlider {
-    .slick-arrow {
+    &:hover {
         opacity: .25;
-        filter: c.$selected-arrow-filter-color;
-
-        &:hover {
-            opacity: .25;
-        }
     }
 }
 

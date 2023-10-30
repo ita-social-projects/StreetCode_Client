@@ -7,6 +7,21 @@
 $bgImg: '@assets/images/catalog/background.webp';
 $loadImg: '@assets/images/catalog/loading.webp';
 
+.streetcodeCatalogCaption {
+    @include mut.with-font($font-family: f.$roboto-font, $font-weight: 300, $font-size: 12px);
+    line-height: 14px;
+    text-transform: uppercase;
+    color: c.$dark-red-color;
+}
+
+.streetcodeHeadingContainer {
+    display: flex;
+    justify-content: space-between;
+    .headingFlexItem {
+        display: inline-block;
+    }
+}
+
 .catalogPage{
     width: 100%;
     background: url($bgImg) no-repeat center / 100%;
@@ -19,6 +34,11 @@ $loadImg: '@assets/images/catalog/loading.webp';
         margin-top: 5.125rem;
         padding: pxToRem(10px) 10% pxToRem(100px) 10%;
         width: 100%;
+
+        .streetcodeHeadingContainer {
+            margin-top: pxToRem(20px);
+        }
+
         .streetcodeCatalogHeading {
             @include mut.with-font('Closer Text', 500, 96px, normal);
             padding-bottom: pxToRem(40px);
@@ -57,7 +77,12 @@ $loadImg: '@assets/images/catalog/loading.webp';
         .streetcodeCatalogWrapper {
             padding: pxToRem(80px) pxToRem(13px) 0;
             margin-top: 0;
-    
+            width: 100%;
+
+            .streetcodeHeadingContainer {
+                margin-top: pxToRem(4px);
+            }
+
             .streetcodeCatalogHeading {
                 padding-bottom: 0;
                 font-size: 54px;
@@ -82,6 +107,14 @@ $loadImg: '@assets/images/catalog/loading.webp';
                 column-gap: pxToRem(10px);
                 row-gap: pxToRem(8px);
             }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .catalogPage{
+        .streetcodeCatalogWrapper {
+            padding: pxToRem(80px) pxToRem(10px) 0;
         }
     }
 }
