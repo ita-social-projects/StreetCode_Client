@@ -58,7 +58,7 @@ const ProgressBar: FC<Props> = ({
 
     useScrollPosition(
         ({ currentPos: { y } }) => {
-            const curScrollY = Math.abs(y);
+            const curScrollY = Math.ceil(Math.abs(y));
 
             setScrollPosition(curScrollY);
 
