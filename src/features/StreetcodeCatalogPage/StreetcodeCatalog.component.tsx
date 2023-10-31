@@ -12,10 +12,9 @@ import StreetcodeCatalogItem from './StreetcodeCatalogItem/StreetcodeCatalogItem
 
 const StreetcodeCatalog = () => {
     const { streetcodeCatalogStore } = useMobx();
-    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray, isNotEightorZero } = streetcodeCatalogStore;
+    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray, moreThenEight, fetchNumber } = streetcodeCatalogStore;
     const [loading, setLoading] = useState(false);
     const [screen, setScreen] = useState(1);
-    const [publishCount, setPublishCount] = useState(0);
 
     const handleSetNextScreen = () => {
         setScreen(screen + 1);
@@ -28,16 +27,12 @@ const StreetcodeCatalog = () => {
 
     useAsync(async () => {
         const count = await StreetcodesApi.getCount();
-        const fetchedPublishCount = (await StreetcodesApi.getAllPublished()).length;
-        setPublishCount(fetchedPublishCount);
-        if (publishCount === 8) {
-            setLoading(false);
-        }
+
         if (count === getCatalogStreetcodesArray.length) {
             return;
         }
         setTimeout(() => {
-            Promise.all([fetchCatalogStreetcodes(screen, 8)]).then(() => {
+            Promise.all([fetchCatalogStreetcodes(screen, fetchNumber)]).then(() => {
                 setLoading(false);
             });
         }, 1000);
@@ -46,7 +41,10 @@ const StreetcodeCatalog = () => {
     return (
         <div className="catalogPage">
             <div className="streetcodeCatalogWrapper">
-                <h1 className="streetcodeCatalogHeading">Стріткоди</h1>
+                <div className="streetcodeHeadingContainer">
+                    <div className="headingFlexItem"><h1 className="streetcodeCatalogHeading">Стріткоди</h1></div>
+                    <div className="headingFlexItem"><p className="streetcodeCatalogCaption">СТРІТКОДИ</p></div>
+                </div>
                 <div className="steetcodeCatalogContainer">
                     {
                         getCatalogStreetcodesArray.map(
@@ -63,7 +61,7 @@ const StreetcodeCatalog = () => {
                 </div>
             </div>
             {
-                loading && (!isNotEightorZero && publishCount !== 8)
+                loading && (moreThenEight)
                 && (
                     <div className="loadingWrapper">
                         <div id="loadingGif" />

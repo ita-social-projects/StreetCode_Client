@@ -37,7 +37,9 @@ const NewsModal: React.FC<{
   open: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   afterSubmit?: (news: News) => void;
-}> = observer(({ newsItem, open, setIsModalOpen, afterSubmit }) => {
+  initialValue: any;
+  limit: any;
+}> = observer(({ newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit }) => {
     const [form] = Form.useForm();
     const { newsStore } = useMobx();
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -46,6 +48,9 @@ const NewsModal: React.FC<{
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const editorRef = useRef<TinyMCEEditor>();
+    const sizeLimit = limit ?? 15000;
+    const [data, setData] = React.useState(initialValue ?? "");
+    const [count, setCount] = React.useState(0);
 
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
@@ -204,6 +209,25 @@ const NewsModal: React.FC<{
         }
     };
 
+    const handleInit = (value: any, editor: any) => {
+        setCount(editor.getContent({ format: "text" }).length);
+    };
+
+    const handleUpdate = (value: any, editor: any) => {
+        const cCount = editor.getContent({ format: "text" }).length;
+        if (cCount <= sizeLimit) {
+            setData(value);
+            setCount(cCount);
+        }
+    };
+
+    const handleBeforeAddUndo = (evt: any, editor: any) => {
+        const cCount = editor.getContent({ format: "text" }).length;
+        if (cCount > sizeLimit) {
+            evt.preventDefault();
+        }
+    };
+
     return (
         <div>
             <ConfigProvider locale={ukUA}>
@@ -262,8 +286,7 @@ const NewsModal: React.FC<{
                                             }
                                             return Promise.reject(new Error('Посилання вже існує'));
                                         },
-                                    },
-                                ]}
+                                    },                                ]}
                             >
                                 <Input maxLength={200} showCount />
                             </Form.Item>
@@ -273,9 +296,12 @@ const NewsModal: React.FC<{
                                 <span>Текст:</span>
                             </div>
                             <Editor
-                                onEditorChange={handleTextChange}
+                                onEditorChange={handleUpdate}
+                                value={data}
+                                onBeforeAddUndo={handleBeforeAddUndo}
                                 onInit={(evt, editor) => {
                                     editorRef.current = editor;
+                                    handleInit;
                                 }}
                                 initialValue={newsItem ? newsItem.text : ''}
                                 init={{
@@ -297,6 +323,7 @@ const NewsModal: React.FC<{
                     'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                                 }}
                             />
+                            <p>Remaining: {sizeLimit - count}</p>
                             {!textIsPresent && textIsChanged && (
                                 <p className="form-text">Введіть текст</p>
                             )}

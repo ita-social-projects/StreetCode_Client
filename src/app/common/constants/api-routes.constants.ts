@@ -161,6 +161,7 @@ export const API_ROUTES = {
         GET_ALL: 'streetcode/getAll',
         GET_BY_FILTER: 'streetcode/getByFilter',
         GET_ALL_MAINPAGE: 'streetcode/getAllMainPage',
+        GET_PAGE_MAINPAGE: 'streetcode/getPageMainPage',
         GET_ALL_PUBLISHED: 'streetcode/getAllPublished',
         GET_ALL_SHORT: 'streetcode/getAllShort',
         GET_SHORT_BY_ID: 'streetcode/getShortById',

@@ -8,7 +8,10 @@ interface Props {
 }
 
 const SearchResultItem = ({ searchResultItem } : Props) => {
-    const url = `/${searchResultItem.streetcodeTransliterationUrl}${searchResultItem.factId !== 0 ? (`?factId=${searchResultItem.factId}`) : ('')}${searchResultItem.timelineItemId !== 0 ? (`?timelineItemId=${searchResultItem.timelineItemId}`) : ('')}${searchResultItem.blockName ? (`#${searchResultItem.blockName}`) : ('')}`;
+    const url = `/${searchResultItem.streetcodeTransliterationUrl
+    }${searchResultItem.factId !== 0 ? (`?factId=${searchResultItem.factId}`) : ('')
+    }${searchResultItem.timelineItemId !== 0 ? (`?timelineItemId=${searchResultItem.timelineItemId}`) : ('')
+    }${searchResultItem.blockName ? (`#${searchResultItem.blockName}`) : ('')}`;
 
     const sourceName = `Стріткод #${searchResultItem.streetcodeIndex.toString().padStart(4, '0')
     }${searchResultItem.sourceName ? `/${searchResultItem.sourceName}` : ''}`;

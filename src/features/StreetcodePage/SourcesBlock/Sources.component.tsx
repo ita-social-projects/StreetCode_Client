@@ -1,7 +1,7 @@
 import './Sources.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';

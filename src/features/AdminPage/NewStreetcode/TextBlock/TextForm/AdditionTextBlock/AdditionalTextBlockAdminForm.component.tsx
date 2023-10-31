@@ -36,7 +36,7 @@ const AdditionalTextBlockAdminForm = ({ character_limit, inputInfo, setInputInfo
 
                     menubar: false,
                     init_instance_callback(editor) {
-                        editor.setContent(text ?? 'Текст підготовлений спільно з');
+                        editor.setContent((text === undefined || text === '') ? 'Текст підготовлений спільно з' : text);
                     },
                     plugins: [
                         'autolink',

@@ -92,7 +92,13 @@ const NewsSlider = () => {
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
                                         {(news.length === 1) ? (
-                                            <div key={news[0].id} className="slider-item">
+                                            <div 
+                                                key={news[0].id} 
+                                                className="slider-item"
+                                                onClickCapture={(e) => {
+                                                    handleOnItemClick(e, news[0].url.toString());
+                                                }}
+                                            >
                                                 <NewsSliderItem news={news[0]} image={images[0]} />
                                             </div>
                                         ) : (

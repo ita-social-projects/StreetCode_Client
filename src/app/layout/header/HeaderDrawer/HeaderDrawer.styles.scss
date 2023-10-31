@@ -28,9 +28,11 @@
   width: 25%;
 }
 
+$track-width: f.pxToRem(1.5px);
+
 .customSlider-track {
   top: f.pxToRem(8px);
-  width: f.pxToRem(1.5px);
+  width: $track-width;
   background: c.$normal-gray-color;
   position: relative;
 }
@@ -38,7 +40,7 @@
 .thumb {
   cursor: default;
   position: absolute;
-  left: -(f.pxToRem(5.2px));
+  transform: translateX(calc(-50% + $track-width / 2)); 
   z-index: 100;
   background: c.$dark-red-color;
   border: f.pxToRem(6px) solid c.$dark-red-color;

@@ -1,36 +1,38 @@
 import './SocialMediaLinks.styles.scss';
 
-import FaceBook from '@images/header-drawer/Facebook.webp';
-import Instagram from '@images/header-drawer/Instagram.webp';
-import TikTok from '@images/header-drawer/TikTok.webp';
-import Twitter from '@images/header-drawer/Twitter.webp';
-import Youtube from '@images/header-drawer/Youtube.webp';
+import FaceBook from '@images/header-drawer/Facebook.svg';
+import Instagram from '@images/header-drawer/Instagram.svg';
+import Telegram from '@images/header-drawer/Telegram.svg';
+import TikTok from '@images/header-drawer/TikTok.svg';
+import Youtube from '@images/header-drawer/YouTube.svg';
+
+import SOCIAL_MEDIA from '@/app/common/constants/social.constants';
 
 const SocialMediaLinks = () => (
     <ul className="socialIconHeaderContainer">
         <li>
-            <a href="https://www.facebook.com/streetcodeua" target="_blank" rel="noreferrer">
-                <img src={FaceBook} alt="" />
+            <a href={SOCIAL_MEDIA.INSTAGRAM} target="_blank" rel="noreferrer">
+                <Instagram />
             </a>
         </li>
         <li>
-            <a href="https://www.instagram.com/streetcodeua" target="_blank" rel="noreferrer">
-                <img src={Instagram} alt="" />
+            <a href={SOCIAL_MEDIA.FACEBOOK} target="_blank" rel="noreferrer">
+                <FaceBook />
             </a>
         </li>
         <li>
-            <a href="https://twitter.com/streetcodeua" target="_blank" rel="noreferrer">
-                <img src={Twitter} alt="" />
+            <a href={SOCIAL_MEDIA.TIKTOK} target="_blank" rel="noreferrer">
+                <TikTok />
             </a>
         </li>
         <li>
-            <a href="https://www.tiktok.com/@streetcodeua" target="_blank" rel="noreferrer">
-                <img src={TikTok} alt="" />
+            <a href={SOCIAL_MEDIA.TELEGRAM} target="_blank" rel="noreferrer">
+                <Telegram />
             </a>
         </li>
         <li>
-            <a href="https://www.youtube.com/@streetcodeua" target="_blank" rel="noreferrer">
-                <img src={Youtube} alt="" />
+            <a href={SOCIAL_MEDIA.YOUTUBE} target="_blank" rel="noreferrer">
+                <Youtube />
             </a>
         </li>
     </ul>
