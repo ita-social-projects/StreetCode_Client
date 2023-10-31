@@ -4,6 +4,7 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@app/common/components/CardText/CardText.styles" as textCard;
 
 @keyframes opacity-animation {
     0%    { opacity: 0; }
@@ -19,52 +20,51 @@
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         line-height: f.pxToRem(23px);
         background-color: c.$pure-white-color;
-        margin-left: f.pxToRem(20.5px);
-        margin-right: f.pxToRem(20.5px);
+        margin-left: f.pxToRem(20px);
 
         @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.flexed(column, flex-start, flex-start, wrap, $gap: 4px);
-            @include mut.sized(310px, 462px);
-            margin-top: f.pxToRem(20px);
+            @include mut.sized(266px, 402px);
             margin-bottom: f.pxToRem(20px);
         }
 
         @media screen and (max-width: 767px) {
             @include mut.sized(310px, 462px);
-            align-content: flex-start;
-            gap: 4px;
             margin-left: f.pxToRem(0px);
         }
     }
 
     .leftSlider {
         @include mut.full-rounded(53px);
-        @include mut.rem-padded($top: 22px, $right: 22px, $bottom: 22px, $left: 22px);
         @include mut.sized(294px, 398px);
         flex: 0 0 f.pxToRem(294px);
         background-color: c.$pure-white-color;
         justify-self: flex-start;
 
         @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.rem-padded($top: 20px, $right: 20px, $bottom: 12px, $left: 20px);
-            @include mut.sized(310px, 406px);
-            overflow: visible !important;
-            flex-basis: auto;
+            @include mut.sized(266px, 338px);
         }
 
         @media screen and (max-width: 767px) {
-            @include mut.rem-padded($top: 20px, $right: 20px, $bottom: 12px, $left: 20px);
-            @include mut.sized(100%, 406px);
-            overflow: visible !important;
-            flex-basis: auto;
+            @include mut.sized(100%, 398px);
         }
     }
 
     .leftSliderContent {
         background-color: c.$accented-gray-color;
+        border: 22px solid c.$pure-white-color;
         @include mut.full-rounded(50px);
         @include mut.parent-sized();
         @include mut.flex-centered();
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            @include mut.sized(100%, 338px);
+            border-bottom: 0px !important;
+        }
+
+        @media screen and (max-width: 767px) {
+            @include mut.sized(100%, 398px);
+            border-bottom: 0px !important;
+        }
     }
 
     .rightSlider {
@@ -78,111 +78,58 @@
         flex: 1 1 auto;
         position: relative;
 
-        @media screen and (max-width: 1024px) {
-            height: fit-content;
-            width: 100%;
-
-            .textContainer {
-                height: 100%;
-                width: f.pxToRem(270px);
-                display: flex;
-                flex-direction: column;
-                text-align: center;
-                gap: f.pxToRem(4px);
-            }
-        }
-    }
-
-    .streetcodeAlias {
-        color: c.$sliders-text-grey-color;
-        @include mut.rem-margined(9px, 0px, 0px, 0px);
-        @include mut.with-font($font-weight: 500, $font-size: 20px);
-
-        @media screen and (max-width: 1024px) {
-            @include mut.rem-margined(0px, 0px, 0px, 0px);
-            color: c.$lighter-black-color;
-            @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 12px);
-            line-height: f.pxToRem(14.06px);
-        }
-    }
-
-    .streetcodeLink {
-      @include mut.truncated($line-num: 1);
-      @include mut.with-font($font-weight: bolder);
-      position: absolute;
-      bottom: f.pxToRem(1px);
-      display: flex;
-      color: c.$dark-red-color;
-
-      &:hover {
-          text-decoration: underline;
-      }
-
-        @media screen and (max-width: 1024px) {
-            @include mut.rem-margined(0px, 0px, 0px, 0px);
-            color: c.$dark-red-color;
-            @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 12px);
-            line-height: f.pxToRem(14.06px);
-            width: 100%;
-            position: unset;
-            text-decoration: underline;
-        }
-  }
-    .streetcodeTitle {
-        @include mut.rem-padded($top: 18px, $right: 0px, $bottom: 0px, $left: 0px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 34px);
-        color: c.$lighter-black-color;
-        line-height: f.pxToRem(40px);
-    }
-
-    .streetcodeMainPageContainer {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded(28px, 0px, 0px, 0px);
 
         @media screen and (max-width: 1024px) {
-            @include mut.rem-padded(0px, 0px, 0px, 0px);
-            align-items: center;
-        }
-    }
-
-    .streetcodeTeaser {
-        width: 100%;
-        @include mut.rem-margined(12px, 3px, 0px, 0px);
-        @include mut.rem-padded(0px, 5px, 0px, 0px);
-        line-height: f.pxToRem(23px);
-        max-height: f.pxToRem(214px);
-        overflow: auto;
-        color: c.$lighter-black-color;
-        @include mut.with-font($font-weight: 300, $font-size: 20px);
-
-        &::-webkit-scrollbar {
-            display: none;
+            @include mut.rem-padded(6px, 0px, 0px, 0px);
+            height: auto;
         }
 
-        @media screen and (max-width: 1024px) {
-            flex-direction: column;
-            text-align: center;
-        }
     }
 
     .streetcodeMainPageImg {
         margin: auto;
         @include mut.sized(225px, 307px);
         @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.sized(237px, 307px);
+            @include mut.sized(200px, 261px);
             object-fit: contain;
         }
 
         @media screen and (max-width: 767px) {
-            @include mut.sized(237px, 307px);
+            @include mut.sized(240px, 312px);
             object-fit: contain;
         }
     }
 
     .imgVisible{
         animation: opacity-animation .5s ease-in forwards;
+    }
+
+    @include textCard.cardText();
+    .cardTextContainer{
+        &Title{
+            @media screen and (max-width: 1024px) {
+                display: none;
+            }
+        }
+
+        &SubTitle{
+            @media screen and (max-width: 1024px) {
+               text-align: center;
+                color: c.$lighter-black-color;
+            }
+        }
+
+        &Text{
+            @media screen and (max-width: 1024px) {
+                display: none;
+            }
+        }
+
+        &Button{
+            @media screen and (max-width: 1024px) {
+                text-align: center;
+            }
+        }
     }
 }
