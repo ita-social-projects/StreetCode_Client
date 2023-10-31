@@ -7,7 +7,7 @@ import Logo from '@images/contact-us/logo-2.webp';
 import Telegram from '@images/contact-us/Telegram.svg';
 import TikTok from '@images/contact-us/TikTok.svg';
 import Twitter from '@images/contact-us/Twitter.svg';
-import YouTube from '@images/contact-us/Youtube.svg';
+import YouTube from '@images/contact-us/YouTube.svg';
 
 import { EMAIL_INFO } from '@constants/email.constants';
 
