@@ -39,7 +39,6 @@ const DonatesModal = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        // const newValue = target.value.replace('₴', '').trim();
         const newValue = target.value.replace(/\D/g, '');
         if (newValue.includes('-')) {
             return;
