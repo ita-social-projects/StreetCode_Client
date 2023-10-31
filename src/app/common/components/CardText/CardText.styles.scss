@@ -1,0 +1,74 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+
+@mixin cardText(
+    $title-max-lines: 2,
+    $text-max-lines: 6,
+    $title-font-size: 36px,
+    $title-font-weight: 500,
+    $text-font-size: 20px,
+    $button-font-weight: 500,
+){
+    .cardTextContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        width: 100%;
+        color: c.$lighter-black-color;
+        @include mut.rem-padded(0px, 15px, 0px, 15px);
+        font-size: $text-font-size;
+
+        @media screen and (max-width: 1024px) {
+            @if $text-font-size == 20px{
+                font-size: 12px;
+            }
+        }
+        &TopPart{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: pxToRem(8px);
+        }
+
+        &Title{
+            color: c.$lighter-black-color;
+            @include mut.truncated($line-num: $title-max-lines);
+
+            @include mut.with-font(
+                            ft.$closer-text-font,
+                            $font-weight: $title-font-weight,
+                            $font-size: $title-font-size);
+            line-height: pxToRem(40px);
+        }
+
+        &SubTitle{
+            color: c.$sliders-text-grey-color;
+            @include mut.truncated($line-num: 2);
+            font-weight: $title-font-weight;
+        }
+
+        &Text{
+            @include mut.truncated($line-num: $text-max-lines);
+        }
+
+        &Button{
+            @include mut.truncated($line-num: 1);
+            color: c.$dark-red-color;
+            font-weight: $button-font-weight;
+
+            &:hover{
+                cursor: pointer;
+                text-decoration: underline;
+            }
+
+            @media screen and (max-width: 1024px) {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+@include cardText();
