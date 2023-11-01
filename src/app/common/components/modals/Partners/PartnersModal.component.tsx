@@ -24,6 +24,7 @@ const PartnersModal = () => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [messageApi, messageContextHolder] = message.useMessage();
     const [isVerified, setIsVerified] = useState(false);
+    const [emailError, setEmailError] = useState('');
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const newEmail: Email = { from: formData.email, content: formData.message };
@@ -120,24 +121,21 @@ const PartnersModal = () => {
                         <Form.Item
                             name="email"
                             className="required-input"
+                            hasFeedback
+                            validateStatus={emailError ? 'error' : ''}
+                            help={emailError}
                             rules={[
                                 {
                                     required: true,
-                                    type: 'email',
-                                },
-
-                                {
-                                    pattern: /^[a-z0-9@._-]+$/,
-                                    message: 'E-mail може містити лише маленькі латинські літери, цифри і символи @._-',
-                                },
-                                {
                                     validator: (_, value) => {
                                         const pattern = /^[a-zA-Z0-9@._-]+$/;
                                         if (!value || pattern.test(value)) {
+                                            setEmailError('');
                                             return Promise.resolve();
                                         }
-                                        // eslint-disable-next-line max-len, prefer-promise-reject-errors
-                                        return Promise.reject('E-mail може містити лише маленькі латинські літери, цифри і символи @._-');
+                                        // eslint-disable-next-line max-len
+                                        setEmailError('E-mail може містити лише маленькі латинські літери, цифри і символи @._-');
+                                        return Promise.reject();
                                     },
                                 },
                             ]}
