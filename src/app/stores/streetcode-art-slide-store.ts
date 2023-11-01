@@ -1,7 +1,7 @@
 import { makeAutoObservable, toJS } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
 import { ModelState } from '@models/enums/model-state';
-import { StreetcodeArtSlideAdmin, StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
+import StreetcodeArtSlide, { StreetcodeArtSlideAdmin, StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 
 export default class StreetcodeArtSlideStore {
     public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = new Array<StreetcodeArtSlideAdmin>();
@@ -17,7 +17,7 @@ export default class StreetcodeArtSlideStore {
     public hasArtWithId(id: string): boolean {
         if (this.streetcodeArtSlides.length === 0) return false;
 
-        const isInSlides = this.streetcodeArtSlides.some(
+        const isInSlides = this.getVisibleSortedSlides()?.some(
             (slide) => slide.streetcodeArts.some(
                 (sArt) => sArt.art.id.toString() === id,
             ),
@@ -41,8 +41,7 @@ export default class StreetcodeArtSlideStore {
             .getArtSlidesByStreetcodeId(streetcodeId, this.startFromSlide, this.amountOfSlides);
 
         if (arrayOfArtSlides.length !== 0) {
-            // if (this.streetcodeArtSlides.length === 0) {
-            this.streetcodeArtSlides.push(...arrayOfArtSlides.map((slide) => ({
+            this.streetcodeArtSlides.push(...arrayOfArtSlides.map((slide:StreetcodeArtSlide) => ({
                 ...slide,
                 modelState: ModelState.Updated,
                 isPersisted: true,
@@ -50,7 +49,6 @@ export default class StreetcodeArtSlideStore {
             })));
             console.log(toJS(this.streetcodeArtSlides));
             this.startFromSlide += 1;
-            // }
         } else {
             throw new Error('No more arts to load');
         }

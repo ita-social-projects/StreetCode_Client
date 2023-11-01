@@ -10,7 +10,7 @@ type Props = {
 } & HTMLProps<HTMLDivElement>;
 
 const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
-    const { artStore, artGalleryTemplateStore } = useMobx();
+    const { artStore, artGalleryTemplateStore, streetcodeArtSlideStore } = useMobx();
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -37,11 +37,16 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
         const artIndex = parseInt(droppableComplexId.split('-')[1], 10);
 
         const art = artStore.arts.find((art) => art.id === draggbleId);
-
         if (art) {
-            artGalleryTemplateStore.setArtInSlide(slideId, artIndex, art as Art);
+            const isInExistingSlides = streetcodeArtSlideStore.hasArtWithId(art.id.toString());
+
+            if (!isInExistingSlides) {
+                artGalleryTemplateStore.setArtInSlide(slideId, artIndex, art as Art);
+            } else {
+                alert('Цей арт уже є в існуючих слайдах');
+            }
         } else {
-            console.log('No art Found');
+            alert('Виникла помилка. Ми не можемо розпізнати цей арт. Спробуйте ще раз або створіть баг репорт');
         }
     }
 };
