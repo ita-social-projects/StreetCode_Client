@@ -4,13 +4,15 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button, Form, Input, Modal, Popover, message } from 'antd';
+import {
+    Button, Form, Input, message, Modal, Popover,
+} from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
-import ReCAPTCHA from 'react-google-recaptcha';
 import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
@@ -26,18 +28,18 @@ const PartnersModal = () => {
 
     const newEmail: Email = { from: formData.email, content: formData.message };
     const onFinish = () => {
-        if(isVerified){
+        if (isVerified) {
             EmailApi.send(newEmail)
-            .then(() => {
-                onCancel();
-                successMessage();
-            })
-            .catch(e => {
-                onCancel();
-                errorMessage();
-            })
+                .then(() => {
+                    onCancel();
+                    successMessage();
+                })
+                .catch((e) => {
+                    onCancel();
+                    errorMessage();
+                });
         }
-    }
+    };
 
     const onClear = () => {
         partners.isOpen = false;
@@ -46,7 +48,7 @@ const PartnersModal = () => {
 
     const onCancel = () => {
         partners.isOpen = false;
-    }
+    };
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -75,8 +77,11 @@ const PartnersModal = () => {
             centered
             footer={null}
             onCancel={onCancel}
-            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'><CancelBtn className='iconSize' onClick={onClear} />
-            </Popover>}
+            closeIcon={(
+                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <CancelBtn className="iconSize" onClick={onClear} />
+                </Popover>
+            )}
         >
             {messageContextHolder}
             <div className="partnersModalContent">
@@ -86,7 +91,8 @@ const PartnersModal = () => {
                         <br />
                         Ми відкриті до найсміливіших пропозицій та найкреативніших ідей!
                     </div>
-                    <Form form={form}
+                    <Form
+                        form={form}
                         className="contactForm"
                         onFinish={onFinish}
                         validateMessages={{}}
@@ -97,7 +103,7 @@ const PartnersModal = () => {
                             rules={[{
                                 required: true,
                                 min: 1,
-                                max: MAX_SYMBOLS
+                                max: MAX_SYMBOLS,
                             }]}
                         >
                             <Input.TextArea
@@ -105,6 +111,7 @@ const PartnersModal = () => {
                                 name="message"
                                 showCount
                                 autoSize={{ minRows: 4, maxRows: 4 }}
+                                // eslint-disable-next-line max-len
                                 placeholder="Твоя пропозиція або ідея – можливо, просто зараз ми чекаємо саме на неї! ;)"
                                 maxLength={MAX_SYMBOLS}
                                 onChange={handleChange}
@@ -116,7 +123,22 @@ const PartnersModal = () => {
                             rules={[
                                 {
                                     required: true,
-                                    type: 'email'
+                                    type: 'email',
+                                },
+
+                                {
+                                    pattern: /^[a-z0-9@._-]+$/,
+                                    message: 'E-mail може містити лише маленькі латинські літери, цифри і символи @._-',
+                                },
+                                {
+                                    validator: (_, value) => {
+                                        const pattern = /^[a-zA-Z0-9@._-]+$/;
+                                        if (!value || pattern.test(value)) {
+                                            return Promise.resolve();
+                                        }
+                                        // eslint-disable-next-line max-len, prefer-promise-reject-errors
+                                        return Promise.reject('E-mail може містити лише маленькі латинські літери, цифри і символи @._-');
+                                    },
                                 },
                             ]}
                         >

@@ -7,10 +7,8 @@ import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
-
 import AboutUsPage from '@/features/AboutUsPage/AboutUsPage.component';
 import Vacancies from '@/features/AboutUsPage/Vacancies/Vacancies.component';
-
 import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
@@ -19,6 +17,7 @@ import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivateP
 import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
+import JobPage from '@/features/AdminPage/JobsPage/JobsPage.component';
 import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import News from '@/features/AdminPage/NewsPage/News.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
@@ -26,34 +25,38 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
-import AboutUsPage from '@/features/AboutUsPage/AboutUsPage.component';
-import JobPage from '@/features/AdminPage/JobsPage/JobsPage.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<AdminPage />}
+        // element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
-            element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
+            element={<StreetcodeContent />}
+        // element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
+        // element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
+        // element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+            element={<ForFansMainPage />}
+        //  element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            element={<ProtectedComponent><Partners /></ProtectedComponent>}
+            // element={<ProtectedComponent><Partners /></ProtectedComponent>}
+            element={<Partners />}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
@@ -80,7 +83,7 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
-        <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element = {<JobPage />}/>
+        <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element={<JobPage />} />
         <Route path="*" element={<NotFound />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
