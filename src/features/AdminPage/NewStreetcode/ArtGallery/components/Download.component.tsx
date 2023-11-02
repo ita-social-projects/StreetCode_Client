@@ -39,7 +39,6 @@ const DownloadBlock = React.memo(() => {
     });
 
     useEffect(() => {
-        console.log('MAPPING FROM ARTS');
         if (artStore.arts.length > 0) {
             const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
                 uid: `${art.id}`,
@@ -55,6 +54,7 @@ const DownloadBlock = React.memo(() => {
     const handleRemove = useCallback((param: UploadFile) => {
         if (streetcodeArtSlideStore.hasArtWithId(param.uid)
         || artGalleryTemplateStore.hasArtWithId(param.uid)) {
+            alert('Ви не можете виділити цей файл для видалення оскільки він є у існуючих слайдах');
             return;
         }
         if (!artsToRemoveIdxs.current.has(param.uid)) {

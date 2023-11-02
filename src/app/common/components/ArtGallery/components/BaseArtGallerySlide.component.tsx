@@ -5,7 +5,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 import Droppable from '@components/Droppable/Droppable';
 import { ModelState } from '@models/enums/model-state';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
 
 import type { MenuProps } from 'antd';
@@ -14,8 +14,9 @@ import { Dropdown, Space } from 'antd';
 const BaseArtGallerySlide = ({
     streetcodeArts, className, artSlideId, isDroppable, isAdmin, slideIndex,
 }: SlidePropsType & { className: string }) => {
-    const { streetcodeArtSlideStore, artGalleryTemplateStore } = useMobx();
+    const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } = useMobx();
     const { streetcodeArtSlides } = streetcodeArtSlideStore;
+    const { modalStore: { setModal } } = useModalContext();
 
     function onEditSlideClick() {
         const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
@@ -98,6 +99,10 @@ const BaseArtGallerySlide = ({
                         className={`base-art-image img${streetcodeArt.index}`}
                         src={base64ToUrl(image.base64, image.mimeType)}
                         alt={image.imageDetails?.title}
+                        onClick={() => setModal(
+                            'artGallery',
+                            streetcodeArt.art.id,
+                        )}
                     />
                 );
 

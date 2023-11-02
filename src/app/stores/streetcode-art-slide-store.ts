@@ -1,7 +1,11 @@
 import { makeAutoObservable, toJS } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
 import { ModelState } from '@models/enums/model-state';
-import StreetcodeArtSlide, { StreetcodeArtSlideAdmin, StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
+import StreetcodeArtSlide,
+{
+    StreetcodeArtSlideAdmin,
+    StreetcodeArtSlideCreateUpdate,
+} from '@models/media/streetcode-art-slide.model';
 
 export default class StreetcodeArtSlideStore {
     public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = new Array<StreetcodeArtSlideAdmin>();
@@ -32,8 +36,8 @@ export default class StreetcodeArtSlideStore {
 
     public getVisibleSortedSlides() {
         return this.streetcodeArtSlides
-            ?.filter((slide) => slide.modelState !== ModelState.Deleted)
-            ?.sort((a, b) => (a.index > b.index ? 1 : -1));
+            .filter((slide) => slide.modelState !== ModelState.Deleted)
+            .sort((a, b) => (a.index > b.index ? 1 : -1));
     }
 
     public fetchNextArtSlidesByStreetcodeId = async (streetcodeId: number) => {
@@ -55,22 +59,25 @@ export default class StreetcodeArtSlideStore {
     };
 
     public getArtSlidesAsDTO(): StreetcodeArtSlideCreateUpdate[] {
-        return this.streetcodeArtSlides.map((slide) => {
-            const convertedSlide = {
-                ...slide,
-                isPersisted: null,
-                streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
-                    index: streetcodeArt.index,
-                    artId: streetcodeArt.art.id,
-                })),
-            };
+        return this.streetcodeArtSlides
+            .sort((a, b) => (a.index > b.index ? 1 : -1))
+            .map((slide, idx) => {
+                const convertedSlide = {
+                    ...slide,
+                    index: idx + 1,
+                    isPersisted: null,
+                    streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
+                        index: streetcodeArt.index,
+                        artId: streetcodeArt.art.id,
+                    })),
+                };
 
-            if (convertedSlide.streetcodeId === -1) {
+                if (convertedSlide.streetcodeId === -1) {
                 // @ts-ignore
-                convertedSlide.streetcodeId = null;
-            }
+                    convertedSlide.streetcodeId = null;
+                }
 
-            return convertedSlide as unknown as StreetcodeArtSlideCreateUpdate;
-        });
+                return convertedSlide as unknown as StreetcodeArtSlideCreateUpdate;
+            });
     }
 }
