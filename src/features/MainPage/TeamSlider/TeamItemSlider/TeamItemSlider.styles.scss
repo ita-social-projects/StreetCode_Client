@@ -20,7 +20,7 @@
         margin-left: f.pxToRem(20px);
 
         @media (min-width: 768px) and (max-width: 1024px) {
-            margin-top: f.pxToRem(40px);
+            margin-top: f.pxToRem(18px);
             @include mut.sized(266px, 402px);
             padding-bottom: f.pxToRem(20px);
         }

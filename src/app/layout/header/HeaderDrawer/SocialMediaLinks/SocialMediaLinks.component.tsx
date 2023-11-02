@@ -3,8 +3,8 @@ import './SocialMediaLinks.styles.scss';
 import FaceBook from '@images/header-drawer/Facebook.svg';
 import Instagram from '@images/header-drawer/Instagram.svg';
 import Telegram from '@images/header-drawer/Telegram.svg';
-import TikTok from '@images/header-drawer/TikTok.svg';
-import Youtube from '@images/header-drawer/Youtube.svg';
+import TikTok from '@images/header-drawer/Tik.svg';
+import Youtube from '@images/header-drawer/You.svg';
 
 import SOCIAL_MEDIA from '@/app/common/constants/social.constants';
 

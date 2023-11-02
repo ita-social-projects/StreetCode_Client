@@ -43,7 +43,7 @@ const SupportUs = () => {
 
     const handlePay = () => {
         donateEvent('support_us_page');
-        window.location.assign('https://pay.mbnk.biz/IyAdn53wljbN');
+        window.open('https://pay.mbnk.biz/IyAdn53wljbN', '_blank');
     };
 
     return (

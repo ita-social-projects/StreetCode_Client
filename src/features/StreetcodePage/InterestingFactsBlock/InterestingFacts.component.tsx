@@ -11,6 +11,7 @@ import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Fact } from '@/models/streetcode/text-contents.model';
 import { useSearchParams } from 'react-router-dom';
+import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -18,6 +19,7 @@ const InterestingFactsComponent = () => {
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const [sliderArray, setSliderArray] = useState<Fact[]>([]);
     const [middleFactIndex, setMiddleFactIndex] = useState(0);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
     const facts = useRef<Fact[]>([]);
     useAsync(
@@ -42,19 +44,25 @@ const InterestingFactsComponent = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const factID = Number(searchParams.get('factId'));
-    const initialSlide = sliderArray.findIndex(fact => fact.id === factID) == -1 ? 0 : sliderArray.findIndex(fact => fact.id === factID);
+    let initialSlideIndex = sliderArray.findIndex(fact => fact.id === factID);
+    if(initialSlideIndex === -1) initialSlideIndex = 0;
 
     useEffect(() => {
-        const hash = location.hash.replace('#', '');
-        const element = document.getElementById(hash);
+        const hash = getUrlHash(location);
+        if (!isScrolled && hash === 'wow-facts'){
+            const element = document.getElementById(hash);
     
-        setTimeout(() => {
-            element?.scrollIntoView({behavior: "smooth", block: "center"});
-        }, 1000);
+            setTimeout(() => {
+                if(element !== null) {
+                    element.scrollIntoView({behavior: "smooth", block: "end"});
+                    setIsScrolled(true);
+                }
+            }, 1000);
+        }
     });
 
     const setings = {
-        initialSlide: initialSlide,
+        initialSlide: initialSlideIndex,
         dots: facts.current.length > 3,
         swipeOnClick: false,
         touchThreshold: 25,

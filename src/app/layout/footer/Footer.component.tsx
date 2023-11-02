@@ -4,9 +4,9 @@ import FaceBook from '@images/footer/Facebook.svg';
 import Instagram from '@images/footer/Instagram.svg';
 import StreetcodeFooter from '@images/footer/streetcode-footer.webp';
 import Telegram from '@images/footer/Telegram.svg';
-import TikTok from '@images/footer/TikTok.svg';
+import TikTok from '@images/footer/Tik.svg';
 import Twitter from '@images/footer/Twitter2.svg';
-import Youtube from '@images/footer/Youtube.svg';
+import Youtube from '@images/footer/You.svg';
 
 import { useEffect, useState } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
