@@ -1,6 +1,7 @@
 /* eslint-disable react/button-has-type */
 import './BaseArtGallerySlide.styles.scss';
 
+import { useMediaQuery } from 'react-responsive';
 import { MoreOutlined } from '@ant-design/icons';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 import Droppable from '@components/Droppable/Droppable';
@@ -17,6 +18,10 @@ const BaseArtGallerySlide = ({
     const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } = useMobx();
     const { streetcodeArtSlides } = streetcodeArtSlideStore;
     const { modalStore: { setModal } } = useModalContext();
+
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 1025px)',
+    });
 
     function onEditSlideClick() {
         const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
@@ -91,19 +96,31 @@ const BaseArtGallerySlide = ({
     ];
 
     return (
-        <div className={`${className} base-art-slide`}>
+        <div className={`${className} baseArtSlide`}>
             {streetcodeArts?.map((streetcodeArt) => {
                 const { image } = streetcodeArt.art;
                 const imageJSX = (
-                    <img
-                        className={`base-art-image img${streetcodeArt.index}`}
-                        src={base64ToUrl(image.base64, image.mimeType)}
-                        alt={image.imageDetails?.title}
-                        onClick={() => setModal(
-                            'artGallery',
-                            streetcodeArt.art.id,
+                    <div className="baseArtSlideImageWrapper">
+                        <img
+                            className={`baseArtImage img${streetcodeArt.index}`}
+                            src={base64ToUrl(image.base64, image.mimeType)}
+                            alt={image.imageDetails?.title}
+                            onClick={() => setModal(
+                                'artGallery',
+                                streetcodeArt.art.id,
+                            )}
+                        />
+                        {isDesktop && (
+                            <div
+                                className={`imgData 
+                                imgData${streetcodeArt.art.description || streetcodeArt.art.title ? 'Full' : 'Empty'
+                            }`}
+                            >
+                                <p className="imgTitle">{streetcodeArt.art.title}</p>
+                                <p className="imgDescription">{streetcodeArt.art.description}</p>
+                            </div>
                         )}
-                    />
+                    </div>
                 );
 
                 return isDroppable
@@ -122,7 +139,7 @@ const BaseArtGallerySlide = ({
                     <Dropdown
                         menu={{ items: editDropdownOptions }}
                         trigger={['click']}
-                        className="admin-options-btn"
+                        className="adminOptionsBtn"
                         placement="bottom"
                     >
                         <Space>

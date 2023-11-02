@@ -33,15 +33,21 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
 
         if (!draggbleId || !droppableComplexId) return;
 
-        const slideId = parseInt(droppableComplexId.split('-')[0], 10);
+        const slideTemplateNumber = parseInt(droppableComplexId.split('-')[0], 10);
         const artIndex = parseInt(droppableComplexId.split('-')[1], 10);
 
         const art = artStore.arts.find((art) => art.id === draggbleId);
         if (art) {
+            const currentTemplate = artGalleryTemplateStore.streetcodeArtSlides
+                .find((slide) => slide.template === slideTemplateNumber);
+            if (currentTemplate?.streetcodeArts.find((sArt) => sArt.art.id === draggbleId)) {
+                alert('Цей арт уже є в цьому слайді');
+                return;
+            }
             const isInExistingSlides = streetcodeArtSlideStore.hasArtWithId(art.id.toString());
 
             if (!isInExistingSlides) {
-                artGalleryTemplateStore.setArtInSlide(slideId, artIndex, art as Art);
+                artGalleryTemplateStore.setArtInSlide(slideTemplateNumber, artIndex, art as Art);
             } else {
                 alert('Цей арт уже є в існуючих слайдах');
             }

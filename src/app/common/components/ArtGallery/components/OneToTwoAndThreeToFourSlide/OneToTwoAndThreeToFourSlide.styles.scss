@@ -5,7 +5,7 @@
 .OneToTwoAndThreeToFourSlide{
     @include mut.flex-center();
 
-    img{
+    .baseArtSlideImageWrapper{
         width: pxToRem(s.$art-gallery-img-size);
     }
 }
