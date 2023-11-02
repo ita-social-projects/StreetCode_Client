@@ -21,10 +21,11 @@ const MAX_SLIDES_AMOUNT = 30;
 type Props = {
     isConfigurationGallery?: boolean
     isAdmin?: boolean
+    isFillArtsStore?: boolean
 };
 
-const ArtGallery = ({ isAdmin, isConfigurationGallery } : Props) => {
-    const { streetcodeArtSlideStore, artGalleryTemplateStore } = useMobx();
+const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props) => {
+    const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides } = streetcodeArtSlideStore;
     const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
@@ -46,6 +47,16 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery } : Props) => {
                     try {
                         // eslint-disable-next-line no-await-in-loop
                         await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+                        if (isFillArtsStore) {
+                            runInAction(() => {
+                                const mappedArts = streetcodeArtSlides.map(
+                                    (slide) => slide.streetcodeArts.map(
+                                        (sArt) => sArt.art,
+                                    ),
+                                );
+                                artStore.arts = [].concat(...mappedArts);
+                            });
+                        }
                         currentSlide += amountOfSlides;
                     } catch (error: unknown) {
                         currentSlide = MAX_SLIDES_AMOUNT;

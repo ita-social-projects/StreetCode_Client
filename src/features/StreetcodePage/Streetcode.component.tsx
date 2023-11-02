@@ -1,7 +1,7 @@
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
@@ -16,19 +16,18 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
-import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import React from 'react';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -113,9 +112,9 @@ const StreetcodeContent = () => {
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 {pageLoadercontext.isPageLoaded ? (
-                    <ArtGallery />
+                    <ArtGallery isFillArtsStore />
                 ) : (
-                    <React.Fragment />
+                    <></>
                 )}
                 <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />

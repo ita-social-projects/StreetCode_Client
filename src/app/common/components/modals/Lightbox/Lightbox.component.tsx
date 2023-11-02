@@ -1,7 +1,7 @@
 import './LightboxComponent.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 import useMobx, { useModalContext } from '@stores/root-store';
 import Lightbox from 'yet-another-react-lightbox';
@@ -21,13 +21,15 @@ const LightboxComponent = () => {
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
     const slides = useMemo(() => arts.map(
-        ({ image: { base64, mimeType }, description, title }) => ({
+        ({ image: { base64, mimeType }, description, title }, index) => ({
             src: base64ToUrl(base64, mimeType),
-            title: `'REMOVED_INDEX'/${arts.length}`,
+            title: `${index + 1}/${arts.length}`,
             description: `${title ?? ''}. \n\n${description ?? ''}`,
         }),
 
     ), [arts]);
+
+    const currentArtIndex = useMemo(() => arts.findIndex((art) => art.id === fromCardId), [arts, fromCardId]);
 
     const onIdleTimerHandlers = useMemo(() => ({
         onIdle: () => setIsCaptionEnabled(false),
@@ -43,8 +45,8 @@ const LightboxComponent = () => {
         <Lightbox
             open={isOpen}
             close={() => setModal('artGallery')}
-            index={fromCardId}
-            className={`lightbox ${!isCaptionEnabled ? 'disabled' : ''}`}
+            index={currentArtIndex}
+            className={`lightbox ${!isCaptionEnabled ? 'lightboxDisabled' : ''}`}
             slides={slides}
             plugins={[Captions]}
         />
