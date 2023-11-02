@@ -24,7 +24,6 @@ const PartnersModal = () => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [messageApi, messageContextHolder] = message.useMessage();
     const [isVerified, setIsVerified] = useState(false);
-    const [emailError, setEmailError] = useState('');
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const newEmail: Email = { from: formData.email, content: formData.message };
@@ -105,6 +104,7 @@ const PartnersModal = () => {
                                 required: true,
                                 min: 1,
                                 max: MAX_SYMBOLS,
+                                message: 'Будь ласка, вкажи свою пропозицію',
                             }]}
                         >
                             <Input.TextArea
@@ -121,22 +121,11 @@ const PartnersModal = () => {
                         <Form.Item
                             name="email"
                             className="required-input"
-                            hasFeedback
-                            validateStatus={emailError ? 'error' : ''}
-                            help={emailError}
                             rules={[
                                 {
                                     required: true,
-                                    validator: (_, value) => {
-                                        const pattern = /^[a-zA-Z0-9@._-]+$/;
-                                        if (!value || pattern.test(value)) {
-                                            setEmailError('');
-                                            return Promise.resolve();
-                                        }
-                                        // eslint-disable-next-line max-len
-                                        setEmailError('E-mail може містити лише маленькі латинські літери, цифри і символи @._-');
-                                        return Promise.reject();
-                                    },
+                                    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                                    message: 'E-mail може містити лише маленькі латинські літери, цифри і символи @._-',
                                 },
                             ]}
                         >

@@ -30,33 +30,27 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
-            element={<AdminPage />}
-        // element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
-            element={<StreetcodeContent />}
-        // element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
+            element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-            element={<NewStreetcode />}
-        // element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<NewStreetcode />}
-        // element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ForFansMainPage />}
-        //  element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            // element={<ProtectedComponent><Partners /></ProtectedComponent>}
-            element={<Partners />}
+            element={<ProtectedComponent><Partners /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
