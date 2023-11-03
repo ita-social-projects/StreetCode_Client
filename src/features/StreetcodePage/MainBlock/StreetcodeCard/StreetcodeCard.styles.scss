@@ -67,10 +67,10 @@
   @include mut.rem-margined(13px, 0, 13px, 0);
 }
 .blurTop{
-  @include mut.blur($edge: 0deg, $top: 9px, $height: 16px);
+  @include mut.blur($edge: 0deg, $top: 9px, $height: 16px, $z-index: 3);
 }
 .blurBottom{
-  @include mut.blur($edge: 180deg, $top: -20px, $height: 21px);
+  @include mut.blur($edge: 180deg, $top: -20px, $height: 21px, $z-index: 3);
 }
 .teaserBlock {
   @include mut.with-font($font-weight: 300, $font-size: 20px);
@@ -167,7 +167,7 @@
   .blockCentering {
     @include mut.rem-padded($top: 2px, $right: 10px, $bottom: 0px, $left: 10px);
     .blurTop{
-      @include mut.blur($edge: 0deg, $top: 4px, $height: 11px);
+      @include mut.blur($edge: 0deg, $top: 4px, $height: 11px, $z-index: 3);
     }
     .teaserBlock {
       line-height: f.pxToRem(18.75px);

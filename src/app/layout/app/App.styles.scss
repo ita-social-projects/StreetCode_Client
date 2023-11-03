@@ -3,6 +3,7 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@sass/_utils.functions.scss" as f;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 @import 'react-toastify/dist/ReactToastify.css';
 
 p,
@@ -27,7 +28,7 @@ div {
     @include mut.parent-sized();
 
     @include vnd.vendored(transition, 'background .5s ease');
-    z-index: 5;
+    z-index: l.$dimmed;
 }
 
 .mainBlockWrapper {
