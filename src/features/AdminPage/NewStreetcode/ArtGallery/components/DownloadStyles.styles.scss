@@ -1,4 +1,5 @@
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as *;
 
 .delete-border{
     border: 0.25rem solid c.$accented-red-color;
@@ -13,4 +14,8 @@
     width: 30%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.art-gallery-download{
+    margin-bottom: pxToRem(10px);
 }

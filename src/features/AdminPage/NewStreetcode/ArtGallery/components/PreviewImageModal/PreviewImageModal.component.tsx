@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import './PreviewImageModal.styles.scss';
 
+import { runInAction } from 'mobx';
 import React, { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
 
@@ -16,7 +18,7 @@ interface Props {
 }
 
 const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
-    const { artStore } = useMobx();
+    const { artStore, streetcodeArtSlideStore } = useMobx();
     const [fileProps, setFileProps] = useState<{
       previewImage: string;
       previewTitle: string;
@@ -32,12 +34,32 @@ const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
         if (artIdx < 0) {
             return;
         }
-        artStore.arts[artIdx].title = form.getFieldValue('title');
-        artStore.arts[artIdx].description = form.getFieldValue('description');
+
+        runInAction(() => {
+            artStore.arts[artIdx].title = form.getFieldValue('title');
+            artStore.arts[artIdx].description = form.getFieldValue('description');
+            artStore.toggleMutation();
+
+            replaceTheArtInSlidesIfExist();
+        });
 
         setOpened(false);
         form.resetFields();
     };
+
+    function replaceTheArtInSlidesIfExist() {
+        streetcodeArtSlideStore.streetcodeArtSlides = streetcodeArtSlideStore.streetcodeArtSlides.map(
+            (slide) => ({ ...slide,
+                          streetcodeArts: slide.streetcodeArts.map(
+                              (sArt) => {
+                                  if (sArt.art.id === artStore.arts[artIdx].id) {
+                                      return { ...sArt, art: artStore.arts[artIdx] };
+                                  }
+                                  return sArt;
+                              },
+                          ) }),
+        );
+    }
 
     useEffect(() => {
         if (artIdx >= 0 && opened) {

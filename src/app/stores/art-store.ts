@@ -7,6 +7,8 @@ import { StreetcodeArtCreateUpdate } from '@models/media/streetcode-art.model';
 export default class ArtStore {
     public arts = new Array<ArtCreateUpdate>();
 
+    public mutationObserved = true;
+
     public constructor() {
         makeAutoObservable(this);
     }
@@ -22,6 +24,10 @@ export default class ArtStore {
                 .getStreetcodeArtsByStreetcodeId(streetcodeId);
         } catch (error: unknown) { /* empty */ }
     };
+
+    public toggleMutation() {
+        this.mutationObserved = !this.mutationObserved;
+    }
 
     private set setInternalArts(fetchedArts: StreetcodeArtCreateUpdate[]) {
         this.arts = fetchedArts.map((fStreetcodeArt) => ({

@@ -1,7 +1,7 @@
 import './LightboxComponent.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 import useMobx, { useModalContext } from '@stores/root-store';
 import Lightbox from 'yet-another-react-lightbox';
@@ -14,7 +14,7 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
 
 const LightboxComponent = () => {
-    const { artStore: { arts } } = useMobx();
+    const { artStore: { arts, mutationObserved } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
 
@@ -27,9 +27,11 @@ const LightboxComponent = () => {
             description: `${title ?? ''}. \n\n${description ?? ''}`,
         }),
 
-    ), [arts]);
+    ), [mutationObserved]);
 
-    const currentArtIndex = useMemo(() => arts.findIndex((art) => art.id === fromCardId), [arts, fromCardId]);
+    const currentArtIndex = useMemo(() => arts.findIndex(
+        (art) => art.id === fromCardId,
+    ), [mutationObserved, fromCardId]);
 
     const onIdleTimerHandlers = useMemo(() => ({
         onIdle: () => setIsCaptionEnabled(false),

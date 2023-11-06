@@ -5,11 +5,7 @@
 .oneToFourSlide{
     @include mut.flex-center();
 
-    img{
+    .droppable, .baseArtSlideImageWrapper{
         width: pxToRem(s.$art-gallery-img-size * 2.6);
-    }
-
-    .droppable{
-        width: auto;
     }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable react/button-has-type */
 import './BaseArtGallerySlide.styles.scss';
 
+import { runInAction } from 'mobx';
 import { useMediaQuery } from 'react-responsive';
 import { MoreOutlined } from '@ant-design/icons';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
@@ -27,8 +28,11 @@ const BaseArtGallerySlide = ({
         const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
         if (slide) {
             const slideClone = JSON.parse(JSON.stringify(slide));
-            artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
-            artGalleryTemplateStore.isEdited = true;
+
+            runInAction(() => {
+                artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
+                artGalleryTemplateStore.isEdited = true;
+            });
         }
     }
 
@@ -37,11 +41,13 @@ const BaseArtGallerySlide = ({
         const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
 
         if (slideIndex !== -1 && slide) {
-            if (slide.isPersisted === false) {
-                streetcodeArtSlides.splice(slideIndexInArtsArray, 1);
-            } else {
-                streetcodeArtSlides[slideIndexInArtsArray] = { ...slide, modelState: ModelState.Deleted };
-            }
+            runInAction(() => {
+                if (slide.isPersisted === false) {
+                    streetcodeArtSlides.splice(slideIndexInArtsArray, 1);
+                } else {
+                    streetcodeArtSlides[slideIndexInArtsArray] = { ...slide, modelState: ModelState.Deleted };
+                }
+            });
         }
     }
 
@@ -54,8 +60,10 @@ const BaseArtGallerySlide = ({
         );
 
         if (currentSlide && prevSlide) {
-            currentSlide.index -= 1;
-            prevSlide.index += 1;
+            runInAction(() => {
+                currentSlide.index -= 1;
+                prevSlide.index += 1;
+            });
         }
     }
 
@@ -68,8 +76,10 @@ const BaseArtGallerySlide = ({
         );
 
         if (currentSlide && nextSlide) {
-            currentSlide.index += 1;
-            nextSlide.index -= 1;
+            runInAction(() => {
+                currentSlide.index += 1;
+                nextSlide.index -= 1;
+            });
         }
     }
 
@@ -85,13 +95,12 @@ const BaseArtGallerySlide = ({
         {
             label: <button onClick={onMoveSlideForward}>Пересунути вперід</button>,
             key: '2',
-            disabled: (streetcodeArtSlideStore.findBySlideIndex(slideIndex)?.index || -1)
-                >= streetcodeArtSlides.length - 1,
+            disabled: slideIndex >= streetcodeArtSlides.length,
         },
         {
             label: <button onClick={onMoveSlideBackward}>Пересунути назад</button>,
             key: '3',
-            disabled: (streetcodeArtSlideStore.findBySlideIndex(slideIndex)?.index || -1) <= 1,
+            disabled: slideIndex <= 1,
         },
     ];
 

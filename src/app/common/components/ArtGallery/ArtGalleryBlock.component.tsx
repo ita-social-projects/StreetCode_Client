@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/jsx-no-bind,@typescript-eslint/no-use-before-define */
 import './ArtGalleryBlock.styles.scss';
 
 import { runInAction } from 'mobx';
@@ -10,6 +10,7 @@ import SLIDER_PROPS from '@components/ArtGallery/constants/sliderProps';
 import convertSlidesToTemplates from '@components/ArtGallery/utils/convertSlidesToTemplates';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
+import { ArtCreateUpdate } from '@models/media/art.model';
 import StreetcodeArtSlide from '@models/media/streetcode-art-slide.model';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -37,9 +38,7 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props
 
     useAsync(
         async () => {
-            if ((getStreetCodeId !== errorStreetCodeId || parseId !== errorStreetCodeId)
-                && !secondRender.current
-                && !isConfigurationGallery) {
+            if (streetcodeIdValidAndFetchingRequired()) {
                 secondRender.current = true;
                 let currentSlide = 0;
 
@@ -47,16 +46,11 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props
                     try {
                         // eslint-disable-next-line no-await-in-loop
                         await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+
                         if (isFillArtsStore) {
-                            runInAction(() => {
-                                const mappedArts = streetcodeArtSlides.map(
-                                    (slide) => slide.streetcodeArts.map(
-                                        (sArt) => sArt.art,
-                                    ),
-                                );
-                                artStore.arts = [].concat(...mappedArts);
-                            });
+                            copyArtsFromSlidesToStore();
                         }
+
                         currentSlide += amountOfSlides;
                     } catch (error: unknown) {
                         currentSlide = MAX_SLIDES_AMOUNT;
@@ -67,16 +61,39 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props
         [getStreetCodeId, parseId],
     );
 
+    function streetcodeIdValidAndFetchingRequired() {
+        return (getStreetCodeId !== errorStreetCodeId || parseId !== errorStreetCodeId)
+        && !secondRender.current
+        && !isConfigurationGallery;
+    }
+
+    function copyArtsFromSlidesToStore() {
+        runInAction(() => {
+            const mappedArts = streetcodeArtSlides.map(
+                (slide) => slide.streetcodeArts.map(
+                    (sArt) => sArt.art,
+                ),
+            );
+
+            artStore.arts = ([] as ArtCreateUpdate[]).concat(...mappedArts);
+            artStore.toggleMutation();
+        });
+    }
+
     useEffect(() => {
         if (isConfigurationGallery) {
-            setSlickProps((prev) => ({
-                ...prev,
-                dots: !prev.dots,
-                arrows: !prev.arrows,
-                draggable: !prev.draggable,
-            }));
+            toggleBlockingOfConfigurationSlider();
         }
     }, [artGalleryTemplateStore.isEdited]);
+
+    function toggleBlockingOfConfigurationSlider() {
+        setSlickProps((prev) => ({
+            ...prev,
+            dots: !prev.dots,
+            arrows: !prev.arrows,
+            draggable: !prev.draggable,
+        }));
+    }
 
     function handleAddNewSlide() {
         const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
@@ -136,7 +153,7 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props
                 ? (
                     <div className="configurationGalleryControls">
                         <Button type="primary" onClick={handleAddNewSlide}>Додати</Button>
-                        <Button type="danger" onClick={handleClearSlideTemplate}>Скасувати</Button>
+                        <Button danger onClick={handleClearSlideTemplate}>Скасувати</Button>
                     </div>
                 )
                 : (<></>)}

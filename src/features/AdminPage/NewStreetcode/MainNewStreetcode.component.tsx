@@ -497,7 +497,6 @@ const NewStreetcode = () => {
                             <TimelineBlockAdmin onChange={handleFieldChange} />
                             <ArtGalleryDndContext>
                                 <ArtGalleryBlock />
-                                <h4>Конфігурація гаралеї</h4>
                                 <ArtGallery isConfigurationGallery />
                                 <ArtGallery isAdmin />
                             </ArtGalleryDndContext>

@@ -69,11 +69,29 @@
 
 .adminOptionsBtn {
     position: absolute;
-    top: 2rem;
-    right: 2rem;
+    top: 1rem;
+    right: 1rem;
 
     .anticon-more{
         font-size: 20px;
     }
 }
 
+.ant-dropdown-menu-item {
+    padding: 0 !important;
+
+    button{
+        width: 100%;
+        padding: pxToRem(10px) pxToRem(15px);
+    }
+}
+
+.ant-dropdown-menu-item-disabled{
+    button {
+        color: red;
+
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+}

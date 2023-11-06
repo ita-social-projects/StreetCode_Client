@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import './DownloadStyles.styles.scss';
 
-import { action } from 'mobx';
+import { action, runInAction } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import base64ToUrl from '@app/common/utils/base64ToUrl.utility';
@@ -19,7 +20,7 @@ import Image from '@/models/media/image.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
-const DownloadBlock = React.memo(() => {
+const DownloadBlock = () => {
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
 
@@ -39,6 +40,7 @@ const DownloadBlock = React.memo(() => {
     });
 
     useEffect(() => {
+        console.log('RERENDER');
         if (artStore.arts.length > 0) {
             const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
                 uid: `${art.id}`,
@@ -49,7 +51,7 @@ const DownloadBlock = React.memo(() => {
             }));
             setFileList(newFileList);
         }
-    }, [toggleMutatedArts, artStore.arts]);
+    }, [artStore.mutationObserved]);
 
     const handleRemove = useCallback((param: UploadFile) => {
         if (streetcodeArtSlideStore.hasArtWithId(param.uid)
@@ -92,8 +94,14 @@ const DownloadBlock = React.memo(() => {
             title: '',
         };
 
-        artStore.arts.push(newArt);
-        setToggleMutatedArts((toggle) => !toggle);
+        runInAction(() => {
+            console.log('BEFORE:', artStore.mutationObserved);
+
+            artStore.arts.push(newArt);
+            artStore.toggleMutation();
+
+            console.log('AFTER:', artStore.mutationObserved);
+        });
     });
 
     function RemoveFile(id: string) {
@@ -102,12 +110,13 @@ const DownloadBlock = React.memo(() => {
         if (artToRemoveIndex !== -1) {
             const toRemove = artStore.arts[artToRemoveIndex];
 
-            if (toRemove.isPersisted) {
-                artStore.arts[artToRemoveIndex].modelState = ModelState.Deleted;
-            } else {
-                artStore.arts = artStore.arts.filter((art) => art.id !== toRemove.id);
-            }
-            console.log(artStore.arts);
+            runInAction(() => {
+                if (toRemove.isPersisted) {
+                    artStore.arts[artToRemoveIndex].modelState = ModelState.Deleted;
+                } else {
+                    artStore.arts = artStore.arts.filter((art) => art.id !== toRemove.id);
+                }
+            });
         }
         setVisibleModal(false);
     }
@@ -116,13 +125,18 @@ const DownloadBlock = React.memo(() => {
         artsToRemoveIdxs.current.forEach((id) => {
             RemoveFile(id);
         });
+
         artsToRemoveIdxs.current.clear();
-        setToggleMutatedArts((toggle) => !toggle);
+
+        runInAction(() => {
+            artStore.toggleMutation();
+        });
+
         setVisibleDeleteButton(false);
     };
 
     return (
-        <>
+        <div className="art-gallery-download">
             <FileUploader
                 accept=".jpeg,.png,.jpg,.webp"
                 listType="picture-card"
@@ -165,8 +179,8 @@ const DownloadBlock = React.memo(() => {
                 opened={isOpen}
                 setOpened={setIsOpen}
             />
-        </>
+        </div>
     );
-});
+};
 
-export default DownloadBlock;
+export default observer(DownloadBlock);
