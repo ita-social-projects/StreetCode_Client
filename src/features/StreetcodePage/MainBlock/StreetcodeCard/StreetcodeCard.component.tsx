@@ -101,16 +101,29 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 swipeOnClick
                                 infinite
                             >
-                                {images.filter((image) => (image.imageDetails?.alt === ImageAssigment.animation.toString()
-                                    || image.imageDetails?.alt === ImageAssigment.blackandwhite.toString())).map((im) => (
+                                <div>
                                     <img
-                                        key={im.id}
-                                        src={base64ToUrl(im.base64, im.mimeType)}
+                                        key={images[0].id}
+                                        src={base64ToUrl(images[0].base64, images[0].mimeType)}
+                                        className="streetcodeImgColored"
+                                        style={{ objectFit: 'contain' }}
+                                        alt={images[0].imageDetails?.alt}
+                                    />
+                                    <img
+                                        key={images[1].id}
+                                        src={base64ToUrl(images[1].base64, images[1].mimeType)}
                                         className="streetcodeImg"
                                         style={{ objectFit: 'contain' }}
-                                        alt={im.imageDetails?.alt}
+                                        alt={images[1].imageDetails?.alt}
                                     />
-                                ))}
+                                </div>
+                                <img
+                                    key={images[1].id}
+                                    src={base64ToUrl(images[1].base64, images[1].mimeType)}
+                                    className="streetcodeImg"
+                                    style={{ objectFit: 'contain' }}
+                                    alt={images[1].imageDetails?.alt}
+                                />
                             </BlockSlider>
                         </div>
                     </div>

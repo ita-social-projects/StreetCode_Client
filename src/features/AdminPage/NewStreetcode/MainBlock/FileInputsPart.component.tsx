@@ -198,7 +198,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
             <div className="photo-uploader-container scrollable-container">
                 <FormItem
                     name="animations"
-                    label="Анімація"
+                    label="Кольорове"
                     rules={[
                         {
                             validator: (_, file) => {
@@ -209,25 +209,28 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     } else if (file.name) {
                                         name = file.name.toLowerCase();
                                     }
-                                    if (name.endsWith('.gif') || name.endsWith('.webp') || name === '') {
+                                    if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
+                                        || name.endsWith('.jpg') || name === '') {
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject(Error('Тільки файли з розширенням .gif та .webp дозволені!'));
+                                    // eslint-disable-next-line max-len
+                                    return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
                                 }
-                                return Promise.resolve();
+                                return Promise.reject();
                             },
                         },
                     ]}
                 >
                     <FileUploader
-                        accept=".gif,.webp"
+                        accept=".jpeg,.png,.jpg,.webp"
                         listType="picture-card"
                         multiple={false}
                         maxCount={1}
                         fileList={animation}
                         beforeUpload={(file) => {
-                            const isGif = file.type === 'image/gif' || file.type === 'image/webp';
-                            if (!isGif) {
+                            const isValid = (file.type === 'image/jpeg') || (file.type === 'image/webp')
+                                || (file.type === 'image/png') || (file.type === 'image/jpg');
+                            if (!isValid) {
                                 return Promise.reject();
                             }
                             return Promise.resolve();
@@ -267,7 +270,6 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     || name.endsWith('.jpg') || name === '') {
                                     return Promise.resolve();
                                 }
-
                                 return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
                             }
                             return Promise.reject();
