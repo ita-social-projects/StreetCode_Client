@@ -270,6 +270,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     || name.endsWith('.jpg') || name === '') {
                                     return Promise.resolve();
                                 }
+                                // eslint-disable-next-line max-len
                                 return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
                             }
                             return Promise.reject();
@@ -342,7 +343,8 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         uploadTo="image"
                         beforeUpload={(file) => {
                             const isValid = (file.type === 'image/jpeg')
-                                || (file.type === 'image/png') || (file.type === 'image/jpg' || (file.type === 'image/webp'));
+                                || (file.type === 'image/png')
+                                || (file.type === 'image/jpg' || (file.type === 'image/webp'));
                             if (!isValid) {
                                 return Promise.reject();
                             }
