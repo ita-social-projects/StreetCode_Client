@@ -218,8 +218,9 @@ $navbar-hidden-innerwidth: 400px;
   }
 
   .searchMobPopover {
+    max-width: 100vw;
     .ant-popover-inner {
-      margin-top: 20px;
+      margin-top: -10px;
     }
 }
 }
