@@ -6,10 +6,6 @@
 @mixin cardText(
     $title-max-lines: 2,
     $text-max-lines: 6,
-    $title-font-size: 36px,
-    $title-font-weight: 500,
-    $text-font-size: 20px,
-    $button-font-weight: 500,
 ){
     .cardTextContainer{
         display: flex;
@@ -19,13 +15,7 @@
         width: 100%;
         color: c.$lighter-black-color;
         @include mut.rem-padded(0px, 15px, 0px, 15px);
-        font-size: $text-font-size;
 
-        @media screen and (max-width: 1024px) {
-            @if $text-font-size == 20px{
-                font-size: 12px;
-            }
-        }
         &TopPart{
             display: flex;
             flex-direction: column;
@@ -36,18 +26,12 @@
         &Title{
             color: c.$lighter-black-color;
             @include mut.truncated($line-num: $title-max-lines);
-
-            @include mut.with-font(
-                            ft.$closer-text-font,
-                            $font-weight: $title-font-weight,
-                            $font-size: $title-font-size);
-            line-height: pxToRem(40px);
         }
 
         &SubTitle{
             color: c.$sliders-text-grey-color;
             @include mut.truncated($line-num: 2);
-            font-weight: $title-font-weight;
+
         }
 
         &Text{
@@ -57,7 +41,7 @@
         &Button{
             @include mut.truncated($line-num: 1);
             color: c.$dark-red-color;
-            font-weight: $button-font-weight;
+            width: max-content;
 
             &:hover{
                 cursor: pointer;

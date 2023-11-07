@@ -107,13 +107,25 @@
 
     @include textCard.cardText();
     .cardTextContainer{
+        font-size: f.pxToRem(20px);
+        @media screen and (max-width: 1024px) {
+            font-size: 12px;
+        }
+
         &Title{
+            @include mut.with-font(
+                            ft.$closer-text-font,
+                            $font-weight: 500,
+                            $font-size: 36px);
+            line-height: pxToRem(40px);
+
             @media screen and (max-width: 1024px) {
                 display: none;
             }
         }
 
         &SubTitle{
+            font-weight: 500;
             @media screen and (max-width: 1024px) {
                text-align: center;
                 color: c.$lighter-black-color;
@@ -121,12 +133,14 @@
         }
 
         &Text{
+            font-weight: 300;
             @media screen and (max-width: 1024px) {
                 display: none;
             }
         }
 
         &Button{
+            font-weight: 500;
             @media screen and (max-width: 1024px) {
                 text-align: center;
             }
