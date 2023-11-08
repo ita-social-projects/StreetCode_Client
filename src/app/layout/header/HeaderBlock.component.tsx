@@ -106,7 +106,7 @@ const HeaderBlock = () => {
                         </Popover>
                     )}
                     
-                    <HeaderSkeleton />
+                    {windowSize.width > 1024 && <HeaderSkeleton />}
                 </div>
                 <div className="rightPartContainer">
                     <div className="rightSectionContainer">
