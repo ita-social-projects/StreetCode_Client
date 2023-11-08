@@ -7,7 +7,7 @@ import StreetcodeSvg from '@images/header/Streetcode_logo.svg';
 import StreetcodeSvgMobile from '@images/header/Streetcode_logo_mobile.svg';
 
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
@@ -28,6 +28,7 @@ const HeaderBlock = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const searchBlockRef = useRef(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const searchButtonRef = useRef(null);
     const dimWrapperRef = useRef(null);
@@ -47,30 +48,25 @@ const HeaderBlock = () => {
         }
     };
 
+    const closeSearchBlock = () => {
+        off();
+        setIsPageDimmed(false);
+        setIsPopoverVisible(false);
+    }
 
-    const onDimCancel = useCallback((e?: Event) => {
-        if (
-            (!searchButtonRef.current || !searchButtonRef.current.contains(e?.target)) &&
-            dimWrapperRef.current && !dimWrapperRef.current.contains(e?.target)
-        ) {
-
-            setTimeout(() => {
-                off();
-                setIsPageDimmed(false);
-                setIsPopoverVisible(false);
-
-            }, 200);
-
-        }
+    const onDimCancel = useCallback(() => {
+        closeSearchBlock();
     }, [setIsPageDimmed, setIsPopoverVisible, off]);
 
     useEventListener('scroll', () => {
         setIsHeaderHidden(window.scrollY > 100);
+        closeSearchBlock();
     });
 
     useEffect(onDimCancel, [isHeaderHidden, onDimCancel]);
-    useOnClickOutside(inputRef, onDimCancel);
-
+    
+    useOnClickOutside(inputRef, searchBlockRef, onDimCancel, searchButtonRef);
+    
     if (isInputActive && !isPageDimmed) {
         setIsPageDimmed(true);
     }
@@ -93,22 +89,24 @@ const HeaderBlock = () => {
                         <Popover
                             trigger="click"
                             open={isPopoverVisible}
+                            getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
                             placement="bottomLeft"
                             content={(
-                                <div className="headerPopupSkeleton">
-                                    <SearchBlock searchQuery={searchQuery} />
+                                <div className="headerPopupSkeleton" ref={searchBlockRef}>
+                                    <SearchBlock searchQuery={searchQuery}/>
                                 </div>
                             )}
-                        />
+                            >
+                            <input
+                                onChange={handleInputChange}
+                                placeholder="Пошук..."
+                                ref={inputRef}
+                                className={`ant-input  
+                                        hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                            />
+                        </Popover>
                     )}
-                    <input
-                        onChange={handleInputChange}
-                        placeholder="Пошук..."
-                        ref={inputRef}
-                        className={`ant-input  
-                                hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
-                    />
-
+                    
                     <HeaderSkeleton />
                 </div>
                 <div className="rightPartContainer">
@@ -145,27 +143,26 @@ const HeaderBlock = () => {
             </div>
             <div >
             {windowSize.width <= 1024 && (
-                <div className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
-                    <Popover
-                        trigger="click"
-                        open={isPopoverVisible}
-                        arrow={true}
-                        overlayClassName="searchMobPopover"
-                        placement='bottom'
-                        content={(
-                            <div>
-                                <SearchBlock searchQuery={searchQuery} />
-                            </div>
-                        )}
-                    />
+                <Popover
+                trigger="click"
+                open={isPopoverVisible}
+                arrow={false}
+                overlayClassName="searchMobPopover"
+                getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
+                placement="bottom"
+                content={(
+                    <div ref={searchBlockRef}>
+                        <SearchBlock searchQuery={searchQuery}/>
+                    </div>
+                )}
+                >
+                <div ref={searchBlockRef} className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
                     <input
                         onChange={handleInputChange}
                         className="ant-input css-dev-only-do-not-override-26rdvq"
                         placeholder="Що ти шукаєш?"
                         ref={inputRef}
-
                     />
-
                     <Button
                         type="primary"
                         className="searchButton"
@@ -177,6 +174,7 @@ const HeaderBlock = () => {
                         Пошук
                     </Button>
                 </div>
+                </Popover>
             )}
             </div>
         </div>

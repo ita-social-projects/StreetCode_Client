@@ -14,14 +14,12 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import useEventListener from '@/app/common/hooks/external/useEventListener.hook';
 
 const HeaderSkeleton = () => {
-    const [isHeaderHidden, setIsHeaderHidden] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
-    const inputRef = useRef<HTMLInputElement>(null);
-    const searchButtonRef = useRef(null);
-    const dimWrapperRef = useRef(null);
+    const inputRef = useRef(null);
+    const searchBlockRef = useRef(null);
     const windowSize = useWindowSize();
     
     const handlePopoverVisibleChange = (visible: boolean) => {
@@ -38,29 +36,21 @@ const HeaderSkeleton = () => {
         }
     };
 
+    const closeSearchBlock = () => {
+        off();
+        setIsPageDimmed(false);
+        setIsPopoverVisible(false);
+    }
 
-    const onDimCancel = useCallback((e?: Event) => {
-        if (
-            (!searchButtonRef.current || !searchButtonRef.current.contains(e?.target)) &&
-            dimWrapperRef.current && !dimWrapperRef.current.contains(e?.target)
-        ) {
-
-            setTimeout(() => {
-                off();
-                setIsPageDimmed(false);
-                setIsPopoverVisible(false);
-
-            }, 0);
-
-        }
+    const onDimCancel = useCallback(() => {
+        closeSearchBlock();
     }, [setIsPageDimmed, setIsPopoverVisible, off]);
 
     useEventListener('scroll', () => {
-        setIsHeaderHidden(window.scrollY > 100);
+        closeSearchBlock();
     });
 
-    useEffect(onDimCancel, [isHeaderHidden, onDimCancel]);
-    useOnClickOutside(inputRef, onDimCancel);
+    useOnClickOutside(inputRef, searchBlockRef, onDimCancel);
 
     if (isInputActive && !isPageDimmed) {
         setIsPageDimmed(true);
@@ -72,31 +62,32 @@ const HeaderSkeleton = () => {
     };
 
     return (
-        <div ref={dimWrapperRef}>
+        <div>
             <Popover
-            trigger="click"
-            placement="bottomLeft"
-            open={isPopoverVisible}
-            content={(
-                <div className="headerPopupSkeleton">
-                    <SearchBlock searchQuery={searchQuery} />
+                trigger="click"
+                placement="bottomLeft"
+                open={isPopoverVisible}
+                getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
+                content={(
+                    <div className="headerPopupSkeleton"  ref={searchBlockRef}>
+                        <SearchBlock searchQuery={searchQuery} />
+                    </div>
+                )}
+            >
+                <div ref={inputRef}>
+                    <Input
+                        onChange={handleInputChange}
+                        placeholder="Пошук..."
+                        prefix={
+                        <MagnifyingGlass
+                            viewBox="0 -2 24 24"
+                            transform="scale(1.2)"
+                            onClick={onMagnifyingGlassClick}
+                            style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                        />}
+                    />
                 </div>
-            )}
-        >
-            <div>
-                <Input
-                    onChange={handleInputChange}
-                    placeholder="Пошук..."
-                    prefix={
-                    <MagnifyingGlass
-                        viewBox="0 -2 24 24"
-                        transform="scale(1.2)"
-                        onClick={onMagnifyingGlassClick}
-                        style={isPageDimmed ? { zIndex: '-1' } : undefined}
-                    />}
-                />
-            </div>
-        </Popover>
+            </Popover>
         </div>
     );
 };
