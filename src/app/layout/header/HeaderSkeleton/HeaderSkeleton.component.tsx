@@ -67,6 +67,7 @@ const HeaderSkeleton = () => {
                 trigger="click"
                 placement="bottomLeft"
                 open={isPopoverVisible}
+                overlayClassName='searchPopoverSkeleton'
                 getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
                 content={(
                     <div className="headerPopupSkeleton"  ref={searchBlockRef}>

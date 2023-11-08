@@ -88,6 +88,7 @@ const HeaderBlock = () => {
                         <Popover
                             trigger="click"
                             open={isPopoverVisible}
+                            overlayClassName='searchPopover'
                             getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
                             placement="bottomLeft"
                             content={(

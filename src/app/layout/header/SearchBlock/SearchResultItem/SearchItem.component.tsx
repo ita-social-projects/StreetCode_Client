@@ -22,7 +22,7 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
         <a href={url}
         className="resultItemContainer">
             <div className="resultItemContent">
-                 {htmlReactParser(contentToDisplay)}
+                {htmlReactParser(contentToDisplay)}
             </div>
             <div className="resultSourceName">
                 {sourceName}

@@ -4,7 +4,7 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
 .resultItemContainer{ 
-    max-width: f.pxToRem(915px);
+    width: 100%;
     @include mut.flexed($align-items: center);
     padding: f.pxToRem(13px) f.pxToRem(20px);
 
@@ -25,19 +25,27 @@
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
         @include mut.rem-margined($right: 14px);
 
-        max-width: f.pxToRem(503px);     
+        max-width: 60%;     
         line-height: 18px;
         color: c.$lighter-black-color;
 
         text-overflow: ellipsis;
-        overflow: hidden;    
+        overflow: hidden;
     }
 
     .resultSourceName{
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
 
-        max-width: f.pxToRem(503px);     
+        max-width: 40%;     
         line-height: 18px;
         color: #D1D1D1;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    p{
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 }
