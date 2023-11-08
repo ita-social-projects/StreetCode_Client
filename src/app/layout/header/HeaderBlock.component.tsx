@@ -30,7 +30,6 @@ const HeaderBlock = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const searchBlockRef = useRef(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
-    const searchButtonRef = useRef(null);
     const dimWrapperRef = useRef(null);
     const windowSize = useWindowSize();
 
@@ -65,7 +64,7 @@ const HeaderBlock = () => {
 
     useEffect(onDimCancel, [isHeaderHidden, onDimCancel]);
     
-    useOnClickOutside(inputRef, searchBlockRef, onDimCancel, searchButtonRef);
+    useOnClickOutside(inputRef, searchBlockRef, onDimCancel);
     
     if (isInputActive && !isPageDimmed) {
         setIsPageDimmed(true);
@@ -144,36 +143,34 @@ const HeaderBlock = () => {
             <div >
             {windowSize.width <= 1024 && (
                 <Popover
-                trigger="click"
-                open={isPopoverVisible}
-                arrow={false}
-                overlayClassName="searchMobPopover"
-                getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
-                placement="bottom"
-                content={(
-                    <div ref={searchBlockRef}>
-                        <SearchBlock searchQuery={searchQuery}/>
-                    </div>
-                )}
+                    trigger="click"
+                    open={isPopoverVisible}
+                    arrow={false}
+                    overlayClassName="searchMobPopover"
+                    getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
+                    placement="bottom"
+                    content={(
+                        <div ref={searchBlockRef}>
+                            <SearchBlock searchQuery={searchQuery}/>
+                        </div>
+                    )}
                 >
-                <div ref={searchBlockRef} className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
-                    <input
-                        onChange={handleInputChange}
-                        className="ant-input css-dev-only-do-not-override-26rdvq"
-                        placeholder="Що ти шукаєш?"
-                        ref={inputRef}
-                    />
-                    <Button
-                        type="primary"
-                        className="searchButton"
-                        onClick={() => {
-                            handlePopoverVisibleChange(true);
-                        }}
-                        ref={searchButtonRef}
-                    >
-                        Пошук
-                    </Button>
-                </div>
+                    <div ref={inputRef} className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
+                        <input
+                            onChange={handleInputChange}
+                            className="ant-input css-dev-only-do-not-override-26rdvq"
+                            placeholder="Що ти шукаєш?"
+                        />
+                        <Button
+                            type="primary"
+                            className="searchButton"
+                            onClick={() => {
+                                handlePopoverVisibleChange(true);
+                            }}
+                        >
+                            Пошук
+                        </Button>
+                    </div>
                 </Popover>
             )}
             </div>
