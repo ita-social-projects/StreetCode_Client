@@ -109,7 +109,7 @@ const BaseArtGallerySlide = ({
             {streetcodeArts?.map((streetcodeArt, index) => {
                 const { image } = streetcodeArt.art;
                 const imageJSX = (
-                    <div className="baseArtSlideImageWrapper">
+                    <div className="baseArtSlideImageWrapper" key={index}>
                         <img
                             className={`baseArtImage img${streetcodeArt.index}`}
                             src={base64ToUrl(image.base64, image.mimeType)}
