@@ -10,7 +10,7 @@ import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
 
-const ContactForm = ({ customClass = "" }) => {
+const ContactForm = ({ customClass = '' }) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
     const messageLength = formData.message.length | 0;
@@ -63,13 +63,13 @@ const ContactForm = ({ customClass = "" }) => {
                     className="textareaBlock required-input"
                     name="message"
                     rules={[{
-                        required: false,
+                        required: true,
                         min: 1,
-                        max: MAX_SYMBOLS
+                        max: MAX_SYMBOLS,
+                        message: 'Будь ласка, вкажи свою пропозицію',
                     }]}
                 >
                     <Input.TextArea
-                        required={true}
                         className="textarea"
                         name="message"
                         autoSize={{ minRows: 4, maxRows: 4 }}
@@ -79,7 +79,9 @@ const ContactForm = ({ customClass = "" }) => {
                     />
                     <p className="custom-character-counter">
                         {messageLength}
-                        / {MAX_SYMBOLS}
+                        /
+                        {' '}
+                        {MAX_SYMBOLS}
                     </p>
                 </Form.Item>
                 <Form.Item
@@ -87,7 +89,9 @@ const ContactForm = ({ customClass = "" }) => {
                     rules={[
                         {
                             required: true,
-                            type: 'email'
+                            type: 'email',
+                            pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                            message: 'E-mail може містити лише маленькі латинські літери, цифри і символи @._-',
                         },
                     ]}
                 >
