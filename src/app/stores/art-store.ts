@@ -35,5 +35,6 @@ export default class ArtStore {
             modelState: ModelState.Updated,
             isPersisted: true,
         }));
+        this.toggleMutation();
     }
 }

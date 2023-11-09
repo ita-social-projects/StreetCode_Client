@@ -28,19 +28,19 @@ const DownloadBlock = () => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [artPreviewIdx, setArtPreviewIdx] = useState<number>(0);
     const [isOpen, setIsOpen] = useState(false);
-    const [toggleMutatedArts, setToggleMutatedArts] = useState(false);
     const [visibleModal, setVisibleModal] = useState(false);
     const [visibleDeleteButton, setVisibleDeleteButton] = useState(false);
     const artsToRemoveIdxs = useRef<Set<string>>(new Set());
+    const isSecondRender = useRef<boolean>(false);
 
     useAsync(async () => {
-        if (artStore.arts.length === 0 && parseId) {
+        if (artStore.arts.length === 0 && parseId && !isSecondRender.current) {
+            isSecondRender.current = true;
             await artStore.fetchArtsByStreetcodeId(parseId);
         }
     });
 
     useEffect(() => {
-        console.log('RERENDER');
         if (artStore.arts.length > 0) {
             const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
                 uid: `${art.id}`,
@@ -95,12 +95,8 @@ const DownloadBlock = () => {
         };
 
         runInAction(() => {
-            console.log('BEFORE:', artStore.mutationObserved);
-
             artStore.arts.push(newArt);
             artStore.toggleMutation();
-
-            console.log('AFTER:', artStore.mutationObserved);
         });
     });
 

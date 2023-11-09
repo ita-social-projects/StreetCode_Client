@@ -14,11 +14,11 @@ import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
 import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
+import StreetcodeArtsBlock from '@features/AdminPage/NewStreetcode/StreetcodeArtsBlock/StreetcodeArtsBlock.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
-import StreetcodeArtSlideStore from '@stores/streetcode-art-slide-store';
 import dayjs from 'dayjs';
 
 import { Button, ConfigProvider, Form, Modal } from 'antd';
@@ -33,7 +33,6 @@ import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import { AudioUpdate } from '@/models/media/audio.model';
 import { ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
-import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
@@ -42,12 +41,10 @@ import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.
 import { TransactionLink } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
-import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
 import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
-import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
@@ -349,7 +346,6 @@ const NewStreetcode = () => {
                 imagesDetails: createUpdateMediaStore.getImageDetails(),
 
             };
-            console.log(JSON.stringify(streetcode));
             if (streetcodeType.current === StreetcodeType.Person) {
                 streetcode.firstName = form.getFieldValue('name');
                 streetcode.lastName = form.getFieldValue('surname');
@@ -496,7 +492,7 @@ const NewStreetcode = () => {
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
                             <ArtGalleryDndContext>
-                                <ArtGalleryBlock />
+                                <StreetcodeArtsBlock />
                                 <ArtGallery isConfigurationGallery />
                                 <ArtGallery isAdmin />
                             </ArtGalleryDndContext>

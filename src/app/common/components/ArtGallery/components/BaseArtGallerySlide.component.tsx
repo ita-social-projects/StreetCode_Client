@@ -106,7 +106,7 @@ const BaseArtGallerySlide = ({
 
     return (
         <div className={`${className} baseArtSlide`}>
-            {streetcodeArts?.map((streetcodeArt) => {
+            {streetcodeArts?.map((streetcodeArt, index) => {
                 const { image } = streetcodeArt.art;
                 const imageJSX = (
                     <div className="baseArtSlideImageWrapper">
@@ -135,6 +135,7 @@ const BaseArtGallerySlide = ({
                 return isDroppable
                     ? (
                         <Droppable
+                            key={index}
                             id={`${artSlideId}-${streetcodeArt.index}`}
                             className={`droppable${streetcodeArt.index}`}
                         >
