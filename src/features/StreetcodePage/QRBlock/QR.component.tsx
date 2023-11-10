@@ -39,9 +39,7 @@ const QRComponent = () => {
                                     <div className="QRBlockTextContainer">
                                         <h1>AR-історія в Інсті!</h1>
                                         <p>
-                                            Переходь за QR-кодом, фокусуй камеру
-                                            <br />
-                                            на ілюстрації та вітай нову реальність.
+                                            Переходь за QR-кодом і вітай нову реальність.
                                         </p>
                                         <p className="appealPrg">Скануй, щоб завіртуалити історію!</p>
                                         <QRCode value={qrUrl.url ?? ''} />
