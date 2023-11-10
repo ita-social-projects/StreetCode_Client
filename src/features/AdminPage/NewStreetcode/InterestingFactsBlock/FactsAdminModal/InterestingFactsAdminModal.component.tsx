@@ -42,7 +42,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const clearModal=() =>{
         form.resetFields();
         setModalOpen(false);
-        setFileList([]);
+        setFileList(undefined);
     }
 
     useEffect(() => {
@@ -201,6 +201,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                     setHasUploadedPhoto(true);
                                 }}
                                 onRemove={() => {
+                                    setFileList(undefined);
                                     setHasUploadedPhoto(false);
                                 }}
                                 onPreview={() => {
@@ -226,6 +227,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         </Form.Item>
                         <div className="center">
                             <Button
+                                disabled = {fileList == null}
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >

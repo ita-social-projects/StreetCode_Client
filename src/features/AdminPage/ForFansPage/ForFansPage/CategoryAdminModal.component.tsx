@@ -193,7 +193,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             maxCount={1}
                             uploadTo="image"
                             fileList={fileList}
-                            onSuccessUpload={handleImageChange}
+                            onSuccessUpload={(image: Image | Audio) => {
+                                    imageId.current = image.id;
+                            }}
                             onPreview={handlePreview}
                             defaultFileList={initialData
                                 ? [{
@@ -208,7 +210,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => handleOk()}>
+                        <Button 
+                        disabled = {fileList == null} 
+                        className="streetcode-custom-button" 
+                        onClick={() => handleOk()}>
                             Зберегти
                         </Button>
                     </div>

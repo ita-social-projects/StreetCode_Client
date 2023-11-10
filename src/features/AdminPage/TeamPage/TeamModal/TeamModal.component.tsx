@@ -42,6 +42,7 @@ const TeamModal: React.FC<{
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
+    const [fileList, setFileList] = useState<UploadFile[]>();
     const imageId = useRef<number>(0);
     useEffect(() => {
         if (open) {
@@ -104,6 +105,7 @@ const TeamModal: React.FC<{
         setSelectedPositions([]);
         teamSourceLinks.splice(0);
         setIsModalOpen(false);
+        setFileList(undefined);
     };
 
     const closeModal = () => {
@@ -307,6 +309,10 @@ const TeamModal: React.FC<{
                         ]}
                     >
                         <FileUploader
+                            onChange={(param) => {
+                                setFileList(param.fileList);
+                            }}
+                            fileList={fileList}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
@@ -384,7 +390,7 @@ const TeamModal: React.FC<{
                 {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
 
                 <div className="center">
-                    <Button className="streetcode-custom-button" onClick={handleOk}>
+                    <Button disabled = {fileList == null}  className="streetcode-custom-button" onClick={handleOk}>
                         Зберегти
                     </Button>
                 </div>
