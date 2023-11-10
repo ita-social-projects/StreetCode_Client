@@ -38,7 +38,7 @@ const StreetcodeSlider = () => {
     const windowsize = useWindowSize();
     if (windowsize.width <= 1024 && windowsize.width >= 768) props.centerMode = true;
     if (windowsize.width <= 1024) props.dots = true;
-    if (windowsize.width <= 1024) props.initialSlide = 1;
+    if (windowsize.width <= 1024 && windowsize.width >= 768) props.initialSlide = 1;
     if (windowsize.width <= 768) props.variableWidth = false;
 
     useAsync(async () => {
