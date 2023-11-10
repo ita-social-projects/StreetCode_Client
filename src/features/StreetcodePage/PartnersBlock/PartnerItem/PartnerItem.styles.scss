@@ -3,12 +3,13 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 .partnerItem {
     text-align: center;
     position: relative;
     .partnerLogo {
-        z-index: 1000;
+        z-index: l.$modal;
         height: 100%;
         width: 80%;
         object-fit: contain;

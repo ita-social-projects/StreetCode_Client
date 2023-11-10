@@ -4,6 +4,7 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 @use '@assets/sass/mixins/_utils.mixins.scss' as ut;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 .InstagramBlock {
     .sliderContainer {
@@ -15,7 +16,6 @@
 
             .slick-prev,
             .slick-next {
-                z-index: 9999;
                 filter: none !important;
             }
 

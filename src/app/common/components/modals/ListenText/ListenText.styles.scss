@@ -3,6 +3,7 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 .modal {
     @include mut.sized(1200px, 46px);
@@ -14,7 +15,7 @@
     background-color: c.$pure-white-color;
     border: 2px solid #DB3424;
 
-    z-index: 1000;
+    z-index: l.$stickyEl;
     box-shadow: 0 2px 15px rgba(163, 163, 163, 0.25);
 }
 
