@@ -19,7 +19,8 @@
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         line-height: f.pxToRem(23px);
         background-color: c.$pure-white-color;
-        margin-left: f.pxToRem(20px);
+        margin-left: f.pxToRem(20.5px);
+        margin-right: f.pxToRem(20.5px);
 
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.flexed(column, flex-start, flex-start, wrap, $gap: 4px);
