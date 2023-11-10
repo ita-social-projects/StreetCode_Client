@@ -19,51 +19,52 @@
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         line-height: f.pxToRem(23px);
         background-color: c.$pure-white-color;
-        margin-left: f.pxToRem(20px);
+        margin-left: f.pxToRem(20.5px);
+        margin-right: f.pxToRem(20.5px);
 
         @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.sized(266px, 402px);
+            @include mut.flexed(column, flex-start, flex-start, wrap, $gap: 4px);
+            @include mut.sized(310px, 462px);
+            margin-top: f.pxToRem(20px);
             margin-bottom: f.pxToRem(20px);
         }
 
         @media screen and (max-width: 767px) {
             @include mut.sized(310px, 462px);
+            align-content: flex-start;
+            gap: 4px;
             margin-left: f.pxToRem(0px);
         }
     }
 
     .leftSlider {
         @include mut.full-rounded(53px);
+        @include mut.rem-padded($top: 22px, $right: 22px, $bottom: 22px, $left: 22px);
         @include mut.sized(294px, 398px);
         flex: 0 0 f.pxToRem(294px);
         background-color: c.$pure-white-color;
         justify-self: flex-start;
 
         @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.sized(266px, 338px);
+            @include mut.rem-padded($top: 20px, $right: 20px, $bottom: 12px, $left: 20px);
+            @include mut.sized(310px, 406px);
+            overflow: visible !important;
+            flex-basis: auto;
         }
 
         @media screen and (max-width: 767px) {
-            @include mut.sized(100%, 398px);
+            @include mut.rem-padded($top: 20px, $right: 20px, $bottom: 12px, $left: 20px);
+            @include mut.sized(100%, 406px);
+            overflow: visible !important;
+            flex-basis: auto;
         }
     }
 
     .leftSliderContent {
         background-color: c.$accented-gray-color;
-        border: 22px solid c.$pure-white-color;
         @include mut.full-rounded(50px);
         @include mut.parent-sized();
         @include mut.flex-centered();
-
-        @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.sized(100%, 338px);
-            border-bottom: 0px !important;
-        }
-
-        @media screen and (max-width: 767px) {
-            @include mut.sized(100%, 398px);
-            border-bottom: 0px !important;
-        }
     }
 
     .rightSlider {
@@ -79,13 +80,15 @@
 
         @media screen and (max-width: 1024px) {
             height: fit-content;
+            width: 100%;
 
             .textContainer {
                 height: 100%;
-                width: 100%;
+                width: f.pxToRem(270px);
                 display: flex;
                 flex-direction: column;
                 text-align: center;
+                gap: f.pxToRem(4px);
             }
         }
     }
@@ -140,7 +143,8 @@
         @include mut.rem-padded(28px, 0px, 0px, 0px);
 
         @media screen and (max-width: 1024px) {
-            @include mut.rem-padded(6px, 0px, 0px, 0px);
+            @include mut.rem-padded(0px, 0px, 0px, 0px);
+            align-items: center;
         }
     }
 
@@ -168,12 +172,12 @@
         margin: auto;
         @include mut.sized(225px, 307px);
         @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.sized(200px, 261px);
+            @include mut.sized(237px, 307px);
             object-fit: contain;
         }
 
         @media screen and (max-width: 767px) {
-            @include mut.sized(240px, 312px);
+            @include mut.sized(237px, 307px);
             object-fit: contain;
         }
     }

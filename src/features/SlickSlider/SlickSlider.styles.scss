@@ -1,6 +1,7 @@
 @use '@assets/sass/_utils.functions.scss' as *;
 @use '@assets/sass/mixins/_utils.mixins.scss' as mut;
 @use '@assets/sass/variables/_variables.colors.scss' as c;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
@@ -81,6 +82,7 @@ li.slick-active button:before {
 }
 
 .slick-arrow {
+    z-index: l.$slickArrow;
     opacity: .4;
     filter: c.$selected-arrow-filter-color;
 

@@ -145,8 +145,8 @@
             left: 0;
             right: 0;
 
-            height: f.pxToRem(54px);
-            padding-top: f.pxToRem(18px);
+            //height of 2 lines + 10px
+            height: f.pxToRem(46px);
             padding-left: f.pxToRem(30px);
 
             @include mut.with-font(ft.$roboto-font, $font-weight: bolder, $font-size: 15px);

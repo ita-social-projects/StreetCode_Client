@@ -3,6 +3,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 $navbar-innerwidth: 500px; 
 $navbar-hidden-innerwidth: 400px;
@@ -14,7 +15,7 @@ $navbar-hidden-innerwidth: 400px;
 
   background-color: c.$pure-white-color;
   position: fixed;
-  z-index: 7;
+  z-index: l.$modal;
   svg {
     
     &:hover {
@@ -178,7 +179,7 @@ $navbar-hidden-innerwidth: 400px;
     
 
     position: fixed;
-    z-index: 6;
+    z-index: l.$modal - 1;
     background-color: c.$pure-white-color;
     transform: translateY(f.pxToRem(-200px));
     @include vnd.vendored(transition, 'transform 0.7s ease');
