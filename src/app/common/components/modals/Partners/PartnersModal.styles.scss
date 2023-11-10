@@ -98,9 +98,6 @@
                 .ant-btn-primary:not(:disabled):hover{
                     background-color: #E04031;
                 }
-                .ant-form-item .ant-form-item-explain-error {
-                    display: none;
-                }
 
                 button{
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
