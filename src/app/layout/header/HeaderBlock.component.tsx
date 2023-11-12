@@ -24,7 +24,7 @@ const HeaderBlock = () => {
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef(null);
     const searchBlockRef = useRef(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const dimWrapperRef = useRef(null);
@@ -64,7 +64,7 @@ const HeaderBlock = () => {
 
     useEffect(onDimCancel, [isHeaderHidden, onDimCancel]);
     
-    useOnClickOutside(inputRef, searchBlockRef, onDimCancel);
+    useOnClickOutside([inputRef, searchBlockRef], onDimCancel);
     
     if (isInputActive && !isPageDimmed) {
         setIsPageDimmed(true);
@@ -108,7 +108,7 @@ const HeaderBlock = () => {
                         </Popover>
                     )}
                     
-                    {isDesktop && <HeaderSkeleton />}
+                    {isDesktop && !isHeaderHidden && <HeaderSkeleton />}
                 </div>
                 <div className="rightPartContainer">
                     <div className="rightSectionContainer">

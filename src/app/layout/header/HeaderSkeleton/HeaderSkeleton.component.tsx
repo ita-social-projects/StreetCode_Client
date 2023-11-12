@@ -50,7 +50,7 @@ const HeaderSkeleton = () => {
         closeSearchBlock();
     });
 
-    useOnClickOutside(inputRef, searchBlockRef, onDimCancel);
+    useOnClickOutside([inputRef, searchBlockRef], onDimCancel);
 
     if (isInputActive && !isPageDimmed) {
         setIsPageDimmed(true);
