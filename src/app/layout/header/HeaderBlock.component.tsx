@@ -14,13 +14,10 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
 import useMobx, { useModalContext } from '@stores/root-store';
-
 import { Button, Popover } from 'antd';
-
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
-
 import SearchBlock from './SearchBlock/SearchBlock.component';
+import { useMediaQuery } from 'react-responsive';
 
 const HeaderBlock = () => {
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
@@ -31,7 +28,10 @@ const HeaderBlock = () => {
     const searchBlockRef = useRef(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const dimWrapperRef = useRef(null);
-    const windowSize = useWindowSize();
+
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 1025px)',
+    });
 
     const handlePopoverVisibleChange = (visible: boolean) => {
         setIsPopoverVisible(visible);
@@ -40,7 +40,7 @@ const HeaderBlock = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setSearchQuery(value);
-        if (value.length > 0 && windowSize.width > 1024) {
+        if (value.length > 0 && isDesktop) {
             handlePopoverVisibleChange(true);
         } else {
             handlePopoverVisibleChange(false);
@@ -80,11 +80,11 @@ const HeaderBlock = () => {
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
                     <div className='logoContainer' onClick={() => window.location.href = '/'}>
-                        {windowSize.width > 1024
+                        {isDesktop 
                             ? <StreetcodeSvg />
                             : <StreetcodeSvgMobile />}
                     </div>
-                    {windowSize.width > 1024 && (
+                    {isDesktop && (
                         <Popover
                             trigger="click"
                             open={isPopoverVisible}
@@ -100,18 +100,19 @@ const HeaderBlock = () => {
                             <input
                                 onChange={handleInputChange}
                                 placeholder="Пошук..."
+                                //onClick={() => {toggle();}}
                                 ref={inputRef}
                                 className={`ant-input  
-                                        hiddenHeaderInput ${((isInputActive && isHeaderHidden && windowSize.width > 1024) ? 'active' : '')}`}
+                                        hiddenHeaderInput ${((isInputActive && isHeaderHidden && isDesktop) ? 'active' : '')}`}
                             />
                         </Popover>
                     )}
                     
-                    {windowSize.width > 1024 && <HeaderSkeleton />}
+                    {isDesktop && <HeaderSkeleton />}
                 </div>
                 <div className="rightPartContainer">
                     <div className="rightSectionContainer">
-                        {isHeaderHidden && windowSize.width > 1024 && (
+                        {isHeaderHidden && isDesktop && (
                             <MagnifyingGlass
                                 viewBox="0 -2 24 24"
                                 transform="scale(1.2)"
@@ -119,7 +120,7 @@ const HeaderBlock = () => {
                                 style={isPageDimmed ? { zIndex: '-1' } : undefined}
                             />
                         )}
-                        {windowSize.width <= 1024 && (
+                        {!isDesktop && (
                             <MagnifyingGlassMobile
                                 viewBox="0 -1 25 25"
                                 onClick={onMagnifyingGlassClick}
@@ -142,7 +143,7 @@ const HeaderBlock = () => {
                 </div>
             </div>
             <div >
-            {windowSize.width <= 1024 && (
+            {!isDesktop && (
                 <Popover
                     trigger="click"
                     open={isPopoverVisible}

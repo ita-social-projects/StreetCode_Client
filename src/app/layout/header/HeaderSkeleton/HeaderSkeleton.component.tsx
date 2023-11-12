@@ -1,17 +1,14 @@
 import './HeaderSkeleton.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import SearchBlock from '@app/layout/header/SearchBlock/SearchBlock.component';
-
 import { Input, Popover } from 'antd';
-
 import useMobx, { useModalContext } from '@stores/root-store';
 import useToggle from '@hooks/stateful/useToggle.hook';
 import useOnClickOutside from '@/app/common/hooks/stateful/useClickOutside.hook';
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import useEventListener from '@/app/common/hooks/external/useEventListener.hook';
+import { useMediaQuery } from 'react-responsive';
 
 const HeaderSkeleton = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -20,7 +17,10 @@ const HeaderSkeleton = () => {
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
     const inputRef = useRef(null);
     const searchBlockRef = useRef(null);
-    const windowSize = useWindowSize();
+    
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 1025px)',
+    });
     
     const handlePopoverVisibleChange = (visible: boolean) => {
         setIsPopoverVisible(visible);
@@ -29,7 +29,7 @@ const HeaderSkeleton = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setSearchQuery(value);
-        if (value.length > 0 && windowSize.width > 1024) {
+        if (value.length > 0 && isDesktop) {
             handlePopoverVisibleChange(true);
         } else {
             handlePopoverVisibleChange(false);
@@ -56,6 +56,13 @@ const HeaderSkeleton = () => {
         setIsPageDimmed(true);
     }
 
+    const onInputClick = () => {
+        if(!isPageDimmed){
+            setIsPageDimmed();
+            toggle();
+        }
+    }
+
     const onMagnifyingGlassClick = () => {
         setIsPageDimmed();
         toggle();
@@ -79,6 +86,7 @@ const HeaderSkeleton = () => {
                     <Input
                         onChange={handleInputChange}
                         placeholder="Пошук..."
+                        onClick={onInputClick}
                         prefix={
                         <MagnifyingGlass
                             viewBox="0 -2 24 24"
