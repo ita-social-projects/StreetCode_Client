@@ -3,6 +3,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 $navbar-innerwidth: 500px; 
 $navbar-hidden-innerwidth: 400px;
@@ -14,7 +15,7 @@ $navbar-hidden-innerwidth: 400px;
 
   background-color: c.$pure-white-color;
   position: fixed;
-  z-index: 7;
+  z-index: l.$modal;
   svg {
     
     &:hover {
@@ -58,6 +59,12 @@ $navbar-hidden-innerwidth: 400px;
     display: flex;
     align-items: center;
     gap: f.pxToRem(15px);
+
+    .logoContainer{
+      svg{
+        @include mut.sized(167.79px, 29px);
+      }
+    }
 }
 .rightPartContainer {
   @include mut.flexed($justify-content: space-between, $align-items: center);
@@ -68,7 +75,7 @@ $navbar-hidden-innerwidth: 400px;
   @include mut.rem-margined($left: 20px);
 
   .loginBtn {
-    @include mut.sized(142px, 39px);
+    @include mut.sized(139.34px, 39px);
     @include mut.full-rounded(12px);
     background-color: c.$accented-red-color;
 
@@ -134,26 +141,29 @@ $navbar-hidden-innerwidth: 400px;
     
     .leftPartContainer {
         .logoContainer {
-            height: f.pxToRem(34px);
+            height: f.pxToRem(24px);
             svg
             {
-                width: 100%;
-                height: f.pxToRem(34px);
+              @include mut.sized(131px, 22px);
             }
         }    
     }
 
     .rightPartContainer {
-      svg {
-        @include mut.rem-margined($right: 15px);
+      .rightSectionContainer{
+        svg {
+          @include mut.rem-margined($right: 15px);
+          @include mut.sized(24px, 24px);
 
-        &:hover {
-          filter: invert(27%) sepia(26%) saturate(0%) hue-rotate(201deg) brightness(96%) contrast(86%);
+          &:hover {
+            filter: invert(27%) sepia(26%) saturate(0%) hue-rotate(201deg) brightness(96%) contrast(86%);
+          }
         }
-      }
-
-      .burgerMenuContainer {
-        @include mut.rem-margined($right: 15px);
+  
+        .burgerMenuContainer {
+          @include mut.rem-margined($right: 15px);
+          @include mut.sized(28px, 17.34px);
+        }
       }
     }
   }
@@ -169,7 +179,7 @@ $navbar-hidden-innerwidth: 400px;
     
 
     position: fixed;
-    z-index: 6;
+    z-index: l.$modal - 1;
     background-color: c.$pure-white-color;
     transform: translateY(f.pxToRem(-200px));
     @include vnd.vendored(transition, 'transform 0.7s ease');

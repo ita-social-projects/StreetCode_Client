@@ -20,15 +20,15 @@ import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/Co
 const mobileOptions = 8;
 const desktopOptions = 6;
 const scaleDesktop = 1;
-const scaleMobile = 5;
+const scaleMobile = 12;
 const menuPositionsMobile = [
     1 * scaleMobile,
     2 * scaleMobile,
     3 * scaleMobile - 1,
-    4 * scaleMobile - 1,
-    5 * scaleMobile - 1,
-    6 * scaleMobile - 1,
-    7 * scaleMobile - 1,
+    4 * scaleMobile - 2,
+    5 * scaleMobile - 3,
+    6 * scaleMobile - 3,
+    7 * scaleMobile - 2,
     8 * scaleMobile,
 ];
 const menuOptions = [

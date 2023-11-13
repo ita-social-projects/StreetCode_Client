@@ -9,12 +9,11 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Donation from '@/models/feedback/donation.model';
 
+// eslint-disable-next-line complexity
 const DonationBlock = () => {
     const [donateAmount, setDonateAmount] = useState<number>(0);
-
     const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
-
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
     const windowSize = useWindowSize();
@@ -28,8 +27,8 @@ const DonationBlock = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        const newValue = target.value;
-        if(newValue.includes('-')){
+        const newValue = target.value.replace(/\D/g, '');
+        if (newValue.includes('-')) {
             return;
         }
         if (!newValue) {
@@ -49,24 +48,23 @@ const DonationBlock = () => {
     const zeroWidth = windowSize.width > 1400 ? 2 : 1;
 
     const count = (donateAmount.toString().match(/1/g) || []).length;
-    const zeroCount = (donateAmount.toString().match(/0/g) || []).length;
+    const zeroCount = (donateAmount.toString().match(/[0689]/g) || []).length;
 
-
-    const inputWidth =  donateAmount.toString().length * charWidth - count * firstWidth + zeroCount * zeroWidth;
+    const inputWidth = donateAmount.toString().length * charWidth - count * firstWidth + zeroCount * zeroWidth;
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
     const handlePost = async () => {
         const donation: Donation = {
-            amount: donateAmount, 
-            pageUrl: window.location.href
+            amount: donateAmount,
+            pageUrl: window.location.href,
         };
 
         if (isCheckboxChecked) {
             try {
                 const response = await DonationApi.create(donation);
                 donateEvent('support_us_page_donation_block');
-                window.location.assign(response.pageUrl);
+                window.open(response.pageUrl);
             } catch (err) {}
         }
     };
@@ -101,8 +99,9 @@ const DonationBlock = () => {
                 <input
                     onChange={handleDonateInputChange}
                     style={{ ...style, width: 'calc(var(--input-width) + 2px)' }}
-                    maxLength={14}
-                    value={`${donateAmount.toString()}`}
+                    placeholder="0"
+                    maxLength={15}
+                    value={donateAmount === 0 ? '' : donateAmount}
                     className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                 />
                 <div className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} GryvnaSymbol`}>₴</div>
@@ -111,7 +110,7 @@ const DonationBlock = () => {
                 {possibleDonateAmounts.map((amount, idx) => (
                     <Button
                         key={amount}
-                        className={( donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
+                        className={(donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
                         onClick={() => handleAmountBtnClick(idx)}
                     >
                         {amount}
@@ -120,12 +119,12 @@ const DonationBlock = () => {
                 ))}
             </div>
             <div className="donatesInputContainer">
-                <Checkbox 
-                    className="checkbox-borderline" 
-                    checked={isCheckboxChecked} 
+                <Checkbox
+                    className="checkbox-borderline"
+                    checked={isCheckboxChecked}
                     onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                 >
-                    Я даю згоду на обробку моїх персональних даних
+                    Я даю згоду на обробку моїх <a href='/privacy-policy'>персональних даних</a>
                 </Checkbox>
             </div>
             <button

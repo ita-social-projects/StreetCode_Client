@@ -28,10 +28,10 @@ const QRComponent = () => {
     return (
         qrUrl?.url
             ? (
-                <div id="QRBlock" className="QRBlockContainer container">
+                <div className="QRBlockContainer container">
                     {isDesktop
                         ? (
-                            <div className="QRBlockContent">
+                            <div id="QRBlock" className="QRBlockContent">
                                 <div className="QRBlockImg">
                                     <img src={IPhoneImg} alt="" />
                                 </div>
@@ -39,9 +39,7 @@ const QRComponent = () => {
                                     <div className="QRBlockTextContainer">
                                         <h1>AR-історія в Інсті!</h1>
                                         <p>
-                                            Переходь за QR-кодом, фокусуй камеру
-                                            <br />
-                                            на ілюстрації та вітай нову реальність.
+                                            Переходь за QR-кодом і вітай нову реальність.
                                         </p>
                                         <p className="appealPrg">Скануй, щоб завіртуалити історію!</p>
                                         <QRCode value={qrUrl.url ?? ''} />

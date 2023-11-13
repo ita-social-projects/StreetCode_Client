@@ -21,11 +21,13 @@ const TextBlock = React.memo(({
     inputInfo, setInputInfo, video, setVideo, onChange, parseId,
 }: Props) => {
     const [inputInfoAsync, setInputInfoAsync] = useState<Partial<Text>>();
-    useAsync(() => {
+    const [canLoad, setCanLoad] = useState<boolean>(parseId === null);
+
+    useAsync(async () => {
         if(parseId != null) {
-            TextsApi.getByStreetcodeId(parseId).then((result) => {
-                setInputInfoAsync(result);
-            });
+            const result = await TextsApi.getByStreetcodeId(parseId);
+            setInputInfoAsync(result);
+            setCanLoad(true);
         }
     }, [parseId]);
 
@@ -34,8 +36,7 @@ const TextBlock = React.memo(({
     }, [inputInfoAsync]);
 
     return (
-        inputInfoAsync !== null
-            ? (
+        canLoad ? (
                 <TextForm
                     inputInfo={inputInfoAsync}
                     setInputInfo={setInputInfoAsync}

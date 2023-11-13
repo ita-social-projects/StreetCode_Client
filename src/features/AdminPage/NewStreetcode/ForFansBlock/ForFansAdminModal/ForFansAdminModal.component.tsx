@@ -31,8 +31,8 @@ interface Props {
 
 const ForFansModal = ({
     character_limit, open, setOpen, allCategories, onChange,
-} : Props) => {
-    const {sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
+}: Props) => {
+    const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
@@ -94,15 +94,17 @@ const ForFansModal = ({
         fetchData();
     }, [open, sourceCreateUpdateStreetcode]);
 
-    const onSave = (values:any) => {
-        let elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
+    const onSave = (values: any) => {
+        const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
         if (elementToUpdate) {
             sourceCreateUpdateStreetcode
                 .updateElement(
                     sourceCreateUpdateStreetcode.indexUpdate,
-                    { ...elementToUpdate,
-                      sourceLinkCategoryId: values.category,
-                      text: editorRef.current?.editor?.getContent() ?? '' },
+                    {
+                        ...elementToUpdate,
+                        sourceLinkCategoryId: values.category,
+                        text: editorRef.current?.editor?.getContent() ?? '',
+                    },
                 );
         } else {
             sourceCreateUpdateStreetcode
@@ -120,7 +122,7 @@ const ForFansModal = ({
         try {
             await form.validateFields();
             form.submit();
-            message.success("Категорію для фанатів успішно додано!", 2)
+            message.success('Категорію для фанатів успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -203,8 +205,15 @@ const ForFansModal = ({
                             Додати нову категорію...
                         </Select.Option>
                         {Categories
-                            // eslint-disable-next-line max-len
-                            .map((c) => <Select.Option key={`${c.id}`} value={c.id} disabled={handleDisabled(c.id)}>{c.title}</Select.Option>)}
+                            .map((c) => (
+                                <Select.Option
+                                    key={`${c.id}`}
+                                    value={c.id}
+                                    disabled={handleDisabled(c.id)}
+                                >
+                                    {c.title}
+                                </Select.Option>
+                            ))}
                     </Select>
                 </FormItem>
                 <SourceModal
@@ -230,10 +239,11 @@ const ForFansModal = ({
                                 'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
                             ],
                             toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
-                        + 'formats blockformats align | removeformat strikethrough ',
+                                + 'formats blockformats align | removeformat strikethrough ',
                             toolbar_mode: 'sliding',
                             language: 'uk',
                             content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                            link_default_target: '_blank',
                         }}
                         onPaste={(e, editor) => {
                             const previousContent = editor.getContent({ format: 'text' });

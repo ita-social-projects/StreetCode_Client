@@ -98,6 +98,10 @@
     &:focus {
       outline: none;
     }
+
+    &::placeholder {
+      color: c.$darkish-gray-color;
+    }
   }
 
   .GryvnaSymbol{
@@ -149,6 +153,12 @@
       border: none;
       display: flex;
       align-items: center;
+      .privacyPolicy{
+        color: c.$dark-red-color;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
 
 
       .ant-checkbox-input {

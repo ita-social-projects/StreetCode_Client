@@ -32,12 +32,14 @@ const StreetcodeSlider = () => {
         slidesToShow: 1,
         swipeOnClick: false,
         centerMode: false,
-        centerPadding: '-5px',
+        initialSlide: 0,
     };
 
     const windowsize = useWindowSize();
     if (windowsize.width <= 1024 && windowsize.width >= 768) props.centerMode = true;
     if (windowsize.width <= 1024) props.dots = true;
+    if (windowsize.width <= 1024 && windowsize.width >= 768) props.initialSlide = 1;
+    if (windowsize.width <= 768) props.variableWidth = false;
 
     useAsync(async () => {
         const shuffleSeed = Math.floor(Date.now() / 1000);

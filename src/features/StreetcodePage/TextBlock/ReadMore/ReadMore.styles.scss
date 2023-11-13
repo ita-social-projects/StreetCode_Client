@@ -2,6 +2,10 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
+.text {
+    white-space: pre-line;
+}
+
 @media screen and (min-width: 481px) {
     .readMore {
         color: c.$dark-red-color;
@@ -22,7 +26,6 @@
     }
 
     .text {
-        white-space: pre-line;
         margin-right: f.pxToRem(10px);
         margin-left: f.pxToRem(10px);
     }
