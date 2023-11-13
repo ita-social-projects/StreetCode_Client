@@ -14,7 +14,7 @@
         height: 100%;
         width: 100%;
         color: c.$lighter-black-color;
-        @include mut.rem-padded(0px, 15px, 0px, 15px);
+        padding: 0 pxToRem(15px);
 
         &TopPart{
             display: flex;
