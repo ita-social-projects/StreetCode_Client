@@ -9,9 +9,9 @@
     padding: f.pxToRem(13px) f.pxToRem(20px);
 
     white-space: nowrap;
-
-    border-bottom: 1px solid c.$accented-gray-color;
     
+    border-bottom: 1px solid c.$accented-gray-color;
+
     &:last-child{
         border: none;
     }
@@ -25,7 +25,7 @@
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
         @include mut.rem-margined($right: 14px);
 
-        max-width: 60%;     
+        max-width: 70%;     
         line-height: 18px;
         color: c.$lighter-black-color;
 
@@ -36,15 +36,10 @@
     .resultSourceName{
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
 
-        max-width: 40%;     
+        max-width: 30%;     
         line-height: 18px;
         color: #D1D1D1;
 
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    p{
         text-overflow: ellipsis;
         overflow: hidden;
     }
