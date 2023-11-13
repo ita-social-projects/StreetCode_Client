@@ -76,8 +76,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     });
                     setFileList(createFileListData(img));
                 });
-        } else {
-            setFileList([]);
         }
     }, [initialData, isModalVisible, form]);
 
@@ -193,9 +191,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             maxCount={1}
                             uploadTo="image"
                             fileList={fileList}
-                            onSuccessUpload={(image: Image | Audio) => {
-                                    imageId.current = image.id;
-                            }}
+                            onSuccessUpload={handleImageChange}
                             onPreview={handlePreview}
                             defaultFileList={initialData
                                 ? [{
@@ -211,7 +207,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </Form.Item>
                     <div className="center">
                         <Button 
-                        disabled = {fileList == null} 
+                        disabled={fileList?.length === 0} 
                         className="streetcode-custom-button" 
                         onClick={() => handleOk()}>
                             Зберегти

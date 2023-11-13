@@ -57,7 +57,7 @@ const PartnerModal: React.FC< {
         const [previewOpen, setPreviewOpen] = useState(false);
         const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
         const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
-        const [fileList, setFileList] = useState<UploadFile[]>();
+        const [fileList, setFileList] = useState<UploadFile[]>([]);
         const [partnerSourceLinks, setPartnersSourceLinks] = useState<
       PartnerSourceLinkCreateUpdate[]
     >([]);
@@ -148,7 +148,7 @@ const PartnerModal: React.FC< {
             setShowSecondFormButton(true);
             setUrlTitleEnabled('');
             setUrlTitleValue('');
-            setFileList(undefined);
+            setFileList([]);
         };
 
         const closeModal =() => {
@@ -536,7 +536,7 @@ const PartnerModal: React.FC< {
                         </Tooltip>
                     ) : (
                         <Button
-                            disabled={showSecondForm || fileList == null}
+                            disabled={showSecondForm || fileList?.length === 0}
                             className="streetcode-custom-button save"
                             onClick={() => {
                                 handleOk();

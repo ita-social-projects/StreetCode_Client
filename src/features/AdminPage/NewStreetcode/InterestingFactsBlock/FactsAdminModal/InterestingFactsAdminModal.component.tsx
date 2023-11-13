@@ -35,14 +35,14 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
-    const [fileList, setFileList] = useState<UploadFile[]>();
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
     const clearModal=() =>{
         form.resetFields();
         setModalOpen(false);
-        setFileList(undefined);
+        setFileList([]);
     }
 
     useEffect(() => {
@@ -201,7 +201,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                     setHasUploadedPhoto(true);
                                 }}
                                 onRemove={() => {
-                                    setFileList(undefined);
                                     setHasUploadedPhoto(false);
                                 }}
                                 onPreview={() => {
@@ -227,7 +226,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         </Form.Item>
                         <div className="center">
                             <Button
-                                disabled = {fileList == null}
+                                disabled={fileList?.length === 0}
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >
