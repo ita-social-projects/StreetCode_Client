@@ -142,7 +142,7 @@
         &Button{
             font-weight: 500;
             @media screen and (max-width: 1024px) {
-                text-align: center;
+                margin: 0 auto;
             }
         }
     }
