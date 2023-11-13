@@ -115,14 +115,14 @@ $search-popover-padding: 5px;
 .searchPopover{
   width: calc(100vw - #{$navbar-hidden-innerwidth});
   .ant-popover-inner{
-    padding: $search-popover-padding;
+    @include mut.rem-padded(0, 0, 0, 0);
   }
 }
 
 .searchPopoverSkeleton{
   width: calc(100vw - #{$navbar-innerwidth});
   .ant-popover-inner{
-    padding: $search-popover-padding;
+    @include mut.rem-padded(0, 0, 0, 0);
   }
 }
 
@@ -236,6 +236,7 @@ $search-popover-padding: 5px;
     max-width: 100vw;
     .ant-popover-inner {
       margin-top: -10px;
+      @include mut.rem-padded(0, 0, 0, 0);
     }
 }
 }
