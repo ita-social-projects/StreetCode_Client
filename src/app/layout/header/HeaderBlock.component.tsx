@@ -14,7 +14,7 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
 import useMobx, { useModalContext } from '@stores/root-store';
-import { Button, Popover, PopoverProps } from 'antd';
+import { Button, Input, Popover, PopoverProps } from 'antd';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import SearchBlock from './SearchBlock/SearchBlock.component';
 import { useMediaQuery } from 'react-responsive';
@@ -86,6 +86,13 @@ const HeaderBlock = () => {
         ),
     };
 
+    const onInputClick = () => {
+        if(!isPageDimmed){
+            setIsPageDimmed();
+            toggle();
+        }
+    };
+
     return (
         <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
@@ -95,7 +102,7 @@ const HeaderBlock = () => {
                             ? <StreetcodeSvg />
                             : <StreetcodeSvgMobile />}
                     </div>
-                    {isDesktop && (
+                    {isDesktop && isHeaderHidden && (
                         <Popover
                             overlayClassName="searchPopover"
                             placement="bottomLeft"
@@ -111,7 +118,30 @@ const HeaderBlock = () => {
                         </Popover>
                     )}
                     
-                    {isDesktop && !isHeaderHidden && <HeaderSkeleton />}
+                    {isDesktop && !isHeaderHidden && (
+                        <div className='searchHeaderSkeleton'>
+                            <Popover
+                                placement="bottomLeft"
+                                overlayClassName='searchPopoverSkeleton'
+                                {...popoverProps}
+                            >
+                                <div ref={inputRef}>
+                                    <Input
+                                        onChange={handleInputChange}
+                                        placeholder="Пошук..."
+                                        onClick={onInputClick}
+                                        prefix={
+                                        <MagnifyingGlass
+                                            viewBox="0 -2 24 24"
+                                            transform="scale(1.2)"
+                                            onClick={onMagnifyingGlassClick}
+                                            style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                                        />}
+                                    />
+                                </div>
+                            </Popover>
+                        </div>
+                    )}
                 </div>
                 <div className="rightPartContainer">
                     <div className="rightSectionContainer">

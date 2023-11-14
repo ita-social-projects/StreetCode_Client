@@ -6,7 +6,6 @@
 
 $navbar-innerwidth: 500px; 
 $navbar-hidden-innerwidth: 400px;
-$search-popover-padding: 5px;
 
 .navBarContainer {
   @include mut.flexed($justify-content: space-between, $align-items: center);
@@ -64,6 +63,10 @@ $search-popover-padding: 5px;
       svg{
         @include mut.sized(167.79px, 29px);
       }
+    }
+
+    .searchHeaderSkeleton{
+      @include mut.rem-margined($left: 10px);
     }
 }
 .rightPartContainer {
