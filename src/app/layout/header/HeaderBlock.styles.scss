@@ -112,18 +112,16 @@ $search-popover-padding: 5px;
   }
 }
 
+.ant-popover-inner{
+  @include mut.rem-padded(0, 6px, 0, 0);
+}
+
 .searchPopover{
   width: calc(100vw - #{$navbar-hidden-innerwidth});
-  .ant-popover-inner{
-    @include mut.rem-padded(0, 0, 0, 0);
-  }
 }
 
 .searchPopoverSkeleton{
   width: calc(100vw - #{$navbar-innerwidth});
-  .ant-popover-inner{
-    @include mut.rem-padded(0, 0, 0, 0);
-  }
 }
 
 .hiddenHeaderInput {

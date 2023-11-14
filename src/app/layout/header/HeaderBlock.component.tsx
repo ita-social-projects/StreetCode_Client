@@ -14,7 +14,7 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
 import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
 import useMobx, { useModalContext } from '@stores/root-store';
-import { Button, Popover } from 'antd';
+import { Button, Popover, PopoverProps } from 'antd';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import SearchBlock from './SearchBlock/SearchBlock.component';
 import { useMediaQuery } from 'react-responsive';
@@ -75,6 +75,17 @@ const HeaderBlock = () => {
         toggle();
     };
 
+    const popoverProps: PopoverProps = {
+        trigger: 'click',
+        open: isPopoverVisible,
+        getPopupContainer: (trigger: HTMLElement) => trigger.parentNode as HTMLElement,
+        content:(
+            <div ref={searchBlockRef}>
+                <SearchBlock searchQuery={searchQuery}/>
+            </div>
+        ),
+    };
+
     return (
         <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
@@ -86,21 +97,13 @@ const HeaderBlock = () => {
                     </div>
                     {isDesktop && (
                         <Popover
-                            trigger="click"
-                            open={isPopoverVisible}
-                            overlayClassName='searchPopover'
-                            getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
+                            overlayClassName="searchPopover"
                             placement="bottomLeft"
-                            content={(
-                                <div className="headerPopupSkeleton" ref={searchBlockRef}>
-                                    <SearchBlock searchQuery={searchQuery}/>
-                                </div>
-                            )}
+                            {...popoverProps}
                             >
                             <input
                                 onChange={handleInputChange}
                                 placeholder="Пошук..."
-                                //onClick={() => {toggle();}}
                                 ref={inputRef}
                                 className={`ant-input  
                                         hiddenHeaderInput ${((isInputActive && isHeaderHidden && isDesktop) ? 'active' : '')}`}
@@ -145,17 +148,10 @@ const HeaderBlock = () => {
             <div >
             {!isDesktop && (
                 <Popover
-                    trigger="click"
-                    open={isPopoverVisible}
                     arrow={false}
-                    overlayClassName="searchMobPopover"
-                    getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
-                    placement="bottom"
-                    content={(
-                        <div ref={searchBlockRef}>
-                            <SearchBlock searchQuery={searchQuery}/>
-                        </div>
-                    )}
+                    overlayClassName='searchMobPopover'
+                    placement='bottom'
+                    {...popoverProps}
                 >
                     <div ref={inputRef} className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
                         <input
