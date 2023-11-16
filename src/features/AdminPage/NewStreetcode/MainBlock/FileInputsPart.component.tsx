@@ -213,10 +213,10 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                         || name.endsWith('.jpg') || name === '') {
                                         return Promise.resolve();
                                     }
-                                    // eslint-disable-next-line max-len
-                                    return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
+                                    return Promise.reject(
+                                        Error('Дозволені тільки файли з розширенням .jpeg, .jpg, .png та .webp'));
                                 }
-                                return Promise.reject();
+                                return Promise.resolve();
                             },
                         },
                     ]}

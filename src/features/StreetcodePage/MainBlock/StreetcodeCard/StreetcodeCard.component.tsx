@@ -1,7 +1,7 @@
 import './StreetcodeCard.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
@@ -54,6 +54,31 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
+    const [animationPicture, setAnimationPicture] = useState<Element >();
+    const [images, setImages] = useState<Image[]>([]);
+
+    const GenerateAnimation = () => {
+        if (images.length > 1) {
+            setAnimationPicture(
+                <div>
+                    <img
+                        key={images[0].id}
+                        src={base64ToUrl(images[0].base64, images[0].mimeType)}
+                        className="streetcodeImgColored"
+                        style={{ objectFit: 'contain' }}
+                        alt={images[0].imageDetails?.alt}
+                    />
+                    <img
+                        key={images[1].id}
+                        src={base64ToUrl(images[1].base64, images[1].mimeType)}
+                        className="streetcodeImgGrey"
+                        style={{ objectFit: 'contain' }}
+                        alt={images[1].imageDetails?.alt}
+                    />
+                </div>,
+            );
+        }
+    };
 
     useAsync(() => {
         if (id && id > 0) {
@@ -62,8 +87,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             });
         }
     }, [id]);
-
-    const [images, setImages] = useState<Image[]>([]);
 
     useEffect(() => {
         if (id && id > 0) {
@@ -77,13 +100,23 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         }
     }, [streetcode]);
 
+    useEffect(() => {
+        GenerateAnimation();
+    }, [images]);
+
     return (
         streecodePageLoaderContext.isPageLoaded ? (
             <>
                 <Helmet>
                     <meta property="og:title" content={streetcode?.title} />
-                    <meta property="og:description" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
-                    <meta name="twitter:card" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
+                    <meta
+                        property="og:description"
+                        content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
+                    />
+                    <meta
+                        name="twitter:card"
+                        content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
+                    />
                     <meta
                         property="og:image"
                         content={
@@ -101,28 +134,16 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 swipeOnClick
                                 infinite
                             >
-                                <div>
-                                    <img
-                                        key={images[0].id}
-                                        src={base64ToUrl(images[0].base64, images[0].mimeType)}
-                                        className="streetcodeImgColored"
-                                        style={{ objectFit: 'contain' }}
-                                        alt={images[0].imageDetails?.alt}
-                                    />
-                                    <img
-                                        key={images[1].id}
-                                        src={base64ToUrl(images[1].base64, images[1].mimeType)}
-                                        className="streetcodeImg"
-                                        style={{ objectFit: 'contain' }}
-                                        alt={images[1].imageDetails?.alt}
-                                    />
-                                </div>
+                                {animationPicture}
                                 <img
-                                    key={images[1].id}
-                                    src={base64ToUrl(images[1].base64, images[1].mimeType)}
+                                    key={images[images.length - 1].id}
+                                    src={base64ToUrl(
+                                        images[images.length - 1].base64,
+                                        images[images.length - 1].mimeType,
+                                    )}
                                     className="streetcodeImg"
                                     style={{ objectFit: 'contain' }}
-                                    alt={images[1].imageDetails?.alt}
+                                    alt={images[images.length - 1].imageDetails?.alt}
                                 />
                             </BlockSlider>
                         </div>
