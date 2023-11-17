@@ -5,13 +5,15 @@ const { Text } = Typography
 import { useEffect, useState } from 'react';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { fromUnixTime } from 'date-fns/esm';
+import Email from '@/models/email/email.model';
 
 interface Props {
     text: string;
     toggleState: () => void | undefined;
+    modalClearState: () => void | undefined;
 }
 
-export const ContactUsModal = ({ text, toggleState }: Props) => {
+export const ContactUsModal = ({ text, toggleState, modalClearState}: Props) => {
     const [form] = Form.useForm();
     const [isActive, setActive] = useState(false);
 
@@ -21,9 +23,8 @@ export const ContactUsModal = ({ text, toggleState }: Props) => {
     };
 
     const onClear = () => {
-        form.resetFields();
+        modalClearState();
     };
-
     return (
         <>
             <Text onClick={() => handleClick()} className='text-white'>{text}</Text>

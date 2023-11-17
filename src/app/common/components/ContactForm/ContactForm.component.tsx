@@ -7,6 +7,7 @@ import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
+import { ContactUsModal } from '../modals/ContactUsModal/ContactUsModal.component';
 
 const MAX_SYMBOLS = 500;
 
@@ -16,12 +17,16 @@ const ContactForm = ({ customClass = '' }) => {
     const [isVerified, setIsVerified] = useState(false);
     const messageLength = formData.message.length | 0;
     const [messageApi, messageContextHolder] = message.useMessage();
+    const [form] = Form.useForm();
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleVerify = () => {
         setIsVerified(true);
     };
 
+    const clearModal = () =>{
+        console.log('qwe');
+    }
     const onFinish = () => {
         if (isVerified) {
             const newEmail: Email = { from: formData.email, content: formData.message };
@@ -30,7 +35,7 @@ const ContactForm = ({ customClass = '' }) => {
                 .catch(errorMessage);
         }
     };
-
+    
     const successMessage = () => {
         messageApi.open({
             type: 'success',
@@ -55,7 +60,7 @@ const ContactForm = ({ customClass = '' }) => {
                     чогось значного! Вйо до листування!
                 </div>
             </div>
-            <Form
+            <Form form={form}
                 className="contactForm"
                 onFinish={onFinish}
                 validateMessages={{}}
@@ -116,7 +121,13 @@ const ContactForm = ({ customClass = '' }) => {
                     </Button>
                 </Form.Item>
             </Form>
-        </div>
+            <ContactUsModal 
+                text={''}
+                modalClearState={clearModal}
+                toggleState={function (): void | undefined {
+                    throw new Error('Function not implemented.');
+                } } />
+        </div> 
     );
 };
 
