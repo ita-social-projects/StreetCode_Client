@@ -228,7 +228,7 @@
         @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
         @include mut.withLineHeight(23px);
       }
-      .streetcodeImg,  streetcodeImgColored, .streetcodeImgGrey{
+      .streetcodeImg,  .streetcodeImgColored, .streetcodeImgGrey{
         @include mut.sized(290px, 377px);
       }
       .cardFooter {
