@@ -46,7 +46,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
             const loadOptions = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 1.0,
+                thresholds: [0.75],
             };
 
             const callback = (entries : any, intersectionObserver : any) => {
