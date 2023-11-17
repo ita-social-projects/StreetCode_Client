@@ -1,18 +1,20 @@
 import './ContactForm.styles.scss';
 
-import { useState } from 'react';
+import { forwardRef, useState, useImperativeHandle } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
-import { ContactUsModal } from '../modals/ContactUsModal/ContactUsModal.component';
 
 const MAX_SYMBOLS = 500;
 
+interface Props {
+    customClass: string;
+}
 
-const ContactForm = ({ customClass = '' }) => {
+const ContactForm = forwardRef((customClass: Props , ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
     const messageLength = formData.message.length | 0;
@@ -24,9 +26,12 @@ const ContactForm = ({ customClass = '' }) => {
         setIsVerified(true);
     };
 
-    const clearModal = () =>{
-        console.log('qwe');
+    useImperativeHandle(ref, () => ({
+     clearModal(){
+        form.resetFields();
     }
+    }));
+
     const onFinish = () => {
         if (isVerified) {
             const newEmail: Email = { from: formData.email, content: formData.message };
@@ -121,14 +126,8 @@ const ContactForm = ({ customClass = '' }) => {
                     </Button>
                 </Form.Item>
             </Form>
-            <ContactUsModal 
-                text={''}
-                modalClearState={clearModal}
-                toggleState={function (): void | undefined {
-                    throw new Error('Function not implemented.');
-                } } />
         </div> 
     );
-};
+});
 
 export default ContactForm;
