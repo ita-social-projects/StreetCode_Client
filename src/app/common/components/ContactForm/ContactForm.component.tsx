@@ -1,6 +1,6 @@
 import './ContactForm.styles.scss';
 
-import { useState } from 'react';
+import { forwardRef, useState, useImperativeHandle } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
@@ -10,17 +10,27 @@ import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
 
+interface Props {
+    customClass: string;
+}
 
-const ContactForm = ({ customClass = '' }) => {
+const ContactForm = forwardRef((customClass: Props , ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
     const messageLength = formData.message.length | 0;
     const [messageApi, messageContextHolder] = message.useMessage();
+    const [form] = Form.useForm();
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleVerify = () => {
         setIsVerified(true);
     };
+
+    useImperativeHandle(ref, () => ({
+     clearModal(){
+        form.resetFields();
+    }
+    }));
 
     const onFinish = () => {
         if (isVerified) {
@@ -30,7 +40,7 @@ const ContactForm = ({ customClass = '' }) => {
                 .catch(errorMessage);
         }
     };
-
+    
     const successMessage = () => {
         messageApi.open({
             type: 'success',
@@ -55,7 +65,7 @@ const ContactForm = ({ customClass = '' }) => {
                     чогось значного! Вйо до листування!
                 </div>
             </div>
-            <Form
+            <Form form={form}
                 className="contactForm"
                 onFinish={onFinish}
                 validateMessages={{}}
@@ -116,8 +126,8 @@ const ContactForm = ({ customClass = '' }) => {
                     </Button>
                 </Form.Item>
             </Form>
-        </div>
+        </div> 
     );
-};
+});
 
 export default ContactForm;
