@@ -4,7 +4,7 @@ import CancelBtn from '@images/utils/Cancel_btn_drawer_mobile.svg';
 
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { useLocation } from 'react-router-dom';
+import { ScrollRestoration, useLocation } from 'react-router-dom';
 import ReactSlider from 'react-slider';
 import BurgerMenu from '@components/BurgerMenu/BurgerMenu.component';
 import useToggle from '@hooks/stateful/useToggle.hook';
@@ -97,6 +97,7 @@ const HeaderDrawer = () => {
 
     return (
         <div className="drawerContainer">
+            <ScrollRestoration/>
             <Drawer
                 placement="right"
                 closable
