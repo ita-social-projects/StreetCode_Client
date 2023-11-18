@@ -1,7 +1,7 @@
 import './StreetcodeCard.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
@@ -54,6 +54,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
+    const [animationPicture, setAnimationPicture] = useState<Element >();
+    const [images, setImages] = useState<Image[]>([]);
 
     useAsync(() => {
         if (id && id > 0) {
@@ -62,8 +64,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             });
         }
     }, [id]);
-
-    const [images, setImages] = useState<Image[]>([]);
 
     useEffect(() => {
         if (id && id > 0) {
@@ -82,8 +82,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             <>
                 <Helmet>
                     <meta property="og:title" content={streetcode?.title} />
-                    <meta property="og:description" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
-                    <meta name="twitter:card" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
+                    <meta
+                        property="og:description"
+                        content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
+                    />
+                    <meta
+                        name="twitter:card"
+                        content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
+                    />
                     <meta
                         property="og:image"
                         content={
@@ -101,16 +107,42 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 swipeOnClick
                                 infinite
                             >
-                                {images.filter((image) => (image.imageDetails?.alt === ImageAssigment.animation.toString()
-                                    || image.imageDetails?.alt === ImageAssigment.blackandwhite.toString())).map((im) => (
-                                    <img
-                                        key={im.id}
-                                        src={base64ToUrl(im.base64, im.mimeType)}
-                                        className="streetcodeImg"
-                                        style={{ objectFit: 'contain' }}
-                                        alt={im.imageDetails?.alt}
-                                    />
-                                ))}
+                                {images.map((image, index) => {
+                                    if (images.length > 1 && index === 0) {
+                                        return (
+                                            <div>
+                                                <img
+                                                    key={images[index].id}
+                                                    src={base64ToUrl(images[index].base64, images[index].mimeType)}
+                                                    className="streetcodeImgColored"
+                                                    style={{ objectFit: 'contain' }}
+                                                    alt={images[index].imageDetails?.alt}
+                                                />
+                                                <img
+                                                    key={images[index + 1].id}
+                                                    src={base64ToUrl(
+                                                        images[index + 1].base64,
+                                                        images[index + 1].mimeType,
+                                                    )}
+                                                    className="streetcodeImgGrey"
+                                                    style={{ objectFit: 'contain' }}
+                                                    alt={images[index].imageDetails?.alt}
+                                                />
+                                            </div>
+                                        );
+                                    }
+
+                                    return (
+                                        <img
+                                            key={image.id}
+                                            src={base64ToUrl(image.base64, image.mimeType)}
+                                            className="streetcodeImg"
+                                            style={{ objectFit: 'contain' }}
+                                            alt={image.imageDetails?.alt}
+                                        />
+                                    );
+                                })}
+
                             </BlockSlider>
                         </div>
                     </div>
