@@ -51,7 +51,12 @@
   .progressBarPopupContent {
     @include mut.flex-centered($direction: column, $gap: 31px);
   }
+
   @media screen and (max-width: 1448px) {
+    left: 59px;
+  }
+
+  @media screen and (max-width: 1024px) {
     display: none;
   }
 }
