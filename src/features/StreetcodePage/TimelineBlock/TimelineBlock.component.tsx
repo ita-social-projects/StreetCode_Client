@@ -36,7 +36,7 @@ const TimelineBlock = () => {
     
             setTimeout(() => {
                 if(element !== null) {
-                    element.scrollIntoView({behavior: "smooth", block: "end"});
+                    element.scrollIntoView({behavior: "smooth", block: "center"});
                     setIsScrolled(true);
                 }
             }, 1000);
