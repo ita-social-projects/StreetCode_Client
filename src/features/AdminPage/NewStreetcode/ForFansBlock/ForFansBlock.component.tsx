@@ -10,10 +10,11 @@ import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
 import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
 
 interface Props {
-    onChange: (field: string, value: any) => void;
+    onChange: (field: string, value: any) => void,
+    allPersistedSourcesAreSet: boolean,
 }
 
-const ForFansBlock: React.FC<Props> = ({ onChange }) => {
+const ForFansBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet }) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
@@ -59,6 +60,7 @@ const ForFansBlock: React.FC<Props> = ({ onChange }) => {
                 open={isModalOpen}
                 setOpen={setIsModalOpen}
                 onChange={onChange}
+                allPersistedSourcesAreSet={allPersistedSourcesAreSet}
             />
         </div>
     );
