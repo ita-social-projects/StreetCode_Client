@@ -10,6 +10,7 @@ import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
 
+
 const ContactForm = ({ customClass = '' }) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);

@@ -4,6 +4,7 @@ import { Form, Modal, Popover, Typography } from 'antd'
 const { Text } = Typography
 import { useEffect, useState } from 'react';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
+import { fromUnixTime } from 'date-fns/esm';
 
 interface Props {
     text: string;
@@ -11,12 +12,18 @@ interface Props {
 }
 
 export const ContactUsModal = ({ text, toggleState }: Props) => {
+    const [form] = Form.useForm();
     const [isActive, setActive] = useState(false);
 
     const handleClick = () => {
         setActive(true);
         toggleState();
     };
+
+    const onClear = () => {
+        form.resetFields();
+    };
+
     return (
         <>
             <Text onClick={() => handleClick()} className='text-white'>{text}</Text>
@@ -26,9 +33,12 @@ export const ContactUsModal = ({ text, toggleState }: Props) => {
                 footer={null}
                 onCancel={() => setActive(false)}
                 width={"max-content"}
-                closeIcon={<CancelBtn />}
+                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'><CancelBtn className='iconSize' onClick={onClear} />
+                </Popover>}
             >
+                <Form form = {form}>
                 <ContactForm customClass={"formWrapper__modal"} />
+                </Form>
             </Modal>
         </>
     )
