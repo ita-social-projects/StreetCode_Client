@@ -1,11 +1,13 @@
 services:
   certbot:
+    restart: always
     image: certbot/certbot:latest
     volumes:
       - /etc/certbot/www/:/var/www/certbot/:rw
       - /etc/certbot/conf/:/etc/letsencrypt/:rw
 
   nginx:
+    restart: always
     image: nginx:latest
     ports:
       - "80:80"
@@ -20,6 +22,7 @@ services:
 
 
   loki:
+    restart: always
     container_name: loki
     image: grafana/loki:latest
     ports:
@@ -29,6 +32,7 @@ services:
       - ./loki/config:/etc/loki
 
   frontend:
+    restart: always
     image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
     pull_policy: always
     expose:
@@ -47,6 +51,7 @@ services:
         loki-url: "http://localhost:3100/loki/api/v1/push"
     
   backend:
+    restart: always
     image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
     pull_policy: always
     expose:
