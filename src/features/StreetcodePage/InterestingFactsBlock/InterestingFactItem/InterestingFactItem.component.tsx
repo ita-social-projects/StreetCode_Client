@@ -2,6 +2,7 @@ import './InterestingFactItem.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
+import CardText from '@components/CardText/CardText.component';
 import { Fact } from '@models/streetcode/text-contents.model';
 import { useModalContext } from '@stores/root-store';
 
@@ -27,17 +28,12 @@ const InterestingFactItem = ({
     const windowSize = useWindowSize();
     const millisecondsToHideAfterOpening = 4000;
     const { modalStore } = useModalContext();
-    const isReadMore = (factContent.length > maxTextLength) && (numberOfSlides !== 1);
     const timeout = useRef<NodeJS.Timeout>();
     const [descriptionVisible, setDescriptionVisible] = useState<boolean>(false);
 
     const elementRef = useRef<HTMLDivElement>(null);
     const isOnScreen = useIsVisible(elementRef);
 
-    let mainContent = factContent;
-    if (isReadMore) {
-        mainContent = `${factContent.substring(0, maxTextLength - 3)}...`;
-    }
     useEffect(() => {
         if (index === middleFactIndex && image?.imageDetails?.alt && isOnScreen) {
             setDescriptionVisible(true);
@@ -67,17 +63,11 @@ const InterestingFactItem = ({
 
             </div>
             <div className="slideText">
-                <p className="heading">
-                    {title}
-                </p>
-                <p className={`mainText ${(numberOfSlides !== 1) ? 'lineSpecifier' : ''}`}>
-                    {mainContent}
-                </p>
-                {isReadMore && (
-                    <p className="readMoreParagraph" onClick={() => modalStore.setModal('facts', id, true)}>
-                        Трохи ще...
-                    </p>
-                )}
+                <CardText
+                    title={title}
+                    text={factContent}
+                    onBtnClick={() => modalStore.setModal('facts', id, true)}
+                />
             </div>
         </div>
     );

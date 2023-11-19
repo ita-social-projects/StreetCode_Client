@@ -5,15 +5,15 @@
 
 .searchResultsBlock{
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     @include mut.flexed($direction: column);
-    
+    @include mut.rem-padded(12px, 0, 12px, 12px);
 }
 
 @media screen and (max-width: 1024px) {
     .searchResultsBlock{ 
-        width: 100vw;
-        overflow-y: scroll;
+        @include mut.rem-padded($right: 6px, $left: 6px);
+        overflow-y: auto;
         
     }
 
