@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import CardText from '@components/CardText/CardText.component';
 
 import VacancyModal from './VacancyModal/VacancyModal.component';
+import htmlReactParser from 'html-react-parser';
 
 const Vacancy = (job: Job) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -17,7 +18,7 @@ const Vacancy = (job: Job) => {
             <CardText
                 onBtnClick={() => setIsModalOpen(true)}
                 title={job.title}
-                text={job.description}
+                text={htmlReactParser(job.description)}
                 subTitle={job.salary}
                 moreBtnText="Трохи ще"
             />
