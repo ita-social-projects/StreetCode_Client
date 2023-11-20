@@ -36,6 +36,10 @@
 
         &Text{
             @include mut.truncated($line-num: $text-max-lines);
+
+            * {
+                display: inline;
+            }
         }
 
         &Button{
