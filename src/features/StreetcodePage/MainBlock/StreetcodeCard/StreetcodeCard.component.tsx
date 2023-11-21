@@ -107,42 +107,30 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 swipeOnClick
                                 infinite
                             >
-                                {images.map((image, index) => {
-                                    if (images.length > 1 && index === 0) {
-                                        return (
-                                            <div>
-                                                <img
-                                                    key={images[index].id}
-                                                    src={base64ToUrl(images[index].base64, images[index].mimeType)}
-                                                    className="streetcodeImgColored"
-                                                    style={{ objectFit: 'contain' }}
-                                                    alt={images[index].imageDetails?.alt}
-                                                />
-                                                <img
-                                                    key={images[index + 1].id}
-                                                    src={base64ToUrl(
-                                                        images[index + 1].base64,
-                                                        images[index + 1].mimeType,
-                                                    )}
-                                                    className="streetcodeImgGrey"
-                                                    style={{ objectFit: 'contain' }}
-                                                    alt={images[index].imageDetails?.alt}
-                                                />
-                                            </div>
-                                        );
-                                    }
+                                <div>
+                                    <img
+                                        key={images[0].id}
+                                        src={base64ToUrl(images[0].base64, images[0].mimeType)}
+                                        className="streetcodeImgColored"
+                                        style={{ objectFit: 'contain' }}
+                                        alt={images[0].imageDetails?.alt}
+                                    />
+                                    <img
+                                        key={images[1].id}
+                                        src={base64ToUrl(images[1].base64, images[1].mimeType,)}
+                                        className="streetcodeImgGrey"
+                                        style={{ objectFit: 'contain' }}
+                                        alt={images[1].imageDetails?.alt}
+                                    />
+                                </div>
 
-                                    return (
-                                        <img
-                                            key={image.id}
-                                            src={base64ToUrl(image.base64, image.mimeType)}
-                                            className="streetcodeImg"
-                                            style={{ objectFit: 'contain' }}
-                                            alt={image.imageDetails?.alt}
-                                        />
-                                    );
-                                })}
-
+                                <img
+                                    key={images[1].id}
+                                    src={base64ToUrl(images[1].base64, images[1].mimeType)}
+                                    className="streetcodeImg"
+                                    style={{ objectFit: 'contain' }}
+                                    alt={images[1].imageDetails?.alt}
+                                />
                             </BlockSlider>
                         </div>
                     </div>
