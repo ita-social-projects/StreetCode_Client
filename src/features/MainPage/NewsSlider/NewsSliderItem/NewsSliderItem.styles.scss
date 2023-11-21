@@ -141,7 +141,7 @@
                     font-weight: 300;
 
                     @media (min-width: 360px) and (max-width: 767px) {
-                        @include mut.truncated(9);
+                        @include mut.truncated(8);
                     }
                 }
 

@@ -126,6 +126,7 @@
 
         &SubTitle{
             font-weight: 500;
+            @include mut.truncated(1);
             @media screen and (max-width: 1024px) {
                text-align: center;
                 color: c.$lighter-black-color;
