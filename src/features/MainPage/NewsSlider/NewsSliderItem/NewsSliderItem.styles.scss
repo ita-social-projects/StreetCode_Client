@@ -87,22 +87,18 @@
         word-break: break-word;
         height: 230px;
         width: f.pxToRem(840px);
-        overflow: hidden;
 
         @include mut.flexed(column, start, space-between, nowrap);
-        @include mut.rem-padded($top: 15px, $right: 30px, $bottom: 0, $left: 30px);
-        margin-bottom: f.pxToRem(25px);
+        @include mut.rem-padded($top: 15px, $right: 30px, $bottom: 25px, $left: 30px);
 
         @media (min-width: 768px) and (max-width: 1024px){
-            @include mut.rem-padded($top: 15px, $right: 40px, $bottom: 0, $left: 20px);
-            margin-bottom: f.pxToRem(10px);
+            @include mut.rem-padded($top: 15px, $right: 40px, $bottom: 10px, $left: 20px);
             height: 190px;
             width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
-            @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 0, $left: 15px);
-            margin-bottom: f.pxToRem(20px);
+            @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 20px, $left: 15px);
             height: 300px;
             width: auto;
         }
