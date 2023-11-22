@@ -17,7 +17,7 @@
 @media screen and (max-width: 1024px) {
     .searchResultsBlock{
         width: 100vw;
-        @include mut.rem-padded($right: 6px, $top: 6px, $left: 6px);
+        @include mut.rem-padded(6px, 6px, 6px, 6px);
         overflow-y: auto;
         
         p{
