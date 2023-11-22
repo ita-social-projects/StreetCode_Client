@@ -8,6 +8,7 @@
     @include mut.sized($height: 40px, $width: 100%);
     @include mut.rem-padded($left: 25px, $right: 20px);
     @include mut.flexed($justify-content: space-between, $align-items: center);
+    white-space: nowrap;
 
     .leftPart {
         @include mut.flexed($align-items: center);
