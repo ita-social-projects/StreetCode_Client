@@ -51,6 +51,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const clearModal = () => {
         form.resetFields();
         setIsModalOpen(false);
+        setErrorMessage('');
     };
 
     useEffect(() => {
@@ -84,8 +85,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const GetDateBasedOnFormat = (date: Date) => {
         let seconds = 0;
         // specific GMT+202 Ukraine timezone before 1/5/1924, where seconds are truncated by browser
-        if(GetLocalMinutesOffset(date) == 122)
-        {
+        if (GetLocalMinutesOffset(date) == 122) {
             seconds = 4;
         }
         date.setHours(0, GetLocalMinutesOffset(date), seconds, 0);
@@ -106,9 +106,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     };
 
     const onSuccesfulSubmit = (formValues: any) => {
-        timelineItemStore.getTimelineItemArray.map((t) => t).forEach(t => {
-            if (formValues.title == t.title || formValues.description == t.description)
+        timelineItemStore.getTimelineItemArray.map((t) => t).forEach((t) => {
+            if (formValues.title == t.title || formValues.description == t.description) {
                 timelineItem = t;
+            }
         });
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
@@ -180,7 +181,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         try {
             await form.validateFields();
             form.submit();
-            message.success("Хронологію успішно додано!", 2)
+            message.success('Хронологію успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -228,7 +229,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         <Input maxLength={28} showCount onChange={(e) => onChange('title', e.target.value)} />
                     </Form.Item>
 
-                    <Form.Item label="Дата:">
+                    <Form.Item
+                        name="date"
+                        rules={[{ required: true, message: 'Введіть дату' }]}
+                        label="Дата:"
+                    >
                         <div className="data-container">
                             <Select
                                 options={selectDateOptionsforTimeline}
@@ -287,7 +292,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         </Form.Item>
                         {tagInput && (
                             <div className="tagInput-counter">
-                                {tagInput.length} / {maxContextLength}
+                                {tagInput.length}
+                                {' '}
+/
+                                {' '}
+                                {maxContextLength}
                             </div>
                         )}
                     </div>
