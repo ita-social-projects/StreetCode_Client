@@ -1,7 +1,7 @@
 import Ornament from '@/assets/images/main-page/ornament.svg';
-import OrnamentMobile from '@/assets/images/main-page/ornament_mobile.svg';
 import './StaticBanner.styles.scss';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+
 interface Props {
     id:  'catalog' | 'support';
     blockName: string,
@@ -13,7 +13,7 @@ interface Props {
 const StaticBanner = ({ id, blockName, blockContent, buttonName, setActionOnClick }: Props) => {
     return (
         <div>
-            {useWindowSize().width <= 360 && id === 'support' ? <div className='top'><OrnamentMobile /></div> : <></>}
+            {useWindowSize().width <= 480 && id === 'support' ? <div className='top' /> : <></>}
 
             <div className={`mainPageBlockStaticBanner ${id}`}>
                 {useWindowSize().width > 768 ? <Ornament className='left' /> : <></>}
@@ -30,7 +30,7 @@ const StaticBanner = ({ id, blockName, blockContent, buttonName, setActionOnClic
 
                 {useWindowSize().width > 768 ? <Ornament className='right' /> : <></>}
             </div>
-            {useWindowSize().width <= 360 && id === 'support' ? <div className='bottom'><OrnamentMobile /></div> : <></>}
+            {useWindowSize().width <= 480 && id === 'support' ? <div className='bottom' /> : <></>}
         </div>
 
     );

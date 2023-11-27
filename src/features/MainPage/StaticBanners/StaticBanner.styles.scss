@@ -261,6 +261,7 @@
 
     @media screen and (max-width: 480px) {
         padding: 0;
+        box-shadow: none;
 
         &.catalog {
             @include mut.full-rounded(0px);
@@ -342,15 +343,16 @@
     }
 }
 
-@media screen and (max-width: 360px) {
-
+@media screen and (max-width: 480px) {
     .top {
-        @include mut.flexed($direction: column, $align-items: center);
+        @include mut.bg-image('@assets/images/main-page/ornamentFlower.svg', $bg-size: contain, $bg-repeat: space);
         @include mut.rem-margined($top: 15px);
+        height: 36px;
     }
 
     .bottom {
-        @include mut.flexed($direction: column, $align-items: center);
+        @include mut.bg-image('@assets/images/main-page/ornamentFlower.svg', $bg-size: contain, $bg-repeat: space);
         @include mut.rem-margined($bottom: 15px);
+        height: 36px;
     }
 }
