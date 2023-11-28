@@ -229,11 +229,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         <Input maxLength={28} showCount onChange={(e) => onChange('title', e.target.value)} />
                     </Form.Item>
 
-                    <Form.Item
-                        name="date"
-                        rules={[{ required: true, message: 'Введіть дату' }]}
-                        label="Дата:"
-                    >
+                    <Form.Item>
                         <div className="data-container">
                             <Select
                                 options={selectDateOptionsforTimeline}
@@ -245,6 +241,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             />
 
                             <Form.Item
+                                label="Дата:"
                                 name="date"
                                 rules={[{ required: true, message: 'Введіть дату' }]}
                             >
