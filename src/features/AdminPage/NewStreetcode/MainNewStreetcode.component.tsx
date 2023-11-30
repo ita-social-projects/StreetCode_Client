@@ -263,6 +263,8 @@ const NewStreetcode = () => {
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
             statisticRecordStore.fetchStatisticRecordsByStreetcodeId(parseId);
+        } else {
+            setAllPersistedSourcesAreSet(true);
         }
     }, []);
 
