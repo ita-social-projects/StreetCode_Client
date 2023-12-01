@@ -14,7 +14,7 @@ const DEFAULT_META: IPageMetadata = {
   title: '',
   description:
     '«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць.',
-  image: 'https://imageupload.io/ib/FxPYSMIqLgKs1u6_1698303095.webp',
+  image: './banner.webp',
 };
 
 @Injectable()
@@ -31,12 +31,12 @@ export class ClientService {
           if (err) {
             reject(err);
           } else {
-            data = data.replace(/__PAGE_TITLE__/g, pageMetadata.title);
+            data = data.replace(/__PAGE_TITLE__/g, pageMetadata?.title ?? DEFAULT_META.title);
             data = data.replace(
               /__PAGE_DESCRIPTION__/g,
-              pageMetadata.description,
+              pageMetadata?.description ?? DEFAULT_META.description,
             );
-            data = data.replace(/__PAGE_IMAGE__/g, pageMetadata.image);
+            data = data.replace(/__PAGE_IMAGE__/g, pageMetadata?.image ?? DEFAULT_META.image);
             resolve(data);
           }
         },

@@ -5,12 +5,11 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientController } from './controllers/client/client.controller';
 import { ClientService } from './controllers/client/client.service';
 import { ClientModule } from './controllers/client/client.module';
-import { NewsService } from './controllers/news/news.service';
-import { NewsModule } from './controllers/news/news.module';
+import { NewsService } from './controllers/client/services/news/news.service';
+import { NewsModule } from './controllers/client/services/news/news.module';
+import { StreetcodeService } from './controllers/client/services/streetcodes/streetcode.service';
+import { StreetcodeModule } from './controllers/client/services/streetcodes/streetcode.module';
 import { HttpModule } from '@nestjs/axios';
-
-// import { ServeStaticModule } from '@nestjs/serve-static';
-// import { join } from 'path';
 
 @Module({
   imports: [
@@ -19,13 +18,12 @@ import { HttpModule } from '@nestjs/axios';
     }),
     ClientModule,
     NewsModule,
-    HttpModule,
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '../..', 'dist'),
-    //   serveRoot: '/app',
-    // }),
+    StreetcodeModule,
+    HttpModule.register({
+      baseURL: process.env.REACT_APP_BACKEND_URL,
+    }),
   ],
   controllers: [AppController, ClientController],
-  providers: [AppService, ClientService, NewsService],
+  providers: [AppService, ClientService, NewsService, StreetcodeService],
 })
 export class AppModule {}

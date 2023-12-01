@@ -1,0 +1,23 @@
+import { Injectable } from '@nestjs/common';
+import { AxiosResponse } from 'axios';
+import { HttpService } from '@nestjs/axios';
+
+@Injectable()
+export class StreetcodeService {
+  constructor(private readonly httpService: HttpService) {}
+
+  public async getAllStreetcodes(): Promise<AxiosResponse> {
+    const url = '/streetcode/getAll';
+    return this.httpService.get(url).toPromise();
+  }
+
+  public async getImagesOfStreetcode(id: string): Promise<AxiosResponse> {
+    const url = '/image/getByStreetcodeId/';
+    return this.httpService.get(url + id).toPromise();
+  }
+
+  public async getByUrl(url: string): Promise<AxiosResponse> {
+    const backUrl = '/streetcode/getByTransliterationUrl/';
+    return this.httpService.get(backUrl + url).toPromise();
+  }
+}
