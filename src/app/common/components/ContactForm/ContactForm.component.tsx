@@ -113,7 +113,7 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                         onChange={handleChange}
                     />
                 </Form.Item>
-                <div className="captchaBlock ">
+                <div className="captchaBlock">
                     <ReCAPTCHA
                         className="required-input"
                         sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
