@@ -49,7 +49,7 @@ const NewsModal: React.FC<{
     const imageId = useRef<number | undefined>(0);
     const editorRef = useRef<TinyMCEEditor>();
     const sizeLimit = limit ?? 15000;
-    const [data, setData] = React.useState(initialValue ?? "");
+    const [data, setData] = React.useState(initialValue ?? '');
     const [count, setCount] = React.useState(0);
 
     const handlePreview = async (file: UploadFile) => {
@@ -76,6 +76,7 @@ const NewsModal: React.FC<{
     };
 
     useEffect(() => {
+        editorRef.current?.setContent('');
         if (newsItem && open) {
             imageId.current = newsItem.imageId;
             form.setFieldsValue({
@@ -117,9 +118,9 @@ const NewsModal: React.FC<{
         editorRef.current?.setContent('');
     };
 
-    const closeModal =() => {
+    const closeModal = () => {
         setIsModalOpen(false);
-    }
+    };
 
     dayjs.locale('uk');
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
@@ -150,7 +151,7 @@ const NewsModal: React.FC<{
             await form.validateFields();
             if (textIsPresent) {
                 form.submit();
-                message.success("Новину успішно додано!", 2)
+                message.success('Новину успішно додано!', 2);
             } else {
                 callErrorMessage("Будь ласка, заповніть всі обов'язкові поля");
             }
@@ -209,12 +210,8 @@ const NewsModal: React.FC<{
         }
     };
 
-    const handleInit = (value: any, editor: any) => {
-        setCount(editor.getContent({ format: "text" }).length);
-    };
-
     const handleUpdate = (value: any, editor: any) => {
-        const cCount = editor.getContent({ format: "text" }).length;
+        const cCount = editor.getContent({ format: 'text' }).length;
         if (cCount <= sizeLimit) {
             setData(value);
             setCount(cCount);
@@ -222,7 +219,7 @@ const NewsModal: React.FC<{
     };
 
     const handleBeforeAddUndo = (evt: any, editor: any) => {
-        const cCount = editor.getContent({ format: "text" }).length;
+        const cCount = editor.getContent({ format: 'text' }).length;
         if (cCount > sizeLimit) {
             evt.preventDefault();
         }
@@ -236,9 +233,11 @@ const NewsModal: React.FC<{
                     onCancel={closeModal}
                     className="modalContainer"
                     footer={null}
-                    closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                        <CancelBtn className='iconSize' onClick={closeAndCleanData} />
-                    </Popover>}
+                    closeIcon={(
+                        <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                            <CancelBtn className="iconSize" onClick={closeAndCleanData} />
+                        </Popover>
+                    )}
                 >
                     <div className="modalContainer-content">
                         <Form
@@ -286,7 +285,8 @@ const NewsModal: React.FC<{
                                             }
                                             return Promise.reject(new Error('Посилання вже існує'));
                                         },
-                                    },                                ]}
+                                    },
+                                ]}
                             >
                                 <Input maxLength={200} showCount />
                             </Form.Item>
@@ -301,7 +301,6 @@ const NewsModal: React.FC<{
                                 onBeforeAddUndo={handleBeforeAddUndo}
                                 onInit={(evt, editor) => {
                                     editorRef.current = editor;
-                                    handleInit;
                                 }}
                                 initialValue={newsItem ? newsItem.text : ''}
                                 init={{
@@ -323,7 +322,10 @@ const NewsModal: React.FC<{
                     'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                                 }}
                             />
-                            <p>Remaining: {sizeLimit - count}</p>
+                            <p>
+                                Remaining:
+                                {sizeLimit - count}
+                            </p>
                             {!textIsPresent && textIsChanged && (
                                 <p className="form-text">Введіть текст</p>
                             )}
@@ -339,6 +341,30 @@ const NewsModal: React.FC<{
                                     return e?.fileList;
                                 }}
                                 className="image-form-item"
+                                rules={[{
+                                    required: true,
+                                    message: 'Додайте зображення',
+                                },
+                                {
+                                    validator: (_, file) => {
+                                        if (file) {
+                                            let name = '';
+                                            if (file.file) {
+                                                name = file.file.name.toLowerCase();
+                                            } else if (file.name) {
+                                                name = file.name.toLowerCase();
+                                            }
+                                            if (name.endsWith('.jpeg') || name.endsWith('.png')
+                                                || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
+                                                return Promise.resolve();
+                                            }
+                                            // eslint-disable-next-line max-len
+                                            return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
+                                        }
+                                        return Promise.reject();
+                                    },
+                                },
+                                ]}
                             >
                                 <FileUploader
                                     multiple={false}
@@ -374,8 +400,12 @@ const NewsModal: React.FC<{
                                     <p>Виберіть чи перетягніть файл</p>
                                 </FileUploader>
                             </Form.Item>
-                            <Form.Item name="creationDate" label="Дата створення: ">
-                                <DatePicker showTime={true} allowClear={false}/>
+                            <Form.Item
+                                name="creationDate"
+                                label="Дата створення: "
+                                rules={[{ required: true, message: 'Введіть дату' }]}
+                            >
+                                <DatePicker showTime={true} allowClear={false} />
                             </Form.Item>
                             <PreviewFileModal
                                 opened={previewOpen}
