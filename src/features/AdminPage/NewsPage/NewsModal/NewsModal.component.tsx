@@ -20,8 +20,8 @@ import {
     Form,
     Input,
     message, Modal,
+    Popover,
     UploadFile,
-    Popover
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
@@ -39,7 +39,9 @@ const NewsModal: React.FC<{
   afterSubmit?: (news: News) => void;
   initialValue: any;
   limit: any;
-}> = observer(({ newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit }) => {
+}> = observer(({
+    newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit,
+}) => {
     const [form] = Form.useForm();
     const { newsStore } = useMobx();
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -47,6 +49,7 @@ const NewsModal: React.FC<{
     const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
+    const image = useRef<Image | undefined>(undefined);
     const editorRef = useRef<TinyMCEEditor>();
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
@@ -79,6 +82,7 @@ const NewsModal: React.FC<{
         editorRef.current?.setContent('');
         if (newsItem && open) {
             imageId.current = newsItem.imageId;
+            image.current = newsItem.image;
             form.setFieldsValue({
                 title: newsItem.title,
                 url: newsItem.url,
@@ -100,11 +104,13 @@ const NewsModal: React.FC<{
             }
         } else {
             imageId.current = 0;
+            image.current = undefined;
         }
     }, [newsItem, open, form]);
 
     const removeImage = () => {
         imageId.current = undefined;
+        image.current = undefined;
         if (newsItem) {
             newsItem.image = undefined;
         }
@@ -126,14 +132,19 @@ const NewsModal: React.FC<{
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
+
     const handleTextChange = () => {
+        setTextIsChanged(true);
+
         if (editorRef.current?.getContent() === '') {
             setTextIsPresent(false);
-        } else {
-            setTextIsPresent(true);
+            return false;
         }
-        setTextIsChanged(true);
+
+        setTextIsPresent(true);
+        return true;
     };
+
     const callErrorMessage = (messageText: string) => {
         message.config({
             top: 100,
@@ -147,9 +158,8 @@ const NewsModal: React.FC<{
 
     const handleOk = async () => {
         try {
-            handleTextChange();
             await form.validateFields();
-            if (textIsPresent) {
+            if (handleTextChange()) {
                 form.submit();
                 message.success('Новину успішно додано!', 2);
             } else {
@@ -171,16 +181,16 @@ const NewsModal: React.FC<{
             creationDate: dayjs(formValues.creationDate),
         };
 
-        newsStore.getNewsArray.map((t) => t).forEach(t => {
-        if (formValues.title == t.title || imageId.current == t.imageId)
-            newsItem = t;
+        newsStore.getNewsArray.map((t) => t).forEach((t) => {
+            if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
-        //need to fix when url is static because from didn't see ti when u press save button on second time
+        // need to fix when url is static because from didn't see ti when u press save button on second time
         let success = false;
         if (newsItem) {
             news.id = newsItem.id;
             news.imageId = imageId.current;
-            news.image = newsItem.image;
+            news.image = image.current;
+            // news.image = newsItem.image;
             Promise.all([
                 newsStore
                     .updateNews(news)
@@ -375,6 +385,7 @@ const NewsModal: React.FC<{
                                     uploadTo="image"
                                     onSuccessUpload={(img: Image | Audio) => {
                                         imageId.current = img.id;
+                                        image.current = img as Image;
                                         if (newsItem) {
                                             newsItem.image = img as Image;
                                         }
@@ -405,7 +416,7 @@ const NewsModal: React.FC<{
                                 label="Дата створення: "
                                 rules={[{ required: true, message: 'Введіть дату' }]}
                             >
-                                <DatePicker showTime={true} allowClear={false} />
+                                <DatePicker showTime allowClear={false} />
                             </Form.Item>
                             <PreviewFileModal
                                 opened={previewOpen}
