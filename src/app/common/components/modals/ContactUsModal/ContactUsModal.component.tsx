@@ -45,9 +45,7 @@ export const ContactUsModal = ({ text, toggleState}: Props) => {
                     </Popover>
                     : <CancelBtn onClick={onClear} />)}
             >
-                <Form>
                 <ContactForm customClass={"formWrapper__modal"} ref={form} />
-                </Form>
             </Modal>
         </>
     )
