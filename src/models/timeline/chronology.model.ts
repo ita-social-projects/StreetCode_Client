@@ -91,19 +91,26 @@ export const selectDateOptionsforTimeline = [{
 }];
 export const dateTimePickerTypes = ['date', 'month', 'season-year', 'year'];
 
-export const dateToString = (typeDate:'date' | 'month' | 'year' | 'season-year', date: Dayjs | null):string => {
+export enum DatePickerType {
+    Date = 'date',
+    Month = 'month',
+    SeasonYear = 'season-year',
+    Year = 'year',
+}
+
+export const dateToString = (typeDate:DatePickerType, date: Dayjs | null):string => {
     dayjs.locale('uk');
     if (!date) {
         return '';
     }
-    if (typeDate === 'date') {
+    if (typeDate === DatePickerType.Date) {
         return date.format('D MMMM YYYY');
     }
-    if (typeDate === 'month') {
+    if (typeDate === DatePickerType.Month) {
         return date.format('MMMM YYYY');
     }
     const year = date.format('YYYY');
-    if (typeDate === 'year') {
+    if (typeDate === DatePickerType.Year) {
         return year;
     }
     return `${getSeason(date)} ${year}`;
