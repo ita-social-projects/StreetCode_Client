@@ -190,7 +190,6 @@ const NewsModal: React.FC<{
             news.id = newsItem.id;
             news.imageId = imageId.current;
             news.image = image.current;
-            // news.image = newsItem.image;
             Promise.all([
                 newsStore
                     .updateNews(news)
