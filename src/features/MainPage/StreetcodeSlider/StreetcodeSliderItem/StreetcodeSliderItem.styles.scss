@@ -34,7 +34,7 @@
     }
 
     .leftSlider {
-        @include mut.full-rounded(53px);
+        @include mut.full-rounded(50px);
         @include mut.sized(294px, 398px);
         flex: 0 0 f.pxToRem(294px);
         background-color: c.$pure-white-color;
@@ -42,6 +42,7 @@
 
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(266px, 338px);
+            padding: f.pxToRem(5px) f.pxToRem(10px);
         }
 
         @media screen and (max-width: 767px) {
