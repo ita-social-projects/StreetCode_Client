@@ -28,8 +28,12 @@ const StreetcodesApi = {
     getAllMainPage: () => Agent.get<StreetcodeMainPage[]>(`${API_ROUTES.STREETCODES.GET_ALL_MAINPAGE}`),
 
     getPageMainPage: (page: number, pageSize: number, args: any) => Agent
-        .get<StreetcodeMainPage[]>(`${API_ROUTES.STREETCODES.GET_PAGE_MAINPAGE}`,
-        new URLSearchParams(Object.entries({ page: page.toString(), pageSize: pageSize.toString(), shuffleSeed: args["shuffleSeed"].toString() }))),
+        .get<StreetcodeMainPage[]>(
+            `${API_ROUTES.STREETCODES.GET_PAGE_MAINPAGE}`,
+            new URLSearchParams(Object.entries({ page: page.toString(),
+                                                 pageSize: pageSize.toString(),
+                                                 shuffleSeed: args.shuffleSeed.toString() })),
+        ),
 
     getAllCatalog: (page: number, count: number) => Agent
         .get<StreetcodeCatalogRecord[]>(
@@ -37,7 +41,9 @@ const StreetcodesApi = {
             new URLSearchParams({ page: page.toString(), count: count.toString() }),
         ),
 
-    getCount: () => Agent.get<number>(`${API_ROUTES.STREETCODES.GET_COUNT}`),
+    getCount: (onlyPublished = false) => Agent.get<number>(
+        `${API_ROUTES.STREETCODES.GET_COUNT}?onlyPublished=${onlyPublished}`,
+    ),
 
     getAllShort: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`),
 
