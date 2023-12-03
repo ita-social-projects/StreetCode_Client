@@ -32,7 +32,7 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
         <div className="mainPageStreetCodeSlider">
             <div className="itemStreetCodeMainPage" onClick={isMobile ? handleLinkClick : undefined}>
                 <div className="leftSlider">
-                    <div className="leftSliderContent">
+                    <div className={`leftSliderContent ${image?.id ? '' : 'skeleton'}`}>
                         {image?.id
                             ? (
                                 <img
