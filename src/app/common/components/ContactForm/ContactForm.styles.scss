@@ -139,14 +139,14 @@
             position: relative;
         }
 
-        .required-input::before {
+        .required-input::after {
             content: '*';
             position: absolute;
-            top: 0;
-            left: f.pxToRem(-8px);
+            top: f.pxToRem(15px);
+            right: f.pxToRem(12px);
             transform: translate(-50%, -50%);
             color: red;
-            font-size: 20px;
+            @include mut.sizedImportant(8px, 8px);
         }
 
         .captchaBlock {

@@ -39,11 +39,11 @@ export const ContactUsModal = ({ text, toggleState}: Props) => {
                 footer={null}
                 onCancel={() => setActive(false)}
                 width={"max-content"}
-                closeIcon={isDesktop ? 
+                closeIcon={(isDesktop ? 
                     <Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
                         <CancelBtn onClick={onClear} />
                     </Popover>
-                    : <CancelBtn onClick={onClear} />}
+                    : <CancelBtn onClick={onClear} />)}
             >
                 <Form>
                 <ContactForm customClass={"formWrapper__modal"} ref={form} />

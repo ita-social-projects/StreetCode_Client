@@ -96,6 +96,7 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                     </p>
                 </Form.Item>
                 <Form.Item
+                    className="required-input"
                     name="email"
                     rules={[
                         {
@@ -115,7 +116,6 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                 </Form.Item>
                 <div className="captchaBlock">
                     <ReCAPTCHA
-                        className="required-input"
                         sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
                         onChange={handleVerify}
                     />
