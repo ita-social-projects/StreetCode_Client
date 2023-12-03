@@ -56,23 +56,20 @@ const StreetcodeSlider = () => {
 
             const emptyStreetcodes = Array(streetcodesAmount).fill({});
             setStreetcodes(emptyStreetcodes);
-            let index = 0;
 
             while (true) {
                 try {
-                    const newStreetcodes = await fetchNextPage();
+                    const [newStreetcodes, startIdx, endIdx] = await fetchNextPage();
                     // eslint-disable-next-line @typescript-eslint/no-loop-func
                     setStreetcodes((prevState) => {
                         // replace empty objects to fetched streetcodes
                         const newState = [
-                            ...prevState.slice(0, index),
+                            ...prevState.slice(0, startIdx),
                             ...newStreetcodes,
-                            ...prevState.slice(index + newStreetcodes.length),
+                            ...prevState.slice(endIdx),
                         ];
 
-                        index += newStreetcodes.length;
-
-                        return newState.slice(0, streetcodesAmount);
+                        return newState;
                     });
 
                     const newImages: Image[] = [];
@@ -86,7 +83,7 @@ const StreetcodeSlider = () => {
                     }
 
                     await Promise.all(promises).then(() => {
-                        setImages((prevState) => [...prevState, ...newImages]);
+                        setImages((prevState) => [...prevState, ...newImages].slice(0, streetcodesAmount));
                     });
                 } catch (error: unknown) {
                     break;
