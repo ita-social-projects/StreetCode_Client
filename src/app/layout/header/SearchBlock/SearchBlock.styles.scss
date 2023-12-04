@@ -8,13 +8,21 @@
     overflow-y: auto;
     @include mut.flexed($direction: column);
     @include mut.rem-padded(12px, 0, 12px, 12px);
+
+    p{
+        @include mut.rem-margined($right: 20px, $left: 20px);
+    }
 }
 
 @media screen and (max-width: 1024px) {
-    .searchResultsBlock{ 
-        @include mut.rem-padded($right: 6px, $left: 6px);
+    .searchResultsBlock{
+        width: 100vw;
+        @include mut.rem-padded(6px, 6px, 6px, 6px);
         overflow-y: auto;
         
+        p{
+            @include mut.rem-margined(13px, 20px, 13px, 20px);
+        }
     }
 
 }

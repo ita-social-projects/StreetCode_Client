@@ -1,37 +1,18 @@
 import './SearchBlock.styles.scss';
 
-import { useEffect, useState } from 'react';
-
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 
 import SearchResultItem from './SearchResultItem/SearchItem.component';
 
 interface Props {
-    searchQuery: string;
+    searchResult: StreetcodeFilterResultDTO[];
 }
-const SearchBlock = ({ searchQuery } : Props) => {
-    const [searchResult, setSearchResult] = useState<StreetcodeFilterResultDTO[]>([]);
-
-    useEffect(() => {
-        if (searchQuery.length === 0) {
-            setSearchResult([]);
-            return;
-        }
-
-        const filter: StreetcodeFilterRequestDTO = { searchQuery };
-
-        StreetcodesApi.getByFilter(filter)
-            .then((response: StreetcodeFilterResultDTO[]) => {
-                setSearchResult(response);
-            });
-    }, [searchQuery]);
-
+const SearchBlock = ({ searchResult } : Props) => {
     const blockHeight = searchResult.length > 9 ? '418px' : '100%';
 
     return (
         <div className="searchResultsBlock" style={{ height: blockHeight }}>
-            {searchResult.length === 0 ? <p style={{paddingLeft: 25}}>Результатів немає</p> : 
+            {searchResult.length === 0 ? <p>Результатів немає</p> : 
             (searchResult.map((searchResultItem: StreetcodeFilterResultDTO, index) => (
                 <SearchResultItem key={index} searchResultItem={searchResultItem} />
             )))}
