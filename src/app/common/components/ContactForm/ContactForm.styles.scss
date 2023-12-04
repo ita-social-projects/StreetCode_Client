@@ -32,6 +32,7 @@
         margin-bottom: 24px;
 
         .formTitle {
+            text-align: left;
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             line-height: 26px;
             color: #891F16;
@@ -221,7 +222,7 @@
 }
 
 @media screen and (max-width: 480px) {
-    .contactUsContainer .formContainer .formTitleContainer .formTitle {
+    .formWrapper .formTitleContainer .formTitle {
         text-align: center;
     }
 }
