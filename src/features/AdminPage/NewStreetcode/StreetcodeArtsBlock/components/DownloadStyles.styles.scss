@@ -19,3 +19,14 @@
 .art-gallery-download{
     margin-bottom: pxToRem(10px);
 }
+
+.streetcode-art-preview{
+    width: 100%;
+    height: 100%;
+
+    & > *{
+        width: 100%;
+        height: 100%;
+    }
+}
+

@@ -143,7 +143,7 @@ const DownloadBlock = () => {
                 onRemove={(e) => handleRemove(e)}
                 className="with-multiple-delete"
                 itemRender={(element, file) => (
-                    <Draggable id={file.uid}>
+                    <Draggable id={file.uid} className="streetcode-art-preview">
                         <div className={`${artsToRemoveIdxs.current.has(file.uid) ? 'delete-border ' : ' '
                         } `}
                         >

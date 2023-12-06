@@ -2,6 +2,7 @@
 import './BaseArtGallerySlide.styles.scss';
 
 import { runInAction } from 'mobx';
+import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { MoreOutlined } from '@ant-design/icons';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
@@ -11,7 +12,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
 
 import type { MenuProps } from 'antd';
-import { Dropdown, Space } from 'antd';
+import { Dropdown, Modal, Space } from 'antd';
 
 const BaseArtGallerySlide = ({
     streetcodeArts, className, artSlideId, isDroppable, isAdmin, slideIndex,
@@ -19,7 +20,7 @@ const BaseArtGallerySlide = ({
     const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } = useMobx();
     const { streetcodeArtSlides } = streetcodeArtSlideStore;
     const { modalStore: { setModal } } = useModalContext();
-
+    const [confirmationModalVisibility, setConfirmationModalVisibility] = useState(false);
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
     });
@@ -89,7 +90,7 @@ const BaseArtGallerySlide = ({
             key: '0',
         },
         {
-            label: <button onClick={onDeleteSlideClick}>Видалити слайд</button>,
+            label: <button onClick={() => setConfirmationModalVisibility(true)}>Видалити слайд</button>,
             key: '1',
         },
         {
@@ -146,16 +147,24 @@ const BaseArtGallerySlide = ({
             })}
             {isAdmin
                 ? (
-                    <Dropdown
-                        menu={{ items: editDropdownOptions }}
-                        trigger={['click']}
-                        className="adminOptionsBtn"
-                        placement="bottom"
-                    >
-                        <Space>
-                            <MoreOutlined />
-                        </Space>
-                    </Dropdown>
+                    <>
+                        <Dropdown
+                            menu={{ items: editDropdownOptions }}
+                            trigger={['click']}
+                            className="adminOptionsBtn"
+                            placement="bottom"
+                        >
+                            <Space>
+                                <MoreOutlined />
+                            </Space>
+                        </Dropdown>
+                        <Modal
+                            title="Ви впевнені, що хочете видалити цей слайд?"
+                            open={confirmationModalVisibility}
+                            onOk={(e) => onDeleteSlideClick()}
+                            onCancel={() => setConfirmationModalVisibility(false)}
+                        />
+                    </>
                 )
                 : <></>}
         </div>

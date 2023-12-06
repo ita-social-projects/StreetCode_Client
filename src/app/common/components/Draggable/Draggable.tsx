@@ -6,10 +6,11 @@ import { CSS } from '@dnd-kit/utilities';
 
 type Props = {
     children: React.ReactNode;
+    className?: string;
     id: string;
 };
 
-const Draggable: React.FC<Props> = ({ children, id }: Props) => {
+const Draggable: React.FC<Props> = ({ children, id, className = '' }: Props) => {
     const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
     const style = transform ? {
         transform: CSS.Translate.toString(transform),
@@ -21,7 +22,7 @@ const Draggable: React.FC<Props> = ({ children, id }: Props) => {
             style={style}
             {...listeners}
             {...attributes}
-            className="draggable"
+            className={`draggable ${className}`}
         >
             {children}
         </div>

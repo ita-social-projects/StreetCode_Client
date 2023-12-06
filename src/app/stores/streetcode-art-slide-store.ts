@@ -51,7 +51,7 @@ export default class StreetcodeArtSlideStore {
                 isPersisted: true,
                 streetcodeArts: slide.streetcodeArts.sort((a, b) => (a.index > b.index ? 1 : -1)),
             })));
-            console.log(toJS(this.streetcodeArtSlides));
+
             this.startFromSlide += 1;
         } else {
             throw new Error('No more arts to load');
