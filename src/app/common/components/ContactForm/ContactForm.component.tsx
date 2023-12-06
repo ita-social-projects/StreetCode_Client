@@ -1,6 +1,6 @@
 import './ContactForm.styles.scss';
 
-import { useState } from 'react';
+import { forwardRef, useState, useImperativeHandle } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
@@ -10,26 +10,40 @@ import Email from '@/models/email/email.model';
 
 const MAX_SYMBOLS = 500;
 
-const ContactForm = ({ customClass = "" }) => {
+interface Props {
+    customClass: string;
+}
+
+const ContactForm = forwardRef((customClass: Props , ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
-    const messageLength = formData.message.length | 0;
     const [messageApi, messageContextHolder] = message.useMessage();
+    const [form] = Form.useForm();
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleVerify = () => {
         setIsVerified(true);
     };
 
+    useImperativeHandle(ref, () => ({
+     clearModal(){
+        form.resetFields();
+    }
+    }));
+
     const onFinish = () => {
         if (isVerified) {
             const newEmail: Email = { from: formData.email, content: formData.message };
             EmailApi.send(newEmail)
-                .then(successMessage)
-                .catch(errorMessage);
+                .then(() => {
+                    successMessage();
+                })
+                .catch(() => {
+                    errorMessage();
+                });
         }
     };
-
+    
     const successMessage = () => {
         messageApi.open({
             type: 'success',
@@ -54,7 +68,7 @@ const ContactForm = ({ customClass = "" }) => {
                     чогось значного! Вйо до листування!
                 </div>
             </div>
-            <Form
+            <Form form={form}
                 className="contactForm"
                 onFinish={onFinish}
                 validateMessages={{}}
@@ -63,13 +77,13 @@ const ContactForm = ({ customClass = "" }) => {
                     className="textareaBlock required-input"
                     name="message"
                     rules={[{
-                        required: false,
+                        required: true,
                         min: 1,
-                        max: MAX_SYMBOLS
+                        max: MAX_SYMBOLS,
+                        message: 'Будь ласка, вкажи свою пропозицію',
                     }]}
                 >
                     <Input.TextArea
-                        required={true}
                         className="textarea"
                         name="message"
                         autoSize={{ minRows: 4, maxRows: 4 }}
@@ -77,17 +91,16 @@ const ContactForm = ({ customClass = "" }) => {
                         maxLength={MAX_SYMBOLS}
                         onChange={handleChange}
                     />
-                    <p className="custom-character-counter">
-                        {messageLength}
-                        / {MAX_SYMBOLS}
-                    </p>
                 </Form.Item>
                 <Form.Item
+                    className="required-input"
                     name="email"
                     rules={[
                         {
                             required: true,
-                            type: 'email'
+                            type: 'email',
+                            pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                            message: 'E-mail може містити лише маленькі латинські літери, цифри і символи @._-',
                         },
                     ]}
                 >
@@ -98,9 +111,9 @@ const ContactForm = ({ customClass = "" }) => {
                         onChange={handleChange}
                     />
                 </Form.Item>
-                <div className="captchaBlock ">
+                <div className="captchaBlock">
                     <ReCAPTCHA
-                        className="required-input"
+                        className="required-captcha"
                         sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
                         onChange={handleVerify}
                     />
@@ -111,8 +124,8 @@ const ContactForm = ({ customClass = "" }) => {
                     </Button>
                 </Form.Item>
             </Form>
-        </div>
+        </div> 
     );
-};
+});
 
 export default ContactForm;

@@ -1,7 +1,7 @@
 import './SearchItem.styles.scss';
 
 import { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
-import htmlReactParser, { domToReact } from 'html-react-parser';
+import { htmlToText } from 'html-to-text';
 
 interface Props {
     searchResultItem: StreetcodeFilterResultDTO;
@@ -16,13 +16,13 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
     const sourceName = `Стріткод #${searchResultItem.streetcodeIndex.toString().padStart(4, '0')
     }${searchResultItem.sourceName ? `/${searchResultItem.sourceName}` : ''}`;
 
-    const contentToDisplay = searchResultItem.content ? searchResultItem.content.slice(0, 67) : '';
+    const contentToDisplay = searchResultItem.content ? htmlToText(searchResultItem.content) : '';
 
     return (
         <a href={url}
         className="resultItemContainer">
             <div className="resultItemContent">
-                 {htmlReactParser(contentToDisplay)}
+                {contentToDisplay}
             </div>
             <div className="resultSourceName">
                 {sourceName}

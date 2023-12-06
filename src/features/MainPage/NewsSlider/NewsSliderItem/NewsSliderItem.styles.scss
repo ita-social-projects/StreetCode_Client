@@ -4,7 +4,7 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
-
+@use "@app/common/components/CardText/CardText.styles" as textCard;
 
 .newsSliderItem {
     display: flex;
@@ -12,7 +12,7 @@
 
     .newsMainPage {
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
-        @include mut.sized(840px, 567px);
+        @include mut.sized(840px, 575px);
         @include mut.full-rounded(30px);
         cursor: pointer;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -21,7 +21,7 @@
 
         @media (min-width: 768px) and (max-width: 1024px) {
             width: 96vw;
-            height: f.pxToRem(462px);
+            height: f.pxToRem(472px);
             margin-right: 20px;
             margin-left: 20px;
             overflow: hidden;
@@ -44,7 +44,7 @@
 
 
         @media (min-width: 768px) and (max-width: 1024px){
-            top: 320px;
+            top: 280px;
             width: 96vw;
         }
 
@@ -65,7 +65,7 @@
         }
 
         @media screen and (max-width: 767px) {
-            height: f.pxToRem(229px);
+            height: f.pxToRem(190px);
         }
 
         .newsPageImg {
@@ -85,106 +85,67 @@
     .newsContainer {
         box-sizing: border-box;
         word-break: break-word;
-        height: 193px;
+        height: 230px;
         width: f.pxToRem(840px);
 
         @include mut.flexed(column, start, space-between, nowrap);
-        @include mut.rem-padded($top: 25px, $right: 30px, $bottom: 25px, $left: 30px);
+        @include mut.rem-padded($top: 15px, $right: 30px, $bottom: 25px, $left: 30px);
 
         @media (min-width: 768px) and (max-width: 1024px){
-            @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 15px, $left: 20px);
-            height: 141px;
+            @include mut.rem-padded($top: 15px, $right: 40px, $bottom: 10px, $left: 20px);
+            height: 190px;
             width: 96vw;
         }
 
         @media (min-width: 360px) and (max-width: 767px) {
-            @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 15px, $left: 15px);
+            @include mut.rem-padded($top: 15px, $right: 15px, $bottom: 20px, $left: 15px);
             height: 300px;
+            width: auto;
         }
 
         .subContainer{
             max-width: 100%;
-        }
-    }
+            height: 100%;
 
-    .newsTitle {
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
-        color: #1D1F23;
-        line-height: f.pxToRem(48px);
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
+            @include textCard.cardText(
+                    $title-max-lines: 2,
+                    $text-max-lines: 3);
 
-        @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-            font-style: bold;
-            line-height: f.pxToRem(26.4px);
-        }
+            .cardTextContainer{
+                padding: 0;
+                font-size: f.pxToRem(15px);
 
-        @media (min-width: 360px) and (max-width: 767px) {
-            @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-            font-style: bold;
-            line-height: f.pxToRem(26.4px);
-            -webkit-line-clamp: 1;
-            width: f.pxToRem(310px);
-        }
-    }
+                &TopPart{
+                    gap: f.pxToRem(10px);
+                }
 
-    .newsText {
-        position: relative;
-        display: contents;
+                &Title{
+                    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+                    line-height: f.pxToRem(38px);
 
-        &::-webkit-scrollbar {
-            display: none;
-        }
+                    @media (max-width: 1024px) {
+                        font-size: f.pxToRem(20px);
+                        line-height: f.pxToRem(26.4px);
+                    }
+                }
 
-        .moreText {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+                &SubTitle{
+                    color: c.$darkish-gray-color;
+                }
 
-            height: f.pxToRem(54px);
-            padding-top: f.pxToRem(18px);
-            padding-left: f.pxToRem(30px);
+                &Text{
+                    font-weight: 300;
 
-            @include mut.with-font(ft.$roboto-font, $font-weight: bolder, $font-size: 15px);
-            color: c.$dark-red-color;
-            background-color: c.$accented-grayish-gray-color;
-            text-decoration: none;
+                    @media (min-width: 360px) and (max-width: 767px) {
+                        @include mut.truncated(8);
+                    }
+                }
 
-            &:hover {
-                text-decoration: underline;
+                &Button{
+                    font-weight: 500;
+                    text-decoration: none;
+                }
             }
-
-            @media (max-width: 1025px) {
-                padding-left: f.pxToRem(20px);
-            }
-        }
-        @media (min-width: 768px) and (max-width: 1024px) {
-            width: 96vw;
-        }
-    }
-    .text{
-        overflow: hidden;
-        @include mut.truncated(2);
-        word-break: break-word;
-
-        @include mut.rem-margined(5px, 0px, 0px, 0px);
-        @include mut.rem-padded(0px, 5px, 0px, 0px);
-
-        color: c.$lighter-black-color;
-        @include mut.with-font(ft.$roboto-light, $font-weight: 300, $font-size: 15px);
-        line-height: 18px;
-
-        @media (min-width: 768px) and (max-width: 1024px) {
-            width: 93vw;
-        }
-
-        @media (max-width: 767px) {
-            @include mut.truncated(11);
-            width: f.pxToRem(320px);
         }
     }
 }

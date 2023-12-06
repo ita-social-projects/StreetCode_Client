@@ -1,11 +1,13 @@
 services:
   certbot:
+    restart: always
     image: certbot/certbot:latest
     volumes:
       - /etc/certbot/www/:/var/www/certbot/:rw
       - /etc/certbot/conf/:/etc/letsencrypt/:rw
 
   nginx:
+    restart: always
     image: nginx:latest
     ports:
       - "80:80"
@@ -17,7 +19,20 @@ services:
       - ./templates:/etc/nginx/templates
       - /etc/certbot/www:/var/www/certbot/:ro
       - /etc/certbot/conf:/etc/nginx/ssl/:ro
+
+
+  loki:
+    restart: always
+    container_name: loki
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki/config:/etc/loki
+
   frontend:
+    restart: always
     image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
     pull_policy: always
     expose:
@@ -29,8 +44,14 @@ services:
       retries: 5
     environment:
       API_URL: ${ENV_API_BACKEND}
-
+      REACT_APP_GOOGLE_ANALYTICS: ${ENV_GOOGLE_ANALYTICS}
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+    
   backend:
+    restart: always
     image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
     pull_policy: always
     expose:
@@ -57,6 +78,10 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
 volumes:
   backend:
 networks:

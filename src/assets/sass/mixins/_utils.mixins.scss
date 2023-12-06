@@ -268,7 +268,7 @@
   }
 }
 
-@mixin blur($edge:0, $top:0, $height:0) {
+@mixin blur($edge:0, $top:0, $height:0, $z-index) {
   position: relative;
   &:after {
     content: '';
@@ -279,7 +279,7 @@
     height: f.pxToRem($height);
     background: linear-gradient($edge, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255, 255, 255, 0.664) 21%);
     -webkit-text-fill-color: transparent;
-    z-index: 100;
+    z-index: $z-index;
   }
 }
 

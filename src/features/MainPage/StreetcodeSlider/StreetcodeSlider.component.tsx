@@ -2,17 +2,17 @@
 import './StreetcodeSlider.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
+import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Image from '@models/media/image.model';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+// eslint-disable-next-line import/extensions
 import { paginateRequest } from '@/app/common/utils/paginateRequest';
 import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
-
-import SlickSlider from '../../SlickSlider/SlickSlider.component';
 
 import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
 
@@ -32,36 +32,58 @@ const StreetcodeSlider = () => {
         slidesToShow: 1,
         swipeOnClick: false,
         centerMode: false,
-        centerPadding: '-5px',
+        initialSlide: 0,
     };
 
     const windowsize = useWindowSize();
     if (windowsize.width <= 1024 && windowsize.width >= 768) props.centerMode = true;
     if (windowsize.width <= 1024) props.dots = true;
+    if (windowsize.width <= 1024 && windowsize.width >= 768) props.initialSlide = 1;
+    if (windowsize.width <= 768) props.variableWidth = false;
 
     useAsync(async () => {
         const shuffleSeed = Math.floor(Date.now() / 1000);
         const { fetchNextPage } = paginateRequest(3, StreetcodesApi.getPageMainPage, { shuffleSeed });
 
+        let streetcodesAmount: number;
         if (!loading.current) {
             loading.current = true;
+            try {
+                streetcodesAmount = await StreetcodesApi.getCount(true);
+            } catch (e: any) {
+                streetcodesAmount = 32; // fetch 32 streetcodes if StreetcodesApi.getCount fails
+            }
+
+            const emptyStreetcodes = Array(streetcodesAmount).fill({});
+            setStreetcodes(emptyStreetcodes);
+
             while (true) {
                 try {
-                    const newStreetcodes = await fetchNextPage();
-                    setStreetcodes((prevState) => [...prevState, ...newStreetcodes]);
+                    const [newStreetcodes, startIdx, endIdx] = await fetchNextPage();
+                    // eslint-disable-next-line @typescript-eslint/no-loop-func
+                    setStreetcodes((prevState) => {
+                        // replace empty objects to fetched streetcodes
+                        const newState = [
+                            ...prevState.slice(0, startIdx),
+                            ...newStreetcodes,
+                            ...prevState.slice(endIdx),
+                        ];
+
+                        return newState;
+                    });
 
                     const newImages: Image[] = [];
                     const promises = [];
 
+                    // eslint-disable-next-line no-plusplus
                     for (let i = 0; i < newStreetcodes.length; i++) {
-                        const currentPosition = newImages.length + i;
                         promises.push(ImagesApi.getById(newStreetcodes[i].imageId).then((img) => {
-                            newImages[currentPosition] = img;
+                            newImages[i] = img;
                         }));
                     }
 
                     await Promise.all(promises).then(() => {
-                        setImages((prevState) => [...prevState, ...newImages]);
+                        setImages((prevState) => [...prevState, ...newImages].slice(0, streetcodesAmount));
                     });
                 } catch (error: unknown) {
                     break;

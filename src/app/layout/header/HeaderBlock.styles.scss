@@ -3,9 +3,16 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 $navbar-innerwidth: 500px; 
 $navbar-hidden-innerwidth: 400px;
+
+.HeaderBlock{
+  .ant-popover-inner{
+    @include mut.rem-padded(0, 6px, 0, 0);
+  }
+}
 
 .navBarContainer {
   @include mut.flexed($justify-content: space-between, $align-items: center);
@@ -14,7 +21,7 @@ $navbar-hidden-innerwidth: 400px;
 
   background-color: c.$pure-white-color;
   position: fixed;
-  z-index: 7;
+  z-index: l.$modal;
   svg {
     
     &:hover {
@@ -64,6 +71,10 @@ $navbar-hidden-innerwidth: 400px;
         @include mut.sized(167.79px, 29px);
       }
     }
+
+    .searchHeaderSkeleton{
+      @include mut.rem-margined($left: 10px);
+    }
 }
 .rightPartContainer {
   @include mut.flexed($justify-content: space-between, $align-items: center);
@@ -109,6 +120,14 @@ $navbar-hidden-innerwidth: 400px;
   .burgerMenuContainer {
     @include mut.rem-margined(0);
   }
+}
+
+.searchPopover{
+  width: calc(100vw - #{$navbar-hidden-innerwidth});
+}
+
+.searchPopoverSkeleton{
+  width: calc(100vw - #{$navbar-innerwidth});
 }
 
 .hiddenHeaderInput {
@@ -178,7 +197,7 @@ $navbar-hidden-innerwidth: 400px;
     
 
     position: fixed;
-    z-index: 6;
+    z-index: l.$modal - 1;
     background-color: c.$pure-white-color;
     transform: translateY(f.pxToRem(-200px));
     @include vnd.vendored(transition, 'transform 0.7s ease');
@@ -218,8 +237,10 @@ $navbar-hidden-innerwidth: 400px;
   }
 
   .searchMobPopover {
+    max-width: 100vw;
     .ant-popover-inner {
-      margin-top: 20px;
+      margin-top: -10px;
+      @include mut.rem-padded(0, 0, 0, 0);
     }
 }
 }

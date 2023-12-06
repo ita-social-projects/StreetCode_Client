@@ -27,10 +27,11 @@ interface Props {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
     allCategories: SourceCategoryName[],
     onChange: (field: string, value: any) => void,
+    allPersistedSourcesAreSet: boolean,
 }
 
 const ForFansModal = ({
-    character_limit, open, setOpen, allCategories, onChange,
+    character_limit, open, setOpen, allCategories, onChange, allPersistedSourcesAreSet,
 }: Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
@@ -82,7 +83,6 @@ const ForFansModal = ({
 
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
-        setCategories(allCategories);
         if (categoryUpdate.current && open) {
             setEditorContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
@@ -91,8 +91,23 @@ const ForFansModal = ({
             setEditorContent('');
             form.setFieldValue('category', '');
         }
-        fetchData();
+
+        if (allPersistedSourcesAreSet) {
+            fetchData();
+        }
     }, [open, sourceCreateUpdateStreetcode]);
+
+    useEffect(() => {
+        if (allCategories.length) {
+            setCategories([...allCategories].sort((a, b) => a.title.localeCompare(b.title)));
+        }
+    }, [allCategories]);
+
+    useEffect(() => {
+        if (allPersistedSourcesAreSet) {
+            fetchData();
+        }
+    }, [allPersistedSourcesAreSet]);
 
     const onSave = (values: any) => {
         const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
@@ -134,22 +149,10 @@ const ForFansModal = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
-    const onDropDownChange = async () => {
-        if (isAddModalVisible === false) {
-            const categories = await SourcesApi.getAllCategories();
-            sourcesAdminStore.setInternalSourceCategories(categories);
-
-            const sourceMas: SourceCategoryName[] = categories.map((x) => ({
-                id: x.id ?? 0,
-                title: x.title,
-            }));
-
-            sourceMas.sort((a, b) => a.title.localeCompare(b.title));
-            setCategories(sourceMas);
-        }
-    };
     const onUpdateStates = async (isNewCatAdded: boolean) => {
         if (isNewCatAdded === true) {
+            const categories = await SourcesApi.getAllNames();
+            setCategories(categories.sort((a, b) => a.title.localeCompare(b.title)));
             const AvailableCats = await getAvailableCategories(true);
             setAvailableCategories(AvailableCats);
             alert('Категорію успішно додано до списку!');
@@ -199,7 +202,6 @@ const ForFansModal = ({
                         key="selectForFansCategory"
                         className="category-select-input"
                         onChange={handleAdd}
-                        onDropdownVisibleChange={onDropDownChange}
                     >
                         <Select.Option key="addCategory" value="addCategory">
                             Додати нову категорію...

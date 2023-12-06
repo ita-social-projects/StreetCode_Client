@@ -67,10 +67,10 @@
   @include mut.rem-margined(13px, 0, 13px, 0);
 }
 .blurTop{
-  @include mut.blur($edge: 0deg, $top: 9px, $height: 16px);
+  @include mut.blur($edge: 0deg, $top: 9px, $height: 16px, $z-index: 3);
 }
 .blurBottom{
-  @include mut.blur($edge: 180deg, $top: -20px, $height: 21px);
+  @include mut.blur($edge: 180deg, $top: -20px, $height: 21px, $z-index: 3);
 }
 .teaserBlock {
   @include mut.with-font($font-weight: 300, $font-size: 20px);
@@ -128,10 +128,30 @@
     box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
   }
 }
-.streetcodeImg {
+.streetcodeImg, .streetcodeImgColored, .streetcodeImgGrey {
     margin: auto;
     @include mut.sized(415px, 542px);
 }
+
+.streetcodeImgColored{
+  position: absolute;
+  animation: fadeIn 4s;
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+}
+
+.streetcodeImgGrey{
+  animation: fadeOut 3s;
+  animation-fill-mode: forwards;
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+}
+
 .playCircle {
     font-size: f.pxToRem(37px);
     margin-right: f.pxToRem(10px);
@@ -167,7 +187,7 @@
   .blockCentering {
     @include mut.rem-padded($top: 2px, $right: 10px, $bottom: 0px, $left: 10px);
     .blurTop{
-      @include mut.blur($edge: 0deg, $top: 4px, $height: 11px);
+      @include mut.blur($edge: 0deg, $top: 4px, $height: 11px, $z-index: 3);
     }
     .teaserBlock {
       line-height: f.pxToRem(18.75px);
@@ -208,7 +228,7 @@
         @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
         @include mut.withLineHeight(23px);
       }
-      .streetcodeImg {
+      .streetcodeImg,  .streetcodeImgColored, .streetcodeImgGrey{
         @include mut.sized(290px, 377px);
       }
       .cardFooter {

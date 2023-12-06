@@ -13,7 +13,7 @@ interface Props extends UploaderWithoutChildren {
     children: JSX.Element[] | JSX.Element;
     edgeSwipe?: boolean;
     uploadTo:'image' | 'audio';
-    greyFilterForImage: boolean;
+    greyFilterForImage?: boolean;
     onSuccessUpload?:(value:ImageCustom | Audio, file?: UploadFile)=>void;
 }
 const FileUploader:React.FC<Props> = ({

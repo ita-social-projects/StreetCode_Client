@@ -1,35 +1,28 @@
+/* eslint-disable react/destructuring-assignment */
 import './Vacancy.syles.scss';
 
 import React, { useState } from 'react';
+import CardText from '@components/CardText/CardText.component';
 
 import VacancyModal from './VacancyModal/VacancyModal.component';
+import htmlReactParser from 'html-react-parser';
 
 const Vacancy = (job: Job) => {
-    const maxLength = 260;
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const ChangeStatus = () => {
         setIsModalOpen(!isModalOpen);
     };
     return (
-        <div className='vacancyContainer'>
-            <h2>{job?.title}</h2>
-            <h3>{job?.salary}</h3>
-            {
-                job?.description.length < maxLength
-                    ? <p><div dangerouslySetInnerHTML={{ __html: job?.description }} />
-                        <label
-                            onClick={ () => {setIsModalOpen(true)}}> Трохи ще
-                        </label>
-                    </p>
-                    : <p><div dangerouslySetInnerHTML={{ __html: `${job?.description.substring(0, maxLength).split(' ').slice(0, -1).join(' ')}...` }} />
-                        <label
-                            onClick={ () => {setIsModalOpen(true)}}>
-                                Трохи ще
-                        </label>
-                    </p>
-            }
-            <VacancyModal isOpen={isModalOpen} setOpen={ChangeStatus} job = {job}/>
+        <div className="vacancyContainer">
+            <CardText
+                onBtnClick={() => setIsModalOpen(true)}
+                title={job.title}
+                text={htmlReactParser(job.description)}
+                subTitle={job.salary}
+                moreBtnText="Трохи ще"
+            />
+            <VacancyModal isOpen={isModalOpen} setOpen={ChangeStatus} job={job} />
         </div>
     );
 };
