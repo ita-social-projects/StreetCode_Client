@@ -56,6 +56,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
     const [animationPicture, setAnimationPicture] = useState<Element >();
     const [images, setImages] = useState<Image[]>([]);
+    const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
 
     useAsync(() => {
         if (id && id > 0) {
@@ -70,6 +71,10 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
                     setImages(imgs);
+                    setImagesForSlider(imgs.filter(
+                        (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
+                        || image.imageDetails?.alt === ImageAssigment.animation.toString(),
+                    ));
                     streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((e) => { });
@@ -107,30 +112,49 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 swipeOnClick
                                 infinite
                             >
-                                <div>
-                                    <img
-                                        key={images[0].id}
-                                        src={base64ToUrl(images[0].base64, images[0].mimeType)}
-                                        className="streetcodeImgColored"
-                                        style={{ objectFit: 'contain' }}
-                                        alt={images[0].imageDetails?.alt}
-                                    />
-                                    <img
-                                        key={images[1].id}
-                                        src={base64ToUrl(images[1].base64, images[1].mimeType)}
-                                        className="streetcodeImgGrey"
-                                        style={{ objectFit: 'contain' }}
-                                        alt={images[1].imageDetails?.alt}
-                                    />
-                                </div>
+                                {imagesForSlider.map((image, index) => {
+                                    if (imagesForSlider.length > 1 && index === 0) {
+                                        return (
+                                            <div>
+                                                <img
+                                                    key={imagesForSlider[0].id}
+                                                    src={
+                                                        base64ToUrl(
+                                                            imagesForSlider[0].base64,
+                                                            imagesForSlider[0].mimeType,
+                                                        )
+                                                    }
+                                                    className="streetcodeImgColored"
+                                                    style={{ objectFit: 'contain' }}
+                                                    alt={images[0].imageDetails?.alt}
+                                                />
+                                                <img
+                                                    key={imagesForSlider[1].id}
+                                                    src={base64ToUrl(
+                                                        imagesForSlider[1].base64,
+                                                        imagesForSlider[1].mimeType,
+                                                    )}
+                                                    className="streetcodeImgGrey"
+                                                    style={{ objectFit: 'contain' }}
+                                                    alt={imagesForSlider[index].imageDetails?.alt}
+                                                />
+                                            </div>
+                                        );
+                                    }
 
-                                <img
-                                    key={images[1].id}
-                                    src={base64ToUrl(images[1].base64, images[1].mimeType)}
-                                    className="streetcodeImg"
-                                    style={{ objectFit: 'contain' }}
-                                    alt={images[1].imageDetails?.alt}
-                                />
+                                    return (
+                                        <img
+                                            key={images[index].id}
+                                            src={base64ToUrl(
+                                                images[index].base64,
+                                                images[index].mimeType,
+                                            )}
+                                            className="streetcodeImg"
+                                            style={{ objectFit: 'contain' }}
+                                            alt={images[index].imageDetails?.alt}
+                                        />
+                                    );
+                                })}
                             </BlockSlider>
                         </div>
                     </div>
