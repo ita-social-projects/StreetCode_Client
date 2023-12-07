@@ -19,8 +19,10 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
     });
 
     const handleClickRedirect = () => {
-        toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'main_page');
-        window.location.href = streetcode.transliterationUrl;
+        if (streetcode.transliterationUrl) {
+            toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'main_page');
+            window.location.href = streetcode.transliterationUrl;
+        }
     };
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
