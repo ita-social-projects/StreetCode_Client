@@ -69,6 +69,7 @@ services:
       STREETCODE_CORS__AllowedMethods: '["*"]'
       STREETCODE_CORS__PreflightMaxAge: 1
       STREETCODE_IPRATELIMITING__GENERALRULES__0__LIMIT: 500
+      ASPNETCORE_ENVIRONMENT: ${SWAGGER_APP_ENVIRONMENT}
     volumes:
       - type: bind
         source: /imagestorage
