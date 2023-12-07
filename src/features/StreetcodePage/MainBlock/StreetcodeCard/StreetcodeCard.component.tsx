@@ -126,7 +126,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                                     }
                                                     className="streetcodeImgColored"
                                                     style={{ objectFit: 'contain' }}
-                                                    alt={images[0].imageDetails?.alt}
+                                                    alt={imagesForSlider[0].imageDetails?.alt}
                                                 />
                                                 <img
                                                     key={imagesForSlider[1].id}
@@ -136,7 +136,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                                     )}
                                                     className="streetcodeImgGrey"
                                                     style={{ objectFit: 'contain' }}
-                                                    alt={imagesForSlider[index].imageDetails?.alt}
+                                                    alt={imagesForSlider[1].imageDetails?.alt}
                                                 />
                                             </div>
                                         );
@@ -144,14 +144,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
 
                                     return (
                                         <img
-                                            key={images[index].id}
+                                            key={imagesForSlider[index].id}
                                             src={base64ToUrl(
-                                                images[index].base64,
-                                                images[index].mimeType,
+                                                imagesForSlider[index].base64,
+                                                imagesForSlider[index].mimeType,
                                             )}
                                             className="streetcodeImg"
                                             style={{ objectFit: 'contain' }}
-                                            alt={images[index].imageDetails?.alt}
+                                            alt={imagesForSlider[index].imageDetails?.alt}
                                         />
                                     );
                                 })}
