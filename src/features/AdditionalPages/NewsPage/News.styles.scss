@@ -36,7 +36,7 @@
             list-style-type: disc;
             padding-inline-start: revert;
           }
-          
+
           ol {
             list-style-type: decimal;
             padding-inline-start: revert;
@@ -66,8 +66,8 @@
         .newsImage {
             margin-bottom: f.pxToRem(20px);
             margin-left: f.pxToRem(20px);
-            height: 100%;
-            max-height: fit-content;
+            height: auto;
+            object-fit: contain;
             max-width: f.pxToRem(600px);
             float: right;
             border-radius: 24px;
