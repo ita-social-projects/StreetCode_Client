@@ -56,6 +56,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
     const [animationPicture, setAnimationPicture] = useState<Element >();
     const [images, setImages] = useState<Image[]>([]);
+    const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
 
     useAsync(() => {
         if (id && id > 0) {
@@ -69,8 +70,11 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs.filter((image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
-                        || image.imageDetails?.alt === ImageAssigment.animation.toString()));
+                    setImages(imgs);
+                    setImagesForSlider(imgs.filter(
+                        (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
+                        || image.imageDetails?.alt === ImageAssigment.animation.toString(),
+                    ));
                     streecodePageLoaderContext.addBlockFetched();
                 })
                 .catch((e) => { });
@@ -108,26 +112,31 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                 swipeOnClick
                                 infinite
                             >
-                                {images.map((image, index) => {
-                                    if (images.length > 1 && index === 0) {
+                                {imagesForSlider.map((image, index) => {
+                                    if (imagesForSlider.length > 1 && index === 0) {
                                         return (
                                             <div>
                                                 <img
-                                                    key={images[0].id}
-                                                    src={base64ToUrl(images[0].base64, images[0].mimeType)}
+                                                    key={imagesForSlider[0].id}
+                                                    src={
+                                                        base64ToUrl(
+                                                            imagesForSlider[0].base64,
+                                                            imagesForSlider[0].mimeType,
+                                                        )
+                                                    }
                                                     className="streetcodeImgColored"
                                                     style={{ objectFit: 'contain' }}
                                                     alt={images[0].imageDetails?.alt}
                                                 />
                                                 <img
-                                                    key={images[1].id}
+                                                    key={imagesForSlider[1].id}
                                                     src={base64ToUrl(
-                                                        images[1].base64,
-                                                        images[1].mimeType,
+                                                        imagesForSlider[1].base64,
+                                                        imagesForSlider[1].mimeType,
                                                     )}
                                                     className="streetcodeImgGrey"
                                                     style={{ objectFit: 'contain' }}
-                                                    alt={images[index].imageDetails?.alt}
+                                                    alt={imagesForSlider[index].imageDetails?.alt}
                                                 />
                                             </div>
                                         );
