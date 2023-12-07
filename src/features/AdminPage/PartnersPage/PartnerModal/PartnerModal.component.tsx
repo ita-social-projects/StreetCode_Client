@@ -45,6 +45,7 @@ const PartnerModal: React.FC< {
         isStreetcodeVisible = true,
         afterSubmit,
     }) => {
+        // eslint-disable-next-line max-len
         const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,256}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
         const [form] = Form.useForm();
         const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
@@ -85,6 +86,16 @@ const PartnerModal: React.FC< {
         useEffect(() => {
             if (partnerItem && open) {
                 imageId.current = partnerItem.logoId;
+                setFileList([{
+                    name: '',
+                    thumbUrl: base64ToUrl(
+                        partnerItem.logo?.base64,
+                        partnerItem.logo?.mimeType,
+                    ),
+                    uid: partnerItem.logoId.toString(),
+                    status: 'done',
+                }]);
+
                 form.setFieldsValue({
                     title: partnerItem.title,
                     isKeyPartner: partnerItem.isKeyPartner,
@@ -125,7 +136,7 @@ const PartnerModal: React.FC< {
             try {
                 const values = await form.validateFields();
                 form.submit();
-                message.success("Партнера успішно додано!", 2)
+                message.success('Партнера успішно додано!', 2);
             } catch (error) {
                 message.config({
                     top: 100,
@@ -151,9 +162,9 @@ const PartnerModal: React.FC< {
             setFileList([]);
         };
 
-        const closeModal =() => {
+        const closeModal = () => {
             setIsModalOpen(false);
-        }
+        };
 
         const onSuccesfulSubmitLinks = (formValues: any) => {
             const url = formValues.url as string;
@@ -283,9 +294,11 @@ const PartnerModal: React.FC< {
                 onCancel={closeModal}
                 className="modalContainer"
                 footer={null}
-                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                    <CancelBtn className='iconSize' onClick={closeAndCleanData} />
-                </Popover>}
+                closeIcon={(
+                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                        <CancelBtn className="iconSize" onClick={closeAndCleanData} />
+                    </Popover>
+                )}
             >
                 <div className="modalContainer-content">
                     <Form
@@ -333,7 +346,7 @@ const PartnerModal: React.FC< {
                             label="Посилання: "
                             rules={[
                                 {
-                                    pattern: URL_REGEX_VALIDATION_PATTERN ,
+                                    pattern: URL_REGEX_VALIDATION_PATTERN,
                                     message: 'Введіть правильне посилання',
                                 },
                             ]}
@@ -386,21 +399,6 @@ const PartnerModal: React.FC< {
                                 onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;
                                 }}
-                                defaultFileList={
-                                    partnerItem
-                                        ? [
-                                            {
-                                                name: '',
-                                                thumbUrl: base64ToUrl(
-                                                    partnerItem.logo?.base64,
-                                                    partnerItem.logo?.mimeType,
-                                                ),
-                                                uid: partnerItem.logoId.toString(),
-                                                status: 'done',
-                                            },
-                                        ]
-                                        : []
-                                }
                             >
                                 <p>Виберіть чи перетягніть файл</p>
                             </FileUploader>
