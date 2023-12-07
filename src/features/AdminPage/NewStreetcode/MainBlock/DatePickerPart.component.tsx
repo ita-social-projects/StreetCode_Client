@@ -153,7 +153,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                         <Input
                             disabled={disableInput}
                             showCount
-                            maxLength={50}
+                            maxLength={100}
                             onChange={(e) => setDateString(e.target.value)}
                             value={dateString}
                         />
