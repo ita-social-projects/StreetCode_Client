@@ -1,3 +1,7 @@
+/* eslint-disable react/jsx-no-duplicate-props */
+/* eslint-disable complexity */
+/* eslint-disable eqeqeq */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-param-reassign */
 import './NewsModal.styles.scss';
@@ -54,6 +58,7 @@ const NewsModal: React.FC<{
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
     const [count, setCount] = React.useState(0);
+    const [textCount, setTextCount] = useState(0);
 
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
@@ -224,6 +229,9 @@ const NewsModal: React.FC<{
         if (cCount <= sizeLimit) {
             setData(value);
             setCount(cCount);
+            setTextCount(cCount);
+        } else {
+            callErrorMessage('Ви перевищіли максимально допустиму кількість символів');
         }
     };
 
@@ -294,6 +302,7 @@ const NewsModal: React.FC<{
                                             }
                                             return Promise.reject(new Error('Посилання вже існує'));
                                         },
+
                                     },
                                 ]}
                             >
@@ -332,8 +341,15 @@ const NewsModal: React.FC<{
                                 }}
                             />
                             <p>
-                                Remaining:
-                                {sizeLimit - count}
+             Залишок символів:
+                                {' '}
+                                {sizeLimit - textCount}
+                                {textCount > sizeLimit && (
+                                    <span style={{ color: 'red', marginLeft: '10px' }}>
+            Ви перевищіли максимально допустиму кількість символів
+                                    </span>
+                                )}
+
                             </p>
                             {!textIsPresent && textIsChanged && (
                                 <p className="form-text">Введіть текст</p>
@@ -342,6 +358,7 @@ const NewsModal: React.FC<{
                             <Form.Item
                                 name="image"
                                 label="Зображення: "
+                                rules={[{ required: true, message: 'Додайте зображення' }]}
                                 valuePropName="fileList"
                                 getValueFromEvent={(e: any) => {
                                     if (Array.isArray(e)) {
@@ -410,6 +427,7 @@ const NewsModal: React.FC<{
                                     <p>Виберіть чи перетягніть файл</p>
                                 </FileUploader>
                             </Form.Item>
+
                             <Form.Item
                                 name="creationDate"
                                 label="Дата створення: "
