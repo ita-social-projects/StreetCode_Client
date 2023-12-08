@@ -18,6 +18,8 @@ import { Button, Input, Popover, PopoverProps } from 'antd';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import SearchBlock from './SearchBlock/SearchBlock.component';
 import { useMediaQuery } from 'react-responsive';
+import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 
 const HeaderBlock = () => {
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
@@ -28,6 +30,8 @@ const HeaderBlock = () => {
     const searchBlockRef = useRef(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const dimWrapperRef = useRef(null);
+    const [searchResult, setSearchResult] = useState<StreetcodeFilterResultDTO[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
@@ -35,6 +39,9 @@ const HeaderBlock = () => {
 
     const handlePopoverVisibleChange = (visible: boolean) => {
         setIsPopoverVisible(visible);
+        if(!visible) {
+            setIsLoading(true);
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,15 +82,37 @@ const HeaderBlock = () => {
         toggle();
     };
 
+    const search = () => {
+        if (searchQuery.length === 0) {
+            setSearchResult([]);
+            return;
+        }
+
+        const filter: StreetcodeFilterRequestDTO = { searchQuery };
+        
+        StreetcodesApi.getByFilter(filter)
+            .then((response: StreetcodeFilterResultDTO[]) => {
+                setSearchResult(response);
+                setIsLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        if(isDesktop){
+            search();
+        }
+    }, [searchQuery]);
+
     const popoverProps: PopoverProps = {
         trigger: 'click',
-        open: isPopoverVisible,
+        open: isPopoverVisible && !isLoading,
         getPopupContainer: (trigger: HTMLElement) => trigger.parentNode as HTMLElement,
         content:(
             <div ref={searchBlockRef}>
-                <SearchBlock searchQuery={searchQuery}/>
+                <SearchBlock searchResult={searchResult}/>
             </div>
         ),
+        afterOpenChange: handlePopoverVisibleChange,
     };
 
     const onInputClick = () => {
@@ -194,6 +223,7 @@ const HeaderBlock = () => {
                             className="searchButton"
                             onClick={() => {
                                 handlePopoverVisibleChange(true);
+                                search();
                             }}
                         >
                             Пошук

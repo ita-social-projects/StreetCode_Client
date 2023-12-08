@@ -17,7 +17,6 @@ interface Props {
 const ContactForm = forwardRef((customClass: Props , ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
-    const messageLength = formData.message.length | 0;
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm();
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,8 +35,12 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
         if (isVerified) {
             const newEmail: Email = { from: formData.email, content: formData.message };
             EmailApi.send(newEmail)
-                .then(successMessage)
-                .catch(errorMessage);
+                .then(() => {
+                    successMessage();
+                })
+                .catch(() => {
+                    errorMessage();
+                });
         }
     };
     
@@ -88,14 +91,9 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                         maxLength={MAX_SYMBOLS}
                         onChange={handleChange}
                     />
-                    <p className="custom-character-counter">
-                        {messageLength}
-                        /
-                        {' '}
-                        {MAX_SYMBOLS}
-                    </p>
                 </Form.Item>
                 <Form.Item
+                    className="required-input"
                     name="email"
                     rules={[
                         {
@@ -113,9 +111,9 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                         onChange={handleChange}
                     />
                 </Form.Item>
-                <div className="captchaBlock ">
+                <div className="captchaBlock">
                     <ReCAPTCHA
-                        className="required-input"
+                        className="required-captcha"
                         sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
                         onChange={handleVerify}
                     />

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable complexity */
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -52,6 +53,7 @@ const NewsModal: React.FC<{
     const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
+    const image = useRef<Image | undefined>(undefined);
     const editorRef = useRef<TinyMCEEditor>();
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
@@ -82,8 +84,10 @@ const NewsModal: React.FC<{
     };
 
     useEffect(() => {
+        editorRef.current?.setContent('');
         if (newsItem && open) {
             imageId.current = newsItem.imageId;
+            image.current = newsItem.image;
             form.setFieldsValue({
                 title: newsItem.title,
                 url: newsItem.url,
@@ -105,11 +109,13 @@ const NewsModal: React.FC<{
             }
         } else {
             imageId.current = 0;
+            image.current = undefined;
         }
     }, [newsItem, open, form]);
 
     const removeImage = () => {
         imageId.current = undefined;
+        image.current = undefined;
         if (newsItem) {
             newsItem.image = undefined;
         }
@@ -131,14 +137,19 @@ const NewsModal: React.FC<{
     const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
+
     const handleTextChange = () => {
+        setTextIsChanged(true);
+
         if (editorRef.current?.getContent() === '') {
             setTextIsPresent(false);
-        } else {
-            setTextIsPresent(true);
+            return false;
         }
-        setTextIsChanged(true);
+
+        setTextIsPresent(true);
+        return true;
     };
+
     const callErrorMessage = (messageText: string) => {
         message.config({
             top: 100,
@@ -152,9 +163,8 @@ const NewsModal: React.FC<{
 
     const handleOk = async () => {
         try {
-            handleTextChange();
             await form.validateFields();
-            if (textIsPresent) {
+            if (handleTextChange()) {
                 form.submit();
                 message.success('Новину успішно додано!', 2);
             } else {
@@ -177,16 +187,14 @@ const NewsModal: React.FC<{
         };
 
         newsStore.getNewsArray.map((t) => t).forEach((t) => {
-            if (formValues.title == t.title || imageId.current == t.imageId) {
-                newsItem = t;
-            }
+            if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
         // need to fix when url is static because from didn't see ti when u press save button on second time
         let success = false;
         if (newsItem) {
             news.id = newsItem.id;
             news.imageId = imageId.current;
-            news.image = newsItem.image;
+            news.image = image.current;
             Promise.all([
                 newsStore
                     .updateNews(news)
@@ -214,10 +222,6 @@ const NewsModal: React.FC<{
         if (success && afterSubmit) {
             afterSubmit(news);
         }
-    };
-
-    const handleInit = (value: any, editor: any) => {
-        setCount(editor.getContent({ format: 'text' }).length);
     };
 
     const handleUpdate = (value: any, editor: any) => {
@@ -298,7 +302,9 @@ const NewsModal: React.FC<{
                                             }
                                             return Promise.reject(new Error('Посилання вже існує'));
                                         },
-                                    }]}
+
+                                    },
+                                ]}
                             >
                                 <Input maxLength={200} showCount />
                             </Form.Item>
@@ -313,7 +319,6 @@ const NewsModal: React.FC<{
                                 onBeforeAddUndo={handleBeforeAddUndo}
                                 onInit={(evt, editor) => {
                                     editorRef.current = editor;
-                                    handleInit;
                                 }}
                                 initialValue={newsItem ? newsItem.text : ''}
                                 init={{
@@ -344,6 +349,7 @@ const NewsModal: React.FC<{
             Ви перевищіли максимально допустиму кількість символів
                                     </span>
                                 )}
+
                             </p>
                             {!textIsPresent && textIsChanged && (
                                 <p className="form-text">Введіть текст</p>
@@ -361,6 +367,30 @@ const NewsModal: React.FC<{
                                     return e?.fileList;
                                 }}
                                 className="image-form-item"
+                                rules={[{
+                                    required: true,
+                                    message: 'Додайте зображення',
+                                },
+                                {
+                                    validator: (_, file) => {
+                                        if (file) {
+                                            let name = '';
+                                            if (file.file) {
+                                                name = file.file.name.toLowerCase();
+                                            } else if (file.name) {
+                                                name = file.name.toLowerCase();
+                                            }
+                                            if (name.endsWith('.jpeg') || name.endsWith('.png')
+                                                || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
+                                                return Promise.resolve();
+                                            }
+                                            // eslint-disable-next-line max-len
+                                            return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
+                                        }
+                                        return Promise.reject();
+                                    },
+                                },
+                                ]}
                             >
                                 <FileUploader
                                     multiple={false}
@@ -371,6 +401,7 @@ const NewsModal: React.FC<{
                                     uploadTo="image"
                                     onSuccessUpload={(img: Image | Audio) => {
                                         imageId.current = img.id;
+                                        image.current = img as Image;
                                         if (newsItem) {
                                             newsItem.image = img as Image;
                                         }
@@ -396,7 +427,12 @@ const NewsModal: React.FC<{
                                     <p>Виберіть чи перетягніть файл</p>
                                 </FileUploader>
                             </Form.Item>
-                            <Form.Item name="creationDate" label="Дата створення: ">
+
+                            <Form.Item
+                                name="creationDate"
+                                label="Дата створення: "
+                                rules={[{ required: true, message: 'Введіть дату' }]}
+                            >
                                 <DatePicker showTime allowClear={false} />
                             </Form.Item>
                             <PreviewFileModal
