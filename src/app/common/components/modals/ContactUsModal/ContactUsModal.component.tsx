@@ -37,13 +37,17 @@ export const ContactUsModal = ({ text, toggleState}: Props) => {
                 className="contactUsModal"
                 open={isActive}
                 footer={null}
-                onCancel={() => setActive(false)}
+                onCancel={() => {
+                    setActive(false);
+                    onClear();
+                }}
                 width={"max-content"}
+                closable={isDesktop}
                 closeIcon={(isDesktop ? 
                     <Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                        <CancelBtn onClick={onClear} />
+                        <CancelBtn/>
                     </Popover>
-                    : <CancelBtn onClick={onClear} />)}
+                    : <CancelBtn/>)}
             >
                 <ContactForm customClass={"formWrapper__modal"} ref={form} />
             </Modal>
