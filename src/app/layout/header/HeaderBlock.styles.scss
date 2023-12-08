@@ -8,6 +8,12 @@
 $navbar-innerwidth: 500px; 
 $navbar-hidden-innerwidth: 400px;
 
+.HeaderBlock{
+  .ant-popover-inner{
+    @include mut.rem-padded(0, 6px, 0, 0);
+  }
+}
+
 .navBarContainer {
   @include mut.flexed($justify-content: space-between, $align-items: center);
   @include mut.sized(100%, 82px);
@@ -114,10 +120,6 @@ $navbar-hidden-innerwidth: 400px;
   .burgerMenuContainer {
     @include mut.rem-margined(0);
   }
-}
-
-.ant-popover-inner{
-  @include mut.rem-padded(0, 6px, 0, 0);
 }
 
 .searchPopover{

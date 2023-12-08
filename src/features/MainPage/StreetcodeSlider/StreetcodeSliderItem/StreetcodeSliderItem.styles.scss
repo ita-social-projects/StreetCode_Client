@@ -34,7 +34,7 @@
     }
 
     .leftSlider {
-        @include mut.full-rounded(53px);
+        @include mut.full-rounded(50px);
         @include mut.sized(294px, 398px);
         flex: 0 0 f.pxToRem(294px);
         background-color: c.$pure-white-color;
@@ -42,6 +42,7 @@
 
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(266px, 338px);
+            padding: f.pxToRem(5px) f.pxToRem(10px);
         }
 
         @media screen and (max-width: 767px) {
@@ -57,13 +58,24 @@
         @include mut.flex-centered();
 
         @media (min-width: 768px) and (max-width: 1024px) {
-            @include mut.sized(100%, 338px);
-            border-bottom: 0px !important;
+            @include mut.sized(100%, 355px);
         }
 
         @media screen and (max-width: 767px) {
-            @include mut.sized(100%, 398px);
-            border-bottom: 0px !important;
+            @include mut.sized(100%, 414px);
+        }
+    }
+
+    .skeleton{
+        background: #F4F4F4;
+        background: linear-gradient(90deg, #F4F4F4 8%, #F9F9F9 18%, #F4F4F4 33%);
+        border-radius: 5px;
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
+    }
+    @keyframes shine {
+        to {
+            background-position-x: -200%;
         }
     }
 
@@ -126,6 +138,7 @@
 
         &SubTitle{
             font-weight: 500;
+            @include mut.truncated(1);
             @media screen and (max-width: 1024px) {
                text-align: center;
                 color: c.$lighter-black-color;
