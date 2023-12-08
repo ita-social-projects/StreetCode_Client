@@ -346,13 +346,13 @@
 @media screen and (max-width: 480px) {
     .top {
         @include mut.bg-image('@assets/images/main-page/ornamentFlower.svg', $bg-size: contain, $bg-repeat: space);
-        @include mut.rem-margined($top: 15px);
+        @include mut.rem-margined($top: 30px);
         height: 36px;
     }
 
     .bottom {
         @include mut.bg-image('@assets/images/main-page/ornamentFlower.svg', $bg-size: contain, $bg-repeat: space);
-        @include mut.rem-margined($bottom: 15px);
+        @include mut.rem-margined($bottom: 10px);
         height: 36px;
     }
 }
