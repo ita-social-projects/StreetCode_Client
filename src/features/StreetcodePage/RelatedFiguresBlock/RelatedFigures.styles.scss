@@ -59,6 +59,7 @@ $card-size: 380px;
     .slick-arrow {
         position: absolute;
         top: f.pxToRem(calc($card-size / 2));
+        transform: translateY(-1.8rem); // half of arrow height
     }
 
     .slick-list {
@@ -94,12 +95,12 @@ $card-size: 380px;
         }
         .slick-slide {
             width: 165px !important;
-            
+
             &.slick-active.slick-current {
                 transform: translateX(0px) !important;
             }
         }
-        
+
     }
 }
 
