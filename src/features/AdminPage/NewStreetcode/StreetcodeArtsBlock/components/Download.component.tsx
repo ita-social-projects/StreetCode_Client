@@ -53,9 +53,11 @@ const DownloadBlock = () => {
         }
     }, [artStore.mutationObserved]);
 
+    const isArtInSlides = (id: string) => (
+        streetcodeArtSlideStore.hasArtWithId(id) || artGalleryTemplateStore.hasArtWithId(id));
+
     const handleRemove = useCallback((param: UploadFile) => {
-        if (streetcodeArtSlideStore.hasArtWithId(param.uid)
-        || artGalleryTemplateStore.hasArtWithId(param.uid)) {
+        if (isArtInSlides(param.uid)) {
             alert('Ви не можете виділити цей файл для видалення оскільки він є у існуючих слайдах');
             return;
         }
@@ -103,7 +105,7 @@ const DownloadBlock = () => {
     function RemoveFile(id: string) {
         const artToRemoveIndex = artStore.arts.findIndex((art) => `${art.id}` === id);
 
-        if (artToRemoveIndex !== -1) {
+        if (artToRemoveIndex !== -1 && !isArtInSlides(id)) {
             const toRemove = artStore.arts[artToRemoveIndex];
 
             runInAction(() => {

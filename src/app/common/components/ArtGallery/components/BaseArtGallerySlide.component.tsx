@@ -115,7 +115,7 @@ const BaseArtGallerySlide = ({
                             className={`baseArtImage img${streetcodeArt.index}`}
                             src={base64ToUrl(image.base64, image.mimeType)}
                             alt={image.imageDetails?.title}
-                            onClick={() => setModal(
+                            onClick={() => !isDroppable && setModal(
                                 'artGallery',
                                 streetcodeArt.art.id,
                             )}
