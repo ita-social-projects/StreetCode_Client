@@ -24,13 +24,13 @@ export default class NewsStore {
     }
 
     public setInternalMap(news: News[]) {
-         // Offset in hours
+        // Offset in hours
         const localOffset = new Date().getTimezoneOffset() / 60;
         this.NewsMap.clear();
         news.forEach(this.setItem);
 
         // as date is saved in UTC+0, add local offset to actualize date
-        news.forEach(n => n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours'));
+        news.forEach((n) => n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours'));
     }
 
     public set setNews(news: News) {
@@ -86,19 +86,11 @@ export default class NewsStore {
     };
 
     public createNews = async (news: News) => {
-        try {
-            await newsApi.create(news).then((created) => this.setItem(created));
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        await newsApi.create(news).then((created) => this.setItem(created));
     };
 
     public updateNews = async (news: News) => {
-        try {
-            await newsApi.update(news).then((updated) => this.setItem(updated));
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        await newsApi.update(news).then((updated) => this.setItem(updated));
     };
 
     public deleteNews = async (newsId: number) => {
