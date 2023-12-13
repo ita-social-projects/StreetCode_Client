@@ -72,7 +72,7 @@ const NewsModal: React.FC<{
     useEffect(() => {
         setWaitingForApiResponse(false);
         if (actionSuccess) {
-            message.info('Новину успішно додано/оновлено!', 2);
+            message.success('Новину успішно додано/оновлено!', 2);
             setActionSuccess(false);
         }
     }, [actionSuccess]);
@@ -80,18 +80,9 @@ const NewsModal: React.FC<{
         setFilePreview(file);
         setPreviewOpen(true);
     };
-    const getNewsList = async () => {
-        try {
-            const response = await axios.get('/news/getAll');
-            return response.data;
-        } catch (error) {
-            console.error('Помилка при отриманні списку новин', error);
-            return [];
-        }
-    };
 
     const checkUniqueURL = async (url: string): Promise<boolean> => {
-        const newsList = await getNewsList();
+        const newsList = newsStore.getNewsArray;
         if (newsItem) {
             const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem.id);
             return filteredNewsList.every((news: News) => news.url !== url);
