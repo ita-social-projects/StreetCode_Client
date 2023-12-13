@@ -59,7 +59,23 @@ const NewsModal: React.FC<{
     const [data, setData] = React.useState(initialValue ?? '');
     const [count, setCount] = React.useState(0);
     const [textCount, setTextCount] = useState(0);
+    const [actionSuccess, setActionSuccess] = useState(false);
+    const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
 
+    message.config({
+        top: 100,
+        duration: 2,
+        maxCount: 3,
+        prefixCls: 'my-message',
+    });
+
+    useEffect(() => {
+        setWaitingForApiResponse(false);
+        if (actionSuccess) {
+            message.info('Новину успішно додано/оновлено!', 2);
+            setActionSuccess(false);
+        }
+    }, [actionSuccess]);
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
         setPreviewOpen(true);
@@ -122,19 +138,23 @@ const NewsModal: React.FC<{
     };
 
     const closeAndCleanData = () => {
-        form.resetFields();
-        setIsModalOpen(false);
-        setTextIsPresent(false);
-        setTextIsChanged(false);
-        editorRef.current?.setContent('');
+        if (!waitingForApiResponse) {
+            form.resetFields();
+            setIsModalOpen(false);
+            setTextIsPresent(false);
+            setTextIsChanged(false);
+            editorRef.current?.setContent('');
+        }
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        if (!waitingForApiResponse) {
+            setIsModalOpen(false);
+        }
     };
 
     dayjs.locale('uk');
-    const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
+    const dayJsUa = require("dayjs/locale/uk") // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
@@ -150,32 +170,25 @@ const NewsModal: React.FC<{
         return true;
     };
 
-    const callErrorMessage = (messageText: string) => {
-        message.config({
-            top: 100,
-            duration: 1,
-            maxCount: 3,
-            rtl: true,
-            prefixCls: 'my-message',
-        });
-        message.error(messageText);
-    };
-
     const handleOk = async () => {
         try {
+            message.loading('Валідація даних...');
+
             await form.validateFields();
             if (handleTextChange()) {
-                form.submit();
-                message.success('Новину успішно додано!', 2);
+                setWaitingForApiResponse(true);
+                await form.submit();
             } else {
-                callErrorMessage("Будь ласка, заповніть всі обов'язкові поля");
+                throw new Error();
             }
         } catch (error) {
-            callErrorMessage("Будь ласка, заповніть всі обов'язкові поля");
+            message.error("Будь ласка, заповніть всі обов'язкові поля");
         }
     };
 
     const onSuccessfulSubmitNews = async (formValues: any) => {
+        message.loading('Зберігання...');
+
         const news: News = {
             id: 0,
             imageId: imageId.current,
@@ -190,37 +203,27 @@ const NewsModal: React.FC<{
             if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
         // need to fix when url is static because from didn't see ti when u press save button on second time
-        let success = false;
-        if (newsItem) {
-            news.id = newsItem.id;
-            news.imageId = imageId.current;
-            news.image = image.current;
-            Promise.all([
-                newsStore
-                    .updateNews(news)
-                    .then(() => {
-                        success = true;
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                        success = false;
-                    }),
-            ]);
-        } else {
-            Promise.all([
-                newsStore
-                    .createNews(news)
-                    .then(() => {
-                        success = true;
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                        success = false;
-                    }),
-            ]);
-        }
-        if (success && afterSubmit) {
-            afterSubmit(news);
+        try {
+            if (!image.current) {
+                throw new Error("Image isn't uploaded yet");
+            }
+            if (newsItem) {
+                news.id = newsItem.id;
+                news.imageId = imageId.current;
+                news.image = image.current;
+
+                await newsStore.updateNews(news);
+            } else {
+                await newsStore.createNews(news);
+            }
+
+            if (afterSubmit) {
+                afterSubmit(news);
+            }
+            setActionSuccess(true);
+        } catch (e: unknown) {
+            message.error('Не вдалось оновити/створити новину. Спробуйте ще раз.');
+            setWaitingForApiResponse(false);
         }
     };
 
@@ -231,7 +234,7 @@ const NewsModal: React.FC<{
             setCount(cCount);
             setTextCount(cCount);
         } else {
-            callErrorMessage('Ви перевищіли максимально допустиму кількість символів');
+            message.error('Ви перевищіли максимально допустиму кількість символів');
         }
     };
 
@@ -358,7 +361,6 @@ const NewsModal: React.FC<{
                             <Form.Item
                                 name="image"
                                 label="Зображення: "
-                                rules={[{ required: true, message: 'Додайте зображення' }]}
                                 valuePropName="fileList"
                                 getValueFromEvent={(e: any) => {
                                     if (Array.isArray(e)) {
