@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { Button } from 'antd';
 
-import TextsApi from '@/app/api/streetcode/text-content/texts.api';
 import ReadMore from '@/features/StreetcodePage/TextBlock/ReadMore/ReadMore.component';
 import { Text, TextPreviewContent } from '@/models/streetcode/text-contents.model';
 
@@ -21,12 +20,12 @@ const TextPreview = ({ inputInfo }: Props) => {
         setText(undefined);
         if (!disabled) {
             setLoading(true);
-            let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
+            const buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
             const content: TextPreviewContent = {
                 textContent: buffer ?? '',
-            }; 
-               setText(buffer);
-               setLoading(false);
+            };
+            setText(buffer);
+            setLoading(false);
         }
     }, [disabled]);
 

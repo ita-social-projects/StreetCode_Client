@@ -11,7 +11,7 @@ export default interface Audio {
 }
 
 export interface AudioCreate {
-    title?: string ;
+    title?: string;
     baseFormat: string;
     mimeType: string;
     extension: string;

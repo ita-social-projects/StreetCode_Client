@@ -6,8 +6,8 @@
 @mixin cardText(
     $title-max-lines: 2,
     $text-max-lines: 6,
-){
-    .cardTextContainer{
+) {
+    .cardTextContainer {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -16,25 +16,25 @@
         color: c.$lighter-black-color;
         padding: 0 pxToRem(15px);
 
-        &TopPart{
+        &TopPart {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             gap: pxToRem(8px);
         }
 
-        &Title{
+        &Title {
             color: c.$lighter-black-color;
             @include mut.truncated($line-num: $title-max-lines);
         }
 
-        &SubTitle{
+        &SubTitle {
             color: c.$sliders-text-grey-color;
             @include mut.truncated($line-num: 2);
 
         }
 
-        &Text{
+        &Text {
             @include mut.truncated($line-num: $text-max-lines);
 
             * {
@@ -42,12 +42,12 @@
             }
         }
 
-        &Button{
+        &Button {
             @include mut.truncated($line-num: 1);
             color: c.$dark-red-color;
             width: max-content;
 
-            &:hover{
+            &:hover {
                 cursor: pointer;
                 text-decoration: underline;
             }

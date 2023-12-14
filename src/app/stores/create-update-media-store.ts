@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 
 import { ModelState } from '@/models/enums/model-state';
 import { AudioUpdate } from '@/models/media/audio.model';
-import Image, { ImageAssigment, ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
+import { ImageAssigment, ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
 
 export default class CreateUpdateMediaStore {
     public animationId: number | null = null;
@@ -26,7 +26,7 @@ export default class CreateUpdateMediaStore {
     }
 
     public getImageDetails(): ImageDetails[] {
-        const details:ImageDetails[] = [];
+        const details: ImageDetails[] = [];
         if (this.animationId) {
             details.push({ id: 0, imageId: this.animationId, alt: ImageAssigment.animation.toString() });
         }
@@ -39,7 +39,7 @@ export default class CreateUpdateMediaStore {
         return details;
     }
 
-    public getImageDetailsUpdate():ImageDetails[] {
+    public getImageDetailsUpdate(): ImageDetails[] {
         const details = this.imagesUpdate
             .filter((image) => image.modelState === ModelState.Updated && image.imageDetails)
             .map((image) => image.imageDetails!);

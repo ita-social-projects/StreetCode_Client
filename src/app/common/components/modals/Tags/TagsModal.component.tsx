@@ -20,13 +20,13 @@ interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
+const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId }: Props) => {
     const { relatedByTag } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { tagsList } } = modalStore;
     const { fetchRelatedFiguresByTagId, getStreetcodesByTag } = relatedByTag;
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
-  
+
     const tagId = activeTagId;
     useAsync(
         () => {
@@ -49,7 +49,10 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
                 setModal('tagsList');
             }}
         >
-            <div className="headerTagContainer" style={{ background: `url(${ModalBg})` }}>
+            <div
+                className="headerTagContainer"
+                style={{ background: `url(${ModalBg})` }}
+            >
                 <div className="tagsSliderWrappper">
                     <TagsSliderModal
                         streetCodeid={getStreetCodeId}

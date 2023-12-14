@@ -2,9 +2,10 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import useMobx from '@stores/root-store';
 
+import { Fact } from '@/models/streetcode/text-contents.model';
+
 import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
-import { Fact } from '@/models/streetcode/text-contents.model';
 
 interface Props {
     fact: Fact;
@@ -37,7 +38,12 @@ const InterestingFactsBlock = ({ fact, onChange }: Props) => {
                 ))}
             </div>
             <div>
-                <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} onChange={onChange} />
+                <InterestingFactsAdminModal
+                    fact={fact}
+                    setModalOpen={setModalOpen}
+                    open={openModal}
+                    onChange={onChange}
+                />
             </div>
         </div>
     );

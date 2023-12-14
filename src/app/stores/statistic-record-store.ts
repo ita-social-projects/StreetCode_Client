@@ -25,9 +25,11 @@ export default class StatisticRecordStore {
         return (Array.from(this.StatisticRecordMap.values()) as StatisticRecordUpdate[])
             .map((item: StatisticRecordUpdate) => {
                 if (item.modelState === ModelState.Created) {
-                    return { ...item,
-                             id: 0,
-                             streetcodeCoordinate: { ...item.streetcodeCoordinate, id: 0 } };
+                    return {
+                        ...item,
+                        id: 0,
+                        streetcodeCoordinate: { ...item.streetcodeCoordinate, id: 0 },
+                    };
                 }
                 return item;
             });
@@ -64,6 +66,7 @@ export default class StatisticRecordStore {
         try {
             const statisticRecords = await StatisticRecordApi.getAllByStreetcodeId(streetcodeId);
             this.setInternalMap(statisticRecords);
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 }

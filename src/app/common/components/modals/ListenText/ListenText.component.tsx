@@ -5,7 +5,7 @@ import ExitBtn from '@images/audio-player/ExitBtn.webp';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { AudioPlayer } from '@components/AudioPlayer/AudioPlayer.component';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
 const ListenTextModal = () => {
     const { modalStore } = useModalContext();

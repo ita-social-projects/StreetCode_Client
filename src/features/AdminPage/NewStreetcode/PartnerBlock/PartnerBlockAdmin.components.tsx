@@ -67,7 +67,14 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                         .map((x) => x.id)}
                     onDeselect={onPartnerDeselect}
                 >
-                    {sortedPartners.map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
+                    {sortedPartners.map((s) => (
+                        <Select.Option
+                            key={`${s.id}`}
+                            value={s.id}
+                        >
+                            {s.title}
+                        </Select.Option>
+                    ))}
                 </Select>
 
                 <Button

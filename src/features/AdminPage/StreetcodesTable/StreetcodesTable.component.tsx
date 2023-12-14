@@ -6,24 +6,23 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, FormOutlined, RollbackOutlined,
 } from '@ant-design/icons';
-import { NumberLiteralTypeAnnotation } from '@babel/types';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
 import {
-    Button, Dropdown, InputNumber, MenuProps, Modal, Pagination, Space,
+    Button, Dropdown, MenuProps, Pagination, Space,
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useMobx, { useModalContext } from '@/app/stores/root-store';
+import { useModalContext } from '@/app/stores/root-store';
 import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
 
 import { formatDate } from './FormatDateAlgorithm';
 import SearchMenu from './SearchMenu.component';
 
-function convertUTCDateToLocalDate(date :Date) {
+function convertUTCDateToLocalDate(date: Date) {
     const newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 
     const offset = date.getTimezoneOffset() / 60;
@@ -33,6 +32,7 @@ function convertUTCDateToLocalDate(date :Date) {
 
     return newDate;
 }
+
 const StreetcodesTable = () => {
     const [currentPages, setCurrentPages] = useState<number>(1);
     const [totalItems, setTotalItems] = useState<number>(0);
@@ -83,7 +83,6 @@ const StreetcodesTable = () => {
     ];
 
     const updateState = (id: number, state: string) => {
-
         const updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
             if (item.key === id) {
                 return {
@@ -179,7 +178,10 @@ const StreetcodesTable = () => {
             }),
 
             render: (text: string, record: MapedStreetCode) => (
-                <Dropdown menu={menuProps} trigger={['click']}>
+                <Dropdown
+                    menu={menuProps}
+                    trigger={['click']}
+                >
                     <Button>
                         <Space>
                             {text}
@@ -188,7 +190,7 @@ const StreetcodesTable = () => {
                     </Button>
                 </Dropdown>
             ),
-          },
+        },
         {
             title: 'Останні зміни',
             dataIndex: 'date',
@@ -271,10 +273,22 @@ const StreetcodesTable = () => {
                 let currentStatus = '';
 
                 switch (streetcode.status) {
-                case 0: { currentStatus = 'Чернетка'; break; }
-                case 1: { currentStatus = 'Опублікований'; break; }
-                case 2: { currentStatus = 'Видалений'; break; }
-                default: { currentStatus = 'Чернетка'; break; }
+                case 0: {
+                    currentStatus = 'Чернетка';
+                    break;
+                }
+                case 1: {
+                    currentStatus = 'Опублікований';
+                    break;
+                }
+                case 2: {
+                    currentStatus = 'Видалений';
+                    break;
+                }
+                default: {
+                    currentStatus = 'Чернетка';
+                    break;
+                }
                 }
                 const mapedStreetCode = {
                     key: streetcode.id,
@@ -298,7 +312,11 @@ const StreetcodesTable = () => {
 
     return (
         <div className="StreetcodeTableWrapper">
-            <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest} />
+            <SearchMenu
+                setStatus={setStatusRequest}
+                setTitle={setTitleRequest}
+                setRequest={setRequest}
+            />
             <div>
                 <Table
                     columns={columnsNames}

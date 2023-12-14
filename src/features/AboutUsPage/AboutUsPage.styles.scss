@@ -9,7 +9,7 @@ $bgImg: '@assets/images/catalog/background.webp';
     background: url($bgImg) no-repeat center / 100%;
     background-position: center top;
     background-attachment: scroll;
-    
+
     min-height: 78vh;
     width: 100vw;
     overflow: hidden;
@@ -49,11 +49,13 @@ $bgImg: '@assets/images/catalog/background.webp';
 
         .contentContainer {
             margin: f.pxToRem(40px) f.pxToRem(10px) 0;
+
             .aboutUsBlockContainer {
                 margin-bottom: f.pxToRem(50px) !important;
-                
+
                 h1 {
                     margin-bottom: f.pxToRem(30px) !important;
+
                     span {
                         font-size: 24px !important;
                     }

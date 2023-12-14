@@ -26,16 +26,17 @@ export interface SourceCategory {
     streetcode?: Streetcode | undefined;
     streetcodeCategoryContents: StreetcodeCategoryContent[];
 }
+
 export interface SourceCategoryName {
     id: number;
     title: string;
 }
 
 export interface StreetcodeCategoryContent {
-    id?:number;
+    id?: number;
     sourceLinkCategoryId: number;
-    streetcodeId:number;
-    text?:string;
+    streetcodeId: number;
+    text?: string;
 }
 
 export interface StreetcodeCategoryContentUpdate extends StreetcodeCategoryContent, IModelState, IPersisted {

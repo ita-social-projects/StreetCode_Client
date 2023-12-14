@@ -62,7 +62,7 @@ const DonatesModal = () => {
     const zeroCount = (donateAmount.toString().match(/[0689]/g) || []).length;
 
     const inputWidth = baseValWidth + donateAmount.toString().length
-     * charWidth - count * firstWidth + zeroCount * baseValWidth;
+        * charWidth - count * firstWidth + zeroCount * baseValWidth;
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
@@ -149,7 +149,14 @@ const DonatesModal = () => {
                         checked={isCheckboxChecked}
                         onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                     >
-                        Я даю згоду на обробку моїх <a className='privacyPolicy' href='/privacy-policy'>персональних даних</a>
+                        Я даю згоду на обробку моїх
+                        {' '}
+                        <a
+                            className="privacyPolicy"
+                            href="/privacy-policy"
+                        >
+персональних даних
+                        </a>
                     </Checkbox>
                 </div>
                 <button

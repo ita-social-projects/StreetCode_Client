@@ -11,14 +11,14 @@
     width: 100%;
     overflow: hidden;
 
-    .swiper-wrapper{
+    .swiper-wrapper {
         align-items: center;
     }
 
     .swiper-slide {
         text-align: center;
         width: fit-content;
-        position:unset;
+        position: unset;
         font-size: 16px;
         font-weight: 500;
         line-height: 21px;
@@ -35,14 +35,15 @@
     }
 }
 
-.swiper{
+.swiper {
     justify-content: center;
 }
 
 .slider-arrow {
     min-width: 44px;
+
     &:hover {
-      fill: #000000;
+        fill: #000000;
     }
 }
 
@@ -53,13 +54,15 @@
     margin: 0 auto;
 }
 
-.squareParent{
+.squareParent {
     position: relative;
 }
+
 .teamMembersSlider {
     .swiper {
         padding: f.pxToRem(30px) 0;
-        .swiper-slide{
+
+        .swiper-slide {
             width: fit-content;
             height: auto;
         }

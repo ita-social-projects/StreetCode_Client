@@ -106,14 +106,16 @@ export default class TimelineStore {
         try {
             const timelineItems = await timelineApi.getByStreetcodeId(streetcodeId);
             this.setInternalMap(timelineItems);
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public createTimelineItem = async (timelineItem: TimelineItem) => {
         try {
             await timelineApi.create(timelineItem);
             this.setItem(timelineItem);
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public updateTimelineItem = async (timelineItem: TimelineItem) => {
@@ -126,7 +128,8 @@ export default class TimelineStore {
                 };
                 this.setItem(updatedTimelineItem as TimelineItem);
             });
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public deleteTimelineItem = async (timelineItemId: number) => {
@@ -135,6 +138,7 @@ export default class TimelineStore {
             runInAction(() => {
                 this.timelineItemMap.delete(timelineItemId);
             });
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 }

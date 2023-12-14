@@ -41,151 +41,140 @@ $breakpoints: (
 $media-direction: max !default;
 
 @mixin css-property($property, $value) {
-  @if type-of($value) == string {
-    #{$property}: unquote($value);
-  } @else {
-    #{$property}: $value;
-  }
+    @if type-of($value) == string {
+        #{$property}: unquote($value);
+    } @else {
+        #{$property}: $value;
+    }
 }
 
 @function split-limits($string, $separator) {
-  $string: inspect(quote($string));
-  $sep-id: str-index(quote($string), $separator);
+    $string: inspect(quote($string));
+    $sep-id: str-index(quote($string), $separator);
 
-  @if $sep-id {
-    $array: (quote(str-slice($string, 0, $sep-id - 1)), quote(str-slice($string, $sep-id + 1)));
-    @return $array;
-  }
-  @return $string;
+    @if $sep-id {
+        $array: (quote(str-slice($string, 0, $sep-id - 1)), quote(str-slice($string, $sep-id + 1)));
+        @return $array;
+    }
+    @return $string;
 }
 
 @mixin media-query(
-  $properties,
-  $orientation: false,
-  $separator: '-'
+    $properties,
+    $orientation: false,
+    $separator: '-'
 ) {
-  @each $property, $value in $properties {
-    @if type-of($value) == 'map' {
-      @each $screen, $val in $value {
-        $screen: split-limits(#{$screen}, $separator);
+    @each $property, $value in $properties {
+        @if type-of($value) == 'map' {
+            @each $screen, $val in $value {
+                $screen: split-limits(#{$screen}, $separator);
 
-        @if type-of($screen) == 'list' {
-          $left-limit: f.str-replace(nth($screen, 1), '"');
-          $right-limit: f.str-replace(nth($screen, 2), '"');
+                @if type-of($screen) == 'list' {
+                    $left-limit: f.str-replace(nth($screen, 1), '"');
+                    $right-limit: f.str-replace(nth($screen, 2), '"');
 
-          @if ($left-limit == min or $left-limit == max) {
-            $media-direction: $left-limit;
+                    @if ($left-limit == min or $left-limit == max) {
+                        $media-direction: $left-limit;
 
-            @if $orientation {
-              @if map-has-key($breakpoints, $right-limit) {
-                @media only screen and (#{$media-direction}-width: map-get($breakpoints, $right-limit) + 'px'
+                        @if $orientation {
+                            @if map-has-key($breakpoints, $right-limit) {
+                                @media only screen and (#{$media-direction}-width: map-get($breakpoints, $right-limit) + 'px'
                                    and (orientation: $orientation)) {
-                  @include css-property($property, $val);
-                }
-              } @else {
-                @media only screen and (#{$media-direction}-width: $right-limit) and (orientation: $orientation) {
-                  @include css-property($property, $val);
-                }
-              }
-            } @else {
-              @if map-has-key($breakpoints, $right-limit) {
-                @media only screen and (#{$media-direction}-width: map-get($breakpoints, $right-limit) + 'px') {
-                  @include css_property($property, $val);
-                }
-              } @else {
-                @media only screen and (#{$media-direction}-width: $right-limit + 'px') {
-                  @include css_property($property, $val);
-                }
-              }
-            }
-          } @else {
-            @if $orientation {
-              @if map-has-key($breakpoints, $left-limit) and map-has-key($breakpoints, $right-limit) {
-                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px')
-                                   and (max-width: map-get($breakpoints, $right-limit) + 'px')
-                                   and (orientation: $orientation) {
-                  @include css_property($property, $val);
-                }
-              } @else if map-has-key($breakpoints, $left-limit) and not map-has-key($breakpoints, $right-limit) {
-                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px')
-                                   and (max-width: $right-limit + 'px')
-                                   and (orientation: $orientation) {
-                  @include css_property($property, $val);
-                }
-              } @else if not map-has-key($breakpoints, $left-limit) and map-has-key($breakpoints, $left-limit) {
-                @media only screen and (min-width: $left-limit + 'px')
-                                   and (max-width: map-get($breakpoints, $right-limit) + 'px')
-                                   and (orientation: $orientation) {
-                  @include css_property($property, $val);
-                }
-              } @else {
-                @media only screen and (min-width: $left-limit + 'px') and (max-width: $right-limit + 'px')
-                                   and (orientation: $orientation) {
-                  @include css_property($property, $val);
-                }
-              }
-            } @else {
-              @if map-has-key($breakpoints, $left-limit) and map-has-key($breakpoints, $right-limit) {
-                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px')
-                                   and (max-width: map-get($breakpoints, $right-limit) + 'px') {
-                  @include css_property($property, $val);
-                }
-              } @else if map-has-key($breakpoints, $left-limit) and not map-has-key($breakpoints, $right-limit) {
-                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px')
-                                   and (max-width: $right-limit + 'px') {
-                  @include css_property($property, $val);
-                }
-              } @else if not map-has-key($breakpoints,  $left-limit) and map-has-key($breakpoints,  $right-limit) {
-                @media only screen and (min-width: $left-limit + 'px')
-                                   and (max-width: map-get($breakpoints, $right-limit) + 'px') {
-                  @include css_property($property, $val);
-                }
-              } @else {
-                @media only screen and (min-width: $left-limit + 'px') and (max-width: $right-limit + 'px') {
-                  @include css_property($property, $val);
-                }
-              }
-            }
-          }
-        } @else {
-          $screen: f.str-replace($screen, '"');
+                                    @include css-property($property, $val);
+                                }
+                            } @else {
+                                @media only screen and (#{$media-direction}-width: $right-limit) and (orientation: $orientation) {
+                                    @include css-property($property, $val);
+                                }
+                            }
+                        } @else {
+                            @if map-has-key($breakpoints, $right-limit) {
+                                @media only screen and (#{$media-direction}-width: map-get($breakpoints, $right-limit) + 'px') {
+                                    @include css_property($property, $val);
+                                }
+                            } @else {
+                                @media only screen and (#{$media-direction}-width: $right-limit + 'px') {
+                                    @include css_property($property, $val);
+                                }
+                            }
+                        }
+                    } @else {
+                        @if $orientation {
+                            @if map-has-key($breakpoints, $left-limit) and map-has-key($breakpoints, $right-limit) {
+                                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px') and (max-width: map-get($breakpoints, $right-limit) + 'px') and (orientation: $orientation) {
+                                    @include css_property($property, $val);
+                                }
+                            } @else if map-has-key($breakpoints, $left-limit) and not map-has-key($breakpoints, $right-limit) {
+                                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px') and (max-width: $right-limit + 'px') and (orientation: $orientation) {
+                                    @include css_property($property, $val);
+                                }
+                            } @else if not map-has-key($breakpoints, $left-limit) and map-has-key($breakpoints, $left-limit) {
+                                @media only screen and (min-width: $left-limit + 'px') and (max-width: map-get($breakpoints, $right-limit) + 'px') and (orientation: $orientation) {
+                                    @include css_property($property, $val);
+                                }
+                            } @else {
+                                @media only screen and (min-width: $left-limit + 'px') and (max-width: $right-limit + 'px') and (orientation: $orientation) {
+                                    @include css_property($property, $val);
+                                }
+                            }
+                        } @else {
+                            @if map-has-key($breakpoints, $left-limit) and map-has-key($breakpoints, $right-limit) {
+                                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px') and (max-width: map-get($breakpoints, $right-limit) + 'px') {
+                                    @include css_property($property, $val);
+                                }
+                            } @else if map-has-key($breakpoints, $left-limit) and not map-has-key($breakpoints, $right-limit) {
+                                @media only screen and (min-width: map-get($breakpoints, $left-limit) + 'px') and (max-width: $right-limit + 'px') {
+                                    @include css_property($property, $val);
+                                }
+                            } @else if not map-has-key($breakpoints,  $left-limit) and map-has-key($breakpoints,  $right-limit) {
+                                @media only screen and (min-width: $left-limit + 'px') and (max-width: map-get($breakpoints, $right-limit) + 'px') {
+                                    @include css_property($property, $val);
+                                }
+                            } @else {
+                                @media only screen and (min-width: $left-limit + 'px') and (max-width: $right-limit + 'px') {
+                                    @include css_property($property, $val);
+                                }
+                            }
+                        }
+                    }
+                } @else {
+                    $screen: f.str-replace($screen, '"');
 
-          @if $orientation {
-            @if map-has-key($breakpoints, $screen) {
-              @media only screen and (#{$media-direction}-width: map-get($breakpoints, $screen) + 'px')
-                                 and (orientation: $orientation) {
-                @include css_property($property, $val);
-              }
-            } @else {
-              @if $screen == all {
-                @media only screen and (orientation: $orientation) {
-                  @include css_property($property, $val);
+                    @if $orientation {
+                        @if map-has-key($breakpoints, $screen) {
+                            @media only screen and (#{$media-direction}-width: map-get($breakpoints, $screen) + 'px') and (orientation: $orientation) {
+                                @include css_property($property, $val);
+                            }
+                        } @else {
+                            @if $screen == all {
+                                @media only screen and (orientation: $orientation) {
+                                    @include css_property($property, $val);
+                                }
+                            } @else {
+                                @media only screen and (#{$media-direction}-width: $screen + 'px') and (orientation: $orientation) {
+                                    @include css_property($property, $val);
+                                }
+                            }
+                        }
+                    } @else {
+                        @if map-has-key($breakpoints, $screen) {
+                            @media only screen and (#{$media-direction}-width: map-get($breakpoints, $screen) + 'px') {
+                                @include css_property($property, $val);
+                            }
+                        } @else {
+                            @if $screen == all {
+                                @include css_property($property, $val);
+                            } @else {
+                                @media only screen and (#{$media-direction}-width: $screen + 'px') {
+                                    @include css_property($property, $val);
+                                }
+                            }
+                        }
+                    }
                 }
-              } @else {
-                @media only screen and (#{$media-direction}-width: $screen + 'px') and (orientation: $orientation) {
-                  @include css_property($property, $val);
-                }
-              }
             }
-          } @else {
-            @if map-has-key($breakpoints, $screen) {
-              @media only screen and (#{$media-direction}-width: map-get($breakpoints, $screen) + 'px') {
-                @include css_property($property, $val);
-              }
-            } @else {
-              @if $screen == all {
-                @include css_property($property, $val);
-              } @else {
-                @media only screen and (#{$media-direction}-width: $screen + 'px') {
-                  @include css_property($property, $val);
-                }
-              }
-            }
-          }
+        } @else {
+            @include css_property($property, $value);
         }
-      }
-    } @else {
-      @include css_property($property, $value);
     }
-  }
 }

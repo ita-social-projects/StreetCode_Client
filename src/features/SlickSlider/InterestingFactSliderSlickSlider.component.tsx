@@ -5,7 +5,7 @@ import {
 } from 'react';
 import Slider from 'react-slick';
 
-import useMobx, { useModalContext } from '@/app/stores/root-store';
+import { useModalContext } from '@/app/stores/root-store';
 
 import SliderProps, { defaultSliderProps } from './index';
 
@@ -21,13 +21,13 @@ const GenericSlider: FC<SliderProps> = ({
     const [lastClick, setLastClick] = useState(Date.now());
 
     const isOnRightEdge = (
-        currentIndx : number,
-        slideToIndex : number,
+        currentIndx: number,
+        slideToIndex: number,
     ) => (currentIndx === children.length - 1 && slideToIndex === 0);
 
     const isOnLeftEdge = (
-        currentIndx : number,
-        slideToIndex : number,
+        currentIndx: number,
+        slideToIndex: number,
     ) => (currentIndx === 0 && slideToIndex === children.length - 1);
 
     const move = useCallback(

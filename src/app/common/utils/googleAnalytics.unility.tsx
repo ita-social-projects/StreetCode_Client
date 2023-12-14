@@ -9,10 +9,10 @@ export const relatedFiguresLeaveEvent = () => ReactGA.event('relatedfigures_leav
 export const relatedFiguresTagsEvent = (tag: string) => ReactGA.event('relatedfigures_tag_click', {
     tagname: `${tag}`,
 });
-export const audioClickEvent = (streetcodeId : number) => ReactGA.event('audio_click', {
+export const audioClickEvent = (streetcodeId: number) => ReactGA.event('audio_click', {
     streetcodeId: `${streetcodeId}`,
 });
-export const personLiveEvent = (streetcodeId : number) => ReactGA.event('person_live', {
+export const personLiveEvent = (streetcodeId: number) => ReactGA.event('person_live', {
     streetcodeId: `${streetcodeId}`,
 });
 export const donateEvent = (from: string) => ReactGA.event('donate_button_click', {

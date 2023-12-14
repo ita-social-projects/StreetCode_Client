@@ -10,7 +10,6 @@ import RelatedFigureItemModal from '@components/modals/RelatedFigures/RelatedFig
 import RelatedFiguresModal from '@components/modals/RelatedFigures/RelatedFiguresModal.component';
 import SourcesModal from '@components/modals/Sources/SourcesModal.component';
 import SurveyModal from '@components/modals/Survey/SurveyModal.component';
-import VacancyModal from '../../features/AboutUsPage/Vacancies/Vacancy/VacancyModal/Vacancy/VacancyModal.component';
 
 const ModalWrapper = () => (
     <>
@@ -25,7 +24,7 @@ const ModalWrapper = () => (
         <ConfirmationModal />
         <RelatedFigureItemModal />
         <StatisticsModal />
-        <SurveyModal/>
+        <SurveyModal />
     </>
 );
 

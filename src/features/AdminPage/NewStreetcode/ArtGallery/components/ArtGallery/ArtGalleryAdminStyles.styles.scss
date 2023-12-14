@@ -1,4 +1,3 @@
-
 // -------------------- ArtGalleryBlock --------------------
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
@@ -100,7 +99,7 @@
         visibility: hidden;
         opacity: 0;
         @include vnd.vendored(transition, 'all .5s ease');
-        @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
+        @include mut.rounded($bottom-right: 30px, $bottom-left: 30px);
         padding: pxToRem(11px) pxToRem(21px);
     }
 

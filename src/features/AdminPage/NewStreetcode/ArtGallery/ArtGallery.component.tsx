@@ -14,7 +14,11 @@ const ArtGalleryBlock = React.memo(({ arts, setArts, onChange }: Props) => (
     <div className="adminContainer-block">
         <h2>Арт-галерея</h2>
         <h3>Завантажити арти</h3>
-        <DownloadBlock arts={arts} setArts={setArts} onChanges={onChange} />
+        <DownloadBlock
+            arts={arts}
+            setArts={setArts}
+            onChanges={onChange}
+        />
     </div>
 ));
 export default ArtGalleryBlock;

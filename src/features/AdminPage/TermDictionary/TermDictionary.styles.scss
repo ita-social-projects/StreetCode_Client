@@ -17,7 +17,7 @@
 
 .termDictionaryContainer {
     padding-top: f.pxToRem(100px);
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     gap: f.pxToRem(10px);
 
     .dictionaryHeader {
@@ -31,56 +31,62 @@
         padding: 0 f.pxToRem(170px);
     }
 }
-    
-.controls{
+
+.controls {
     position: relative;
-    button{
+
+    button {
         border-radius: f.pxToRem(5px);
         font-size: 12pt;
         text-align: center;
         height: max-content;
         border: 0.025rem solid c.$dark-red-color;
         color: c.$dark-red-color;
-        &:hover{
+
+        &:hover {
             box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem c.$dark-red-color;
             color: rgb(255, 255, 255);
         }
     }
 }
 
-.actionButton{
+.actionButton {
     border: none;
     background: transparent;
 
-    .actionIcon{
+    .actionIcon {
         color: c.$dark-red-color;
 
-        &:hover{
+        &:hover {
             scale: 1.35;
             transition: all 0.125s;
         }
     }
-    .disableIcon{
+
+    .disableIcon {
         color: lightgray;
     }
 }
 
-.ant-table{
+.ant-table {
     .ant-table-thead .ant-table-cell {
         background-color: transparent;
-        #text{
+
+        #text {
             color: white;
         }
     }
+
     .ant-table-tbody > tr.ant-table-row:hover > td {
         transform: none !important;
     }
 }
 
-.ant-pagination-item{
+.ant-pagination-item {
     border: 0.02rem solid c.$dark-red-color;
     color: c.$dark-red-color;
-    a{
+
+    a {
         color: c.$dark-red-color;
     }
 }

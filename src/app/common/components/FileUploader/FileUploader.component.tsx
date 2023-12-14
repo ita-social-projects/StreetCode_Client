@@ -12,12 +12,17 @@ type UploaderWithoutChildren = Omit<UploadProps, 'children'>;
 interface Props extends UploaderWithoutChildren {
     children: JSX.Element[] | JSX.Element;
     edgeSwipe?: boolean;
-    uploadTo:'image' | 'audio';
+    uploadTo: 'image' | 'audio';
     greyFilterForImage?: boolean;
-    onSuccessUpload?:(value:ImageCustom | Audio)=>void;
+    onSuccessUpload?: (value: ImageCustom | Audio) => void;
 }
-const FileUploader:React.FC<Props> = ({
-    onSuccessUpload, uploadTo, greyFilterForImage = false, children, ...uploadProps
+
+const FileUploader: React.FC<Props> = ({
+    onSuccessUpload,
+    uploadTo,
+    greyFilterForImage = false,
+    children,
+    ...uploadProps
 }) => {
     const imageDataAsURL = useRef<any | null>(null);
     const onUploadChange = (uploadParams: UploadChangeParam<UploadFile<any>>) => {
@@ -72,10 +77,10 @@ const FileUploader:React.FC<Props> = ({
             uploadProps.onChange(uploadParams);
         }
     };
-    const onFileUpload = (uploadType:'image' | 'audio', uplFile:UploadFile)
-    :Promise< ImageCustom | Audio> => {
+    const onFileUpload = (uploadType: 'image' | 'audio', uplFile: UploadFile)
+        : Promise<ImageCustom | Audio> => {
         if (uploadType === 'audio') {
-            const audio :AudioCreate = {
+            const audio: AudioCreate = {
                 baseFormat: imageDataAsURL.current
                     .substring(imageDataAsURL.current.indexOf(',') + 1, imageDataAsURL.current.length),
                 extension: uplFile.name.substring(uplFile.name
@@ -85,16 +90,18 @@ const FileUploader:React.FC<Props> = ({
             };
             return AudiosApi.create(audio);
         }
-        const image: ImageCreate = { baseFormat: imageDataAsURL.current
-            .substring(imageDataAsURL.current.indexOf(',') + 1, imageDataAsURL.current.length),
-                                     extension: uplFile.name.substring(uplFile.name
-                                         .lastIndexOf('.') + 1, uplFile.name.length),
-                                     mimeType: uplFile.type!,
-                                     title: uplFile.name };
+        const image: ImageCreate = {
+            baseFormat: imageDataAsURL.current
+                .substring(imageDataAsURL.current.indexOf(',') + 1, imageDataAsURL.current.length),
+            extension: uplFile.name.substring(uplFile.name
+                .lastIndexOf('.') + 1, uplFile.name.length),
+            mimeType: uplFile.type!,
+            title: uplFile.name,
+        };
 
         return ImagesApi.create(image);
     };
-    const customRequest = async (options:any) => {
+    const customRequest = async (options: any) => {
         const {
             onSuccess, onError, file, action, onProgress,
         } = options;

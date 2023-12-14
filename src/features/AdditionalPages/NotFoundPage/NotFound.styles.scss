@@ -11,7 +11,7 @@
     @include mut.rem-margined($top: 82px);
 
     background: url('../../../assets/images/streetcode-card/background.webp') no-repeat center center / cover;
-      
+
     .notFoundNumber {
         @include mut.with-font($font-weight: 500, $font-size: 220px);
         color: c.$dark-red-color;
@@ -24,7 +24,7 @@
         text-align: center;
         color: c.$lighter-black-color;
 
-        margin: f.pxToRem(110px) 0 f.pxToRem(40px) 0;  
+        margin: f.pxToRem(110px) 0 f.pxToRem(40px) 0;
     }
 
     .redirectToMain {
@@ -32,15 +32,15 @@
         display: block;
         width: f.pxToRem(219px);
         height: f.pxToRem(73px);
-        
+
         line-height: 23px;
         color: c.$pure-white-color;
         white-space: nowrap;
         text-align: center;
-       
-        background: c.$accented-red-color;     
+
+        background: c.$accented-red-color;
         @include mut.full-rounded(10px);
-        
+
         padding: f.pxToRem(25px) f.pxToRem(26px);
         box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
 
@@ -51,7 +51,7 @@
 }
 
 @media (max-width: 1024px) or (max-height: 900px) {
-    .notFoundContainer {  
+    .notFoundContainer {
         height: calc(100vh - 102px);
         @include mut.rem-margined($top: 64px);
 
@@ -59,18 +59,20 @@
             @include mut.with-font($font-weight: 500, $font-size: 165px);
             line-height: 140px;
         }
+
         .content {
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             line-height: 26px;
             letter-spacing: 0.005em;
         }
+
         .redirectToMain {
             @include mut.sized(340px, 46px);
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
-            line-height: 16px;      
+            line-height: 16px;
             padding: f.pxToRem(15px) 0;
         }
-    }  
+    }
 }
 
 @media (min-width: 1025px) and (max-height: 900px) {

@@ -2,7 +2,7 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-.keyPartnersBlock{
+.keyPartnersBlock {
     display: flex;
     column-gap: f.pxToRem(30px);
     row-gap: f.pxToRem(80px);
@@ -11,14 +11,14 @@
 
     margin-bottom: f.pxToRem(80px);
 
-    .partnersItem{
+    .partnersItem {
         @include mut.sized(380px, 110px);
     }
 }
 
-.partnersContainer{
-    .partnersBlock{        
-        .otherPartnersBlock{
+.partnersContainer {
+    .partnersBlock {
+        .otherPartnersBlock {
             display: flex;
             column-gap: f.pxToRem(10px);
             row-gap: f.pxToRem(80px);
@@ -27,7 +27,7 @@
 
             margin-bottom: f.pxToRem(60px);
 
-            .partnersItem{
+            .partnersItem {
                 @include mut.sized(232px, 68px);
             }
         }
@@ -35,21 +35,21 @@
 }
 
 @media screen and (max-width: 1020px) {
-    .partnersContainer .partnersBlock{
-        .keyPartnersBlock{
+    .partnersContainer .partnersBlock {
+        .keyPartnersBlock {
             column-gap: f.pxToRem(30px);
             row-gap: f.pxToRem(40px);
 
-            .partnersItem{
+            .partnersItem {
                 @include mut.sized(340px, 98px);
             }
         }
 
-        .otherPartnersBlock{
+        .otherPartnersBlock {
             column-gap: f.pxToRem(30px);
             row-gap: f.pxToRem(20px);
 
-            .partnersItem{
+            .partnersItem {
                 @include mut.sized(160px, 46px);
             }
         }
@@ -57,8 +57,8 @@
 }
 
 @media screen and (max-width: 768px) {
-    .partnersContainer .partnersBlock{
-        .keyPartnersBlock{
+    .partnersContainer .partnersBlock {
+        .keyPartnersBlock {
             column-gap: 0px;
         }
     }

@@ -173,14 +173,21 @@ const ForFansModal = ({
             className="modalContainer"
             open={open}
             onCancel={() => {
-                setOpen(false); sourceCreateUpdateStreetcode.indexUpdate = -1;
+                setOpen(false);
+                sourceCreateUpdateStreetcode.indexUpdate = -1;
             }}
             footer={null}
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                    <CancelBtn className="iconSize" onClick={clearModal} />
+                <Popover
+                    content="Внесені зміни не будуть збережені!"
+                    trigger="hover"
+                >
+                    <CancelBtn
+                        className="iconSize"
+                        onClick={clearModal}
+                    />
                 </Popover>
             )}
         >
@@ -203,7 +210,10 @@ const ForFansModal = ({
                         className="category-select-input"
                         onChange={handleAdd}
                     >
-                        <Select.Option key="addCategory" value="addCategory">
+                        <Select.Option
+                            key="addCategory"
+                            value="addCategory"
+                        >
                             Додати нову категорію...
                         </Select.Option>
                         {Categories

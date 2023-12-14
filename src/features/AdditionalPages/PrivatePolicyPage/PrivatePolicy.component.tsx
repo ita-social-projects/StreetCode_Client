@@ -1,8 +1,5 @@
 import './PrivatePolicy.styles.scss';
 
-import { useEffect } from 'react';
-import Footer from '@layout/footer/Footer.component';
-
 import SectionFifth from './SubSections/SubSectionFifth/SectionFifth.component';
 import SectionFirst from './SubSections/SubSectionFirst/SectionFirst.component';
 import SectionFourth from './SubSections/SubSectionFourth/SectionFourth.component';

@@ -5,16 +5,14 @@ import StreetcodeMarker from '@images/footer/streetcode-marker.webp';
 
 import { Autocomplete, GoogleMap, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
 
-import {
-    Button, Input, message, Modal, Table,
-} from 'antd';
+import { Button, Input, message, Table } from 'antd';
 
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import StatisticRecord, { StatisticRecordUpdate } from '@/models/analytics/statisticrecord.model';
@@ -254,7 +252,10 @@ const MapOSMAdmin = () => {
             >
                 <div className="statisticsContainerAdmin">
                     <h1>Додати стріткод на мапу:</h1>
-                    <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                    <Autocomplete
+                        onLoad={onLoad}
+                        onPlaceChanged={onPlaceChanged}
+                    >
                         <Input
                             className="input-streets"
                             placeholder="введіть вулицю"
@@ -278,7 +279,7 @@ const MapOSMAdmin = () => {
                             Даний номер таблички вже використовується
                         </span>
                     )}
-                    { isInvalidInput && (
+                    {isInvalidInput && (
                         <span className="notification red">
                             Введіть додатнє число
                         </span>
@@ -292,7 +293,10 @@ const MapOSMAdmin = () => {
                     </Button>  */}
 
                     {(streetcodeCoordinates.length > 0) && (!isExist) && (!isInvalidInput) && (showButton) && (
-                        <Button className="onMapbtn" onClick={handleSaveButtonClick}>
+                        <Button
+                            className="onMapbtn"
+                            onClick={handleSaveButtonClick}
+                        >
                             <a>Зберегти стріткод</a>
                         </Button>
                     )}
@@ -323,7 +327,10 @@ const MapOSMAdmin = () => {
                     />
                 ))}
             </GoogleMap>
-            <Table columns={columns} dataSource={data} />
+            <Table
+                columns={columns}
+                dataSource={data}
+            />
         </>
 
     );

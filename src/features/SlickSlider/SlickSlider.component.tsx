@@ -34,7 +34,10 @@ const GenericSlider: FC<SliderProps> = ({
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
                 {children?.map((slide, idx) => (
-                    <div className="slider-item-container" key={idx}>
+                    <div
+                        className="slider-item-container"
+                        key={idx}
+                    >
                         {swipeOnClick ? (
                             <div
                                 className="left"

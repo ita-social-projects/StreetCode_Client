@@ -12,11 +12,14 @@ const PartnersBtnCircle = () => {
     const windowSize = useWindowSize();
 
     return (
-        <div className="partnersBtnCircleContainer" onClick={onBtnClick}>
+        <div
+            className="partnersBtnCircleContainer"
+            onClick={onBtnClick}
+        >
             <div className="partnersBtnCircle">
                 <ShakeHand />
             </div>
-            { windowSize.width > 1024 && <h2 className="partnersBtnText">Стати партнером</h2> }
+            {windowSize.width > 1024 && <h2 className="partnersBtnText">Стати партнером</h2>}
         </div>
     );
 };

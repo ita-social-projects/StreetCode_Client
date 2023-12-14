@@ -11,13 +11,13 @@
     background: url('@/assets/images/donates/donatesPage/background.svg') no-repeat center center / cover;
 
     .heading {
-        .donateLogoSmall{
+        .donateLogoSmall {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
             line-height: 14px;
             text-transform: uppercase;
             color: #891F16;
-    
-            text-align: right; 
+
+            text-align: right;
         }
 
         .titleBig {
@@ -393,7 +393,7 @@
 
 .CoppyMessage {
     position: fixed;
-    height: f.pxToRem(40px);    
+    height: f.pxToRem(40px);
     bottom: f.pxToRem(-40px);
     left: f.pxToRem(20px);
     background-color: rgba(0, 0, 0, 0.788);

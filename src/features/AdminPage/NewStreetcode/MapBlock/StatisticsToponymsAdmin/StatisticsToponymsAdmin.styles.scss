@@ -12,15 +12,17 @@
     .ant-btn-primary:disabled {
         background-color: c.$lighter-gray-color;
         color: c.$pure-white-color;
-      }
-      .ant-btn-default {
+    }
+
+    .ant-btn-default {
         border-color: c.$accented-red-color;
-    }   
+    }
 }
 
 
 .paginationButton > li {
     border-color: c.$accented-red-color;
+
     a {
         color: c.$accented-red-color;
     }

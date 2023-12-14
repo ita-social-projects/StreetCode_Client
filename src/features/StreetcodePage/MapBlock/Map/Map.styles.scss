@@ -6,21 +6,21 @@
     width: 100vw;
     position: relative;
     @media screen and (max-width: 480px) {
-      height: 74vh;
-      width: 100vw;
+        height: 74vh;
+        width: 100vw;
     }
 
     @media (min-width: 481px) and (max-width: 768px) {
-      height: 78vh;
-      width: 100vw;
+        height: 78vh;
+        width: 100vw;
     }
 
     @media (min-width: 769px) and (max-width: 1024px) {
-      height: 81vh;
-      width: 100vw;
+        height: 81vh;
+        width: 100vw;
     }
-  }
-  
+}
+
 .mapCentered {
     @include mut.flex-centered();
 }
@@ -28,11 +28,11 @@
 .leaflet-control-container {
     position: absolute;
     bottom: 10px;
-    left:1px;
+    left: 1px;
 }
 
 .custom-zoom-control {
     position: absolute;
     top: 100rem;
     left: 100rem;
-  }
+}

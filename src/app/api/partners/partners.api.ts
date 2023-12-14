@@ -2,8 +2,6 @@ import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Partner, { PartnerShort } from '@models/partners/partners.model';
 
-import PartnerResponse from '@/models/partners/partnersResponse.model';
-
 // eslint-disable-next-line no-restricted-imports
 import { PartnerCreateUpdate } from '../../../models/partners/partners.model';
 
@@ -12,7 +10,7 @@ const PartnersApi = {
 
     getAll: () => Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_ALL}`),
 
-    getAllByIsKeyPartner: (isKeyPartner : boolean) => Agent.get<Partner[]>(
+    getAllByIsKeyPartner: (isKeyPartner: boolean) => Agent.get<Partner[]>(
         `${API_ROUTES.PARTNERS.GET_ALL_BY_IS_KEY_PARTNERS}/${isKeyPartner}`,
     ),
 

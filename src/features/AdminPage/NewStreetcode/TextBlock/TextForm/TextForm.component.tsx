@@ -18,6 +18,7 @@ interface Props {
     setVideo: React.Dispatch<Video | undefined>;
     onChange: (fieldName: string, value: any) => void;
 }
+
 const TextForm = ({
     inputInfo, setInputInfo, video, setVideo, onChange,
 }: Props) => {

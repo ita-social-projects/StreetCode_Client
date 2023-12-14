@@ -1,14 +1,17 @@
 import './HeaderSkeleton.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import SearchBlock from '@app/layout/header/SearchBlock/SearchBlock.component';
-import { Input, Popover } from 'antd';
-import useMobx, { useModalContext } from '@stores/root-store';
-import useToggle from '@hooks/stateful/useToggle.hook';
-import useOnClickOutside from '@/app/common/hooks/stateful/useClickOutside.hook';
-import useEventListener from '@/app/common/hooks/external/useEventListener.hook';
+
+import { useCallback, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import SearchBlock from '@app/layout/header/SearchBlock/SearchBlock.component';
+import useToggle from '@hooks/stateful/useToggle.hook';
+import { useModalContext } from '@stores/root-store';
+
+import { Input, Popover } from 'antd';
+
+import useEventListener from '@/app/common/hooks/external/useEventListener.hook';
+import useOnClickOutside from '@/app/common/hooks/stateful/useClickOutside.hook';
 
 const HeaderSkeleton = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -17,11 +20,11 @@ const HeaderSkeleton = () => {
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
     const inputRef = useRef(null);
     const searchBlockRef = useRef(null);
-    
+
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
     });
-    
+
     const handlePopoverVisibleChange = (visible: boolean) => {
         setIsPopoverVisible(visible);
     };
@@ -40,7 +43,7 @@ const HeaderSkeleton = () => {
         off();
         setIsPageDimmed(false);
         setIsPopoverVisible(false);
-    }
+    };
 
     const onDimCancel = useCallback(() => {
         closeSearchBlock();
@@ -57,11 +60,11 @@ const HeaderSkeleton = () => {
     }
 
     const onInputClick = () => {
-        if(!isPageDimmed){
+        if (!isPageDimmed) {
             setIsPageDimmed();
             toggle();
         }
-    }
+    };
 
     const onMagnifyingGlassClick = () => {
         setIsPageDimmed();
@@ -74,7 +77,7 @@ const HeaderSkeleton = () => {
                 trigger="click"
                 placement="bottomLeft"
                 open={isPopoverVisible}
-                overlayClassName='searchPopoverSkeleton'
+                overlayClassName="searchPopoverSkeleton"
                 getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
                 content={(
                     <div ref={searchBlockRef}>
@@ -87,13 +90,14 @@ const HeaderSkeleton = () => {
                         onChange={handleInputChange}
                         placeholder="Пошук..."
                         onClick={onInputClick}
-                        prefix={
-                        <MagnifyingGlass
-                            viewBox="0 -2 24 24"
-                            transform="scale(1.2)"
-                            onClick={onMagnifyingGlassClick}
-                            style={isPageDimmed ? { zIndex: '-1' } : undefined}
-                        />}
+                        prefix={(
+                            <MagnifyingGlass
+                                viewBox="0 -2 24 24"
+                                transform="scale(1.2)"
+                                onClick={onMagnifyingGlassClick}
+                                style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                            />
+                        )}
                     />
                 </div>
             </Popover>

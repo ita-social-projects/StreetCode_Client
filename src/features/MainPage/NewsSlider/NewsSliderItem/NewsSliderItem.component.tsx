@@ -46,7 +46,10 @@ const NewsSliderItem = ({ news, image }: Props) => {
 
     return (
         <div className="newsSliderItem">
-            <div className="newsMainPage" onClick={isMobileOrTablet ? handleClickRedirect : undefined}>
+            <div
+                className="newsMainPage"
+                onClick={isMobileOrTablet ? handleClickRedirect : undefined}
+            >
                 <div className="newsPageImgContainer">
                     <img
                         key={image?.id}

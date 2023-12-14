@@ -3,29 +3,31 @@
 @use '@sass/variables/variables.fonts' as ft;
 @use '@sass/variables/variables.colors' as c;
 
-.statisticsContainer{
-  h1{
-    @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
-    line-height: 26px;
-    @include mut.rem-padded(10px, 10px, 0, 10px);
-    color: c.$accented-red-color;
-  }
+.statisticsContainer {
+    h1 {
+        @include mut.with-font(ft.$roboto-font, 500, 20px, normal);
+        line-height: 26px;
+        @include mut.rem-padded(10px, 10px, 0, 10px);
+        color: c.$accented-red-color;
+    }
 
-  .streetsBlock{
-    @include mut.rem-padded($top:10px);
-    width:100%;
-    p{
-      @include mut.flexed($direction:row, $gap:5px);
-      @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
-      line-height: 134.19%;
-      color: c.$lighter-black-color;
-      padding-left: f.pxToRem(10px);
+    .streetsBlock {
+        @include mut.rem-padded($top: 10px);
+        width: 100%;
+
+        p {
+            @include mut.flexed($direction: row, $gap: 5px);
+            @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
+            line-height: 134.19%;
+            color: c.$lighter-black-color;
+            padding-left: f.pxToRem(10px);
+        }
+
+        span {
+            @include mut.with-font($font-weight: 500, $font-size: 22px);
+            color: c.$accented-red-color;
+        }
     }
-    span{
-      @include mut.with-font($font-weight:500, $font-size:22px);
-      color: c.$accented-red-color;
-    }
-  }
- 
+
 }
 

@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
-import GetAllToponymsResponse from '@models/toponyms/getAllToponyms.response';
 import Toponym, { ToponymCreateUpdate } from '@models/toponyms/toponym.model';
 
-import { Button, Checkbox, InputNumber, Pagination } from 'antd';
+import { Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import Table from 'antd/es/table/Table';
 
@@ -44,7 +43,7 @@ const StatisticsToponymsComponentAdmin = () => {
             Page: pageRequest,
             Amount: amountRequest,
             Title: titleRequest === ' ' ? null : titleRequest,
-        })
+        });
     };
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedToponyms[]>([]);
 
@@ -114,7 +113,6 @@ const StatisticsToponymsComponentAdmin = () => {
             ToponymsApi.getAll(requestGetAll).then((response) => setToponyms(response.toponyms));
         }
     }, [requestGetAll, parseId]);
-    
 
     useEffect(() => {
         const mappedStreetCodes: MapedToponyms[] = [];
@@ -131,7 +129,10 @@ const StatisticsToponymsComponentAdmin = () => {
 
     return (
         <div className="ToponymsTableWrapper">
-            <SearchMenu setTitle={setTitleRequest} setRequest={setRequest} />
+            <SearchMenu
+                setTitle={setTitleRequest}
+                setRequest={setRequest}
+            />
             <div>
                 <Table
                     columns={columnsNames}

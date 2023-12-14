@@ -62,11 +62,12 @@ li.slick-active button:before {
         display: flex !important;
         position: relative;
         flex-direction: column;
+
         &:focus,
         &:focus-visible {
-         outline: none;
+            outline: none;
         }
-        
+
         .left {
             position: absolute;
             width: 35%;
@@ -95,7 +96,7 @@ li.slick-active button:before {
     }
 }
 
-@media screen and (max-width:1024px) {
+@media screen and (max-width: 1024px) {
     .slick-next,
     .slick-prev {
         visibility: hidden;

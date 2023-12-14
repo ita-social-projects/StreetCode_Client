@@ -13,11 +13,15 @@ const NotFound = () => {
         <div className="notFoundContainer">
             <div className="notFoundNumber">404</div>
             <div className="content">
-            А нехай йому!
+                А нехай йому!
                 <br />
-            Історія ще не створила цієї сторінки.
+                Історія ще не створила цієї сторінки.
             </div>
-            <button type="button" className="redirectToMain" onClick={redirect}>
+            <button
+                type="button"
+                className="redirectToMain"
+                onClick={redirect}
+            >
                 Гайда на головну!
             </button>
         </div>

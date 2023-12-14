@@ -4,7 +4,7 @@
 
 .loadingText {
     @include mut.sized(1200px, auto);
-    @include mut.with-font($font-weight: 300, $font-size:17px);
+    @include mut.with-font($font-weight: 300, $font-size: 17px);
     @include mut.flexed($wrap: wrap);
     text-align: justify;
 }

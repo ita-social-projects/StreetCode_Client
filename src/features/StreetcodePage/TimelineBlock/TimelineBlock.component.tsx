@@ -1,6 +1,7 @@
 import './TimelineBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -8,7 +9,7 @@ import TimelineSlideCard from '@streetcode/TimelineBlock/TimelineItem/TimelineIt
 import TimelineReelOutline from '@streetcode/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
 import TimelineSlider from '@streetcode/TimelineBlock/TimelineSlider.component';
 import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.component';
-import { useEffect, useState } from 'react';
+
 import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 const TimelineBlock = () => {
@@ -16,7 +17,7 @@ const TimelineBlock = () => {
     const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
-    
+
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
@@ -28,15 +29,15 @@ const TimelineBlock = () => {
         },
         [getStreetCodeId],
     );
-    
+
     useEffect(() => {
         const hash = getUrlHash(location);
-        if (!isScrolled && hash === 'timeline'){
+        if (!isScrolled && hash === 'timeline') {
             const element = document.getElementById(hash);
-    
+
             setTimeout(() => {
-                if(element !== null) {
-                    element.scrollIntoView({behavior: "smooth", block: "center"});
+                if (element !== null) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     setIsScrolled(true);
                 }
             }, 1000);
@@ -46,36 +47,36 @@ const TimelineBlock = () => {
     return (
         <div>
             {(getTimelineItemArray.length > 0)
-            ? (
-                <div
-                    id="timeline"
-                    className="timelineContainer container"
-                >
-                    <BlockHeading headingText="Хронологія" />
-                    <TimelineTimespan />
-                    <div className="timelineContentContainer" >
-                        <TimelineReelOutline />
-                        <TimelineSlider
-                            dots={false}
-                            arrows={false}
-                            centerMode
-                            swipeOnClick
-                            infinite={false}
-                            variableWidth
-                            swipeToSlide
-                            slidesToScroll={1}
-                        >
-                            {getTimelineItemArray.map((timelineItem) => (
-                                <TimelineSlideCard
-                                    key={timelineItem.id}
-                                    timelineItem={timelineItem}
-                                />
-                            ))}
-                        </TimelineSlider>
-                        <TimelineReelOutline />
+                ? (
+                    <div
+                        id="timeline"
+                        className="timelineContainer container"
+                    >
+                        <BlockHeading headingText="Хронологія" />
+                        <TimelineTimespan />
+                        <div className="timelineContentContainer">
+                            <TimelineReelOutline />
+                            <TimelineSlider
+                                dots={false}
+                                arrows={false}
+                                centerMode
+                                swipeOnClick
+                                infinite={false}
+                                variableWidth
+                                swipeToSlide
+                                slidesToScroll={1}
+                            >
+                                {getTimelineItemArray.map((timelineItem) => (
+                                    <TimelineSlideCard
+                                        key={timelineItem.id}
+                                        timelineItem={timelineItem}
+                                    />
+                                ))}
+                            </TimelineSlider>
+                            <TimelineReelOutline />
+                        </div>
                     </div>
-                </div>
-            ) : <></>}
+                ) : <></>}
         </div>
     );
 };

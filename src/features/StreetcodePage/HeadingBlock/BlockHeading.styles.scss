@@ -15,18 +15,19 @@
     position: relative;
 }
 
-.rhombus{
+.rhombus {
     height: 100%;
     z-index: 0;
     position: absolute;
     left: -62px;
-    .svg{
+
+    .svg {
         height: 100%;
         width: 100%;
     }
 }
 
-.blockHeadingTextContainer{
+.blockHeadingTextContainer {
     position: absolute;
     display: flex;
     align-items: center;
@@ -43,10 +44,10 @@
 }
 
 @media (max-width: 1350px) {
-    .rhombus{
+    .rhombus {
         left: -36px;
     }
-    .blockHeadingTextContainer{
+    .blockHeadingTextContainer {
         @include mut.rem-padded($right: 10px, $left: 10px);
     }
 }

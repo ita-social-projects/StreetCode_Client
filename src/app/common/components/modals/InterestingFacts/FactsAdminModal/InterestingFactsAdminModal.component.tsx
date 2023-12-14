@@ -10,8 +10,8 @@ import { Button, Form, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import { UploadFile } from 'antd/lib/upload/interface';
 
-import Image, { ImageCreate } from '@/models/media/image.model';
-import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
+import { ImageCreate } from '@/models/media/image.model';
+import { FactCreate } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsModal = () => {
     const { modalStore, factsStore, imagesStore: { getImageArray } } = useMobx();
@@ -47,7 +47,10 @@ const InterestingFactsModal = () => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <Form className="factForm" onFinish={onFinish}>
+            <Form
+                className="factForm"
+                onFinish={onFinish}
+            >
                 <h2>Wow-Факт</h2>
                 <p>Заголовок</p>
                 <div className="inputBlock">
@@ -55,7 +58,11 @@ const InterestingFactsModal = () => {
                         <input />
                     </Form.Item>
                     <p>Основний текст</p>
-                    <textarea value={factContent} maxLength={600} onChange={(e) => setFactContent(e.target.value)} />
+                    <textarea
+                        value={factContent}
+                        maxLength={600}
+                        onChange={(e) => setFactContent(e.target.value)}
+                    />
                     <p className="characterCounter">
                         {characterCount}
                         /600
@@ -78,7 +85,12 @@ const InterestingFactsModal = () => {
                         </div>
                     </Upload>
                 </FormItem>
-                <Button className="saveButton" htmlType="submit">Зберегти</Button>
+                <Button
+                    className="saveButton"
+                    htmlType="submit"
+                >
+Зберегти
+                </Button>
             </Form>
         </Modal>
     );

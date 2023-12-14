@@ -46,7 +46,8 @@ const ArtGalleryAdminBlock = ({ arts }: Props) => {
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) { /* empty */ }
+            } catch (error: unknown) { /* empty */
+            }
 
             setIndexedArts(newMap);
         });
@@ -82,7 +83,10 @@ const ArtGalleryAdminBlock = ({ arts }: Props) => {
                         if (x.index === artsData[0].index) x.offset = 4;
                     });
                     slideOfArtList.push(
-                        <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
+                        <ArtGallerySlide
+                            artGalleryList={artsData}
+                            isAdminPage={isAdminPage}
+                        />,
                     );
                     artsData = [];
                     offsetSumForSlide = 0;
@@ -91,7 +95,10 @@ const ArtGalleryAdminBlock = ({ arts }: Props) => {
             }
         } else if (artsData.length > 0 && (offsetSumForSlide + offset > SECTION_AMOUNT)) {
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
+                <ArtGallerySlide
+                    artGalleryList={artsData}
+                    isAdminPage={isAdminPage}
+                />,
             );
             sequenceNumber = index - 1;
             artsData = [{
@@ -110,7 +117,10 @@ const ArtGalleryAdminBlock = ({ arts }: Props) => {
         if (offsetSumForSlide === SECTION_AMOUNT) {
             offsetSumForSlide = 0;
             slideOfArtList.push(
-                <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
+                <ArtGallerySlide
+                    artGalleryList={artsData}
+                    isAdminPage={isAdminPage}
+                />,
             );
             artsData = [];
         }
@@ -118,7 +128,10 @@ const ArtGalleryAdminBlock = ({ arts }: Props) => {
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
-            <ArtGallerySlide artGalleryList={artsData} isAdminPage={isAdminPage} />,
+            <ArtGallerySlide
+                artGalleryList={artsData}
+                isAdminPage={isAdminPage}
+            />,
         );
     }
 

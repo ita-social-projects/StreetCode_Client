@@ -1,7 +1,6 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import TeamMember from '@models/team/team.model';
-import { TeamCreateUpdate } from '@models/team/team.model';
+import TeamMember, { TeamCreateUpdate } from '@models/team/team.model';
 
 const TeamApi = {
     getById: (id: number) => Agent.get<TeamMember>(`${API_ROUTES.TEAM.GET}/${id}`),
@@ -10,7 +9,7 @@ const TeamApi = {
 
     getAllMain: () => Agent.get<TeamMember[]>(`${API_ROUTES.TEAM.GET_ALL_MAIN}`),
 
-    getByRoleId: (id:number) => Agent.get<TeamMember[]>(`${API_ROUTES.TEAM.GET_BY_ROLE_ID}/${id}`),
+    getByRoleId: (id: number) => Agent.get<TeamMember[]>(`${API_ROUTES.TEAM.GET_BY_ROLE_ID}/${id}`),
 
     create: (team: TeamCreateUpdate) => Agent.post<TeamMember>(`${API_ROUTES.TEAM.CREATE}`, team),
 

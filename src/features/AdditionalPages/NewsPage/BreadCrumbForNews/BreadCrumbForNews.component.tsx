@@ -1,8 +1,9 @@
 import './BreadCrumbForNews.styles.scss';
 
 import { Breadcrumb } from 'antd';
-import News from '@/models/news/news.model';
+
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import News from '@/models/news/news.model';
 
 interface Props {
     separator?: JSX.Element | string;
@@ -10,11 +11,17 @@ interface Props {
 }
 
 const BreadCrumbForNews = ({ separator = '->', news }: Props) => (
-    <Breadcrumb className="breadcrumbForNewsContainer" separator={separator}>
-        <Breadcrumb.Item className="activeLink" href={FRONTEND_ROUTES.BASE}>
+    <Breadcrumb
+        className="breadcrumbForNewsContainer"
+        separator={separator}
+    >
+        <Breadcrumb.Item
+            className="activeLink"
+            href={FRONTEND_ROUTES.BASE}
+        >
             Головна
         </Breadcrumb.Item>
-        <Breadcrumb.Item >
+        <Breadcrumb.Item>
             Новина
         </Breadcrumb.Item>
     </Breadcrumb>

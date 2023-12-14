@@ -31,9 +31,15 @@ const QRComponent = () => {
                 <div className="QRBlockContainer container">
                     {isDesktop
                         ? (
-                            <div id="QRBlock" className="QRBlockContent">
+                            <div
+                                id="QRBlock"
+                                className="QRBlockContent"
+                            >
                                 <div className="QRBlockImg">
-                                    <img src={IPhoneImg} alt="" />
+                                    <img
+                                        src={IPhoneImg}
+                                        alt=""
+                                    />
                                 </div>
                                 <div className="QRBlockText">
                                     <div className="QRBlockTextContainer">

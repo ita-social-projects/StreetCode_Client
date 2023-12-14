@@ -5,4 +5,4 @@ export default interface InstagramPost {
     media_url: string;
     permalink: string;
     thumbnail_url: string;
-}
+};

@@ -2,41 +2,41 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-.partnersContainer{
-    .titleContainer{
+.partnersContainer {
+    .titleContainer {
         margin-bottom: f.pxToRem(24px);
-    
-        .titleSmall{
+
+        .titleSmall {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
             line-height: 14px;
             color: #891F16;
             text-align: right;
-            text-transform: uppercase;      
+            text-transform: uppercase;
         }
-    
-        .titleBig{
+
+        .titleBig {
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 96px);
             line-height: 127px;
             color: #F4F4F4;
         }
-        
-        .content{
+
+        .content {
             position: relative;
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             line-height: 23px;
             color: #1D1F23;
-            margin: f.pxToRem(40px) 0 f.pxToRem(16px) 0; 
+            margin: f.pxToRem(40px) 0 f.pxToRem(16px) 0;
             z-index: 1;
 
-            .logo{
+            .logo {
                 position: absolute;
-                top:  f.pxToRem(-150px);
-                right:  f.pxToRem(70px);
+                top: f.pxToRem(-150px);
+                right: f.pxToRem(70px);
                 z-index: -1;
             }
         }
 
-        .subTitle{
+        .subTitle {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
             position: relative;
             z-index: 1;
@@ -45,32 +45,32 @@
 }
 
 @media screen and (max-width: 1024px) {
-    .partnersContainer{
-        .titleContainer{
-            .titleBig{
+    .partnersContainer {
+        .titleContainer {
+            .titleBig {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 54px);
                 line-height: 71px;
             }
 
-            .content{
+            .content {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
                 line-height: 21px;
-                
-                .logo{
+
+                .logo {
                     transform: scale(0.5);
                 }
-            } 
-        }       
+            }
+        }
     }
 }
 
 @media screen and (max-width: 680px) {
-    .partnersContainer{
-        .titleContainer{
-            .content .logo{
-                top:  f.pxToRem(-50px);
-                right:  f.pxToRem(-80px);
+    .partnersContainer {
+        .titleContainer {
+            .content .logo {
+                top: f.pxToRem(-50px);
+                right: f.pxToRem(-80px);
             }
-        }       
+        }
     }
 }

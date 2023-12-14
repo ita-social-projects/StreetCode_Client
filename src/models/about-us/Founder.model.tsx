@@ -1,5 +1,4 @@
-interface FounderProps
-{
+interface FounderProps {
     founderName: string,
     founderRole: string,
     founderInstagram: string,

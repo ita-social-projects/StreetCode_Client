@@ -11,8 +11,7 @@ import { ModelState } from '@models/enums/model-state';
 import dayjs from 'dayjs';
 
 import {
-    Button,
-    DatePicker, Form, Input, message, Modal, Popover, Select,
+    Button, DatePicker, Form, Input, message, Modal, Popover, Select,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -20,7 +19,9 @@ import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
     dateTimePickerTypes,
     DateViewPatternToDatePickerType,
-    HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
+    HistoricalContext,
+    HistoricalContextUpdate,
+    selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 
 interface NewTimelineModalProps {
@@ -84,8 +85,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const GetDateBasedOnFormat = (date: Date) => {
         let seconds = 0;
         // specific GMT+202 Ukraine timezone before 1/5/1924, where seconds are truncated by browser
-        if(GetLocalMinutesOffset(date) == 122)
-        {
+        if (GetLocalMinutesOffset(date) == 122) {
             seconds = 4;
         }
         date.setHours(0, GetLocalMinutesOffset(date), seconds, 0);
@@ -106,9 +106,8 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     };
 
     const onSuccesfulSubmit = (formValues: any) => {
-        timelineItemStore.getTimelineItemArray.map((t) => t).forEach(t => {
-            if (formValues.title == t.title || formValues.description == t.description)
-                timelineItem = t;
+        timelineItemStore.getTimelineItemArray.map((t) => t).forEach((t) => {
+            if (formValues.title == t.title || formValues.description == t.description) timelineItem = t;
         });
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
@@ -180,7 +179,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         try {
             await form.validateFields();
             form.submit();
-            message.success("Хронологію успішно додано!", 2)
+            message.success('Хронологію успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -205,8 +204,14 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                    <CancelBtn className="iconSize" onClick={clearModal} />
+                <Popover
+                    content="Внесені зміни не будуть збережені!"
+                    trigger="hover"
+                >
+                    <CancelBtn
+                        className="iconSize"
+                        onClick={clearModal}
+                    />
                 </Popover>
             )}
         >
@@ -225,7 +230,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву', max: 28 }]}
                     >
-                        <Input maxLength={28} showCount onChange={(e) => onChange('title', e.target.value)} />
+                        <Input
+                            maxLength={28}
+                            showCount
+                            onChange={(e) => onChange('title', e.target.value)}
+                        />
                     </Form.Item>
 
                     <Form.Item label="Дата:">
@@ -279,7 +288,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 onChange={(e) => onChange('historicalContexts', e)}
                             >
                                 {historicalContextStore.historicalContextArray.map((cntx) => (
-                                    <Select.Option key={cntx.id} value={cntx.title}>
+                                    <Select.Option
+                                        key={cntx.id}
+                                        value={cntx.title}
+                                    >
                                         {cntx.title}
                                     </Select.Option>
                                 ))}
@@ -287,7 +299,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         </Form.Item>
                         {tagInput && (
                             <div className="tagInput-counter">
-                                {tagInput.length} / {maxContextLength}
+                                {tagInput.length}
+                                {' '}
+/
+                                {maxContextLength}
                             </div>
                         )}
                     </div>
@@ -297,7 +312,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Опис: "
                         rules={[{ required: true, message: 'Введіть опис' }]}
                     >
-                        <TextArea maxLength={400} showCount onChange={(e) => onChange('description', e.target.value)} />
+                        <TextArea
+                            maxLength={400}
+                            showCount
+                            onChange={(e) => onChange('description', e.target.value)}
+                        />
                     </Form.Item>
                     <div className="center">
                         <Button

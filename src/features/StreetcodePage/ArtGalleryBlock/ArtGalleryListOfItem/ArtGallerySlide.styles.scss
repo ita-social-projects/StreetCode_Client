@@ -3,7 +3,8 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
-@media screen and (min-width:1025px){
+
+@media screen and (min-width: 1025px) {
     .slideArtGallery {
         @include mut.flex-centered($direction: column);
         flex-wrap: wrap;
@@ -24,7 +25,8 @@
         width: 100%;
     }
 }
-@media screen and (max-width:1450px) {
+
+@media screen and (max-width: 1450px) {
     .slideArtGallery {
         height: pxToRem(476px);
 
@@ -38,7 +40,8 @@
     }
 
 }
-@media screen and (max-width:1200px) {
+
+@media screen and (max-width: 1200px) {
     .slideArtGallery {
         height: pxToRem(378px);
 
@@ -53,14 +56,15 @@
 
 }
 
-@media screen and (max-width:1025px) {
+@media screen and (max-width: 1025px) {
 
     .slideArtGallery {
         height: 21.5rem;
         align-content: center;
+
         &.width-1 {
             width: pxToRem(252px);
-            
+
         }
     }
 }

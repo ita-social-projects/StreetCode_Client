@@ -1,7 +1,10 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import {
-    SourceCategory, SourceCategoryAdmin, SourceCategoryName, SourceLink, StreetcodeCategoryContent,
+    SourceCategory,
+    SourceCategoryAdmin,
+    SourceCategoryName,
+    StreetcodeCategoryContent,
 } from '@models/sources/sources.model';
 
 const SourcesApi = {

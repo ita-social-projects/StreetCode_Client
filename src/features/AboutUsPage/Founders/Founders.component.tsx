@@ -96,7 +96,8 @@ const Founders = () => (
         </h1>
         <div className="foundersBlock">
             {window.innerWidth > 600 ? <Founder {...FounderInna} /> : <TeamMemberCard person={TeamMemberCardInna} />}
-            {window.innerWidth > 600 ? <Founder {...FounderNatalia} /> : <TeamMemberCard person={TeamMemberCardNatalia} />}
+            {window.innerWidth > 600 ? <Founder {...FounderNatalia} />
+                : <TeamMemberCard person={TeamMemberCardNatalia} />}
         </div>
     </div>
 );

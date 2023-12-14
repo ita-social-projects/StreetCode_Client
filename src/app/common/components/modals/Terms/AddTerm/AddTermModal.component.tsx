@@ -5,7 +5,9 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import { useModalContext } from '@stores/root-store';
 
-import { Button, Form, Input, message, Modal, Popover } from 'antd';
+import {
+    Button, Form, Input, message, Modal, Popover,
+} from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -17,7 +19,7 @@ interface Props {
     setTerm: React.Dispatch<React.SetStateAction<Partial<Term> | undefined>>;
 }
 
-const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
+const AddTermModal = ({ handleAdd, term, setTerm }: Props) => {
     const { modalStore: { setModal, modalsState: { addTerm } } } = useModalContext();
     const [form] = Form.useForm();
     const handleChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -35,14 +37,14 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
     const onCancel = () => {
         addTerm.isOpen = false;
     };
-     const onClear = () => {
+    const onClear = () => {
         addTerm.isOpen = false;
         form.resetFields();
     };
-    const handleOk= async () =>{
+    const handleOk = async () => {
         try {
             form.submit();
-            message.success("термін успішно додано!", 2)
+            message.success('термін успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -53,7 +55,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
             });
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
-    }
+    };
 
     return (
         <Modal
@@ -61,18 +63,35 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
             open={addTerm.isOpen}
             onCancel={onCancel}
             footer={[null]}
-            closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
-                <CancelBtn className='iconSize' onClick={onClear}/>
-            </Popover>}
+            closeIcon={(
+                <Popover
+                    content="Внесені зміни не будуть збережені!"
+                    trigger="hover"
+                >
+                    <CancelBtn
+                        className="iconSize"
+                        onClick={onClear}
+                    />
+                </Popover>
+            )}
         >
             <h2>Створення визначення</h2>
-            <Form form={form} onFinish={onSuccessfulSubmit} layout="vertical">
+            <Form
+                form={form}
+                onFinish={onSuccessfulSubmit}
+                layout="vertical"
+            >
                 <FormItem
                     name="title"
                     label="Назва"
                     rules={[{ required: true, message: 'Введіть назву' }]}
                 >
-                    <Input value={term?.title} onChange={handleChangeTitle} showCount maxLength={50} />
+                    <Input
+                        value={term?.title}
+                        onChange={handleChangeTitle}
+                        showCount
+                        maxLength={50}
+                    />
                 </FormItem>
                 <FormItem
                     name="description"
@@ -86,7 +105,10 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                         maxLength={500}
                     />
                 </FormItem>
-                <Button className="streetcode-custom-button" onClick={() => handleOk()}>
+                <Button
+                    className="streetcode-custom-button"
+                    onClick={() => handleOk()}
+                >
                     Зберегти
                 </Button>
             </Form>

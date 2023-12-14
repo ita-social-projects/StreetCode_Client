@@ -29,7 +29,10 @@ const TeamMemberCard = ({ person, isSingleCard }: Props) => (
             <div className="linksContainer">
                 {person.teamMemberLinks.map(
                     (link) => (
-                        <TeamMemberLinks key={link.id} link={link} />
+                        <TeamMemberLinks
+                            key={link.id}
+                            link={link}
+                        />
                     ),
                 )}
             </div>

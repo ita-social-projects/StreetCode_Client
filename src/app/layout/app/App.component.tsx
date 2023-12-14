@@ -24,8 +24,14 @@ const App = () => {
     const { pathname } = useLocation();
     const { modalStore: { isPageDimmed } } = useModalContext();
     return (
-        <div className="mainBlockWrapper" style={{ position: 'relative' }}>
-            <ToastContainer position="bottom-right" limit={3} />
+        <div
+            className="mainBlockWrapper"
+            style={{ position: 'relative' }}
+        >
+            <ToastContainer
+                position="bottom-right"
+                limit={3}
+            />
             <CopyWithCopyright copyrightText={CopyrightText}>
                 <ModalWrapper />
             </CopyWithCopyright>

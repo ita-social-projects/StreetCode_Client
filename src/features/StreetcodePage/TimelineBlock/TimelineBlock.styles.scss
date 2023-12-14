@@ -7,106 +7,124 @@
 $timelineLvivImg: "@assets/images/timeline/Lviv.webp";
 $timelineSquareImg: "@assets/images/timeline/Square.webp";
 
-.timelineContainer{
-  width: 100vw;
-  align-self: center;
-  align-items: center;
+.timelineContainer {
+    width: 100vw;
+    align-self: center;
+    align-items: center;
 
-  &.container{
-    margin-top: f.pxToRem(155px);
-  }
-
-  .timelineContentContainer {
-  margin: f.pxToRem(50px) auto 0 auto;
-  background-color: c.$timeline-reel-color;
-
-  .sliderClass {
-    @include mut.sized(100%, 380px);
-    @include mut.rem-margined($bottom: 30px, $top: 30px);
-  }
-
-    .slick-slider {
-      @include mut.parent-sized();
-    }
-
-    .slick-list {
-      margin:f.pxToRem(0) !important;
-    }
-
-  .slick-track {
-    @include mut.rem-margined($top: 30.50px, $right: 0px, $bottom: 30.50px, $left: 0px);
-    display: flex;
-    @include mut.flexed($align-items: center);
-    @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
-
-    .slick-slide >div{
-      border-radius: 40px;
-      place-items: center;
-    }
-    .slick-slide {
-      border-radius: 40px;
-      border-width:f.pxToRem(15px) f.pxToRem(15px);
-      border-style: solid ;
-      border-color: c.$timeline-reel-color;
-      @include mut.bg-image($timelineSquareImg);
-      
-
-      background-size:f.pxToRem(605px) f.pxToRem(365px);
-      background-position: center;   
-
-      &:nth-child(2n + 1) {
-        @include mut.bg-image($timelineLvivImg);
-        background-position: center;
-      }
-
-      @include vnd.vendored(transition, 'border 500ms ease');
-    }
-    
-    .slick-current {
-      border-radius: 40px;
-      box-shadow: inset  0px 0px 0px 6px c.$pure-white-color;
-    }
-  }
-}
-}
-
-@media screen and (max-width: 1450px) {
-  .timelineContainer{
-    &.container{
-      margin-top: f.pxToRem(80px);
-    }
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .timelineContainer{
-    &.container{
-      margin-top: f.pxToRem(63px);
+    &.container {
+        margin-top: f.pxToRem(155px);
     }
 
     .timelineContentContainer {
-      margin: f.pxToRem(28px) auto;
-      .sliderClass{
-        @include mut.rem-margined($bottom: 10px, $top: 10px);
-      }
+        margin: f.pxToRem(50px) auto 0 auto;
+        background-color: c.$timeline-reel-color;
 
-      .slick-track {
-        @include mut.rem-margined($top: 11px, $right: 0px, $bottom: 11px, $left: 0px);
-        .slick-slide >div{
-          height: min-content;
-          border-radius: 20px;
-          place-items: center;
+        .sliderClass {
+            @include mut.sized(100%, 380px);
+            @include mut.rem-margined($bottom: 30px, $top: 30px);
         }
-        .slick-slide {
-          border-radius: 20px;
-          border-width:f.pxToRem(7px) f.pxToRem(7px);
-          background-size:f.pxToRem(295px) f.pxToRem(185px);
-          background-position: center;  
+
+        .slick-slider {
+            @include mut.parent-sized();
         }
-        .slick-current {
-          box-shadow: inset  0px 0px 0px 3px c.$pure-white-color;
+
+        .slick-list {
+            margin:f.pxToRem
+
+        (0) !important;
         }
-      }
+
+        .slick-track {
+            @include mut.rem-margined($top: 30.50px, $right: 0px, $bottom: 30.50px, $left: 0px);
+            display: flex;
+            @include mut.flexed($align-items: center);
+            @include vnd.vendored(transition, 'transform 800ms ease-in-out !important');
+
+            .slick-slide > div {
+                border-radius: 40px;
+                place-items: center;
+            }
+
+            .slick-slide {
+                border-radius: 40px;
+
+                border-width:f.pxToRem
+
+            (15 px) f . pxToRem(15 px);
+                border-style: solid;
+                border-color: c.$timeline-reel-color;
+                @include mut.bg-image($timelineSquareImg);
+
+
+                background-size:f.pxToRem
+
+            (605 px) f . pxToRem(365 px);
+                background-position: center;
+
+                &:nth-child(2n + 1) {
+                    @include mut.bg-image($timelineLvivImg);
+                    background-position: center;
+                }
+
+                @include vnd.vendored(transition, 'border 500ms ease');
+            }
+
+            .slick-current {
+                border-radius: 40px;
+                box-shadow: inset 0px 0px 0px 6px c.$pure-white-color;
+            }
+        }
     }
-  }
+}
+
+@media screen and (max-width: 1450px) {
+    .timelineContainer {
+        &.container {
+            margin-top: f.pxToRem(80px);
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .timelineContainer {
+        &.container {
+            margin-top: f.pxToRem(63px);
+        }
+
+        .timelineContentContainer {
+            margin: f.pxToRem(28px) auto;
+
+            .sliderClass {
+                @include mut.rem-margined($bottom: 10px, $top: 10px);
+            }
+
+            .slick-track {
+                @include mut.rem-margined($top: 11px, $right: 0px, $bottom: 11px, $left: 0px);
+
+                .slick-slide > div {
+                    height: min-content;
+                    border-radius: 20px;
+                    place-items: center;
+                }
+
+                .slick-slide {
+                    border-radius: 20px;
+
+                    border-width:f.pxToRem
+
+                (7 px) f . pxToRem(7 px);
+
+                    background-size:f.pxToRem
+
+                (295 px) f . pxToRem(185 px);
+                    background-position: center;
+                }
+
+                .slick-current {
+                    box-shadow: inset 0px 0px 0px 3px c.$pure-white-color;
+                }
+            }
+        }
+    }
 }

@@ -40,14 +40,16 @@ export default class StreetcodeCoordinatesStore {
     public fetchStreetcodeCoordinatesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalStreetcodeCoordinateMap = await StreetcodeCoordinatesApi.getByStreetcodeId(streetcodeId);
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public createStreetcodeCoordinate = async (streetcodeCoordinate: StreetcodeCoordinate, streetcodeId: number) => {
         try {
             const newStreetcodeCoordinate = await StreetcodeCoordinatesApi.create(streetcodeCoordinate);
             this.setStreetcodeCoordinateItem(newStreetcodeCoordinate);
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public updateStreetcodeCoordinate = async (streetcodeStreetcodeCoordinate: StreetcodeCoordinate) => {
@@ -56,7 +58,8 @@ export default class StreetcodeCoordinatesStore {
             runInAction(() => {
                 this.setStreetcodeCoordinateItem(streetcodeStreetcodeCoordinate);
             });
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public deleteStreetcodeCoordinate = async (StreetcodeCoordinateId: number) => {
@@ -65,6 +68,7 @@ export default class StreetcodeCoordinatesStore {
             runInAction(() => {
                 this.setStreetcodeCoordinateMap.delete(StreetcodeCoordinateId);
             });
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 }

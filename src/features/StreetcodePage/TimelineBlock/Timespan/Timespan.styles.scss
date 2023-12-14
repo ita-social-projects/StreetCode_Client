@@ -5,59 +5,60 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .timelineYearTicksContainerSwiper {
-  width: 100vw;
+    width: 100vw;
 }
 
 .timeSpanContainer {
-  height: f.pxToRem(8px);
-  margin: f.pxToRem(60px) auto 0 auto;
-  background-color: c.$dark-red-color;
+    height: f.pxToRem(8px);
+    margin: f.pxToRem(60px) auto 0 auto;
+    background-color: c.$dark-red-color;
 
-  .timelineYearTicksContainer {
-    position: relative;
-
-    @include mut.sized(100%, 26px);
-    @include mut.rem-padded(0, 100px, 20px, 100px);
-
-    .timelineYearTick {
-      overflow: visible;
-      @include mut.parent-sized();
-      @include mut.flex-centered();
-
-      background-color: c.$timeline-reel-color;
-      @include vnd.vendored(transition, 'background .5s ease');
-
-      &:hover {
-        background-color: c.$darkish-gray-color;
-        cursor: pointer;
-      }
-
-      >* {
+    .timelineYearTicksContainer {
         position: relative;
-        bottom: f.pxToRem(30px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500);
-      }
+
+        @include mut.sized(100%, 26px);
+        @include mut.rem-padded(0, 100px, 20px, 100px);
+
+        .timelineYearTick {
+            overflow: visible;
+            @include mut.parent-sized();
+            @include mut.flex-centered();
+
+            background-color: c.$timeline-reel-color;
+            @include vnd.vendored(transition, 'background .5s ease');
+
+            &:hover {
+                background-color: c.$darkish-gray-color;
+                cursor: pointer;
+            }
+
+            > * {
+                position: relative;
+                bottom: f.pxToRem(30px);
+                @include mut.with-font(ft.$closer-text-font, $font-weight: 500);
+            }
+        }
     }
-  }
 }
 
 @media screen and (max-width: 1024px) {
-  .timeSpanContainer {
-    height: f.pxToRem(3px);
-  }
-
-  .timeSpanContainer .timelineYearTicksContainer {
-    @include mut.rem-padded(0, 0px, 20px, 0px);
-    .timelineYearTick>* {
-      bottom: f.pxToRem(20px);
-      @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 12px);
+    .timeSpanContainer {
+        height: f.pxToRem(3px);
     }
-  }
+
+    .timeSpanContainer .timelineYearTicksContainer {
+        @include mut.rem-padded(0, 0px, 20px, 0px);
+
+        .timelineYearTick > * {
+            bottom: f.pxToRem(20px);
+            @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 12px);
+        }
+    }
 
 }
 
 @media screen and (max-width: 480px) {
-  .timeSpanContainer .timelineYearTicksContainer {
-    @include mut.rem-padded(0, 0px, 20px, 0px);
-  }
+    .timeSpanContainer .timelineYearTicksContainer {
+        @include mut.rem-padded(0, 0px, 20px, 0px);
+    }
 }

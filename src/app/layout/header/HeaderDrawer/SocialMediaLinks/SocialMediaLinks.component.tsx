@@ -11,27 +11,47 @@ import SOCIAL_MEDIA from '@/app/common/constants/social.constants';
 const SocialMediaLinks = () => (
     <ul className="socialIconHeaderContainer">
         <li>
-            <a href={SOCIAL_MEDIA.INSTAGRAM} target="_blank" rel="noreferrer">
+            <a
+                href={SOCIAL_MEDIA.INSTAGRAM}
+                target="_blank"
+                rel="noreferrer"
+            >
                 <Instagram />
             </a>
         </li>
         <li>
-            <a href={SOCIAL_MEDIA.FACEBOOK} target="_blank" rel="noreferrer">
+            <a
+                href={SOCIAL_MEDIA.FACEBOOK}
+                target="_blank"
+                rel="noreferrer"
+            >
                 <FaceBook />
             </a>
         </li>
         <li>
-            <a href={SOCIAL_MEDIA.TIKTOK} target="_blank" rel="noreferrer">
+            <a
+                href={SOCIAL_MEDIA.TIKTOK}
+                target="_blank"
+                rel="noreferrer"
+            >
                 <TikTok />
             </a>
         </li>
         <li>
-            <a href={SOCIAL_MEDIA.TELEGRAM} target="_blank" rel="noreferrer">
+            <a
+                href={SOCIAL_MEDIA.TELEGRAM}
+                target="_blank"
+                rel="noreferrer"
+            >
                 <Telegram />
             </a>
         </li>
         <li>
-            <a href={SOCIAL_MEDIA.YOUTUBE} target="_blank" rel="noreferrer">
+            <a
+                href={SOCIAL_MEDIA.YOUTUBE}
+                target="_blank"
+                rel="noreferrer"
+            >
                 <Youtube />
             </a>
         </li>

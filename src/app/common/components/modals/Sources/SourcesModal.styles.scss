@@ -13,194 +13,194 @@ $CancelBtnMobile: "/src/assets/images/utils/Cancel_btn_mobile.svg";
 $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
 
 .ant-modal.sourcesModal {
-  @include mut.sizedImportant(823px, 725px);
+    @include mut.sizedImportant(823px, 725px);
 
-  .sourceImgContainer {
-    @include mut.sizedImportant(100%, 91px);
-    @include mut.flex-centered();
-    background: url($ModalBig);
+    .sourceImgContainer {
+        @include mut.sizedImportant(100%, 91px);
+        @include mut.flex-centered();
+        background: url($ModalBig);
 
-    h1 {
-      color: c.$pure-white-color;
-      @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
-    }
-  }
-
-  .highlightedHeader {
-    font-size: pxToRem(36px) !important;
-    line-height: 47.52px;
-  }
-
-  &.ant-modal {
-    .ant-modal-body {
-      height: pxToRem(730px);
+        h1 {
+            color: c.$pure-white-color;
+            @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+        }
     }
 
-    .ant-modal-content {
-      @include mut.full-rounded(70px, $overflow: visible);
-      padding: 0;
-    }
-  }
-
-  .ant-modal-close {
-    @include mut.circular(80px, c.$pure-white-color);
-    @include mut.positioned-as($position: absolute, $left: 93%, $top: -25px);
-
-    &:hover {
-      background-color: c.$modal-hover-color;
+    .highlightedHeader {
+        font-size: pxToRem(36px) !important;
+        line-height: 47.52px;
     }
 
-    .ant-modal-close-x {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
+    &.ant-modal {
+        .ant-modal-body {
+            height: pxToRem(730px);
+        }
 
-  .mainContentContainer {
-    height: pxToRem(570px);
-    @include mut.flexed($direction: column, $gap: 10px);
-    @include mut.rem-margined(30px, 10px, 30px, 30px);
-    padding-right: pxToRem(10px);
-    overflow-y: scroll;
-    font-weight: 300;
-    font-size: 15px;
-
-    ul {
-      list-style-type: disc;
-      padding-inline-start: revert;
-    }
-    
-    ol {
-      list-style-type: decimal;
-      padding-inline-start: revert;
+        .ant-modal-content {
+            @include mut.full-rounded(70px, $overflow: visible);
+            padding: 0;
+        }
     }
 
-    >h1 {
-      @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 24px, $font-style: light);
-      line-height: pxToRem(26.4px);
-    }
-
-    a {
-      text-decoration: underline;
-      color: c.$pure-black-color;
-    }
-
-    .sectionLinksContainer {
-      @include mut.flexed($direction: column, $gap: 10px);
-
-      >* {
-        @include mut.with-font($font-weight: 300, $font-size: 15px);
-        color: c.$pure-black-color;
-        line-height: pxToEm(18px);
+    .ant-modal-close {
+        @include mut.circular(80px, c.$pure-white-color);
+        @include mut.positioned-as($position: absolute, $left: 93%, $top: -25px);
 
         &:hover {
-          text-decoration: underline;
-          cursor: pointer;
+            background-color: c.$modal-hover-color;
         }
-      }
-    }
 
-    &::-webkit-scrollbar {
-      width: .765rem;
-    }
-
-    &::-webkit-scrollbar-thumb,
-    &::-webkit-scrollbar-track {
-      @include mut.full-rounded(15px);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: c.$card-scrollbar-track-color;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: c.$accented-gray-color;
-      @include mut.rem-margined($top: 0px, $bottom: 90px);
-    }
-  }
-
-  @media screen and (max-width: 1024px) {
-    @include mut.sizedImportant(579px, 585px);
-
-    .sourceImgContainer {
-      @include mut.sizedImportant(100%, 60px);
-
-      h1 {
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
-      }
-
-      background: url($ModalTablet);
-    }
-
-    &.ant-modal {
-      .ant-modal-content {
-        @include mut.full-rounded(20px, $overflow: visible);
-        @include mut.sizedImportant(579px, 585px)
-      }
-    }
-
-    .ant-modal-close {
-      @include mut.circular(40px, c.$pure-white-color);
-      @include mut.positioned-as($position: absolute, $left: 95.36%, $top: -15px);
+        .ant-modal-close-x {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 
     .mainContentContainer {
-      @include mut.rem-margined(15px, 7px, 30px, 20px);
+        height: pxToRem(570px);
+        @include mut.flexed($direction: column, $gap: 10px);
+        @include mut.rem-margined(30px, 10px, 30px, 30px);
+        padding-right: pxToRem(10px);
+        overflow-y: scroll;
+        font-weight: 300;
+        font-size: 15px;
 
-      p {
-        line-height: pxToRem(17.58px);
-      }
+        ul {
+            list-style-type: disc;
+            padding-inline-start: revert;
+        }
 
-      &::-webkit-scrollbar {
-        width: pxToRem(5px);
-        height: pxToRem(316px);
-      }
+        ol {
+            list-style-type: decimal;
+            padding-inline-start: revert;
+        }
 
-      &::-webkit-scrollbar-thumb,
-      &::-webkit-scrollbar-track {
-        @include mut.full-rounded(10px);
-      }
+        > h1 {
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 24px, $font-style: light);
+            line-height: pxToRem(26.4px);
+        }
 
-      height: pxToRem(490px);
+        a {
+            text-decoration: underline;
+            color: c.$pure-black-color;
+        }
+
+        .sectionLinksContainer {
+            @include mut.flexed($direction: column, $gap: 10px);
+
+            > * {
+                @include mut.with-font($font-weight: 300, $font-size: 15px);
+                color: c.$pure-black-color;
+                line-height: pxToEm(18px);
+
+                &:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &::-webkit-scrollbar {
+            width: .765rem;
+        }
+
+        &::-webkit-scrollbar-thumb,
+        &::-webkit-scrollbar-track {
+            @include mut.full-rounded(15px);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: c.$card-scrollbar-track-color;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: c.$accented-gray-color;
+            @include mut.rem-margined($top: 0px, $bottom: 90px);
+        }
     }
-  }
 
-  @media screen and (max-width: 480px) {
-    @include mut.sizedImportant(340px, 442px);
+    @media screen and (max-width: 1024px) {
+        @include mut.sizedImportant(579px, 585px);
 
-    &.ant-modal {
-      .ant-modal-body {
-        max-height: pxToRem(342px);
-      }
+        .sourceImgContainer {
+            @include mut.sizedImportant(100%, 60px);
 
-      .ant-modal-content {
+            h1 {
+                @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+            }
+
+            background: url($ModalTablet);
+        }
+
+        &.ant-modal {
+            .ant-modal-content {
+                @include mut.full-rounded(20px, $overflow: visible);
+                @include mut.sizedImportant(579px, 585px)
+            }
+        }
+
+        .ant-modal-close {
+            @include mut.circular(40px, c.$pure-white-color);
+            @include mut.positioned-as($position: absolute, $left: 95.36%, $top: -15px);
+        }
+
+        .mainContentContainer {
+            @include mut.rem-margined(15px, 7px, 30px, 20px);
+
+            p {
+                line-height: pxToRem(17.58px);
+            }
+
+            &::-webkit-scrollbar {
+                width: pxToRem(5px);
+                height: pxToRem(316px);
+            }
+
+            &::-webkit-scrollbar-thumb,
+            &::-webkit-scrollbar-track {
+                @include mut.full-rounded(10px);
+            }
+
+            height: pxToRem(490px);
+        }
+    }
+
+    @media screen and (max-width: 480px) {
         @include mut.sizedImportant(340px, 442px);
-      }
+
+        &.ant-modal {
+            .ant-modal-body {
+                max-height: pxToRem(342px);
+            }
+
+            .ant-modal-content {
+                @include mut.sizedImportant(340px, 442px);
+            }
+        }
+
+        .sourceImgContainer {
+            @include mut.sizedImportant(100%, 47px);
+
+            h1 {
+                @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+            }
+
+            background: url($ModalPhone);
+        }
+
+        .mainContentContainer {
+            height: pxToRem(370px);
+            @include mut.rem-margined(15px, 4px, 10px, 10px);
+
+            p {
+                font-size: 12px;
+                line-height: pxToRem(15.14px);
+            }
+        }
+
+        .ant-modal-close {
+            @include mut.positioned-as($position: absolute, $left: 90%, $top: -15px);
+        }
     }
-
-    .sourceImgContainer {
-      @include mut.sizedImportant(100%, 47px);
-
-      h1 {
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-      }
-
-      background: url($ModalPhone);
-    }
-
-    .mainContentContainer {
-      height: pxToRem(370px);
-      @include mut.rem-margined(15px, 4px, 10px, 10px);
-
-      p {
-        font-size: 12px;
-        line-height: pxToRem(15.14px);
-      }
-    }
-
-    .ant-modal-close {
-      @include mut.positioned-as($position: absolute, $left: 90%, $top: -15px);
-    }
-  }
 }

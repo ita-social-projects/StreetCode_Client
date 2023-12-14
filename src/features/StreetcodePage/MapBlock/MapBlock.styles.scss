@@ -1,16 +1,17 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 
-.mapBlockContainer{
-   @include mut.positioned-as(relative);
-  .leaflet-container {
-    z-index: 1;
-  }
+.mapBlockContainer {
+    @include mut.positioned-as(relative);
+
+    .leaflet-container {
+        z-index: 1;
+    }
 }
 
 @media screen and (max-width: 1024px) {
-  .mapBlockContainer{
-    margin-top: f.pxToRem(72px);
-  }
+    .mapBlockContainer {
+        margin-top: f.pxToRem(72px);
+    }
 }
 

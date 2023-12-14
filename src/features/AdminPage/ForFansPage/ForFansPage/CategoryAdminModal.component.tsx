@@ -14,8 +14,7 @@ import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover,
-    UploadFile,
+    Button, Form, Input, message, Modal, Popover, UploadFile,
 } from 'antd';
 import { UploadFileStatus } from 'antd/es/upload/interface';
 
@@ -97,9 +96,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
             imageId: imageId.current,
             image,
         };
-        sourcesAdminStore.getSourcesAdmin.map((t) => t).forEach(t => {
-            if (formData.title == t.title ||  imageId.current == t.imageId)
-                currentSource.id = t.id;
+        sourcesAdminStore.getSourcesAdmin.map((t) => t).forEach((t) => {
+            if (formData.title == t.title || imageId.current == t.imageId) currentSource.id = t.id;
         });
 
         if (currentSource.id) {
@@ -127,18 +125,18 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const getValueFromEvent = (e: any) => {
         if (e && e.fileList) {
             return e.fileList;
-        } if (e && e.file && e.fileList === undefined) {
+        }
+        if (e && e.file && e.fileList === undefined) {
             return [e.file];
         }
         return [];
     };
 
-
     const handleOk = async () => {
         try {
             await form.validateFields();
             form.submit();
-            message.success("Категорію успішно додано!", 2)
+            message.success('Категорію успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -149,7 +147,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             });
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
-    }
+    };
 
     return (
         <div>
@@ -159,19 +157,34 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 onCancel={closeModal}
                 className="modalContainer"
                 closeIcon={(
-                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                        <CancelBtn className="iconSize" onClick={handleCancel} />
+                    <Popover
+                        content="Внесені зміни не будуть збережені!"
+                        trigger="hover"
+                    >
+                        <CancelBtn
+                            className="iconSize"
+                            onClick={handleCancel}
+                        />
                     </Popover>
                 )}
                 footer={null}
             >
-                <Form form={form} layout="vertical" onFinish={onSubmit} initialValues={initialData}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={onSubmit}
+                    initialValues={initialData}
+                >
                     <Form.Item
                         name="title"
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" maxLength={23} showCount />
+                        <Input
+                            placeholder="Title"
+                            maxLength={23}
+                            showCount
+                        />
                     </Form.Item>
                     <Form.Item
                         name="image"
@@ -206,16 +219,22 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button 
-                        disabled={fileList?.length === 0} 
-                        className="streetcode-custom-button" 
-                        onClick={() => handleOk()}>
+                        <Button
+                            disabled={fileList?.length === 0}
+                            className="streetcode-custom-button"
+                            onClick={() => handleOk()}
+                        >
                             Зберегти
                         </Button>
                     </div>
                 </Form>
             </Modal>
-            <PreviewFileModal greyFilterForImage file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
+            <PreviewFileModal
+                greyFilterForImage
+                file={filePreview}
+                opened={previewOpen}
+                setOpened={setPreviewOpen}
+            />
         </div>
     );
 };

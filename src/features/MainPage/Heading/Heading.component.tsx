@@ -6,9 +6,9 @@ import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 import Squares from '@/assets/images/main-page/heading-squares.component.svg';
 
 interface Props {
-	blockName: string,
-    	buttonName?: string | undefined,
-	setActionOnClick: React.MouseEventHandler<HTMLParagraphElement> | undefined
+    blockName: string,
+    buttonName?: string | undefined,
+    setActionOnClick: React.MouseEventHandler<HTMLParagraphElement> | undefined
 }
 
 const Heading = ({ blockName, buttonName, setActionOnClick }: Props) => {
@@ -17,7 +17,7 @@ const Heading = ({ blockName, buttonName, setActionOnClick }: Props) => {
         <>
             {windowSize.width > 480
                 ? (
-                   <div className="mainPageBlockHeading">
+                    <div className="mainPageBlockHeading">
                         <div className="leftPart">
                             <Squares />
                             <p className="blockName">{blockName}</p>
@@ -27,7 +27,7 @@ const Heading = ({ blockName, buttonName, setActionOnClick }: Props) => {
                         </div>
                     </div>
                 )
-                :				(
+                : (
                     <div className="mainPageBlockHeading">
                         <SquaresMobile />
                         <div className="leftPart">

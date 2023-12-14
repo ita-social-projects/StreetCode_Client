@@ -1,6 +1,4 @@
-import {
-    createBrowserRouter, createHashRouter, createRoutesFromElements, Route, Routes, useParams,
-} from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
 import App from '@layout/app/App.component';
@@ -8,7 +6,6 @@ import StreetcodeContent from '@streetcode/Streetcode.component';
 
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
 import AboutUsPage from '@/features/AboutUsPage/AboutUsPage.component';
-import Vacancies from '@/features/AboutUsPage/Vacancies/Vacancies.component';
 import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
@@ -27,7 +24,10 @@ import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.c
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route
+        path="/"
+        element={<App />}
+    >
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
             element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
@@ -68,7 +68,10 @@ const router = createBrowserRouter(createRoutesFromElements(
             path={FRONTEND_ROUTES.ADMIN.NEWS}
             element={<ProtectedComponent><News /></ProtectedComponent>}
         />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
+            element={<StreetcodeCatalog />}
+        />
         <Route
             path={FRONTEND_ROUTES.ADMIN.TEAM}
             element={(
@@ -77,18 +80,57 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
-        <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element={<JobPage />} />
-        <Route path="*" element={<NotFound />} />
-        <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US} element={<ContactUs />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.NEWS} element={<NewsPage />} />
-        <Route index path="/:id" element={<StreetcodeContent />} />
-        <Route index path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`} element={<NewsPage />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US} element={<AboutUsPage />} />
+        <Route
+            path={FRONTEND_ROUTES.ADMIN.JOBS}
+            element={<JobPage />}
+        />
+        <Route
+            path="*"
+            element={<NotFound />}
+        />
+        <Route
+            index
+            path={FRONTEND_ROUTES.ADMIN.LOGIN}
+            element={<AdminLogin />}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404}
+            element={<NotFound />}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
+            element={<PrivatePolicy />}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}
+            element={<ContactUs />}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS}
+            element={<PartnersPage />}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US}
+            element={<SupportUs />}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.NEWS}
+            element={<NewsPage />}
+        />
+        <Route
+            index
+            path="/:id"
+            element={<StreetcodeContent />}
+        />
+        <Route
+            index
+            path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`}
+            element={<NewsPage />}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}
+            element={<AboutUsPage />}
+        />
         <Route
             path={`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}/:section`}
             element={<AboutUsPage />}

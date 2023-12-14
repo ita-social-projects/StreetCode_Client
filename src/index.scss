@@ -2,86 +2,93 @@
 @use '@assets/sass/mixins/_utils.mixins.scss' as ut;
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
+
 *,
 *:before,
 *:after {
-  margin: 0;
-  text-decoration: none;
-  box-sizing: border-box;
+    margin: 0;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 
 .ant-message {
-  position: fixed !important;
+    position: fixed !important;
 }
 
 body {
-  font-family: ft.$body-tag-font;
-  @include ut.antialiased();
-  overflow-x: hidden;
+    font-family: ft.$body-tag-font;
+    @include ut.antialiased();
+    overflow-x: hidden;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 code {
-  font-family: ft.$code-tag-font;
+    font-family: ft.$code-tag-font;
 }
 
 html,
 body,
 #root {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 ul, ol {
-  list-style: none;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline-start: 0;
-  margin-inline-end: 0;
-  padding-inline-start: 0;
+    list-style: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
 }
 
-.streetcode-custom-button{
-  @include ut.flex-centered();
-  @include ut.full-rounded(12px);
-  @include ut.with-font($font-weight: 500);
-  background-color: c.$accented-red-color;
-  border-color: c.$accented-red-color;
-  color:#fff;
-  .ant-btn-default:hover{
-    color:#fff !important;
-  }
-  .ant-btn{
-    color:#fff;
-    &:hover{
-      color: c.$pure-white-color ;
+.streetcode-custom-button {
+    @include ut.flex-centered();
+    @include ut.full-rounded(12px);
+    @include ut.with-font($font-weight: 500);
+    background-color: c.$accented-red-color;
+    border-color: c.$accented-red-color;
+    color: #fff;
+
+    .ant-btn-default:hover {
+        color: #fff !important;
     }
-  }
-  button{
-    color:#fff;
-    &:hover{
-      color:#fff;
+
+    .ant-btn {
+        color: #fff;
+
+        &:hover {
+            color: c.$pure-white-color;
+        }
     }
-  }
-  
-  &:hover{
-    color: c.$pure-white-color ;
-    background-color: c.$dark-red-color;
-    border-color: c.$dark-red-color;
-  }
-  
-  &[disabled]{
-    pointer-events: none;
-  }
-  &:disabled{
-    background-color: c.$lighter-gray-color;
-    border-color: c.$lighter-gray-color;
-  }
+
+    button {
+        color: #fff;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+
+    &:hover {
+        color: c.$pure-white-color;
+        background-color: c.$dark-red-color;
+        border-color: c.$dark-red-color;
+    }
+
+    &[disabled] {
+        pointer-events: none;
+    }
+
+    &:disabled {
+        background-color: c.$lighter-gray-color;
+        border-color: c.$lighter-gray-color;
+    }
 }
 
 .ant-checkbox-checked::after {
-  border: none;
+    border: none;
 }

@@ -3,32 +3,32 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .timelineSquareContainer {
-  margin-left: f.pxToRem(4px);
-  @include mut.flex-centered($gap: 36px);
+    margin-left: f.pxToRem(4px);
+    @include mut.flex-centered($gap: 36px);
 
-  &:first-child {
-    padding-top: f.pxToRem(16px);
-  }
+    &:first-child {
+        padding-top: f.pxToRem(16px);
+    }
 
-  &:last-child {
-    padding-bottom: f.pxToRem(16px);
-  }
+    &:last-child {
+        padding-bottom: f.pxToRem(16px);
+    }
 
-  .timelineSquare {
-    @include mut.sized(44px, 40px);
-    background-color: c.$pure-white-color;
-    @include mut.full-rounded(11px);
-    flex-shrink: 0;
-  }
+    .timelineSquare {
+        @include mut.sized(44px, 40px);
+        background-color: c.$pure-white-color;
+        @include mut.full-rounded(11px);
+        flex-shrink: 0;
+    }
 }
 
 @media screen and (max-width: 1024px) {
-  .timelineSquareContainer{
-    @include mut.flex-centered($gap: 18px);
+    .timelineSquareContainer {
+        @include mut.flex-centered($gap: 18px);
 
-    .timelineSquare{
-      @include mut.sized(22px, 20px);
-      @include mut.full-rounded(6px);
+        .timelineSquare {
+            @include mut.sized(22px, 20px);
+            @include mut.full-rounded(6px);
+        }
     }
-  }
 }

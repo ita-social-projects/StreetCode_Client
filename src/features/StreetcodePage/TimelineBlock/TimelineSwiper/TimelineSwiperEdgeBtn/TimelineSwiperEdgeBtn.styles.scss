@@ -5,28 +5,28 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .swiperEdgeBtn {
-  @include mut.sized(42px, 42px);
-  @include mut.flex-centered();
+    @include mut.sized(42px, 42px);
+    @include mut.flex-centered();
 
-  position: absolute;
-  z-index: 10;
+    position: absolute;
+    z-index: 10;
 
-  background-color: c.$timeline-reel-color;
-  @include vnd.vendored(transition, '.5s ease');
+    background-color: c.$timeline-reel-color;
+    @include vnd.vendored(transition, '.5s ease');
 
-  &:hover {
-    background-color: c.$dark-gray-color;
-    cursor: pointer;
-  }
+    &:hover {
+        background-color: c.$dark-gray-color;
+        cursor: pointer;
+    }
 
-  > * {
-    @include mut.positioned-as(relative, $bottom: 60px);
-    @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 30px);
-  }
+    > * {
+        @include mut.positioned-as(relative, $bottom: 60px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 30px);
+    }
 }
 
 @media screen and (max-width: 1024px) {
-  .swiperEdgeBtn{
-    display: none;
-  }
+    .swiperEdgeBtn {
+        display: none;
+    }
 }

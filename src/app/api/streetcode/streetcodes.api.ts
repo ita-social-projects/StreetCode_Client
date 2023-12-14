@@ -1,9 +1,13 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import Streetcode,
-{
-    EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord,
-    StreetcodeCreate, StreetcodeMainPage, StreetcodeShort, StreetcodeUpdate,
+import Streetcode, {
+    EventStreetcode,
+    PersonStreetcode,
+    StreetcodeCatalogRecord,
+    StreetcodeCreate,
+    StreetcodeMainPage,
+    StreetcodeShort,
+    StreetcodeUpdate,
 } from '@models/streetcode/streetcode-types.model';
 
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
@@ -30,9 +34,11 @@ const StreetcodesApi = {
     getPageMainPage: (page: number, pageSize: number, args: any) => Agent
         .get<StreetcodeMainPage[]>(
             `${API_ROUTES.STREETCODES.GET_PAGE_MAINPAGE}`,
-            new URLSearchParams(Object.entries({ page: page.toString(),
-                                                 pageSize: pageSize.toString(),
-                                                 shuffleSeed: args.shuffleSeed.toString() })),
+            new URLSearchParams(Object.entries({
+                page: page.toString(),
+                pageSize: pageSize.toString(),
+                shuffleSeed: args.shuffleSeed.toString(),
+            })),
         ),
 
     getAllCatalog: (page: number, count: number) => Agent
@@ -73,7 +79,7 @@ const StreetcodesApi = {
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 
-    existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
+    existWithIndex: (index: number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
 
     existWithUrl: (url: string) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_URL}/${url}`),
 };

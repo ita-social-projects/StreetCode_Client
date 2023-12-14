@@ -4,8 +4,8 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .card {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
     @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
     @include mut.sized(1200px, 697px);
     @include mut.full-rounded(50px);
@@ -21,11 +21,13 @@
     .slick-track {
         margin: 0;
     }
+
     .slick-initialized .slick-slide {
-      @include mut.flexed($justify-content: center, $gap: 0px);
-      @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
+        @include mut.flexed($justify-content: center, $gap: 0px);
+        @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
     }
 }
+
 .leftSider {
     @include mut.full-rounded(53px);
     @include mut.sized(514px, 697px);
@@ -33,123 +35,152 @@
     background-color: c.$pure-white-color;
     justify-self: flex-start;
 }
+
 .leftSiderContent {
     background-color: c.$accented-gray-color;
-    @include mut.border(c.$pure-white-color,22px,solid);
+    @include mut.border(c.$pure-white-color, 22px, solid);
     @include mut.full-rounded(50px);
     @include mut.parent-sized();
     @include mut.flex-centered();
 }
+
 .rightSider {
-  @include mut.rem-padded(49px, 23px, 0px, 51px);
-  height: f.pxToRem(697px);
-  display: flex;
-  flex-direction: column;
+    @include mut.rem-padded(49px, 23px, 0px, 51px);
+    height: f.pxToRem(697px);
+    display: flex;
+    flex-direction: column;
 }
+
 .streetcodeIndex {
     @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 14px, $left: 0px);
     color: c.$dark-red-color;
     @include mut.with-font($font-weight: 500);
     line-height: f.pxToRem(23.44px);
 }
+
 .streetcodeTitle {
-  @include mut.rem-padded(0px, 10px, 7px, 0px);
-  @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
-  color: c.$lighter-black-color;
-  line-height: f.pxToRem(47.52px);
+    @include mut.rem-padded(0px, 10px, 7px, 0px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
+    color: c.$lighter-black-color;
+    line-height: f.pxToRem(47.52px);
 }
+
 .streetcodeDate {
-  @include mut.rem-padded(7px, 10px, 12px, 0px);
-  font-size: f.pxToRem(20px);
-  line-height: f.pxToRem(23.44px);
+    @include mut.rem-padded(7px, 10px, 12px, 0px);
+    font-size: f.pxToRem(20px);
+    line-height: f.pxToRem(23.44px);
 }
-.tagContainer{
-  @include mut.rem-margined(13px, 0, 13px, 0);
+
+.tagContainer {
+    @include mut.rem-margined(13px, 0, 13px, 0);
 }
-.blurTop{
-  @include mut.blur($edge: 0deg, $top: 9px, $height: 16px, $z-index: 3);
+
+.blurTop {
+    @include mut.blur($edge: 0deg, $top: 9px, $height: 16px, $z-index: 3);
 }
-.blurBottom{
-  @include mut.blur($edge: 180deg, $top: -20px, $height: 21px, $z-index: 3);
+
+.blurBottom {
+    @include mut.blur($edge: 180deg, $top: -20px, $height: 21px, $z-index: 3);
 }
+
 .teaserBlock {
-  @include mut.with-font($font-weight: 300, $font-size: 20px);
-  @include mut.rem-margined($top: 10px);
-  @include mut.rem-padded($top: 15px, $bottom: 15px);
-  line-height: 23px;
-  overflow: auto;
-  flex-grow: 1;
-  color: c.$lighter-black-color;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+    @include mut.with-font($font-weight: 300, $font-size: 20px);
+    @include mut.rem-margined($top: 10px);
+    @include mut.rem-padded($top: 15px, $bottom: 15px);
+    line-height: 23px;
+    overflow: auto;
+    flex-grow: 1;
+    color: c.$lighter-black-color;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
+
 .cardFooter {
     width: 100%;
     position: relative;
     @include mut.rem-padded(10px, 0px, 54px, 0px);
     @include mut.flexed($justify-content: flex-start, $gap: 20px);
-  .ant-btn-primary:disabled {
-    background-color: c.$lighter-gray-color;
-    color: c.$pure-white-color;
+
+    .ant-btn-primary:disabled {
+        background-color: c.$lighter-gray-color;
+        color: c.$pure-white-color;
     }
-  .ant-btn-default {
-    border-width: 3px;
-    border-color: c.$accented-red-color;
-  }
+
+    .ant-btn-default {
+        border-width: 3px;
+        border-color: c.$accented-red-color;
+    }
 }
+
 .audioBtnActive {
-  background-color: c.$accented-red-color;
-  border-color: c.$accented-red-color;
-  &:hover {
-    box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
-  }
+    background-color: c.$accented-red-color;
+    border-color: c.$accented-red-color;
+
+    &:hover {
+        box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
+    }
 }
+
 .audioBtn {
     @include mut.sized(271px, 73px);
     @include mut.flex-centered();
     @include mut.full-rounded(14px);
     @include mut.with-font($font-weight: 500);
 }
+
 .audioBtn:disabled {
     cursor: default;
 }
+
 .animateFigureBtn {
-  @include mut.sized(229px, 73px);
-  @include mut.flex-centered();
-  @include mut.full-rounded(14px);
-  a {
-    @include mut.with-font($font-weight: 500);
-    border-width: 3px;
-    border-color: c.$accented-red-color;
-    color: c.$accented-red-color;
-  }
-  &:hover {
-    box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
-  }
+    @include mut.sized(229px, 73px);
+    @include mut.flex-centered();
+    @include mut.full-rounded(14px);
+
+    a {
+        @include mut.with-font($font-weight: 500);
+        border-width: 3px;
+        border-color: c.$accented-red-color;
+        color: c.$accented-red-color;
+    }
+
+    &:hover {
+        box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
+    }
 }
+
 .streetcodeImg, .streetcodeImgColored, .streetcodeImgGrey {
     margin: auto;
     @include mut.sized(415px, 542px);
 }
 
-.streetcodeImgColored{
-  position: absolute;
-  animation: fadeIn 4s;
+.streetcodeImgColored {
+    position: absolute;
+    animation: fadeIn 4s;
 
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
 }
 
-.streetcodeImgGrey{
-  animation: fadeOut 3s;
-  animation-fill-mode: forwards;
-  @keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-  }
+.streetcodeImgGrey {
+    animation: fadeOut 3s;
+    animation-fill-mode: forwards;
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
 }
 
 .playCircle {
@@ -162,12 +193,14 @@
         width: 100%;
         @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 10px);
         margin: auto;
+
         .rightSider {
             @include mut.rem-padded($top: 20px, $right: 40px, $bottom: 0px, $left: 7px);
         }
 
     }
 }
+
 @media screen and (max-width: 1210px) {
     .cardFooter {
         gap: f.pxToRem(10px);
@@ -178,125 +211,149 @@
         }
     }
 }
+
 @media screen and (max-width: 1060px) {
-  .blockCentering {
-  @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
-  }
+    .blockCentering {
+        @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+    }
 }
+
 @media screen and (max-width: 1024px) {
-  .blockCentering {
-    @include mut.rem-padded($top: 2px, $right: 10px, $bottom: 0px, $left: 10px);
-    .blurTop{
-      @include mut.blur($edge: 0deg, $top: 4px, $height: 11px, $z-index: 3);
-    }
-    .teaserBlock {
-      line-height: f.pxToRem(18.75px);
-      font-size: f.pxToRem(16px);
-      @include mut.rem-margined($top: 5px);
-      @include mut.rem-padded($top: 10px, $bottom: 15px);
-      @include mut.with-font($font-weight: 300, $font-size: 16px);
-    }
-    .card {
-      @include mut.sized(100%, 495px);
-      background-color: rgba(0, 0, 0, 0) !important;
-      box-shadow: none;
-      .rightSider{
-        @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 21px);
-        padding: 0;
-        height: 100%;
-      }
-      .leftSider {
-        @include mut.sized(360px, 489px);
-        flex: 0 0 f.pxToRem(360px);
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        .leftSiderContent {
-          background-color: c.$accented-gray-color;
-          @include mut.border(c.$pure-white-color,10px,solid);
+    .blockCentering {
+        @include mut.rem-padded($top: 2px, $right: 10px, $bottom: 0px, $left: 10px);
+
+        .blurTop {
+            @include mut.blur($edge: 0deg, $top: 4px, $height: 11px, $z-index: 3);
         }
-      }
-      .streetcodeIndex {
-        @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 5px, $left: 0px);
-        @include mut.with-font($font-weight: 300, $font-size: 15px);
-      }
-      .streetcodeTitle {
-        @include mut.rem-padded(0px, 10px, 0px, 0px);
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
-        @include mut.withLineHeight(42px);
-      }
-      .streetcodeDate {
-        @include mut.rem-padded(5px, 0px, 2px, 0px);
-        @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
-        @include mut.withLineHeight(23px);
-      }
-      .streetcodeImg,  .streetcodeImgColored, .streetcodeImgGrey{
-        @include mut.sized(290px, 377px);
-      }
-      .cardFooter {
-        width: 98%;
-        @include mut.rem-padded(10px, 0px, 0px, 0px);
-        .animateFigureBtn {
-          @include mut.hidden();
+
+        .teaserBlock {
+            line-height: f.pxToRem(18.75px);
+            font-size: f.pxToRem(16px);
+            @include mut.rem-margined($top: 5px);
+            @include mut.rem-padded($top: 10px, $bottom: 15px);
+            @include mut.with-font($font-weight: 300, $font-size: 16px);
         }
-        .audioBtn {
-          @include mut.full-rounded(8px);
-          @include mut.with-font($font-weight: 400, $font-size: 14px);
-          @include mut.sized(95%, 46px);
-          .playCircle {
-            font-size: f.pxToRem(23px);
-            margin-right: f.pxToRem(10px);
-          }
+
+        .card {
+            @include mut.sized(100%, 495px);
+            background-color: rgba(0, 0, 0, 0) !important;
+            box-shadow: none;
+
+            .rightSider {
+                @include mut.rem-padded($top: 0px, $right: 10px, $bottom: 0px, $left: 21px);
+                padding: 0;
+                height: 100%;
+            }
+
+            .leftSider {
+                @include mut.sized(360px, 489px);
+                flex: 0 0 f.pxToRem(360px);
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+                .leftSiderContent {
+                    background-color: c.$accented-gray-color;
+                    @include mut.border(c.$pure-white-color, 10px, solid);
+                }
+            }
+
+            .streetcodeIndex {
+                @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 5px, $left: 0px);
+                @include mut.with-font($font-weight: 300, $font-size: 15px);
+            }
+
+            .streetcodeTitle {
+                @include mut.rem-padded(0px, 10px, 0px, 0px);
+                @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
+                @include mut.withLineHeight(42px);
+            }
+
+            .streetcodeDate {
+                @include mut.rem-padded(5px, 0px, 2px, 0px);
+                @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
+                @include mut.withLineHeight(23px);
+            }
+
+            .streetcodeImg, .streetcodeImgColored, .streetcodeImgGrey {
+                @include mut.sized(290px, 377px);
+            }
+
+            .cardFooter {
+                width: 98%;
+                @include mut.rem-padded(10px, 0px, 0px, 0px);
+
+                .animateFigureBtn {
+                    @include mut.hidden();
+                }
+
+                .audioBtn {
+                    @include mut.full-rounded(8px);
+                    @include mut.with-font($font-weight: 400, $font-size: 14px);
+                    @include mut.sized(95%, 46px);
+
+                    .playCircle {
+                        font-size: f.pxToRem(23px);
+                        margin-right: f.pxToRem(10px);
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 @media screen and (max-width: 680px) {
-  .blockCentering{
-    .card{
-      width: 100%;
-      flex-direction: column;
-      align-items: center;
-      height: unset;
-      @include mut.full-rounded(0px);
-      .leftSider{
-        flex:auto;
-      }
-      .rightSider {
-        @include mut.rem-padded($top: 40px, $right: 0px, $bottom: 0px, $left: 0px);
-        width: 100%;
-        .streetcodeDate{
-          @include mut.rem-padded(10px, 0px, 2px, 0px);
-        }
-        .teaserBlock{
-          max-height: f.pxToRem(228px);
-        }
-      }
-      .streetcodeIndex {
-        @include mut.rem-padded($bottom: 10px);
-      }
-      .cardFooter{
-        margin-top: f.pxToRem(39px) !important;
-        @include mut.rem-padded(0px, 0px, 0px, 0px);
-        .audioBtn{
-          width: 100%;
-        }
-      }
-      .headerContainer{
-        @include mut.rem-padded($top: 40px, $right: 0px, $bottom: 0px, $left: 0px);
-        @include mut.full-rounded(0px);
+    .blockCentering {
+        .card {
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            height: unset;
+            @include mut.full-rounded(0px);
 
-      }
+            .leftSider {
+                flex: auto;
+            }
+
+            .rightSider {
+                @include mut.rem-padded($top: 40px, $right: 0px, $bottom: 0px, $left: 0px);
+                width: 100%;
+
+                .streetcodeDate {
+                    @include mut.rem-padded(10px, 0px, 2px, 0px);
+                }
+
+                .teaserBlock {
+                    max-height: f.pxToRem(228px);
+                }
+            }
+
+            .streetcodeIndex {
+                @include mut.rem-padded($bottom: 10px);
+            }
+
+            .cardFooter {
+                margin-top: f.pxToRem(39px) !important;
+                @include mut.rem-padded(0px, 0px, 0px, 0px);
+
+                .audioBtn {
+                    width: 100%;
+                }
+            }
+
+            .headerContainer {
+                @include mut.rem-padded($top: 40px, $right: 0px, $bottom: 0px, $left: 0px);
+                @include mut.full-rounded(0px);
+
+            }
+        }
     }
-  }
 }
 
 @media screen and (max-width: 385px) {
-  .blockCentering {
-    .card {
-      .leftSider {
-        @include mut.sized(98%, 489px);
-      }
+    .blockCentering {
+        .card {
+            .leftSider {
+                @include mut.sized(98%, 489px);
+            }
+        }
     }
-  }
 }

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { ModelState } from '@models/enums/model-state';
-import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
+import { RelatedFigureCreateUpdate } from '@models/streetcode/related-figure.model';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import Streetcode, { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
+import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
@@ -58,8 +57,16 @@ const RelatedFiguresBlock = React.memo(({ currentStreetcodeId, figures, setFigur
     return (
         <div className="adminContainer-block">
             <h2>Зв&apos;язки історії(Стріткоди)</h2>
-            <InputPanel figures={figures} options={options} handleAdd={handleAdd} onChange={onChange} />
-            <RelationsList figures={figures} handleDelete={handleDelete} />
+            <InputPanel
+                figures={figures}
+                options={options}
+                handleAdd={handleAdd}
+                onChange={onChange}
+            />
+            <RelationsList
+                figures={figures}
+                handleDelete={handleDelete}
+            />
         </div>
     );
 });

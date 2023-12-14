@@ -6,247 +6,247 @@
 @use "@app/common/components/CardText/CardText.styles" as textCard;
 
 .interestingFactSlide {
-  @include mut.sized(387px);
-  @include mut.full-rounded(33px);
-  z-index: 0;
-  position: relative;
-  @include vnd.vendored(transition, '.5s ease');
-
-  background-color: c.$pure-white-color;
-  box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, .25);
-
-  .slideImage {
+    @include mut.sized(387px);
+    @include mut.full-rounded(33px);
+    z-index: 0;
     position: relative;
-    @include mut.sized(100%, 250px);
-    @include mut.rounded(33px, 33px);
-    @include mut.border($border-width: 4px, $color: c.$pure-white-color, $type: solid);
+    @include vnd.vendored(transition, '.5s ease');
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    background-color: c.$pure-white-color;
+    box-shadow: 0 2.62461px 2.62461px rgba(0, 0, 0, .25);
 
-    .description-popup {
-      visibility: hidden;
-      position: absolute;
-      background-color: c.$hover-wow-fact-background;
-      color: c.$pure-white-color;
-      width: 100%;
-      bottom: 0;
+    .slideImage {
+        position: relative;
+        @include mut.sized(100%, 250px);
+        @include mut.rounded(33px, 33px);
+        @include mut.border($border-width: 4px, $color: c.$pure-white-color, $type: solid);
 
-      p {
-        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 10px, $font-style: normal);
-        @include mut.rem-padded(5px, 5px, 5px, 5px);
-      }
-    }
-
-    .description-popup-visible,
-    &:hover>.description-popup {
-      @if((&:content !=undefined) and (&:content !='')) {
-        visibility: visible;
-      }
-
-    }
-
-  }
-
-  .slideText {
-    @include mut.sized(100%, 167px);
-    padding-bottom: f.pxToRem(15px);
-    @include textCard.cardText(
-            $title-max-lines: 1,
-            $text-max-lines: 5,
-    );
-
-    @media screen and (max-width: 1024px) {
-      padding-bottom: f.pxToRem(5px);
-    }
-
-    .cardTextContainer{
-      @include mut.with-font($font-weight: 300, $font-size: 13px);
-      line-height: f.pxToEm(18px);
-
-      @media screen and (max-width: 1450px) {
-        @include mut.with-font($font-weight: 300, $font-size: 10px);
-        line-height: f.pxToEm(16px);
-      }
-
-      &TopPart{
-        @media screen and (max-width: 768px) {
-          gap: f.pxToRem(2px);
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-      }
 
-      &Title{
-        padding-top: f.pxToRem(17px);
-        color: c.$accented-red-color;
-        @include mut.with-font($font-weight: 500, $font-size: 17px);
-        line-height: f.pxToEm(20px);
+        .description-popup {
+            visibility: hidden;
+            position: absolute;
+            background-color: c.$hover-wow-fact-background;
+            color: c.$pure-white-color;
+            width: 100%;
+            bottom: 0;
 
-        @media screen and (max-width: 1450px) {
-          padding-top: f.pxToRem(7px);
-
-          @include mut.with-font($font-weight: 500, $font-size: 12px);
+            p {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 10px, $font-style: normal);
+                @include mut.rem-padded(5px, 5px, 5px, 5px);
+            }
         }
-      }
 
-      &Button{
-        text-decoration: none;
-      }
+        .description-popup-visible,
+        &:hover > .description-popup {
+            @if ((&:content !=undefined) and (&:content !='')) {
+                visibility: visible;
+            }
+
+        }
+
     }
-  }
+
+    .slideText {
+        @include mut.sized(100%, 167px);
+        padding-bottom: f.pxToRem(15px);
+        @include textCard.cardText(
+                $title-max-lines: 1,
+                $text-max-lines: 5,
+        );
+
+        @media screen and (max-width: 1024px) {
+            padding-bottom: f.pxToRem(5px);
+        }
+
+        .cardTextContainer {
+            @include mut.with-font($font-weight: 300, $font-size: 13px);
+            line-height: f.pxToEm(18px);
+
+            @media screen and (max-width: 1450px) {
+                @include mut.with-font($font-weight: 300, $font-size: 10px);
+                line-height: f.pxToEm(16px);
+            }
+
+            &TopPart {
+                @media screen and (max-width: 768px) {
+                    gap: f.pxToRem(2px);
+                }
+            }
+
+            &Title {
+                padding-top: f.pxToRem(17px);
+                color: c.$accented-red-color;
+                @include mut.with-font($font-weight: 500, $font-size: 17px);
+                line-height: f.pxToEm(20px);
+
+                @media screen and (max-width: 1450px) {
+                    padding-top: f.pxToRem(7px);
+
+                    @include mut.with-font($font-weight: 500, $font-size: 12px);
+                }
+            }
+
+            &Button {
+                text-decoration: none;
+            }
+        }
+    }
 }
 
 .slick-center .interestingFactSlide {
-  z-index: 1;
+    z-index: 1;
 }
 
 .interestingFactsSliderContainer .sliderClass {
-  height: 100%;
+    height: 100%;
 }
 
 .readMoreParagraph {
-  @include mut.rem-padded(7px, 20px, 0px, 20px);
-  @include vnd.vendored(transition, '.5s ease');
-  cursor: pointer;
-  color: c.$dark-red-color;
-  @include mut.with-font(ft.$roboto-font, 300, 13px, normal);
+    @include mut.rem-padded(7px, 20px, 0px, 20px);
+    @include vnd.vendored(transition, '.5s ease');
+    cursor: pointer;
+    color: c.$dark-red-color;
+    @include mut.with-font(ft.$roboto-font, 300, 13px, normal);
 
-  &:hover {
-    color: c.$accented-red-color;
-  }
+    &:hover {
+        color: c.$accented-red-color;
+    }
 }
 
 @media screen and (max-width: 1450px) {
-  .interestingFactSlide {
-    @include mut.sized(280px, 305px);
-  }
-
-  .interestingFactsSliderContainer {
-    .slick-track {
-      @include mut.flexed($align-items: flex-start, $gap: 10px);
-    }
-  }
-
-  .interestingFactSlide {
-    @include mut.full-rounded(20px);
-
-    .slideImage {
-      @include mut.sized(100%, 142px);
-      @include mut.rounded(20px, 20px);
+    .interestingFactSlide {
+        @include mut.sized(280px, 305px);
     }
 
-    .slideText {
-      @include mut.sized(100%, 145px);
+    .interestingFactsSliderContainer {
+        .slick-track {
+            @include mut.flexed($align-items: flex-start, $gap: 10px);
+        }
     }
 
-    .readMoreParagraph {
-      @include mut.rem-padded(6px, 20px, 0px, 12px);
-      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);
+    .interestingFactSlide {
+        @include mut.full-rounded(20px);
+
+        .slideImage {
+            @include mut.sized(100%, 142px);
+            @include mut.rounded(20px, 20px);
+        }
+
+        .slideText {
+            @include mut.sized(100%, 145px);
+        }
+
+        .readMoreParagraph {
+            @include mut.rem-padded(6px, 20px, 0px, 12px);
+            @include mut.with-font(ft.$roboto-font, 300, 10px, normal);
+        }
     }
-  }
 }
 
 @media screen and (max-width: 1200px) {
-  .interestingFactSlide {
-    @include mut.sized(250px, 285px);
-  }
+    .interestingFactSlide {
+        @include mut.sized(250px, 285px);
+    }
 }
 
 @media screen and (max-width: 1024px) {
-  .interestingFactSlide {
-    @include mut.sized(205px, 240px);
-    margin-bottom: f.pxToRem(0px);
-  }
-
-  .interestingFactsSliderContainer {
-    .slick-dots {
-      text-align: center;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      text-align: center;
-
+    .interestingFactSlide {
+        @include mut.sized(205px, 240px);
+        margin-bottom: f.pxToRem(0px);
     }
 
-    li {
-      text-align: center;
-      justify-content: center;
-      list-style: none;
-      text-align: center;
-      @include mut.sized(8px, 8px);
+    .interestingFactsSliderContainer {
+        .slick-dots {
+            text-align: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-align: center;
 
+        }
+
+        li {
+            text-align: center;
+            justify-content: center;
+            list-style: none;
+            text-align: center;
+            @include mut.sized(8px, 8px);
+
+        }
+
+        li button {
+            text-align: center;
+            justify-content: center;
+            padding: 0;
+
+            list-style: none;
+            text-align: center;
+            @include mut.sized(8px, 8px);
+        }
+
+        li button:before {
+            text-align: center;
+            justify-content: center;
+            left: -50% !important;
+
+            @include mut.rem-margined($right: 5px, $left: 5px);
+
+            list-style: none;
+            text-align: center;
+            @include mut.sized(8px, 8px);
+        }
     }
 
-    li button {
-      text-align: center;
-      justify-content: center;
-      padding: 0;
+    .interestingFactSlide {
+        @include mut.full-rounded(20px);
 
-      list-style: none;
-      text-align: center;
-      @include mut.sized(8px, 8px);
+        .slideImage {
+            @include mut.sized(100%, 132px);
+        }
+
+        .slideText {
+            @include mut.sized(100%, 105px);
+        }
     }
-
-    li button:before {
-      text-align: center;
-      justify-content: center;
-      left: -50% !important;
-
-      @include mut.rem-margined($right: 5px, $left: 5px);
-
-      list-style: none;
-      text-align: center;
-      @include mut.sized(8px, 8px);
-    }
-  }
-
-  .interestingFactSlide {
-    @include mut.full-rounded(20px);
-
-    .slideImage {
-      @include mut.sized(100%, 132px);
-    }
-
-    .slideText {
-      @include mut.sized(100%, 105px);
-    }
-  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1000px) {
-  .interestingFactsSliderContainer {
-    @include mut.sized(100%);
-  }
-
-  .interestingFactSlide {
-    @include mut.full-rounded(20px);
-
-    .slideImage {
-      @include mut.sized(100%, 132px);
-      @include mut.rounded(20px, 20px);
+    .interestingFactsSliderContainer {
+        @include mut.sized(100%);
     }
 
-    .slideText {
-      @include mut.sized(100%, 103px);
+    .interestingFactSlide {
+        @include mut.full-rounded(20px);
+
+        .slideImage {
+            @include mut.sized(100%, 132px);
+            @include mut.rounded(20px, 20px);
+        }
+
+        .slideText {
+            @include mut.sized(100%, 103px);
+        }
     }
-  }
 }
 
 @media screen and (max-width: 768px) {
-  .interestingFactsSliderContainer .slick-track {
-    gap: f.pxToRem(2px);
-  }
-
-  .interestingFactSlide {
-    @include mut.full-rounded(20px);
-    overflow: visible;
-
-    .slideImage {
-      @include mut.sized(100%, 50%);
-      @include mut.rounded(20px, 20px);
+    .interestingFactsSliderContainer .slick-track {
+        gap: f.pxToRem(2px);
     }
-  }
+
+    .interestingFactSlide {
+        @include mut.full-rounded(20px);
+        overflow: visible;
+
+        .slideImage {
+            @include mut.sized(100%, 50%);
+            @include mut.rounded(20px, 20px);
+        }
+    }
 }

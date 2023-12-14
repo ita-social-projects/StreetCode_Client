@@ -1,7 +1,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 
-.mapBlockContainerr{
+.mapBlockContainerr {
     display: flex;
     gap: f.pxToRem(10px);
     max-height: 1600px;

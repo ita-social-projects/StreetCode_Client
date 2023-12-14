@@ -116,7 +116,8 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
             handleCancelModalRemove();
             break;
         }
-        default: break;
+        default:
+            break;
         }
     };
 
@@ -177,7 +178,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         });
                         createUpdateMediaStore.audioId = result?.id;
                         if (result) {
-                            const audioUpdate : AudioUpdate = {
+                            const audioUpdate: AudioUpdate = {
                                 id: result.id,
                                 streetcodeId: parseId,
                                 modelState: ModelState.Updated,
@@ -187,7 +188,9 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                             createUpdateMediaStore.audioUpdate = [];
                         }
                     });
-                } catch (error) { /* empty */ } finally { /* empty */ }
+                } catch (error) { /* empty */
+                } finally { /* empty */
+                }
             };
             fetchData();
         }
@@ -214,7 +217,8 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                         return Promise.resolve();
                                     }
                                     return Promise.reject(
-                                        Error('Дозволені тільки файли з розширенням .jpeg, .jpg, .png та .webp'));
+                                        Error('Дозволені тільки файли з розширенням .jpeg, .jpg, .png та .webp'),
+                                    );
                                 }
                                 return Promise.resolve();
                             },
@@ -267,7 +271,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                     name = file.name.toLowerCase();
                                 }
                                 if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
-                                    || name.endsWith('.jpg') || name === '') {
+                                        || name.endsWith('.jpg') || name === '') {
                                     return Promise.resolve();
                                 }
                                 // eslint-disable-next-line max-len
@@ -435,7 +439,11 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     onCancel={handleCancelModalRemove}
                 />
             </div>
-            <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
+            <PreviewFileModal
+                file={filePreview}
+                opened={previewOpen}
+                setOpened={setPreviewOpen}
+            />
         </div>
     );
 };

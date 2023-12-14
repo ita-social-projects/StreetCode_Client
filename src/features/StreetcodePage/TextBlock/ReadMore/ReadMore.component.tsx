@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive';
 import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
 
 interface Props {
-  text: string;
+    text: string;
 }
 
 const MAX_LENGTH_DESKTOP = 2000;
@@ -28,8 +28,8 @@ const ReadMore = ({ text }: Props) => {
     });
 
     const isTextLong = (isDesktop && text.length > MAX_LENGTH_DESKTOP)
-                                || (isTablet && text.length > MAX_LENGTH_TABLET)
-                                || (isMobile && text.length > MAX_LENGTH_MOBILE);
+        || (isTablet && text.length > MAX_LENGTH_TABLET)
+        || (isMobile && text.length > MAX_LENGTH_MOBILE);
 
     useEffect(() => {
         if (!isExpanded && isTextLong && readMoreRef.current) {

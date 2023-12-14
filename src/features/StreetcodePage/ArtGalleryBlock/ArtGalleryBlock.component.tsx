@@ -7,7 +7,7 @@ import { getImageSize } from 'react-image-size';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { IndexedArt } from '@models/media/art.model';
-import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
@@ -78,7 +78,8 @@ const ArtGalleryBlock = () => {
                         offset: (width <= height) ? 2 : (width > height && height <= 300) ? 1 : 4,
                     } as IndexedArt);
                 }
-            } catch (error: unknown) { /* empty */ }
+            } catch (error: unknown) { /* empty */
+            }
             setIndexedArts(newMap);
             setIndexedArtsSmall(newMap);
         });
@@ -107,7 +108,10 @@ const ArtGalleryBlock = () => {
                         if (x.index === artsData[0].index) x.offset = 4;
                     });
                     slideOfArtList.push(
-                        <ArtGallerySlide key={index} artGalleryList={artsData} />,
+                        <ArtGallerySlide
+                            key={index}
+                            artGalleryList={artsData}
+                        />,
                     );
                     artsData = [];
                     offsetSumForSlide = 0;
@@ -116,7 +120,10 @@ const ArtGalleryBlock = () => {
             }
         } else if (artsData.length > 0 && offsetSumForSlide + offset > SECTION_AMOUNT) {
             slideOfArtList.push(
-                <ArtGallerySlide key={index} artGalleryList={artsData} />,
+                <ArtGallerySlide
+                    key={index}
+                    artGalleryList={artsData}
+                />,
             );
             sequenceNumber = index - 1;
             artsData = [{
@@ -135,7 +142,10 @@ const ArtGalleryBlock = () => {
             offsetSumForSlide = 0;
 
             slideOfArtList.push(
-                <ArtGallerySlide key={index} artGalleryList={artsData} />,
+                <ArtGallerySlide
+                    key={index}
+                    artGalleryList={artsData}
+                />,
             );
             artsData = [];
         }
@@ -143,7 +153,10 @@ const ArtGalleryBlock = () => {
 
     if (!Number.isInteger(offsetSum / SECTION_AMOUNT)) {
         slideOfArtList.push(
-            <ArtGallerySlide key={artsData.length} artGalleryList={artsData} />,
+            <ArtGallerySlide
+                key={artsData.length}
+                artGalleryList={artsData}
+            />,
         );
     }
     let offsetTmp = 0;
@@ -206,7 +219,10 @@ const ArtGalleryBlock = () => {
         } else if (artsDataSmall.length > 0 && offsetSumForSlideSmall + offset > SECTION_AMOUNT_SMALL) {
             sequenceNumberSmall = index - 1;
             slideOfArtListSmall.push(
-                <ArtGallerySlideSmall key={index} artGalleryList={artsDataSmall} />,
+                <ArtGallerySlideSmall
+                    key={index}
+                    artGalleryList={artsDataSmall}
+                />,
             );
             artsDataSmall = [{
                 index,
@@ -222,7 +238,10 @@ const ArtGalleryBlock = () => {
 
         if (offsetSumForSlideSmall >= SECTION_AMOUNT_SMALL) {
             slideOfArtListSmall.push(
-                <ArtGallerySlideSmall key={index} artGalleryList={artsDataSmall} />,
+                <ArtGallerySlideSmall
+                    key={index}
+                    artGalleryList={artsDataSmall}
+                />,
             );
             artsDataSmall = [];
             offsetSumForSlideSmall = 0;
@@ -231,7 +250,10 @@ const ArtGalleryBlock = () => {
 
     if (!Number.isInteger(offsetSumSmall / SECTION_AMOUNT_SMALL)) {
         slideOfArtListSmall.push(
-            <ArtGallerySlideSmall key={artsDataSmall.length} artGalleryList={artsDataSmall} />,
+            <ArtGallerySlideSmall
+                key={artsDataSmall.length}
+                artGalleryList={artsDataSmall}
+            />,
         );
     }
 
@@ -264,34 +286,35 @@ const ArtGalleryBlock = () => {
 
     return (
         <div>
-            {getStreetcodeArtArray.length > 0 && <div
-                id="art-gallery"
-                className="artGalleryWrapper"
-            >
-                <div className="artGalleryContainer container">
-                    <BlockHeading headingText="Арт-галерея" />
-                    <div className="artGalleryContentContainer">
-                        <div className="artGallerySliderContainer">
-                            {windowsize.width >= 1025 && (
-                                <SlickSlider
-                                    {...sliderProps}
-                                >
-                                    {slideOfArtList}
-                                </SlickSlider>
-                            )}
-                            {windowsize.width <= 1024 && (
-                                <SlickSlider
+            {getStreetcodeArtArray.length > 0 && (
+                <div
+                    id="art-gallery"
+                    className="artGalleryWrapper"
+                >
+                    <div className="artGalleryContainer container">
+                        <BlockHeading headingText="Арт-галерея" />
+                        <div className="artGalleryContentContainer">
+                            <div className="artGallerySliderContainer">
+                                {windowsize.width >= 1025 && (
+                                    <SlickSlider
+                                        {...sliderProps}
+                                    >
+                                        {slideOfArtList}
+                                    </SlickSlider>
+                                )}
+                                {windowsize.width <= 1024 && (
+                                    <SlickSlider
 
-                                    {...sliderPropsSmall}
-                                >
-                                    {slideOfArtListSmall}
-                                </SlickSlider>
-                            )}
+                                        {...sliderPropsSmall}
+                                    >
+                                        {slideOfArtListSmall}
+                                    </SlickSlider>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            }
+            )}
         </div>
     );
 };

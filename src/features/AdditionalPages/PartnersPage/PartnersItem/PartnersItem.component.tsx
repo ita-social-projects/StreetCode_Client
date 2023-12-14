@@ -7,8 +7,7 @@ import { Popover } from 'antd';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import PartnerContent
-    from '@/features/StreetcodePage/PartnersBlock/PartnerItem/PartnerContent/PartnerContent.component';
+import PartnerContent from '@/features/StreetcodePage/PartnersBlock/PartnerItem/PartnerContent/PartnerContent.component';
 import Partner from '@/models/partners/partners.model';
 
 interface Props {
@@ -38,7 +37,12 @@ const PartnersItem = ({ partner }: Props) => {
         <div className="partnersItem">
             <Popover
                 overlayClassName="partnerPopover"
-                content={<PartnerContent partner={partner} image={getImage(partner.logoId)} />}
+                content={(
+                    <PartnerContent
+                        partner={partner}
+                        image={getImage(partner.logoId)}
+                    />
+                )}
                 trigger={trigger}
             >
                 <img

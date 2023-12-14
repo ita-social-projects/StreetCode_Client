@@ -3,29 +3,29 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.resultItemContainer{ 
+.resultItemContainer {
     width: 100%;
     @include mut.flexed($align-items: center);
     padding: f.pxToRem(13px) f.pxToRem(20px);
 
     white-space: nowrap;
-    
+
     border-bottom: 1px solid c.$accented-gray-color;
 
-    &:last-child{
+    &:last-child {
         border: none;
     }
 
-    &:hover{
+    &:hover {
         background-color: #faf5f5;
         border-radius: 10px;
     }
 
-    .resultItemContent{
+    .resultItemContent {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
         @include mut.rem-margined($right: 14px);
 
-        max-width: 70%;     
+        max-width: 70%;
         line-height: 18px;
         color: c.$lighter-black-color;
 
@@ -33,10 +33,10 @@
         overflow: hidden;
     }
 
-    .resultSourceName{
+    .resultSourceName {
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px);
 
-        width: auto;     
+        width: auto;
         line-height: 18px;
         color: #D1D1D1;
 

@@ -103,7 +103,10 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, filterTags = true, h
                 <>
                     <div
                         className="relatedFigureSlide"
-                        style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})`, backgroundSize: 'cover'}}
+                        style={{
+                            backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})`,
+                            backgroundSize: 'cover',
+                        }}
                         onClick={handleClick}
                     />
                     <div className="figureSlideText mobile">

@@ -2,19 +2,17 @@ import './Map.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
+import { MapContainer, ZoomControl } from 'react-leaflet';
 import VectorTileLayer from 'react-leaflet-vector-tile-layer';
-import ReactMapGL, { Layer, Marker, Source } from 'react-map-gl';
 import CustomMarker from '@streetcode/MapBlock/Map/Marker/MarkerWrapper.component';
 import * as L from 'leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';
 
 import useMobx from '@/app/stores/root-store';
-import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import Toponym from '@/models/toponyms/toponym.model';
 
 import CustomMarkerCluster from './MarkerCluster/MarkerClusterWrapper.component';
-import StatisticRecord from '@/models/analytics/statisticrecord.model';
 
 const centerOfUkraine = {
     latitude: 48.4501,
@@ -26,7 +24,7 @@ interface Props {
     toponyms: Toponym[]
 }
 
-const MapOSM = ({  statisticRecord, toponyms }: Props) => {
+const MapOSM = ({ statisticRecord, toponyms }: Props) => {
     const { checkboxStore } = useMobx();
     const { checkBoxesState: { streetcodes, streets } } = checkboxStore;
     const [defaultZoom, setDefaultZoom] = useState(6.4);
@@ -49,7 +47,7 @@ const MapOSM = ({  statisticRecord, toponyms }: Props) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
     L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
-    
+
     // if you need to use the previous second map
     // return (
     //     <div className="mapCentered">
@@ -93,12 +91,30 @@ const MapOSM = ({  statisticRecord, toponyms }: Props) => {
 
                 {streetcodes?.isActive && (
                     <CustomMarkerCluster>
-                        {statisticRecord?.map((sc) => <CustomMarker key={sc.id} latitude={sc.streetcodeCoordinate.latitude} longtitude={sc.streetcodeCoordinate.longtitude} title={String(sc.id)} description={sc.address} isStreetcode={true} />)}
+                        {statisticRecord?.map((sc) => (
+                            <CustomMarker
+                                key={sc.id}
+                                latitude={sc.streetcodeCoordinate.latitude}
+                                longtitude={sc.streetcodeCoordinate.longtitude}
+                                title={String(sc.id)}
+                                description={sc.address}
+                                isStreetcode
+                            />
+                        ))}
                     </CustomMarkerCluster>
                 )}
                 {streets?.isActive && (
                     <CustomMarkerCluster>
-                        {toponyms?.map((t) => <CustomMarker key={t.id} latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`} isStreetcode={false} />)}
+                        {toponyms?.map((t) => (
+                            <CustomMarker
+                                key={t.id}
+                                latitude={t.coordinate?.latitude}
+                                longtitude={t.coordinate?.longtitude}
+                                title={String(t.id)}
+                                description={`${t.streetType} ${t.streetName}`}
+                                isStreetcode={false}
+                            />
+                        ))}
                     </CustomMarkerCluster>
                 )}
 

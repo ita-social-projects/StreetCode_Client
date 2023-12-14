@@ -18,25 +18,25 @@ export enum DateViewPattern {
     Year,
 }
 
-export const DateViewPatternToDatePickerType = (dateViewPattern: DateViewPattern) =>{
-    switch(dateViewPattern){
-        case(DateViewPattern.DateMonthYear):
-            return 'date';
-        case(DateViewPattern.MonthYear):
-            return 'month';
-        case(DateViewPattern.SeasonYear):
-            return 'season-year';
-        case(DateViewPattern.Year):
-            return 'year';
-        default:
-            throw new Error('Function: DateViewPatternToDatePickerType. Error: dateViewPattern.')
+export const DateViewPatternToDatePickerType = (dateViewPattern: DateViewPattern) => {
+    switch (dateViewPattern) {
+    case (DateViewPattern.DateMonthYear):
+        return 'date';
+    case (DateViewPattern.MonthYear):
+        return 'month';
+    case (DateViewPattern.SeasonYear):
+        return 'season-year';
+    case (DateViewPattern.Year):
+        return 'year';
+    default:
+        throw new Error('Function: DateViewPatternToDatePickerType. Error: dateViewPattern.');
     }
-}
+};
 
 export default interface TimelineItem {
     id: number;
     date: string;
-    dateViewPattern:DateViewPattern,
+    dateViewPattern: DateViewPattern,
     title: string;
     description?: string | undefined;
     historicalContexts: HistoricalContext[];
@@ -98,7 +98,7 @@ export enum DatePickerType {
     Year = 'year',
 }
 
-export const dateToString = (typeDate:DatePickerType, date: Dayjs | null):string => {
+export const dateToString = (typeDate: DatePickerType, date: Dayjs | null): string => {
     dayjs.locale('uk');
     if (!date) {
         return '';

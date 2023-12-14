@@ -11,7 +11,7 @@ import useMobx from '@/app/stores/root-store';
 import UserLoginStore from '@/app/stores/user-login-store';
 import { UserLoginResponce } from '@/models/user/user.model';
 
-const AdminLogin:React.FC = () => {
+const AdminLogin: React.FC = () => {
     const { modalStore, userLoginStore } = useMobx();
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -19,7 +19,8 @@ const AdminLogin:React.FC = () => {
     const setConfirmationModal = () => {
         modalStore.setConfirmationModal('confirmation', () => {
             userLoginStore.refreshToken()
-                .catch((e) => {});
+                .catch((e) => {
+                });
             modalStore.setConfirmationModal('confirmation');
         }, 'Бажаєте продовжити сеанс?', undefined, () => {
             userLoginStore.clearUserData();
@@ -29,7 +30,7 @@ const AdminLogin:React.FC = () => {
     const onSuccessfulLogin = (loginResponce: UserLoginResponce) => userLoginStore
         .setUserLoginResponce(loginResponce, setConfirmationModal);
 
-    const login = (formValues:any) => {
+    const login = (formValues: any) => {
         UserApi.login({ login: formValues.login, password: formValues.password })
             .then((logResp) => onSuccessfulLogin(logResp))
             .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
@@ -43,16 +44,31 @@ const AdminLogin:React.FC = () => {
     }
 
     return (
-        <Form form={form} className="admin-login-form" onFinish={login}>
-            <Form.Item name="login" label="Логін" rules={[{ required: true, message: 'Введіть логін' }]}>
+        <Form
+            form={form}
+            className="admin-login-form"
+            onFinish={login}
+        >
+            <Form.Item
+                name="login"
+                label="Логін"
+                rules={[{ required: true, message: 'Введіть логін' }]}
+            >
                 <Input maxLength={20} />
             </Form.Item>
 
-            <Form.Item name="password" label="Пароль" rules={[{ required: true, message: 'Введіть пароль' }]}>
+            <Form.Item
+                name="password"
+                label="Пароль"
+                rules={[{ required: true, message: 'Введіть пароль' }]}
+            >
                 <Input.Password maxLength={20} />
             </Form.Item>
             <Form.Item>
-                <Button htmlType="submit" className="streetcode-custom-button">
+                <Button
+                    htmlType="submit"
+                    className="streetcode-custom-button"
+                >
                     Увійти
                 </Button>
             </Form.Item>

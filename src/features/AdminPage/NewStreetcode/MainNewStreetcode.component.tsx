@@ -13,7 +13,6 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
@@ -46,14 +45,12 @@ import ForFansBlock from './ForFansBlock/ForFansBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
-import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { AudioUpdate } from '@/models/media/audio.model';
 
-function reindex(list:Array<StreetcodeTag>):Array<StreetcodeTag> {
+function reindex(list: Array<StreetcodeTag>): Array<StreetcodeTag> {
     const result = Array.from(list);
 
     for (let i = 0; i < result.length; i += 1) {
@@ -221,7 +218,8 @@ const NewStreetcode = () => {
                     .then((result) => {
                         setSubTitle(result);
                     })
-                    .catch((error) => { });
+                    .catch((error) => {
+                    });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
                     const id = result.map((x) => x.id);
                     const getAllStreetcodeCategoriesContentRequest = result.map((x) => SourcesApi.getCategoryContentByStreetcodeId(parseId, x.id));
@@ -428,7 +426,7 @@ const NewStreetcode = () => {
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
                     streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                    ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
+                        ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
                         ...streetcodeArt,
                         art: {
                             ...streetcodeArt.art,
@@ -439,9 +437,17 @@ const NewStreetcode = () => {
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
-                    images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
+                    images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({
+                        id: img.id,
+                        modelState: img.modelState,
+                        streetcodeId: img.streetcodeId,
+                    })),
                     audioId: createUpdateMediaStore.audioId,
-                    audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
+                    audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({
+                        id: a.id,
+                        modelState: a.modelState,
+                        streetcodeId: a.streetcodeId,
+                    })),
                     transactionLink: {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
@@ -497,7 +503,12 @@ const NewStreetcode = () => {
                 <div className="adminContainer">
                     <div className="adminContainer-block">
                         <h2>Стріткод</h2>
-                        <Form form={form} layout="vertical" onFinish={onFinish} scrollToFirstError>
+                        <Form
+                            form={form}
+                            layout="vertical"
+                            onFinish={onFinish}
+                            scrollToFirstError
+                        >
                             <MainBlockAdmin
                                 Id={parseId}
                                 form={form}
@@ -516,11 +527,31 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
-                            <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
-                            <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
-                            <ForFansBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
-                            <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
-                            <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
+                            <ArtGalleryBlock
+                                arts={arts}
+                                setArts={setArts}
+                                onChange={handleFieldChange}
+                            />
+                            <RelatedFiguresBlock
+                                currentStreetcodeId={parseId}
+                                figures={figures}
+                                setFigures={setFigures}
+                                onChange={handleFieldChange}
+                            />
+                            <ForFansBlock
+                                onChange={handleFieldChange}
+                                allPersistedSourcesAreSet={allPersistedSourcesAreSet}
+                            />
+                            <PartnerBlockAdmin
+                                partners={partners}
+                                setPartners={setPartners}
+                                onChange={handleFieldChange}
+                            />
+                            <SubtitleBlock
+                                subTitle={subTitle}
+                                setSubTitle={setSubTitle}
+                                onChange={handleFieldChange}
+                            />
                             <ARBlock onChange={handleFieldChange} />
                         </Form>
                     </div>

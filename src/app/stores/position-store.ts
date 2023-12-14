@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, observable } from 'mobx';
+import { action, makeAutoObservable } from 'mobx';
 
 import { Positions } from '../../models/team/team.model';
 import PositionsApi from '../api/team/positions.api';
@@ -9,7 +9,7 @@ export default class PositionsStore {
     public constructor() {
         makeAutoObservable(this, {
             fetchStreetcodesAll: action,
-            addItemToArray: action
+            addItemToArray: action,
         });
     }
 

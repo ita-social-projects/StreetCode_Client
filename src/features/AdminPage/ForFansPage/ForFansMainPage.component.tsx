@@ -11,6 +11,7 @@ import Table, { ColumnsType } from 'antd/es/table';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { SourceCategoryAdmin } from '@/models/sources/sources.model';
+
 import CategoryAdminModal from './ForFansPage/CategoryAdminModal.component';
 
 const ForFansMainPage: React.FC = observer(() => {
@@ -76,7 +77,10 @@ const ForFansMainPage: React.FC = observer(() => {
             key: 'action',
             width: '10%',
             render: (value, srcCategory, index) => (
-                <div key={`${srcCategory.id}${index}1`} className="partner-page-actions">
+                <div
+                    key={`${srcCategory.id}${index}1`}
+                    className="partner-page-actions"
+                >
                     <DeleteOutlined
                         key={`${srcCategory.id}${index}`}
                         className="actionButton"
@@ -128,12 +132,19 @@ const ForFansMainPage: React.FC = observer(() => {
                     pagination={{ pageSize: 10 }}
                     className="partners-table"
                     columns={columns}
-                   dataSource={sourcesStore?.getSrcCategoriesArray}
+                    dataSource={sourcesStore?.getSrcCategoriesArray}
                     rowKey="id"
                 />
             </div>
-            <CategoryAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
-            <CategoryAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={categoryToEdit} />
+            <CategoryAdminModal
+                isModalVisible={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+            />
+            <CategoryAdminModal
+                isModalVisible={modalEditOpened}
+                setIsModalOpen={setModalEditOpened}
+                initialData={categoryToEdit}
+            />
         </div>
 
     );

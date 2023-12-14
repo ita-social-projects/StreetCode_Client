@@ -3,37 +3,38 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 
 .tagContainer {
-  @include mut.rem-margined(13px, 0, 0px, 0px);
-  @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
-  max-height: f.pxToRem(82px);
-  overflow: hidden;
+    @include mut.rem-margined(13px, 0, 0px, 0px);
+    @include mut.flexed($align-items: flex-start, $wrap: wrap, $gap: 5px);
+    max-height: f.pxToRem(82px);
+    overflow: hidden;
 
-  .tagItem {
-    height: f.pxToRem(38px);
-    @include mut.flex-centered();
+    .tagItem {
+        height: f.pxToRem(38px);
+        @include mut.flex-centered();
 
-    @include mut.full-rounded(11px);
-    @include mut.rem-padded(8px, 10px, 8px, 10px);
+        @include mut.full-rounded(11px);
+        @include mut.rem-padded(8px, 10px, 8px, 10px);
 
-    color: c.$accented-red-color;
-    border: 2px solid c.$accented-red-color;
-    @include mut.with-font($font-weight: bold, $font-size: 15px);
+        color: c.$accented-red-color;
+        border: 2px solid c.$accented-red-color;
+        @include mut.with-font($font-weight: bold, $font-size: 15px);
 
-    &:hover {
-      color: c.$dark-red-color;
-      border-color: c.$dark-red-color;
+        &:hover {
+            color: c.$dark-red-color;
+            border-color: c.$dark-red-color;
+        }
+
+        @media (max-width: 1024px) {
+            pointer-events: none;
+        }
     }
-
-    @media (max-width: 1024px) {
-      pointer-events: none;
-    }
-  }
 }
+
 @media (max-width: 1024px) {
-.tagContainer {
-  .tagItem {
-    @include mut.with-font($font-weight: bold, $font-size: 14px);
-    line-height: f.pxToRem(16px);
-  }
-}
+    .tagContainer {
+        .tagItem {
+            @include mut.with-font($font-weight: bold, $font-size: 14px);
+            line-height: f.pxToRem(16px);
+        }
+    }
 }

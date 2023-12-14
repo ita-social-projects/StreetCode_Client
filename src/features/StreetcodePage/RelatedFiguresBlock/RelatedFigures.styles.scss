@@ -5,13 +5,14 @@
 
 $moreInfo-width: 150px;
 
-.relatedFiguresWrapper.container{
+.relatedFiguresWrapper.container {
     margin-top: f.pxToRem(120px);
 }
 
 .smallWrapper {
     .slick-track {
         @include mut.rem-margined();
+
         .slick-cloned {
             display: none;
         }
@@ -32,6 +33,7 @@ $moreInfo-width: 150px;
     top: -90px;
 
     width: $moreInfo-width;
+
     p {
         @include mut.with-font($font-weight: 500, $font-size: 20px);
         line-height: f.pxToEm(25px);
@@ -69,35 +71,37 @@ $moreInfo-width: 150px;
 }
 
 @media screen and (max-width: 481px) {
-    .OneRowSlide{
+    .OneRowSlide {
         display: flex;
         flex-direction: column;
     }
-    .TwoRowSlide{
+    .TwoRowSlide {
         display: flex;
         flex-direction: column;
         height: f.pxToRem(500px);
     }
-    .SecondItem{
-       position: absolute;
-       margin-top: 250px;
+    .SecondItem {
+        position: absolute;
+        margin-top: 250px;
     }
     .relatedFiguresWrapper {
         .slick-dots {
             bottom: f.pxToRem(-30px);
             left: f.pxToRem(7px);
         }
+
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 10px);
         }
+
         .slick-slide {
             width: 165px !important;
-            
+
             &.slick-active.slick-current {
                 transform: translateX(0px) !important;
             }
         }
-        
+
     }
 }
 
@@ -108,7 +112,7 @@ $moreInfo-width: 150px;
 }
 
 @media screen and (max-width: 1024px) {
-    .relatedFiguresWrapper.container{
+    .relatedFiguresWrapper.container {
         margin-top: f.pxToRem(60px);
     }
 
@@ -119,6 +123,7 @@ $moreInfo-width: 150px;
             @include mut.flexed($align-items: flex-start, $gap: 10px);
             @include mut.rem-margined($left: 10px);
         }
+
         .slick-arrow {
             display: none;
             visibility: hidden;

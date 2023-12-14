@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import { API_ROUTES } from '@/app/common/constants/api-routes.constants';
 
 import Agent from '../agent.api';

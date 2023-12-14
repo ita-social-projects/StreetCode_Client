@@ -3,9 +3,9 @@ import './Vacancy.syles.scss';
 
 import React, { useState } from 'react';
 import CardText from '@components/CardText/CardText.component';
+import htmlReactParser from 'html-react-parser';
 
 import VacancyModal from './VacancyModal/VacancyModal.component';
-import htmlReactParser from 'html-react-parser';
 
 const Vacancy = (job: Job) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -22,7 +22,11 @@ const Vacancy = (job: Job) => {
                 subTitle={job.salary}
                 moreBtnText="Трохи ще"
             />
-            <VacancyModal isOpen={isModalOpen} setOpen={ChangeStatus} job={job} />
+            <VacancyModal
+                isOpen={isModalOpen}
+                setOpen={ChangeStatus}
+                job={job}
+            />
         </div>
     );
 };

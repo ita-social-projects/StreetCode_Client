@@ -34,7 +34,7 @@ const TermDictionary = () => {
     }, []);
 
     const handleAdd = () => {
-        const newTerm : Term = {
+        const newTerm: Term = {
             id: 0,
             title: term?.title as string,
             description: term?.description,
@@ -57,9 +57,11 @@ const TermDictionary = () => {
             termsStore.updateTerm(upd.id, upd);
             setData(data?.map(
                 (t) => (t.id === upd?.id
-                    ? { ...t,
+                    ? {
+                        ...t,
                         title: upd?.title as string,
-                        description: upd.description === undefined ? '' : upd.description as string } : t),
+                        description: upd.description === undefined ? '' : upd.description as string,
+                    } : t),
             ));
         }
     };
@@ -140,9 +142,19 @@ const TermDictionary = () => {
                         />
                     </div>
                 </div>
-                <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
-                <DeleteTermModal term={term} handleDelete={handleDelete} />
-                <EditTermModal term={term} handleEdit={handleEdit} />
+                <AddTermModal
+                    term={term}
+                    setTerm={setTerm}
+                    handleAdd={handleAdd}
+                />
+                <DeleteTermModal
+                    term={term}
+                    handleDelete={handleDelete}
+                />
+                <EditTermModal
+                    term={term}
+                    handleEdit={handleEdit}
+                />
             </div>
         </div>
     );

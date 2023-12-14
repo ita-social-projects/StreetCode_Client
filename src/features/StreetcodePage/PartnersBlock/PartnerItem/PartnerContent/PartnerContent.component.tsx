@@ -14,7 +14,6 @@ interface Props {
     image: Image | undefined;
 }
 
-
 const PartnerContent = ({ partner, image }: Props) => {
     const {
         id, title, targetUrl, partnerSourceLinks, description,

@@ -5,7 +5,7 @@
 
 $bgImg: '@assets/images/streetcode-card/background.webp';
 
-.no-scroll{
+.no-scroll {
     max-height: 0;
 }
 
@@ -21,19 +21,19 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
     overflow: clip;
     @include mut.rem-padded($top: 82px);
     @include mut.bg-image($bgImg, auto);
-    background-color: c.$streetcode-background-color ;
+    background-color: c.$streetcode-background-color;
     overflow-anchor: none;
 
-    .slick-next{
+    .slick-next {
         right: f.pxToRem(-97px);
     }
 
-    .slick-prev{
+    .slick-prev {
         left: f.pxToRem(-97px);
     }
 }
 
-.sticky{
+.sticky {
     position: sticky;
     display: flex;
     z-index: 4;
@@ -55,13 +55,13 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
 }
 
 @media screen and (max-width: 1450px) {
-    .streetcodeContainer{
+    .streetcodeContainer {
 
-        .slick-next{
+        .slick-next {
             right: f.pxToRem(-67px);
         }
 
-        .slick-prev{
+        .slick-prev {
             left: f.pxToRem(-67px);
         }
     }
@@ -72,18 +72,18 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
         @include mut.rem-padded($top: 64px);
     }
 
-    .container{
+    .container {
         margin-top: f.pxToRem(44px);
     }
 }
 
 @media screen and (max-width: 680px) {
-    .streetcodeContainer, .mainBlock{
+    .streetcodeContainer, .mainBlock {
         background-image: none !important;
     }
 }
 
-.loader-container{
+.loader-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -95,13 +95,13 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
     pointer-events: none;
 }
 
-.display-none{
+.display-none {
     display: none !important;
 }
 
-.spinner{
+.spinner {
     pointer-events: none;
     scroll-behavior: none;
     object-fit: cover;
-    @include mut.sized(100%,100%);
+    @include mut.sized(100%, 100%);
 }

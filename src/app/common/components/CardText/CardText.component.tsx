@@ -1,8 +1,5 @@
 import './CardText.styles.scss';
 
-import { useEffect, useMemo } from 'react';
-import { useMediaQuery } from 'react-responsive';
-
 type Props = {
     moreBtnText?: string,
     className?: string,
@@ -14,7 +11,7 @@ type Props = {
 
 const CardText = ({
     moreBtnText = 'Трохи ще...', title, text, subTitle, className, onBtnClick,
-}:Props) => (
+}: Props) => (
     <div className={`cardTextContainer ${className}`}>
         <div className="cardTextContainerTopPart">
             <p className="cardTextContainerTitle">{title}</p>

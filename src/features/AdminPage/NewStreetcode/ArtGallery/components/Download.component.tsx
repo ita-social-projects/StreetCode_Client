@@ -46,7 +46,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
         }
     }, [arts]);
 
-    function compareFilesByUid(a:UploadFile, b:UploadFile) {
+    function compareFilesByUid(a: UploadFile, b: UploadFile) {
         if (a.uid < b.uid) {
             return -1;
         }
@@ -188,7 +188,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
                 onRemove={(e) => handleRemove(e)}
                 className="with-multiple-delete"
             >
-                {<p>+ Додати</p>}
+                <p>+ Додати</p>
             </FileUploader>
             {visibleDeleteButton ? (
                 <Button
@@ -196,7 +196,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
                     danger
                     onClick={() => setVisibleModal(true)}
                 >
-Видалити
+                    Видалити
                 </Button>
             ) : <></>}
             <Modal

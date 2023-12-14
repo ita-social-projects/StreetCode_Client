@@ -1,6 +1,6 @@
 import './ContactForm.styles.scss';
 
-import { forwardRef, useState, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
@@ -14,7 +14,7 @@ interface Props {
     customClass: string;
 }
 
-const ContactForm = forwardRef((customClass: Props , ref) => {
+const ContactForm = forwardRef((customClass: Props, ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
     const [messageApi, messageContextHolder] = message.useMessage();
@@ -26,9 +26,9 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
     };
 
     useImperativeHandle(ref, () => ({
-     clearModal(){
-        form.resetFields();
-    }
+        clearModal() {
+            form.resetFields();
+        },
     }));
 
     const onFinish = () => {
@@ -43,7 +43,7 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                 });
         }
     };
-    
+
     const successMessage = () => {
         messageApi.open({
             type: 'success',
@@ -68,7 +68,8 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                     чогось значного! Вйо до листування!
                 </div>
             </div>
-            <Form form={form}
+            <Form
+                form={form}
                 className="contactForm"
                 onFinish={onFinish}
                 validateMessages={{}}
@@ -119,12 +120,15 @@ const ContactForm = forwardRef((customClass: Props , ref) => {
                     />
                 </div>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                    >
                         Відправити
                     </Button>
                 </Form.Item>
             </Form>
-        </div> 
+        </div>
     );
 });
 

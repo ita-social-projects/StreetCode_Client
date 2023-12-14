@@ -5,265 +5,267 @@
 
 // --------------------------Positioning--------------------------
 @mixin flexed(
-  $direction: row,
-  $align-items: stretch,
-  $justify-content: stretch,
-  $wrap: nowrap,
-  $gap: 0
+    $direction: row,
+    $align-items: stretch,
+    $justify-content: stretch,
+    $wrap: nowrap,
+    $gap: 0
 ) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify-content;
-  align-items: $align-items;
-  flex-wrap: $wrap;
-  gap: f.pxToRem($gap);
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify-content;
+    align-items: $align-items;
+    flex-wrap: $wrap;
+    gap: f.pxToRem($gap);
 }
 
 
 @mixin set-positioning($top, $right, $bottom, $left) {
-  @if ($top == 'auto' or unit($top) == '%') {
-    top: $top;
-  } @else {
-    top: f.pxToRem($top);
-  }
-  @if ($right == 'auto' or unit($right) == '%') {
-    right: $right;
-  } @else {
-    right: f.pxToRem($right);
-  }
-  @if ($bottom == 'auto' or unit($bottom) == '%') {
-    bottom: $bottom;
-  } @else {
-    bottom: f.pxToRem($bottom);
-  }
-  @if ($left == 'auto' or unit($left) == '%') {
-    left: $left;
-  } @else {
-    left: f.pxToRem($left);
-  }
+    @if ($top == 'auto' or unit($top) == '%') {
+        top: $top;
+    } @else {
+        top: f.pxToRem($top);
+    }
+    @if ($right == 'auto' or unit($right) == '%') {
+        right: $right;
+    } @else {
+        right: f.pxToRem($right);
+    }
+    @if ($bottom == 'auto' or unit($bottom) == '%') {
+        bottom: $bottom;
+    } @else {
+        bottom: f.pxToRem($bottom);
+    }
+    @if ($left == 'auto' or unit($left) == '%') {
+        left: $left;
+    } @else {
+        left: f.pxToRem($left);
+    }
 }
 
 @mixin positioned-as($position: relative, $top: auto, $right: auto, $bottom: auto, $left: auto) {
-  position: $position;
-  @include set-positioning($top, $right, $bottom, $left);
+    position: $position;
+    @include set-positioning($top, $right, $bottom, $left);
 }
 
 @mixin sized($width: auto, $height: auto) {
-  @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
-    width: $width ;
-  } @else {
-    width: f.pxToRem($width) ;
-  }
-  @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
-    height: $height ;
-  } @else {
-    height: f.pxToRem($height);
-  }
+    @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
+        width: $width;
+    } @else {
+        width: f.pxToRem($width);
+    }
+    @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
+        height: $height;
+    } @else {
+        height: f.pxToRem($height);
+    }
 }
+
 @mixin sizedImportant($width: auto, $height: auto) {
-  @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
-    width: $width !important ;
-  } @else {
-    width: f.pxToRem($width) !important ;
-  }
-  @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
-    height: $height !important ;
-  } @else {
-    height: f.pxToRem($height) !important;
-  }
+    @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
+        width: $width !important;
+    } @else {
+        width: f.pxToRem($width) !important;
+    }
+    @if ($height == 'auto' or $height == 'inherit' or unit($height) == '%') {
+        height: $height !important;
+    } @else {
+        height: f.pxToRem($height) !important;
+    }
 }
 
 @mixin parent-sized {
-  @include sized(100%, 100%);
+    @include sized(100%, 100%);
 }
 
 // --------------------------Centering----------------------------
 @mixin flex-centered($direction: row, $gap: 0) {
-  @include flexed($direction, center, center, nowrap, $gap);
+    @include flexed($direction, center, center, nowrap, $gap);
 }
 
 @mixin absolute-centered($axes: 'both') {
-  position: absolute;
+    position: absolute;
 
-  @if $axes == 'vertical' or $axes == 'v' {
-    top: 50%;
-    @include vnd.vendored(transform, translateY(-50%));
-  }
-  @else if $axes == 'horizontal' or $axes == 'h' {
-    left: 50%;
-    @include vnd.vendored(transform, translateX(-50%));
-  }
-  @else if $axes == 'both' or $axes == 'b' {
-    top: 50%;
-    left: 50%;
-    @include vnd.vendored(transform, translate(-50%, -50%));
-  }
+    @if $axes == 'vertical' or $axes == 'v' {
+        top: 50%;
+        @include vnd.vendored(transform, translateY(-50%));
+    } @else if $axes == 'horizontal' or $axes == 'h' {
+        left: 50%;
+        @include vnd.vendored(transform, translateX(-50%));
+    } @else if $axes == 'both' or $axes == 'b' {
+        top: 50%;
+        left: 50%;
+        @include vnd.vendored(transform, translate(-50%, -50%));
+    }
 }
 
 // --------------------------Bordering----------------------------
 @mixin rounded(
-  $top-left: 0,
-  $top-right: 0,
-  $bottom-right: 0,
-  $bottom-left: 0,
-  $overflow: hidden
+    $top-left: 0,
+    $top-right: 0,
+    $bottom-right: 0,
+    $bottom-left: 0,
+    $overflow: hidden
 ) {
-  $rad: $top-left $top-right $bottom-right $bottom-left;
+    $rad: $top-left $top-right $bottom-right $bottom-left;
 
-  border-radius: $rad !important;
-  -webkit-border-radius: $rad !important;
+    border-radius: $rad !important;
+    -webkit-border-radius: $rad !important;
 
-  overflow: $overflow !important;
-  -webkit-background-clip: padding-box;
+    overflow: $overflow !important;
+    -webkit-background-clip: padding-box;
 }
-@mixin border($color:"#000", $border-width:1px, $type:solid ){
-  border:  f.pxToRem($border-width) $type $color;
+
+@mixin border($color:"#000", $border-width:1px, $type:solid ) {
+    border: f.pxToRem($border-width) $type $color;
 }
 
 @mixin full-rounded($rad, $overflow: hidden) {
-  @include rounded($rad, $rad, $rad, $rad, $overflow);
+    @include rounded($rad, $rad, $rad, $rad, $overflow);
 }
 
 @mixin circular($radius, $color: c.$pure-white-color) {
-  @include sized($radius, $radius);
-  @include full-rounded(50%);
-  background: $color;
+    @include sized($radius, $radius);
+    @include full-rounded(50%);
+    background: $color;
 }
 
 // --------------------------Margins-----------------------------
 @mixin rem-margined($top: 0, $right: 0, $bottom: 0, $left: 0) {
-  margin: f.pxToRem($top) f.pxToRem($right)
-          f.pxToRem($bottom) f.pxToRem($left) !important;
+    margin: f.pxToRem($top) f.pxToRem($right) f.pxToRem($bottom) f.pxToRem($left) !important;
 }
 
 @mixin rem-padded($top: 0, $right: 0, $bottom: 0, $left: 0) {
-  padding: f.pxToRem($top) f.pxToRem($right)
-          f.pxToRem($bottom) f.pxToRem($left) !important;
+    padding: f.pxToRem($top) f.pxToRem($right) f.pxToRem($bottom) f.pxToRem($left) !important;
 }
-// --------------------------Appearance----------------------------
-@mixin backdrop-filtering-blur($f-size){
-  -webkit-backdrop-filter: blur($f-size);
-  -o-backdrop-filter: blur($f-size);
-  -moz-backdrop-filter: blur($f-size);
 
-  backdrop-filter: blur($f-size);
+// --------------------------Appearance----------------------------
+@mixin backdrop-filtering-blur($f-size) {
+    -webkit-backdrop-filter: blur($f-size);
+    -o-backdrop-filter: blur($f-size);
+    -moz-backdrop-filter: blur($f-size);
+
+    backdrop-filter: blur($f-size);
 }
 
 @mixin outlined($b-size: 2px, $color: red) {
-  outline: $b-size solid $color !important;
+    outline: $b-size solid $color !important;
 }
 
 @mixin hidden {
-  display: none !important;
-  visibility: hidden !important;
+    display: none !important;
+    visibility: hidden !important;
 }
 
 @mixin visible($display: block) {
-  display: $display !important;
-  visibility: visible !important;
+    display: $display !important;
+    visibility: visible !important;
 }
 
 @mixin bg-image($file-path, $bg-size: cover, $bg-repeat: no-repeat) {
-  background-image: url($file-path);
-  background-repeat: $bg-repeat;
-  background-size: $bg-size;
+    background-image: url($file-path);
+    background-repeat: $bg-repeat;
+    background-size: $bg-size;
 }
 
 @mixin colored($color: c.$pure-black-color, $bg-color: c.$pure-white-color) {
-  color: $color;
-  background-color: $bg-color;
+    color: $color;
+    background-color: $bg-color;
 }
-// --------------------------Text----------------------------------
-@mixin withLineHeight($line-height){
-  line-height:f.pxToRem($line-height);
-}
-@mixin truncated($line-num: 3, $text-overflow: ellipsis) {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: $text-overflow;
-  word-break: break-word;
 
-  @supports (-webkit-line-clamp: $line-num) {
+// --------------------------Text----------------------------------
+@mixin withLineHeight($line-height) {
+    line-height:f.pxToRem
+($line-height);
+}
+
+@mixin truncated($line-num: 3, $text-overflow: ellipsis) {
     overflow: hidden;
+    white-space: nowrap;
     text-overflow: $text-overflow;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: $line-num;
-    -webkit-box-orient: vertical;
-  }
+    word-break: break-word;
+
+    @supports (-webkit-line-clamp: $line-num) {
+        overflow: hidden;
+        text-overflow: $text-overflow;
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-line-clamp: $line-num;
+        -webkit-box-orient: vertical;
+    }
 }
 
 // --------------------------Fonts---------------------------------
 @mixin with-font(
-  $font-family: ft.$roboto-font,
-  $font-weight: normal,
-  $font-size: 20px,
-  $font-style: ft.$roboto-font-style
+    $font-family: ft.$roboto-font,
+    $font-weight: normal,
+    $font-size: 20px,
+    $font-style: ft.$roboto-font-style
 ) {
-  font-family: $font-family;
-  // px equivalent for browsers without rem support
-  font-size: f.pxToRem($font-size);
-  font-weight: $font-weight;
-  font-style: $font-style;
+    font-family: $font-family;
+    // px equivalent for browsers without rem support
+    font-size: f.pxToRem($font-size);
+    font-weight: $font-weight;
+    font-style: $font-style;
 }
 
 @mixin antialiased {
-  font-smoothing: antialiased;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 @mixin font-face(
-  $font-family,
-  $file-path,
-  $font-weight: normal,
-  $font-style: normal,
-  $fallback: sans-serif
+    $font-family,
+    $file-path,
+    $font-weight: normal,
+    $font-style: normal,
+    $fallback: sans-serif
 ) {
-  $file-path: '@assets/fonts/#{$file-path}';
+    $file-path: '@assets/fonts/#{$file-path}';
 
-  @font-face {
-    font-family: '#{$font-family}';
+    @font-face {
+        font-family: '#{$font-family}';
 
-    src: url($file-path + '.eot');
-    src: local($file-path),
-      url($file-path + '.eot?#iefix') format('embedded-opentype'),
-      url($file-path + '.woff2') format('woff2'),
-      url($file-path + '.woff') format('woff');
+        src: url($file-path + '.eot');
+        src: local($file-path),
+        url($file-path + '.eot?#iefix') format('embedded-opentype'),
+        url($file-path + '.woff2') format('woff2'),
+        url($file-path + '.woff') format('woff');
 
-    font-weight: $font-weight;
-    font-style: $font-style;
-    font-display: swap;
-  }
+        font-weight: $font-weight;
+        font-style: $font-style;
+        font-display: swap;
+    }
 
 }
 
 @mixin fadeKeyframes($type: "fadeIn", $name: "fade") {
-  @-webkit-keyframes #{$name} {
-    @content;
-  }
-  @-moz-keyframes #{$name} {
-    @content;
-  }
-  @-ms-keyframes #{$name} {
-    @content;
-  }
-  @keyframes #{$name} {
-    @content;
-  }
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
 }
 
 @mixin blur($edge:0, $top:0, $height:0, $z-index) {
-  position: relative;
-  &:after {
-    content: '';
-    position: absolute;
-    top: $top;
-    left: 0;
-    right: 0;
-    height: f.pxToRem($height);
-    background: linear-gradient($edge, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255, 255, 255, 0.664) 21%);
-    -webkit-text-fill-color: transparent;
-    z-index: $z-index;
-  }
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        top: $top;
+        left: 0;
+        right: 0;
+        height: f.pxToRem($height);
+        background: linear-gradient($edge, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.25) 5%, rgba(255, 255, 255, 0.664) 21%);
+        -webkit-text-fill-color: transparent;
+        z-index: $z-index;
+    }
 }

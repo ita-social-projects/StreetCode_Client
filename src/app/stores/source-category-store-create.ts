@@ -32,11 +32,11 @@ export default class SourceCreateUpdateStreetcode {
         this.streetcodeCategoryContents.push(category);
     }
 
-    public updateElement(index:number, category: StreetcodeCategoryContent) {
+    public updateElement(index: number, category: StreetcodeCategoryContent) {
         this.streetcodeCategoryContents[index] = category;
     }
 
-    public removeSourceCategoryContent(index:number) {
+    public removeSourceCategoryContent(index: number) {
         const sourceCategoryContent = this.streetcodeCategoryContents[index] as StreetcodeCategoryContentUpdate;
         if (sourceCategoryContent && sourceCategoryContent.isPersisted) {
             const sourceCategoryContentToUpdate: StreetcodeCategoryContentUpdate = {

@@ -9,12 +9,12 @@ import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import htmpReactParser from 'html-react-parser';
 
+import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
 import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
-import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 const TextComponent = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
@@ -41,12 +41,12 @@ const TextComponent = () => {
 
     useEffect(() => {
         const hash = getUrlHash(location);
-        if (!isScrolled && hash === 'text'){
+        if (!isScrolled && hash === 'text') {
             const element = document.getElementById(hash);
-    
+
             setTimeout(() => {
-                if(element !== null) {
-                    element.scrollIntoView({behavior: "smooth", block: "start"});
+                if (element !== null) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     setIsScrolled(true);
                 }
             }, 1000);
@@ -63,7 +63,10 @@ const TextComponent = () => {
                         <BlockHeading headingText={String(text?.title)} />
                         <div className="textComponent">
                             <div className="TextContainer">
-                                <ReadMore key={text?.title} text={String(text?.textContent)} />
+                                <ReadMore
+                                    key={text?.title}
+                                    text={String(text?.textContent)}
+                                />
                                 <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                             </div>
                         </div>

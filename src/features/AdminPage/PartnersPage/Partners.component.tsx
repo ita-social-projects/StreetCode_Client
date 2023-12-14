@@ -24,7 +24,7 @@ import PartnerModal from './PartnerModal/PartnerModal.component';
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
-const Partners:React.FC = observer(() => {
+const Partners: React.FC = observer(() => {
     const { partnersStore } = useMobx();
 
     const { modalStore } = useModalContext();
@@ -56,7 +56,10 @@ const Partners:React.FC = observer(() => {
             key: 'title',
             render(value, record) {
                 return (
-                    <div key={`${value}${record.id}`} className="partner-table-item-name">
+                    <div
+                        key={`${value}${record.id}`}
+                        className="partner-table-item-name"
+                    >
                         <p>{value}</p>
                         {record.isKeyPartner ? <StarOutlined /> : ''}
                     </div>
@@ -85,7 +88,7 @@ const Partners:React.FC = observer(() => {
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),
-            render: (logo:Image, record) => (
+            render: (logo: Image, record) => (
                 <img
                     key={`${record.id}${record.logo?.id}}`}
                     className="partners-table-logo"
@@ -100,8 +103,11 @@ const Partners:React.FC = observer(() => {
             dataIndex: 'partnerSourceLinks',
             key: 'partnerSourceLinks',
             width: '12%',
-            render: (links:PartnerSourceLink[], partner) => (
-                <div key={`${links.length}${partner.id}${partner.logoId}`} className="partner-links">
+            render: (links: PartnerSourceLink[], partner) => (
+                <div
+                    key={`${links.length}${partner.id}${partner.logoId}`}
+                    className="partner-links"
+                >
                     {links.map((link) => {
                         const LogoComponent = LogoType[link.logoType];
                         return (
@@ -119,39 +125,45 @@ const Partners:React.FC = observer(() => {
                 </div>
             ),
         },
-        { title: 'Дії',
-          dataIndex: 'action',
-          key: 'action',
-          width: '10%',
-          render: (value, partner, index) => (
-              <div key={`${partner.id}${index}`} className="partner-page-actions">
-                  <DeleteOutlined
-                      key={`${partner.id}${index}111`}
-                      className="actionButton"
-                      onClick={() => {
-                          modalStore.setConfirmationModal(
-                              'confirmation',
-                              () => {
-                                  PartnersApi.delete(partner.id)
-                                      .then(() => {
-                                          partnersStore.PartnerMap.delete(partner.id);
-                                      }).catch((e) => {});
-                                  modalStore.setConfirmationModal('confirmation');
-                              },
-                              'Ви впевнені, що хочете видалити цього партнера?',
-                          );
-                      }}
-                  />
-                  <EditOutlined
-                      key={`${partner.id}${index}222`}
-                      className="actionButton"
-                      onClick={() => {
-                          setPartnerToedit(partner);
-                          setModalEditOpened(true);
-                      }}
-                  />
-              </div>
-          ) },
+        {
+            title: 'Дії',
+            dataIndex: 'action',
+            key: 'action',
+            width: '10%',
+            render: (value, partner, index) => (
+                <div
+                    key={`${partner.id}${index}`}
+                    className="partner-page-actions"
+                >
+                    <DeleteOutlined
+                        key={`${partner.id}${index}111`}
+                        className="actionButton"
+                        onClick={() => {
+                            modalStore.setConfirmationModal(
+                                'confirmation',
+                                () => {
+                                    PartnersApi.delete(partner.id)
+                                        .then(() => {
+                                            partnersStore.PartnerMap.delete(partner.id);
+                                        }).catch((e) => {
+                                        });
+                                    modalStore.setConfirmationModal('confirmation');
+                                },
+                                'Ви впевнені, що хочете видалити цього партнера?',
+                            );
+                        }}
+                    />
+                    <EditOutlined
+                        key={`${partner.id}${index}222`}
+                        className="actionButton"
+                        onClick={() => {
+                            setPartnerToedit(partner);
+                            setModalEditOpened(true);
+                        }}
+                    />
+                </div>
+            ),
+        },
     ];
     return (
         <div className="partners-page">
@@ -162,7 +174,7 @@ const Partners:React.FC = observer(() => {
                         className="streetcode-custom-button partners-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                    Створити партнера
+                        Створити партнера
                     </Button>
                 </div>
                 <Table
@@ -173,7 +185,11 @@ const Partners:React.FC = observer(() => {
                     rowKey="id"
                 />
             </div>
-            <PartnerModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} isStreetcodeVisible />
+            <PartnerModal
+                open={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+                isStreetcodeVisible
+            />
             <PartnerModal
                 open={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}

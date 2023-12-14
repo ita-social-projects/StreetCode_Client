@@ -47,7 +47,11 @@ const TopCarouselBlock = () => {
     return (
         isMobile
             ? (
-                <Carousel className="top-carousel" autoplay autoplaySpeed={PLAY_SPEED}>
+                <Carousel
+                    className="top-carousel"
+                    autoplay
+                    autoplaySpeed={PLAY_SPEED}
+                >
                     {contentMobile.map((item) => (
                         <div key={item.image}>
                             <img
@@ -58,7 +62,11 @@ const TopCarouselBlock = () => {
                     ))}
                 </Carousel>
             ) : (
-                <Carousel className="top-carousel" autoplay autoplaySpeed={PLAY_SPEED}>
+                <Carousel
+                    className="top-carousel"
+                    autoplay
+                    autoplaySpeed={PLAY_SPEED}
+                >
                     {content.map((item) => (
                         <div key={item.image}>
                             <img

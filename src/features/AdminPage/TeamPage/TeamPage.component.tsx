@@ -62,7 +62,10 @@ const TeamPage = () => {
             key: 'name',
             render(value, record) {
                 return (
-                    <div key={`${value}${record.id}`} className="team-table-item-name">
+                    <div
+                        key={`${value}${record.id}`}
+                        className="team-table-item-name"
+                    >
                         <p>
                             {record.name}
                         </p>
@@ -77,7 +80,10 @@ const TeamPage = () => {
             key: 'positions',
             render(value, record) {
                 return (
-                    <div key={`${value}${record.id}`} className="team-table-item-name">
+                    <div
+                        key={`${value}${record.id}`}
+                        className="team-table-item-name"
+                    >
                         <p>
                             {record.positions.map((x) => `${x.position} `)}
                             {' '}
@@ -92,7 +98,10 @@ const TeamPage = () => {
             key: 'description',
             render(value, record) {
                 return (
-                    <div key={`${value}${record.id}`} className="team-table-item-name">
+                    <div
+                        key={`${value}${record.id}`}
+                        className="team-table-item-name"
+                    >
                         <p>{value}</p>
                     </div>
                 );
@@ -113,7 +122,10 @@ const TeamPage = () => {
             key: 'teamMemberLinks',
             width: '8%',
             render: (links: TeamMemberLink[], team) => (
-                <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
+                <div
+                    key={`${links.length}${team.id}${team.imageId}`}
+                    className="team-links"
+                >
                     {links.map((link) => {
                         const LogoComponent = LogoType[link.logoType];
                         return (
@@ -137,7 +149,10 @@ const TeamPage = () => {
             key: 'action',
             width: '5%',
             render: (value, team, index) => (
-                <div key={`${team.id}${index}`} className="team-page-actions">
+                <div
+                    key={`${team.id}${index}`}
+                    className="team-page-actions"
+                >
                     <DeleteOutlined
                         key={`${team.id}${index}111`}
                         className="actionButton"
@@ -189,7 +204,10 @@ const TeamPage = () => {
                     rowKey="id"
                 />
             </div>
-            <TeamModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
+            <TeamModal
+                open={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+            />
             <TeamModal
                 open={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}

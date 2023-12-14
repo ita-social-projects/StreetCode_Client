@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx, { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
@@ -67,7 +67,10 @@ const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
         const hasBottomRow = figureOnBottomRow !== undefined;
 
         const sliderItem = (
-            <div className={hasBottomRow ?"TwoRowSlide" : "OneRowSlide"} key={i}>
+            <div
+                className={hasBottomRow ? 'TwoRowSlide' : 'OneRowSlide'}
+                key={i}
+            >
                 <div className="FirstItem">
                     <RelatedFigureItem
                         relatedFigure={figureOnTopRow}
@@ -78,12 +81,12 @@ const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
                 </div>
                 {hasBottomRow && (
                     <div className="SecondItem">
-                    <RelatedFigureItem
-                        relatedFigure={figureOnBottomRow}
-                        filterTags
-                        hoverable
-                        setActiveTagId={setActiveTagId}
-                    />
+                        <RelatedFigureItem
+                            relatedFigure={figureOnBottomRow}
+                            filterTags
+                            hoverable
+                            setActiveTagId={setActiveTagId}
+                        />
                     </div>
                 )}
             </div>

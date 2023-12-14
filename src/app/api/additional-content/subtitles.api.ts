@@ -7,9 +7,9 @@ const SubtitlesApi = {
 
     getAll: () => Agent.get<Subtitle[]>(`${API_ROUTES.SUBTITLES.GET_ALL}`),
 
-    getSubtitlesByStreetcodeId: (streetcodeId: number) => { return Agent.get<Subtitle>(
+    getSubtitlesByStreetcodeId: (streetcodeId: number) => Agent.get<Subtitle>(
         `${API_ROUTES.SUBTITLES.GET_BY_STREETCODE_ID}/${streetcodeId}`,
-    );},
+    ),
 
     create: (subtitle: Subtitle) => Agent.post<Subtitle>(`${API_ROUTES.SUBTITLES.CREATE}`, subtitle),
 

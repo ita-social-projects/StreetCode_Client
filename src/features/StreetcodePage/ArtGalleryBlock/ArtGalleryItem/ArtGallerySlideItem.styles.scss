@@ -5,7 +5,6 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 
-
 .slideArt {
     flex: pxToRem(80px);
 
@@ -25,7 +24,7 @@
     }
 }
 
-@media screen and (max-width:1450px) {
+@media screen and (max-width: 1450px) {
     .slideArt {
         .small {
             @include mut.sized(323px, 215px);
@@ -41,7 +40,7 @@
     }
 }
 
-@media screen and (max-width:1200px) {
+@media screen and (max-width: 1200px) {
     .slideArt {
         .small {
             @include mut.sized(256px, 170.7px);
@@ -58,7 +57,7 @@
 }
 
 
-@media screen and (max-width:1025px) {
+@media screen and (max-width: 1025px) {
 
     .slideArt {
         flex: pxToRem(80px);
@@ -102,7 +101,7 @@
         visibility: hidden;
         opacity: 0;
         @include vnd.vendored(transition, 'all .5s ease');
-        @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
+        @include mut.rounded($bottom-right: 30px, $bottom-left: 30px);
         padding: pxToRem(11px) pxToRem(21px);
     }
 

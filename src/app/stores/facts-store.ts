@@ -28,10 +28,12 @@ export default class FactsStore {
     };
 
     public setImageDetails = (fact: FactCreate, imageDetailId: number) => {
-        this.factImageDetailsMap.set(fact.imageId, { id: imageDetailId,
-                                                     imageId: fact.imageId,
-                                                     alt: fact.imageDescription,
-                                                     title: '' });
+        this.factImageDetailsMap.set(fact.imageId, {
+            id: imageDetailId,
+            imageId: fact.imageId,
+            alt: fact.imageDescription,
+            title: '',
+        });
     };
 
     public addFact = (fact: Fact) => {
@@ -88,7 +90,8 @@ export default class FactsStore {
             const facts = await factsApi.getFactsByStreetcodeId(streetcodeId);
             this.setInternalMap(facts);
             return facts;
-        } catch (error: unknown) {}
+        } catch (error: unknown) {
+        }
         return Array<Fact>(0);
     };
 
@@ -96,7 +99,8 @@ export default class FactsStore {
         try {
             await factsApi.create(fact);
             this.setItem(fact);
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public updateFact = async (fact: Fact) => {
@@ -109,7 +113,8 @@ export default class FactsStore {
                 };
                 this.setItem(updatedFact as Fact);
             });
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 
     public deleteFact = async (factId: number) => {
@@ -118,6 +123,7 @@ export default class FactsStore {
             runInAction(() => {
                 this.factMap.delete(factId);
             });
-        } catch (error: unknown) { /* empty */ }
+        } catch (error: unknown) { /* empty */
+        }
     };
 }

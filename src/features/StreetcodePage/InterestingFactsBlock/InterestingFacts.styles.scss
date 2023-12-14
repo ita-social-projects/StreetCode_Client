@@ -5,14 +5,15 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/_utils.functions.scss" as f;
 
-.singleFact{
+.singleFact {
     width: 100% !important;
 }
 
 .interestingFactsContainer {
     @include mut.sized(100%);
     @include mut.flex-centered($direction: column);
-    .blockHeadingWrapper{
+
+    .blockHeadingWrapper {
         padding-left: f.pxToRem(12px);
     }
 }
@@ -28,7 +29,7 @@
         padding: f.pxToRem(110px) 0;
     }
 
-    .slick-dots{
+    .slick-dots {
         bottom: f.pxToRem(-57px);
         margin-top: f.pxToRem(30px);
     }
@@ -47,14 +48,14 @@
     cursor: pointer;
 }
 
-.singleSlideContainer{
+.singleSlideContainer {
     margin-bottom: pxToRem(90px);
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
     padding-top: pxToRem(88px);
-    
-    .interestingFactSlide{
-        @include  mut.sized(650px, 600px);
+
+    .interestingFactSlide {
+        @include mut.sized(650px, 600px);
 
         .slideImage {
             @include mut.sized($height: 60%);
@@ -65,74 +66,74 @@
             }
         }
 
-        .slideText{
+        .slideText {
             @include mut.sized($height: 40%);
-            
-            .heading{
-                font-size:26px;
-            }
-                      
-            .mainText{
-                @include mut.sized($height: 75%);
-                font-size:15px;
-                line-height: pxToRem(20px);
-                @include mut.rem-margined($right: 5px );
 
-                
+            .heading {
+                font-size: 26px;
+            }
+
+            .mainText {
+                @include mut.sized($height: 75%);
+                font-size: 15px;
+                line-height: pxToRem(20px);
+                @include mut.rem-margined($right: 5px);
+
+
                 &::-webkit-scrollbar-thumb,
                 &::-webkit-scrollbar-track {
-                  @include mut.full-rounded(15px);
-                  @include mut.sized($height: 20px);
+                    @include mut.full-rounded(15px);
+                    @include mut.sized($height: 20px);
 
                 }
-              
+
                 &::-webkit-scrollbar-thumb {
-                  background: c.$card-scrollbar-track-color;
+                    background: c.$card-scrollbar-track-color;
                 }
-              
+
                 &::-webkit-scrollbar-track {
-                  background: c.$accented-gray-color;
-                  @include mut.rem-margined( $bottom: 10px );              
+                    background: c.$accented-gray-color;
+                    @include mut.rem-margined($bottom: 10px);
                 }
             }
         }
     }
 }
 
-@media screen and (max-width: 1450px){
+@media screen and (max-width: 1450px) {
     .interestingFactsSliderContainer {
         @include mut.sized(930px);
     }
 
     .interestingFactsSliderContainer {
-        .slick-dots{
+        .slick-dots {
             bottom: auto;
         }
     }
 }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1200px) {
     .interestingFactsSliderContainer {
         @include mut.sized(830px);
     }
 }
 
-@media screen and (max-width: 1024px){
-    .interestingFactsSliderContainer .slick-list{
+@media screen and (max-width: 1024px) {
+    .interestingFactsSliderContainer .slick-list {
         padding: 63px 0 !important;
     }
 
     .interestingFactsWrapper {
-        .slick-dots{         
+        .slick-dots {
             @include mut.rem-margined(0);
             bottom: 15%;
         }
     }
 
     .interestingFactsContainer {
-        @include mut.sized(92%, 100%); 
+        @include mut.sized(92%, 100%);
         @include mut.flex-centered($direction: column);
-    
+
         .blockHeadingContainer {
             margin-left: pxToRem(10px);
         }
@@ -141,33 +142,35 @@
         @include mut.sized(85%, 100%);
     }
 
-    .singleSlideContainer{
-        .interestingFactSlide{
-            @include mut.sized(445px); 
+    .singleSlideContainer {
+        .interestingFactSlide {
+            @include mut.sized(445px);
             @include mut.full-rounded(20px);
-    
+
             .slideImage {
                 @include mut.sized($height: 65%);
-    
+
                 img {
                     @include mut.sized($width: 100%, $height: 100%);
                     max-height: 300px;
                 }
             }
-            .slideText{
+
+            .slideText {
                 @include mut.sized($height: 40%);
-                .heading{
-                    font-size:20px;
+
+                .heading {
+                    font-size: 20px;
                     @include mut.rem-padded(7px, 0px, 8px, 15px);
                 }
-    
-                .mainText{
+
+                .mainText {
                     overflow: auto;
                     height: 150px;
                     font-size: 15px;
                     line-height: pxToRem(21px);
                     margin-bottom: pxToEm(10px);
-    
+
                     &:after {
                         content: "";
                         position: absolute;
@@ -175,65 +178,67 @@
                         bottom: 0;
                         left: 0;
                         pointer-events: none;
-                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
                         width: 100%;
                         height: 1.7em;
-                      }
+                    }
                 }
             }
         }
     }
 }
 
-@media screen
-and (min-width: 768px) and (max-width: 1024px){
+@media screen and (min-width: 768px) and (max-width: 1024px) {
 
-.interestingFactsWrapper {
-    @include wr.main-page-block-wrapper();
-    .slick-dots{
-        @include mut.rem-margined(0);
-        bottom: 15%;
+    .interestingFactsWrapper {
+        @include wr.main-page-block-wrapper();
+
+        .slick-dots {
+            @include mut.rem-margined(0);
+            bottom: 15%;
+        }
+
     }
-  
-}
     .interestingFactsContainer {
-        @include mut.sized(765px, 100%); 
+        @include mut.sized(765px, 100%);
         @include mut.flex-centered($direction: column);
         margin: 0 auto;
     }
     .interestingFactsSliderContainer {
-        @include mut.sized(100%, 100%); 
+        @include mut.sized(100%, 100%);
     }
 
-    .singleSlideContainer{
- 
-        .interestingFactSlide{
+    .singleSlideContainer {
+
+        .interestingFactSlide {
             @include mut.sized(445px);
-    
+
             @include mut.full-rounded(20px);
-    
+
             .slideImage {
                 @include mut.sized($height: 65%);
-    
+
                 img {
                     @include mut.sized($width: 100%, $height: 100%);
                     max-height: 210px;
                 }
             }
-            .slideText{
+
+            .slideText {
                 @include mut.sized($height: 40%);
-                .heading{
-                    font-size:20px;
+
+                .heading {
+                    font-size: 20px;
                     @include mut.rem-padded(7px, 0px, 8px, 15px);
                 }
-    
-                .mainText{
+
+                .mainText {
                     overflow: auto;
                     height: 150px;
                     font-size: 15px;
                     line-height: pxToRem(21px);
                     margin-bottom: pxToEm(10px);
-    
+
                     &:after {
                         content: "";
                         position: absolute;
@@ -241,88 +246,91 @@ and (min-width: 768px) and (max-width: 1024px){
                         bottom: 0;
                         left: 0;
                         pointer-events: none;
-                        background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+                        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
                         width: 100%;
                         height: 1.7em;
-                      }
-    
+                    }
+
                 }
             }
         }
     }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
     .interestingFactsWrapper {
         @include wr.main-page-block-wrapper();
-        .slick-dots{
+
+        .slick-dots {
             @include mut.rem-margined(0);
             bottom: 15%;
         }
     }
 
     .interestingFactsContainer {
-        @include mut.sized(765px, 100%); 
+        @include mut.sized(765px, 100%);
         @include mut.flex-centered($direction: column);
-    
+
         .blockHeadingContainer {
             margin-left: pxToRem(10px);
         }
     }
     .interestingFactsSliderContainer {
-        @include mut.sized(100%, 100%); 
+        @include mut.sized(100%, 100%);
     }
 
 
-.singleSlideContainer{
-    margin-bottom: pxToRem(65px);
-    padding-top: pxToRem(50px);
+    .singleSlideContainer {
+        margin-bottom: pxToRem(65px);
+        padding-top: pxToRem(50px);
 
-    .interestingFactSlide{
-        @include mut.sized(345px);
-        @include mut.full-rounded(20px);
+        .interestingFactSlide {
+            @include mut.sized(345px);
+            @include mut.full-rounded(20px);
 
-        .slideImage {
-            @include mut.sized($height: 65%);
+            .slideImage {
+                @include mut.sized($height: 65%);
 
-            img {
-                @include mut.sized($width: 100%, $height: 100%);
-                max-height: 210px;
-            }
-        }
-        .slideText{
-            @include mut.sized($height: 40%);
-            .heading{
-                font-size:14px;
-                @include mut.rem-padded(7px, 0px, 8px, 15px);
+                img {
+                    @include mut.sized($width: 100%, $height: 100%);
+                    max-height: 210px;
+                }
             }
 
-            .mainText{
-                overflow: auto;
-                font-size: 12px;
-                line-height: pxToRem(21px);
-                margin-bottom: pxToEm(10px);
+            .slideText {
+                @include mut.sized($height: 40%);
 
-                &:after {
-                    content: "";
-                    position: absolute;
-                    z-index: 1;
-                    bottom: 0;
-                    left: 0;
-                    pointer-events: none;
-                    background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
-                    width: 100%;
-                    height: 1.7em;
-                  }
+                .heading {
+                    font-size: 14px;
+                    @include mut.rem-padded(7px, 0px, 8px, 15px);
+                }
 
+                .mainText {
+                    overflow: auto;
+                    font-size: 12px;
+                    line-height: pxToRem(21px);
+                    margin-bottom: pxToEm(10px);
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        z-index: 1;
+                        bottom: 0;
+                        left: 0;
+                        pointer-events: none;
+                        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+                        width: 100%;
+                        height: 1.7em;
+                    }
+
+                }
             }
         }
     }
 }
-}
 
-@media screen and (max-width: 768px){
-    .singleSlideContainer{
+@media screen and (max-width: 768px) {
+    .singleSlideContainer {
         margin-bottom: 3.0625rem;
         padding-top: 2.125rem;
     }
@@ -330,26 +338,28 @@ and (min-width: 768px) and (max-width: 1024px){
     .interestingFactsContainer {
         @include mut.sized(100%, 100%);
 
-        .single{
-            margin-bottom: pxToRem(100px) ;
+        .single {
+            margin-bottom: pxToRem(100px);
         }
     }
 
     .interestingFactsWrapper {
         @include wr.main-page-block-wrapper();
-        .slick-dots{
+
+        .slick-dots {
             bottom: 15%;
             @include mut.sized($height: 80%);
         }
     }
 
     .interestingFactsSliderContainer {
-        @include mut.sized(770px, 100%); 
+        @include mut.sized(770px, 100%);
     }
-    
-    .interestingFactSlide{
+
+    .interestingFactSlide {
         .slideImage {
             @include mut.sized($height: 45%);
+
             img {
                 @include mut.sized($width: 100%);
                 max-height: 210px;
@@ -357,19 +367,20 @@ and (min-width: 768px) and (max-width: 1024px){
         }
     }
 
-    .singleSlideContainer{
-        .interestingFactSlide{
+    .singleSlideContainer {
+        .interestingFactSlide {
             @include mut.sized(32%);
             @include mut.full-rounded(20px);
-    
+
             .slideImage {
                 @include mut.sized($height: 55%);
-    
+
                 img {
                     @include mut.sized($width: 100%, $height: 100%);
                 }
             }
-            .slideText{
+
+            .slideText {
                 @include mut.sized($height: 110px);
                 @include mut.full-rounded(0px);
             }

@@ -5,7 +5,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
 import {
     Button, Form, Input, message, Modal, Popover,
@@ -78,8 +78,14 @@ const PartnersModal = () => {
             footer={null}
             onCancel={onCancel}
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                    <CancelBtn className="iconSize" onClick={onClear} />
+                <Popover
+                    content="Внесені зміни не будуть збережені!"
+                    trigger="hover"
+                >
+                    <CancelBtn
+                        className="iconSize"
+                        onClick={onClear}
+                    />
                 </Popover>
             )}
         >
@@ -144,7 +150,11 @@ const PartnersModal = () => {
                             />
                         </div>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" onClick={() => partnersClickEvent()}>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                onClick={() => partnersClickEvent()}
+                            >
                                 Відправити
                             </Button>
                         </Form.Item>

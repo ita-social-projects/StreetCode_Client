@@ -13,10 +13,10 @@ export default interface Partner {
     title: string;
     description?: string | undefined;
     logoId: number;
-    logo?:Image;
+    logo?: Image;
     targetUrl?: Url;
     partnerSourceLinks: PartnerSourceLink[];
-    streetcodes:StreetcodeShort[];
+    streetcodes: StreetcodeShort[];
 }
 
 export interface PartnerShort {
@@ -32,9 +32,9 @@ export interface PartnerCreateUpdate {
     description?: string | undefined;
     logoId: number;
     targetUrl: string;
-    urlTitle:string;
-    partnerSourceLinks:PartnerSourceLinkCreateUpdate[];
-    streetcodes:StreetcodeShort[];
+    urlTitle: string;
+    partnerSourceLinks: PartnerSourceLinkCreateUpdate[];
+    streetcodes: StreetcodeShort[];
 }
 
 export interface PartnerCreateUpdateShort extends PartnerShort, IModelState, IPersisted {

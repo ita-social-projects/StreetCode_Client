@@ -24,8 +24,8 @@ const NavigableBlockWrapper = ({ children, setBlocks, topDistance }: Props) => {
         Array.from(parentRef.current.children).forEach((child, idx) => {
             const headerBlock = Array.from(child.getElementsByTagName('h1'))
                 .find(({ className }) => className.trim() === 'blockHeadingText')
-             ?? Array.from(child.getElementsByTagName('h2'))
-                 .find(({ className }) => className === 'streetcodeTitle');
+                ?? Array.from(child.getElementsByTagName('h2'))
+                    .find(({ className }) => className === 'streetcodeTitle');
 
             // Перевіряємо наявність блоку перед додаванням його в масив
             if (headerBlock) {

@@ -3,7 +3,7 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.contactUsContainer{
+.contactUsContainer {
     position: relative;
 
     height: 100%;
@@ -12,13 +12,13 @@
     background-color: c.$accented-grayish-gray-color;
     padding: f.pxToRem(112px) f.pxToRem(10px) 0 f.pxToRem(10px);
 
-    .wrapper{
+    .wrapper {
         max-width: f.pxToRem(1200px);
         @include mut.sized(100%, 100%);
         margin: 0 auto;
     }
 
-    .contactUsCover{
+    .contactUsCover {
         padding-bottom: f.pxToRem(100px);
     }
 
@@ -28,44 +28,47 @@
 
 
         > h1 {
-        text-align: left;
-          color: c.$pure-black-color;
-          @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
+            text-align: left;
+            color: c.$pure-black-color;
+            @include mut.with-font(ft.$closer-text-font, $font-size: 25px, $font-weight: 500);
         }
 
         > h3 {
-        text-align: left;
-          @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
+            text-align: left;
+            @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
         }
 
 
         .contactUsBtnContainer {
-          @include mut.sized(180px, 46px);
-          @include mut.full-rounded(10px);
+            @include mut.sized(180px, 46px);
+            @include mut.full-rounded(10px);
 
-          margin-top: 10px;
-          background-color: c.$accented-red-color;
-          a {
-            @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
-            border-width: 3px;
-            border-color: c.$pure-white-color;
-            color: c.$pure-white-color;
-          }
-          &:hover {
-            box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
-            border-color: c.$accented-red-color;
-          }
+            margin-top: 10px;
+            background-color: c.$accented-red-color;
+
+            a {
+                @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
+                border-width: 3px;
+                border-color: c.$pure-white-color;
+                color: c.$pure-white-color;
+            }
+
+            &:hover {
+                box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
+                border-color: c.$accented-red-color;
+            }
         }
-      }
+    }
 }
 
 @media screen and (max-width: 1024px) {
-    .contactUsContainer{
+    .contactUsContainer {
         padding: f.pxToRem(94px) f.pxToRem(10px) 0 f.pxToRem(10px);
 
-        .titleBlock{
+        .titleBlock {
             margin-bottom: f.pxToRem(80px);
         }
+
         .contactUsContent {
             display: none;
         }
@@ -73,10 +76,11 @@
 }
 
 @media screen and (max-width: 480px) {
-    .contactUsContainer{
-        .contactUsCover{
+    .contactUsContainer {
+        .contactUsCover {
             padding-bottom: f.pxToRem(24px);
         }
+
         .contactUsContent {
             display: none;
         }

@@ -2,9 +2,7 @@ import './StreetcodesTable.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 
-import {
-    Button, Input, InputNumber, Select, SelectProps,
-} from 'antd';
+import { Button, Input, Select, SelectProps } from 'antd';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
@@ -32,7 +30,12 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
     return (
         <div className="searchMenu">
             <div className="searchMenuElement">
-                <Button className="Button" onClick={() => setRequest()}>Пошук стріткодів</Button>
+                <Button
+                    className="Button"
+                    onClick={() => setRequest()}
+                >
+Пошук стріткодів
+                </Button>
             </div>
             <div className="searchMenuElement">
                 <Input

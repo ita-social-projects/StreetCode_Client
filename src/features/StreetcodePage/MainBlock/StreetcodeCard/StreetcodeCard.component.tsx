@@ -54,7 +54,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [animationPicture, setAnimationPicture] = useState<Element >();
+    const [animationPicture, setAnimationPicture] = useState<Element>();
     const [images, setImages] = useState<Image[]>([]);
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
 
@@ -73,11 +73,12 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                     setImages(imgs);
                     setImagesForSlider(imgs.filter(
                         (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
-                        || image.imageDetails?.alt === ImageAssigment.animation.toString(),
+                            || image.imageDetails?.alt === ImageAssigment.animation.toString(),
                     ));
                     streecodePageLoaderContext.addBlockFetched();
                 })
-                .catch((e) => { });
+                .catch((e) => {
+                });
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
@@ -86,7 +87,10 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
         streecodePageLoaderContext.isPageLoaded ? (
             <>
                 <Helmet>
-                    <meta property="og:title" content={streetcode?.title} />
+                    <meta
+                        property="og:title"
+                        content={streetcode?.title}
+                    />
                     <meta
                         property="og:description"
                         content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."

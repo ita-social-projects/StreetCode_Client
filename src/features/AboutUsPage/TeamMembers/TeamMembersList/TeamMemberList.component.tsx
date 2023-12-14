@@ -13,8 +13,14 @@ const TeamMemberList = ({ teamMembers }: TeamMemberListProps) => (
         {
             teamMembers.map(
                 (founder) => (
-                    <div key={founder.id} className="teamMemberCardContainer">
-                        <TeamMemberCard key={founder.id} person={founder} />
+                    <div
+                        key={founder.id}
+                        className="teamMemberCardContainer"
+                    >
+                        <TeamMemberCard
+                            key={founder.id}
+                            person={founder}
+                        />
                     </div>
                 ),
             )

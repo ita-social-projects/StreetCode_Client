@@ -1,14 +1,13 @@
 import './InterestingFactsModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Modal } from 'antd';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { useEffect, useState } from 'react';
-import useIsVisible from '@/app/common/hooks/stateful/useIsVisible';
 
 const InterestingFactsModal = () => {
     const millisecondsToHideAfterOpening = 3000;
@@ -39,7 +38,10 @@ const InterestingFactsModal = () => {
         >
             <div className="factsModalContainer">
                 <div className="factsImgContainer">
-                    <img src={base64ToUrl(fact?.image?.base64, fact?.image?.mimeType)} alt="" />
+                    <img
+                        src={base64ToUrl(fact?.image?.base64, fact?.image?.mimeType)}
+                        alt=""
+                    />
                     {fact?.image?.imageDetails?.alt ? (
                         <div className={`description-popup ${descriptionVisible ? 'description-popup-visible' : ''}`}>
                             <p>{fact?.image?.imageDetails?.alt}</p>

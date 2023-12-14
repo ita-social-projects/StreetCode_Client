@@ -2,11 +2,11 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-.partnersItem{
+.partnersItem {
     text-align: center;
     position: relative;
 
-    img{
+    img {
         height: 100%;
         width: 100%;
         object-fit: contain;

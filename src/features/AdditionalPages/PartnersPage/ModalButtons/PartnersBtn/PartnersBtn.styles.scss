@@ -13,14 +13,15 @@ button {
     cursor: pointer;
 }
 
-.partner-button{
-    border-color:c.$accented-red-color ;
+.partner-button {
+    border-color:c.$accented-red-color
+;
     color: c.$pure-white-color;
     background-color: c.$accented-red-color;
 
-    &:hover{
+    &:hover {
         background-color: c.$dark-red-color;
         transition: 0.5s;
     }
- }
+}
 

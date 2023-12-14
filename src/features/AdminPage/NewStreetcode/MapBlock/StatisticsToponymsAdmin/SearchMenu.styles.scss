@@ -22,11 +22,12 @@
         &:hover {
             border-color: c.$accented-red-color;
         }
+
         &:focus-within {
             border-color: c.$accented-red-color;
         }
     }
-    
+
 }
 
 .actionButton {

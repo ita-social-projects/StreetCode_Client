@@ -37,7 +37,10 @@ const Footer = () => {
             {windowSize.width > 1024 && (
                 <div className="footerContainer">
                     <div className="footerLogoContainer">
-                        <img src={StreetcodeFooter} alt="" />
+                        <img
+                            src={StreetcodeFooter}
+                            alt=""
+                        />
                     </div>
                     <div className="usefulLinksColumnContainer">
                         <ul className="usefulLinksColumn">
@@ -62,41 +65,75 @@ const Footer = () => {
                         </ul>
                         <ul className="usefulLinksColumn supportLinks">
                             <li><a href={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}>Політика конфіденційності</a></li>
-                            <li><ContactUsModal toggleState={() => { }} text="Зворотний зв&apos;язок" /></li>
                             <li>
-                                <a href={REPORTS} target="_blank" rel="noreferrer">
+                                <ContactUsModal
+                                    toggleState={() => {
+                                    }}
+                                    text="Зворотний зв&apos;язок"
+                                />
+                            </li>
+                            <li>
+                                <a
+                                    href={REPORTS}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     Звітність ГО «Історична Платформа»
                                 </a>
                             </li>
                         </ul>
                         <ul className="socialIconContainer">
                             <li>
-                                <a href={SOCIAL_MEDIA.INSTAGRAM} target="_blank" rel="noreferrer">
+                                <a
+                                    href={SOCIAL_MEDIA.INSTAGRAM}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     <Instagram />
                                 </a>
                             </li>
                             <li>
-                                <a href={SOCIAL_MEDIA.FACEBOOK} target="_blank" rel="noreferrer">
+                                <a
+                                    href={SOCIAL_MEDIA.FACEBOOK}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     <FaceBook />
                                 </a>
                             </li>
                             <li>
-                                <a href={SOCIAL_MEDIA.TWITTER} target="_blank" rel="noreferrer">
+                                <a
+                                    href={SOCIAL_MEDIA.TWITTER}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     <Twitter />
                                 </a>
                             </li>
                             <li>
-                                <a href={SOCIAL_MEDIA.TIKTOK} target="_blank" rel="noreferrer">
+                                <a
+                                    href={SOCIAL_MEDIA.TIKTOK}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     <TikTok />
                                 </a>
                             </li>
                             <li>
-                                <a href={SOCIAL_MEDIA.TELEGRAM} target="_blank" rel="noreferrer">
+                                <a
+                                    href={SOCIAL_MEDIA.TELEGRAM}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     <Telegram />
                                 </a>
                             </li>
                             <li>
-                                <a href={SOCIAL_MEDIA.YOUTUBE} target="_blank" rel="noreferrer">
+                                <a
+                                    href={SOCIAL_MEDIA.YOUTUBE}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     <Youtube />
                                 </a>
                             </li>

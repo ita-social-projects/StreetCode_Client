@@ -13,6 +13,7 @@ export default interface RelatedFigure {
     image?: Image;
     tags: Tag[];
 }
+
 export interface RelatedFigureShort {
     id: number;
     title: string;

@@ -6,8 +6,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
 
 import {
-    Button, Form, Input, message, Modal, Popover,
-    Select,
+    Button, Form, Input, message, Modal, Popover, Select,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
@@ -19,7 +18,7 @@ interface Props {
     currentId: number,
 }
 
-const JobsModal = ({ open, setOpen, currentId } : Props) => {
+const JobsModal = ({ open, setOpen, currentId }: Props) => {
     const maxLengths = {
         maxLenghtVacancyName: 50,
         maxLenghtVacancyDesc: 2000,
@@ -31,7 +30,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
     const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const [storedJob, setStoredJob] = useState<Job>();
     const [validateDescription, setValidateDescription] = useState<boolean>(true);
-    const emptyJob : Job = {
+    const emptyJob: Job = {
         title: form.getFieldValue('title'),
         description: form.getFieldValue('description'),
         status: form.getFieldValue('status'),
@@ -85,16 +84,15 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 salary,
             };
             const allJobs = await JobApi.getAllShort();
-            allJobs.map((t) => t).forEach(t => {
-                if (values.title == t.title)
-                    newJob.id = t.id;
+            allJobs.map((t) => t).forEach((t) => {
+                if (values.title == t.title) newJob.id = t.id;
             });
             if (newJob.id === 0) {
                 await JobApi.create(newJob);
             } else {
                 await JobApi.update(newJob);
             }
-            message.success("Вакансію успішно додано!", 2)
+            message.success('Вакансію успішно додано!', 2);
         } catch (error) {
             console.log(error);
         }
@@ -121,8 +119,14 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                    <CancelBtn className="iconSize" onClick={clearModal} />
+                <Popover
+                    content="Внесені зміни не будуть збережені!"
+                    trigger="hover"
+                >
+                    <CancelBtn
+                        className="iconSize"
+                        onClick={clearModal}
+                    />
                 </Popover>
             )}
         >
@@ -152,10 +156,16 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                         className="status-select-input"
                         defaultValue="setActive"
                     >
-                        <Select.Option key="active" value="setActive">
+                        <Select.Option
+                            key="active"
+                            value="setActive"
+                        >
                             Активна
                         </Select.Option>
-                        <Select.Option key="inactive" value="setInactive">
+                        <Select.Option
+                            key="inactive"
+                            value="setInactive"
+                        >
                             Не активна
                         </Select.Option>
                     </Select>
@@ -230,7 +240,11 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                     />
                 </FormItem>
                 <div className="center">
-                    <Button className="streetcode-custom-button" htmlType="submit" onClick={handleSave}>
+                    <Button
+                        className="streetcode-custom-button"
+                        htmlType="submit"
+                        onClick={handleSave}
+                    >
                         Зберегти
                     </Button>
                 </div>

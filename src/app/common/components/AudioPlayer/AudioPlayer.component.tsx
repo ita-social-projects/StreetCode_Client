@@ -8,7 +8,7 @@ import { useAudioContext } from '@stores/root-store';
 
 import base64ToUrl from '../../utils/base64ToUrl.utility';
 
-const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay }) => {
+const AudioPlayer: React.FC<{ immediatelyPlay?: boolean }> = ({ immediatelyPlay }) => {
     const { audio } = useAudioContext();
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
@@ -81,12 +81,22 @@ const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay })
             {isPlaying
                 ? (
                     <div className="buttonContainer">
-                        <img src={PauseBtn} alt="Пауза" className="play" onClick={togglePlayPause} />
+                        <img
+                            src={PauseBtn}
+                            alt="Пауза"
+                            className="play"
+                            onClick={togglePlayPause}
+                        />
                     </div>
                 )
                 : (
                     <div className="buttonContainer">
-                        <img src={PlayBtn} alt="Програти" className="play" onClick={togglePlayPause} />
+                        <img
+                            src={PlayBtn}
+                            alt="Програти"
+                            className="play"
+                            onClick={togglePlayPause}
+                        />
                     </div>
                 )}
             <div className="progressBarWrapper">
