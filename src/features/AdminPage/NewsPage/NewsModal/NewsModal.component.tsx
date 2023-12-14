@@ -237,216 +237,214 @@ const NewsModal: React.FC<{
     };
 
     return (
-        <div>
-            <ConfigProvider locale={ukUA}>
-                <Modal
-                    open={open}
-                    onCancel={closeModal}
-                    className="modalContainer"
-                    footer={null}
-                    closeIcon={(
-                        <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                            <CancelBtn className="iconSize" onClick={closeAndCleanData} />
-                        </Popover>
-                    )}
-                >
-                    <div className="modalContainer-content">
-                        <Form
-                            scrollToFirstError
-                            form={form}
-                            layout="vertical"
-                            onFinish={onSuccessfulSubmitNews}
-                            initialValues={{
-                                title: newsItem?.title,
-                                url: newsItem?.url,
-                                creationDate: newsItem ? dayjs(newsItem.creationDate) : undefined,
-                            }}
-                        >
-                            <div className="center">
-                                <h2>
-                                    {newsItem ? 'Редагувати' : 'Додати'}
-                                    {' '}
-Новину
-                                </h2>
-                            </div>
-                            <Form.Item
-                                name="title"
-                                label="Заголовок: "
-                                rules={[{ required: true, message: 'Введіть заголовок' }]}
-                            >
-                                <Input maxLength={100} showCount />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="url"
-                                label="Посилання: "
-                                rules={[
-                                    { required: true, message: 'Введіть Посилання' },
-                                    {
-                                        pattern: /^[a-z-]+$/,
-                                        message:
-                      'Посилання має містити лише малі латинські літери та дефіс',
-                                    },
-                                    {
-                                        validator: async (_, value) => {
-                                            const isUnique = checkUniqueURL(value);
-
-                                            if (await isUnique) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error('Посилання вже існує'));
-                                        },
-
-                                    },
-                                ]}
-                            >
-                                <Input maxLength={200} showCount />
-                            </Form.Item>
-
-                            <div className="required-text" title="Текст:">
-                                <span className="star">&#x204E;</span>
-                                <span>Текст:</span>
-                            </div>
-                            <Editor
-                                onEditorChange={handleUpdate}
-                                value={data}
-                                onBeforeAddUndo={handleBeforeAddUndo}
-                                onInit={(evt, editor) => {
-                                    editorRef.current = editor;
-                                }}
-                                initialValue={newsItem ? newsItem.text : ''}
-                                init={{
-                                    height: 300,
-                                    menubar: false,
-                                    plugins: [
-                                        'autolink',
-                                        'lists',
-                                        'preview',
-                                        'anchor',
-                                        'searchreplace',
-                                        'visualblocks',
-                                        'insertdatetime',
-                                        'wordcount',
-                                    ],
-                                    // eslint-disable-next-line no-useless-concat
-                                    toolbar: 'undo redo | bold italic | ' + 'removeformat ',
-                                    content_style:
-                    'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                                }}
-                            />
-                            <p>
-             Залишок символів:
+        <ConfigProvider locale={ukUA}>
+            <Modal
+                open={open}
+                onCancel={closeModal}
+                className="modalContainer"
+                footer={null}
+                closeIcon={(
+                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                        <CancelBtn className="iconSize" onClick={closeAndCleanData} />
+                    </Popover>
+                )}
+            >
+                <div className="modalContainer-content">
+                    <Form
+                        scrollToFirstError
+                        form={form}
+                        layout="vertical"
+                        onFinish={onSuccessfulSubmitNews}
+                        initialValues={{
+                            title: newsItem?.title,
+                            url: newsItem?.url,
+                            creationDate: newsItem ? dayjs(newsItem.creationDate) : undefined,
+                        }}
+                    >
+                        <div className="center">
+                            <h2>
+                                {newsItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-                                {sizeLimit - textCount}
-                                {textCount > sizeLimit && (
-                                    <span style={{ color: 'red', marginLeft: '10px' }}>
-            Ви перевищіли максимально допустиму кількість символів
-                                    </span>
-                                )}
+Новину
+                            </h2>
+                        </div>
+                        <Form.Item
+                            name="title"
+                            label="Заголовок: "
+                            rules={[{ required: true, message: 'Введіть заголовок' }]}
+                        >
+                            <Input maxLength={100} showCount />
+                        </Form.Item>
 
-                            </p>
-                            {!textIsPresent && textIsChanged && (
-                                <p className="form-text">Введіть текст</p>
-                            )}
-
-                            <Form.Item
-                                name="image"
-                                label="Зображення: "
-                                valuePropName="fileList"
-                                getValueFromEvent={(e: any) => {
-                                    if (Array.isArray(e)) {
-                                        return e;
-                                    }
-                                    return e?.fileList;
-                                }}
-                                className="image-form-item"
-                                rules={[{
-                                    required: true,
-                                    message: 'Додайте зображення',
+                        <Form.Item
+                            name="url"
+                            label="Посилання: "
+                            rules={[
+                                { required: true, message: 'Введіть Посилання' },
+                                {
+                                    pattern: /^[a-z-]+$/,
+                                    message:
+                      'Посилання має містити лише малі латинські літери та дефіс',
                                 },
                                 {
-                                    validator: (_, file) => {
-                                        if (file) {
-                                            let name = '';
-                                            if (file.file) {
-                                                name = file.file.name.toLowerCase();
-                                            } else if (file.name) {
-                                                name = file.name.toLowerCase();
-                                            }
-                                            if (name.endsWith('.jpeg') || name.endsWith('.png')
-                                                || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
-                                                return Promise.resolve();
-                                            }
-                                            // eslint-disable-next-line max-len
-                                            return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
+                                    validator: async (_, value) => {
+                                        const isUnique = checkUniqueURL(value);
+
+                                        if (await isUnique) {
+                                            return Promise.resolve();
                                         }
-                                        return Promise.reject();
+                                        return Promise.reject(new Error('Посилання вже існує'));
                                     },
+
                                 },
-                                ]}
-                            >
-                                <FileUploader
-                                    multiple={false}
-                                    accept=".jpeg,.png,.jpg,.webp"
-                                    listType="picture-card"
-                                    maxCount={1}
-                                    onPreview={handlePreview}
-                                    uploadTo="image"
-                                    onSuccessUpload={(img: Image | Audio) => {
-                                        imageId.current = img.id;
-                                        image.current = img as Image;
-                                        if (newsItem) {
-                                            newsItem.image = img as Image;
+                            ]}
+                        >
+                            <Input maxLength={200} showCount />
+                        </Form.Item>
+
+                        <div className="required-text" title="Текст:">
+                            <span className="star">&#x204E;</span>
+                            <span>Текст:</span>
+                        </div>
+                        <Editor
+                            onEditorChange={handleUpdate}
+                            value={data}
+                            onBeforeAddUndo={handleBeforeAddUndo}
+                            onInit={(evt, editor) => {
+                                editorRef.current = editor;
+                            }}
+                            initialValue={newsItem ? newsItem.text : ''}
+                            init={{
+                                height: 300,
+                                menubar: false,
+                                plugins: [
+                                    'autolink',
+                                    'lists',
+                                    'preview',
+                                    'anchor',
+                                    'searchreplace',
+                                    'visualblocks',
+                                    'insertdatetime',
+                                    'wordcount',
+                                ],
+                                // eslint-disable-next-line no-useless-concat
+                                toolbar: 'undo redo | bold italic | ' + 'removeformat ',
+                                content_style:
+                    'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                            }}
+                        />
+                        <p>
+             Залишок символів:
+                            {' '}
+                            {sizeLimit - textCount}
+                            {textCount > sizeLimit && (
+                                <span style={{ color: 'red', marginLeft: '10px' }}>
+            Ви перевищіли максимально допустиму кількість символів
+                                </span>
+                            )}
+
+                        </p>
+                        {!textIsPresent && textIsChanged && (
+                            <p className="form-text">Введіть текст</p>
+                        )}
+
+                        <Form.Item
+                            name="image"
+                            label="Зображення: "
+                            valuePropName="fileList"
+                            getValueFromEvent={(e: any) => {
+                                if (Array.isArray(e)) {
+                                    return e;
+                                }
+                                return e?.fileList;
+                            }}
+                            className="image-form-item"
+                            rules={[{
+                                required: true,
+                                message: 'Додайте зображення',
+                            },
+                            {
+                                validator: (_, file) => {
+                                    if (file) {
+                                        let name = '';
+                                        if (file.file) {
+                                            name = file.file.name.toLowerCase();
+                                        } else if (file.name) {
+                                            name = file.name.toLowerCase();
                                         }
-                                    }}
-                                    onRemove={removeImage}
-                                    defaultFileList={
-                                        newsItem?.imageId != null
-                                            ? [
-                                                {
-                                                    name: '',
-                                                    thumbUrl: base64ToUrl(
-                                                        newsItem?.image?.base64,
-                                                        newsItem?.image?.mimeType,
-                                                    ),
-                                                    uid: newsItem?.imageId?.toString() || '',
-                                                    status: 'done',
-                                                },
-                                            ]
-                                            : []
+                                        if (name.endsWith('.jpeg') || name.endsWith('.png')
+                                                || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
+                                            return Promise.resolve();
+                                        }
+                                        // eslint-disable-next-line max-len
+                                        return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
                                     }
+                                    return Promise.reject();
+                                },
+                            },
+                            ]}
+                        >
+                            <FileUploader
+                                multiple={false}
+                                accept=".jpeg,.png,.jpg,.webp"
+                                listType="picture-card"
+                                maxCount={1}
+                                onPreview={handlePreview}
+                                uploadTo="image"
+                                onSuccessUpload={(img: Image | Audio) => {
+                                    imageId.current = img.id;
+                                    image.current = img as Image;
+                                    if (newsItem) {
+                                        newsItem.image = img as Image;
+                                    }
+                                }}
+                                onRemove={removeImage}
+                                defaultFileList={
+                                    newsItem?.imageId != null
+                                        ? [
+                                            {
+                                                name: '',
+                                                thumbUrl: base64ToUrl(
+                                                    newsItem?.image?.base64,
+                                                    newsItem?.image?.mimeType,
+                                                ),
+                                                uid: newsItem?.imageId?.toString() || '',
+                                                status: 'done',
+                                            },
+                                        ]
+                                        : []
+                                }
 
-                                >
-                                    <p>Виберіть чи перетягніть файл</p>
-                                </FileUploader>
-                            </Form.Item>
-
-                            <Form.Item
-                                name="creationDate"
-                                label="Дата створення: "
-                                rules={[{ required: true, message: 'Введіть дату' }]}
                             >
-                                <DatePicker showTime allowClear={false} />
-                            </Form.Item>
-                            <PreviewFileModal
-                                opened={previewOpen}
-                                setOpened={setPreviewOpen}
-                                file={filePreview}
-                            />
+                                <p>Виберіть чи перетягніть файл</p>
+                            </FileUploader>
+                        </Form.Item>
 
-                            <div className="center">
-                                <Button
-                                    className="streetcode-custom-button"
-                                    onClick={() => handleOk()}
-                                >
+                        <Form.Item
+                            name="creationDate"
+                            label="Дата створення: "
+                            rules={[{ required: true, message: 'Введіть дату' }]}
+                        >
+                            <DatePicker showTime allowClear={false} />
+                        </Form.Item>
+                        <PreviewFileModal
+                            opened={previewOpen}
+                            setOpened={setPreviewOpen}
+                            file={filePreview}
+                        />
+
+                        <div className="center">
+                            <Button
+                                className="streetcode-custom-button"
+                                onClick={() => handleOk()}
+                            >
                   Зберегти
-                                </Button>
-                            </div>
-                        </Form>
-                    </div>
-                </Modal>
-            </ConfigProvider>
-        </div>
+                            </Button>
+                        </div>
+                    </Form>
+                </div>
+            </Modal>
+        </ConfigProvider>
     );
 });
 export default NewsModal;
