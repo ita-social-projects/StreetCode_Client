@@ -188,7 +188,7 @@ const DownloadBlock = ({ arts, setArts, onChanges }: Props) => {
                 onRemove={(e) => handleRemove(e)}
                 className="with-multiple-delete"
             >
-                {<p>+ Додати</p>}
+                <p>+ Додати</p>
             </FileUploader>
             {visibleDeleteButton ? (
                 <Button

@@ -110,7 +110,7 @@ const TeamModal: React.FC<{
 
     const closeModal = () => {
         setIsModalOpen(false);
-    }
+    };
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
@@ -136,7 +136,7 @@ const TeamModal: React.FC<{
         try {
             await form.validateFields();
             form.submit();
-            message.success("Нового члена команди успішно додано!", 2)
+            message.success('Нового члена команди успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -164,9 +164,8 @@ const TeamModal: React.FC<{
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
-        teamStore.getTeamArray.map((t) => t).forEach(t => {
-        if (formValues.name == t.name  || imageId.current == t.imageId)
-            teamMember = t;
+        teamStore.getTeamArray.map((t) => t).forEach((t) => {
+            if (formValues.name == t.name || imageId.current == t.imageId) teamMember = t;
         });
         if (teamMember) {
             team.id = teamMember.id;
@@ -390,7 +389,7 @@ const TeamModal: React.FC<{
                 {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
 
                 <div className="center">
-                    <Button disabled={fileList?.length === 0}  className="streetcode-custom-button" onClick={handleOk}>
+                    <Button disabled={fileList?.length === 0} className="streetcode-custom-button" onClick={handleOk}>
                         Зберегти
                     </Button>
                 </div>

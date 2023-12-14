@@ -5,13 +5,16 @@ import './News.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, NavigationType, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
+import {
+    Link, NavigationType, useLocation, useNavigate, useNavigationType,
+} from 'react-router-dom';
 import { NewsWithUrl } from '@models/news/news.model';
 import dayjs from 'dayjs';
 import parse from 'html-react-parser';
 
 import NewsApi from '@/app/api/news/news.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import useScrollToTop from '@/app/common/hooks/scrolling/useScrollToTop.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -21,7 +24,6 @@ import News from '@/models/news/news.model';
 
 import BreadCrumbForNews from './BreadCrumbForNews/BreadCrumbForNews.component';
 import RandomNewsBlock from './RandomNewsBlock.component';
-import useScrollToTop from '@/app/common/hooks/scrolling/useScrollToTop.hook';
 
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
@@ -48,7 +50,7 @@ const NewsPage = () => {
                 navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`);
             });
     }, [newsUrl]);
-    
+
     useScrollToTop();
 
     useEffect(

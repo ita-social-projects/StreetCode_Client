@@ -98,9 +98,9 @@ const ProgressBar: FC<Props> = ({
     const onActiveBlockSelection = (activeIdx: number) => {
         const firstBlockHeight = blocks[0]?.height ?? 0;
         const lastBlockHeight = blocks[blocks.length - 1]?.height ?? 1;
-    
+
         scrollPercentage.current = getYScrollPercentage(scrollPosition, firstBlockHeight, lastBlockHeight);
-    };    
+    };
 
     const onProgressBarCallerClick = () => {
         toggle();

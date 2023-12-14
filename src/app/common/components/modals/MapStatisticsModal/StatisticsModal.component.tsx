@@ -1,6 +1,7 @@
 import './StatisticsModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 
 import { Modal } from 'antd';
@@ -9,7 +10,6 @@ import ToponymsApi from '@/app/api/map/toponyms.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import useMobx, { useModalContext, useStreetcodeDataContext, useToponymContext } from '@/app/stores/root-store';
 import Toponym from '@/models/toponyms/toponym.model';
-import { useEffect, useState } from 'react';
 
 const countByStreetType = (toponyms: Toponym[]): Map<string, number> => toponyms?.reduce((acc, toponym) => {
     const { streetType } = toponym;
@@ -36,16 +36,15 @@ const StatisticsModal = () => {
     };
     const [headingText, setHeadingText] = useState('цього стріткоду');
     useEffect(() => {
-     const updateHeadingText = () => {
-       const headingElement = document.querySelector('h2.streetcodeTitle');
-       if (headingElement) {
-         setHeadingText(headingElement.textContent || 'цього стріткоду');
-       }
-     };
- 
-     updateHeadingText();
-    
-   }, []);
+        const updateHeadingText = () => {
+            const headingElement = document.querySelector('h2.streetcodeTitle');
+            if (headingElement) {
+                setHeadingText(headingElement.textContent || 'цього стріткоду');
+            }
+        };
+
+        updateHeadingText();
+    }, []);
     return (
         <Modal
             className="statisticsModal"
@@ -57,7 +56,11 @@ const StatisticsModal = () => {
             closeIcon={<CancelBtn />}
         >
             <div className="statisticsModalsContainer">
-            <h1>В Україні іменем «{headingText}» названі:</h1>
+                <h1>
+В Україні іменем «
+                    {headingText}
+» названі:
+                </h1>
                 <div className="streetsBlock" style={{ display: 'flex', flexWrap: 'wrap' }}>
                     {countByStreetTypeMap && [...countByStreetTypeMap.entries()].map(([streetType, count]) => (
                         <p style={{ flexBasis: '50%', width: '45%' }}>

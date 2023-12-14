@@ -50,7 +50,7 @@ const TimelineSwiper: React.FC<Props> = ({
         <div className="timeline-swiper">
             <Swiper
                 className="swiperClass"
-                //pagination={{ clickable: true }}
+                // pagination={{ clickable: true }}
                 centeredSlides
                 ref={swiperRef}
                 {...swiperProps}

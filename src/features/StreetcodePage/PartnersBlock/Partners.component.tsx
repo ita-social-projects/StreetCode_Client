@@ -26,8 +26,8 @@ const PartnersComponent = () => {
                             .then((img) => {
                                 res[index].logo = img;
                             }))).then(() => {
-                                setPartners(res);
-                            });
+                            setPartners(res);
+                        });
                     });
             }
         },

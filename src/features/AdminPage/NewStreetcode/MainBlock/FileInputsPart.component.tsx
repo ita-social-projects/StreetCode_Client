@@ -214,7 +214,8 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                                         return Promise.resolve();
                                     }
                                     return Promise.reject(
-                                        Error('Дозволені тільки файли з розширенням .jpeg, .jpg, .png та .webp'));
+                                        Error('Дозволені тільки файли з розширенням .jpeg, .jpg, .png та .webp'),
+                                    );
                                 }
                                 return Promise.resolve();
                             },

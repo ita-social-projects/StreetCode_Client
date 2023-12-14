@@ -14,23 +14,25 @@ const ProgressBarSection = ({ idx, block: { title, height }, isBlockActive }: Pr
     const CurrentClick = (e: any) => {
         e.stopPropagation();
         window.scrollTo(0, height);
-    }
+    };
 
-    return(<Popover
-        overlayClassName="progressBarSectionPopover"
-        align={{ offset: [0, 1] }}
-        content={<p>{title}</p>}
-    >
-        <div
-            key={idx}
-            className={`progressBarSection ${isBlockActive ? 'active' : ''}`}
-            onClick={CurrentClick}
+    return (
+        <Popover
+            overlayClassName="progressBarSectionPopover"
+            align={{ offset: [0, 1] }}
+            content={<p>{title}</p>}
         >
-            <span>
-                {idx + 1}
-            </span>
-        </div>
-    </Popover>);
+            <div
+                key={idx}
+                className={`progressBarSection ${isBlockActive ? 'active' : ''}`}
+                onClick={CurrentClick}
+            >
+                <span>
+                    {idx + 1}
+                </span>
+            </div>
+        </Popover>
+    );
 };
 
 export default ProgressBarSection;

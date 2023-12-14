@@ -12,10 +12,10 @@ const SearchBlock = ({ searchResult } : Props) => {
 
     return (
         <div className="searchResultsBlock" style={{ height: blockHeight }}>
-            {searchResult.length === 0 ? <p>Результатів немає</p> : 
-            (searchResult.map((searchResultItem: StreetcodeFilterResultDTO, index) => (
-                <SearchResultItem key={index} searchResultItem={searchResultItem} />
-            )))}
+            {searchResult.length === 0 ? <p>Результатів немає</p>
+                : (searchResult.map((searchResultItem: StreetcodeFilterResultDTO, index) => (
+                    <SearchResultItem key={index} searchResultItem={searchResultItem} />
+                )))}
         </div>
     );
 };

@@ -7,7 +7,7 @@ import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
 import UserLoginStore from '../stores/user-login-store';
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'development'
-    ? 'https://localhost:5001/api' : window._env_.API_URL;
+    ? 'https://stageback.streetcode.com.ua/api' : window._env_.API_URL;
 
 axios.interceptors.response.use(
     async (response) => response,
@@ -44,22 +44,22 @@ axios.interceptors.response.use(
     },
 );
 
-const responseBody = <T> (response: AxiosResponse<T>) => response.data;
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const Agent = {
-    get: async <T> (url: string, params?: URLSearchParams) => {
+    get: async <T>(url: string, params?: URLSearchParams) => {
         axios.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
         return axios.get<T>(url, { params })
             .then(responseBody);
     },
 
-    post: async <T> (url: string, body: object, headers?: object) => {
+    post: async <T>(url: string, body: object, headers?: object) => {
         axios.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
         return axios.post<T>(url, body, headers)
             .then(responseBody);
     },
 
-    put: async <T> (url: string, body: object) => {
+    put: async <T>(url: string, body: object) => {
         axios.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
         return axios.put<T>(url, body)
             .then(responseBody);
