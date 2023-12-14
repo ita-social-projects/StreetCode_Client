@@ -11,11 +11,11 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 
 import { Drawer } from 'antd';
 
-import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
 
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
+import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
 
 const mobileOptions = 8;
 const desktopOptions = 6;
@@ -97,7 +97,7 @@ const HeaderDrawer = () => {
 
     return (
         <div className="drawerContainer">
-            <ScrollRestoration />
+            <ScrollRestoration/>
             <Drawer
                 placement="right"
                 closable
@@ -176,8 +176,7 @@ const HeaderDrawer = () => {
                                         />
                                         <ContactUsModal
                                             toggleState={toggle}
-                                            text="Зворотний зв'язок"
-                                        />
+                                            text="Зворотний зв'язок" />
                                     </div>
                                     <SocialMediaLinks />
                                 </>

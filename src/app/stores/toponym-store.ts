@@ -18,7 +18,7 @@ export default class ToponymStore {
     };
 
     public fetchToponymByStreetcodeId = async (streetcodeId: number)
-        : Promise<Toponym[]> => {
+    : Promise<Toponym[]> => {
         this.loaded = true;
         return ToponymsApi.getByStreetcodeId(streetcodeId).then((res) => {
             this.setToponyms(res);

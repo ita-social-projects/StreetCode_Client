@@ -7,12 +7,8 @@
 @use "@app/common/components/CardText/CardText.styles" as textCard;
 
 @keyframes opacity-animation {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+    0%    { opacity: 0; }
+    100%  { opacity: 1; }
 }
 
 .mainPageStreetCodeSlider {
@@ -70,14 +66,13 @@
         }
     }
 
-    .skeleton {
+    .skeleton{
         background: #F4F4F4;
         background: linear-gradient(90deg, #F4F4F4 8%, #F9F9F9 18%, #F4F4F4 33%);
         border-radius: 5px;
         background-size: 200% 100%;
         animation: 1.5s shine linear infinite;
     }
-
     @keyframes shine {
         to {
             background-position-x: -200%;
@@ -118,23 +113,22 @@
         }
     }
 
-    .imgVisible {
+    .imgVisible{
         animation: opacity-animation .5s ease-in forwards;
     }
 
     @include textCard.cardText();
-
-    .cardTextContainer {
+    .cardTextContainer{
         font-size: f.pxToRem(20px);
         @media screen and (max-width: 1024px) {
             font-size: 12px;
         }
 
-        &Title {
+        &Title{
             @include mut.with-font(
                             ft.$closer-text-font,
-                    $font-weight: 500,
-                    $font-size: 36px);
+                            $font-weight: 500,
+                            $font-size: 36px);
             line-height: pxToRem(40px);
 
             @media screen and (max-width: 1024px) {
@@ -142,23 +136,23 @@
             }
         }
 
-        &SubTitle {
+        &SubTitle{
             font-weight: 500;
             @include mut.truncated(1);
             @media screen and (max-width: 1024px) {
-                text-align: center;
+               text-align: center;
                 color: c.$lighter-black-color;
             }
         }
 
-        &Text {
+        &Text{
             font-weight: 300;
             @media screen and (max-width: 1024px) {
                 display: none;
             }
         }
 
-        &Button {
+        &Button{
             font-weight: 500;
             @media screen and (max-width: 1024px) {
                 margin: 0 auto;

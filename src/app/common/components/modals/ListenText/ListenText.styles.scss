@@ -22,60 +22,46 @@
 .fadeInAnimation {
     animation: fadeIn .5s;
 }
-
 .fadeOutAnimation {
     animation: fadeOut .5s;
 }
 
 @include mut.fadeKeyframes("fadeIn", "fadeIn") {
-    from {
-        opacity: 0
-    }
-    to {
-        opacity: 100%
-    }
+    from { opacity: 0 }
+    to { opacity: 100% }
 }
 
 @include mut.fadeKeyframes("fadeOut", "fadeOut") {
-    from {
-        opacity: 100%
-    }
-    to {
-        opacity: 0
-    }
+    from { opacity: 100% }
+    to { opacity: 0 }
 }
 
 .closeModal {
     @include mut.positioned-as($position: absolute, $top: -20px, $right: -24px);
     cursor: pointer;
 }
-
 @media screen and (max-width: 1200px) {
-    .modal {
+    .modal{
         @include mut.sized(90%, 46px);
 
-        .audioPlayer {
-            @include mut.sizedImportant(100%, 30px);
-            @include mut.rem-padded(0px, 25px, 0, 25px);
-
-            .progressBarWrapper {
-                width: 100%;
-            }
-
-            .progressBar {
-                width: 100%;
-            }
-
-            .buttonContainer {
-                @include mut.flex-centered();
-                margin-right: f.pxToRem(10px);
-            }
+      .audioPlayer {
+        @include mut.sizedImportant(100%, 30px);
+        @include mut.rem-padded(0px, 25px,0, 25px);
+        .progressBarWrapper{
+          width: 100%;
         }
+        .progressBar{
+          width: 100%;
+        }
+        .buttonContainer {
+            @include mut.flex-centered();
+            margin-right: f.pxToRem(10px);
+          }
+      }
     }
 
 }
-
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px){
 
     .buttonContainer {
         margin-right: f.pxToRem(15px);

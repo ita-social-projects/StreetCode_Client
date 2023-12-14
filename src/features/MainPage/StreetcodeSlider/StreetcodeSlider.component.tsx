@@ -95,10 +95,7 @@ const StreetcodeSlider = () => {
     return (
         <div>
             <div className="streetcodeMainPageWrapper">
-                <div
-                    id="streetcodeSliderContentBlock"
-                    className="streetcodeSliderComponent"
-                >
+                <div id="streetcodeSliderContentBlock" className="streetcodeSliderComponent">
                     <div className="streetcodeSliderContainer">
                         <div className="blockCenter">
                             <div className="streetcodeSliderContent">
@@ -107,10 +104,7 @@ const StreetcodeSlider = () => {
                                         ? (
                                             <SlickSlider {...props}>
                                                 {streetcodes.map((item, index) => (
-                                                    <div
-                                                        key={item.id}
-                                                        className="slider-item"
-                                                    >
+                                                    <div key={item.id} className="slider-item">
                                                         <StreetcodeSliderItem
                                                             streetcode={item}
                                                             image={images[index]}

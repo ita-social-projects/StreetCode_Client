@@ -43,7 +43,7 @@
         background-color: c.$pure-white-color;
 
 
-        @media (min-width: 768px) and (max-width: 1024px) {
+        @media (min-width: 768px) and (max-width: 1024px){
             top: 280px;
             width: 96vw;
         }
@@ -75,7 +75,7 @@
             @include mut.full-rounded(30px);
 
             object-fit: cover;
-            @media (max-width: 1024px) {
+            @media (max-width: 1024px){
                 margin-top: 0;
                 height: 100%;
             }
@@ -91,7 +91,7 @@
         @include mut.flexed(column, start, space-between, nowrap);
         @include mut.rem-padded($top: 15px, $right: 30px, $bottom: 25px, $left: 30px);
 
-        @media (min-width: 768px) and (max-width: 1024px) {
+        @media (min-width: 768px) and (max-width: 1024px){
             @include mut.rem-padded($top: 15px, $right: 40px, $bottom: 10px, $left: 20px);
             height: 190px;
             width: 96vw;
@@ -103,7 +103,7 @@
             width: auto;
         }
 
-        .subContainer {
+        .subContainer{
             max-width: 100%;
             height: 100%;
 
@@ -111,15 +111,15 @@
                     $title-max-lines: 1,
                     $text-max-lines: 4);
 
-            .cardTextContainer {
+            .cardTextContainer{
                 padding: 0;
                 font-size: f.pxToRem(15px);
 
-                &TopPart {
+                &TopPart{
                     gap: f.pxToRem(10px);
                 }
 
-                &Title {
+                &Title{
                     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
                     line-height: f.pxToRem(47.5px);
 
@@ -133,11 +133,11 @@
                     }
                 }
 
-                &SubTitle {
+                &SubTitle{
                     color: c.$darkish-gray-color;
                 }
 
-                &Text {
+                &Text{
                     font-weight: 300;
 
                     @media (min-width: 360px) and (max-width: 767px) {
@@ -145,7 +145,7 @@
                     }
                 }
 
-                &Button {
+                &Button{
                     font-weight: 500;
                     text-decoration: none;
                 }

@@ -141,7 +141,7 @@ const MainBlockAdmin = React.memo(({
     };
 
     dayjs.locale('uk');
-    const dayJsUa = require("dayjs/locale/uk") // eslint-disable-line
+    const dayJsUa = require("dayjs/locale/uk"); // eslint-disable-line
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
@@ -245,11 +245,7 @@ const MainBlockAdmin = React.memo(({
                 </Space.Compact>
             )
                 : ('')}
-            <Form.Item
-                name="alias"
-                label="Короткий опис (для зв'язків історії)"
-                className="maincard-item"
-            >
+            <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
                 <Input
                     maxLength={33}
                     showCount
@@ -333,10 +329,7 @@ const MainBlockAdmin = React.memo(({
                         )}
                     >
                         <div className="tags-block-tagitems">
-                            <DragableTags
-                                setTags={setSelectedTags}
-                                tags={selectedTags}
-                            />
+                            <DragableTags setTags={setSelectedTags} tags={selectedTags} />
                             <Select
                                 className="tags-select-input"
                                 mode="tags"
@@ -354,23 +347,13 @@ const MainBlockAdmin = React.memo(({
                                 filterSort={(optionA, optionB) => (optionA?.value ?? '').toString().toLowerCase()
                                     .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
                             >
-                                {tags.map((t) => (
-                                    <Select.Option
-                                        key={`${t.id}`}
-                                        value={t.title}
-                                    >
-                                        {t.title}
-                                    </Select.Option>
-                                ))}
+                                {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
                             </Select>
                         </div>
                     </Form.Item>
                     {tagInput && (
                         <div className="tagInput-counter">
-                            {tagInput.length}
-                            {' '}
-/
-                            {maxTagLength}
+                            {tagInput.length} / {maxTagLength}
                         </div>
                     )}
                 </div>
@@ -415,10 +398,7 @@ const MainBlockAdmin = React.memo(({
                     />
                 </Form.Item>
             </div>
-            <FileInputsPart
-                form={form}
-                onChange={handleInputChange}
-            />
+            <FileInputsPart form={form} onChange={handleInputChange} />
         </div>
     );
 });

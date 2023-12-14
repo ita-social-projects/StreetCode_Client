@@ -7,12 +7,7 @@ const Title = () => (
             <div className="titleBig">Політика конфіденційності</div>
             <div className="subTitle">
                 та захисту персональних даних платформи&nbsp;
-                <a
-                    className="link"
-                    href="https://www.streetcode.com.ua"
-                >
-www.streetcode.com.ua
-                </a>
+                <a className="link" href="https://www.streetcode.com.ua">www.streetcode.com.ua</a>
             </div>
         </div>
         <div className="disclaimer">

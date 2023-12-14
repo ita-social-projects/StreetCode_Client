@@ -7,61 +7,61 @@
 .progressBarContainer,
 .progressBarContainer svg,
 .progressBarPopupContainer {
-    @include vnd.vendored(transition, 'all .6s ease-out');
+  @include vnd.vendored(transition, 'all .6s ease-out');
 }
 
 .progressBarContainer {
-    @include mut.sized(74px, 43px);
-    position: fixed;
-    bottom: 0;
-    left: calc((100vw - 1200px) / 4 - 37px);
+  @include mut.sized(74px, 43px);
+  position: fixed;
+  bottom: 0;
+  left: calc((100vw - 1200px) / 4 - 37px);
 
-    z-index: 4;
+  z-index: 4;
+  @include mut.flex-centered();
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  background-color: c.$accented-gray-color;
+  box-shadow: 3px 2px 5px 0 #43434340;
+
+  &:hover {
+    background-color: c.$lighter-gray-color;
+    cursor: pointer;
+  }
+
+  .progressBarPopupContainer {
+    position: absolute;
+    @include mut.sized(93px);
+
     @include mut.flex-centered();
+    @include mut.full-rounded(20px, $overflow: visible);
+    @include mut.rem-padded($top: 30px, $bottom: 30px);
 
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    background-color: c.$pure-white-color;
+    box-shadow: 0 2px 15px 0 #B0B0B040;
 
-    background-color: c.$accented-gray-color;
-    box-shadow: 3px 2px 5px 0 #43434340;
+    @include vnd.vendored(transform, 'translateY(300px)');
 
-    &:hover {
-        background-color: c.$lighter-gray-color;
-        cursor: pointer;
+    &.visible {
+      @include vnd.vendored(transform, 'translateY(calc(-50vh + 21.5px))');
     }
+  }
 
-    .progressBarPopupContainer {
-        position: absolute;
-        @include mut.sized(93px);
+  .progressBarPopupContent {
+    @include mut.flex-centered($direction: column, $gap: 31px);
+  }
 
-        @include mut.flex-centered();
-        @include mut.full-rounded(20px, $overflow: visible);
-        @include mut.rem-padded($top: 30px, $bottom: 30px);
+  @media screen and (max-width: 1448px) {
+    left: 59px;
+  }
 
-        background-color: c.$pure-white-color;
-        box-shadow: 0 2px 15px 0 #B0B0B040;
-
-        @include vnd.vendored(transform, 'translateY(300px)');
-
-        &.visible {
-            @include vnd.vendored(transform, 'translateY(calc(-50vh + 21.5px))');
-        }
-    }
-
-    .progressBarPopupContent {
-        @include mut.flex-centered($direction: column, $gap: 31px);
-    }
-
-    @media screen and (max-width: 1448px) {
-        left: 59px;
-    }
-
-    @media screen and (max-width: 1024px) {
-        display: none;
-    }
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 }
 
 .ant-popover.progressBarSectionPopover p {
-    @include mut.with-font(ft.$closer-text-font, $font-size: 11px, $font-weight: 500);
-    contain: content;
+  @include mut.with-font(ft.$closer-text-font, $font-size: 11px, $font-weight: 500);
+  contain: content;
 }

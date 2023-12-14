@@ -9,57 +9,55 @@
 
 .TextContainer {
     @include mut.sized(1200px, auto);
-    @include mut.with-font($font-weight: 300, $font-size: 20px);
+    @include mut.with-font($font-weight: 300, $font-size:20px);
     text-align: justify;
     justify-content: flex-end;
     display: flex;
     flex-wrap: wrap;
 }
-
 .textComponent {
     @include mut.flex-centered();
 }
-
-.videoComponent {
+.videoComponent{
     margin-right: f.pxToRem(5px);
     margin-left: f.pxToRem(5px);
     overflow: hidden;
 }
 
-@media screen and (max-width: 1024px) {
-    .videoComponent {
+@media screen and (max-width: 1024px){
+    .videoComponent{
         margin-bottom: f.pxToRem(20px);
     }
-    .TextContainer {
+    .TextContainer{
         padding: 0rem 0.625rem 0rem 0.625rem !important;
     }
 
     .textComponentContainer {
-        .blockHeadingContainer {
+        .blockHeadingContainer{
             position: relative;
-
-            .bigTextComponent {
+            
+            .bigTextComponent{
                 position: absolute;
                 max-width: 360px;
 
-                left: f.pxToRem(-25px);
+                left:  f.pxToRem(-25px);
                 top: 1.1875rem;
             }
-        }
+        }  
     }
 }
 
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 780px){
     .textComponentContainer {
-        .blockHeadingContainer {
-            .bigTextComponent {
+        .blockHeadingContainer{
+            .bigTextComponent{
                 position: absolute;
-                left: f.pxToRem(-35px);
+                left:  f.pxToRem(-35px);
             }
-        }
+        }  
     }
-    .videoComponent {
+    .videoComponent{
         margin-bottom: f.pxToRem(0);
     }
 }

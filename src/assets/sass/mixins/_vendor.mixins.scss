@@ -48,38 +48,38 @@ $vendor-values: (
 /// @param {mixed} $value String/list of value(s).
 @mixin vendored($property, $value) {
 
-    // Determine if property should expand.
-    $expandProperty: index($vendor-properties, $property);
+  // Determine if property should expand.
+  $expandProperty: index($vendor-properties, $property);
 
-    // Determine if value should expand (and if so, add '-prefix-' placeholder).
-    $expandValue: false;
+  // Determine if value should expand (and if so, add '-prefix-' placeholder).
+  $expandValue: false;
 
-    @each $x in $value {
-        @each $y in $vendor-values {
-            @if $y == str-slice($x, 1, str-length($y)) {
+  @each $x in $value {
+    @each $y in $vendor-values {
+      @if $y == str-slice($x, 1, str-length($y)) {
 
-                $value: set-nth($value, index($value, $x), '-prefix-' + $x);
-                $expandValue: true;
-            }
-        }
+        $value: set-nth($value, index($value, $x), '-prefix-' + $x);
+        $expandValue: true;
+      }
     }
+  }
 
-    // Expand property?
-    @if $expandProperty {
-        @each $vendor in $vendor-prefixes {
-            #{$vendor}#{$property}: #{f.str-replace-all($value, '-prefix-', $vendor)};
-        }
+  // Expand property?
+  @if $expandProperty {
+    @each $vendor in $vendor-prefixes {
+      #{$vendor}#{$property}: #{f.str-replace-all($value, '-prefix-', $vendor)};
     }
+  }
 
-        // Expand just the value?
-    @else if $expandValue {
-        @each $vendor in $vendor-prefixes {
-            #{$property}: #{f.str-replace-all($value, '-prefix-', $vendor)};
-        }
+    // Expand just the value?
+  @else if $expandValue {
+    @each $vendor in $vendor-prefixes {
+      #{$property}: #{f.str-replace-all($value, '-prefix-', $vendor)};
     }
+  }
 
-        // Neither? Treat them as a normal declaration.
-    @else {
-        #{$property}: #{$value};
-    }
+    // Neither? Treat them as a normal declaration.
+  @else {
+    #{$property}: #{$value};
+  }
 }

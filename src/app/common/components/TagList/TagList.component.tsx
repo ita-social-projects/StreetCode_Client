@@ -1,11 +1,10 @@
 import './TagList.styles.scss';
 
-import { useModalContext } from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
 
 import Tag from '@/models/additional-content/tag.model';
-
 import useWindowSize from '../../hooks/stateful/useWindowSize.hook';
 
 interface Props {
@@ -25,7 +24,7 @@ const TagList = ({ tags, setActiveTagId, setActiveTagBlock }: Props) => {
                     className="tagItem"
                     onClick={() => {
                         {
-                            if (windowSize.width > 1024) {
+                            if(windowSize.width > 1024){
                                 setActiveTagId(tag.id);
                                 setModal('tagsList');
                                 setActiveTagBlock(index);

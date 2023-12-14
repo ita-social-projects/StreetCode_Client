@@ -25,8 +25,7 @@ export default class SourcesStore {
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap(await sourcesApi.getCategoriesByStreetcodeId(streetcodeId));
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) { }
     };
 
     public fetchSrcCategoriesAll = async () => {
@@ -41,8 +40,7 @@ export default class SourcesStore {
         try {
             await sourcesApi.create(srcCategory);
             this.setCategoryItem(srcCategory);
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) { }
     };
 
     public updateSourceCategory = async (srcCategory: SourceCategory) => {
@@ -54,8 +52,7 @@ export default class SourcesStore {
                 };
                 this.setCategoryItem(updatedSourceCategory as SourceCategory);
             });
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) { }
     };
 
     public deleteSourceCategory = async (SourceCategoryId: number) => {
@@ -64,7 +61,6 @@ export default class SourcesStore {
             runInAction(() => {
                 this.srcCategoriesMap.delete(SourceCategoryId);
             });
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) { }
     };
 }

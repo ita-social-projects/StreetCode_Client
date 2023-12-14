@@ -98,9 +98,9 @@ const ProgressBar: FC<Props> = ({
     const onActiveBlockSelection = (activeIdx: number) => {
         const firstBlockHeight = blocks[0]?.height ?? 0;
         const lastBlockHeight = blocks[blocks.length - 1]?.height ?? 1;
-
+    
         scrollPercentage.current = getYScrollPercentage(scrollPosition, firstBlockHeight, lastBlockHeight);
-    };
+    };    
 
     const onProgressBarCallerClick = () => {
         toggle();
@@ -112,16 +112,10 @@ const ProgressBar: FC<Props> = ({
 
     return (
         <>
-            <NavigableBlockWrapper
-                setBlocks={setBlocks}
-                topDistance={topDistance}
-            >
+            <NavigableBlockWrapper setBlocks={setBlocks} topDistance={topDistance}>
                 {children}
             </NavigableBlockWrapper>
-            <div
-                className="progressBarContainer"
-                onClick={onProgressBarCallerClick}
-            >
+            <div className="progressBarContainer" onClick={onProgressBarCallerClick}>
                 <div
                     {...cursorCaptureHandlers}
                     style={(!isOnTimeout) ? { pointerEvents: 'none' } : undefined}

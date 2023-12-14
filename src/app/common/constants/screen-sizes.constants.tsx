@@ -4,4 +4,4 @@ export const SCREEN_SIZES = {
     smallTablet: 700,
     phone: 600,
     smallPhone: 400,
-};
+}

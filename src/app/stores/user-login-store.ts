@@ -12,17 +12,17 @@ export default class UserLoginStore {
 
     public userLoginResponce?: UserLoginResponce;
 
-    private callback?: () => void;
+    private callback?:()=>void;
 
     public constructor() {
         makeAutoObservable(this);
     }
 
-    private static getExpiredDate(): number {
+    private static getExpiredDate():number {
         return Number(localStorage.getItem(UserLoginStore.dateStorageName)!);
     }
 
-    private static setExpiredDate(date: string): void {
+    private static setExpiredDate(date: string):void {
         localStorage.setItem(UserLoginStore.dateStorageName, date);
     }
 
@@ -30,7 +30,7 @@ export default class UserLoginStore {
         return localStorage.getItem(UserLoginStore.tokenStorageName);
     }
 
-    public static setToken(newToken: string) {
+    public static setToken(newToken:string) {
         return localStorage.setItem(UserLoginStore.tokenStorageName, newToken);
     }
 
@@ -38,11 +38,11 @@ export default class UserLoginStore {
         localStorage.removeItem(UserLoginStore.tokenStorageName);
     }
 
-    public setCallback(func: () => void) {
+    public setCallback(func:()=>void) {
         this.callback = func;
     }
 
-    public static get isLoggedIn(): boolean {
+    public static get isLoggedIn():boolean {
         return UserLoginStore.getExpiredDate() > new Date(Date.now()).getTime();
     }
 
@@ -58,7 +58,7 @@ export default class UserLoginStore {
         this.clearUserData();
     }
 
-    public setUserLoginResponce(user: UserLoginResponce, func: () => void) {
+    public setUserLoginResponce(user:UserLoginResponce, func:()=>void) {
         try {
             const timeNumber = (new Date(user.expireAt)).getTime();
             UserLoginStore.setExpiredDate(timeNumber.toString());
@@ -78,7 +78,7 @@ export default class UserLoginStore {
         }
     }
 
-    public refreshToken = (): Promise<RefreshTokenResponce> => (
+    public refreshToken = ():Promise<RefreshTokenResponce> => (
         UserApi.refreshToken({ token: UserLoginStore.getToken() ?? '' })
             .then((refreshToken) => {
                 const expireForSeconds = (new Date(refreshToken.expireAt)).getTime() - new Date().getTime();

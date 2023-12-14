@@ -12,7 +12,11 @@ import scrollWithOffset from '@utils/window.utility';
 import { Button, Modal } from 'antd';
 
 import JobApi from '@/app/api/job/Job.api';
-import { becomePartnerEvent, donateEvent, joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+import {
+    becomePartnerEvent,
+    donateEvent,
+    joinToStreetcodeClickEvent,
+} from '@/app/common/utils/googleAnalytics.unility';
 
 const HeaderLoginModal = () => {
     const [hasVacancies, setHasVacancies] = useState(false);

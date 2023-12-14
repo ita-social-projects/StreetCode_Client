@@ -4,16 +4,16 @@
 @use "@sass/variables/_variables.fonts.scss" as ft;
 
 .tickerContainer {
-    display: flex;
-    justify-content: center;
-    @include mut.colored(c.$pure-white-color, c.$selected-arrow-color);
-    @include mut.sizedImportant(200%, 44px);
-    z-index: -1;
+  display: flex;
+  justify-content: center;
+  @include mut.colored(c.$pure-white-color, c.$selected-arrow-color);
+  @include mut.sizedImportant(200%, 44px);
+  z-index: -1;
 }
 
 .tickerItem {
-    @include mut.flex-centered();
-    @include mut.with-font(ft.$closer-text-font, 400, 20px);
-    padding-right: f.pxToRem(10px);
-    white-space: nowrap;
+  @include mut.flex-centered();
+  @include mut.with-font(ft.$closer-text-font, 400, 20px);
+  padding-right: f.pxToRem(10px);
+  white-space: nowrap;
 }

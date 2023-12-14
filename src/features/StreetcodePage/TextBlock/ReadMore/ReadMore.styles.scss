@@ -10,8 +10,7 @@
     .readMore {
         color: c.$dark-red-color;
         cursor: pointer;
-
-        &:hover {
+        &:hover{
             text-decoration: underline;
         }
     }
@@ -35,10 +34,10 @@
 @media screen and (max-width: 1024px) {
     .text {
         font-size: f.pxToRem(16px);
-        @include mut.rem-margined($top: -10px, $right: 10px, $left: 10px);
+        @include mut.rem-margined($top: -10px, $right: 10px, $left: 10px  );
         line-height: f.pxToRem(21px);
     }
-    .readMore {
+    .readMore{
         font-size: f.pxToRem(16px);
         line-height: f.pxToRem(18.75px);
         display: flex;
@@ -50,14 +49,14 @@
     }
 }
 
-@media screen and (max-width: 480px) {
-    .readMore {
+@media screen and (max-width: 480px){
+    .readMore{
         color: c.$dark-red-color;
         display: flex;
         justify-content: center;
     }
 
-    .readLessContainer {
+    .readLessContainer{
         position: sticky;
         bottom: 40px;
     }
@@ -72,7 +71,7 @@
         border-style: solid;
         border-width: 2px;
         width: 252px;
-        color: #E04031 !important;
+        color: #E04031!important;
         margin: auto;
         font-size: 14px;
         font-weight: 500;

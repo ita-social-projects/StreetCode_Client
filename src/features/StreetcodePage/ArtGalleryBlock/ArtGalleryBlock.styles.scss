@@ -4,7 +4,7 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.artGalleryContainer .blockHeadingWrapper {
+.artGalleryContainer .blockHeadingWrapper{
     margin-bottom: pxToRem(10px);
 }
 
@@ -28,24 +28,22 @@
         width: pxToRem(1230px);
     }
 }
-
-@media screen and (max-width: 1450px) {
+@media screen and (max-width:1450px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-            .artGalleryContentContainer {
-                .artGallerySliderContainer {
+            .artGalleryContentContainer{
+                .artGallerySliderContainer{
                     width: pxToRem(1045.5px);
                 }
             }
         }
     }
 }
-
-@media screen and (max-width: 1200px) { //-32.5%
+@media screen and (max-width:1200px) {//-32.5%
     .artGalleryWrapper {
         .artGalleryContainer {
-            .artGalleryContentContainer {
-                .artGallerySliderContainer {
+            .artGalleryContentContainer{
+                .artGallerySliderContainer{
                     width: pxToRem(830px);
                 }
             }
@@ -53,15 +51,14 @@
     }
 }
 
-@media screen and (max-width: 1025px) {
+@media screen and (max-width:1025px) {
     .artGalleryWrapper {
         .artGalleryContainer {
             .slick-list {
                 margin-left: pxToRem(-10px);
             }
-
-            .artGalleryContentContainer {
-                .artGallerySliderContainer {
+            .artGalleryContentContainer{
+                .artGallerySliderContainer{
                     @include mut.sized(1025px, 100%);
                 }
             }

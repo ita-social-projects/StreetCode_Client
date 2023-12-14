@@ -6,7 +6,7 @@ import JobApi from '@/app/api/job/Job.api';
 
 import Vacancy from './Vacancy/Vacancy.component';
 
-const Vacancies = ({ setHasVacancies }: { setHasVacancies: (hasVacancies: boolean) => void }) => {
+const Vacancies = ({ setHasVacancies } : { setHasVacancies: (hasVacancies: boolean) => void }) => {
     const [jobs, setJobs] = useState<Job[]>([]);
 
     useEffect(() => {
@@ -26,10 +26,7 @@ const Vacancies = ({ setHasVacancies }: { setHasVacancies: (hasVacancies: boolea
     return (
         jobs.length
             ? (
-                <div
-                    id="vacancies"
-                    className="aboutUsBlockContainer"
-                >
+                <div id="vacancies" className="aboutUsBlockContainer">
                     <h1>
                         <div />
                         <span>Вакансії</span>

@@ -6,11 +6,7 @@ import Heading from '../Heading/Heading.component';
 
 const PartnersBlockComponent = () => (
     <div className="partnersBlockMainContainer">
-        <Heading
-            blockName="Наші партнери"
-            buttonName={undefined}
-            setActionOnClick={undefined}
-        />
+        <Heading blockName="Наші партнери" buttonName={undefined} setActionOnClick={undefined} />
         <PartnersBlock onlyKeyPartners />
     </div>
 );

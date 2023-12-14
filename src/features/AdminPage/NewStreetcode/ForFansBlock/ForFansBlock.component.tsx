@@ -21,8 +21,7 @@ const ForFansBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet }) 
 
     useEffect(() => {
         if (!isModalOpen) {
-            SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => {
-            });
+            SourcesApi.getAllNames().then((categ) => setCategoriesSelect(categ)).catch((e) => {});
         }
     }, [isModalOpen]);
 

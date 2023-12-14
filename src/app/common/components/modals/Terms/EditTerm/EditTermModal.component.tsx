@@ -17,12 +17,12 @@ interface Props {
     term: Partial<Term> | undefined;
 }
 
-const EditTermModal = ({ handleEdit, term }: Props) => {
+const EditTermModal = ({ handleEdit, term } : Props) => {
     const { modalStore: { setModal, modalsState: { editTerm } } } = useModalContext();
     const [form] = Form.useForm();
 
     const onSuccessfulSubmit = (formValues: any) => {
-        const newTerm: Partial<Term> = {
+        const newTerm : Partial<Term> = {
             id: term!.id,
             title: formValues.title,
             description: formValues.description,
@@ -63,10 +63,7 @@ const EditTermModal = ({ handleEdit, term }: Props) => {
                     label="Назва"
                     rules={[{ required: true, message: 'Введіть назву' }]}
                 >
-                    <Input
-                        showCount
-                        maxLength={50}
-                    />
+                    <Input showCount maxLength={50} />
                 </FormItem>
                 <FormItem
                     name="description"
@@ -79,10 +76,7 @@ const EditTermModal = ({ handleEdit, term }: Props) => {
                         maxLength={500}
                     />
                 </FormItem>
-                <Button
-                    className="streetcode-custom-button"
-                    onClick={() => form.submit()}
-                >
+                <Button className="streetcode-custom-button" onClick={() => form.submit()}>
                     Зберегти
                 </Button>
             </Form>

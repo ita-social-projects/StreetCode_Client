@@ -3,12 +3,13 @@ import './PartnersBlock.styles.scss';
 import React, { useState } from 'react';
 import PartnersItem from '@features/AdditionalPages/PartnersPage/PartnersItem/PartnersItem.component';
 
+import ImagesApi from '@/app/api/media/images.api';
 import PartnersApi from '@/app/api/partners/partners.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import Partner from '@/models/partners/partners.model';
 
 interface Props {
-    onlyKeyPartners: boolean;
+    onlyKeyPartners : boolean;
 }
 
 const PartnersBlock = ({ onlyKeyPartners }: Props) => {
@@ -32,10 +33,7 @@ const PartnersBlock = ({ onlyKeyPartners }: Props) => {
     );
 
     const createPartnersItem = (partners: Partner[]) => partners.map((partner) => (
-        <PartnersItem
-            key={partner.id}
-            partner={partner}
-        />
+        <PartnersItem key={partner.id} partner={partner} />
 
     ));
 

@@ -14,18 +14,16 @@ interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     onChange: (field: string, value: any) => void;
-    text: string | undefined;
+    text : string | undefined;
 }
 
-const AdditionalTextBlockAdminForm = ({
-    character_limit, inputInfo, setInputInfo, onChange, text,
-}: Props) => {
+const AdditionalTextBlockAdminForm = ({ character_limit, inputInfo, setInputInfo, onChange, text }: Props) => {
     const handleEditorChange = (content: string, editor: any) => {
         setInputInfo({ ...inputInfo, additionalText: content });
         onChange('additionalText', content);
     };
     const [selected, setSelected] = useState('');
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
+    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight','End','Home']);
     const maxLength = character_limit || 200;
 
     return (

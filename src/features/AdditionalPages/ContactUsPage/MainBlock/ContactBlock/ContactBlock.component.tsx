@@ -15,17 +15,10 @@ import SOCIAL_MEDIA from '@/app/common/constants/social.constants';
 
 const ContactBlock = () => (
     <div className="contactBlock">
-        <img
-            className="contactLogo"
-            src={Logo}
-            alt=""
-        />
+        <img className="contactLogo" src={Logo} alt="" />
         <div className="contactCover">
             <div className="emailBlock">
-                <a
-                    href={EMAIL_INFO.WRITE_EMAIL_TO_US}
-                    className="emailLink"
-                >
+                <a href={EMAIL_INFO.WRITE_EMAIL_TO_US} className="emailLink">
                     <div className="icon">
                         <Email />
                     </div>
@@ -36,56 +29,32 @@ const ContactBlock = () => (
             </div>
 
             <div className="socials">
-                <a
-                    href={SOCIAL_MEDIA.FACEBOOK}
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <a href={SOCIAL_MEDIA.FACEBOOK} target="_blank" rel="noreferrer">
                     <div className="icon">
                         <Facebook />
                     </div>
                 </a>
-                <a
-                    href={SOCIAL_MEDIA.INSTAGRAM}
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <a href={SOCIAL_MEDIA.INSTAGRAM} target="_blank" rel="noreferrer">
                     <div className="icon">
                         <Instagram />
                     </div>
                 </a>
-                <a
-                    href={SOCIAL_MEDIA.TWITTER}
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <a href={SOCIAL_MEDIA.TWITTER} target="_blank" rel="noreferrer">
                     <div className="icon">
                         <Twitter />
                     </div>
                 </a>
-                <a
-                    href={SOCIAL_MEDIA.TIKTOK}
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <a href={SOCIAL_MEDIA.TIKTOK} target="_blank" rel="noreferrer">
                     <div className="icon">
                         <TikTok />
                     </div>
                 </a>
-                <a
-                    href={SOCIAL_MEDIA.TELEGRAM}
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <a href={SOCIAL_MEDIA.TELEGRAM} target="_blank" rel="noreferrer">
                     <div className="icon">
                         <Telegram />
                     </div>
                 </a>
-                <a
-                    href={SOCIAL_MEDIA.YOUTUBE}
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <a href={SOCIAL_MEDIA.YOUTUBE} target="_blank" rel="noreferrer">
                     <div className="icon">
                         <YouTube />
                     </div>

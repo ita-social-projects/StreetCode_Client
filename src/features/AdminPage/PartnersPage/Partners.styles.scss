@@ -3,48 +3,40 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.partners-page {
+.partners-page{
     padding-top: f.pxToRem(100px);
     display: flex;
     gap: f.pxToRem(10px);
-
-    .partners-page-add-button {
+    .partners-page-add-button{
         min-height: f.pxToRem(50px);
         min-width: f.pxToRem(120px);
     }
-
-    .container-justify-end {
+    .container-justify-end{
         display: flex;
         justify-content: end;
     }
-
-    .partners-page-container {
+    .partners-page-container{
         @include mut.sized(80%);
-
-        .partners-table-logo {
+        
+        .partners-table-logo{
             height: f.pxToRem(40px);
             margin: 0;
             padding: 0
         }
-
-        .partner-page-actions {
+        .partner-page-actions{
             display: flex;
             gap: f.pxToRem(30px);
         }
-
-        .partner-links {
-            @include mut.flexed(row, start, space-between, wrap, 4px);
+        .partner-links{
+            @include mut.flexed(row, start,space-between, wrap, 4px);
         }
-
-        .partners-table {
+        .partners-table{
             margin-top: f.pxToRem(20px);
         }
-
-        .partner-table-item-name {
-            @include mut.flexed(row, start, flex-start, wrap, 4px);
+        .partner-table-item-name{
+            @include mut.flexed(row, start,flex-start, wrap, 4px);
         }
-
-        .site-link {
+        .site-link{
             word-break: break-all
         }
     }

@@ -1,24 +1,21 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/_utils.functions.scss" as f;
 
-.react-player {
-    max-width: f.pxToRem(1200px);
-    max-height: f.pxToRem(674px);
-    @include mut.full-rounded(50px);
+.react-player{
+  max-width: f.pxToRem(1200px);
+  max-height: f.pxToRem(674px);
+  @include mut.full-rounded(50px);
 }
-
-.player-wrapper {
-    @include mut.flex-centered();
+.player-wrapper{
+  @include mut.flex-centered();
 }
-
-@media screen and (max-width: 1024px) {
-    .react-player {
-        @include mut.full-rounded(44px);
-    }
+@media screen and (max-width: 1024px){
+  .react-player{
+    @include mut.full-rounded(44px);
+  }
 }
-
-@media screen and (max-width: 768px) {
-    .react-player {
-        @include mut.full-rounded(20px);
-    }
+@media screen and (max-width: 768px){
+  .react-player{
+    @include mut.full-rounded(20px);
+  }
 }

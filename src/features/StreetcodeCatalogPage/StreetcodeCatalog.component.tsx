@@ -2,6 +2,7 @@ import './StreetcodeCatalog.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
+import Footer from '@layout/footer/Footer.component';
 import useMobx from '@stores/root-store';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';

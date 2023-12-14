@@ -17,13 +17,12 @@ $loadImg: '@assets/images/catalog/loading.webp';
 .streetcodeHeadingContainer {
     display: flex;
     justify-content: space-between;
-
     .headingFlexItem {
         display: inline-block;
     }
 }
 
-.catalogPage {
+.catalogPage{
     width: 100%;
     background: url($bgImg) no-repeat center / 100%;
     background-color: c.$accented-low-opasity-grayish-gray-color;
@@ -48,7 +47,7 @@ $loadImg: '@assets/images/catalog/loading.webp';
             align-items: center;
             color: c.$milky-white-color;
         }
-
+    
         .steetcodeCatalogContainer {
             display: grid;
             grid-template-columns: repeat(auto-fit, 278px);
@@ -59,12 +58,12 @@ $loadImg: '@assets/images/catalog/loading.webp';
             justify-items: center;
         }
     }
-
+    
     .loadingWrapper {
         background-color: c.$accented-grayish-gray-color;
         width: 100%;
-        @include mut.flex-centered();
-
+        @include mut.flex-centered();        
+    
         #loadingGif {
             @include mut.bg-image($loadImg, contain, no-repeat);
             @include mut.sized(60px, 60px);
@@ -74,7 +73,7 @@ $loadImg: '@assets/images/catalog/loading.webp';
 }
 
 @media screen and (max-width: 1024px) {
-    .catalogPage {
+    .catalogPage{
         .streetcodeCatalogWrapper {
             padding: pxToRem(80px) pxToRem(13px) 0;
             margin-top: 0;
@@ -89,7 +88,7 @@ $loadImg: '@assets/images/catalog/loading.webp';
                 font-size: 54px;
                 line-height: pxToRem(71.28px);
             }
-
+    
             .steetcodeCatalogContainer {
                 padding-top: pxToRem(20px);
                 row-gap: pxToRem(39px);
@@ -102,7 +101,7 @@ $loadImg: '@assets/images/catalog/loading.webp';
 }
 
 @media screen and (max-width: 768px) {
-    .catalogPage {
+    .catalogPage{
         .streetcodeCatalogWrapper {
             .steetcodeCatalogContainer {
                 column-gap: pxToRem(10px);
@@ -113,7 +112,7 @@ $loadImg: '@assets/images/catalog/loading.webp';
 }
 
 @media screen and (max-width: 480px) {
-    .catalogPage {
+    .catalogPage{
         .streetcodeCatalogWrapper {
             padding: pxToRem(80px) pxToRem(10px) 0;
         }

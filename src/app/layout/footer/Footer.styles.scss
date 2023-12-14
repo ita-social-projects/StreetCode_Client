@@ -4,103 +4,99 @@
 @use "@assets/sass/_utils.functions.scss" as *;
 
 .footerContainer {
-    @include mut.sized(100%, 206px);
-    @include mut.flexed($justify-content: center);
-    background-color: c.$dark-red-color;
+  @include mut.sized(100%, 206px);
+  @include mut.flexed($justify-content: center);
+  background-color: c.$dark-red-color;
 
-    @media (max-width: 1024px) {
-        display: none;
-    }
+  @media (max-width: 1024px){
+    display: none;
+  }
 }
 
 .footerCopyright {
-    @include mut.sized($height: 38px);
-    @include mut.flex-centered();
+  @include mut.sized($height: 38px);
+  @include mut.flex-centered();
 
-    @include mut.colored(c.$copyright-section-color, c.$pure-white-color);
-    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 400, $font-size: 13px);
-    flex-wrap: wrap;
+  @include mut.colored(c.$copyright-section-color, c.$pure-white-color);
+  @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 400, $font-size: 13px);
+  flex-wrap: wrap;
+  text-align: center;
+  @media (max-width: 1024px) {
+    font-size: pxToRem(12px);
+    font-weight: 500;
     text-align: center;
-    @media (max-width: 1024px) {
-        font-size: pxToRem(12px);
-        font-weight: 500;
-        text-align: center;
-    }
-    @media screen and (max-width: 480px) {
-        height: pxToRem(72px);
-        line-height: pxToRem(16px);
-    }
+  }
+  @media screen and (max-width: 480px) {
+    height: pxToRem(72px);
+    line-height: pxToRem(16px);
+  }
 }
 
 .footerLogoContainer {
-    @include mut.sized($width: 26%, $height: 100%);
-    padding-top: pxToRem(45px);
+  @include mut.sized($width: 26%, $height: 100%);
+  padding-top: pxToRem(45px);
 
-    > * {
-        @include mut.sized(175px, 96px);
-        @include mut.flex-centered();
-        margin: 0 auto;
-    }
+  > * {
+    @include mut.sized(175px, 96px);
+    @include mut.flex-centered();
+    margin: 0 auto;
+  }
 }
 
 .usefulLinksColumnContainer {
-    @include mut.sized($width: 60%, $height: 100%);
-    display: flex;
-    @include mut.flexed($justify-content: space-between);
+  @include mut.sized($width: 60%, $height: 100%);
+  display: flex;
+  @include mut.flexed($justify-content: space-between);
+  > .usefulLinksColumn {
+    margin-top: pxToRem(29px);
+    margin-right: 10%;
 
-    > .usefulLinksColumn {
-        margin-top: pxToRem(29px);
-        margin-right: 10%;
+    color: c.$pure-white-color;
+    @include mut.with-font($font-weight: 300, $font-size: 15px);
 
-        color: c.$pure-white-color;
-        @include mut.with-font($font-weight: 300, $font-size: 15px);
+    > * {
+      margin-bottom: pxToRem(8px);
+      cursor: pointer;
 
-        > * {
-            margin-bottom: pxToRem(8px);
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        a {
-            color: c.$pure-white-color;
-        }
-
-        li {
-            .ant-typography.text-white {
-                color: white;
-                @include mut.with-font($font-weight: 300, $font-size: 15px);
-            }
-        }
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
-    .socialIconContainer {
-        @include mut.rem-margined($top: 29px);
-        color: c.$pure-white-color;
-        @include mut.with-font($font-weight: 300, $font-size: 15px);
-        @include mut.flexed($align-items: center);
-        @include mut.sized($height: 27px);
-
-        > * {
-            @include mut.rem-margined($right: 14.62px);
-        }
+    a{
+      color: c.$pure-white-color;
     }
+
+    li{
+      .ant-typography.text-white{
+        color: white;
+        @include mut.with-font($font-weight: 300, $font-size: 15px);
+      }
+    }
+  }
+
+  .socialIconContainer {
+    @include mut.rem-margined($top: 29px);
+    color: c.$pure-white-color;
+    @include mut.with-font($font-weight: 300, $font-size: 15px);
+    @include mut.flexed($align-items: center);
+    @include mut.sized($height: 27px);
+    > * {
+     @include mut.rem-margined($right: 14.62px);
+    }
+  }
 }
-
 @media screen and (max-width: 480px) {
-    .footerCopyright {
-        height: pxToRem(72px);
+  .footerCopyright{
+    height: pxToRem(72px);
 
-    }
+  }
 }
-
 @media screen and (max-width: 1285px) {
-    .usefulLinksColumn {
-        margin-right: 0;
-    }
-    .socialIconContainer {
-        margin-right: 0 !important;
-    }
+  .usefulLinksColumn{
+    margin-right: 0;
+  }
+  .socialIconContainer{
+    margin-right: 0 !important;
+  }
 }

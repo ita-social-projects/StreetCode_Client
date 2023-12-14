@@ -11,7 +11,8 @@ import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/Previe
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Checkbox, Form, Input, message, Modal, Popover, Select, Tooltip, UploadFile,
+    Button, Checkbox, Form, Input, message,
+    Modal, Popover, Select, Tooltip, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -23,15 +24,19 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
-import Partner, { LogoType, PartnerCreateUpdate, PartnerSourceLinkCreateUpdate } from '@/models/partners/partners.model';
+import Partner, {
+    LogoType,
+    PartnerCreateUpdate,
+    PartnerSourceLinkCreateUpdate,
+} from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
-const PartnerModal: React.FC<{
-    partnerItem?: Partner;
-    open: boolean;
-    isStreetcodeVisible?: boolean;
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    afterSubmit?: (partner: Partner) => void;
+const PartnerModal: React.FC< {
+  partnerItem?: Partner;
+  open: boolean;
+  isStreetcodeVisible?: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  afterSubmit?: (partner: Partner) => void;
 }> = observer(
     ({
         partnerItem,
@@ -55,8 +60,8 @@ const PartnerModal: React.FC<{
         const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
         const [fileList, setFileList] = useState<UploadFile[]>([]);
         const [partnerSourceLinks, setPartnersSourceLinks] = useState<
-            PartnerSourceLinkCreateUpdate[]
-        >([]);
+      PartnerSourceLinkCreateUpdate[]
+    >([]);
         const imageId = useRef<number>(0);
         const handlePreview = (file: UploadFile) => {
             setFilePreview(file);
@@ -227,8 +232,9 @@ const PartnerModal: React.FC<{
                 urlTitle: formValues.urlTitle?.trim() || null,
                 isVisibleEverywhere: formValues.isVisibleEverywhere ?? false,
             };
-            partnersStore.getPartnerArray.map((t) => t).forEach((t) => {
-                if (formValues.title == t.title || imageId.current == t.logoId) partnerItem = t;
+            partnersStore.getPartnerArray.map((t) => t).forEach(t => {
+                if (formValues.title == t.title || imageId.current == t.logoId)
+                    partnerItem = t;
             });
             if (partnerItem) {
                 partner.id = partnerItem.id;
@@ -248,8 +254,7 @@ const PartnerModal: React.FC<{
                                 partnersStore.setItem({ ...p, logo: img });
                             });
                         })
-                        .catch((e) => {
-                        }),
+                        .catch((e) => {}),
                 ]);
             } else {
                 Promise.all([
@@ -260,8 +265,7 @@ const PartnerModal: React.FC<{
                                 afterSubmit(p);
                             }
                         })
-                        .catch((e) => {
-                        }),
+                        .catch((e) => {}),
                 ]);
             }
         };
@@ -291,14 +295,8 @@ const PartnerModal: React.FC<{
                 className="modalContainer"
                 footer={null}
                 closeIcon={(
-                    <Popover
-                        content="Внесені зміни не будуть збережені!"
-                        trigger="hover"
-                    >
-                        <CancelBtn
-                            className="iconSize"
-                            onClick={closeAndCleanData}
-                        />
+                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                        <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                     </Popover>
                 )}
             >
@@ -312,7 +310,7 @@ const PartnerModal: React.FC<{
                             <h2>
                                 {partnerItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-                                партнера
+партнера
                             </h2>
                         </div>
                         <div className="checkbox-container">
@@ -340,10 +338,7 @@ const PartnerModal: React.FC<{
                             label="Назва: "
                             rules={[{ required: true, message: 'Введіть назву' }]}
                         >
-                            <Input
-                                maxLength={100}
-                                showCount
-                            />
+                            <Input maxLength={100} showCount />
                         </Form.Item>
 
                         <Form.Item
@@ -356,17 +351,10 @@ const PartnerModal: React.FC<{
                                 },
                             ]}
                         >
-                            <Input
-                                maxLength={200}
-                                showCount
-                                onChange={handleUrlChange}
-                            />
+                            <Input maxLength={200} showCount onChange={handleUrlChange} />
                         </Form.Item>
 
-                        <Form.Item
-                            name="urlTitle"
-                            label="Назва посилання:"
-                        >
+                        <Form.Item name="urlTitle" label="Назва посилання:">
                             <Input
                                 maxLength={100}
                                 showCount
@@ -376,18 +364,12 @@ const PartnerModal: React.FC<{
                         </Form.Item>
                         {urlTitleEnabled === '' && urlTitleValue && (
                             <p className="error-text">
-                                Введіть правильне посилання для збереження назви посилання.
+                Введіть правильне посилання для збереження назви посилання.
                             </p>
                         )}
 
-                        <Form.Item
-                            name="description"
-                            label="Опис: "
-                        >
-                            <TextArea
-                                showCount
-                                maxLength={450}
-                            />
+                        <Form.Item name="description" label="Опис: ">
+                            <TextArea showCount maxLength={450} />
                         </Form.Item>
 
                         <Form.Item
@@ -428,20 +410,14 @@ const PartnerModal: React.FC<{
                         />
 
                         {isStreetcodeVisible ? (
-                            <Form.Item
-                                name="partnersStreetcodes"
-                                label="Стріткоди: "
-                            >
+                            <Form.Item name="partnersStreetcodes" label="Стріткоди: ">
                                 <Select
                                     mode="multiple"
                                     onSelect={onStreetcodeSelect}
                                     onDeselect={onStreetcodeDeselect}
                                 >
                                     {streetcodeShortStore.streetcodes.map((s) => (
-                                        <Select.Option
-                                            key={`${s.id}`}
-                                            value={s.title}
-                                        >
+                                        <Select.Option key={`${s.id}`} value={s.title}>
                                             {s.title}
                                         </Select.Option>
                                     ))}
@@ -473,7 +449,7 @@ const PartnerModal: React.FC<{
                         onClick={handleShowSecondForm}
                         className="add-social-media-button"
                     >
-                        Додати соціальну мережу
+            Додати соціальну мережу
                     </Button>
                 )}
                 <Form
@@ -484,11 +460,8 @@ const PartnerModal: React.FC<{
                     {showSecondForm && (
                         <div>
                             <div className="button-container">
-                                <Button
-                                    onClick={handleHideSecondForm}
-                                    className="close-button"
-                                >
-                                    Закрити
+                                <Button onClick={handleHideSecondForm} className="close-button">
+                  Закрити
                                 </Button>
                             </div>
                             <div className="link-container">
@@ -515,8 +488,8 @@ const PartnerModal: React.FC<{
                                                 const logotype = partnerLinksForm.getFieldValue('logotype');
                                                 if (
                                                     !value
-                                                    || !logotype
-                                                    || value.toLowerCase().includes(logotype)
+                          || !logotype
+                          || value.toLowerCase().includes(logotype)
                                                 ) {
                                                     return Promise.resolve();
                                                 }
@@ -527,11 +500,7 @@ const PartnerModal: React.FC<{
                                         },
                                     ]}
                                 >
-                                    <Input
-                                        min={1}
-                                        maxLength={255}
-                                        showCount
-                                    />
+                                    <Input min={1} maxLength={255} showCount />
                                 </Form.Item>
 
                                 <Form.Item label=" ">
@@ -540,10 +509,7 @@ const PartnerModal: React.FC<{
                                         placement="bottom"
                                         overlayClassName="custom-tooltip"
                                     >
-                                        <Button
-                                            htmlType="submit"
-                                            className="plus-button"
-                                        >
+                                        <Button htmlType="submit" className="plus-button">
                                             <PlusOutlined />
                                         </Button>
                                     </Tooltip>
@@ -561,10 +527,7 @@ const PartnerModal: React.FC<{
                             overlayClassName="custom-tooltip"
                         >
                             <span>
-                                <Button
-                                    disabled
-                                    className="streetcode-custom-button save"
-                                >
+                                <Button disabled className="streetcode-custom-button save">
                   Зберегти
                                 </Button>
                             </span>
@@ -577,7 +540,7 @@ const PartnerModal: React.FC<{
                                 handleOk();
                             }}
                         >
-                            Зберегти
+              Зберегти
                         </Button>
                     )}
                 </div>

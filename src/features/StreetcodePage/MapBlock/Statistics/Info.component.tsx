@@ -3,10 +3,13 @@ import './Info.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { useModalContext } from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Popover } from 'antd';
 
+import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-cooridnates.api';
+import ToponymsApi from '@/app/api/map/toponyms.api';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import Toponym from '@/models/toponyms/toponym.model';
 
@@ -38,10 +41,7 @@ const InfoComponent = ({ streetcodeCoordinates, toponyms }: Props) => {
     const isMobile = window.innerWidth < 1024;
 
     const content = (
-        <StatisticsComponent
-            toponyms={toponyms}
-            streetcodeCoordinates={streetcodeCoordinates}
-        />
+        <StatisticsComponent toponyms={toponyms} streetcodeCoordinates={streetcodeCoordinates} />
     );
 
     return (

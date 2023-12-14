@@ -12,7 +12,7 @@ import { SCREEN_SIZES } from '@/app/common/constants/screen-sizes.constants';
 interface Props {
     isOpen: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    job: Job
+    job : Job
 }
 
 const VacancyModal = ({ isOpen, setOpen, job }: Props) => {

@@ -5,9 +5,8 @@ import useWindowSize from '@hooks/stateful/useWindowSize.hook';
 
 interface Props {
     videoUrls: string[] | string;
-    onReady?: () => void;
+    onReady?: ()=>void;
 }
-
 const VideoPlayer = ({ videoUrls, onReady }: Props) => {
     const windowSize = useWindowSize();
     let width = '50vw';

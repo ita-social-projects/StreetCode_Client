@@ -9,7 +9,6 @@ interface Props {
     setSubTitle: React.Dispatch<React.SetStateAction<Partial<Subtitle | undefined>>>;
     onChange: (field: string, value: any) => void;
 }
-
 const SubtitleBlock = React.memo(({ subTitle, setSubTitle, onChange }: Props) => (
     <div className="adminContainer-block">
         <h2>Бігуча стрічка</h2>

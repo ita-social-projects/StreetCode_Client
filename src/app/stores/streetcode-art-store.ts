@@ -3,6 +3,7 @@ import StreetcodeArtApi from '@api/media/streetcode-art.api';
 import { ModelState } from '@models/enums/model-state';
 
 import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
+import Art from "@models/media/art.model"
 
 export default class StreetcodeArtStore {
     public streetcodeArtMap = new Map<number, StreetcodeArt>();
@@ -41,8 +42,7 @@ export default class StreetcodeArtStore {
         try {
             this.setInternalStreetcodeArtMap = await StreetcodeArtApi
                 .getStreetcodeArtsByStreetcodeId(streetcodeId);
-        } catch (error: unknown) { /* empty */
-        }
+        } catch (error: unknown) { /* empty */ }
     };
 
     public fetchNextPageOfArtsByStreetcodeId = async (streetcodeId: number) => {

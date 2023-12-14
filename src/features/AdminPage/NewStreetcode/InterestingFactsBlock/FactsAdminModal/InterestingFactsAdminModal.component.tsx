@@ -1,7 +1,7 @@
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
@@ -140,14 +140,8 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 maskClosable
                 centered
                 closeIcon={(
-                    <Popover
-                        content="Внесені зміни не будуть збережені!"
-                        trigger="hover"
-                    >
-                        <CancelBtn
-                            className="iconSize"
-                            onClick={clearModal}
-                        />
+                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                        <CancelBtn className="iconSize" onClick={clearModal} />
                     </Popover>
                 )}
             >
@@ -166,11 +160,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
                             ]}
                         >
-                            <Input
-                                maxLength={68}
-                                showCount
-                                onChange={(e) => onChange('title', e.target.value)}
-                            />
+                            <Input maxLength={68} showCount onChange={(e) => onChange('title', e.target.value)} />
                         </Form.Item>
 
                         <Form.Item
@@ -246,15 +236,8 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                     </Form>
                 </div>
             </Modal>
-            <Popover
-                content="popupContent"
-                trigger="hover"
-            />
-            <PreviewFileModal
-                file={fileList?.at(0) ?? null}
-                opened={previewOpen}
-                setOpened={setPreviewOpen}
-            />
+            <Popover content="popupContent" trigger="hover" />
+            <PreviewFileModal file={fileList?.at(0) ?? null} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
 
     );

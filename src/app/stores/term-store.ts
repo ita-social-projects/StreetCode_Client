@@ -25,8 +25,7 @@ export default class TermStore {
         try {
             const terms = await termsApi.getAll();
             this.setInternalMap(terms);
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public createTerm = async (term: Term) => {
@@ -56,8 +55,7 @@ export default class TermStore {
                     this.setItem(updatedTerm as Term);
                 });
             }
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteTerm = async (termId: number) => {
@@ -68,7 +66,6 @@ export default class TermStore {
                     this.TermMap.delete(termId);
                 });
             }
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 }

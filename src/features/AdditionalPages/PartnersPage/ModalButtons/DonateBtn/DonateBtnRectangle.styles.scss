@@ -3,10 +3,10 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.donate-button {
+.donate-button{
     border: f.pxToRem(3px) solid;
     border-color: c.$accented-red-color;
-    background-color: c.$pure-white-color;
+    background-color: c.$pure-white-color; 
     color: c.$accented-red-color;
 
     &:hover {
@@ -15,7 +15,7 @@
 }
 
 @media screen and (max-width: 670px) {
-    .donate-button {
-        border: f.pxToRem(2px) solid !important;
+    .donate-button{
+        border: f.pxToRem(2px) solid !important;    
     }
 }

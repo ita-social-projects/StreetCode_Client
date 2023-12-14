@@ -113,10 +113,7 @@ const Analytics = () => {
                         <h2 className="streetcodeName">
                             Статистика
                         </h2>
-                        <Table
-                            columns={columns}
-                            dataSource={data}
-                        />
+                        <Table columns={columns} dataSource={data} />
                     </div>
                 </div>
             </div>

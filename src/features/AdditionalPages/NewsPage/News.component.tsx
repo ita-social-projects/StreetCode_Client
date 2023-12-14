@@ -5,22 +5,23 @@ import './News.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavigationType, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import { NewsWithUrl } from '@models/news/news.model';
 import dayjs from 'dayjs';
 import parse from 'html-react-parser';
 
 import NewsApi from '@/app/api/news/news.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useScrollToTop from '@/app/common/hooks/scrolling/useScrollToTop.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { nextArticleClickEvent, prevArticleClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import useMobx from '@/app/stores/root-store';
+import News from '@/models/news/news.model';
 
 import BreadCrumbForNews from './BreadCrumbForNews/BreadCrumbForNews.component';
 import RandomNewsBlock from './RandomNewsBlock.component';
+import useScrollToTop from '@/app/common/hooks/scrolling/useScrollToTop.hook';
 
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
@@ -47,7 +48,7 @@ const NewsPage = () => {
                 navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`);
             });
     }, [newsUrl]);
-
+    
     useScrollToTop();
 
     useEffect(
@@ -83,18 +84,9 @@ const NewsPage = () => {
     return (
         <div>
             <Helmet>
-                <meta
-                    property="og:title"
-                    content={newsValue?.news.title}
-                />
-                <meta
-                    property="og:description"
-                    content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
-                />
-                <meta
-                    name="twitter:card"
-                    content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
-                />
+                <meta property="og:title" content={newsValue?.news.title} />
+                <meta property="og:description" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
+                <meta name="twitter:card" content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
                 <meta
                     property="og:image"
                     content={newsImg?.src || ''}
@@ -103,14 +95,8 @@ const NewsPage = () => {
             {newsValue
                 ? (
                     <div className="newsContainer">
-                        <div
-                            className="wrapper"
-                            ref={wrapperRef}
-                        >
-                            <BreadCrumbForNews
-                                separator={<div className="separator" />}
-                                news={newsValue?.news}
-                            />
+                        <div className="wrapper" ref={wrapperRef}>
+                            <BreadCrumbForNews separator={<div className="separator" />} news={newsValue?.news} />
                             <div className="NewsHeader">
                                 <h1 className="">{newsValue?.news.title}</h1>
                                 <h3 className="news-date">{dayjs(newsValue?.news.creationDate).format('DD.MM.YYYY')}</h3>

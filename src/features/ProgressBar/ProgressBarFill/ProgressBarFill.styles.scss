@@ -4,15 +4,15 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .progressBarProgressFill {
-    overflow: hidden;
-    height: calc(100% - 100px);
-    width: 2px;
-    @include mut.positioned-as(absolute, $top: 50px);
-    @include vnd.vendored(transform, 'rotate(0)');
+  overflow: hidden;
+  height: calc(100% - 100px);
+  width: 2px;
+  @include mut.positioned-as(absolute, $top: 50px);
+  @include vnd.vendored(transform, 'rotate(0)');
 }
 
 .progressBarDashedFill {
-    height: 80%;
-    position: absolute;
-    border-left: 2px dashed #ADADAD;
+  height: 80%;
+  position: absolute;
+  border-left: 2px dashed #ADADAD;
 }

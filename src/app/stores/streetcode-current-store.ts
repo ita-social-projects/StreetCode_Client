@@ -27,8 +27,7 @@ export default class StreetcodeStore {
                     return streetcode;
                 }
             }
-        } catch (error) {
-        }
+        } catch (error) { }
     };
 
     public get getStreetCodeId() {

@@ -3,39 +3,34 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.artPreviewModal {
+.artPreviewModal{
     @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
     color: c.$dark-red-color;
     align-items: center;
     margin: auto;
-
-    p {
+    p{
         @include mut.rem-padded($top: 5px, $bottom: 5px);
     }
-
-    img {
-        @include mut.sized(50%, 50%);
+    img{
+        @include mut.sized(50%,50%);
         display: block;
         margin: auto;
     }
-
-    input, textarea {
+    input, textarea{
         @include mut.with-font(ft.$roboto-font, 300, 20px, normal) ;
     }
-
-    .saveButton {
+    .saveButton{
         background-color: c.$pure-white-color;
         border-radius: 5px;
         border: 2px solid c.$ant-menu-text-color;
-        width: 30%;
+        width: 30%;   
         justify-content: center;
         left: 33%;
         @include mut.with-font(ft.$roboto-font, 300, 15px, normal);
         color: c.$ant-menu-text-color;
-
-        &:hover {
+        &:hover{
             color: c.$pure-white-color;
             background-color: c.$ant-menu-color;
         }
-    }
+      }
 }

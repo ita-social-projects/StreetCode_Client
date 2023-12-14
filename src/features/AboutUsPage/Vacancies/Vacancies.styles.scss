@@ -4,7 +4,7 @@
 @use "@assets/sass/variables/_variables.fonts.scss" as ft;
 @use "@assets/sass/variables/_variables.sizes.scss" as s;
 
-.vacanciesBlock {
+.vacanciesBlock{
     display: flex;
     flex-direction: column;
 
@@ -18,11 +18,9 @@
         padding: 0 f.pxToRem(164px);
 
         text-align: center;
-
         h2 {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 36px);
         }
-
         h3 {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 24px);
         }

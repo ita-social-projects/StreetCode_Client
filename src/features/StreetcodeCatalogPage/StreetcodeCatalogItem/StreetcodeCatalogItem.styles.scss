@@ -16,10 +16,10 @@
     cursor: pointer;
 
     &:hover {
-        @include mut.positioned-as();
-        @include vnd.vendored(transition, 'all .5s ease');
-        overflow: visible !important;
-    }
+      @include mut.positioned-as();
+      @include vnd.vendored(transition, 'all .5s ease');
+      overflow: visible !important;
+    } 
 }
 
 .catalogItemText {
@@ -38,18 +38,18 @@
         justify-content: center;
 
         .aliasText {
-            @include mut.rem-padded($left: 5px, $right: 5px, $top: 5px, $bottom: 0px);
-            line-height: pxToRem(16.4px);
-            font-size: 14px;
+          @include mut.rem-padded($left: 5px, $right: 5px, $top: 5px, $bottom: 0px);
+          line-height: pxToRem(16.4px);
+          font-size: 14px;
         }
 
         p {
-            @include mut.truncated($line-num: 2);
-            @include mut.rem-padded($left: 12px, $right: 12px, $top: 10px);
+          @include mut.truncated($line-num: 2);
+          @include mut.rem-padded($left: 12px, $right: 12px, $top: 10px);
 
-            @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
-            text-align: center;
-            color: c.$pure-white-color;
+          @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
+          text-align: center;
+          color: c.$pure-white-color;
         }
     }
 
@@ -65,15 +65,15 @@
             height: 100%;
 
             p {
-                font-size: 14px;
-                color: c.$pure-black-color;
-                padding-top: pxToRem(9px) !important;
+              font-size: 14px;
+              color: c.$pure-black-color;
+              padding-top: pxToRem(9px) !important;
             }
 
             .aliasText {
-                line-height: pxToRem(13.2px);
-                font-size: 10px;
-                padding-top: pxToRem(0px) !important;
+              line-height: pxToRem(13.2px);
+              font-size: 10px;
+              padding-top: pxToRem(0px) !important;
             }
         }
     }
@@ -81,7 +81,7 @@
 
 @media screen and (max-width: 1024px) {
     .catalogItem {
-        @include mut.sized($width: 165px, $height: 165px);
-        border-radius: pxToRem(30px);
+      @include mut.sized($width: 165px, $height: 165px);
+      border-radius: pxToRem(30px);
     }
 }

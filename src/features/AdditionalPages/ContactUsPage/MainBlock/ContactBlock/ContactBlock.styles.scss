@@ -33,7 +33,6 @@
             @media screen and (max-width: 1024px) {
                 @include mut.flexed($align-items: normal);
             }
-
             .icon {
                 transform: scale(1.7);
                 margin-right: f.pxToRem(20px);

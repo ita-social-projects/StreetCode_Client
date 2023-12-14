@@ -49,8 +49,8 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
                 thresholds: [0.75],
             };
 
-            const callback = (entries: any, intersectionObserver: any) => {
-                entries.forEach((entry: any) => {
+            const callback = (entries : any, intersectionObserver : any) => {
+                entries.forEach((entry : any) => {
                     if (entry.isIntersecting) {
                         handleNextScreen();
                         intersectionObserver.unobserve(entry.target);
@@ -75,23 +75,16 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     return (
         <>
             {windowsize.width > 1024 && (
-                <a
-                    {...LinkProps}
-                    href={`/${streetcode.url}`}
-                    onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}
-                >
-                    <div
-                        ref={elementRef}
-                        className="catalogItemText"
-                    >
+                <a {...LinkProps} href={`/${streetcode.url}`} onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}>
+                    <div ref={elementRef} className="catalogItemText">
                         <div className="heading">
                             <p>{streetcode.title}</p>
                             {
                                 streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
                                     <p className="aliasText">
-                                        (
+(
                                         {streetcode.alias}
-                                        )
+)
                                     </p>
                                 ) : undefined
                             }
@@ -101,19 +94,9 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
             )}
             {windowsize.width <= 1024 && (
                 <div>
-                    <a
-                        {...LinkProps}
-                        href={`/${streetcode.url}`}
-                        onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}
-                    />
-                    <div
-                        ref={elementRef}
-                        className="catalogItemText mobile"
-                    >
-                        <div
-                            className="heading"
-                            onClick={handleTextClick}
-                        >
+                    <a {...LinkProps} href={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')} />
+                    <div ref={elementRef} className="catalogItemText mobile">
+                        <div className="heading" onClick={handleTextClick}>
                             <p>{streetcode.title}</p>
                             {
                                 streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (

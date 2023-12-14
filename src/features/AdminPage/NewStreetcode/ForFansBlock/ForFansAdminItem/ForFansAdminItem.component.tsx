@@ -6,7 +6,7 @@ import useMobx from '@stores/root-store';
 import { Modal } from 'antd';
 
 const ForFansAdminItem: React.FC<{
-    index: number,
+    index:number,
     categoryName: string,
     onEditClick: () => void
 }> = ({ index, categoryName, onEditClick }) => {
@@ -37,8 +37,7 @@ const ForFansAdminItem: React.FC<{
                     title="Ви впевнені, що хочете видалити дану категорію?"
                     open={visibleModal}
                     onOk={(e) => {
-                        sourceCreateUpdateStreetcode.removeSourceCategoryContent(index);
-                        setVisibleModal(false);
+                        sourceCreateUpdateStreetcode.removeSourceCategoryContent(index); setVisibleModal(false);
                     }}
                     onCancel={handleCancelModalRemove}
                 />

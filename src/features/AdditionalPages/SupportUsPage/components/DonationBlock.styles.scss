@@ -5,285 +5,279 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 
 .donatesBlockContent {
-    .ant-checkbox-wrapper:focus-within .ant-checkbox-inner {
-        outline: none;
+  .ant-checkbox-wrapper:focus-within .ant-checkbox-inner {
+    outline: none;
+  }
+
+  @include mut.flex-centered($direction: column);
+  @include mut.sized(590px, 525px);
+  padding: auto 20px;
+
+  > h1 {
+    @include mut.with-font(ft.$closer-text-font, $font-size: 36px, $font-weight: 500);
+    text-align: center;
+    color: c.$pure-black-color;
+  }
+
+  .enterSum {
+    @include mut.rem-margined($top: 32px);
+    @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
+    line-height: f.pxToRem(18px);
+    color: c.$darkish-gray-color;
+  }
+
+   .donateInputContainerWrapper{
+    @include mut.rem-margined($bottom: 35px);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: f.pxToRem(53px);
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      border-bottom: solid c.$darkish-gray-color;
+    }
+    &.active::before {
+      content: none;
+    }
+  }
+
+  .amountInput {
+    @include mut.with-font(ft.$closer-text-font, $font-size: 40px, $font-weight: 500);
+    text-align: right;
+    --input-width: f.pxToRem(42px);
+    color: c.$darkish-gray-color;
+    border: none;
+    padding: 0;
+    overflow: visible;
+
+    &.active {
+      color: c.$pure-black-color;
+      text-shadow: 1px 0 1px c.$pure-black-color;
     }
 
-    @include mut.flex-centered($direction: column);
-    @include mut.sized(590px, 525px);
-    padding: auto 20px;
-
-    > h1 {
-        @include mut.with-font(ft.$closer-text-font, $font-size: 36px, $font-weight: 500);
-        text-align: center;
-        color: c.$pure-black-color;
+    &:focus {
+      outline: none;
     }
 
-    .enterSum {
-        @include mut.rem-margined($top: 32px);
-        @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
-        line-height: f.pxToRem(18px);
-        color: c.$darkish-gray-color;
+    &::placeholder {
+      color: c.$darkish-gray-color;
     }
+  }
 
-    .donateInputContainerWrapper {
-        @include mut.rem-margined($bottom: 35px);
-        position: relative;
-        display: flex;
-        justify-content: center;
-        height: f.pxToRem(53px);
+  .GryvnaSymbol{
+    @include mut.flex-centered();
+    width: fit-content;
+  }
 
-        &::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            border-bottom: solid c.$darkish-gray-color;
-        }
+  .donatesBtnContainer {
+    @include mut.flexed($gap: 10px, $wrap: wrap);
+    margin: 0 20px;
 
-        &.active::before {
-            content: none;
-        }
-    }
+    > * {
+      @include mut.sized(130px, 58px);
+      @include mut.full-rounded(11px);
+      @include mut.flex-centered();
 
-    .amountInput {
-        @include mut.with-font(ft.$closer-text-font, $font-size: 40px, $font-weight: 500);
-        text-align: right;
-        --input-width: f.pxToRem(42px);
-        color: c.$darkish-gray-color;
-        border: none;
-        padding: 0;
-        overflow: visible;
+      border: 1px solid c.$dark-red-color;
+      @include vnd.vendored(transition, 'background-color .75s ease');
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.19);
+      > span {
+        @include vnd.vendored(transition, 'color .75s ease');
+        @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+        color: c.$dark-red-color;
+      }
 
-        &.active {
-            color: c.$pure-black-color;
-            text-shadow: 1px 0 1px c.$pure-black-color;
-        }
-
-        &:focus {
-            outline: none;
-        }
-
-        &::placeholder {
-            color: c.$darkish-gray-color;
-        }
-    }
-
-    .GryvnaSymbol {
-        @include mut.flex-centered();
-        width: fit-content;
-    }
-
-    .donatesBtnContainer {
-        @include mut.flexed($gap: 10px, $wrap: wrap);
-        margin: 0 20px;
-
-        > * {
-            @include mut.sized(130px, 58px);
-            @include mut.full-rounded(11px);
-            @include mut.flex-centered();
-
-            border: 1px solid c.$dark-red-color;
-            @include vnd.vendored(transition, 'background-color .75s ease');
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.19);
-
-            > span {
-                @include vnd.vendored(transition, 'color .75s ease');
-                @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-                color: c.$dark-red-color;
-            }
-
-            &:where(:hover, &.active) {
-                background-color: c.$accented-red-color;
-                border: 3px solid c.$accented-red-color;
-
-                > span {
-                    color: c.$pure-white-color;
-                    font-weight: 500;
-                }
-            }
-
-            &:focus {
-                outline: none;
-            }
-        }
-    }
-
-    .donatesInputContainer {
-        @include mut.sized($width: 100%);
-        padding: f.pxToRem(32px) f.pxToRem(20px);
-
-        > .checkbox-borderline {
-            border-radius: 0px !important;
-            align-items: center;
-
-            span {
-                display: inline-block;
-                overflow: visible;
-
-                &:last-child {
-                    @include mut.rem-padded($left: 16px);
-                    @include mut.rem-margined($top: 6px);
-                    @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
-                    @include mut.sized($height: 15px);
-                    color: c.$checkbox-light-grey;
-                }
-            }
-        }
-
-        .ant-checkbox {
-            @include mut.sized(25px, 25px);
-        }
-
-        .ant-checkbox-inner {
-            @include mut.sizedImportant(25px, 25px);
-
-            border: 3px solid c.$normal-darker-gray-color;
-            border-radius: 0 !important;
-            overflow: visible;
-        }
-
-        .ant-checkbox-checked {
-            .ant-checkbox-inner {
-                border: 3px solid c.$accented-red-color;
-            }
-        }
-
-        .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
-            opacity: 0;
-        }
-
-        .ant-checkbox-checked:after {
-            border-color: none !important;
-        }
-
-        .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
-            background: c.$accented-red-color;
-            box-shadow: inset 0 0 0 2px c.$pure-white-color;
-        }
-    }
-
-    .donatesDonateBtn {
-        @include mut.full-rounded(10px);
-        @include mut.sized($width: 550px, $height: 73px);
-        @include mut.with-font($font-size: 20px);
-        color: c.$pure-white-color;
+      &:where(:hover, &.active) {
         background-color: c.$accented-red-color;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
-        border-radius: 15px;
-
-        &:disabled {
-            cursor: pointer;
-            background-color: c.$lighter-gray-color;
-            color: c.$pure-white-color;
-
-            &:hover {
-                background-color: c.$lighter-gray-color;
-                cursor: default;
-            }
-        }
+        border: 3px solid c.$accented-red-color;
 
         > span {
-            @include mut.with-font($font-size: 20px);
-            color: c.$pure-white-color;
+          color: c.$pure-white-color;
+          font-weight: 500;
         }
+      }
 
-        &:hover {
-            background-color: c.$dark-red-color;
-        }
-
-        &:focus {
-            outline: none;
-        }
+      &:focus {
+        outline: none;
+      }
     }
+  }
+
+  .donatesInputContainer {
+    @include mut.sized($width: 100%);
+    padding: f.pxToRem(32px) f.pxToRem(20px);
+    >.checkbox-borderline {
+      border-radius: 0px !important;
+      align-items: center;
+
+      span {
+        display: inline-block;
+        overflow: visible;
+
+        &:last-child {
+          @include mut.rem-padded($left: 16px);
+          @include mut.rem-margined($top: 6px);
+          @include mut.with-font(ft.$roboto-font, $font-size: 15px, $font-weight: 300);
+          @include mut.sized($height: 15px);
+          color: c.$checkbox-light-grey;
+        }
+      }
+    }
+
+      .ant-checkbox {
+        @include mut.sized(25px, 25px);
+      }
+
+      .ant-checkbox-inner {
+        @include mut.sizedImportant(25px, 25px);
+
+        border: 3px solid c.$normal-darker-gray-color;
+        border-radius: 0  !important;
+        overflow: visible;
+      }
+
+      .ant-checkbox-checked {
+        .ant-checkbox-inner {
+          border: 3px solid c.$accented-red-color;
+        }
+      }
+
+      .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
+        opacity: 0;
+      }
+
+      .ant-checkbox-checked:after {
+        border-color: none !important;
+      }
+
+      .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+        background: c.$accented-red-color;
+        box-shadow: inset 0 0 0 2px c.$pure-white-color;
+      }
+  }
+
+  .donatesDonateBtn {
+    @include mut.full-rounded(10px);
+    @include mut.sized($width: 550px, $height: 73px);
+    @include mut.with-font($font-size: 20px);
+    color: c.$pure-white-color;
+    background-color: c.$accented-red-color;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
+    border-radius: 15px;
+    &:disabled {
+      cursor: pointer;
+      background-color: c.$lighter-gray-color;
+      color: c.$pure-white-color;
+
+      &:hover {
+        background-color: c.$lighter-gray-color;
+        cursor: default;
+      }
+    }
+
+    > span {
+      @include mut.with-font($font-size: 20px);
+      color: c.$pure-white-color;
+    }
+
+    &:hover {
+      background-color: c.$dark-red-color;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 @media screen and (max-width: 1400px) {
-    .ant-checkbox-wrapper:focus-within .ant-checkbox-inner {
+  .ant-checkbox-wrapper:focus-within .ant-checkbox-inner {
+    outline: none;
+  }
+
+  .donatesBlockContent {
+    @include mut.sized(340px, 343px);
+    padding: 16px 10px;
+
+    > h1 {
+      @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+      line-height: 26.4px;
+    }
+
+    .enterSum {
+      @include mut.rem-margined($top: 20px);
+      @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
+      line-height: 15px;
+    }
+
+    .donateInputContainerWrapper{
+      @include mut.rem-margined($bottom: 20px);
+      height: f.pxToRem(42px);
+    }
+
+    .amountInput {
+      @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
+      display: flex;
+      align-items: center;
+      height: f.pxToRem(42px);
+      max-width: 100%;
+    }
+
+    .donatesBtnContainer {
+      @include mut.sized($width: 320px, $height: 78px);
+      @include mut.rem-margined($bottom: 20px);
+      gap: 0.5rem;
+
+      > * {
+        @include mut.sizedImportant($width: 100px, $height: 35px);
+        border: 1px;
+
+        > span {
+          @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 500);
+        }
+      }
+    }
+
+    .donatesDonateBtn {
+      @include mut.sized(320px, 46px);
+      @include mut.rem-margined($top: 20px);
+      @include mut.full-rounded(10px);
+      > span {
+        @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
+        line-height: 16px;
+        color: c.$pure-white-color;
+        text-transform: none;
+      }
+
+      &:focus {
         outline: none;
+      }
     }
 
-    .donatesBlockContent {
-        @include mut.sized(340px, 343px);
-        padding: 16px 10px;
+    .donatesInputContainer {
+      @include mut.sized(100%, 25px);
+      padding: 0;
 
-        > h1 {
-            @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-            line-height: 26.4px;
+      label {
+        @include mut.sizedImportant($height: 25px);
+      }
+
+      >.checkbox-borderline {
+        display: flex;
+        overflow: visible;
+
+        span {
+          &:last-child {
+            @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
+            @include mut.rem-padded($left: 8px);
+            @include mut.rem-margined($top: 5px);
+            @include mut.sized($height: 12px);
+          }
         }
-
-        .enterSum {
-            @include mut.rem-margined($top: 20px);
-            @include mut.with-font(ft.$closer-text-font, $font-size: 10px, $font-weight: 500);
-            line-height: 15px;
-        }
-
-        .donateInputContainerWrapper {
-            @include mut.rem-margined($bottom: 20px);
-            height: f.pxToRem(42px);
-        }
-
-        .amountInput {
-            @include mut.with-font(ft.$closer-text-font, $font-size: 32px, $font-weight: 500);
-            display: flex;
-            align-items: center;
-            height: f.pxToRem(42px);
-            max-width: 100%;
-        }
-
-        .donatesBtnContainer {
-            @include mut.sized($width: 320px, $height: 78px);
-            @include mut.rem-margined($bottom: 20px);
-            gap: 0.5rem;
-
-            > * {
-                @include mut.sizedImportant($width: 100px, $height: 35px);
-                border: 1px;
-
-                > span {
-                    @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 500);
-                }
-            }
-        }
-
-        .donatesDonateBtn {
-            @include mut.sized(320px, 46px);
-            @include mut.rem-margined($top: 20px);
-            @include mut.full-rounded(10px);
-
-            > span {
-                @include mut.with-font(ft.$roboto-font, $font-size: 14px, $font-weight: 500);
-                line-height: 16px;
-                color: c.$pure-white-color;
-                text-transform: none;
-            }
-
-            &:focus {
-                outline: none;
-            }
-        }
-
-        .donatesInputContainer {
-            @include mut.sized(100%, 25px);
-            padding: 0;
-
-            label {
-                @include mut.sizedImportant($height: 25px);
-            }
-
-            > .checkbox-borderline {
-                display: flex;
-                overflow: visible;
-
-                span {
-                    &:last-child {
-                        @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
-                        @include mut.rem-padded($left: 8px);
-                        @include mut.rem-margined($top: 5px);
-                        @include mut.sized($height: 12px);
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 }

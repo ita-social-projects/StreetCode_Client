@@ -22,7 +22,7 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
         padding-left: pxToRem(31px);
     }
 
-    &.container {
+    &.container{
         margin-top: pxToRem(110px);
     }
 }
@@ -48,7 +48,7 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
     }
 
     .appealPrg {
-        @include mut.with-font($font-weight: 500, $font-size: 24px);
+       @include mut.with-font($font-weight: 500, $font-size: 24px);
         color: colors.$lighter-black-color;
 
         padding-left: pxToRem(14px);
@@ -58,30 +58,27 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
     img {
         @include mut.rem-margined(36px, 0, 0, 14px);
     }
-
     .QRBlockTextContainer {
         @include mut.sized(405px, 491px);
-
-        .ant-qrcode {
+        .ant-qrcode{
             @include mut.rem-margined(36px, 0, 0, 14px);
             background-color: rgba($color: #000000, $alpha: 0);
             border-width: 0;
             @include mut.sizedImportant(217px, 217px);
-
-            canvas {
+            canvas{
                 @include mut.sizedImportant(217px, 217px);
             }
-
+            
         }
     }
 }
 
 @media (max-width: 1024px) {
-    .QRBlockContainer {
+    .QRBlockContainer{
         background-image: none;
         @include mut.sized(100%, auto);
 
-        &.container {
+        &.container{
             margin-top: pxToRem(86px);
         }
     }

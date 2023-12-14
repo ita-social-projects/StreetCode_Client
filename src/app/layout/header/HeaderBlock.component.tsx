@@ -7,21 +7,19 @@ import StreetcodeSvg from '@images/header/Streetcode_logo.svg';
 import StreetcodeSvgMobile from '@images/header/Streetcode_logo_mobile.svg';
 
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
-import { useModalContext } from '@stores/root-store';
-
+import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
+import useMobx, { useModalContext } from '@stores/root-store';
 import { Button, Input, Popover, PopoverProps } from 'antd';
-
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
-import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
-
 import SearchBlock from './SearchBlock/SearchBlock.component';
+import { useMediaQuery } from 'react-responsive';
+import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 
 const HeaderBlock = () => {
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
@@ -41,7 +39,7 @@ const HeaderBlock = () => {
 
     const handlePopoverVisibleChange = (visible: boolean) => {
         setIsPopoverVisible(visible);
-        if (!visible) {
+        if(!visible) {
             setIsLoading(true);
         }
     };
@@ -60,7 +58,7 @@ const HeaderBlock = () => {
         off();
         setIsPageDimmed(false);
         setIsPopoverVisible(false);
-    };
+    }
 
     const onDimCancel = useCallback(() => {
         closeSearchBlock();
@@ -72,9 +70,9 @@ const HeaderBlock = () => {
     });
 
     useEffect(onDimCancel, [isHeaderHidden, onDimCancel]);
-
+    
     useOnClickOutside([inputRef, searchBlockRef], onDimCancel);
-
+    
     if (isInputActive && !isPageDimmed) {
         setIsPageDimmed(true);
     }
@@ -91,16 +89,16 @@ const HeaderBlock = () => {
         }
 
         const filter: StreetcodeFilterRequestDTO = { searchQuery };
-
+        
         StreetcodesApi.getByFilter(filter)
             .then((response: StreetcodeFilterResultDTO[]) => {
                 setSearchResult(response);
                 setIsLoading(false);
             });
-    };
+    }
 
     useEffect(() => {
-        if (isDesktop) {
+        if(isDesktop){
             search();
         }
     }, [searchQuery]);
@@ -109,33 +107,27 @@ const HeaderBlock = () => {
         trigger: 'click',
         open: isPopoverVisible && !isLoading,
         getPopupContainer: (trigger: HTMLElement) => trigger.parentNode as HTMLElement,
-        content: (
+        content:(
             <div ref={searchBlockRef}>
-                <SearchBlock searchResult={searchResult} />
+                <SearchBlock searchResult={searchResult}/>
             </div>
         ),
         afterOpenChange: handlePopoverVisibleChange,
     };
 
     const onInputClick = () => {
-        if (!isPageDimmed) {
+        if(!isPageDimmed){
             setIsPageDimmed();
             toggle();
         }
     };
 
     return (
-        <div
-            className="HeaderBlock"
-            ref={dimWrapperRef}
-        >
+        <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div
-                        className="logoContainer"
-                        onClick={() => window.location.href = '/'}
-                    >
-                        {isDesktop
+                    <div className='logoContainer' onClick={() => window.location.href = '/'}>
+                        {isDesktop 
                             ? <StreetcodeSvg />
                             : <StreetcodeSvgMobile />}
                     </div>
@@ -144,7 +136,7 @@ const HeaderBlock = () => {
                             overlayClassName="searchPopover"
                             placement="bottomLeft"
                             {...popoverProps}
-                        >
+                            >
                             <input
                                 onChange={handleInputChange}
                                 placeholder="Пошук..."
@@ -154,12 +146,12 @@ const HeaderBlock = () => {
                             />
                         </Popover>
                     )}
-
+                    
                     {isDesktop && !isHeaderHidden && (
-                        <div className="searchHeaderSkeleton">
+                        <div className='searchHeaderSkeleton'>
                             <Popover
                                 placement="bottomLeft"
-                                overlayClassName="searchPopoverSkeleton"
+                                overlayClassName='searchPopoverSkeleton'
                                 {...popoverProps}
                             >
                                 <div ref={inputRef}>
@@ -167,14 +159,13 @@ const HeaderBlock = () => {
                                         onChange={handleInputChange}
                                         placeholder="Пошук..."
                                         onClick={onInputClick}
-                                        prefix={(
-                                            <MagnifyingGlass
-                                                viewBox="0 -2 24 24"
-                                                transform="scale(1.2)"
-                                                onClick={onMagnifyingGlassClick}
-                                                style={isPageDimmed ? { zIndex: '-1' } : undefined}
-                                            />
-                                        )}
+                                        prefix={
+                                        <MagnifyingGlass
+                                            viewBox="0 -2 24 24"
+                                            transform="scale(1.2)"
+                                            onClick={onMagnifyingGlassClick}
+                                            style={isPageDimmed ? { zIndex: '-1' } : undefined}
+                                        />}
                                     />
                                 </div>
                             </Popover>
@@ -213,36 +204,33 @@ const HeaderBlock = () => {
                     </div>
                 </div>
             </div>
-            <div>
-                {!isDesktop && (
-                    <Popover
-                        arrow={false}
-                        overlayClassName="searchMobPopover"
-                        placement="bottom"
-                        {...popoverProps}
-                    >
-                        <div
-                            ref={inputRef}
-                            className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}
+            <div >
+            {!isDesktop && (
+                <Popover
+                    arrow={false}
+                    overlayClassName='searchMobPopover'
+                    placement='bottom'
+                    {...popoverProps}
+                >
+                    <div ref={inputRef} className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
+                        <input
+                            onChange={handleInputChange}
+                            className="ant-input css-dev-only-do-not-override-26rdvq"
+                            placeholder="Що ти шукаєш?"
+                        />
+                        <Button
+                            type="primary"
+                            className="searchButton"
+                            onClick={() => {
+                                handlePopoverVisibleChange(true);
+                                search();
+                            }}
                         >
-                            <input
-                                onChange={handleInputChange}
-                                className="ant-input css-dev-only-do-not-override-26rdvq"
-                                placeholder="Що ти шукаєш?"
-                            />
-                            <Button
-                                type="primary"
-                                className="searchButton"
-                                onClick={() => {
-                                    handlePopoverVisibleChange(true);
-                                    search();
-                                }}
-                            >
-                                Пошук
-                            </Button>
-                        </div>
-                    </Popover>
-                )}
+                            Пошук
+                        </Button>
+                    </div>
+                </Popover>
+            )}
             </div>
         </div>
     );

@@ -67,7 +67,6 @@ interface Store {
 export interface StreetcodeDataStore {
     streetcodeStore: StreetcodeStore,
 }
-
 export interface ModalDataStore {
     modalStore: ModalStore,
 }
@@ -102,16 +101,16 @@ export const store: Store = {
     relatedByTag: new StreetcodesByTagStore(),
     createUpdateMediaStore: new CreateUpdateMediaStore(),
 };
-export const streetcodeDataStore: StreetcodeDataStore = {
+export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),
 };
 
-export const modalDataStore: ModalDataStore = {
+export const modalDataStore:ModalDataStore = {
     modalStore: new ModalStore(),
 };
 
-export const toponymDataStore: ToponymStore = new ToponymStore();
-export const streecodePageLoaderStore: StreetcodePageLoaderStore = new StreetcodePageLoaderStore();
+export const toponymDataStore:ToponymStore = new ToponymStore();
+export const streecodePageLoaderStore:StreetcodePageLoaderStore = new StreetcodePageLoaderStore();
 export const audioDataStore: AudioStore = new AudioStore();
 
 const streecodePageLoaderContext = createContext(streecodePageLoaderStore);

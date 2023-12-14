@@ -3,24 +3,24 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 
-.searchResultsBlock {
+.searchResultsBlock{
     width: 100%;
     overflow-y: auto;
     @include mut.flexed($direction: column);
     @include mut.rem-padded(12px, 0, 12px, 12px);
 
-    p {
+    p{
         @include mut.rem-margined($right: 20px, $left: 20px);
     }
 }
 
 @media screen and (max-width: 1024px) {
-    .searchResultsBlock {
+    .searchResultsBlock{
         width: 100vw;
         @include mut.rem-padded(6px, 6px, 6px, 6px);
         overflow-y: auto;
-
-        p {
+        
+        p{
             @include mut.rem-margined(13px, 20px, 13px, 20px);
         }
     }

@@ -5,73 +5,71 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .timelineItem {
-    border-radius: 30px;
-    align-self: center;
-    @include mut.sized(604px, 366px);
+  border-radius: 30px;
+  align-self: center;
+  @include mut.sized(604px, 366px);
 
-    @include vnd.vendored(transition, 'backdrop-filter 300ms ease-in');
+  @include vnd.vendored(transition, 'backdrop-filter 300ms ease-in');
 
-    &:hover {
-        cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .timelineItemContent {
-    padding: f.pxToRem(24px) f.pxToRem(26px);
+  padding: f.pxToRem(24px) f.pxToRem(26px);
 
-    .timelineItemMetadata {
-        @include mut.truncated($line-num: 1);
-        @include mut.with-font($font-weight: 600);
-        color: c.$darker-gray-color;
-    }
+  .timelineItemMetadata {
+    @include mut.truncated($line-num: 1);
+    @include mut.with-font($font-weight: 600);
+    color: c.$darker-gray-color;
+  }
 
-    .timelineItemTitle {
-        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
-        margin: f.pxToRem(20px) 0;
+  .timelineItemTitle {
+    @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
+    margin: f.pxToRem(20px) 0;
 
-        color: c.$dark-red-color;
-        @include mut.truncated($line-num: 1);
-    }
+    color: c.$dark-red-color;
+    @include mut.truncated($line-num: 1);
+  }
 
-    .timelineItemDescription {
-        @include mut.with-font($font-weight: 500);
-        color: c.$dark-gray-color;
-        word-wrap: break-word;
-    }
+  .timelineItemDescription {
+    @include mut.with-font($font-weight: 500);
+    color: c.$dark-gray-color;
+    word-wrap: break-word;
+  }
 }
 
 .historicalContext {
-    @include mut.with-font($font-weight: 600);
-    color: c.$darker-gray-color;
+  @include mut.with-font($font-weight: 600);
+  color: c.$darker-gray-color;
 }
 
 @media screen and (max-width: 1024px) {
-    .timelineItem {
-        @include mut.sized(299px, 190px);
-        border-radius: 15px;
+  .timelineItem{
+    @include mut.sized(299px, 190px);
+    border-radius: 15px;
+    .timelineItemContent{
+      padding: f.pxToRem(13px);
 
-        .timelineItemContent {
-            padding: f.pxToRem(13px);
+      .timelineItemMetadata{
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
+      }
+      .timelineItemTitle{
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+        line-height: 16px;
+        margin: f.pxToRem(5px) 0;
+      }
 
-            .timelineItemMetadata {
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
-            }
-
-            .timelineItemTitle {
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
-                line-height: 16px;
-                margin: f.pxToRem(5px) 0;
-            }
-
-            .timelineItemDescription {
-                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
-                line-height: 14px;
-            }
-        }
-
-        .historicalContext {
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
-            line-height: 16px;
-        }
+      .timelineItemDescription{
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
+        line-height: 14px;
+      }
     }
+
+    .historicalContext{
+      @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 12px);
+      line-height: 16px;
+    }
+  }
 }

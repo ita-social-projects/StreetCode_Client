@@ -30,7 +30,6 @@ export default class StreetcodesByTagStore {
                 figure.tags = [];
                 return figure;
             })));
-        } catch (error: unknown) { /* empty */
-        }
+        } catch (error: unknown) { /* empty */ }
     };
 }

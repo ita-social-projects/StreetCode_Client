@@ -98,13 +98,10 @@ const JobsTable = () => {
             key: 'status',
 
             render: (status: boolean, job: JobShort) => (
-                <Dropdown
-                    menu={menuProps}
-                    trigger={['click']}
-                >
+                <Dropdown menu={menuProps} trigger={['click']}>
                     <Button onClick={() => setCurrentId(job.id)}>
                         <Space>
-                            {job.status === false ? 'Не активна' : 'Активна'}
+                            { job.status === false ? 'Не активна' : 'Активна' }
                             <DownOutlined />
                         </Space>
                     </Button>

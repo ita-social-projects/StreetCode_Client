@@ -29,8 +29,7 @@ export default class StreetcodesCatalogStore {
                     this.moreThenEight = true;
                 }
             }
-        } catch (error) {
-        }
+        } catch (error) {}
     };
 
     get getCatalogStreetcodesArray() {

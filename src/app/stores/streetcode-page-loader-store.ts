@@ -13,7 +13,7 @@ export default class StreetcodePageLoaderStore {
         this.loadedBlocks += 1;
     }
 
-    get isPageLoaded(): boolean {
+    get isPageLoaded():boolean {
         return this.loadedBlocks >= this.allBlocks;
     }
 }

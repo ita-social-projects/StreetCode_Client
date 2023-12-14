@@ -7,22 +7,28 @@ const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
     useEffect(() => {
         const listener = (event: Event) => {
             const nodeTarget = event.target as Node;
-            if (refArray.length === 1) {
+            if(refArray.length === 1) {
                 if ((refArray[0].current && !refArray[0].current.contains(nodeTarget))) {
                     handler();
-                } else {
-
                 }
-            } else if (refArray.length === 2) {
-                if ((refArray[0].current && !refArray[0].current.contains(nodeTarget) && !refArray[1].current)
+                else {
+                    return;
+                };
+            }
+            else {
+                if(refArray.length === 2) {
+                    if ((refArray[0].current && !refArray[0].current.contains(nodeTarget) && !refArray[1].current) 
                         || ((refArray[0].current && !refArray[0].current.contains(nodeTarget)) && (refArray[1].current && !refArray[1].current.contains(nodeTarget)))
-                ) {
-                    handler();
-                } else {
-
+                    ) {
+                        handler();
+                    }
+                    else {
+                        return;
+                    };
                 }
-            } else {
-
+                else {
+                    return;
+                }
             }
         };
 
@@ -32,6 +38,6 @@ const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
             document.removeEventListener('mousedown', listener);
         };
     }, [refArray, handler]);
-};
+}
 
 export default useOnClickOutside;

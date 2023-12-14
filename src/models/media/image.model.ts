@@ -15,12 +15,11 @@ export enum ImageAssigment {
 }
 
 export interface ImageCreate {
-    title?: string;
+    title?: string ;
     baseFormat: string;
     mimeType: string;
     extension: string;
 }
-
 export interface ImageDetails {
     id: number;
     title?: string;

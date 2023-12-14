@@ -25,23 +25,20 @@ export default class RelatedFiguresStore {
     public fetchRelatedFiguresByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalRelatedFiguresMap = await relatedFiguresApi.getByStreetcodeId(streetcodeId);
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public fetchRelatedFiguresByTagId = async (tagId: number) => {
         try {
             this.setInternalRelatedFiguresMap = await relatedFiguresApi.getByTagId(tagId);
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public createRelatedFigure = async (relatedFigure: RelatedFigure) => {
         try {
             await relatedFiguresApi.create(relatedFigure);
             this.setRelatedFigureItem(relatedFigure);
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public updateRelatedFigure = async (relatedFigure: RelatedFigure) => {
@@ -54,8 +51,7 @@ export default class RelatedFiguresStore {
                 };
                 this.setRelatedFigureItem(updatedRelatedFigure as RelatedFigure);
             });
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteRelatedFigure = async (relatedFigureId: number) => {
@@ -64,7 +60,6 @@ export default class RelatedFiguresStore {
             runInAction(() => {
                 this.relatedFiguresMap.delete(relatedFigureId);
             });
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 }

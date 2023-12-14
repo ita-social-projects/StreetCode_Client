@@ -17,11 +17,7 @@ const TeamMemberLinks = ({ link }: Props) => {
     const LogoComponent = LogoType[link.logoType];
 
     return (
-        <a
-            href={link.targetUrl}
-            target="_blank"
-            rel="noreferrer"
-        >
+        <a href={link.targetUrl} target="_blank" rel="noreferrer">
             <LogoComponent />
         </a>
     );

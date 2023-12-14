@@ -1,13 +1,13 @@
 import './MainBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
 import BreadCrumb from '@streetcode/MainBlock/BreadCrumb/BreadCrumb.component';
 import StreetcodeCard from '@streetcode/MainBlock/StreetcodeCard/StreetcodeCard.component';
 
 import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
-import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+import { useEffect, useState } from 'react';
+import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
@@ -15,12 +15,13 @@ interface Props {
     streetcode?: Streetcode,
 }
 
-const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode }: Props) => {
+
+const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode } : Props) =>{
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
     useEffect(() => {
         const hash = getUrlHash(location);
-        if (!isScrolled && hash === '') {
+        if (!isScrolled && hash === ''){
             setTimeout(() => {
                 window.scrollTo(0, 0);
                 setIsScrolled(true);
@@ -28,15 +29,9 @@ const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode }: Props) => {
         }
     });
     return (
-        <div
-            id="mainBlock"
-            className="mainBlock"
-        >
+        <div id="mainBlock" className="mainBlock">
             <div className="mainContainer">
-                <BreadCrumb
-                    separator={<div className="separator" />}
-                    streetcode={streetcode}
-                />
+                <BreadCrumb separator={<div className="separator" />} streetcode={streetcode} />
                 <div className="blockCentering">
                     <div className="mainContent">
                         <StreetcodeCard
@@ -50,6 +45,8 @@ const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode }: Props) => {
             <ListenTextModal />
         </div>
     );
-};
+}
+
+    
 
 export default observer(MainBlock);

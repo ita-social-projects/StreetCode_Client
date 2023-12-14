@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
+import { toast } from 'react-toastify';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 
 import { RelatedTerm } from '@/models/streetcode/text-contents.model';
@@ -28,12 +29,11 @@ export default class RelatedTermsStore {
     public fetchRelatedTermsByTermId = async (id: number) => {
         try {
             this.setRelatedTermMap = await relatedTermApi.getAllByTermId(id);
-        } catch (error) {
-        }
+        } catch (error) {}
     };
 
     public createRelatedTerm = async (word: string, termId: number) => {
-        const newRelatedTerm: RelatedTerm = {
+        const newRelatedTerm : RelatedTerm = {
             id: 0,
             word,
             termId,
@@ -61,7 +61,6 @@ export default class RelatedTermsStore {
                 };
                 this.setRelatedTermItem(updateRelatedTerm as RelatedTerm);
             });
-        } catch (error) {
-        }
+        } catch (error) {}
     };
 }

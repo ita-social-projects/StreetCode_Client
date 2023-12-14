@@ -6,7 +6,6 @@ import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.componen
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
-import dayjs from 'dayjs';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
@@ -15,6 +14,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
+import dayjs from 'dayjs';
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -80,10 +80,7 @@ const Newss: React.FC = observer(() => {
                 style: { padding: '0', margin: '0' },
             }),
             render: (value: string, record) => (
-                <div
-                    key={value}
-                    className="partner-table-item-name"
-                >
+                <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
                 </div>
             ),
@@ -94,10 +91,7 @@ const Newss: React.FC = observer(() => {
             key: 'action',
             width: '10%',
             render: (value, news, index) => (
-                <div
-                    key={`${news.id}${index}1`}
-                    className="partner-page-actions"
-                >
+                <div key={`${news.id}${index}1`} className="partner-page-actions">
                     <DeleteOutlined
                         key={`${news.id}${index}`}
                         className="actionButton"
@@ -149,10 +143,7 @@ const Newss: React.FC = observer(() => {
                     rowKey="id"
                 />
             </div>
-            <NewsModal
-                open={modalAddOpened}
-                setIsModalOpen={setModalAddOpened}
-            />
+            <NewsModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <NewsModal
                 open={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}

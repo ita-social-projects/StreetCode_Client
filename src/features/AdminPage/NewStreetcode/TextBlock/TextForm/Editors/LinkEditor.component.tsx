@@ -84,10 +84,7 @@ const LinkEditor = ({
             name="video"
             label="Відео"
             // eslint-disable-next-line max-len
-            rules={[{
-                pattern: youtubeRegex,
-                message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL',
-            }]}
+            rules={[{ pattern: youtubeRegex, message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL' }]}
         >
             <div className="youtube-block">
                 <Input
@@ -110,10 +107,7 @@ const LinkEditor = ({
                     inputInfo?.link && showPreview ? (
                         <div>
                             <h4>Попередній перегляд</h4>
-                            <Youtube
-                                opts={opts}
-                                videoId={youtubeId}
-                            />
+                            <Youtube opts={opts} videoId={youtubeId} />
                         </div>
                     ) : (
                         <div />

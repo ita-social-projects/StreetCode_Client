@@ -1,7 +1,8 @@
 import './TeamComponent.styles.scss';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
+import NewsApi from '@api/news/news.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Image from '@models/media/image.model';
 
@@ -48,7 +49,7 @@ const TeamComponent = () => {
             const response = await TeamApi.getAllMain();
             setTeam(response);
 
-            const newImages: Image[] = [];
+            const newImages : Image[] = [];
             for (const teammate of response) {
                 await ImagesApi.getById(teammate.imageId)
                     .then((img) => {
@@ -56,22 +57,14 @@ const TeamComponent = () => {
                         setImages(newImages);
                     });
             }
-        } catch (error) {
-        }
+        } catch (error) {}
     });
 
     return (
         (team.length > 0)
             ? (
-                <div
-                    id="mainBlock"
-                    className="teamComponent"
-                >
-                    <Heading
-                        blockName="Команда"
-                        buttonName="Вся команда"
-                        setActionOnClick={handleButtonClick}
-                    />
+                <div id="mainBlock" className="teamComponent">
+                    <Heading blockName="Команда" buttonName="Вся команда" setActionOnClick={handleButtonClick} />
                     <div className="mainContainer">
                         <div className="blockCenter">
                             <div className="mainContent">
@@ -79,14 +72,8 @@ const TeamComponent = () => {
                                     {...props}
                                 >
                                     {team.map((member, index) => (
-                                        <div
-                                            key={member.id}
-                                            className="slider-item"
-                                        >
-                                            <TeamItemSlider
-                                                team={member}
-                                                image={images[index]}
-                                            />
+                                        <div key={member.id} className="slider-item">
+                                            <TeamItemSlider team={member} image={images[index]} />
                                         </div>
                                     ))}
                                 </SlickSlider>
@@ -94,11 +81,8 @@ const TeamComponent = () => {
                         </div>
                         {windowsize.width <= 480
                             && (
-                                <button
-                                    className="redirectButton"
-                                    onClick={handleButtonClick}
-                                >
-                                    Побачити всю команду
+                                <button className="redirectButton" onClick={handleButtonClick}>
+                                Побачити всю команду
                                 </button>
                             )}
                     </div>

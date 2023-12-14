@@ -6,14 +6,14 @@ import { NewsWithUrl } from '@models/news/news.model';
 import { alsoReadArticleClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface RandomNewsBlockProps {
-    newsValue: NewsWithUrl | undefined;
+  newsValue: NewsWithUrl | undefined;
 }
 
 const RandomNewsBlock: React.FC<RandomNewsBlockProps> = ({ newsValue }) => (
     <div className={`randomNewsBlock ${newsValue?.news.url as unknown as string === newsValue?.randomNews.randomNewsUrl ? 'toHide' : ''}`}>
         <div className="randomNewsLink">
             <div className="additionalNewsText">
-                Також читайте:
+        Також читайте:
             </div>
             <div className="randomNewsTitleAndButtn">
                 {newsValue?.randomNews.title}

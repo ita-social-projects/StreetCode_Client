@@ -32,11 +32,11 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
             }
 
             @media (min-width: 768px) and (max-width: 1024px) {
-                .slick-center {
+                .slick-center{
                     padding: 0 f.pxToRem(20px);
                 }
 
-                .slick-list {
+                .slick-list{
                     height: 30rem;
                 }
             }
@@ -46,7 +46,7 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
             width: unset !important;
 
             @media screen and (max-width: 767px) {
-                width: 100% !important;
+                    width: 100% !important;
             }
         }
 

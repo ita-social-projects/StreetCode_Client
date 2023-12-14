@@ -14,23 +14,19 @@
 
 .BarContainer {
     @include mut.flexed(column, $align-items: flex-start, $gap: 10px);
-
+  
     position: fixed;
-
     .Link {
-        color: black;
+        color:black;
         margin-bottom: 10px;
-
         &:hover {
             cursor: pointer;
             color: c.$dark-red-color
         }
-
         &:focus {
             outline: none;
             box-shadow: none;
-        }
-
+          }
         @include vnd.vendored(transition, 'scale .3s ease');
     }
 }

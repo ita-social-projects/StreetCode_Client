@@ -2,7 +2,6 @@ import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -10,8 +9,9 @@ import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFa
 
 import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 import { Fact } from '@/models/streetcode/text-contents.model';
+import { useSearchParams } from 'react-router-dom';
+import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -32,7 +32,7 @@ const InterestingFactsComponent = () => {
                         res[index].image = img;
                     }))).then(() => {
                         setSliderArray(res.length === 3
-                        || res.length === 2
+                            || res.length === 2
                             ? res.concat(res)
                             : res);
                     });
@@ -44,17 +44,17 @@ const InterestingFactsComponent = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const factID = Number(searchParams.get('factId'));
-    let initialSlideIndex = sliderArray.findIndex((fact) => fact.id === factID);
-    if (initialSlideIndex === -1) initialSlideIndex = 0;
+    let initialSlideIndex = sliderArray.findIndex(fact => fact.id === factID);
+    if(initialSlideIndex === -1) initialSlideIndex = 0;
 
     useEffect(() => {
         const hash = getUrlHash(location);
-        if (!isScrolled && hash === 'wow-facts') {
+        if (!isScrolled && hash === 'wow-facts'){
             const element = document.getElementById(hash);
-
+    
             setTimeout(() => {
-                if (element !== null) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if(element !== null) {
+                    element.scrollIntoView({behavior: "smooth", block: "center"});
                     setIsScrolled(true);
                 }
             }, 1000);

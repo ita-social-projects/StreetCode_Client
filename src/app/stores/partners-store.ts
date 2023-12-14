@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import partnersApi from '@api/partners/partners.api';
 import Partner, { PartnerCreateUpdate, PartnerShort } from '@models/partners/partners.model';
 
@@ -20,11 +20,10 @@ export default class PartnersStore {
         this.PartnerMap.set(partner.id, partner);
     };
 
-    public static async getAllPartnerShort(): Promise<PartnerShort[]> {
+    public static async getAllPartnerShort():Promise<PartnerShort[]> {
         try {
             return await partnersApi.getAllShort();
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
         return [];
     }
 
@@ -35,28 +34,25 @@ export default class PartnersStore {
     public getAll = async () => {
         try {
             this.setInternalMap(await partnersApi.getAll());
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap(await partnersApi.getByStreetcodeId(streetcodeId));
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public fetchPartnersAll = async () => {
         try {
             this.setInternalMap(await partnersApi.getAll());
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
-    public createPartner = async (partner: PartnerCreateUpdate): Promise<Partner | undefined> => {
+    public createPartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
         try {
             return await partnersApi.create(partner).then((created) => {
-                ImagesApi.getById(created.logoId).then((logo): Partner => ({ ...created, logo }))
+                ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
                     .then((p) => this.setItem(p));
                 return created;
             });
@@ -65,10 +61,10 @@ export default class PartnersStore {
         }
     };
 
-    public updatePartner = async (partner: PartnerCreateUpdate): Promise<Partner | undefined> => {
+    public updatePartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
         try {
             return await partnersApi.update(partner).then((created) => {
-                ImagesApi.getById(created.logoId).then((logo): Partner => ({ ...created, logo }))
+                ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
                     .then((p) => this.setItem(p));
                 return created;
             });
@@ -80,7 +76,6 @@ export default class PartnersStore {
     public static deletePartner = async (partnerId: number) => {
         try {
             await partnersApi.delete(partnerId);
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 }

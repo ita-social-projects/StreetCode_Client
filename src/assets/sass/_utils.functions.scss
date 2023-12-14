@@ -3,41 +3,37 @@
 $body-font-size: 16px;
 
 @function pxToRem($value) {
-    @if ($value == 0) {
-        @return 0;
-    }
-    @return math.div($value, $body-font-size) * 1rem;
+  @if ($value == 0) { @return 0; }
+  @return math.div($value, $body-font-size) * 1rem;
 }
 
 @function pxToEm($value, $context: $body-font-size) {
-    @if ($value == 0) {
-        @return 0;
-    }
-    @return #{math.div($value, $context)}em;
+  @if ($value == 0) { @return 0; }
+  @return #{math.div($value, $context)}em;
 }
 
 @function str-replace($string, $search, $replace: '') {
-    $index: str-index($string, $search);
+  $index: str-index($string, $search);
 
-    @if $index {
-        @return str-slice($string, 1, $index - 1) + $replace +
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
       str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
-    }
-    @return $string;
+  }
+  @return $string;
 }
 
 @function str-replace-all($strings, $search, $replace: '') {
-    @each $string in $strings {
-        $strings: set-nth($strings, index($strings, $string), str-replace($string, $search, $replace));
-    }
-    @return $strings;
+  @each $string in $strings {
+    $strings: set-nth($strings, index($strings, $string), str-replace($string, $search, $replace));
+  }
+  @return $strings;
 }
 
 @function map-to-rem($map) {
-    $new-map: ();
+  $new-map: ( );
 
-    @each $key, $value in $map {
-        $new-map: map-merge($new-map, ($key: str-replace(#{pxToRem($value)}, 'px')));
-    }
-    @return $new-map;
+  @each $key, $value in $map {
+    $new-map: map-merge($new-map, ($key: str-replace(#{pxToRem($value)}, 'px')));
+  }
+  @return $new-map;
 }

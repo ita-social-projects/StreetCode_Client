@@ -7,11 +7,16 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
-import TeamMember, { LogoType, Positions, TeamCreateUpdate, TeamMemberLinkCreateUpdate } from '@models/team/team.model';
+import TeamMember, {
+    LogoType, Positions,
+    TeamCreateUpdate, TeamMemberLinkCreateUpdate,
+} from '@models/team/team.model';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Checkbox, Form, Input, message, Modal, Popover, Select, UploadFile,
+    Button,
+    Checkbox,
+    Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -105,7 +110,7 @@ const TeamModal: React.FC<{
 
     const closeModal = () => {
         setIsModalOpen(false);
-    };
+    }
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
@@ -131,7 +136,7 @@ const TeamModal: React.FC<{
         try {
             await form.validateFields();
             form.submit();
-            message.success('Нового члена команди успішно додано!', 2);
+            message.success("Нового члена команди успішно додано!", 2)
         } catch (error) {
             message.config({
                 top: 100,
@@ -159,8 +164,9 @@ const TeamModal: React.FC<{
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
-        teamStore.getTeamArray.map((t) => t).forEach((t) => {
-            if (formValues.name == t.name || imageId.current == t.imageId) teamMember = t;
+        teamStore.getTeamArray.map((t) => t).forEach(t => {
+        if (formValues.name == t.name  || imageId.current == t.imageId)
+            teamMember = t;
         });
         if (teamMember) {
             team.id = teamMember.id;
@@ -230,14 +236,8 @@ const TeamModal: React.FC<{
             className="modalContainer"
             footer={null}
             closeIcon={(
-                <Popover
-                    content="Внесені зміни не будуть збережені!"
-                    trigger="hover"
-                >
-                    <CancelBtn
-                        className="iconSize"
-                        onClick={closeAndCleanData}
-                    />
+                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                 </Popover>
             )}
         >
@@ -251,15 +251,12 @@ const TeamModal: React.FC<{
                         <h2>
                             {teamMember ? 'Редагувати' : 'Додати'}
                             {' '}
-                            нового члена команди
+нового члена команди
                         </h2>
                     </div>
                     <div className="checkbox-container">
                         <Form.Item>
-                            <Checkbox
-                                checked={isMain}
-                                onChange={handleCheckboxChange}
-                            >
+                            <Checkbox checked={isMain} onChange={handleCheckboxChange}>
                                 Ключовий член команди
                             </Checkbox>
                         </Form.Item>
@@ -270,10 +267,7 @@ const TeamModal: React.FC<{
                         label="Прізвище та ім'я: "
                         rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
                     >
-                        <Input
-                            maxLength={41}
-                            showCount
-                        />
+                        <Input maxLength={41} showCount />
                     </Form.Item>
 
                     <Form.Item label="Позиції">
@@ -286,12 +280,7 @@ const TeamModal: React.FC<{
                                 onDeselect={onPositionDeselect}
                                 value={selectedPositions.map((x) => x.position)}
                             >
-                                {positions.map((t) => (
-                                    <Option
-                                        key={`${t.id}`}
-                                        value={t.position}
-                                    />
-                                ))}
+                                {positions.map((t) => <Option key={`${t.id}`} value={t.position} />)}
                             </Select>
                         </div>
                     </Form.Item>
@@ -299,10 +288,7 @@ const TeamModal: React.FC<{
                         name="description"
                         label="Опис: "
                     >
-                        <TextArea
-                            showCount
-                            maxLength={70}
-                        />
+                        <TextArea showCount maxLength={70} />
                     </Form.Item>
 
                     <Form.Item
@@ -332,8 +318,7 @@ const TeamModal: React.FC<{
                             listType="picture-card"
                             maxCount={1}
                             onPreview={(e) => {
-                                setFilePreview(e);
-                                setPreviewOpen(true);
+                                setFilePreview(e); setPreviewOpen(true);
                             }}
                             uploadTo="image"
                             onSuccessUpload={(image: Image) => {
@@ -351,11 +336,7 @@ const TeamModal: React.FC<{
                             <p>Виберіть чи перетягніть файл</p>
                         </FileUploader>
                     </Form.Item>
-                    <PreviewFileModal
-                        opened={previewOpen}
-                        setOpened={setPreviewOpen}
-                        file={filePreview}
-                    />
+                    <PreviewFileModal opened={previewOpen} setOpened={setPreviewOpen} file={filePreview} />
 
                 </Form>
             </div>
@@ -395,11 +376,7 @@ const TeamModal: React.FC<{
                         className="url-input"
                         name="url"
                     >
-                        <Input
-                            min={1}
-                            max={255}
-                            showCount
-                        />
+                        <Input min={1} max={255} showCount />
                     </Form.Item>
 
                     <Form.Item
@@ -413,11 +390,7 @@ const TeamModal: React.FC<{
                 {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
 
                 <div className="center">
-                    <Button
-                        disabled={fileList?.length === 0}
-                        className="streetcode-custom-button"
-                        onClick={handleOk}
-                    >
+                    <Button disabled={fileList?.length === 0}  className="streetcode-custom-button" onClick={handleOk}>
                         Зберегти
                     </Button>
                 </div>

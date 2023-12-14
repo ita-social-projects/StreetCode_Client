@@ -21,7 +21,7 @@ const InputPanel = ({ figures, options, handleAdd, onChange }: Props) => {
     useEffect(() => {
         if (figures.length > 0) {
             const filtered = options.filter((option) => figures.some((figure) => figure.id === option.id
-                    && figure.modelState === ModelState.Deleted)
+                && figure.modelState === ModelState.Deleted)
                 || !figures.some((figure) => figure.id === option.id));
 
             setFilteredOptions(filtered);
@@ -62,12 +62,8 @@ const InputPanel = ({ figures, options, handleAdd, onChange }: Props) => {
                 onChange={(value) => setRelation(value)}
                 value={relation}
             />
-            <Button
-                onClick={handleAddItem}
-                className="streetcode-custom-button button-margin-left"
-                type="primary"
-            >
-                Додати
+            <Button onClick={handleAddItem} className="streetcode-custom-button button-margin-left" type="primary">
+        Додати
             </Button>
         </div>
     );

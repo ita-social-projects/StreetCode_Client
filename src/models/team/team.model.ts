@@ -11,7 +11,6 @@ export default interface TeamMember {
     teamMemberLinks: TeamMemberLinkCreateUpdate[];
     positions: Positions[];
 }
-
 export interface TeamCreateUpdate {
     id: number;
     isMain: boolean;
@@ -21,24 +20,20 @@ export interface TeamCreateUpdate {
     teamMemberLinks: TeamMemberLinkCreateUpdate[];
     positions: Positions[];
 }
-
 export interface TeamMemberLinkCreateUpdate {
     id: number;
     targetUrl: string;
     logoType: number;
 }
-
 export interface TeamMemberLink {
     id: number;
     targetUrl: Url;
     logoType: number;
 }
-
 export interface Positions {
     id: number;
     position: string;
 }
-
 export enum LogoType {
     twitter = 0,
     instagram = 1,

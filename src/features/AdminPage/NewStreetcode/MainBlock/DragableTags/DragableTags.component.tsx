@@ -11,7 +11,7 @@ import { StreetcodeTag } from '@/models/additional-content/tag.model';
 
 import ClickableTagItem from './ClickableTagItem';
 
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number): Array<T> {
+function reorder<T>(list:Array<T>, startIndex:number, endIndex:number):Array<T> {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -21,7 +21,7 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number): Array
 
 interface Props {
     tags: StreetcodeTag[],
-    setTags: React.Dispatch<React.SetStateAction<StreetcodeTag[]>>
+    setTags:React.Dispatch<React.SetStateAction<StreetcodeTag[]>>
 }
 
 const DragableTags = React.memo(({ tags, setTags }: Props) => {
@@ -45,16 +45,9 @@ const DragableTags = React.memo(({ tags, setTags }: Props) => {
     });
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <StrictModeDroppable
-                droppableId="droppable"
-                direction="horizontal"
-            >
+            <StrictModeDroppable droppableId="droppable" direction="horizontal">
                 {(prov) => (
-                    <div
-                        {...prov.droppableProps}
-                        ref={prov.innerRef}
-                        className="draggable-tag-list"
-                    >
+                    <div {...prov.droppableProps} ref={prov.innerRef} className="draggable-tag-list">
                         {tags.map((tag, index) => (
                             <Draggable
                                 key={tag.id}

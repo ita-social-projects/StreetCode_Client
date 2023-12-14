@@ -1,6 +1,6 @@
 import './ScrollToTopBtn.styles.scss';
 
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import ScrollBtn from '@assets/images/utils/ScrollToTopBtn.svg';
 import useEventListener from '@hooks/external/useEventListener.hook';
 

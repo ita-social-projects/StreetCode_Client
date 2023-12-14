@@ -65,8 +65,7 @@ const DonationBlock = () => {
                 const response = await DonationApi.create(donation);
                 donateEvent('support_us_page_donation_block');
                 window.open(response.pageUrl);
-            } catch (err) {
-            }
+            } catch (err) {}
         }
     };
 
@@ -125,9 +124,7 @@ const DonationBlock = () => {
                     checked={isCheckboxChecked}
                     onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                 >
-                    Я даю згоду на обробку моїх
-                    {' '}
-                    <a href="/privacy-policy">персональних даних</a>
+                    Я даю згоду на обробку моїх <a href='/privacy-policy'>персональних даних</a>
                 </Checkbox>
             </div>
             <button

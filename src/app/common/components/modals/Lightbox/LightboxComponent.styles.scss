@@ -43,7 +43,7 @@
         padding: 0 !important;
     }
 
-    @media screen and (min-width: 1025px) {
+    @media screen and (min-width:1025px) {
 
         .yarl__slide_description {
             @include mut.rem-margined($top: 5px, $left: 50px);
@@ -75,7 +75,7 @@
         }
     }
 
-    @media screen and (max-width: 1025px) {
+    @media screen and (max-width:1025px) {
         .yarl__slide_description_container {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(26.5px);

@@ -37,7 +37,6 @@
     .partnersBlock {
         .keyPartnersBlock {
             @include mut.rem-margined($top: 0px, $bottom: 30px);
-
             .partnersItem {
                 @include mut.rem-margined($top: 15px, $right: 10px, $bottom: 10px, $left: 15px);
                 @include mut.sized($width: 350px, $height: 106px);

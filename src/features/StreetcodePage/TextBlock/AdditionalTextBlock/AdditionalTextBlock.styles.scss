@@ -2,7 +2,6 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.fonts.scss" as fon;
-
 .additionalText {
 
     width: 50%;
@@ -13,7 +12,7 @@
     line-height: f.pxToRem(26px);
     font-style: italic;
     display: flex;
-    justify-content: flex-end;
+    justify-content:flex-end;
 
     p {
         font-family: 'Closer Text' !important;
@@ -29,7 +28,7 @@
 @media screen and (max-width: 1024px) {
     .additionalText {
         width: 100%;
-        @include mut.rem-margined($top: 20px, $left: 10px, $bottom: 20px, $right: 10px);
+        @include mut.rem-margined($top: 20px, $left: 10px, $bottom: 20px, $right: 10px );
     }
 }
 

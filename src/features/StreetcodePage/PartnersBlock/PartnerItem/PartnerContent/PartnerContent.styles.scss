@@ -20,11 +20,11 @@
     }
 }
 
-.partnerContentLogo {
+.partnerContentLogo{
     @include mut.sized($width: 108px, $height: 100%);
     @include mut.flex-centered();
 
-    img {
+    img{
         @include mut.sized($width: 104px);
     }
 }
@@ -72,9 +72,8 @@
         border-radius: 30px;
     }
 }
-
 @media screen and (max-width: 480px) {
-    .partnerContent {
+    .partnerContent{
         width: pxToRem(280px);
     }
 }

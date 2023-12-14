@@ -9,8 +9,7 @@ interface Props {
     figure: RelatedFigureCreateUpdate
     handleDelete: (id: number) => void;
 }
-
-const RelatedItem = ({ figure, handleDelete }: Props) => {
+const RelatedItem = ({ figure, handleDelete } : Props) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const handleRemove = useCallback(() => {
         setVisibleModal(true);

@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     gap: f.pxToRem(24px);
-
+    
     &ImageContainer {
         display: flex;
         justify-content: center;
@@ -44,23 +44,23 @@
         display: flex;
         gap: 14px;
         @media screen and (min-width: 1024px) {
-            transform: scale(1.4);
+        transform: scale(1.4);
         }
     }
 
-    @media screen and (max-width: s.$smallDesctop) {
+    @media screen and (max-width: s.$smallDesctop)
+    {
         max-width: f.pxToRem(258px);
-
+        
         &ImageContainer {
-            max-height: f.pxToRem(372px);
-            max-width: f.pxToRem(250px);
-        }
+           max-height: f.pxToRem(372px);
+           max-width: f.pxToRem(250px);
+        } 
         &TextContainer {
             h2 {
                 font-size: 24px !important;
             }
-
-            p {
+            p { 
                 word-break: word-break;
                 font-size: 15px !important;
             }

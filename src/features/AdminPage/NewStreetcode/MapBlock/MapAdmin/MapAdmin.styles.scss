@@ -5,7 +5,7 @@
     height: 100vh;
     width: 100%;
     position: relative;
-}
+  }
 
 .mapCentered {
     @include mut.flex-centered();
@@ -14,18 +14,18 @@
 .leaflet-control-container {
     position: absolute;
     bottom: 10px;
-    left: 1px;
+    left:1px;
 }
 
 .custom-zoom-control {
     position: absolute;
     top: 100rem;
     left: 100rem;
-}
+  }
 
-.tableContainer {
+  .tableContainer {
     position: absolute;
     width: 100%;
     padding: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-}
+  }

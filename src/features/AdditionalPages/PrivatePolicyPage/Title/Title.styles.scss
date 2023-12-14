@@ -2,44 +2,43 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-.privatePolicyContainer {
-    .titleContainer {
+.privatePolicyContainer{
+    .titleContainer{
         margin-bottom: f.pxToRem(60px);
-
-        .titleSmall {
+    
+        .titleSmall{
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 12px);
             line-height: 14px;
             color: #891F16;
             text-align: right;
-            text-transform: uppercase;
+            text-transform: uppercase;          
         }
-
-        .titleBig {
+    
+        .titleBig{
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
             line-height: 53px;
             color: #1D1F23;
-            margin-top: f.pxToRem(24px);
+            margin-top: f.pxToRem(24px);  
         }
-
-        .subTitle {
+    
+        .subTitle{
             @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
             line-height: 26px;
             color: #891F16;
-
-            margin-top: f.pxToRem(16px);
+    
+            margin-top: f.pxToRem(16px);    
         }
     }
 }
 
 @media screen and (max-width: 1024px) {
-    .privatePolicyContainer {
-        .titleContainer {
-            .titleBig {
+    .privatePolicyContainer{
+        .titleContainer{
+            .titleBig{
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
                 line-height: 42px;
             }
-
-            .subTitle {
+            .subTitle{
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
                 line-height: 16px;
             }

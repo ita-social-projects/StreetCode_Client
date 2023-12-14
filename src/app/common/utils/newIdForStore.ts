@@ -1,4 +1,4 @@
-const getNewMinNegativeId = (arr: number[]): number => {
+const getNewMinNegativeId = (arr: number[]):number => {
     if (arr.length > 0) {
         const min = Math.min(...arr);
         if (min < 0) {

@@ -3,162 +3,161 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
-
 $StbgImg: '@assets/images/donates/bgStrLogo.webp';
 
 .surveyModal {
-    width: f.pxToRem(748px) !important;
-    height: f.pxToRem(346px);
+  width: f.pxToRem(748px) !important;
+  height: f.pxToRem(346px);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    &.ant-modal {
-        .ant-modal-content {
-            height: inherit;
+  &.ant-modal {
+    .ant-modal-content {
+      height: inherit;
 
-            @include mut.full-rounded(30px, $overflow: visible);
+      @include mut.full-rounded(30px, $overflow: visible);
 
-            @include mut.bg-image($StbgImg, f.pxToRem(128px), no-repeat);
-            background-position: left f.pxToRem(310px) top f.pxToRem(100px);
-            padding: f.pxToRem(40px) f.pxToRem(20px) !important;
-            box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
-        }
-
-        .ant-modal-close {
-            @include mut.positioned-as(absolute, $left: 690px, $top: -25px);
-            @include mut.circular(80px, c.$pure-white-color);
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-            &:hover {
-                background-color: c.$modal-hover-color;
-            }
-
-            .ant-modal-close-x {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
+      @include mut.bg-image($StbgImg, f.pxToRem(128px), no-repeat);
+      background-position: left f.pxToRem(310px) top f.pxToRem(100px);
+      padding: f.pxToRem(40px) f.pxToRem(20px) !important;
+      box-shadow: 0 7px 11px 2px rgba(0, 0, 0, 0.25);
     }
 
-    .surveyModalContent {
-        @include mut.flex-centered($direction: column, $gap: 20px);
-        text-align: center;
-        line-height: normal;
+    .ant-modal-close {
+      @include mut.positioned-as(absolute, $left: 690px, $top: -25px);
+      @include mut.circular(80px, c.$pure-white-color);
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-        > h1 {
-            color: c.$pure-black-color;
-            height: f.pxToRem(26px);
-            @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
-        }
+      &:hover {
+        background-color: c.$modal-hover-color;
+      }
 
-        > h3 {
-            height: f.pxToRem(38px);
-            @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
-        }
-
-        .surveyModalParagraph3 {
-            width: f.pxToRem(552px);
-        }
-
-        .surveyModalBtnContainer {
-            @include mut.sized(180px, 46px);
-            @include mut.full-rounded(10px);
-            background-color: c.$accented-red-color;
-            border: 0;
-
-            a {
-                @include mut.with-font($font-size: 14px, $font-weight: 500);
-                border-width: 3px;
-                border-color: c.$pure-white-color;
-                color: c.$pure-white-color;
-            }
-
-            &:hover {
-                box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
-                border-color: c.$accented-red-color;
-            }
-        }
+      .ant-modal-close-x {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
+  }
+
+  .surveyModalContent {
+    @include mut.flex-centered($direction: column, $gap: 20px);
+    text-align: center;
+    line-height: normal;
+
+    >h1 {
+      color: c.$pure-black-color;
+      height: f.pxToRem(26px);
+      @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
+    }
+
+    >h3 {
+      height: f.pxToRem(38px);
+      @include mut.with-font(ft.$roboto-font, $font-size: 16px, $font-weight: 300);
+    }
+
+    .surveyModalParagraph3 {
+      width: f.pxToRem(552px);
+    }
+
+    .surveyModalBtnContainer {
+      @include mut.sized(180px, 46px);
+      @include mut.full-rounded(10px);
+      background-color: c.$accented-red-color;
+      border: 0;
+
+      a {
+        @include mut.with-font($font-size: 14px, $font-weight: 500);
+        border-width: 3px;
+        border-color: c.$pure-white-color;
+        color: c.$pure-white-color;
+      }
+
+      &:hover {
+        box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
+        border-color: c.$accented-red-color;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 1024px) {
-    .surveyModal {
-        &.ant-modal {
-            .ant-modal-content {
-                background-position: center;
-            }
+  .surveyModal {
+    &.ant-modal {
+      .ant-modal-content {
+        background-position: center;
+      }
 
-            .ant-modal-close {
-                @include mut.sizedImportant(60px, 60px);
-                @include mut.positioned-as(absolute, $left: 93.5%, $top: -25px);
-                @include mut.circular(65px, c.$pure-white-color);
+      .ant-modal-close {
+        @include mut.sizedImportant(60px, 60px);
+        @include mut.positioned-as(absolute, $left: 93.5%, $top: -25px);
+        @include mut.circular(65px, c.$pure-white-color);
 
-                .ant-modal-close-x svg {
-                    transform: scale(0.9);
-                }
-            }
+        .ant-modal-close-x svg {
+          transform: scale(0.9);
         }
+      }
     }
+  }
 }
 
 @media screen and (max-width: 767px) {
-    .surveyModal {
+  .surveyModal {
+    height: auto;
+
+    .surveyModalContent {
+      >h3 {
         height: auto;
+      }
 
-        .surveyModalContent {
-            > h3 {
-                height: auto;
-            }
-
-            .surveyModalParagraph3 {
-                width: auto;
-            }
-        }
+      .surveyModalParagraph3 {
+        width: auto;
+      }
     }
+  }
 }
 
 @media screen and (max-width: 480px) {
-    .surveyModal {
-        @include mut.sizedImportant(340px, 498px);
-        max-width: f.pxToRem(340px);
+  .surveyModal {
+    @include mut.sizedImportant(340px, 498px);
+    max-width: f.pxToRem(340px);
 
-        &.ant-modal {
-            .ant-modal-content {
-                @include mut.bg-image($StbgImg, 35%, no-repeat);
-                background-position: left f.pxToRem(102px) top f.pxToRem(171px);
-            }
+    &.ant-modal {
+      .ant-modal-content {
+        @include mut.bg-image($StbgImg, 35%, no-repeat);
+        background-position: left f.pxToRem(102px) top f.pxToRem(171px);
+      }
 
-            .ant-modal-close {
-                @include mut.positioned-as($position: absolute, $left: 309px, $top: -15px);
-                @include mut.sizedImportant(40px, 40px);
-                @include mut.circular(65px, c.$pure-white-color);
+      .ant-modal-close {
+        @include mut.positioned-as($position: absolute, $left: 309px, $top: -15px);
+        @include mut.sizedImportant(40px, 40px);
+        @include mut.circular(65px, c.$pure-white-color);
 
-                .ant-modal-close-x svg {
-                    transform: scale(0.6);
-                }
-            }
+        .ant-modal-close-x svg {
+          transform: scale(0.6);
         }
-
-        .surveyModalContent {
-            > h3 {
-                width: 97%;
-            }
-
-            .surveyModalParagraph1 {
-                height: f.pxToRem(95px);
-            }
-
-            .surveyModalParagraph2 {
-                height: f.pxToRem(114px);
-            }
-
-            .surveyModalParagraph3 {
-                height: f.pxToRem(57px);
-                width: 97%;
-            }
-        }
+      }
     }
+
+    .surveyModalContent {
+      >h3 {
+        width: 97%;
+      }
+
+      .surveyModalParagraph1 {
+        height: f.pxToRem(95px);
+      }
+
+      .surveyModalParagraph2 {
+        height: f.pxToRem(114px);
+      }
+
+      .surveyModalParagraph3 {
+        height: f.pxToRem(57px);
+        width: 97%;
+      }
+    }
+  }
 }

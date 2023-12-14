@@ -2,8 +2,8 @@ import './BreadCrumb.styles.scss';
 
 import { Breadcrumb } from 'antd';
 
-import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
 interface Props {
     separator?: JSX.Element | string;
@@ -11,14 +11,8 @@ interface Props {
 }
 
 const BreadCrumb = ({ separator = '->', streetcode }: Props) => (
-    <Breadcrumb
-        className="breadcrumbContainer"
-        separator={separator}
-    >
-        <Breadcrumb.Item
-            className="activeLink"
-            href={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
-        >
+    <Breadcrumb className="breadcrumbContainer" separator={separator}>
+        <Breadcrumb.Item className="activeLink" href={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>
             стріткоди
         </Breadcrumb.Item>
         <Breadcrumb.Item>

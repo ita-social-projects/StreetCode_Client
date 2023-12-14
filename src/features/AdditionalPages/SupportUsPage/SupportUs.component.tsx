@@ -1,10 +1,9 @@
 import './SupportUs.styles.scss';
 import '../ContactUsPage/Title/Title.styles.scss';
 
-import { useState } from 'react';
-
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { copyBankNumberEvent, donateEvent } from '@/app/common/utils/googleAnalytics.unility';
+import Footer from '@/app/layout/footer/Footer.component';
 import { useModalContext } from '@/app/stores/root-store';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
 import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
@@ -16,20 +15,21 @@ import QRCodeSmall from '@/assets/images/donates/donatesPage/qr-code-small.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 
 import DonationBlock from './components/DonationBlock.component';
+import { useState } from 'react';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useModalContext();
     const BANK_ACCOUNT = 'UA753057490000026003000018553';
 
     const windowSize = useWindowSize();
-
+    
     const [isCopied, setIsCopied] = useState(false);
 
     const handleAfterCopy = () => {
         setIsCopied(true);
         setTimeout(() => {
             setIsCopied(false);
-        }, 2000);
+        }, 2000 );
     };
 
     const handleCopy = async () => {
@@ -37,7 +37,7 @@ const SupportUs = () => {
             copyBankNumberEvent();
             await navigator.clipboard.writeText(BANK_ACCOUNT);
         } catch {
-            alert('No permission to copy bank account to the clipboard!');
+            alert("No permission to copy bank account to the clipboard!");
         }
     };
 
@@ -60,14 +60,11 @@ const SupportUs = () => {
                         {windowSize.width >= 480 && <>нас</>}
                     </div>
                     <div className="titleSmall">
-                        Привіт! Після всіх важливих сторінок нашої платформи ти нарешті тут — на не менш важливій
-                        сторінці твоєї залученості та підтримки.
+                        Привіт! Після всіх важливих сторінок нашої платформи ти нарешті тут — на не менш важливій сторінці твоєї залученості та підтримки.
                     </div>
                     <div className="text">
-                        Наша команда горить—палає місією «застріткодити всю Україну», розповісти про видатних Героїв та
-                        подати цікавенні факти з історії.
-                        Так, це ми. Але окрім внутрішніх волонтерських вогників наших сердець проєкту для стійкості та
-                        розвитку...
+                        Наша команда горить—палає місією «застріткодити всю Україну», розповісти про видатних Героїв та подати цікавенні факти з історії.
+                        Так, це ми. Але окрім внутрішніх волонтерських вогників наших сердець проєкту для стійкості та розвитку...
                     </div>
                 </div>
                 <div className="mainBlock">
@@ -104,10 +101,8 @@ const SupportUs = () => {
                                 та силу українців. Хіба можна таким не пишатися?
                             </p>
                             <p>
-                                Тож обирай зручний спосіб допомогти так, щоб проєкт пульсував та жив, а історія
-                                промовляла
-                                в міських просторах. З історії ми знаємо, що світ не без добрих людей, а Стріткод — не
-                                без
+                                Тож обирай зручний спосіб допомогти так, щоб проєкт пульсував та жив, а історія промовляла
+                                в міських просторах. З історії ми знаємо, що світ не без добрих людей, а Стріткод — не без
                                 добрих стріткодерів.
                             </p>
                         </div>
@@ -126,12 +121,7 @@ const SupportUs = () => {
                                         : undefined
                             }
                         </div>
-                        <button
-                            className="supportButton"
-                            onClick={handlePay}
-                        >
-Задонатити
-                        </button>
+                        <button className="supportButton" onClick={handlePay}>Задонатити</button>
                     </div>
                     <div className="block forCompanies">
                         <p className="heading">Для компаній</p>
@@ -143,12 +133,7 @@ const SupportUs = () => {
 
                             </p>
                         </div>
-                        <button
-                            className="supportButton"
-                            onClick={() => setModal('partners')}
-                        >
-Стати партнером
-                        </button>
+                        <button className="supportButton" onClick={() => setModal('partners')}>Стати партнером</button>
                     </div>
                     <div className="block bankAccount">
                         <p className="heading">За реквізитами</p>
@@ -163,17 +148,11 @@ const SupportUs = () => {
                             </div>
                         </div>
                         <div>
-                            <button
-                                className="supportButton withSvg"
-                                onClick={() => {
-                                    handleCopy();
-                                    handleAfterCopy();
-                                }}
-                            >
+                            <button className="supportButton withSvg" onClick={() => {handleCopy(); handleAfterCopy();}}>
                                 <span>Скопіювати рахунок UAH</span>
                                 <Copy />
                             </button>
-                            {isCopied && <div className="CoppyMessage">Скопійовано </div>}
+                            {isCopied && <div className='CoppyMessage'>Скопійовано  </div>}
                         </div>
 
                     </div>

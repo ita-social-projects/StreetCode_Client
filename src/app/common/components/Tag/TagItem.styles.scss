@@ -1,7 +1,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/_utils.functions.scss" as f;
-
 .tagItem {
     height: f.pxToRem(38px);
     @include mut.flex-centered();
@@ -14,7 +13,7 @@
     @include mut.with-font($font-weight: bold, $font-size: 15px);
 
     &:hover {
-        color: c.$dark-red-color;
-        border-color: c.$dark-red-color;
+      color: c.$dark-red-color;
+      border-color: c.$dark-red-color;
     }
-}
+  }

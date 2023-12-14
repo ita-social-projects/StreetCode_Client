@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable, observable } from 'mobx';
 
 import { StreetcodeShort } from '../../models/streetcode/streetcode-types.model';
 import StreetcodesApi from '../api/streetcode/streetcodes.api';
@@ -15,8 +15,7 @@ export default class StreetcodeShortStore {
         StreetcodesApi.getAllShort()
             .then((value) => {
                 this.streetcodes = value.map((s) => ({ id: s.id, title: s.title, index: s.index }));
-            }).catch((error) => {
-            });
+            }).catch((error) => {});
     };
 
     public addItemToArray = (item: StreetcodeShort) => {

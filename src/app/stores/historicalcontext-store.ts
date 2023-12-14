@@ -29,7 +29,6 @@ export default class HistoricalContextStore {
         try {
             const response = await HistoricalContextApi.getAll();
             this.setInternalMap(response);
-        } catch (error) { /* empty */
-        }
+        } catch (error) { /* empty */ }
     };
 }

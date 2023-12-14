@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import SliderProps, { defaultSliderProps } from '@features/SlickSlider';
 import useMobx from '@stores/root-store';
+import { useSearchParams } from 'react-router-dom';
 
 const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sliderProps }) => {
     const sliderRef = useRef<Slider>(null);
@@ -15,7 +15,7 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
 
     const [searchParams, setSearchParams] = useSearchParams();
     const timelineItemId = Number(searchParams.get('timelineItemId'));
-    const [timelineItemIndex, setTimelineItemIndex] = useState<number>(getTimelineItemArray.findIndex((timelineItem) => timelineItem.id === timelineItemId));
+    const [timelineItemIndex, setTimelineItemIndex] = useState<number>(getTimelineItemArray.findIndex(timelineItem => timelineItem.id === timelineItemId));
 
     useEffect(() => {
         if (sliderRef && sliderRef.current && timelineItemIndex < 0) {
@@ -32,7 +32,8 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
                 sliderRef.current.slickGoTo(sectionIdx);
             }
             swiped.current = false;
-        } else {
+        }
+        else {
             sliderRef?.current?.slickGoTo(timelineItemIndex);
             setActiveYear(new Date(getTimelineItemArray[timelineItemIndex].date).getFullYear());
             setTimelineItemIndex(-1);
@@ -62,16 +63,13 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
-                centerMode
+                centerMode={true}
                 afterChange={onAfterChange}
                 onSwipe={onSwipe}
                 slidesToShow={slideToShow}
             >
                 {children.map((slide, idx) => (
-                    <div
-                        key={idx}
-                        onClick={() => handleClick(idx)}
-                    >
+                    <div key={idx} onClick={() => handleClick(idx)}>
                         {slide}
                     </div>
                 ))}

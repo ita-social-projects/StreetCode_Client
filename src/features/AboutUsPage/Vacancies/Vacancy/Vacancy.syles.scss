@@ -15,14 +15,14 @@
             $title-max-lines: 1,
             $text-max-lines: 3);
 
-    .cardTextContainer {
+    .cardTextContainer{
         padding: 0;
 
-        &TopPart {
+        &TopPart{
             gap: f.pxToRem(10px);
         }
 
-        &Title {
+        &Title{
             font-size: f.pxToRem(32px) !important;
 
             @media screen and (max-width: s.$tablet) {
@@ -30,20 +30,20 @@
             }
         }
 
-        &SubTitle {
+        &SubTitle{
             color: c.$lighter-gray-color;
         }
 
-        &Text {
+        &Text{
             font-family: ft.$roboto-font !important;
-            font-weight: 300 !important;
+            font-weight: 300  !important;
 
             @media screen and (max-width: s.$phone) {
                 @include mut.truncated($line-num: 9);
             }
         }
 
-        &Button {
+        &Button{
             font-weight: 500;
             text-decoration: none;
         }

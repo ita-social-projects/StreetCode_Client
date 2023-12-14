@@ -13,21 +13,18 @@ export default class AudioStore {
         this.audio = audio;
     };
 
-    public fetchAudioByStreetcodeId = async (streetcodeId: number): Promise<Audio | undefined> => {
+    public fetchAudioByStreetcodeId = async (streetcodeId: number):Promise<Audio | undefined> => {
         try {
             return await audiosApi.getByStreetcodeId(streetcodeId).then((audio) => {
-                this.setItem(audio);
-                return audio;
+                this.setItem(audio); return audio;
             });
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public createAudio = async (audio: AudioCreate) => {
         try {
             await audiosApi.create(audio).then((newAudio) => this.setItem(newAudio));
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) { }
     };
 
     public updateAudio = async (audio: Audio) => {
@@ -36,8 +33,7 @@ export default class AudioStore {
             runInAction(() => {
                 this.setItem(audio as Audio);
             });
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 
     public deleteAudio = async (audioId: number) => {
@@ -46,7 +42,6 @@ export default class AudioStore {
             runInAction(() => {
                 this.setItem(undefined);
             });
-        } catch (error: unknown) {
-        }
+        } catch (error: unknown) {}
     };
 }

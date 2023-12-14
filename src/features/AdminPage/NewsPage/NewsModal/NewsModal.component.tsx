@@ -12,17 +12,24 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
-import { Editor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/**//Editor';
+import { Editor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { Editor as TinyMCEEditor } from 'tinymce/tinymce';
 
 import {
-    Button, ConfigProvider, DatePicker, Form, Input, message, Modal, Popover, UploadFile,
+    Button,
+    ConfigProvider,
+    DatePicker,
+    Form,
+    Input,
+    message, Modal,
+    Popover,
+    UploadFile,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
 
-/**/
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio from '@/models/media/audio.model';
@@ -30,12 +37,12 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
 const NewsModal: React.FC<{
-    newsItem?: News;
-    open: boolean;
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    afterSubmit?: (news: News) => void;
-    initialValue: any;
-    limit: any;
+  newsItem?: News;
+  open: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  afterSubmit?: (news: News) => void;
+  initialValue: any;
+  limit: any;
 }> = observer(({
     newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit,
 }) => {
@@ -238,14 +245,8 @@ const NewsModal: React.FC<{
                     className="modalContainer"
                     footer={null}
                     closeIcon={(
-                        <Popover
-                            content="Внесені зміни не будуть збережені!"
-                            trigger="hover"
-                        >
-                            <CancelBtn
-                                className="iconSize"
-                                onClick={closeAndCleanData}
-                            />
+                        <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                            <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                         </Popover>
                     )}
                 >
@@ -265,7 +266,7 @@ const NewsModal: React.FC<{
                                 <h2>
                                     {newsItem ? 'Редагувати' : 'Додати'}
                                     {' '}
-                                    Новину
+Новину
                                 </h2>
                             </div>
                             <Form.Item
@@ -273,10 +274,7 @@ const NewsModal: React.FC<{
                                 label="Заголовок: "
                                 rules={[{ required: true, message: 'Введіть заголовок' }]}
                             >
-                                <Input
-                                    maxLength={100}
-                                    showCount
-                                />
+                                <Input maxLength={100} showCount />
                             </Form.Item>
 
                             <Form.Item
@@ -287,7 +285,7 @@ const NewsModal: React.FC<{
                                     {
                                         pattern: /^[a-z-]+$/,
                                         message:
-                                            'Посилання має містити лише малі латинські літери та дефіс',
+                      'Посилання має містити лише малі латинські літери та дефіс',
                                     },
                                     {
                                         validator: async (_, value) => {
@@ -302,16 +300,10 @@ const NewsModal: React.FC<{
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={200}
-                                    showCount
-                                />
+                                <Input maxLength={200} showCount />
                             </Form.Item>
 
-                            <div
-                                className="required-text"
-                                title="Текст:"
-                            >
+                            <div className="required-text" title="Текст:">
                                 <span className="star">&#x204E;</span>
                                 <span>Текст:</span>
                             </div>
@@ -339,11 +331,11 @@ const NewsModal: React.FC<{
                                     // eslint-disable-next-line no-useless-concat
                                     toolbar: 'undo redo | bold italic | ' + 'removeformat ',
                                     content_style:
-                                        'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
+                    'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
                                 }}
                             />
                             <p>
-                                Залишок символів:
+             Залишок символів:
                                 {' '}
                                 {sizeLimit - textCount}
                                 {textCount > sizeLimit && (
@@ -382,7 +374,7 @@ const NewsModal: React.FC<{
                                                 name = file.name.toLowerCase();
                                             }
                                             if (name.endsWith('.jpeg') || name.endsWith('.png')
-                                                    || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
+                                                || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
                                                 return Promise.resolve();
                                             }
                                             // eslint-disable-next-line max-len
@@ -434,10 +426,7 @@ const NewsModal: React.FC<{
                                 label="Дата створення: "
                                 rules={[{ required: true, message: 'Введіть дату' }]}
                             >
-                                <DatePicker
-                                    showTime
-                                    allowClear={false}
-                                />
+                                <DatePicker showTime allowClear={false} />
                             </Form.Item>
                             <PreviewFileModal
                                 opened={previewOpen}
@@ -450,7 +439,7 @@ const NewsModal: React.FC<{
                                     className="streetcode-custom-button"
                                     onClick={() => handleOk()}
                                 >
-                                    Зберегти
+                  Зберегти
                                 </Button>
                             </div>
                         </Form>

@@ -37,11 +37,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
 
     return (
         <div className="topSliderContainer">
-            <LeftSliderArrow
-                className="slider-arrow"
-                alt="Previous"
-                onClick={handlePreviousSlide}
-            />
+            <LeftSliderArrow className="slider-arrow" alt="Previous" onClick={handlePreviousSlide} />
             <div className="topSlider">
                 <Swiper
                     slidesPerView={5}
@@ -76,11 +72,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                     ))}
                 </Swiper>
             </div>
-            <RightSliderArrow
-                className="slider-arrow"
-                alt="Next"
-                onClick={handleNextSlide}
-            />
+            <RightSliderArrow className="slider-arrow" alt="Next" onClick={handleNextSlide} />
         </div>
     );
 };

@@ -22,8 +22,8 @@ const PreviewFileModal = ({
     opened, setOpened, streetcodeArt, arts, setArts, onChange,
 }: Props) => {
     const [fileProps, setFileProps] = useState<{
-        previewImage: string;
-        previewTitle: string;
+      previewImage: string;
+      previewTitle: string;
     }>({ previewImage: '', previewTitle: '' });
     const [form] = Form.useForm();
 
@@ -74,10 +74,7 @@ const PreviewFileModal = ({
                 onFinish={handleSave}
             >
                 <div className="artPreviewModal">
-                    <img
-                        alt="uploaded"
-                        src={fileProps.previewImage}
-                    />
+                    <img alt="uploaded" src={fileProps.previewImage} />
 
                     <FormItem
                         name="title"
@@ -97,12 +94,7 @@ const PreviewFileModal = ({
                             maxLength={400}
                         />
                     </FormItem>
-                    <Button
-                        onClick={handleSave}
-                        className="saveButton"
-                    >
-Зберегти
-                    </Button>
+                    <Button onClick={handleSave} className="saveButton">Зберегти</Button>
                 </div>
 
             </Form>

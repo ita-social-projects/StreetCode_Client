@@ -116,7 +116,7 @@
         }
 
         .ant-form-item .ant-form-item-explain-error {
-        }
+            }
 
         button {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
@@ -157,12 +157,11 @@
         .required-captcha {
             position: relative;
         }
-
         .required-captcha::before {
             content: '*';
             position: absolute;
             top: f.pxToRem(0);
-            left: f.pxToRem(-8px);
+            left:  f.pxToRem(-8px);
             transform: translate(-50%, -50%);
             color: red;
             @include mut.sizedImportant(8px, 8px);

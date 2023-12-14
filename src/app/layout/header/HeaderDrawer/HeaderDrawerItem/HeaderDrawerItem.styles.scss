@@ -4,7 +4,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.headerItem {
+.headerItem{
     background-color: transparent;
     border: none;
     text-align: left;
@@ -12,7 +12,7 @@
     text-decoration: none;
 }
 
-.headerItem:hover {
+.headerItem:hover {    
     cursor: pointer;
     color: c.$dark-red-color;
 }

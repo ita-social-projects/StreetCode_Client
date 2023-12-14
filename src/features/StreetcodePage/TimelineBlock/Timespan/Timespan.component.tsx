@@ -17,7 +17,7 @@ const TimelineTimespan = () => {
         <div className="timeSpanContainer">
             <div className="timelineYearTicksContainer">
                 <TimelineSwiper
-
+                
                     slidesPerView={5}
                     className="timelineYearTicksContainerSwiper"
                     {...settings}

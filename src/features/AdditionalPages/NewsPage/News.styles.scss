@@ -21,7 +21,6 @@
             h1 {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
             }
-
             .news-date {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 15px);
                 color: c.$darkish-gray-color;
@@ -36,12 +35,12 @@
         ul {
             list-style-type: disc;
             padding-inline-start: revert;
-        }
-
-        ol {
+          }
+          
+          ol {
             list-style-type: decimal;
             padding-inline-start: revert;
-        }
+          }
 
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);

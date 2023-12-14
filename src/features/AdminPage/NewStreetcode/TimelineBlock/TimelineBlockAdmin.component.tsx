@@ -28,7 +28,7 @@ const TimelineBlockAdmin = ({ onChange }: Props) => {
                     className="buttonWithPlus"
                     onClick={showModal}
                 >
-                    +
+                +
                 </button>
                 {timelineItemStore
                     .getTimelineItemArray

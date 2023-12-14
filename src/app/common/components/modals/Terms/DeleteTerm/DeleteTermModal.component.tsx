@@ -14,7 +14,7 @@ interface Props {
     term: Partial<Term> | undefined;
 }
 
-const DeleteTermModal = ({ handleDelete, term }: Props) => {
+const DeleteTermModal = ({ handleDelete, term } : Props) => {
     const { modalStore: { setModal, modalsState: { deleteTerm } } } = useModalContext();
 
     return (

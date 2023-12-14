@@ -5,71 +5,71 @@
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .ant-carousel .slick-dots li.slick-active {
-    width: none;
+  width: none;
 }
 
 .top-carousel {
-    @include mut.rem-padded($top: 82px);
+  @include mut.rem-padded($top: 82px);
 
-    .slick-dots {
-        li {
-            width: f.pxToRem(13px) !important;
-        }
+.slick-dots{
+  li {
+    width: f.pxToRem(13px) !important;
+  }
+}
+
+  .carousel-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .slick-dots li button {
+    @include mut.sized(12px, 12px);
+    background: c.$slider-base-dot-color;
+
+    @media screen and (min-width: 481px) {
+
+      &::after,
+      &::before {
+        background: c.$pure-white-color;
+        inset: 0px;
+      }
     }
+  }
 
+  .slick-dots {
+    bottom: f.pxToRem(30px);
+    top: auto;
+  }
+
+  .slick-dots li {
+    margin: 0 f.pxToRem(8px);
+  }
+
+  @media screen and (max-width: 480px) {
     .carousel-image {
-        width: 100%;
-        height: 100%;
-    }
-
-    .slick-dots li button {
-        @include mut.sized(12px, 12px);
-        background: c.$slider-base-dot-color;
-
-        @media screen and (min-width: 481px) {
-
-            &::after,
-            &::before {
-                background: c.$pure-white-color;
-                inset: 0px;
-            }
-        }
+      height: auto;
     }
 
     .slick-dots {
-        bottom: f.pxToRem(30px);
-        top: auto;
+      bottom: f.pxToRem(-20px);
     }
+  }
 
-    .slick-dots li {
-        margin: 0 f.pxToRem(8px);
+  @media (min-width: 481px) and (max-width: 1024px) {
+    .carousel-image {
+      height: auto;
     }
+  }
 
-    @media screen and (max-width: 480px) {
-        .carousel-image {
-            height: auto;
-        }
-
-        .slick-dots {
-            bottom: f.pxToRem(-20px);
-        }
+  @media screen and (min-width: 1800px) {
+    .carousel-image {
+      height: auto;
     }
-
-    @media (min-width: 481px) and (max-width: 1024px) {
-        .carousel-image {
-            height: auto;
-        }
-    }
-
-    @media screen and (min-width: 1800px) {
-        .carousel-image {
-            height: auto;
-        }
-    }
+  }
 }
 
 @media screen and (max-width: 1024px) {
-    .top-carousel {
-        @include mut.rem-padded($top: 64px);
-    }
+  .top-carousel {
+    @include mut.rem-padded($top: 64px);
+  }
 }

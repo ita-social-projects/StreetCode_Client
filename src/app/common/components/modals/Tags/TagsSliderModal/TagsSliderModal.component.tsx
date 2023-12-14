@@ -1,6 +1,6 @@
 import './TagsSliderModal.styles.scss';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx from '@stores/root-store';
 
@@ -22,7 +22,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagBlock, setActiveTagId }: Props
 
     return (
         <div className="tagModalContainer">
-            {getTagArray.length > 1
+            { getTagArray.length > 1
                 ? (
                     <BlockSlider
                         className="tagSliderClass"

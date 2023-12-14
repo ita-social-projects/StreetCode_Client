@@ -20,21 +20,20 @@ export interface IndexedArt {
     title: string;
     sequenceNumber: number;
 }
-
 export interface ArtCreate {
-    imageId: number;
+    imageId:number;
     description?: string;
     image: string;
     index: number;
     title?: string;
-    mimeType: string;
-    uidFile: string;
+    mimeType:string;
+    uidFile:string;
 }
 
 export interface ArtCreateDTO {
-    imageId: number;
+    imageId:number;
     description: string;
     index: number;
     title: string;
-    mimeType: string;
+    mimeType:string;
 }

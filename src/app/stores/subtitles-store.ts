@@ -26,8 +26,7 @@ export default class SubtitleStore {
             runInAction(() => {
                 this.subtitles.set(id, subtitle);
             });
-        } catch (err: unknown) {
-        }
+        } catch (err: unknown) {}
     };
 
     public getAll = async () => {
@@ -36,16 +35,14 @@ export default class SubtitleStore {
             runInAction(() => {
                 this.setSubtitles(subtitles);
             });
-        } catch (err: unknown) {
-        }
+        } catch (err: unknown) {}
     };
 
     public getSubtitlesByStreetcodeId = async (streetcodeId: number) => {
         try {
             const subtitles = await subtitlesApi.getSubtitlesByStreetcodeId(streetcodeId);
             this.setSubtitles(subtitles);
-        } catch (err: unknown) {
-        }
+        } catch (err: unknown) {}
     };
 
     public create = async (subtitle: Subtitle) => {
@@ -54,8 +51,7 @@ export default class SubtitleStore {
             runInAction(() => {
                 this.subtitles.set(subtitle.id, subtitle);
             });
-        } catch (err: unknown) {
-        }
+        } catch (err: unknown) {}
     };
 
     public update = async (subtitle: Subtitle) => {
@@ -66,8 +62,7 @@ export default class SubtitleStore {
                 const updatedSubtitle = { ...this.subtitles.get(subtitleId), ...subtitle } as Subtitle;
                 this.subtitles.set(subtitleId, updatedSubtitle);
             });
-        } catch (err: unknown) {
-        }
+        } catch (err: unknown) {}
     };
 
     public delete = async (subtitleId: number) => {
@@ -76,7 +71,6 @@ export default class SubtitleStore {
             runInAction(() => {
                 this.subtitles.delete(subtitleId);
             });
-        } catch (err: unknown) {
-        }
+        } catch (err: unknown) {}
     };
 }

@@ -34,12 +34,10 @@ const RelatedFiguresItemModal = () => {
             <div className="relatedFigureSlide">
                 <div
                     className="figureSlideImage"
-                    style={{
-                        backgroundImage: `url(${base64ToUrl(
-                            relation?.image?.base64,
-                            relation?.image?.mimeType,
-                        )})`,
-                    }}
+                    style={{ backgroundImage: `url(${base64ToUrl(
+                        relation?.image?.base64,
+                        relation?.image?.mimeType,
+                    )})` }}
                 />
                 <div className="figureSlideText">
                     <div className="heading">
@@ -48,9 +46,9 @@ const RelatedFiguresItemModal = () => {
                             relation?.alias !== null
                                 ? (
                                     <p className="aliasText">
-                                        (
+                                (
                                         {relation?.alias}
-                                        )
+)
                                     </p>
                                 )
                                 : undefined
