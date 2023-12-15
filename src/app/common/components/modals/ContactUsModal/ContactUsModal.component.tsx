@@ -4,6 +4,7 @@ import { Form, Modal, Popover, Typography } from 'antd'
 const { Text } = Typography
 import { useRef, useState } from 'react';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
+import { useMediaQuery } from 'react-responsive';
 
 interface Props {
     text: string;
@@ -15,6 +16,10 @@ export const ContactUsModal = ({ text, toggleState}: Props) => {
     const [isActive, setActive] = useState(false);
     const form = useRef(null);
 
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 1025px)',
+    });
+    
     const handleClick = () => {
         setActive(true);
         toggleState();
@@ -32,14 +37,19 @@ export const ContactUsModal = ({ text, toggleState}: Props) => {
                 className="contactUsModal"
                 open={isActive}
                 footer={null}
-                onCancel={() => setActive(false)}
+                onCancel={() => {
+                    setActive(false);
+                    onClear();
+                }}
                 width={"max-content"}
-                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'><CancelBtn className='iconSize' onClick={onClear} />
-                </Popover>}
+                closable={isDesktop}
+                closeIcon={(isDesktop ? 
+                    <Popover content="Внесені зміни не будуть збережені!" trigger='hover'>
+                        <CancelBtn/>
+                    </Popover>
+                    : <CancelBtn/>)}
             >
-                <Form>
                 <ContactForm customClass={"formWrapper__modal"} ref={form} />
-                </Form>
             </Modal>
         </>
     )

@@ -62,6 +62,10 @@ li.slick-active button:before {
         display: flex !important;
         position: relative;
         flex-direction: column;
+        &:focus,
+        &:focus-visible {
+         outline: none;
+        }
         
         .left {
             position: absolute;

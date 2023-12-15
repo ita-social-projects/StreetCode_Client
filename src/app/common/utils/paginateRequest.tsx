@@ -17,7 +17,7 @@ export function paginateRequest(
         }
 
         page = currentPage + 1;
-        return response;
+        return [response, (currentPage - 1) * pageSize, currentPage * pageSize];
     };
 
     return { fetchNextPage };

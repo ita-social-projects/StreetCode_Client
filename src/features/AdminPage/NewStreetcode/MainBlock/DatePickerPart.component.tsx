@@ -9,7 +9,7 @@ import { Dayjs } from 'dayjs';
 import { DatePicker, FormInstance, Input, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
-import { dateToString, selectDateOptions } from '@/models/timeline/chronology.model';
+import { DatePickerType, dateToString, selectDateOptions } from '@/models/timeline/chronology.model';
 
 interface Props {
     setFirstDate: (newDate: Dayjs | null) => void,
@@ -19,10 +19,8 @@ interface Props {
 }
 
 const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange }: Props) => {
-    const [dateFirstTimePickerType, setFirstDateTimePickerType] = useState<
-        'date' | 'month' | 'year' | 'season-year'>('date');
-    const [dateSecondTimePickerType, setSecondDateTimePickerType] = useState<
-        'date' | 'month' | 'year' | 'season-year'>('date');
+    const [firstDateTimePickerType, setFirstDateTimePickerType] = useState<DatePickerType>(DatePickerType.Date);
+    const [secondDateTimePickerType, setSecondDateTimePickerType] = useState<DatePickerType>(DatePickerType.Date);
     const capitalize = (text: string): string => {
         if (!text) {
             return text;
@@ -42,15 +40,15 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
         }
     });
 
-    const onChangeFirstDate = (date: Dayjs | null | undefined) => {
+    const onChangeFirstDate = async (date: Dayjs | null | undefined) => {
         if (date) {
             setFirstDate(date);
             const dateString = form.getFieldValue('dateString') ?? '';
             const index = dateString.indexOf(' – ');
             if (index < 0) {
-                form.setFieldValue('dateString', capitalize(dateToString(dateFirstTimePickerType, date)));
+                form.setFieldValue('dateString', capitalize(dateToString(firstDateTimePickerType, date)));
             } else {
-                const newString = dateToString(dateFirstTimePickerType, date);
+                const newString = dateToString(firstDateTimePickerType, date);
                 form.setFieldValue(
                     'dateString',
                     capitalize(newString.concat(dateString.substring(index, dateString.length))),
@@ -75,7 +73,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
     };
 
     const onChangeSecondDate = (date: Dayjs | null | undefined) => {
-        if (date && date !== null && date !== undefined) {
+        if (date) {
             setSecondDate(date);
             const firstDate = form.getFieldValue('streetcodeFirstDate');
             if (firstDate && date && date.isBefore(firstDate)) {
@@ -100,19 +98,19 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                 form.setFieldValue(
                     'dateString',
                     dateString
-                        .concat(` – ${dateToString(dateSecondTimePickerType, date)}`),
+                        .concat(` – ${dateToString(secondDateTimePickerType, date)}`),
                 );
             } else if (date === null || date === undefined) {
                 form.setFieldValue('dateString', dateString.substring(0, index));
             } else {
                 const newDateString = dateString
-                    .substring(0, index).concat(` – ${dateToString(dateSecondTimePickerType, date)}`);
+                    .substring(0, index).concat(` – ${dateToString(secondDateTimePickerType, date)}`);
                 form.setFieldValue('dateString', newDateString);
             }
             onChange('streetcodeSecondDate', date);
         } else {
-            form.setFieldValue('dateString', form.getFieldValue('dateString').split(' – ')[0]);
-            setSecondDate(date);
+            form.setFieldValue('dateString', form.getFieldValue('dateString')?.split(' – ')[0]);
+            setSecondDate(null);
             form.setFields([
                 {
                     name: 'streetcodeSecondDate',
@@ -124,6 +122,15 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
     };
 
     const [dateString, setDateString] = useState('');
+
+    useEffect(() => {
+        onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
+    }, [firstDateTimePickerType]);
+
+    useEffect(() => {
+        onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
+    }, [secondDateTimePickerType]);
+
 
     return (
         <FormItem label="Роки">
@@ -146,7 +153,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                         <Input
                             disabled={disableInput}
                             showCount
-                            maxLength={50}
+                            maxLength={100}
                             onChange={(e) => setDateString(e.target.value)}
                             value={dateString}
                         />
@@ -158,10 +165,9 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                         <Select
                             className="date-picker-type-input"
                             options={selectDateOptions}
-                            defaultValue={dateFirstTimePickerType}
+                            defaultValue={firstDateTimePickerType}
                             onChange={(val) => {
                                 setFirstDateTimePickerType(val);
-                                onChangeFirstDate(form.getFieldValue('streetcodeFirstDate'));
                             }}
                         />
                         <FormItem
@@ -173,16 +179,16 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                             <DatePicker
                                 className="streetcode-first-datepicker"
                                 onChange={onChangeFirstDate}
-                                picker={(dateFirstTimePickerType !== 'season-year')
-                                    ? dateFirstTimePickerType : 'month'}
-                                format={(dateFirstTimePickerType === 'date'
+                                picker={(firstDateTimePickerType !== 'season-year')
+                                    ? firstDateTimePickerType : 'month'}
+                                format={(firstDateTimePickerType === 'date'
                                     ? 'D-MMMM-YYYY'
-                                    : dateFirstTimePickerType === 'year'
+                                    : firstDateTimePickerType === 'year'
                                         ? 'YYYY'
                                         : 'YYYY-MMMM')}
-                                placeholder={(dateFirstTimePickerType === 'date'
+                                placeholder={(firstDateTimePickerType === 'date'
                                     ? 'dd-mm-yyyy'
-                                    : dateFirstTimePickerType === 'year'
+                                    : firstDateTimePickerType === 'year'
                                         ? 'yyyy'
                                         : 'yyyy-mm')}
                             />
@@ -193,10 +199,9 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                         <Select
                             className="date-picker-type-input"
                             options={selectDateOptions}
-                            defaultValue={dateSecondTimePickerType}
+                            defaultValue={secondDateTimePickerType}
                             onChange={(val) => {
                                 setSecondDateTimePickerType(val);
-                                onChangeSecondDate(form.getFieldValue('streetcodeSecondDate'));
                             }}
                         />
 
@@ -206,16 +211,16 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                         >
                             <DatePicker
                                 onChange={onChangeSecondDate}
-                                picker={(dateSecondTimePickerType !== 'season-year')
-                                    ? dateSecondTimePickerType : 'month'}
-                                format={(dateSecondTimePickerType === 'date'
+                                picker={(secondDateTimePickerType !== 'season-year')
+                                    ? secondDateTimePickerType : 'month'}
+                                format={(secondDateTimePickerType === 'date'
                                     ? 'D-MMMM-YYYY'
-                                    : dateSecondTimePickerType === 'year'
+                                    : secondDateTimePickerType === 'year'
                                         ? 'YYYY'
                                         : 'YYYY-MMMM')}
-                                placeholder={(dateSecondTimePickerType === 'date'
+                                placeholder={(secondDateTimePickerType === 'date'
                                     ? 'dd-mm-yyyy'
-                                    : dateSecondTimePickerType === 'year'
+                                    : secondDateTimePickerType === 'year'
                                         ? 'yyyy'
                                         : 'yyyy-mm')}
                             />
