@@ -47,12 +47,6 @@ const TeamPage = () => {
         updatedTeam();
     }, []);
 
-    // useEffect(() => {
-    //     if (teamToEdit) {
-    //
-    //     }
-    // }, [teamToEdit]);
-
     const renderImageColumn = (image: Image, record: { id: any; }) => (
         <img
             key={`${record.id}${image?.id}`}
