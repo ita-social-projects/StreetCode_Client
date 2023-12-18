@@ -10,28 +10,28 @@
     width: f.pxToRem(500px);
 }
 
-.mainblock-add-form{   
+.mainblock-add-form{
     .checknumber{
         margin: 0 f.pxToRem(20px);
     }
-        .p-margin{ 
+        .p-margin{
             gap:5px;
             p{
                 font-size: 18px;
             }
         }
-        
+
         .grey-text{
             color:grey;
         }
 
         .red-text{
-            color:c.$accented-red-color;
+            color: c.$accented-red-color;
         }
 
         .ant-switch-checked{
             background-color: c.$dark-red-color;
-        } 
+        }
 
     }
 
@@ -48,18 +48,18 @@
                 margin-bottom: f.pxToRem(10px);
             }
             .date-picker-group-item{
-                width: 100%; 
+                width: 100%;
                 .streetcode-first-formitem-datepicker{
                     .ant-row{
                         //flex-direction: column;
                         flex-flow: row nowrap;
                     }
                 }
-            }    
+            }
         }
     }
 
-    .tags-block{   
+    .tags-block{
         display: flex;
         flex-direction: column;
          .ant-select-selector{
@@ -78,7 +78,7 @@
                 @include mut.sized(40px,40px);
             }
         }
-       
+
         .tags-block-tagitems{
             width: 100%;
             .tags-select-input{
@@ -123,8 +123,8 @@
     .photo-uploader-container{
         display: flex;
         justify-content: space-between;
-    } 
- 
+    }
+
     .tagInput-counter {
         position: absolute;
         right: f.pxToRem(2px);

@@ -45,7 +45,13 @@ const TeamPage = () => {
 
     useEffect(() => {
         updatedTeam();
-    }, [modalEditOpened, modalAddOpened]);
+    }, []);
+
+    // useEffect(() => {
+    //     if (teamToEdit) {
+    //
+    //     }
+    // }, [teamToEdit]);
 
     const renderImageColumn = (image: Image, record: { id: any; }) => (
         <img
