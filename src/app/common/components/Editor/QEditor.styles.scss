@@ -1,0 +1,25 @@
+@use "@sass/_utils.functions.scss" as f;
+
+.ql-toolbar button {
+    height: f.pxToRem(28px) !important;
+    width: f.pxToRem(32px) !important;
+}
+
+.quillEditor {
+    margin-bottom: f.pxToRem(35px);
+}
+
+.charsCounter {
+    padding-top: f.pxToRem(10px);
+    font-size: 14px;
+    font-weight: bold;
+    text-align: end;
+}
+
+.quillEditor .ql-editor u {
+    text-decoration: underline;
+}
+
+.quillEditor .ql-editor s {
+    text-decoration: line-through;
+}
