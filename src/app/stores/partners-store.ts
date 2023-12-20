@@ -49,28 +49,20 @@ export default class PartnersStore {
         } catch (error: unknown) {}
     };
 
-    public createPartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
-        try {
-            return await partnersApi.create(partner).then((created) => {
-                ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
-                    .then((p) => this.setItem(p));
-                return created;
-            });
-        } catch (error: unknown) {
-            return undefined;
-        }
+    public createPartner = async (partner: PartnerCreateUpdate) => {
+        await partnersApi.create(partner).then((created) => {
+            ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
+                .then((p) => this.setItem(p));
+            return created;
+        });
     };
 
-    public updatePartner = async (partner: PartnerCreateUpdate):Promise<Partner | undefined> => {
-        try {
-            return await partnersApi.update(partner).then((created) => {
-                ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
-                    .then((p) => this.setItem(p));
-                return created;
-            });
-        } catch (error: unknown) {
-            return undefined;
-        }
+    public updatePartner = async (partner: PartnerCreateUpdate) => {
+        await partnersApi.update(partner).then((created) => {
+            ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
+                .then((p) => this.setItem(p));
+            return created;
+        });
     };
 
     public static deletePartner = async (partnerId: number) => {

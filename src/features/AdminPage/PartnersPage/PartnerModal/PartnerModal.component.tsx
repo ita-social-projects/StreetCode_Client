@@ -8,11 +8,12 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import SOCIAL_OPTIONS from '@features/AdminPage/PartnersPage/PartnerModal/constants/socialOptions';
 import useMobx from '@stores/root-store';
 
 import {
     Button, Checkbox, Form, Input, message,
-    Modal, Popover, Select, Tooltip, UploadFile,
+    Modal, Popover, Select, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -45,7 +46,7 @@ const PartnerModal: React.FC< {
         isStreetcodeVisible = true,
         afterSubmit,
     }) => {
-        // eslint-disable-next-line max-len
+        // eslint-disable-next-line max-len,no-useless-escape
         const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,256}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
         const [form] = Form.useForm();
         const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
@@ -59,25 +60,15 @@ const PartnerModal: React.FC< {
         const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
         const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
         const [fileList, setFileList] = useState<UploadFile[]>([]);
-        const [partnerSourceLinks, setPartnersSourceLinks] = useState<
-      PartnerSourceLinkCreateUpdate[]
-    >([]);
+        const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
         const imageId = useRef<number>(0);
-        const handlePreview = (file: UploadFile) => {
-            setFilePreview(file);
-            setPreviewOpen(true);
-        };
-        const onStreetcodeSelect = (value: string) => {
-            const index = streetcodeShortStore.streetcodes.findIndex(
-                (c) => c.title === value,
-            );
-            selectedStreetcodes.current.push(streetcodeShortStore.streetcodes[index]);
-        };
-        const onStreetcodeDeselect = (value: string) => {
-            selectedStreetcodes.current = selectedStreetcodes.current.filter(
-                (c) => c.title !== value,
-            );
-        };
+
+        message.config({
+            top: 100,
+            duration: 2,
+            maxCount: 1,
+        });
+
         useEffect(() => {
             if (isStreetcodeVisible) {
                 streetcodeShortStore.fetchStreetcodesAll();
@@ -132,19 +123,30 @@ const PartnerModal: React.FC< {
             }
         }, [partnerItem, open, form]);
 
+        const handlePreview = (file: UploadFile) => {
+            setFilePreview(file);
+            setPreviewOpen(true);
+        };
+
+        const onStreetcodeSelect = (value: string) => {
+            const index = streetcodeShortStore.streetcodes.findIndex(
+                (c) => c.title === value,
+            );
+            selectedStreetcodes.current.push(streetcodeShortStore.streetcodes[index]);
+        };
+
+        const onStreetcodeDeselect = (value: string) => {
+            selectedStreetcodes.current = selectedStreetcodes.current.filter(
+                (c) => c.title !== value,
+            );
+        };
+
         const handleOk = async () => {
             try {
                 const values = await form.validateFields();
                 form.submit();
-                message.success('Партнера успішно додано!', 2);
+                message.success('Партнера успішно додано!');
             } catch (error) {
-                message.config({
-                    top: 100,
-                    duration: 3,
-                    maxCount: 3,
-                    rtl: true,
-                    prefixCls: 'my-message',
-                });
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
             }
         };
@@ -188,6 +190,7 @@ const PartnerModal: React.FC< {
             setShowSecondForm(false);
             setShowSecondFormButton(true);
         };
+
         const handleUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
             const { value } = e.target;
             try {
@@ -197,29 +200,35 @@ const PartnerModal: React.FC< {
                 setUrlTitleEnabled('');
             }
         };
+
         const handleUrlTitleChange = async (
             e: React.ChangeEvent<HTMLInputElement>,
         ) => {
             const { value } = e.target;
             setUrlTitleValue(value);
         };
+
         const handleShowSecondForm = () => {
             setShowSecondForm(true);
             setShowSecondFormButton(false);
         };
+
         const handleHideSecondForm = () => {
             setShowSecondForm(false);
             setShowSecondFormButton(true);
         };
+
         const onSuccesfulSubmitPartner = async (formValues: any) => {
             partnerSourceLinks.forEach((el, index) => {
                 if (el.id < 0) {
                     partnerSourceLinks[index].id = 0;
                 }
             });
+
             if (!form.getFieldValue('url')) {
                 formValues.urlTitle = null;
             }
+
             const partner: PartnerCreateUpdate = {
                 id: 0,
                 isKeyPartner: formValues.isKeyPartner ?? false,
@@ -232,62 +241,39 @@ const PartnerModal: React.FC< {
                 urlTitle: formValues.urlTitle?.trim() || null,
                 isVisibleEverywhere: formValues.isVisibleEverywhere ?? false,
             };
-            partnersStore.getPartnerArray.map((t) => t).forEach(t => {
-                if (formValues.title == t.title || imageId.current == t.logoId)
-                    partnerItem = t;
+
+            partnersStore.getPartnerArray.map((t) => t).forEach((t) => {
+                if (formValues.title === t.title || imageId.current === t.logoId) partnerItem = t;
             });
+
             if (partnerItem) {
                 partner.id = partnerItem.id;
-                Promise.all([
-                    partnersApi
-                        .update(partner)
-                        .then((p) => {
-                            if (afterSubmit) {
-                                if (p) {
-                                    afterSubmit({ ...p });
-                                }
+                partnersApi
+                    .update(partner)
+                    .then((p) => {
+                        if (afterSubmit) {
+                            if (p) {
+                                afterSubmit({ ...p });
                             }
-                            return p;
-                        })
-                        .then((p) => {
-                            ImagesApi.getById(p.logoId).then((img) => {
-                                partnersStore.setItem({ ...p, logo: img });
-                            });
-                        })
-                        .catch((e) => {}),
-                ]);
+                        }
+                        return p;
+                    })
+                    .then((p) => {
+                        ImagesApi.getById(p.logoId).then((img) => {
+                            partnersStore.setItem({ ...p, logo: img });
+                        });
+                    });
             } else {
-                Promise.all([
-                    partnersStore
-                        .createPartner(partner)
-                        .then((p) => {
-                            if (afterSubmit && p) {
-                                afterSubmit(p);
-                            }
-                        })
-                        .catch((e) => {}),
-                ]);
+                partnersStore
+                    .createPartner(partner)
+                    .then((p) => {
+                        if (afterSubmit && p) {
+                            afterSubmit(p);
+                        }
+                    });
             }
         };
 
-        const selectSocialMediaOptions = [
-            {
-                value: 'twitter',
-                label: 'Twitter',
-            },
-            {
-                value: 'instagram',
-                label: 'Instagram',
-            },
-            {
-                value: 'facebook',
-                label: 'Facebook',
-            },
-            {
-                value: 'youtube',
-                label: 'Youtube',
-            },
-        ];
         return (
             <Modal
                 open={open}
@@ -471,11 +457,10 @@ const PartnerModal: React.FC< {
                                     rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
                                     className="social-media-form-item"
                                 >
-                                    <Select options={selectSocialMediaOptions} />
+                                    <Select options={SOCIAL_OPTIONS} />
                                 </FormItem>
                                 <Form.Item
                                     label="Посилання"
-                                    className="url-input"
                                     name="url"
                                     rules={[
                                         { required: true, message: 'Введіть Посилання' },
@@ -486,13 +471,11 @@ const PartnerModal: React.FC< {
                                         {
                                             validator: (_, value) => {
                                                 const logotype = partnerLinksForm.getFieldValue('logotype');
-                                                if (
-                                                    !value
-                          || !logotype
-                          || value.toLowerCase().includes(logotype)
-                                                ) {
+
+                                                if (!value || !logotype || value.toLowerCase().includes(logotype)) {
                                                     return Promise.resolve();
                                                 }
+
                                                 return Promise.reject(new Error(
                                                     'Посилання не співпадає з вибраним текстом',
                                                 ));
@@ -504,15 +487,11 @@ const PartnerModal: React.FC< {
                                 </Form.Item>
 
                                 <Form.Item label=" ">
-                                    <Tooltip
-                                        title="Додати"
-                                        placement="bottom"
-                                        overlayClassName="custom-tooltip"
-                                    >
+                                    <Popover content="Додати" trigger="hover">
                                         <Button htmlType="submit" className="plus-button">
                                             <PlusOutlined />
                                         </Button>
-                                    </Tooltip>
+                                    </Popover>
                                 </Form.Item>
                             </div>
                         </div>
@@ -521,24 +500,18 @@ const PartnerModal: React.FC< {
 
                 <div className="center">
                     {showSecondForm ? (
-                        <Tooltip
-                            title="Завершіть додавання соціальної мережі"
-                            placement="bottom"
-                            overlayClassName="custom-tooltip"
-                        >
+                        <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
                   Зберегти
                                 </Button>
                             </span>
-                        </Tooltip>
+                        </Popover>
                     ) : (
                         <Button
                             disabled={showSecondForm || fileList?.length === 0}
                             className="streetcode-custom-button save"
-                            onClick={() => {
-                                handleOk();
-                            }}
+                            onClick={handleOk}
                         >
               Зберегти
                         </Button>
