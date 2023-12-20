@@ -62,6 +62,8 @@ const PartnerModal: React.FC< {
         const [fileList, setFileList] = useState<UploadFile[]>([]);
         const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
         const imageId = useRef<number>(0);
+        const [actionSuccess, setActionSuccess] = useState(false);
+        const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
 
         message.config({
             top: 100,
@@ -74,28 +76,19 @@ const PartnerModal: React.FC< {
                 streetcodeShortStore.fetchStreetcodesAll();
             }
         }, []);
-        useEffect(() => {
-            if (partnerItem && open) {
-                imageId.current = partnerItem.logoId;
-                setFileList([{
-                    name: '',
-                    thumbUrl: base64ToUrl(
-                        partnerItem.logo?.base64,
-                        partnerItem.logo?.mimeType,
-                    ),
-                    uid: partnerItem.logoId.toString(),
-                    status: 'done',
-                }]);
 
-                form.setFieldsValue({
-                    title: partnerItem.title,
-                    isKeyPartner: partnerItem.isKeyPartner,
-                    url: partnerItem.targetUrl?.href,
-                    urlTitle: partnerItem.targetUrl?.title,
-                    description: partnerItem.description,
-                    partnersStreetcodes: partnerItem.streetcodes.map((s: { title: string; }) => s.title),
-                    isVisibleEverywhere: partnerItem.isVisibleEverywhere,
-                    logo: [
+        useEffect(() => {
+            setWaitingForApiResponse(false);
+            if (actionSuccess) {
+                message.success('Партнера успішно додано/оновлено!');
+                setActionSuccess(false);
+            }
+        }, [actionSuccess]);
+
+        useEffect(() => {
+            const getImageAsFileInArray = (): UploadFile[] => (
+                partnerItem
+                    ? [
                         {
                             name: '',
                             thumbUrl: base64ToUrl(
@@ -105,7 +98,21 @@ const PartnerModal: React.FC< {
                             uid: partnerItem.logoId.toString(),
                             status: 'done',
                         },
-                    ],
+                    ] : []);
+
+            if (partnerItem && open) {
+                imageId.current = partnerItem.logoId;
+                setFileList(getImageAsFileInArray());
+
+                form.setFieldsValue({
+                    title: partnerItem.title,
+                    isKeyPartner: partnerItem.isKeyPartner,
+                    url: partnerItem.targetUrl?.href,
+                    urlTitle: partnerItem.targetUrl?.title,
+                    description: partnerItem.description,
+                    partnersStreetcodes: partnerItem.streetcodes.map((s: { title: string; }) => s.title),
+                    isVisibleEverywhere: partnerItem.isVisibleEverywhere,
+                    logo: getImageAsFileInArray(),
                 });
                 setUrlTitleEnabled(form.getFieldValue('url'));
                 setUrlTitleValue(form.getFieldValue('urlTitle'));
@@ -113,8 +120,7 @@ const PartnerModal: React.FC< {
                 selectedStreetcodes.current = partnerItem.streetcodes;
                 setPartnersSourceLinks(
                     partnerItem.partnerSourceLinks.map((l: { id: any; logoType: any; targetUrl: { href: any; }; }) => ({
-                        id: l.id,
-                        logoType: l.logoType,
+                        ...l,
                         targetUrl: l.targetUrl.href,
                     })),
                 );
@@ -143,8 +149,9 @@ const PartnerModal: React.FC< {
 
         const handleOk = async () => {
             try {
-                const values = await form.validateFields();
-                form.submit();
+                setWaitingForApiResponse(true);
+                await form.validateFields();
+                await form.submit();
                 message.success('Партнера успішно додано!');
             } catch (error) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -152,20 +159,24 @@ const PartnerModal: React.FC< {
         };
 
         const closeAndCleanData = () => {
-            form.resetFields();
-            partnerLinksForm.resetFields();
-            selectedStreetcodes.current = [];
-            partnerSourceLinks.splice(0);
-            setIsModalOpen(false);
-            setShowSecondForm(false);
-            setShowSecondFormButton(true);
-            setUrlTitleEnabled('');
-            setUrlTitleValue('');
-            setFileList([]);
+            if (!waitingForApiResponse) {
+                form.resetFields();
+                partnerLinksForm.resetFields();
+                selectedStreetcodes.current = [];
+                partnerSourceLinks.splice(0);
+                setIsModalOpen(false);
+                setShowSecondForm(false);
+                setShowSecondFormButton(true);
+                setUrlTitleEnabled('');
+                setUrlTitleValue('');
+                setFileList([]);
+            }
         };
 
         const closeModal = () => {
-            setIsModalOpen(false);
+            if (!waitingForApiResponse) {
+                setIsModalOpen(false);
+            }
         };
 
         const onSuccesfulSubmitLinks = (formValues: any) => {
@@ -219,6 +230,8 @@ const PartnerModal: React.FC< {
         };
 
         const onSuccesfulSubmitPartner = async (formValues: any) => {
+            message.loading('Зберігання...');
+
             partnerSourceLinks.forEach((el, index) => {
                 if (el.id < 0) {
                     partnerSourceLinks[index].id = 0;
@@ -246,31 +259,26 @@ const PartnerModal: React.FC< {
                 if (formValues.title === t.title || imageId.current === t.logoId) partnerItem = t;
             });
 
-            if (partnerItem) {
-                partner.id = partnerItem.id;
-                partnersApi
-                    .update(partner)
-                    .then((p) => {
-                        if (afterSubmit) {
-                            if (p) {
-                                afterSubmit({ ...p });
-                            }
-                        }
-                        return p;
-                    })
-                    .then((p) => {
-                        ImagesApi.getById(p.logoId).then((img) => {
-                            partnersStore.setItem({ ...p, logo: img });
-                        });
-                    });
-            } else {
-                partnersStore
-                    .createPartner(partner)
-                    .then((p) => {
-                        if (afterSubmit && p) {
-                            afterSubmit(p);
-                        }
-                    });
+            try {
+                if (!imageId.current) {
+                    throw new Error("Image isn't uploaded yet");
+                }
+
+                if (partnerItem) {
+                    partner.id = partnerItem.id;
+                    await partnersStore.updatePartner(partner);
+                } else {
+                    await partnersStore.createPartner(partner);
+                }
+                console.log('Success');
+                if (afterSubmit) {
+                    const partnerWithLogo = partnersStore.PartnerMap.get(partner.id) as Partner;
+                    afterSubmit(partnerWithLogo);
+                }
+                setActionSuccess(true);
+            } catch (e: unknown) {
+                message.error('Не вдалось оновити/створити партнера. Спробуйте ще раз.');
+                setWaitingForApiResponse(false);
             }
         };
 
@@ -381,6 +389,9 @@ const PartnerModal: React.FC< {
                                 listType="picture-card"
                                 maxCount={1}
                                 onPreview={handlePreview}
+                                onRemove={() => {
+                                    imageId.current = 0;
+                                }}
                                 uploadTo="image"
                                 onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;

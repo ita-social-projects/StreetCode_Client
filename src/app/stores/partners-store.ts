@@ -53,7 +53,6 @@ export default class PartnersStore {
         await partnersApi.create(partner).then((created) => {
             ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
                 .then((p) => this.setItem(p));
-            return created;
         });
     };
 
@@ -61,7 +60,6 @@ export default class PartnersStore {
         await partnersApi.update(partner).then((created) => {
             ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
                 .then((p) => this.setItem(p));
-            return created;
         });
     };
 
