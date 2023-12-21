@@ -2,7 +2,6 @@ import './StreetcodeCard.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -84,146 +83,126 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
 
     return (
         streecodePageLoaderContext.isPageLoaded ? (
-            <>
-                <Helmet>
-                    <meta property="og:title" content={streetcode?.title} />
-                    <meta
-                        property="og:description"
-                        content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
-                    />
-                    <meta
-                        name="twitter:card"
-                        content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць."
-                    />
-                    <meta
-                        property="og:image"
-                        content={
-                            images.length > 1 ? base64ToUrl(images[1].base64, images[1].mimeType)
-                                : base64ToUrl(images[0].base64, images[0].mimeType)
-                        }
-                    />
-                </Helmet>
-                <div className="card">
-                    <div className="leftSider">
-                        <div className="leftSiderContent">
-                            <BlockSlider
-                                arrows={false}
-                                slidesToShow={1}
-                                swipeOnClick
-                                infinite
-                            >
-                                {imagesForSlider.map((image, index) => {
-                                    if (imagesForSlider.length > 1 && index === 0) {
-                                        return (
-                                            <div>
-                                                <img
-                                                    key={imagesForSlider[0].id}
-                                                    src={
-                                                        base64ToUrl(
-                                                            imagesForSlider[0].base64,
-                                                            imagesForSlider[0].mimeType,
-                                                        )
-                                                    }
-                                                    className="streetcodeImgColored"
-                                                    style={{ objectFit: 'contain' }}
-                                                    alt={imagesForSlider[0].imageDetails?.alt}
-                                                />
-                                                <img
-                                                    key={imagesForSlider[1].id}
-                                                    src={base64ToUrl(
-                                                        imagesForSlider[1].base64,
-                                                        imagesForSlider[1].mimeType,
-                                                    )}
-                                                    className="streetcodeImgGrey"
-                                                    style={{ objectFit: 'contain' }}
-                                                    alt={imagesForSlider[1].imageDetails?.alt}
-                                                />
-                                            </div>
-                                        );
-                                    }
-
+            <div className="card">
+                <div className="leftSider">
+                    <div className="leftSiderContent">
+                        <BlockSlider
+                            arrows={false}
+                            slidesToShow={1}
+                            swipeOnClick
+                            infinite
+                        >
+                            {imagesForSlider.map((image, index) => {
+                                if (imagesForSlider.length > 1 && index === 0) {
                                     return (
-                                        <img
-                                            key={imagesForSlider[index].id}
-                                            src={base64ToUrl(
-                                                imagesForSlider[index].base64,
-                                                imagesForSlider[index].mimeType,
-                                            )}
-                                            className="streetcodeImg"
-                                            style={{ objectFit: 'contain' }}
-                                            alt={imagesForSlider[index].imageDetails?.alt}
-                                        />
+                                        <div>
+                                            <img
+                                                key={imagesForSlider[0].id}
+                                                src={
+                                                    base64ToUrl(
+                                                        imagesForSlider[0].base64,
+                                                        imagesForSlider[0].mimeType,
+                                                    )
+                                                }
+                                                className="streetcodeImgColored"
+                                                style={{ objectFit: 'contain' }}
+                                                alt={imagesForSlider[0].imageDetails?.alt}
+                                            />
+                                            <img
+                                                key={imagesForSlider[1].id}
+                                                src={base64ToUrl(
+                                                    imagesForSlider[1].base64,
+                                                    imagesForSlider[1].mimeType,
+                                                )}
+                                                className="streetcodeImgGrey"
+                                                style={{ objectFit: 'contain' }}
+                                                alt={imagesForSlider[1].imageDetails?.alt}
+                                            />
+                                        </div>
                                     );
-                                })}
-                            </BlockSlider>
-                        </div>
-                    </div>
-                    <div className="rightSider">
-                        <div className="streetcodeIndex">
-                            Стріткод #
-                            {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
-                                : streetcode?.index}
-                        </div>
-                        <h2 className="streetcodeTitle">
-                            {streetcode?.title}
-                        </h2>
-                        <div className="streetcodeDate">
-                            {streetcode?.dateString}
-                        </div>
-                        <div className="tagListWrapper">
-                            <TagList
-                                tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
-                                setActiveTagId={setActiveTagId}
-                                setActiveTagBlock={setActiveBlock}
-                            />
-                        </div>
-                        <div className="blurTop" />
+                                }
 
-                        <p className="teaserBlock">
-                            {streetcode?.teaser}
-                        </p>
-
-                        <div className="blurBottom" />
-                        <div className="cardFooter">
-                            {audio?.base64 && audioIsLoaded
-                                ? (
-                                    <Button
-                                        type="primary"
-                                        className="audioBtn audioBtnActive"
-                                        onClick={() => {
-                                            setModal('audio');
-                                            audioClickEvent(streetcode?.id ?? 0);
-                                        }}
-                                    >
-                                        <PlayCircleFilled className="playCircle" />
-                                        <span>Прослухати текст</span>
-                                    </Button>
-                                )
-                                : (
-                                    <Button
-                                        disabled
-                                        type="primary"
-                                        className="audioBtn"
-                                    >
-                                        <span>Аудіо на підході</span>
-                                    </Button>
-                                )}
-
-                            {arlink
-                                ? (
-                                    <Button
-                                        className="animateFigureBtn"
-                                        onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                                        href="#QRBlock"
-                                    >
-                                        <a>Оживити картинку</a>
-                                    </Button>
-                                )
-                                : <></>}
-                        </div>
+                                return (
+                                    <img
+                                        key={imagesForSlider[index].id}
+                                        src={base64ToUrl(
+                                            imagesForSlider[index].base64,
+                                            imagesForSlider[index].mimeType,
+                                        )}
+                                        className="streetcodeImg"
+                                        style={{ objectFit: 'contain' }}
+                                        alt={imagesForSlider[index].imageDetails?.alt}
+                                    />
+                                );
+                            })}
+                        </BlockSlider>
                     </div>
                 </div>
-            </>
+                <div className="rightSider">
+                    <div className="streetcodeIndex">
+                            Стріткод #
+                        {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
+                            : streetcode?.index}
+                    </div>
+                    <h2 className="streetcodeTitle">
+                        {streetcode?.title}
+                    </h2>
+                    <div className="streetcodeDate">
+                        {streetcode?.dateString}
+                    </div>
+                    <div className="tagListWrapper">
+                        <TagList
+                            tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
+                            setActiveTagId={setActiveTagId}
+                            setActiveTagBlock={setActiveBlock}
+                        />
+                    </div>
+                    <div className="blurTop" />
+
+                    <p className="teaserBlock">
+                        {streetcode?.teaser}
+                    </p>
+
+                    <div className="blurBottom" />
+                    <div className="cardFooter">
+                        {audio?.base64 && audioIsLoaded
+                            ? (
+                                <Button
+                                    type="primary"
+                                    className="audioBtn audioBtnActive"
+                                    onClick={() => {
+                                        setModal('audio');
+                                        audioClickEvent(streetcode?.id ?? 0);
+                                    }}
+                                >
+                                    <PlayCircleFilled className="playCircle" />
+                                    <span>Прослухати текст</span>
+                                </Button>
+                            )
+                            : (
+                                <Button
+                                    disabled
+                                    type="primary"
+                                    className="audioBtn"
+                                >
+                                    <span>Аудіо на підході</span>
+                                </Button>
+                            )}
+
+                        {arlink
+                            ? (
+                                <Button
+                                    className="animateFigureBtn"
+                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}
+                                    href="#QRBlock"
+                                >
+                                    <a>Оживити картинку</a>
+                                </Button>
+                            )
+                            : <></>}
+                    </div>
+                </div>
+            </div>
         ) : <></>
     );
 };
