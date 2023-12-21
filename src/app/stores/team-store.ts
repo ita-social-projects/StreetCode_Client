@@ -55,26 +55,18 @@ export default class TeamStore {
     };
 
     public createTeam = async (team: TeamCreateUpdate) => {
-        try {
-            return await teamApi.create(team)
-                .then((created) => {
-                    ImagesApi.getById(created.imageId).then((logo) => ({ ...created, image: logo }))
-                        .then((t) => this.setItem(t));
-                });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        await teamApi.create(team)
+            .then((created) => {
+                ImagesApi.getById(created.imageId).then((logo) => ({ ...created, image: logo }))
+                    .then((t) => this.setItem(t));
+            });
     };
 
     public updateTeam = async (team: TeamCreateUpdate) => {
-        try {
-            await teamApi.update(team).then((updated) => {
-                ImagesApi.getById(updated.imageId).then((logo) => ({ ...updated, image: logo }))
-                    .then((t) => this.setItem(t));
-            });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+        await teamApi.update(team).then((updated) => {
+            ImagesApi.getById(updated.imageId).then((logo) => ({ ...updated, image: logo }))
+                .then((t) => this.setItem(t));
+        });
     };
 
     public deleteTeam = async (teamId: number) => {

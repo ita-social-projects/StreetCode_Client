@@ -21,6 +21,14 @@
     gap: f.pxToRem(5px);
     display: flex;
     align-items: center;
+    position: relative;
+
+    .error-message{
+        color: c.$accented-red-color;
+        position: absolute;
+        bottom: f.pxToRem(5px);
+        left: f.pxToRem(5px);
+    }
 }
 
 .team-source-list{
