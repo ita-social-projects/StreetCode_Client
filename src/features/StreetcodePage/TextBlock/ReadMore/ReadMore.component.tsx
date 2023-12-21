@@ -15,6 +15,7 @@ const MAX_LENGTH_MOBILE = 900;
 
 const ReadMore = ({ text }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
     const readMoreRef = useRef<HTMLDivElement>(null);
 
     const isMobile = useMediaQuery({
@@ -32,7 +33,7 @@ const ReadMore = ({ text }: Props) => {
                                 || (isMobile && text.length > MAX_LENGTH_MOBILE);
 
     useEffect(() => {
-        if (!isExpanded && isTextLong && readMoreRef.current) {
+        if (!isExpanded && isClicked && isTextLong && readMoreRef.current) {
             const screenHeight = window.innerHeight;
 
             const rect = readMoreRef.current.getBoundingClientRect();
@@ -42,7 +43,7 @@ const ReadMore = ({ text }: Props) => {
 
             window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
         }
-    }, [isExpanded]);
+    }, [isExpanded, isClicked]);
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
     function getTrunculatedText(text: string) {
@@ -76,7 +77,10 @@ const ReadMore = ({ text }: Props) => {
                     >
                         <span
                             className={`readMore ${isExpanded && 'readLess'}`}
-                            onClick={() => setIsExpanded((prev) => !prev)}
+                            onClick={() => {
+                                setIsExpanded((prev) => !prev);
+                                setIsClicked(true);
+                            }}
                         >
                             {!isExpanded ? 'Трохи ще' : isMobile ? 'Згорнути текст' : 'Дещо менше'}
                         </span>

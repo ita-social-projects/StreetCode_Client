@@ -163,8 +163,6 @@ const NewsModal: React.FC<{
 
     const handleOk = async () => {
         try {
-            message.loading('Валідація даних...');
-
             await form.validateFields();
             if (handleTextChange()) {
                 setWaitingForApiResponse(true);
