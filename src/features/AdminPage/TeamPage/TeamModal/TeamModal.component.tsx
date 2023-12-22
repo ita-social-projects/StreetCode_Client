@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import SOCIAL_OPTIONS from '@features/AdminPage/TeamPage/TeamModal/constants/socialOptions';
 import TeamMember, {
     LogoType, Positions,
     TeamCreateUpdate, TeamMemberLinkCreateUpdate,
@@ -42,26 +43,80 @@ const TeamModal: React.FC<{
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [actionSuccess, setActionSuccess] = useState(false);
+    const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const imageId = useRef<number>(0);
+
+    message.config({
+        top: 100,
+        duration: 2,
+        maxCount: 1,
+    });
+
+    const getImageAsFileInArray = (): UploadFile[] => (teamMember ? [
+        {
+            name: '',
+            thumbUrl: base64ToUrl(teamMember.image?.base64, teamMember.image?.mimeType),
+            uid: teamMember.imageId.toString(),
+            status: 'done',
+        },
+    ] : []);
+
     useEffect(() => {
         if (open) {
             PositionsApi.getAll().then((pos) => setPositions(pos));
         }
     }, [open]);
 
-    const onPositionSelect = (selectedValue: string) => {
-        let selected;
-        const selectedIndex = positions.findIndex((t) => t.position === selectedValue);
-        if (selectedIndex < 0) {
-            let minId = Math.min(...selectedPositions.map((t) => t.id));
-            if (minId < 0) {
-                minId -= 1;
-            } else {
-                minId = -1;
-            }
-            setSelectedPositions([...selectedPositions, { id: minId, position: selectedValue }]);
+    useEffect(() => {
+        setIsMain(teamMember ? teamMember.isMain : false);
+    }, [teamMember]);
+
+    useEffect(() => {
+        setWaitingForApiResponse(false);
+        if (actionSuccess) {
+            message.success('Члена команди успішно додано/оновлено!');
+            setActionSuccess(false);
+        }
+    }, [actionSuccess]);
+
+    useEffect(() => {
+        if (teamMember && open) {
+            imageId.current = teamMember.imageId;
+            form.setFieldsValue({
+                ...teamMember,
+                positions: teamMember.positions.map((s) => s.position),
+                image: getImageAsFileInArray(),
+            });
+            setSelectedPositions(teamMember.positions);
+            setTeamSourceLinks([...teamMember.teamMemberLinks]);
         } else {
-            selected = positions[selectedIndex];
+            imageId.current = 0;
+        }
+    }, [teamMember, open, form]);
+
+    const getNewId = (objects: Array<{ id: number }>) => {
+        let minId = Math.min(...objects.map((t) => t.id));
+
+        if (minId < 0) {
+            minId -= 1;
+        } else {
+            minId = -1;
+        }
+
+        return minId;
+    };
+
+    const onPositionSelect = (selectedValue: string) => {
+        const selectedIndex = positions.findIndex((t) => t.position === selectedValue);
+
+        if (selectedIndex < 0) {
+            const id = getNewId(selectedPositions);
+
+            setSelectedPositions([...selectedPositions, { id, position: selectedValue }]);
+        } else {
+            const selected = positions[selectedIndex];
 
             setSelectedPositions([...selectedPositions, { ...selected, position: selectedValue }]);
         }
@@ -71,58 +126,34 @@ const TeamModal: React.FC<{
         setSelectedPositions(selectedPositions.filter((t) => t.position !== deselectedValue));
     };
 
-    useEffect(() => {
-        if (teamMember && open) {
-            imageId.current = teamMember.imageId;
-            form.setFieldsValue({
-                name: teamMember.name,
-                isMain: teamMember.isMain,
-                description: teamMember.description,
-                positions: teamMember.positions.map((s) => s.position),
-                image: [
-                    {
-                        name: '',
-                        thumbUrl: base64ToUrl(teamMember.image?.base64, teamMember.image?.mimeType),
-                        uid: teamMember.imageId.toString(),
-                        status: 'done',
-                    }],
-            });
-            setSelectedPositions(teamMember.positions);
-            setTeamSourceLinks(teamMember.teamMemberLinks.map((l) => ({
-                id: l.id,
-                logoType: l.logoType,
-                targetUrl: l.targetUrl,
-            })));
-        } else {
-            imageId.current = 0;
-        }
-    }, [teamMember, open, form]);
-
     const closeAndCleanData = () => {
-        form.resetFields();
-        teamLinksForm.resetFields();
-        setSelectedPositions([]);
-        teamSourceLinks.splice(0);
-        setIsModalOpen(false);
+        if (!waitingForApiResponse) {
+            form.resetFields();
+            teamLinksForm.resetFields();
+            setSelectedPositions([]);
+            teamSourceLinks.splice(0);
+            setIsModalOpen(false);
+            setFileList([]);
+            setCustomWarningVisible(false);
+        }
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
-    }
+        if (!waitingForApiResponse) {
+            setIsModalOpen(false);
+        }
+    };
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
         const logotype = teamLinksForm.getFieldValue('logotype');
+
         if (!url.toLocaleLowerCase().includes(logotype)) {
             setCustomWarningVisible(true);
         } else {
             setCustomWarningVisible(false);
-            let newId = Math.min(...teamSourceLinks.map((item) => item.id));
-            if (newId < 0) {
-                newId -= 1;
-            } else {
-                newId = -1;
-            }
+
+            const newId = getNewId(teamSourceLinks);
             setTeamSourceLinks([...teamSourceLinks, {
                 id: newId,
                 logoType: Number(LogoType[logotype]),
@@ -130,23 +161,23 @@ const TeamModal: React.FC<{
             }]);
         }
     };
+
+    const removeImage = () => {
+        imageId.current = 0;
+    };
+
     const handleOk = async () => {
         try {
             await form.validateFields();
-            form.submit();
-            message.success("Нового члена команди успішно додано!", 2)
+            setWaitingForApiResponse(true);
+            await form.submit();
         } catch (error) {
-            message.config({
-                top: 100,
-                duration: 3,
-                maxCount: 3,
-                rtl: true,
-                prefixCls: 'my-message',
-            });
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
+
     const onSuccesfulSubmitPosition = async (formValues: any) => {
+        message.loading('Зберігання...');
         teamSourceLinks.forEach((el, index) => {
             if (el.id < 0) {
                 teamSourceLinks[index].id = 0;
@@ -162,71 +193,38 @@ const TeamModal: React.FC<{
             positions: selectedPositions,
             description: formValues.description ?? '',
         };
-        teamStore.getTeamArray.map((t) => t).forEach(t => {
-        if (formValues.name == t.name  || imageId.current == t.imageId)
-            teamMember = t;
-        });
-        if (teamMember) {
-            team.id = teamMember.id;
-            Promise.all([
-                teamStore.updateTeam(team)
-                    .then(() => {
-                        if (afterSubmit) {
-                            afterSubmit(team);
-                        }
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                    }),
-            ]);
-        } else {
-            Promise.all([
-                teamStore.createTeam(team)
-                    .then(() => {
-                        if (afterSubmit) {
-                            afterSubmit(team);
-                        }
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                    }),
-            ]);
+
+        // eslint-disable-next-line no-param-reassign
+        teamMember = teamStore.getTeamArray.find(
+            (t) => (formValues.name === t.name || imageId.current === t.imageId),
+        );
+
+        try {
+            if (imageId.current === 0) {
+                throw new Error("Image isn't uploaded yet");
+            }
+
+            if (teamMember) {
+                team.id = teamMember.id;
+                await teamStore.updateTeam(team);
+            } else {
+                await teamStore.createTeam(team);
+            }
+
+            if (afterSubmit) {
+                afterSubmit(team);
+            }
+            setActionSuccess(true);
+        } catch (error: unknown) {
+            message.error('Не вдалось оновити/створити члена команди. Спробуйте ще раз.');
+            setWaitingForApiResponse(false);
         }
     };
-
-    const selectSocialMediaOptions = [{
-        value: 'twitter',
-        label: 'Twitter',
-    }, {
-        value: 'instagram',
-        label: 'Instagram',
-    }, {
-        value: 'facebook',
-        label: 'Facebook',
-    }, {
-        value: 'youtube',
-        label: 'Youtube',
-    }, {
-        value: 'linkedin',
-        label: 'LinkedIn',
-    }, {
-        value: 'tiktok',
-        label: 'TikTok',
-    }, {
-        value: 'behance',
-        label: 'Behance',
-    }, {
-        value: 'https',
-        label: 'Ваш сайт',
-    }];
-
-    useEffect(() => {
-        setIsMain(teamMember ? teamMember.isMain : false);
-    }, [teamMember]);
 
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
     };
+
     return (
         <Modal
             open={open}
@@ -307,6 +305,10 @@ const TeamModal: React.FC<{
                         ]}
                     >
                         <FileUploader
+                            onChange={(param) => {
+                                setFileList(param.fileList);
+                            }}
+                            fileList={fileList}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
@@ -314,18 +316,12 @@ const TeamModal: React.FC<{
                             onPreview={(e) => {
                                 setFilePreview(e); setPreviewOpen(true);
                             }}
+                            onRemove={removeImage}
                             uploadTo="image"
                             onSuccessUpload={(image: Image) => {
                                 imageId.current = image.id;
                             }}
-                            defaultFileList={(teamMember)
-                                ? [{
-                                    name: '',
-                                    thumbUrl: base64ToUrl(teamMember.image?.base64, teamMember.image?.mimeType),
-                                    uid: teamMember.imageId.toString(),
-                                    status: 'done',
-                                }]
-                                : []}
+                            defaultFileList={getImageAsFileInArray()}
                         >
                             <p>Виберіть чи перетягніть файл</p>
                         </FileUploader>
@@ -362,7 +358,7 @@ const TeamModal: React.FC<{
                         label="Соціальна мережа"
                     >
                         <Select
-                            options={selectSocialMediaOptions}
+                            options={SOCIAL_OPTIONS}
                         />
                     </FormItem>
                     <Form.Item
@@ -380,10 +376,13 @@ const TeamModal: React.FC<{
                             <UserAddOutlined />
                         </Button>
                     </Form.Item>
+
+                    {customWarningVisible
+                        ? <p className="error-message">Посилання не співпадає з вибраним текстом</p> : ''}
                 </div>
-                {customWarningVisible ? <p className="red-text">Посилання не співпадає з вибраним текстом</p> : ''}
 
                 <div className="center">
+                    {/* disabled={fileList?.length === 0} */}
                     <Button className="streetcode-custom-button" onClick={handleOk}>
                         Зберегти
                     </Button>

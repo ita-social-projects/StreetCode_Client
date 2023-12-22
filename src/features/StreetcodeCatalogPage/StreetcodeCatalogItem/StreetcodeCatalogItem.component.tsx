@@ -3,10 +3,8 @@ import './StreetcodeCatalogItem.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import useMobx from '@stores/root-store';
 
-import useOnScreen from '@/app/common/hooks/scrolling/useOnScreen.hook';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
@@ -22,9 +20,6 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const { imagesStore: { getImage, fetchImage } } = useMobx();
     const elementRef = useRef<HTMLDivElement>(null);
     const classSelector = 'catalogItem';
-    const isOnScreen = useOnScreen(elementRef, classSelector);
-
-    useEffect(() => (isOnScreen && isLast ? () => handleNextScreen() : () => { }), [isOnScreen]);
 
     useEffect(() => {
         Promise.all([fetchImage(streetcode.imageId)]);
@@ -37,6 +32,46 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     };
     const windowsize = useWindowSize();
 
+    const handleClickRedirect = () => {
+        toStreetcodeRedirectClickEvent(streetcode.url.toString(), 'catalog');
+        window.location.href = `/${streetcode.url}`;
+    };
+    const handleTextClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        handleClickRedirect();
+    };
+
+    useEffect(() => {
+        if (isLast) {
+            const loadOptions = {
+                root: null,
+                rootMargin: '0px',
+                thresholds: [0.75],
+            };
+
+            const callback = (entries : any, intersectionObserver : any) => {
+                entries.forEach((entry : any) => {
+                    if (entry.isIntersecting) {
+                        handleNextScreen();
+                        intersectionObserver.unobserve(entry.target);
+                    }
+                });
+            };
+
+            const intersectionObserver = new IntersectionObserver(callback, loadOptions);
+
+            if (elementRef.current) {
+                intersectionObserver.observe(elementRef.current);
+            }
+
+            return () => {
+                if (elementRef.current) {
+                    intersectionObserver.unobserve(elementRef.current);
+                }
+            };
+        }
+    }, []);
+
     return (
         <>
             {windowsize.width > 1024 && (
@@ -46,7 +81,11 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
                             <p>{streetcode.title}</p>
                             {
                                 streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
-                                    <p className="aliasText">({streetcode.alias})</p>
+                                    <p className="aliasText">
+(
+                                        {streetcode.alias}
+)
+                                    </p>
                                 ) : undefined
                             }
                         </div>
@@ -55,13 +94,13 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
             )}
             {windowsize.width <= 1024 && (
                 <div>
-                    <a {...LinkProps} href={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}/>
+                    <a {...LinkProps} href={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')} />
                     <div ref={elementRef} className="catalogItemText mobile">
-                        <div className="heading">
+                        <div className="heading" onClick={handleTextClick}>
                             <p>{streetcode.title}</p>
                             {
                                 streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
-                                    <p className="aliasText">({streetcode.alias})</p>
+                                    <p className="aliasText">{streetcode.alias}</p>
                                 ) : undefined
                             }
                         </div>

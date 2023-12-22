@@ -95,6 +95,7 @@ const NewStreetcode = () => {
     const navigationString = 'Покинути сторінку? Внесені зміни, можливо, не буде збережено.';
     const [fieldChanges, setFieldChanges] = useState({});
     const streetcodeType = useRef<StreetcodeType>(StreetcodeType.Person);
+    const [allPersistedSourcesAreSet, setAllPersistedSourcesAreSet] = useState(false);
 
     const handleFieldChange = (fieldName: any, value: any) => {
         setFieldChanges((prevChanges) => ({
@@ -223,14 +224,15 @@ const NewStreetcode = () => {
                     .catch((error) => { });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
                     const id = result.map((x) => x.id);
-                    id.map((x) => {
-                        SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then((x) => {
-                            const newSource: StreetcodeCategoryContent = {
-                                sourceLinkCategoryId: x.sourceLinkCategoryId,
-                                streetcodeId: x.streetcodeId,
-                                id: x.id,
-                                text: x.text,
-                            };
+                    const getAllStreetcodeCategoriesContentRequest = result.map((x) => SourcesApi.getCategoryContentByStreetcodeId(parseId, x.id));
+                    Promise.all(getAllStreetcodeCategoriesContentRequest).then((x) => {
+                        const newSources: StreetcodeCategoryContent[] = x.map((e) => ({
+                            sourceLinkCategoryId: e.sourceLinkCategoryId,
+                            streetcodeId: e.streetcodeId,
+                            id: e.id,
+                            text: e.text,
+                        }));
+                        newSources.map((newSource) => {
                             const existingSource = sourceCreateUpdateStreetcode
                                 .streetcodeCategoryContents.find((s) => s
                                     .sourceLinkCategoryId === newSource.sourceLinkCategoryId);
@@ -245,6 +247,8 @@ const NewStreetcode = () => {
                                 sourceCreateUpdateStreetcode.setItem(persistedItem);
                             }
                         });
+                    }).then(() => {
+                        setAllPersistedSourcesAreSet(true);
                     });
                 });
                 TransactionLinksApi.getByStreetcodeId(parseId)
@@ -259,6 +263,8 @@ const NewStreetcode = () => {
             factsStore.fetchFactsByStreetcodeId(parseId);
             timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
             statisticRecordStore.fetchStatisticRecordsByStreetcodeId(parseId);
+        } else {
+            setAllPersistedSourcesAreSet(true);
         }
     }, []);
 
@@ -343,10 +349,10 @@ const NewStreetcode = () => {
                 status: tempStatus,
                 toponyms: newStreetcodeInfoStore.selectedToponyms,
                 streetcodeCategoryContents:
-                        JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
-                            .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
-                                { ...streetcodeCategoryContent, id: 0 }
-                            )),
+                    JSON.parse(JSON.stringify(sourceCreateUpdateStreetcode.streetcodeCategoryContents))
+                        .map((streetcodeCategoryContent: StreetcodeCategoryContent) => (
+                            { ...streetcodeCategoryContent, id: 0 }
+                        )),
                 statisticRecords: JSON.parse(JSON.stringify(statisticRecordStore.getStatisticRecordArray))
                     .map((statisticRecord: StatisticRecord) => (
                         {
@@ -424,7 +430,7 @@ const NewStreetcode = () => {
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
                     streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                        ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
+                    ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
                         ...streetcodeArt,
                         art: {
                             ...streetcodeArt.art,
@@ -514,7 +520,7 @@ const NewStreetcode = () => {
                             <TimelineBlockAdmin onChange={handleFieldChange} />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
-                            <ForFansBlock onChange={handleFieldChange} />
+                            <ForFansBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
                             <ARBlock onChange={handleFieldChange} />

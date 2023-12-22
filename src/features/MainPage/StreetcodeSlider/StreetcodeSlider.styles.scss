@@ -30,11 +30,21 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
             ::-webkit-scrollbar {
                 width: f.pxToRem(5px);
             }
+
+            @media (min-width: 768px) and (max-width: 1024px) {
+                .slick-center{
+                    padding: 0 f.pxToRem(20px);
+                }
+
+                .slick-list{
+                    height: 30rem;
+                }
+            }
         }
 
         .slick-slide {
             width: unset !important;
-            
+
             @media screen and (max-width: 767px) {
                     width: 100% !important;
             }
@@ -57,8 +67,6 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
 
         .slick-center {
             transform: scale(1.16);
-            padding-left: f.pxToRem(16px);
-            padding-right: f.pxToRem(16px);
             padding-bottom: f.pxToRem(20px);
         }
     }

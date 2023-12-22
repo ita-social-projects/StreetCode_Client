@@ -31,7 +31,7 @@ const Newss: React.FC = observer(() => {
                     ImageStore.getImageById(val.imageId!).then((image) => {
                         newsStore.NewsMap.set(
                             key,
-                            { ...val, image},
+                            { ...val, image },
                         );
                     });
                 }
@@ -106,7 +106,7 @@ const Newss: React.FC = observer(() => {
                                     });
                                     modalStore.setConfirmationModal('confirmation');
                                 },
-                                'Ви впевнені, що хочете видалити чю новину?',
+                                'Ви впевнені, що хочете видалити цю новину?',
                             );
                         }}
                     />

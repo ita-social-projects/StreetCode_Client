@@ -98,6 +98,10 @@
     &:focus {
       outline: none;
     }
+
+    &::placeholder {
+      color: c.$darkish-gray-color;
+    }
   }
 
   .GryvnaSymbol{
@@ -114,7 +118,7 @@
       @include mut.flex-centered();
 
       border-radius: 15px !important;
-      border: 3px solid c.$dark-red-color;
+      border: 3px solid c.$button-border-red-color;
       @include vnd.vendored(transition, 'background-color .75s ease');
       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.19);
 
@@ -127,7 +131,7 @@
 
       &:where(:hover, &.active) {
         background-color: c.$accented-red-color;
-        border: 3px solid c.$accented-red-color;
+        border: none !important;
 
         > span {
           color: c.$pure-white-color;
@@ -149,6 +153,12 @@
       border: none;
       display: flex;
       align-items: center;
+      .privacyPolicy{
+        color: c.$dark-red-color;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
 
 
       .ant-checkbox-input {
@@ -321,10 +331,14 @@
           width: f.pxToRem(100px) !important;
           height: f.pxToRem(37px) !important;
           border-radius: 11px !important;
-          border: 2px solid c.$dark-red-color;
+          border: 2px solid c.$button-border-red-color;
 
           > span{
             @include mut.with-font(ft.$closer-text-font, $font-size: 16px, $font-weight: 350);
+          }
+
+          &:where(:hover, &.active) {
+            border: none !important;
           }
         }
       }

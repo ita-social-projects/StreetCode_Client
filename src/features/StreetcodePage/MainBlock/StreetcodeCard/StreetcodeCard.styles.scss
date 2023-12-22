@@ -2,6 +2,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/_utils.functions.scss" as f;
+
 .card {
   display: flex;
   flex-direction: row;
@@ -65,10 +66,16 @@
 .tagContainer{
   @include mut.rem-margined(13px, 0, 13px, 0);
 }
+.blurTop{
+  @include mut.blur($edge: 0deg, $top: 9px, $height: 16px, $z-index: 3);
+}
+.blurBottom{
+  @include mut.blur($edge: 180deg, $top: -20px, $height: 21px, $z-index: 3);
+}
 .teaserBlock {
-  padding-bottom: f.pxToRem(20px);
   @include mut.with-font($font-weight: 300, $font-size: 20px);
-  @include mut.rem-margined(25px, 0px, 0px, 0px);
+  @include mut.rem-margined($top: 10px);
+  @include mut.rem-padded($top: 15px, $bottom: 15px);
   line-height: 23px;
   overflow: auto;
   flex-grow: 1;
@@ -90,17 +97,6 @@
     border-width: 3px;
     border-color: c.$accented-red-color;
   }
-  &:before {
-    content: '';
-    position: absolute;
-    top: -25px;
-    left: 0;
-    right: 0;
-    height: f.pxToRem(25px);
-    background: linear-gradient(180deg, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255,255,255,0.75) 21%);
-    -webkit-text-fill-color: transparent;
-  }
-
 }
 .audioBtnActive {
   background-color: c.$accented-red-color;
@@ -132,10 +128,30 @@
     box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
   }
 }
-.streetcodeImg {
+.streetcodeImg, .streetcodeImgColored, .streetcodeImgGrey {
     margin: auto;
     @include mut.sized(415px, 542px);
 }
+
+.streetcodeImgColored{
+  position: absolute;
+  animation: fadeIn 4s;
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+}
+
+.streetcodeImgGrey{
+  animation: fadeOut 3s;
+  animation-fill-mode: forwards;
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+}
+
 .playCircle {
     font-size: f.pxToRem(37px);
     margin-right: f.pxToRem(10px);
@@ -170,10 +186,14 @@
 @media screen and (max-width: 1024px) {
   .blockCentering {
     @include mut.rem-padded($top: 2px, $right: 10px, $bottom: 0px, $left: 10px);
+    .blurTop{
+      @include mut.blur($edge: 0deg, $top: 4px, $height: 11px, $z-index: 3);
+    }
     .teaserBlock {
       line-height: f.pxToRem(18.75px);
       font-size: f.pxToRem(16px);
-      @include mut.rem-margined(15px, 0px, 0px, 0px);
+      @include mut.rem-margined($top: 5px);
+      @include mut.rem-padded($top: 10px, $bottom: 15px);
       @include mut.with-font($font-weight: 300, $font-size: 16px);
     }
     .card {
@@ -208,7 +228,7 @@
         @include mut.with-font(ft.$roboto-font, $font-weight: 400, $font-size: 20px);
         @include mut.withLineHeight(23px);
       }
-      .streetcodeImg {
+      .streetcodeImg,  .streetcodeImgColored, .streetcodeImgGrey{
         @include mut.sized(290px, 377px);
       }
       .cardFooter {
@@ -258,9 +278,6 @@
       .cardFooter{
         margin-top: f.pxToRem(39px) !important;
         @include mut.rem-padded(0px, 0px, 0px, 0px);
-        &:before {
-          top: -64px;
-        }
         .audioBtn{
           width: 100%;
         }
@@ -269,6 +286,16 @@
         @include mut.rem-padded($top: 40px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.full-rounded(0px);
 
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .blockCentering {
+    .card {
+      .leftSider {
+        @include mut.sized(98%, 489px);
       }
     }
   }

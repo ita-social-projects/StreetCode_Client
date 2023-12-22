@@ -1,6 +1,8 @@
 import './NewsSliderItem.styles.scss';
 
 import { useMediaQuery } from 'react-responsive';
+import CardText from '@components/CardText/CardText.component';
+import dayjs from 'dayjs';
 import htmlReactParser from 'html-react-parser';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -14,7 +16,6 @@ interface Props {
 }
 
 const NewsSliderItem = ({ news, image }: Props) => {
-
     const isMobileOrTablet = useMediaQuery({
         query: '(max-width: 1024px)',
     });
@@ -56,17 +57,13 @@ const NewsSliderItem = ({ news, image }: Props) => {
                 <div className="newsSlideText">
                     <div className="newsContainer">
                         <div className="subContainer">
-                            <h2 className="newsTitle">
-                                {news?.title}
-                            </h2>
-                            <div className="newsText">
-                                <p className="text">
-                                    {htmlReactParser(cleanText?.substring(0, 800))}
-                                </p>
-                                <a className="moreText" href={`news/${news.url.toString()}`} onClick={handleLinkClick}>
-                                    До новини
-                                </a>
-                            </div>
+                            <CardText
+                                onBtnClick={handleLinkClick}
+                                moreBtnText="До новини"
+                                title={news?.title}
+                                text={htmlReactParser(cleanText?.substring(0, 800))}
+                                subTitle={dayjs(news.creationDate).format('DD.MM.YYYY') ?? ''}
+                            />
                         </div>
                     </div>
                 </div>

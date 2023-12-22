@@ -3,6 +3,7 @@
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.fonts.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
 
 .relatedFigureSlide {
     @include mut.sized($width: 278px, $height: 380px);
@@ -11,14 +12,13 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-size: 285px;
     background-repeat: no-repeat;
-
     @include mut.positioned-as();
     @include mut.flexed($justify-content: center, $align-items: flex-end);
 
     @include vnd.vendored(transition, 'all .5s ease');
     cursor: pointer;
 
-    z-index: 1000;
+    z-index: l.$modal;
 }
 
 .figureSlideText {
@@ -109,11 +109,11 @@
     }
 }
 
-.relatedFigureSlide.hoverable:hover { 
-    @include mut.sized($width: 278px, $height: 459px); 
- 
+.relatedFigureSlide.hoverable:hover {
+    @include mut.sized($width: 278px, $height: 459px);
+
     .figureSlideText{
-        @include mut.sized($width: 278px, $height: 176px); 
+        @include mut.sized($width: 278px, $height: 176px);
 
         .relatedTagList {
             visibility: visible;

@@ -252,3 +252,18 @@
     @content;
   }
 }
+
+@mixin blur($edge:0, $top:0, $height:0, $z-index) {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    top: $top;
+    left: 0;
+    right: 0;
+    height: f.pxToRem($height);
+    background: linear-gradient($edge, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255, 255, 255, 0.664) 21%);
+    -webkit-text-fill-color: transparent;
+    z-index: $z-index;
+  }
+}

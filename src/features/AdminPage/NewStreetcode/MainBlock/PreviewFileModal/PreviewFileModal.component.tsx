@@ -16,7 +16,7 @@ interface Props {
     opened: boolean,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>,
     file: UploadFile | null,
-    greyFilterForImage: boolean
+    greyFilterForImage?: boolean
 }
 
 const PreviewFileModal = ({ opened, setOpened, file, greyFilterForImage = false }: Props) => {

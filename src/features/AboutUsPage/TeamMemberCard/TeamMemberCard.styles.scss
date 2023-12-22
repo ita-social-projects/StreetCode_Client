@@ -51,7 +51,7 @@
 
             h2 {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 23px);
-                @include mut.truncated($line-num: 1);
+                @include mut.truncated($line-num: 2);
             }
 
             p {

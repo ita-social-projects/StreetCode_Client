@@ -58,7 +58,7 @@ const ProgressBar: FC<Props> = ({
 
     useScrollPosition(
         ({ currentPos: { y } }) => {
-            const curScrollY = Math.abs(y);
+            const curScrollY = Math.ceil(Math.abs(y));
 
             setScrollPosition(curScrollY);
 
@@ -76,7 +76,10 @@ const ProgressBar: FC<Props> = ({
     }, [wasScrolled.current, setInvisible]);
 
     useEffect(() => {
-        timeoutId.current = setTimeout(() => setIsOnTimeout(false), hidingDelay);
+        timeoutId.current = setTimeout(() => {
+            setIsOnTimeout(false);
+            setInvisible();
+        }, hidingDelay);
         return () => clearTimeout(timeoutId.current);
     }, []);
 
@@ -98,9 +101,9 @@ const ProgressBar: FC<Props> = ({
     const onActiveBlockSelection = (activeIdx: number) => {
         const firstBlockHeight = blocks[0]?.height ?? 0;
         const lastBlockHeight = blocks[blocks.length - 1]?.height ?? 1;
-    
+
         scrollPercentage.current = getYScrollPercentage(scrollPosition, firstBlockHeight, lastBlockHeight);
-    };    
+    };
 
     const onProgressBarCallerClick = () => {
         toggle();

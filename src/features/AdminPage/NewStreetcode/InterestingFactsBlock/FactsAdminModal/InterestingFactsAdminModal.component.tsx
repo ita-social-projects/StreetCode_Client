@@ -8,7 +8,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover, UploadFile, 
+    Button, Form, Input, message, Modal, Popover, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -22,8 +22,6 @@ import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model'
 
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
 
-
-
 interface Props {
     fact?: FactCreate,
     open: boolean,
@@ -35,15 +33,15 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const { factsStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
-    const [fileList, setFileList] = useState<UploadFile[]>();
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
-    const clearModal=() =>{
+    const clearModal = () => {
         form.resetFields();
         setModalOpen(false);
         setFileList([]);
-    }
+    };
 
     useEffect(() => {
         if (fact && open) {
@@ -80,9 +78,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     }, [fact, open, form]);
 
     const onSuccesfulSubmit = (formValues: any) => {
-        factsStore.getFactArray.map((t) => t).forEach(t => {
-            if (formValues.title == t.title || formValues.factContent == t.factContent || imageId.current == t.imageId)
-                fact = t;
+        factsStore.getFactArray.map((t) => t).forEach((t) => {
+            if (formValues.title === t.title
+                || formValues.factContent === t.factContent
+                || imageId.current === t.imageId) fact = t;
         });
         if (fact) {
             const item = factsStore.factMap.get(fact.id) as FactUpdate;
@@ -116,7 +115,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         try {
             await form.validateFields();
             form.submit();
-            message.success("Wow-факт успішно додано!", 2)
+            message.success('Wow-факт успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -140,10 +139,11 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 footer={null}
                 maskClosable
                 centered
-
-                closeIcon={<Popover content="Внесені зміни не будуть збережені!" trigger='hover'>               
-                    <CancelBtn className='iconSize'  onClick={clearModal} />      
-                </Popover>}
+                closeIcon={(
+                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                        <CancelBtn className="iconSize" onClick={clearModal} />
+                    </Popover>
+                )}
             >
                 <div className="modalContainer-content">
                     <Form
@@ -226,6 +226,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         </Form.Item>
                         <div className="center">
                             <Button
+                                disabled={fileList?.length === 0 || !hasUploadedPhoto}
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >
@@ -235,10 +236,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                     </Form>
                 </div>
             </Modal>
-            <Popover content="popupContent" trigger='hover'></Popover>
+            <Popover content="popupContent" trigger="hover" />
             <PreviewFileModal file={fileList?.at(0) ?? null} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
-        
+
     );
 };
 

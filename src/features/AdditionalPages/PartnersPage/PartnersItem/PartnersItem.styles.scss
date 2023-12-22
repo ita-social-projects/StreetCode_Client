@@ -11,5 +11,6 @@
         width: 100%;
         object-fit: contain;
         cursor: pointer;
+        @include mut.rem-padded($right: 32px, $left: 32px);
     }
 }

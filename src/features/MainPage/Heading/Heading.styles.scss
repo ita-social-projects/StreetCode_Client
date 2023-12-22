@@ -8,6 +8,7 @@
     @include mut.sized($height: 40px, $width: 100%);
     @include mut.rem-padded($left: 25px, $right: 20px);
     @include mut.flexed($justify-content: space-between, $align-items: center);
+    white-space: nowrap;
 
     .leftPart {
         @include mut.flexed($align-items: center);
@@ -22,21 +23,24 @@
     .headingButton {
         @include mut.sized($width: 235px);
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-        
+
         line-height: 23.44px;
         text-decoration: underline;
         text-align: right;
         color: c.$text-red-color;
         cursor: pointer;
     }
-    @media screen and (max-width: 1024px){
+
+    @media screen and (max-width: 1024px) {
         @include mut.sized($height: 50px, $width: 100%);
+
         .leftPart {
             .blockName {
                 @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 24px);
                 line-height: 40px;
             }
         }
+
         .headingButton {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 16px);
             line-height: 18.75px;
@@ -44,7 +48,12 @@
     }
 
     @media screen and (max-width: 480px) {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: f.pxToRem(30px);
         @include mut.rem-padded($left: 33px, $right: 33px);
+
         .leftPart {
             .blockName {
                 @include mut.rem-margined($left: 0px);

@@ -8,13 +8,15 @@ import TimelineSlideCard from '@streetcode/TimelineBlock/TimelineItem/TimelineIt
 import TimelineReelOutline from '@streetcode/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
 import TimelineSlider from '@streetcode/TimelineBlock/TimelineSlider.component';
 import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.component';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
     const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    
     useAsync(
         () => {
             if (getStreetCodeId !== errorStreetCodeId) {
@@ -28,12 +30,17 @@ const TimelineBlock = () => {
     );
     
     useEffect(() => {
-        const hash = location.hash.replace('#', '');
-        const element = document.getElementById(hash);
+        const hash = getUrlHash(location);
+        if (!isScrolled && hash === 'timeline'){
+            const element = document.getElementById(hash);
     
-        setTimeout(() => {
-            element?.scrollIntoView({behavior: "smooth", block: "center"});
-        }, 1000);
+            setTimeout(() => {
+                if(element !== null) {
+                    element.scrollIntoView({behavior: "smooth", block: "center"});
+                    setIsScrolled(true);
+                }
+            }, 1000);
+        }
     });
 
     return (

@@ -4,6 +4,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 
 $moreInfo-width: 150px;
+$card-size: 380px;
 
 .relatedFiguresWrapper.container{
     margin-top: f.pxToRem(120px);
@@ -56,7 +57,9 @@ $moreInfo-width: 150px;
     margin: 0 auto;
 
     .slick-arrow {
-        top: 45%;
+        position: absolute;
+        top: f.pxToRem(calc($card-size / 2));
+        transform: translateY(-1.8rem); // half of arrow height
     }
 
     .slick-list {
@@ -92,12 +95,12 @@ $moreInfo-width: 150px;
         }
         .slick-slide {
             width: 165px !important;
-            
+
             &.slick-active.slick-current {
                 transform: translateX(0px) !important;
             }
         }
-        
+
     }
 }
 

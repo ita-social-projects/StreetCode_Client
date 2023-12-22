@@ -6,6 +6,8 @@ import StreetcodeCard from '@streetcode/MainBlock/StreetcodeCard/StreetcodeCard.
 
 import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+import { useEffect, useState } from 'react';
+import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
@@ -13,23 +15,38 @@ interface Props {
     streetcode?: Streetcode,
 }
 
-const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode } : Props) => (streetcode && (
-    <div id="mainBlock" className="mainBlock">
-        <div className="mainContainer">
-            <BreadCrumb separator={<div className="separator" />} streetcode={streetcode} />
-            <div className="blockCentering">
-                <div className="mainContent">
-                    <StreetcodeCard
-                        streetcode={streetcode}
-                        setActiveTagId={setActiveTagId}
-                        setActiveBlock={setActiveBlock}
-                    />
+
+const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode } : Props) =>{
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+    useEffect(() => {
+        const hash = getUrlHash(location);
+        if (!isScrolled && hash === ''){
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                setIsScrolled(true);
+            }, 100);
+        }
+    });
+    return (
+        <div id="mainBlock" className="mainBlock">
+            <div className="mainContainer">
+                <BreadCrumb separator={<div className="separator" />} streetcode={streetcode} />
+                <div className="blockCentering">
+                    <div className="mainContent">
+                        <StreetcodeCard
+                            streetcode={streetcode}
+                            setActiveTagId={setActiveTagId}
+                            setActiveBlock={setActiveBlock}
+                        />
+                    </div>
                 </div>
             </div>
+            <ListenTextModal />
         </div>
-        <ListenTextModal />
-    </div>
-)
-);
+    );
+}
+
+    
 
 export default observer(MainBlock);

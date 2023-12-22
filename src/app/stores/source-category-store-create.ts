@@ -33,7 +33,16 @@ export default class SourceCreateUpdateStreetcode {
     }
 
     public updateElement(index:number, category: StreetcodeCategoryContent) {
-        this.streetcodeCategoryContents[index] = category;
+        const sourceCategoryContent = this.streetcodeCategoryContents[index] as StreetcodeCategoryContentUpdate;
+        if (sourceCategoryContent && sourceCategoryContent.isPersisted) {
+            const updatedSourceCategoryContent: StreetcodeCategoryContentUpdate = {
+                ...category,
+                modelState: ModelState.Updated,
+            };
+            this.streetcodeCategoryContents[index] = updatedSourceCategoryContent;
+        } else {
+            this.streetcodeCategoryContents[index] = category;
+        }
     }
 
     public removeSourceCategoryContent(index:number) {

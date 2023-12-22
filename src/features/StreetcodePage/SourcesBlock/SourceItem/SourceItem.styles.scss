@@ -10,6 +10,10 @@ $articlesImg: "@assets/images/sources/Articles.webp";
   gap: 10px;
   @include mut.flex-centered();
   @include mut.bg-image($articlesImg);
+  &:focus,
+  &:focus-visible {
+   outline: none;
+  }
 
   h1 {
     color: white;

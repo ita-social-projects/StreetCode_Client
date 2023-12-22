@@ -15,12 +15,12 @@ import Donation from '@/models/feedback/donation.model';
 
 const possibleDonateAmounts = [500, 100, 50];
 
+// eslint-disable-next-line complexity
 const DonatesModal = () => {
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
@@ -29,7 +29,6 @@ const DonatesModal = () => {
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
-        setActiveBtnIndex(btnIdx);
     };
 
     const handleModalClose = () => {
@@ -38,7 +37,7 @@ const DonatesModal = () => {
     };
 
     const handleDonateInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        const newValue = target.value.replace('₴', '').trim();
+        const newValue = target.value.replace(/\D/g, '');
         if (newValue.includes('-')) {
             return;
         }
@@ -56,10 +55,12 @@ const DonatesModal = () => {
 
     const charWidth = windowSize.width > 1024 ? 42 : 21;
     const firstWidth = windowSize.width > 1024 ? 13 : 6;
-    const baseValWidth = windowSize.width > 1024 ? 3 : 4;
+    const baseValWidth = windowSize.width > 1024 ? 2 : 1;
     const count = (donateAmount.toString().match(/1/g) || []).length;
+    const zeroCount = (donateAmount.toString().match(/[0689]/g) || []).length;
 
-    const inputWidth = baseValWidth + donateAmount.toString().length * charWidth - count * firstWidth;
+    const inputWidth = baseValWidth + donateAmount.toString().length
+     * charWidth - count * firstWidth + zeroCount * baseValWidth;
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
@@ -74,7 +75,7 @@ const DonatesModal = () => {
 
             Promise.all([DonationApi.create(donation)])
                 .then((response) => {
-                    window.location.assign(response[0].pageUrl);
+                    window.open(response[0].pageUrl);
                 })
                 .catch();
         }
@@ -120,8 +121,9 @@ const DonatesModal = () => {
                     <input
                         onChange={handleDonateInputChange}
                         style={{ ...style, width: 'var(--input-width)' }}
+                        placeholder="0"
                         maxLength={14}
-                        value={`${donateAmount.toString()}`}
+                        value={donateAmount === 0 ? '' : donateAmount}
                         className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                     />
                     <div className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} GryvnaSymbol`}>₴</div>
@@ -130,8 +132,7 @@ const DonatesModal = () => {
                     {possibleDonateAmounts.map((amount, idx) => (
                         <Button
                             key={amount}
-                            className={(activeBtnIdx === idx
-                                && donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
+                            className={(donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
                             onClick={() => handleAmountBtnClick(idx)}
                         >
                             {amount}
@@ -145,7 +146,7 @@ const DonatesModal = () => {
                         checked={isCheckboxChecked}
                         onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                     >
-                        Я даю згоду на обробку моїх персональних даних
+                        Я даю згоду на обробку моїх <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
                     </Checkbox>
                 </div>
                 <button

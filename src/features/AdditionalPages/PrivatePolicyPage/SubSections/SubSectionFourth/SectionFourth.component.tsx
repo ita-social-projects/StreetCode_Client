@@ -23,7 +23,7 @@ const SectionFourth = () => (
                 достовірності розміщеної там інформації. Ми не несемо відповідальності за політику
                 конфіденційності або зміст цих сайтів. Якщо у вас є питання або сумніви з приводу цієї
                 політики, Ви можете звязатися з нами за адресою електронної пошти&nbsp;
-                <a className="link" href="https://www.streetcode.com.ua">https://www.streetcode.com.ua</a>
+                <a className="link" href="https://streetcode.com.ua">https://www.streetcode.com.ua</a>
                 .
             </div>
             <div className="title">Взаємодія платформи з іншими ресурсами:</div>
