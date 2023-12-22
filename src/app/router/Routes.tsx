@@ -33,27 +33,33 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+           // element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<AdminPage />}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
-            element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
+            //element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
+            element={<StreetcodeContent />}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+           //element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+           // element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+           // element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+            element={<ForFansMainPage />}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            element={<ProtectedComponent><Partners /></ProtectedComponent>}
+          //  element={<ProtectedComponent><Partners /></ProtectedComponent>}
+            element={<Partners />}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
@@ -69,7 +75,8 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEWS}
-            element={<ProtectedComponent><News /></ProtectedComponent>}
+            element={<News />}
+           // element={<ProtectedComponent><News /></ProtectedComponent>}
         />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
         <Route
