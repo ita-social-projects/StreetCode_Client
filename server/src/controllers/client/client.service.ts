@@ -31,12 +31,18 @@ export class ClientService {
           if (err) {
             reject(err);
           } else {
-            data = data.replace(/__PAGE_TITLE__/g, pageMetadata?.title ?? DEFAULT_META.title);
+            data = data.replace(
+              /__PAGE_TITLE__/g,
+              pageMetadata?.title ?? DEFAULT_META.title,
+            );
             data = data.replace(
               /__PAGE_DESCRIPTION__/g,
               pageMetadata?.description ?? DEFAULT_META.description,
             );
-            data = data.replace(/__PAGE_IMAGE__/g, pageMetadata?.image ?? DEFAULT_META.image);
+            data = data.replace(
+              /__PAGE_IMAGE__/g,
+              pageMetadata?.image ?? DEFAULT_META.image,
+            );
             resolve(data);
           }
         },
