@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { NewsService } from './services/news/news.service';
 import News from '../../interfaces/News';
@@ -33,6 +33,18 @@ export class ClientController {
     };
 
     return this.clientService.getApp(meta);
+  }
+
+  @Put('news/:url')
+  public async updateNews(
+    @Param('url') url: string,
+    @Body() updatedNews: News,
+  ) {
+    this.newsCacheMap.set(url, updatedNews);
+
+    const response = await this.newsService.updateNews(updatedNews);
+    console.log(response);
+    return response;
   }
 
   @Get(':url')
