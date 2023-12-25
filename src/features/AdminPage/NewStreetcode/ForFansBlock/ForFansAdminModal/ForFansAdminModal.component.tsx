@@ -27,10 +27,18 @@ interface Props {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
     allCategories: SourceCategoryName[],
     onChange: (field: string, value: any) => void,
+    allPersistedSourcesAreSet: boolean,
+}
+
+function isEditingCategoryTextOnly(
+    elementToUpdate: StreetcodeCategoryContent | null,
+    editedCategoryId: any,
+) : boolean | null {
+    return elementToUpdate && elementToUpdate?.sourceLinkCategoryId === Number(editedCategoryId);
 }
 
 const ForFansModal = ({
-    character_limit, open, setOpen, allCategories, onChange,
+    character_limit, open, setOpen, allCategories, onChange, allPersistedSourcesAreSet,
 }: Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
     const editorRef = useRef<Editor | null>(null);
@@ -82,7 +90,6 @@ const ForFansModal = ({
 
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
-        setCategories(allCategories);
         if (categoryUpdate.current && open) {
             setEditorContent(categoryUpdate.current.text ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
@@ -91,12 +98,60 @@ const ForFansModal = ({
             setEditorContent('');
             form.setFieldValue('category', '');
         }
-        fetchData();
+
+        if (allPersistedSourcesAreSet) {
+            fetchData();
+        }
     }, [open, sourceCreateUpdateStreetcode]);
 
-    const onSave = (values: any) => {
-        const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
-        if (elementToUpdate) {
+    useEffect(() => {
+        if (allCategories.length) {
+            setCategories([...allCategories].sort((a, b) => a.title.localeCompare(b.title)));
+        }
+    }, [allCategories]);
+
+    useEffect(() => {
+        if (allPersistedSourcesAreSet) {
+            fetchData();
+        }
+    }, [allPersistedSourcesAreSet]);
+
+    const handleCategoryAdding = (
+        values: any,
+        indexOfPersistedCategory: number,
+        isEditedCategoryPersisted: boolean,
+    ) => {
+        if (!isEditedCategoryPersisted) {
+            sourceCreateUpdateStreetcode
+                .addSourceCategoryContent({
+                    id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
+                    sourceLinkCategoryId: values.category,
+                    text: editorRef.current?.editor?.getContent() ?? '',
+                    streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
+                });
+            sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length;
+            sourceCreateUpdateStreetcode.indexUpdate -= 1;
+        } else {
+            sourceCreateUpdateStreetcode
+                .updateElement(
+                    indexOfPersistedCategory,
+                    {
+                        ...sourceCreateUpdateStreetcode.streetcodeCategoryContents[indexOfPersistedCategory],
+                        sourceLinkCategoryId: values.category,
+                        text: editorRef.current?.editor?.getContent() ?? '',
+                    },
+                );
+            sourceCreateUpdateStreetcode.indexUpdate = indexOfPersistedCategory;
+        }
+    };
+
+    const handleCategoryUpdating = (
+        values: any,
+        elementToUpdate: StreetcodeCategoryContent,
+        indexOfPersistedCategory: number,
+        isEditedCategoryPersisted: boolean,
+    ) => {
+        if (isEditingCategoryTextOnly(elementToUpdate, values.category)) {
             sourceCreateUpdateStreetcode
                 .updateElement(
                     sourceCreateUpdateStreetcode.indexUpdate,
@@ -107,15 +162,23 @@ const ForFansModal = ({
                     },
                 );
         } else {
-            sourceCreateUpdateStreetcode
-                .addSourceCategoryContent({
-                    id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
-                    sourceLinkCategoryId: values.category,
-                    text: editorRef.current?.editor?.getContent() ?? '',
-                    streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
-                });
-            sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length - 1;
+            sourceCreateUpdateStreetcode.removeSourceCategoryContent(sourceCreateUpdateStreetcode.indexUpdate);
+            handleCategoryAdding(values, indexOfPersistedCategory, isEditedCategoryPersisted);
         }
+    };
+
+    const onSave = (values: any) => {
+        const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
+        const indexOfPersistedCategory = sourceCreateUpdateStreetcode.streetcodeCategoryContents
+            .findIndex((x: StreetcodeCategoryContent) => x.sourceLinkCategoryId === Number(values.category));
+        const isEditedCategoryPersisted = indexOfPersistedCategory !== -1;
+
+        if (!elementToUpdate) {
+            handleCategoryAdding(values, indexOfPersistedCategory, isEditedCategoryPersisted);
+        } else {
+            handleCategoryUpdating(values, elementToUpdate, indexOfPersistedCategory, isEditedCategoryPersisted);
+        }
+
         onChange('saved', null);
     };
     const handleOk = async () => {
@@ -134,22 +197,10 @@ const ForFansModal = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
-    const onDropDownChange = async () => {
-        if (isAddModalVisible === false) {
-            const categories = await SourcesApi.getAllCategories();
-            sourcesAdminStore.setInternalSourceCategories(categories);
-
-            const sourceMas: SourceCategoryName[] = categories.map((x) => ({
-                id: x.id ?? 0,
-                title: x.title,
-            }));
-
-            sourceMas.sort((a, b) => a.title.localeCompare(b.title));
-            setCategories(sourceMas);
-        }
-    };
     const onUpdateStates = async (isNewCatAdded: boolean) => {
         if (isNewCatAdded === true) {
+            const categories = await SourcesApi.getAllNames();
+            setCategories(categories.sort((a, b) => a.title.localeCompare(b.title)));
             const AvailableCats = await getAvailableCategories(true);
             setAvailableCategories(AvailableCats);
             alert('Категорію успішно додано до списку!');
@@ -199,7 +250,6 @@ const ForFansModal = ({
                         key="selectForFansCategory"
                         className="category-select-input"
                         onChange={handleAdd}
-                        onDropdownVisibleChange={onDropDownChange}
                     >
                         <Select.Option key="addCategory" value="addCategory">
                             Додати нову категорію...

@@ -21,7 +21,6 @@ const DonatesModal = () => {
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
@@ -30,7 +29,6 @@ const DonatesModal = () => {
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
-        setActiveBtnIndex(btnIdx);
     };
 
     const handleModalClose = () => {
@@ -57,7 +55,7 @@ const DonatesModal = () => {
 
     const charWidth = windowSize.width > 1024 ? 42 : 21;
     const firstWidth = windowSize.width > 1024 ? 13 : 6;
-    const baseValWidth = windowSize.width > 1024 ? 3 : 4;
+    const baseValWidth = windowSize.width > 1024 ? 2 : 1;
     const count = (donateAmount.toString().match(/1/g) || []).length;
     const zeroCount = (donateAmount.toString().match(/[0689]/g) || []).length;
 
@@ -124,7 +122,7 @@ const DonatesModal = () => {
                         onChange={handleDonateInputChange}
                         style={{ ...style, width: 'var(--input-width)' }}
                         placeholder="0"
-                        maxLength={15}
+                        maxLength={14}
                         value={donateAmount === 0 ? '' : donateAmount}
                         className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                     />
@@ -134,8 +132,7 @@ const DonatesModal = () => {
                     {possibleDonateAmounts.map((amount, idx) => (
                         <Button
                             key={amount}
-                            className={(activeBtnIdx === idx
-                                && donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
+                            className={(donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
                             onClick={() => handleAmountBtnClick(idx)}
                         >
                             {amount}
@@ -149,7 +146,7 @@ const DonatesModal = () => {
                         checked={isCheckboxChecked}
                         onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                     >
-                        Я даю згоду на обробку моїх <a className='privacyPolicy' href='/privacy-policy'>персональних даних</a>
+                        Я даю згоду на обробку моїх <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
                     </Checkbox>
                 </div>
                 <button

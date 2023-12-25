@@ -76,8 +76,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     });
                     setFileList(createFileListData(img));
                 });
-        } else {
-            setFileList([]);
         }
     }, [initialData, isModalVisible, form]);
 
@@ -208,7 +206,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button className="streetcode-custom-button" onClick={() => handleOk()}>
+                        <Button 
+                        disabled={fileList?.length === 0} 
+                        className="streetcode-custom-button" 
+                        onClick={() => handleOk()}>
                             Зберегти
                         </Button>
                     </div>
