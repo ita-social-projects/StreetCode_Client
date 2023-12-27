@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Delete } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { NewsService } from './services/news/news.service';
 import News from '../../interfaces/News';
@@ -43,6 +43,13 @@ export class ClientController {
     this.newsCacheMap.set(url, updatedNews);
 
     const response = await this.newsService.updateNews(updatedNews);
+    console.log('RESPONSE FROM API', response);
+    return response;
+  }
+
+  @Delete('news/delete/:id')
+  public async deleteNews(@Param('id') id: string) {
+    const response = await this.newsService.deleteNews(id);
     console.log(response);
     return response;
   }

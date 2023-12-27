@@ -5,7 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 @Module({
   imports: [
     HttpModule.register({
-      baseURL: process.env.REACT_APP_BACKEND_URL,
+      baseURL: 'https://localhost:5001/api',
     }),
   ],
   providers: [StreetcodeService],

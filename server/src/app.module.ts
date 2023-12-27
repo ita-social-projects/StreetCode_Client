@@ -20,7 +20,7 @@ import { HttpModule } from '@nestjs/axios';
     NewsModule,
     StreetcodeModule,
     HttpModule.register({
-      baseURL: process.env.REACT_APP_BACKEND_URL,
+      baseURL: 'https://localhost:5001/api',
     }),
   ],
   controllers: [AppController, ClientController],
