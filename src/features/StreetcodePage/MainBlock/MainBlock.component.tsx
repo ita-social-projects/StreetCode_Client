@@ -13,10 +13,11 @@ interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
     setActiveBlock: React.Dispatch<React.SetStateAction<number>>,
     streetcode?: Streetcode,
+    setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 
-const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode } : Props) =>{
+const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode, setShowAllTags } : Props) =>{
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
     useEffect(() => {
@@ -38,6 +39,7 @@ const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode } : Props) =>{
                             streetcode={streetcode}
                             setActiveTagId={setActiveTagId}
                             setActiveBlock={setActiveBlock}
+                            setShowAllTags={setShowAllTags}
                         />
                     </div>
                 </div>
