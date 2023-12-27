@@ -11,6 +11,7 @@ import Table, { ColumnsType } from 'antd/es/table';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { SourceCategoryAdmin } from '@/models/sources/sources.model';
+
 import CategoryAdminModal from './ForFansPage/CategoryAdminModal.component';
 
 const ForFansMainPage: React.FC = observer(() => {
@@ -128,7 +129,7 @@ const ForFansMainPage: React.FC = observer(() => {
                     pagination={{ pageSize: 10 }}
                     className="partners-table"
                     columns={columns}
-                   dataSource={sourcesStore?.getSrcCategoriesArray}
+                    dataSource={sourcesStore?.getSrcCategoriesArray}
                     rowKey="id"
                 />
             </div>

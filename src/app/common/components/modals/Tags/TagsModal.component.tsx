@@ -26,7 +26,7 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
     const { setModal, modalsState: { tagsList } } = modalStore;
     const { fetchRelatedFiguresByTagId, getStreetcodesByTag } = relatedByTag;
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
-  
+
     const tagId = activeTagId;
     useAsync(
         () => {

@@ -1,7 +1,6 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import News from '@models/news/news.model';
-import { NewsWithUrl } from '@models/news/news.model';
+import News, { NewsWithUrl } from '@models/news/news.model';
 
 const NewsApi = {
     getById: (id: number) => Agent.get<News>(`${API_ROUTES.NEWS.GET}/${id}`),

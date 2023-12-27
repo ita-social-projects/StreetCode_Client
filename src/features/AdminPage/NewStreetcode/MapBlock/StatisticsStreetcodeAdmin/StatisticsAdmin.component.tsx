@@ -10,9 +10,9 @@ const StatisticsComponentAdmin = () => (
         <Input
             className="input-streets"
             placeholder="введіть вулицю"
-            prefix={<EnvironmentOutlined  className="site-form-item-icon" />}
-             />
-      
+            prefix={<EnvironmentOutlined className="site-form-item-icon" />}
+        />
+
     </div>
 );
 export default StatisticsComponentAdmin;

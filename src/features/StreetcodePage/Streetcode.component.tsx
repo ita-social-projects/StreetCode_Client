@@ -1,7 +1,7 @@
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
@@ -28,7 +28,6 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import React from 'react';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -115,7 +114,7 @@ const StreetcodeContent = () => {
                 {pageLoadercontext.isPageLoaded ? (
                     <ArtGalleryBlockComponent />
                 ) : (
-                    <React.Fragment />
+                    <></>
                 )}
                 <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
                 <SourcesBlock />

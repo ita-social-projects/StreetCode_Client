@@ -353,7 +353,10 @@ const MainBlockAdmin = React.memo(({
                     </Form.Item>
                     {tagInput && (
                         <div className="tagInput-counter">
-                            {tagInput.length} / {maxTagLength}
+                            {tagInput.length}
+                            {' '}
+/
+                            {maxTagLength}
                         </div>
                     )}
                 </div>
