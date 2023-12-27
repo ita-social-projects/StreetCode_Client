@@ -1,76 +1,101 @@
 import './TagsSliderModal.styles.scss';
 
-import { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 interface Props {
     streetCodeid: number,
-    activeTagBlock: number,
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
+    activeTagId: number,
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
+    showAllTags: boolean
 }
 
-const TagsSliderModal = ({ streetCodeid, activeTagBlock, setActiveTagId }: Props) => {
+const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTags = false }: Props) => {
     const { tagsStore } = useMobx();
-    const { fetchTagByStreetcodeId, getTagArray } = tagsStore;
+    const { fetchTagByStreetcodeId, fetchAllTags, getTagArray, getAllTagsArray } = tagsStore;
 
-    useEffect(() => {
-        fetchTagByStreetcodeId(streetCodeid);
-    }, [streetCodeid, getTagArray]);
+    useAsync(
+        () => {
+            fetchTagByStreetcodeId(streetCodeid);
+            fetchAllTags();
+        }, 
+        [streetCodeid],
+    );
+
+    const tags = getTagArray?.map((tag) => (
+        <div key={tag.id}>
+            <Button
+                className="tagModalItem"
+                onClick={() => {
+                    setActiveTagId(tag.id);
+                }}
+                key={tag.id}
+            >
+                {tag.title}
+            </Button>
+        </div>
+    ));
+
+    const allTags = getAllTagsArray?.map((tag) => (
+        <div key={tag.id}>
+            <Button
+                className="tagModalItem"
+                onClick={() => {
+                    setActiveTagId(tag.id);
+                }}
+                key={tag.id}
+            >
+                {tag.title}
+            </Button>
+        </div>
+    ));
+
+    const initialSlide = showAllTags ? getAllTagsArray.findIndex(tag => tag.id === activeTagId) : getTagArray.findIndex(tag => tag.id === activeTagId);
+
+    const sliderProps = {
+        className: "tagSliderClass",
+        infinite: false,
+        slidesToSho: 1,
+        arrows: false,
+        swipe: false,
+        dots: false,
+        variableWidth: true,
+        centerMode: true,
+        slidesToScroll: 1,
+        initialSlide: initialSlide,
+        focusOnSelect: true,
+        beforeChange: (currentSlide: number, nextSlide: number) => setActiveTagId(getAllTagsArray[nextSlide].id),
+    };
 
     return (
         <div className="tagModalContainer">
-            { getTagArray.length > 1
+            {showAllTags && (allTags.length > 1
                 ? (
                     <BlockSlider
-                        className="tagSliderClass"
-                        infinite={false}
-                        slidesToShow={1}
-                        arrows={false}
-                        swipe={false}
-                        dots={false}
-                        variableWidth
-                        centerMode
-                        slidesToScroll={1}
-                        initialSlide={activeTagBlock}
-                        focusOnSelect
-                        beforeChange={
-                            (currentSlide, nextSlide) => setActiveTagId(getTagArray[nextSlide].id)
-                        }
+                        {...sliderProps}
                     >
-                        {getTagArray?.map((tag) => (
-                            <div key={tag.id}>
-                                <Button
-                                    className="tagModalItem"
-                                    onClick={() => {
-                                        setActiveTagId(tag.id);
-                                    }}
-                                    key={tag.id}
-                                >
-                                    {tag.title}
-                                </Button>
-                            </div>
-                        ))}
+                        {allTags}
                     </BlockSlider>
                 ) : (
                     <div>
-                        {getTagArray?.map((tag) => (
-                            <div key={tag.id}>
-                                <Button
-                                    className="tagModalItem"
-                                    onClick={() => {
-                                        setActiveTagId(tag.id);
-                                    }}
-                                    key={tag.id}
-                                >
-                                    {tag.title}
-                                </Button>
-                            </div>
-                        ))}
+                        {allTags}
                     </div>
-                )}
+            ))}
+            {!showAllTags && (tags.length > 1
+                ? (
+                    <BlockSlider
+                        {...sliderProps}
+                    >
+                        {tags}
+                    </BlockSlider>
+                ) : (
+                    <div>
+                        {tags}
+                    </div>
+            ))}
         </div>
     );
 };
