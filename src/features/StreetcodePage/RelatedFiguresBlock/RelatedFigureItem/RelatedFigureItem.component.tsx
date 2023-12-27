@@ -33,13 +33,16 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, setShowAllTags, stre
     };
 
     const totalLength: number = tags.reduce((acc, str) => acc + str.title.length, 0);
+
+    const commonTags = tags.filter((tag) => streetcode?.tags.find((ti) => ti.id === tag.id));
+
     return (
         <>
             {windowsize.width > 1024 && (
                 <a
                     className={`relatedFigureSlide 
-                    ${hoverable && tags.length > 1 ? 'hoverable' : undefined} 
-                    ${hoverable && tags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
+                    ${hoverable && commonTags.length > 1 ? 'hoverable' : undefined} 
+                    ${hoverable && commonTags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
 
                     style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})` }}
                     href={`/${url}`}
@@ -64,9 +67,8 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, setShowAllTags, stre
                                 ) : undefined
                             }
                         </div>
-                        <div className={`relatedTagList ${tags.length > 1 ? undefined : 'noneTags'}`}>
-                            {tags.filter((tag) => streetcode?.tags.find((ti) => ti.id === tag.id))
-                            .map((tag) => (
+                        <div className={`relatedTagList ${commonTags.length > 1 ? undefined : 'noneTags'}`}>
+                            {commonTags.map((tag) => (
                                 <button
                                     type="button"
                                     key={tag.id}
