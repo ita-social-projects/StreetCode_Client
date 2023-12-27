@@ -27,7 +27,6 @@ const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
 interface Props {
     streetcode?: Streetcode;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
-    setActiveBlock: React.Dispatch<React.SetStateAction<number>>,
     setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
@@ -47,7 +46,7 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setShowAllTags }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
@@ -155,7 +154,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock, setShowAll
                         <TagList
                             tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
                             setActiveTagId={setActiveTagId}
-                            setActiveTagBlock={setActiveBlock}
                             setShowAllTags={setShowAllTags}
                         />
                     </div>

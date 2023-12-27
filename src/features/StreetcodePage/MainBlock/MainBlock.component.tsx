@@ -11,13 +11,12 @@ import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
-    setActiveBlock: React.Dispatch<React.SetStateAction<number>>,
     streetcode?: Streetcode,
     setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 
-const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode, setShowAllTags } : Props) =>{
+const MainBlock = ({ setActiveTagId, streetcode, setShowAllTags } : Props) =>{
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
     useEffect(() => {
@@ -38,7 +37,6 @@ const MainBlock = ({ setActiveTagId, setActiveBlock, streetcode, setShowAllTags 
                         <StreetcodeCard
                             streetcode={streetcode}
                             setActiveTagId={setActiveTagId}
-                            setActiveBlock={setActiveBlock}
                             setShowAllTags={setShowAllTags}
                         />
                     </div>

@@ -37,7 +37,6 @@ const StreetcodeContent = () => {
     const streetcodeUrl = useRef<string>(useRouteUrl());
 
     const [activeTagId, setActiveTagId] = useState(0);
-    const [activeBlock, setActiveBlock] = useState(0);
     const [showAllTags, setShowAllTags] = useState<boolean>(false);
     const [streetcode, setStreecode] = useState<Streetcode>();
 
@@ -108,7 +107,6 @@ const StreetcodeContent = () => {
                 <MainBlock
                     streetcode={streetcode}
                     setActiveTagId={setActiveTagId}
-                    setActiveBlock={setActiveBlock}
                     setShowAllTags={setShowAllTags}
                 />
                 <TextBlockComponent />
@@ -134,7 +132,6 @@ const StreetcodeContent = () => {
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}
-                activeTagBlock={activeBlock}
                 showAllTags={showAllTags}
                 setShowAllTags={setShowAllTags}
             />

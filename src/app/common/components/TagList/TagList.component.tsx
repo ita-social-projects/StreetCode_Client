@@ -10,11 +10,10 @@ import useWindowSize from '../../hooks/stateful/useWindowSize.hook';
 interface Props {
     tags: Tag[] | undefined;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
-    setActiveTagBlock: React.Dispatch<React.SetStateAction<number>>,
     setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-const TagList = ({ tags, setActiveTagId, setActiveTagBlock, setShowAllTags }: Props) => {
+const TagList = ({ tags, setActiveTagId, setShowAllTags }: Props) => {
     const { modalStore } = useModalContext();
     const { setModal } = modalStore;
     const windowSize = useWindowSize();
@@ -28,7 +27,6 @@ const TagList = ({ tags, setActiveTagId, setActiveTagBlock, setShowAllTags }: Pr
                             if(windowSize.width > 1024){
                                 setActiveTagId(tag.id);
                                 setModal('tagsList');
-                                setActiveTagBlock(index);
                                 setShowAllTags(false);
                             }
                         }
