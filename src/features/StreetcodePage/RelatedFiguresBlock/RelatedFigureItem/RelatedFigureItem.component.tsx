@@ -14,12 +14,11 @@ interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>;
     filterTags?: boolean;
     hoverable?: boolean;
-    streetcodeId: number;
     setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>;
     streetcode?: Streetcode;
 }
 
-const RelatedFigureItem = ({ relatedFigure, setActiveTagId, setShowAllTags, streetcodeId, streetcode, filterTags = true, hoverable = false }: Props) => {
+const RelatedFigureItem = ({ relatedFigure, setActiveTagId, setShowAllTags, streetcode, filterTags = true, hoverable = false }: Props) => {
     const {
         id, imageId, title, tags, alias, url, image,
     } = relatedFigure;

@@ -67,7 +67,6 @@ const TagsModal = ({ activeTagId, setActiveTagId, setShowAllTags, showAllTags } 
                         relatedFigure={figure}
                         setActiveTagId={setActiveTagId}
                         setShowAllTags={setShowAllTags}
-                        streetcodeId={getStreetCodeId}
                     />
                 ))}
             </div>

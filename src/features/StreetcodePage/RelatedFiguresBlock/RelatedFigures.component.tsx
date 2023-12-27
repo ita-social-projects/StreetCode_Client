@@ -59,7 +59,6 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
             hoverable
             setActiveTagId={setActiveTagId}
             setShowAllTags={setShowAllTags}
-            streetcodeId={getStreetCodeId}
             streetcode={streetcode}
         />
     ));
@@ -81,7 +80,6 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
                         hoverable
                         setActiveTagId={setActiveTagId}
                         setShowAllTags={setShowAllTags}
-                        streetcodeId={getStreetCodeId}
                     />
                 </div>
                 {hasBottomRow && (
@@ -92,7 +90,6 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
                         hoverable
                         setActiveTagId={setActiveTagId}
                         setShowAllTags={setShowAllTags}
-                        streetcodeId={getStreetCodeId}
                     />
                     </div>
                 )}
