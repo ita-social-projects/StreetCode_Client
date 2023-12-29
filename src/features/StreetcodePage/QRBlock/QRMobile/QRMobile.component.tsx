@@ -34,22 +34,20 @@ const QRMobile: React.FC<{ hrefLink: string }> = ({ hrefLink }) => {
                         </a>
                     </div>
                 ) : (
-                    <>
-                        <div className="QRMobileContent">
-                            <p className="arInstagram">AR-історія в Інсті!</p>
-                            <p className="pressButtonText">
+                    <div className="QRMobileContent">
+                        <p className="arInstagram">AR-історія в Інсті!</p>
+                        <p className="pressButtonText">
                                 Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
-                            </p>
-                            <a href={hrefLink} target="_blank" rel="noreferrer">
-                                <Button
-                                    className="goToInstaButton"
-                                    onClick={() => instagramOnStreetcodeClickEvent('tablet')}
-                                >
+                        </p>
+                        <a href={hrefLink} target="_blank" rel="noreferrer">
+                            <Button
+                                className="goToInstaButton"
+                                onClick={() => instagramOnStreetcodeClickEvent('tablet')}
+                            >
                                     Перейти в Instagram
-                                </Button>
-                            </a>
-                        </div>
-                    </>
+                            </Button>
+                        </a>
+                    </div>
                 )}
         </div>
     );

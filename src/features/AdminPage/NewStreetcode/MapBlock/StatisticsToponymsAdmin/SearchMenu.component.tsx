@@ -18,7 +18,7 @@ const SearchMenu = ({ setTitle, setRequest }: IProps) => {
 
     return (
         <div className="searchMenuToponyms">
-         
+
             <div className="searchMenuElement">
                 <Input
                     className="searchMenuElementInput"
