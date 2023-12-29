@@ -150,7 +150,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     return (
-        <div>
+        <>
             <Modal
                 title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
@@ -215,7 +215,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 </Form>
             </Modal>
             <PreviewFileModal greyFilterForImage file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
-        </div>
+        </>
     );
 };
 

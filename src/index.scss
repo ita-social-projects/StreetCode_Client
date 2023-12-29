@@ -45,12 +45,20 @@ ul, ol {
 }
 
 .streetcode-custom-button{
+  @include ut.rem-padded(20px, 10px, 20px, 10px);
   @include ut.flex-centered();
   @include ut.full-rounded(12px);
-  @include ut.with-font($font-weight: 500);
+  @include ut.with-font($font-weight: 400, $font-size: 16px);
+
   background-color: c.$accented-red-color;
   border-color: c.$accented-red-color;
-  color:#fff;
+  color: c.$pure-white-color;
+
+  &:hover {
+    border-color: c.$dark-red-color;
+    background-color: c.$dark-red-color;
+  }
+
   .ant-btn-default:hover{
     color:#fff !important;
   }
@@ -66,13 +74,7 @@ ul, ol {
       color:#fff;
     }
   }
-  
-  &:hover{
-    color: c.$pure-white-color ;
-    background-color: c.$dark-red-color;
-    border-color: c.$dark-red-color;
-  }
-  
+
   &[disabled]{
     pointer-events: none;
   }
