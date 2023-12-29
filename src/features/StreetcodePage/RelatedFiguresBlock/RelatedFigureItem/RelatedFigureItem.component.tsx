@@ -18,7 +18,9 @@ interface Props {
     streetcode?: Streetcode;
 }
 
-const RelatedFigureItem = ({ relatedFigure, setActiveTagId, setShowAllTags, streetcode, filterTags = true, hoverable = false }: Props) => {
+const RelatedFigureItem = ({
+    relatedFigure, setActiveTagId, setShowAllTags, streetcode, filterTags = true, hoverable = false,
+}: Props) => {
     const {
         id, imageId, title, tags, alias, url, image,
     } = relatedFigure;
@@ -92,7 +94,7 @@ const RelatedFigureItem = ({ relatedFigure, setActiveTagId, setShowAllTags, stre
                 <>
                     <div
                         className="relatedFigureSlide"
-                        style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})`, backgroundSize: 'cover'}}
+                        style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})`, backgroundSize: 'cover' }}
                         onClick={handleClick}
                     />
                     <div className="figureSlideText mobile">

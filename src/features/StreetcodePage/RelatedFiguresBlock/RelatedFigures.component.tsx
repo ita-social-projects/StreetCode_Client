@@ -72,7 +72,7 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
         const hasBottomRow = figureOnBottomRow !== undefined;
 
         const sliderItem = (
-            <div className={hasBottomRow ?"TwoRowSlide" : "OneRowSlide"} key={i}>
+            <div className={hasBottomRow ? 'TwoRowSlide' : 'OneRowSlide'} key={i}>
                 <div className="FirstItem">
                     <RelatedFigureItem
                         relatedFigure={figureOnTopRow}
@@ -84,13 +84,13 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
                 </div>
                 {hasBottomRow && (
                     <div className="SecondItem">
-                    <RelatedFigureItem
-                        relatedFigure={figureOnBottomRow}
-                        filterTags
-                        hoverable
-                        setActiveTagId={setActiveTagId}
-                        setShowAllTags={setShowAllTags}
-                    />
+                        <RelatedFigureItem
+                            relatedFigure={figureOnBottomRow}
+                            filterTags
+                            hoverable
+                            setActiveTagId={setActiveTagId}
+                            setShowAllTags={setShowAllTags}
+                        />
                     </div>
                 )}
             </div>

@@ -4,6 +4,7 @@ import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx from '@stores/root-store';
 
 import { Button } from 'antd';
+
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 interface Props {
@@ -21,7 +22,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
         () => {
             fetchTagByStreetcodeId(streetCodeid);
             fetchAllTags();
-        }, 
+        },
         [streetCodeid],
     );
 
@@ -53,10 +54,10 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
         </div>
     ));
 
-    const initialSlide = showAllTags ? getAllTagsArray.findIndex(tag => tag.id === activeTagId) : getTagArray.findIndex(tag => tag.id === activeTagId);
+    const initialSlide = showAllTags ? getAllTagsArray.findIndex((tag) => tag.id === activeTagId) : getTagArray.findIndex((tag) => tag.id === activeTagId);
 
     const sliderProps = {
-        className: "tagSliderClass",
+        className: 'tagSliderClass',
         infinite: false,
         slidesToSho: 1,
         arrows: false,
@@ -65,7 +66,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
         variableWidth: true,
         centerMode: true,
         slidesToScroll: 1,
-        initialSlide: initialSlide,
+        initialSlide,
         focusOnSelect: true,
         beforeChange: (currentSlide: number, nextSlide: number) => setActiveTagId(getAllTagsArray[nextSlide].id),
     };
@@ -83,7 +84,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
                     <div>
                         {allTags}
                     </div>
-            ))}
+                ))}
             {!showAllTags && (tags.length > 1
                 ? (
                     <BlockSlider
@@ -95,7 +96,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
                     <div>
                         {tags}
                     </div>
-            ))}
+                ))}
         </div>
     );
 };
