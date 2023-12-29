@@ -3,6 +3,8 @@ import tagsApi from '@api/additional-content/tags.api';
 import Tag, { StreetcodeTagUpdate } from '@models/additional-content/tag.model';
 
 export default class TagsStore {
+    public AllTagsMap = new Map<number, Tag>();
+
     public TagMap = new Map<number, Tag>();
 
     public TagCatalogMap = new Map<number, Tag>();
@@ -13,6 +15,11 @@ export default class TagsStore {
         makeAutoObservable(this);
     }
 
+    private set setInternalAllTags(tags: Tag[]) {
+        this.AllTagsMap.clear();
+        tags.forEach(this.setAllItem);
+    }
+
     private set setInternalMap(tags: Tag[]) {
         this.TagMap.clear();
         tags.forEach(this.setItem);
@@ -21,6 +28,10 @@ export default class TagsStore {
     private set setInternalCatalog(tags: Tag[]) {
         tags.forEach(this.setCatalogItem);
     }
+
+    private setAllItem = (tag: Tag) => {
+        this.AllTagsMap.set(tag.id, tag);
+    };
 
     private setItem = (tag: Tag) => {
         this.TagMap.set(tag.id, tag);
@@ -42,6 +53,10 @@ export default class TagsStore {
         return this.TagToDeleteArray;
     }
 
+    get getAllTagsArray() {
+        return Array.from(this.AllTagsMap.values());
+    }
+
     get getTagArray() {
         return Array.from(this.TagMap.values());
     }
@@ -49,6 +64,12 @@ export default class TagsStore {
     get getTagCatalogArray() {
         return Array.from(this.TagCatalogMap.values());
     }
+
+    public fetchAllTags = async () => {
+        try {
+            this.setInternalAllTags = await tagsApi.getAll();
+        } catch (error: unknown) { /* empty */ }
+    };
 
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {
         try {

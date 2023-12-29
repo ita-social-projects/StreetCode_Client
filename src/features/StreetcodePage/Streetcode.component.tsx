@@ -37,7 +37,7 @@ const StreetcodeContent = () => {
     const streetcodeUrl = useRef<string>(useRouteUrl());
 
     const [activeTagId, setActiveTagId] = useState(0);
-    const [activeBlock, setActiveBlock] = useState(0);
+    const [showAllTags, setShowAllTags] = useState<boolean>(false);
     const [streetcode, setStreecode] = useState<Streetcode>();
 
     const navigate = useNavigate();
@@ -107,7 +107,7 @@ const StreetcodeContent = () => {
                 <MainBlock
                     streetcode={streetcode}
                     setActiveTagId={setActiveTagId}
-                    setActiveBlock={setActiveBlock}
+                    setShowAllTags={setShowAllTags}
                 />
                 <TextBlockComponent />
                 <InterestingFactsComponent />
@@ -117,7 +117,7 @@ const StreetcodeContent = () => {
                 ) : (
                     <React.Fragment />
                 )}
-                <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
+                <RelatedFiguresComponent streetcode={streetcode} setActiveTagId={setActiveTagId} setShowAllTags={setShowAllTags}/>
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
@@ -132,7 +132,8 @@ const StreetcodeContent = () => {
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}
-                activeTagBlock={activeBlock}
+                showAllTags={showAllTags}
+                setShowAllTags={setShowAllTags}
             />
         </div>
     );

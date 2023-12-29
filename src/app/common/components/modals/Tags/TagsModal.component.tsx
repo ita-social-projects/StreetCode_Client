@@ -16,11 +16,12 @@ import TagsSliderModal from './TagsSliderModal/TagsSliderModal.component';
 
 interface Props {
     activeTagId: number,
-    activeTagBlock: number,
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
+    showAllTags: boolean,
+    setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
+const TagsModal = ({ activeTagId, setActiveTagId, setShowAllTags, showAllTags } : Props) => {
     const { relatedByTag } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { tagsList } } = modalStore;
@@ -53,8 +54,9 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
                 <div className="tagsSliderWrappper">
                     <TagsSliderModal
                         streetCodeid={getStreetCodeId}
+                        activeTagId={activeTagId}
                         setActiveTagId={setActiveTagId}
-                        activeTagBlock={activeTagBlock}
+                        showAllTags={showAllTags}
                     />
                 </div>
             </div>
@@ -64,6 +66,7 @@ const TagsModal = ({ activeTagId, activeTagBlock, setActiveTagId } : Props) => {
                         key={figure.id}
                         relatedFigure={figure}
                         setActiveTagId={setActiveTagId}
+                        setShowAllTags={setShowAllTags}
                     />
                 ))}
             </div>
