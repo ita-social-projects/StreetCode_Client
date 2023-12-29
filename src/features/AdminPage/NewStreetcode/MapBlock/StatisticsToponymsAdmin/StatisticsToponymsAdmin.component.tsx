@@ -44,7 +44,7 @@ const StatisticsToponymsComponentAdmin = () => {
             Page: pageRequest,
             Amount: amountRequest,
             Title: titleRequest === ' ' ? null : titleRequest,
-        })
+        });
     };
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedToponyms[]>([]);
 
@@ -114,7 +114,6 @@ const StatisticsToponymsComponentAdmin = () => {
             ToponymsApi.getAll(requestGetAll).then((response) => setToponyms(response.toponyms));
         }
     }, [requestGetAll, parseId]);
-    
 
     useEffect(() => {
         const mappedStreetCodes: MapedToponyms[] = [];

@@ -85,16 +85,15 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 salary,
             };
             const allJobs = await JobApi.getAllShort();
-            allJobs.map((t) => t).forEach(t => {
-                if (values.title == t.title)
-                    newJob.id = t.id;
+            allJobs.map((t) => t).forEach((t) => {
+                if (values.title == t.title) newJob.id = t.id;
             });
             if (newJob.id === 0) {
                 await JobApi.create(newJob);
             } else {
                 await JobApi.update(newJob);
             }
-            message.success("Вакансію успішно додано!", 2)
+            message.success('Вакансію успішно додано!', 2);
         } catch (error) {
             console.log(error);
         }

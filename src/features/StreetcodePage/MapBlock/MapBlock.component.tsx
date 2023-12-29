@@ -6,15 +6,14 @@ import { useStreetcodeDataContext, useToponymContext } from '@stores/root-store'
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-cooridnates.api';
+import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import CheckBoxComponent from '@/features/StreetcodePage/MapBlock/CheckBox/CheckBox.component';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 
 import 'leaflet/dist/leaflet.css';
 
 import MapOSM from './Map/Map.component';
-
-import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import StatisticRecord from '@/models/analytics/statisticrecord.model';
 
 const MapBlock = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
@@ -30,7 +29,7 @@ const MapBlock = () => {
                 if (!toponymContext.loaded) {
                     toponymContext.fetchToponymByStreetcodeId(streetcodeId);
                 }
-                StatisticRecordApi.getAllByStreetcodeId(streetcodeId).then((resp)=>setStatisticRecord(resp));
+                StatisticRecordApi.getAllByStreetcodeId(streetcodeId).then((resp) => setStatisticRecord(resp));
             }
         },
         [getStreetCodeId],

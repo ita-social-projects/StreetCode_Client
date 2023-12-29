@@ -30,7 +30,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import { AudioUpdate } from '@/models/media/audio.model';
+import { AudioUpdate, AudioUpdate } from '@/models/media/audio.model';
 import { ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
@@ -51,7 +51,6 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { AudioUpdate } from '@/models/media/audio.model';
 
 function reindex(list:Array<StreetcodeTag>):Array<StreetcodeTag> {
     const result = Array.from(list);
@@ -430,7 +429,7 @@ const NewStreetcode = () => {
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
                     streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                    ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
+                        ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
                         ...streetcodeArt,
                         art: {
                             ...streetcodeArt.art,

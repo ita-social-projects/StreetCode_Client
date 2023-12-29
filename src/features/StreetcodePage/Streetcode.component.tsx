@@ -1,7 +1,7 @@
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
@@ -28,7 +28,6 @@ import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import React from 'react';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -37,7 +36,7 @@ const StreetcodeContent = () => {
     const streetcodeUrl = useRef<string>(useRouteUrl());
 
     const [activeTagId, setActiveTagId] = useState(0);
-    const [activeBlock, setActiveBlock] = useState(0);
+    const [showAllTags, setShowAllTags] = useState<boolean>(false);
     const [streetcode, setStreecode] = useState<Streetcode>();
 
     const navigate = useNavigate();
@@ -107,7 +106,7 @@ const StreetcodeContent = () => {
                 <MainBlock
                     streetcode={streetcode}
                     setActiveTagId={setActiveTagId}
-                    setActiveBlock={setActiveBlock}
+                    setShowAllTags={setShowAllTags}
                 />
                 <TextBlockComponent />
                 <InterestingFactsComponent />
@@ -115,9 +114,9 @@ const StreetcodeContent = () => {
                 {pageLoadercontext.isPageLoaded ? (
                     <ArtGalleryBlockComponent />
                 ) : (
-                    <React.Fragment />
+                    <></>
                 )}
-                <RelatedFiguresComponent setActiveTagId={setActiveTagId} />
+                <RelatedFiguresComponent streetcode={streetcode} setActiveTagId={setActiveTagId} setShowAllTags={setShowAllTags} />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
@@ -132,7 +131,8 @@ const StreetcodeContent = () => {
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}
-                activeTagBlock={activeBlock}
+                showAllTags={showAllTags}
+                setShowAllTags={setShowAllTags}
             />
         </div>
     );

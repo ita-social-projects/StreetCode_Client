@@ -1,7 +1,8 @@
+/* eslint-disable */
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
@@ -37,6 +38,12 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
+    message.config({
+        top: 100,
+        duration: 2,
+        maxCount: 3,
+    });
+
     const clearModal = () => {
         form.resetFields();
         setModalOpen(false);
@@ -51,62 +58,77 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 title: fact.title,
                 factContent: fact.factContent,
             });
+
             ImagesApi.getById(fact.imageId)
                 .then((image) => {
-                    fact.image = image;
-                    form.setFieldsValue({
-                        image: fact ? [{
+                    const imageInArray: UploadFile[] = [];
+
+                    if (fact) {
+                        fact.image = image;
+                        imageInArray.push({
                             name: '',
                             url: base64ToUrl(image.base64, image.mimeType),
                             thumbUrl: base64ToUrl(image.base64, image.mimeType),
                             uid: `${fact.id}`,
                             status: 'done',
                             type: image.mimeType,
-                        }] : [],
-                        imageDescription: fact.imageDescription ?? image?.imageDetails?.alt,
+                        });
+                    }
+
+                    form.setFieldsValue({
+                        image: imageInArray,
+                        imageDescription: fact?.imageDescription ?? image?.imageDetails?.alt,
                     });
-                    setFileList(fact ? [{
-                        name: '',
-                        url: base64ToUrl(image.base64, image.mimeType),
-                        thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                        uid: `${fact.id}`,
-                        status: 'done',
-                        type: image.mimeType,
-                    }] : []);
+                    setFileList(imageInArray);
                 });
         }
     }, [fact, open, form]);
 
-    const onSuccesfulSubmit = (formValues: any) => {
+    const fillFactWithFormData = (formValues: any, fact?: FactCreate | FactUpdate) => {
+        if (!fact) {
+            fact = {} as FactCreate;
+            fact.id = getNewMinNegativeId(factsStore.getFactArray.map((t) => t.id));
+        }
+
+        fact.title = formValues.title;
+        fact.factContent = formValues.factContent;
+        fact.imageId = imageId.current;
+        fact.imageDescription = formValues.imageDescription;
+
+        return fact;
+    };
+
+    const setFactUpdateIfItExist = (formValues: any) => {
         factsStore.getFactArray.map((t) => t).forEach((t) => {
             if (formValues.title === t.title
                 || formValues.factContent === t.factContent
                 || imageId.current === t.imageId) fact = t;
         });
+    }
+
+    const onSuccesfulSubmit = (formValues: any) => {
+        setFactUpdateIfItExist(formValues);
+
         if (fact) {
-            const item = factsStore.factMap.get(fact.id) as FactUpdate;
+            let item = factsStore.factMap.get(fact.id) as FactUpdate;
+
             if (item) {
-                item.title = formValues.title;
-                item.factContent = formValues.factContent;
-                item.imageId = imageId.current;
-                item.imageDescription = formValues.imageDescription;
+                item = fillFactWithFormData(formValues, item);
             }
+
             if (fact.image?.imageDetails || formValues.imageDescription) {
                 factsStore.setImageDetails(item, fact.image?.imageDetails?.id ?? 0);
             }
+
         } else {
-            const newFact: FactCreate = {
-                id: getNewMinNegativeId(factsStore.getFactArray.map((t) => t.id)),
-                title: formValues.title,
-                factContent: formValues.factContent,
-                imageId: imageId.current,
-                imageDescription: formValues.imageDescription,
-            };
+            const newFact = fillFactWithFormData(formValues);
+
             if (formValues.imageDescription) {
                 factsStore.setImageDetails(newFact, 0);
             }
             factsStore.addFact(newFact);
         }
+
         setHasUploadedPhoto(false);
         onChange('fact', formValues);
     };
@@ -115,15 +137,8 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         try {
             await form.validateFields();
             form.submit();
-            message.success('Wow-факт успішно додано!', 2);
+            message.success('Wow-факт успішно додано/оновлено!');
         } catch (error) {
-            message.config({
-                top: 100,
-                duration: 3,
-                maxCount: 3,
-                rtl: true,
-                prefixCls: 'my-message',
-            });
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };

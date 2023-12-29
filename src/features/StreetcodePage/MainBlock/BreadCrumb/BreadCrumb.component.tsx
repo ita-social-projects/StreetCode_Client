@@ -2,8 +2,8 @@ import './BreadCrumb.styles.scss';
 
 import { Breadcrumb } from 'antd';
 
-import Streetcode from '@/models/streetcode/streetcode-types.model';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     separator?: JSX.Element | string;

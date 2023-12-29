@@ -18,7 +18,6 @@ const RelatedFiguresItemModal = () => {
 
     const handleClick = () => {
         setModal('relatedFigureItem', relation?.id, false);
-        window.scrollTo(0, 0);
     };
 
     return (

@@ -9,7 +9,7 @@ export default class PositionsStore {
     public constructor() {
         makeAutoObservable(this, {
             fetchStreetcodesAll: action,
-            addItemToArray: action
+            addItemToArray: action,
         });
     }
 
