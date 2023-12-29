@@ -17,6 +17,7 @@
 # production
 /build
 /dist
+/config/dist
 # misc
 .DS_Store
 .env.local

@@ -30,6 +30,13 @@ interface Props {
     allPersistedSourcesAreSet: boolean,
 }
 
+function isEditingCategoryTextOnly(
+    elementToUpdate: StreetcodeCategoryContent | null,
+    editedCategoryId: any,
+) : boolean | null {
+    return elementToUpdate && elementToUpdate?.sourceLinkCategoryId === Number(editedCategoryId);
+}
+
 const ForFansModal = ({
     character_limit, open, setOpen, allCategories, onChange, allPersistedSourcesAreSet,
 }: Props) => {
@@ -109,9 +116,42 @@ const ForFansModal = ({
         }
     }, [allPersistedSourcesAreSet]);
 
-    const onSave = (values: any) => {
-        const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
-        if (elementToUpdate) {
+    const handleCategoryAdding = (
+        values: any,
+        indexOfPersistedCategory: number,
+        isEditedCategoryPersisted: boolean,
+    ) => {
+        if (!isEditedCategoryPersisted) {
+            sourceCreateUpdateStreetcode
+                .addSourceCategoryContent({
+                    id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
+                    sourceLinkCategoryId: values.category,
+                    text: editorRef.current?.editor?.getContent() ?? '',
+                    streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
+                });
+            sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length;
+            sourceCreateUpdateStreetcode.indexUpdate -= 1;
+        } else {
+            sourceCreateUpdateStreetcode
+                .updateElement(
+                    indexOfPersistedCategory,
+                    {
+                        ...sourceCreateUpdateStreetcode.streetcodeCategoryContents[indexOfPersistedCategory],
+                        sourceLinkCategoryId: values.category,
+                        text: editorRef.current?.editor?.getContent() ?? '',
+                    },
+                );
+            sourceCreateUpdateStreetcode.indexUpdate = indexOfPersistedCategory;
+        }
+    };
+
+    const handleCategoryUpdating = (
+        values: any,
+        elementToUpdate: StreetcodeCategoryContent,
+        indexOfPersistedCategory: number,
+        isEditedCategoryPersisted: boolean,
+    ) => {
+        if (isEditingCategoryTextOnly(elementToUpdate, values.category)) {
             sourceCreateUpdateStreetcode
                 .updateElement(
                     sourceCreateUpdateStreetcode.indexUpdate,
@@ -122,15 +162,23 @@ const ForFansModal = ({
                     },
                 );
         } else {
-            sourceCreateUpdateStreetcode
-                .addSourceCategoryContent({
-                    id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
-                    sourceLinkCategoryId: values.category,
-                    text: editorRef.current?.editor?.getContent() ?? '',
-                    streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
-                });
-            sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length - 1;
+            sourceCreateUpdateStreetcode.removeSourceCategoryContent(sourceCreateUpdateStreetcode.indexUpdate);
+            handleCategoryAdding(values, indexOfPersistedCategory, isEditedCategoryPersisted);
         }
+    };
+
+    const onSave = (values: any) => {
+        const elementToUpdate = sourceCreateUpdateStreetcode.ElementToUpdate;
+        const indexOfPersistedCategory = sourceCreateUpdateStreetcode.streetcodeCategoryContents
+            .findIndex((x: StreetcodeCategoryContent) => x.sourceLinkCategoryId === Number(values.category));
+        const isEditedCategoryPersisted = indexOfPersistedCategory !== -1;
+
+        if (!elementToUpdate) {
+            handleCategoryAdding(values, indexOfPersistedCategory, isEditedCategoryPersisted);
+        } else {
+            handleCategoryUpdating(values, elementToUpdate, indexOfPersistedCategory, isEditedCategoryPersisted);
+        }
+
         onChange('saved', null);
     };
     const handleOk = async () => {

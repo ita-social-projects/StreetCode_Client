@@ -3,8 +3,9 @@ import './PartnersModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useNavigate } from 'react-router-dom';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import {
@@ -48,6 +49,7 @@ const PartnersModal = () => {
 
     const onCancel = () => {
         partners.isOpen = false;
+        form.resetFields();
     };
 
     const handleVerify = () => {
@@ -68,6 +70,21 @@ const PartnersModal = () => {
             content: 'Щось пішло не так...',
         });
     };
+
+    useEffect(() => {
+        const handleRouteChange = () => {
+            if (partners.isOpen) {
+                onCancel();
+                window.history.replaceState(null, '');
+            }
+        };
+
+        window.addEventListener('popstate', handleRouteChange);
+
+        return () => {
+            window.removeEventListener('popstate', handleRouteChange);
+        };
+    }, [partners.isOpen]);
 
     return (
         <Modal

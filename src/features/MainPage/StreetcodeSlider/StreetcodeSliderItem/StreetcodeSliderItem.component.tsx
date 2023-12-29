@@ -19,8 +19,10 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
     });
 
     const handleClickRedirect = () => {
-        toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'main_page');
-        window.location.href = streetcode.transliterationUrl;
+        if (streetcode.transliterationUrl) {
+            toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'main_page');
+            window.location.href = streetcode.transliterationUrl;
+        }
     };
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -32,7 +34,7 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
         <div className="mainPageStreetCodeSlider">
             <div className="itemStreetCodeMainPage" onClick={isMobile ? handleLinkClick : undefined}>
                 <div className="leftSlider">
-                    <div className="leftSliderContent">
+                    <div className={`leftSliderContent ${image?.id ? '' : 'skeleton'}`}>
                         {image?.id
                             ? (
                                 <img
