@@ -155,6 +155,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                             tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
                             setActiveTagId={setActiveTagId}
                             setShowAllTags={setShowAllTags}
+
                         />
                     </div>
                     <div className="blurTop" />

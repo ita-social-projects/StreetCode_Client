@@ -146,9 +146,11 @@ const DonatesModal = () => {
                         checked={isCheckboxChecked}
                         onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                     >
+                      
                         Я даю згоду на обробку моїх
                         {' '}
                         <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
+
                     </Checkbox>
                 </div>
                 <button
