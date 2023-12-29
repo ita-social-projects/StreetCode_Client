@@ -24,6 +24,6 @@ export class NewsService {
 
   public async deleteNews(id: string): Promise<AxiosResponse> {
     const backUrl = '/news/delete/' + id;
-    return this.httpService.put(backUrl).toPromise();
+    return this.httpService.delete(backUrl).toPromise();
   }
 }

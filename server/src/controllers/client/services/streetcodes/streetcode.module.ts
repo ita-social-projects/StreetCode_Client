@@ -1,13 +1,9 @@
 import { Module } from '@nestjs/common';
 import { StreetcodeService } from './streetcode.service';
-import { HttpModule } from '@nestjs/axios';
+import { HttpConfigModule } from '../../../../shared/http-config/http-config.module';
 
 @Module({
-  imports: [
-    HttpModule.register({
-      baseURL: 'https://localhost:5001/api',
-    }),
-  ],
+  imports: [HttpConfigModule],
   providers: [StreetcodeService],
 })
 export class StreetcodeModule {}

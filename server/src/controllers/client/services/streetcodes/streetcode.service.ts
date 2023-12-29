@@ -20,4 +20,14 @@ export class StreetcodeService {
     const backUrl = '/streetcode/getByTransliterationUrl/';
     return this.httpService.get(backUrl + url).toPromise();
   }
+
+  public async updateStreetcode(streetcode: any): Promise<AxiosResponse> {
+    const backUrl = '/streetcode/update';
+    return this.httpService.put(backUrl, streetcode).toPromise();
+  }
+
+  public async deleteStreetcode(id: string): Promise<AxiosResponse> {
+    const backUrl = '/streetcode/delete/' + id;
+    return this.httpService.delete(backUrl).toPromise();
+  }
 }

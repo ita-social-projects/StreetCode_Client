@@ -14,7 +14,8 @@ const DEFAULT_META: IPageMetadata = {
   title: '',
   description:
     '«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць.',
-  image: './banner.webp',
+  image:
+    'https://ita-social-projects.github.io/StreetCode_Client/public/banner.webp',
 };
 
 @Injectable()

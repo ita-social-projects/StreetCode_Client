@@ -1,13 +1,25 @@
-import { Body, Controller, Get, Param, Put, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  Delete,
+  BadRequestException,
+} from '@nestjs/common';
 import { ClientService } from './client.service';
 import { NewsService } from './services/news/news.service';
 import News from '../../interfaces/News';
 import { StreetcodeService } from './services/streetcodes/streetcode.service';
+import { StreetcodeImageEnum } from '../../enums/StreetcodeImageEnum';
+import Image from '../../interfaces/Image';
 
 @Controller()
 export class ClientController {
   private newsCacheMap: Map<string, News> = new Map();
+  private newsCacheUrlsMap: Map<string, string> = new Map();
   private streetcodeCacheMap: Map<string, any> = new Map();
+  private streetcodeCacheUrlsMap: Map<string, string> = new Map();
   private urlsToOmit: Array<string> = ['admin-panel'];
 
   constructor(
@@ -21,37 +33,49 @@ export class ClientController {
 
   @Get('news/:url')
   public async getNews(@Param('url') url: string) {
-    if (!this.newsCacheMap.has(url)) {
-      await this.addNewsToCache(url);
+    try {
+      if (!this.newsCacheUrlsMap.has(url)) {
+        await this.addNewsToCache(url);
+      }
+      const id = this.newsCacheUrlsMap.get(url);
+      const theNews = this.newsCacheMap.get(id);
+
+      const meta = {
+        description: theNews.title,
+        image: this.base64ToUrl(theNews.image.base64, theNews.image.mimeType),
+      };
+
+      return this.clientService.getApp(meta);
+    } catch (error) {
+      console.error('Error loading news:', error);
+      return this.clientService.getApp();
     }
-
-    const theNews = this.newsCacheMap.get(url);
-
-    const meta = {
-      description: theNews.title,
-      image: this.base64ToUrl(theNews.image.base64, theNews.image.mimeType),
-    };
-
-    return this.clientService.getApp(meta);
   }
 
-  @Put('news/:url')
-  public async updateNews(
-    @Param('url') url: string,
-    @Body() updatedNews: News,
-  ) {
-    this.newsCacheMap.set(url, updatedNews);
-
-    const response = await this.newsService.updateNews(updatedNews);
-    console.log('RESPONSE FROM API', response);
-    return response;
+  @Put('news/update')
+  public async updateNews(@Body() updatedNews: News) {
+    try {
+      const response = await this.newsService.updateNews(updatedNews);
+      this.updateNewsCache(updatedNews);
+      console.log('RESPONSE FROM API ON NEWS UPDATE', response);
+      return response.data;
+    } catch (error) {
+      console.log('ERROR FROM API ON NEWS UPDATE', error);
+      throw new BadRequestException(error);
+    }
   }
 
   @Delete('news/delete/:id')
   public async deleteNews(@Param('id') id: string) {
-    const response = await this.newsService.deleteNews(id);
-    console.log(response);
-    return response;
+    try {
+      await this.newsService.deleteNews(id);
+      this.deleteNewsFromCache(id);
+      console.log('NEWS DELETED ' + id);
+      return 'Deleted successfully ' + id;
+    } catch (error) {
+      console.log('ERROR FROM API ON NEWS DELETE ' + id);
+      throw new BadRequestException(error);
+    }
   }
 
   @Get(':url')
@@ -60,15 +84,15 @@ export class ClientController {
       return this.clientService.getApp();
     }
 
-    if (!this.streetcodeCacheMap.has(url)) {
+    if (!this.streetcodeCacheUrlsMap.has(url)) {
       const isAdded = await this.addStreetcodeToCache(url);
 
       if (!isAdded) {
         return this.clientService.getApp();
       }
     }
-
-    const streetcode = this.newsCacheMap.get(url);
+    const id = this.streetcodeCacheUrlsMap.get(url);
+    const streetcode = this.streetcodeCacheMap.get(id);
 
     const meta = {
       title: streetcode.title,
@@ -81,6 +105,33 @@ export class ClientController {
     return this.clientService.getApp(meta);
   }
 
+  @Put('streetcode/update')
+  public async updateStreetcode(@Body() updatedStreetcode: any) {
+    try {
+      const response =
+        await this.streetcodeService.updateStreetcode(updatedStreetcode);
+      this.updateStreetcodeCache(updatedStreetcode);
+      console.log('RESPONSE FROM API ON STREETCODE UPDATE', response);
+      return;
+    } catch (error) {
+      console.log('ERROR FROM API ON STREETCODE UPDATE', error);
+      throw new BadRequestException(error);
+    }
+  }
+
+  @Delete('streetcode/delete/:id')
+  public async deleteStreetcode(@Param('id') id: string) {
+    try {
+      await this.streetcodeService.deleteStreetcode(id);
+      this.deleteStreetcodeFromCache(id);
+      console.log('STREETCODE DELETED ' + id);
+      return 'Deleted successfully ' + id;
+    } catch (error) {
+      console.log('ERROR FROM API ON STREETCODE DELETE ' + id);
+      throw new BadRequestException(error);
+    }
+  }
+
   @Get('*')
   public async get() {
     return this.clientService.getApp();
@@ -90,54 +141,126 @@ export class ClientController {
     try {
       const allNewsResponse = await this.newsService.getAllNews();
       allNewsResponse.data.forEach((news) => {
-        this.newsCacheMap.set(news.url, news);
+        this.newsCacheMap.set(news.id.toString(), news);
+        this.newsCacheUrlsMap.set(news.url, news.id.toString());
       });
     } catch (error) {
       console.error('Error loading news:', error);
     }
   }
+
   private async loadStreetcodes() {
     try {
       const allStreetcoderesponse =
         await this.streetcodeService.getAllStreetcodes();
 
-      allStreetcoderesponse.data.streetcodes.forEach((streetcode) => {
-        this.streetcodeService
-          .getImagesOfStreetcode(streetcode.id)
-          .then((data) => {
-            this.streetcodeCacheMap.set(streetcode.transliterationUrl, {
-              id: streetcode.id,
-              title: streetcode.title,
-              image: data[1] ? data[1] : data[0],
+      const imagePromises = allStreetcoderesponse.data.streetcodes.map(
+        (streetcode) => {
+          return this.streetcodeService
+            .getImagesOfStreetcode(streetcode.id)
+            .then((response) => {
+              const data = response.data;
+              if (!this.streetcodeCacheMap.has(streetcode.id.toString())) {
+                this.streetcodeCacheMap.set(streetcode.id.toString(), {
+                  title: streetcode.title,
+                  image: this.findGrayImage(data),
+                });
+
+                this.streetcodeCacheUrlsMap.set(
+                  streetcode.transliterationUrl,
+                  streetcode.id.toString(),
+                );
+              }
             });
-          });
-      });
+        },
+      );
+      console.log('PROMISES', imagePromises.length);
+      await Promise.all(imagePromises);
     } catch (error) {
       console.error('Error loading streetcodes:', error);
     }
   }
 
-  private async addNewsToCache(url: string) {
-    try {
-      const news = await this.newsService.getByUrl(url);
-      this.newsCacheMap.set(news.data.url, news.data);
-    } catch (error) {
-      console.error('Error loading news:', error);
-    }
+  private deleteNewsFromCache(id: string) {
+    const url = this.newsCacheMap.get(id).url;
+    this.newsCacheMap.delete(id);
+    this.newsCacheUrlsMap.delete(url);
   }
+
+  private deleteStreetcodeFromCache(id: string) {
+    const url = this.streetcodeCacheMap.get(id).transliterationUrl;
+    this.streetcodeCacheMap.delete(id);
+    this.streetcodeCacheUrlsMap.delete(url);
+  }
+
+  private updateNewsCache(updatedNews: News) {
+    const id = updatedNews.id.toString();
+    const oldNews = this.newsCacheMap.get(id);
+
+    if (oldNews && oldNews.url !== updatedNews.url) {
+      this.newsCacheUrlsMap.delete(oldNews.url);
+      this.newsCacheUrlsMap.set(updatedNews.url, id);
+    }
+    this.newsCacheMap.set(updatedNews.id.toString(), updatedNews);
+  }
+
+  private updateStreetcodeCache(updatedStreetcode: any) {
+    const id = updatedStreetcode.id.toString();
+    const oldStreetcode = this.streetcodeCacheMap.get(id);
+
+    if (!oldStreetcode) {
+      this.streetcodeCacheUrlsMap.set(updatedStreetcode.transliterationUrl, id);
+    } else {
+      if (
+        oldStreetcode.transliterationUrl !==
+        updatedStreetcode.transliterationUrl
+      ) {
+        this.streetcodeCacheUrlsMap.delete(oldStreetcode.transliterationUrl);
+        this.streetcodeCacheUrlsMap.set(
+          updatedStreetcode.transliterationUrl,
+          id,
+        );
+      }
+    }
+
+    this.streetcodeService.getImagesOfStreetcode(id).then((response) => {
+      const data = response.data;
+      this.streetcodeCacheMap.set(id, {
+        title: updatedStreetcode.title,
+        image: this.findGrayImage(data),
+      });
+    });
+  }
+
+  private async addNewsToCache(url: string) {
+    const response = await this.newsService.getByUrl(url);
+    const news = response.data;
+    if (!news) {
+      throw new BadRequestException(`News with ${url} url not found`);
+    }
+    this.newsCacheMap.set(news.id.toString(), news);
+    this.newsCacheUrlsMap.set(news.url, news.id.toString());
+  }
+
   private async addStreetcodeToCache(url: string) {
     try {
       const streetcodeResponse = await this.streetcodeService.getByUrl(url);
       const streetcode = streetcodeResponse.data;
 
-      this.streetcodeService
+      await this.streetcodeService
         .getImagesOfStreetcode(streetcode.id)
-        .then((data) => {
-          this.streetcodeCacheMap.set(streetcode.transliterationUrl, {
-            id: streetcode.id,
+        .then((response) => {
+          const data = response.data;
+
+          this.streetcodeCacheMap.set(streetcode.id.toString(), {
             title: streetcode.title,
-            image: data[1] ? data[1] : data[0],
+            image: this.findGrayImage(data),
           });
+
+          this.streetcodeCacheUrlsMap.set(
+            streetcode.transliterationUrl,
+            streetcode.id.toString(),
+          );
         });
 
       return true;
@@ -146,7 +269,13 @@ export class ClientController {
       return false;
     }
   }
-
+  private findGrayImage(images: Image[]) {
+    return images.find(
+      (image) =>
+        image.imageDetails?.alt ===
+        StreetcodeImageEnum.blackandwhite.toString(),
+    );
+  }
   base64ToUrl = (
     base64Data: string | undefined,
     mimeType: string | undefined,

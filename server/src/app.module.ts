@@ -9,7 +9,7 @@ import { NewsService } from './controllers/client/services/news/news.service';
 import { NewsModule } from './controllers/client/services/news/news.module';
 import { StreetcodeService } from './controllers/client/services/streetcodes/streetcode.service';
 import { StreetcodeModule } from './controllers/client/services/streetcodes/streetcode.module';
-import { HttpModule } from '@nestjs/axios';
+import { HttpConfigModule } from './shared/http-config/http-config.module';
 
 @Module({
   imports: [
@@ -19,9 +19,7 @@ import { HttpModule } from '@nestjs/axios';
     ClientModule,
     NewsModule,
     StreetcodeModule,
-    HttpModule.register({
-      baseURL: 'https://localhost:5001/api',
-    }),
+    HttpConfigModule,
   ],
   controllers: [AppController, ClientController],
   providers: [AppService, ClientService, NewsService, StreetcodeService],

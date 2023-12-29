@@ -1,4 +1,4 @@
-import Agent from '@api/agent.api';
+import Agent, { AgentFrontend } from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
 {
@@ -63,7 +63,7 @@ const StreetcodesApi = {
     create: (streetcode: StreetcodeCreate) => Agent
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
-    update: (streetcode: StreetcodeUpdate) => Agent
+    update: (streetcode: StreetcodeUpdate) => AgentFrontend
         .put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
     updateState: (id: number, stateId: number) => Agent.put<void>(
@@ -71,7 +71,7 @@ const StreetcodesApi = {
         {},
     ),
 
-    delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
+    delete: (id: number) => AgentFrontend.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 
     existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
 
