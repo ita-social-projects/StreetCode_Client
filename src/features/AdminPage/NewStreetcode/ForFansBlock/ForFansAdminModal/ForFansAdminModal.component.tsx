@@ -127,11 +127,12 @@ const ForFansModal = ({
         isEditedCategoryPersisted: boolean,
     ) => {
         if (!isEditedCategoryPersisted) {
+            console.log(editorContent);
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({
                     id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
                     sourceLinkCategoryId: values.category,
-                    text: editorRef.current?.editor?.getContent() ?? '',
+                    text: editorContent ?? '',
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
                 });
             sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length;
@@ -143,7 +144,7 @@ const ForFansModal = ({
                     {
                         ...sourceCreateUpdateStreetcode.streetcodeCategoryContents[indexOfPersistedCategory],
                         sourceLinkCategoryId: values.category,
-                        text: editorRef.current?.editor?.getContent() ?? '',
+                        text: editorContent ?? '',
                     },
                 );
             sourceCreateUpdateStreetcode.indexUpdate = indexOfPersistedCategory;
