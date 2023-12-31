@@ -12,12 +12,15 @@ import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem
 import ImagesApi from '@/app/api/media/images.api';
 import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>>
+    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
+    setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
+    streetcode?: Streetcode,
 }
 
-const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
+const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }: Props) => {
     const { modalStore: { setModal } } = useModalContext();
     const { relatedFiguresStore } = useMobx();
     const { getRelatedFiguresArray } = relatedFiguresStore;
@@ -55,6 +58,8 @@ const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
             filterTags
             hoverable
             setActiveTagId={setActiveTagId}
+            setShowAllTags={setShowAllTags}
+            streetcode={streetcode}
         />
     ));
 
@@ -67,23 +72,25 @@ const RelatedFiguresComponent = ({ setActiveTagId }: Props) => {
         const hasBottomRow = figureOnBottomRow !== undefined;
 
         const sliderItem = (
-            <div className={hasBottomRow ?"TwoRowSlide" : "OneRowSlide"} key={i}>
+            <div className={hasBottomRow ? 'TwoRowSlide' : 'OneRowSlide'} key={i}>
                 <div className="FirstItem">
                     <RelatedFigureItem
                         relatedFigure={figureOnTopRow}
                         filterTags
                         hoverable
                         setActiveTagId={setActiveTagId}
+                        setShowAllTags={setShowAllTags}
                     />
                 </div>
                 {hasBottomRow && (
                     <div className="SecondItem">
-                    <RelatedFigureItem
-                        relatedFigure={figureOnBottomRow}
-                        filterTags
-                        hoverable
-                        setActiveTagId={setActiveTagId}
-                    />
+                        <RelatedFigureItem
+                            relatedFigure={figureOnBottomRow}
+                            filterTags
+                            hoverable
+                            setActiveTagId={setActiveTagId}
+                            setShowAllTags={setShowAllTags}
+                        />
                     </div>
                 )}
             </div>

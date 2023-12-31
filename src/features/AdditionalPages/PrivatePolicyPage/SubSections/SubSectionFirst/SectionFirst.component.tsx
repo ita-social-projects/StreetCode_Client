@@ -4,7 +4,7 @@ const SectionFirst = () => (
         <div className="content">
             Управління платформою
             &nbsp;
-            <a className="link" href="https://www.streetcode.com.ua">https://www.streetcode.com.ua</a>
+            <a className="link" href="https://streetcode.com.ua">https://www.streetcode.com.ua</a>
             &nbsp;
             (далі — платформа)
             здійснюється Громадською організацією «Історична платформа» (ЄДРПОУ 44801186) — юридичною особою,

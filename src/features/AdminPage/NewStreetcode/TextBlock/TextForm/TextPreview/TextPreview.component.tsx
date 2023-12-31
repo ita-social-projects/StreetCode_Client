@@ -21,12 +21,12 @@ const TextPreview = ({ inputInfo }: Props) => {
         setText(undefined);
         if (!disabled) {
             setLoading(true);
-            let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
+            const buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
             const content: TextPreviewContent = {
                 textContent: buffer ?? '',
-            }; 
-               setText(buffer);
-               setLoading(false);
+            };
+            setText(buffer);
+            setLoading(false);
         }
     }, [disabled]);
 

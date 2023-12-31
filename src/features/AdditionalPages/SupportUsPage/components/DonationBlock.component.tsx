@@ -100,7 +100,7 @@ const DonationBlock = () => {
                     onChange={handleDonateInputChange}
                     style={{ ...style, width: 'calc(var(--input-width) + 2px)' }}
                     placeholder="0"
-                    maxLength={15}
+                    maxLength={14}
                     value={donateAmount === 0 ? '' : donateAmount}
                     className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                 />
@@ -124,7 +124,9 @@ const DonationBlock = () => {
                     checked={isCheckboxChecked}
                     onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                 >
-                    Я даю згоду на обробку моїх <a href='/privacy-policy'>персональних даних</a>
+                    Я даю згоду на обробку моїх
+                    {' '}
+                    <a href="/privacy-policy">персональних даних</a>
                 </Checkbox>
             </div>
             <button
