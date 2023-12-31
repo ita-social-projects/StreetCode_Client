@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
 import useMobx, { useModalContext } from '@app/stores/root-store';
@@ -32,9 +32,7 @@ const TextEditor = ({
     const [selected, setSelected] = useState('');
     const editorRef = useRef<ReactQuill | null>(null);
     const [editorContent, setEditorContent] = useState(text ?? '');
-
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
-    const MAX_CHARS = 25000;
+    const MAX_CHARS = character_limit || 25000;
 
     const invokeMessage = (context: string, success: boolean) => {
         const config = {
@@ -88,22 +86,6 @@ const TextEditor = ({
     };
 
     useAsync(fetchTerms, []);
-    const maxLength = character_limit || 15000;
-
-    // useEffect(() => {
-    //     editorRef.current = (
-    //         <Editor
-    //             qRef={editorRef}
-    //             value={editorContent}
-    //             onChange={(data) => {
-    //                 setInputInfo({ ...inputInfo, textContent: data });
-    //                 onChange('textContent', data);
-    //             }}
-    //             maxChars={MAX_CHARS}
-    //         />
-    //     );
-    //     console.log(editorRef);
-    // }, [text, inputInfo, setInputInfo, onChange]);
 
     return (
         <FormItem
@@ -118,34 +100,11 @@ const TextEditor = ({
                     onChange('textContent', editor);
                 }}
                 maxChars={MAX_CHARS}
+                selectionChange={(selectedText: string) => {
+                    setSelected(selectedText);
+                    console.log('selectedText ', selectedText);
+                }}
             />
-            {/* STILL NEED TO IMPLEMENT FUNCTIONALITY BELOW!!! */}
-            {/* <TinyMCEEditor
-                onPaste={(e, editor) => {
-                    const previousContent = editor.getContent({ format: 'text' });
-                    const clipboardContent = e.clipboardData?.getData('text') || '';
-                    const resultContent = previousContent + clipboardContent;
-                    const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
-
-                    if (selected.length >= clipboardContent.length) {
-                        return;
-                    }
-                    if (resultContent.length >= maxLength && isSelectionEnd) {
-                        // eslint-disable-next-line max-len
-                        editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
-                        e.preventDefault();
-                    }
-                    if (resultContent.length <= maxLength && !isSelectionEnd) {
-                        return;
-                    }
-                    if (resultContent.length >= maxLength && !isSelectionEnd) {
-                        e.preventDefault();
-                    }
-                }}
-                onSelectionChange={(e, editor) => {
-                    setSelected(editor.selection.getContent());
-                }}
-            /> */}
         </FormItem>
     );
 };

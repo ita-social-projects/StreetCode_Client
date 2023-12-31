@@ -228,40 +228,10 @@ const NewsModal: React.FC<{
 
     const handleUpdate = (value: any) => {
         const cCount = value.length;
-        if (cCount <= sizeLimit) {
-            setData(value);
-            setCount(cCount);
-            setTextCount(cCount);
-        } else {
-            callErrorMessage(tooManyCharsMessage);
-        }
+        setData(value);
+        setCount(cCount);
+        setTextCount(cCount);
     };
-
-    const handleBeforeAddUndo = (evt: any, editor: any) => {
-        const cCount = editor.getContent({ format: 'text' }).length;
-        if (cCount > sizeLimit) {
-            evt.preventDefault();
-        }
-    };
-
-    // useEffect(() => {
-    //     editorRef.current = (
-    //         <Editor
-    //             qRef={editorRef}
-    //             value={data}
-    //             onChange={handleUpdate}
-    //             maxChars={sizeLimit}
-    //         />
-    //     );
-    // }, []);
-
-    // useEffect(() => {
-    //     const editor = editorRef?.current?.editor;
-    //     if (editor) {
-    //         const convertToDelta = editor.clipboard.convert(data);
-    //         editorRef.current?.editor?.setContents(convertToDelta);
-    //     }
-    // }, [data]);
 
     return (
         <div>
@@ -340,17 +310,6 @@ const NewsModal: React.FC<{
                                 onChange={handleUpdate}
                                 maxChars={sizeLimit}
                             />
-                            <p>
-                                Залишок символів:
-                                {' '}
-                                {sizeLimit - textCount}
-                                {textCount > sizeLimit && (
-                                    <span style={{ color: 'red', marginLeft: '10px' }}>
-                                        {tooManyCharsMessage}
-                                    </span>
-                                )}
-
-                            </p>
                             {!textIsPresent && textIsChanged && (
                                 <p className="form-text">Введіть текст</p>
                             )}

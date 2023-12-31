@@ -13,10 +13,11 @@ interface EditorProps {
     onChange: (html: string) => void;
     maxChars: number,
     initialVal?: string,
+    selectionChange?: (selection: string) => void;
 }
 
 const Editor: React.FC<EditorProps> = ({
-    qRef, value, onChange, maxChars, initialVal,
+    qRef, value, onChange, maxChars, initialVal, selectionChange,
 }) => {
     const [val, setVal] = useState(value);
     const removeHtmlTags = (content: string) => content.replace(/<[^>]*>/g, '');
@@ -25,6 +26,7 @@ const Editor: React.FC<EditorProps> = ({
     const quillRef = useRef<ReactQuill | null>(null);
     const availableButtons = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight',
         'ArrowUp', 'ArrowDown', 'Home', 'End']);
+    const [validateDescription, setValidateDescription] = useState<boolean>(false);
 
     const countCharacters = (content: string) => {
         const textWithoutTags = removeHtmlTags(content);
@@ -36,10 +38,49 @@ const Editor: React.FC<EditorProps> = ({
         setRawText(removeHtmlTags(value));
     }, [value]);
 
+    useEffect(() => {
+        const handlePaste = (e: any) => {
+            const editor = quillRef.current?.editor;
+            if (!editor) {
+                return;
+            }
+
+            const previousContent = editor.getText();
+            const clipboardContent = e.clipboardData?.getData('text') || '';
+            const resultContent = previousContent + clipboardContent;
+            const isSelectionEnd = editor.getSelection()?.length === previousContent.length;
+            const selectedTextLength = editor.getSelection()?.length || 0;
+
+            if (resultContent.length <= maxChars && !isSelectionEnd) {
+                return;
+            }
+
+            if (resultContent.length > maxChars && (!isSelectionEnd || isSelectionEnd)) {
+                editor.setText(previousContent + clipboardContent.substring(0, maxChars - previousContent.length));
+                e.preventDefault();
+            }
+        };
+
+        quillRef.current?.editor?.root.addEventListener('paste', handlePaste);
+
+        return () => {
+            quillRef.current?.editor?.root.removeEventListener('paste', handlePaste);
+        };
+    }, [characterCount, maxChars]);
+
     const handleOnChange = (html: string) => {
         onChange(html);
         setVal(html);
         countCharacters(html);
+    };
+
+    const handleSelectionChange = (range: any, source: any, editor: any) => {
+        if (range && range.index != null && range.length != null) {
+            const selectedText = editor.getText(range.index, range.length);
+            if (selectionChange) {
+                selectionChange(selectedText);
+            }
+        }
     };
 
     const modules = {
@@ -71,9 +112,14 @@ const Editor: React.FC<EditorProps> = ({
                     onChange={handleOnChange}
                     modules={modules}
                     onKeyDown={(e) => {
-                        if (characterCount >= maxChars && !availableButtons.has(e.key)
-                            && quillRef.current?.editor?.getSelection()?.length === 0) {
-                            e.preventDefault();
+                        if (characterCount > maxChars) {
+                            setValidateDescription(true);
+                            if (!availableButtons.has(e.key)
+                                && quillRef.current?.editor?.getSelection()?.length === 0) {
+                                e.preventDefault();
+                            }
+                        } else {
+                            setValidateDescription(false);
                         }
                     }}
                     ref={(el) => {
@@ -85,15 +131,18 @@ const Editor: React.FC<EditorProps> = ({
                     style={{ height: 300 }}
                     formats={formats}
                     theme="snow"
-                    // onChangeSelection={ } // still can paste logner text if current text < chars limit
+                    onChangeSelection={handleSelectionChange}
                 />
             </div>
-            <div className="charsCounter">
-                Лічильник символів:
-                {' '}
-                {characterCount}
-                /
-                {maxChars}
+            <div className="editorInfoContainer">
+                {validateDescription && (
+                    <span className="validateLabelDescription">
+                        Максимальна довжина - {maxChars}
+                    </span>
+                )}
+                <div className="charsCounter">
+                    Символи: {characterCount}/{maxChars}
+                </div>
             </div>
         </>
     );

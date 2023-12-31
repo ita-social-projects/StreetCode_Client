@@ -2,11 +2,11 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
-import { Editor } from '@tinymce/tinymce-react';
 
 import {
     Button, Form, message, Modal, Popover, Select,
@@ -14,6 +14,7 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
+import Editor from '@/app/common/components/Editor/QEditor';
 import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
 import {
     SourceCategoryName,
@@ -34,15 +35,13 @@ const ForFansModal = ({
     character_limit, open, setOpen, allCategories, onChange, allPersistedSourcesAreSet,
 }: Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
-    const editorRef = useRef<Editor | null>(null);
+    const editorRef = useRef<ReactQuill | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
     const [Categories, setCategories] = useState<SourceCategoryName[]>([]);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [form] = Form.useForm();
-    const [selectedText, setSelected] = useState('');
     const [editorContent, setEditorContent] = useState('');
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const maxLength = character_limit || 10000;
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
@@ -57,8 +56,8 @@ const ForFansModal = ({
             const selectedIds = selected.map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
             const available = allCategories.filter((c) => !selectedIds.includes(c.id));
             if (categoryUpdate.current) {
-                // eslint-disable-next-line max-len
-                available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate.current?.sourceLinkCategoryId)]);
+                available.push(allCategories[allCategories
+                    .findIndex((c) => c.id === categoryUpdate.current?.sourceLinkCategoryId)]);
             }
             if (isNewCat) {
                 const allCategoriesIds = allCategories.map((c) => c.id);
@@ -83,12 +82,18 @@ const ForFansModal = ({
 
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
+        const categoryText = categoryUpdate?.current?.text;
         if (categoryUpdate.current && open) {
-            setEditorContent(categoryUpdate.current.text ?? '');
+            setEditorContent(categoryText ?? '');
+            if (editorRef.current?.editor) {
+                const delta = editorRef.current.editor.clipboard.convert(categoryText);
+                editorRef.current.editor.setContents(delta);
+            }
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
             setEditorContent('');
+            editorRef.current?.editor?.setText('');
             form.setFieldValue('category', '');
         }
 
@@ -118,7 +123,7 @@ const ForFansModal = ({
                     {
                         ...elementToUpdate,
                         sourceLinkCategoryId: values.category,
-                        text: editorRef.current?.editor?.getContent() ?? '',
+                        text: editorContent ?? '',
                     },
                 );
         } else {
@@ -126,7 +131,7 @@ const ForFansModal = ({
                 .addSourceCategoryContent({
                     id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
                     sourceLinkCategoryId: values.category,
-                    text: editorRef.current?.editor?.getContent() ?? '',
+                    text: editorContent ?? '',
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
                 });
             sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length - 1;
@@ -184,7 +189,6 @@ const ForFansModal = ({
                 </Popover>
             )}
         >
-
             <Form
                 layout="vertical"
                 form={form}
@@ -223,61 +227,12 @@ const ForFansModal = ({
                     isNewCategory={onUpdateStates}
                     setIsModalOpen={setIsAddModalVisible}
                 />
-                <FormItem
-                    label="Текст: "
-                    rules={[{ required: true, message: 'Введіть текст' }]}
-                >
+                <FormItem label="Текст:">
                     <Editor
-                        ref={editorRef}
+                        qRef={editorRef}
                         value={editorContent}
-                        onEditorChange={setEditorContent}
-                        init={{
-                            max_chars: 800,
-                            height: 300,
-                            menubar: false,
-                            plugins: [
-                                'autolink',
-                                'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                                'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
-                            ],
-                            toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
-                                + 'formats blockformats align | removeformat strikethrough ',
-                            toolbar_mode: 'sliding',
-                            language: 'uk',
-                            content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                            link_default_target: '_blank',
-                        }}
-                        onPaste={(e, editor) => {
-                            const previousContent = editor.getContent({ format: 'text' });
-                            const clipboardContent = e.clipboardData?.getData('text') || '';
-                            const resultContent = previousContent + clipboardContent;
-                            const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
-
-                            if (selectedText.length >= clipboardContent.length) {
-                                return;
-                            }
-                            if (resultContent.length >= maxLength && isSelectionEnd) {
-                                // eslint-disable-next-line max-len
-                                editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
-                                e.preventDefault();
-                            }
-                            if (resultContent.length <= maxLength && !isSelectionEnd) {
-                                return;
-                            }
-                            if (resultContent.length >= maxLength && !isSelectionEnd) {
-                                e.preventDefault();
-                            }
-                        }}
-                        onKeyDown={(e, editor) => {
-                            if (editor.getContent({ format: 'text' }).length >= maxLength
-                                && !setOfKeys.has(e.key)
-                                && editor.selection.getContent({ format: 'text' }).length === 0) {
-                                e.preventDefault();
-                            }
-                        }}
-                        onSelectionChange={(e, editor) => {
-                            setSelected(editor.selection.getContent());
-                        }}
+                        onChange={setEditorContent}
+                        maxChars={maxLength}
                     />
                 </FormItem>
                 <div className="center">
@@ -289,7 +244,6 @@ const ForFansModal = ({
                     </Button>
                 </div>
             </Form>
-
         </Modal>
     );
 };
