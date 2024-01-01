@@ -1,5 +1,4 @@
 import Image from './Image';
-import dayjs from 'dayjs';
 
 export default interface News {
   id: number;
@@ -8,5 +7,5 @@ export default interface News {
   url: string;
   imageId?: number;
   image?: Image;
-  creationDate: dayjs.Dayjs;
+  creationDate: string;
 }

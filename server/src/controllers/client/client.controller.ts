@@ -13,14 +13,15 @@ import News from '../../interfaces/News';
 import { StreetcodeService } from './services/streetcodes/streetcode.service';
 import { StreetcodeImageEnum } from '../../enums/StreetcodeImageEnum';
 import Image from '../../interfaces/Image';
+import { StreetcodeUpdate } from '../../interfaces/StreetcodeUpdate';
 
 @Controller()
 export class ClientController {
-  private newsCacheMap: Map<string, News> = new Map();
-  private newsCacheUrlsMap: Map<string, string> = new Map();
-  private streetcodeCacheMap: Map<string, any> = new Map();
-  private streetcodeCacheUrlsMap: Map<string, string> = new Map();
-  private urlsToOmit: Array<string> = ['admin-panel'];
+  public newsCacheMap: Map<string, News> = new Map();
+  public newsCacheUrlsMap: Map<string, string> = new Map();
+  public streetcodeCacheMap: Map<string, any> = new Map();
+  public streetcodeCacheUrlsMap: Map<string, string> = new Map();
+  public urlsToOmit: Array<string> = ['admin-panel'];
 
   constructor(
     private readonly clientService: ClientService,
@@ -56,9 +57,14 @@ export class ClientController {
   public async updateNews(@Body() updatedNews: News) {
     try {
       const response = await this.newsService.updateNews(updatedNews);
+      if (response.status !== 200) {
+        throw new BadRequestException(
+          `status code ${response.status}, message: ${response.statusText}`,
+        );
+      }
       this.updateNewsCache(updatedNews);
       console.log('RESPONSE FROM API ON NEWS UPDATE', response);
-      return response.data;
+      return response;
     } catch (error) {
       console.log('ERROR FROM API ON NEWS UPDATE', error);
       throw new BadRequestException(error);
@@ -106,7 +112,7 @@ export class ClientController {
   }
 
   @Put('streetcode/update')
-  public async updateStreetcode(@Body() updatedStreetcode: any) {
+  public async updateStreetcode(@Body() updatedStreetcode: StreetcodeUpdate) {
     try {
       const response =
         await this.streetcodeService.updateStreetcode(updatedStreetcode);

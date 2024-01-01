@@ -1,0 +1,32 @@
+export interface StreetcodeUpdate {
+  id: number;
+  index: number;
+  firstName: string | null;
+  lastName: string | null;
+  title: string;
+  teaser: string;
+  alias?: string;
+  status: any;
+  transliterationUrl: string;
+  eventStartOrPersonBirthDate: Date | null;
+  eventEndOrPersonDeathDate: Date | null;
+  dateString: string;
+  streetcodeType: any;
+  videos: any[];
+  facts: any[];
+  relatedFigures: any[];
+  timelineItems: any[];
+  partners: any[];
+  streetcodeArts: any[];
+  subtitles: any[];
+  text: any | null;
+  streetcodeCategoryContents: any[];
+  tags: any[];
+  statisticRecords: any[];
+  toponyms: any[];
+  images: any[];
+  audioId: number | null;
+  audios: any[];
+  imagesDetails: any[];
+  transactionLink: any[];
+}

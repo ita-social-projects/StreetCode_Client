@@ -45,6 +45,7 @@
     "@types/tough-cookie": "^4.0.5",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cheerio": "^1.0.0-rc.12",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

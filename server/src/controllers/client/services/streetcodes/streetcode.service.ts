@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
+import {StreetcodeUpdate} from "../../../../interfaces/StreetcodeUpdate"
 
 @Injectable()
 export class StreetcodeService {
@@ -21,7 +22,7 @@ export class StreetcodeService {
     return this.httpService.get(backUrl + url).toPromise();
   }
 
-  public async updateStreetcode(streetcode: any): Promise<AxiosResponse> {
+  public async updateStreetcode(streetcode: StreetcodeUpdate): Promise<AxiosResponse> {
     const backUrl = '/streetcode/update';
     return this.httpService.put(backUrl, streetcode).toPromise();
   }

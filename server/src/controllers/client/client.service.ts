@@ -10,7 +10,7 @@ interface IPageMetadata {
   image?: string;
 }
 
-const DEFAULT_META: IPageMetadata = {
+export const DEFAULT_META: IPageMetadata = {
   title: '',
   description:
     '«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць.',
