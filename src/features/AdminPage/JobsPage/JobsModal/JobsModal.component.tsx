@@ -12,7 +12,8 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import JobApi from '@/app/api/job/Job.api';
-import Editor from '@/app/common/components/Editor/QEditor';
+import setQuillContents from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 
 interface Props {
     open: boolean,
@@ -44,10 +45,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 try {
                     const currentJob = await JobApi.getById(currentId);
                     setCurrent(currentJob);
-                    if (textEditor.current?.editor) {
-                        const delta = textEditor.current.editor.clipboard.convert(currentJob?.description);
-                        textEditor.current.editor.setContents(delta);
-                    }
+                    setQuillContents(textEditor.current, currentJob?.description);
                     form.setFieldsValue({
                         title: currentJob?.title,
                         status: currentJob?.status ? 'setActive' : 'setInactive',

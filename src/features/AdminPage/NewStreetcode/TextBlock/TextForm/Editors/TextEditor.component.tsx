@@ -7,7 +7,7 @@ import useMobx, { useModalContext } from '@app/stores/root-store';
 import { message } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
-import Editor from '@/app/common/components/Editor/QEditor';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { Term, Text } from '@/models/streetcode/text-contents.model';
 

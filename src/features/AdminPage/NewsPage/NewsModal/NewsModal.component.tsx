@@ -28,7 +28,8 @@ import {
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
 
-import Editor from '@/app/common/components/Editor/QEditor';
+import setQuillContents from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio from '@/models/media/audio.model';
@@ -110,10 +111,7 @@ const NewsModal: React.FC<{
                 ] : [],
             });
 
-            if (editorRef.current?.editor) {
-                const delta = editorRef.current.editor.clipboard.convert(newsItem.text);
-                editorRef.current.editor.setContents(delta);
-            }
+            setQuillContents(editorRef.current, newsItem.text);
         } else {
             imageId.current = 0;
             image.current = undefined;

@@ -14,7 +14,8 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
-import Editor from '@/app/common/components/Editor/QEditor';
+import setQuillContents from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
 import {
     SourceCategoryName,
@@ -92,10 +93,7 @@ const ForFansModal = ({
         const categoryText = categoryUpdate?.current?.text;
         if (categoryUpdate.current && open) {
             setEditorContent(categoryText ?? '');
-            if (editorRef.current?.editor) {
-                const delta = editorRef.current.editor.clipboard.convert(categoryText);
-                editorRef.current.editor.setContents(delta);
-            }
+            setQuillContents(editorRef.current, categoryText ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;

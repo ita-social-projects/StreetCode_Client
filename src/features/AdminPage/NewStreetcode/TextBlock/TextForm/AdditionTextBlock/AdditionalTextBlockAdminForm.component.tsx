@@ -7,7 +7,7 @@ import ReactQuill from 'react-quill';
 
 import FormItem from 'antd/es/form/FormItem';
 
-import Editor from '@/app/common/components/Editor/QEditor';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 import { Text } from '@/models/streetcode/text-contents.model';
 
 interface Props {
