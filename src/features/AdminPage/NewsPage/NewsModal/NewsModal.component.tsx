@@ -28,7 +28,10 @@ import {
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
 
-import setQuillContents from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import {
+    checkQuillTextLength,
+    setQuillContents,
+} from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -57,7 +60,7 @@ const NewsModal: React.FC<{
     const editorRef = useRef<ReactQuill>(null);
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
-    const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля";
+    const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля правильно";
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
 
@@ -163,13 +166,14 @@ const NewsModal: React.FC<{
     const handleOk = async () => {
         try {
             await form.validateFields();
+            checkQuillTextLength(editorRef?.current, sizeLimit);
             if (handleTextChange()) {
                 setWaitingForApiResponse(true);
                 await form.submit();
             } else {
                 throw new Error();
             }
-        } catch (error) {
+        } catch {
             message.error(fillInAllFieldsMessage);
         }
     };

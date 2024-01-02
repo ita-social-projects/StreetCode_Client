@@ -14,7 +14,10 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
-import setQuillContents from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import {
+    checkQuillTextLength,
+    setQuillContents,
+} from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
 import {
@@ -206,6 +209,7 @@ const ForFansModal = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
+            checkQuillTextLength(editorRef?.current, maxLength);
             if (handleTextChange()) {
                 form.submit();
                 message.success('Категорію для фанатів успішно додано!', 2);

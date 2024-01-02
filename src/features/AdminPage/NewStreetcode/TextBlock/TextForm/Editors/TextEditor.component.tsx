@@ -102,7 +102,6 @@ const TextEditor = ({
                 maxChars={MAX_CHARS}
                 selectionChange={(selectedText: string) => {
                     setSelected(selectedText);
-                    console.log('selectedText ', selectedText);
                 }}
             />
         </FormItem>

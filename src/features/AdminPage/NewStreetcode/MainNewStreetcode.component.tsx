@@ -27,10 +27,11 @@ import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.utility';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import { AudioUpdate, AudioUpdate } from '@/models/media/audio.model';
+import { AudioUpdate } from '@/models/media/audio.model';
 import { ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
 import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
@@ -125,6 +126,15 @@ const NewStreetcode = () => {
     const alertUser = (event: BeforeUnloadEvent) => {
         event.preventDefault();
         event.returnValue = navigationString;
+    };
+
+    const validateQuillTexts = (mainText: string | undefined, additionalText: string | undefined) => {
+        const tooLongMainText = mainText && mainText.length > QUILL_TEXTS_LENGTH.mainTextMaxLength;
+        const tooLongAdditionalText = additionalText && additionalText.length > QUILL_TEXTS_LENGTH.additionalTextMaxLength;
+
+        if (tooLongMainText || tooLongAdditionalText) {
+            throw new Error();
+        }
     };
 
     useEffect(() => {
@@ -308,6 +318,7 @@ const NewStreetcode = () => {
                     ? '' : inputInfo?.additionalText,
                 streetcodeId: parseId,
             };
+            validateQuillTexts(text.textContent, text.additionalText);
 
             const streetcode: StreetcodeCreate = {
                 id: parseId,
@@ -365,8 +376,8 @@ const NewStreetcode = () => {
                         }
                     )),
                 imagesDetails: createUpdateMediaStore.getImageDetails(),
-
             };
+
             if (streetcodeType.current === StreetcodeType.Person) {
                 streetcode.firstName = form.getFieldValue('name');
                 streetcode.lastName = form.getFieldValue('surname');
@@ -483,6 +494,8 @@ const NewStreetcode = () => {
             const name = form.getFieldsError().find((e) => e.errors.length > 0)?.name;
             if (name) {
                 scrollToErrors();
+            } else {
+                alert('Будь ласка, заповніть всі поля валідними даними');
             }
         });
     };

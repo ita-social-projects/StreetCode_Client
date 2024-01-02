@@ -3,6 +3,7 @@ import './TextForm.styles.scss';
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
+import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.utility';
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
@@ -46,7 +47,7 @@ const TextForm = ({
             </Form.Item>
             <Form.Item>
                 <TextEditor
-                    character_limit={25000}
+                    character_limit={QUILL_TEXTS_LENGTH.mainTextMaxLength}
                     inputInfo={inputInfo}
                     setInputInfo={setInputInfo}
                     onChange={onChange}
@@ -56,7 +57,7 @@ const TextForm = ({
             </Form.Item>
             <Form.Item>
                 <AdditionalTextBlockAdminForm
-                    character_limit={200}
+                    character_limit={QUILL_TEXTS_LENGTH.additionalTextMaxLength}
                     inputInfo={inputInfo}
                     setInputInfo={setInputInfo}
                     onChange={onChange}

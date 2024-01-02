@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import './QEditor.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -20,7 +21,10 @@ const Editor: React.FC<EditorProps> = ({
     qRef, value, onChange, maxChars, initialVal, selectionChange,
 }) => {
     const [val, setVal] = useState(value);
-    const removeHtmlTags = (content: string) => content.replace(/<[^>]*>/g, '');
+    const removeHtmlTags = (content: string) => content.replace(/<[^>]*>|&nbsp;/g, (match) => {
+        if (match === '&nbsp;') return ' ';
+        return '';
+    });
     const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
     const [characterCount, setCharacterCount] = useState(rawText.length ?? 0);
     const quillRef = useRef<ReactQuill | null>(null);
@@ -38,35 +42,6 @@ const Editor: React.FC<EditorProps> = ({
         setRawText(removeHtmlTags(value));
     }, [value]);
 
-    useEffect(() => {
-        const handlePaste = (e: any) => {
-            const editor = quillRef.current?.editor;
-            if (!editor) {
-                return;
-            }
-
-            const previousContent = editor.getText();
-            const clipboardContent = e.clipboardData?.getData('text') || '';
-            const resultContent = previousContent + clipboardContent;
-            const isSelectionEnd = editor.getSelection()?.length === previousContent.length;
-
-            if (resultContent.length <= maxChars && !isSelectionEnd) {
-                return;
-            }
-
-            if (resultContent.length > maxChars && (!isSelectionEnd || isSelectionEnd)) {
-                editor.setText(previousContent + clipboardContent.substring(0, maxChars - previousContent.length));
-                e.preventDefault();
-            }
-        };
-
-        quillRef.current?.editor?.root.addEventListener('paste', handlePaste);
-
-        return () => {
-            quillRef.current?.editor?.root.removeEventListener('paste', handlePaste);
-        };
-    }, [characterCount, maxChars]);
-
     const handleOnChange = (html: string) => {
         onChange(html);
         setVal(html);
@@ -81,6 +56,14 @@ const Editor: React.FC<EditorProps> = ({
             }
         }
     };
+
+    useEffect(() => {
+        if (characterCount > maxChars) {
+            setValidateDescription(true);
+        } else {
+            setValidateDescription(false);
+        }
+    }, [characterCount, maxChars]);
 
     const modules = {
         toolbar: {
@@ -116,9 +99,9 @@ const Editor: React.FC<EditorProps> = ({
                             if (!availableButtons.has(e.key)
                                 && quillRef.current?.editor?.getSelection()?.length === 0) {
                                 e.preventDefault();
+                            } else if (characterCount - 1 < maxChars) {
+                                setValidateDescription(false);
                             }
-                        } else {
-                            setValidateDescription(false);
                         }
                     }}
                     ref={(el) => {

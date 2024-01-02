@@ -12,7 +12,10 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import JobApi from '@/app/api/job/Job.api';
-import setQuillContents from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import {
+    checkQuillTextLength,
+    setQuillContents,
+} from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 
 interface Props {
@@ -21,7 +24,7 @@ interface Props {
     currentId: number,
 }
 
-const JobsModal = ({ open, setOpen, currentId } : Props) => {
+const JobsModal = ({ open, setOpen, currentId }: Props) => {
     const maxLengths = {
         maxLenghtVacancyName: 50,
         maxLenghtVacancyDesc: 2000,
@@ -31,7 +34,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
     const [current, setCurrent] = useState<Job>();
     const [form] = Form.useForm();
     const [storedJob, setStoredJob] = useState<Job>();
-    const emptyJob : Job = {
+    const emptyJob: Job = {
         title: form.getFieldValue('title'),
         description: '',
         status: form.getFieldValue('status'),
@@ -73,7 +76,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
-
+            checkQuillTextLength(textEditor?.current, maxLengths.maxLenghtVacancyDesc);
             const { title, status, description, salary } = values;
             const isActive = status === 'setActive';
 
@@ -94,8 +97,8 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 await JobApi.update(newJob);
             }
             message.success('Вакансію успішно додано!', 2);
-        } catch (error) {
-            console.log(error);
+        } catch {
+            message.error('Будь ласка, перевірте введені дані', 2);
         }
     };
 
