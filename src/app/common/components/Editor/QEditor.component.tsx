@@ -49,7 +49,6 @@ const Editor: React.FC<EditorProps> = ({
             const clipboardContent = e.clipboardData?.getData('text') || '';
             const resultContent = previousContent + clipboardContent;
             const isSelectionEnd = editor.getSelection()?.length === previousContent.length;
-            const selectedTextLength = editor.getSelection()?.length || 0;
 
             if (resultContent.length <= maxChars && !isSelectionEnd) {
                 return;
@@ -112,7 +111,7 @@ const Editor: React.FC<EditorProps> = ({
                     onChange={handleOnChange}
                     modules={modules}
                     onKeyDown={(e) => {
-                        if (characterCount > maxChars) {
+                        if (characterCount >= maxChars) {
                             setValidateDescription(true);
                             if (!availableButtons.has(e.key)
                                 && quillRef.current?.editor?.getSelection()?.length === 0) {
