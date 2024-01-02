@@ -149,8 +149,9 @@ const NewsModal: React.FC<{
 
     const handleTextChange = () => {
         setTextIsChanged(true);
+        const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
 
-        if (editorRef.current?.editor?.getText() === '') {
+        if (emptyTextField) {
             setTextIsPresent(false);
             return false;
         }

@@ -33,7 +33,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
     const [storedJob, setStoredJob] = useState<Job>();
     const emptyJob : Job = {
         title: form.getFieldValue('title'),
-        description: form.getFieldValue('description'),
+        description: '',
         status: form.getFieldValue('status'),
         id: 0,
         salary: form.getFieldValue('salary'),
@@ -81,7 +81,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 id: currentId,
                 title,
                 status: isActive,
-                description: current.description,
+                description: current?.description ?? '',
                 salary,
             };
             const allJobs = await JobApi.getAllShort();

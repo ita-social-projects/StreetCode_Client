@@ -35,7 +35,7 @@ interface Props {
 function isEditingCategoryTextOnly(
     elementToUpdate: StreetcodeCategoryContent | null,
     editedCategoryId: any,
-) : boolean | null {
+): boolean | null {
     return elementToUpdate && elementToUpdate?.sourceLinkCategoryId === Number(editedCategoryId);
 }
 
@@ -50,6 +50,8 @@ const ForFansModal = ({
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [editorContent, setEditorContent] = useState('');
+    const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
+    const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const maxLength = character_limit || 10000;
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
@@ -80,6 +82,8 @@ const ForFansModal = ({
 
     const clearModal = () => {
         form.resetFields();
+        setTextIsPresent(false);
+        setTextIsChanged(false);
         setOpen(false);
     };
 
@@ -185,11 +189,29 @@ const ForFansModal = ({
 
         onChange('saved', null);
     };
+
+    const handleTextChange = () => {
+        setTextIsChanged(true);
+        const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
+
+        if (emptyTextField) {
+            setTextIsPresent(false);
+            return false;
+        }
+
+        setTextIsPresent(true);
+        return true;
+    };
+
     const handleOk = async () => {
         try {
             await form.validateFields();
-            form.submit();
-            message.success('Категорію для фанатів успішно додано!', 2);
+            if (handleTextChange()) {
+                form.submit();
+                message.success('Категорію для фанатів успішно додано!', 2);
+            } else {
+                throw new Error();
+            }
         } catch (error) {
             message.config({
                 top: 100,
@@ -201,6 +223,7 @@ const ForFansModal = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
+
     const onUpdateStates = async (isNewCatAdded: boolean) => {
         if (isNewCatAdded === true) {
             const categories = await SourcesApi.getAllNames();
@@ -281,6 +304,9 @@ const ForFansModal = ({
                         onChange={setEditorContent}
                         maxChars={maxLength}
                     />
+                    {!textIsPresent && textIsChanged && (
+                        <p className="form-text">Введіть текст</p>
+                    )}
                 </FormItem>
                 <div className="center">
                     <Button
