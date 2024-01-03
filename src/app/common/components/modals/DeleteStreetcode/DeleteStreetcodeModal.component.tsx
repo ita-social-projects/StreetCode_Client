@@ -18,7 +18,7 @@ const DeleteStreetcodeModal = () => {
             title="Delete streetcode"
             open={deleteStreetcode.isOpen}
             onOk={() => confirmHandler()}
-            onCancel={() => setModal('deleteStreetcode')}
+            onCancel={() => deleteStreetcode.isOpen = false}
             className="deleteModal"
         >
             {deleteStreetcode.fromCardId}

@@ -22,7 +22,7 @@ const DeleteTermModal = ({ handleDelete, term } : Props) => {
             className="deleteModal"
             closeIcon={<CancelBtn />}
             open={deleteTerm.isOpen}
-            onCancel={() => setModal('deleteTerm')}
+            onCancel={() => deleteTerm.isOpen = false}
             onOk={() => {
                 handleDelete(term?.id as number);
                 setModal('deleteTerm');

@@ -38,7 +38,7 @@ const SourcesModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('sources', categoryId)}
+            onCancel={() => sources.isOpen = false}
             closeIcon={windowsize.width <= 1024 ? <CancelBtnMobile /> : <CancelBtn />}
         >
             <div className="sourceImgContainer">

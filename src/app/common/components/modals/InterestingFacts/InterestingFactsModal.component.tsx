@@ -31,7 +31,7 @@ const InterestingFactsModal = () => {
         <Modal
             className="interestingFactsModal"
             open={facts.isOpen}
-            onCancel={() => setModal('facts')}
+            onCancel={() => facts.isOpen = false}
             footer={null}
             maskClosable
             centered

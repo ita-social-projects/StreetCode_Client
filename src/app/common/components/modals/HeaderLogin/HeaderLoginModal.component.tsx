@@ -54,7 +54,7 @@ const HeaderLoginModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('login')}
+            onCancel={() => login.isOpen = false}
             closeIcon={<CancelBtn />}
         >
             <div className="loginModalContent">
