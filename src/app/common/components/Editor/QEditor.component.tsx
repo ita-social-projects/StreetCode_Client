@@ -2,14 +2,15 @@
 import './QEditor.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
-import ReactQuill from 'react-quill';
+import ReactQuill, { UnprivilegedEditor } from 'react-quill';
+import { Sources } from 'quill';
 
 import 'react-quill/dist/quill.snow.css';
 
 import LinkHandler from './EditorExtensions/LinkHandler';
 
 interface EditorProps {
-    qRef: any,
+    qRef: React.RefObject<ReactQuill>,
     value: string;
     onChange: (html: string) => void;
     maxChars: number,
@@ -48,7 +49,7 @@ const Editor: React.FC<EditorProps> = ({
         countCharacters(html);
     };
 
-    const handleSelectionChange = (range: any, source: any, editor: any) => {
+    const handleSelectionChange = (range: ReactQuill.Range | null, source: Sources, editor: UnprivilegedEditor) => {
         if (range && range.index != null && range.length != null) {
             const selectedText = editor.getText(range.index, range.length);
             if (selectionChange) {
@@ -99,8 +100,6 @@ const Editor: React.FC<EditorProps> = ({
                             if (!availableButtons.has(e.key)
                                 && quillRef.current?.editor?.getSelection()?.length === 0) {
                                 e.preventDefault();
-                            } else if (characterCount - 1 < maxChars) {
-                                setValidateDescription(false);
                             }
                         }
                     }}
