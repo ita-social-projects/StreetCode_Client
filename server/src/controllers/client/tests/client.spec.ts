@@ -5,7 +5,7 @@ import { ClientService, DEFAULT_META } from '../client.service';
 import { NewsService } from '../services/news/news.service';
 import { StreetcodeService } from '../services/streetcodes/streetcode.service';
 import { HttpConfigModule } from '../../../shared/http-config/http-config.module';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import News from '../../../interfaces/News';
 
 process.env.CLIENT_BUILD_PATH = './src/controllers/client/tests';
@@ -65,9 +65,7 @@ describe('ClientController', () => {
     streetcodeService = module.get<StreetcodeService>(StreetcodeService);
   });
   describe('news ednpoints', () => {
-
     describe('method GET(news/:url)', () => {
-
       it('should return index.html with news meta', async () => {
         jest
           .spyOn(newsService, 'getByUrl')
@@ -122,7 +120,75 @@ describe('ClientController', () => {
         expect(newsFromCache.image.mimeType).toEqual('image/png');
       });
 
-      it('should not update news cache due to failed updateNews request', async () => {
+      it('should not update newsCacheMap due to failed updateNews request', async () => {
+        const apiError = new AxiosError('Server Error', '500');
+
+        jest.spyOn(newsService, 'updateNews').mockResolvedValue(apiError);
+
+        clientController.newsCacheMap.set('1', {
+          ...mockNews,
+          title: 'Old title',
+          image: {
+            ...mockNews.image,
+            base64: 'oldMockedBase64Data',
+            mimeType: 'image/jpeg',
+          },
+        });
+
+        const result = await clientController.updateNews(mockNews);
+        const newsFromCache = clientController.newsCacheMap.get('1');
+
+        expect(result).toEqual(apiError);
+        expect(newsFromCache.title).toEqual('Old title');
+        expect(newsFromCache.image.base64).toEqual('oldMockedBase64Data');
+        expect(newsFromCache.image.mimeType).toEqual('image/jpeg');
+      });
+
+      it('should update newsUrlsCacheMap due to updated news.url', async () => {
+        const apiResponse = { status: 200, data: 2 } as AxiosResponse;
+        jest.spyOn(newsService, 'updateNews').mockResolvedValue(apiResponse);
+        clientController.newsCacheUrlsMap.set('old-url', '1');
+        clientController.newsCacheMap.set('1', {
+          ...mockNews,
+          url: 'old-url',
+        });
+
+        const result = await clientController.updateNews(mockNews);
+        const deletedIdOfOldNews =
+          clientController.newsCacheUrlsMap.get('old-url');
+        const changedIdOfNews =
+          clientController.newsCacheUrlsMap.get('news-url');
+
+        expect(result).toEqual(apiResponse);
+        expect(deletedIdOfOldNews).toBeUndefined();
+        expect(changedIdOfNews).toEqual('1');
+      });
+    });
+
+    describe('method PUT(streetcode/update)', () => {
+      it('should update streetcodeCacheMap due to updateStreetcode request success', async () => {
+        const apiResponse = { status: 200, data: 1 } as AxiosResponse;
+        jest.spyOn(newsService, 'updateNews').mockResolvedValue(apiResponse);
+        clientController.newsCacheMap.set('1', {
+          ...mockNews,
+          title: 'Old title',
+          image: {
+            ...mockNews.image,
+            base64: 'oldMockedBase64Data',
+            mimeType: 'image/jpeg',
+          },
+        });
+
+        const result = await clientController.updateNews(mockNews);
+        const newsFromCache = clientController.newsCacheMap.get('1');
+
+        expect(result).toEqual(apiResponse);
+        expect(newsFromCache.title).toEqual('Mocked News Title');
+        expect(newsFromCache.image.base64).toEqual('mockedBase64Data');
+        expect(newsFromCache.image.mimeType).toEqual('image/png');
+      });
+
+      it('should not update streetcodeCacheMap due to failed updateStreetcode request', async () => {
         const apiResponse = {
           status: 500,
           data: '',

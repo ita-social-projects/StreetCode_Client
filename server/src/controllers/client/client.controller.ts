@@ -55,20 +55,10 @@ export class ClientController {
 
   @Put('news/update')
   public async updateNews(@Body() updatedNews: News) {
-    try {
-      const response = await this.newsService.updateNews(updatedNews);
-      if (response.status !== 200) {
-        throw new BadRequestException(
-          `status code ${response.status}, message: ${response.statusText}`,
-        );
-      }
-      this.updateNewsCache(updatedNews);
-      console.log('RESPONSE FROM API ON NEWS UPDATE', response);
-      return response;
-    } catch (error) {
-      console.log('ERROR FROM API ON NEWS UPDATE', error);
-      throw new BadRequestException(error);
-    }
+    const response = await this.newsService.updateNews(updatedNews);
+    this.updateNewsCache(updatedNews);
+    console.log('RESPONSE FROM API ON NEWS UPDATE', response);
+    return response;
   }
 
   @Delete('news/delete/:id')
