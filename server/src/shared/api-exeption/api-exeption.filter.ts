@@ -20,9 +20,8 @@ export class ApiExceptionFilter implements ExceptionFilter {
       const axiosError = error as AxiosError;
       const axiosResponse = axiosError.response as AxiosResponse;
       console.log('ERROR FROM API', axiosError);
-      response.status(axiosResponse.status).json(axiosResponse.data);
+      response.status(axiosResponse.status).json({...axiosResponse.data, isFromFilter: true});
     } else {
-      // For other types of errors, send a generic 500 Internal Server Error
       response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
         message: `Internal Server Error: ${error.message}`,

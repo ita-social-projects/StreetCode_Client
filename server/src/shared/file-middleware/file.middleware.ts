@@ -1,14 +1,11 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ClientService } from './client.service';
 import * as path from 'path';
 import { Logger } from '@nestjs/common';
 import * as fs from 'fs';
 
 @Injectable()
-export class ClientMiddleware implements NestMiddleware {
-  constructor(private readonly clientService: ClientService) {}
-
+export class FileMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: () => void) {
     if (/[^\\/]+\.[^\\/]+$/.test(req.path)) {
       const file = this.getAssetPath(req.path);
@@ -27,7 +24,7 @@ export class ClientMiddleware implements NestMiddleware {
     }
   }
 
-  getAssetPath(url: any) {
+  public getAssetPath(url: any) {
     const basePath = process.env.CLIENT_BUILD_PATH;
     return path.resolve(path.join(basePath, url));
   }

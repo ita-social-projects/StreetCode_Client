@@ -1,3 +1,5 @@
+import Image from './Image';
+
 export interface StreetcodeUpdate {
   id: number;
   index: number;
@@ -24,7 +26,7 @@ export interface StreetcodeUpdate {
   tags: any[];
   statisticRecords: any[];
   toponyms: any[];
-  images: any[];
+  images: Image[];
   audioId: number | null;
   audios: any[];
   imagesDetails: any[];

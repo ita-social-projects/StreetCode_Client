@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ClientController } from './controllers/client/client.controller';
 import { ClientService } from './controllers/client/client.service';
@@ -21,7 +19,7 @@ import { HttpConfigModule } from './shared/http-config/http-config.module';
     StreetcodeModule,
     HttpConfigModule,
   ],
-  controllers: [AppController, ClientController],
-  providers: [AppService, ClientService, NewsService, StreetcodeService],
+  controllers: [ClientController],
+  providers: [ClientService, NewsService, StreetcodeService],
 })
 export class AppModule {}

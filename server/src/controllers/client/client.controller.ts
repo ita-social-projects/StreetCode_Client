@@ -103,16 +103,11 @@ export class ClientController {
 
   @Put('streetcode/update')
   public async updateStreetcode(@Body() updatedStreetcode: StreetcodeUpdate) {
-    try {
-      const response =
-        await this.streetcodeService.updateStreetcode(updatedStreetcode);
-      this.updateStreetcodeCache(updatedStreetcode);
-      console.log('RESPONSE FROM API ON STREETCODE UPDATE', response);
-      return;
-    } catch (error) {
-      console.log('ERROR FROM API ON STREETCODE UPDATE', error);
-      throw new BadRequestException(error);
-    }
+    const response =
+      await this.streetcodeService.updateStreetcode(updatedStreetcode);
+    this.updateStreetcodeCache(updatedStreetcode);
+    console.log('RESPONSE FROM API ON STREETCODE UPDATE', response);
+    return response;
   }
 
   @Delete('streetcode/delete/:id')
@@ -223,6 +218,7 @@ export class ClientController {
       const data = response.data;
       this.streetcodeCacheMap.set(id, {
         title: updatedStreetcode.title,
+        transliterationUrl: updatedStreetcode.transliterationUrl,
         image: this.findGrayImage(data),
       });
     });
