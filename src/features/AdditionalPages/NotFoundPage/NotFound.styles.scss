@@ -5,90 +5,86 @@
 
 .notFoundContainer {
     @include mut.flexed($justify-content: center, $align-items: center, $direction: column);
+    background: url('../../../assets/images/streetcode-card/background.webp') no-repeat center center / cover;
+    height: calc(100vh - 136px);
+    @include mut.rem-margined($top: 64px);
 
     width: 100vw;
-    height: calc(100vh - 326px);
-    @include mut.rem-margined($top: 82px);
-
-    background: url('../../../assets/images/streetcode-card/background.webp') no-repeat center center / cover;
 
     .notFoundNumber {
-        @include mut.with-font($font-weight: 500, $font-size: 220px);
+        @include mut.with-font($font-weight: 500, $font-size: 165px);
+        line-height: 140px;
         color: c.$dark-red-color;
-        line-height: 170px;
     }
 
     .content {
-        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
-        line-height: 48px;
         text-align: center;
         color: c.$lighter-black-color;
-
+        padding: 0 f.pxToRem(10px) 0;
         margin: f.pxToRem(110px) 0 f.pxToRem(40px) 0;
+
+        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
+        line-height: 26px;
+        letter-spacing: 0.005em;
     }
 
     .redirectToMain {
-        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         display: block;
-        width: f.pxToRem(219px);
-        height: f.pxToRem(73px);
 
-        line-height: 23px;
         color: c.$pure-white-color;
         white-space: nowrap;
         text-align: center;
 
         background: c.$accented-red-color;
         @include mut.full-rounded(10px);
-
-        padding: f.pxToRem(25px) f.pxToRem(26px);
         box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.18);
+
+        @include mut.sized(340px, 46px);
+        @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
+        line-height: 16px;
+        padding: f.pxToRem(15px) 0;
 
         &:hover {
             background: c.$dark-red-color;
         }
     }
-}
 
-@media only screen and ((max-width: 1024px) or (max-height: 900px)) {
-    .notFoundContainer {
+    @media screen and (min-width: 480px) {
         height: calc(100vh - 102px);
         @include mut.rem-margined($top: 64px);
-
-        .notFoundNumber {
-            @include mut.with-font($font-weight: 500, $font-size: 165px);
-            line-height: 140px;
-        }
-        .content {
-            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 20px);
-            line-height: 26px;
-            letter-spacing: 0.005em;
-        }
-        .redirectToMain {
-            @include mut.sized(340px, 46px);
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 14px);
-            line-height: 16px;
-            padding: f.pxToRem(15px) 0;
-        }
     }
-}
 
-@media only screen and (min-width: 1025px) and (max-height: 900px) {
-    .notFoundContainer {
+    @media screen and (min-width: 1025px) {
         height: calc(100vh - 269px);
 
         .content {
             margin: f.pxToRem(60px) f.pxToRem(10px) f.pxToRem(40px);
         }
     }
-}
 
-@media only screen and (max-width: 480px) {
-    .notFoundContainer {
-        height: calc(100vh - 136px);
+    @media screen and (min-width: 1025px) and (min-height: 900px) {
+        height: calc(100vh - 326px);
+        @include mut.rem-margined($top: 82px);
+
+        .notFoundNumber {
+            @include mut.with-font($font-weight: 500, $font-size: 220px);
+            line-height: 170px;
+        }
 
         .content {
-            padding: 0 f.pxToRem(10px) 0;
+            @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
+            line-height: 48px;
+            margin: f.pxToRem(110px) 0 f.pxToRem(40px) 0;
+        }
+
+        .redirectToMain {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+            width: f.pxToRem(219px);
+            height: f.pxToRem(73px);
+
+            line-height: 23px;
+
+            padding: f.pxToRem(25px) f.pxToRem(26px);
         }
     }
 }
