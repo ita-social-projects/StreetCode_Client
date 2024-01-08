@@ -47,7 +47,7 @@ const InstagramBlock = () => {
     ));
 
     const handleClick = () => {
-        window.location.assign('https://www.instagram.com/streetcodeua/');
+        window.open('https://www.instagram.com/streetcodeua/', '_blank');
     };
 
     return (
