@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Put,
-  Delete,
-  NotFoundException,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Delete } from '@nestjs/common';
 import { NewsService } from './news.service';
 import News from '../../interfaces/News';
 import { GetAppService } from '../../shared/get-app-service/get-app.service';
@@ -26,47 +18,46 @@ export class NewsController {
 
   @Get('news/:url')
   public async getNews(@Param('url') url: string) {
-    try {
-      if (!this.newsCacheUrlsMap.has(url)) {
-        await this.addNewsToCache(url);
+    if (!this.newsCacheUrlsMap.has(url)) {
+      const isAdded = await this.addNewsToCacheByUrl(url);
+      if (!isAdded) {
+        return this.getAppService.getApp();
       }
-      const id = this.newsCacheUrlsMap.get(url);
-      const theNews = this.newsCacheMap.get(id);
-
-      const meta = {
-        description: theNews.title,
-        image: base64ToUrl(theNews.image.base64, theNews.image.mimeType),
-      };
-
-      return this.getAppService.getApp(meta);
-    } catch (error) {
-      console.error('Error loading news:', error);
-      return this.getAppService.getApp();
     }
+    const id = this.newsCacheUrlsMap.get(url);
+    const theNews = this.newsCacheMap.get(id);
+
+    const meta = {
+      description: theNews.title,
+      image: base64ToUrl(theNews.image.base64, theNews.image.mimeType),
+    };
+
+    return this.getAppService.getApp(meta);
   }
 
   @Put('news/update')
   public async updateNews(@Body() updatedNews: News) {
     const response = await this.newsService.updateNews(updatedNews);
     this.updateNewsCache(updatedNews);
-    console.log('RESPONSE FROM API ON NEWS UPDATE', response);
-    return response;
+    console.log('NEWS UPDATED', response);
+    return response.data;
   }
 
   @Delete('news/delete/:id')
   public async deleteNews(@Param('id') id: string) {
     await this.newsService.deleteNews(id);
     this.deleteNewsFromCache(id);
-    console.log('NEWS DELETED ' + id);
-    return 'Deleted successfully ' + id;
+
+    const message = 'NEWS DELETED ' + id;
+    console.log(message);
+    return message;
   }
 
   private async loadNews() {
     try {
       const allNewsResponse = await this.newsService.getAllNews();
       allNewsResponse.data.forEach((news) => {
-        this.newsCacheMap.set(news.id.toString(), news);
-        this.newsCacheUrlsMap.set(news.url, news.id.toString());
+        this.addNewsToCache(news);
       });
     } catch (error) {
       console.error('Error loading news:', error);
@@ -87,16 +78,24 @@ export class NewsController {
       this.newsCacheUrlsMap.delete(oldNews.url);
       this.newsCacheUrlsMap.set(updatedNews.url, id);
     }
-    this.newsCacheMap.set(updatedNews.id.toString(), updatedNews);
+    this.newsCacheMap.set(id, updatedNews);
   }
 
-  private async addNewsToCache(url: string) {
-    const response = await this.newsService.getByUrl(url);
-    const news = response.data;
-    if (!news) {
-      throw new NotFoundException(`News with ${url} url not found`);
+  private async addNewsToCacheByUrl(url: string): Promise<boolean> {
+    try {
+      const response = await this.newsService.getByUrl(url);
+      const news = response.data;
+
+      this.addNewsToCache(news);
+      return true;
+    } catch {
+      return false;
     }
-    this.newsCacheMap.set(news.id.toString(), news);
-    this.newsCacheUrlsMap.set(news.url, news.id.toString());
+  }
+
+  private addNewsToCache(news: News) {
+    const id = news.id.toString();
+    this.newsCacheMap.set(id, news);
+    this.newsCacheUrlsMap.set(news.url, id);
   }
 }

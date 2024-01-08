@@ -123,9 +123,13 @@ describe('StreetcodeController', () => {
       });
 
       it('should return app with default meta because streetcode does not exists', async () => {
-        jest
-          .spyOn(streetcodeService, 'getByUrl')
-          .mockResolvedValue({ data: undefined, status: 404 } as AxiosResponse);
+        jest.spyOn(streetcodeService, 'getByUrl').mockRejectedValue({
+          ...apiError,
+          response: {
+            status: 404,
+            data: { message: "Streetcode with the url doesn't exist" },
+          },
+        } as AxiosError);
 
         const result =
           await streetcodeController.getStreetcode('non-existent-url');
@@ -170,7 +174,7 @@ describe('StreetcodeController', () => {
         const streetcodeFromCache =
           streetcodeController.streetcodeCacheMap.get('1');
 
-        expect(result).toEqual(updateStreetcodeApiResponse);
+        expect(result).toEqual(updateStreetcodeApiResponse.data);
         expect(streetcodeFromCache.title).toEqual('Mocked streetcode title');
         expect(streetcodeFromCache.image.base64).toEqual(
           'Mocked streetcode base64',

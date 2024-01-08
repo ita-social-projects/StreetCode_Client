@@ -83,9 +83,13 @@ describe('NewsController', () => {
       });
 
       it('should return app with default meta because news does not exists', async () => {
-        jest
-          .spyOn(newsService, 'getByUrl')
-          .mockResolvedValue({ data: undefined, status: 404 } as AxiosResponse);
+        jest.spyOn(newsService, 'getByUrl').mockRejectedValue({
+          ...apiError,
+          response: {
+            status: 404,
+            data: { message: "News with the url doesn't exist" },
+          },
+        } as AxiosError);
 
         const result = await newsController.getNews('non-existent-url');
 
@@ -115,7 +119,7 @@ describe('NewsController', () => {
         const result = await newsController.updateNews(mockNews);
         const newsFromCache = newsController.newsCacheMap.get('1');
 
-        expect(result).toEqual(apiResponse);
+        expect(result).toEqual(apiResponse.data);
         expect(newsFromCache.title).toEqual('Mocked News Title');
         expect(newsFromCache.image.base64).toEqual('mockedBase64Data');
         expect(newsFromCache.image.mimeType).toEqual('image/png');

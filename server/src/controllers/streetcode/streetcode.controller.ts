@@ -26,7 +26,7 @@ export class StreetcodeController {
     }
 
     if (!this.streetcodeCacheUrlsMap.has(url)) {
-      const isAdded = await this.addStreetcodeToCache(url);
+      const isAdded = await this.addStreetcodeToCacheByUrl(url);
 
       if (!isAdded) {
         return this.getAppService.getApp();
@@ -48,16 +48,18 @@ export class StreetcodeController {
     const response =
       await this.streetcodeService.updateStreetcode(updatedStreetcode);
     this.updateStreetcodeCache(updatedStreetcode);
-    console.log('RESPONSE FROM API ON STREETCODE UPDATE', response);
-    return response;
+    console.log('STREETCODE UPDATED: ', response);
+    return response.data;
   }
 
   @Delete('streetcode/delete/:id')
   public async deleteStreetcode(@Param('id') id: string) {
     await this.streetcodeService.deleteStreetcode(id);
     this.deleteStreetcodeFromCache(id);
-    console.log('STREETCODE DELETED ' + id);
-    return 'Deleted successfully ' + id;
+
+    const message = 'STREETCODE DELETED ' + id;
+    console.log(message);
+    return message;
   }
 
   private async loadStreetcodes() {
@@ -70,22 +72,15 @@ export class StreetcodeController {
           return this.streetcodeService
             .getImagesOfStreetcode(streetcode.id)
             .then((response) => {
-              const data = response.data;
               if (!this.streetcodeCacheMap.has(streetcode.id.toString())) {
-                this.streetcodeCacheMap.set(streetcode.id.toString(), {
-                  title: streetcode.title,
-                  image: this.findGrayImage(data),
-                });
+                streetcode.images = response.data;
 
-                this.streetcodeCacheUrlsMap.set(
-                  streetcode.transliterationUrl,
-                  streetcode.id.toString(),
-                );
+                this.addStreetcodeToCache(streetcode);
               }
             });
         },
       );
-      console.log('PROMISES', imagePromises.length);
+
       await Promise.all(imagePromises);
     } catch (error) {
       console.error('Error loading streetcode:', error);
@@ -110,24 +105,17 @@ export class StreetcodeController {
         updatedStreetcode.transliterationUrl
       ) {
         this.streetcodeCacheUrlsMap.delete(oldStreetcode.transliterationUrl);
-        this.streetcodeCacheUrlsMap.set(
-          updatedStreetcode.transliterationUrl,
-          id,
-        );
       }
     }
 
     this.streetcodeService.getImagesOfStreetcode(id).then((response) => {
-      const data = response.data;
-      this.streetcodeCacheMap.set(id, {
-        title: updatedStreetcode.title,
-        transliterationUrl: updatedStreetcode.transliterationUrl,
-        image: this.findGrayImage(data),
-      });
+      updatedStreetcode.images = response.data;
+
+      this.addStreetcodeToCache(updatedStreetcode);
     });
   }
 
-  private async addStreetcodeToCache(url: string) {
+  private async addStreetcodeToCacheByUrl(url: string) {
     try {
       const streetcodeResponse = await this.streetcodeService.getByUrl(url);
       const streetcode = streetcodeResponse.data;
@@ -135,25 +123,29 @@ export class StreetcodeController {
       await this.streetcodeService
         .getImagesOfStreetcode(streetcode.id)
         .then((response) => {
-          const data = response.data;
+          streetcode.images = response.data;
 
-          this.streetcodeCacheMap.set(streetcode.id.toString(), {
-            title: streetcode.title,
-            image: this.findGrayImage(data),
-          });
-
-          this.streetcodeCacheUrlsMap.set(
-            streetcode.transliterationUrl,
-            streetcode.id.toString(),
-          );
+          this.addStreetcodeToCache(streetcode);
         });
 
       return true;
-    } catch (error) {
-      console.error('Error loading streetcode:', error);
+    } catch {
       return false;
     }
   }
+
+  private addStreetcodeToCache(streetcode: StreetcodeUpdate) {
+    const id = streetcode.id.toString();
+
+    this.streetcodeCacheMap.set(id, {
+      title: streetcode.title,
+      image: this.findGrayImage(streetcode.images),
+      transliterationUrl: streetcode.transliterationUrl,
+    });
+
+    this.streetcodeCacheUrlsMap.set(streetcode.transliterationUrl, id);
+  }
+
   private findGrayImage(images: Image[]) {
     return images.find(
       (image) =>
