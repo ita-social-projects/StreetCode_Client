@@ -51,7 +51,7 @@ const StreetcodeSlider = () => {
             try {
                 streetcodesAmount = await StreetcodesApi.getCount(true);
             } catch (e: any) {
-                streetcodesAmount = 32; // fetch 32 streetcodes if StreetcodesApi.getCount fails
+                streetcodesAmount = 32; // fetch 32 streetcode if StreetcodesApi.getCount fails
             }
 
             const emptyStreetcodes = Array(streetcodesAmount).fill({});
@@ -62,7 +62,7 @@ const StreetcodeSlider = () => {
                     const [newStreetcodes, startIdx, endIdx] = await fetchNextPage();
                     // eslint-disable-next-line @typescript-eslint/no-loop-func
                     setStreetcodes((prevState) => {
-                        // replace empty objects to fetched streetcodes
+                        // replace empty objects to fetched streetcode
                         const newState = [
                             ...prevState.slice(0, startIdx),
                             ...newStreetcodes,

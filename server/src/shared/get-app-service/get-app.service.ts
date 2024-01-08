@@ -19,7 +19,7 @@ export const DEFAULT_META: IPageMetadata = {
 };
 
 @Injectable()
-export class ClientService {
+export class GetAppService {
   public async getApp(pageMetadata: IPageMetadata = DEFAULT_META) {
     const basePath = process.env.CLIENT_BUILD_PATH;
     const filePath = path.resolve(path.join(basePath, 'index.html'));

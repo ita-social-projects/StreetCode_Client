@@ -49,7 +49,7 @@ const MapOSM = ({  statisticRecord, toponyms }: Props) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
     L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
-    
+
     // if you need to use the previous second map
     // return (
     //     <div className="mapCentered">
@@ -59,7 +59,7 @@ const MapOSM = ({  statisticRecord, toponyms }: Props) => {
     //             <TileLayer
     //                 url="https://tile.openstreetmap.org.ua/styles/positron-gl-style/{z}/{x}/{y}.png"
     //             />
-    //             {streetcodes?.isActive && (
+    //             {streetcode?.isActive && (
     //                 <CustomMarkerCluster>
     //                     {streetcodeCoordinates?.map((sc) => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)} />)}
     //                 </CustomMarkerCluster>

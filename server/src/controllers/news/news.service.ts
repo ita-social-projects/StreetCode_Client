@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
-import News from '../../../../interfaces/News';
+import News from '../../interfaces/News';
 
 @Injectable()
 export class NewsService {
