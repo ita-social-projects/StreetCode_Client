@@ -8,7 +8,7 @@ const jestConfig: JestConfigWithTsJest = {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
         'antd': '<rootDir>/__mocks__/antd/Modal'
         // DEV_NOTE: Down below is the right solution for compiling files by path
-        // But before that we need to fix ALL typo error before it could be complied
+        // But we need to fix ALL typo errors before it could be complied
         // Temp solution - mocking store/root-store. It will be added in mocks folder
         // After fixing type error remove mock or continue using it(as more simple solution)
         /*
