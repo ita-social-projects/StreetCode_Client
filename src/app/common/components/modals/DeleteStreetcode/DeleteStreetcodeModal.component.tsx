@@ -1,27 +1,26 @@
 import './DeleteStreetcodeModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
+import { Modal } from 'antd';
 
-import { Button, Modal } from 'antd';
+import { TITLE, DELETE_STREETCODE } from '../../../constants/modal.constant';
 
 const DeleteStreetcodeModal = () => {
     const { modalStore: { setModal, modalsState: { deleteStreetcode } } } = useModalContext();
+    const clickHandle = () => setModal(DELETE_STREETCODE);
 
-    const confirmHandler = () => {
-        setModal('deleteStreetcode');
-    };
+    const { isOpen, fromCardId } = deleteStreetcode;
 
     return (
         <Modal
-            title="Delete streetcode"
-            open={deleteStreetcode.isOpen}
-            onOk={() => confirmHandler()}
-            onCancel={() => setModal('deleteStreetcode')}
+            title={TITLE}
+            open={isOpen}
+            onOk={clickHandle}
+            onCancel={clickHandle}
             className="deleteModal"
         >
-            {deleteStreetcode.fromCardId}
+            {fromCardId}
         </Modal>
     );
 };
