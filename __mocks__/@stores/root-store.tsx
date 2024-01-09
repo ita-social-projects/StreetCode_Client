@@ -1,4 +1,5 @@
-const mockID = 1;
+export const mockID = 1;
+export const mockIsOpen = true;
 export const mockSetModal = jest.fn();
 
 export const useModalContext = () => {
@@ -7,7 +8,7 @@ export const useModalContext = () => {
             setModal: mockSetModal, 
             modalsState: {
                 deleteStreetcode: {
-                    isOpen: true,
+                    isOpen: mockIsOpen,
                     fromCardId: mockID,
                 },
             }
