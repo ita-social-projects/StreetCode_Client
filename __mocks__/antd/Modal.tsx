@@ -1,14 +1,14 @@
-import React from "react";
+import React, { ReactNode, MouseEventHandler, JSX } from 'react';
 
 type Props = {
   title: string,
-  open: Boolean,
-  onOk: React.MouseEventHandler<HTMLButtonElement>,
-  onCancel: React.MouseEventHandler<HTMLButtonElement>,
-  children: React.ReactNode,
+  open: boolean,
+  onOk: MouseEventHandler<HTMLButtonElement>,
+  onCancel: MouseEventHandler<HTMLButtonElement>,
+  children: ReactNode,
 }
 
-export const Modal = ({ title, open, onOk, onCancel, children }: Props): React.JSX.Element => {
+export const Modal = ({ title, open, onOk, onCancel, children }: Props): JSX.Element => {
   return (
     <>
       <div className='modalTitle'>{title}</div>
