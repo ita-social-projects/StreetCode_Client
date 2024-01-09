@@ -6,6 +6,7 @@ import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.componen
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
+import dayjs from 'dayjs';
 
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
@@ -14,7 +15,6 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
-import dayjs from 'dayjs';
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();

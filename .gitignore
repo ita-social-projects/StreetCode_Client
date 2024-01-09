@@ -19,6 +19,8 @@
 /build
 /dist
 /server/dist
+/config/dist
+
 # misc
 .DS_Store
 .env.local

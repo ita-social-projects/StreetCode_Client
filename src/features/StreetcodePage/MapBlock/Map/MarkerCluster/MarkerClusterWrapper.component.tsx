@@ -1,7 +1,7 @@
-import './MarkerCluster.styles.scss'
+import './MarkerCluster.styles.scss';
 
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
-import MarkerClusterGroup from 'react-leaflet-cluster'
 
 interface Props {
     children: React.ReactNode
@@ -9,14 +9,14 @@ interface Props {
 
 const createClusterCustomIcon = function (cluster: any) {
     return L.divIcon({
-      html: `<span>${cluster.getChildCount()}</span>`,
-      className: "customMarkerCluster",
-      iconSize: L.point(28, 28, true)
+        html: `<span>${cluster.getChildCount()}</span>`,
+        className: 'customMarkerCluster',
+        iconSize: L.point(28, 28, true),
     });
 };
 
 const CustomMarkerCluster = (props: Props) => (
-    <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon} showCoverageOnHover={false} >
+    <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon} showCoverageOnHover={false}>
         {props.children}
     </MarkerClusterGroup>
 );

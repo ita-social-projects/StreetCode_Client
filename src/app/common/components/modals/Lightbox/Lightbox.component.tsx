@@ -7,10 +7,11 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import Lightbox from 'yet-another-react-lightbox';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
 
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const LightboxComponent = () => {
     const { streetcodeArtStore: { getStreetcodeArtArray } } = useMobx();

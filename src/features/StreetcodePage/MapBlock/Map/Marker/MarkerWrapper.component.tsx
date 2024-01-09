@@ -1,6 +1,6 @@
-import "./Marker.styles.scss"
+import './Marker.styles.scss';
 
-import { Marker, Popup } from "react-leaflet";
+import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 
 interface Props {
@@ -12,12 +12,12 @@ interface Props {
 }
 
 const CustomMarker = ({ description, latitude, longtitude, isStreetcode }: Props) => {
-    const markerClassName = isStreetcode ? "markerCircle streetcode" : "markerCircle";
+    const markerClassName = isStreetcode ? 'markerCircle streetcodes' : 'markerCircle';
 
     const myIcon = L.divIcon({
         html: `<div class="${markerClassName}"></div>`,
         iconAnchor: [0, 0],
-        className: 'my-custom-marker'
+        className: 'my-custom-marker',
     });
 
     return (

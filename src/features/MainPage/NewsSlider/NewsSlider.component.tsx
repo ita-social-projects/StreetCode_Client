@@ -92,8 +92,8 @@ const NewsSlider = () => {
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
                                         {(news.length === 1) ? (
-                                            <div 
-                                                key={news[0].id} 
+                                            <div
+                                                key={news[0].id}
                                                 className="slider-item"
                                                 onClickCapture={(e) => {
                                                     handleOnItemClick(e, news[0].url.toString());
@@ -102,23 +102,23 @@ const NewsSlider = () => {
                                                 <NewsSliderItem news={news[0]} image={images[0]} />
                                             </div>
                                         ) : (
-                                        <SlickSlider
-                                            beforeChange={handleBeforeChange}
-                                            afterChange={handleAfterChange}
-                                            {...props}
-                                        >
-                                            {news.map((item, index) => (
-                                                <div
-                                                    key={item.id}
-                                                    className="slider-item"
-                                                    onClickCapture={(e) => {
-                                                        handleOnItemClick(e, item.url.toString());
-                                                    }}
-                                                >
-                                                    <NewsSliderItem news={item} image={images[index]} />
-                                                </div>
-                                            ))}
-                                        </SlickSlider>
+                                            <SlickSlider
+                                                beforeChange={handleBeforeChange}
+                                                afterChange={handleAfterChange}
+                                                {...props}
+                                            >
+                                                {news.map((item, index) => (
+                                                    <div
+                                                        key={item.id}
+                                                        className="slider-item"
+                                                        onClickCapture={(e) => {
+                                                            handleOnItemClick(e, item.url.toString());
+                                                        }}
+                                                    >
+                                                        <NewsSliderItem news={item} image={images[index]} />
+                                                    </div>
+                                                ))}
+                                            </SlickSlider>
                                         )}
                                     </div>
                                 </div>
