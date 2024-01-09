@@ -1,7 +1,7 @@
 import React from "react";
 
 type Props = {
-  title: String,
+  title: string,
   open: Boolean,
   onOk: React.MouseEventHandler<HTMLButtonElement>,
   onCancel: React.MouseEventHandler<HTMLButtonElement>,
