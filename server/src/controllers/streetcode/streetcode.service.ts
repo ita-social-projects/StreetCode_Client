@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {AxiosResponse} from 'axios'
+import { AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
 import { StreetcodeUpdate } from '../../interfaces/StreetcodeUpdate';
 

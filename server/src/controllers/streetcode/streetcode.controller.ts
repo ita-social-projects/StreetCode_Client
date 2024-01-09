@@ -5,12 +5,22 @@ import Image from '../../interfaces/Image';
 import { StreetcodeUpdate } from '../../interfaces/StreetcodeUpdate';
 import { GetAppService } from '../../shared/get-app-service/get-app.service';
 import base64ToUrl from '../../shared/utils/base64ToUrl';
+import URLS_TO_OMIT from './constants/urlsToOmit';
+import { StreetcodeCache } from '../../interfaces/StreetcodeCache';
+import { Streetcode } from '../../interfaces/Streetcode';
 
 @Controller()
 export class StreetcodeController {
-  public streetcodeCacheMap: Map<string, any> = new Map();
-  public streetcodeCacheUrlsMap: Map<string, string> = new Map();
-  public urlsToOmit: Array<string> = ['admin-panel'];
+  private streetcodeCacheMap: Map<string, StreetcodeCache> = new Map();
+  private streetcodeCacheUrlsMap: Map<string, string> = new Map();
+
+  get getStreetcodeCacheMap(): Map<string, StreetcodeCache> {
+    return new Map(this.streetcodeCacheMap);
+  }
+
+  get getStreetcodeCacheUrlsMap(): Map<string, string> {
+    return new Map(this.streetcodeCacheUrlsMap);
+  }
 
   constructor(
     private readonly getAppService: GetAppService,
@@ -21,7 +31,7 @@ export class StreetcodeController {
 
   @Get(':url')
   public async getStreetcode(@Param('url') url: string) {
-    if (this.urlsToOmit.find((toOmit) => toOmit === url)) {
+    if (URLS_TO_OMIT.find((toOmit) => toOmit === url)) {
       return this.getAppService.getApp();
     }
 
@@ -72,10 +82,11 @@ export class StreetcodeController {
           return this.streetcodeService
             .getImagesOfStreetcode(streetcode.id)
             .then((response) => {
+              // important to dont override cache of already updated streetcodes
               if (!this.streetcodeCacheMap.has(streetcode.id.toString())) {
-                streetcode.images = response.data;
+                const images = response.data;
 
-                this.addStreetcodeToCache(streetcode);
+                this.addStreetcodeToCache(streetcode, images);
               }
             });
         },
@@ -93,7 +104,7 @@ export class StreetcodeController {
     this.streetcodeCacheUrlsMap.delete(url);
   }
 
-  private updateStreetcodeCache(updatedStreetcode: any) {
+  private updateStreetcodeCache(updatedStreetcode: StreetcodeUpdate) {
     const id = updatedStreetcode.id.toString();
     const oldStreetcode = this.streetcodeCacheMap.get(id);
 
@@ -109,23 +120,23 @@ export class StreetcodeController {
     }
 
     this.streetcodeService.getImagesOfStreetcode(id).then((response) => {
-      updatedStreetcode.images = response.data;
+      const images = response.data;
 
-      this.addStreetcodeToCache(updatedStreetcode);
+      this.addStreetcodeToCache(updatedStreetcode as Streetcode, images);
     });
   }
 
   private async addStreetcodeToCacheByUrl(url: string) {
     try {
       const streetcodeResponse = await this.streetcodeService.getByUrl(url);
-      const streetcode = streetcodeResponse.data;
+      const streetcode = streetcodeResponse.data as Streetcode;
 
       await this.streetcodeService
-        .getImagesOfStreetcode(streetcode.id)
+        .getImagesOfStreetcode(streetcode.id.toString())
         .then((response) => {
-          streetcode.images = response.data;
+          const images = response.data;
 
-          this.addStreetcodeToCache(streetcode);
+          this.addStreetcodeToCache(streetcode, images);
         });
 
       return true;
@@ -134,12 +145,12 @@ export class StreetcodeController {
     }
   }
 
-  private addStreetcodeToCache(streetcode: StreetcodeUpdate) {
+  private addStreetcodeToCache(streetcode: Streetcode, images: Image[]) {
     const id = streetcode.id.toString();
 
     this.streetcodeCacheMap.set(id, {
       title: streetcode.title,
-      image: this.findGrayImage(streetcode.images),
+      image: this.findGrayImage(images),
       transliterationUrl: streetcode.transliterationUrl,
     });
 

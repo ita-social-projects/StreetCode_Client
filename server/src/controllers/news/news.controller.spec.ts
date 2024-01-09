@@ -2,19 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosError, AxiosResponse } from 'axios';
 import News from '../../interfaces/News';
 import { NewsService } from './news.service';
-import {
-  DEFAULT_META,
-  GetAppService,
-} from '../../shared/get-app-service/get-app.service';
 import { NewsController } from './news.controller';
 import { APP_FILTER } from '@nestjs/core';
 import { ApiExceptionFilter } from '../../shared/api-exeption-filter/api-exeption.filter';
 import { HttpConfigModule } from '../../shared/http-config-module/http-config.module';
 import extractMetaTags from '../../shared/utils/extractMetaTags';
+import { GetAppService } from '../../shared/get-app-service/get-app.service';
+import DEFAULT_META from '../../shared/get-app-service/constants/defaultMeta';
 
 process.env.CLIENT_BUILD_PATH = './src/for-tests';
 
-const mockNews: News = {
+const mockedNews: News = {
   id: 1,
   title: 'Mocked News Title',
   text: 'Mocked News Text',
@@ -34,6 +32,31 @@ const mockNews: News = {
   },
   creationDate: '2021-01-01',
 };
+
+const mockedOldNews = {
+  ...mockedNews,
+  title: 'Old title',
+  image: {
+    ...mockedNews.image,
+    base64: 'oldMockedBase64Data',
+    mimeType: 'image/jpeg',
+  },
+};
+
+async function putOldNewsInCache(
+  controller: NewsController,
+  service: NewsService,
+  url: string = 'news-url',
+) {
+  const oldNews = { ...mockedOldNews, url };
+  const apiResponse = { status: 200, data: oldNews } as AxiosResponse;
+  jest.spyOn(service, 'getByUrl').mockResolvedValue(apiResponse);
+
+  await controller.getNews(url);
+
+  expect(controller.getNewsCacheMap.get('1')).toEqual(oldNews);
+  expect(controller.getNewsCacheUrlsMap.get(url)).toEqual('1');
+}
 
 const apiError = {
   isAxiosError: true,
@@ -68,21 +91,24 @@ describe('NewsController', () => {
   describe('news endpoints', () => {
     describe('method GET(news/:url)', () => {
       it('should return index.html with news meta', async () => {
+        // Arrange
         jest
           .spyOn(newsService, 'getByUrl')
-          .mockResolvedValue({ data: mockNews } as AxiosResponse);
+          .mockResolvedValue({ data: mockedNews } as AxiosResponse);
 
+        // Act
         const result = await newsController.getNews('news-url');
-
         const metaTags = extractMetaTags(result as string);
 
+        // Assert
         expect(metaTags['og:description']).toEqual('Mocked News Title');
         expect(metaTags['og:image']).toEqual(
           'data:image/png;base64,mockedBase64Data',
         );
       });
 
-      it('should return app with default meta because news does not exists', async () => {
+      it('should return app with DEFAULT meta because news does not exists', async () => {
+        // Arrange
         jest.spyOn(newsService, 'getByUrl').mockRejectedValue({
           ...apiError,
           response: {
@@ -91,10 +117,11 @@ describe('NewsController', () => {
           },
         } as AxiosError);
 
+        // Act
         const result = await newsController.getNews('non-existent-url');
-
         const metaTags = extractMetaTags(result as string);
 
+        // Assert
         expect(metaTags['og:description']).toEqual(DEFAULT_META.description);
         expect(metaTags['twitter:card']).toEqual(DEFAULT_META.description);
         expect(metaTags['og:image']).toEqual(DEFAULT_META.image);
@@ -103,68 +130,93 @@ describe('NewsController', () => {
     });
 
     describe('method PUT(news/update)', () => {
-      it('should update newsCacheMap due to updateNews request success', async () => {
+      it('should update getNewsCacheMap due to updateNews request success', async () => {
+        // Arrange
         const apiResponse = { status: 200, data: 1 } as AxiosResponse;
         jest.spyOn(newsService, 'updateNews').mockResolvedValue(apiResponse);
-        newsController.newsCacheMap.set('1', {
-          ...mockNews,
-          title: 'Old title',
-          image: {
-            ...mockNews.image,
-            base64: 'oldMockedBase64Data',
-            mimeType: 'image/jpeg',
-          },
-        });
+        await putOldNewsInCache(newsController, newsService);
 
-        const result = await newsController.updateNews(mockNews);
-        const newsFromCache = newsController.newsCacheMap.get('1');
+        // Act
+        const result = await newsController.updateNews(mockedNews);
+        const newsFromCache = newsController.getNewsCacheMap.get('1');
 
+        // Assert
         expect(result).toEqual(apiResponse.data);
         expect(newsFromCache.title).toEqual('Mocked News Title');
         expect(newsFromCache.image.base64).toEqual('mockedBase64Data');
         expect(newsFromCache.image.mimeType).toEqual('image/png');
       });
 
-      it('should not update newsCacheMap due to failed updateNews request', async () => {
+      it('should NOT update getNewsCacheMap due to failed updateNews request', async () => {
+        // Arrange
         jest.spyOn(newsService, 'updateNews').mockRejectedValue(apiError);
+        await putOldNewsInCache(newsController, newsService);
 
-        newsController.newsCacheMap.set('1', {
-          ...mockNews,
-          title: 'Old title',
-          image: {
-            ...mockNews.image,
-            base64: 'oldMockedBase64Data',
-            mimeType: 'image/jpeg',
-          },
-        });
-
+        // Act
         await expect(async () => {
-          await newsController.updateNews(mockNews);
+          await newsController.updateNews(mockedNews);
         }).rejects.toEqual(apiError);
-        const newsFromCache = newsController.newsCacheMap.get('1');
+        const newsFromCache = newsController.getNewsCacheMap.get('1');
 
+        // Assert
         expect(newsFromCache.title).toEqual('Old title');
         expect(newsFromCache.image.base64).toEqual('oldMockedBase64Data');
         expect(newsFromCache.image.mimeType).toEqual('image/jpeg');
       });
 
       it('should update newsCacheUrlsMap due to updated news.url', async () => {
+        // Arrange
         const apiResponse = { status: 200, data: 2 } as AxiosResponse;
         jest.spyOn(newsService, 'updateNews').mockResolvedValue(apiResponse);
-        newsController.newsCacheUrlsMap.set('old-url', '1');
-        newsController.newsCacheMap.set('1', {
-          ...mockNews,
-          url: 'old-url',
-        });
+        await putOldNewsInCache(newsController, newsService, 'old-url');
 
-        const result = await newsController.updateNews(mockNews);
+        // Act
+        const result = await newsController.updateNews(mockedNews);
         const deletedIdOfOldNews =
-          newsController.newsCacheUrlsMap.get('old-url');
-        const changedIdOfNews = newsController.newsCacheUrlsMap.get('news-url');
+          newsController.getNewsCacheUrlsMap.get('old-url');
+        const changedIdOfNews =
+          newsController.getNewsCacheUrlsMap.get('news-url');
 
-        expect(result).toEqual(apiResponse);
+        // Assert
+        expect(result).toEqual(apiResponse.data);
         expect(deletedIdOfOldNews).toBeUndefined();
         expect(changedIdOfNews).toEqual('1');
+      });
+    });
+
+    describe('method DELETE(news/delete)', () => {
+      it('should delete news and update cache', async () => {
+        // Arrange
+        const apiResponse = { status: 200, data: 1 } as AxiosResponse;
+        jest
+          .spyOn(newsService, 'deleteNews')
+          .mockResolvedValueOnce(apiResponse);
+        await putOldNewsInCache(newsController, newsService);
+
+        // Act
+        const result = await newsController.deleteNews('1');
+
+        // Assert
+        expect(result).toContain('1');
+        expect(newsController.getNewsCacheMap.get('1')).toBeUndefined();
+        expect(
+          newsController.getNewsCacheUrlsMap.get('news-url'),
+        ).toBeUndefined();
+      });
+
+      it('should NOT delete news and NOT update cache', async () => {
+        // Arrange
+        jest.spyOn(newsService, 'deleteNews').mockRejectedValue(apiError);
+        await putOldNewsInCache(newsController, newsService);
+
+        // Act
+        await expect(async () => {
+          await newsController.deleteNews('1');
+        }).rejects.toEqual(apiError);
+
+        // Assert
+        expect(newsController.getNewsCacheMap.get('1')).toEqual(mockedOldNews);
+        expect(newsController.getNewsCacheUrlsMap.get('news-url')).toEqual('1');
       });
     });
   });

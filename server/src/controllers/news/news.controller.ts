@@ -6,8 +6,16 @@ import base64ToUrl from '../../shared/utils/base64ToUrl';
 
 @Controller()
 export class NewsController {
-  public newsCacheMap: Map<string, News> = new Map();
-  public newsCacheUrlsMap: Map<string, string> = new Map();
+  private newsCacheMap: Map<string, News> = new Map();
+  private newsCacheUrlsMap: Map<string, string> = new Map();
+
+  get getNewsCacheMap(): Map<string, News> {
+    return new Map(this.newsCacheMap);
+  }
+
+  get getNewsCacheUrlsMap(): Map<string, string> {
+    return new Map(this.newsCacheUrlsMap);
+  }
 
   constructor(
     private readonly getAppService: GetAppService,
@@ -57,7 +65,10 @@ export class NewsController {
     try {
       const allNewsResponse = await this.newsService.getAllNews();
       allNewsResponse.data.forEach((news) => {
-        this.addNewsToCache(news);
+        // important to dont override cache of already updated news
+        if (!this.newsCacheMap.has(news.id.toString())) {
+          this.addNewsToCache(news);
+        }
       });
     } catch (error) {
       console.error('Error loading news:', error);

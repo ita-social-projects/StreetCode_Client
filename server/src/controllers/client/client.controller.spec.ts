@@ -1,11 +1,9 @@
 // client.controller.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClientController } from './client.controller';
-import {
-  DEFAULT_META,
-  GetAppService,
-} from '../../shared/get-app-service/get-app.service';
+import { GetAppService } from '../../shared/get-app-service/get-app.service';
 import extractMetaTags from '../../shared/utils/extractMetaTags';
+import DEFAULT_META from '../../shared/get-app-service/constants/defaultMeta';
 
 process.env.CLIENT_BUILD_PATH = './src/for-tests';
 

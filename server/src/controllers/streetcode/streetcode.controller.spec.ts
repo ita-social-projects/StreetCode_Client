@@ -7,41 +7,20 @@ import extractMetaTags from '../../shared/utils/extractMetaTags';
 import { StreetcodeUpdate } from '../../interfaces/StreetcodeUpdate';
 import { StreetcodeImageEnum } from '../../enums/StreetcodeImageEnum';
 import { StreetcodeService } from './streetcode.service';
-import {
-  DEFAULT_META,
-  GetAppService,
-} from '../../shared/get-app-service/get-app.service';
+import { GetAppService } from '../../shared/get-app-service/get-app.service';
 import { ApiExceptionFilter } from '../../shared/api-exeption-filter/api-exeption.filter';
 import { HttpConfigModule } from '../../shared/http-config-module/http-config.module';
+import { StreetcodeCache } from '../../interfaces/StreetcodeCache';
+import { Streetcode } from '../../interfaces/Streetcode';
+import DEFAULT_META from '../../shared/get-app-service/constants/defaultMeta';
+import URLS_TO_OMIT from './constants/urlsToOmit';
 
 process.env.CLIENT_BUILD_PATH = './src/for-tests';
 
-const mockStreetcodeUpdate: StreetcodeUpdate = {
+const mockedStreetcodeUpdate: StreetcodeUpdate = {
   id: 1,
-  index: 123,
-  firstName: '',
-  lastName: '',
   title: 'Mocked streetcode title',
-  teaser: 'Mocked streetcode teaser',
-  alias: '',
-  status: 'ACTIVE',
   transliterationUrl: 'mocked-streetcode-url',
-  eventStartOrPersonBirthDate: new Date('1990-01-01'),
-  eventEndOrPersonDeathDate: new Date('2022-01-01'),
-  dateString: 'January 1, 2022',
-  streetcodeType: '',
-  videos: [],
-  facts: [],
-  relatedFigures: [],
-  timelineItems: [],
-  partners: [],
-  streetcodeArts: [],
-  subtitles: [],
-  text: '',
-  streetcodeCategoryContents: [],
-  tags: [],
-  statisticRecords: [],
-  toponyms: [],
   images: [
     {
       id: 101,
@@ -56,11 +35,34 @@ const mockStreetcodeUpdate: StreetcodeUpdate = {
       },
     },
   ],
-  audioId: 301,
-  audios: [],
-  imagesDetails: [],
-  transactionLink: [],
 };
+
+const mockedStreetcode: Streetcode = mockedStreetcodeUpdate as Streetcode;
+
+const oldMockedStreetcodeCache: StreetcodeCache = {
+  title: 'Old title',
+  image: {
+    ...mockedStreetcodeUpdate.images[0],
+    base64: 'oldMockedBase64Data',
+    mimeType: 'image/png',
+  },
+  transliterationUrl: mockedStreetcodeUpdate.transliterationUrl,
+};
+
+const updateStreetcodeApiResponse = {
+  status: 200,
+  data: 1,
+} as AxiosResponse;
+
+const getImagesOfStreetcodeApiResponse = {
+  status: 200,
+  data: mockedStreetcodeUpdate.images,
+} as AxiosResponse;
+
+const getStreetcodeApiResponse = {
+  status: 200,
+  data: mockedStreetcode,
+} as AxiosResponse;
 
 const apiError = {
   isAxiosError: true,
@@ -69,6 +71,50 @@ const apiError = {
     data: { message: 'Internal Server Error' },
   },
 } as AxiosError;
+
+async function putOldStreetcodeInCache(
+  controller: StreetcodeController,
+  service: StreetcodeService,
+  transliterationUrl: string = 'mocked-streetcode-url',
+) {
+  const oldStreetcode = {
+    ...mockedStreetcodeUpdate,
+    ...oldMockedStreetcodeCache,
+    transliterationUrl,
+  };
+
+  const apiResponse = { status: 200, data: oldStreetcode } as AxiosResponse;
+  jest.spyOn(service, 'getByUrl').mockResolvedValue(apiResponse);
+
+  const getImagesOfStreetcodeApiResponse = {
+    status: 200,
+    data: [oldMockedStreetcodeCache.image],
+  } as AxiosResponse;
+  jest
+    .spyOn(service, 'getImagesOfStreetcode')
+    .mockResolvedValue(getImagesOfStreetcodeApiResponse);
+
+  await controller.getStreetcode(transliterationUrl);
+
+  expect(controller.getStreetcodeCacheMap.get('1')).toEqual({
+    ...oldMockedStreetcodeCache,
+    transliterationUrl,
+  });
+  expect(controller.getStreetcodeCacheUrlsMap.get(transliterationUrl)).toEqual(
+    '1',
+  );
+}
+
+function mockStreetcodeService(service: StreetcodeService) {
+  jest.spyOn(service, 'getByUrl').mockResolvedValue(getStreetcodeApiResponse);
+
+  jest
+    .spyOn(service, 'updateStreetcode')
+    .mockResolvedValue(updateStreetcodeApiResponse);
+  jest
+    .spyOn(service, 'getImagesOfStreetcode')
+    .mockResolvedValue(getImagesOfStreetcodeApiResponse);
+}
 
 describe('StreetcodeController', () => {
   let streetcodeController: StreetcodeController;
@@ -96,25 +142,16 @@ describe('StreetcodeController', () => {
   describe('streetcode endpoints', () => {
     describe('method GET(/:url)', () => {
       it('should return index.html with streetcode meta', async () => {
-        const getImagesOfStreetcodeApiResponse = {
-          status: 200,
-          data: mockStreetcodeUpdate.images,
-        } as AxiosResponse;
+        // Arrange
+        mockStreetcodeService(streetcodeService);
 
-        jest
-          .spyOn(streetcodeService, 'getByUrl')
-          .mockResolvedValue({ data: mockStreetcodeUpdate } as AxiosResponse);
-
-        jest
-          .spyOn(streetcodeService, 'getImagesOfStreetcode')
-          .mockResolvedValue(getImagesOfStreetcodeApiResponse);
-
+        // Act
         const result = await streetcodeController.getStreetcode(
           'mocked-streetcode-url',
         );
 
+        // Assert
         const metaTags = extractMetaTags(result as string);
-
         expect(metaTags['og:description']).toEqual(DEFAULT_META.description);
         expect(metaTags['og:title']).toEqual('Mocked streetcode title');
         expect(metaTags['og:image']).toEqual(
@@ -122,7 +159,8 @@ describe('StreetcodeController', () => {
         );
       });
 
-      it('should return app with default meta because streetcode does not exists', async () => {
+      it('should return app with DEFAULT meta because streetcode does not exists', async () => {
+        // Arrange
         jest.spyOn(streetcodeService, 'getByUrl').mockRejectedValue({
           ...apiError,
           response: {
@@ -131,11 +169,28 @@ describe('StreetcodeController', () => {
           },
         } as AxiosError);
 
+        // Act
         const result =
           await streetcodeController.getStreetcode('non-existent-url');
 
+        // Assert
         const metaTags = extractMetaTags(result as string);
+        expect(metaTags['og:description']).toEqual(DEFAULT_META.description);
+        expect(metaTags['twitter:card']).toEqual(DEFAULT_META.description);
+        expect(metaTags['og:image']).toEqual(DEFAULT_META.image);
+        expect(metaTags['og:title']).toEqual(DEFAULT_META.title);
+      });
 
+      it('should return app with DEFAULT meta because url is in URLS_TO_OMIT', async () => {
+        // Arrange
+
+        // Act
+        const result = await streetcodeController.getStreetcode(
+          URLS_TO_OMIT[0],
+        );
+
+        // Assert
+        const metaTags = extractMetaTags(result as string);
         expect(metaTags['og:description']).toEqual(DEFAULT_META.description);
         expect(metaTags['twitter:card']).toEqual(DEFAULT_META.description);
         expect(metaTags['og:image']).toEqual(DEFAULT_META.image);
@@ -145,35 +200,18 @@ describe('StreetcodeController', () => {
 
     describe('method PUT(streetcode/update)', () => {
       it('should update streetcodeCacheMap due to updateStreetcode request success', async () => {
-        const updateStreetcodeApiResponse = {
-          status: 200,
-          data: 1,
-        } as AxiosResponse;
-        const getImagesOfStreetcodeApiResponse = {
-          status: 200,
-          data: mockStreetcodeUpdate.images,
-        } as AxiosResponse;
+        // Arrange
+        await putOldStreetcodeInCache(streetcodeController, streetcodeService); // important to place before other mocks
+        mockStreetcodeService(streetcodeService);
 
-        jest
-          .spyOn(streetcodeService, 'updateStreetcode')
-          .mockResolvedValue(updateStreetcodeApiResponse);
-        jest
-          .spyOn(streetcodeService, 'getImagesOfStreetcode')
-          .mockResolvedValue(getImagesOfStreetcodeApiResponse);
-        streetcodeController.streetcodeCacheMap.set('1', {
-          title: 'Old title',
-          image: {
-            ...mockStreetcodeUpdate.images[0],
-            base64: 'oldMockedBase64Data',
-            mimeType: 'image/png',
-          },
-        });
-
-        const result =
-          await streetcodeController.updateStreetcode(mockStreetcodeUpdate);
+        // Act
+        const result = await streetcodeController.updateStreetcode(
+          mockedStreetcodeUpdate,
+        );
         const streetcodeFromCache =
-          streetcodeController.streetcodeCacheMap.get('1');
+          streetcodeController.getStreetcodeCacheMap.get('1');
 
+        // Assert
         expect(result).toEqual(updateStreetcodeApiResponse.data);
         expect(streetcodeFromCache.title).toEqual('Mocked streetcode title');
         expect(streetcodeFromCache.image.base64).toEqual(
@@ -182,66 +220,103 @@ describe('StreetcodeController', () => {
         expect(streetcodeFromCache.image.mimeType).toEqual('image/webp');
       });
 
-      it('should not update streetcodeCacheMap due to failed updateStreetcode request', async () => {
+      it('should NOT update streetcodeCacheMap due to failed updateStreetcode request', async () => {
+        // Arrange
+        await putOldStreetcodeInCache(streetcodeController, streetcodeService); // important to place before other mocks
+
         jest
           .spyOn(streetcodeService, 'updateStreetcode')
           .mockRejectedValue(apiError);
 
-        streetcodeController.streetcodeCacheMap.set('1', {
-          title: 'Old title',
-          image: {
-            ...mockStreetcodeUpdate.images[0],
-            base64: 'oldMockedBase64Data',
-            mimeType: 'image/png',
-          },
-        });
-
+        // Act
         await expect(async () => {
-          await streetcodeController.updateStreetcode(mockStreetcodeUpdate);
+          await streetcodeController.updateStreetcode(mockedStreetcodeUpdate);
         }).rejects.toEqual(apiError);
         const streetcodeFromCache =
-          streetcodeController.streetcodeCacheMap.get('1');
+          streetcodeController.getStreetcodeCacheMap.get('1');
 
+        // Assert
         expect(streetcodeFromCache.title).toEqual('Old title');
+        expect(streetcodeFromCache.transliterationUrl).toEqual(
+          'mocked-streetcode-url',
+        );
         expect(streetcodeFromCache.image.base64).toEqual('oldMockedBase64Data');
         expect(streetcodeFromCache.image.mimeType).toEqual('image/png');
       });
 
       it('should update streetcodeCacheUrlsMap due to updated streetcode.transliterationUrl', async () => {
-        const updateStreetcodeApiResponse = {
-          status: 200,
-          data: 1,
-        } as AxiosResponse;
-        const getImagesOfStreetcodeApiResponse = {
-          status: 200,
-          data: mockStreetcodeUpdate.images,
-        } as AxiosResponse;
+        // Arrange
+        await putOldStreetcodeInCache(
+          streetcodeController,
+          streetcodeService,
+          'old-url',
+        ); // important to place before other mocks
 
-        jest
-          .spyOn(streetcodeService, 'updateStreetcode')
-          .mockResolvedValue(updateStreetcodeApiResponse);
-        jest
-          .spyOn(streetcodeService, 'getImagesOfStreetcode')
-          .mockResolvedValue(getImagesOfStreetcodeApiResponse);
-        streetcodeController.streetcodeCacheMap.set('1', {
-          title: mockStreetcodeUpdate.title,
-          image: { ...mockStreetcodeUpdate.images[0] },
-          transliterationUrl: 'old-url',
-        });
-        streetcodeController.streetcodeCacheUrlsMap.set('old-url', '1');
+        mockStreetcodeService(streetcodeService);
 
-        const result =
-          await streetcodeController.updateStreetcode(mockStreetcodeUpdate);
+        // Act
+        const result = await streetcodeController.updateStreetcode(
+          mockedStreetcodeUpdate,
+        );
         const deletedIdOfOldStreetcode =
-          streetcodeController.streetcodeCacheUrlsMap.get('old-url');
+          streetcodeController.getStreetcodeCacheUrlsMap.get('old-url');
         const changedIdOfStreetcode =
-          streetcodeController.streetcodeCacheUrlsMap.get(
+          streetcodeController.getStreetcodeCacheUrlsMap.get(
             'mocked-streetcode-url',
           );
 
-        expect(result).toEqual(updateStreetcodeApiResponse);
+        // Assert
+        expect(result).toEqual(updateStreetcodeApiResponse.data);
         expect(deletedIdOfOldStreetcode).toBeUndefined();
         expect(changedIdOfStreetcode).toEqual('1');
+      });
+    });
+
+    describe('method DELETE(streetcode/delete)', () => {
+      it('should delete streetcode and update cache', async () => {
+        // Arrange
+        const apiResponse = { status: 200, data: 1 } as AxiosResponse;
+        jest
+          .spyOn(streetcodeService, 'deleteStreetcode')
+          .mockResolvedValueOnce(apiResponse);
+        await putOldStreetcodeInCache(streetcodeController, streetcodeService);
+
+        // Act
+        const result = await streetcodeController.deleteStreetcode('1');
+
+        // Assert
+        expect(result).toContain('1');
+        expect(
+          streetcodeController.getStreetcodeCacheMap.get('1'),
+        ).toBeUndefined();
+        expect(
+          streetcodeController.getStreetcodeCacheUrlsMap.get(
+            'mocked-streetcode-url',
+          ),
+        ).toBeUndefined();
+      });
+
+      it('should NOT delete streetcode and NOT update cache', async () => {
+        // Arrange
+        jest
+          .spyOn(streetcodeService, 'deleteStreetcode')
+          .mockRejectedValue(apiError);
+        await putOldStreetcodeInCache(streetcodeController, streetcodeService);
+
+        // Act
+        await expect(async () => {
+          await streetcodeController.deleteStreetcode('1');
+        }).rejects.toEqual(apiError);
+
+        // Assert
+        expect(streetcodeController.getStreetcodeCacheMap.get('1')).toEqual(
+          oldMockedStreetcodeCache,
+        );
+        expect(
+          streetcodeController.getStreetcodeCacheUrlsMap.get(
+            'mocked-streetcode-url',
+          ),
+        ).toEqual('1');
       });
     });
   });

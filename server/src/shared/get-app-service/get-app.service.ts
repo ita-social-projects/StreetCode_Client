@@ -3,20 +3,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as process from 'process';
 import { Logger } from '@nestjs/common';
-
-interface IPageMetadata {
-  title?: string;
-  description?: string;
-  image?: string;
-}
-
-export const DEFAULT_META: IPageMetadata = {
-  title: '',
-  description:
-    '«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць.',
-  image:
-    'https://ita-social-projects.github.io/StreetCode_Client/public/banner.webp',
-};
+import META_PLACEHOLDERS from './constants/metaPlaceholders';
+import DEFAULT_META, { IPageMetadata } from './constants/defaultMeta';
 
 @Injectable()
 export class GetAppService {
@@ -32,16 +20,16 @@ export class GetAppService {
           if (err) {
             reject(err);
           } else {
-            data = data.replace(
-              /__PAGE_TITLE__/g,
+            data = data.replaceAll(
+              META_PLACEHOLDERS.title,
               pageMetadata?.title ?? DEFAULT_META.title,
             );
-            data = data.replace(
-              /__PAGE_DESCRIPTION__/g,
+            data = data.replaceAll(
+              META_PLACEHOLDERS.description,
               pageMetadata?.description ?? DEFAULT_META.description,
             );
-            data = data.replace(
-              /__PAGE_IMAGE__/g,
+            data = data.replaceAll(
+              META_PLACEHOLDERS.image,
               pageMetadata?.image ?? DEFAULT_META.image,
             );
             resolve(data);

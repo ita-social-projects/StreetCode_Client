@@ -1,4 +1,9 @@
-import {MiddlewareConsumer, Module, NestModule, RequestMethod} from '@nestjs/common'
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { HttpConfigModule } from './shared/http-config-module/http-config.module';
 import { NewsController } from './controllers/news/news.controller';
@@ -21,6 +26,8 @@ import { ClientController } from './controllers/client/client.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(FileMiddleware).forRoutes({path: '*', method: RequestMethod.ALL});
+    consumer
+      .apply(FileMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
