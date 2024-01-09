@@ -1,4 +1,3 @@
-// client.controller.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClientController } from './client.controller';
 import { GetAppService } from '../../shared/get-app-service/get-app.service';

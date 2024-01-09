@@ -50,29 +50,6 @@ const MapOSM = ({ statisticRecord, toponyms }: Props) => {
     }, []);
     L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
-    // if you need to use the previous second map
-    // return (
-    //     <div className="mapCentered">
-    //         <MapContainer {...mapOptions} center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]}
-    //          zoom={defaultZoom} className="mapContainer"
-    //           scrollWheelZoom={true}>
-    //             <TileLayer
-    //                 url="https://tile.openstreetmap.org.ua/styles/positron-gl-style/{z}/{x}/{y}.png"
-    //             />
-    //             {streetcode?.isActive && (
-    //                 <CustomMarkerCluster>
-    //                     {streetcodeCoordinates?.map((sc) => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)} />)}
-    //                 </CustomMarkerCluster>
-    //             )}
-    //             {streets?.isActive && (
-    //                 <CustomMarkerCluster>
-    //                     {toponyms?.map((t) => <CustomMarker latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`} />)}
-    //                 </CustomMarkerCluster>
-    //             )}
-    //         </MapContainer>
-    //     </div>
-    // );
-
     return (
         <div className="mapCentered">
 

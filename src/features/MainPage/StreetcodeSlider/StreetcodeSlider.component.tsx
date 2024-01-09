@@ -16,6 +16,8 @@ import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
 import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
 
+const DEFAULT_STREETCODE_CARDS_AMOUNT = 32;
+
 const StreetcodeSlider = () => {
     const [streetcodes, setStreetcodes] = useState<StreetcodeMainPage[]>([]);
     const [images, setImages] = useState<Image[]>([]);
@@ -51,7 +53,7 @@ const StreetcodeSlider = () => {
             try {
                 streetcodesAmount = await StreetcodesApi.getCount(true);
             } catch (e: any) {
-                streetcodesAmount = 32; // fetch 32 streetcode if StreetcodesApi.getCount fails
+                streetcodesAmount = DEFAULT_STREETCODE_CARDS_AMOUNT;
             }
 
             const emptyStreetcodes = Array(streetcodesAmount).fill({});

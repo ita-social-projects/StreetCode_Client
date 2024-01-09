@@ -54,7 +54,6 @@ export default class NewsStore {
     }
 
     public setItem = (news: News) => {
-        console.log(news);
         this.NewsMap.set(news.id, news);
     };
 
