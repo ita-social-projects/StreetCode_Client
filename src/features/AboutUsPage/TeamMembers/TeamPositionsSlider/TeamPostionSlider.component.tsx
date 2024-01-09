@@ -15,6 +15,7 @@ interface Props {
 
 const SliderComponents = ({ positions, setActive }: Props) => {
     const [swiper, setSwiper] = useState(null);
+    const [slidesPerView, setSlidesPerView] = useState(5);
 
     const handlePreviousSlide = () => {
         if (swiper) {
@@ -40,7 +41,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
             <LeftSliderArrow className="slider-arrow" alt="Previous" onClick={handlePreviousSlide} />
             <div className="topSlider">
                 <Swiper
-                    slidesPerView={5}
+                    slidesPerView={slidesPerView}
                     centeredSlides
                     loop
                     slideToClickedSlide
@@ -49,14 +50,14 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                     navigation={{ nextEl: '.arrow-left', prevEl: '.arrow-right' }}
                     modules={[Navigation]}
                     breakpoints={{
-                        360: {
+                        320: {
                             slidesPerView: 1,
                         },
-                        425: {
+                        600: {
                             slidesPerView: 3,
                         },
-                        768: {
-                            slidesPerView: 5,
+                        1024: {
+                            slidesPerView: slidesPerView,
                         },
                     }}
                 >
