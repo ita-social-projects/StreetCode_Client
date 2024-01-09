@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useModalContext } from '@stores/root-store';
 import { Modal } from 'antd';
 
-import { TITLE, DELETE_STREETCODE } from '../../../constants/modal.constant';
+import { TITLE, DELETE_STREETCODE } from '../../../constants/modal.constants';
 
 const DeleteStreetcodeModal = () => {
     const { modalStore: { setModal, modalsState: { deleteStreetcode } } } = useModalContext();

@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import { mockSetModal } from '../../../../../../__mocks__/@stores/root-store';
 
-import { TITLE, DELETE_STREETCODE } from '../../../constants/modal.constant';
+import { TITLE, DELETE_STREETCODE } from '../../../constants/modal.constants';
 
 import DeleteStreetcodeModalComponent from "./DeleteStreetcodeModal.component";
 
