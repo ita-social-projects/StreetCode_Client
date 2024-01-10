@@ -11,8 +11,6 @@ import RelatedFiguresModal from '@components/modals/RelatedFigures/RelatedFigure
 import SourcesModal from '@components/modals/Sources/SourcesModal.component';
 import SurveyModal from '@components/modals/Survey/SurveyModal.component';
 
-import VacancyModal from '../../features/AboutUsPage/Vacancies/Vacancy/VacancyModal/Vacancy/VacancyModal.component';
-
 const ModalWrapper = () => (
     <>
         <InterestingFactsModal />

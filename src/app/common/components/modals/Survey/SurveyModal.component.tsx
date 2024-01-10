@@ -16,7 +16,7 @@ const SurveyModal = () => {
     const { setModal, modalsState: { survey } } = modalStore;
 
     const handleModalClose = () => {
-        setModal('survey');
+        survey.isOpen = false;
     };
 
     return (

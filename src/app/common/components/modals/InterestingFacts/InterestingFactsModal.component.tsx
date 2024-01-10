@@ -18,6 +18,8 @@ const InterestingFactsModal = () => {
     const [descriptionVisible, setDescriptionVisible] = useState<boolean>(false);
     const factId = facts.fromCardId!;
     const fact = factMap.get(factId);
+    const clickHandle = () => facts.isOpen = false;
+
     useEffect(() => {
         if (fact?.image?.imageDetails?.alt) {
             setDescriptionVisible(true);
@@ -31,7 +33,7 @@ const InterestingFactsModal = () => {
         <Modal
             className="interestingFactsModal"
             open={facts.isOpen}
-            onCancel={() => setModal('facts')}
+            onCancel={clickHandle}
             footer={null}
             maskClosable
             centered

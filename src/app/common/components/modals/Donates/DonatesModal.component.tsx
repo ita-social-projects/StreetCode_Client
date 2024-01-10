@@ -32,7 +32,7 @@ const DonatesModal = () => {
     };
 
     const handleModalClose = () => {
-        setModal('donates');
+        donates.isOpen = false;
         setDonateAmount(0);
     };
 
