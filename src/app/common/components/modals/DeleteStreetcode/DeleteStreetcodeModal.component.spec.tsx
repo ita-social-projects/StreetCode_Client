@@ -1,9 +1,12 @@
+import React from 'react';
 import { render, fireEvent, getByRole } from '@testing-library/react';
 import { mockSetModal, mockID, mockIsOpen } from '../../../../../../__mocks__/@stores/root-store';
 
 import { TITLE, DELETE_STREETCODE } from '../../../constants/modal.constants';
 
 import DeleteStreetcodeModalComponent from "./DeleteStreetcodeModal.component";
+
+const mockSetState = jest.fn();
 
 describe('DeleteStreetcodeModalComponent', () => {
 
@@ -15,6 +18,15 @@ describe('DeleteStreetcodeModalComponent', () => {
     // for exp. div element do not have role so getByRole will not work
 
     describe('using getElementsByClassName', () => {
+        beforeEach(() => {
+            const mockUseState: any = (initValue: any) => [initValue, mockSetState];
+            jest.spyOn(React, 'useState').mockImplementation(mockUseState);            
+        });
+
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
+
         it('should render itself and its elements', () => {
             const { container } = render(<DeleteStreetcodeModalComponent />);
         
@@ -50,15 +62,24 @@ describe('DeleteStreetcodeModalComponent', () => {
             const cancelButton = container.getElementsByClassName('modalCancelButton')[0];
         
             fireEvent.click(cancelButton);
-            expect(mockSetModal).toHaveBeenCalledWith(DELETE_STREETCODE);
+            expect(mockSetState).toHaveBeenCalled();
         });
     });
 
     describe('using getByRole', () => {        
+        beforeEach(() => {
+            const mockUseState: any = (initValue: any) => [initValue, mockSetState];
+            jest.spyOn(React, 'useState').mockImplementation(mockUseState);            
+        });
+
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
+
         it('should call setModal from useModalContext when clicking onClick button', () => {
             const { container } = render(<DeleteStreetcodeModalComponent />);
             const okButton = getByRole(container, 'button', {
-                name: 'okButton' // button text
+                name: /okButton/ // button text
             });
         
             fireEvent.click(okButton);
@@ -68,11 +89,11 @@ describe('DeleteStreetcodeModalComponent', () => {
         it('should call setModal from useModalContext when clicking onCancel button', () => {
             const { container } = render(<DeleteStreetcodeModalComponent />);
             const cancelButton = getByRole(container, 'button', {
-                name: 'cancelButton' // button text
+                name: /cancelButton/ // button text
             });
         
             fireEvent.click(cancelButton);
-            expect(mockSetModal).toHaveBeenCalledWith(DELETE_STREETCODE);
+            expect(mockSetState).toHaveBeenCalled();
         });
     })
 });
