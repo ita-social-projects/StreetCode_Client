@@ -15,9 +15,9 @@ const NewsApi = {
 
     create: (news: News) => Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news),
 
-    delete: (id: number) => Agent.delete(`${API_ROUTES.NEWS.DELETE}/${id}`),
+    delete: (id: number) => AgentFrontend.delete(`${API_ROUTES.NEWS.DELETE}/${id}`),
 
-    update: (news: News) => Agent.put<News>(`${API_ROUTES.NEWS.UPDATE}`, news),
+    update: (news: News) => AgentFrontend.put<News>(`${API_ROUTES.NEWS.UPDATE}`, news),
 };
 
 export default NewsApi;
