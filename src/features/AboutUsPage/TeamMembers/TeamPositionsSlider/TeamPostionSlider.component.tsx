@@ -53,7 +53,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                         320: {
                             slidesPerView: 1,
                         },
-                        600: {
+                        768: {
                             slidesPerView: 3,
                         },
                         1024: {
