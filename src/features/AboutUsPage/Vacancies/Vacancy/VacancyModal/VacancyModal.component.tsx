@@ -50,7 +50,6 @@ const VacancyModal = ({ isOpen, setOpen, job }: Props) => {
             footer={null}
             width={getWidth()}
         >
-
             <div className="vacancyModalContainer">
                 <div className="textContainer">
                     <h2>{job.title}</h2>

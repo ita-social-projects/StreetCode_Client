@@ -2,8 +2,8 @@ import './JobsModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
 
 import {
     Button, Form, Input, message, Modal, Popover,
@@ -12,6 +12,11 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import JobApi from '@/app/api/job/Job.api';
+import {
+    checkQuillEditorTextLength,
+    setQuillEditorContent,
+} from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 
 interface Props {
     open: boolean,
@@ -19,21 +24,19 @@ interface Props {
     currentId: number,
 }
 
-const JobsModal = ({ open, setOpen, currentId } : Props) => {
+const JobsModal = ({ open, setOpen, currentId }: Props) => {
     const maxLengths = {
         maxLenghtVacancyName: 50,
         maxLenghtVacancyDesc: 2000,
         maxLenghtVacancySalary: 15,
     };
-    const textEditor = useRef<TinyMCEEditor>();
+    const textEditor = useRef<ReactQuill | null>(null);
     const [current, setCurrent] = useState<Job>();
     const [form] = Form.useForm();
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
     const [storedJob, setStoredJob] = useState<Job>();
-    const [validateDescription, setValidateDescription] = useState<boolean>(true);
-    const emptyJob : Job = {
+    const emptyJob: Job = {
         title: form.getFieldValue('title'),
-        description: form.getFieldValue('description'),
+        description: '',
         status: form.getFieldValue('status'),
         id: 0,
         salary: form.getFieldValue('salary'),
@@ -45,7 +48,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 try {
                     const currentJob = await JobApi.getById(currentId);
                     setCurrent(currentJob);
-                    textEditor.current?.editor?.setContent(currentJob?.description);
+                    setQuillEditorContent(textEditor.current, currentJob?.description);
                     form.setFieldsValue({
                         title: currentJob?.title,
                         status: currentJob?.status ? 'setActive' : 'setInactive',
@@ -66,14 +69,14 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
             }
         };
 
-        textEditor.current?.editor?.setContent('');
+        textEditor.current?.editor?.setText('');
         fetchJobData();
     }, [open, currentId, form]);
 
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
-
+            checkQuillEditorTextLength(textEditor?.current, maxLengths.maxLenghtVacancyDesc);
             const { title, status, description, salary } = values;
             const isActive = status === 'setActive';
 
@@ -81,7 +84,7 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 id: currentId,
                 title,
                 status: isActive,
-                description: current.description,
+                description: current?.description ?? '',
                 salary,
             };
             const allJobs = await JobApi.getAllShort();
@@ -94,18 +97,17 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 await JobApi.update(newJob);
             }
             message.success('Вакансію успішно додано!', 2);
-        } catch (error) {
-            console.log(error);
+        } catch {
+            message.error('Будь ласка, перевірте введені дані', 2);
         }
     };
 
     const clearModal = () => {
         form.resetFields();
-        setValidateDescription(true);
         setOpen(false);
     };
 
-    const handleEditorChange = (content: string, editor: any) => {
+    const handleEditorChange = (content: string) => {
         setCurrent({ ...current, description: content });
     };
 
@@ -161,63 +163,12 @@ const JobsModal = ({ open, setOpen, currentId } : Props) => {
                 </FormItem>
 
                 <label>Опис вакансії</label>
-                <TinyMCEEditor
-                    className="textWrapper"
-                    ref={textEditor}
-                    onEditorChange={(event, editor) => {
-                        handleEditorChange(event, editor);
-                    }}
-                    init={{
-                        max_chars: maxLengths.maxLenghtVacancyDesc,
-                        language: 'uk',
-                        height: 300,
-                        menubar: false,
-                        init_instance_callback(editor) {
-                            editor.setContent(current?.description ?? '');
-                        },
-                        plugins: [
-                            'autolink',
-                            'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                            'insertdatetime', 'wordcount', 'link', 'lists',
-                        ],
-                        toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
-                            + 'formats blockformats align | removeformat strikethrough ',
-                        content_style: 'body {font - family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                        link_title: false,
-                        link_target_list: false,
-                    }}
-                    onPaste={(e, editor) => {
-                        const previousContent = editor.getContent({ format: 'text' });
-                        const clipboardContent = e.clipboardData?.getData('text') || '';
-                        const resultContent = previousContent + clipboardContent;
-                        const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
-
-                        if (resultContent.length >= maxLengths.maxLenghtVacancyDesc && isSelectionEnd) {
-                            editor.setContent(previousContent + clipboardContent.substring(0, maxLengths.maxLenghtVacancyDesc - previousContent.length));
-                            e.preventDefault();
-                        }
-                        if (resultContent.length <= maxLengths.maxLenghtVacancyDesc && !isSelectionEnd) {
-                            return;
-                        }
-                        if (resultContent.length >= maxLengths.maxLenghtVacancyDesc && !isSelectionEnd) {
-                            e.preventDefault();
-                        }
-                    }}
-                    onKeyDown={(e, editor) => {
-                        if (editor.getContent({ format: 'text' }).length >= maxLengths.maxLenghtVacancyDesc
-                            && !setOfKeys.has(e.key)
-                            && editor.selection.getContent({ format: 'text' }).length === 0) {
-                            e.preventDefault();
-                            setValidateDescription(false);
-                        } else {
-                            setValidateDescription(true);
-                        }
-                    }}
-                    onChange={(e, editor) => {
-                        setCurrent({ ...current, description: editor.getContent() });
-                    }}
+                <Editor
+                    qRef={textEditor}
+                    value={current?.description ?? ''}
+                    onChange={handleEditorChange}
+                    maxChars={maxLengths.maxLenghtVacancyDesc}
                 />
-                {!validateDescription ? <label className="validateLabelDescription">Занадто довгий опис</label> : <></>}
                 <FormItem
                     label="Заробітня плата"
                     name="salary"

@@ -47,7 +47,7 @@ const TagsModal = ({ activeTagId, setActiveTagId, setShowAllTags, showAllTags } 
             footer={null}
             closeIcon={<CancelBtn />}
             onCancel={() => {
-                setModal('tagsList');
+                tagsList.isOpen = false;
             }}
         >
             <div className="headerTagContainer" style={{ background: `url(${ModalBg})` }}>
