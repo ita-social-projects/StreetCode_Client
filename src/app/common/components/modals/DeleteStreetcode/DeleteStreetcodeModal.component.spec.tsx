@@ -62,7 +62,7 @@ describe('DeleteStreetcodeModalComponent', () => {
             const cancelButton = container.getElementsByClassName('modalCancelButton')[0];
 
             fireEvent.click(cancelButton);
-            expect(mockSetState).toHaveBeenCalled();
+            expect(mockSetState).toHaveBeenCalledWith(false);
         });
     });
 
@@ -93,7 +93,7 @@ describe('DeleteStreetcodeModalComponent', () => {
             });
 
             fireEvent.click(cancelButton);
-            expect(mockSetState).toHaveBeenCalled();
+            expect(mockSetState).toHaveBeenCalledWith(false);
         });
     })
 });
