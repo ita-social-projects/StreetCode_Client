@@ -23,6 +23,8 @@ const SourcesModal = () => {
     const [content, setContent] = useState<StreetcodeCategoryContent>();
     const categoryId = sources.fromCardId!;
     const category = srcCategoriesMap.get(categoryId);
+    const clickHandle = () => sources.isOpen = false;
+
     useAsync(() => {
         if (streetcodeStore.getStreetCodeId && categoryId) {
             sourcesApi.getCategoryContentByStreetcodeId(streetcodeStore.getStreetCodeId, categoryId)
@@ -38,7 +40,7 @@ const SourcesModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => sources.isOpen = false}
+            onCancel={clickHandle}
             closeIcon={windowsize.width <= 1024 ? <CancelBtnMobile /> : <CancelBtn />}
         >
             <div className="sourceImgContainer">

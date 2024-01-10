@@ -16,13 +16,14 @@ interface Props {
 
 const DeleteTermModal = ({ handleDelete, term } : Props) => {
     const { modalStore: { setModal, modalsState: { deleteTerm } } } = useModalContext();
+    const clickHandle = () => deleteTerm.isOpen = false;
 
     return (
         <Modal
             className="deleteModal"
             closeIcon={<CancelBtn />}
             open={deleteTerm.isOpen}
-            onCancel={() => deleteTerm.isOpen = false}
+            onCancel={clickHandle}
             onOk={() => {
                 handleDelete(term?.id as number);
                 setModal('deleteTerm');

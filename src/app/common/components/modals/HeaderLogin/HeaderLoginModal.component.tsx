@@ -22,7 +22,7 @@ const HeaderLoginModal = () => {
     const [hasVacancies, setHasVacancies] = useState(false);
     const SURVEY_LINK = 'https://forms.gle/eWwX5RP84X7dymLR6';
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
-
+    const handleClick = () => login.isOpen = false;
     useEffect(() => {
         JobApi.getActive()
             .then(
@@ -54,7 +54,7 @@ const HeaderLoginModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => login.isOpen = false}
+            onCancel={handleClick}
             closeIcon={<CancelBtn />}
         >
             <div className="loginModalContent">
