@@ -12,8 +12,8 @@ import { ApiExceptionFilter } from '../../shared/api-exeption-filter/api-exeptio
 import { HttpConfigModule } from '../../shared/http-config-module/http-config.module';
 import { StreetcodeCache } from '../../interfaces/StreetcodeCache';
 import { Streetcode } from '../../interfaces/Streetcode';
-import DEFAULT_META from '../../shared/get-app-service/constants/defaultMeta';
-import URLS_TO_OMIT from './constants/urlsToOmit';
+import DEFAULT_META from '../../shared/get-app-service/constants/defaultMeta.constant';
+import URLS_TO_OMIT from './constants/urlsToOmit.constant';
 
 process.env.CLIENT_BUILD_PATH = './src/for-tests';
 
@@ -172,13 +172,14 @@ describe('StreetcodeController', () => {
         // Act
         const result =
           await streetcodeController.getStreetcode('non-existent-url');
+        const { title, description, image } = DEFAULT_META;
 
         // Assert
         const metaTags = extractMetaTags(result as string);
-        expect(metaTags['og:description']).toEqual(DEFAULT_META.description);
-        expect(metaTags['twitter:card']).toEqual(DEFAULT_META.description);
-        expect(metaTags['og:image']).toEqual(DEFAULT_META.image);
-        expect(metaTags['og:title']).toEqual(DEFAULT_META.title);
+        expect(metaTags['og:description']).toEqual(description);
+        expect(metaTags['twitter:card']).toEqual(description);
+        expect(metaTags['og:image']).toEqual(image);
+        expect(metaTags['og:title']).toEqual(title);
       });
 
       it('should return app with DEFAULT meta because url is in URLS_TO_OMIT', async () => {
@@ -188,13 +189,14 @@ describe('StreetcodeController', () => {
         const result = await streetcodeController.getStreetcode(
           URLS_TO_OMIT[0],
         );
+        const { title, description, image } = DEFAULT_META;
 
         // Assert
         const metaTags = extractMetaTags(result as string);
-        expect(metaTags['og:description']).toEqual(DEFAULT_META.description);
-        expect(metaTags['twitter:card']).toEqual(DEFAULT_META.description);
-        expect(metaTags['og:image']).toEqual(DEFAULT_META.image);
-        expect(metaTags['og:title']).toEqual(DEFAULT_META.title);
+        expect(metaTags['og:description']).toEqual(description);
+        expect(metaTags['twitter:card']).toEqual(description);
+        expect(metaTags['og:image']).toEqual(image);
+        expect(metaTags['og:title']).toEqual(title);
       });
     });
 
@@ -210,14 +212,16 @@ describe('StreetcodeController', () => {
         );
         const streetcodeFromCache =
           streetcodeController.getStreetcodeCacheMap.get('1');
+        const {
+          title,
+          image: { base64, mimeType },
+        } = streetcodeFromCache;
 
         // Assert
         expect(result).toEqual(updateStreetcodeApiResponse.data);
-        expect(streetcodeFromCache.title).toEqual('Mocked streetcode title');
-        expect(streetcodeFromCache.image.base64).toEqual(
-          'Mocked streetcode base64',
-        );
-        expect(streetcodeFromCache.image.mimeType).toEqual('image/webp');
+        expect(title).toEqual('Mocked streetcode title');
+        expect(base64).toEqual('Mocked streetcode base64');
+        expect(mimeType).toEqual('image/webp');
       });
 
       it('should NOT update streetcodeCacheMap due to failed updateStreetcode request', async () => {
@@ -234,14 +238,17 @@ describe('StreetcodeController', () => {
         }).rejects.toEqual(apiError);
         const streetcodeFromCache =
           streetcodeController.getStreetcodeCacheMap.get('1');
+        const {
+          title,
+          transliterationUrl,
+          image: { base64, mimeType },
+        } = streetcodeFromCache;
 
         // Assert
-        expect(streetcodeFromCache.title).toEqual('Old title');
-        expect(streetcodeFromCache.transliterationUrl).toEqual(
-          'mocked-streetcode-url',
-        );
-        expect(streetcodeFromCache.image.base64).toEqual('oldMockedBase64Data');
-        expect(streetcodeFromCache.image.mimeType).toEqual('image/png');
+        expect(title).toEqual('Old title');
+        expect(transliterationUrl).toEqual('mocked-streetcode-url');
+        expect(base64).toEqual('oldMockedBase64Data');
+        expect(mimeType).toEqual('image/png');
       });
 
       it('should update streetcodeCacheUrlsMap due to updated streetcode.transliterationUrl', async () => {

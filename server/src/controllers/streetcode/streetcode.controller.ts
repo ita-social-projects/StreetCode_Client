@@ -5,9 +5,10 @@ import Image from '../../interfaces/Image';
 import { StreetcodeUpdate } from '../../interfaces/StreetcodeUpdate';
 import { GetAppService } from '../../shared/get-app-service/get-app.service';
 import base64ToUrl from '../../shared/utils/base64ToUrl';
-import URLS_TO_OMIT from './constants/urlsToOmit';
+import URLS_TO_OMIT from './constants/urlsToOmit.constant';
 import { StreetcodeCache } from '../../interfaces/StreetcodeCache';
 import { Streetcode } from '../../interfaces/Streetcode';
+import STREETCODE_CONSOLE_MESSAGES from './constants/console.constant';
 
 @Controller()
 export class StreetcodeController {
@@ -58,7 +59,7 @@ export class StreetcodeController {
     const response =
       await this.streetcodeService.updateStreetcode(updatedStreetcode);
     this.updateStreetcodeCache(updatedStreetcode);
-    console.log('STREETCODE UPDATED: ', response);
+    console.log(STREETCODE_CONSOLE_MESSAGES.streetcodeUpdated, response);
     return response.data;
   }
 
@@ -67,7 +68,7 @@ export class StreetcodeController {
     await this.streetcodeService.deleteStreetcode(id);
     this.deleteStreetcodeFromCache(id);
 
-    const message = 'STREETCODE DELETED ' + id;
+    const message = STREETCODE_CONSOLE_MESSAGES.streetcodeDeleted + id;
     console.log(message);
     return message;
   }
@@ -94,7 +95,10 @@ export class StreetcodeController {
 
       await Promise.all(imagePromises);
     } catch (error) {
-      console.error('Error loading streetcode:', error);
+      console.error(
+        STREETCODE_CONSOLE_MESSAGES.errorOnLoadingStreetcodes,
+        error,
+      );
     }
   }
 

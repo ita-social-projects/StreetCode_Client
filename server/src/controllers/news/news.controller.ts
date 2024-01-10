@@ -3,6 +3,7 @@ import { NewsService } from './news.service';
 import News from '../../interfaces/News';
 import { GetAppService } from '../../shared/get-app-service/get-app.service';
 import base64ToUrl from '../../shared/utils/base64ToUrl';
+import NEWS_CONSOLE_MESSAGES from './constants/console.constant';
 
 @Controller()
 export class NewsController {
@@ -34,10 +35,14 @@ export class NewsController {
     }
     const id = this.newsCacheUrlsMap.get(url);
     const theNews = this.newsCacheMap.get(id);
+    const {
+      title,
+      image: { base64, mimeType },
+    } = theNews;
 
     const meta = {
-      description: theNews.title,
-      image: base64ToUrl(theNews.image.base64, theNews.image.mimeType),
+      description: title,
+      image: base64ToUrl(base64, mimeType),
     };
 
     return this.getAppService.getApp(meta);
@@ -47,7 +52,7 @@ export class NewsController {
   public async updateNews(@Body() updatedNews: News) {
     const response = await this.newsService.updateNews(updatedNews);
     this.updateNewsCache(updatedNews);
-    console.log('NEWS UPDATED', response);
+    console.log(NEWS_CONSOLE_MESSAGES.newsUpdated, response);
     return response.data;
   }
 
@@ -56,7 +61,7 @@ export class NewsController {
     await this.newsService.deleteNews(id);
     this.deleteNewsFromCache(id);
 
-    const message = 'NEWS DELETED ' + id;
+    const message = NEWS_CONSOLE_MESSAGES.newsDeleted + id;
     console.log(message);
     return message;
   }
@@ -65,13 +70,13 @@ export class NewsController {
     try {
       const allNewsResponse = await this.newsService.getAllNews();
       allNewsResponse.data.forEach((news) => {
-        // important to dont override cache of already updated news
+        // important to don't override cache of already updated news
         if (!this.newsCacheMap.has(news.id.toString())) {
           this.addNewsToCache(news);
         }
       });
     } catch (error) {
-      console.error('Error loading news:', error);
+      console.error(NEWS_CONSOLE_MESSAGES.errorOnLoadingNews, error);
     }
   }
 

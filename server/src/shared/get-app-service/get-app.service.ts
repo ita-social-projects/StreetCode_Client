@@ -3,8 +3,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as process from 'process';
 import { Logger } from '@nestjs/common';
-import META_PLACEHOLDERS from './constants/metaPlaceholders';
-import DEFAULT_META, { IPageMetadata } from './constants/defaultMeta';
+import META_PLACEHOLDERS from './constants/metaPlaceholders.constant';
+import DEFAULT_META, { IPageMetadata } from './constants/defaultMeta.constant';
 
 @Injectable()
 export class GetAppService {
