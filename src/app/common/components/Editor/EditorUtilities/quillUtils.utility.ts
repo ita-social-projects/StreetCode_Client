@@ -1,15 +1,15 @@
-import ReactQuill from 'react-quill';
+import QuillEditor from 'react-quill';
 
-export const setQuillContents = (currentQuill: ReactQuill | null, text: string) => {
-    if (currentQuill && currentQuill.editor) {
-        const delta = currentQuill.editor.clipboard.convert(text);
-        currentQuill.editor.setContents(delta);
+export const setQuillEditorContent = (currentEditor: QuillEditor | null, text: string) => {
+    if (currentEditor && currentEditor.editor) {
+        const delta = currentEditor.editor.clipboard.convert(text);
+        currentEditor.editor.setContents(delta);
     }
 };
 
-export const checkQuillTextLength = (currentQuill: ReactQuill | null, maxChars: number) => {
-    if (currentQuill && currentQuill.editor) {
-        if (currentQuill.editor.getText().length > maxChars) {
+export const checkQuillEditorTextLength = (currentEditor: QuillEditor | null, maxChars: number) => {
+    if (currentEditor && currentEditor.editor) {
+        if (currentEditor.editor.getText().length > maxChars) {
             throw new Error();
         }
     }

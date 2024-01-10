@@ -3,7 +3,8 @@ import './TextForm.styles.scss';
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 
-import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.utility';
+import QUILL_TEXTS_LENGTH from
+    '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
 import Video from '@/models/media/video.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 

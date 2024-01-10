@@ -13,8 +13,8 @@ import FormItem from 'antd/es/form/FormItem';
 
 import JobApi from '@/app/api/job/Job.api';
 import {
-    checkQuillTextLength,
-    setQuillContents,
+    checkQuillEditorTextLength,
+    setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 
@@ -48,7 +48,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 try {
                     const currentJob = await JobApi.getById(currentId);
                     setCurrent(currentJob);
-                    setQuillContents(textEditor.current, currentJob?.description);
+                    setQuillEditorContent(textEditor.current, currentJob?.description);
                     form.setFieldsValue({
                         title: currentJob?.title,
                         status: currentJob?.status ? 'setActive' : 'setInactive',
@@ -76,7 +76,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
-            checkQuillTextLength(textEditor?.current, maxLengths.maxLenghtVacancyDesc);
+            checkQuillEditorTextLength(textEditor?.current, maxLengths.maxLenghtVacancyDesc);
             const { title, status, description, salary } = values;
             const isActive = status === 'setActive';
 

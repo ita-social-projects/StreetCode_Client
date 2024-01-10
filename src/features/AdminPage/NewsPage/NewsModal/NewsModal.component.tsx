@@ -29,8 +29,8 @@ import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
 
 import {
-    checkQuillTextLength,
-    setQuillContents,
+    checkQuillEditorTextLength,
+    setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -114,7 +114,7 @@ const NewsModal: React.FC<{
                 ] : [],
             });
 
-            setQuillContents(editorRef.current, newsItem.text);
+            setQuillEditorContent(editorRef.current, newsItem.text);
         } else {
             imageId.current = 0;
             image.current = undefined;
@@ -166,7 +166,7 @@ const NewsModal: React.FC<{
     const handleOk = async () => {
         try {
             await form.validateFields();
-            checkQuillTextLength(editorRef?.current, sizeLimit);
+            checkQuillEditorTextLength(editorRef?.current, sizeLimit);
             if (handleTextChange()) {
                 setWaitingForApiResponse(true);
                 await form.submit();

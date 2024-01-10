@@ -3,6 +3,7 @@ import './QEditor.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill, { UnprivilegedEditor } from 'react-quill';
+import removeHtmlTags from '@app/common/utils/removeHtmlTags.utility';
 import { Sources } from 'quill';
 
 import 'react-quill/dist/quill.snow.css';
@@ -22,16 +23,12 @@ const Editor: React.FC<EditorProps> = ({
     qRef, value, onChange, maxChars, initialVal, selectionChange,
 }) => {
     const [val, setVal] = useState(value);
-    const removeHtmlTags = (content: string) => content.replace(/<[^>]*>|&nbsp;/g, (match) => {
-        if (match === '&nbsp;') return ' ';
-        return '';
-    });
     const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
     const [characterCount, setCharacterCount] = useState(rawText.length ?? 0);
+    const [validateDescription, setValidateDescription] = useState<boolean>(false);
     const quillRef = useRef<ReactQuill | null>(null);
     const availableButtons = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight',
         'ArrowUp', 'ArrowDown', 'Home', 'End']);
-    const [validateDescription, setValidateDescription] = useState<boolean>(false);
 
     const countCharacters = (content: string) => {
         const textWithoutTags = removeHtmlTags(content);
@@ -40,8 +37,17 @@ const Editor: React.FC<EditorProps> = ({
     };
 
     useEffect(() => {
-        setRawText(removeHtmlTags(value));
+        const valueWithoutHtml = removeHtmlTags(value);
+        setRawText(valueWithoutHtml);
     }, [value]);
+
+    useEffect(() => {
+        if (characterCount > maxChars) {
+            setValidateDescription(true);
+        } else {
+            setValidateDescription(false);
+        }
+    }, [characterCount, maxChars]);
 
     const handleOnChange = (html: string) => {
         onChange(html);
@@ -57,14 +63,6 @@ const Editor: React.FC<EditorProps> = ({
             }
         }
     };
-
-    useEffect(() => {
-        if (characterCount > maxChars) {
-            setValidateDescription(true);
-        } else {
-            setValidateDescription(false);
-        }
-    }, [characterCount, maxChars]);
 
     const modules = {
         toolbar: {
@@ -86,6 +84,22 @@ const Editor: React.FC<EditorProps> = ({
         'list', 'bullet', 'indent', 'align', 'link', 'clean',
     ];
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (characterCount >= maxChars) {
+            setValidateDescription(true);
+            if (!availableButtons.has(e.key) && quillRef.current?.editor?.getSelection()?.length === 0) {
+                e.preventDefault();
+            }
+        }
+    };
+
+    const handleQuillRef = (el) => {
+        quillRef.current = el;
+        if (qRef) {
+            qRef.current = el;
+        }
+    };
+
     return (
         <>
             <div className="quillEditor">
@@ -94,21 +108,8 @@ const Editor: React.FC<EditorProps> = ({
                     value={val || ''}
                     onChange={handleOnChange}
                     modules={modules}
-                    onKeyDown={(e) => {
-                        if (characterCount >= maxChars) {
-                            setValidateDescription(true);
-                            if (!availableButtons.has(e.key)
-                                && quillRef.current?.editor?.getSelection()?.length === 0) {
-                                e.preventDefault();
-                            }
-                        }
-                    }}
-                    ref={(el) => {
-                        quillRef.current = el;
-                        if (qRef) {
-                            qRef.current = el;
-                        }
-                    }}
+                    onKeyDown={handleKeyDown}
+                    ref={handleQuillRef}
                     style={{ height: 300 }}
                     formats={formats}
                     theme="snow"

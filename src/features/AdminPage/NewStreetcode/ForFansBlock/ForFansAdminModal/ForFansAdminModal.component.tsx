@@ -15,8 +15,8 @@ import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
 import {
-    checkQuillTextLength,
-    setQuillContents,
+    checkQuillEditorTextLength,
+    setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
@@ -57,6 +57,12 @@ const ForFansModal = ({
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const maxLength = character_limit || 10000;
 
+    message.config({
+        top: 100,
+        duration: 3,
+        maxCount: 3,
+    });
+
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
         try {
             const categories = await SourcesApi.getAllCategories();
@@ -69,8 +75,11 @@ const ForFansModal = ({
             const selectedIds = selected.map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
             const available = allCategories.filter((c) => !selectedIds.includes(c.id));
             if (categoryUpdate.current) {
-                available.push(allCategories[allCategories
-                    .findIndex((c) => c.id === categoryUpdate.current?.sourceLinkCategoryId)]);
+                const sourceLinkCategoryId = categoryUpdate.current?.sourceLinkCategoryId;
+                const foundCategoryIndex = allCategories.findIndex((c) => c.id === sourceLinkCategoryId);
+                if (foundCategoryIndex !== -1) {
+                    available.push(allCategories[foundCategoryIndex]);
+                }
             }
             if (isNewCat) {
                 const allCategoriesIds = allCategories.map((c) => c.id);
@@ -100,7 +109,7 @@ const ForFansModal = ({
         const categoryText = categoryUpdate?.current?.text;
         if (categoryUpdate.current && open) {
             setEditorContent(categoryText ?? '');
-            setQuillContents(editorRef.current, categoryText ?? '');
+            setQuillEditorContent(editorRef.current, categoryText ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
@@ -193,7 +202,7 @@ const ForFansModal = ({
         onChange('saved', null);
     };
 
-    const handleTextChange = () => {
+    const validateTextChange = () => {
         setTextIsChanged(true);
         const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
 
@@ -209,21 +218,14 @@ const ForFansModal = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
-            checkQuillTextLength(editorRef?.current, maxLength);
-            if (handleTextChange()) {
+            checkQuillEditorTextLength(editorRef?.current, maxLength);
+            if (validateTextChange()) {
                 form.submit();
-                message.success('Категорію для фанатів успішно додано!', 2);
+                message.success('Категорію для фанатів успішно додано!');
             } else {
                 throw new Error();
             }
         } catch (error) {
-            message.config({
-                top: 100,
-                duration: 3,
-                maxCount: 3,
-                rtl: true,
-                prefixCls: 'my-message',
-            });
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
