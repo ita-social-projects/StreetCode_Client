@@ -47,8 +47,6 @@
             overflow-wrap: break-word;
 
             p {
-                padding-bottom: f.pxToRem(24px);
-
                 strong {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500);
                 }
@@ -79,6 +77,7 @@
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
         @include mut.flexed($justify-content: space-between, $align-items: center);
         line-height: f.pxToRem(14px);
+        padding-top: f.pxToRem(24px);
         text-align: center;
         text-decoration: underline;
         text-decoration-color: c.$dark-red-color;
