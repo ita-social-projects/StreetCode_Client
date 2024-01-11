@@ -45,6 +45,7 @@
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             overflow-wrap: break-word;
+            white-space: pre-line;
 
             p {
                 strong {
@@ -154,6 +155,7 @@
         }
 
         .newsTextArea {
+            white-space: pre-line;
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
         }
 
@@ -198,6 +200,7 @@
         }
 
         .newsTextArea {
+            white-space: pre-line;
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
         }
 
