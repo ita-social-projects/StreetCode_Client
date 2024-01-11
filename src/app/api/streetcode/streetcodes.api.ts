@@ -63,7 +63,7 @@ const StreetcodesApi = {
     create: (streetcode: StreetcodeCreate) => Agent
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
-    update: (streetcode: StreetcodeUpdate) => AgentFrontend
+    update: (streetcode: StreetcodeUpdate) => Agent
         .put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
     updateState: (id: number, stateId: number) => Agent.put<void>(
@@ -71,7 +71,7 @@ const StreetcodesApi = {
         {},
     ),
 
-    delete: (id: number) => AgentFrontend.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
+    delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
 
     existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
 
