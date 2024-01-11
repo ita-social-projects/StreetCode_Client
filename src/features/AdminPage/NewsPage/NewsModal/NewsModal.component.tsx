@@ -10,12 +10,10 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
-import { Editor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
-import axios from 'axios';
 import dayjs from 'dayjs';
-import { Editor as TinyMCEEditor } from 'tinymce/tinymce';
 
 import {
     Button,
@@ -30,6 +28,11 @@ import {
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
 
+import {
+    checkQuillEditorTextLength,
+    setQuillEditorContent,
+} from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio from '@/models/media/audio.model';
@@ -37,12 +40,12 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
 const NewsModal: React.FC<{
-  newsItem?: News;
-  open: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  afterSubmit?: (news: News) => void;
-  initialValue: any;
-  limit: any;
+    newsItem?: News;
+    open: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    afterSubmit?: (news: News) => void;
+    initialValue: any;
+    limit: any;
 }> = observer(({
     newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit,
 }) => {
@@ -54,11 +57,10 @@ const NewsModal: React.FC<{
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const image = useRef<Image | undefined>(undefined);
-    const editorRef = useRef<TinyMCEEditor>();
+    const editorRef = useRef<ReactQuill>(null);
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
-    const [count, setCount] = React.useState(0);
-    const [textCount, setTextCount] = useState(0);
+    const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля правильно";
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
 
@@ -91,7 +93,7 @@ const NewsModal: React.FC<{
     };
 
     useEffect(() => {
-        editorRef.current?.setContent('');
+        editorRef.current?.editor?.setText('');
         if (newsItem && open) {
             imageId.current = newsItem.imageId;
             image.current = newsItem.image;
@@ -111,9 +113,8 @@ const NewsModal: React.FC<{
                     },
                 ] : [],
             });
-            if (editorRef.current) {
-                editorRef.current.setContent(newsItem.text);
-            }
+
+            setQuillEditorContent(editorRef.current, newsItem.text);
         } else {
             imageId.current = 0;
             image.current = undefined;
@@ -134,7 +135,7 @@ const NewsModal: React.FC<{
             setIsModalOpen(false);
             setTextIsPresent(false);
             setTextIsChanged(false);
-            editorRef.current?.setContent('');
+            editorRef.current?.editor?.setText('');
         }
     };
 
@@ -151,8 +152,9 @@ const NewsModal: React.FC<{
 
     const handleTextChange = () => {
         setTextIsChanged(true);
+        const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
 
-        if (editorRef.current?.getContent() === '') {
+        if (emptyTextField) {
             setTextIsPresent(false);
             return false;
         }
@@ -164,14 +166,15 @@ const NewsModal: React.FC<{
     const handleOk = async () => {
         try {
             await form.validateFields();
+            checkQuillEditorTextLength(editorRef?.current, sizeLimit);
             if (handleTextChange()) {
                 setWaitingForApiResponse(true);
                 await form.submit();
             } else {
                 throw new Error();
             }
-        } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля");
+        } catch {
+            message.error(fillInAllFieldsMessage);
         }
     };
 
@@ -183,11 +186,10 @@ const NewsModal: React.FC<{
             imageId: imageId.current,
             url: formValues.url,
             title: formValues.title,
-            text: editorRef.current?.getContent() ?? '',
+            text: data ?? '',
             image: undefined,
             creationDate: dayjs(formValues.creationDate),
         };
-
         newsStore.getNewsArray.map((t) => t).forEach((t) => {
             if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
@@ -216,22 +218,8 @@ const NewsModal: React.FC<{
         }
     };
 
-    const handleUpdate = (value: any, editor: any) => {
-        const cCount = editor.getContent({ format: 'text' }).length;
-        if (cCount <= sizeLimit) {
-            setData(value);
-            setCount(cCount);
-            setTextCount(cCount);
-        } else {
-            message.error('Ви перевищіли максимально допустиму кількість символів');
-        }
-    };
-
-    const handleBeforeAddUndo = (evt: any, editor: any) => {
-        const cCount = editor.getContent({ format: 'text' }).length;
-        if (cCount > sizeLimit) {
-            evt.preventDefault();
-        }
+    const handleUpdate = (value: any) => {
+        setData(value);
     };
 
     return (
@@ -263,7 +251,7 @@ const NewsModal: React.FC<{
                             <h2>
                                 {newsItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-Новину
+                                Новину
                             </h2>
                         </div>
                         <Form.Item
@@ -282,7 +270,7 @@ const NewsModal: React.FC<{
                                 {
                                     pattern: /^[a-z-]+$/,
                                     message:
-                      'Посилання має містити лише малі латинські літери та дефіс',
+                                        'Посилання має містити лише малі латинські літери та дефіс',
                                 },
                                 {
                                     validator: async (_, value) => {
@@ -305,43 +293,11 @@ const NewsModal: React.FC<{
                             <span>Текст:</span>
                         </div>
                         <Editor
-                            onEditorChange={handleUpdate}
+                            qRef={editorRef}
                             value={data}
-                            onBeforeAddUndo={handleBeforeAddUndo}
-                            onInit={(evt, editor) => {
-                                editorRef.current = editor;
-                            }}
-                            initialValue={newsItem ? newsItem.text : ''}
-                            init={{
-                                height: 300,
-                                menubar: false,
-                                plugins: [
-                                    'autolink',
-                                    'lists',
-                                    'preview',
-                                    'anchor',
-                                    'searchreplace',
-                                    'visualblocks',
-                                    'insertdatetime',
-                                    'wordcount',
-                                ],
-                                // eslint-disable-next-line no-useless-concat
-                                toolbar: 'undo redo | bold italic | ' + 'removeformat ',
-                                content_style:
-                    'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                            }}
+                            onChange={handleUpdate}
+                            maxChars={sizeLimit}
                         />
-                        <p>
-             Залишок символів:
-                            {' '}
-                            {sizeLimit - textCount}
-                            {textCount > sizeLimit && (
-                                <span style={{ color: 'red', marginLeft: '10px' }}>
-            Ви перевищіли максимально допустиму кількість символів
-                                </span>
-                            )}
-
-                        </p>
                         {!textIsPresent && textIsChanged && (
                             <p className="form-text">Введіть текст</p>
                         )}
@@ -371,7 +327,7 @@ const NewsModal: React.FC<{
                                             name = file.name.toLowerCase();
                                         }
                                         if (name.endsWith('.jpeg') || name.endsWith('.png')
-                                                || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
+                                            || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
                                             return Promise.resolve();
                                         }
                                         // eslint-disable-next-line max-len
@@ -436,7 +392,7 @@ const NewsModal: React.FC<{
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >
-                  Зберегти
+                                Зберегти
                             </Button>
                         </div>
                     </Form>

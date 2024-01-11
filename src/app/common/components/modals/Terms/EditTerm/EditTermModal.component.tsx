@@ -34,7 +34,7 @@ const EditTermModal = ({ handleEdit, term } : Props) => {
 
     const onCancel = () => {
         form.resetFields();
-        setModal('editTerm');
+        editTerm.isOpen = false;
     };
 
     useEffect(() => {

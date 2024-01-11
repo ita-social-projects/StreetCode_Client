@@ -10,9 +10,6 @@ import VacancyModal from './VacancyModal/VacancyModal.component';
 const Vacancy = (job: Job) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const ChangeStatus = () => {
-        setIsModalOpen(!isModalOpen);
-    };
     return (
         <div className="vacancyContainer">
             <CardText
@@ -22,7 +19,7 @@ const Vacancy = (job: Job) => {
                 subTitle={job.salary}
                 moreBtnText="Трохи ще"
             />
-            <VacancyModal isOpen={isModalOpen} setOpen={ChangeStatus} job={job} />
+            <VacancyModal isOpen={isModalOpen} setOpen={setIsModalOpen} job={job} />
         </div>
     );
 };

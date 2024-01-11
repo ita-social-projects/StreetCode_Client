@@ -32,7 +32,7 @@ const StatisticsModal = () => {
     const { setModal, modalsState: { statistics } } = modalStore;
     const countByStreetTypeMap = countByStreetType(toponymContext.toponyms);
     const handleModalClose = () => {
-        setModal('statistics');
+        statistics.isOpen = false;
     };
     const [headingText, setHeadingText] = useState('цього стріткоду');
     useEffect(() => {

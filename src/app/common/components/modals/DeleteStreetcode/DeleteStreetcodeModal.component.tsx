@@ -8,6 +8,7 @@ import { Button, Modal } from 'antd';
 
 const DeleteStreetcodeModal = () => {
     const { modalStore: { setModal, modalsState: { deleteStreetcode } } } = useModalContext();
+    const clickHandle = () => deleteStreetcode.isOpen = false;
 
     const confirmHandler = () => {
         setModal('deleteStreetcode');
@@ -18,7 +19,7 @@ const DeleteStreetcodeModal = () => {
             title="Delete streetcode"
             open={deleteStreetcode.isOpen}
             onOk={() => confirmHandler()}
-            onCancel={() => setModal('deleteStreetcode')}
+            onCancel={clickHandle}
             className="deleteModal"
         >
             {deleteStreetcode.fromCardId}
