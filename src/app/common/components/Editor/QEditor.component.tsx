@@ -92,7 +92,11 @@ const Editor: React.FC<EditorProps> = ({
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (characterCount >= maxChars) {
             setValidateDescription(true);
-            if (!availableButtons.has(e.key) && quillRef.current?.editor?.getSelection()?.length === 0) {
+            const ctrlAIsPressed = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a';
+            const isSelectionEmpty = quillRef.current?.editor?.getSelection()?.length === 0;
+            const disableKeysPressing = !availableButtons.has(e.key) && isSelectionEmpty && !ctrlAIsPressed;
+
+            if (disableKeysPressing) {
                 e.preventDefault();
             }
         }
