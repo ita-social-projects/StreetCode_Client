@@ -3,4 +3,4 @@ export const removeHtmlTags = (content: string) => content.replace(/<[^>]*>|&nbs
     return '';
 });
 
-export const indentsBetweenParagraphsHtml = (content: string) => content.replace(/\n/g, '<p><br></p>');
+export const refactorIndentsHtml = (content: string) => content.replace(/\n/g, '<p><br></p>');
