@@ -17,11 +17,11 @@ interface EditorProps {
     maxChars: number,
     initialVal?: string,
     selectionChange?: (selection: string) => void,
-    onCharacterCountChange: (count: number) => void,
+    onCharacterCountChange?: (count: number) => void,
 }
 
 const Editor: React.FC<EditorProps> = ({
-    qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange,
+    qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => {},
 }) => {
     const [val, setVal] = useState(value);
     const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
