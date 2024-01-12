@@ -30,23 +30,28 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+           // element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<AdminPage />}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
-            element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
+            //element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
+            element={<StreetcodeContent />}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+           // element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+          //  element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<NewStreetcode />}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+           // element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+            element={<ForFansMainPage />}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
@@ -71,11 +76,12 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
         <Route
             path={FRONTEND_ROUTES.ADMIN.TEAM}
-            element={(
-                <ProtectedComponent>
-                    <TeamPage />
-                </ProtectedComponent>
-            )}
+            element={(<TeamPage />)}
+            // element={(
+            //     <ProtectedComponent>
+            //         <TeamPage />
+            //     </ProtectedComponent>
+            // )}
         />
         <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element={<JobPage />} />
         <Route path="*" element={<NotFound />} />
