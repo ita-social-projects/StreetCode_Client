@@ -6,15 +6,15 @@ const jestConfig: JestConfigWithTsJest = {
     roots: ['<rootDir>'],
     moduleNameMapper: {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
-        'antd': '<rootDir>/__mocks__/antd/Modal'
+        'antd': '<rootDir>/__mocks__/antd/Modal',
+        '^@assets/(.*)$': '<rootDir>/src/assets/$1',
         // DEV_NOTE: Down below is the right solution for compiling files by path
         // But we need to fix ALL typo errors before it could be compiled
-        // Temp solution - mocking store/root-store. It will be added in mocks folder
-        // After fixing type error remove mock or continue using it(as more simple solution)
+        // Temp solution - mocking modules.
+        // After fixing type error remove mocks or continue using them(as more simple solution)
         /*
         '^@/(.*)$': '<rootDir>/src/$1',
         '^@app/(.*)$': '<rootDir>/src/app/$1',
-        '^@assets/(.*)$': '<rootDir>/src/assets/fonts/$1',
         '^@sass/(.*)$': '<rootDir>/src/assets/sass/$1',
         '^@images/(.*)$': '<rootDir>/src/assets/images/$1',
         '^@features/(.*)$': '<rootDir>/src/features/$1',
@@ -35,6 +35,9 @@ const jestConfig: JestConfigWithTsJest = {
         _env_: {
             API_URL: 'https://mock_URL.com',
         }
+    },
+    transform: {
+        "^.+\\.svg$": "jest-transformer-svg",
     },
     coverageThreshold: {
         global: {
