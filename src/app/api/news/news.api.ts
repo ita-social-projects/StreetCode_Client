@@ -1,4 +1,4 @@
-import Agent from '@api/agent.api';
+import Agent, { AgentFrontend } from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import News, { NewsWithUrl } from '@models/news/news.model';
 
