@@ -29,7 +29,7 @@ const jestConfig: JestConfigWithTsJest = {
     },
     verbose: true,
     collectCoverageFrom: [
-        "src/**/*.{ts}" // temp disable coverage collection from tsx, js, jsx util type error will be fixed
+        "src/**/*.{ts}" // temp disable coverage collection for tsx, js, jsx util type errors will be fixed
     ],
     globals: {
         _env_: {
