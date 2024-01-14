@@ -61,7 +61,7 @@ describe('PartnerLink', () => {
         // 'data-file-name' attribute ^^ will be avaliable only in test
     });
 
-    it('should render SvgYoutube logo', () => {
+    it('should render Youtube logo', () => {
         const newMockLinkProp = {
             ...mockLinkProp,
             logoType: 3,
