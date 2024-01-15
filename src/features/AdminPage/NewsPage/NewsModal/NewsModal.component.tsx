@@ -114,8 +114,8 @@ const NewsModal: React.FC<{
                     },
                 ] : [],
             });
-
             setQuillEditorContent(editorRef.current, newsItem.text);
+            setData(newsItem.text);
         } else {
             imageId.current = 0;
             image.current = undefined;

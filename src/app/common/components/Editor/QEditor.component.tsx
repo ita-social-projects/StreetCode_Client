@@ -3,7 +3,7 @@ import './QEditor.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill, { UnprivilegedEditor } from 'react-quill';
-import removeHtmlTags from '@app/common/utils/removeHtmlTags.utility';
+import { refactorIndentsHtml, removeHtmlTags } from '@app/common/utils/removeHtmlTags.utility';
 import { Sources } from 'quill';
 
 import 'react-quill/dist/quill.snow.css';
@@ -23,7 +23,8 @@ interface EditorProps {
 const Editor: React.FC<EditorProps> = ({
     qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => {},
 }) => {
-    const [val, setVal] = useState(value);
+    const indentedValue = refactorIndentsHtml(value);
+    const [val, setVal] = useState(indentedValue);
     const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
     const [characterCount, setCharacterCount] = useState(rawText.length ?? 0);
     const [validateDescription, setValidateDescription] = useState<boolean>(false);
@@ -38,6 +39,10 @@ const Editor: React.FC<EditorProps> = ({
     };
 
     useEffect(() => {
+        if (value.includes('\n')) {
+            const preservedIndents = refactorIndentsHtml(value);
+            setVal(preservedIndents);
+        }
         const valueWithoutHtml = removeHtmlTags(value);
         setRawText(valueWithoutHtml);
     }, [value]);

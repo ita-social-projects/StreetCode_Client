@@ -59,10 +59,10 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
 
   .mainContentContainer {
     height: pxToRem(570px);
-    @include mut.flexed($direction: column, $gap: 10px);
     @include mut.rem-margined(30px, 10px, 30px, 30px);
     padding-right: pxToRem(10px);
     overflow-y: scroll;
+    white-space: pre-line;
     font-weight: 300;
     font-size: 15px;
 

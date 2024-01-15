@@ -48,8 +48,8 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
             if (open && currentId !== 0) {
                 try {
                     const currentJob = await JobApi.getById(currentId);
-                    setCurrent(currentJob);
                     setQuillEditorContent(textEditor.current, currentJob?.description);
+                    setCurrent(currentJob);
                     form.setFieldsValue({
                         title: currentJob?.title,
                         status: currentJob?.status ? 'setActive' : 'setInactive',

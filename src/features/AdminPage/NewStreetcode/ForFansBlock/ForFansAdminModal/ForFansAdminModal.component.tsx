@@ -98,6 +98,7 @@ const ForFansModal = ({
         setTextIsPresent(false);
         setTextIsChanged(false);
         setOpen(false);
+        editorRef.current?.editor?.setText('');
     };
 
     async function fetchData() {
@@ -109,8 +110,8 @@ const ForFansModal = ({
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
         const categoryText = categoryUpdate?.current?.text;
         if (categoryUpdate.current && open) {
-            setEditorContent(categoryText ?? '');
             setQuillEditorContent(editorRef.current, categoryText ?? '');
+            setEditorContent(categoryText ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
@@ -142,7 +143,6 @@ const ForFansModal = ({
         isEditedCategoryPersisted: boolean,
     ) => {
         if (!isEditedCategoryPersisted) {
-            console.log(editorContent);
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({
                     id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
