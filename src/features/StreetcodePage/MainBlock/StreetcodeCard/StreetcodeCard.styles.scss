@@ -114,20 +114,7 @@
 .audioBtn:disabled {
     cursor: default;
 }
-.animateFigureBtn {
-  @include mut.sized(229px, 73px);
-  @include mut.flex-centered();
-  @include mut.full-rounded(14px);
-  a {
-    @include mut.with-font($font-weight: 500);
-    border-width: 3px;
-    border-color: c.$accented-red-color;
-    color: c.$accented-red-color;
-  }
-  &:hover {
-    box-shadow: 0px 4px 4px rgba(219, 52, 36, 0.1);
-  }
-}
+
 .streetcodeImg, .streetcodeImgColored, .streetcodeImgGrey {
     margin: auto;
     @include mut.sized(415px, 542px);
@@ -234,9 +221,7 @@
       .cardFooter {
         width: 98%;
         @include mut.rem-padded(10px, 0px, 0px, 0px);
-        .animateFigureBtn {
-          @include mut.hidden();
-        }
+
         .audioBtn {
           @include mut.full-rounded(8px);
           @include mut.with-font($font-weight: 400, $font-size: 14px);

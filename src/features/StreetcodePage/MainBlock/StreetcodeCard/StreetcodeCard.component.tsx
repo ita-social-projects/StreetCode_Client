@@ -15,7 +15,7 @@ import { Button } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { audioClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image, { ImageAssigment } from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
@@ -189,18 +189,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-
-                        {arlink
-                            ? (
-                                <Button
-                                    className="animateFigureBtn"
-                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                                    href="#QRBlock"
-                                >
-                                    <a>Оживити картинку</a>
-                                </Button>
-                            )
-                            : <></>}
                     </div>
                 </div>
             </div>
