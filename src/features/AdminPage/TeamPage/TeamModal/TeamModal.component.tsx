@@ -27,6 +27,7 @@ import PositionsApi from '@/app/api/team/positions.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
+import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 
 const TeamModal: React.FC<{
@@ -318,7 +319,8 @@ const TeamModal: React.FC<{
                             }}
                             onRemove={removeImage}
                             uploadTo="image"
-                            onSuccessUpload={(image: Image) => {
+                            onSuccessUpload={(value: Image | Audio) => {
+                                const image = value as Image;
                                 imageId.current = image.id;
                             }}
                             defaultFileList={getImageAsFileInArray()}

@@ -6,7 +6,9 @@ const jestConfig: JestConfigWithTsJest = {
     roots: ['<rootDir>'],
     moduleNameMapper: {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
-        'antd': '<rootDir>/__mocks__/antd/Modal'
+        'antd': '<rootDir>/__mocks__/antd/Modal',
+        '@/app/api/team/positions.api': '<rootDir>/src/app/api/team/positions.api.mock.ts',
+        '^@images/(.*)$': '<rootDir>/src/assets/images/$1',
         // DEV_NOTE: Down below is the right solution for compiling files by path
         // But we need to fix ALL typo errors before it could be compiled
         // Temp solution - mocking store/root-store. It will be added in mocks folder
@@ -26,6 +28,10 @@ const jestConfig: JestConfigWithTsJest = {
         '^@constants/(.*)$': '<rootDir>/src/app/common/constants/$1',
         '^@utils/(.*)$': '<rootDir>/src/app/common/utils/$1',
         */
+    },
+    transform: {
+        '\\.svg$': '<rootDir>/svgTransform.ts',
+        '^.+\\.(ts|tsx)$': 'ts-jest',
     },
     verbose: true,
     collectCoverageFrom: [
