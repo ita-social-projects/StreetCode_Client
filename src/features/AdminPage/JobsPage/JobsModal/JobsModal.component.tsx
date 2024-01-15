@@ -32,6 +32,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
     };
     const textEditor = useRef<ReactQuill | null>(null);
     const [current, setCurrent] = useState<Job>();
+    const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const [form] = Form.useForm();
     const [storedJob, setStoredJob] = useState<Job>();
     const emptyJob: Job = {
@@ -76,7 +77,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
-            checkQuillEditorTextLength(textEditor?.current, maxLengths.maxLenghtVacancyDesc);
+            checkQuillEditorTextLength(editorCharacterCount, maxLengths.maxLenghtVacancyDesc);
             const { title, status, description, salary } = values;
             const isActive = status === 'setActive';
 
@@ -168,6 +169,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                     value={current?.description ?? ''}
                     onChange={handleEditorChange}
                     maxChars={maxLengths.maxLenghtVacancyDesc}
+                    onCharacterCountChange={setEditorCharacterCount}
                 />
                 <FormItem
                     label="Заробітня плата"

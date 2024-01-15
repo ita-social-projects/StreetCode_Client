@@ -55,6 +55,7 @@ const ForFansModal = ({
     const [editorContent, setEditorContent] = useState('');
     const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
+    const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const maxLength = character_limit || 10000;
 
     message.config({
@@ -218,7 +219,7 @@ const ForFansModal = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
-            checkQuillEditorTextLength(editorRef?.current, maxLength);
+            checkQuillEditorTextLength(editorCharacterCount, maxLength);
             if (validateTextChange()) {
                 form.submit();
                 message.success('Категорію для фанатів успішно додано!');
@@ -309,6 +310,7 @@ const ForFansModal = ({
                         value={editorContent}
                         onChange={setEditorContent}
                         maxChars={maxLength}
+                        onCharacterCountChange={setEditorCharacterCount}
                     />
                     {!textIsPresent && textIsChanged && (
                         <p className="form-text">Введіть текст</p>

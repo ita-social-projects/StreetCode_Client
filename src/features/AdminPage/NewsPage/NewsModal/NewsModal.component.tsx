@@ -63,6 +63,7 @@ const NewsModal: React.FC<{
     const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля правильно";
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
+    const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
 
     message.config({
         top: 100,
@@ -166,7 +167,7 @@ const NewsModal: React.FC<{
     const handleOk = async () => {
         try {
             await form.validateFields();
-            checkQuillEditorTextLength(editorRef?.current, sizeLimit);
+            checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
             if (handleTextChange()) {
                 setWaitingForApiResponse(true);
                 await form.submit();
@@ -297,6 +298,7 @@ const NewsModal: React.FC<{
                             value={data}
                             onChange={handleUpdate}
                             maxChars={sizeLimit}
+                            onCharacterCountChange={setEditorCharacterCount}
                         />
                         {!textIsPresent && textIsChanged && (
                             <p className="form-text">Введіть текст</p>
