@@ -23,7 +23,7 @@ interface EditorProps {
 const Editor: React.FC<EditorProps> = ({
     qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => {},
 }) => {
-    const indentedValue = refactorIndentsHtml(value);
+    const indentedValue = refactorIndentsHtml(value || '');
     const [val, setVal] = useState(indentedValue);
     const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
     const [characterCount, setCharacterCount] = useState(rawText.length ?? 0);
@@ -39,8 +39,8 @@ const Editor: React.FC<EditorProps> = ({
     };
 
     useEffect(() => {
-        if (value.includes('\n')) {
-            const preservedIndents = refactorIndentsHtml(value);
+        if (value?.includes('\n')) {
+            const preservedIndents = refactorIndentsHtml(value || '');
             setVal(preservedIndents);
         }
         const valueWithoutHtml = removeHtmlTags(value);
