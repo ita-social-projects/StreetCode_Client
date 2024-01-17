@@ -27,7 +27,7 @@ import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import removeHtmlTags from '@/app/common/utils/removeHtmlTags.utility';
+import { removeHtmlTags } from '@/app/common/utils/removeHtmlTags.utility';
 import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
