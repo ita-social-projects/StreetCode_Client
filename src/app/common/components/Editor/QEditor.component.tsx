@@ -39,7 +39,7 @@ const Editor: React.FC<EditorProps> = ({
     };
 
     useEffect(() => {
-        if (value && value.includes('\n')) {
+        if (value?.includes('\n')) {
             const preservedIndents = refactorIndentsHtml(value || '');
             setVal(preservedIndents);
         }
