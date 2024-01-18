@@ -60,7 +60,7 @@ const VacancyModal = ({ isOpen, setOpen, job }: Props) => {
                     <Button
                         className="vacancyModalButton streetcode-custom-button"
                         onClick={(e) => {
-                            window.location.href = EMAIL_INFO.WRITE_EMAIL_TO_US;
+                            window.open(EMAIL_INFO.WRITE_EMAIL_TO_US, '_blank');
                             e.preventDefault();
                         }}
                     >
