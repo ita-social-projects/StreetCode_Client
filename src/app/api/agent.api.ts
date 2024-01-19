@@ -3,14 +3,17 @@ import { toast } from 'react-toastify';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
+// eslint-disable-next-line no-restricted-imports
 import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
+import { API_URL, SERVER_API_URL } from '../common/utils/config';
+// eslint-disable-next-line no-restricted-imports
 import UserLoginStore from '../stores/user-login-store';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
-    ? 'https://localhost:5001/api' : window._env_.API_URL;
+    ? 'https://localhost:5001/api' : API_URL;
 
 const frontendServerBaseUrl = process.env.NODE_ENV === 'development'
-    ? 'https://localhost:4000' : window._env_.SERVER_API_URL;
+    ? 'https://localhost:4000' : SERVER_API_URL;
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 

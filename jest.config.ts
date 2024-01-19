@@ -11,6 +11,14 @@ const jestConfig: JestConfigWithTsJest = {
         '^@images/(.*)$': '<rootDir>/src/assets/images/$1',
         '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.ts',
         '^@assets/(.*)$': '<rootDir>/src/assets/$1',
+        '^@features/(.*)$': '<rootDir>/src/features/$1',
+        '^@models/(.*)$': '<rootDir>/src/models/$1',
+        '^@components/(.*)$': '<rootDir>/src/app/common/components/$1',
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '^@api/(.*)$': '<rootDir>/src/app/api/$1',
+        '^@constants/(.*)$': '<rootDir>/src/app/common/constants/$1',
+        '^@hooks/(.*)$': '<rootDir>/src/app/common/hooks/$1',
+       // '^@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component.tsx$': '<rootDir>/__mocks__/mocked-PreviewFileModal.component.tsx',        
 
         // DEV_NOTE: Down below is the right solution for compiling files by path
         // But we need to fix ALL typo errors before it could be compiled
@@ -39,6 +47,7 @@ const jestConfig: JestConfigWithTsJest = {
     globals: {
         _env_: {
             API_URL: 'https://mock_URL.com',
+            SERVER_API_URL: 'https://test.server.com'
         }
     },
     transform: {

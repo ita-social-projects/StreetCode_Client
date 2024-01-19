@@ -8,6 +8,22 @@ jest.mock('@/app/api/team/positions.api', () => ({
     getAll: jest.fn(() => Promise.resolve([{ position: 'Developer' }])),
 }));
 
+jest.mock('antd', () => {
+    const originalModule = jest.requireActual('antd');
+    return {
+        ...originalModule,
+        Form: {
+            ...originalModule.Form,
+            useForm: jest.fn(() => [{}, {}]),
+        },
+    };
+});
+
+jest.mock('@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component', () => ({
+    __esModule: true,
+    default: () => <div data-testid="mockPreviewModal">Mock Preview Modal</div>,
+}));
+
 // Mocking some external modules
 jest.mock('antd', () => {
     const actualAntd = jest.requireActual('antd');
@@ -159,5 +175,18 @@ describe('TeamModal Component', () => {
 
         // Assert that setIsModalOpen is called with false
         expect(setIsModalOpen).toHaveBeenCalledWith(false);
+    });
+
+    it('renders mock preview modal', () => {
+        render(
+            <TeamModal
+                open
+                setIsModalOpen={setIsModalOpen}
+                afterSubmit={mockAfterSubmit}
+                teamMember={mockTeamMember}
+            />,
+        );
+
+        expect(screen.getByTestId('mockPreviewModal')).toBeInTheDocument();
     });
 });
