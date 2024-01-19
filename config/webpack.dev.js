@@ -7,6 +7,7 @@ module.exports = {
     },
     devtool: 'cheap-module-source-map',
     devServer: {
+        open: true,
         port: "3000",
         historyApiFallback: true,
     },

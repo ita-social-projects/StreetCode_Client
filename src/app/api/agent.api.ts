@@ -7,7 +7,7 @@ import FRONTEND_ROUTES from '../common/constants/frontend-routes.constants';
 import UserLoginStore from '../stores/user-login-store';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
-    ? 'https://stageback.streetcode.com.ua/api' : window._env_.API_URL;
+    ? 'https://localhost:5001/api' : window._env_.API_URL;
 
 const frontendServerBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:4000' : window._env_.SERVER_API_URL;
