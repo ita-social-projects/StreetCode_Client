@@ -31,16 +31,13 @@
 
     .newsWithImageWrapper {
         overflow: auto;
-
         ul {
-            list-style-type: disc;
-            padding-inline-start: revert;
-          }
+            @include mut.list-styles($type: disc);
+        }
 
-          ol {
-            list-style-type: decimal;
-            padding-inline-start: revert;
-          }
+        ol {
+            @include mut.list-styles($type: decimal);
+        }
 
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
