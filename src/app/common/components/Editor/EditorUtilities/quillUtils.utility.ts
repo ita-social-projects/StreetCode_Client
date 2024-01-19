@@ -7,10 +7,8 @@ export const setQuillEditorContent = (currentEditor: QuillEditor | null, text: s
     }
 };
 
-export const checkQuillEditorTextLength = (currentEditor: QuillEditor | null, maxChars: number) => {
-    if (currentEditor && currentEditor.editor) {
-        if (currentEditor.editor.getText().length > maxChars) {
-            throw new Error();
-        }
+export const checkQuillEditorTextLength = (counter: number, maxChars: number) => {
+    if (counter > maxChars) {
+        throw new Error();
     }
 };

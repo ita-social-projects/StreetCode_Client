@@ -3,7 +3,7 @@ import './QEditor.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill, { UnprivilegedEditor } from 'react-quill';
-import removeHtmlTags from '@app/common/utils/removeHtmlTags.utility';
+import { refactorIndentsHtml, removeHtmlTags } from '@app/common/utils/removeHtmlTags.utility';
 import { Sources } from 'quill';
 
 import 'react-quill/dist/quill.snow.css';
@@ -12,17 +12,19 @@ import LinkHandler from './EditorExtensions/LinkHandler';
 
 interface EditorProps {
     qRef: React.RefObject<ReactQuill>,
-    value: string;
+    value: string,
     onChange: (html: string) => void;
     maxChars: number,
     initialVal?: string,
-    selectionChange?: (selection: string) => void;
+    selectionChange?: (selection: string) => void,
+    onCharacterCountChange?: (count: number) => void,
 }
 
 const Editor: React.FC<EditorProps> = ({
-    qRef, value, onChange, maxChars, initialVal, selectionChange,
+    qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => {},
 }) => {
-    const [val, setVal] = useState(value);
+    const indentedValue = refactorIndentsHtml(value || '');
+    const [val, setVal] = useState(indentedValue);
     const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
     const [characterCount, setCharacterCount] = useState(rawText.length ?? 0);
     const [validateDescription, setValidateDescription] = useState<boolean>(false);
@@ -37,6 +39,10 @@ const Editor: React.FC<EditorProps> = ({
     };
 
     useEffect(() => {
+        if (value?.includes('\n')) {
+            const preservedIndents = refactorIndentsHtml(value || '');
+            setVal(preservedIndents);
+        }
         const valueWithoutHtml = removeHtmlTags(value);
         setRawText(valueWithoutHtml);
     }, [value]);
@@ -48,6 +54,10 @@ const Editor: React.FC<EditorProps> = ({
             setValidateDescription(false);
         }
     }, [characterCount, maxChars]);
+
+    useEffect(() => {
+        onCharacterCountChange(characterCount);
+    }, [characterCount, onCharacterCountChange]);
 
     const handleOnChange = (html: string) => {
         onChange(html);
@@ -87,7 +97,11 @@ const Editor: React.FC<EditorProps> = ({
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (characterCount >= maxChars) {
             setValidateDescription(true);
-            if (!availableButtons.has(e.key) && quillRef.current?.editor?.getSelection()?.length === 0) {
+            const ctrlAIsPressed = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a';
+            const isSelectionEmpty = quillRef.current?.editor?.getSelection()?.length === 0;
+            const disableKeysPressing = !availableButtons.has(e.key) && isSelectionEmpty && !ctrlAIsPressed;
+
+            if (disableKeysPressing) {
                 e.preventDefault();
             }
         }

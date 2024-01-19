@@ -1,6 +1,12 @@
-const removeHtmlTags = (content: string) => content.replace(/<[^>]*>|&nbsp;/g, (match) => {
-    if (match === '&nbsp;') return ' ';
-    return '';
-});
+export const removeHtmlTags = (content: string | null) => {
+    if (!content) {
+        return '';
+    }
 
-export default removeHtmlTags;
+    return content.replace(/<[^>]*>|&nbsp;/g, (match) => {
+        if (match === '&nbsp;') return ' ';
+        return '';
+    });
+};
+
+export const refactorIndentsHtml = (content: string | null) => content?.replace(/\n/g, '<p><br></p>') ?? '';

@@ -64,7 +64,7 @@ const DonationBlock = () => {
             try {
                 const response = await DonationApi.create(donation);
                 donateEvent('support_us_page_donation_block');
-                window.open(response.pageUrl);
+                window.location.assign(response.pageUrl);
             } catch (err) {}
         }
     };

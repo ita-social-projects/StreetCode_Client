@@ -27,6 +27,7 @@ import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import { removeHtmlTags } from '@/app/common/utils/removeHtmlTags.utility';
 import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
@@ -129,8 +130,11 @@ const NewStreetcode = () => {
     };
 
     const validateQuillTexts = (mainText: string | undefined, additionalText: string | undefined) => {
-        const tooLongMainText = mainText && mainText.length > QUILL_TEXTS_LENGTH.mainTextMaxLength;
-        const tooLongAdditionalText = additionalText && additionalText.length > QUILL_TEXTS_LENGTH.additionalTextMaxLength;
+        const mainTextWithoutHtml = mainText ? removeHtmlTags(mainText) : '';
+        const additionalTextWithoutHtml = additionalText ? removeHtmlTags(additionalText) : '';
+
+        const tooLongMainText = mainText && mainTextWithoutHtml.length > QUILL_TEXTS_LENGTH.mainTextMaxLength;
+        const tooLongAdditionalText = additionalText && additionalTextWithoutHtml.length > QUILL_TEXTS_LENGTH.additionalTextMaxLength;
 
         if (tooLongMainText || tooLongAdditionalText) {
             throw new Error('The value is too long either in the main text or in the additional text');
