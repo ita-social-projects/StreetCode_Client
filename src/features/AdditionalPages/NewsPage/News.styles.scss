@@ -47,6 +47,14 @@
             overflow-wrap: break-word;
             white-space: pre-line;
 
+            ul, ol {
+                white-space: normal;
+            }
+
+            li:not(:last-child)[dir="ltr"] {
+                padding-bottom: f.pxToRem(24px);
+            }
+
             p {
                 strong {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500);
@@ -57,7 +65,7 @@
         .newsGoodImageClass.Full {
             border: 6px solid c.$pure-white-color;
             border-radius: f.pxToRem(30px);
-            margin-bottom: f.pxToRem(24px);
+            margin-top: f.pxToRem(24px);
             display: initial;
             width: 100%;
         }
@@ -257,7 +265,6 @@
 
             .newsLinks {
                 @include mut.flexed($justify-content: center, $wrap: wrap);
-                padding-top: 0px;
                 text-align: center;
                 text-decoration: none;
 
