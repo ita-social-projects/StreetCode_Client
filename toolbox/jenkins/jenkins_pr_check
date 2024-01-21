@@ -4,7 +4,7 @@ pipeline {
     }
     options {
         // test config to not keep ALL builds of PR check
-        // some test comment
+        // some test comment 111
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()
     }
