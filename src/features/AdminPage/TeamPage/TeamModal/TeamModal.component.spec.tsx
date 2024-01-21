@@ -16,6 +16,15 @@ jest.mock('antd', () => {
             ...originalModule.Form,
             useForm: jest.fn(() => [{}, {}]),
         },
+        Modal: jest.fn(({ onCancel }) => (
+            <div>
+                <div data-testid="modal-close" onClick={onCancel} />
+                <div data-testid="modal-content" />
+            </div>
+        )),
+        message: {
+            config: jest.fn(),
+        }
     };
 });
 
@@ -23,20 +32,6 @@ jest.mock('@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewF
     __esModule: true,
     default: () => <div data-testid="mockPreviewModal">Mock Preview Modal</div>,
 }));
-
-// Mocking some external modules
-jest.mock('antd', () => {
-    const actualAntd = jest.requireActual('antd');
-    return {
-        ...actualAntd,
-        Modal: jest.fn(({ onCancel }) => (
-            <div>
-                <div data-testid="modal-close" onClick={onCancel} />
-                <div data-testid="modal-content" />
-            </div>
-        )),
-    };
-});
 
 const mockTeamMember = {
     id: 1,
