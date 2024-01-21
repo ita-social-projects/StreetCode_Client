@@ -11,6 +11,7 @@ pipeline {
         stage('Intall node modules') {
             steps {
                 // need also take nvm into consideration 
+                // test comment
                 echo 'Installing modules...'
                 sh 'npm install'
                 }
