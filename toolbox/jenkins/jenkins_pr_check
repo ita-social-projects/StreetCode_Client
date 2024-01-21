@@ -8,12 +8,16 @@ pipeline {
         timestamps()
     }
     stages {
+        stage('Set up node version') {
+            steps {
+                echo 'Set up node version'
+                sh 'nvm use 16'
+                }
+            }
         stage('Intall node modules') {
             steps {
-                // need also take nvm into consideration 
-                // test comment
                 echo 'Installing modules...'
-                sh 'npm install'
+                sh 'npm i'
                 }
             }
         stage('Run test:cover') {
