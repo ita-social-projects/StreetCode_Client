@@ -1,0 +1,32 @@
+pipeline {
+    agent { 
+        label 'stage' 
+    }
+    options {
+        // test config to not keep ALL builds of PR check
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    
+    stages {
+        stage('Intall node modules') {
+            steps {
+                // need also take nvm into consideration 
+                echo 'Installing modules...'
+                sh 'npm install'
+                }
+            }
+        }
+        stage('Run test:cover') {
+            steps {
+                echo 'Collect test coverage'
+                sh 'npm run test:cover'
+            }
+        }
+        stage('Run lint') {
+            steps {
+                echo 'Runt lint check'
+                sh 'npm run lint'
+            }
+        }
+    }
+}
