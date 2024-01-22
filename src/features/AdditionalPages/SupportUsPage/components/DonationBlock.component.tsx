@@ -54,18 +54,20 @@ const DonationBlock = () => {
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
-    const handlePost = async () => {
+    const handlePost = () => {
         const donation: Donation = {
             amount: donateAmount,
             pageUrl: window.location.href,
         };
 
         if (isCheckboxChecked) {
-            try {
-                const response = await DonationApi.create(donation);
+            const windowReference = window.open() as Window;
+            DonationApi.create(donation).then(({ pageUrl }) => {
                 donateEvent('support_us_page_donation_block');
-                window.location.assign(response.pageUrl);
-            } catch (err) {}
+                windowReference.location = pageUrl;
+            }).catch((err) => {
+                windowReference.close();
+            });
         }
     };
 
@@ -131,7 +133,7 @@ const DonationBlock = () => {
             </div>
             <button
                 onClick={handlePost}
-                disabled={!isCheckboxChecked || donateAmount == 0}
+                disabled={!isCheckboxChecked || donateAmount === 0}
                 className="donatesDonateBtn"
                 type="button"
             >
