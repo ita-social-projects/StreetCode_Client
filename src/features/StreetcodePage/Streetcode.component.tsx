@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
@@ -13,6 +14,8 @@ import QRBlock from '@streetcode/QRBlock/QR.component';
 import SourcesBlock from '@streetcode/SourcesBlock/Sources.component';
 import TextBlockComponent from '@streetcode/TextBlock/TextBlock.component';
 import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
+import { toStreetcodeRedirectClickEvent } from '@utils/googleAnalytics.unility';
+import { clearWindowHistoryState } from '@utils/window.utility';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
@@ -24,7 +27,6 @@ import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
-import MapBlock from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
@@ -40,8 +42,8 @@ const StreetcodeContent = () => {
     const [streetcode, setStreecode] = useState<Streetcode>();
 
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams();
     const isMobile = useMediaQuery({
         query: '(max-width: 4800px)',
     });
@@ -87,6 +89,13 @@ const StreetcodeContent = () => {
 
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl.current).then((val) => setStreecode(val));
+
+        const fromPage = location.state?.fromPage;
+
+        if (fromPage) {
+            toStreetcodeRedirectClickEvent(streetcodeUrl.current, fromPage);
+            clearWindowHistoryState();
+        }
     }, []);
 
     return (
@@ -116,7 +125,11 @@ const StreetcodeContent = () => {
                 ) : (
                     <></>
                 )}
-                <RelatedFiguresComponent streetcode={streetcode} setActiveTagId={setActiveTagId} setShowAllTags={setShowAllTags} />
+                <RelatedFiguresComponent
+                    streetcode={streetcode}
+                    setActiveTagId={setActiveTagId}
+                    setShowAllTags={setShowAllTags}
+                />
                 <SourcesBlock />
             </ProgressBar>
             <QRBlock />
