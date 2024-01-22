@@ -7,4 +7,7 @@ const scrollWithOffset = (el: any, offset: number) => {
     });
 };
 
+const clearWindowHistoryState = () => window.history.replaceState({}, document.title, window.location.pathname);
+
 export default scrollWithOffset;
+export { clearWindowHistoryState };

@@ -1,10 +1,10 @@
 import './StreetcodeSliderItem.styles.scss';
 
 import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
 import CardText from '@components/CardText/CardText.component';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image from '@/models/media/image.model';
 import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
@@ -18,21 +18,17 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
         query: '(max-width: 480px)',
     });
 
+    const navigate = useNavigate();
+    const historyState = { fromPage: 'main_page' };
     const handleClickRedirect = () => {
         if (streetcode.transliterationUrl) {
-            toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'main_page');
-            window.location.href = streetcode.transliterationUrl;
+            navigate(streetcode.transliterationUrl, { state: historyState });
         }
-    };
-
-    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        handleClickRedirect();
     };
 
     return (
         <div className="mainPageStreetCodeSlider">
-            <div className="itemStreetCodeMainPage" onClick={isMobile ? handleLinkClick : undefined}>
+            <div className="itemStreetCodeMainPage" onClick={isMobile ? handleClickRedirect : undefined}>
                 <div className="leftSlider">
                     <div className={`leftSliderContent ${image?.id ? '' : 'skeleton'}`}>
                         {image?.id
@@ -52,7 +48,7 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
                         text={streetcode.teaser}
                         subTitle={streetcode.text}
                         moreBtnText="До стріткоду"
-                        onBtnClick={handleLinkClick}
+                        moreBtnAsLink={{ link: streetcode.transliterationUrl, state: historyState }}
                     />
                 </div>
             </div>
