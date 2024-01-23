@@ -15,40 +15,24 @@ const QRMobile: React.FC<{ hrefLink: string }> = ({ hrefLink }) => {
         return null;
     }
 
+    const handleClick = () => instagramOnStreetcodeClickEvent(isMobile ? 'mobile' : 'tablet');
+
     return (
         <div className="QRMobileContainer">
-            {isMobile
-                ? (
-                    <div className="QRMobileContent">
-                        <p className="arInstagram">AR-історія в Інсті!</p>
-                        <p className="pressButtonText">
-                            Тисни кнопку та вітай нову реальність.
-                        </p>
-                        <a href={hrefLink} target="_blank" rel="noreferrer">
-                            <Button
-                                className="goToInstaButton"
-                                onClick={() => instagramOnStreetcodeClickEvent('mobile')}
-                            >
-                                Перейти в Instagram
-                            </Button>
-                        </a>
-                    </div>
-                ) : (
-                    <div className="QRMobileContent">
-                        <p className="arInstagram">AR-історія в Інсті!</p>
-                        <p className="pressButtonText">
-                                Тисни кнопку, фокусуй камеру на ілюстрації та вітай нову реальність.
-                        </p>
-                        <a href={hrefLink} target="_blank" rel="noreferrer">
-                            <Button
-                                className="goToInstaButton"
-                                onClick={() => instagramOnStreetcodeClickEvent('tablet')}
-                            >
-                                    Перейти в Instagram
-                            </Button>
-                        </a>
-                    </div>
-                )}
+            <div className="QRMobileContent">
+                <p className="arInstagram">AR-історія в Інсті!</p>
+                <p className="pressButtonText">
+                    Тисни кнопку та вітай нову реальність.
+                </p>
+                <a href={hrefLink} target="_blank" rel="noreferrer">
+                    <Button
+                        className="goToInstaButton"
+                        onClick={handleClick}
+                    >
+                        Перейти в Instagram
+                    </Button>
+                </a>
+            </div>
         </div>
     );
 };
