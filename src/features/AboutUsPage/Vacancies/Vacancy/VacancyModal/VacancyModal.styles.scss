@@ -7,6 +7,14 @@
 
 
 .vacancyModal {
+    ul {
+        @include mut.list-styles($type: disc);
+    }
+
+    ol {
+        @include mut.list-styles($type: decimal);
+    }
+    
     .ant-modal {
         &-content{
             border-radius: 60px;

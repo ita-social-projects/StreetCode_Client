@@ -4,6 +4,14 @@
 
 .text {
     white-space: pre-line;
+
+    ul {
+        @include mut.list-styles($type: disc);
+    }
+
+    ol {
+        @include mut.list-styles($type: decimal);
+    }
 }
 
 @media screen and (min-width: 481px) {

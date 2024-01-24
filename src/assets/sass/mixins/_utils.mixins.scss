@@ -276,3 +276,8 @@
     z-index: $z-index;
   }
 }
+
+@mixin list-styles($type) {
+  list-style-type: $type;
+  padding-inline-start: revert;
+}
