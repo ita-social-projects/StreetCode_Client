@@ -55,7 +55,7 @@
     @include mut.sized(100%, 167px);
     padding-bottom: f.pxToRem(15px);
     @include textCard.cardText(
-            $title-max-lines: 1,
+            $title-max-lines: 2,
             $text-max-lines: 5,
     );
 
@@ -73,7 +73,7 @@
       }
 
       &TopPart{
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 1024px) {
           gap: f.pxToRem(2px);
         }
       }
@@ -82,7 +82,7 @@
         padding-top: f.pxToRem(17px);
         color: c.$accented-red-color;
         @include mut.with-font($font-weight: 500, $font-size: 17px);
-        line-height: f.pxToEm(20px);
+        line-height: normal;
 
         @media screen and (max-width: 1450px) {
           padding-top: f.pxToRem(7px);
