@@ -48,6 +48,7 @@ const InterestingFactsComponent = () => {
     if (initialSlideIndex === -1) initialSlideIndex = 0;
 
     useEffect(() => {
+        // eslint-disable-next-line no-restricted-globals
         const hash = getUrlHash(location);
         if (!isScrolled && hash === 'wow-facts') {
             const element = document.getElementById(hash);
@@ -120,7 +121,6 @@ const InterestingFactsComponent = () => {
                                     {(facts.current.length === 1) ? (
                                         <div className="singleSlideContainer">
                                             <InterestingFactItem
-                                                numberOfSlides={1}
                                                 fact={facts.current[0]}
                                             />
                                         </div>
@@ -133,7 +133,6 @@ const InterestingFactsComponent = () => {
                                                 <InterestingFactItem
                                                     key={fact.id}
                                                     fact={fact}
-                                                    numberOfSlides={sliderArray.length}
                                                     index={index}
                                                     middleFactIndex={middleFactIndex}
                                                 />
