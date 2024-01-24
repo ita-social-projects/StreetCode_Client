@@ -20,6 +20,7 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
 
     const navigate = useNavigate();
     const historyState = { fromPage: 'main_page' };
+
     const handleClickRedirect = (e: React.MouseEvent<HTMLDivElement>) => {
         const streetcodeUrl = streetcode.transliterationUrl;
 
