@@ -5,8 +5,6 @@ import React, { useCallback, useState } from 'react';
 import ImagesApi from '@api/media/images.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Image from '@models/media/image.model';
-import useMobx from '@stores/root-store';
-import { toArticleRedirectClickEvent } from '@utils/googleAnalytics.unility';
 
 import NewsApi from '@/app/api/news/news.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
@@ -18,8 +16,6 @@ import Heading from '../Heading/Heading.component';
 import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
 
 const NewsSlider = () => {
-    const { streetcodeMainPageStore, newsStore } = useMobx();
-    const { fetchNewsAll } = newsStore;
     const [news, setNews] = useState<News[]>([]);
     const [images, setImages] = useState<Image[]>([]);
 
@@ -35,15 +31,9 @@ const NewsSlider = () => {
         setDragging(false);
     }, [setDragging]);
 
-    const handleClickRedirect = (url : string) => {
-        toArticleRedirectClickEvent(url, 'main_page');
-        window.location.href = `news/${url}`;
-    };
-
     const handleOnItemClick = useCallback(
-        (e : React.MouseEvent<HTMLDivElement>, url: string) => {
+        (e : React.MouseEvent<HTMLDivElement>) => {
             if (dragging) e.stopPropagation();
-            else handleClickRedirect(url);
         },
         [dragging],
     );
@@ -95,9 +85,7 @@ const NewsSlider = () => {
                                             <div
                                                 key={news[0].id}
                                                 className="slider-item"
-                                                onClickCapture={(e) => {
-                                                    handleOnItemClick(e, news[0].url.toString());
-                                                }}
+                                                onClickCapture={handleOnItemClick}
                                             >
                                                 <NewsSliderItem news={news[0]} image={images[0]} />
                                             </div>
@@ -111,9 +99,7 @@ const NewsSlider = () => {
                                                     <div
                                                         key={item.id}
                                                         className="slider-item"
-                                                        onClickCapture={(e) => {
-                                                            handleOnItemClick(e, item.url.toString());
-                                                        }}
+                                                        onClickCapture={handleOnItemClick}
                                                     >
                                                         <NewsSliderItem news={item} image={images[index]} />
                                                     </div>

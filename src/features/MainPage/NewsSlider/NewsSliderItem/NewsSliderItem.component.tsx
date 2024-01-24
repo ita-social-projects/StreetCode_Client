@@ -1,6 +1,5 @@
 import './NewsSliderItem.styles.scss';
 
-import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import CardText from '@components/CardText/CardText.component';
 import dayjs from 'dayjs';
@@ -16,13 +15,15 @@ interface Props {
 }
 
 const NewsSliderItem = ({ news, image }: Props) => {
-    const isMobileOrTablet = useMediaQuery({
-        query: '(max-width: 1024px)',
-    });
-
     const navigate = useNavigate();
     const historyState = { fromPage: 'main_page' };
-    const handleClickRedirect = () => navigate(news.url.toString(), { state: historyState });
+    const newsUrl = news.url.toString();
+    const handleClickRedirect = (e: React.MouseEvent<HTMLDivElement>) => {
+        // if we click "До новини" link, we don't want to redirect to news page again
+        if (!(e.target as HTMLLinkElement)?.href?.includes(newsUrl)) {
+            navigate(`/news/${newsUrl}`, { state: historyState });
+        }
+    };
 
     const tempElement = document.createElement('div');
     tempElement.innerHTML = news?.text;
@@ -41,7 +42,7 @@ const NewsSliderItem = ({ news, image }: Props) => {
 
     return (
         <div className="newsSliderItem">
-            <div className="newsMainPage" onClick={isMobileOrTablet ? handleClickRedirect : undefined}>
+            <div className="newsMainPage" onClick={handleClickRedirect}>
                 <div className="newsPageImgContainer">
                     <img
                         key={image?.id}
@@ -54,7 +55,7 @@ const NewsSliderItem = ({ news, image }: Props) => {
                     <div className="newsContainer">
                         <div className="subContainer">
                             <CardText
-                                moreBtnAsLink={{ link: news.url.toString(), state: historyState }}
+                                moreBtnAsLink={{ link: `/news/${newsUrl}`, state: historyState }}
                                 moreBtnText="До новини"
                                 title={news?.title}
                                 text={htmlReactParser(cleanText?.substring(0, 800)) as string}
