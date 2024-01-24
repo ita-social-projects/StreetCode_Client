@@ -67,13 +67,11 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
     font-size: 15px;
 
     ul {
-      list-style-type: disc;
-      padding-inline-start: revert;
+      @include mut.list-styles($type: disc);
     }
-    
+
     ol {
-      list-style-type: decimal;
-      padding-inline-start: revert;
+        @include mut.list-styles($type: decimal);
     }
 
     >h1 {

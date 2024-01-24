@@ -20,9 +20,13 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
 
     const navigate = useNavigate();
     const historyState = { fromPage: 'main_page' };
-    const handleClickRedirect = () => {
-        if (streetcode.transliterationUrl) {
-            navigate(streetcode.transliterationUrl, { state: historyState });
+
+    const handleClickRedirect = (e: React.MouseEvent<HTMLDivElement>) => {
+        const streetcodeUrl = streetcode.transliterationUrl;
+
+        // if we click "До стріткоду" link, we don't want to redirect to streetcode page again
+        if (!(e.target as HTMLLinkElement)?.href?.includes(streetcodeUrl)) {
+            navigate(streetcodeUrl, { state: historyState });
         }
     };
 

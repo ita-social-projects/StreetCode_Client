@@ -28,7 +28,7 @@ const SOCIAL_OPTIONS = [
         label: 'Behance',
     },
     {
-        value: 'https',
+        value: 'http',
         label: 'Ваш сайт',
     },
 ];
