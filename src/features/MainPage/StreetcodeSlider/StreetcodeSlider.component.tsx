@@ -14,6 +14,7 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { paginateRequest } from '@/app/common/utils/paginateRequest';
 import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
+import STREETCODE_SLIDER_PROPS from './constants/streetcodeSliderProps.constant';
 import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
 
 const DEFAULT_STREETCODE_CARDS_AMOUNT = 32;
@@ -23,25 +24,11 @@ const StreetcodeSlider = () => {
     const [images, setImages] = useState<Image[]>([]);
     const loading = useRef(false);
 
-    const props = {
-        touchAction: 'pan-y',
-        touchThreshold: 25,
-        transform: 'translateZ(0)',
-        arrows: false,
-        dots: false,
-        infinite: true,
-        variableWidth: true,
-        slidesToShow: 1,
-        swipeOnClick: false,
-        centerMode: false,
-        initialSlide: 0,
-    };
-
     const windowsize = useWindowSize();
-    if (windowsize.width <= 1024 && windowsize.width >= 768) props.centerMode = true;
-    if (windowsize.width <= 1024) props.dots = true;
-    if (windowsize.width <= 1024 && windowsize.width >= 768) props.initialSlide = 1;
-    if (windowsize.width <= 768) props.variableWidth = false;
+    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.centerMode = true;
+    if (windowsize.width <= 1024) STREETCODE_SLIDER_PROPS.dots = true;
+    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.initialSlide = 1;
+    if (windowsize.width <= 768) STREETCODE_SLIDER_PROPS.variableWidth = false;
 
     useAsync(async () => {
         const shuffleSeed = Math.floor(Date.now() / 1000);
@@ -104,7 +91,7 @@ const StreetcodeSlider = () => {
                                 {
                                     streetcodes.length > 0
                                         ? (
-                                            <SlickSlider {...props}>
+                                            <SlickSlider {...STREETCODE_SLIDER_PROPS}>
                                                 {streetcodes.map((item, index) => (
                                                     <div key={item.id} className="slider-item">
                                                         <StreetcodeSliderItem

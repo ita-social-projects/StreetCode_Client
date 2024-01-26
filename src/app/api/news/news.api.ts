@@ -1,13 +1,16 @@
 import Agent, { AgentFrontend } from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import News, { NewsWithUrl } from '@models/news/news.model';
+import { useQuery } from '@tanstack/react-query';
 
 const NewsApi = {
     getById: (id: number) => Agent.get<News>(`${API_ROUTES.NEWS.GET}/${id}`),
 
     getByUrl: (url: string) => Agent.get<News>(`${API_ROUTES.NEWS.GET_BY_URL}/${url}`),
 
-    getNewsAndLinksByUrl: (url: string):Promise<NewsWithUrl> => Agent.get<NewsWithUrl>(`${API_ROUTES.NEWS.GET_NEWS_AND_LINKS_BY_URL}/${url}`),
+    getNewsAndLinksByUrl: (url: string):Promise<NewsWithUrl> => Agent.get<NewsWithUrl>(
+        `${API_ROUTES.NEWS.GET_NEWS_AND_LINKS_BY_URL}/${url}`,
+    ),
 
     getAll: () => Agent.get<News[]>(`${API_ROUTES.NEWS.GET_ALL}`),
 
@@ -19,5 +22,7 @@ const NewsApi = {
 
     update: (news: News) => Agent.put<News>(`${API_ROUTES.NEWS.UPDATE}`, news),
 };
+
+export const useSortedNews = () => useQuery({ queryKey: ['sortedNews'], queryFn: NewsApi.getAllSortedNews });
 
 export default NewsApi;

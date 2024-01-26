@@ -1,5 +1,5 @@
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
-import newsApi from '@api/news/news.api';
+import newsApi, { useSortedNews } from '@api/news/news.api';
 import News from '@models/news/news.model';
 import dayjs from 'dayjs';
 
@@ -30,7 +30,11 @@ export default class NewsStore {
         news.forEach(this.setItem);
 
         // as date is saved in UTC+0, add local offset to actualize date
-        news.forEach((n) => n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours'));
+
+        news.forEach((n) => {
+            // eslint-disable-next-line no-param-reassign
+            n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours');
+        });
     }
 
     public set setNews(news: News) {
@@ -78,10 +82,12 @@ export default class NewsStore {
     };
 
     public fetchNewsAllSortedByCreationDate = async () => {
-        try {
-            this.setInternalMap(await newsApi.getAllSortedNews());
-        } catch (error: unknown) {
-            console.log(error);
+        const { data: sortedNews, isError } = await useSortedNews();
+
+        if (!isError) {
+            runInAction(() => {
+                this.setInternalMap(sortedNews as News[]);
+            });
         }
     };
 
