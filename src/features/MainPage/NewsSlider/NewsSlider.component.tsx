@@ -3,7 +3,7 @@ import './NewsSlider.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useCallback, useState } from 'react';
 import Heading from '@features/MainPage/Heading/Heading.component';
-import NEWS_SLIDER_PROPS from '@features/MainPage/NewsSlider/constants/streetcodeSliderProps.constant';
+import NEWS_SLIDER_PROPS from '@features/MainPage/NewsSlider/constants/newsSliderProps.constant';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
