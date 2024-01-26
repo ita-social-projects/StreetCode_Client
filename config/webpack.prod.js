@@ -1,4 +1,6 @@
 const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
 const webpack = require("webpack");
 
 module.exports = {
@@ -23,7 +25,23 @@ module.exports = {
         ...require('./webpack.plugins'),
         new Dotenv({
             path: `./.env`,
-        }), 
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: 'public/sitemap.xml',
+                    to: path.resolve(__dirname, '../dist'),
+                },
+                {
+                    from: 'public/robots.txt',
+                    to: path.resolve(__dirname, '../dist'),
+                },
+                {
+                    from: 'public/env-config.js',
+                    to: path.resolve(__dirname, '../dist'),
+                },
+            ],
+        }),
       ],
     optimization: {
         splitChunks: {
