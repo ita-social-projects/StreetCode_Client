@@ -40,6 +40,10 @@ module.exports = {
                     from: 'public/env-config.js',
                     to: path.resolve(__dirname, '../dist'),
                 },
+                {
+                    from: 'public/google9bdfd511d53c8fcd.html',
+                    to: path.resolve(__dirname, '../dist'),
+                },
             ],
         }),
       ],
