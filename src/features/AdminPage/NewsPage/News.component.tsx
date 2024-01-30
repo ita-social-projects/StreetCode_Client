@@ -25,10 +25,6 @@ const Newss: React.FC = observer(() => {
     newsStore.fetchSortedNews();
     imagesStore.fetchImages(newsStore.getNewsArray || []);
 
-    // useEffect(() => {
-    //     updatedNews();
-    // }, [modalAddOpened, modalEditOpened]);
-
     const columns: ColumnsType<News> = [
         {
             title: 'Назва',
