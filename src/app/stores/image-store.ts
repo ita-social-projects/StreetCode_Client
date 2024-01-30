@@ -43,7 +43,7 @@ export default class ImageStore {
         try {
             const image = await ImagesApi.getById(id);
             this.setItem(image);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public fetchImages = (array: { imageId: number }[]) => {
@@ -64,7 +64,7 @@ export default class ImageStore {
         try {
             const image = await ImagesApi.getByStreetcodeId(streetcodeId);
             this.setInternalMap(image);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public createImage = async (image: ImageCreate) => {
@@ -72,7 +72,7 @@ export default class ImageStore {
             await ImagesApi.create(image).then((resp) => {
                 this.setItem(resp);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public updateImage = async (image: Image) => {
@@ -85,7 +85,7 @@ export default class ImageStore {
                 };
                 this.setItem(updatedImage as Image);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public deleteImage = async (imageId: number) => {
@@ -94,6 +94,6 @@ export default class ImageStore {
             runInAction(() => {
                 this.ImageMap.delete(imageId);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 }

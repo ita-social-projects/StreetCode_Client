@@ -1,6 +1,7 @@
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
-import newsApi, { useSortedNews } from '@api/news/news.api';
+import NewsApi from '@api/news/news.api';
 import News from '@models/news/news.model';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 export default class NewsStore {
@@ -43,7 +44,7 @@ export default class NewsStore {
 
     public setCurrentNewsId = async (url: string) => {
         try {
-            const news = await newsApi.getByUrl(url);
+            const news = await NewsApi.getByUrl(url);
             if (news !== null) {
                 this.setNews = news;
                 return news;
@@ -67,7 +68,7 @@ export default class NewsStore {
 
     public getAll = async () => {
         try {
-            this.setInternalMap(await newsApi.getAll());
+            this.setInternalMap(await NewsApi.getAll());
         } catch (error: unknown) {
             console.log(error);
         }
@@ -75,33 +76,36 @@ export default class NewsStore {
 
     public fetchNewsAll = async () => {
         try {
-            this.setInternalMap(await newsApi.getAll());
+            this.setInternalMap(await NewsApi.getAll());
         } catch (error: unknown) {
             console.log(error);
         }
     };
 
-    public fetchNewsAllSortedByCreationDate = async () => {
-        const { data: sortedNews, isError } = await useSortedNews();
-
-        if (!isError) {
-            runInAction(() => {
-                this.setInternalMap(sortedNews as News[]);
-            });
-        }
+    public fetchSortedNews = () => {
+        useQuery(
+            {
+                queryKey: ['sortedNews'],
+                queryFn: () => NewsApi.getAllSortedNews().then((sortedNews) => {
+                    runInAction(() => {
+                        this.setInternalMap(sortedNews);
+                    });
+                }),
+            },
+        );
     };
 
     public createNews = async (news: News) => {
-        await newsApi.create(news).then((created) => this.setItem(created));
+        await NewsApi.create(news).then((created) => this.setItem(created));
     };
 
     public updateNews = async (news: News) => {
-        await newsApi.update(news).then((updated) => this.setItem(updated));
+        await NewsApi.update(news).then((updated) => this.setItem(updated));
     };
 
     public deleteNews = async (newsId: number) => {
         try {
-            await newsApi.delete(newsId);
+            await NewsApi.delete(newsId);
             runInAction(() => {
                 this.NewsMap.delete(newsId);
             });

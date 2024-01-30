@@ -43,15 +43,15 @@ const NewsSliderItem = ({ news, image }: Props) => {
     return (
         <div className="newsSliderItem">
             <div className="newsMainPage" onClick={handleClickRedirect}>
-                <div className="newsPageImgContainer">
+                <div className={`newsPageImgContainer ${image?.id ? '' : 'skeleton'}`}>
                     {image ? (
                         <img
                             key={image?.id}
                             src={base64ToUrl(image?.base64, image?.mimeType)}
                             className="newsPageImg"
-                            alt="news"
+                            alt={image?.imageDetails?.alt ?? 'news'}
                         />
-                    ) : null}
+                    ) : <></>}
                 </div>
                 <div className="newsSlideText">
                     <div className="newsContainer">

@@ -7,7 +7,6 @@ import NEWS_SLIDER_PROPS from '@features/MainPage/NewsSlider/constants/newsSlide
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { useSortedNews } from '@/app/api/news/news.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
@@ -16,10 +15,10 @@ const NewsSlider = () => {
     const windowSize = useWindowSize();
 
     const { modalStore } = useModalContext();
-    const { imagesStore } = useMobx();
-    const { data: sortedNews } = useSortedNews();
+    const { imagesStore, newsStore } = useMobx();
 
-    imagesStore.fetchImages(sortedNews || []);
+    newsStore.fetchSortedNews();
+    imagesStore.fetchImages(newsStore.getNewsArray || []);
 
     const [dragging, setDragging] = useState(false);
 
@@ -41,7 +40,7 @@ const NewsSlider = () => {
     );
 
     return (
-        (sortedNews && sortedNews.length > 0)
+        (newsStore.getNewsArray && newsStore.getNewsArray.length > 0)
             ? (
                 <div>
                     <div className="NewsWrapper">
@@ -50,15 +49,15 @@ const NewsSlider = () => {
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
-                                        {(sortedNews.length === 1) ? (
+                                        {(newsStore.getNewsArray.length === 1) ? (
                                             <div
-                                                key={sortedNews[0].id}
+                                                key={newsStore.getNewsArray[0].id}
                                                 className="slider-item"
                                                 onClickCapture={handleOnItemClick}
                                             >
                                                 <NewsSliderItem
-                                                    news={sortedNews[0]}
-                                                    image={imagesStore.getImage(sortedNews[0].imageId)}
+                                                    news={newsStore.getNewsArray[0]}
+                                                    image={imagesStore.getImage(newsStore.getNewsArray[0].imageId)}
                                                 />
                                             </div>
                                         ) : (
@@ -67,7 +66,7 @@ const NewsSlider = () => {
                                                 afterChange={handleAfterChange}
                                                 {...NEWS_SLIDER_PROPS}
                                             >
-                                                {sortedNews.map((item, index) => (
+                                                {newsStore.getNewsArray.map((item, index) => (
                                                     <div
                                                         key={item.id}
                                                         className="slider-item"
