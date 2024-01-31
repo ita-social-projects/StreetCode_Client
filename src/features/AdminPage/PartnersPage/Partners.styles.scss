@@ -14,6 +14,7 @@
         @include mut.sized(80%);
 
         .partners-table-logo{
+            max-width: 90%;
             height: f.pxToRem(40px);
             margin: 0;
             padding: 0
