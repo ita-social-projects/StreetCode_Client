@@ -7,6 +7,7 @@ import NEWS_SLIDER_PROPS from '@features/MainPage/NewsSlider/constants/newsSlide
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
+
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
