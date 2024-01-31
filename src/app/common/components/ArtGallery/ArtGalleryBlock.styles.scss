@@ -1,5 +1,6 @@
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.sizes.scss" as s;
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
@@ -57,18 +58,49 @@
     }
 }
 
-@media screen and (max-width:1025px) {
+@media screen and (max-width:1024px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-            .slick-list {
-                margin-left: pxToRem(-10px);
-            }
             .artGalleryContentContainer{
                 .artGallerySliderContainer{
-                    @include mut.sized(1025px, 100%);
+                    @include mut.sized(100%, 100%);
                 }
             }
 
+        }
+    }
+}
+
+@media screen and (max-width:768px) {
+    .artGalleryWrapper {
+        .artGalleryContainer {
+            .artGalleryContentContainer{
+                .artGallerySliderContainer{
+                    height: pxToRem(400px);
+                }
+            }
+
+        }
+    }
+}
+
+@media screen and (max-width:680px) {
+    .artGalleryWrapper {
+        .artGalleryContainer {
+            .artGalleryContentContainer {
+                .artGallerySliderContainer {
+                    @include mut.rem-padded(s.$art-gallery-gap-mobile, s.$art-gallery-gap-mobile, 0, s.$art-gallery-gap-mobile);
+                    gap: pxToRem(s.$art-gallery-gap-mobile);
+                    height: pxToRem(362px);
+
+                    overflow-y: hidden;
+                    overflow-x: scroll;
+
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+            }
         }
     }
 }

@@ -297,8 +297,7 @@
   $gap-sum: ($rows - 1) * $gap;
 
   display: grid;
-  gap: f.pxToRem($gap);
   justify-content: center;
   grid-template-columns: repeat($cols, 1fr);
-  grid-template-rows: repeat($rows, f.pxToRem(calc((536px - $gap-sum)/$rows)));
+  grid-template-rows: repeat($rows, 1fr);
 }

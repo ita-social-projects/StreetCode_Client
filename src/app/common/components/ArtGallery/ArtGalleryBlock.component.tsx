@@ -16,6 +16,7 @@ import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import { Button } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 const MAX_SLIDES_AMOUNT = 30;
 
@@ -32,6 +33,9 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props
     const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
     const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
     const secondRender = useRef(false);
+    const isMobile = useMediaQuery({
+        query: '(max-width: 680px)',
+    });
 
     const { id } = useParams<any>();
     const parseId = id ? +id : errorStreetCodeId;
@@ -135,15 +139,24 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props
                         <BlockHeading headingText="Арт-галерея" />
                         <div className="artGalleryContentContainer">
                             <div className="artGallerySliderContainer">
-                                <SlickSlider {...slickProps}>
-                                    {isConfigurationGallery
+                                {isMobile
+                                    ? isConfigurationGallery
                                         ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
                                         : convertSlidesToTemplates(
                                             streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
                                             false,
                                             isAdmin,
-                                        )}
-                                </SlickSlider>
+                                        )
+                                    : <SlickSlider {...slickProps}>
+                                        {isConfigurationGallery
+                                            ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
+                                            : convertSlidesToTemplates(
+                                                streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
+                                                false,
+                                                isAdmin,
+                                            )}
+                                    </SlickSlider>
+                                }
                             </div>
                         </div>
                     </div>

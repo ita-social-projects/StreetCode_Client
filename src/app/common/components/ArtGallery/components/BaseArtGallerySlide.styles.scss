@@ -1,12 +1,12 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.sizes.scss" as s;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
 .baseArtSlide{
     position: relative;
-    overflow: hidden;
-    padding: pxToRem(30px);
+    padding: pxToRem(s.$art-gallery-gap);
 
     height: pxToRem(596px);
     width: pxToRem(1260px);
@@ -14,7 +14,21 @@
     max-height: 100%;
     max-width: 100%;
 
-    gap: pxToRem(30px);
+    gap: pxToRem(s.$art-gallery-gap);
+
+    @media screen and (max-width: 768px) {
+        @include mut.rem-padded($bottom: s.$art-gallery-gap-mobile, $right: s.$art-gallery-gap-mobile, $left: s.$art-gallery-gap-mobile);
+        gap: pxToRem(s.$art-gallery-gap-mobile);
+        height: pxToRem(400px);
+    }
+
+    @media screen and (max-width: 680px) {
+        @include mut.rem-padded($bottom: s.$art-gallery-gap-mobile);
+        height: pxToRem(362px);
+        width: pxToRem(680px);
+
+        max-height: unset;
+    }
 }
 
 .baseArtSlideImageWrapper{
