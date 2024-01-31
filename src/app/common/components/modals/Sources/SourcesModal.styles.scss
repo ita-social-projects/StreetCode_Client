@@ -62,7 +62,6 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
     @include mut.rem-margined(30px, 10px, 30px, 30px);
     padding-right: pxToRem(10px);
     overflow-y: scroll;
-    white-space: pre-line;
     font-weight: 300;
     font-size: 15px;
 
@@ -72,6 +71,10 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
 
     ol {
         @include mut.list-styles($type: decimal);
+    }
+
+    p:not(:last-child)[dir="ltr"] {
+      padding-bottom: pxToRem(10px);
     }
 
     >h1 {

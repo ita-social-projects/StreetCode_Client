@@ -7,7 +7,9 @@ const NewsApi = {
 
     getByUrl: (url: string) => Agent.get<News>(`${API_ROUTES.NEWS.GET_BY_URL}/${url}`),
 
-    getNewsAndLinksByUrl: (url: string):Promise<NewsWithUrl> => Agent.get<NewsWithUrl>(`${API_ROUTES.NEWS.GET_NEWS_AND_LINKS_BY_URL}/${url}`),
+    getNewsAndLinksByUrl: (url: string):Promise<NewsWithUrl> => Agent.get<NewsWithUrl>(
+        `${API_ROUTES.NEWS.GET_NEWS_AND_LINKS_BY_URL}/${url}`,
+    ),
 
     getAll: () => Agent.get<News[]>(`${API_ROUTES.NEWS.GET_ALL}`),
 
