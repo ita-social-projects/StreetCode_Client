@@ -6,7 +6,7 @@ export default interface News {
     title: string;
     text: string;
     url: string;
-    imageId?: number;
+    imageId: number;
     image?: Image;
     creationDate: dayjs.Dayjs;
 }

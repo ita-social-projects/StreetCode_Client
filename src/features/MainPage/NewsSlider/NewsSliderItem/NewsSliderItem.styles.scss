@@ -57,11 +57,12 @@
     .newsPageImgContainer {
         position: relative;
         z-index: 1;
+        height: 100%;
+
         @include mut.rem-padded($top: 5px, $right: 5px, $bottom: 5px, $left: 5px);
 
         @media (min-width: 768px) and (max-width: 1024px) {
             margin-top: 0;
-            height: 100%;
         }
 
         @media screen and (max-width: 767px) {

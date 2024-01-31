@@ -11,7 +11,7 @@ import News from '@/models/news/news.model';
 
 interface Props {
     news: News;
-    image: Image
+    image?: Image
 }
 
 const NewsSliderItem = ({ news, image }: Props) => {
@@ -43,13 +43,15 @@ const NewsSliderItem = ({ news, image }: Props) => {
     return (
         <div className="newsSliderItem">
             <div className="newsMainPage" onClick={handleClickRedirect}>
-                <div className="newsPageImgContainer">
-                    <img
-                        key={image?.id}
-                        src={base64ToUrl(image?.base64, image?.mimeType)}
-                        className="newsPageImg"
-                        alt="news"
-                    />
+                <div className={`newsPageImgContainer ${image?.id ? '' : 'skeleton'}`}>
+                    {image ? (
+                        <img
+                            key={image?.id}
+                            src={base64ToUrl(image?.base64, image?.mimeType)}
+                            className="newsPageImg"
+                            alt={image?.imageDetails?.alt ?? 'news'}
+                        />
+                    ) : <></>}
                 </div>
                 <div className="newsSlideText">
                     <div className="newsContainer">
