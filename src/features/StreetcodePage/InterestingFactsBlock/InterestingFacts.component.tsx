@@ -2,6 +2,7 @@ import './InterestingFacts.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -9,9 +10,8 @@ import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFa
 
 import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
-import { Fact } from '@/models/streetcode/text-contents.model';
-import { useSearchParams } from 'react-router-dom';
 import getUrlHash from '@/app/common/utils/getUrlHash.utility';
+import { Fact } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -44,17 +44,18 @@ const InterestingFactsComponent = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const factID = Number(searchParams.get('factId'));
-    let initialSlideIndex = sliderArray.findIndex(fact => fact.id === factID);
-    if(initialSlideIndex === -1) initialSlideIndex = 0;
+    let initialSlideIndex = sliderArray.findIndex((fact) => fact.id === factID);
+    if (initialSlideIndex === -1) initialSlideIndex = 0;
 
     useEffect(() => {
+        // eslint-disable-next-line no-restricted-globals
         const hash = getUrlHash(location);
-        if (!isScrolled && hash === 'wow-facts'){
+        if (!isScrolled && hash === 'wow-facts') {
             const element = document.getElementById(hash);
-    
+
             setTimeout(() => {
-                if(element !== null) {
-                    element.scrollIntoView({behavior: "smooth", block: "center"});
+                if (element !== null) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     setIsScrolled(true);
                 }
             }, 1000);
@@ -120,7 +121,6 @@ const InterestingFactsComponent = () => {
                                     {(facts.current.length === 1) ? (
                                         <div className="singleSlideContainer">
                                             <InterestingFactItem
-                                                numberOfSlides={1}
                                                 fact={facts.current[0]}
                                             />
                                         </div>
@@ -133,7 +133,6 @@ const InterestingFactsComponent = () => {
                                                 <InterestingFactItem
                                                     key={fact.id}
                                                     fact={fact}
-                                                    numberOfSlides={sliderArray.length}
                                                     index={index}
                                                     middleFactIndex={middleFactIndex}
                                                 />

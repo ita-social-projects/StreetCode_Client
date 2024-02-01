@@ -10,12 +10,10 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
-import { Editor } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor';
-import axios from 'axios';
 import dayjs from 'dayjs';
-import { Editor as TinyMCEEditor } from 'tinymce/tinymce';
 
 import {
     Button,
@@ -30,6 +28,11 @@ import {
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 import ukUA from 'antd/locale/uk_UA';
 
+import {
+    checkQuillEditorTextLength,
+    setQuillEditorContent,
+} from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio from '@/models/media/audio.model';
@@ -37,12 +40,12 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 
 const NewsModal: React.FC<{
-  newsItem?: News;
-  open: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  afterSubmit?: (news: News) => void;
-  initialValue: any;
-  limit: any;
+    newsItem?: News;
+    open: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    afterSubmit?: (news: News) => void;
+    initialValue?: any;
+    limit?: any;
 }> = observer(({
     newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit,
 }) => {
@@ -54,13 +57,13 @@ const NewsModal: React.FC<{
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const image = useRef<Image | undefined>(undefined);
-    const editorRef = useRef<TinyMCEEditor>();
+    const editorRef = useRef<ReactQuill>(null);
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
-    const [count, setCount] = React.useState(0);
-    const [textCount, setTextCount] = useState(0);
+    const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля правильно";
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
+    const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
 
     message.config({
         top: 100,
@@ -91,7 +94,7 @@ const NewsModal: React.FC<{
     };
 
     useEffect(() => {
-        editorRef.current?.setContent('');
+        editorRef.current?.editor?.setText('');
         if (newsItem && open) {
             imageId.current = newsItem.imageId;
             image.current = newsItem.image;
@@ -111,9 +114,8 @@ const NewsModal: React.FC<{
                     },
                 ] : [],
             });
-            if (editorRef.current) {
-                editorRef.current.setContent(newsItem.text);
-            }
+            setQuillEditorContent(editorRef.current, newsItem.text);
+            setData(newsItem.text);
         } else {
             imageId.current = 0;
             image.current = undefined;
@@ -134,7 +136,7 @@ const NewsModal: React.FC<{
             setIsModalOpen(false);
             setTextIsPresent(false);
             setTextIsChanged(false);
-            editorRef.current?.setContent('');
+            editorRef.current?.editor?.setText('');
         }
     };
 
@@ -151,8 +153,9 @@ const NewsModal: React.FC<{
 
     const handleTextChange = () => {
         setTextIsChanged(true);
+        const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
 
-        if (editorRef.current?.getContent() === '') {
+        if (emptyTextField) {
             setTextIsPresent(false);
             return false;
         }
@@ -164,14 +167,15 @@ const NewsModal: React.FC<{
     const handleOk = async () => {
         try {
             await form.validateFields();
+            checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
             if (handleTextChange()) {
                 setWaitingForApiResponse(true);
                 await form.submit();
             } else {
                 throw new Error();
             }
-        } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля");
+        } catch {
+            message.error(fillInAllFieldsMessage);
         }
     };
 
@@ -180,14 +184,13 @@ const NewsModal: React.FC<{
 
         const news: News = {
             id: 0,
-            imageId: imageId.current,
+            imageId: imageId.current as number,
             url: formValues.url,
             title: formValues.title,
-            text: editorRef.current?.getContent() ?? '',
+            text: data ?? '',
             image: undefined,
             creationDate: dayjs(formValues.creationDate),
         };
-
         newsStore.getNewsArray.map((t) => t).forEach((t) => {
             if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
@@ -198,7 +201,7 @@ const NewsModal: React.FC<{
             }
             if (newsItem) {
                 news.id = newsItem.id;
-                news.imageId = imageId.current;
+                news.imageId = imageId.current as number;
                 news.image = image.current;
 
                 await newsStore.updateNews(news);
@@ -216,235 +219,188 @@ const NewsModal: React.FC<{
         }
     };
 
-    const handleUpdate = (value: any, editor: any) => {
-        const cCount = editor.getContent({ format: 'text' }).length;
-        if (cCount <= sizeLimit) {
-            setData(value);
-            setCount(cCount);
-            setTextCount(cCount);
-        } else {
-            message.error('Ви перевищіли максимально допустиму кількість символів');
-        }
-    };
-
-    const handleBeforeAddUndo = (evt: any, editor: any) => {
-        const cCount = editor.getContent({ format: 'text' }).length;
-        if (cCount > sizeLimit) {
-            evt.preventDefault();
-        }
+    const handleUpdate = (value: any) => {
+        setData(value);
     };
 
     return (
-        <div>
-            <ConfigProvider locale={ukUA}>
-                <Modal
-                    open={open}
-                    onCancel={closeModal}
-                    className="modalContainer"
-                    footer={null}
-                    closeIcon={(
-                        <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
-                            <CancelBtn className="iconSize" onClick={closeAndCleanData} />
-                        </Popover>
-                    )}
-                >
-                    <div className="modalContainer-content">
-                        <Form
-                            scrollToFirstError
-                            form={form}
-                            layout="vertical"
-                            onFinish={onSuccessfulSubmitNews}
-                            initialValues={{
-                                title: newsItem?.title,
-                                url: newsItem?.url,
-                                creationDate: newsItem ? dayjs(newsItem.creationDate) : undefined,
-                            }}
-                        >
-                            <div className="center">
-                                <h2>
-                                    {newsItem ? 'Редагувати' : 'Додати'}
-                                    {' '}
-Новину
-                                </h2>
-                            </div>
-                            <Form.Item
-                                name="title"
-                                label="Заголовок: "
-                                rules={[{ required: true, message: 'Введіть заголовок' }]}
-                            >
-                                <Input maxLength={100} showCount />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="url"
-                                label="Посилання: "
-                                rules={[
-                                    { required: true, message: 'Введіть Посилання' },
-                                    {
-                                        pattern: /^[a-z-]+$/,
-                                        message:
-                      'Посилання має містити лише малі латинські літери та дефіс',
-                                    },
-                                    {
-                                        validator: async (_, value) => {
-                                            const isUnique = checkUniqueURL(value);
-
-                                            if (await isUnique) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error('Посилання вже існує'));
-                                        },
-
-                                    },
-                                ]}
-                            >
-                                <Input maxLength={200} showCount />
-                            </Form.Item>
-
-                            <div className="required-text" title="Текст:">
-                                <span className="star">&#x204E;</span>
-                                <span>Текст:</span>
-                            </div>
-                            <Editor
-                                onEditorChange={handleUpdate}
-                                value={data}
-                                onBeforeAddUndo={handleBeforeAddUndo}
-                                onInit={(evt, editor) => {
-                                    editorRef.current = editor;
-                                }}
-                                initialValue={newsItem ? newsItem.text : ''}
-                                init={{
-                                    height: 300,
-                                    menubar: false,
-                                    plugins: [
-                                        'autolink',
-                                        'lists',
-                                        'preview',
-                                        'anchor',
-                                        'searchreplace',
-                                        'visualblocks',
-                                        'insertdatetime',
-                                        'wordcount',
-                                    ],
-                                    // eslint-disable-next-line no-useless-concat
-                                    toolbar: 'undo redo | bold italic | ' + 'removeformat ',
-                                    content_style:
-                    'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                                }}
-                            />
-                            <p>
-             Залишок символів:
+        <ConfigProvider locale={ukUA}>
+            <Modal
+                open={open}
+                onCancel={closeModal}
+                className="modalContainer"
+                footer={null}
+                closeIcon={(
+                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                        <CancelBtn className="iconSize" onClick={closeAndCleanData} />
+                    </Popover>
+                )}
+            >
+                <div className="modalContainer-content">
+                    <Form
+                        scrollToFirstError
+                        form={form}
+                        layout="vertical"
+                        onFinish={onSuccessfulSubmitNews}
+                        initialValues={{
+                            title: newsItem?.title,
+                            url: newsItem?.url,
+                            creationDate: newsItem ? dayjs(newsItem.creationDate) : undefined,
+                        }}
+                    >
+                        <div className="center">
+                            <h2>
+                                {newsItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-                                {sizeLimit - textCount}
-                                {textCount > sizeLimit && (
-                                    <span style={{ color: 'red', marginLeft: '10px' }}>
-            Ви перевищіли максимально допустиму кількість символів
-                                    </span>
-                                )}
+                                Новину
+                            </h2>
+                        </div>
+                        <Form.Item
+                            name="title"
+                            label="Заголовок: "
+                            rules={[{ required: true, message: 'Введіть заголовок' }]}
+                        >
+                            <Input maxLength={100} showCount />
+                        </Form.Item>
 
-                            </p>
-                            {!textIsPresent && textIsChanged && (
-                                <p className="form-text">Введіть текст</p>
-                            )}
-
-                            <Form.Item
-                                name="image"
-                                label="Зображення: "
-                                valuePropName="fileList"
-                                getValueFromEvent={(e: any) => {
-                                    if (Array.isArray(e)) {
-                                        return e;
-                                    }
-                                    return e?.fileList;
-                                }}
-                                className="image-form-item"
-                                rules={[{
-                                    required: true,
-                                    message: 'Додайте зображення',
+                        <Form.Item
+                            name="url"
+                            label="Посилання: "
+                            rules={[
+                                { required: true, message: 'Введіть Посилання' },
+                                {
+                                    pattern: /^[a-z-]+$/,
+                                    message:
+                                        'Посилання має містити лише малі латинські літери та дефіс',
                                 },
                                 {
-                                    validator: (_, file) => {
-                                        if (file) {
-                                            let name = '';
-                                            if (file.file) {
-                                                name = file.file.name.toLowerCase();
-                                            } else if (file.name) {
-                                                name = file.name.toLowerCase();
-                                            }
-                                            if (name.endsWith('.jpeg') || name.endsWith('.png')
-                                                || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
-                                                return Promise.resolve();
-                                            }
-                                            // eslint-disable-next-line max-len
-                                            return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
+                                    validator: async (_, value) => {
+                                        const isUnique = checkUniqueURL(value);
+
+                                        if (await isUnique) {
+                                            return Promise.resolve();
                                         }
-                                        return Promise.reject();
+                                        return Promise.reject(new Error('Посилання вже існує'));
                                     },
+
                                 },
-                                ]}
-                            >
-                                <FileUploader
-                                    multiple={false}
-                                    accept=".jpeg,.png,.jpg,.webp"
-                                    listType="picture-card"
-                                    maxCount={1}
-                                    onPreview={handlePreview}
-                                    uploadTo="image"
-                                    onSuccessUpload={(img: Image | Audio) => {
-                                        imageId.current = img.id;
-                                        image.current = img as Image;
-                                        if (newsItem) {
-                                            newsItem.image = img as Image;
+                            ]}
+                        >
+                            <Input maxLength={200} showCount />
+                        </Form.Item>
+
+                        <div className="required-text" title="Текст:">
+                            <span className="star">&#x204E;</span>
+                            <span>Текст:</span>
+                        </div>
+                        <Editor
+                            qRef={editorRef}
+                            value={data}
+                            onChange={handleUpdate}
+                            maxChars={sizeLimit}
+                            onCharacterCountChange={setEditorCharacterCount}
+                        />
+                        {!textIsPresent && textIsChanged && (
+                            <p className="form-text">Введіть текст</p>
+                        )}
+
+                        <Form.Item
+                            name="image"
+                            label="Зображення: "
+                            valuePropName="fileList"
+                            getValueFromEvent={(e: any) => {
+                                if (Array.isArray(e)) {
+                                    return e;
+                                }
+                                return e?.fileList;
+                            }}
+                            className="image-form-item"
+                            rules={[{
+                                required: true,
+                                message: 'Додайте зображення',
+                            },
+                            {
+                                validator: (_, file) => {
+                                    if (file) {
+                                        let name = '';
+                                        if (file.file) {
+                                            name = file.file.name.toLowerCase();
+                                        } else if (file.name) {
+                                            name = file.name.toLowerCase();
                                         }
-                                    }}
-                                    onRemove={removeImage}
-                                    defaultFileList={
-                                        newsItem?.imageId != null
-                                            ? [
-                                                {
-                                                    name: '',
-                                                    thumbUrl: base64ToUrl(
-                                                        newsItem?.image?.base64,
-                                                        newsItem?.image?.mimeType,
-                                                    ),
-                                                    uid: newsItem?.imageId?.toString() || '',
-                                                    status: 'done',
-                                                },
-                                            ]
-                                            : []
+                                        if (name.endsWith('.jpeg') || name.endsWith('.png')
+                                            || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
+                                            return Promise.resolve();
+                                        }
+                                        // eslint-disable-next-line max-len
+                                        return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
                                     }
+                                    return Promise.reject();
+                                },
+                            },
+                            ]}
+                        >
+                            <FileUploader
+                                multiple={false}
+                                accept=".jpeg,.png,.jpg,.webp"
+                                listType="picture-card"
+                                maxCount={1}
+                                onPreview={handlePreview}
+                                uploadTo="image"
+                                onSuccessUpload={(img: Image | Audio) => {
+                                    imageId.current = img.id;
+                                    image.current = img as Image;
+                                    if (newsItem) {
+                                        newsItem.image = img as Image;
+                                    }
+                                }}
+                                onRemove={removeImage}
+                                defaultFileList={
+                                    newsItem?.imageId != null
+                                        ? [
+                                            {
+                                                name: '',
+                                                thumbUrl: base64ToUrl(
+                                                    newsItem?.image?.base64,
+                                                    newsItem?.image?.mimeType,
+                                                ),
+                                                uid: newsItem?.imageId?.toString() || '',
+                                                status: 'done',
+                                            },
+                                        ]
+                                        : []
+                                }
 
-                                >
-                                    <p>Виберіть чи перетягніть файл</p>
-                                </FileUploader>
-                            </Form.Item>
-
-                            <Form.Item
-                                name="creationDate"
-                                label="Дата створення: "
-                                rules={[{ required: true, message: 'Введіть дату' }]}
                             >
-                                <DatePicker showTime allowClear={false} />
-                            </Form.Item>
-                            <PreviewFileModal
-                                opened={previewOpen}
-                                setOpened={setPreviewOpen}
-                                file={filePreview}
-                            />
+                                <p>Виберіть чи перетягніть файл</p>
+                            </FileUploader>
+                        </Form.Item>
 
-                            <div className="center">
-                                <Button
-                                    className="streetcode-custom-button"
-                                    onClick={() => handleOk()}
-                                >
-                  Зберегти
-                                </Button>
-                            </div>
-                        </Form>
-                    </div>
-                </Modal>
-            </ConfigProvider>
-        </div>
+                        <Form.Item
+                            name="creationDate"
+                            label="Дата створення: "
+                            rules={[{ required: true, message: 'Введіть дату' }]}
+                        >
+                            <DatePicker showTime allowClear={false} />
+                        </Form.Item>
+                        <PreviewFileModal
+                            opened={previewOpen}
+                            setOpened={setPreviewOpen}
+                            file={filePreview}
+                        />
+
+                        <div className="center">
+                            <Button
+                                className="streetcode-custom-button"
+                                onClick={() => handleOk()}
+                            >
+                                Зберегти
+                            </Button>
+                        </div>
+                    </Form>
+                </div>
+            </Modal>
+        </ConfigProvider>
     );
 });
 export default NewsModal;

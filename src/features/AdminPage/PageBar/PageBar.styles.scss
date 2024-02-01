@@ -6,15 +6,15 @@
 
 .PageBarContainer {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
-    @include mut.sized(14%);
+    @include mut.sized(20%);
     float: left;
     display: flex;
-    justify-content: center;
+    justify-content: start;
 }
 
 .BarContainer {
     @include mut.flexed(column, $align-items: flex-start, $gap: 10px);
-  
+
     position: fixed;
     .Link {
         color:black;

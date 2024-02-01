@@ -4,11 +4,8 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .adminPageContainer {
-    margin-top: f.pxToRem(100px);
-    display: flex;
-    float: left;
-    width: 100%;
-    padding-left: 10px;
+    @include mut.admin-page-base-layout();
+
     @include mut.with-font();
     .dimmed {
         @include mut.sized(100%);

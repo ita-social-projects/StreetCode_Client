@@ -27,6 +27,8 @@ import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import { removeHtmlTags } from '@/app/common/utils/removeHtmlTags.utility';
+import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
@@ -51,7 +53,6 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import { AudioUpdate } from '@/models/media/audio.model';
 
 function reindex(list:Array<StreetcodeTag>):Array<StreetcodeTag> {
     const result = Array.from(list);
@@ -126,6 +127,18 @@ const NewStreetcode = () => {
     const alertUser = (event: BeforeUnloadEvent) => {
         event.preventDefault();
         event.returnValue = navigationString;
+    };
+
+    const validateQuillTexts = (mainText: string | undefined, additionalText: string | undefined) => {
+        const mainTextWithoutHtml = mainText ? removeHtmlTags(mainText) : '';
+        const additionalTextWithoutHtml = additionalText ? removeHtmlTags(additionalText) : '';
+
+        const tooLongMainText = mainText && mainTextWithoutHtml.length > QUILL_TEXTS_LENGTH.mainTextMaxLength;
+        const tooLongAdditionalText = additionalText && additionalTextWithoutHtml.length > QUILL_TEXTS_LENGTH.additionalTextMaxLength;
+
+        if (tooLongMainText || tooLongAdditionalText) {
+            throw new Error('The value is too long either in the main text or in the additional text');
+        }
     };
 
     useEffect(() => {
@@ -309,6 +322,7 @@ const NewStreetcode = () => {
                     ? '' : inputInfo?.additionalText,
                 streetcodeId: parseId,
             };
+            validateQuillTexts(text.textContent, text.additionalText);
 
             const streetcode: StreetcodeCreate = {
                 id: parseId,
@@ -366,8 +380,8 @@ const NewStreetcode = () => {
                         }
                     )),
                 imagesDetails: createUpdateMediaStore.getImageDetails(),
-
             };
+
             if (streetcodeType.current === StreetcodeType.Person) {
                 streetcode.firstName = form.getFieldValue('name');
                 streetcode.lastName = form.getFieldValue('surname');
@@ -430,7 +444,7 @@ const NewStreetcode = () => {
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
                     streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                    ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
+                        ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
                         ...streetcodeArt,
                         art: {
                             ...streetcodeArt.art,
@@ -484,6 +498,8 @@ const NewStreetcode = () => {
             const name = form.getFieldsError().find((e) => e.errors.length > 0)?.name;
             if (name) {
                 scrollToErrors();
+            } else {
+                alert('Будь ласка, заповніть всі поля валідними даними');
             }
         });
     };
@@ -493,7 +509,7 @@ const NewStreetcode = () => {
     };
 
     return (
-        <div className="NewStreetcodeContainer">
+        <div className="newStreetcodeContainer">
             <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">

@@ -159,7 +159,7 @@ const Partners:React.FC = observer(() => {
             <div className="partners-page-container">
                 <div className="container-justify-end">
                     <Button
-                        className="streetcode-custom-button partners-page-add-button"
+                        className="streetcode-custom-button"
                         onClick={() => setModalAddOpened(true)}
                     >
                     Створити партнера

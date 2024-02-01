@@ -173,6 +173,15 @@
   color: $color;
   background-color: $bg-color;
 }
+
+@mixin admin-page-base-layout(){
+  margin-top: f.pxToRem(100px);
+  display: flex;
+  float: left;
+  width: 100%;
+  padding: 0 f.pxToRem(32px);
+  gap: f.pxToRem(10px);
+}
 // --------------------------Text----------------------------------
 @mixin withLineHeight($line-height){
   line-height:f.pxToRem($line-height);
@@ -266,4 +275,9 @@
     -webkit-text-fill-color: transparent;
     z-index: $z-index;
   }
+}
+
+@mixin list-styles($type) {
+  list-style-type: $type;
+  padding-inline-start: revert;
 }

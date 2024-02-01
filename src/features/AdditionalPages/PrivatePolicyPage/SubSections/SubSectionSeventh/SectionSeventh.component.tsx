@@ -12,8 +12,10 @@ const SectionSeventh = () => (
             <br />
             З питань щодо політики конфіденційності (в т.ч. видалення персональних даних), Користувач може
 
-            зв&apos;язатися з нами, використовуючи e—mail: 
-            <a className="link" href={EMAIL_INFO.WRITE_EMAIL_TO_US}>{EMAIL_INFO.EMAIL}</a>
+            зв&apos;язатися з нами, використовуючи e—mail:
+            <a className="link" href={EMAIL_INFO.WRITE_EMAIL_TO_US} target="_blank" rel="noopener noreferrer">
+                {EMAIL_INFO.EMAIL}
+            </a>
             .
         </div>
     </section>

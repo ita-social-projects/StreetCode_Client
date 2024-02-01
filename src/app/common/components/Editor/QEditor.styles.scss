@@ -1,0 +1,39 @@
+@use "@sass/_utils.functions.scss" as f;
+
+.ql-toolbar button {
+    height: f.pxToRem(26px) !important;
+    width: f.pxToRem(30px) !important;
+}
+
+.quillEditor {
+    margin-bottom: f.pxToRem(35px);
+}
+
+.editorInfoContainer {
+    display: flex;
+    flex-direction: row;
+    padding-top: f.pxToRem(10px);
+    gap: f.pxToRem(50px);
+    transition: margin-left 0.3s ease;
+}
+
+.charsCounter {
+    max-width: fit-content;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+.quillEditor .ql-editor u {
+    text-decoration: underline;
+}
+
+.quillEditor .ql-editor s {
+    text-decoration: line-through;
+}
+
+.validateLabelDescription {
+    max-width: fit-content;
+    color: red;
+    font-size: 14px;
+}

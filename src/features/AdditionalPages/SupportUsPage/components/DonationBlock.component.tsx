@@ -1,13 +1,12 @@
 import './DonationBlock.styles.scss';
 
 import { ChangeEvent, useEffect, useState } from 'react';
+import donateButtonRequest from '@app/common/requests/donateButtonRequest';
+import { PositiveNumber } from '@constants/custom-types.constants';
 
 import { Button, Checkbox } from 'antd';
 
-import DonationApi from '@/app/api/donates/donation.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import { donateEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Donation from '@/models/feedback/donation.model';
 
 // eslint-disable-next-line complexity
 const DonationBlock = () => {
@@ -54,18 +53,9 @@ const DonationBlock = () => {
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
-    const handlePost = async () => {
-        const donation: Donation = {
-            amount: donateAmount,
-            pageUrl: window.location.href,
-        };
-
-        if (isCheckboxChecked) {
-            try {
-                const response = await DonationApi.create(donation);
-                donateEvent('support_us_page_donation_block');
-                window.open(response.pageUrl);
-            } catch (err) {}
+    const handlePost = () => {
+        if (isCheckboxChecked && donateAmount > 0) {
+            donateButtonRequest(donateAmount as PositiveNumber);
         }
     };
 
@@ -124,12 +114,14 @@ const DonationBlock = () => {
                     checked={isCheckboxChecked}
                     onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                 >
-                    Я даю згоду на обробку моїх <a href='/privacy-policy'>персональних даних</a>
+                    Я даю згоду на обробку моїх
+                    {' '}
+                    <a href="/privacy-policy">персональних даних</a>
                 </Checkbox>
             </div>
             <button
                 onClick={handlePost}
-                disabled={!isCheckboxChecked || donateAmount == 0}
+                disabled={!isCheckboxChecked || donateAmount === 0}
                 className="donatesDonateBtn"
                 type="button"
             >

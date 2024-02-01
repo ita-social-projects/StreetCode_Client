@@ -69,23 +69,23 @@
 }
 .plus-button:hover{
     color: c.$text-red-color;
-    border-color:c.$ant-menu-color;
+    border-color: c.$ant-menu-color;
 }
 .close-button {
     top: -5;
     right: 0;
     background-color: c.$ant-menu-color;
-    color:c.$pure-white-color;
+    color: c.$pure-white-color;
     height: 30px;
 }
 .close-button:hover {
-    background-color:c.$dark-red-color;
-    color:c.$pure-white-color;
+    background-color: c.$dark-red-color;
+    color: c.$pure-white-color;
     border: none!important;
 }
 .custom-tooltip .ant-tooltip-inner {
     background-color: c.$darkish-gray-color;
-    color: c.$pure-white-color; 
+    color: c.$pure-white-color;
 }
 .error-text {
     color: c.$ant-menu-color;

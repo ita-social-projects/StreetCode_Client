@@ -1,37 +1,39 @@
 import '../MainNewStreetcode.styles.scss';
 
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 
-import { ConfigProvider, Form, Button } from 'antd';
+import { Button, ConfigProvider, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
+import StreetcodeCoordinateApi from '@/app/api/additional-content/streetcode-cooridnates.api';
+import SubtitlesApi from '@/app/api/additional-content/subtitles.api';
+import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
+import VideosApi from '@/app/api/media/videos.api';
+import PartnersApi from '@/app/api/partners/partners.api';
+import SourcesApi from '@/app/api/sources/sources.api';
+import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import FactsApi from '@/app/api/streetcode/text-content/facts.api';
+import TextsApi from '@/app/api/streetcode/text-content/texts.api';
 import useMobx from '@/app/stores/root-store';
+import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 import { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import { StreetcodeTag } from '@/models/additional-content/tag.model';
 import { ArtCreate, ArtCreateDTO } from '@/models/media/art.model';
-import  { VideoCreate } from '@/models/media/video.model';
+import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerShort } from '@/models/partners/partners.model';
 import { SourceCategory, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType }
     from '@/models/streetcode/streetcode-types.model';
 import { Fact, TextCreate } from '@/models/streetcode/text-contents.model';
 import TimelineItem from '@/models/timeline/chronology.model';
-import TextsApi from '@/app/api/streetcode/text-content/texts.api';
-import PartnersApi from '@/app/api/partners/partners.api';
-import VideosApi from '@/app/api/media/videos.api';
-import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
-import SourcesApi from '@/app/api/sources/sources.api';
-import SubtitlesApi from '@/app/api/additional-content/subtitles.api';
-import StreetcodeCoordinateApi from '@/app/api/additional-content/streetcode-cooridnates.api';
+
 import PageBar from '../../PageBar/PageBar.component';
-import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
-import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
-import ArtGalleryBlock from '../ArtGallery/ArtGallery.component'; 
+import ArtGalleryBlock from '../ArtGallery/ArtGallery.component';
 import ForFansBlock from '../ForFansBlock/ForFansBlock.component';
-import FactsApi from '@/app/api/streetcode/text-content/facts.api';
 import RelatedFiguresBlock from '../HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from '../InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from '../MainBlock/MainBlockAdmin.component';
@@ -41,8 +43,6 @@ import SubtitleBlock from '../SubtitileBlock/SubtitleBlock.component';
 import TextInputInfo from '../TextBlock/InputType/TextInputInfo.model';
 import TextBlock from '../TextBlock/TextBlock.component';
 import TimelineBlockAdmin from '../TimelineBlock/TimelineBlockAdmin.component';
-import Video from '@/models/media/video.model';
-import { useParams } from 'react-router-dom';
 
 const streetCodeBlock = () => {
     const [form] = useForm();
@@ -58,30 +58,29 @@ const streetCodeBlock = () => {
     const [figures, setFigures] = useState<RelatedFigure[]>([]);
     const [partners, setPartners] = useState<PartnerShort[]>([]);
     const [video, setVideo] = useState<Video>();
-    
+
     const { id } = useParams<any>();
     const parseId = id ? +id : null;
     timelineItemStore.fetchTimelineItemsByStreetcodeId(parseId);
-    
 
     useEffect(() => {
         if (ukUA.DatePicker) {
             ukUA.DatePicker.lang.locale = 'uk';
         }
         if (parseId) {
-            StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then(result => {
-                const newArts = result.map(x => ({
-                    description: x.art.description ?? "",
-                    title: x.art.image.alt ?? "",
+            StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
+                const newArts = result.map((x) => ({
+                    description: x.art.description ?? '',
+                    title: x.art.image.alt ?? '',
                     imageId: x.art.imageId,
                     image: x.art.image.base64,
                     index: x.index,
                     mimeType: x.art.image.mimeType,
-                    uidFile: x.index + ""
+                    uidFile: `${x.index}`,
                 }));
                 setArts([...newArts]);
             });
-            StreetcodesApi.getById(parseId).then(x => {
+            StreetcodesApi.getById(parseId).then((x) => {
                 if (x.lastName && x.firstName) {
                     form.setFieldsValue({
                         surname: x.lastName,
@@ -93,12 +92,11 @@ const streetCodeBlock = () => {
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
-                        //video: video
+                        // video: video
                     });
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Person);
-                }
-                else {
+                } else {
                     form.setFieldsValue({
                         streetcodeNumber: parseId,
                         mainTitle: x.title,
@@ -107,56 +105,53 @@ const streetCodeBlock = () => {
                         firstDate: x.eventStartOrPersonBirthDate,
                         secondDate: x.eventEndOrPersonDeathDate,
                         teaser: x.teaser,
-                        video: "asdasd"
+                        video: 'asdasd',
                     });
                     setSelectedTags(x.tags);
                     setStreetcodeType(StreetcodeType.Event);
                 }
             });
-            TextsApi.getByStreetcodeId(parseId).then(result => {
+            TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-            })
-            VideosApi.getByStreetcodeId(parseId).then(result => {
+            });
+            VideosApi.getByStreetcodeId(parseId).then((result) => {
                 setVideo(result);
-            })
-            RelatedFigureApi.getByStreetcodeId(parseId).then(result => {
+            });
+            RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
                 setFigures([...result]);
             });
-            PartnersApi.getByStreetcodeId(parseId).then(result => {
+            PartnersApi.getByStreetcodeId(parseId).then((result) => {
                 setPartners([...result]);
             });
-            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then(result => {
+            SubtitlesApi.getSubtitlesByStreetcodeId(parseId).then((result) => {
                 setSubTitle(result[0].subtitleText);
             });
-            SourcesApi.getCategoriesByStreetcodeId(parseId).then(result => {
-                const id = result.map(x => x.id);
-                id.map(x => {
-                    SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then(x => {
+            SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
+                const id = result.map((x) => x.id);
+                id.map((x) => {
+                    SourcesApi.getCategoryContentByStreetcodeId(parseId, x).then((x) => {
                         const newSource: StreetcodeCategoryContent = {
                             sourceLinkCategoryId: x.sourceLinkCategoryId,
                             streetcodeId: x.streetcodeId,
                             id: x.id,
-                            text: x.text
-                        }
-                        const existingSource = sourceCreateUpdateStreetcode.streetcodeCategoryContents.find(s => s.sourceLinkCategoryId === newSource.sourceLinkCategoryId);
+                            text: x.text,
+                        };
+                        const existingSource = sourceCreateUpdateStreetcode.streetcodeCategoryContents.find((s) => s.sourceLinkCategoryId === newSource.sourceLinkCategoryId);
 
                         if (!existingSource) {
                             sourceCreateUpdateStreetcode.addSourceCategoryContent(newSource);
-
                         }
                     });
                 });
             });
-            StreetcodeCoordinateApi.getByStreetcodeId(parseId).then(result => {
+            StreetcodeCoordinateApi.getByStreetcodeId(parseId).then((result) => {
                 setCoordinates([...result]);
             });
-            FactsApi.getFactsByStreetcodeId(parseId).then(result => {
+            FactsApi.getFactsByStreetcodeId(parseId).then((result) => {
                 setFacts([...result]);
             });
-
         }
     }, []);
-    
 
     const onFinish = (data) => {
         const subtitles: SubtitleCreate[] = [{
@@ -223,20 +218,19 @@ const streetCodeBlock = () => {
         }
 
         if (parseId) {
-            //StreetcodeArtApi.update(streetcode).then((response2) => {
-            //})
-             //   .catch((error2) => {
-              //      console.log(error2);
-              //  });
-        }
-        else {
+            // StreetcodeArtApi.update(streetcode).then((response2) => {
+            // })
+            //   .catch((error2) => {
+            //      console.log(error2);
+            //  });
+        } else {
             StreetcodesApi.create(streetcode)
                 .then((response) => {})
                 .catch((error) => {});
         }
     };
-    return(
-        <div className='adminContainer-block'>
+    return (
+        <div className="adminContainer-block">
             <h2>Стріткод</h2>
             <Form form={form} layout="vertical" onFinish={onFinish}>
                 <MainBlockAdmin
@@ -245,12 +239,12 @@ const streetCodeBlock = () => {
                     setSelectedTags={setSelectedTags}
                     streetcodeType={streetcodeType}
                     setStreetcodeType={setStreetcodeType}
-                    />
-                    
+                />
+
                 <TextBlock inputInfo={inputInfo} setInputInfo={setInputInfo} />
-                <Button className = 'streetcode-custom-button' type="submit">Відправити</Button>
+                <Button className="streetcode-custom-button" type="submit">Відправити</Button>
             </Form>
         </div>
     );
-}
+};
 export default streetCodeBlock;

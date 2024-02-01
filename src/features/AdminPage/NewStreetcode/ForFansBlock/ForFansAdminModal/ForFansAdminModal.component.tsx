@@ -2,11 +2,11 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
-import { Editor } from '@tinymce/tinymce-react';
 
 import {
     Button, Form, message, Modal, Popover, Select,
@@ -14,6 +14,11 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
+import {
+    checkQuillEditorTextLength,
+    setQuillEditorContent,
+} from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
+import Editor from '@/app/common/components/Editor/QEditor.component';
 import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
 import {
     SourceCategoryName,
@@ -33,7 +38,7 @@ interface Props {
 function isEditingCategoryTextOnly(
     elementToUpdate: StreetcodeCategoryContent | null,
     editedCategoryId: any,
-) : boolean | null {
+): boolean | null {
     return elementToUpdate && elementToUpdate?.sourceLinkCategoryId === Number(editedCategoryId);
 }
 
@@ -41,16 +46,23 @@ const ForFansModal = ({
     character_limit, open, setOpen, allCategories, onChange, allPersistedSourcesAreSet,
 }: Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
-    const editorRef = useRef<Editor | null>(null);
+    const editorRef = useRef<ReactQuill | null>(null);
     const categoryUpdate = useRef<StreetcodeCategoryContent | null>();
     const [availableCategories, setAvailableCategories] = useState<SourceCategoryName[]>([]);
     const [Categories, setCategories] = useState<SourceCategoryName[]>([]);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [form] = Form.useForm();
-    const [selectedText, setSelected] = useState('');
     const [editorContent, setEditorContent] = useState('');
-    const setOfKeys = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'End', 'Home']);
+    const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
+    const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
+    const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const maxLength = character_limit || 10000;
+
+    message.config({
+        top: 100,
+        duration: 3,
+        maxCount: 3,
+    });
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
         try {
@@ -64,8 +76,11 @@ const ForFansModal = ({
             const selectedIds = selected.map((srcCatContent) => srcCatContent.sourceLinkCategoryId);
             const available = allCategories.filter((c) => !selectedIds.includes(c.id));
             if (categoryUpdate.current) {
-                // eslint-disable-next-line max-len
-                available.push(allCategories[allCategories.findIndex((c) => c.id === categoryUpdate.current?.sourceLinkCategoryId)]);
+                const sourceLinkCategoryId = categoryUpdate.current?.sourceLinkCategoryId;
+                const foundCategoryIndex = allCategories.findIndex((c) => c.id === sourceLinkCategoryId);
+                if (foundCategoryIndex !== -1) {
+                    available.push(allCategories[foundCategoryIndex]);
+                }
             }
             if (isNewCat) {
                 const allCategoriesIds = allCategories.map((c) => c.id);
@@ -80,7 +95,10 @@ const ForFansModal = ({
 
     const clearModal = () => {
         form.resetFields();
+        setTextIsPresent(false);
+        setTextIsChanged(false);
         setOpen(false);
+        editorRef.current?.editor?.setText('');
     };
 
     async function fetchData() {
@@ -90,12 +108,15 @@ const ForFansModal = ({
 
     useEffect(() => {
         categoryUpdate.current = sourceCreateUpdateStreetcode.ElementToUpdate;
+        const categoryText = categoryUpdate?.current?.text;
         if (categoryUpdate.current && open) {
-            setEditorContent(categoryUpdate.current.text ?? '');
+            setQuillEditorContent(editorRef.current, categoryText ?? '');
+            setEditorContent(categoryText ?? '');
             form.setFieldValue('category', categoryUpdate.current.sourceLinkCategoryId);
         } else {
             categoryUpdate.current = null;
             setEditorContent('');
+            editorRef.current?.editor?.setText('');
             form.setFieldValue('category', '');
         }
 
@@ -126,7 +147,7 @@ const ForFansModal = ({
                 .addSourceCategoryContent({
                     id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
                     sourceLinkCategoryId: values.category,
-                    text: editorRef.current?.editor?.getContent() ?? '',
+                    text: editorContent ?? '',
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
                 });
             sourceCreateUpdateStreetcode.indexUpdate = sourceCreateUpdateStreetcode.streetcodeCategoryContents.length;
@@ -138,7 +159,7 @@ const ForFansModal = ({
                     {
                         ...sourceCreateUpdateStreetcode.streetcodeCategoryContents[indexOfPersistedCategory],
                         sourceLinkCategoryId: values.category,
-                        text: editorRef.current?.editor?.getContent() ?? '',
+                        text: editorContent ?? '',
                     },
                 );
             sourceCreateUpdateStreetcode.indexUpdate = indexOfPersistedCategory;
@@ -158,7 +179,7 @@ const ForFansModal = ({
                     {
                         ...elementToUpdate,
                         sourceLinkCategoryId: values.category,
-                        text: editorRef.current?.editor?.getContent() ?? '',
+                        text: editorContent ?? '',
                     },
                 );
         } else {
@@ -181,22 +202,35 @@ const ForFansModal = ({
 
         onChange('saved', null);
     };
+
+    const validateTextChange = () => {
+        setTextIsChanged(true);
+        const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
+
+        if (emptyTextField) {
+            setTextIsPresent(false);
+            return false;
+        }
+
+        setTextIsPresent(true);
+        return true;
+    };
+
     const handleOk = async () => {
         try {
             await form.validateFields();
-            form.submit();
-            message.success('Категорію для фанатів успішно додано!', 2);
+            checkQuillEditorTextLength(editorCharacterCount, maxLength);
+            if (validateTextChange()) {
+                form.submit();
+                message.success('Категорію для фанатів успішно додано!');
+            } else {
+                throw new Error();
+            }
         } catch (error) {
-            message.config({
-                top: 100,
-                duration: 3,
-                maxCount: 3,
-                rtl: true,
-                prefixCls: 'my-message',
-            });
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
+
     const onUpdateStates = async (isNewCatAdded: boolean) => {
         if (isNewCatAdded === true) {
             const categories = await SourcesApi.getAllNames();
@@ -232,7 +266,6 @@ const ForFansModal = ({
                 </Popover>
             )}
         >
-
             <Form
                 layout="vertical"
                 form={form}
@@ -271,62 +304,17 @@ const ForFansModal = ({
                     isNewCategory={onUpdateStates}
                     setIsModalOpen={setIsAddModalVisible}
                 />
-                <FormItem
-                    label="Текст: "
-                    rules={[{ required: true, message: 'Введіть текст' }]}
-                >
+                <FormItem label="Текст:">
                     <Editor
-                        ref={editorRef}
+                        qRef={editorRef}
                         value={editorContent}
-                        onEditorChange={setEditorContent}
-                        init={{
-                            max_chars: 800,
-                            height: 300,
-                            menubar: false,
-                            plugins: [
-                                'autolink',
-                                'lists', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                                'insertdatetime', 'wordcount', 'link', 'lists', 'formatselect ',
-                            ],
-                            toolbar: 'undo redo blocks bold italic link align | underline superscript subscript '
-                                + 'formats blockformats align | removeformat strikethrough ',
-                            toolbar_mode: 'sliding',
-                            language: 'uk',
-                            content_style: 'body { font-family:Roboto,Helvetica Neue,sans-serif; font-size:14px }',
-                            link_default_target: '_blank',
-                        }}
-                        onPaste={(e, editor) => {
-                            const previousContent = editor.getContent({ format: 'text' });
-                            const clipboardContent = e.clipboardData?.getData('text') || '';
-                            const resultContent = previousContent + clipboardContent;
-                            const isSelectionEnd = editor.selection.getSel()?.anchorOffset == previousContent.length;
-
-                            if (selectedText.length >= clipboardContent.length) {
-                                return;
-                            }
-                            if (resultContent.length >= maxLength && isSelectionEnd) {
-                                // eslint-disable-next-line max-len
-                                editor.setContent(previousContent + clipboardContent.substring(0, maxLength - previousContent.length));
-                                e.preventDefault();
-                            }
-                            if (resultContent.length <= maxLength && !isSelectionEnd) {
-                                return;
-                            }
-                            if (resultContent.length >= maxLength && !isSelectionEnd) {
-                                e.preventDefault();
-                            }
-                        }}
-                        onKeyDown={(e, editor) => {
-                            if (editor.getContent({ format: 'text' }).length >= maxLength
-                                && !setOfKeys.has(e.key)
-                                && editor.selection.getContent({ format: 'text' }).length === 0) {
-                                e.preventDefault();
-                            }
-                        }}
-                        onSelectionChange={(e, editor) => {
-                            setSelected(editor.selection.getContent());
-                        }}
+                        onChange={setEditorContent}
+                        maxChars={maxLength}
+                        onCharacterCountChange={setEditorCharacterCount}
                     />
+                    {!textIsPresent && textIsChanged && (
+                        <p className="form-text">Введіть текст</p>
+                    )}
                 </FormItem>
                 <div className="center">
                     <Button
@@ -337,7 +325,6 @@ const ForFansModal = ({
                     </Button>
                 </div>
             </Form>
-
         </Modal>
     );
 };

@@ -4,19 +4,15 @@
 @use "@sass/_utils.functions.scss" as f;
 $articlesImg: "@assets/images/sources/Articles.webp";
 
-.NewStreetcodeContainer {
-    margin-top: f.pxToRem(100px);
-    display: flex;
-    float: left;
-    width: 100%;            
-    
+.newStreetcodeContainer {
+    @include mut.admin-page-base-layout();
+
     .adminContainer
     {
          @include mut.sized(80%);
-        //@include mut.with-font();
         margin: auto;
-        
-        &-block{ 
+
+        &-block{
             margin-bottom: f.pxToRem(20px);
             display: flex;
             flex-direction: column;
@@ -42,7 +38,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
 
               &:hover{
                 cursor: pointer;
-                background-color: c.$dark-red-color;    
+                background-color: c.$dark-red-color;
                 color: white !important;
                 transition: all .3s ease-out;
             }
@@ -60,7 +56,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
 
                 .item {
                     border: 1.5px solid c.$dark-red-color;
-                    @include mut.flex-centered();  
+                    @include mut.flex-centered();
                     @include mut.full-rounded($rad: 7.86px);
                     @include mut.rem-padded($left: 9.5px, $top: 4px, $right: 9.5px, $bottom: 4px);
 
@@ -86,10 +82,10 @@ $articlesImg: "@assets/images/sources/Articles.webp";
             }
             width: 100%;
         }
-   
+
         .ant-input:hover:enabled{
             border-color: c.$accented-red-color;
-        } 
+        }
 
         .ant-select:focus,
         .ant-input:focus,
@@ -98,7 +94,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         .ant-picker-focused,
         .my-picker :hover{
             border-color: c.$accented-red-color;
-            box-shadow: none !important;  
+            box-shadow: none !important;
         }
 
         .ant-select-disabled,
@@ -107,7 +103,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
             pointer-events: none;
         }
 
-        .ant-select-selector, 
+        .ant-select-selector,
         .ant-input-affix-wrapper,
         .ant-input-number {
             @include mut.with-font($font-size: 16px);
@@ -131,12 +127,12 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         .ant-upload:hover {
             border-color:  c.$accented-red-color ;
           }
-        
+
         .ant-input-number-handler-up-inner,
         .ant-input-number-handler-down-inner {
             color: c.$accented-red-color;
         }
-         
+
         .display-flex-row div, .display-flex-row{
             display: flex;
             &-centered{
@@ -160,13 +156,13 @@ $articlesImg: "@assets/images/sources/Articles.webp";
                 margin-right: f.pxToRem(5px);
             }
         }
-        
+
         .submit-button{
             min-height: f.pxToRem(100px);
             min-width: 100%;
             margin-bottom: f.pxToRem(20px);
         }
-        
+
         .ant-checkbox-inner {
             width: f.pxToRem(25px) !important;
             height: f.pxToRem(25px) !important;
@@ -187,7 +183,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
             background: red !important;
             box-shadow: inset 0 0 0 2px white !important;
         }
-     
+
     }
  }
 

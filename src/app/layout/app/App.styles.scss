@@ -40,3 +40,16 @@ div {
 .mainWrapper {
     flex: 1 1 auto;
 }
+
+.skeleton{
+    background: #F4F4F4;
+    background: linear-gradient(90deg, #F4F4F4 8%, #F9F9F9 18%, #F4F4F4 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}

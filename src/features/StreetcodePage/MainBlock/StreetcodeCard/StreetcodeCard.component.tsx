@@ -15,7 +15,7 @@ import { Button } from 'antd';
 import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { audioClickEvent, personLiveEvent } from '@/app/common/utils/googleAnalytics.unility';
+import { audioClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image, { ImageAssigment } from '@/models/media/image.model';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
@@ -27,7 +27,7 @@ const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
 interface Props {
     streetcode?: Streetcode;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
-    setActiveBlock: React.Dispatch<React.SetStateAction<number>>
+    setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
@@ -46,7 +46,7 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
     return dates;
 };
 
-const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) => {
+const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
@@ -154,7 +154,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                         <TagList
                             tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
                             setActiveTagId={setActiveTagId}
-                            setActiveTagBlock={setActiveBlock}
+                            setShowAllTags={setShowAllTags}
+
                         />
                     </div>
                     <div className="blurTop" />
@@ -188,18 +189,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setActiveBlock }: Props) =
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
-
-                        {arlink
-                            ? (
-                                <Button
-                                    className="animateFigureBtn"
-                                    onClick={() => personLiveEvent(streetcode?.id ?? 0)}
-                                    href="#QRBlock"
-                                >
-                                    <a>Оживити картинку</a>
-                                </Button>
-                            )
-                            : <></>}
                     </div>
                 </div>
             </div>
