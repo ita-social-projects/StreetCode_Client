@@ -42,53 +42,18 @@ const StreetcodeSlider = () => {
     if (windowsize.width <= 768) props.variableWidth = false;
 
     useAsync(async () => {
-        const shuffleSeed = Math.floor(Date.now() / 1000);
-        const { fetchNextPage } = paginateRequest(3, StreetcodesApi.getPageMainPage, { shuffleSeed });
+        try {
+            const response = await StreetcodesApi.getAllMainPage();
+            setStreetcodes(response);
 
-        let streetcodesAmount: number;
-        if (!loading.current) {
-            loading.current = true;
-            try {
-                streetcodesAmount = await StreetcodesApi.getCount(true);
-            } catch (e: any) {
-                streetcodesAmount = 32; // fetch 32 streetcodes if StreetcodesApi.getCount fails
+            const newImages : Image[] = [];
+            for (const streetcode of response) {
+                await ImagesApi.getById(streetcode.imageId)
+                    .then((img) => newImages.push(img));
             }
-
-            const emptyStreetcodes = Array(streetcodesAmount).fill({});
-            setStreetcodes(emptyStreetcodes);
-
-            while (true) {
-                try {
-                    const [newStreetcodes, startIdx, endIdx] = await fetchNextPage();
-                    // eslint-disable-next-line @typescript-eslint/no-loop-func
-                    setStreetcodes((prevState) => {
-                        // replace empty objects to fetched streetcodes
-                        const newState = [
-                            ...prevState.slice(0, startIdx),
-                            ...newStreetcodes,
-                            ...prevState.slice(endIdx),
-                        ];
-
-                        return newState;
-                    });
-
-                    const newImages: Image[] = [];
-                    const promises = [];
-
-                    // eslint-disable-next-line no-plusplus
-                    for (let i = 0; i < newStreetcodes.length; i++) {
-                        promises.push(ImagesApi.getById(newStreetcodes[i].imageId).then((img) => {
-                            newImages[i] = img;
-                        }));
-                    }
-
-                    await Promise.all(promises).then(() => {
-                        setImages((prevState) => [...prevState, ...newImages].slice(0, streetcodesAmount));
-                    });
-                } catch (error: unknown) {
-                    break;
-                }
-            }
+            setImages(newImages);
+        } catch (error) {
+            console.log(error);
         }
     });
 
