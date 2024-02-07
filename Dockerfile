@@ -8,6 +8,8 @@ RUN npm run build
 
 FROM streetcode-frontend-server:latest  as server 
 COPY --from=build /app/dist/ /usr/src/app/client-dist/
+COPY --from=build /app/.env /usr/src/app/client-dist/.env_build
+RUN cat /usr/src/app/client-dist/.env_build >> /usr/src/app/client-dist/.env
 COPY --from=build /app/env.sh /usr/src/app/client-dist/env.sh
 WORKDIR /usr/src/app/client-dist/
 RUN apk add --no-cache bash
