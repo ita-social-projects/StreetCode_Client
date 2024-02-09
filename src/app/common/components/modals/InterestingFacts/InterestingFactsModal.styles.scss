@@ -5,7 +5,7 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .interestingFactsModal {
-  @include mut.sizedImportant(823px, auto);
+  @include mut.sizedImportant(823px, 858px);
 
   &.ant-modal {
     .ant-modal-content {
@@ -33,11 +33,11 @@
 }
 
 .factsModalContainer{
-  max-height: 88vh;
+  @include mut.sizedImportant(823px, 858px);
 
   .factsImgContainer {
     @include mut.flex-centered();
-    @include mut.sizedImportant(100%, 100%);
+    @include mut.sizedImportant(100%, 535px);
     position: relative;
 
     .description-popup{
@@ -50,6 +50,7 @@
       p{
         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 15px, $font-style: normal);
         @include mut.rem-padded(13px, 13px, 13px, 13px);
+        line-height: pxToRem(17.58px);
       }
     }
     .description-popup-visible, &:hover>.description-popup{
@@ -60,7 +61,6 @@
     }
 
     img{
-      max-height: 62vh;
       @include mut.rounded(70px, 70px);
       height: 100%;
       width: 100%;
@@ -70,24 +70,29 @@
 
   .factsContentContainer {
     @include mut.rem-padded(29px, 42px, 42px, 42px);
-    max-height: 26vh;
+    height: 323px;
 
     h1 {
       @include mut.with-font(ft.$roboto-font, 500, 26px, normal);
-      line-height: pxToEm(22px);
-      margin: 0;
+      line-height: pxToRem(30.47px);
+      margin-bottom: 21px;
       color: c.$accented-red-color;
     }
 
     .factsTextContainer {      
       overflow-y: auto;      
-      max-height: 16vh;
+      height: 207px;
 
       @include mut.flexed($direction: column, $gap: 10px);
       @include mut.with-font(ft.$roboto-font, 300, 20px, normal);
 
       color: c.$lighter-black-color;
-      line-height: pxToEm(23px);
+      line-height: pxToRem(23.44px);
+
+      &::-webkit-scrollbar-track {
+        background: c.$accented-gray-color;
+        @include mut.rem-margined($top: 0px, $bottom: 10px);
+      }
     }
   }
 }
@@ -121,10 +126,18 @@
   }
 
   .factsModalContainer{
-    width: 100%;
+    @include mut.sizedImportant(340px, 449px);
 
     .factsImgContainer {   
       @include mut.sizedImportant(100%, 218px);
+
+      .description-popup{
+        p{
+          @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 8px, $font-style: normal);
+          @include mut.rem-padded(5px, 8px, 8px, 8px);
+          line-height: pxToRem(9.38px);
+        }
+      }
 
       img{
         @include mut.rounded(20px, 20px);
@@ -132,20 +145,21 @@
     }
 
     .factsContentContainer {
-      @include mut.sized($width: 100%, $height: 100% );
+      @include mut.sized($width: 100%, $height: 231px );
       @include mut.rem-padded(9px, 16px, 16px, 16px);
       display: inline-block;
     
       h1 {
         @include mut.with-font(ft.$roboto-font, 500, 14px, normal);
-        line-height: pxToEm(15px);
+        line-height: pxToRem(16.41px);
         margin-bottom: pxToRem(8px);
       }
 
       .factsTextContainer {
         @include mut.flexed($direction: column, $gap: 10px);
         @include mut.with-font(ft.$roboto-font, 300, 12px, normal);
-        line-height: pxToEm(20px);
+        line-height: pxToRem(14.06px);
+        max-height: 170px;
 
         &::-webkit-scrollbar-track {
           background: c.$accented-gray-color;
