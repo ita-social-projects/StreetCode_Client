@@ -8,14 +8,14 @@ pipeline {
         timestamps()
     }
     stages {
+        /*
         stage('Set up node version') {
-            /*
             steps {
                 echo 'Set up node version'
                 sh 'nvm use 16'
                 }
             }
-            */
+        */
         stage('Intall node modules') {
             steps {
                 echo 'Installing modules...'
