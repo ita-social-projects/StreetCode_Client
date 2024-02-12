@@ -27,6 +27,7 @@ pipeline {
             }
         }
         /* uncomment me when you will fix lint
+        // some new comment
         stage('Run lint') {
             steps {
                 echo 'Runt lint check'
