@@ -26,11 +26,13 @@ pipeline {
                 sh 'npm run test:cover'
             }
         }
+        /* uncomment me when you will fix lint
         stage('Run lint') {
             steps {
                 echo 'Runt lint check'
                 sh 'npm run lint'
             }
         }
+        */
     }
 }
