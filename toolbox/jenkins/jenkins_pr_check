@@ -22,10 +22,10 @@ pipeline {
                 sh 'npm i'
                 }
             }
-        stage('Run test:cover') {
+        stage('Run 1 test for example') {
             steps {
-                echo 'Collect test coverage'
-                sh 'npm run test:cover'
+                echo 'Run one test_for example'
+                sh 'npm run test DeleteStreetcodeModal'
             }
         }
         /* uncomment me when you will fix lint
