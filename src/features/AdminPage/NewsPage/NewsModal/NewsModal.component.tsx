@@ -44,8 +44,8 @@ const NewsModal: React.FC<{
     open: boolean;
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     afterSubmit?: (news: News) => void;
-    initialValue: any;
-    limit: any;
+    initialValue?: any;
+    limit?: any;
 }> = observer(({
     newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit,
 }) => {
@@ -184,7 +184,7 @@ const NewsModal: React.FC<{
 
         const news: News = {
             id: 0,
-            imageId: imageId.current,
+            imageId: imageId.current as number,
             url: formValues.url,
             title: formValues.title,
             text: data ?? '',
@@ -201,7 +201,7 @@ const NewsModal: React.FC<{
             }
             if (newsItem) {
                 news.id = newsItem.id;
-                news.imageId = imageId.current;
+                news.imageId = imageId.current as number;
                 news.image = image.current;
 
                 await newsStore.updateNews(news);

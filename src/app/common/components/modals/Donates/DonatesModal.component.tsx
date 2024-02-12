@@ -4,14 +4,13 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import { ChangeEvent, useEffect, useState } from 'react';
+import donateButtonRequest from '@app/common/requests/donateButtonRequest';
+import { PositiveNumber } from '@constants/custom-types.constants';
 import { useModalContext } from '@stores/root-store';
 
 import { Button, Checkbox, Modal } from 'antd';
 
-import DonationApi from '@/app/api/donates/donation.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Donation from '@/models/feedback/donation.model';
 
 const possibleDonateAmounts = [500, 100, 50];
 
@@ -64,20 +63,9 @@ const DonatesModal = () => {
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
-    const handlePost = async () => {
-        const donation: Donation = {
-            amount: donateAmount,
-            pageUrl: window.location.href,
-        };
-
-        if (isCheckboxChecked) {
-            supportEvent('submit_donate_from_modal');
-
-            Promise.all([DonationApi.create(donation)])
-                .then((response) => {
-                    window.location.assign(response[0].pageUrl);
-                })
-                .catch();
+    const handlePost = () => {
+        if (isCheckboxChecked && donateAmount > 0) {
+            donateButtonRequest(donateAmount as PositiveNumber);
         }
     };
 
@@ -146,11 +134,9 @@ const DonatesModal = () => {
                         checked={isCheckboxChecked}
                         onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                     >
-                      
                         Я даю згоду на обробку моїх
                         {' '}
                         <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
-
                     </Checkbox>
                 </div>
                 <button

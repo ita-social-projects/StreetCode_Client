@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import imagesApi from '@api/media/images.api';
+import ImagesApi from '@api/media/images.api';
 import Image, { ImageCreate } from '@models/media/image.model';
+import { useQueries } from '@tanstack/react-query';
 
 export default class ImageStore {
     public ImageMap = new Map<number, Image>();
@@ -28,7 +29,7 @@ export default class ImageStore {
 
     static async getImageById(imageId:number):Promise<Image | undefined> {
         let image:Image | undefined;
-        await imagesApi.getById(imageId)
+        await ImagesApi.getById(imageId)
             .then((im) => {
                 image = im;
             })
@@ -40,29 +41,43 @@ export default class ImageStore {
 
     public fetchImage = async (id: number) => {
         try {
-            const image = await imagesApi.getById(id);
+            const image = await ImagesApi.getById(id);
             this.setItem(image);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
+    };
+
+    public fetchImages = (array: { imageId: number }[]) => {
+        useQueries({
+            queries: array
+                ? array.map(({ imageId }) => ({
+                    queryKey: ['image', imageId],
+                    queryFn: () => ImagesApi.getById(imageId).then((image) => {
+                        this.setItem(image);
+                        return image;
+                    }),
+                }))
+                : [],
+        });
     };
 
     public fetchImageByStreetcodeId = async (streetcodeId: number) => {
         try {
-            const image = await imagesApi.getByStreetcodeId(streetcodeId);
+            const image = await ImagesApi.getByStreetcodeId(streetcodeId);
             this.setInternalMap(image);
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public createImage = async (image: ImageCreate) => {
         try {
-            await imagesApi.create(image).then((resp) => {
+            await ImagesApi.create(image).then((resp) => {
                 this.setItem(resp);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public updateImage = async (image: Image) => {
         try {
-            await imagesApi.update(image);
+            await ImagesApi.update(image);
             runInAction(() => {
                 const updatedImage = {
                     ...this.ImageMap.get(image.id),
@@ -70,15 +85,15 @@ export default class ImageStore {
                 };
                 this.setItem(updatedImage as Image);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 
     public deleteImage = async (imageId: number) => {
         try {
-            await imagesApi.delete(imageId);
+            await ImagesApi.delete(imageId);
             runInAction(() => {
                 this.ImageMap.delete(imageId);
             });
-        } catch (error: unknown) {}
+        } catch (error: unknown) { /* empty */ }
     };
 }

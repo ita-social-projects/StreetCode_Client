@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <!-- Base route -->
+    <url>
+        <loc>https://streetcode.com.ua/</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Other pages -->
+    <url>
+        <loc>https://streetcode.com.ua/catalog</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://streetcode.com.ua/privacy-policy</loc>
+    </url>
+    <url>
+        <loc>https://streetcode.com.ua/contact-us</loc>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://streetcode.com.ua/partners-page</loc>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://streetcode.com.ua/support-us</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://streetcode.com.ua/about-us</loc>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Streetcodes -->
+    <url>
+        <loc>https://streetcode.com.ua/borys-hrinchenko</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/vasyl-stus</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/taras-shevchenko</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/petro-bolbochan</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/oleksandr-makhov</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/mykhailo-hrushevskyi</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/mytropolyt-vasyl-lypkivskyi</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/stepan-bandera</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/yurii-dadak-ruf</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/lesia-ukrainka</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/ivan-franko</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/pavlo-li</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/symon-petliura</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/yevhen-chykalenko</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/volodymyr-antonovych</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/kniazi-ostrozki</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/mariia-prymachenko</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/roman-ratushnyi-seneka</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/yuliia-zdanovska</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/pylyp-orlyk</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/bohdan-khmelnytskyi</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/yevhen-konovalets</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/oleksii-almazov</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/ivan-mykolaichuk</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/oleksandr-konyskyi</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/kazymyr-malevych</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/ivan-mazepa</loc>
+    </url>
+
+
+    <!-- News -->
+
+    <url>
+        <loc>https://streetcode.com.ua/news/dopovnena-realnist-u-stritkod</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/persha-ekskursiia-v-kyievi</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/nezlamni-nazavzhdy-zbir-koshtiv-na-istoriiu</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/stritkod-na-vulytsiakh-kyieva</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/kruhlyi-stil-z-istorykamy</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/my-zapustyly-stritkod-sait</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/kmda-pohodyly-maket-stritkodu-dlia-kyieva</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/pidpysaly-memorandumy-z-kmda-i-knu</loc>
+    </url>
+
+    <url>
+        <loc>https://streetcode.com.ua/news/teper-v-nas-ye-ngo</loc>
+    </url>
+</urlset>

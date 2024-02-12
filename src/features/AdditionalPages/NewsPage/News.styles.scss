@@ -31,21 +31,26 @@
 
     .newsWithImageWrapper {
         overflow: auto;
-
         ul {
-            list-style-type: disc;
-            padding-inline-start: revert;
-          }
+            @include mut.list-styles($type: disc);
+        }
 
-          ol {
-            list-style-type: decimal;
-            padding-inline-start: revert;
-          }
+        ol {
+            @include mut.list-styles($type: decimal);
+        }
 
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             overflow-wrap: break-word;
             white-space: pre-line;
+
+            ul, ol {
+                white-space: normal;
+            }
+
+            li:not(:last-child)[dir="ltr"] {
+                padding-bottom: f.pxToRem(24px);
+            }
 
             p {
                 strong {
@@ -57,7 +62,7 @@
         .newsGoodImageClass.Full {
             border: 6px solid c.$pure-white-color;
             border-radius: f.pxToRem(30px);
-            margin-bottom: f.pxToRem(24px);
+            margin-top: f.pxToRem(24px);
             display: initial;
             width: 100%;
         }
@@ -257,7 +262,6 @@
 
             .newsLinks {
                 @include mut.flexed($justify-content: center, $wrap: wrap);
-                padding-top: 0px;
                 text-align: center;
                 text-decoration: none;
 

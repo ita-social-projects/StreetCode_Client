@@ -4,10 +4,9 @@
 import './News.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
-import {
-    Link, NavigationType, useLocation, useNavigate, useNavigationType,
-} from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { NewsWithUrl } from '@models/news/news.model';
+import { clearWindowHistoryState } from '@utils/window.utility';
 import dayjs from 'dayjs';
 import parse from 'html-react-parser';
 
@@ -17,9 +16,12 @@ import useScrollToTop from '@/app/common/hooks/scrolling/useScrollToTop.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { nextArticleClickEvent, prevArticleClickEvent } from '@/app/common/utils/googleAnalytics.unility';
+import {
+    nextArticleClickEvent,
+    prevArticleClickEvent, toArticleRedirectClickEvent,
+} from '@/app/common/utils/googleAnalytics.unility';
+// eslint-disable-next-line import/extensions
 import useMobx from '@/app/stores/root-store';
-import News from '@/models/news/news.model';
 
 import BreadCrumbForNews from './BreadCrumbForNews/BreadCrumbForNews.component';
 import RandomNewsBlock from './RandomNewsBlock.component';
@@ -27,6 +29,7 @@ import RandomNewsBlock from './RandomNewsBlock.component';
 const NewsPage = () => {
     const newsUrl = useRouteUrl();
     const navigate = useNavigate();
+    const location = useLocation();
     const [newsImg, setNewsImg] = useState<HTMLImageElement | null>(null);
     const [newsValue, setValue] = useState<NewsWithUrl>();
     const { imagesStore } = useMobx();
@@ -37,6 +40,15 @@ const NewsPage = () => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const [wrapperWidth, setWrapperWidth] = useState<number>(0);
     const { getImage, addImage } = imagesStore;
+
+    useEffect(() => {
+        const fromPage = location.state?.fromPage;
+
+        if (fromPage) {
+            toArticleRedirectClickEvent(newsUrl, fromPage);
+            clearWindowHistoryState();
+        }
+    }, []);
 
     useEffect(() => {
         NewsApi.getNewsAndLinksByUrl(newsUrl)

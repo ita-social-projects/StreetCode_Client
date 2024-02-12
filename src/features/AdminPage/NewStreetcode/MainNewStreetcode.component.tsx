@@ -509,7 +509,7 @@ const NewStreetcode = () => {
     };
 
     return (
-        <div className="NewStreetcodeContainer">
+        <div className="newStreetcodeContainer">
             <PageBar />
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">
