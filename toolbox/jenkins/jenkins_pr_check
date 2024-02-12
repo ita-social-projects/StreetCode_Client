@@ -4,29 +4,33 @@ pipeline {
     }
     options {
         // test config to not keep ALL builds of PR check
+        // another comment
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()
     }
     stages {
+        /*
         stage('Set up node version') {
             steps {
                 echo 'Set up node version'
                 sh 'nvm use 16'
                 }
             }
+        */
         stage('Intall node modules') {
             steps {
                 echo 'Installing modules...'
                 sh 'npm i'
                 }
             }
-        stage('Run test:cover') {
+        stage('Collect coverage') {
             steps {
-                echo 'Collect test coverage'
+                echo 'Collect coverge'
                 sh 'npm run test:cover'
             }
         }
         /* uncomment me when you will fix lint
+        // some new comment
         stage('Run lint') {
             steps {
                 echo 'Runt lint check'
