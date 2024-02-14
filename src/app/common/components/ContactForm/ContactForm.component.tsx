@@ -1,6 +1,6 @@
 import './ContactForm.styles.scss';
 
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { LegacyRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
@@ -19,7 +19,10 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
     const [isVerified, setIsVerified] = useState(false);
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm();
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const siteKey = process.env.RECAPTCHA_SITE_KEY;
+    
+    const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -33,13 +36,19 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
 
     const onFinish = () => {
         if (isVerified) {
-            const newEmail: Email = { from: formData.email, content: formData.message };
+            const token = recaptchaRef?.current?.getValue();
+            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
             EmailApi.send(newEmail)
                 .then(() => {
                     successMessage();
                 })
-                .catch(() => {
-                    errorMessage();
+                .catch((error) => {
+                    if (error === 429) {
+                        errorMessage('Ви перевищили ліміт повідомлень, повторіть через 5 хвилин!');
+                    }
+                    else {
+                        errorMessage('Щось пішло не так...');
+                    }
                 });
         }
     };
@@ -51,10 +60,10 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
         });
     };
 
-    const errorMessage = () => {
+    const errorMessage = (message: string) => {
         messageApi.open({
             type: 'error',
-            content: 'Щось пішло не так...',
+            content: message,
         });
     };
 
@@ -115,8 +124,9 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 <div className="captchaBlock">
                     <ReCAPTCHA
                         className="required-captcha"
-                        sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
+                        sitekey={siteKey ? siteKey : ""}
                         onChange={handleVerify}
+                        ref={recaptchaRef}
                     />
                 </div>
                 <Form.Item>
