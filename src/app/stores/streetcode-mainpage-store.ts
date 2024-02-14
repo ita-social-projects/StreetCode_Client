@@ -1,33 +1,34 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import StreetcodesApi from '@api/streetcode/streetcodes.api';
+import { useQuery } from '@tanstack/react-query';
 
 import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
 export default class StreetcodesMainPageStore {
-    public streetcodes = new Array<StreetcodeMainPage>();
+    public streetcodesMap = new Map<number, StreetcodeMainPage>();
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    public fetchStreetcodesMainPageAll = async () => {
-        try {
-            const value = await StreetcodesApi.getAllMainPage();
-            this.streetcodes = value.map((s) => ({
-                id: s.id,
-                title: s.title,
-                teaser: s.teaser,
-                alias: s.alias,
-                text: s.text,
-                imageId: s.imageId,
-                transliterationUrl: s.transliterationUrl,
-            }));
-        } catch (error) {
-            console.error(error);
-        }
+    public setItem = (streetcodeMainPage: StreetcodeMainPage) => {
+        this.streetcodesMap.set(streetcodeMainPage.id, streetcodeMainPage);
+    };
+
+    public fetchStreetcodesMainPage = async (page: number, pageSize: number) => {
+        useQuery(
+            {
+                queryKey: ['streetcodesMainPage', page, pageSize],
+                queryFn: () => StreetcodesApi.getPageMainPage(page, pageSize).then((streetcodesMainPage) => {
+                    runInAction(() => {
+                        streetcodesMainPage.forEach(this.setItem);
+                    });
+                }),
+            },
+        );
     };
 
     get getStreetcodesArray() {
-        return this.streetcodes;
+        return Array.from(this.streetcodesMap.values());
     }
 }

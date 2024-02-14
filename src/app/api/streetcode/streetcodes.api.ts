@@ -27,12 +27,16 @@ const StreetcodesApi = {
 
     getAllMainPage: () => Agent.get<StreetcodeMainPage[]>(`${API_ROUTES.STREETCODES.GET_ALL_MAINPAGE}`),
 
-    getPageMainPage: (page: number, pageSize: number, args: any) => Agent
+    getPageMainPage: (page: number, pageSize: number) => Agent
         .get<StreetcodeMainPage[]>(
             `${API_ROUTES.STREETCODES.GET_PAGE_MAINPAGE}`,
-            new URLSearchParams(Object.entries({ page: page.toString(),
-                                                 pageSize: pageSize.toString(),
-                                                 shuffleSeed: args.shuffleSeed.toString() })),
+            new URLSearchParams(Object.entries(
+                {
+                    page: page.toString(),
+                    pageSize: pageSize.toString(),
+                    shuffleSeed: '1',
+                },
+            )),
         ),
 
     getAllCatalog: (page: number, count: number) => Agent
