@@ -6,7 +6,7 @@ RUN npm install --global serve
 COPY ./ ./
 RUN npm run build
 
-FROM streetcode-frontend-server:latest  as server 
+FROM streetcodeua/streetcode-frontend-server  as server 
 COPY --from=build /app/dist/ /usr/src/app/client-dist/
 COPY --from=build /app/.env /usr/src/app/client-dist/.env_build
 RUN cat /usr/src/app/client-dist/.env_build >> /usr/src/app/client-dist/.env
