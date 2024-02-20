@@ -53,7 +53,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [animationPicture, setAnimationPicture] = useState<Element >();
     const [images, setImages] = useState<Image[]>([]);
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
 
