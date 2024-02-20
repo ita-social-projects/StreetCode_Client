@@ -20,8 +20,8 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm();
     const recaptchaRef = useRef<ReCAPTCHA>(null);
-    const siteKey = process.env.RECAPTCHA_SITE_KEY;
-    
+    const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleVerify = () => {
