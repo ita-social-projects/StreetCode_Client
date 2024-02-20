@@ -45,6 +45,7 @@ services:
     environment:
       API_URL: ${ENV_API_BACKEND}
       REACT_APP_GOOGLE_ANALYTICS: ${ENV_GOOGLE_ANALYTICS}
+      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
     logging:
       driver: loki
       options:
@@ -64,6 +65,7 @@ services:
       STREETCODE_Instagram__InstagramToken: ${INSTAGRAM_TOKEN}
       STREETCODE_Payment__Token: ${PAYMENT_TOKEN}
       STREETCODE_EMAILCONFIGURATION__PASSWORD: ${EMAIL_PASSWORD}
+      STREETCODE_RECAPTCHA__SECRETKEY: ${RECAPTCHA_SECRET_KEY}
       STREETCODE_CORS__AllowedOrigins: '["*"]'
       STREETCODE_CORS__AllowedHeaders: '["*"]'
       STREETCODE_CORS__AllowedMethods: '["*"]'
