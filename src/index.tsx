@@ -15,6 +15,7 @@ declare global {
             API_URL: string;
             SERVER_API_URL: string;
             REACT_APP_GOOGLE_ANALYTICS: string;
+            RECAPTCHA_SITE_KEY: string;
         };
     }
 }

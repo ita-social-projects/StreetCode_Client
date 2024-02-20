@@ -26,7 +26,8 @@ const PartnersModal = () => {
     const [messageApi, messageContextHolder] = message.useMessage();
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
-    const siteKey = process.env.RECAPTCHA_SITE_KEY;
+    const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onFinish = () => {
