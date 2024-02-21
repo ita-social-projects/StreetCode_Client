@@ -48,6 +48,7 @@ const PartnersModal = () => {
                         errorMessage('Щось пішло не так...');
                     }
                 });
+            recaptchaRef.current?.reset();
         }
     };
 
