@@ -50,6 +50,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                         errorMessage('Щось пішло не так...');
                     }
                 });
+            recaptchaRef.current?.reset();
         }
     };
 
