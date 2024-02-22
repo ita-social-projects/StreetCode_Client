@@ -51,6 +51,10 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                     }
                 });
             recaptchaRef.current?.reset();
+            setIsVerified(false);
+        }
+        else {
+            errorMessage('Підтвердьте, що ви не робот.');
         }
     };
 

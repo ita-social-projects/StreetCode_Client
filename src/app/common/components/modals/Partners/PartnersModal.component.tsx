@@ -49,6 +49,10 @@ const PartnersModal = () => {
                     }
                 });
             recaptchaRef.current?.reset();
+            setIsVerified(false);
+        }
+        else {
+            errorMessage('Підтвердьте, що ви не робот.');
         }
     };
 
