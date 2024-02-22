@@ -15,6 +15,7 @@ import {
 import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Email from '@/models/email/email.model';
+import ERROR_MESSAGE from '@/app/common/constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -42,17 +43,17 @@ const PartnersModal = () => {
                 .catch((error) => {
                     onCancel();
                     if (error === 429) {
-                        errorMessage('Ви перевищили ліміт повідомлень, повторіть через 5 хвилин!');
+                        errorMessage(ERROR_MESSAGE.MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage('Щось пішло не так...');
+                        errorMessage(ERROR_MESSAGE.SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
             setIsVerified(false);
         }
         else {
-            errorMessage('Підтвердьте, що ви не робот.');
+            errorMessage(ERROR_MESSAGE.RECAPTCHA_CHECK);
         }
     };
 
