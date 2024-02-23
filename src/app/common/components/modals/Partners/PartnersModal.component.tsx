@@ -15,7 +15,7 @@ import {
 import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Email from '@/models/email/email.model';
-import ERROR_MESSAGE from '@/app/common/constants/error-messages.constants';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -43,17 +43,17 @@ const PartnersModal = () => {
                 .catch((error) => {
                     onCancel();
                     if (error === 429) {
-                        errorMessage(ERROR_MESSAGE.MESSAGE_LIMIT);
+                        errorMessage(ERROR_MESSAGES.MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage(ERROR_MESSAGE.SOMETHING_IS_WRONG);
+                        errorMessage(ERROR_MESSAGES.SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
             setIsVerified(false);
         }
         else {
-            errorMessage(ERROR_MESSAGE.RECAPTCHA_CHECK);
+            errorMessage(ERROR_MESSAGES.RECAPTCHA_CHECK);
         }
     };
 

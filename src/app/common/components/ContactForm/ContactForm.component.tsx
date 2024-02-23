@@ -7,7 +7,7 @@ import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
-import ERROR_MESSAGE from '../../constants/error-messages.constants';
+import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -45,17 +45,17 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 })
                 .catch((error) => {
                     if (error === 429) {
-                        errorMessage(ERROR_MESSAGE.MESSAGE_LIMIT);
+                        errorMessage(ERROR_MESSAGES.MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage(ERROR_MESSAGE.SOMETHING_IS_WRONG);
+                        errorMessage(ERROR_MESSAGES.SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
             setIsVerified(false);
         }
         else {
-            errorMessage(ERROR_MESSAGE.RECAPTCHA_CHECK);
+            errorMessage(ERROR_MESSAGES.RECAPTCHA_CHECK);
         }
     };
 
