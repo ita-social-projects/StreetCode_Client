@@ -6,5 +6,4 @@ export const ERROR_MESSAGES ={
     RECAPTCHA_CHECK,
     SOMETHING_IS_WRONG,
     MESSAGE_LIMIT,
-    
 }
