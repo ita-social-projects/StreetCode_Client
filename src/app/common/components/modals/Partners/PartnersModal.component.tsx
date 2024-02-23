@@ -28,6 +28,7 @@ const PartnersModal = () => {
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -43,17 +44,17 @@ const PartnersModal = () => {
                 .catch((error) => {
                     onCancel();
                     if (error === 429) {
-                        errorMessage(ERROR_MESSAGES.MESSAGE_LIMIT);
+                        errorMessage(MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage(ERROR_MESSAGES.SOMETHING_IS_WRONG);
+                        errorMessage(SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
             setIsVerified(false);
         }
         else {
-            errorMessage(ERROR_MESSAGES.RECAPTCHA_CHECK);
+            errorMessage(RECAPTCHA_CHECK);
         }
     };
 
