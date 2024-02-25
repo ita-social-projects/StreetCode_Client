@@ -87,7 +87,7 @@ const NewsModal: React.FC<{
     const checkUniqueURL = async (url: string): Promise<boolean> => {
         const newsList = newsStore.getNewsArray;
         if (newsItem) {
-            const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem.id);
+            const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem?.id);
             return filteredNewsList.every((news: News) => news.url !== url);
         }
         return newsList.every((news: News) => news.url !== url);
@@ -146,10 +146,10 @@ const NewsModal: React.FC<{
         }
     };
 
-    dayjs.locale('uk');
-    const dayJsUa = require("dayjs/locale/uk") // eslint-disable-line
-    ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
-    ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
+    // dayjs.locale('uk');
+    // const dayJsUa = require("dayjs/locale/uk") // eslint-disable-line
+    // ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
+    // ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
     const handleTextChange = () => {
         setTextIsChanged(true);
