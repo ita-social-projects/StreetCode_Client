@@ -21,7 +21,6 @@ interface Props {
 }
 
 const TeamItemSlider = ({ team, image }: Props) => {
-    const windowsize = useWindowSize();
     const LogoType = [twitter, instagram, facebook, youtube, linkedin, tiktok, behance, http];
 
     return (
@@ -33,7 +32,6 @@ const TeamItemSlider = ({ team, image }: Props) => {
                             key={image?.id}
                             src={base64ToUrl(image?.base64, image?.mimeType)}
                             className="teamImg"
-                            alt={image?.alt}
                         />
                     </div>
                 </div>
