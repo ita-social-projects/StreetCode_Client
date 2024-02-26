@@ -5,6 +5,7 @@ import { uk } from 'date-fns/locale';
 import dayjs from 'dayjs';
 
 import TimelineItem, { DateViewPattern, getSeason } from '@/models/timeline/chronology.model';
+import { useState } from 'react';
 
 const monthsMap = new Map([
     ['січня', 'січень'],
@@ -38,18 +39,22 @@ function FromDateToString(date: Date, dataViewType: DateViewPattern) {
     }
 }
 
-const copyText = async (text : string|undefined) => {
-    if(text){
-        await navigator.clipboard.writeText(text);
-    }
-}
-
 const TimelineSlideCard = ({
     timelineItem: {
         date, description,
         historicalContexts, title, dateViewPattern,
     },
 }: Props) => {
+    const [isCopied, setIsCopied] = useState(false);
+
+    const clickHandle = async () => {
+        description ? await navigator.clipboard.writeText(description) : null;
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+    };
+    
     let newDate: string;
     if (dateViewPattern == 1) {
         const words = FromDateToString(new Date(date), dateViewPattern).split(' ');
@@ -60,21 +65,24 @@ const TimelineSlideCard = ({
 
     return (
         <div className="timelineItem">
-            <div className="timelineItemContent" onClick={(e: any) => copyText(description)} role="presentation">
-                <p className="timelineItemMetadata">
-                    {newDate}
-                    {historicalContexts.map(({ id, title: ctxTitle }) => (
-                        <span key={id} className="historicalContext">
-                            {`. ${ctxTitle}`}
-                        </span>
-                    ))}
-                </p>
-                <p className="timelineItemTitle">
-                    {title}
-                </p>
-                <p className="timelineItemDescription">
-                    {truncateCharString(description)}
-                </p>
+            <div className="timelineItemContent" onClick={clickHandle} role="presentation">
+                <div>
+                    <p className="timelineItemMetadata">
+                        {newDate}
+                        {historicalContexts.map(({ id, title: ctxTitle }) => (
+                            <span key={id} className="historicalContext">
+                                {`. ${ctxTitle}`}
+                            </span>
+                        ))}
+                    </p>
+                    <p className="timelineItemTitle">
+                        {title}
+                    </p>
+                    <p className="timelineItemDescription">
+                        {truncateCharString(description)}
+                    </p>
+                    {isCopied && <div className="copy-message-relative">Скопійовано  </div>}
+                </div>
             </div>
         </div>
     );
