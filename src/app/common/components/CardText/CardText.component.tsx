@@ -12,11 +12,15 @@ type Props = {
     text: string
 };
 
+const copyText = async (text : string) => {
+    await navigator.clipboard.writeText(text);
+}
+
 const CardText = ({
     moreBtnText = 'Трохи ще...', title, text, subTitle, className, onBtnClick, moreBtnAsLink,
 }:Props) => (
     <div className={`cardTextContainer ${className}`}>
-        <div className="cardTextContainerTopPart">
+        <div className="cardTextContainerTopPart" onClick={(e: any) => copyText(text)}>
             <p className="cardTextContainerTitle">{title}</p>
             {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
             <p className="cardTextContainerText">{text}</p>

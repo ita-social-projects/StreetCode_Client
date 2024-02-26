@@ -37,6 +37,13 @@ function FromDateToString(date: Date, dataViewType: DateViewPattern) {
     default: return '';
     }
 }
+
+const copyText = async (text : string|undefined) => {
+    if(text){
+        await navigator.clipboard.writeText(text);
+    }
+}
+
 const TimelineSlideCard = ({
     timelineItem: {
         date, description,
@@ -53,7 +60,7 @@ const TimelineSlideCard = ({
 
     return (
         <div className="timelineItem">
-            <div className="timelineItemContent">
+            <div className="timelineItemContent" onClick={(e: any) => copyText(description)}>
                 <p className="timelineItemMetadata">
                     {newDate}
                     {historicalContexts.map(({ id, title: ctxTitle }) => (
