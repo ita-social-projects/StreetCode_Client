@@ -20,7 +20,9 @@ const CardText = ({
     const [isCopied, setIsCopied] = useState(false);
 
     const clickHandle = async () => {
-        text ? await navigator.clipboard.writeText(text) : null;
+        if(text) {
+            await navigator.clipboard.writeText(text);
+        }
         setIsCopied(true);
         setTimeout(() => {
             setIsCopied(false);
@@ -29,7 +31,7 @@ const CardText = ({
 
     return (
         <div className={`cardTextContainer ${className}`}>
-            <div className="cardTextContainerTopPart" onClick={clickHandle} role="presentation">
+            <div className="cardTextContainerTopPart" onClick={clickHandle} >
                 <p className="cardTextContainerTitle">{title}</p>
                 {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
                 <p className="cardTextContainerText">{text}</p>

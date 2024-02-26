@@ -48,7 +48,9 @@ const TimelineSlideCard = ({
     const [isCopied, setIsCopied] = useState(false);
 
     const clickHandle = async () => {
-        description ? await navigator.clipboard.writeText(description) : null;
+        if(description) { 
+            await navigator.clipboard.writeText(description);
+        }
         setIsCopied(true);
         setTimeout(() => {
             setIsCopied(false);
@@ -65,7 +67,7 @@ const TimelineSlideCard = ({
 
     return (
         <div className="timelineItem">
-            <div className="timelineItemContent" onClick={clickHandle} role="presentation">
+            <div className="timelineItemContent" onClick={clickHandle} >
                 <div>
                     <p className="timelineItemMetadata">
                         {newDate}
