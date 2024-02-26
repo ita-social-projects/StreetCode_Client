@@ -7,6 +7,7 @@ import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
+import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -21,6 +22,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
     const [form] = Form.useForm();
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -44,13 +46,17 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 })
                 .catch((error) => {
                     if (error === 429) {
-                        errorMessage('Ви перевищили ліміт повідомлень, повторіть через 5 хвилин!');
+                        errorMessage(MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage('Щось пішло не так...');
+                        errorMessage(SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
+            setIsVerified(false);
+        }
+        else {
+            errorMessage(RECAPTCHA_CHECK);
         }
     };
 
