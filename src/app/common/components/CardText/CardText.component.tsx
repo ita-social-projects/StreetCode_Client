@@ -20,7 +20,7 @@ const CardText = ({
     moreBtnText = 'Трохи ще...', title, text, subTitle, className, onBtnClick, moreBtnAsLink,
 }:Props) => (
     <div className={`cardTextContainer ${className}`}>
-        <div className="cardTextContainerTopPart" onClick={(e: any) => copyText(text)}>
+        <div className="cardTextContainerTopPart" onClick={(e: any) => copyText(text)} role="presentation">
             <p className="cardTextContainerTitle">{title}</p>
             {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
             <p className="cardTextContainerText">{text}</p>

@@ -60,7 +60,7 @@ const TimelineSlideCard = ({
 
     return (
         <div className="timelineItem">
-            <div className="timelineItemContent" onClick={(e: any) => copyText(description)}>
+            <div className="timelineItemContent" onClick={(e: any) => copyText(description)} role="presentation">
                 <p className="timelineItemMetadata">
                     {newDate}
                     {historicalContexts.map(({ id, title: ctxTitle }) => (
