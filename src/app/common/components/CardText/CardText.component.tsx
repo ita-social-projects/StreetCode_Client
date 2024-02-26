@@ -1,4 +1,5 @@
 import './CardText.styles.scss';
+import { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -14,33 +15,48 @@ type Props = {
 
 const CardText = ({
     moreBtnText = 'Трохи ще...', title, text, subTitle, className, onBtnClick, moreBtnAsLink,
-}:Props) => (
-    <div className={`cardTextContainer ${className}`}>
-        <div className="cardTextContainerTopPart">
-            <p className="cardTextContainerTitle">{title}</p>
-            {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
-            <p className="cardTextContainerText">{text}</p>
-        </div>
-        {moreBtnAsLink
-            ? (
-                <Link
-                    to={moreBtnAsLink.link}
-                    state={moreBtnAsLink.state}
-                    className="cardTextContainerButton"
-                >
-                    {moreBtnText}
-                </Link>
-            )
-            : (
-                <p
-                    className="cardTextContainerButton"
-                    onClick={onBtnClick}
-                >
-                    {moreBtnText}
-                </p>
-            )}
+}:Props) => {
+    const [isCopied, setIsCopied] = useState(false);
 
-    </div>
-);
+    const clickHandle = async () => {
+        if(text) {
+            await navigator.clipboard.writeText(text);
+        }
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+    };
+
+    return (
+        <div className={`cardTextContainer ${className}`}>
+            <div className="cardTextContainerTopPart" onClick={clickHandle} role="presentation" >
+                <p className="cardTextContainerTitle">{title}</p>
+                {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
+                <p className="cardTextContainerText">{text}</p>
+                {isCopied && <div className="CoppyMessage">Скопійовано  </div>}
+            </div>
+            {moreBtnAsLink
+                ? (
+                    <Link
+                        to={moreBtnAsLink.link}
+                        state={moreBtnAsLink.state}
+                        className="cardTextContainerButton"
+                    >
+                        {moreBtnText}
+                    </Link>
+                )
+                : (
+                    <p
+                        className="cardTextContainerButton"
+                        onClick={onBtnClick}
+                    >
+                        {moreBtnText}
+                    </p>
+                )}
+
+        </div>
+    );
+}
 
 export default CardText;
