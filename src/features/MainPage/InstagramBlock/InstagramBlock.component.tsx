@@ -28,7 +28,6 @@ const InstagramBlock = () => {
 
     const sliderProps = {
         infinite: true,
-        swipe: windowSize.width < 1025,
         variableWidth: true,
         swipeOnClick: false,
         slidesToShow: 4,
@@ -37,7 +36,7 @@ const InstagramBlock = () => {
         slidesToScroll: 1,
     };
 
-    const sliderItems = posts.map((p) => (
+    const sliderItems = posts && posts.map((p) => (
         <InstagramSliderItem
             key={p.id}
             photoUrl={p.media_url}
