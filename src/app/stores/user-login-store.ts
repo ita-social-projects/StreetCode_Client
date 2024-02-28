@@ -4,7 +4,7 @@ import UserApi from '@api/user/user.api';
 import { RefreshTokenResponce, UserLoginResponce } from '@/models/user/user.model';
 
 export default class UserLoginStore {
-    private timeoutHandler: NodeJS.Timeout = null;
+    private timeoutHandler: NodeJS.Timeout = setTimeout(() => null);
 
     private static tokenStorageName = 'token';
 
