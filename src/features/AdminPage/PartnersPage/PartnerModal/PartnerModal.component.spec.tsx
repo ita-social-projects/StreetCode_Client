@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import PartnerModal from "./PartnerModal.component";
 
 jest.mock("@stores/root-store", () => ({
@@ -22,8 +23,20 @@ jest.mock("@stores/root-store", () => ({
   }),
 }));
 
+jest.mock("antd/es/upload", () => {
+  const antd = jest.requireActual("antd")
+  const { Upload } = antd;
+  return {__esModule: true, ...antd, Upload: {...Upload}}
+
+})
+
 describe("PartnerModal", () => {
   test("it should render component", () => {
-    render(<PartnerModal open={false} setIsModalOpen={() => {}}/>)
+    const container = render(
+      <PartnerModal open={false} setIsModalOpen={() => {}} />
+    );
+
+    const input = container.getAllByTestId("input-show-count");
+    console.log(container);
   });
 });

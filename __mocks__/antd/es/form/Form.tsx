@@ -11,10 +11,10 @@ type FormProps = {
 const Form = ({ form, layout, onFinish, children }: FormProps) => {
   return (
     <>
-      <div data-test-id="form-form">{form && "form exists"}</div>
-      <div data-test-id="form-layout">{layout}</div>
-      <button type='button' data-test-id="form-on-finish" onClick={onFinish}/>
-      <div data-test-id="form-children">{children}</div>
+      <div data-testid="form-form">{form && "form exists"}</div>
+      <div data-testid="form-layout">{layout}</div>
+      <button type='button' data-testid="form-on-finish" onClick={onFinish}/>
+      <div data-testid="form-children">{children}</div>
     </>
   )
 }

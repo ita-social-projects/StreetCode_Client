@@ -28,7 +28,7 @@ const mainPageContent = () => (
             <NewsSliderComponent />
             <TeamComponent />
             <PartnersBlockComponent />
-            <InstagramBlock />
+            {/* <InstagramBlock /> */}
             <StaticBanner
                 id="support"
                 blockName="Слід в історії у кожного різний. У тебе може бути свій"
