@@ -112,6 +112,8 @@ const StreetcodeContent = () => {
             toStreetcodeRedirectClickEvent(streetcodeUrl.current, fromPage);
             clearWindowHistoryState();
         }
+
+        return () => pageLoadercontext.resetLoadedBlocks();
     }, []);
 
     return (
