@@ -107,10 +107,12 @@ const Editor: React.FC<EditorProps> = ({
         }
     };
 
-    const handleQuillRef = (el) => {
+    //remove explicitly set any
+    const handleQuillRef = (el: any) => {
         quillRef.current = el;
         if (qRef) {
-            qRef.current = el;
+            // remove comment from this line
+            //qRef.current = el;
         }
     };
 

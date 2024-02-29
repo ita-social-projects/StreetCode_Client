@@ -108,9 +108,10 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         setOpen(false);
     };
 
-    const handleEditorChange = (content: string) => {
-        setCurrent({ ...current, description: content });
-    };
+    // produces error
+    // const handleEditorChange = (content: string) => {
+    //     setCurrent({ ...current, description: content });
+    // };
 
     return (
         <Modal
@@ -135,7 +136,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 layout="vertical"
                 form={form}
             >
-                <FormItem
+                <Form.Item
                     label="Назва вакансії"
                     name="title"
                     rules={[{ required: true, message: 'Введіть назву вакансії' }]}
@@ -144,8 +145,8 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                         showCount
                         maxLength={maxLengths.maxLenghtVacancyName}
                     />
-                </FormItem>
-                <FormItem
+                </Form.Item>
+                <Form.Item
                     label="Статус вакансії"
                     name="status"
                 >
@@ -161,17 +162,20 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                             Не активна
                         </Select.Option>
                     </Select>
-                </FormItem>
+                </Form.Item>
 
                 <label>Опис вакансії</label>
                 <Editor
                     qRef={textEditor}
                     value={current?.description ?? ''}
-                    onChange={handleEditorChange}
+                    // unworking shit
+                    // onChange={handleEditorChange}
+                    // just for testing (fix it later)
+                    onChange={()=>{}}
                     maxChars={maxLengths.maxLenghtVacancyDesc}
                     onCharacterCountChange={setEditorCharacterCount}
                 />
-                <FormItem
+                <Form.Item
                     label="Заробітня плата"
                     name="salary"
                     rules={[{ required: true, message: 'Введіть заробітню плату' }]}
@@ -180,7 +184,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                         showCount
                         maxLength={maxLengths.maxLenghtVacancySalary}
                     />
-                </FormItem>
+                </Form.Item>
                 <div className="center">
                     <Button className="streetcode-custom-button" htmlType="submit" onClick={handleSave}>
                         Зберегти
