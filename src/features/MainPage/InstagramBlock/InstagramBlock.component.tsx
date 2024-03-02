@@ -36,7 +36,7 @@ const InstagramBlock = () => {
         slidesToScroll: 1,
     };
 
-    const sliderItems = posts && posts.map((p) => (
+    const sliderItems = posts.map((p) => (
         <InstagramSliderItem
             key={p.id}
             photoUrl={p.media_url}
