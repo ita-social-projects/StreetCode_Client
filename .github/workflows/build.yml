@@ -1,4 +1,4 @@
-name: SonarCloud
+name: PR-check
 
 on:
   push:
@@ -21,6 +21,8 @@ jobs:
     - name: Build project
       run: npm run build
 
+    # when lint error will be fixed - add step with lint as wel
+
     - name: Run unit tests
       run: npm run test:cover
     
@@ -29,6 +31,6 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: "https://sonarcloud.io"
-      with:
-        projectName: StreetCode_Client
-        projectDescription: 'Front end side of Street Code app'
+        INPUT_PROJECTNAME: StreetCode_Client
+        INPUT_PROJECTDESCRIPTION: Front end side of Street Code app
+
