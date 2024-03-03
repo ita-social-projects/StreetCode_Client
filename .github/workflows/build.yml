@@ -1,0 +1,34 @@
+name: SonarCloud
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    types: [opened, synchronize, reopended]
+
+jobs:
+  sonard_cloud:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Install modules
+      run: npm i
+    
+    - name: Build project
+      run: npm run build
+
+    - name: Run unit tests
+      run: npm run test:cover
+    
+    - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@develop
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: "https://sonarcloud.io"
+        with:
+          projectName: StreetCode_Client
+          projectDescription: 'Front end side of Street Code app'
