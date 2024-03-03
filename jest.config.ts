@@ -7,7 +7,7 @@ const jestConfig: JestConfigWithTsJest = {
     moduleNameMapper: {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
         
-        // actual antd import
+        // antd components filepath
         "^antd/(.*)$": "<rootDir>/node_modules/antd/es/$1",
         
         '^@assets/(.*)$': '<rootDir>/src/assets/$1',

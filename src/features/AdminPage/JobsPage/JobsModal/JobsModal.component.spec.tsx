@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event"
-import JobApi from "../../../../app/api/job/Job.api";
+import JobApi from "@/app/api/job/Job.api";
 import JobsModalComponent from "./JobsModal.component";
 
 
@@ -12,6 +12,7 @@ const mockJob: Job = {
     status: false
 }
 
+// needed to render component without errors
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: (query: any) => ({
@@ -26,7 +27,7 @@ Object.defineProperty(window, 'matchMedia', {
     })
   });
 
-jest.mock('../../../../app/api/job/Job.api', () => ({
+jest.mock('@/app/api/job/Job.api', () => ({
     getById: jest.fn(() => mockJob),
     create: jest.fn(()=> {}),
     update: jest.fn(()=> {}),
@@ -42,14 +43,17 @@ describe('JobsModal test', () => {
         const currentId = 1;
 
         render(<JobsModalComponent open={open} setOpen={setOpen} currentId={currentId} />)
+        
         // test input in title field
         const inputTitle = screen.getByRole('textbox', {
             name: /назва вакансії/i
           })
          user.click(inputTitle)
          user.keyboard('test')
-        // idk how to compare properly
-        expect(inputTitle).toBe('test');
+        
+        expect(inputTitle.getAttribute('value')).toBe('test');
+
+        
     })
 
     it('should call the mock function', () => {

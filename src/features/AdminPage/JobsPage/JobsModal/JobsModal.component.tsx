@@ -9,7 +9,7 @@ import {
     Button, Form, Input, message, Modal, Popover,
     Select,
 } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
+
 
 import JobApi from '@/app/api/job/Job.api';
 import {
@@ -30,11 +30,9 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         maxLenghtVacancyDesc: 2000,
         maxLenghtVacancySalary: 15,
     };
-    const textEditor = useRef<ReactQuill | null>(null);
-    const [current, setCurrent] = useState<Job>();
-    const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
+
     const [form] = Form.useForm();
-    const [storedJob, setStoredJob] = useState<Job>();
+
     const emptyJob: Job = {
         title: form.getFieldValue('title'),
         description: '',
@@ -42,6 +40,13 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         id: 0,
         salary: form.getFieldValue('salary'),
     };
+
+    const textEditor = useRef<ReactQuill | null>(null);
+    const [current, setCurrent] = useState<Job>(emptyJob);
+    const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
+    
+    const [storedJob, setStoredJob] = useState<Job>(emptyJob);
+    
 
     useEffect(() => {
         const fetchJobData = async () => {
@@ -85,7 +90,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 id: currentId,
                 title,
                 status: isActive,
-                description: current?.description ?? '',
+                description: description ?? '',
                 salary,
             };
             const allJobs = await JobApi.getAllShort();
@@ -108,10 +113,12 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         setOpen(false);
     };
 
-    // produces error
-    // const handleEditorChange = (content: string) => {
-    //     setCurrent({ ...current, description: content });
-    // };
+    const handleEditorChange = (content: string) => {
+        setCurrent({
+            ...current,
+            description: content,
+        })
+    };
 
     return (
         <Modal
@@ -168,10 +175,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 <Editor
                     qRef={textEditor}
                     value={current?.description ?? ''}
-                    // unworking shit
-                    // onChange={handleEditorChange}
-                    // just for testing (fix it later)
-                    onChange={()=>{}}
+                    onChange={handleEditorChange}
                     maxChars={maxLengths.maxLenghtVacancyDesc}
                     onCharacterCountChange={setEditorCharacterCount}
                 />
