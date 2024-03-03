@@ -21,16 +21,20 @@ jobs:
     - name: Build project
       run: npm run build
 
-    # when lint error will be fixed - add step with lint as wel
+    # when lint error will be fixed - add step with lint as well
 
     - name: Run unit tests
       run: npm run test:cover
     
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: "https://sonarcloud.io"
-        INPUT_PROJECTNAME: StreetCode_Client
-        INPUT_PROJECTDESCRIPTION: Front end side of Street Code app
+      with: 
+        token: ${{ secrets.SONAR_TOKEN }}
+        host.url: https://sonarcloud.io
+        projectKey: ita-social-projects_StreetCode_Client
+        organization: ita-social-projects
+        projectName: StreetCode_Client
+        projectDescription: Fronted app of Street Code project
+        sources: src/
+
 
