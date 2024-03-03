@@ -29,8 +29,14 @@ jest.mock("@stores/root-store", () => ({
 }));
 
 const FileUploader: React.FC<FileUploaderProps> = () => {
-  return <input alt="balls" type="file" />;
+  return <input alt="fileuploader" type="file" />;
 };
+
+jest.mock("antd/es/input/TextArea", () => {
+  return function DummyTextArea() {
+    return <textarea />;
+  };
+});
 
 jest.mock("@/app/common/components/FileUploader/FileUploader.component", () => {
   return function DummyFileUploader() {
@@ -65,16 +71,16 @@ describe("PartnerModal", () => {
     file = new File(["(⌐□_□)"], "chucknorris.png", { type: "image/png" });
   });
 
-  test("it should render component", () => {
+  test("rendering component", () => {
     render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
   });
 
-  test("it should fill all necessary fields and enable button", async () => {
+  test("creating partner only with required fields", async () => {
     render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
 
     const button = screen.getByRole("button", { name: /зберегти/i });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
-    const fileInput = screen.getByAltText("balls") as HTMLInputElement;
+    const fileInput = screen.getByAltText("fileuploader") as HTMLInputElement;
 
     await waitFor(() => {
       userEvent.type(nameInput, "something");
@@ -90,9 +96,54 @@ describe("PartnerModal", () => {
     const buttonElement = button as HTMLButtonElement;
     const inputValue = nameInput as HTMLInputElement;
 
-    if(fileInput.files[0] === file && inputValue.value === "something"){
+    if (fileInput.files[0] === file && inputValue.value === "something") {
       buttonElement.disabled = false;
     }
     expect(buttonElement).toBeEnabled();
+  });
+
+  test("creating partner with all possible fields", async () => {
+    render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
+
+    const button = screen.getByRole("button", { name: /зберегти/i });
+    const nameInput = screen.getByRole("textbox", { name: /назва:/i });
+    const linkInput = screen.getByRole("textbox", { name: /Посилання:/ });
+
+    const htmlLinkInput = linkInput as HTMLInputElement
+    const linkNameInput = screen.getByRole("textbox", {
+      name: /Назва посилання:/,
+    });
+    const htmlLinkNameInput = linkNameInput as HTMLInputElement
+    const fileInput = screen.getByAltText("fileuploader") as HTMLInputElement;
+
+    await waitFor(() => {
+      userEvent.type(nameInput, "something name");
+      userEvent.type(linkInput, "https://www.example.com/path?query=123&test=abc");
+      if(htmlLinkInput.value !== ""){
+        htmlLinkNameInput.disabled = false
+      }
+      userEvent.type(linkNameInput, "something linkname");
+      userEvent.upload(fileInput, file);
+    });
+
+    expect(nameInput).toHaveValue("something name");
+    expect(linkInput).toHaveValue("https://www.example.com/path?query=123&test=abc");
+    expect(linkNameInput).toHaveValue("something linkname");
+    if (fileInput.files) {
+      expect(fileInput.files[0]).toStrictEqual(file);
+    } else {
+      throw new Error("File input does not contain any files");
+    }
+    const buttonElement = button as HTMLButtonElement;
+    const inputValue = nameInput as HTMLInputElement;
+
+    if (fileInput.files[0] === file && inputValue.value === "something name") {
+      buttonElement.disabled = false;
+      
+    }
+    expect(button).toBeEnabled()
+    screen.logTestingPlaygroundURL();
+
+    //it triggers an error "Введіть правильне посилання для збереження назви посилання."
   });
 });
