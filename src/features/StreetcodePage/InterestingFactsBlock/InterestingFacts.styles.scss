@@ -18,7 +18,7 @@
 }
 
 .interestingFactsWrapper {
-    @include wr.main-page-block-wrapper();
+    @include wr.block-wrapper-for-slick-slider();
 }
 
 .interestingFactsSliderContainer {
@@ -52,7 +52,7 @@
     @include mut.flex-centered();
     @include vnd.vendored(transform, scale(1.32));
     padding-top: pxToRem(88px);
-    
+
     .interestingFactSlide{
         @include  mut.sized(650px, 600px);
 
@@ -67,32 +67,32 @@
 
         .slideText{
             @include mut.sized($height: 40%);
-            
+
             .heading{
                 font-size:26px;
             }
-                      
+
             .mainText{
                 @include mut.sized($height: 75%);
                 font-size:15px;
                 line-height: pxToRem(20px);
                 @include mut.rem-margined($right: 5px );
 
-                
+
                 &::-webkit-scrollbar-thumb,
                 &::-webkit-scrollbar-track {
                   @include mut.full-rounded(15px);
                   @include mut.sized($height: 20px);
 
                 }
-              
+
                 &::-webkit-scrollbar-thumb {
                   background: c.$card-scrollbar-track-color;
                 }
-              
+
                 &::-webkit-scrollbar-track {
                   background: c.$accented-gray-color;
-                  @include mut.rem-margined( $bottom: 10px );              
+                  @include mut.rem-margined( $bottom: 10px );
                 }
             }
         }
@@ -123,16 +123,16 @@
     }
 
     .interestingFactsWrapper {
-        .slick-dots{         
+        .slick-dots{
             @include mut.rem-margined(0);
             bottom: 15%;
         }
     }
 
     .interestingFactsContainer {
-        @include mut.sized(92%, 100%); 
+        @include mut.sized(92%, 100%);
         @include mut.flex-centered($direction: column);
-    
+
         .blockHeadingContainer {
             margin-left: pxToRem(10px);
         }
@@ -143,12 +143,12 @@
 
     .singleSlideContainer{
         .interestingFactSlide{
-            @include mut.sized(445px); 
+            @include mut.sized(445px);
             @include mut.full-rounded(20px);
-    
+
             .slideImage {
                 @include mut.sized($height: 65%);
-    
+
                 img {
                     @include mut.sized($width: 100%, $height: 100%);
                     max-height: 300px;
@@ -160,14 +160,14 @@
                     font-size:20px;
                     @include mut.rem-padded(7px, 0px, 8px, 15px);
                 }
-    
+
                 .mainText{
                     overflow: auto;
                     height: 150px;
                     font-size: 15px;
                     line-height: pxToRem(21px);
                     margin-bottom: pxToEm(10px);
-    
+
                     &:after {
                         content: "";
                         position: absolute;
@@ -189,32 +189,32 @@
 and (min-width: 768px) and (max-width: 1024px){
 
 .interestingFactsWrapper {
-    @include wr.main-page-block-wrapper();
+    @include wr.block-wrapper-for-slick-slider();
     .slick-dots{
         @include mut.rem-margined(0);
         bottom: 15%;
     }
-  
+
 }
     .interestingFactsContainer {
-        @include mut.sized(765px, 100%); 
+        @include mut.sized(765px, 100%);
         @include mut.flex-centered($direction: column);
         margin: 0 auto;
     }
     .interestingFactsSliderContainer {
-        @include mut.sized(100%, 100%); 
+        @include mut.sized(100%, 100%);
     }
 
     .singleSlideContainer{
- 
+
         .interestingFactSlide{
             @include mut.sized(445px);
-    
+
             @include mut.full-rounded(20px);
-    
+
             .slideImage {
                 @include mut.sized($height: 65%);
-    
+
                 img {
                     @include mut.sized($width: 100%, $height: 100%);
                     max-height: 210px;
@@ -226,14 +226,14 @@ and (min-width: 768px) and (max-width: 1024px){
                     font-size:20px;
                     @include mut.rem-padded(7px, 0px, 8px, 15px);
                 }
-    
+
                 .mainText{
                     overflow: auto;
                     height: 150px;
                     font-size: 15px;
                     line-height: pxToRem(21px);
                     margin-bottom: pxToEm(10px);
-    
+
                     &:after {
                         content: "";
                         position: absolute;
@@ -245,7 +245,7 @@ and (min-width: 768px) and (max-width: 1024px){
                         width: 100%;
                         height: 1.7em;
                       }
-    
+
                 }
             }
         }
@@ -254,7 +254,7 @@ and (min-width: 768px) and (max-width: 1024px){
 
 @media screen and (max-width: 768px){
     .interestingFactsWrapper {
-        @include wr.main-page-block-wrapper();
+        @include wr.block-wrapper-for-slick-slider();
         .slick-dots{
             @include mut.rem-margined(0);
             bottom: 15%;
@@ -262,15 +262,15 @@ and (min-width: 768px) and (max-width: 1024px){
     }
 
     .interestingFactsContainer {
-        @include mut.sized(765px, 100%); 
+        @include mut.sized(765px, 100%);
         @include mut.flex-centered($direction: column);
-    
+
         .blockHeadingContainer {
             margin-left: pxToRem(10px);
         }
     }
     .interestingFactsSliderContainer {
-        @include mut.sized(100%, 100%); 
+        @include mut.sized(100%, 100%);
     }
 
 
@@ -336,7 +336,7 @@ and (min-width: 768px) and (max-width: 1024px){
     }
 
     .interestingFactsWrapper {
-        @include wr.main-page-block-wrapper();
+        @include wr.block-wrapper-for-slick-slider();
         .slick-dots{
             bottom: 15%;
             @include mut.sized($height: 80%);
@@ -344,9 +344,9 @@ and (min-width: 768px) and (max-width: 1024px){
     }
 
     .interestingFactsSliderContainer {
-        @include mut.sized(770px, 100%); 
+        @include mut.sized(770px, 100%);
     }
-    
+
     .interestingFactSlide{
         .slideImage {
             @include mut.sized($height: 45%);
@@ -361,10 +361,10 @@ and (min-width: 768px) and (max-width: 1024px){
         .interestingFactSlide{
             @include mut.sized(32%);
             @include mut.full-rounded(20px);
-    
+
             .slideImage {
                 @include mut.sized($height: 55%);
-    
+
                 img {
                     @include mut.sized($width: 100%, $height: 100%);
                 }

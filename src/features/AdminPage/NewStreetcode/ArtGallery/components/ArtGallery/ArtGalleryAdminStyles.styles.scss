@@ -13,7 +13,7 @@
 .artGalleryWrapperAdmin {
     @include mut.sized(100%, 230px);
 
-    @include wr.main-page-block-wrapper();
+    @include wr.block-wrapper-for-slick-slider();
     margin-bottom: pxToRem(390px);
 
     .artGalleryContainerAdmin {

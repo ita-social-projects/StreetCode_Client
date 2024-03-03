@@ -28,12 +28,3 @@ $body-font-size: 16px;
   }
   @return $strings;
 }
-
-@function map-to-rem($map) {
-  $new-map: ( );
-
-  @each $key, $value in $map {
-    $new-map: map-merge($new-map, ($key: str-replace(#{pxToRem($value)}, 'px')));
-  }
-  @return $new-map;
-}

@@ -29,6 +29,7 @@
 
     .formTitleContainer {
         @include mut.flexed($direction: column, $gap: 24px);
+
         margin-bottom: 24px;
 
         .formTitle {

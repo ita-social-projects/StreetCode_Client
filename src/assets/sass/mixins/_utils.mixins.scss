@@ -19,7 +19,7 @@
   gap: f.pxToRem($gap);
 }
 
-
+// helper for positioned-as
 @mixin set-positioning($top, $right, $bottom, $left) {
   @if ($top == 'auto' or unit($top) == '%') {
     top: $top;
@@ -60,6 +60,7 @@
     height: f.pxToRem($height);
   }
 }
+
 @mixin sizedImportant($width: auto, $height: auto) {
   @if ($width == 'auto' or $width == 'inherit' or unit($width) == '%') {
     width: $width !important ;
@@ -116,6 +117,7 @@
   overflow: $overflow !important;
   -webkit-background-clip: padding-box;
 }
+
 @mixin border($color:"#000", $border-width:1px, $type:solid ){
   border:  f.pxToRem($border-width) $type $color;
 }
@@ -140,6 +142,7 @@
   padding: f.pxToRem($top) f.pxToRem($right)
           f.pxToRem($bottom) f.pxToRem($left) !important;
 }
+
 // --------------------------Appearance----------------------------
 @mixin backdrop-filtering-blur($f-size){
   -webkit-backdrop-filter: blur($f-size);
@@ -182,10 +185,32 @@
   padding: 0 f.pxToRem(32px);
   gap: f.pxToRem(10px);
 }
+
+@mixin blur($edge:0, $top:0, $height:0, $z-index) {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    top: $top;
+    left: 0;
+    right: 0;
+    height: f.pxToRem($height);
+    background: linear-gradient($edge, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255, 255, 255, 0.664) 21%);
+    -webkit-text-fill-color: transparent;
+    z-index: $z-index;
+  }
+}
+
+@mixin list-styles($type) {
+  list-style-type: $type;
+  padding-inline-start: revert;
+}
+
 // --------------------------Text----------------------------------
 @mixin withLineHeight($line-height){
-  line-height:f.pxToRem($line-height);
+  line-height: f.pxToRem($line-height);
 }
+
 @mixin truncated($line-num: 3, $text-overflow: ellipsis) {
   overflow: hidden;
   white-space: nowrap;
@@ -216,7 +241,7 @@
   font-style: $font-style;
 }
 
-@mixin antialiased {
+@mixin font-smoothing {
   font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -247,6 +272,7 @@
 
 }
 
+// --------------------------Animations---------------------------------
 @mixin fadeKeyframes($type: "fadeIn", $name: "fade") {
   @-webkit-keyframes #{$name} {
     @content;
@@ -260,24 +286,4 @@
   @keyframes #{$name} {
     @content;
   }
-}
-
-@mixin blur($edge:0, $top:0, $height:0, $z-index) {
-  position: relative;
-  &:after {
-    content: '';
-    position: absolute;
-    top: $top;
-    left: 0;
-    right: 0;
-    height: f.pxToRem($height);
-    background: linear-gradient($edge, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.25) 5%, rgba(255, 255, 255, 0.664) 21%);
-    -webkit-text-fill-color: transparent;
-    z-index: $z-index;
-  }
-}
-
-@mixin list-styles($type) {
-  list-style-type: $type;
-  padding-inline-start: revert;
 }

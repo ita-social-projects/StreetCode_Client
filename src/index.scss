@@ -16,7 +16,7 @@
 
 body {
   font-family: ft.$body-tag-font;
-  @include ut.antialiased();
+  @include ut.font-smoothing();
   overflow-x: hidden;
 }
 
