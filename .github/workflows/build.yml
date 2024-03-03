@@ -25,10 +25,10 @@ jobs:
       run: npm run test:cover
     
     - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@develop
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: "https://sonarcloud.io"
-        with:
-          projectName: StreetCode_Client
-          projectDescription: 'Front end side of Street Code app'
+      uses: sonarsource/sonarqube-scan-action@develop
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: "https://sonarcloud.io"
+      with:
+        projectName: StreetCode_Client
+        projectDescription: 'Front end side of Street Code app'
