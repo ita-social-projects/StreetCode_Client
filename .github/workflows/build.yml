@@ -25,7 +25,7 @@ jobs:
       run: npm run test:cover
     
     - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@develop
+        uses: sonarsource/sonarqube-scan-action@develop
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: "https://sonarcloud.io"
