@@ -26,8 +26,8 @@ import {
   Popover,
   UploadFile,
 } from "antd";
-// import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
-// import ukUA from 'antd/locale/uk_UA';
+import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
+import ukUA from 'antd/locale/uk_UA';
 
 import {
   checkQuillEditorTextLength,
@@ -151,10 +151,10 @@ const NewsModal: React.FC<{
       }
     };
 
-    // dayjs.locale('uk');
-    // const dayJsUa = require("dayjs/locale/uk") ;// eslint-disable-line
-    // ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
-    // ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
+    dayjs.locale('uk');
+    const dayJsUa = require("dayjs/locale/uk") ;// eslint-disable-line
+    ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
+    ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
     const handleTextChange = () => {
       setTextIsChanged(true);
@@ -232,8 +232,8 @@ const NewsModal: React.FC<{
     };
 
     return (
-    //   <ConfigProvider locale={ukUA}>
-        <ConfigProvider >
+      <ConfigProvider locale={ukUA}>
+      {/* <ConfigProvider > */}
         <Modal
           open={open}
           onCancel={closeModal}

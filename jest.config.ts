@@ -6,15 +6,10 @@ const jestConfig: JestConfigWithTsJest = {
   roots: ["<rootDir>"],
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
-
-    // actual antd import
-
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
     "^antd/es/upload$": "<rootDir>/__mocks__/antd/es/upload/upload.tsx",
-    // '^antd/es/date-picker/locale/uk_UA$': '<rootDir>/__mocks__/antd/es/date/datepicker.tsx',
-
-    "^antd/es/date-picker/locale/(.*)$":
-      "<rootDir>/node_modules/antd/es/date-picker/locale/$1",
+    "^antd/es/date-picker/locale/uk_UA$": "<rootDir>/__mocks__/antd/es/date/localeprovider.tsx",
+    
     "^antd/(.*)$": "<rootDir>/node_modules/antd/es/$1",
     // DEV_NOTE: Down below is the right solution for compiling files by path
     // But we need to fix ALL typo errors before it could be compiled
@@ -45,7 +40,11 @@ const jestConfig: JestConfigWithTsJest = {
   },
   transform: {
     "^.+\\.svg$": "jest-transformer-svg",
+    // "^.+\\.tsx?$": "babel-jest",
   },
+  // transformIgnorePatterns: [
+  //   '/node_modules/(?!(antd)/)',
+  // ],
   coverageThreshold: {
     global: {
       statements: 0.1,
