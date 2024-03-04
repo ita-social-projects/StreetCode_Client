@@ -34,7 +34,7 @@ const FileUploader: React.FC<FileUploaderProps> = () => {
 
 jest.mock("antd/es/input/TextArea", () => {
   return function DummyTextArea() {
-    return <textarea />;
+    return <textarea maxLength={450} data-testid="text-area-description" />;
   };
 });
 
@@ -108,27 +108,34 @@ describe("PartnerModal", () => {
     const button = screen.getByRole("button", { name: /зберегти/i });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
     const linkInput = screen.getByRole("textbox", { name: /Посилання:/ });
-
-    const htmlLinkInput = linkInput as HTMLInputElement
+    const description = screen.getByTestId("text-area-description");
+    const htmlLinkInput = linkInput as HTMLInputElement;
     const linkNameInput = screen.getByRole("textbox", {
       name: /Назва посилання:/,
     });
-    const htmlLinkNameInput = linkNameInput as HTMLInputElement
+    const htmlLinkNameInput = linkNameInput as HTMLInputElement;
     const fileInput = screen.getByAltText("fileuploader") as HTMLInputElement;
 
     await waitFor(() => {
       userEvent.type(nameInput, "something name");
-      userEvent.type(linkInput, "https://www.example.com/path?query=123&test=abc");
-      if(htmlLinkInput.value !== ""){
-        htmlLinkNameInput.disabled = false
+      userEvent.type(
+        linkInput,
+        "https://www.example.com/path?query=123&test=abc"
+      );
+      userEvent.type(description, "something description");
+      if (htmlLinkInput.value !== "") {
+        htmlLinkNameInput.disabled = false;
       }
       userEvent.type(linkNameInput, "something linkname");
       userEvent.upload(fileInput, file);
     });
 
     expect(nameInput).toHaveValue("something name");
-    expect(linkInput).toHaveValue("https://www.example.com/path?query=123&test=abc");
+    expect(linkInput).toHaveValue(
+      "https://www.example.com/path?query=123&test=abc"
+    );
     expect(linkNameInput).toHaveValue("something linkname");
+    expect(description).toHaveValue("something description");
     if (fileInput.files) {
       expect(fileInput.files[0]).toStrictEqual(file);
     } else {
@@ -139,11 +146,48 @@ describe("PartnerModal", () => {
 
     if (fileInput.files[0] === file && inputValue.value === "something name") {
       buttonElement.disabled = false;
-      
     }
-    expect(button).toBeEnabled()
-    screen.logTestingPlaygroundURL();
+    expect(button).toBeEnabled();
 
+    screen.logTestingPlaygroundURL();
     //it triggers an error "Введіть правильне посилання для збереження назви посилання."
   });
+
+  test("check text amount restrictions in inputs",async () => {
+    render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
+
+    const nameInput = screen.getByRole("textbox", { name: /назва:/i });
+    const linkInput = screen.getByRole("textbox", { name: /Посилання:/ });
+    const linkNameInput = screen.getByRole("textbox", {
+      name: /Назва посилання:/,
+    });
+    const description = screen.getByTestId("text-area-description");
+
+    const str = "string for 20symbols"
+    const linkstr = "https://www.example.com/path?query=123&test=abcfff" // 50symbols
+    
+    const htmlLinkInput = linkInput as HTMLInputElement;
+    const htmlLinkNameInput = linkNameInput as HTMLInputElement;
+
+    await waitFor(() => {
+      userEvent.type(nameInput, str.repeat(6));
+      userEvent.type(
+        linkInput,
+        linkstr.repeat(5)
+      );
+      if (htmlLinkInput.value !== "") {
+        htmlLinkNameInput.disabled = false;
+      }
+      userEvent.type(linkNameInput, str.repeat(6));
+      userEvent.type(description, linkstr.repeat(10));
+    });
+
+    expect(nameInput).toHaveValue(str.repeat(5))
+    expect(linkInput).toHaveValue(linkstr.repeat(4))
+    expect(linkNameInput).toHaveValue(str.repeat(5))
+    expect(description).toHaveValue(linkstr.repeat(9))
+  });
+
+
+  
 });
