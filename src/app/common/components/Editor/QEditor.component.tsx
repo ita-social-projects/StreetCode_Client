@@ -112,7 +112,7 @@ const Editor: React.FC<EditorProps> = ({
         quillRef.current = el;
         if (qRef) {
             // remove comment from this line
-            //qRef.current = el;
+            // qRef.current = el;
         }
     };
 
