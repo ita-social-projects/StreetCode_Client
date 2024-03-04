@@ -148,12 +148,10 @@ describe("PartnerModal", () => {
       buttonElement.disabled = false;
     }
     expect(button).toBeEnabled();
-
-    screen.logTestingPlaygroundURL();
     //it triggers an error "Введіть правильне посилання для збереження назви посилання."
   });
 
-  test("check text amount restrictions in inputs",async () => {
+  test("check text amount restrictions in inputs", async () => {
     render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
 
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
@@ -163,31 +161,31 @@ describe("PartnerModal", () => {
     });
     const description = screen.getByTestId("text-area-description");
 
-    const str = "string for 20symbols"
-    const linkstr = "https://www.example.com/path?query=123&test=abcfff" // 50symbols
-    
+    const str = "string for 20symbols";
+    const linkstr = "https://www.example.com/path?query=123&test=abcfff"; // 50symbols
+
     const htmlLinkInput = linkInput as HTMLInputElement;
     const htmlLinkNameInput = linkNameInput as HTMLInputElement;
 
+    const fileInput = screen.getByAltText("fileuploader") as HTMLInputElement;
     await waitFor(() => {
       userEvent.type(nameInput, str.repeat(6));
-      userEvent.type(
-        linkInput,
-        linkstr.repeat(5)
-      );
+      userEvent.type(linkInput, linkstr.repeat(5));
       if (htmlLinkInput.value !== "") {
         htmlLinkNameInput.disabled = false;
       }
       userEvent.type(linkNameInput, str.repeat(6));
       userEvent.type(description, linkstr.repeat(10));
+      userEvent.upload(fileInput, file);
+      userEvent.upload(fileInput, file);
     });
 
-    expect(nameInput).toHaveValue(str.repeat(5))
-    expect(linkInput).toHaveValue(linkstr.repeat(4))
-    expect(linkNameInput).toHaveValue(str.repeat(5))
-    expect(description).toHaveValue(linkstr.repeat(9))
+    expect(nameInput).toHaveValue(str.repeat(5));
+    expect(linkInput).toHaveValue(linkstr.repeat(4));
+    expect(linkNameInput).toHaveValue(str.repeat(5));
+    expect(description).toHaveValue(linkstr.repeat(9));
+    if (fileInput.files) {
+      expect(fileInput.files[0]).toStrictEqual(file);
+    }
   });
-
-
-  
 });
