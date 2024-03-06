@@ -81,6 +81,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     logging:
       driver: loki
       options:
