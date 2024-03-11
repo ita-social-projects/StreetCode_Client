@@ -9,7 +9,9 @@ const jestConfig: JestConfigWithTsJest = {
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
     "^antd/es/upload$": "<rootDir>/__mocks__/antd/es/upload/upload.tsx",
     "^antd/es/date-picker/locale/uk_UA$": "<rootDir>/__mocks__/antd/es/date/localeprovider.tsx",
-    
+    // "^antd/es/date-picker/(.*)$": "<rootDir>/node_modules/antd/es/date-picker/$1",
+
+    "^antd/locale/(.*)$": "<rootDir>/node_modules/antd/locale/$1",
     "^antd/(.*)$": "<rootDir>/node_modules/antd/es/$1",
     // DEV_NOTE: Down below is the right solution for compiling files by path
     // But we need to fix ALL typo errors before it could be compiled
