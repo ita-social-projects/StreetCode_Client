@@ -76,7 +76,7 @@
             width: 100%;
             @include mut.rem-margined(10px, 0px, 0px, 0px);
             @include mut.rem-padded(0px, 5px, 0px, 0px);
-            line-height: f.pxToRem(23px);
+            line-height: f.pxToRem(20px);
             max-height: f.pxToRem(214px);
             overflow: auto;
             color: c.$lighter-black-color;
