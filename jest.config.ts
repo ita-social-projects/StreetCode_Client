@@ -40,7 +40,7 @@ const jestConfig: JestConfigWithTsJest = {
     "^@hooks/(.*)$": "<rootDir>/src/app/common/hooks/$1",
     "^@constants/(.*)$": "<rootDir>/src/app/common/constants/$1",
     "^@utils/(.*)$": "<rootDir>/src/app/common/utils/$1",
-  },
+    },
   verbose: true,
   collectCoverageFrom: [
     "src/**/*.{ts,js}", // temp disable coverage collection for tsx, jsx until type errors will be fixed
@@ -53,6 +53,9 @@ const jestConfig: JestConfigWithTsJest = {
   transform: {
     "^.+\\.svg$": "jest-transformer-svg",
   },
+  transformIgnorePatterns: [
+    "node_modules/(?!antd/)"
+  ],
   coverageThreshold: {
     global: {
       statements: 0.1,
