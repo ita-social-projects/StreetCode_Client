@@ -1,9 +1,8 @@
-import { act, fireEvent, getByLabelText, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent,  render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import NewsModal from "./NewsModal.component";
 import userEvent from "@testing-library/user-event";
 import dayjs from "dayjs";
-import { debug } from "console";
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -42,12 +41,12 @@ jest.mock("@/app/common/components/Editor/QEditor.component", () => {
 });
 
 describe("NewsModal", () => {
-  test.skip("it should render component", () => {
+  test("it should render component", () => {
     const setIsModalOpen = jest.fn();
     render(<NewsModal open setIsModalOpen={setIsModalOpen} />);
   });
 
-  test.skip("it should be filled with required values and submited", async () => {
+  test("it should be filled with required values and submited", async () => {
     const setIsModalOpen = jest.fn();
     const afterSubmitMock = jest.fn();
 
@@ -119,7 +118,6 @@ describe("NewsModal", () => {
         afterSubmit={afterSubmitMock}
       />
     );
-
     
     const requiredFields = document.querySelectorAll<HTMLInputElement>('[aria-required="true"]');
     const requiredFieldsArray = Array.from(requiredFields);
@@ -138,7 +136,7 @@ describe("NewsModal", () => {
     expect(afterSubmitMock).not.toHaveBeenCalled();
   });
 
-  test.skip("it should truncate inputs when exceeding maximum characters/files", async () => {
+  test("it should truncate inputs when exceeding maximum characters/files", async () => {
     render(<NewsModal open setIsModalOpen={() => {}} />);
 
     const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
@@ -169,7 +167,7 @@ describe("NewsModal", () => {
     });
   });
 
-  test.skip("it should properly edit fields", async () => {
+  test("it should properly edit fields", async () => {
     const setIsModalOpen = jest.fn();
     const afterSubmitMock = jest.fn();
 
