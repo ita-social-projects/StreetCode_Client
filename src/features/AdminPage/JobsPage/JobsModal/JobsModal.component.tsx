@@ -76,20 +76,19 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
 
   const handleSave = async () => {
     try {
-      setTimeout(async () => {
         const values = await form.validateFields();
         checkQuillEditorTextLength(
           editorCharacterCount,
           maxLengths.maxLenghtVacancyDesc
         );
-        const { title, status, description, salary } = values;
+        const { title, status, salary } = values;
         const isActive = status === "setActive";
 
         const newJob: Job = {
           id: currentId,
           title,
           status: isActive,
-          description: description ?? "",
+          description: current.description ?? "",
           salary,
         };
         const allJobs = await JobApi.getAllShort();
@@ -104,7 +103,6 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           await JobApi.update(newJob);
         }
         message.success("Вакансію успішно додано!", 2);
-      });
     } catch (e: any) {
       console.log(e);
       message.error("Будь ласка, перевірте введені дані", 2);
@@ -176,6 +174,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
             maxChars={maxLengths.maxLenghtVacancyDesc}
             onCharacterCountChange={setEditorCharacterCount}
           />
+
         </Form.Item>
         <Form.Item
           label="Заробітня плата"
@@ -188,7 +187,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           <Button
             className="streetcode-custom-button"
             htmlType="submit"
-            onClick={handleSave}
+            onClick={() => setTimeout(async () => await handleSave())}
           >
             Зберегти
           </Button>
