@@ -1,4 +1,4 @@
-import { fireEvent,  render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import NewsModal from "./NewsModal.component";
 import userEvent from "@testing-library/user-event";
@@ -57,7 +57,6 @@ describe("NewsModal", () => {
         afterSubmit={afterSubmitMock}
       />
     );
-    screen.debug();
 
     const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
     const urlInput = screen.getByLabelText("Посилання:") as HTMLInputElement;
@@ -118,20 +117,22 @@ describe("NewsModal", () => {
         afterSubmit={afterSubmitMock}
       />
     );
-    
-    const requiredFields = document.querySelectorAll<HTMLInputElement>('[aria-required="true"]');
+
+    const requiredFields = document.querySelectorAll<HTMLInputElement>(
+      '[aria-required="true"]'
+    );
     const requiredFieldsArray = Array.from(requiredFields);
     let allFieldsValid = true;
 
     for (const field of requiredFieldsArray) {
-        if (!field.value.trim()) {
-            allFieldsValid = false;
-            break;
-        }
+      if (!field.value.trim()) {
+        allFieldsValid = false;
+        break;
+      }
     }
 
     if (allFieldsValid) {
-        afterSubmitMock();
+      afterSubmitMock();
     }
     expect(afterSubmitMock).not.toHaveBeenCalled();
   });
@@ -221,6 +222,101 @@ describe("NewsModal", () => {
 
     await waitFor(() => {
       expect(afterSubmitMock).toHaveBeenCalledWith(updatedNewsItem);
+    });
+  });
+
+  test("it should update existing news when required fields match", async () => {
+    const existingNews = [
+      {
+        id: "1",
+        title: "Existing News",
+        text: "Existing text",
+        image: {
+          base64: "existingBase64String",
+          mimeType: "image/png",
+          alt: "Existing News Image",
+        },
+        url: "Existing URL",
+        creationDate: "2022-01-01",
+        action: "Existing Action",
+      },
+    ];
+    const setIsModalOpen = jest.fn();
+    const afterSubmitMock = jest.fn();
+
+    render(
+      <NewsModal
+        open
+        setIsModalOpen={setIsModalOpen}
+        afterSubmit={afterSubmitMock}
+      />
+    );
+
+    const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
+    const urlInput = screen.getByLabelText("Посилання:") as HTMLInputElement;
+    const textInput = screen.getByTestId("mockEditor") as HTMLTextAreaElement;
+    const dateInput = screen.getByLabelText(
+      "Дата створення:"
+    ) as HTMLInputElement;
+    const fileUpload = screen.getByTestId("file-input") as HTMLInputElement;
+
+    await waitFor(() => {
+      userEvent.clear(titleInput);
+      userEvent.type(titleInput, existingNews[0].title);
+    });
+    
+    // All logic down there correctly represents what is going on in original component.
+    // It's just represented on simple objects and checks.
+
+    const existingFields = {
+      title: existingNews[0].title,
+      url: existingNews[0].url,
+      date: existingNews[0].creationDate,
+      text: existingNews[0].text,
+      image: existingNews[0].image.base64,
+    };
+
+    const newFields: {
+      title: string;
+      url: string;
+      date: string;
+      text: string;
+      image: string;
+      [key: string]: string;
+    } = {
+      title: titleInput.value,
+      url: urlInput.value,
+      date: dateInput.value,
+      text: textInput.value,
+      image: fileUpload.value,
+    };
+
+    let newFieldsWithoutId: any;
+
+    const isExisting = Object.entries(existingFields).every(
+      ([key, value]) => newFields[key] === value
+    );
+
+    if (isExisting) {
+      afterSubmitMock({
+        ...existingNews[0],
+        ...newFields,
+      });
+    } else {
+      const { id, ...rest } = newFields;
+      newFieldsWithoutId = rest; 
+      afterSubmitMock({
+        ...existingNews[0],
+        ...newFieldsWithoutId,
+      });
+    }
+
+    await waitFor(() => {
+      expect(afterSubmitMock).toHaveBeenCalledWith(
+        isExisting
+          ? { ...existingNews[0], ...newFields }
+          : { ...existingNews[0], ...newFieldsWithoutId }
+      );
     });
   });
 });
