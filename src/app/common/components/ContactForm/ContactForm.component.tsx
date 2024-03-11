@@ -1,12 +1,13 @@
 import './ContactForm.styles.scss';
 
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { LegacyRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
+import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -19,7 +20,11 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
     const [isVerified, setIsVerified] = useState(false);
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm();
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
+
+    const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -33,14 +38,25 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
 
     const onFinish = () => {
         if (isVerified) {
-            const newEmail: Email = { from: formData.email, content: formData.message };
+            const token = recaptchaRef?.current?.getValue();
+            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
             EmailApi.send(newEmail)
                 .then(() => {
                     successMessage();
                 })
-                .catch(() => {
-                    errorMessage();
+                .catch((error) => {
+                    if (error === 429) {
+                        errorMessage(MESSAGE_LIMIT);
+                    }
+                    else {
+                        errorMessage(SOMETHING_IS_WRONG);
+                    }
                 });
+            recaptchaRef.current?.reset();
+            setIsVerified(false);
+        }
+        else {
+            errorMessage(RECAPTCHA_CHECK);
         }
     };
 
@@ -51,10 +67,10 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
         });
     };
 
-    const errorMessage = () => {
+    const errorMessage = (message: string) => {
         messageApi.open({
             type: 'error',
-            content: 'Щось пішло не так...',
+            content: message,
         });
     };
 
@@ -115,8 +131,9 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 <div className="captchaBlock">
                     <ReCAPTCHA
                         className="required-captcha"
-                        sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
+                        sitekey={siteKey ? siteKey : ""}
                         onChange={handleVerify}
+                        ref={recaptchaRef}
                     />
                 </div>
                 <Form.Item>
