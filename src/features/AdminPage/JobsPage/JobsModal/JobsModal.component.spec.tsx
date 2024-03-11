@@ -31,13 +31,15 @@ jest.mock("@/app/common/components/Editor/QEditor.component", () => {
     __esModule: true,
     default: jest.fn((props) => {
       const { value, onChange, maxChars } = props;
+      const valueToSet = value ?? "";
       const handleOnChange = (newValue: string) => {
         onChange(newValue.slice(0, 3000));
       };
       return (
         <div>
-          <textarea
-            value={value}
+          <input
+            type="text"
+            value={valueToSet}
             onChange={(e) => handleOnChange(e.target.value)}
             maxLength={maxChars}
           />
@@ -56,8 +58,8 @@ jest.mock("@/app/api/job/Job.api", () => ({
   }),
 }));
 
-// needs act warning fix
 describe("JobsModal test", () => {
+  // Arrange
   it("should be rendered", async () => {
     const open = true;
     const setOpen = () => {};
@@ -72,7 +74,7 @@ describe("JobsModal test", () => {
       );
     });
 
-    // test input in title field
+
     const inputTitle = screen.getByRole("textbox", {
       name: /назва вакансії/i,
     });
@@ -87,6 +89,7 @@ describe("JobsModal test", () => {
     });
     const buttonSave = screen.getByRole("button", { name: /зберегти/i });
 
+    // Assert
     expect(inputTitle).toBeInTheDocument;
     expect(selectStatus).toBeInTheDocument;
     expect(inputDesctription).toBeInTheDocument;
@@ -127,7 +130,7 @@ describe("JobsModal test", () => {
       status: false,
     };
 
-    //Act
+    // Act
     await waitFor(() => {
       user.type(inputTitle, "title");
       user.type(inputSalary, "salary");
@@ -180,7 +183,7 @@ describe("JobsModal test", () => {
       status: true,
     };
 
-    //Act
+    // Act
     await waitFor(() => {
       user.type(inputTitle, createJobWithAllFields.title);
       user.type(inputDescription, createJobWithAllFields.description);
@@ -253,6 +256,7 @@ describe("JobsModal test", () => {
       user.click(buttonSave);
     });
 
+    // Assert
     expect(JobApi.update).toHaveBeenCalled();
     expect(JobApi.update).toHaveBeenCalledWith(editedJob);
   });
@@ -299,11 +303,12 @@ describe("JobsModal test", () => {
 
     sameRequiredFieldsJob.id = mockJob.id;
 
+    // Assert
     expect(JobApi.update).toHaveBeenCalled();
     expect(JobApi.update).toHaveBeenCalledWith(sameRequiredFieldsJob);
   });
 
-  it.skip("should check text amount restrictions", async () => {
+  it("should check text amount restrictions", async () => {
     // Arrange
     const open = true;
     const setOpen = () => {};
@@ -330,16 +335,22 @@ describe("JobsModal test", () => {
       name: /заробітня плата/i,
     });
 
-    const buttonSave = screen.getByRole("button", { name: /зберегти/i });
+    const titleRestriction = 50;
+    const salaryRestriction = 15;
+    const descriptionRestriction = 2000;
+    const longText = 'String which excides text amount limit'.repeat(2);
+    const veryLongText = 'String which excides text amount limit'.repeat(55);
 
     // Act
     await waitFor(() => {
-      user.type(inputTitle, 'a'.repeat(55));
-      user.type(inputDescription, 'a'.repeat(2005));
-      user.type(inputSalary, 'a'.repeat(20));
+      user.type(inputTitle, longText);
+      user.type(inputDescription, veryLongText);
+      user.type(inputSalary, longText);
     });
 
-    
-    
+    // Assert
+    expect(inputTitle.getAttribute('value')).toHaveLength(titleRestriction);
+    expect(inputDescription.getAttribute('value')).toHaveLength(descriptionRestriction)
+    expect(inputSalary.getAttribute('value')).toHaveLength(salaryRestriction);
   });
 });

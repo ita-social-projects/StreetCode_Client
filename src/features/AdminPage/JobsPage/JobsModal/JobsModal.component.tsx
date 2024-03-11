@@ -51,10 +51,10 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           setQuillEditorContent(textEditor.current, currentJob?.description);
           setCurrent(currentJob);
           form.setFieldsValue({
-            title: currentJob?.title,
-            status: currentJob?.status ? "setActive" : "setInactive",
-            description: currentJob?.description,
-            salary: currentJob?.salary,
+            title: currentJob.title,
+            status: currentJob.status ? "setActive" : "setInactive",
+            description: currentJob.description,
+            salary: currentJob.salary,
           });
         } catch (error) {
           console.log(error);
@@ -62,21 +62,21 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       } else if (currentId === 0) {
         setStoredJob(emptyJob);
         form.setFieldsValue({
-          title: storedJob?.title,
-          status: storedJob?.status ? "setActive" : "setInactive",
-          description: storedJob?.description,
-          salary: storedJob?.salary,
+          title: storedJob.title,
+          status: storedJob.status ? "setActive" : "setInactive",
+          description: storedJob.description,
+          salary: storedJob.salary,
         });
       }
     };
 
     textEditor.current?.editor?.setText("");
     fetchJobData();
-  }, [open, currentId, form]);
+  }, [open, currentId]);
 
   const handleSave = async () => {
     try {
-        const values = await form.validateFields();
+        const values = await form.getFieldsValue();
         checkQuillEditorTextLength(
           editorCharacterCount,
           maxLengths.maxLenghtVacancyDesc
@@ -88,7 +88,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           id: currentId,
           title,
           status: isActive,
-          description: current.description ?? "",
+          description: current.description,
           salary,
         };
         const allJobs = await JobApi.getAllShort();
@@ -108,6 +108,14 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       message.error("Будь ласка, перевірте введені дані", 2);
     }
   };
+
+  const handelOk = () => {
+    try{
+      form.submit();
+    } catch(e: any){
+      console.log(e);
+    }
+  }
 
   const clearModal = () => {
     form.resetFields();
@@ -140,7 +148,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       <div className="center">
         <h2>Вакансії</h2>
       </div>
-      <Form layout="vertical" form={form}>
+      <Form layout="vertical" form={form} initialValues={{status: 'setActive' }} onFinish={handleSave}>
         <Form.Item
           label="Назва вакансії"
           name="title"
@@ -152,7 +160,6 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           <Select
             key="statusSelectInput"
             className="status-select-input"
-            defaultValue="setActive"
           >
             <Select.Option key="active" value="setActive">
               Активна
@@ -169,7 +176,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         >
           <Editor
             qRef={textEditor}
-            value={current?.description ?? ""}
+            value={current.description}
             onChange={handleEditorChange}
             maxChars={maxLengths.maxLenghtVacancyDesc}
             onCharacterCountChange={setEditorCharacterCount}
@@ -186,8 +193,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         <div className="center">
           <Button
             className="streetcode-custom-button"
-            htmlType="submit"
-            onClick={() => setTimeout(async () => await handleSave())}
+            onClick={handelOk}
           >
             Зберегти
           </Button>
