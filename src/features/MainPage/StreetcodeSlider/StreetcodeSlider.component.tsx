@@ -1,36 +1,48 @@
-/* eslint-disable no-await-in-loop */
 import './StreetcodeSlider.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useRef, useState } from 'react';
-import ImagesApi from '@api/media/images.api';
+import { useEffect, useState } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import Image from '@models/media/image.model';
 import useMobx from '@stores/root-store';
 
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-// eslint-disable-next-line import/extensions
-import { paginateRequest } from '@/app/common/utils/paginateRequest';
-import { StreetcodeMainPage } from '@/models/streetcode/streetcode-types.model';
 
 import STREETCODE_SLIDER_PROPS from './constants/streetcodeSliderProps.constant';
 import StreetcodeSliderItem from './StreetcodeSliderItem/StreetcodeSliderItem.component';
 
-const DEFAULT_STREETCODE_CARDS_AMOUNT = 10;
-
 const StreetcodeSlider = () => {
+    const MAX_STREETCODES_LOADED = 3;
     const { imagesStore, streetcodeMainPageStore } = useMobx();
-
+    const [notAllowedIntersectionIndexes, setNotAllowedIntersectionIndexes] = useState<number[]>([]);
     const windowsize = useWindowSize();
-    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.centerMode = true;
-    if (windowsize.width <= 1024) STREETCODE_SLIDER_PROPS.dots = true;
-    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.initialSlide = 1;
+    if (windowsize.width <= 1024) {
+        if (windowsize.width >= 768) {
+            STREETCODE_SLIDER_PROPS.centerMode = true;
+            STREETCODE_SLIDER_PROPS.initialSlide = 1;
+        }
+        STREETCODE_SLIDER_PROPS.dots = true;
+    }
+
     if (windowsize.width <= 768) STREETCODE_SLIDER_PROPS.variableWidth = false;
 
-    streetcodeMainPageStore.fetchStreetcodesMainPage(1, DEFAULT_STREETCODE_CARDS_AMOUNT);
-    imagesStore.fetchImages(streetcodeMainPageStore.getStreetcodesArray || []);
+    const LoadStreetcode = async (index : number) => {
+        await streetcodeMainPageStore.fetchLastStreetcodeWithOffset(index)
+            .then(async () => imagesStore.fetchImage(streetcodeMainPageStore.getStreetcodesArray[index]?.imageId));
+    };
+
+    useEffect(() => {
+        for (let i = 0; i < MAX_STREETCODES_LOADED; i += 1) {
+            if (i !== MAX_STREETCODES_LOADED - 1) {
+                setNotAllowedIntersectionIndexes([...notAllowedIntersectionIndexes, i]);
+                LoadStreetcode(i);
+            } else {
+                setNotAllowedIntersectionIndexes(
+                    [...notAllowedIntersectionIndexes, streetcodeMainPageStore.STREETCODE_MAX_AMOUNT - 1],
+                );
+                LoadStreetcode(streetcodeMainPageStore.STREETCODE_MAX_AMOUNT - 1);
+            }
+        }
+    }, []);
 
     return (
         <div>
@@ -44,10 +56,14 @@ const StreetcodeSlider = () => {
                                         ? (
                                             <SlickSlider {...STREETCODE_SLIDER_PROPS}>
                                                 {streetcodeMainPageStore.getStreetcodesArray.map((item, index) => (
-                                                    <div key={item.id} className="slider-item">
+                                                    <div key={item?.id} className="slider-item">
                                                         <StreetcodeSliderItem
+                                                            index={index}
                                                             streetcode={item}
-                                                            image={imagesStore.getImage(item.imageId)}
+                                                            image={imagesStore.getImage(item?.imageId)}
+                                                            allowIntersection={
+                                                                !(index in notAllowedIntersectionIndexes)
+                                                            }
                                                         />
                                                     </div>
                                                 ))}

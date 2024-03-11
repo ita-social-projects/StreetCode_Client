@@ -27,6 +27,9 @@ const StreetcodesApi = {
 
     getAllMainPage: () => Agent.get<StreetcodeMainPage[]>(`${API_ROUTES.STREETCODES.GET_ALL_MAINPAGE}`),
 
+    getLastWithOffset: (offset: number) => Agent
+        .get<StreetcodeMainPage>(`${API_ROUTES.STREETCODES.GET_LAST_WITH_OFFSET}/${offset}`),
+
     getPageMainPage: (page: number, pageSize: number) => Agent
         .get<StreetcodeMainPage[]>(
             `${API_ROUTES.STREETCODES.GET_PAGE_MAINPAGE}`,
