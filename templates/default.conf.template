@@ -2,27 +2,37 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name $FRONTEND_SERVER_NAME;
+    server_name $FRONTEND_SERVER_NAME www.$FRONTEND_SERVER_NAME;
+    server_tokens off;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
 
-    return 301 https://$FRONTEND_SERVER_NAME;
+
+    location / {
+    return 301 https://$FRONTEND_SERVER_NAME$request_uri;
+    }
 }
 
 server {
     listen 80;
     listen [::]:80;
 
-    server_name $BACKEND_SERVER_NAME;
+    server_name $BACKEND_SERVER_NAME www.$BACKEND_SERVER_NAME;
+    server_tokens off;
+
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
-    
-    return 301 https://$BACKEND_SERVER_NAME;
+
+
+    location / {
+    return 301 https://$BACKEND_SERVER_NAME$request_uri;
+    }
 }
+
 
 server {
     listen 443 ssl http2;
