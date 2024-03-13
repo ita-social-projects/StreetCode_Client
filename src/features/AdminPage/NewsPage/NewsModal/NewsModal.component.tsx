@@ -233,7 +233,6 @@ const NewsModal: React.FC<{
 
     return (
       <ConfigProvider locale={ukUA}>
-      {/* <ConfigProvider > */}
         <Modal
           open={open}
           onCancel={closeModal}

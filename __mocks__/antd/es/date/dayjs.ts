@@ -1,9 +1,9 @@
-const weekdaysShort = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']; 
-const monthsShort = ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лис', 'Гру']; 
+const WEEKDAY_SHORTS = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']; 
+const  MONTH_SHORTS = ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лис', 'Гру']; 
 
-const dayJsUkLocale = {
-  weekdaysShort,
-  monthsShort
-};
+const DAY_JS_UK_LOCALE = {
+  WEEKDAY_SHORTS,
+  MONTH_SHORTS
+}
 
-export default dayJsUkLocale;
+export default DAY_JS_UK_LOCALE;

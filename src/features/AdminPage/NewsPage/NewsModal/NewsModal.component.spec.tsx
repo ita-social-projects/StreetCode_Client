@@ -41,12 +41,12 @@ jest.mock("@/app/common/components/Editor/QEditor.component", () => {
 });
 
 describe("NewsModal", () => {
-  test("it should render component", () => {
+  it(" should render component", () => {
     const setIsModalOpen = jest.fn();
     render(<NewsModal open setIsModalOpen={setIsModalOpen} />);
   });
 
-  test("it should be filled with required values and submited", async () => {
+  it(" should be filled with required values and submited", async () => {
     const setIsModalOpen = jest.fn();
     const afterSubmitMock = jest.fn();
 
@@ -106,7 +106,7 @@ describe("NewsModal", () => {
     });
   }, 10000);
 
-  test("it should not submit when required fields are empty", async () => {
+  it(" should not submit when required fields are empty", async () => {
     const setIsModalOpen = jest.fn();
     const afterSubmitMock = jest.fn();
 
@@ -137,7 +137,7 @@ describe("NewsModal", () => {
     expect(afterSubmitMock).not.toHaveBeenCalled();
   });
 
-  test("it should truncate inputs when exceeding maximum characters/files", async () => {
+  it("should truncate inputs when exceeding maximum characters/files", async () => {
     render(<NewsModal open setIsModalOpen={() => {}} />);
 
     const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
@@ -168,7 +168,7 @@ describe("NewsModal", () => {
     });
   });
 
-  test("it should properly edit fields", async () => {
+  it("should properly edit fields", async () => {
     const setIsModalOpen = jest.fn();
     const afterSubmitMock = jest.fn();
 
@@ -225,7 +225,7 @@ describe("NewsModal", () => {
     });
   });
 
-  test("it should update existing news when required fields match", async () => {
+  it("should update existing news when required fields match", async () => {
     const existingNews = [
       {
         id: "1",

@@ -11,12 +11,9 @@ const jestConfig: JestConfigWithTsJest = {
     "^antd/es/date-picker/locale/uk_UA$": "<rootDir>/__mocks__/antd/es/date/localeprovider.tsx",
     "^antd/locale/(.*)$": "<rootDir>/node_modules/antd/locale/$1",
     "^antd/es/table$": "<rootDir>/node_modules/antd/es/table",
+    "^@stores/root-store$": "<rootDir>/__mocks__/@stores/root-store.tsx", 
     "^antd/(.*)$": "<rootDir>/node_modules/antd/es/$1",
-    // DEV_NOTE: Down below is the right solution for compiling files by path
-    // But we need to fix ALL typo errors before it could be compiled
-    // Temp solution - mocking modules.
-    // After fixing type error remove mocks or continue using them(as more simple solution)
-
+    
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@app/(.*)$": "<rootDir>/src/app/$1",
     "^@sass/(.*)$": "<rootDir>/src/assets/sass/$1",
@@ -41,11 +38,7 @@ const jestConfig: JestConfigWithTsJest = {
   },
   transform: {
     "^.+\\.svg$": "jest-transformer-svg",
-    // "^.+\\.tsx?$": "babel-jest",
   },
-  // transformIgnorePatterns: [
-  //   '/node_modules/(?!(antd)/)',
-  // ],
   coverageThreshold: {
     global: {
       statements: 0.1,

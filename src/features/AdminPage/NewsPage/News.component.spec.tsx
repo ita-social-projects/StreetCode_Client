@@ -62,7 +62,7 @@ jest.mock("antd/es/table", () => ({ columns, dataSource }: any) => {
 });
 
 describe("News", () => {
-  test("it should render component and its elements", () => {
+  it("should render component and its elements", () => {
     render(
       <MemoryRouter>
         <Newss />
