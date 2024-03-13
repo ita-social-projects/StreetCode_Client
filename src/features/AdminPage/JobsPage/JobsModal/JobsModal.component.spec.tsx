@@ -49,6 +49,7 @@ jest.mock("@/app/common/components/Editor/QEditor.component", () => {
   };
 });
 
+// mock backend api calls
 jest.mock("@/app/api/job/Job.api", () => ({
   getById: jest.fn(() => mockJob),
   create: jest.fn(() => {}),
@@ -58,11 +59,18 @@ jest.mock("@/app/api/job/Job.api", () => ({
   }),
 }));
 
+// JobModal's props
+const open = true;
+const setOpen = () => {};
+
 describe("JobsModal test", () => {
-  // Arrange
+
+  afterEach(()=>{
+    jest.clearAllMocks();
+  })
+
   it("should be rendered", async () => {
-    const open = true;
-    const setOpen = () => {};
+    // Arrange
     const currentId = 0;
     await waitFor(() => {
       render(
@@ -99,8 +107,6 @@ describe("JobsModal test", () => {
 
   it("should create job with required fields only", async () => {
     // Arrange
-    const open = true;
-    const setOpen = () => {};
     const currentId = 0;
     await waitFor(() => {
       render(
@@ -144,8 +150,6 @@ describe("JobsModal test", () => {
 
   it("should create job with all fields", async () => {
     // Arrange
-    const open = true;
-    const setOpen = () => {};
     const currentId = 0;
     await waitFor(() => {
       render(
@@ -200,8 +204,6 @@ describe("JobsModal test", () => {
 
   it("should edit vacancy data", async () => {
     // Arrange
-    const open = true;
-    const setOpen = () => {};
     const currentId = 1;
     await waitFor(() => {
       render(
@@ -263,8 +265,6 @@ describe("JobsModal test", () => {
 
   it("should check functionality when required fields are the same", async () => {
     // Arrange
-    const open = true;
-    const setOpen = () => {};
     const currentId = 0;
     await waitFor(() => {
       render(
@@ -310,8 +310,6 @@ describe("JobsModal test", () => {
 
   it("should check text amount restrictions", async () => {
     // Arrange
-    const open = true;
-    const setOpen = () => {};
     const currentId = 0;
     await waitFor(() => {
       render(
