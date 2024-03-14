@@ -203,7 +203,6 @@ describe("PartnerModal", () => {
     const buttonElement = button as HTMLButtonElement;
 
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
-    const inputValue = nameInput as HTMLInputElement;
 
     const fileInput = screen.getByTestId("fileuploader");
     const inputElement = fileInput as HTMLInputElement;
