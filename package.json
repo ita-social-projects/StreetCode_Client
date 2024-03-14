@@ -157,6 +157,7 @@
     "react-test-renderer": "^18.2.0",
     "sass": "^1.69.5",
     "sass-loader": "^13.2.0",
+    "sonarqube-scanner": "^3.3.0",
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
