@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Partners from "@features/AdminPage/PartnersPage/Partners.component";
 import { MemoryRouter } from "react-router-dom"; // Import MemoryRouter
 import "@testing-library/jest-dom";
@@ -100,9 +100,6 @@ describe("Partners Component", () => {
         <Partners />
       </MemoryRouter>
     );
-    const button = screen.getByRole('button', {
-      name: /створити партнера/i
-    })
 
     await waitFor(() => {
       expect(screen.getByText("Mock Partner 1")).toBeInTheDocument();

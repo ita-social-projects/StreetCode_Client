@@ -17,15 +17,13 @@ jest.mock("@/app/api/partners/partners.api", () => ({
 
 jest.mock("@/app/api/media/images.api", () => ({
   create: (image: ImageCreate) => (
-    new Promise<Image>((r) => {
-      r(
-        {
-          id: 999,
-          base64: image.baseFormat,
-          blobName: image.title,
-          mimeType: image.mimeType,
-        } as Image)
-    })),
+    Promise.resolve({
+      id: 999,
+      base64: image.baseFormat,
+      blobName: image.title,
+      mimeType: image.mimeType,
+    } as Image)
+    ),
 }));
 
 jest.mock("@stores/root-store", () => ({
@@ -108,13 +106,8 @@ describe("PartnerModal", () => {
     } else {
       throw new Error("File input does not contain any files");
     }
-    const buttonElement = button as HTMLButtonElement;
-    const inputValue = nameInput as HTMLInputElement;
-
-    // if (inputElement.files[0] === file && inputValue.value === "something") {
-    //   buttonElement.disabled = false;
-    // }
-    expect(buttonElement).toBeEnabled();
+    
+    expect(button).toBeEnabled();
   });
 
   test("creating partner with all possible fields", async () => {
@@ -158,12 +151,7 @@ describe("PartnerModal", () => {
     } else {
       throw new Error("File input does not contain any files");
     }
-    const buttonElement = button as HTMLButtonElement;
-    const inputValue = nameInput as HTMLInputElement;
-
-    if (inputElement.files[0] === file && inputValue.value === "something name") {
-      buttonElement.disabled = false;
-    }
+    
     expect(button).toBeEnabled();
     //it triggers an error "Введіть правильне посилання для збереження назви посилання."
   });
@@ -249,6 +237,6 @@ describe("PartnerModal", () => {
       expect(PartnersApi.update).toHaveBeenCalled();
       expect(PartnersApi.create).not.toHaveBeenCalled();
     });
-  }, 10000000);
+  }, 10000);
 
 });
