@@ -1,9 +1,7 @@
-import { debug } from "console";
 import React, {
   ReactNode,
   MouseEventHandler,
   ChangeEventHandler,
-  JSX,
 } from "react";
 export { default as Form } from "./es/form/Form";
 
@@ -119,9 +117,7 @@ export const Popover = ({ content, trigger, children }: PopoverProps) => {
 
 const Option = ({ value }: OptionProps) => {
   return (
-    <>
-      <div data-test-id="option-value">{value}</div>
-    </>
+    <div data-test-id="option-value">{value}</div>
   );
 };
 
@@ -157,7 +153,6 @@ Select.Option = Option;
 
 export { Select };
 
-debug;
 export const Input = ({ value, showCount, maxLength }: InputProps) => {
   return (
     <>
@@ -170,29 +165,8 @@ export const Input = ({ value, showCount, maxLength }: InputProps) => {
 
 export const Checkbox = ({ checked, onChange, children }: CheckboxProps) => {
   return (
-    <>
       <input type="checkbox" checked={checked} onChange={onChange}>
         {children}
       </input>
-    </>
   );
 };
-
-// export const FileUploader = ({
-//   onChange,
-//   fileList,
-//   className,
-//   multiple,
-//   accept,
-//   listType,
-//   maxCount,
-//   onPreview,
-//   onRemove,
-//   uploadTo,
-//   onSuccessUpload,
-//   children
-// }: FileUploaderProps) => {
-//   return(<>
-//     <div data-testid="zalupa">{children}</div>
-//   </>)
-// };
