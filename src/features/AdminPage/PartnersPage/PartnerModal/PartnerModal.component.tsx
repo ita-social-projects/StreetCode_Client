@@ -520,7 +520,7 @@ const PartnerModal: React.FC< {
                         </Popover>
                     ) : (
                         <Button
-                            disabled={showSecondForm || fileList?.length === 0}
+                            disabled={showSecondForm || fileList.length === 0}
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
