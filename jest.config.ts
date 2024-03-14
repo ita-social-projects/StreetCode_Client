@@ -8,21 +8,8 @@ const jestConfig: JestConfigWithTsJest = {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
     // PartnerModal specification for testing
-    "^antd/(.*)$": "<rootDir>/node_modules/antd/$1",
-    "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.ts",
-    "^@/app/common/components/FileUploader/(.*)$":
-      "<rootDir>/src/app/common/components/FileUploader/$1",
-    "^@/app/common/utils/(.*)$": "<rootDir>/src/app/common/utils/$1",
-    "^@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/(.*)$":
-      "<rootDir>/src/features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/$1",
-    "^@features/AdminPage/PartnersPage/PartnerModal/constants/(.*)$":
-      "<rootDir>/src/features/AdminPage/PartnersPage/PartnerModal/constants/$1",
-    "^@/features/AdminPage/PartnersPage/(.*)$":
-      "<rootDir>/src/features/AdminPage/PartnersPage/$1",
-    "^@/models/media/(.*)$": "<rootDir>/src/models/media/$1",
-    "^@/models/partners/(.*)$": "<rootDir>/src/models/partners/$1",
-    "^@/models/streetcode/(.*)$": "<rootDir>/src/models/streetcode/$1",
-    "^@/app/api/media/(.*)$": "<rootDir>/src/app/api/media/$1",
+    "^antd/es/(.*)$": "<rootDir>/node_modules/antd/lib/$1",
+    // "^antd/(.*)$": "<rootDir>/node_modules/antd/$1",
     // DEV_NOTE: Down below is the right solution for compiling files by path
     // But we need to fix ALL typo errors before it could be compiled
     // Temp solution - mocking modules.
@@ -53,9 +40,7 @@ const jestConfig: JestConfigWithTsJest = {
   transform: {
     "^.+\\.svg$": "jest-transformer-svg",
   },
-  transformIgnorePatterns: [
-    "node_modules/(?!antd/)"
-  ],
+  transformIgnorePatterns: ["node_modules/(?!(antd)/)"],
   coverageThreshold: {
     global: {
       statements: 0.1,
