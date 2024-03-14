@@ -33,6 +33,30 @@ jest.mock("@stores/root-store", () => ({
   })),
 }));
 
+const renderContent = (partner : any, column : any) => {
+  if (column.dataIndex === "targetUrl") {
+    return (
+      <a
+        href={partner[column.dataIndex].href}
+        title={partner[column.dataIndex].title}
+      >
+        {partner[column.dataIndex].title}
+      </a>
+    );
+  } else if (column.dataIndex === "logo") {
+    return partner[column.dataIndex].base64 ? (
+      <img
+        src={`data:${partner[column.dataIndex].mimeType};base64,${partner[column.dataIndex].base64}`}
+        alt="Logo"
+      />
+    ) : (
+      "No Logo"
+    );
+  } else {
+    return partner[column.dataIndex];
+  }
+};
+
 // Mock antd components as needed
 jest.mock("antd/es/table", () => ({ dataSource, columns }: any) => {
   const mockPartnersData = [
@@ -57,36 +81,16 @@ jest.mock("antd/es/table", () => ({ dataSource, columns }: any) => {
         </tr>
       </thead>
       <tbody>
-        {mockPartnersData.map((partner : any) => (
-          <tr key={partner.id}>
-            {columns.map((column : any) => (
-              <td key={`${partner.id}-${column.key}`}>
-                {column.dataIndex === "targetUrl" ? (
-                  <a
-                    href={partner[column.dataIndex].href}
-                    title={partner[column.dataIndex].title}
-                  >
-                    {partner[column.dataIndex].title}
-                  </a>
-                ) : column.dataIndex === "logo" ? (
-                  partner[column.dataIndex].base64 ? (
-                    <img
-                      src={`data:${partner[column.dataIndex].mimeType};base64,${
-                        partner[column.dataIndex].base64
-                      }`}
-                      alt="Logo"
-                    />
-                  ) : (
-                    "No Logo"
-                  )
-                ) : (
-                  partner[column.dataIndex]
-                )}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
+      {mockPartnersData.map((partner : any) => (
+        <tr key={partner.id}>
+          {columns.map((column : any) => (
+            <td key={`${partner.id}-${column.key}`}>
+              {renderContent(partner, column)}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
     </table>
   );
 });
