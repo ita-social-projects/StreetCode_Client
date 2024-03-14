@@ -2,12 +2,32 @@ import React, { ReactNode, useState } from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PartnerModal from "./PartnerModal.component";
-import { act, scryRenderedDOMComponentsWithClass } from "react-dom/test-utils";
+import PartnersApi from "@/app/api/partners/partners.api";
 import "@testing-library/jest-dom";
+import 'jest-canvas-mock';
+import Image, { ImageCreate } from "@/models/media/image.model";
+import Partner, { PartnerCreateUpdate } from "@/models/partners/partners.model";
+import { act } from "react-dom/test-utils";
 
-interface FileUploaderProps {
-  onFileUpload: (file: File) => void;
-}
+global.URL.createObjectURL = jest.fn();
+
+jest.mock("@/app/api/partners/partners.api", () => ({
+  create: jest.fn(() => { }),
+  update: jest.fn(() => { }),
+}));
+
+jest.mock("@/app/api/media/images.api", () => ({
+  create: (image: ImageCreate) => (
+    new Promise<Image>((r) => {
+      r(
+        {
+          id: 999,
+          base64: image.baseFormat,
+          blobName: image.title,
+          mimeType: image.mimeType,
+        } as Image)
+    })),
+}));
 
 jest.mock("@stores/root-store", () => ({
   __esModule: true, // This property is needed when mocking modules that have a default export
@@ -15,8 +35,18 @@ jest.mock("@stores/root-store", () => ({
     partnersStore: {
       fetchPartnersAll: jest.fn().mockResolvedValue([]),
       PartnerMap: new Map(),
-      getPartnerArray: [],
+      getPartnerArray: [{
+          id: 0,
+          isKeyPartner: false,
+          isVisibleEverywhere: false,
+          title: 'something',
+          logoId: 999,
+          partnerSourceLinks: [],
+          streetcodes: [],
+        } as Partner] as Partner[],
       setInternalMap: jest.fn(),
+      createPartner: (partner: PartnerCreateUpdate) => { PartnersApi.create(partner) },
+      updatePartner: (partner: PartnerCreateUpdate) => { PartnersApi.update(partner) },
     },
     streetcodeShortStore: {
       fetchStreetcodesAll: jest.fn().mockResolvedValue([]), // Mock the fetch function
@@ -25,12 +55,8 @@ jest.mock("@stores/root-store", () => ({
         { id: "2", title: "Streetcode 2" },
       ],
     },
-  }),
+  })
 }));
-
-const FileUploader: React.FC<FileUploaderProps> = () => {
-  return <input alt="fileuploader" type="file" />;
-};
 
 jest.mock("antd/es/input/TextArea", () => {
   return function DummyTextArea() {
@@ -38,29 +64,17 @@ jest.mock("antd/es/input/TextArea", () => {
   };
 });
 
-jest.mock("@/app/common/components/FileUploader/FileUploader.component", () => {
-  return function DummyFileUploader() {
-    return <FileUploader onFileUpload={() => {}} />;
-  };
-});
-
-jest.mock("antd/es/upload", () => ({
-  __esModule: true, // This property is needed to mock a module with named exports
-  default: jest.fn(), // Mock the default export if needed
-  Upload: jest.fn(), // Mock the named export `Upload`
-}));
-
 // needed to render component without errors
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: () => ({
     matches: false,
     onchange: null,
-    addListener: () => {},
-    removeListener: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    dispatchEvent: () => {},
+    addListener: () => { },
+    removeListener: () => { },
+    addEventListener: () => { },
+    removeEventListener: () => { },
+    dispatchEvent: () => { },
   }),
 });
 
@@ -72,15 +86,17 @@ describe("PartnerModal", () => {
   });
 
   test("rendering component", () => {
-    render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
+    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
   });
 
   test("creating partner only with required fields", async () => {
-    render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
+    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
 
     const button = screen.getByRole("button", { name: /зберегти/i });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
-    const fileInput = screen.getByAltText("fileuploader") as HTMLInputElement;
+
+    const fileInput = screen.getByTestId("fileuploader");
+    const inputElement = fileInput as HTMLInputElement;
 
     await waitFor(() => {
       userEvent.type(nameInput, "something");
@@ -88,22 +104,22 @@ describe("PartnerModal", () => {
     });
 
     expect(nameInput).toHaveValue("something");
-    if (fileInput.files) {
-      expect(fileInput.files[0]).toStrictEqual(file);
+    if (inputElement.files) {
+      expect(inputElement.files[0]).toStrictEqual(file);
     } else {
       throw new Error("File input does not contain any files");
     }
     const buttonElement = button as HTMLButtonElement;
     const inputValue = nameInput as HTMLInputElement;
 
-    if (fileInput.files[0] === file && inputValue.value === "something") {
-      buttonElement.disabled = false;
-    }
+    // if (inputElement.files[0] === file && inputValue.value === "something") {
+    //   buttonElement.disabled = false;
+    // }
     expect(buttonElement).toBeEnabled();
   });
 
   test("creating partner with all possible fields", async () => {
-    render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
+    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
 
     const button = screen.getByRole("button", { name: /зберегти/i });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
@@ -114,7 +130,9 @@ describe("PartnerModal", () => {
       name: /Назва посилання:/,
     });
     const htmlLinkNameInput = linkNameInput as HTMLInputElement;
-    const fileInput = screen.getByAltText("fileuploader") as HTMLInputElement;
+
+    const fileInput = screen.getByTestId("fileuploader");
+    const inputElement = fileInput as HTMLInputElement;
 
     await waitFor(() => {
       userEvent.type(nameInput, "something name");
@@ -136,15 +154,15 @@ describe("PartnerModal", () => {
     );
     expect(linkNameInput).toHaveValue("something linkname");
     expect(description).toHaveValue("something description");
-    if (fileInput.files) {
-      expect(fileInput.files[0]).toStrictEqual(file);
+    if (inputElement.files) {
+      expect(inputElement.files[0]).toStrictEqual(file);
     } else {
       throw new Error("File input does not contain any files");
     }
     const buttonElement = button as HTMLButtonElement;
     const inputValue = nameInput as HTMLInputElement;
 
-    if (fileInput.files[0] === file && inputValue.value === "something name") {
+    if (inputElement.files[0] === file && inputValue.value === "something name") {
       buttonElement.disabled = false;
     }
     expect(button).toBeEnabled();
@@ -152,7 +170,7 @@ describe("PartnerModal", () => {
   });
 
   test("check text amount restrictions in inputs", async () => {
-    render(<PartnerModal open={true} setIsModalOpen={() => {}} />);
+    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
 
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
     const linkInput = screen.getByRole("textbox", { name: /Посилання:/ });
@@ -167,7 +185,9 @@ describe("PartnerModal", () => {
     const htmlLinkInput = linkInput as HTMLInputElement;
     const htmlLinkNameInput = linkNameInput as HTMLInputElement;
 
-    const fileInput = screen.getByAltText("fileuploader") as HTMLInputElement;
+    const fileInput = screen.getByTestId("fileuploader");
+    const inputElement = fileInput as HTMLInputElement;
+
     await waitFor(() => {
       userEvent.type(nameInput, str.repeat(6));
       userEvent.type(linkInput, linkstr.repeat(5));
@@ -184,8 +204,52 @@ describe("PartnerModal", () => {
     expect(linkInput).toHaveValue(linkstr.repeat(4));
     expect(linkNameInput).toHaveValue(str.repeat(5));
     expect(description).toHaveValue(linkstr.repeat(9));
-    if (fileInput.files) {
-      expect(fileInput.files[0]).toStrictEqual(file);
+    if (inputElement.files) {
+      expect(inputElement.files[0]).toStrictEqual(file);
     }
   });
+
+  test("check when required fields are the same then existing partner should be updated instead of created", async () => {
+    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
+
+    const button = screen.getByRole("button", { name: /зберегти/i });
+    const buttonElement = button as HTMLButtonElement;
+
+    const nameInput = screen.getByRole("textbox", { name: /назва:/i });
+    const inputValue = nameInput as HTMLInputElement;
+
+    const fileInput = screen.getByTestId("fileuploader");
+    const inputElement = fileInput as HTMLInputElement;
+
+    await act(async () => {
+      userEvent.upload(fileInput, file);
+      userEvent.type(nameInput, "something");
+    });
+
+    expect(nameInput).toHaveValue("something");
+
+    if (inputElement.files) {
+      expect(inputElement.files[0]).toStrictEqual(file);
+    } else {
+      throw new Error("File input does not contain any files");
+    }
+
+    expect(buttonElement).toBeEnabled();
+
+    //Should wrap this in act because new Promise shifts to another framestack(?) 
+    //and causes async changing of state of previous multiple components
+    //outside of act() framestack (which causes warnings, unexpected behaviour etc.)
+    await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
+    
+
+    await act(async () => {
+      userEvent.click(button);
+    })
+
+    await waitFor(() => {
+      expect(PartnersApi.update).toHaveBeenCalled();
+      expect(PartnersApi.create).not.toHaveBeenCalled();
+    });
+  }, 10000000);
+
 });
