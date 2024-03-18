@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toInstaPostRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface Props {
-    photoUrl: string,
+    photoUrl: string | undefined,
     caption: string | undefined,
     permalink: string
 }
@@ -35,7 +35,6 @@ const InstagramSliderItem = ({ photoUrl, caption, permalink } : Props) => {
         if (!isDragging) {
             handleOpenPost();
         }
-        setIsDragging(false);
     };
 
     const handleOpenPost = () => {
