@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toInstaPostRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
 interface Props {
-    photoUrl: string | undefined,
+    photoUrl: string,
     caption: string | undefined,
     permalink: string
 }
