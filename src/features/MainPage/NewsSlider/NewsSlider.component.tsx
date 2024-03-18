@@ -7,7 +7,6 @@ import NEWS_SLIDER_PROPS from '@features/MainPage/NewsSlider/constants/newsSlide
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
@@ -18,7 +17,7 @@ const NewsSlider = () => {
     const { modalStore } = useModalContext();
     const { imagesStore, newsStore } = useMobx();
 
-    newsStore.fetchSortedNews();
+    newsStore.fetchSortedNews(1, 10);
     imagesStore.fetchImages(newsStore.getNewsArray || []);
 
     const [dragging, setDragging] = useState(false);
