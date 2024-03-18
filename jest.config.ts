@@ -6,15 +6,8 @@ const jestConfig: JestConfigWithTsJest = {
   roots: ["<rootDir>"],
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
-    "^@assets/(.*)$": "<rootDir>/src/assets/$1",
-    // PartnerModal specification for testing
     "^antd/es/(.*)$": "<rootDir>/node_modules/antd/lib/$1",
-    // "^antd/(.*)$": "<rootDir>/node_modules/antd/$1",
-    // DEV_NOTE: Down below is the right solution for compiling files by path
-    // But we need to fix ALL typo errors before it could be compiled
-    // Temp solution - mocking modules.
-    // After fixing type error remove mocks or continue using them(as more simple solution)
-
+    "^@assets/(.*)$": "<rootDir>/src/assets/$1",
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@app/(.*)$": "<rootDir>/src/app/$1",
     "^@sass/(.*)$": "<rootDir>/src/assets/sass/$1",
