@@ -14,6 +14,7 @@ import {
 } from "@/app/common/components/Editor/EditorUtilities/quillUtils.utility";
 import Editor from "@/app/common/components/Editor/QEditor.component";
 
+import POPOVER_CONTENT from "./constants/popoverContent";
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,33 +44,33 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
 
   const [storedJob, setStoredJob] = useState<Job>(emptyJob);
 
-  useEffect(() => {
-    const fetchJobData = async () => {
-      if (open && currentId !== 0) {
-        try {
-          const currentJob = await JobApi.getById(currentId);
-          setQuillEditorContent(textEditor.current, currentJob?.description);
-          setCurrent(currentJob);
-          form.setFieldsValue({
-            title: currentJob.title,
-            status: currentJob.status ? "setActive" : "setInactive",
-            description: currentJob.description,
-            salary: currentJob.salary,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      } else if (currentId === 0) {
-        setStoredJob(emptyJob);
+  const fetchJobData = async () => {
+    if (open && currentId !== 0) {
+      try {
+        const currentJob = await JobApi.getById(currentId);
+        setQuillEditorContent(textEditor.current, currentJob?.description);
+        setCurrent(currentJob);
         form.setFieldsValue({
-          title: storedJob.title,
-          status: storedJob.status ? "setActive" : "setInactive",
-          description: storedJob.description,
-          salary: storedJob.salary,
+          title: currentJob.title,
+          status: currentJob.status ? "setActive" : "setInactive",
+          description: currentJob.description,
+          salary: currentJob.salary,
         });
+      } catch (error) {
+        console.log(error);
       }
-    };
+    } else if (currentId === 0) {
+      setStoredJob(emptyJob);
+      form.setFieldsValue({
+        title: storedJob.title,
+        status: storedJob.status ? "setActive" : "setInactive",
+        description: storedJob.description,
+        salary: storedJob.salary,
+      });
+    }
+  };
 
+  useEffect(() => {
     textEditor.current?.editor?.setText("");
     fetchJobData();
   }, [open, currentId]);
@@ -140,7 +141,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       maskClosable
       centered
       closeIcon={
-        <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+        <Popover content={POPOVER_CONTENT} trigger="hover">
           <CancelBtn className="iconSize" onClick={clearModal} />
         </Popover>
       }

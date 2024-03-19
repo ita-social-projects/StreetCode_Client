@@ -65,7 +65,7 @@ describe('DeleteStreetcodeModalComponent', () => {
             expect(mockSetModal).toHaveBeenCalledWith(DELETE_STREETCODE);
         });
 
-        it.skip('should call setModal from useModalContext when clicking onCancel button', () => {
+        it('should call setModal from useModalContext when clicking onCancel button', () => {
             const { container } = render(<DeleteStreetcodeModalComponent />);
             const cancelButton = container.getElementsByClassName('modalCancelButton')[0];
 
