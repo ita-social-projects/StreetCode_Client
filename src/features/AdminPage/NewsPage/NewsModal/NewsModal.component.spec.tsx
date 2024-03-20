@@ -174,6 +174,7 @@ describe("NewsModal", () => {
 
     const newsToEdit = {
       id: 1,
+      imageId: 1,
       title: "Initial Title",
       url: "initial-url",
       text: "Initial Text",
