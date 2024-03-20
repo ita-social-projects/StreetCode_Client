@@ -146,10 +146,10 @@ const NewsModal: React.FC<{
         }
     };
 
-    // dayjs.locale('uk');
-    // const dayJsUa = require("dayjs/locale/uk") // eslint-disable-line
-    // ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
-    // ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
+    dayjs.locale('uk');
+    const dayJsUa = require("dayjs/locale/uk") // eslint-disable-line
+    ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
+    ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
     const handleTextChange = () => {
         setTextIsChanged(true);

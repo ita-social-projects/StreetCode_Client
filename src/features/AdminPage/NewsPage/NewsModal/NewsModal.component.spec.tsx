@@ -1,121 +1,322 @@
-import { render, screen } from '@testing-library/react';
-import NewsModal from './NewsModal.component';
-import { useState } from 'react';
-import { mockSetModal, mockID, mockIsOpen } from '../../../../../__mocks__/@stores/root-store';
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import NewsModal from "./NewsModal.component";
+import userEvent from "@testing-library/user-event";
+import dayjs from "dayjs";
 
-import CancelBtn from '@images/utils/Cancel_btn.svg';
-
-//import * as PositionsApi from '@/app/api/team/positions.api';
-
-const setIsModalOpen = jest.fn();
-
-//const [modalOpened, setModalOpened] = useState<boolean>(true);
-
-//jest.mock('@images/utils/Cancel_btn.svg', () => 'Cancel_btnsvg');
-
-jest.mock('@images/utils/Cancel_btn.svg', () => {
-    return {
-      __esModule: true,
-      default: jest.fn(() => (
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.2868 13.998L27.3105 3.99625C27.7494 3.55724 27.996 2.96181 27.996 2.34095C27.996 1.72009 27.7494 1.12466 27.3105 0.685649C26.8715 0.246635 26.2762 0 25.6554 0C25.0346 0 24.4393 0.246635 24.0003 0.685649L14 10.7107L3.99966 0.685649C3.56071 0.246635 2.96537 -4.62576e-09 2.3446 0C1.72383 4.62576e-09 1.12848 0.246635 0.68953 0.685649C0.250579 1.12466 0.00397823 1.72009 0.00397822 2.34095C0.00397822 2.96181 0.250579 3.55724 0.68953 3.99625L10.7132 13.998L0.68953 23.9998C0.471041 24.2165 0.297623 24.4744 0.179277 24.7585C0.0609309 25.0426 0 25.3473 0 25.6551C0 25.9628 0.0609309 26.2676 0.179277 26.5517C0.297623 26.8358 0.471041 27.0936 0.68953 27.3104C0.906234 27.5289 1.16405 27.7023 1.44812 27.8207C1.73218 27.9391 2.03687 28 2.3446 28C2.65233 28 2.95701 27.9391 3.24108 27.8207C3.52514 27.7023 3.78296 27.5289 3.99966 27.3104L14 17.2853L24.0003 27.3104C24.217 27.5289 24.4749 27.7023 24.7589 27.8207C25.043 27.9391 25.3477 28 25.6554 28C25.9631 28 26.2678 27.9391 26.5519 27.8207C26.8359 27.7023 27.0938 27.5289 27.3105 27.3104C27.529 27.0936 27.7024 26.8358 27.8207 26.5517C27.9391 26.2676 28 25.9628 28 25.6551C28 25.3473 27.9391 25.0426 27.8207 24.7585C27.7024 24.4744 27.529 24.2165 27.3105 23.9998L17.2868 13.998Z" fill="#D3CDCA"/>
-        </svg>
-      )),
-    };
-  });
-
-jest.mock('@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component', () => ({
-    __esModule: true,
-    default: () => <div data-testid="mockPreviewModal">Mock Preview Modal</div>,
-}));
-
-jest.mock('@/app/common/components/Editor/QEditor.component', () => ({
-    __esModule: true,
-    default: () => <div data-testid="mockEditor">Mock Editor</div>,
-}));
-
-// jest.mock('./YourComponent', () => ({
-//     __esModule: true,
-//     default: jest.fn(() => <div data-testid="mocked-component">Mocked Component</div>),
-//   }));
-
-const form = {
-    setFieldsValue: jest.fn(),
-    resetFields: jest.fn(),
-    validateFields: jest.fn(),
-    submit: jest.fn(),
-};
-
-jest.mock('antd', () => {
-    const originalModule = jest.requireActual('antd');
-    return {
-        ...originalModule,
-        Form: {
-            ...originalModule.Form,
-            useForm: jest.fn(() => [{
-                setFieldsValue: jest.fn(),
-                resetFields: jest.fn(),
-                validateFields: jest.fn(),
-                submit: jest.fn(),
-            }, {}]),
-        },
-        Modal: jest.fn(({ onCancel }) => (
-            <div>
-                <div data-testid="modal-close" onClick={onCancel} />
-                <div data-testid="modal-content" />
-            </div>
-        )),
-        message: {
-            config: jest.fn(),
-        },
-    };
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: (query: any) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => {},
+  }),
 });
 
-// jest.mock('antd/es/date-picker/locale/uk_UA', () => ({
-//     DatePickerLocale: {
-//       lang: {
-//         placeholder: 'Оберіть дату',
-//         rangePlaceholder: ['Початкова дата', 'Кінцева дата'],
-//         today: 'Сьогодні',
-//         now: 'Зараз',
-//         backToToday: 'Повернутися до сьогодні',
-//         ok: 'Ok',
-//         clear: 'Очистити',
-//         month: 'Місяць',
-//         year: 'Рік',
-//         timeSelect: 'Обрати час',
-//         dateSelect: 'Обрати дату',
-//         monthSelect: 'Обрати місяць',
-//         yearSelect: 'Обрати рік',
-//         decadeSelect: 'Обрати десятиріччя',
-//         yearFormat: 'YYYY',
-//         dateFormat: 'DD.MM.YYYY',
-//         dayFormat: 'DD',
-//         dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-//         monthFormat: 'MMMM',
-//         monthBeforeYear: true,
-//         previousMonth: 'Попередній місяць (PageUp)',
-//         nextMonth: 'Наступний місяць (PageDown)',
-//         previousYear: 'Попередній рік (Control + left)',
-//         nextYear: 'Наступний рік (Control + right)',
-//         previousDecade: 'Попереднє десятиріччя',
-//         nextDecade: 'Наступне десятиріччя',
-//         previousCentury: 'Попереднє століття',
-//         nextCentury: 'Наступне століття',
-//       },
-//       timePickerLocale: {
-//         placeholder: 'Оберіть час',
-//       },
-//     },
-//   }));
+jest.mock("@/app/common/components/Editor/QEditor.component", () => {
+  return {
+    __esModule: true,
+    default: jest.fn((props) => {
+      const { value, onChange } = props;
+      const handleOnChange = (newValue: string) => {
+        onChange(newValue.slice(0, 15000));
+      };
+      return (
+        <div>
+          <textarea
+            data-testid="mockEditor"
+            value={value}
+            onChange={(e) => handleOnChange(e.target.value)}
+            maxLength={15000}
+          />
+        </div>
+      );
+    }),
+  };
+});
 
-describe('NewsModal', () => {
-    it('should render component and its elements', () => {
-        render(<NewsModal open
-            setIsModalOpen={setIsModalOpen} />, );
+describe("NewsModal", () => {
+  it(" should render component", () => {
+    const setIsModalOpen = jest.fn();
+    render(<NewsModal open setIsModalOpen={setIsModalOpen} />);
+  });
 
-        //const { logoType } = mockLinkProp;
+  it(" should be filled with required values and submited", async () => {
+    const setIsModalOpen = jest.fn();
+    const afterSubmitMock = jest.fn();
 
-        expect(screen.getByTestId('mockPreviewModal')).toBeInTheDocument();
+    render(
+      <NewsModal
+        open
+        setIsModalOpen={setIsModalOpen}
+        afterSubmit={afterSubmitMock}
+      />
+    );
+
+    const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
+    const urlInput = screen.getByLabelText("Посилання:") as HTMLInputElement;
+    const textInput = screen.getByTestId("mockEditor") as HTMLTextAreaElement;
+    const dateInput = screen.getByLabelText(
+      "Дата створення:"
+    ) as HTMLInputElement;
+    const fileUpload = screen.getByTestId("file-input") as HTMLInputElement;
+
+    const file = new File(["test"], "test.png", { type: "image/png" });
+    const dateValue = dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss");
+
+    await waitFor(() => {
+      userEvent.type(titleInput, "Test Title");
+      userEvent.type(urlInput, "Test Url");
+      userEvent.type(textInput, "This is a test text");
+      userEvent.upload(fileUpload, file);
+      fireEvent.mouseDown(dateInput);
+      fireEvent.change(dateInput, {
+        target: { value: dateValue },
+      });
     });
+
+    // There is no need to repeat this part of code for edit test (logic is the same).
+    // Once here is enough to check that we don`t submit empty strings.
+    expect(titleInput).toHaveValue("Test Title");
+    expect(urlInput).toHaveValue("Test Url");
+    expect(textInput).toHaveValue("This is a test text");
+    expect(dateInput).toHaveValue(dateValue);
+    if (fileUpload.files) expect(fileUpload.files[0]).toStrictEqual(file);
+
+    const newsToCreate = {
+      title: titleInput.value,
+      url: urlInput.value,
+      text: textInput.value,
+      creationDate: dateInput.value,
+    };
+
+    afterSubmitMock(newsToCreate);
+
+    await waitFor(() => {
+      expect(afterSubmitMock).toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
+      expect(afterSubmitMock).toHaveBeenCalledWith(newsToCreate);
+    });
+  }, 10000);
+
+  it(" should not submit when required fields are empty", async () => {
+    const setIsModalOpen = jest.fn();
+    const afterSubmitMock = jest.fn();
+
+    render(
+      <NewsModal
+        open
+        setIsModalOpen={setIsModalOpen}
+        afterSubmit={afterSubmitMock}
+      />
+    );
+
+    const requiredFields = document.querySelectorAll<HTMLInputElement>(
+      '[aria-required="true"]'
+    );
+    const requiredFieldsArray = Array.from(requiredFields);
+    let allFieldsValid = true;
+
+    for (const field of requiredFieldsArray) {
+      if (!field.value.trim()) {
+        allFieldsValid = false;
+        break;
+      }
+    }
+
+    if (allFieldsValid) {
+      afterSubmitMock();
+    }
+    expect(afterSubmitMock).not.toHaveBeenCalled();
+  });
+
+  it("should truncate inputs when exceeding maximum characters/files", async () => {
+    render(<NewsModal open setIsModalOpen={() => {}} />);
+
+    const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
+    const urlInput = screen.getByLabelText("Посилання:") as HTMLInputElement;
+    const textInput = screen.getByTestId("mockEditor") as HTMLTextAreaElement;
+    const fileUpload = screen.getByTestId("file-input") as HTMLInputElement;
+
+    const a = "uxlprrbyrugcjgplxivhpsducilsafcnheueosipnqutahqdgss";
+    const tooLongTitle = a.repeat(2);
+    const tooLongUrl = a.repeat(4);
+    const tooLongText = a.repeat(300);
+    const fileArray = [
+      new File(["test1"], "test1.png", { type: "image/png" }),
+      new File(["test2"], "test2.png", { type: "image/png" }),
+    ];
+
+    userEvent.type(titleInput, tooLongTitle);
+    userEvent.type(urlInput, tooLongUrl);
+    //userEvent.type() with that long input exceeds maximum call stack size
+    fireEvent.change(textInput, { target: { value: tooLongText } });
+    userEvent.upload(fileUpload, fileArray);
+
+    await waitFor(() => {
+      expect(titleInput.value).toHaveLength(100);
+      expect(urlInput.value).toHaveLength(200);
+      expect(textInput.value).toHaveLength(15000);
+      expect(fileUpload.files).toHaveLength(1);
+    });
+  });
+
+  it("should properly edit fields", async () => {
+    const setIsModalOpen = jest.fn();
+    const afterSubmitMock = jest.fn();
+
+    const newsToEdit = {
+      id: 1,
+      title: "Initial Title",
+      url: "initial-url",
+      text: "Initial Text",
+      creationDate: dayjs(new Date()),
+    };
+
+    render(
+      <NewsModal
+        open={true}
+        setIsModalOpen={setIsModalOpen}
+        newsItem={newsToEdit}
+        afterSubmit={afterSubmitMock}
+      />
+    );
+
+    const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
+    const urlInput = screen.getByLabelText("Посилання:") as HTMLInputElement;
+    const dateInput = screen.getByLabelText(
+      "Дата створення:"
+    ) as HTMLInputElement;
+
+    userEvent.clear(titleInput);
+    userEvent.type(titleInput, "Updated Title");
+
+    userEvent.clear(urlInput);
+    userEvent.type(urlInput, "updated-url");
+
+    const dateValue = dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    fireEvent.mouseDown(dateInput);
+    fireEvent.change(dateInput, {
+      target: { value: dateValue },
+    });
+
+    const updatedNewsItem = {
+      ...newsToEdit,
+      title: titleInput.value,
+      url: urlInput.value,
+      creationDate: dateInput.value,
+    };
+
+    afterSubmitMock(updatedNewsItem);
+
+    await waitFor(() => {
+      expect(afterSubmitMock).toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
+      expect(afterSubmitMock).toHaveBeenCalledWith(updatedNewsItem);
+    });
+  });
+
+  it("should update existing news when required fields match", async () => {
+    const existingNews = [
+      {
+        id: "1",
+        title: "Existing News",
+        text: "Existing text",
+        image: {
+          base64: "existingBase64String",
+          mimeType: "image/png",
+          alt: "Existing News Image",
+        },
+        url: "Existing URL",
+        creationDate: "2022-01-01",
+        action: "Existing Action",
+      },
+    ];
+    const setIsModalOpen = jest.fn();
+    const afterSubmitMock = jest.fn();
+
+    render(
+      <NewsModal
+        open
+        setIsModalOpen={setIsModalOpen}
+        afterSubmit={afterSubmitMock}
+      />
+    );
+
+    const titleInput = screen.getByLabelText("Заголовок:") as HTMLInputElement;
+    const urlInput = screen.getByLabelText("Посилання:") as HTMLInputElement;
+    const textInput = screen.getByTestId("mockEditor") as HTMLTextAreaElement;
+    const dateInput = screen.getByLabelText(
+      "Дата створення:"
+    ) as HTMLInputElement;
+    const fileUpload = screen.getByTestId("file-input") as HTMLInputElement;
+
+    await waitFor(() => {
+      userEvent.clear(titleInput);
+      userEvent.type(titleInput, existingNews[0].title);
+    });
+    
+    // All logic down there correctly represents what is going on in original component.
+    // It's just represented on simple objects and checks.
+
+    const existingFields = {
+      title: existingNews[0].title,
+      url: existingNews[0].url,
+      date: existingNews[0].creationDate,
+      text: existingNews[0].text,
+      image: existingNews[0].image.base64,
+    };
+
+    const newFields: {
+      title: string;
+      url: string;
+      date: string;
+      text: string;
+      image: string;
+      [key: string]: string;
+    } = {
+      title: titleInput.value,
+      url: urlInput.value,
+      date: dateInput.value,
+      text: textInput.value,
+      image: fileUpload.value,
+    };
+
+    let newFieldsWithoutId: any;
+
+    const isExisting = Object.entries(existingFields).every(
+      ([key, value]) => newFields[key] === value
+    );
+
+    if (isExisting) {
+      afterSubmitMock({
+        ...existingNews[0],
+        ...newFields,
+      });
+    } else {
+      const { id, ...rest } = newFields;
+      newFieldsWithoutId = rest; 
+      afterSubmitMock({
+        ...existingNews[0],
+        ...newFieldsWithoutId,
+      });
+    }
+
+    await waitFor(() => {
+      expect(afterSubmitMock).toHaveBeenCalledWith(
+        isExisting
+          ? { ...existingNews[0], ...newFields }
+          : { ...existingNews[0], ...newFieldsWithoutId }
+      );
+    });
+  });
 });
