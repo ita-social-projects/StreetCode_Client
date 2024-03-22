@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, getByRole } from '@testing-library/react';
 import { mockSetModal, mockID, mockIsOpen } from '../../../../../../__mocks__/@stores/root-store';
-import {Modal} from '../../../../../../__mocks__/antd/Modal'
+import {Modal} from '../../../../../../__mocks__/antd/es/modal/Modal'
 
 import { TITLE, DELETE_STREETCODE } from '../../../constants/modal.constants';
 
