@@ -9,6 +9,7 @@ import DeleteStreetcodeModalComponent from "./DeleteStreetcodeModal.component";
 
 const mockSetState = jest.fn();
 
+
 const mockUseState: any = (initValue: any) => [initValue, mockSetState];
 jest.spyOn(React, 'useState').mockImplementation(mockUseState);
 
