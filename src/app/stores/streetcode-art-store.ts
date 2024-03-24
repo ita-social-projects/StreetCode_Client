@@ -1,7 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import StreetcodeArtApi from '@api/media/streetcode-art.api';
 import { ModelState } from '@models/enums/model-state';
-import Art from '@models/media/art.model';
 
 import StreetcodeArt, { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 

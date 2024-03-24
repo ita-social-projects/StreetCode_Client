@@ -52,7 +52,8 @@ const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
                     title="Ви впевнені, що хочете видалити цей таймлайн?"
                     open={visibleModal}
                     onOk={(e) => {
-                        timelineItemStore.deleteTimelineFromMap(timelineItem.id); setVisibleModal(false);
+                        timelineItemStore.deleteTimelineFromMap(timelineItem.id);
+                        setVisibleModal(false);
                         onChange('timelineItem', timelineItem);
                     }}
                     onCancel={handleCancelModalRemove}

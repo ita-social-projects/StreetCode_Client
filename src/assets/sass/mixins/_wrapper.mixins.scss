@@ -1,7 +1,7 @@
 @use "@assets/sass/_utils.functions.scss" as *;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
-@mixin main-page-block-wrapper {
+@mixin block-wrapper-for-slick-slider {
   width: 100%;
   @include mut.flex-centered();
 
