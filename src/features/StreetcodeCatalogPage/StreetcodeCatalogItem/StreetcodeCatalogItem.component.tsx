@@ -1,14 +1,16 @@
 /* eslint-disable max-len */
 import './StreetcodeCatalogItem.styles.scss';
-
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useMobx from '@stores/root-store';
-
+import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { toStreetcodeRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.model';
+import Image, { ImageAssigment } from '@/models/media/image.model';
+import ImagesApi from '@/app/api/media/images.api';
+import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 
 interface Props {
     streetcode: StreetcodeCatalogRecord;
@@ -17,19 +19,47 @@ interface Props {
 }
 
 const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) => {
-    const { imagesStore: { getImage, fetchImage } } = useMobx();
+    const id = streetcode?.id;
+    const { modalStore: { setModal } } = useModalContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const [arlink, setArlink] = useState('');
+    const [images, setImages] = useState<Image[]>([]);
+    const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
     const elementRef = useRef<HTMLDivElement>(null);
     const classSelector = 'catalogItem';
 
+    
+
     useEffect(() => {
-        Promise.all([fetchImage(streetcode.imageId)]);
-    }, []);
+        if (id && id > 0) {
+            ImagesApi.getByStreetcodeId(id ?? 1)
+                .then((imgs) => {
+                    setImages(imgs);
+                    const relatedFigureImages = imgs.filter(
+                        (image) => image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()
+                    );
+                    const imagesForSlider = relatedFigureImages.length > 0 ? relatedFigureImages : imgs.filter(
+                        (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
+                    );
+                    setImagesForSlider(imagesForSlider);
+                    streecodePageLoaderContext.addBlockFetched();
+                })
+                .catch((e) => { });
+            TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
+        }
+    }, [streetcode]);
+    
 
     const LinkProps = {
         className: classSelector,
-        style: { backgroundImage: `url(${base64ToUrl(getImage(streetcode.imageId)?.base64, getImage(streetcode.imageId)?.mimeType)})` },
+        style: { 
+            backgroundImage: imagesForSlider.length > 0 
+                ? `url(${base64ToUrl(imagesForSlider[0]?.base64, imagesForSlider[0]?.mimeType)})` 
+                : ''
+        },
         href: `../${streetcode.url}`,
     };
+    
     const windowsize = useWindowSize();
 
     const handleClickRedirect = () => {
