@@ -37,12 +37,16 @@ export default class ImageStore {
         return image;
     }
 
-    public getImage = (id: number) => this.ImageMap.get(id);
+    public getImage = (id: number | undefined) => {
+        if (id !== undefined) return this.ImageMap.get(id);
+    };
 
-    public fetchImage = async (id: number) => {
+    public fetchImage = async (id: number | undefined) => {
         try {
-            const image = await ImagesApi.getById(id);
-            this.setItem(image);
+            if (id !== undefined) {
+                const image = await ImagesApi.getById(id);
+                this.setItem(image);
+            }
         } catch (error: unknown) { /* empty */ }
     };
 

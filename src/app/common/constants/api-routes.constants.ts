@@ -181,6 +181,7 @@ export const API_ROUTES = {
         DELETE: 'streetcode/delete',
         EXIST_WITH_INDEX: 'streetcode/existWithIndex',
         EXIST_WITH_URL: 'streetcode/existWithUrl',
+        GET_LAST_WITH_OFFSET: 'streetcode/GetLastWithOffset'
     },
     SUBTITLES: {
         GET_ALL: 'subtitle/getAll',

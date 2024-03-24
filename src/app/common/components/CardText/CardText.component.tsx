@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 type Props = {
     moreBtnText?: string,
-    moreBtnAsLink?: { link: string, state: any },
+    moreBtnAsLink?: { link?: string, state: any },
     className?: string,
     onBtnClick?: (event: any) => void,
-    title: string
+    title?: string
     subTitle?: string,
-    text: string
+    text?: string
 };
 
 const CardText = ({
@@ -21,7 +21,7 @@ const CardText = ({
             {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
             <p className="cardTextContainerText">{text}</p>
         </div>
-        {moreBtnAsLink
+        {moreBtnAsLink && moreBtnAsLink.link
             ? (
                 <Link
                     to={moreBtnAsLink.link}
