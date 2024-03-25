@@ -17,7 +17,14 @@ type Props = {
 function handleQueryAbort()
 {
     const queryClient = useQueryClient();
-    queryClient.cancelQueries({ queryKey: ['sortedNews', 'image', 'streetcodesMainPage'] });
+    queryClient.cancelQueries({ queryKey: ['sortedNews', 'image', 'streetcodesMainPage'] });   
+}
+
+const handleOnClick = (isStreetcodeSlider: boolean) =>
+{
+    if(isStreetcodeSlider) {
+        handleQueryAbort();
+    } 
 }
 
 const CardText = ({
@@ -35,11 +42,7 @@ const CardText = ({
                     to={moreBtnAsLink.link}
                     state={moreBtnAsLink.state}
                     className="cardTextContainerButton"
-                    onClick = {(e) => {
-                        if(isStreetcodeSlider) {
-                            handleQueryAbort();
-                        }
-                    }}
+                    onClick = {() => handleOnClick(isStreetcodeSlider)}
                 >
                     {moreBtnText}
                     
