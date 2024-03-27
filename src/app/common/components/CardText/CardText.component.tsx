@@ -16,7 +16,7 @@ type Props = {
     isInterestingFact?: boolean
 };
 
-function handleQueryAbort()
+function HandleQueryAbort()
 {
     const queryClient = useQueryClient();
     queryClient.cancelQueries({ queryKey: ['sortedNews', 'image', 'streetcodesMainPage'] });   
@@ -25,7 +25,7 @@ function handleQueryAbort()
 const handleOnClick = (isStreetcodeSlider: boolean) =>
 {
     if(isStreetcodeSlider) {
-        handleQueryAbort();
+        HandleQueryAbort();
     } 
 }
 
