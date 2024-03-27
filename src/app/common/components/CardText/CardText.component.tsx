@@ -31,12 +31,26 @@ const handleOnClick = (isStreetcodeSlider: boolean) =>
 
 const CardText = ({
     isInterestingFact = false, isStreetcodeSlider = false, moreBtnText, title, text, subTitle, className, onBtnClick, moreBtnAsLink,
-}:Props) => (
+}:Props) => {
+    const [isCopied, setIsCopied] = useState(false);
+
+    const clickHandle = async () => {
+        if(text) {
+            await navigator.clipboard.writeText(text);
+        }
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+    };
+
+    return (
     <div className={`cardTextContainer ${className}`}>
-        <div className="cardTextContainerTopPart">
+        <div className="cardTextContainerTopPart" onClick={clickHandle} role="presentation">
             <p className="cardTextContainerTitle">{title}</p>
             {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
             <p className="cardTextContainerText">{text}</p>
+            {isCopied && <div className="CoppyMessage">Скопійовано </div>}
         </div>
         {isInterestingFact ? <></> :
             moreBtnAsLink ? (
@@ -58,7 +72,7 @@ const CardText = ({
                 </p>
             )
         }
-    </div>
-);
+    </div>);
+    }
 
 export default CardText;
