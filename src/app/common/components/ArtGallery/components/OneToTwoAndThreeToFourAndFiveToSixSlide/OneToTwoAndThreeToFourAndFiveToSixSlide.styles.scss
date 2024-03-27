@@ -1,0 +1,6 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+
+.OneToTwoAndThreeToFourAndFiveToSixSlide{
+    @include mut.art-slide-grid($cols:3);
+}

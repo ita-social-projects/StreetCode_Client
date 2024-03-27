@@ -1,0 +1,12 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+
+.OneAndTwoAndThreeToFourSlide{
+    @include mut.art-slide-grid($rows: 2);
+    @include mut.images-grid-area($to:3);
+
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+            "img1 img3"
+            "img2 img3";
+}

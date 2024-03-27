@@ -1,3 +1,6 @@
+import IModelState from '@models/interfaces/IModelState';
+import IPersisted from '@models/interfaces/IPersisted';
+
 import Image from './image.model';
 
 export default interface Art {
@@ -8,7 +11,7 @@ export default interface Art {
     image: Image;
 }
 
-export interface ArtCreateUpdate extends Omit<Art, 'image'> {
+export interface ArtCreateUpdate extends IModelState, IPersisted, Omit<Art, 'image'> {
     image: Image | null;
 }
 
@@ -16,10 +19,9 @@ export interface IndexedArt {
     index: number;
     description: string;
     imageHref: string;
-    offset: number;
     title: string;
-    sequenceNumber: number;
 }
+
 export interface ArtCreate {
     imageId:number;
     description?: string;
