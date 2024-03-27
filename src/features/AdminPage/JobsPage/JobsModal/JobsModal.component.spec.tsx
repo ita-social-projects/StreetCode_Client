@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import JobApi from "@/app/api/job/Job.api";
 import JobsModalComponent from "./JobsModal.component";
@@ -336,13 +336,19 @@ describe("JobsModal test", () => {
     const titleRestriction = 50;
     const salaryRestriction = 15;
     const descriptionRestriction = 2000;
-    const longText = 'String which excides text amount limit'.repeat(2);
-    const veryLongText = 'String which excides text amount limit'.repeat(55);
-
+    const text = 'String which excides text amount limit';
+    const longText = text.repeat(3);
+    const veryLongText = text.repeat(50);
+    
     // Act
     await waitFor(() => {
       user.type(inputTitle, longText);
-      user.type(inputDescription, veryLongText);
+      
+      // user.type() takes too much time to input all the text, so fireEvent.change() partially
+      // fills description and user.type() tries to exceed text amount restrictions
+      fireEvent.change(inputDescription, { target: { value: veryLongText } });
+      user.type(inputDescription, longText);
+
       user.type(inputSalary, longText);
     });
 
