@@ -12,6 +12,7 @@ type Props = {
     subTitle?: string,
     text: string
     isStreetcodeSlider?: boolean
+    isInterestingFact?: boolean
 };
 
 function handleQueryAbort()
@@ -28,7 +29,7 @@ const handleOnClick = (isStreetcodeSlider: boolean) =>
 }
 
 const CardText = ({
-    moreBtnText = 'Трохи ще...', isStreetcodeSlider = false, title, text, subTitle, className, onBtnClick, moreBtnAsLink,  
+    isInterestingFact = false, isStreetcodeSlider = false, moreBtnText, title, text, subTitle, className, onBtnClick, moreBtnAsLink,
 }:Props) => (
     <div className={`cardTextContainer ${className}`}>
         <div className="cardTextContainerTopPart">
@@ -36,8 +37,8 @@ const CardText = ({
             {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
             <p className="cardTextContainerText">{text}</p>
         </div>
-        {moreBtnAsLink
-            ? (
+        {isInterestingFact ? <></> :
+            moreBtnAsLink ? (
                 <Link
                     to={moreBtnAsLink.link}
                     state={moreBtnAsLink.state}
@@ -47,16 +48,15 @@ const CardText = ({
                     {moreBtnText}
                     
                 </Link>
-            )
-            : (
+            ) : (
                 <p
                     className="cardTextContainerButton"
                     onClick={onBtnClick}
                 >
                     {moreBtnText}
                 </p>
-            )}
-
+            )
+        }
     </div>
 );
 
