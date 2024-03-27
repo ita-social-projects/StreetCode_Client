@@ -3,7 +3,6 @@
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 
 import { DatePicker, FormInstance, Input, Select } from 'antd';
