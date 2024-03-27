@@ -28,7 +28,6 @@ const InstagramBlock = () => {
 
     const sliderProps = {
         infinite: true,
-        swipe: windowSize.width < 1025,
         variableWidth: true,
         swipeOnClick: false,
         slidesToShow: 4,
