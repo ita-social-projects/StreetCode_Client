@@ -17,8 +17,7 @@ const RelatedFiguresItemModal = () => {
     const relation = relatedFiguresMap.get(relationId);
 
     const handleClick = () => {
-        setModal('relatedFigureItem', relation?.id, false);
-        window.scrollTo(0, 0);
+        relatedFigureItem.isOpen = false;
     };
 
     return (
@@ -28,7 +27,7 @@ const RelatedFiguresItemModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('relatedFigureItem')}
+            onCancel={handleClick}
             closeIcon={<CancelBtn />}
         >
             <div className="relatedFigureSlide">

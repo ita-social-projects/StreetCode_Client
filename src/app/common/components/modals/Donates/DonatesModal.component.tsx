@@ -4,14 +4,13 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import { ChangeEvent, useEffect, useState } from 'react';
+import donateButtonRequest from '@app/common/requests/donateButtonRequest';
+import { PositiveNumber } from '@constants/custom-types.constants';
 import { useModalContext } from '@stores/root-store';
 
 import { Button, Checkbox, Modal } from 'antd';
 
-import DonationApi from '@/app/api/donates/donation.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import { supportEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Donation from '@/models/feedback/donation.model';
 
 const possibleDonateAmounts = [500, 100, 50];
 
@@ -21,7 +20,6 @@ const DonatesModal = () => {
     const { setModal, modalsState: { donates } } = modalStore;
 
     const [donateAmount, setDonateAmount] = useState<number>(0);
-    const [activeBtnIdx, setActiveBtnIndex] = useState<number>();
     const [inputStyle, setInputStyle] = useState({ width: '100%' });
 
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
@@ -30,11 +28,10 @@ const DonatesModal = () => {
 
     const handleAmountBtnClick = (btnIdx: number) => {
         setDonateAmount(possibleDonateAmounts[btnIdx]);
-        setActiveBtnIndex(btnIdx);
     };
 
     const handleModalClose = () => {
-        setModal('donates');
+        donates.isOpen = false;
         setDonateAmount(0);
     };
 
@@ -57,7 +54,7 @@ const DonatesModal = () => {
 
     const charWidth = windowSize.width > 1024 ? 42 : 21;
     const firstWidth = windowSize.width > 1024 ? 13 : 6;
-    const baseValWidth = windowSize.width > 1024 ? 3 : 4;
+    const baseValWidth = windowSize.width > 1024 ? 2 : 1;
     const count = (donateAmount.toString().match(/1/g) || []).length;
     const zeroCount = (donateAmount.toString().match(/[0689]/g) || []).length;
 
@@ -66,20 +63,9 @@ const DonatesModal = () => {
 
     const style = { '--input-width': `${inputWidth}px` } as React.CSSProperties;
 
-    const handlePost = async () => {
-        const donation: Donation = {
-            amount: donateAmount,
-            pageUrl: window.location.href,
-        };
-
-        if (isCheckboxChecked) {
-            supportEvent('submit_donate_from_modal');
-
-            Promise.all([DonationApi.create(donation)])
-                .then((response) => {
-                    window.open(response[0].pageUrl);
-                })
-                .catch();
+    const handlePost = () => {
+        if (isCheckboxChecked && donateAmount > 0) {
+            donateButtonRequest(donateAmount as PositiveNumber);
         }
     };
 
@@ -124,7 +110,7 @@ const DonatesModal = () => {
                         onChange={handleDonateInputChange}
                         style={{ ...style, width: 'var(--input-width)' }}
                         placeholder="0"
-                        maxLength={15}
+                        maxLength={14}
                         value={donateAmount === 0 ? '' : donateAmount}
                         className={`amountInput ${(donateAmount !== 0) ? 'active' : ''} `}
                     />
@@ -134,8 +120,7 @@ const DonatesModal = () => {
                     {possibleDonateAmounts.map((amount, idx) => (
                         <Button
                             key={amount}
-                            className={(activeBtnIdx === idx
-                                && donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
+                            className={(donateAmount === possibleDonateAmounts[idx]) ? 'active' : ''}
                             onClick={() => handleAmountBtnClick(idx)}
                         >
                             {amount}
@@ -149,7 +134,9 @@ const DonatesModal = () => {
                         checked={isCheckboxChecked}
                         onChange={(e) => setIsCheckboxChecked(e.target.checked)}
                     >
-                        Я даю згоду на обробку моїх <a className='privacyPolicy' href='/privacy-policy'>персональних даних</a>
+                        Я даю згоду на обробку моїх
+                        {' '}
+                        <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
                     </Checkbox>
                 </div>
                 <button

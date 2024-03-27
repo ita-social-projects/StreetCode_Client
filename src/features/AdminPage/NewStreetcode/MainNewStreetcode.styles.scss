@@ -4,16 +4,12 @@
 @use "@sass/_utils.functions.scss" as f;
 $articlesImg: "@assets/images/sources/Articles.webp";
 
-.NewStreetcodeContainer {
-    margin-top: f.pxToRem(100px);
-    display: flex;
-    float: left;
-    width: 100%;
+.newStreetcodeContainer {
+    @include mut.admin-page-base-layout();
 
     .adminContainer
     {
          @include mut.sized(80%);
-        //@include mut.with-font();
         margin: auto;
 
         &-block{

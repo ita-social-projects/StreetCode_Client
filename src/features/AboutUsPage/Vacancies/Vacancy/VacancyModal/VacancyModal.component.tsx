@@ -50,7 +50,6 @@ const VacancyModal = ({ isOpen, setOpen, job }: Props) => {
             footer={null}
             width={getWidth()}
         >
-
             <div className="vacancyModalContainer">
                 <div className="textContainer">
                     <h2>{job.title}</h2>
@@ -60,9 +59,8 @@ const VacancyModal = ({ isOpen, setOpen, job }: Props) => {
                 <div className="buttonContainer">
                     <Button
                         className="vacancyModalButton streetcode-custom-button"
-                        onClick={(e) => {
-                            window.location.href = EMAIL_INFO.WRITE_EMAIL_TO_US;
-                            e.preventDefault();
+                        onClick={() => {
+                            window.open(EMAIL_INFO.WRITE_EMAIL_TO_US, '_blank');
                         }}
                     >
                         Відгукнутися

@@ -2,15 +2,12 @@
 @use '@assets/sass/mixins/_utils.mixins.scss' as mut;
 @use '@assets/sass/variables/_variables.colors.scss' as c;
 @use "@assets/sass/variables/_variables.layers.scss" as l;
-
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
-
 @mixin slick-arrow-pseudo($direction, $margin) {
     transition: .5s;
     margin-left: pxToRem($margin);
     @include mut.sized(40px, 58px);
-
     $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
     content: url($path);
 }
@@ -18,11 +15,9 @@
 .slick-next,
 .slick-prev {
     pointer-events: none;
-
     &:hover:before {
         filter: brightness(25%);
     }
-
     &:before {
         pointer-events: all;
     }
@@ -45,7 +40,6 @@
 
 .slick-disabled {
     filter: c.$base-arrow-filter-color;
-
     &:before {
         pointer-events: none;
     }
@@ -57,12 +51,14 @@ li.slick-active button:before {
 
 .sliderClass {
     width: 100%;
-
     .slider-item-container {
         display: flex !important;
         position: relative;
         flex-direction: column;
-        
+        &:focus,
+        &:focus-visible {
+            outline: none;
+        }
         .left {
             position: absolute;
             width: 35%;
@@ -70,7 +66,6 @@ li.slick-active button:before {
             left: 0;
             opacity: 0;
         }
-
         .right {
             position: absolute;
             width: 35%;
@@ -83,11 +78,10 @@ li.slick-active button:before {
 
 .slick-arrow {
     z-index: l.$slickArrow;
-    opacity: .4;
+    opacity: 1;
     filter: c.$selected-arrow-filter-color;
-
     &:hover {
-        opacity: .25;
+        opacity: 1;
     }
 }
 
@@ -96,7 +90,6 @@ li.slick-active button:before {
     .slick-prev {
         visibility: hidden;
     }
-
     .sliderClass .slick-dots li,
     .sliderClass .slick-dots li button,
     .sliderClass .slick-dots li button::before,

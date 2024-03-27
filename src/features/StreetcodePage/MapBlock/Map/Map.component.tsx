@@ -11,10 +11,10 @@ import { GestureHandling } from 'leaflet-gesture-handling';
 
 import useMobx from '@/app/stores/root-store';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import Toponym from '@/models/toponyms/toponym.model';
 
 import CustomMarkerCluster from './MarkerCluster/MarkerClusterWrapper.component';
-import StatisticRecord from '@/models/analytics/statisticrecord.model';
 
 const centerOfUkraine = {
     latitude: 48.4501,
@@ -26,7 +26,7 @@ interface Props {
     toponyms: Toponym[]
 }
 
-const MapOSM = ({  statisticRecord, toponyms }: Props) => {
+const MapOSM = ({ statisticRecord, toponyms }: Props) => {
     const { checkboxStore } = useMobx();
     const { checkBoxesState: { streetcodes, streets } } = checkboxStore;
     const [defaultZoom, setDefaultZoom] = useState(6.4);
@@ -49,29 +49,6 @@ const MapOSM = ({  statisticRecord, toponyms }: Props) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
     L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
-    
-    // if you need to use the previous second map
-    // return (
-    //     <div className="mapCentered">
-    //         <MapContainer {...mapOptions} center={[centerOfUkraine.latitude, centerOfUkraine.longtitude]}
-    //          zoom={defaultZoom} className="mapContainer"
-    //           scrollWheelZoom={true}>
-    //             <TileLayer
-    //                 url="https://tile.openstreetmap.org.ua/styles/positron-gl-style/{z}/{x}/{y}.png"
-    //             />
-    //             {streetcodes?.isActive && (
-    //                 <CustomMarkerCluster>
-    //                     {streetcodeCoordinates?.map((sc) => <CustomMarker latitude={sc.latitude} longtitude={sc.longtitude} title={String(sc.id)} description={String(sc.streetcodeId)} />)}
-    //                 </CustomMarkerCluster>
-    //             )}
-    //             {streets?.isActive && (
-    //                 <CustomMarkerCluster>
-    //                     {toponyms?.map((t) => <CustomMarker latitude={t.coordinate?.latitude} longtitude={t.coordinate?.longtitude} title={String(t.id)} description={`${t.streetType} ${t.streetName}`} />)}
-    //                 </CustomMarkerCluster>
-    //             )}
-    //         </MapContainer>
-    //     </div>
-    // );
 
     return (
         <div className="mapCentered">
@@ -93,7 +70,7 @@ const MapOSM = ({  statisticRecord, toponyms }: Props) => {
 
                 {streetcodes?.isActive && (
                     <CustomMarkerCluster>
-                        {statisticRecord?.map((sc) => <CustomMarker key={sc.id} latitude={sc.streetcodeCoordinate.latitude} longtitude={sc.streetcodeCoordinate.longtitude} title={String(sc.id)} description={sc.address} isStreetcode={true} />)}
+                        {statisticRecord?.map((sc) => <CustomMarker key={sc.id} latitude={sc.streetcodeCoordinate.latitude} longtitude={sc.streetcodeCoordinate.longtitude} title={String(sc.id)} description={sc.address} isStreetcode />)}
                     </CustomMarkerCluster>
                 )}
                 {streets?.isActive && (

@@ -18,7 +18,7 @@ const ContactBlock = () => (
         <img className="contactLogo" src={Logo} alt="" />
         <div className="contactCover">
             <div className="emailBlock">
-                <a href={EMAIL_INFO.WRITE_EMAIL_TO_US} className="emailLink">
+                <a href={EMAIL_INFO.WRITE_EMAIL_TO_US} className="emailLink" target="_blank" rel="noreferrer">
                     <div className="icon">
                         <Email />
                     </div>

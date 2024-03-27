@@ -83,7 +83,6 @@ const StreetcodesTable = () => {
     ];
 
     const updateState = (id: number, state: string) => {
-
         const updatedMapedStreetCodes = mapedStreetCodes.map((item) => {
             if (item.key === id) {
                 return {
@@ -188,7 +187,7 @@ const StreetcodesTable = () => {
                     </Button>
                 </Dropdown>
             ),
-          },
+        },
         {
             title: 'Останні зміни',
             dataIndex: 'date',

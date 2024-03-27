@@ -57,11 +57,12 @@
     .newsPageImgContainer {
         position: relative;
         z-index: 1;
+        height: 100%;
+
         @include mut.rem-padded($top: 5px, $right: 5px, $bottom: 5px, $left: 5px);
 
         @media (min-width: 768px) and (max-width: 1024px) {
             margin-top: 0;
-            height: 100%;
         }
 
         @media screen and (max-width: 767px) {
@@ -108,8 +109,8 @@
             height: 100%;
 
             @include textCard.cardText(
-                    $title-max-lines: 2,
-                    $text-max-lines: 3);
+                    $title-max-lines: 1,
+                    $text-max-lines: 4);
 
             .cardTextContainer{
                 padding: 0;
@@ -121,7 +122,11 @@
 
                 &Title{
                     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 36px);
-                    line-height: f.pxToRem(38px);
+                    line-height: f.pxToRem(47.5px);
+
+                    @media (min-width: 360px) and (max-width: 767px) {
+                        @include mut.truncated(2);
+                    }
 
                     @media (max-width: 1024px) {
                         font-size: f.pxToRem(20px);

@@ -1,6 +1,8 @@
 import './SupportUs.styles.scss';
 import '../ContactUsPage/Title/Title.styles.scss';
 
+import { useState } from 'react';
+
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { copyBankNumberEvent, donateEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Footer from '@/app/layout/footer/Footer.component';
@@ -15,21 +17,20 @@ import QRCodeSmall from '@/assets/images/donates/donatesPage/qr-code-small.svg';
 import Route from '@/assets/images/donates/donatesPage/route.svg';
 
 import DonationBlock from './components/DonationBlock.component';
-import { useState } from 'react';
 
 const SupportUs = () => {
     const { modalStore: { setModal } } = useModalContext();
     const BANK_ACCOUNT = 'UA753057490000026003000018553';
 
     const windowSize = useWindowSize();
-    
+
     const [isCopied, setIsCopied] = useState(false);
 
     const handleAfterCopy = () => {
         setIsCopied(true);
         setTimeout(() => {
             setIsCopied(false);
-        }, 2000 );
+        }, 2000);
     };
 
     const handleCopy = async () => {
@@ -37,7 +38,7 @@ const SupportUs = () => {
             copyBankNumberEvent();
             await navigator.clipboard.writeText(BANK_ACCOUNT);
         } catch {
-            alert("No permission to copy bank account to the clipboard!");
+            alert('No permission to copy bank account to the clipboard!');
         }
     };
 
@@ -148,11 +149,16 @@ const SupportUs = () => {
                             </div>
                         </div>
                         <div>
-                            <button className="supportButton withSvg" onClick={() => {handleCopy(); handleAfterCopy();}}>
+                            <button
+                                className="supportButton withSvg"
+                                onClick={() => {
+                                    handleCopy(); handleAfterCopy();
+                                }}
+                            >
                                 <span>Скопіювати рахунок UAH</span>
                                 <Copy />
                             </button>
-                            {isCopied && <div className='CoppyMessage'>Скопійовано  </div>}
+                            {isCopied && <div className="CoppyMessage">Скопійовано  </div>}
                         </div>
 
                     </div>

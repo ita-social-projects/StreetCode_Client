@@ -1,7 +1,8 @@
 import './SearchItem.styles.scss';
 
-import { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 import { htmlToText } from 'html-to-text';
+
+import { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 
 interface Props {
     searchResultItem: StreetcodeFilterResultDTO;
@@ -19,8 +20,10 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
     const contentToDisplay = searchResultItem.content ? htmlToText(searchResultItem.content) : '';
 
     return (
-        <a href={url}
-        className="resultItemContainer">
+        <a
+            href={url}
+            className="resultItemContainer"
+        >
             <div className="resultItemContent">
                 {contentToDisplay}
             </div>

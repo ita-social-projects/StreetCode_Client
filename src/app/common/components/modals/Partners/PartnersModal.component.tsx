@@ -3,8 +3,9 @@ import './PartnersModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useNavigate } from 'react-router-dom';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import {
@@ -14,6 +15,7 @@ import {
 import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Email from '@/models/email/email.model';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -24,20 +26,35 @@ const PartnersModal = () => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [messageApi, messageContextHolder] = message.useMessage();
     const [isVerified, setIsVerified] = useState(false);
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
-    const newEmail: Email = { from: formData.email, content: formData.message };
+    const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
     const onFinish = () => {
         if (isVerified) {
+            const token = recaptchaRef?.current?.getValue();
+            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
             EmailApi.send(newEmail)
                 .then(() => {
                     onCancel();
                     successMessage();
                 })
-                .catch((e) => {
+                .catch((error) => {
                     onCancel();
-                    errorMessage();
+                    if (error === 429) {
+                        errorMessage(MESSAGE_LIMIT);
+                    }
+                    else {
+                        errorMessage(SOMETHING_IS_WRONG);
+                    }
                 });
+            recaptchaRef.current?.reset();
+            setIsVerified(false);
+        }
+        else {
+            errorMessage(RECAPTCHA_CHECK);
         }
     };
 
@@ -48,6 +65,7 @@ const PartnersModal = () => {
 
     const onCancel = () => {
         partners.isOpen = false;
+        form.resetFields();
     };
 
     const handleVerify = () => {
@@ -62,12 +80,27 @@ const PartnersModal = () => {
         form.resetFields();
     };
 
-    const errorMessage = () => {
+    const errorMessage = (message: string) => {
         messageApi.open({
             type: 'error',
-            content: 'Щось пішло не так...',
+            content: message,
         });
     };
+
+    useEffect(() => {
+        const handleRouteChange = () => {
+            if (partners.isOpen) {
+                onCancel();
+                window.history.replaceState(null, '');
+            }
+        };
+
+        window.addEventListener('popstate', handleRouteChange);
+
+        return () => {
+            window.removeEventListener('popstate', handleRouteChange);
+        };
+    }, [partners.isOpen]);
 
     return (
         <Modal
@@ -139,8 +172,9 @@ const PartnersModal = () => {
                         <div className="captchaBlock ">
                             <ReCAPTCHA
                                 className="required-input"
-                                sitekey="6Lf0te8mAAAAAN47cZDXrIUk0kjdoCQO9Jl0DtI4"
+                                sitekey={siteKey ? siteKey : ""}
                                 onChange={handleVerify}
+                                ref={recaptchaRef}
                             />
                         </div>
                         <Form.Item>

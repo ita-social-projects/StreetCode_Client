@@ -188,6 +188,14 @@
   width: 100%;
   height: 100%;
 }
+@mixin admin-page-base-layout(){
+  margin-top: f.pxToRem(100px);
+  display: flex;
+  float: left;
+  width: 100%;
+  padding: 0 f.pxToRem(32px);
+  gap: f.pxToRem(10px);
+}
 // --------------------------Text----------------------------------
 @mixin withLineHeight($line-height){
   line-height:f.pxToRem($line-height);
@@ -301,4 +309,8 @@
   justify-content: center;
   grid-template-columns: repeat($cols, 1fr);
   grid-template-rows: repeat($rows, f.pxToRem(calc((536px - $gap-sum)/$rows)));
+}
+@mixin list-styles($type) {
+  list-style-type: $type;
+  padding-inline-start: revert;
 }

@@ -1,14 +1,14 @@
 import './InterestingFactsModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Modal } from 'antd';
 
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { useEffect, useState } from 'react';
 import useIsVisible from '@/app/common/hooks/stateful/useIsVisible';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 const InterestingFactsModal = () => {
     const millisecondsToHideAfterOpening = 3000;
@@ -18,6 +18,8 @@ const InterestingFactsModal = () => {
     const [descriptionVisible, setDescriptionVisible] = useState<boolean>(false);
     const factId = facts.fromCardId!;
     const fact = factMap.get(factId);
+    const clickHandle = () => facts.isOpen = false;
+
     useEffect(() => {
         if (fact?.image?.imageDetails?.alt) {
             setDescriptionVisible(true);
@@ -31,7 +33,7 @@ const InterestingFactsModal = () => {
         <Modal
             className="interestingFactsModal"
             open={facts.isOpen}
-            onCancel={() => setModal('facts')}
+            onCancel={clickHandle}
             footer={null}
             maskClosable
             centered
