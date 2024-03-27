@@ -2549,6 +2549,7 @@
   resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.24.1.tgz"
   integrity sha512-DZ6Nx9p7BhjkG50ayJ+MKPgff+lMeol7QYXkvuU5jr2ryW/4ok5eanaS9W5eooA4xN0A/GPHdLGOZGzArgf5Cg==
 
+
 "@tanstack/query-devtools@5.17.21":
   version "5.17.21"
   resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.17.21.tgz"
