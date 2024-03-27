@@ -34,7 +34,7 @@ const CardText = ({
 }:Props) => {
     const [isCopied, setIsCopied] = useState(false);
 
-    const clickHandle = async () => {
+    const ClickHandle = async () => {
         if(text) {
             await navigator.clipboard.writeText(text);
         }
@@ -46,7 +46,7 @@ const CardText = ({
 
     return (
     <div className={`cardTextContainer ${className}`}>
-        <div className="cardTextContainerTopPart" onClick={clickHandle} role="presentation">
+        <div className="cardTextContainerTopPart" onClick={ClickHandle} role="presentation">
             <p className="cardTextContainerTitle">{title}</p>
             {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
             <p className="cardTextContainerText">{text}</p>
