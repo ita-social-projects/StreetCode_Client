@@ -28,8 +28,6 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
         return text[0].toLocaleUpperCase() + text.substring(1, text.length);
     };
     const [disableInput, setDisableInput] = useState(true);
-    const { id } = useParams<any>();
-    const parseId = id ? +id : null;
 
     useEffect(() => {
         const dateEntered = form.getFieldValue('streetcodeFirstDate');

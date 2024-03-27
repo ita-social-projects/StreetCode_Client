@@ -312,12 +312,12 @@ const NewStreetcode = () => {
         form.validateFields().then(() => {
             data.stopPropagation();
 
-            const subtitles: SubtitleCreate[] = [{ subtitleText: subTitle?.subtitleText || '' }];
+            const subtitles: SubtitleCreate[] = [{ subtitleText: subTitle?.subtitleText ?? '' }];
 
-            const videos: VideoCreate[] = [{ url: inputInfo?.link || '' }];
+            const videos: VideoCreate[] = [{ url: inputInfo?.link ?? '' }];
 
             const text: TextCreateUpdate = {
-                id: inputInfo?.id || 0,
+                id: inputInfo?.id ?? 0,
                 title: inputInfo?.title,
                 textContent: inputInfo?.textContent,
                 additionalText: inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>'
