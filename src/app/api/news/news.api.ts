@@ -21,16 +21,6 @@ const NewsApi = {
         )),
     ),
 
-    getAllSortedNews: (page: number, pageSize: number) => Agent.getPaginated<News[]>(
-        `${API_ROUTES.NEWS.GET_ALL_SORTED}`,
-        new URLSearchParams(Object.entries(
-            {
-                page: page.toString(),
-                pageSize: pageSize.toString(),
-            },
-        )),
-    ),
-
     create: (news: News) => Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.NEWS.DELETE}/${id}`),

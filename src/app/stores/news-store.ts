@@ -27,7 +27,6 @@ export default class NewsStore {
     public constructor() {
         makeAutoObservable(this, {
             NewsMap: observable,
-            fetchNewsAll: action,
             getAll: action,
             createNews: action,
             deleteNews: action,
@@ -97,28 +96,10 @@ export default class NewsStore {
     }
 
     public getAll = async (page: number, pageSize?: number) => {
-        try {
-            this.setInternalMap((await NewsApi.getAll(page, pageSize ?? this.defaultPageSize)).data);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchNewsAll = async (page: number, pageSize?: number) => {
-        try {
-            const response = await NewsApi.getAll(page, pageSize ?? this.defaultPageSize);
-            this.setInternalMap(response.data);
-            this.setPaginationInfo(response.paginationInfo);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchSortedNews = (page: number, pageSize?: number) => {
         useQuery(
             {
                 queryKey: ['sortedNews', page],
-                queryFn: () => NewsApi.getAllSortedNews(page, pageSize ?? this.defaultPageSize)
+                queryFn: () => NewsApi.getAll(page, pageSize ?? this.defaultPageSize)
                     .then((response) => {
                         runInAction(() => {
                             this.setInternalMap(response.data);

@@ -42,7 +42,7 @@ const Newss: React.FC = observer(() => {
     // Fetch paginated news from api and decrease currentPage if it
     // is bidder than TotalPages value from x-pagination header.
     const getNews: () => void = () => {
-        newsStore.fetchSortedNews(currentPage, 7);
+        newsStore.getAll(currentPage, 7);
         decreaseCurrentPageNumberIfTooBig();
         imagesStore.fetchImages(newsStore.getNewsArray || []);
     };

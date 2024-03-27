@@ -17,7 +17,7 @@ const NewsSlider = () => {
     const { modalStore } = useModalContext();
     const { imagesStore, newsStore } = useMobx();
 
-    newsStore.fetchSortedNews(1, 10);
+    newsStore.getAll(1, 10);
     imagesStore.fetchImages(newsStore.getNewsArray || []);
 
     const [dragging, setDragging] = useState(false);
