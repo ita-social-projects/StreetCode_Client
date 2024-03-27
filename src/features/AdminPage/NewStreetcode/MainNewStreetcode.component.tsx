@@ -13,11 +13,15 @@ import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'
+import tz from 'dayjs/plugin/timezone'
+dayjs.extend(utc)
+dayjs.extend(tz)
 
 import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -79,8 +83,6 @@ const NewStreetcode = () => {
         streetcodeArtStore,
         tagsStore,
     } = useMobx();
-
-    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
 
     const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
@@ -189,8 +191,8 @@ const NewStreetcode = () => {
                         surname: x.lastName,
                         alias: x.alias,
                         streetcodeUrlName: x.transliterationUrl,
-                        streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
-                        streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
+                        streetcodeFirstDate: dayjs.utc(x.eventStartOrPersonBirthDate).local(),
+                        streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs.utc(x.eventEndOrPersonDeathDate).local() : undefined,
                         dateString: x.dateString,
                         teaser: x.teaser,
                         video,
@@ -332,9 +334,9 @@ const NewStreetcode = () => {
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 arBlockURL: form.getFieldValue('arlink'),
                 streetcodeType: streetcodeType.current,
-                eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
+                eventStartOrPersonBirthDate: dayjs.utc(form.getFieldValue('streetcodeFirstDate')).toDate(),
                 eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
-                    ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
+                    ? dayjs.utc(form.getFieldValue('streetcodeSecondDate')).toDate() : null,
                 imagesIds: createUpdateMediaStore.getImageIds(),
                 audioId: createUpdateMediaStore.audioId,
                 tags: reindex(selectedTags).map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
@@ -430,8 +432,9 @@ const NewStreetcode = () => {
                     status: tempStatus,
                     transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                     streetcodeType: streetcodeType.current,
-                    eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
-                    eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
+                    eventStartOrPersonBirthDate: dayjs.utc(form.getFieldValue('streetcodeFirstDate')).toDate(),
+                    eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
+                        ? dayjs.utc(form.getFieldValue('streetcodeSecondDate')).toDate() : null,
                     teaser: form.getFieldValue('teaser'),
                     dateString: form.getFieldValue('dateString'),
                     videos: videosUpdate,

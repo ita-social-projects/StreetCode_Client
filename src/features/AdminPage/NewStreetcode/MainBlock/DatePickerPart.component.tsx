@@ -170,7 +170,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                             }}
                         />
                         <FormItem
-                            rules={[{ required: !parseId, message: 'Введіть дату' }]}
+                            rules={[{ required: true, message: 'Введіть дату' }]}
                             name="streetcodeFirstDate"
                             className="streetcode-first-formitem-datepicker"
                             label=" "
