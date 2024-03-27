@@ -103,19 +103,14 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         } else {
           await JobApi.update(newJob);
         }
-        message.success("Вакансію успішно додано!", 2);
-    } catch (e: any) {
-      console.log(e);
-      message.error("Будь ласка, перевірте введені дані", 2);
+        message.success(POPOVER_CONTENT.SUCCESS, 2);
+    } catch {
+      message.error(POPOVER_CONTENT.FAIL, 2);
     }
   };
 
-  const handelOk = () => {
-    try{
-      form.submit();
-    } catch(e: any){
-      console.log(e);
-    }
+  const handleFail = () => {
+    message.error(POPOVER_CONTENT.FAIL, 2);
   }
 
   const clearModal = () => {
@@ -141,7 +136,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       maskClosable
       centered
       closeIcon={
-        <Popover content={POPOVER_CONTENT} trigger="hover">
+        <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
           <CancelBtn className="iconSize" onClick={clearModal} />
         </Popover>
       }
@@ -149,7 +144,12 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       <div className="center">
         <h2>Вакансії</h2>
       </div>
-      <Form layout="vertical" form={form} initialValues={{status: 'setActive' }} onFinish={handleSave}>
+      <Form layout="vertical" 
+        form={form} 
+        initialValues={{status: 'setActive' }} 
+        onFinish={handleSave} 
+        onFinishFailed={handleFail}
+      >
         <Form.Item
           label="Назва вакансії"
           name="title"
@@ -194,7 +194,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         <div className="center">
           <Button
             className="streetcode-custom-button"
-            onClick={handelOk}
+            onClick={form.submit}
           >
             Зберегти
           </Button>
