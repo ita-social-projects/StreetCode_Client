@@ -1,4 +1,5 @@
 import './InstagramSliderItem.styles.scss';
+import { useState } from 'react';
 
 import { toInstaPostRedirectClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 
@@ -10,6 +11,7 @@ interface Props {
 
 const InstagramSliderItem = ({ photoUrl, caption, permalink } : Props) => {
     const MAX_CAPTION_LENGTH = 110;
+    const [isDragging, setIsDragging] = useState(false);
 
     const truncatedCaption = caption && caption.length > MAX_CAPTION_LENGTH
         ? `${caption.substring(0, MAX_CAPTION_LENGTH).split(' ').slice(0, -1).join(' ')}...`
@@ -21,6 +23,19 @@ const InstagramSliderItem = ({ photoUrl, caption, permalink } : Props) => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
     };
+    const handleMouseDown = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = () => {
+        setIsDragging(true);
+    };
+
+    const handleMouseUp = () => {
+        if (!isDragging) {
+            handleOpenPost();
+        }
+    };
 
     const handleOpenPost = () => {
         toInstaPostRedirectClickEvent(permalink, 'main_page');
@@ -30,7 +45,9 @@ const InstagramSliderItem = ({ photoUrl, caption, permalink } : Props) => {
     return (
         <div
             className="InstagramSliderItem"
-            onClick={handleOpenPost}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
         >
             <div
                 className="imageContainer"

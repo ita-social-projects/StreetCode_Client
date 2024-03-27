@@ -1,0 +1,33 @@
+name: PR-check
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    types: [opened, synchronize, reopended]
+
+jobs:
+  sonard_cloud:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Install modules
+      run: npm i
+    
+    - name: Build project
+      run: npm run build
+
+    # when lint error will be fixed - add step with lint as well
+
+    - name: Run unit tests
+      run: npm run test:cover
+    
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: https://sonarcloud.io

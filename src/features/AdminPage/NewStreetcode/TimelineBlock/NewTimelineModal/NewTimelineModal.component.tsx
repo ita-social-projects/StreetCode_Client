@@ -39,10 +39,16 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
-    const maxContextLength = 50;
-    const getErrorMessage = (maxLength: number = maxContextLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+
+    const MAX_LENGTH = {
+        title: 26,
+        description: 400,
+        context: 50,
+    };
+
+    const getErrorMessage = (maxLength: number = MAX_LENGTH.context) => `Довжина не повинна перевищувати ${maxLength} символів`;
     const { onContextKeyDown, handleSearch } = createTagValidator(
-        maxContextLength,
+        MAX_LENGTH.context,
         getErrorMessage,
         setTagInput,
         setErrorMessage,
@@ -138,7 +144,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const onContextSelect = (value: string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
-            if (value.length > maxContextLength) {
+            if (value.length > MAX_LENGTH.context) {
                 form.setFieldValue('historicalContexts', selectedContext.current.map((c) => c.title));
                 setErrorMessage(getErrorMessage());
                 setTagInput('');
@@ -224,9 +230,9 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву', max: 28 }]}
+                        rules={[{ required: true, message: 'Введіть назву', max: MAX_LENGTH.title }]}
                     >
-                        <Input maxLength={28} showCount onChange={(e) => onChange('title', e.target.value)} />
+                        <Input maxLength={MAX_LENGTH.title} showCount onChange={(e) => onChange('title', e.target.value)} />
                     </Form.Item>
 
                     <Form.Item>
@@ -293,7 +299,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 {' '}
 /
                                 {' '}
-                                {maxContextLength}
+                                {MAX_LENGTH.context}
                             </div>
                         )}
                     </div>
@@ -303,7 +309,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Опис: "
                         rules={[{ required: true, message: 'Введіть опис' }]}
                     >
-                        <TextArea maxLength={400} showCount onChange={(e) => onChange('description', e.target.value)} />
+                        <TextArea maxLength={MAX_LENGTH.description} showCount onChange={(e) => onChange('description', e.target.value)} />
                     </Form.Item>
                     <div className="center">
                         <Button

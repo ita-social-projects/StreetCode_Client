@@ -126,6 +126,7 @@ const FileUploader:React.FC<Props> = ({
             {...uploadProps}
             customRequest={customRequest}
             onChange={onUploadChange}
+            data-testid={"fileuploader"}
         >
             {children}
         </Upload>

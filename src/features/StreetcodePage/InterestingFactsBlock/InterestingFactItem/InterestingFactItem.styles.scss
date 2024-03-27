@@ -68,6 +68,11 @@
       line-height: f.pxToEm(18px);
 
       @media screen and (max-width: 1450px) {
+        @include mut.with-font($font-weight: 300, $font-size: 11.5px);
+        line-height: f.pxToEm(16px);
+      }
+
+      @media screen and (max-width: 1325px) {
         @include mut.with-font($font-weight: 300, $font-size: 10px);
         line-height: f.pxToEm(16px);
       }
@@ -85,6 +90,12 @@
         line-height: normal;
 
         @media screen and (max-width: 1450px) {
+          padding-top: f.pxToRem(7px);
+
+          @include mut.with-font($font-weight: 500, $font-size: 14.5px);
+        }
+
+        @media screen and (max-width: 1325px) {
           padding-top: f.pxToRem(7px);
 
           @include mut.with-font($font-weight: 500, $font-size: 12px);
@@ -120,7 +131,22 @@
 
 @media screen and (max-width: 1450px) {
   .interestingFactSlide {
-    @include mut.sized(280px, 305px);
+    @include mut.sized(320px, 348.5px);
+  }
+
+  .interestingFactSlide {
+    .slideImage {
+      @include mut.sized(100%, 215px);
+    }
+
+    .slideText{
+      padding-bottom: f.pxToRem(5px);
+      @include mut.sized(100%, 120px);
+    }
+
+    .readMoreParagraph {
+      @include mut.with-font(ft.$roboto-font, 300, 10px, normal);
+    }
   }
 
   .interestingFactsSliderContainer {
@@ -128,12 +154,18 @@
       @include mut.flexed($align-items: flex-start, $gap: 10px);
     }
   }
+}
+
+@media screen and (max-width: 1325px) {
+  .interestingFactSlide {
+    @include mut.sized(280px, 305px);
+  }
 
   .interestingFactSlide {
     @include mut.full-rounded(20px);
 
     .slideImage {
-      @include mut.sized(100%, 142px);
+      @include mut.sized(100%, 190px);
       @include mut.rounded(20px, 20px);
     }
 
@@ -142,7 +174,7 @@
     }
 
     .readMoreParagraph {
-      @include mut.rem-padded(6px, 20px, 0px, 12px);
+      @include mut.rem-padded(6px, 6px, 0px, 12px);
       @include mut.with-font(ft.$roboto-font, 300, 10px, normal);
     }
   }
