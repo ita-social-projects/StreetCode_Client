@@ -1,4 +1,4 @@
-import type { JestConfigWithTsJest } from "ts-jest";
+import type { JestConfigWithTsJest } from 'ts-jest';
 
 const jestConfig: JestConfigWithTsJest = {
   preset: "ts-jest",
@@ -8,6 +8,9 @@ const jestConfig: JestConfigWithTsJest = {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
     "^antd/es/(.*)$": "<rootDir>/node_modules/antd/lib/$1",
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
+    "^antd/es/date-picker/locale/uk_UA$": "<rootDir>/__mocks__/antd/es/date/localeprovider.tsx",
+    "^@stores/root-store$": "<rootDir>/__mocks__/@stores/root-store.tsx", 
+    
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@app/(.*)$": "<rootDir>/src/app/$1",
     "^@sass/(.*)$": "<rootDir>/src/assets/sass/$1",
@@ -20,7 +23,7 @@ const jestConfig: JestConfigWithTsJest = {
     "^@hooks/(.*)$": "<rootDir>/src/app/common/hooks/$1",
     "^@constants/(.*)$": "<rootDir>/src/app/common/constants/$1",
     "^@utils/(.*)$": "<rootDir>/src/app/common/utils/$1",
-    },
+  },
   verbose: true,
   collectCoverageFrom: [
     "src/**/*.{ts,js}", // temp disable coverage collection for tsx, jsx until type errors will be fixed
@@ -33,7 +36,6 @@ const jestConfig: JestConfigWithTsJest = {
   transform: {
     "^.+\\.svg$": "jest-transformer-svg",
   },
-  transformIgnorePatterns: ["node_modules/(?!(antd)/)"],
   coverageThreshold: {
     global: {
       statements: 0.1,

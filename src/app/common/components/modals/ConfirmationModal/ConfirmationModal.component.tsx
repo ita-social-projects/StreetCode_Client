@@ -8,7 +8,7 @@ const ConfirmationModal = () => {
     const { modalStore: { setConfirmationModal, modalsState: { confirmation } } } = useModalContext();
     return (
         <Modal
-            title="Підтведження"
+            title="Підтвердження"
             open={confirmation.isOpen}
             onOk={() => {
                 if (confirmation.confirmationProps?.onSubmit) {
