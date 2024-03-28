@@ -28,14 +28,28 @@ pipeline {
         stage('Setup dependencies') {
             steps {
                 script {
-                    sh 'dotnet tool update --global dotnet-coverage'
-                    sh 'dotnet tool update --global dotnet-sonarscanner'
                     sh 'dotnet tool update --global GitVersion.Tool --version 5.12.0'
-                    sh 'docker image prune --force --all --filter "until=72h"'
-                    sh 'docker system prune --force --all --filter "until=72h"'
-
-                    sh 'dotnet-gitversion'
                  
+                }
+            }
+        }
+        stage('Build') {?????
+            steps {
+                script {
+                    // sh './StreetCode_Client/build.sh Run'
+                    sh(script: 'dotnet gitversion > GITVERSION_PROPERTIES', returnStdout: true)
+                    sh "cat GITVERSION_PROPERTIES"
+                    sh(script: "dotnet gitversion | grep -oP '(?<=\"MajorMinorPatch\": \")[^\"]*' > version", returnStatus: true)
+                    sh "cat version"
+                    vers = readFile(file: 'version').trim()
+                    sh "echo ${vers}"
+                    env.CODE_VERSION = readFile(file: 'version').trim()
+                    echo "${env.CODE_VERSION}"
+                    env.CODE_VERSION = "${env.CODE_VERSION}.${env.BUILD_NUMBER}"
+                    echo "${env.CODE_VERSION}"
+                    def gitCommit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat').trim()
+                    currentBuild.displayName = "${env.CODE_VERSION}-${BRANCH_NAME}:${gitCommit}"
+
                 }
             }
         }
