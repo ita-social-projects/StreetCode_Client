@@ -37,8 +37,11 @@ const TeamComponent = () => {
     };
 
     const windowsize = useWindowSize();
-    if (windowsize.width <= 1024 && windowsize.width >= 768) props.centerMode = true;
-    if (windowsize.width <= 1024) props.dots = true;
+    if (windowsize.width <= 1024)
+    {
+        props.dots = true;
+        if (windowsize.width >= 768) props.centerMode = true;
+    }
 
     const handleButtonClick = () => {
         window.location.href = '../about-us';
