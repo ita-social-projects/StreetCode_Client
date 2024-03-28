@@ -31,7 +31,7 @@ const jestConfig: JestConfigWithTsJest = {
   ],
   coveragePathIgnorePatterns: [
     "node_modules",
-    "*.{spec,test}.{js,ts,tsx,jsx}"
+    ".{spec,test}.{js,ts,tsx,jsx}"
   ],
   globals: {
     _env_: {
