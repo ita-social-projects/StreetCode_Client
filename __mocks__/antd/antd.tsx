@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, {
-  ReactNode,
-  MouseEventHandler,
-  ChangeEventHandler,
-} from "react";
-export { default as Form } from "./es/form/Form";
+    ChangeEventHandler,
+    MouseEventHandler,
+    ReactNode,
+} from 'react';
+
+export { default as Form } from './es/form/Form';
 
 type ModalProps = {
   title: string;
@@ -34,6 +36,13 @@ type FileUploaderProps = {
   children: ReactNode;
 };
 
+export type MockPaginationProps = {
+  current: number;
+  total: number;
+  pageSize: number;
+  onChange: typeof jest.fn;
+};
+
 type ButtonProps = {
   className: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -55,12 +64,9 @@ type SelectProps = {
   children: ReactNode;
 };
 
-type UploadFileProps = {};
-
 type CheckboxProps = {
   checked: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
-  children: ReactNode;
 };
 
 type OptionProps = {
@@ -70,103 +76,105 @@ type OptionProps = {
 export const mockConfig = jest.fn();
 
 export const Modal = ({
-  title,
-  open,
-  onOk,
-  onCancel,
-  children,
-}: ModalProps) => {
-  return (
+    title,
+    open,
+    onOk,
+    onCancel,
+    children,
+}: ModalProps) => (
     <>
-      <div className="modalTitle">{title}</div>
-      <div className="isModalOpen">{JSON.stringify(open)}</div>
-      <button type="button" className="modalOkButton" onClick={onOk}>
-        okButton
-      </button>
-      <button type="button" className="modalCancelButton" onClick={onCancel}>
-        cancelButton
-      </button>
-      <div className="modal-children">{children}</div>
+        <div className="modalTitle">{title}</div>
+        <div className="isModalOpen">{JSON.stringify(open)}</div>
+        <button type="button" className="modalOkButton" onClick={onOk}>
+          okButton
+        </button>
+        <button type="button" className="modalCancelButton" onClick={onCancel}>
+          cancelButton
+        </button>
+        <div className="modal-children">{children}</div>
     </>
-  );
-};
+);
 
-export const Button = ({ className, onClick, children }: ButtonProps) => {
-  return (
+export const Button = ({ className, onClick, children }: ButtonProps) => (
     <>
-      <div data-test-id="button-class" className={className} />
-      <button type="button" data-test-id="button-button" onClick={onClick} />
-      <div data-test-id="modal-children">{children}</div>
+        <div data-test-id="button-class" className={className} />
+        <button type="button" data-test-id="button-button" onClick={onClick} />
+        <div data-test-id="modal-children">{children}</div>
     </>
-  );
-};
+);
 
 export const message = {
-  config: mockConfig,
+    config: mockConfig,
 };
 
-export const Popover = ({ content, trigger, children }: PopoverProps) => {
-  return (
+export const Popover = ({ content, trigger, children }: PopoverProps) => (
     <>
-      <div data-test-id="popover-content">{content}</div>
-      <div data-test-id="popover-trigger">{trigger}</div>
-      <div data-test-id="popover-children">{children}</div>
+        <div data-test-id="popover-content">{content}</div>
+        <div data-test-id="popover-trigger">{trigger}</div>
+        <div data-test-id="popover-children">{children}</div>
     </>
-  );
-};
+);
 
-const Option = ({ value }: OptionProps) => {
-  return (
+const Option = ({ value }: OptionProps) => (
     <div data-test-id="option-value">{value}</div>
-  );
-};
+);
 
 const Select = ({
-  className,
-  onSelect,
-  mode,
-  onDeselect,
-  value,
-  children,
-}: SelectProps) => {
-  return (
+    className,
+    onSelect,
+    mode,
+    onDeselect,
+    value,
+    children,
+}: SelectProps) => (
     <>
-      <div className={className} data-test-id="select-class-name" />
-      <button
-        type="button"
-        data-test-id="select-on-select"
-        onClick={onSelect}
-      />
-      <div data-test-id="select-mode">{mode}</div>
-      <button
-        type="button"
-        data-test-id="select-on-deselect"
-        onClick={onDeselect}
-      />
-      <div data-test-id="select-value">{value}</div>
-      <div data-test-id="select-children">{children}</div>
+        <div className={className} data-test-id="select-class-name" />
+        <button
+            type="button"
+            data-test-id="select-on-select"
+            onClick={onSelect}
+        />
+        <div data-test-id="select-mode">{mode}</div>
+        <button
+            type="button"
+            data-test-id="select-on-deselect"
+            onClick={onDeselect}
+        />
+        <div data-test-id="select-value">{value}</div>
+        <div data-test-id="select-children">{children}</div>
     </>
-  );
-};
+);
 
 Select.Option = Option;
 
 export { Select };
 
-export const Input = ({ value, showCount, maxLength }: InputProps) => {
-  return (
+export const Input = ({ value, showCount, maxLength }: InputProps) => (
     <>
-      <div data-testid="input-show-count">{showCount}</div>
-      <div data-testid="input-max-length">{maxLength}</div>
-      <input data-testid="input-value" value={value}></input>
+        <div data-testid="input-show-count">{showCount}</div>
+        <div data-testid="input-max-length">{maxLength}</div>
+        <input data-testid="input-value" value={value} />
     </>
-  );
-};
+);
 
-export const Checkbox = ({ checked, onChange, children }: CheckboxProps) => {
-  return (
-      <input type="checkbox" checked={checked} onChange={onChange}>
-        {children}
-      </input>
-  );
+export const Checkbox = ({ checked, onChange }: CheckboxProps) => (
+    <input type="checkbox" checked={checked} onChange={onChange} />
+);
+
+export const MockPagination = ({ current, total, pageSize, onChange }: MockPaginationProps) => {
+    const totalPages = total % pageSize === 0 ? total / pageSize : (total / pageSize) + 1;
+    return (
+        <ul>
+            <li>
+                <button type="button" disabled={current === 1} onChange={onChange}>{'<'}</button>
+            </li>
+            <li>
+                <input type="text" size={3} />
+                {totalPages}
+            </li>
+            <li>
+                <button type="button" disabled={current >= totalPages} onChange={onChange}>{'>'}</button>
+            </li>
+        </ul>
+    );
 };
