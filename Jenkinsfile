@@ -2,6 +2,11 @@ pipeline {
     agent { 
         label 'stage' 
     }
+    options {
+        // test config to not keep ALL builds of PR check
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
     stages {
          stage('Checkout') {
             steps {
@@ -53,5 +58,32 @@ pipeline {
                 }
             }
         }
+         stage('Set up node version') {
+            steps {
+                echo 'Set up node version'
+                sh 'nvm use 16'
+                }
+            }
+        stage('Intall node modules') {
+            steps {
+                echo 'Installing modules...'
+                sh 'npm i'
+                }
+            }
+        stage('Run test:cover') {
+            steps {
+                echo 'Collect test coverage'
+                sh 'npm run test:cover'
+            }
+        }
+        /* uncomment me when you will fix lint
+        stage('Run lint') {
+            steps {
+                echo 'Runt lint check'
+                sh 'npm run lint'
+            }
+        }
+        */
+    
     }
 }
