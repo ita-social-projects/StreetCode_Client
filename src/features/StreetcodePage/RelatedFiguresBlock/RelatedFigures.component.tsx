@@ -2,10 +2,10 @@
 import './RelatedFigures.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx, { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
@@ -27,6 +27,8 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
 
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const windowsize = useWindowSize();
+
+    const [isTouchScreen, setIsTouchScreen] = useState(false);
 
     const handleClick = (e: React.MouseEvent) => {
         if (windowsize.width > 1024) {
@@ -51,12 +53,25 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
         [getStreetCodeId],
     );
 
+    useEffect(() => {
+        const onTouchStart = () => {
+            setIsTouchScreen(true);
+            window.removeEventListener('touchstart', onTouchStart);
+        };
+
+        window.addEventListener('touchstart', onTouchStart);
+
+        return () => {
+            window.removeEventListener('touchstart', onTouchStart);
+        };
+    }, []);
+
     const sliderItems = getRelatedFiguresArray.map((figure) => (
         <RelatedFigureItem
             key={figure.id}
             relatedFigure={figure}
             filterTags
-            hoverable
+            hoverable={!isTouchScreen}
             setActiveTagId={setActiveTagId}
             setShowAllTags={setShowAllTags}
             streetcode={streetcode}
