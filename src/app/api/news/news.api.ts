@@ -1,4 +1,4 @@
-import Agent, { AgentFrontend } from '@api/agent.api';
+import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import News, { NewsWithUrl } from '@models/news/news.model';
 
@@ -11,9 +11,15 @@ const NewsApi = {
         `${API_ROUTES.NEWS.GET_NEWS_AND_LINKS_BY_URL}/${url}`,
     ),
 
-    getAll: () => Agent.get<News[]>(`${API_ROUTES.NEWS.GET_ALL}`),
-
-    getAllSortedNews: () => Agent.get<News[]>(`${API_ROUTES.NEWS.GET_ALL_SORTED}`),
+    getAll: (page: number, pageSize: number) => Agent.getPaginated<News[]>(
+        `${API_ROUTES.NEWS.GET_ALL}`,
+        new URLSearchParams(Object.entries(
+            {
+                page: page.toString(),
+                pageSize: pageSize.toString(),
+            },
+        )),
+    ),
 
     create: (news: News) => Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news),
 
