@@ -34,7 +34,7 @@ pipeline {
                     sh 'docker image prune --force --all --filter "until=72h"'
                     sh 'docker system prune --force --all --filter "until=72h"'
 
-                    sh 'gitversion'
+                    sh 'dotnet-gitversion'
                  
                 }
             }
