@@ -28,7 +28,10 @@ const jestConfig: JestConfigWithTsJest = {
   verbose: true,
   collectCoverageFrom: [
     "src/**/*.{ts,js,tsx,jsx}", // temp disable coverage collection for tsx, jsx until type errors will be fixed
-    "!src/**/*{spec,test}.{ts,js,tsx,jsx}"
+  ],
+  coveragePathIgnorePatterns: [
+    "node_modules",
+    "*.{spec,test}.{js,ts,tsx,jsx}"
   ],
   globals: {
     _env_: {
