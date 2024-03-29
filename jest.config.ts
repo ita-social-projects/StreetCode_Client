@@ -1,5 +1,4 @@
 import type { JestConfigWithTsJest } from 'ts-jest';
-import { defaults } from 'jestConfig';
 
 const jestConfig: JestConfigWithTsJest = {
 
@@ -32,7 +31,7 @@ const jestConfig: JestConfigWithTsJest = {
   ],
   coveragePathIgnorePatterns: [
     "node_modules",
-    defaults.coveragePathIgnorePatterns,
+    "**/**.spec.tsx"
   ],
   globals: {
     _env_: {
