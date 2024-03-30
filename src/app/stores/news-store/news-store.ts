@@ -1,7 +1,7 @@
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import NewsApi from '@api/news/news.api';
 import News from '@models/news/news.model';
-import { keepPreviousData, QueryClient, useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 import { PaginationInfo } from '@/models/pagination/pagination.model';
@@ -68,6 +68,7 @@ export default class NewsStore {
     public setCurrentNewsId = async (url: string) => {
         try {
             const news = await NewsApi.getByUrl(url);
+            console.log(news);
             if (news !== null) {
                 this.setNews = news;
                 return news;
