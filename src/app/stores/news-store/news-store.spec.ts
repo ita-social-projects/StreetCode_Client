@@ -30,7 +30,6 @@ const getTestNews = (
 });
 
 describe('news-store', () => {
-    const store = new NewsStore();
     const testUrl = 'testUrl';
 
     describe('api methods tests', () => {
@@ -43,6 +42,8 @@ describe('news-store', () => {
         ]);
 
         it('sets current news id with setCurrentNewsId', async () => {
+            const store = new NewsStore();
+
             await store.setCurrentNewsId(testUrl);
 
             expect(store.currentNews).toBe(1);
@@ -50,13 +51,51 @@ describe('news-store', () => {
     });
 
     describe('helper methods tests', () => {
-        it('sets current news id with setter', async () => {
+        it('sets News through setInternalMap', async () => {
+            const store = new NewsStore();
+
+            store.setInternalMap([
+                getTestNews(1),
+                getTestNews(2),
+                getTestNews(3),
+            ]);
+
+            expect(store.NewsMap).toBeTruthy();
+            expect(store.NewsMap.size).toBe(3);
+            expect(store.NewsMap.get(1)?.id).toBe(1);
+            expect(store.NewsMap.get(2)?.id).toBe(2);
+            expect(store.NewsMap.get(3)?.id).toBe(3);
+        });
+
+        it('sets current news id with setNews', async () => {
+            const store = new NewsStore();
+
             store.setNews = getTestNews(99);
 
             expect(store.currentNews).toBe(99);
         });
 
-        it('gets default pagination info', async () => {
+        it('gets current news id with getNewsId', async () => {
+            const store = new NewsStore();
+
+            store.setNews = getTestNews(99);
+
+            expect(store.getNewsId).toBe(99);
+        });
+
+        it('add new News to NewsMap with setItem', async () => {
+            const store = new NewsStore();
+
+            store.setItem(getTestNews(99));
+
+            expect(store.NewsMap).toBeTruthy();
+            expect(store.NewsMap.size).toBe(1);
+            expect(store.NewsMap.keys().next().value).toBe(99);
+        });
+
+        it('gets default pagination info with getPaginationInfo', async () => {
+            const store = new NewsStore();
+
             const paginationInfo: PaginationInfo = store.getPaginationInfo;
 
             expect(paginationInfo).toBeTruthy();
@@ -66,7 +105,9 @@ describe('news-store', () => {
             expect(paginationInfo.TotalPages).toBe(1);
         });
 
-        it('sets pagination info', async () => {
+        it('sets pagination info with setPaginationInfo', async () => {
+            const store = new NewsStore();
+
             const expectedPaginationInfo: PaginationInfo = {
                 PageSize: 7,
                 CurrentPage: 3,
