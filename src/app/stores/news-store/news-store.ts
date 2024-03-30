@@ -65,19 +65,6 @@ export default class NewsStore {
         this.currentNews = news.id;
     }
 
-    public setCurrentNewsId = async (url: string) => {
-        try {
-            const news = await NewsApi.getByUrl(url);
-            console.log(news);
-            if (news !== null) {
-                this.setNews = news;
-                return news;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     public get getNewsId() {
         return this.currentNews;
     }
@@ -95,6 +82,22 @@ export default class NewsStore {
             ...this.PaginationInfo,
         };
     }
+
+    private resetQueries(keys: string[]) {
+        this.queryClient?.invalidateQueries({ queryKey: keys });
+    }
+
+    public setCurrentNewsId = async (url: string) => {
+        try {
+            const news = await NewsApi.getByUrl(url);
+            if (news !== null) {
+                this.setNews = news;
+                return news;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     public getAll = async (page: number, pageSize?: number) => {
         useQuery(
@@ -133,8 +136,4 @@ export default class NewsStore {
             console.log(error);
         }
     };
-
-    private resetQueries(keys: string[]) {
-        this.queryClient?.invalidateQueries({ queryKey: keys });
-    }
 }
