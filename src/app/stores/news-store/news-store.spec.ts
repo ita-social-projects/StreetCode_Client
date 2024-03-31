@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-imports */
-import { QueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 import Image from '@/models/media/image.model';
@@ -28,11 +27,22 @@ const getTestNews = (
     image,
     creationDate: creationDate ?? dayjs(new Date('01-01-2000')),
 });
+let store: NewsStore;
+const createResolver = jest.fn();
+const updateResolver = jest.fn();
+const deleteResolver = jest.fn();
+
+beforeEach(() => {
+    store = new NewsStore();
+});
 
 describe('news-store', () => {
     describe('ApiMethodsTests', () => {
+        const testId = 1;
+        const testErrorId = 10;
         const testUrl = 'testUrl';
         const testErrorUrl = 'testErrorUrl';
+
         createMockServer([
             {
                 method: 'get',
@@ -45,18 +55,36 @@ describe('news-store', () => {
                 path: `news/getByUrl/${testErrorUrl}`,
                 errorStatusCode: 400,
             },
+            {
+                method: 'post',
+                path: 'news/create',
+                responseFn: createResolver,
+            },
+            {
+                method: 'put',
+                path: 'news/update',
+                responseFn: updateResolver,
+            },
+            {
+                method: 'delete',
+                path: `news/delete/${testId}`,
+                responseFn: deleteResolver,
+            },
+            {
+                type: 'error',
+                method: 'delete',
+                path: `news/delete/${testErrorId}`,
+                errorStatusCode: 400,
+            },
         ]);
 
         it('sets current news id with setCurrentNewsId', async () => {
-            const store = new NewsStore();
-
             await store.getByUrl(testUrl);
 
             expect(store.CurrentNewsId).toBe(1);
         });
 
         it('hadles error and don\'t set currentNewsId setter when error from api occurs', async () => {
-            const store = new NewsStore();
             const consoleSpy = jest.spyOn(console, 'log');
 
             await store.getByUrl(testErrorUrl);
@@ -64,12 +92,41 @@ describe('news-store', () => {
             expect(store.CurrentNewsId).toBe(-1);
             expect(consoleSpy).toHaveBeenCalledWith(400);
         });
+
+        it('adds new News to collection when createNews is called', async () => {
+            const testNews = getTestNews(testId);
+
+            await store.createNews(testNews);
+
+            expect(createResolver).toHaveBeenCalledTimes(1);
+        });
+
+        it('modifies News in collection when updateNews is called', async () => {
+            const testNews = getTestNews(testId);
+
+            await store.updateNews(testNews);
+
+            expect(updateResolver).toHaveBeenCalledTimes(1);
+        });
+
+        it('deletes News from collection', async () => {
+            await store.deleteNews(testId);
+
+            expect(deleteResolver).toHaveBeenCalledTimes(1);
+        });
+
+        it('handles an error when exception occurs', async () => {
+            const consoleSpy = jest.spyOn(console, 'log');
+
+            await store.deleteNews(testErrorId);
+
+            expect(deleteResolver).toHaveBeenCalledTimes(1);
+            expect(consoleSpy).toHaveBeenCalledWith(400);
+        });
     });
 
     describe('HelperMethodsTests', () => {
         it('sets News through setInternalMap', () => {
-            const store = new NewsStore();
-
             store.setInternalMap([
                 getTestNews(1),
                 getTestNews(2),
@@ -84,24 +141,18 @@ describe('news-store', () => {
         });
 
         it('sets current news id with News setter', () => {
-            const store = new NewsStore();
-
             store.CurrentNewsId = getTestNews(99).id;
 
             expect(store.CurrentNewsId).toBe(99);
         });
 
         it('gets current news id with CurrentNewsId getter', () => {
-            const store = new NewsStore();
-
             store.CurrentNewsId = getTestNews(99).id;
 
             expect(store.CurrentNewsId).toBe(99);
         });
 
         it('add new News to NewsMap with addNews', () => {
-            const store = new NewsStore();
-
             store.addNews(getTestNews(99));
 
             expect(store.NewsMap).toBeTruthy();
@@ -110,8 +161,6 @@ describe('news-store', () => {
         });
 
         it('gets default pagination info with PaginationInfo getter', () => {
-            const store = new NewsStore();
-
             const paginationInfo: PaginationInfo = store.PaginationInfo;
 
             expect(paginationInfo).toBeTruthy();
@@ -122,8 +171,6 @@ describe('news-store', () => {
         });
 
         it('sets pagination info with PaginationInfo setter', () => {
-            const store = new NewsStore();
-
             const expectedPaginationInfo: PaginationInfo = {
                 PageSize: 7,
                 CurrentPage: 3,
@@ -142,7 +189,6 @@ describe('news-store', () => {
         });
 
         it('gets News array with NewsArray getter', () => {
-            const store = new NewsStore();
             const expectedNewsArray: News[] = [
                 getTestNews(1),
                 getTestNews(2),

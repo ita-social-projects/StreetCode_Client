@@ -17,7 +17,7 @@ type HttpMethodType =
 
 type SuccessRequestOptions = {
     type?: 'success';
-    responseFn: () => any;
+    responseFn: any;
 };
 
 type ErrorRequestOptions = {

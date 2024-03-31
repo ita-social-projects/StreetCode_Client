@@ -119,13 +119,10 @@ export default class NewsStore {
     };
 
     public deleteNews = async (newsId: number) => {
-        try {
-            await NewsApi.delete(newsId);
-            runInAction(() => {
+        await NewsApi.delete(newsId)
+            .then(() => {
                 this.resetQueries(['sortedNews']);
-            });
-        } catch (error: unknown) {
-            console.log(error);
-        }
+            })
+            .catch((error) => console.log(error));
     };
 }
