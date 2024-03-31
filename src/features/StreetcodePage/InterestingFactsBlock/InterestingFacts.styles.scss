@@ -125,7 +125,14 @@
                 @include mut.sized(273px, 174px);
             }
         }
+
+        .cardTextContainer{
+            .cardTextContainerTitle{
+                margin-bottom: f.pxToRem(8px);
+            }
+        }
     }
+    
 }
 
 @media screen
