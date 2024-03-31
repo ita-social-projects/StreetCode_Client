@@ -31,7 +31,7 @@ jest.mock('@stores/root-store', () => ({
             getNewsArray: [],
             deleteNews: jest.fn(),
             setInternalMap: jest.fn(),
-            getPaginationInfo: getPaginationInfoMpckFn(),
+            PaginationInfo: getPaginationInfoMpckFn(),
             setQueryClient: jest.fn(),
         },
         imagesStore: {
