@@ -34,8 +34,8 @@ const Newss: React.FC = observer(() => {
     // Function for decreasing current page and rerendering component,
     // if currenPage is bigger than TotalPages(may happen when we delete news).
     const decreaseCurrentPageNumberIfTooBig = () => {
-        if (newsStore.getPaginationInfo.TotalPages && currentPage > newsStore.getPaginationInfo.TotalPages) {
-            setCurrentPage(newsStore.getPaginationInfo.TotalPages);
+        if (newsStore.PaginationInfo.TotalPages && currentPage > newsStore.PaginationInfo.TotalPages) {
+            setCurrentPage(newsStore.PaginationInfo.TotalPages);
         }
     };
 
@@ -44,7 +44,7 @@ const Newss: React.FC = observer(() => {
     const getNews: () => void = () => {
         newsStore.getAll(currentPage, 7);
         decreaseCurrentPageNumberIfTooBig();
-        imagesStore.fetchImages(newsStore.getNewsArray || []);
+        imagesStore.fetchImages(newsStore.NewsArray || []);
     };
 
     getNews();
@@ -148,7 +148,7 @@ const Newss: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={newsStore.getNewsArray}
+                    dataSource={newsStore.NewsArray}
                     rowKey="id"
                     scroll={{ y: 440 }}
                 />
@@ -159,9 +159,9 @@ const Newss: React.FC = observer(() => {
                             className="pagenationElement"
                             simple
                             defaultCurrent={1}
-                            current={newsStore.getPaginationInfo.CurrentPage}
-                            total={newsStore.getPaginationInfo.TotalItems}
-                            pageSize={newsStore.getPaginationInfo.PageSize}
+                            current={newsStore.PaginationInfo.CurrentPage}
+                            total={newsStore.PaginationInfo.TotalItems}
+                            pageSize={newsStore.PaginationInfo.PageSize}
                             onChange={(value: any) => {
                                 setCurrentPage(value);
                             }}

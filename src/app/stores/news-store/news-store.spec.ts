@@ -26,32 +26,48 @@ const getTestNews = (
     url: url ?? 'TestUrl',
     imageId: imageId ?? 1,
     image,
-    creationDate: creationDate ?? dayjs(),
+    creationDate: creationDate ?? dayjs(new Date('01-01-2000')),
 });
 
 describe('news-store', () => {
-    const testUrl = 'testUrl';
-
-    describe('api methods tests', () => {
+    describe('ApiMethodsTests', () => {
+        const testUrl = 'testUrl';
+        const testErrorUrl = 'testErrorUrl';
         createMockServer([
             {
                 method: 'get',
                 path: `news/getByUrl/${testUrl}`,
-                res: () => getTestNews(1),
+                responseFn: () => getTestNews(1),
+            },
+            {
+                type: 'error',
+                method: 'get',
+                path: `news/getByUrl/${testErrorUrl}`,
+                errorStatusCode: 400,
             },
         ]);
 
         it('sets current news id with setCurrentNewsId', async () => {
             const store = new NewsStore();
 
-            await store.setCurrentNewsId(testUrl);
+            await store.getByUrl(testUrl);
 
-            expect(store.currentNews).toBe(1);
+            expect(store.CurrentNewsId).toBe(1);
+        });
+
+        it('hadles error and don\'t set currentNewsId setter when error from api occurs', async () => {
+            const store = new NewsStore();
+            const consoleSpy = jest.spyOn(console, 'log');
+
+            await store.getByUrl(testErrorUrl);
+
+            expect(store.CurrentNewsId).toBe(-1);
+            expect(consoleSpy).toHaveBeenCalledWith(400);
         });
     });
 
-    describe('helper methods tests', () => {
-        it('sets News through setInternalMap', async () => {
+    describe('HelperMethodsTests', () => {
+        it('sets News through setInternalMap', () => {
             const store = new NewsStore();
 
             store.setInternalMap([
@@ -67,36 +83,36 @@ describe('news-store', () => {
             expect(store.NewsMap.get(3)?.id).toBe(3);
         });
 
-        it('sets current news id with setNews', async () => {
+        it('sets current news id with News setter', () => {
             const store = new NewsStore();
 
-            store.setNews = getTestNews(99);
+            store.CurrentNewsId = getTestNews(99).id;
 
-            expect(store.currentNews).toBe(99);
+            expect(store.CurrentNewsId).toBe(99);
         });
 
-        it('gets current news id with getNewsId', async () => {
+        it('gets current news id with CurrentNewsId getter', () => {
             const store = new NewsStore();
 
-            store.setNews = getTestNews(99);
+            store.CurrentNewsId = getTestNews(99).id;
 
-            expect(store.getNewsId).toBe(99);
+            expect(store.CurrentNewsId).toBe(99);
         });
 
-        it('add new News to NewsMap with setItem', async () => {
+        it('add new News to NewsMap with addNews', () => {
             const store = new NewsStore();
 
-            store.setItem(getTestNews(99));
+            store.addNews(getTestNews(99));
 
             expect(store.NewsMap).toBeTruthy();
             expect(store.NewsMap.size).toBe(1);
             expect(store.NewsMap.keys().next().value).toBe(99);
         });
 
-        it('gets default pagination info with getPaginationInfo', async () => {
+        it('gets default pagination info with PaginationInfo getter', () => {
             const store = new NewsStore();
 
-            const paginationInfo: PaginationInfo = store.getPaginationInfo;
+            const paginationInfo: PaginationInfo = store.PaginationInfo;
 
             expect(paginationInfo).toBeTruthy();
             expect(paginationInfo.PageSize).toBe(10);
@@ -105,7 +121,7 @@ describe('news-store', () => {
             expect(paginationInfo.TotalPages).toBe(1);
         });
 
-        it('sets pagination info with setPaginationInfo', async () => {
+        it('sets pagination info with PaginationInfo setter', () => {
             const store = new NewsStore();
 
             const expectedPaginationInfo: PaginationInfo = {
@@ -115,14 +131,31 @@ describe('news-store', () => {
                 TotalItems: 69,
             };
 
-            store.setPaginationInfo(expectedPaginationInfo);
-            const actualPaginationInfo: PaginationInfo = store.getPaginationInfo;
+            store.PaginationInfo = (expectedPaginationInfo);
+            const actualPaginationInfo: PaginationInfo = store.PaginationInfo;
 
             expect(actualPaginationInfo).toBeTruthy();
             expect(actualPaginationInfo.PageSize).toBe(expectedPaginationInfo.PageSize);
             expect(actualPaginationInfo.CurrentPage).toBe(expectedPaginationInfo.CurrentPage);
             expect(actualPaginationInfo.TotalItems).toBe(expectedPaginationInfo.TotalItems);
             expect(actualPaginationInfo.TotalPages).toBe(expectedPaginationInfo.TotalPages);
+        });
+
+        it('gets News array with NewsArray getter', () => {
+            const store = new NewsStore();
+            const expectedNewsArray: News[] = [
+                getTestNews(1),
+                getTestNews(2),
+                getTestNews(3),
+            ];
+
+            store.setInternalMap(expectedNewsArray);
+            const actualNewsArray = store.NewsArray;
+
+            expect(actualNewsArray.length).toBe(expectedNewsArray.length);
+            expect(actualNewsArray[0].id).toBe(expectedNewsArray[0].id);
+            expect(actualNewsArray[1].id).toBe(expectedNewsArray[1].id);
+            expect(actualNewsArray[2].id).toBe(expectedNewsArray[2].id);
         });
     });
 });

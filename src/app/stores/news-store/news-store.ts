@@ -11,11 +11,11 @@ export default class NewsStore {
 
     public errorNewsId = -1;
 
-    public currentNews = this.errorNewsId;
+    private currentNewsId = this.errorNewsId;
 
     private defaultPageSize = 10;
 
-    private PaginationInfo: PaginationInfo = {
+    private paginationInfo: PaginationInfo = {
         PageSize: this.defaultPageSize,
         TotalPages: 1,
         TotalItems: 1,
@@ -31,7 +31,7 @@ export default class NewsStore {
             createNews: action,
             deleteNews: action,
             setInternalMap: action,
-            setItem: action,
+            addNews: action,
             updateNews: action,
             setQueryClient: action,
         });
@@ -45,7 +45,7 @@ export default class NewsStore {
         // Offset in hours
         const localOffset = new Date().getTimezoneOffset() / 60;
         this.NewsMap.clear();
-        news.forEach(this.setItem);
+        news.forEach(this.addNews);
 
         // as date is saved in UTC+0, add local offset to actualize date
 
@@ -55,48 +55,40 @@ export default class NewsStore {
         });
     }
 
-    public setPaginationInfo(paginationInfo: PaginationInfo) {
-        this.PaginationInfo = {
-            ...paginationInfo,
-        };
+    public set CurrentNewsId(id: number) {
+        this.currentNewsId = id;
     }
 
-    public set setNews(news: News) {
-        this.currentNews = news.id;
+    public get CurrentNewsId(): number {
+        return this.currentNewsId;
     }
 
-    public get getNewsId() {
-        return this.currentNews;
-    }
-
-    public setItem = (news: News) => {
+    public addNews = (news: News) => {
         this.NewsMap.set(news.id, news);
     };
 
-    get getNewsArray() {
+    public get NewsArray() {
         return Array.from(this.NewsMap.values());
     }
 
-    get getPaginationInfo(): PaginationInfo {
-        return {
-            ...this.PaginationInfo,
-        };
+    public set PaginationInfo(paginationInfo: PaginationInfo) {
+        this.paginationInfo = paginationInfo;
+    }
+
+    public get PaginationInfo(): PaginationInfo {
+        return this.paginationInfo;
     }
 
     private resetQueries(keys: string[]) {
         this.queryClient?.invalidateQueries({ queryKey: keys });
     }
 
-    public setCurrentNewsId = async (url: string) => {
-        try {
-            const news = await NewsApi.getByUrl(url);
-            if (news !== null) {
-                this.setNews = news;
-                return news;
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    public getByUrl = async (url: string) => {
+        await NewsApi.getByUrl(url)
+            .then((news) => {
+                this.CurrentNewsId = news.id;
+            })
+            .catch((error) => console.log(error));
     };
 
     public getAll = async (page: number, pageSize?: number) => {
@@ -107,7 +99,7 @@ export default class NewsStore {
                     .then((response) => {
                         runInAction(() => {
                             this.setInternalMap(response.data);
-                            this.setPaginationInfo(response.paginationInfo);
+                            this.PaginationInfo = response.paginationInfo;
                         });
                         return response;
                     })
