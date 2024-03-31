@@ -49,7 +49,6 @@
 
 .oneFactContainer{
     
-
     .oneFactItem{
         @include mut.flex-centered();
         transform: scale(1.52);
@@ -80,6 +79,14 @@
     .interestingFactsSliderContainer {
         @include mut.sized(830px);
     }
+
+    .oneFactItem{
+        .interestingFactSlide{
+            .slideImage{
+                @include mut.sized(250px, 170px);
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 1024px){
@@ -104,6 +111,20 @@
     }
     .interestingFactsSliderContainer {
         @include mut.sized(85%, 100%);
+    }
+
+    .oneFactContainer{
+        @include mut.flex-centered();
+    }
+
+    .oneFactItem{
+        .interestingFactSlide{
+            @include mut.sized(273px, 293px);
+
+            .slideImage{
+                @include mut.sized(273px, 174px);
+            }
+        }
     }
 }
 
@@ -148,53 +169,6 @@ and (min-width: 768px) and (max-width: 1024px){
     .interestingFactsSliderContainer {
         @include mut.sized(100%, 100%); 
     }
-
-
-.singleSlideContainer{
-    margin-bottom: pxToRem(65px);
-    padding-top: pxToRem(50px);
-
-    .interestingFactSlide{
-        @include mut.sized(345px);
-        @include mut.full-rounded(20px);
-
-        .slideImage {
-            @include mut.sized($height: 65%);
-
-            img {
-                @include mut.sized($width: 100%, $height: 100%);
-                max-height: 210px;
-            }
-        }
-        .slideText{
-            @include mut.sized($height: 40%);
-            .heading{
-                font-size:14px;
-                @include mut.rem-padded(7px, 0px, 8px, 15px);
-            }
-
-            .mainText{
-                overflow: auto;
-                font-size: 12px;
-                line-height: pxToRem(21px);
-                margin-bottom: pxToEm(10px);
-
-                &:after {
-                    content: "";
-                    position: absolute;
-                    z-index: 1;
-                    bottom: 0;
-                    left: 0;
-                    pointer-events: none;
-                    background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
-                    width: 100%;
-                    height: 1.7em;
-                  }
-
-            }
-        }
-    }
-}
 }
 
 @media screen and (max-width: 768px){
@@ -230,6 +204,33 @@ and (min-width: 768px) and (max-width: 1024px){
                 @include mut.sized($width: 100%);
                 max-height: 210px;
             }
+        }
+    }
+
+    .oneFactContainer{
+        @include mut.flex-centered();
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .oneFactItem{
+        .interestingFactSlide{
+            @include mut.sized(205px, 220px);
+
+            .slideImage{
+                @include mut.sized(205px, 131px);
+            }
+            .cardTextContainer{
+                .cardTextContainerText{
+                    font-size: f.pxToRem(8.5px);
+                }
+                .cardTextContainerTitle{
+                    font-size: f.pxToRem(10.5px);
+                    margin-bottom: f.pxToRem(6px);
+                    padding-top: 5px;
+                }
+            }
+            
         }
     }
 }
