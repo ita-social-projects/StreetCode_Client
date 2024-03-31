@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-restricted-imports */
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import useMobx, { useModalContext } from '@stores/root-store';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 import { Button, Pagination } from 'antd';
@@ -19,35 +20,14 @@ import News from '@/models/news/news.model';
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
     const { newsStore, imagesStore } = useMobx();
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [newsToEdit, setNewsToEdit] = useState<News>();
 
-    // QueryClient is used in newsStore to mark query as stale
-    // whenever data modification occurs( create, update, delete ), so news refetching happens.
-    const queryClient = useQueryClient();
-    useEffect(() => {
-        newsStore.setQueryClient(queryClient);
-    }, []);
-
-    // Function for decreasing current page and rerendering component,
-    // if currenPage is bigger than TotalPages(may happen when we delete news).
-    const decreaseCurrentPageNumberIfTooBig = () => {
-        if (newsStore.PaginationInfo.TotalPages && currentPage > newsStore.PaginationInfo.TotalPages) {
-            setCurrentPage(newsStore.PaginationInfo.TotalPages);
-        }
-    };
-
-    // Fetch paginated news from api and decrease currentPage if it
-    // is bidder than TotalPages value from x-pagination header.
-    const getNews: () => void = () => {
-        newsStore.getAll(currentPage, 7);
-        decreaseCurrentPageNumberIfTooBig();
-        imagesStore.fetchImages(newsStore.NewsArray || []);
-    };
-
-    getNews();
+    useQuery({
+        queryKey: ['news', newsStore.CurrentPage],
+        queryFn: () => newsStore.getAll(3),
+    });
 
     const columns: ColumnsType<News> = [
         {
@@ -88,7 +68,7 @@ const Newss: React.FC = observer(() => {
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),
-            render: (value: string, record) => (
+            render: (value: string) => (
                 <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
                 </div>
@@ -163,7 +143,7 @@ const Newss: React.FC = observer(() => {
                             total={newsStore.PaginationInfo.TotalItems}
                             pageSize={newsStore.PaginationInfo.PageSize}
                             onChange={(value: any) => {
-                                setCurrentPage(value);
+                                newsStore.setCurrentPage(value);
                             }}
                         />
                     </div>

@@ -17,7 +17,7 @@ type HttpMethodType =
 
 type SuccessRequestOptions = {
     type?: 'success';
-    responseFn: any;
+    resolveFn: any;
 };
 
 type ErrorRequestOptions = {
@@ -28,6 +28,7 @@ type ErrorRequestOptions = {
 type CommonRequestOptions = {
     method: HttpMethodType;
     path: string;
+    headers?: object,
 };
 
 type CreateMockServerProps =
@@ -52,13 +53,15 @@ export default function createMockServer(handlersConfig: CreateMockServerProps[]
                 if (config.type === 'error') {
                     return response(
                         context.status(config.errorStatusCode ?? 400),
+                        config.headers && context.set(config.headers),
                     );
                 }
 
                 return response(
                     context.json(
-                        config.responseFn(),
+                        config.resolveFn(),
                     ),
+                    config.headers && context.set(config.headers),
                 );
             });
         },

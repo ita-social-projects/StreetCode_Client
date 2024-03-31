@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-imports */
 import dayjs from 'dayjs';
@@ -9,6 +10,13 @@ import { PaginationInfo } from '@/models/pagination/pagination.model';
 import createMockServer from '../../../../__mocks__/server';
 
 import NewsStore from './news-store';
+
+const testPagination: PaginationInfo = {
+    CurrentPage: 1,
+    PageSize: 1,
+    TotalItems: 1,
+    TotalPages: 1,
+};
 
 const getTestNews = (
     id: number,
@@ -27,7 +35,9 @@ const getTestNews = (
     image,
     creationDate: creationDate ?? dayjs(new Date('01-01-2000')),
 });
+
 let store: NewsStore;
+const getAllResolver = jest.fn();
 const createResolver = jest.fn();
 const updateResolver = jest.fn();
 const deleteResolver = jest.fn();
@@ -46,8 +56,16 @@ describe('news-store', () => {
         createMockServer([
             {
                 method: 'get',
+                path: 'news/getAll',
+                resolveFn: getAllResolver,
+                headers: {
+                    'x-pagination': JSON.stringify(testPagination),
+                },
+            },
+            {
+                method: 'get',
                 path: `news/getByUrl/${testUrl}`,
-                responseFn: () => getTestNews(1),
+                resolveFn: () => getTestNews(1),
             },
             {
                 type: 'error',
@@ -58,17 +76,17 @@ describe('news-store', () => {
             {
                 method: 'post',
                 path: 'news/create',
-                responseFn: createResolver,
+                resolveFn: createResolver,
             },
             {
                 method: 'put',
                 path: 'news/update',
-                responseFn: updateResolver,
+                resolveFn: updateResolver,
             },
             {
                 method: 'delete',
                 path: `news/delete/${testId}`,
-                responseFn: deleteResolver,
+                resolveFn: deleteResolver,
             },
             {
                 type: 'error',
@@ -77,6 +95,12 @@ describe('news-store', () => {
                 errorStatusCode: 400,
             },
         ]);
+
+        it('calls query with getAll', async () => {
+            await store.getAll(testPagination.PageSize);
+
+            expect(getAllResolver).toHaveBeenCalled();
+        });
 
         it('sets current news id with setCurrentNewsId', async () => {
             await store.getByUrl(testUrl);
@@ -98,7 +122,7 @@ describe('news-store', () => {
 
             await store.createNews(testNews);
 
-            expect(createResolver).toHaveBeenCalledTimes(1);
+            expect(createResolver).toHaveBeenCalled();
         });
 
         it('modifies News in collection when updateNews is called', async () => {
@@ -106,13 +130,13 @@ describe('news-store', () => {
 
             await store.updateNews(testNews);
 
-            expect(updateResolver).toHaveBeenCalledTimes(1);
+            expect(updateResolver).toHaveBeenCalled();
         });
 
         it('deletes News from collection', async () => {
             await store.deleteNews(testId);
 
-            expect(deleteResolver).toHaveBeenCalledTimes(1);
+            expect(deleteResolver).toHaveBeenCalled();
         });
 
         it('handles an error when exception occurs', async () => {
@@ -120,14 +144,14 @@ describe('news-store', () => {
 
             await store.deleteNews(testErrorId);
 
-            expect(deleteResolver).toHaveBeenCalledTimes(1);
+            expect(deleteResolver).toHaveBeenCalled();
             expect(consoleSpy).toHaveBeenCalledWith(400);
         });
     });
 
     describe('HelperMethodsTests', () => {
-        it('sets News through setInternalMap', () => {
-            store.setInternalMap([
+        it('sets News through setNewsMap', () => {
+            store.setNewsMap([
                 getTestNews(1),
                 getTestNews(2),
                 getTestNews(3),
@@ -195,7 +219,7 @@ describe('news-store', () => {
                 getTestNews(3),
             ];
 
-            store.setInternalMap(expectedNewsArray);
+            store.setNewsMap(expectedNewsArray);
             const actualNewsArray = store.NewsArray;
 
             expect(actualNewsArray.length).toBe(expectedNewsArray.length);

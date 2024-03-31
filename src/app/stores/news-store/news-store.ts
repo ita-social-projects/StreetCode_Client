@@ -1,7 +1,6 @@
-import { action, makeAutoObservable, observable, runInAction } from 'mobx';
+import { action, computed, makeAutoObservable, observable } from 'mobx';
 import NewsApi from '@api/news/news.api';
 import News from '@models/news/news.model';
-import { QueryClient, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 import { PaginationInfo } from '@/models/pagination/pagination.model';
@@ -9,50 +8,52 @@ import { PaginationInfo } from '@/models/pagination/pagination.model';
 export default class NewsStore {
     public NewsMap = new Map<number, News>();
 
-    public errorNewsId = -1;
+    private errorNewsId = -1;
 
     private currentNewsId = this.errorNewsId;
 
     private defaultPageSize = 10;
 
+    public CurrentPage = 1;
+
     private paginationInfo: PaginationInfo = {
         PageSize: this.defaultPageSize,
         TotalPages: 1,
         TotalItems: 1,
-        CurrentPage: 1,
+        CurrentPage: 0,
     };
-
-    private queryClient: QueryClient | null = null;
 
     public constructor() {
         makeAutoObservable(this, {
             NewsMap: observable,
+            CurrentPage: observable,
             getAll: action,
             createNews: action,
             deleteNews: action,
-            setInternalMap: action,
+            setNewsMap: action,
             addNews: action,
             updateNews: action,
-            setQueryClient: action,
+            setCurrentPage: action,
+            NewsArray: computed,
         });
     }
 
-    public setQueryClient(client: QueryClient) {
-        this.queryClient = client;
-    }
-
-    public setInternalMap(news: News[]) {
+    public setNewsMap(news: News[]) {
         // Offset in hours
         const localOffset = new Date().getTimezoneOffset() / 60;
         this.NewsMap.clear();
-        news.forEach(this.addNews);
+        news?.forEach(this.addNews);
 
         // as date is saved in UTC+0, add local offset to actualize date
 
-        news.forEach((n) => {
+        news?.forEach((n) => {
             // eslint-disable-next-line no-param-reassign
             n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours');
         });
+    }
+
+    public setCurrentPage(currPage: number) {
+        this.CurrentPage = currPage;
     }
 
     public set CurrentNewsId(id: number) {
@@ -68,7 +69,8 @@ export default class NewsStore {
     };
 
     public get NewsArray() {
-        return Array.from(this.NewsMap.values());
+        console.log(this.NewsMap);
+        return this.NewsMap.size > 0 ? Array.from(this.NewsMap.values()) : [];
     }
 
     public set PaginationInfo(paginationInfo: PaginationInfo) {
@@ -79,10 +81,6 @@ export default class NewsStore {
         return this.paginationInfo;
     }
 
-    private resetQueries(keys: string[]) {
-        this.queryClient?.invalidateQueries({ queryKey: keys });
-    }
-
     public getByUrl = async (url: string) => {
         await NewsApi.getByUrl(url)
             .then((news) => {
@@ -91,38 +89,31 @@ export default class NewsStore {
             .catch((error) => console.log(error));
     };
 
-    public getAll = async (page: number, pageSize?: number) => {
-        useQuery(
-            {
-                queryKey: ['sortedNews', page],
-                queryFn: () => NewsApi.getAll(page, pageSize ?? this.defaultPageSize)
-                    .then((response) => {
-                        runInAction(() => {
-                            this.setInternalMap(response.data);
-                            this.PaginationInfo = response.paginationInfo;
-                        });
-                        return response;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    }),
-            },
-        );
+    public getAll = async (pageSize?: number) => {
+        await NewsApi.getAll(this.CurrentPage, pageSize ?? 1)
+            .then((resp) => {
+                console.log('in useQuery');
+                this.PaginationInfo = resp.paginationInfo;
+                this.setNewsMap(resp.data);
+            })
+            .catch((error) => console.log(error));
     };
 
     public createNews = async (news: News) => {
-        await NewsApi.create(news).then(() => this.resetQueries(['sortedNews']));
+        await NewsApi.create(news)
+            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .catch((error) => console.log(error));
     };
 
     public updateNews = async (news: News) => {
-        await NewsApi.update(news).then(() => this.resetQueries(['sortedNews']));
+        await NewsApi.update(news)
+            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .catch((error) => console.log(error));
     };
 
     public deleteNews = async (newsId: number) => {
         await NewsApi.delete(newsId)
-            .then(() => {
-                this.resetQueries(['sortedNews']);
-            })
+            .then(() => this.getAll(this.PaginationInfo.PageSize))
             .catch((error) => console.log(error));
     };
 }

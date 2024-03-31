@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable no-restricted-imports */
 import { ReactNode } from 'react';
