@@ -227,5 +227,13 @@ describe('news-store', () => {
             expect(actualNewsArray[1].id).toBe(expectedNewsArray[1].id);
             expect(actualNewsArray[2].id).toBe(expectedNewsArray[2].id);
         });
+
+        it('sets CurrentPage with setCurrentPage', () => {
+            const testCurrentPage = 7;
+
+            store.setCurrentPage(testCurrentPage);
+
+            expect(store.CurrentPage).toBe(testCurrentPage);
+        });
     });
 });
