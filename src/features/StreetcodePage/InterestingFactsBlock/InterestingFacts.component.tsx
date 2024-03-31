@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
-import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
@@ -20,6 +20,7 @@ const InterestingFactsComponent = () => {
     const [sliderArray, setSliderArray] = useState<Fact[]>([]);
     const [middleFactIndex, setMiddleFactIndex] = useState(0);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    const { modalStore: { setModal } } = useModalContext();
 
     const facts = useRef<Fact[]>([]);
     useAsync(
@@ -109,19 +110,20 @@ const InterestingFactsComponent = () => {
                 ? (
                     <div
                         id="wow-facts"
-                        className={`container "interestingFactsWrapper"
-                    ${facts.current.length === 1 ? 'single' : ''}`}
+                        className={`container "interestingFactsWrapper"`}
                     >
                         <BlockHeading headingText="Wow-факти" />
                         <div className={`interestingFactsContainer
-                    ${facts.current.length === 1 ? 'singleFact' : ''}`}
+                    ${facts.current.length === 1 ? 'oneFactContainer' : ''}`}
                         >
                             <div className="interestingFactsSliderContainer">
                                 <div style={{ height: '100%' }}>
                                     {(facts.current.length === 1) ? (
-                                        <div className="singleSlideContainer">
+                                        <div className="oneFactItem"
+                                        onClick={() => setModal('facts', facts.current[0].id, true)}>
                                             <InterestingFactItem
                                                 fact={facts.current[0]}
+                                                middleFactIndex={middleFactIndex}
                                             />
                                         </div>
                                     ) : (
