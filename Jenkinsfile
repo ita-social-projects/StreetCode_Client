@@ -85,22 +85,23 @@ pipeline {
                 # Run npm install
                 npm install
             '''
+                sh 'npm run test:cover'
 
                 }
             }
-        stage('Intall node modules') {
-            steps {
-                echo 'Installing modules...'
-                sh 'npm version '
-                sh 'npm install'
-                }
-            }
-        stage('Run test:cover') {
-            steps {
-                echo 'Collect test coverage'
-                sh 'npm run test:cover'
-            }
-        }
+        // stage('Intall node modules') {
+        //     steps {
+        //         echo 'Installing modules...'
+        //         sh 'npm version '
+        //         sh 'npm install'
+        //         }
+        //     }
+        // stage('Run test:cover') {
+        //     steps {
+        //         echo 'Collect test coverage'
+        //         sh 'npm run test:cover'
+        //     }
+        // }
         /* uncomment me when you will fix lint
         stage('Run lint') {
             steps {
