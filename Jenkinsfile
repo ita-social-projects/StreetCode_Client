@@ -87,7 +87,10 @@ pipeline {
                 npm version
                 
                 # Run npm install
+                npm install --save-dev jest
                 npm install
+                npm test -- --coverage
+
             '''
                 sh 'npm install --save-dev jest'
                 sh ' jest --coverage'
