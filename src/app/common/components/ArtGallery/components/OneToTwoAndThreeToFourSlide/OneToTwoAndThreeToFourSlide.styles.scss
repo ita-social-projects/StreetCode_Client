@@ -7,5 +7,11 @@
 
     .baseArtSlideImageWrapper, .droppable{
         width: pxToRem(s.$art-gallery-img-size);
+        @media screen and (max-width: 768px){
+            width: pxToRem(s.$art-gallery-img-size-mobile * 1.2);
+        }
+    }
+    @media screen and (max-width: 680px){
+        width: pxToRem(s.$art-gallery-img-size-mobile * 2 + s.$art-gallery-gap-mobile);
     }
 }

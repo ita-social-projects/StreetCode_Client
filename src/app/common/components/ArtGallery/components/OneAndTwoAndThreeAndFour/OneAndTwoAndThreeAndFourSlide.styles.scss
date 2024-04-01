@@ -3,11 +3,16 @@
 @use '@sass/variables/variables.sizes' as s;
 
 .OneAndTwoAndThreeAndFourSlide{
-    @include mut.art-slide-grid($rows:2);
-    @include mut.images-grid-area($to:4);
+  @include mut.art-slide-grid($rows:2);
+  @include mut.images-grid-area($to:4);
 
-    grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size));
-    grid-template-areas:
+  grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size));
+  grid-template-areas:
             "img1 img3"
             "img2 img4";
+
+  @media screen and (max-width: 680px) {
+    grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile));
+    width: pxToRem(s.$art-gallery-img-size-mobile * 2 + s.$art-gallery-gap-mobile);
+  }
 }

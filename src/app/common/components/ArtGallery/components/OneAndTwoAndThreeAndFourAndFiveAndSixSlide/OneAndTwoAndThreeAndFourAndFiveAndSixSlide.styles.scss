@@ -3,4 +3,9 @@
 
 .OneAndTwoAndThreeAndFourAndFiveAndSixSlide{
     @include mut.art-slide-grid($cols: 3, $rows: 2);
+    @include mut.images-grid-area($to: 6);
+
+    grid-template-areas:
+            "img1 img3 img5"
+            "img2 img4 img6";
 }

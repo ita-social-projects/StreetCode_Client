@@ -2,10 +2,10 @@
 @use "@sass/_utils.functions.scss" as *;
 
 .OneAndTwoAndThreeToFourAndFiveAndSixSlide{
-    @include mut.art-slide-grid($cols: 3, $rows: 2);
-    @include mut.images-grid-area($to:5);
+  @include mut.art-slide-grid($cols: 3, $rows: 2);
+  @include mut.images-grid-area($to:5);
 
-    grid-template-areas:
+  grid-template-areas:
             "img1 img3 img4"
             "img2 img3 img5";
 
