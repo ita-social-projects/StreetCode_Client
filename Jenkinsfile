@@ -70,9 +70,9 @@ pipeline {
                 # Print current Node.js version
                 node -v
             
-                # Switch to Node.js version 16
-                nvm install 16
-                nvm use 16
+                # Switch to Node.js version 18
+                nvm install 18
+                nvm use 18
             
                 # Print Node.js version after switching
                 node -v
