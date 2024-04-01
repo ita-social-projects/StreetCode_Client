@@ -66,6 +66,7 @@ pipeline {
             if [ -s "$NVM_DIR/nvm.sh" ]; then
                 . "$NVM_DIR/nvm.sh" 
             fi
+            nvm install 16
             nvm use 16
         '''
                 }
