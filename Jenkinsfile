@@ -6,6 +6,9 @@ pipeline {
     agent { 
         label 'stage' 
     }
+    environment {
+        GITHUB_TOKEN = credentials('GH_TOKEN')     
+    }
     options {
         // test config to not keep ALL builds of PR check
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
@@ -90,6 +93,7 @@ pipeline {
                 npm install --save-dev jest
                 npm install
                 //npm test -- --coverage
+                echo $GITHUB_TOKEN
                 npm run test:cover
 
             '''
