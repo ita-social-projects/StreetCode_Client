@@ -62,15 +62,28 @@ pipeline {
             steps {
                 echo 'Set up node version'
            sh '''
-            export NVM_DIR="$HOME/.nvm"
-            if [ -s "$NVM_DIR/nvm.sh" ]; then
-                . "$NVM_DIR/nvm.sh" 
-            fi
-            nvm install 16
-            nvm use 16
-        '''
-                sh 'npm version '
-                sh 'npm install'
+                export NVM_DIR="$HOME/.nvm"
+                if [ -s "$NVM_DIR/nvm.sh" ]; then
+                    . "$NVM_DIR/nvm.sh" 
+                fi
+            
+                # Print current Node.js version
+                node -v
+            
+                # Switch to Node.js version 16
+                nvm install 16
+                nvm use 16
+            
+                # Print Node.js version after switching
+                node -v
+            
+                # Check npm version
+                npm version
+            
+                # Run npm install
+                npm install
+            '''
+
                 }
             }
         stage('Intall node modules') {
