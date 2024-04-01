@@ -74,8 +74,8 @@ pipeline {
         stage('Intall node modules') {
             steps {
                 echo 'Installing modules...'
-                sh 'npm uninstall fsevents'
-                sh 'npm install --no-optional '
+                sh 'npm audit fix '
+                sh 'npm install'
                 }
             }
         stage('Run test:cover') {
