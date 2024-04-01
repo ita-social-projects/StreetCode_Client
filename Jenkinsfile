@@ -89,7 +89,8 @@ pipeline {
                 # Run npm install
                 npm install
             '''
-                sh 'npx jest --coverage'
+                sh 'npm install --save-dev jest'
+                sh ' jest --coverage'
      //           sh 'npm run test:cover'
 
                 }
