@@ -74,7 +74,7 @@ pipeline {
         stage('Intall node modules') {
             steps {
                 echo 'Installing modules...'
-                sh 'npm i'
+                sh 'npm install --no-optional '
                 }
             }
         stage('Run test:cover') {
