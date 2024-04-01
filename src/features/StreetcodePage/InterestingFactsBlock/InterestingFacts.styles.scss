@@ -48,7 +48,6 @@
 }
 
 .oneFactContainer{
-    
     .oneFactItem{
         @include mut.flex-centered();
         transform: scale(1.52);
@@ -67,6 +66,11 @@
             bottom: auto;
         }
     }
+    .oneFactContainer{
+        .oneFactItem{
+            padding: f.pxToRem(63px) 0;
+        }
+    }
 }
 
 @media screen and (max-width: 1325px){
@@ -81,6 +85,8 @@
     }
 
     .oneFactItem{
+        padding: f.pxToRem(43px) 0;
+
         .interestingFactSlide{
             .slideImage{
                 @include mut.sized(250px, 170px);
@@ -118,6 +124,8 @@
     }
 
     .oneFactItem{
+        padding: f.pxToRem(83px) 0;
+
         .interestingFactSlide{
             @include mut.sized(273px, 293px);
 
@@ -153,6 +161,11 @@ and (min-width: 768px) and (max-width: 1024px){
     }
     .interestingFactsSliderContainer {
         @include mut.sized(100%, 100%); 
+    }
+    .oneFactContainer{
+        .oneFactItem{
+            padding: f.pxToRem(83px) 0;
+        }
     }
 }
 
@@ -213,9 +226,12 @@ and (min-width: 768px) and (max-width: 1024px){
             }
         }
     }
-
     .oneFactContainer{
         @include mut.flex-centered();
+
+        .oneFactItem{
+            padding: f.pxToRem(83px) 0;
+        }
     }
 }
 
