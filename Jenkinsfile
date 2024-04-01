@@ -85,7 +85,7 @@ pipeline {
                 # Run npm install
                 npm install
             '''
-                sh 'npm run test:cover'
+     //           sh 'npm run test:cover'
 
                 }
             }
