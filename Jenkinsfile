@@ -79,7 +79,9 @@ pipeline {
             
                 # Check npm version
                 npm version
-            
+                npm install -g npm@7
+                npm version
+                
                 # Run npm install
                 npm install
             '''
