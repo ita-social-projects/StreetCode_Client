@@ -74,7 +74,7 @@ pipeline {
         stage('Intall node modules') {
             steps {
                 echo 'Installing modules...'
-                sh 'npm audit fix '
+                sh 'npm version '
                 sh 'npm install'
                 }
             }
