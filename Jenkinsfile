@@ -92,11 +92,12 @@ pipeline {
                 # Run npm install
                 npm install --save-dev jest
                 npm install
-                //npm test -- --coverage
+                
                 echo $GITHUB_TOKEN
                 npm run test:cover
 
             '''
+                //npm test -- --coverage
         //        sh 'npm install --save-dev jest'
         //        sh ' jest --coverage'
      //           sh 'npm run test:cover'
