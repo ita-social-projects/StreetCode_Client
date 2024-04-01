@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import UploadMock from "../../../../../__mocks__/antd/es/upload/upload"
 import NewsModal from "./NewsModal.component";
 import userEvent from "@testing-library/user-event";
 import dayjs from "dayjs";
@@ -17,6 +18,13 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: () => {},
   }),
 });
+
+jest.mock("antd/es/upload", () => {
+  return {
+    __esModule: true,
+    default: UploadMock
+  }
+})
 
 jest.mock("@/app/common/components/Editor/QEditor.component", () => {
   return {
