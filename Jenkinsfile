@@ -69,6 +69,8 @@ pipeline {
             nvm install 16
             nvm use 16
         '''
+                sh 'npm version '
+                sh 'npm install'
                 }
             }
         stage('Intall node modules') {
