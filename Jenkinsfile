@@ -71,15 +71,15 @@ pipeline {
                 node -v
             
                 # Switch to Node.js version 16
-                nvm install 16
-                nvm use 16
+                nvm install latest
+                nvm use latest
             
                 # Print Node.js version after switching
                 node -v
             
                 # Check npm version
                 npm version
-                npm install -g npm@7
+                npm install -g npm@latest
                 npm version
                 
                 # Run npm install
