@@ -61,10 +61,8 @@ pipeline {
          stage('Set up node version') {
             steps {
                 echo 'Set up node version'
-                sh '. ~/.nvm/nvm.sh'
-                sh '. ~/.profile '
-                sh '.~/.bashrc' 
-                sh 'source ~/.bashrc'
+                sh 'export NVM_DIR="$HOME/.nvm"'
+                sh '[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"  # '
                 sh 'nvm use 16'
                 }
             }
