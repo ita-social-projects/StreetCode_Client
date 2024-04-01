@@ -12,6 +12,7 @@ type Props = {
     subTitle?: string,
     text: string
     isStreetcodeSlider?: boolean
+    isInterestingFact?: boolean
 };
 
 const handleQueryAbort = (queryClient: QueryClient) =>
@@ -39,8 +40,8 @@ const CardText = ({
             {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
             <p className="cardTextContainerText">{text}</p>
         </div>
-        {moreBtnAsLink
-            ? (
+        {isInterestingFact ? <></> :
+            moreBtnAsLink ? (
                 <Link
                     to={moreBtnAsLink.link}
                     state={moreBtnAsLink.state}
@@ -50,16 +51,15 @@ const CardText = ({
                     {moreBtnText}
                     
                 </Link>
-            )
-            : (
+            ) : (
                 <p
                     className="cardTextContainerButton"
                     onClick={onBtnClick}
                 >
                     {moreBtnText}
                 </p>
-            )}
-
+            )
+        }
     </div>
 );
 };
