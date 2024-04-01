@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import './CardText.styles.scss';
 
 import { Link } from 'react-router-dom';
@@ -15,22 +15,25 @@ type Props = {
     isInterestingFact?: boolean
 };
 
-function handleQueryAbort()
+function handleQueryAbort(queryClient: QueryClient)
 {
-    const queryClient = useQueryClient();
     queryClient.cancelQueries({ queryKey: ['sortedNews', 'image', 'streetcodesMainPage'] });   
 }
 
-const handleOnClick = (isStreetcodeSlider: boolean) =>
+const handleOnClick = (queryClient: QueryClient, isStreetcodeSlider: boolean) =>
 {
     if(isStreetcodeSlider) {
-        handleQueryAbort();
+        handleQueryAbort(queryClient);
     } 
 }
 
 const CardText = ({
     isInterestingFact = false, isStreetcodeSlider = false, moreBtnText, title, text, subTitle, className, onBtnClick, moreBtnAsLink,
-}:Props) => (
+}:Props) => {
+
+    const queryClient = useQueryClient();
+
+    return (
     <div className={`cardTextContainer ${className}`}>
         <div className="cardTextContainerTopPart">
             <p className="cardTextContainerTitle">{title}</p>
@@ -43,7 +46,7 @@ const CardText = ({
                     to={moreBtnAsLink.link}
                     state={moreBtnAsLink.state}
                     className="cardTextContainerButton"
-                    onClick = {() => handleOnClick(isStreetcodeSlider)}
+                    onClick = {() => handleOnClick(queryClient, isStreetcodeSlider)}
                 >
                     {moreBtnText}
                     
@@ -59,5 +62,6 @@ const CardText = ({
         }
     </div>
 );
+};
 
 export default CardText;
