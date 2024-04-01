@@ -89,11 +89,12 @@ pipeline {
                 # Run npm install
                 npm install --save-dev jest
                 npm install
-                npm test -- --coverage
+                //npm test -- --coverage
+                npm run test:cover
 
             '''
-                sh 'npm install --save-dev jest'
-                sh ' jest --coverage'
+        //        sh 'npm install --save-dev jest'
+        //        sh ' jest --coverage'
      //           sh 'npm run test:cover'
 
                 }
