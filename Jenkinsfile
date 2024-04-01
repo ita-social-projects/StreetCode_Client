@@ -1,3 +1,7 @@
+def CODE_VERSION = ''     
+def IS_IMAGE_BUILDED = false
+def isSuccess
+def vers
 pipeline {
     agent { 
         label 'stage' 
