@@ -27,7 +27,6 @@ const jestConfig: JestConfigWithTsJest = {
   },
   verbose: true,
   collectCoverageFrom: [
-    "!src/**/*.spec.tsx",
     "src/**/*.{ts,js,tsx,jsx}"
   ],
   globals: {
