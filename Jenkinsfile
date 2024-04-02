@@ -183,7 +183,7 @@ pipeline {
         steps {
             script {
                     CHOICES = ["deployProd", "rollbackStage"];    
-                        env.yourChoice = input  message: 'Please validate, choose one', ok : 'Proceed',, submitter: 'deploy_admin',id :'choice_id',
+                        env.yourChoice = input  message: 'Please validate, choose one', ok : 'Proceed', submitter: 'deploy_admin',id :'choice_id',
                                         parameters: [choice(choices: CHOICES, description: 'Do you want to deploy or to rollback?', name: 'CHOICE')]
             } 
         }
