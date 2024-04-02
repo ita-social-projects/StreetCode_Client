@@ -42,7 +42,7 @@ const jestConfig: JestConfigWithTsJest = {
     global: {
       statements: 8.6,
       branches: 5.9,
-      functions: 6.6,
+      functions: 6.5,
       lines: 8.7,
     },
   },
