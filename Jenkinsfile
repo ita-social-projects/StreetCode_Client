@@ -77,23 +77,22 @@ pipeline {
                 # Print current Node.js version
                 node -v
             
-                # Switch to Node.js version 18
-                nvm install 18
-                nvm use 18
+                # Switch to Node.js version 16
+                # nvm install 16
+                nvm use 16
             
                 # Print Node.js version after switching
                 node -v
             
                 # Check npm version
-                npm version
-                npm install -g npm@7
-                npm version
+                #npm version
+                #npm install -g npm@7
+                #npm version
                 
                 # Run npm install
-                npm install --save-dev jest
+                # npm install --save-dev jest ?
                 npm install
                 
-                echo $GITHUB_TOKEN
                 npm run test:cover
 
             '''
