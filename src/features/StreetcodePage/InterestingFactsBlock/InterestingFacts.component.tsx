@@ -63,6 +63,11 @@ const InterestingFactsComponent = () => {
         }
     });
 
+    const handleClick = () =>
+    {
+        setModal('facts', facts.current[0].id, true);
+    }
+
     const setings = {
         initialSlide: initialSlideIndex,
         dots: facts.current.length > 3,
@@ -120,7 +125,7 @@ const InterestingFactsComponent = () => {
                                 <div style={{ height: '100%' }}>
                                     {(facts.current.length === 1) ? (
                                         <div className="oneFactItem"
-                                        onClick={() => setModal('facts', facts.current[0].id, true)}>
+                                        onClick={() => handleClick}>
                                             <InterestingFactItem
                                                 fact={facts.current[0]}
                                                 middleFactIndex={middleFactIndex}
