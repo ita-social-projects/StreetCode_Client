@@ -63,7 +63,7 @@ const InterestingFactsComponent = () => {
         }
     });
 
-    const handleClick = () =>
+    const handleModalOpen = () =>
     {
         setModal('facts', facts.current[0].id, true);
     }
@@ -125,7 +125,8 @@ const InterestingFactsComponent = () => {
                                 <div style={{ height: '100%' }}>
                                     {(facts.current.length === 1) ? (
                                         <div className="oneFactItem"
-                                        onClick={() => handleClick}>
+                                        onClick={() => handleModalOpen}
+                                        onKeyDown={() => handleModalOpen}>
                                             <InterestingFactItem
                                                 fact={facts.current[0]}
                                                 middleFactIndex={middleFactIndex}
