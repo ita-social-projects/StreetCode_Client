@@ -55,7 +55,7 @@ const createAxiosInstance = (baseUrl: string) => {
                 toast.error(errorMessage);
             }
 
-            return Promise.reject(response?.status);
+            return Promise.reject(response);
         },
     );
 

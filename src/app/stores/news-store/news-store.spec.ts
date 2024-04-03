@@ -37,7 +37,10 @@ const getTestNews = (
 });
 
 let store: NewsStore;
-const getAllResolver = jest.fn();
+const getAllResolver = jest.fn(() => [
+    getTestNews(1),
+    getTestNews(2),
+]);
 const createResolver = jest.fn();
 const updateResolver = jest.fn();
 const deleteResolver = jest.fn();
@@ -52,6 +55,8 @@ describe('news-store', () => {
         const testErrorId = 10;
         const testUrl = 'testUrl';
         const testErrorUrl = 'testErrorUrl';
+        const testDeleteErrorMessage = 'Delete error message';
+        const testGetByUrlErrorMessage = 'GetByUrl error message';
 
         createMockServer([
             {
@@ -72,6 +77,7 @@ describe('news-store', () => {
                 method: 'get',
                 path: `news/getByUrl/${testErrorUrl}`,
                 errorStatusCode: 400,
+                errorMessage: testGetByUrlErrorMessage,
             },
             {
                 method: 'post',
@@ -93,6 +99,7 @@ describe('news-store', () => {
                 method: 'delete',
                 path: `news/delete/${testErrorId}`,
                 errorStatusCode: 400,
+                errorMessage: testDeleteErrorMessage,
             },
         ]);
 
@@ -109,12 +116,13 @@ describe('news-store', () => {
         });
 
         it('hadles error and don\'t set currentNewsId setter when error from api occurs', async () => {
-            const consoleSpy = jest.spyOn(console, 'log');
+            const consoleSpy = jest.spyOn(console, 'error');
 
             await store.getByUrl(testErrorUrl);
+            const actualErrorMessage = consoleSpy.mock.lastCall?.[0].data.errorMessage;
 
             expect(store.CurrentNewsId).toBe(-1);
-            expect(consoleSpy).toHaveBeenCalledWith(400);
+            expect(actualErrorMessage).toBe(testGetByUrlErrorMessage);
         });
 
         it('adds new News to collection when createNews is called', async () => {
@@ -140,12 +148,13 @@ describe('news-store', () => {
         });
 
         it('handles an error when exception occurs', async () => {
-            const consoleSpy = jest.spyOn(console, 'log');
+            const consoleSpy = jest.spyOn(console, 'error');
 
             await store.deleteNews(testErrorId);
+            const actualErrorMessage = consoleSpy.mock.lastCall?.[0].data.errorMessage;
 
             expect(deleteResolver).toHaveBeenCalled();
-            expect(consoleSpy).toHaveBeenCalledWith(400);
+            expect(actualErrorMessage).toBe(testDeleteErrorMessage);
         });
     });
 

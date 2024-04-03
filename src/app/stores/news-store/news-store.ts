@@ -42,14 +42,13 @@ export default class NewsStore {
         // Offset in hours
         const localOffset = new Date().getTimezoneOffset() / 60;
         this.NewsMap.clear();
-        news?.forEach(this.addNews);
-
-        // as date is saved in UTC+0, add local offset to actualize date
-
-        news?.forEach((n) => {
-            // eslint-disable-next-line no-param-reassign
-            n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours');
-        });
+        if (news) {
+            news.forEach(this.addNews);
+            news.forEach((n) => {
+                // eslint-disable-next-line no-param-reassign
+                n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours');
+            });
+        }
     }
 
     public setCurrentPage(currPage: number) {
@@ -69,7 +68,6 @@ export default class NewsStore {
     };
 
     public get NewsArray() {
-        console.log(this.NewsMap);
         return this.NewsMap.size > 0 ? Array.from(this.NewsMap.values()) : [];
     }
 
@@ -86,34 +84,34 @@ export default class NewsStore {
             .then((news) => {
                 this.CurrentNewsId = news.id;
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
     };
 
     public getAll = async (pageSize?: number) => {
         await NewsApi.getAll(this.CurrentPage, pageSize ?? 1)
             .then((resp) => {
-                console.log('in useQuery');
+                console.log(resp);
                 this.PaginationInfo = resp.paginationInfo;
                 this.setNewsMap(resp.data);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
     };
 
     public createNews = async (news: News) => {
         await NewsApi.create(news)
             .then(() => this.getAll(this.PaginationInfo.PageSize))
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
     };
 
     public updateNews = async (news: News) => {
         await NewsApi.update(news)
             .then(() => this.getAll(this.PaginationInfo.PageSize))
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
     };
 
     public deleteNews = async (newsId: number) => {
         await NewsApi.delete(newsId)
             .then(() => this.getAll(this.PaginationInfo.PageSize))
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
     };
 }

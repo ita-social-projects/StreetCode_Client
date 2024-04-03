@@ -23,6 +23,7 @@ type SuccessRequestOptions = {
 type ErrorRequestOptions = {
     type: 'error';
     errorStatusCode?: number;
+    errorMessage?:string;
 };
 
 type CommonRequestOptions = {
@@ -53,6 +54,11 @@ export default function createMockServer(handlersConfig: CreateMockServerProps[]
                 if (config.type === 'error') {
                     return response(
                         context.status(config.errorStatusCode ?? 400),
+                        context.json(
+                            {
+                                errorMessage: config.errorMessage || 'Default error message',
+                            },
+                        ),
                         config.headers && context.set(config.headers),
                     );
                 }
