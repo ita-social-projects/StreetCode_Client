@@ -23,148 +23,154 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const { imagesStore } = useMobx();
     const [arlink, setArlink] = useState('');
-    const [images, setImages] = useState<Image>();
+    const [images, setImages] = useState<Image[]>();
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
     const elementRef = useRef<HTMLDivElement>(null);
     const classSelector = 'catalogItem';
     const [linkStyle, setLinkStyle] = useState({}); // Оголошення стану для стилів посилання
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const image = await ImageStore.getImageById(streetcode.imageId);
+    //             if (image) {
+    //                 if (image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()) {
+    //                     setLinkStyle({ backgroundImage: `url(${base64ToUrl(image.base64, image.mimeType)})` });
+    //                 } else if (image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()) {
+    //                     setLinkStyle({ backgroundImage: `url(${base64ToUrl(image.base64, image.mimeType)})` });
+    //                 }
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching image:', error);
+    //         }
+    //     };
+
+    //     if (streetcode.imageId) {
+    //         fetchData();
+    //     }
+    // }, [streetcode.imageId]);
+
+    // const LinkProps = {
+    //     className: classSelector,
+    //     style: linkStyle,
+    //     href: `../${streetcode.url}`,
+    // };
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const image = await ImageStore.getImageById(streetcode.imageId);
-                if (image) {
-                    if (image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()) {
-                        setLinkStyle({ backgroundImage: `url(${base64ToUrl(image.base64, image.mimeType)})` });
-                    } else if (image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()) {
-                        setLinkStyle({ backgroundImage: `url(${base64ToUrl(image.base64, image.mimeType)})` });
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching image:', error);
+            try
+            {
+                await imagesStore.fetchImageByStreetcodeId(id);
+                const imgs = imagesStore.getImageArray;
+                setImages(imgs);
+                const relatedFigureImages = imgs.filter(
+                    (image) => image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()
+                );
+                const imagesForSlider = relatedFigureImages.length > 0 ? relatedFigureImages : imgs.filter(
+                    (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
+                );
+                setImagesForSlider(imagesForSlider);
+                streecodePageLoaderContext.addBlockFetched();
+            } 
+            catch (x)
+            {
+                TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
             }
-        };
-    
-        if (streetcode.imageId) {
+        }
+        if (id && id > 0) {
             fetchData();
         }
-    }, [streetcode.imageId]);
-    
-    const LinkProps = {
-        className: classSelector,
-        style: linkStyle,
-        href: `../${streetcode.url}`,
-    };
-   /* useEffect(() => {
-        if (id && id > 0) {
-            ImagesApi.getByStreetcodeId(id)
-                .then((imgs) => {
-                    setImages(imgs);
-                    const relatedFigureImages = imgs.filter(
-                        (image) => image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()
-                    );
-                    const imagesForSlider = relatedFigureImages.length > 0 ? relatedFigureImages : imgs.filter(
-                        (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
-                    );
-                    setImagesForSlider(imagesForSlider);
-                    streecodePageLoaderContext.addBlockFetched();
-                })
-                .catch((e) => { });
-            TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
-        }
     }, [streetcode]);
-    
 
-    const LinkProps = {
-        className: classSelector,
-        style: { 
-            backgroundImage: imagesForSlider.length > 0 
-                ? `url(${base64ToUrl(imagesForSlider[0]?.base64, imagesForSlider[0]?.mimeType)})` 
-                : ''
-        },
-        href: `../${streetcode.url}`,
-    };*/
-    
-    const windowsize = useWindowSize();
 
-    const handleClickRedirect = () => {
-        toStreetcodeRedirectClickEvent(streetcode.url.toString(), 'catalog');
-        window.location.href = `/${streetcode.url}`;
-    };
-    const handleTextClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        handleClickRedirect();
-    };
+const LinkProps = {
+    className: classSelector,
+    style: {
+        backgroundImage: `url(${base64ToUrl(imagesForSlider[0]?.base64, imagesForSlider[0]?.mimeType)})`
+    },
+    href: `../${streetcode.url}`,
+};
 
-    useEffect(() => {
-        if (isLast) {
-            const loadOptions = {
-                root: null,
-                rootMargin: '0px',
-                thresholds: [0.75],
-            };
+const windowsize = useWindowSize();
 
-            const callback = (entries : any, intersectionObserver : any) => {
-                entries.forEach((entry : any) => {
-                    if (entry.isIntersecting) {
-                        handleNextScreen();
-                        intersectionObserver.unobserve(entry.target);
-                    }
-                });
-            };
+const handleClickRedirect = () => {
+    toStreetcodeRedirectClickEvent(streetcode.url.toString(), 'catalog');
+    window.location.href = `/${streetcode.url}`;
+};
+const handleTextClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    handleClickRedirect();
+};
 
-            const intersectionObserver = new IntersectionObserver(callback, loadOptions);
+useEffect(() => {
+    if (isLast) {
+        const loadOptions = {
+            root: null,
+            rootMargin: '0px',
+            thresholds: [0.75],
+        };
 
-            if (elementRef.current) {
-                intersectionObserver.observe(elementRef.current);
-            }
-
-            return () => {
-                if (elementRef.current) {
-                    intersectionObserver.unobserve(elementRef.current);
+        const callback = (entries: any, intersectionObserver: any) => {
+            entries.forEach((entry: any) => {
+                if (entry.isIntersecting) {
+                    handleNextScreen();
+                    intersectionObserver.unobserve(entry.target);
                 }
-            };
-        }
-    }, []);
+            });
+        };
 
-    return (
-        <>
-            {windowsize.width > 1024 && (
-                <a {...LinkProps} href={`/${streetcode.url}`} onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}>
-                    <div ref={elementRef} className="catalogItemText">
-                        <div className="heading">
-                            <p>{streetcode.title}</p>
-                            {
-                                streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
-                                    <p className="aliasText">
-(
-                                        {streetcode.alias}
-)
-                                    </p>
-                                ) : undefined
-                            }
-                        </div>
-                    </div>
-                </a>
-            )}
-            {windowsize.width <= 1024 && (
-                <div>
-                    <a {...LinkProps} href={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')} />
-                    <div ref={elementRef} className="catalogItemText mobile">
-                        <div className="heading" onClick={handleTextClick}>
-                            <p>{streetcode.title}</p>
-                            {
-                                streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
-                                    <p className="aliasText">{streetcode.alias}</p>
-                                ) : undefined
-                            }
-                        </div>
+        const intersectionObserver = new IntersectionObserver(callback, loadOptions);
+
+        if (elementRef.current) {
+            intersectionObserver.observe(elementRef.current);
+        }
+
+        return () => {
+            if (elementRef.current) {
+                intersectionObserver.unobserve(elementRef.current);
+            }
+        };
+    }
+}, []);
+
+return (
+    <>
+        {windowsize.width > 1024 && (
+            <a {...LinkProps} href={`/${streetcode.url}`} onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}>
+                <div ref={elementRef} className="catalogItemText">
+                    <div className="heading">
+                        <p>{streetcode.title}</p>
+                        {
+                            streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
+                                <p className="aliasText">
+                                    (
+                                    {streetcode.alias}
+                                    )
+                                </p>
+                            ) : undefined
+                        }
                     </div>
                 </div>
-            )}
-        </>
-    );
+            </a>
+        )}
+        {windowsize.width <= 1024 && (
+            <div>
+                <a {...LinkProps} href={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')} />
+                <div ref={elementRef} className="catalogItemText mobile">
+                    <div className="heading" onClick={handleTextClick}>
+                        <p>{streetcode.title}</p>
+                        {
+                            streetcode.alias !== null && streetcode.alias?.trim() !== '' ? (
+                                <p className="aliasText">{streetcode.alias}</p>
+                            ) : undefined
+                        }
+                    </div>
+                </div>
+            </div>
+        )}
+    </>
+);
 };
 
 export default observer(StreetcodeCatalogItem);
