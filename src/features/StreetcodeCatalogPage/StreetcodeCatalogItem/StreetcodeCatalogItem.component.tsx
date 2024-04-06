@@ -11,6 +11,7 @@ import { StreetcodeCatalogRecord } from '@/models/streetcode/streetcode-types.mo
 import Image, { ImageAssigment } from '@/models/media/image.model';
 import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
+import ImageStore from "@stores/image-store";
 
 interface Props {
     streetcode: StreetcodeCatalogRecord;
@@ -23,16 +24,41 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const { modalStore: { setModal } } = useModalContext();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const [arlink, setArlink] = useState('');
-    const [images, setImages] = useState<Image[]>([]);
+    const [images, setImages] = useState<Image>();
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
     const elementRef = useRef<HTMLDivElement>(null);
     const classSelector = 'catalogItem';
-
-    
+    const [linkStyle, setLinkStyle] = useState({}); // Оголошення стану для стилів посилання
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const image = await ImageStore.getImageById(streetcode.imageId);
+                if (image) {
+                    if (image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()) {
+                        setLinkStyle({ backgroundImage: `url(${base64ToUrl(image.base64, image.mimeType)})` });
+                    } else if (image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()) {
+                        setLinkStyle({ backgroundImage: `url(${base64ToUrl(image.base64, image.mimeType)})` });
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching image:', error);
+            }
+        };
+    
+        if (streetcode.imageId) {
+            fetchData();
+        }
+    }, [streetcode.imageId]);
+    
+    const LinkProps = {
+        className: classSelector,
+        style: linkStyle,
+        href: `../${streetcode.url}`,
+    };
+   /* useEffect(() => {
         if (id && id > 0) {
-            ImagesApi.getByStreetcodeId(id ?? 1)
+            ImagesApi.getByStreetcodeId(id)
                 .then((imgs) => {
                     setImages(imgs);
                     const relatedFigureImages = imgs.filter(
@@ -58,7 +84,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
                 : ''
         },
         href: `../${streetcode.url}`,
-    };
+    };*/
     
     const windowsize = useWindowSize();
 
