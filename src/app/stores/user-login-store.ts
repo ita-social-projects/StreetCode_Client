@@ -1,20 +1,32 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable class-methods-use-this */
-import { action, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import UserApi from '@api/user/user.api';
+import { jwtDecode } from 'jwt-decode';
 
-import User, { RefreshTokenResponce, UserLoginResponse } from '@/models/user/user.model';
+import User, { UserLoginResponse } from '@/models/user/user.model';
 
 export default class UserLoginStore {
     private static tokenStorageName = 'token';
 
-    public user?: User;
-
-    private callback?:()=>void;
+    public user?: User = undefined;
 
     public constructor() {
         makeObservable(this, {
+            user: observable,
             login: action,
+            isLoggedIn: computed,
         });
+    }
+
+    public get isLoggedIn(): boolean {
+        const token = localStorage.getItem(UserLoginStore.tokenStorageName) ?? '';
+        const decodedToken = token && jwtDecode(token);
+        console.log(decodedToken);
+        const expirationTime = ((decodedToken && decodedToken?.exp) || 0) * 1000;
+        const actualTime = new Date().getTime();
+
+        return actualTime < expirationTime;
     }
 
     private setUser(newUser: User) {
@@ -25,16 +37,12 @@ export default class UserLoginStore {
         return localStorage.getItem(this.tokenStorageName);
     }
 
-    private static setToken(newToken:string) {
-        return localStorage.setItem(this.tokenStorageName, newToken);
+    private setToken(newToken:string) {
+        return localStorage.setItem(UserLoginStore.tokenStorageName, newToken);
     }
 
     private static clearToken() {
         localStorage.removeItem(this.tokenStorageName);
-    }
-
-    public setCallback(func:()=>void) {
-        this.callback = func;
     }
 
     // public clearUserData() {
@@ -72,7 +80,8 @@ export default class UserLoginStore {
         await UserApi.login({ login, password })
             .then((response: UserLoginResponse) => {
                 UserLoginStore.clearToken();
-                UserLoginStore.setToken(response.token);
+                this.setToken(response.token);
+                this.setUser(response.user);
                 console.log(response);
             })
             .catch((error) => {

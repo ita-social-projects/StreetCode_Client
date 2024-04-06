@@ -11,10 +11,10 @@ type PropsWithChildren = { children: ReactNode };
 const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => {
     const { userLoginStore } = useMobx();
     const navigate = useNavigate();
-    if (!UserLoginStore.isLoggedIn) {
+    if (!userLoginStore.isLoggedIn) {
         const token = UserLoginStore.getToken();
         if (token && token !== '') {
-            userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+            // userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
         } else {
             return <Navigate to={FRONTEND_ROUTES.ADMIN.LOGIN} />;
         }
