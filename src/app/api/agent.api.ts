@@ -1,11 +1,13 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-underscore-dangle */
 import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import UserLoginStore from '@stores/user-login-store';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
+
+import UserLoginStore from '@/app/stores/user-login-store';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;
@@ -62,11 +64,11 @@ const createAxiosInstance = (baseUrl: string) => {
 
     instance.interceptors.request.use((config) => {
         // eslint-disable-next-line no-param-reassign
-        config.headers.Authorization = `Bearer ${UserLoginStore.getToken()}`;
+        config.headers.Authorization = `Bearer ${UserLoginStore.getAccessToken()}`;
         return config;
     });
 
-    instance.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
+    instance.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getAccessToken()}`;
 
     return {
         get: async <T> (url: string, params?: URLSearchParams|GetAllToponymsRequest) => instance.get<T>(url, { params })

@@ -4,10 +4,12 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import UserApi from '@api/user/user.api';
 import { jwtDecode } from 'jwt-decode';
 
-import User, { UserLoginResponse } from '@/models/user/user.model';
+import User, { RefreshTokenRequest, UserLoginResponse } from '@/models/user/user.model';
 
 export default class UserLoginStore {
-    private static tokenStorageName = 'token';
+    private static accessTokenStorageName = 'AccessToken';
+
+    private static refreshTokenStorageName = 'RefreshToken';
 
     public user?: User = undefined;
 
@@ -15,12 +17,12 @@ export default class UserLoginStore {
         makeObservable(this, {
             user: observable,
             login: action,
-            isLoggedIn: computed,
+            isAccessTokenValid: computed,
         });
     }
 
-    public get isLoggedIn(): boolean {
-        const token = localStorage.getItem(UserLoginStore.tokenStorageName) ?? '';
+    public get isAccessTokenValid(): boolean {
+        const token = localStorage.getItem(UserLoginStore.accessTokenStorageName) ?? '';
         const decodedToken = token && jwtDecode(token);
         console.log(decodedToken);
         const expirationTime = ((decodedToken && decodedToken?.exp) || 0) * 1000;
@@ -29,33 +31,42 @@ export default class UserLoginStore {
         return actualTime < expirationTime;
     }
 
-    private setUser(newUser: User) {
+    private setUser(newUser: User | undefined) {
         this.user = newUser;
     }
 
-    public static getToken() {
-        return localStorage.getItem(this.tokenStorageName);
+    public static getAccessToken() {
+        return localStorage.getItem(this.accessTokenStorageName);
     }
 
-    private setToken(newToken:string) {
-        return localStorage.setItem(UserLoginStore.tokenStorageName, newToken);
+    private setAccessToken(newToken: string) {
+        localStorage.setItem(UserLoginStore.accessTokenStorageName, newToken);
     }
 
-    private static clearToken() {
-        localStorage.removeItem(this.tokenStorageName);
+    private clearAccessToken() {
+        localStorage.removeItem(UserLoginStore.accessTokenStorageName);
     }
 
-    // public clearUserData() {
-    //     if (this.timeoutHandler) {
-    //         clearTimeout(this.timeoutHandler);
-    //     }
-    //     localStorage.removeItem(UserLoginStore.tokenStorageName);
-    //     localStorage.removeItem(UserLoginStore.dateStorageName);
-    // }
+    public static getRefreshToken() {
+        return localStorage.getItem(this.refreshTokenStorageName);
+    }
 
-    // public logout() {
-    //     this.clearUserData();
-    // }
+    private setRefreshToken(newToken:string) {
+        localStorage.setItem(UserLoginStore.refreshTokenStorageName, newToken);
+    }
+
+    private clearRefreshToken() {
+        localStorage.removeItem(UserLoginStore.refreshTokenStorageName);
+    }
+
+    private clearData() {
+        this.clearAccessToken();
+        this.setUser(undefined);
+    }
+
+    public logout() {
+        this.clearData();
+    }
 
     // public setUserLoginResponce(user:UserLoginResponce) {
     //     try {
@@ -79,27 +90,32 @@ export default class UserLoginStore {
     public async login(login: string, password: string) {
         await UserApi.login({ login, password })
             .then((response: UserLoginResponse) => {
-                UserLoginStore.clearToken();
-                this.setToken(response.token);
+                this.clearAccessToken();
+                this.clearRefreshToken();
+
+                this.setAccessToken(response.accessToken);
+                this.setRefreshToken(response.refreshToken);
                 this.setUser(response.user);
-                console.log(response);
             })
             .catch((error) => {
                 console.log(error);
                 return Promise.reject(error);
             });
     }
-    // public refreshToken = ():Promise<RefreshTokenResponce> => (
-    //     UserApi.refreshToken({ token: UserLoginStore.getToken() ?? '' })
-    //         .then((refreshToken) => {
-    //             const expireForSeconds = (new Date(refreshToken.expireAt)).getTime() - new Date().getTime();
-    //             this.timeoutHandler = setTimeout(() => {
-    //                 if (this.callback) {
-    //                     this.callback();
-    //                 }
-    //             }, expireForSeconds);
-    //             UserLoginStore.setExpiredDate((new Date(refreshToken.expireAt)).getTime().toString());
-    //             UserLoginStore.setToken(refreshToken.token);
-    //             return refreshToken;
-    //         }));
+
+    public refreshToken = () => {
+        const refreshTokenRequest: RefreshTokenRequest = {
+            accessToken: UserLoginStore.getAccessToken() || '',
+            refreshToken: UserLoginStore.getRefreshToken() || '',
+        };
+
+        return UserApi.refreshToken(refreshTokenRequest)
+            .then((refreshToken) => {
+                this.setAccessToken(refreshToken.accessToken);
+            })
+            .catch((error) => {
+                console.log(error);
+                return Promise.reject(error);
+            });
+    };
 }
