@@ -41,8 +41,9 @@
 
 .slider-arrow {
     min-width: 44px;
+    transition: .5s;
     &:hover {
-      fill: #000000;
+      filter: brightness(50%);
     }
 }
 

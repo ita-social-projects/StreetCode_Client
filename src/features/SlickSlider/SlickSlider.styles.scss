@@ -4,19 +4,25 @@
 @use "@assets/sass/variables/_variables.layers.scss" as l;
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
+
+
+
 @mixin slick-arrow-pseudo($direction, $margin) {
-    transition: .5s;
+    transition: filter .5s;
     margin-left: pxToRem($margin);
     @include mut.sized(40px, 58px);
     $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
     content: url($path);
+    opacity: 1 !important;
 }
+
 
 .slick-next,
 .slick-prev {
+    transition: filter .5s;
     pointer-events: none;
     &:hover:before {
-        filter: brightness(25%);
+        filter: c.$selected-arrow-filter-color;
     }
     &:before {
         pointer-events: all;
@@ -31,6 +37,23 @@
     @include slick-arrow-pseudo(Right, -5px);
 }
 
+.slick-arrow {
+    z-index: l.$slickArrow;
+    opacity: 1;
+    filter: c.$active-arrow-filter-color;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.slick-disabled {
+    transition: .5s;
+    filter: c.$base-arrow-filter-color;
+    &:before {
+        pointer-events: none;
+    }
+}
+
 .slick-dots li button:before {
     content: '';
     @include mut.sized(12px, 12px);
@@ -38,12 +61,6 @@
     transition: .5s;
 }
 
-.slick-disabled {
-    filter: c.$base-arrow-filter-color;
-    &:before {
-        pointer-events: none;
-    }
-}
 
 li.slick-active button:before {
     background: c.$dark-red-color;
@@ -76,14 +93,7 @@ li.slick-active button:before {
     }
 }
 
-.slick-arrow {
-    z-index: l.$slickArrow;
-    opacity: 1;
-    filter: c.$selected-arrow-filter-color;
-    &:hover {
-        opacity: 1;
-    }
-}
+
 
 @media screen and (max-width:1024px) {
     .slick-next,
