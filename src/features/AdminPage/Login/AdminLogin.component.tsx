@@ -41,13 +41,6 @@ const AdminLogin:React.FC = () => {
                 'Неправильний логін чи пароль',
             );
         }
-        // UserApi.login({ login: formValues.login, password: formValues.password })
-        //     .then((logResp) => onSuccessfulLogin(logResp))
-        //     .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
-        //     .catch((er) => {
-        //         message
-        //             .error('Неправильний логін чи пароль');
-        //     });
     };
     if (userLoginStore.isAccessTokenValid) {
         return <Navigate to={FRONTEND_ROUTES.ADMIN.BASE} />;
