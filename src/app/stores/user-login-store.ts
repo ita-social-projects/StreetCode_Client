@@ -68,25 +68,6 @@ export default class UserLoginStore {
         this.clearData();
     }
 
-    // public setUserLoginResponce(user:UserLoginResponce) {
-    //     try {
-    //         const timeNumber = (new Date(user.expireAt)).getTime();
-    //         UserLoginStore.setExpiredDate(timeNumber.toString());
-    //         const expireForSeconds = timeNumber - new Date().getTime();
-    //         this.userLoginResponce = user;
-    //         UserLoginStore.setToken(user.token);
-    //         if (expireForSeconds > 10000) {
-    //             this.timeoutHandler = setTimeout(() => {
-    //                 if (this.callback) {
-    //                     this.callback();
-    //                 }
-    //             }, expireForSeconds - 10000);
-    //         }
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-
     public async login(login: string, password: string) {
         await UserApi.login({ login, password })
             .then((response: UserLoginResponse) => {
