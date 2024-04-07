@@ -1,6 +1,8 @@
+/* eslint-disable no-restricted-imports */
+/* eslint-disable import/extensions */
 import { observer } from 'mobx-react-lite';
 import { FC, ReactNode } from 'react';
-import { Navigate, redirect, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import useMobx from '@/app/stores/root-store';
 import UserLoginStore from '@/app/stores/user-login-store';
@@ -11,10 +13,12 @@ type PropsWithChildren = { children: ReactNode };
 const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => {
     const { userLoginStore } = useMobx();
     const navigate = useNavigate();
-    if (!userLoginStore.isLoggedIn) {
-        const token = UserLoginStore.getToken();
+    if (!userLoginStore.isAccessTokenValid) {
+        const token = UserLoginStore.getAccessToken();
         if (token && token !== '') {
-            // userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+            userLoginStore
+                .refreshToken()
+                .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
         } else {
             return <Navigate to={FRONTEND_ROUTES.ADMIN.LOGIN} />;
         }

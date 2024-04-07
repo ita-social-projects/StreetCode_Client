@@ -11,17 +11,18 @@ export interface UserLoginRequest {
     password:string;
 }
 export interface UserLoginResponse {
-    user:User;
-    token:string;
+    user: User;
+    accessToken: string;
+    refreshToken: string;
 }
 
 export interface RefreshTokenRequest {
-    token:string;
+    accessToken:string;
+    refreshToken:string;
 }
 
 export interface RefreshTokenResponce {
-    token:string;
-    expireAt:Date;
+    accessToken:string;
 }
 
 export enum UserRole {

@@ -49,7 +49,7 @@ const AdminLogin:React.FC = () => {
         //             .error('Неправильний логін чи пароль');
         //     });
     };
-    if (UserLoginStore.isLoggedIn) {
+    if (userLoginStore.isAccessTokenValid) {
         return <Navigate to={FRONTEND_ROUTES.ADMIN.BASE} />;
     }
 
