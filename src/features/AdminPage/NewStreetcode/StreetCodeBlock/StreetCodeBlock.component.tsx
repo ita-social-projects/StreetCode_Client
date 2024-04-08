@@ -33,7 +33,7 @@ import TimelineItem from '@/models/timeline/chronology.model';
 
 import PageBar from '../../PageBar/PageBar.component';
 import ArtGalleryBlock from '../ArtGallery/ArtGallery.component';
-import ForFansBlock from '../ForFansBlock/ForFansBlock.component';
+import CategoriesBlock from '../ForFansBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from '../HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from '../InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from '../MainBlock/MainBlockAdmin.component';

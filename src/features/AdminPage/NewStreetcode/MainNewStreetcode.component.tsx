@@ -44,7 +44,7 @@ import TransactionLink from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
-import ForFansBlock from './ForFansBlock/ForFansBlock.component';
+import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
@@ -536,7 +536,7 @@ const NewStreetcode = () => {
                             <TimelineBlockAdmin onChange={handleFieldChange} />
                             <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
-                            <ForFansBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
+                            <CategoriesBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
                             <ARBlock onChange={handleFieldChange} />

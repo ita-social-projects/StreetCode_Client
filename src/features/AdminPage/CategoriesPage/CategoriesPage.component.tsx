@@ -12,9 +12,9 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { SourceCategoryAdmin } from '@/models/sources/sources.model';
 
-import CategoryAdminModal from './ForFansPage/CategoryAdminModal.component';
+import CategoryAdminModal from './CategoriesPage/CategoryAdminModal.component';
 
-const ForFansMainPage: React.FC = observer(() => {
+const CategoriesMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
     const { sourcesStore } = useMobx();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -139,4 +139,4 @@ const ForFansMainPage: React.FC = observer(() => {
 
     );
 });
-export default ForFansMainPage;
+export default CategoriesMainPage;
