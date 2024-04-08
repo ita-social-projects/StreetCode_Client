@@ -309,3 +309,8 @@
   grid-template-columns: repeat($cols, 1fr);
   grid-template-rows: repeat($rows, 1fr);
 }
+
+@mixin list-styles($type) {
+  list-style-type: $type;
+  padding-inline-start: revert;
+}

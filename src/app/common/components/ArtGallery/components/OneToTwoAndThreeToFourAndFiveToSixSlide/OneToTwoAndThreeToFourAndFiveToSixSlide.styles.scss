@@ -1,11 +1,17 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
+@use '@sass/variables/variables.sizes' as s;
 
-.OneToTwoAndThreeToFourAndFiveSlide{
-    @include mut.art-slide-grid($cols:3, $rows: 2);
-    @include mut.images-grid-area($to:3);
+.OneToTwoAndThreeToFourAndFiveToSixSlide{
+    @include mut.flex-center();
 
-    grid-template-areas:
-            "img1 img2 img3"
-            "img1 img2 .";
+    .baseArtSlideImageWrapper, .droppable{
+        width: pxToRem(s.$art-gallery-img-size);
+        @media screen and (max-width: 768px){
+            width: pxToRem(s.$art-gallery-img-size-mobile * 1.2);
+        }
+    }
+    @media screen and (max-width: 680px){
+        width: pxToRem(s.$art-gallery-img-size-mobile * 3 + s.$art-gallery-gap-mobile * 2);
+    }
 }
