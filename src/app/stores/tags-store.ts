@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import tagsApi from '@api/additional-content/tags.api';
-import Tag, { StreetcodeTagUpdate } from '@models/additional-content/tag.model';
+import Tag, { StreetcodeTagUpdate, TagCreate } from '@models/additional-content/tag.model';
 
 export default class TagsStore {
     public AllTagsMap = new Map<number, Tag>();
@@ -71,6 +71,12 @@ export default class TagsStore {
         } catch (error: unknown) { /* empty */ }
     };
 
+    public fetchTags = async () => {
+        try {
+            this.setInternalMap = await tagsApi.getAll();
+        } catch (error: unknown) { /* empty */ }
+    };
+
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap = await tagsApi.getTagsByStreetcodeId(streetcodeId);
@@ -83,10 +89,10 @@ export default class TagsStore {
         } catch (error: unknown) { /* empty */ }
     };
 
-    public createTag = async (tag: Tag) => {
+    public createTag = async (tag: TagCreate) => {
         try {
-            await tagsApi.create(tag);
-            this.setItem(tag);
+            const newtag: Tag = await tagsApi.create(tag);
+            this.setItem(newtag);
         } catch (error: unknown) { /* empty */ }
     };
 

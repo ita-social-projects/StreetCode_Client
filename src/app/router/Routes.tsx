@@ -3,6 +3,7 @@ import {
 } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
+import TagsMainPage from '@features/AdminPage/TagsPage/TagsMainPage.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
             element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
+        />
+        <Route
+            path={FRONTEND_ROUTES.ADMIN.TAGS}
+            element={<ProtectedComponent><TagsMainPage /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
