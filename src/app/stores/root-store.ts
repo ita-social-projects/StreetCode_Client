@@ -21,8 +21,8 @@ import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
+import NewsStore from './news-store/news-store';
 import CreateUpdateMediaStore from './create-update-media-store';
-import NewsStore from './news-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
