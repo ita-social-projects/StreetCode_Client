@@ -2,8 +2,6 @@ import {
     createBrowserRouter, createHashRouter, createRoutesFromElements, Route, Routes, useParams,
 } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import ForFansMainPage from '@features/AdminPage/ForFansPage/ForFansMainPage.component';
-import TagsMainPage from '@features/AdminPage/TagsPage/TagsMainPage.component';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
@@ -26,6 +24,7 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -46,12 +45,8 @@ const router = createBrowserRouter(createRoutesFromElements(
             element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
         />
         <Route
-            path={FRONTEND_ROUTES.ADMIN.FOR_FANS}
-            element={<ProtectedComponent><ForFansMainPage /></ProtectedComponent>}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.TAGS}
-            element={<ProtectedComponent><TagsMainPage /></ProtectedComponent>}
+            path={FRONTEND_ROUTES.ADMIN.EDITOR}
+            element={<ProtectedComponent><EditorPage /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}

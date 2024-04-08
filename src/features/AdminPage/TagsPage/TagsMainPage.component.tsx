@@ -1,7 +1,8 @@
+import './TagsMainPage.style.scss';
+
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
@@ -10,7 +11,7 @@ import Table, { ColumnsType } from 'antd/es/table';
 import TagAdminModal from './TagsPage/TagAdminModal';
 import Tag from '@/models/additional-content/tag.model';
 
-const ForFansMainPage: React.FC = observer(() => {
+const TagsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
     const { tagsStore } = useMobx();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -44,7 +45,7 @@ const ForFansMainPage: React.FC = observer(() => {
             key: 'action',
             width: '10%',
             render: (value, tag, index) => (
-                <div key={`${tag.id}${index}1`} className="partner-page-actions">
+                <div key={`${tag.id}${index}1`} className="tag-page-actions">
                     <DeleteOutlined
                         key={`${tag.id}${index}`}
                         className="actionButton"
@@ -78,12 +79,11 @@ const ForFansMainPage: React.FC = observer(() => {
         },
     ];
     return (
-        <div className="partners-page">
-            <PageBar />
-            <div className="partners-page-container">
+        <div className="tags-page">
+            <div className="tags-page-container">
                 <div className="container-justify-end">
                     <Button
-                        className="streetcode-custom-button partners-page-add-button"
+                        className="streetcode-custom-button tags-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
                         Додати новий тег
@@ -91,7 +91,7 @@ const ForFansMainPage: React.FC = observer(() => {
                 </div>
                 <Table
                     pagination={{ pageSize: 10 }}
-                    className="partners-table"
+                    className="tags-table"
                     columns={columns}
                     dataSource={tagsStore.getTagArray}
                     rowKey="id"
@@ -103,4 +103,4 @@ const ForFansMainPage: React.FC = observer(() => {
 
     );
 });
-export default ForFansMainPage;
+export default TagsMainPage;
