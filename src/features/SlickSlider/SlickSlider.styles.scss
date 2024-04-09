@@ -8,7 +8,7 @@
 
 
 @mixin slick-arrow-pseudo($direction, $margin) {
-    transition: filter .5s;
+    transition: .5s;
     margin-left: pxToRem($margin);
     @include mut.sized(40px, 58px);
     $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
@@ -19,12 +19,13 @@
 
 .slick-next,
 .slick-prev {
-    transition: filter .5s;
+    transition: .5s;
     pointer-events: none;
     &:hover:before {
         filter: c.$selected-arrow-filter-color;
     }
     &:before {
+        filter: c.$active-arrow-filter-color;
         pointer-events: all;
     }
 }
@@ -39,18 +40,16 @@
 
 .slick-arrow {
     z-index: l.$slickArrow;
-    opacity: 1;
-    filter: c.$active-arrow-filter-color;
-    &:hover {
-        opacity: 1;
-    }
 }
 
 .slick-disabled {
     transition: .5s;
-    filter: c.$base-arrow-filter-color;
     &:before {
+        filter: c.$base-arrow-filter-color;
         pointer-events: none;
+    }
+    &:hover:before{
+        filter: c.$base-arrow-filter-color;
     }
 }
 
