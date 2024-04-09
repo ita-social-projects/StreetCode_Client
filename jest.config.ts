@@ -28,6 +28,7 @@ const jestConfig: JestConfigWithTsJest = {
         */
     },
     verbose: true,
+    logLevel: 'warn', // ADDDDDDDDDDDDDDDDDDDDDDDDDDDDD
     collectCoverageFrom: [
         "src/**/*.{ts,js}" // temp disable coverage collection for tsx, jsx until type errors will be fixed
     ],
