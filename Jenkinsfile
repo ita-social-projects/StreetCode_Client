@@ -92,7 +92,7 @@ pipeline {
                 # Run npm install
                 # npm install --save-dev jest ?
                 npm install
-                npx jest --coverage --no-watchAll --json --outputFile=testCoverage.json  --bail=100  --noStackTrac
+                npx jest --coverage --no-watchAll --json --outputFile=testCoverage.json  --bail=100
 
             '''
                 //npm test -- --coverage
