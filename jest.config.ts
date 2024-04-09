@@ -27,8 +27,8 @@ const jestConfig: JestConfigWithTsJest = {
         '^@utils/(.*)$': '<rootDir>/src/app/common/utils/$1',
         */
     },
-    verbose: true,
-    logLevel: 'warn', // ADDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+    silent: true, // Set Jest to be silent
+    collectCoverage: true, // Enable coverage collection
     collectCoverageFrom: [
         "src/**/*.{ts,js}" // temp disable coverage collection for tsx, jsx until type errors will be fixed
     ],
