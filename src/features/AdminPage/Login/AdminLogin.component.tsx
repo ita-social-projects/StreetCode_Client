@@ -9,21 +9,19 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 import { Button, Form, Input, message } from 'antd';
 
-import UserApi from '@/app/api/user/user.api';
-import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@/app/common/constants/error-messages.constants';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import AuthStore from '@/app/stores/auth-store';
 import useMobx, { useModalContext } from '@/app/stores/root-store';
-import UserLoginStore from '@/app/stores/user-login-store';
 
 const AdminLogin:React.FC = () => {
     const { userLoginStore } = useMobx();
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const [messageApi, messageContextHolder] = message.useMessage({ maxCount: 3 });
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
-    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
+    const { SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -34,15 +32,21 @@ const AdminLogin:React.FC = () => {
     };
 
     const handleLogin = async ({ login, password }: any) => {
-        try {
-            await userLoginStore.login(login, password);
-        } catch (error) {
-            message.error(
-                'Неправильний логін чи пароль',
-            );
+        if (isVerified) {
+            try {
+                const token = recaptchaRef?.current?.getValue();
+                await userLoginStore.login(login, password, token)
+                    .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
+                    .catch(() => message.error(SOMETHING_IS_WRONG));
+            } catch (error) {
+                message.error(INVALID_LOGIN_ATTEMPT);
+            }
+        } else {
+            message.error(RECAPTCHA_CHECK);
         }
     };
-    if (userLoginStore.isAccessTokenValid) {
+
+    if (AuthStore.isLoggedIn()) {
         return <Navigate to={FRONTEND_ROUTES.ADMIN.BASE} />;
     }
 

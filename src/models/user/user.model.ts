@@ -9,6 +9,7 @@ export default interface User {
 export interface UserLoginRequest {
     login:string;
     password:string;
+    captchaToken: string | null | undefined;
 }
 export interface UserLoginResponse {
     user: User;

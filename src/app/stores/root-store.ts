@@ -22,6 +22,7 @@ import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 
 import NewsStore from './news-store/news-store';
+import AuthStore from './auth-store';
 import CreateUpdateMediaStore from './create-update-media-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
@@ -33,7 +34,6 @@ import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
-import UserLoginStore from './user-login-store';
 
 interface Store {
     factsStore: FactsStore,
@@ -58,7 +58,7 @@ interface Store {
     newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
     sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
-    userLoginStore: UserLoginStore,
+    userLoginStore: AuthStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
     newsStore: NewsStore,
@@ -95,7 +95,7 @@ export const store: Store = {
     newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
-    userLoginStore: new UserLoginStore(),
+    userLoginStore: new AuthStore(),
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
