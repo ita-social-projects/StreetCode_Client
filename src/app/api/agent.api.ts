@@ -7,7 +7,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
-    ? 'https://localhost:5001/api' : window._env_.API_URL;
+    ? 'https://stageback.streetcode.com.ua/api' : window._env_.API_URL;
 
 const frontendServerBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:4000' : window._env_.SERVER_API_URL;
