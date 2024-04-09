@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-imports */
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/extensions */
 /* eslint-disable no-underscore-dangle */
 import { redirect } from 'react-router-dom';
@@ -8,6 +10,8 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
 
 import AuthStore from '@/app/stores/auth-store';
+
+import AuthService from '../common/services/AuthService';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;
@@ -29,17 +33,27 @@ const createAxiosInstance = (baseUrl: string) => {
 
     instance.interceptors.response.use(
         async (response) => response,
-        ({ response, message }: AxiosError) => {
+        async ({ response, message }: AxiosError) => {
             let errorMessage = '';
             if (message === 'Network Error') {
                 errorMessage = message;
             }
+
+            if (response?.status === StatusCodes.UNAUTHORIZED) {
+                return AuthService.refreshTokenAsync()
+                    .then(() => {
+                        response.config.headers.Authorization = `Bearer ${AuthStore.getAccessToken()}`;
+                        return instance.request(response.config);
+                    })
+                    .catch((error) => {
+                        redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                        return Promise.reject(error);
+                    });
+            }
+
             switch (response?.status) {
             case StatusCodes.INTERNAL_SERVER_ERROR:
                 errorMessage = ReasonPhrases.INTERNAL_SERVER_ERROR;
-                break;
-            case StatusCodes.UNAUTHORIZED:
-                errorMessage = ReasonPhrases.UNAUTHORIZED;
                 break;
             case StatusCodes.NOT_FOUND:
                 errorMessage = ReasonPhrases.NOT_FOUND;
@@ -61,7 +75,7 @@ const createAxiosInstance = (baseUrl: string) => {
         },
     );
 
-    instance.interceptors.request.use((config) => {
+    instance.interceptors.request.use(async (config) => {
         // eslint-disable-next-line no-param-reassign
         config.headers.Authorization = `Bearer ${AuthStore.getAccessToken()}`;
         return config;

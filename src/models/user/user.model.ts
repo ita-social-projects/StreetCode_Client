@@ -24,6 +24,7 @@ export interface RefreshTokenRequest {
 
 export interface RefreshTokenResponce {
     accessToken:string;
+    expireAt: string;
 }
 
 export enum UserRole {
