@@ -11,11 +11,9 @@ import { Button, Form, Input, message } from 'antd';
 
 import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@/app/common/constants/error-messages.constants';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import AuthStore from '@/app/stores/auth-store';
-import useMobx, { useModalContext } from '@/app/stores/root-store';
+import AuthService from '@/app/common/services/AuthService';
 
 const AdminLogin:React.FC = () => {
-    const { userLoginStore } = useMobx();
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const [isVerified, setIsVerified] = useState(false);
@@ -35,7 +33,7 @@ const AdminLogin:React.FC = () => {
         if (isVerified) {
             try {
                 const token = recaptchaRef?.current?.getValue();
-                await userLoginStore.login(login, password, token)
+                await AuthService.loginAsync(login, password, token)
                     .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
                     .catch(() => message.error(SOMETHING_IS_WRONG));
             } catch (error) {
@@ -46,7 +44,7 @@ const AdminLogin:React.FC = () => {
         }
     };
 
-    if (AuthStore.isLoggedIn()) {
+    if (AuthService.isLoggedIn()) {
         return <Navigate to={FRONTEND_ROUTES.ADMIN.BASE} />;
     }
 

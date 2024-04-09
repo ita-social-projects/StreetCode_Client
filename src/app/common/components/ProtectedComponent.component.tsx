@@ -5,23 +5,22 @@ import { observer } from 'mobx-react-lite';
 import { FC, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import AuthStore from '@/app/stores/auth-store';
-import useMobx from '@/app/stores/root-store';
-
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
+import AuthService from '../services/AuthService';
 
 type PropsWithChildren = { children: ReactNode };
 const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => {
-    const { userLoginStore } = useMobx();
     const navigate = useNavigate();
+    const isLoggedIn = AuthService.isLoggedIn();
 
+    console.log('In protected component');
     useEffect(() => {
-        if (!AuthStore.isLoggedIn()) {
-            console.log(AuthStore.isLoggedIn());
-            userLoginStore.refreshToken()
+        console.log('rerender ccc');
+        if (!AuthService.isLoggedIn()) {
+            AuthService.refreshTokenAsync()
                 .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
         }
-    }, [userLoginStore]);
+    }, [isLoggedIn]);
 
     if (!Array.isArray(children)) return <>{children}</>;
 
