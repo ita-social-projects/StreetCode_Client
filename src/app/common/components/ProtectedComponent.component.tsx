@@ -14,13 +14,10 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => 
     const isLoggedIn = AuthService.isLoggedIn();
 
     console.log('In protected component');
-    useEffect(() => {
-        console.log('rerender ccc');
-        if (!AuthService.isLoggedIn()) {
-            AuthService.refreshTokenAsync()
-                .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
-        }
-    }, [isLoggedIn]);
+    if (!isLoggedIn) {
+        AuthService.refreshTokenAsync()
+            .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+    }
 
     if (!Array.isArray(children)) return <>{children}</>;
 
