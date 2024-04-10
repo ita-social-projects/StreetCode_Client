@@ -22,8 +22,7 @@ Back-end part: https://github.com/ita-social-projects/StreetCode.git.
     - [Required to install](#required-to-install)
     - [Clone](#clone)
     - [Setup](#setup)
-      - [Setting Up Workbox in Our Project](#setting-up-workbox-in-our-project)
-        - [Prerequisites](#prerequisites)
+      - [Prerequisites](#prerequisites)
       - [Installation Steps](#installation-steps)
     - [How to run local](#how-to-run-local)
   - [Usage](#usage)
@@ -75,11 +74,9 @@ To setup this project use this command in project folder:
 npm install
 ```
 
-#### Setting Up Workbox in Our Project
-
 To facilitate the usage of Workbox in our project, we have a few setup steps. Follow these instructions carefully:
 
-##### Prerequisites
+#### Prerequisites
 
 Before proceeding, ensure you have [Chocolatey](https://chocolatey.org/install) installed on your system.
 
@@ -98,7 +95,7 @@ mkcert -install
 ```
 mkcert localhost 127.0.0.1
 ```
-
+5. In `webpack.dev.js` update DevServer section according to comment.
 ### How to run local
 To start project locally, write following command:
 ```
