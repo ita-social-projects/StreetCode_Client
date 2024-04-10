@@ -9,10 +9,12 @@ export default class AuthService {
 
     private static refreshTokenStorageName = 'RefreshToken';
 
+    public static getAccessToken() {
+        return localStorage.getItem(this.accessTokenStorageName);
+    }
+
     public static isLoggedIn(): boolean {
         const token = this.getAccessToken();
-        console.log(`Valid signature: ${this.isAccessTokenHasValidSignature(token)}`);
-        console.log(`Expired: ${this.isAccessTokenExpired(token!)}`);
         if (!this.isAccessTokenHasValidSignature(token) || this.isAccessTokenExpired(token!)) {
             return false;
         }
@@ -44,7 +46,6 @@ export default class AuthService {
         const oldAccesstoken = this.getAccessToken();
         if (!AuthService.isAccessTokenHasValidSignature(oldAccesstoken)) {
             const error = new Error('Invalid sigrature of access token');
-            console.log('hello');
             return Promise.reject(error);
         }
 
@@ -62,8 +63,6 @@ export default class AuthService {
         return AuthApi.refreshToken(refreshTokenRequest)
             .then((response) => {
                 localStorage.setItem(this.accessTokenStorageName, response.accessToken);
-                const expirationTime = new Date(response.expireAt).getTime() - Date.now();
-                console.log(expirationTime);
             })
             .catch((error) => {
                 console.log(error);
@@ -92,10 +91,6 @@ export default class AuthService {
         }
 
         return decodedToken;
-    }
-
-    private static getAccessToken() {
-        return localStorage.getItem(this.accessTokenStorageName);
     }
 
     private static getRefreshToken() {

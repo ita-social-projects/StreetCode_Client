@@ -13,7 +13,6 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => 
     const navigate = useNavigate();
     const isLoggedIn = AuthService.isLoggedIn();
 
-    console.log('In protected component');
     if (!isLoggedIn) {
         AuthService.refreshTokenAsync()
             .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
