@@ -9,8 +9,6 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
 
-import AuthStore from '@/app/stores/auth-store';
-
 import AuthService from '../common/services/AuthService';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
@@ -42,7 +40,7 @@ const createAxiosInstance = (baseUrl: string) => {
             if (response?.status === StatusCodes.UNAUTHORIZED) {
                 return AuthService.refreshTokenAsync()
                     .then(() => {
-                        response.config.headers.Authorization = `Bearer ${AuthStore.getAccessToken()}`;
+                        response.config.headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
                         return instance.request(response.config);
                     })
                     .catch((error) => {
@@ -77,11 +75,11 @@ const createAxiosInstance = (baseUrl: string) => {
 
     instance.interceptors.request.use(async (config) => {
         // eslint-disable-next-line no-param-reassign
-        config.headers.Authorization = `Bearer ${AuthStore.getAccessToken()}`;
+        config.headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
         return config;
     });
 
-    instance.defaults.headers.common.Authorization = `Bearer ${AuthStore.getAccessToken()}`;
+    instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
 
     return {
         get: async <T> (url: string, params?: URLSearchParams|GetAllToponymsRequest) => instance.get<T>(url, { params })
