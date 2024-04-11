@@ -5,6 +5,7 @@ import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import UserLoginStore from '@stores/user-login-store';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;
@@ -63,7 +64,7 @@ const createAxiosInstance = (baseUrl: string) => {
     instance.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
 
     return {
-        get: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })
+        get: async <T> (url: string, params?: URLSearchParams|GetAllToponymsRequest) => instance.get<T>(url, { params })
             .then(responseBody),
 
         post: async <T> (url: string, body: object, headers?: object) => instance.post<T>(url, body, headers)
