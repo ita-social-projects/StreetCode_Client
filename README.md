@@ -86,7 +86,7 @@ Before proceeding, ensure you have [Chocolatey](https://chocolatey.org/install) 
    ```
    choco install mkcert
    ```
-2. Create a `cert` folder in the root directory of your project.
+2. Create a `cert` folder in the root directory of cloned project.
 3. Navigate to the `cert` folder in your console.
 4. Run the following commands to generate SSL certificates:
 ```
@@ -95,7 +95,8 @@ mkcert -install
 ```
 mkcert localhost 127.0.0.1
 ```
-5. In `webpack.dev.js` update DevServer section according to comment.
+5. In `webpack.dev.js` file update DevServer section according to comment left there.
+   
 ### How to run local
 To start project locally, write following command:
 ```
