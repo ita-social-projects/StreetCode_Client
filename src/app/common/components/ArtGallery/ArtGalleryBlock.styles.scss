@@ -26,7 +26,7 @@
     }
 
     .artGallerySliderContainer {
-        width: pxToRem(1230px);
+        width: pxToRem(1260px);
     }
 }
 
@@ -89,7 +89,7 @@
         .artGalleryContainer {
             .artGalleryContentContainer {
                 .artGallerySliderContainer {
-                    @include mut.rem-padded(s.$art-gallery-gap-mobile, s.$art-gallery-gap-mobile, 0, s.$art-gallery-gap-mobile);
+                    @include mut.rem-padded(0, s.$art-gallery-gap-mobile, 0, 0);
                     gap: pxToRem(s.$art-gallery-gap-mobile);
                     height: pxToRem(362px);
 

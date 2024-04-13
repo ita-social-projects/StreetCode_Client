@@ -308,7 +308,7 @@
   justify-content: center;
   align-content: center;
   grid-template-columns: repeat($cols, 1fr);
-  grid-template-rows: repeat($rows, 1fr);
+  grid-template-rows: repeat($rows, minmax(auto, 253px));
 }
 
 @mixin list-styles($type) {

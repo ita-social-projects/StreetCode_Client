@@ -1,7 +1,12 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 
-.OneToFourAndFiveToSixSlide{
-    @include mut.art-slide-grid();
-    grid-template-columns: 2fr 1fr;
+.OneToFourAndFiveToSixSlide {
+  @include mut.art-slide-grid($cols: 2, $rows: 2);
+  @include mut.images-grid-area($to: 2);
+
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+            "img1 img2"
+            "img1 img2";
 }

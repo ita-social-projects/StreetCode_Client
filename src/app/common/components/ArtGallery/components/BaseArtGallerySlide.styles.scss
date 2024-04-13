@@ -24,10 +24,10 @@
 
     @media screen and (max-width: 680px) {
         @include mut.rem-padded($bottom: s.$art-gallery-gap-mobile);
+        padding: 0 0 0 0 !important;
         height: pxToRem(362px);
         width: pxToRem(680px);
-
-        max-height: unset;
+        max-width: fit-content;
     }
 }
 
