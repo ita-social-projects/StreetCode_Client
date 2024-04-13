@@ -7,6 +7,7 @@ import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
+import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -17,15 +18,20 @@ interface Props {
 const ContactForm = forwardRef((customClass: Props, ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
-    const [messageApi, messageContextHolder] = message.useMessage();
+    const [messageApi, messageContextHolder] = message.useMessage({maxCount: 3});
     const [form] = Form.useForm();
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleVerify = () => {
         setIsVerified(true);
+    };
+
+    const handleExpiration = () => {
+        setIsVerified(false);
     };
 
     useImperativeHandle(ref, () => ({
@@ -44,13 +50,17 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 })
                 .catch((error) => {
                     if (error === 429) {
-                        errorMessage('Ви перевищили ліміт повідомлень, повторіть через 5 хвилин!');
+                        errorMessage(MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage('Щось пішло не так...');
+                        errorMessage(SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
+            setIsVerified(false);
+        }
+        else {
+            errorMessage(RECAPTCHA_CHECK);
         }
     };
 
@@ -127,6 +137,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                         className="required-captcha"
                         sitekey={siteKey ? siteKey : ""}
                         onChange={handleVerify}
+                        onExpired={handleExpiration}
                         ref={recaptchaRef}
                     />
                 </div>

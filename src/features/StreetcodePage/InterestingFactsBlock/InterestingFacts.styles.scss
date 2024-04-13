@@ -101,13 +101,19 @@
 
 @media screen and (max-width: 1450px){
     .interestingFactsSliderContainer {
-        @include mut.sized(930px);
+        @include mut.sized(1120px);
     }
 
     .interestingFactsSliderContainer {
         .slick-dots{
             bottom: auto;
         }
+    }
+}
+
+@media screen and (max-width: 1325px){
+    .interestingFactsSliderContainer {
+        @include mut.sized(980px);
     }
 }
 

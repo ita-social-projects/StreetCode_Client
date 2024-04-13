@@ -228,7 +228,7 @@
         .audioBtn {
           @include mut.full-rounded(8px);
           @include mut.with-font($font-weight: 400, $font-size: 14px);
-          @include mut.sized(95%, 46px);
+          @include mut.sized(340px, 46px);
           .playCircle {
             font-size: f.pxToRem(23px);
             margin-right: f.pxToRem(10px);
@@ -266,8 +266,10 @@
       .cardFooter{
         margin-top: f.pxToRem(39px) !important;
         @include mut.rem-padded(0px, 0px, 0px, 0px);
+        width: 100%;
         .audioBtn{
-          width: 100%;
+          width: f.pxToRem(340px);
+          margin: auto;
         }
       }
       .headerContainer{
