@@ -103,8 +103,7 @@
     
     &.ant-modal {
       .ant-modal-content {
-        width: 100%;
-        
+        width: 340px !important;
         @include mut.full-rounded(20px, $overflow: visible);
   
         padding: 0 !important;
@@ -145,7 +144,7 @@
     }
 
     .factsContentContainer {
-      @include mut.sized($width: 100%, $height: 231px );
+      @include mut.sizedImportant(340px, 231px);
       @include mut.rem-padded(9px, 16px, 16px, 16px);
       display: inline-block;
     
