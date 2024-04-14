@@ -61,8 +61,8 @@ const InterestingFactItem = ({
                 <CardText
                     title={title}
                     text={factContent}
-                    onBtnClick={() => modalStore.setModal('facts', id, true)}
-                />
+                    isInterestingFact={true}
+                /> 
             </div>
         </div>
     );
