@@ -2,12 +2,11 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
-
 $moreInfo-width: 150px;
 $card-size: 380px;
-
-.relatedFiguresWrapper.container{
+.relatedFiguresWrapper.container {
     margin-top: f.pxToRem(120px);
+    height: 535px;
 }
 
 .smallWrapper {
@@ -31,7 +30,6 @@ $card-size: 380px;
     position: absolute;
     right: 0;
     top: -90px;
-
     width: $moreInfo-width;
     p {
         @include mut.with-font($font-weight: 500, $font-size: 20px);
@@ -39,12 +37,9 @@ $card-size: 380px;
         text-decoration-line: none;
         color: c.$dark-red-color;
         width: inherit;
-
         cursor: pointer;
-
         &:hover {
             text-decoration-line: underline;
-
             filter: contrast(150%);
         }
     }
@@ -52,38 +47,34 @@ $card-size: 380px;
 
 .relatedFiguresSliderContainer {
     position: relative;
-
     @include mut.sized($width: 1216px);
     margin: 0 auto;
-
     .slick-arrow {
         position: absolute;
         top: f.pxToRem(calc($card-size / 2));
         transform: translateY(-1.8rem); // half of arrow height
     }
-
     .slick-list {
         @include mut.rem-padded($bottom: 4px);
     }
-
     .slick-track {
         @include mut.flexed($justify-content: center, $align-items: flex-start, $gap: 28px);
     }
 }
 
 @media screen and (max-width: 481px) {
-    .OneRowSlide{
+    .OneRowSlide {
         display: flex;
         flex-direction: column;
     }
-    .TwoRowSlide{
+    .TwoRowSlide {
         display: flex;
         flex-direction: column;
         height: f.pxToRem(500px);
     }
-    .SecondItem{
-       position: absolute;
-       margin-top: 250px;
+    .SecondItem {
+        position: absolute;
+        margin-top: 250px;
     }
     .relatedFiguresWrapper {
         .slick-dots {
@@ -95,12 +86,10 @@ $card-size: 380px;
         }
         .slick-slide {
             width: 165px !important;
-
             &.slick-active.slick-current {
                 transform: translateX(0px) !important;
             }
         }
-
     }
 }
 
@@ -111,13 +100,11 @@ $card-size: 380px;
 }
 
 @media screen and (max-width: 1024px) {
-    .relatedFiguresWrapper.container{
+    .relatedFiguresWrapper.container {
         margin-top: f.pxToRem(60px);
     }
-
     .relatedFiguresSliderContainer {
         width: 100vw !important;
-
         .slick-track {
             @include mut.flexed($align-items: flex-start, $gap: 10px);
             @include mut.rem-margined($left: 10px);
@@ -127,7 +114,6 @@ $card-size: 380px;
             visibility: hidden;
         }
     }
-
     .moreInfo {
         display: none;
     }
