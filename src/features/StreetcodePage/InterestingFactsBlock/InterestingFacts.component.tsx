@@ -125,8 +125,8 @@ const InterestingFactsComponent = () => {
                                 <div style={{ height: '100%' }}>
                                     {(facts.current.length === 1) ? (
                                         <div className="oneFactItem"
-                                        onClick={() => handleModalOpen}
-                                        onKeyDown={() => handleModalOpen}>
+                                        onClick={handleModalOpen}
+                                        onKeyDown={handleModalOpen}>
                                             <InterestingFactItem
                                                 fact={facts.current[0]}
                                                 middleFactIndex={middleFactIndex}
