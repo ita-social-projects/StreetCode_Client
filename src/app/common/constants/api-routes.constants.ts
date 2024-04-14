@@ -201,9 +201,9 @@ export const API_ROUTES = {
         DELETE: 'coordinate/delete',
     },
     USERS: {
-        LOGIN: 'user/login',
-        REFRESH_TOKEN: 'user/refreshToken',
-        REGISTER: 'user/register',
+        LOGIN: 'auth/login',
+        REFRESH_TOKEN: 'auth/refreshToken',
+        REGISTER: 'auth/register',
     },
     EMAIL: {
         SEND: 'email/send',

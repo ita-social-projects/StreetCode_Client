@@ -11,6 +11,8 @@
             width: pxToRem(s.$art-gallery-img-size-mobile * 1.2);
         }
     }
+
+
     @media screen and (max-width: 680px){
         width: pxToRem(s.$art-gallery-img-size-mobile * 3 + s.$art-gallery-gap-mobile * 2);
     }

@@ -4,14 +4,25 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@features/SlickSlider/SlickSlider.styles.scss" as ss;
 
 .artGalleryContainer .blockHeadingWrapper{
     margin-bottom: pxToRem(10px);
 }
 
+.artGalleryContainer {
+    .slick-next:before  {
+        @include ss.slick-arrow-pseudo(Right, -23px)
+    }
+
+    .slick-prev:before {
+        @include ss.slick-arrow-pseudo(Left, 0px)
+    }
+}
+
+
 .artGallerySliderContainer .sliderClass .slick-slider {
     width: 100%;
-
     .slick-dots {
         padding: 0 pxToRem(16px);
         bottom: pxToRem(-40px);
@@ -43,6 +54,7 @@
                     width: pxToRem(1045.5px);
                 }
             }
+
         }
     }
 }

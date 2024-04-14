@@ -10,6 +10,14 @@
   grid-template-areas:
             "img1 img3"
             "img2 img3";
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(auto, pxToRem(s.$art-gallery-img-size) - 1rem));
+  }
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile + 52px));
+  }
   
   @media screen and (max-width: 680px) {
     grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile));
