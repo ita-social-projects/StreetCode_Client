@@ -26,29 +26,31 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const { imagesStore } = useMobx();
     const [arlink, setArlink] = useState('');
     const [images, setImages] = useState<Image[]>();
-    const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
+    const [imagesForSlider, setImagesForSlider] = useState<Image>(); // Change type to Image
     const elementRef = useRef<HTMLDivElement>(null);
     const classSelector = 'catalogItem';
-    const [linkStyle, setLinkStyle] = useState({}); // Оголошення стану для стилів посилання
+    const [linkStyle, setLinkStyle] = useState({}); 
     useEffect(() => {
         const fetchData = async () => {
-            try
-            {
+            try {
                 await imagesStore.fetchImageByStreetcodeId(id);
                 const imgs = imagesStore.getImageArray;
                 setImages(imgs);
                 const relatedFigureImages = imgs.filter(
                     (image) => image.imageDetails?.alt === ImageAssigment.relatedfigure.toString()
                 );
-                const imagesForSlider = relatedFigureImages.length > 0 ? relatedFigureImages : imgs.filter(
+                const imagesForSlider = relatedFigureImages.length > 0 ? relatedFigureImages[0] : imgs.find(
                     (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
                 );
                 setImagesForSlider(imagesForSlider);
                 streecodePageLoaderContext.addBlockFetched();
-            } 
-            catch (x)
-            {
-                TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
+            } catch (error) {
+                try {
+                    const x = await TransactionLinksApi.getByStreetcodeId(id);
+                    setArlink(x.url);
+                } catch (error) {
+                    console.error('Error fetching transaction links:', error);
+                }
             }
         }
         if (id && id > 0) {
@@ -56,14 +58,13 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
         }
     }, [streetcode]);
 
-
-const LinkProps = {
-    className: classSelector,
-    style: {
-        backgroundImage: `url(${base64ToUrl(imagesForSlider[0]?.base64, imagesForSlider[0]?.mimeType)})`
-    },
-    href: `../${streetcode.url}`,
-};
+    const LinkProps = {
+        className: classSelector,
+        style: {
+            backgroundImage: `url(${base64ToUrl(imagesForSlider?.base64, imagesForSlider?.mimeType)})`
+        },
+        href: `../${streetcode.url}`,
+    };
 
 const windowsize = useWindowSize();
 
