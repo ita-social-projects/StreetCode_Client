@@ -151,7 +151,7 @@ const PartnerModal: React.FC< {
             try {
                 setWaitingForApiResponse(true);
                 await form.validateFields();
-                await form.submit();
+                form.submit();
                 message.success('Партнера успішно додано!');
             } catch (error) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -520,7 +520,7 @@ const PartnerModal: React.FC< {
                         </Popover>
                     ) : (
                         <Button
-                            disabled={showSecondForm || fileList?.length === 0}
+                            disabled={showSecondForm || fileList.length === 0}
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
