@@ -41,8 +41,10 @@
 
 .slider-arrow {
     min-width: 44px;
+    transition: .5s;
+    filter: c.$active-arrow-filter-color;
     &:hover {
-      fill: #000000;
+      filter: c.$selected-arrow-filter-color;
     }
 }
 
