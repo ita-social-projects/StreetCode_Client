@@ -45,6 +45,21 @@
   color: c.$darker-gray-color;
 }
 
+.copy-message-relative {
+  position: relative;
+  height: f.pxToRem(40px);    
+  bottom: f.pxToRem(-40px);
+  left: f.pxToRem(20px);
+  background-color: rgba(0, 0, 0, 0.788);
+  color: #fff;
+  padding: f.pxToRem(10px);
+  border-radius: f.pxToRem(4px);
+  animation-name: slideAndReturn;
+  animation-duration: 2s;
+  animation-iteration-count: calc(1);
+  width: max-content;
+}
+
 @media screen and (max-width: 1024px) {
   .timelineItem{
     @include mut.sized(299px, 190px);
