@@ -454,7 +454,7 @@ const NewStreetcode = () => {
                 StreetcodesApi.update(streetcodeUpdate).then(() => {
                     window.location.reload();
                 }).then(() => {
-                    alert('Cтріткод успішно оновленний');
+                    alert('Cтріткод успішно оновлений');
                 })
                     .catch((error2) => {
                         alert('Виникла помилка при оновленні стріткоду');

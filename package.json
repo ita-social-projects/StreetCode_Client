@@ -171,7 +171,8 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "workbox-webpack-plugin": "^7.0.0"
   },
   "description": "<a href=\"https://softserve.academy/\">   <img src=\"https://raw.githubusercontent.com/ita-social-projects/StreetCode/master/StreerCodeLogo.jpg\"    title=\"SoftServe IT Academy\"    alt=\"SoftServe IT Academy\"> </a>",
   "main": ".eslintrc.js",
