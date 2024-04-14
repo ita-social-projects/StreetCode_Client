@@ -36,6 +36,7 @@ const AdminLogin:React.FC = () => {
                 await AuthService.loginAsync(login, password, token)
                     .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
                     .catch(() => message.error(SOMETHING_IS_WRONG));
+                recaptchaRef.current?.reset();
             } catch (error) {
                 message.error(INVALID_LOGIN_ATTEMPT);
             }
