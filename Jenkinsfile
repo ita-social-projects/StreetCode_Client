@@ -65,66 +65,20 @@ pipeline {
                 }
             }
         }
-         stage('Set up node version') {
+         stage('Run tests') {
             steps {
-                echo 'Set up node version'
-           sh '''
-                export NVM_DIR="$HOME/.nvm"
-                if [ -s "$NVM_DIR/nvm.sh" ]; then
-                    . "$NVM_DIR/nvm.sh" 
-                fi
-            
-                # Print current Node.js version
-                node -v
-            
-                # Switch to Node.js version 16
-                # nvm install 16
-                nvm use 16
-            
-                # Print Node.js version after switching
-                node -v
-            
-                # Check npm version
-                #npm version
-                #npm install -g npm@7
-                #npm version
+               sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    if [ -s "$NVM_DIR/nvm.sh" ]; then
+                        . "$NVM_DIR/nvm.sh" 
+                    fi
+                    
+                    nvm use 16
                 
-                # Run npm install
-                # npm install --save-dev jest ?
-                npm install
-                #npx jest --coverage --no-watchAll --json --outputFile=testCoverage.json  --bail=100
-                npm run test:cover 2>&1 | tee output.log
-
-            '''
-                //npm test -- --coverage
-        //        sh 'npm install --save-dev jest'
-        //        sh ' jest --coverage'
-     //           sh 'npm run test:cover'
-
-                }
-            }
-        // stage('Intall node modules') {
-        //     steps {
-        //         echo 'Installing modules...'
-        //         sh 'npm version '
-        //         sh 'npm install'
-        //         }
-        //     }
-        // stage('Run test:cover') {
-        //     steps {
-        //         echo 'Collect test coverage'
-        //         sh 'npm run test:cover'
-        //     }
-        // }
-        /* uncomment me when you will fix lint
-        stage('Run lint') {
-            steps {
-                echo 'Runt lint check'
-                sh 'npm run lint'
-            }
-        }
-        */
-    
+                    npm install
+                    
+                    npm run test:cover
+                '''
 
         stage('Build image') {
             when {
