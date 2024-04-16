@@ -90,7 +90,8 @@ const FileUploader:React.FC<Props> = ({
                                      extension: uplFile.name.substring(uplFile.name
                                          .lastIndexOf('.') + 1, uplFile.name.length),
                                      mimeType: uplFile.type!,
-                                     title: uplFile.name };
+                                     title: uplFile.name,
+                                     alt: "" };
 
         return ImagesApi.create(image);
     };

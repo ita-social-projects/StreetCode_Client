@@ -1,7 +1,6 @@
 import IModelState from '@models/interfaces/IModelState';
 
 export default interface Image {
-    alt?: string
     id: number;
     base64: string;
     blobName: string;
@@ -21,6 +20,7 @@ export interface ImageCreate {
     baseFormat: string;
     mimeType: string;
     extension: string;
+    alt: string;
 }
 export interface ImageDetails {
     id: number;
