@@ -91,7 +91,7 @@ const FileUploader:React.FC<Props> = ({
                                          .lastIndexOf('.') + 1, uplFile.name.length),
                                      mimeType: uplFile.type!,
                                      title: uplFile.name,
-                                     alt: "" };
+                                     alt: "default" };
 
         return ImagesApi.create(image);
     };
