@@ -129,7 +129,7 @@ describe('AuthService', () => {
                     type: 'error',
                     method: 'post',
                     path: 'auth/login',
-                    errorStatusCode: 400,
+                    errorStatusCode: 404,
                     errorMessage: loginErrorMessage,
                 },
             ]);
@@ -187,7 +187,7 @@ describe('AuthService', () => {
                     type: 'error',
                     method: 'post',
                     path: 'auth/refreshToken',
-                    errorStatusCode: 400,
+                    errorStatusCode: 500,
                     errorMessage: refreshTokenErrorMessage,
                 },
             ]);
