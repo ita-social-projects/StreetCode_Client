@@ -157,6 +157,10 @@ export const Input = ({ value, showCount, maxLength }: InputProps) => (
     </>
 );
 
+Input.Password = ({ value }: InputProps) => (
+    <input type="password" data-testid="input-value" value={value} />
+);
+
 export const Checkbox = ({ checked, onChange }: CheckboxProps) => (
     <input type="checkbox" checked={checked} onChange={onChange} />
 );
