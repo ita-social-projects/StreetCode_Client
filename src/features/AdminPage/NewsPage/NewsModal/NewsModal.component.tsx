@@ -95,7 +95,6 @@ const NewsModal: React.FC<{
 
     useEffect(() => {
         editorRef.current?.editor?.setText('');
-        console.log(editorRef.current?.editor?.getText());
         if (newsItem && open) {
             imageId.current = newsItem.imageId;
             image.current = newsItem.image;
@@ -117,7 +116,6 @@ const NewsModal: React.FC<{
             });
             setQuillEditorContent(editorRef.current, newsItem.text);
             setData(newsItem.text);
-            console.log(editorRef.current?.editor?.getText());
         } else {
             imageId.current = 0;
             image.current = undefined;
