@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-imports */
-
 import createMockServer from '../../../../../__mocks__/server';
 
 import AuthService from './AuthService';
@@ -34,6 +33,11 @@ const getTestAccessToken = (isValidSignature = true, isExpired = false) => {
 
     return JSON.stringify(tokenDecoded);
 };
+
+afterEach(() => {
+    localStorage.removeItem(accessTokenStorageName);
+    localStorage.removeItem(refreshTokenStorageName);
+});
 
 describe('AuthService', () => {
     describe('logout()', () => {
@@ -89,57 +93,148 @@ describe('AuthService', () => {
         });
     });
 
-    describe('successful login', () => {
-        const testAccessToken = 'test_access_token';
-        const testRefreshToken = 'test_refresh_token';
-        const successfulLoginResolveFn = () => ({
-            accessToken: testAccessToken,
-            refreshToken: testRefreshToken,
+    describe('loginAsync()', () => {
+        describe('successful login', () => {
+            const testAccessToken = 'test_access_token';
+            const testRefreshToken = 'test_refresh_token';
+            const successfulLoginResolveFn = () => ({
+                accessToken: testAccessToken,
+                refreshToken: testRefreshToken,
+            });
+            createMockServer([
+                {
+                    type: 'success',
+                    method: 'post',
+                    path: 'auth/login',
+                    resolveFn: successfulLoginResolveFn,
+                },
+            ]);
+
+            it('sets access and refresh tokens to local storage is login is successful', async () => {
+                // Arrange.
+
+                // Act.
+                await AuthService.loginAsync('', '', '');
+
+                // Assert.
+                expect(localStorage.getItem(accessTokenStorageName)).toEqual(testAccessToken);
+                expect(localStorage.getItem(refreshTokenStorageName)).toEqual(testRefreshToken);
+            });
         });
-        createMockServer([
-            {
-                type: 'success',
-                method: 'post',
-                path: 'auth/login',
-                resolveFn: successfulLoginResolveFn,
-            },
-        ]);
 
-        it('sets access and refresh tokens to local storage is login is successful', async () => {
-            // Arrange.
+        describe('unsuccessful login', () => {
+            const loginErrorMessage = 'Unsuccessful login';
+            createMockServer([
+                {
+                    type: 'error',
+                    method: 'post',
+                    path: 'auth/login',
+                    errorStatusCode: 400,
+                    errorMessage: loginErrorMessage,
+                },
+            ]);
 
-            // Act.
-            await AuthService.loginAsync('', '', '');
+            it('returns error when login is unsuccessful', async () => {
+                // Arrange.
 
-            // Assert.
-            expect(localStorage.getItem(accessTokenStorageName)).toEqual(testAccessToken);
-            expect(localStorage.getItem(refreshTokenStorageName)).toEqual(testRefreshToken);
+                // Act.
+                await AuthService.loginAsync('', '', '')
+                    .catch((error) => {
+                        const actualErrorMessage = error.response.data.errorMessage;
+
+                        // Assert.
+                        expect(actualErrorMessage).toEqual(loginErrorMessage);
+                    });
+            });
         });
     });
 
-    describe('unsuccessful login', () => {
-        const loginErrorMessage = 'Unsuccessful login';
-        createMockServer([
-            {
-                type: 'error',
-                method: 'post',
-                path: 'auth/login',
-                errorStatusCode: 400,
-                errorMessage: loginErrorMessage,
-            },
-        ]);
-
-        it('returns error when login is unsuccessful', async () => {
+    describe('refreshTokenAsync()', () => {
+        it('returns error if previuos access token has invalid signature', async () => {
             // Arrange.
+            const expectedErrorMessage = 'Invalid sigrature of access token';
 
             // Act.
-            await AuthService.loginAsync('', '', '')
+            await AuthService.refreshTokenAsync()
                 .catch((error) => {
-                    const actualErrorMessage = error.response.data.errorMessage;
+                    const actualErrorMessage = error.message;
 
                     // Assert.
-                    expect(actualErrorMessage).toEqual(loginErrorMessage);
+                    expect(actualErrorMessage).toEqual(expectedErrorMessage);
                 });
+        });
+
+        it('returns error if refresh token doesn`t exist', async () => {
+            // Arrange.
+            const expectedErrorMessage = 'Refresh token doesn`t exists';
+            const testAccessToken = getTestAccessToken(true, false);
+            localStorage.setItem(accessTokenStorageName, testAccessToken);
+
+            // Act.
+            await AuthService.refreshTokenAsync()
+                .catch((error) => {
+                    const actualErrorMessage = error.message;
+
+                    // Assert.
+                    expect(actualErrorMessage).toEqual(expectedErrorMessage);
+                });
+        });
+
+        describe('unsuccessful refreshToken api call', () => {
+            const refreshTokenErrorMessage = 'Unsuccessful refreshToken call';
+            createMockServer([
+                {
+                    type: 'error',
+                    method: 'post',
+                    path: 'auth/refreshToken',
+                    errorStatusCode: 400,
+                    errorMessage: refreshTokenErrorMessage,
+                },
+            ]);
+
+            it('returns error when refreshToken call is unsuccessful', async () => {
+                // Arrange.
+                const testPreviousAccessToken = getTestAccessToken(true, false);
+                localStorage.setItem(accessTokenStorageName, testPreviousAccessToken);
+                localStorage.setItem(refreshTokenStorageName, 'test_refresh_token');
+
+                // Act.
+                await AuthService.refreshTokenAsync()
+                    .catch((error) => {
+                        const actualErrorMessage = error.response.data.errorMessage;
+
+                        // Assert.
+                        expect(actualErrorMessage).toEqual(refreshTokenErrorMessage);
+                    });
+            });
+        });
+
+        describe('successful refreshToken api call', () => {
+            const testAccessToken = 'test_access_token';
+            const successfulRefreshTokenResolveFn = () => ({
+                accessToken: testAccessToken,
+            });
+            createMockServer([
+                {
+                    type: 'success',
+                    method: 'post',
+                    path: 'auth/refreshToken',
+                    resolveFn: successfulRefreshTokenResolveFn,
+                },
+            ]);
+
+            it('sets access token to local storage when refreshToken call is unsuccessful', async () => {
+                // Arrange.
+                const testPreviousAccessToken = getTestAccessToken(true, false);
+                localStorage.setItem(accessTokenStorageName, testPreviousAccessToken);
+                localStorage.setItem(refreshTokenStorageName, 'test_refresh_token');
+
+                // Act.
+                await AuthService.refreshTokenAsync();
+
+                // Assert.
+                expect(localStorage.getItem(accessTokenStorageName)).toBe(testAccessToken);
+            });
         });
     });
 });
