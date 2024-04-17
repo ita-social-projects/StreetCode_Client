@@ -6,7 +6,7 @@ import { FC, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
-import AuthService from '../services/AuthService';
+import AuthService from '../services/auth-service/AuthService';
 
 type PropsWithChildren = { children: ReactNode };
 const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => {
