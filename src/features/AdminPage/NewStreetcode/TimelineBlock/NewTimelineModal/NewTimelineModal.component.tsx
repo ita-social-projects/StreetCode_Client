@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
+import NewTimelineContextModal from '@features/AdminPage/NewStreetcode/TimelineBlock/NewTimelineContextModal/NewTimelineContextModal.component';
 import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
     dateTimePickerTypes,
@@ -39,6 +40,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
+    const [IsContextModalOpen, setIsContextModalOpen] = useState(false);
 
     const MAX_LENGTH = {
         title: 26,
@@ -293,6 +295,13 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 ))}
                             </Select>
                         </Form.Item>
+                        <Button onClick={() => {
+                            setIsContextModalOpen(true);
+                        }}
+                        >
+                            Додати новий контекст
+                        </Button>
+                        <NewTimelineContextModal open={IsContextModalOpen} setIsContextModalOpen={setIsContextModalOpen} onChange={onChange} />
                         {tagInput && (
                             <div className="tagInput-counter">
                                 {tagInput.length}
