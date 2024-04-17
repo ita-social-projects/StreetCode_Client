@@ -9,7 +9,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
 
-import AuthService from '../common/services/AuthService';
+import AuthService from '../common/services/auth-service/AuthService';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;

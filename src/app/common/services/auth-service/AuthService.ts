@@ -99,6 +99,6 @@ export default class AuthService {
 
     private static clearTokenData() {
         localStorage.removeItem(this.accessTokenStorageName);
-        localStorage.removeItem(this.accessTokenStorageName);
+        localStorage.removeItem(this.refreshTokenStorageName);
     }
 }

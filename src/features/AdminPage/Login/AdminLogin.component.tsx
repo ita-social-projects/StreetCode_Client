@@ -11,7 +11,7 @@ import { Button, Form, Input, message } from 'antd';
 
 import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@/app/common/constants/error-messages.constants';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import AuthService from '@/app/common/services/AuthService';
+import AuthService from '@/app/common/services/auth-service/AuthService';
 
 const AdminLogin:React.FC = () => {
     const navigate = useNavigate();
