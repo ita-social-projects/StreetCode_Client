@@ -1,0 +1,18 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+@use '@sass/variables/variables.sizes' as s;
+
+.oneToFourSlide{
+    @include mut.flex-center();
+
+    .droppable, .baseArtSlideImageWrapper{
+        width: pxToRem(s.$art-gallery-img-size * 2.12);
+        @media screen and (max-width: 768px){
+            width: pxToRem(s.$art-gallery-img-size-mobile * 2.6);
+        }
+    }
+
+    @media screen and (max-width: 680px){
+        width: pxToRem(s.$art-gallery-img-size-mobile * 2.4);
+    }
+}

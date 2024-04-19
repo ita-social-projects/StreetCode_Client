@@ -19,7 +19,7 @@
 }
 
 .lightbox {
-    &.disabled {
+    &Disabled {
         .yarl__slide_captions_container, .yarl__toolbar, .yarl__button {
             @include vnd.vendored(transition, 'all .5s ease');
             visibility: hidden;
