@@ -11,7 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 import LinkHandler from './EditorExtensions/LinkHandler';
 
 interface EditorProps {
-    qRef: React.RefObject<ReactQuill>,
+    qRef: React.MutableRefObject<ReactQuill | null>,
     value: string,
     onChange: (html: string) => void;
     maxChars: number,
@@ -110,7 +110,7 @@ const Editor: React.FC<EditorProps> = ({
     const handleQuillRef = (el: ReactQuill | null) => {
         quillRef.current = el;
         if (qRef) {
-            // qRef.current = el; temp commented
+            qRef.current = el;
         }
     };
 
