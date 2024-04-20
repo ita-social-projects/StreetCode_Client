@@ -50,7 +50,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // sh './StreetCode_Client/build.sh Run'
                     sh(script: 'dotnet gitversion > GITVERSION_PROPERTIES', returnStdout: true)
                     sh "cat GITVERSION_PROPERTIES"
                     sh(script: "dotnet gitversion | grep -oP '(?<=\"MajorMinorPatch\": \")[^\"]*' > version", returnStatus: true)
@@ -212,8 +211,7 @@ pipeline {
                sh """
                   export DOCKER_TAG_BACKEND=${preDeployBackProd}
                   export DOCKER_TAG_FRONTEND=${env.CODE_VERSION}
-                  docker stop production_deploy-frontend-1 loki production_deploy-certbot-1 production_deploy-nginx-1 production_deploy-backend-1
-                  #docker stop backend frontend nginx loki certbot
+                  docker stop backend frontend nginx loki certbot
                   docker container prune -f
                   docker volume prune -f
                   docker network prune -f
@@ -237,18 +235,18 @@ pipeline {
             script {
                
                 sh 'echo ${BRANCH_NAME}'
-                // sh "git checkout master" 
-                // sh 'echo ${BRANCH_NAME}'
-                // sh "git merge release/${env.CODE_VERSION}"  ??????????????????????????/
-                // sh "git push origin main" 
+                sh "git checkout master" 
+                sh 'echo ${BRANCH_NAME}'
+                sh "git merge release/${env.CODE_VERSION}" 
+                sh "git push origin main" 
                   
             }
         }
         post {
             success {
-                // sh 'gh auth status'
-                // sh "gh release create v${vers}  --generate-notes --draft"
-               sh 'echo delitt'
+                sh 'gh auth status'
+                sh "gh release create v${vers}  --generate-notes --draft"
+            
             }
         }
     }
@@ -268,7 +266,6 @@ pipeline {
                     sh 'docker system prune --force --filter "until=72h"'
                      sh """ export DOCKER_TAG_BACKEND=${preDeployBackProd}
                         export DOCKER_TAG_FRONTEND=${preDeployFrontProd}
-                       # docker stop production_deploy-frontend-1 loki production_deploy-certbot-1 production_deploy-nginx-1 production_deploy-backend-1
                         docker stop backend frontend nginx loki certbot
                         docker container prune -f
                         docker volume prune -f
