@@ -58,6 +58,7 @@ pipeline {
                     sh "echo ${vers}"
                     env.CODE_VERSION = readFile(file: 'version').trim()
                     echo "${env.CODE_VERSION}"
+                    sh "npm version ${env.CODE_VERSION} --allow-same-version --no-git-tag-version"
                     env.CODE_VERSION = "${env.CODE_VERSION}.${env.BUILD_NUMBER}"
                     echo "${env.CODE_VERSION}"
                     def gitCommit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat').trim()
