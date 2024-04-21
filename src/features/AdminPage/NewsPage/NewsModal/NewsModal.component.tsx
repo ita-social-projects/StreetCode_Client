@@ -57,7 +57,7 @@ const NewsModal: React.FC<{
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const image = useRef<Image | undefined>(undefined);
-    const editorRef = useRef<ReactQuill>(null);
+    const editorRef = useRef<ReactQuill | null>(null);
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
     const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля правильно";
