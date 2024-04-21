@@ -5,6 +5,7 @@ def isSuccess
 def preDeployFrontStage
 def preDeployBackStage
 def vers
+def SEM_VERSION = ''
 pipeline {
     agent { 
         label 'stage' 
@@ -43,6 +44,7 @@ pipeline {
             steps {
                 script {
                     sh 'dotnet tool update --global GitVersion.Tool --version 5.12.0'
+                    sh 'nvm use 16'
                  
                 }
             }
@@ -58,6 +60,7 @@ pipeline {
                     sh "echo ${vers}"
                     env.CODE_VERSION = readFile(file: 'version').trim()
                     echo "${env.CODE_VERSION}"
+                    SEM_VERSION="${env.CODE_VERSION}"
                     sh "npm version ${env.CODE_VERSION} --allow-same-version --no-git-tag-version"
                     env.CODE_VERSION = "${env.CODE_VERSION}.${env.BUILD_NUMBER}"
                     echo "${env.CODE_VERSION}"
@@ -75,7 +78,6 @@ pipeline {
                         . "$NVM_DIR/nvm.sh" 
                     fi
                     
-                    nvm use 16
                 
                     npm install
                     
@@ -238,7 +240,9 @@ pipeline {
                 sh 'echo ${BRANCH_NAME}'
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
-                sh "git merge release/${env.CODE_VERSION}" 
+                sh "git merge release/${env.SEM_VERSION}" 
+                sh "npm version ${env.SEM_VERSION} -m 'Upgrade to %s as part of release'"
+
                 sh "git push origin main" 
                   
             }
