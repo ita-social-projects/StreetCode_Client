@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable react/prefer-stateless-function */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-imports */
@@ -11,6 +13,8 @@ import { Input } from '../../../../__mocks__/antd/antd';
 import Form from '../../../../__mocks__/antd/es/form/Form';
 
 import AdminLogin from './AdminLogin.component';
+import React from 'react';
+import { ReCAPTCHAProps } from 'react-google-recaptcha';
 
 // Mock AuthService.
 jest.mock('@/app/common/services/auth-service/AuthService', () => ({
@@ -43,9 +47,32 @@ jest.mock('antd', () => {
     };
 });
 
+// Mock reCaptcha.
+jest.mock('react-google-recaptcha', () => class MockCapthca extends React.Component {
+    
+});
+
 describe('AdminLogin', () => {
     it('should render component and its elements', () => {
         window._env_.RECAPTCHA_SITE_KEY = 'fake_site_key';
+        render(
+            <MemoryRouter>
+                <AdminLogin />
+            </MemoryRouter>,
+        );
+
+        const inputForLogin = screen.getByText('login');
+        const inputForPassword = screen.getByText('login');
+        const formPresent = screen.getByText('form exists');
+
+        expect(formPresent).toBeInTheDocument();
+        expect(inputForLogin).toBeInTheDocument();
+        expect(inputForPassword).toBeInTheDocument();
+    });
+
+    it('loginAsync is called if form is submitted', () => {
+        window._env_.RECAPTCHA_SITE_KEY = 'fake_site_key';
+        const AdminLogin = shallow
         render(
             <MemoryRouter>
                 <AdminLogin />
