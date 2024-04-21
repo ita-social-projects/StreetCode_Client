@@ -44,8 +44,13 @@ pipeline {
             steps {
                 script {
                     sh 'dotnet tool update --global GitVersion.Tool --version 5.12.0'
-                    sh 'nvm use 16'
-                 
+                    sh """
+                      export NVM_DIR="$HOME/.nvm"
+                    if [ -s "$NVM_DIR/nvm.sh" ]; then
+                        . "$NVM_DIR/nvm.sh" 
+                    fi
+                    nvm use 16
+                 """
                 }
             }
         }
@@ -73,12 +78,6 @@ pipeline {
          stage('Run tests') {
             steps {
                sh '''
-                    export NVM_DIR="$HOME/.nvm"
-                    if [ -s "$NVM_DIR/nvm.sh" ]; then
-                        . "$NVM_DIR/nvm.sh" 
-                    fi
-                    
-                
                     npm install
                     
                     npm run test:cover
