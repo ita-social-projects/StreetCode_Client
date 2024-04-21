@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Setup dependencies') {
             steps {
-                script {
+               // script {
                     //sh 'dotnet tool update --global GitVersion.Tool --version 5.12.0'
                     sh """
                       export NVM_DIR="$HOME/.nvm"
@@ -51,7 +51,7 @@ pipeline {
                     fi
                     nvm use 16
                  """
-                }
+                //}
             }
         }
         stage('Build') {
