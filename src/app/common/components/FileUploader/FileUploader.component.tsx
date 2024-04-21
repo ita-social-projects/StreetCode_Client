@@ -14,7 +14,7 @@ interface Props extends UploaderWithoutChildren {
     edgeSwipe?: boolean;
     uploadTo:'image' | 'audio';
     greyFilterForImage?: boolean;
-    onSuccessUpload?:(value:ImageCustom | Audio)=>void;
+    onSuccessUpload?:(value:ImageCustom | Audio, file?: UploadFile)=>void;
 }
 const FileUploader:React.FC<Props> = ({
     onSuccessUpload, uploadTo, greyFilterForImage = false, children, ...uploadProps
@@ -108,7 +108,7 @@ const FileUploader:React.FC<Props> = ({
                         .then((respones) => {
                             onSuccess(respones);
                             if (onSuccessUpload) {
-                                onSuccessUpload(respones);
+                                onSuccessUpload(respones, file);
                             }
                         })
                         .catch((err) => {
@@ -126,6 +126,7 @@ const FileUploader:React.FC<Props> = ({
             {...uploadProps}
             customRequest={customRequest}
             onChange={onUploadChange}
+            data-testid={"fileuploader"}
         >
             {children}
         </Upload>

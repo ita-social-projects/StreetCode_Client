@@ -13,7 +13,12 @@ const defaultBaseUrl = process.env.NODE_ENV === 'development'
 const frontendServerBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:4000' : window._env_.SERVER_API_URL;
 
-const responseBody = <T> (response: AxiosResponse<T>) => response.data;
+const responseData = <T> (response: AxiosResponse<T>) => response.data;
+
+const paginationResponseData = <T> (response: AxiosResponse<T>) => ({
+    data: response.data,
+    paginationInfo: JSON.parse(response.headers['x-pagination']),
+});
 
 const createAxiosInstance = (baseUrl: string) => {
     const instance = axios.create({
@@ -51,7 +56,7 @@ const createAxiosInstance = (baseUrl: string) => {
                 toast.error(errorMessage);
             }
 
-            return Promise.reject(response?.status);
+            return Promise.reject(response);
         },
     );
 
@@ -65,16 +70,19 @@ const createAxiosInstance = (baseUrl: string) => {
 
     return {
         get: async <T> (url: string, params?: URLSearchParams|GetAllToponymsRequest) => instance.get<T>(url, { params })
-            .then(responseBody),
+            .then(responseData),
+
+        getPaginated: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })
+            .then(paginationResponseData),
 
         post: async <T> (url: string, body: object, headers?: object) => instance.post<T>(url, body, headers)
-            .then(responseBody),
+            .then(responseData),
 
         put: async <T> (url: string, body: object) => instance.put<T>(url, body)
-            .then(responseBody),
+            .then(responseData),
 
         delete: async <T>(url: string) => instance.delete<T>(url)
-            .then(responseBody),
+            .then(responseData),
     };
 };
 
