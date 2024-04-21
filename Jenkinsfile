@@ -43,7 +43,7 @@ pipeline {
         stage('Setup dependencies') {
             steps {
                 script {
-                    sh 'dotnet tool update --global GitVersion.Tool --version 5.12.0'
+                    //sh 'dotnet tool update --global GitVersion.Tool --version 5.12.0'
                     sh """
                       export NVM_DIR="$HOME/.nvm"
                     if [ -s "$NVM_DIR/nvm.sh" ]; then
