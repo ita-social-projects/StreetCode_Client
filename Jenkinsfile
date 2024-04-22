@@ -135,8 +135,8 @@ pipeline {
 
                     sh 'docker image prune --force --filter "until=72h"'
                     sh 'docker system prune --force --filter "until=72h"'
-                    sh """ export DOCKER_TAG_BACKEND=${env.CODE_VERSION}
-                    export DOCKER_TAG_FRONTEND=${preDeployBackStage}
+                    sh """ export DOCKER_TAG_BACKEND=${preDeployBackStage}
+                    export DOCKER_TAG_FRONTEND=${env.CODE_VERSION}
                     docker stop backend frontend nginx loki certbot
                     docker container prune -f                
                     docker volume prune -f
