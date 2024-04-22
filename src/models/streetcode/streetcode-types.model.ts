@@ -110,7 +110,7 @@ export interface StreetcodeCreate {
     arBlockURL?: string,
     viewCount: number,
     eventStartOrPersonBirthDate: Date,
-    eventEndOrPersonDeathDate: Date,
+    eventEndOrPersonDeathDate: Date | null,
     dateString: string,
     tags: StreetcodeTag[],
     imagesIds: Array<number>,
