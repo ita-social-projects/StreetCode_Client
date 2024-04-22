@@ -27,7 +27,16 @@
             margin-top: pxToRem(0px);
         }
     }
-    .sourcesSliderContainer {
+    .sourcesSliderContainerBig {
+        position: relative;
+        @include mut.sized($width: 1065px);
+        margin: 0 auto;
+        .slick-arrow {
+            position: absolute;
+            transform: translateY(-1.8rem);
+        }
+    }
+    .sourcesSliderContainerSmall {
         @include mut.sizedImportant(1230px, 100%);
         .slick-arrow {
             display: none;
@@ -37,6 +46,8 @@
     .sliderClass {
         .slick-list {
             @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px;
+            margin-right: -60px;
         }
         .slick-track {
             @include mut.flex-centered($gap: 30px);
@@ -77,3 +88,4 @@
         left: f.pxToRem(1px);
     }
 }
+

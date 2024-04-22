@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
@@ -9,6 +8,8 @@ import Table, { ColumnsType } from 'antd/es/table';
 
 import NewTimelineContextModal from './NewTimelineContextModal.component';
 import Context from '@/models/additional-content/context.model';
+
+import './ContextMainPage.style.scss';
 
 const ContextMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -78,9 +79,8 @@ const ContextMainPage: React.FC = observer(() => {
         },
     ];
     return (
-        <div className="partners-page">
-            <PageBar />
-            <div className="partners-page-container">
+        <div className="context-page">
+            <div className="contexts-page-container">
                 <div className="container-justify-end">
                     <Button
                         className="streetcode-custom-button partners-page-add-button"

@@ -12,8 +12,10 @@ import SourcesApi from '@app/api/sources/sources.api';
 import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
 import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
+import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
+import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
+import StreetcodeArtsBlock from '@features/AdminPage/NewStreetcode/StreetcodeArtsBlock/StreetcodeArtsBlock.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
@@ -23,7 +25,6 @@ import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
-import StreetcodeArtApi from '@/app/api/media/streetcode-art.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -34,21 +35,18 @@ import { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/
 import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import { AudioUpdate } from '@/models/media/audio.model';
 import { ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
-import { StreetcodeArtCreateUpdate } from '@/models/media/streetcode-art.model';
 import Video, { VideoCreate } from '@/models/media/video.model';
 import { PartnerCreateUpdateShort, PartnerUpdate } from '@/models/partners/partners.model';
 import { StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 import { StreetcodeCreate, StreetcodeType, StreetcodeUpdate } from '@/models/streetcode/streetcode-types.model';
 import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.model';
-import TransactionLink from '@/models/transactions/transaction-link.model';
+import { TransactionLink } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
-import ArtGalleryBlock from './ArtGallery/ArtGallery.component';
-import ForFansBlock from './ForFansBlock/ForFansBlock.component';
+import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
-import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
@@ -76,8 +74,9 @@ const NewStreetcode = () => {
         streetcodeCoordinatesStore,
         createUpdateMediaStore,
         statisticRecordStore,
-        streetcodeArtStore,
+        artStore,
         tagsStore,
+        streetcodeArtSlideStore,
     } = useMobx();
 
     const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
@@ -88,7 +87,6 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [arts, setArts] = useState<StreetcodeArtCreateUpdate[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
@@ -172,14 +170,6 @@ const NewStreetcode = () => {
         if (parseId) {
             TextsApi.getByStreetcodeId(parseId).then((result) => {
                 setInputInfo(result);
-                StreetcodeArtApi.getStreetcodeArtsByStreetcodeId(parseId).then((result) => {
-                    const artToUpdate = result.map((streetcodeArt) => ({
-                        ...streetcodeArt,
-                        modelState: ModelState.Updated,
-                        isPersisted: true,
-                    }));
-                    setArts([...artToUpdate]);
-                });
                 StreetcodesApi.getById(parseId).then((x) => {
                     streetcodeType.current = x.streetcodeType;
                     form.setFieldsValue({
@@ -349,13 +339,8 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                streetcodeArts: arts.map((streetcodeArt) => ({
-                    ...streetcodeArt,
-                    art: {
-                        ...streetcodeArt.art,
-                        image: null,
-                    },
-                })),
+                arts: artStore.arts.map((a) => ({ ...a, image: null })),
+                streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                 subtitles,
                 firstName: null,
                 lastName: null,
@@ -443,14 +428,8 @@ const NewStreetcode = () => {
                     text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
-                    streetcodeArts: [...arts.map((streetcodeArt) => ({ ...streetcodeArt, streetcodeId: parseId })),
-                        ...streetcodeArtStore.getStreetcodeArtsToDelete].map((streetcodeArt) => ({
-                        ...streetcodeArt,
-                        art: {
-                            ...streetcodeArt.art,
-                            image: null,
-                        },
-                    })),
+                    arts: artStore.arts,
+                    streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
                         .map((record) => ({ ...record, streetcodeId: parseId })),
@@ -475,7 +454,7 @@ const NewStreetcode = () => {
                 StreetcodesApi.update(streetcodeUpdate).then(() => {
                     window.location.reload();
                 }).then(() => {
-                    alert('Cтріткод успішно оновленний');
+                    alert('Cтріткод успішно оновлений');
                 })
                     .catch((error2) => {
                         alert('Виникла помилка при оновленні стріткоду');
@@ -484,6 +463,7 @@ const NewStreetcode = () => {
                 console.log(streetcode);
                 StreetcodesApi.create(streetcode)
                     .then(() => {
+                        streetcodeArtSlideStore.streetcodeArtSlides = [];
                         if (tempStatus === 1) {
                             navigate(`../${form.getFieldValue('streetcodeUrlName')}`, { replace: true });
                         } else {
@@ -534,9 +514,13 @@ const NewStreetcode = () => {
                             />
                             <InterestingFactsBlock onChange={handleFieldChange} />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
-                            <ArtGalleryBlock arts={arts} setArts={setArts} onChange={handleFieldChange} />
+                            <ArtGalleryDndContext>
+                                <StreetcodeArtsBlock />
+                                <ArtGallery isConfigurationGallery />
+                                <ArtGallery isAdmin />
+                            </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
-                            <ForFansBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
+                            <CategoriesBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
                             <ARBlock onChange={handleFieldChange} />
