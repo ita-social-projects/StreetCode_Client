@@ -154,6 +154,7 @@ const PartnerModal: React.FC< {
                 form.submit();
                 message.success('Партнера успішно додано!');
             } catch (error) {
+                setWaitingForApiResponse(false);
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
             }
         };

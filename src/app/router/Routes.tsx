@@ -1,13 +1,10 @@
-import {
-    createBrowserRouter, createHashRouter, createRoutesFromElements, Route, Routes, useParams,
-} from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import App from '@layout/app/App.component';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
 import AboutUsPage from '@/features/AboutUsPage/AboutUsPage.component';
-import Vacancies from '@/features/AboutUsPage/Vacancies/Vacancies.component';
 import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
