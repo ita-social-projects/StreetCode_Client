@@ -266,7 +266,7 @@ const StreetcodesTable = () => {
         const getAllStreetcodesResponse = StreetcodesApi.getAll(requestGetAll);
         const mapedStreetCodesBuffer: MapedStreetCode[] = [];
         Promise.all([getAllStreetcodesResponse]).then((response) => {
-            response[0].map((streetcode) => {
+            response[0].streetcodes.map((streetcode) => {
                 let currentStatus = '';
 
                 switch (streetcode.status) {
