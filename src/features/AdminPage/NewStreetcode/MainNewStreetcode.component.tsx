@@ -222,7 +222,9 @@ const NewStreetcode = () => {
                 });
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
                     .then((result) => {
-                        setSubTitle(result[0]);
+                        if(result){
+                            setSubTitle(result[0]);
+                        } 
                     })
                     .catch((error) => { });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
