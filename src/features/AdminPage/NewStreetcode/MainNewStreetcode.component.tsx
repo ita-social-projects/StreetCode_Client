@@ -339,7 +339,7 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                arts: artStore.arts.map((a) => ({ ...a, image: null })),
+                arts: artStore.arts.map((a) => ({ ...a})),
                 streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                 subtitles,
                 firstName: null,

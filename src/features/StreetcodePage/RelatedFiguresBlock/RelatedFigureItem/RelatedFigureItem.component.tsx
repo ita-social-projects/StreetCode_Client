@@ -14,7 +14,7 @@ interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>;
     filterTags?: boolean;
     hoverable?: boolean;
-    setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowAllTags?: React.Dispatch<React.SetStateAction<boolean>>;
     streetcode?: Streetcode;
 }
 
@@ -52,7 +52,9 @@ const RelatedFigureItem = ({
                         if (!tagsList) {
                             relatedFiguresLeaveEvent();
                             setModal('tagsList');
-                            setShowAllTags(true);
+                            if(setShowAllTags){
+                                setShowAllTags(true);
+                            }   
                         }
                     }}
                 >
@@ -80,7 +82,9 @@ const RelatedFigureItem = ({
                                         relatedFiguresTagsEvent(tag.title);
                                         setModal('tagsList');
                                         setActiveTagId(tag.id);
-                                        setShowAllTags(true);
+                                        if(setShowAllTags){
+                                            setShowAllTags(true);
+                                        } 
                                     }}
                                 >
                                     <p>{tag.title}</p>

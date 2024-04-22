@@ -123,7 +123,7 @@ export interface StreetcodeCreate {
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
-    arts: ArtCreateUpdate[],
+    arts: ArtCreateUpdate[] | null,
     streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
     toponyms: ToponymCreateUpdate[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],
