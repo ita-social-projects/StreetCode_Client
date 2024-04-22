@@ -25,6 +25,7 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import ContextMainPage from "@features/AdminPage/ContextPage/ContextMainPage.component";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -51,6 +52,10 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
             element={<ProtectedComponent><Partners /></ProtectedComponent>}
+        />
+        <Route
+            path={FRONTEND_ROUTES.ADMIN.CONTEXT}
+            element={<ProtectedComponent><ContextMainPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
