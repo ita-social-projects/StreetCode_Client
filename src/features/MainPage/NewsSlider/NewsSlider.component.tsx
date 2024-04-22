@@ -10,6 +10,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
+import { useQuery } from '@tanstack/react-query';
 
 const NewsSlider = () => {
     const windowSize = useWindowSize();
@@ -17,7 +18,11 @@ const NewsSlider = () => {
     const { modalStore } = useModalContext();
     const { imagesStore, newsStore } = useMobx();
 
-    newsStore.getAll(1);
+    useQuery({
+        queryKey: ['news', newsStore.CurrentPage],
+        queryFn: () => newsStore.getAll(10),
+    });
+
     imagesStore.fetchImages(newsStore.NewsArray || []);
 
     const [dragging, setDragging] = useState(false);
