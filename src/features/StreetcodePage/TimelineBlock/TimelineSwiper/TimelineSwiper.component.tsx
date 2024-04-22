@@ -6,7 +6,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useMobx from '@stores/root-store';
 import TimelineSwiperEdgeBtn
     from '@streetcode/TimelineBlock/TimelineSwiper/TimelineSwiperEdgeBtn/TimelineSwiperEdgeBtn.component';
-import SwiperCore, { Pagination } from 'swiper/core';
+import SwiperCore, { Pagination } from 'swiper';
 import { Swiper, SwiperProps, SwiperRef, SwiperSlide } from 'swiper/react';
 
 type SwiperWithoutChildren = Omit<SwiperProps, 'children'>;

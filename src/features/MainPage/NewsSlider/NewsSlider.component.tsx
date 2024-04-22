@@ -17,8 +17,8 @@ const NewsSlider = () => {
     const { modalStore } = useModalContext();
     const { imagesStore, newsStore } = useMobx();
 
-    newsStore.getAll(1, 10);
-    imagesStore.fetchImages(newsStore.getNewsArray || []);
+    newsStore.getAll(1);
+    imagesStore.fetchImages(newsStore.NewsArray || []);
 
     const [dragging, setDragging] = useState(false);
 
@@ -40,7 +40,7 @@ const NewsSlider = () => {
     );
 
     return (
-        (newsStore.getNewsArray && newsStore.getNewsArray.length > 0)
+        (newsStore.NewsArray && newsStore.NewsArray.length > 0)
             ? (
                 <div>
                     <div className="NewsWrapper">
@@ -49,15 +49,15 @@ const NewsSlider = () => {
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
-                                        {(newsStore.getNewsArray.length === 1) ? (
+                                        {(newsStore.NewsArray.length === 1) ? (
                                             <div
-                                                key={newsStore.getNewsArray[0].id}
+                                                key={newsStore.NewsArray[0].id}
                                                 className="slider-item"
                                                 onClickCapture={handleOnItemClick}
                                             >
                                                 <NewsSliderItem
-                                                    news={newsStore.getNewsArray[0]}
-                                                    image={imagesStore.getImage(newsStore.getNewsArray[0].imageId)}
+                                                    news={newsStore.NewsArray[0]}
+                                                    image={imagesStore.getImage(newsStore.NewsArray[0].imageId)}
                                                 />
                                             </div>
                                         ) : (
@@ -66,7 +66,7 @@ const NewsSlider = () => {
                                                 afterChange={handleAfterChange}
                                                 {...NEWS_SLIDER_PROPS}
                                             >
-                                                {newsStore.getNewsArray.map((item, index) => (
+                                                {newsStore.NewsArray.map((item, index) => (
                                                     <div
                                                         key={item.id}
                                                         className="slider-item"

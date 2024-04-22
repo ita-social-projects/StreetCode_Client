@@ -30,8 +30,8 @@ export const ContactUsModal = ({ text, toggleState }: Props) => {
     };
 
     const onClear = () => {
-        if (form.current !== undefined || form.current !== null) {
-            form.current?.clearModal();
+        if (form.current !== undefined && form.current !== null) {
+            form.current.clearModal();
         }
     };
     return (
