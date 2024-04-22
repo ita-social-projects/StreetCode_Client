@@ -5,6 +5,7 @@ import LeftSliderArrow from '@assets/images/utils/LeftDefaultSliderArrow.svg';
 import RightSliderArrow from '@assets/images/utils/RightDefaultSliderArrow.svg';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperNew from 'swiper';
 
 import { Positions } from '@/models/team/team.model';
 
@@ -14,9 +15,9 @@ interface Props {
 }
 
 const SliderComponents = ({ positions, setActive }: Props) => {
-    const [swiper, setSwiper] = useState(null);
+    const [swiper, setSwiper] = useState< SwiperNew | null >(null);
     const [slidesPerView, setSlidesPerView] = useState(5);
-
+    
     const handlePreviousSlide = () => {
         if (swiper) {
             swiper.slidePrev();
@@ -29,7 +30,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
         }
     };
 
-    const getActive = (swiper) => {
+    const getActive = (swiper : any) => {
         const { realIndex } = swiper;
         const activePosition = positions[realIndex];
         const activePositionId = activePosition.id;
@@ -38,7 +39,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
 
     return (
         <div className="topSliderContainer">
-            <LeftSliderArrow className="slider-arrow" alt="Previous" onClick={handlePreviousSlide} />
+            <LeftSliderArrow className="slider-arrow" onClick={handlePreviousSlide} />
             <div className="topSlider">
                 <Swiper
                     slidesPerView={slidesPerView}
@@ -73,7 +74,7 @@ const SliderComponents = ({ positions, setActive }: Props) => {
                     ))}
                 </Swiper>
             </div>
-            <RightSliderArrow className="slider-arrow" alt="Next" onClick={handleNextSlide} />
+            <RightSliderArrow className="slider-arrow" onClick={handleNextSlide} />
         </div>
     );
 };

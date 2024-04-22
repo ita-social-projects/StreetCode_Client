@@ -17,6 +17,7 @@ import type { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import Image from '@/models/media/image.model';
+import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
@@ -83,7 +84,8 @@ const DownloadBlock = () => {
         }
     };
 
-    const onSuccessUpload = action((image: Image) => {
+    const onSuccessUploadImage = action((file: Image | Audio) => {
+        let image: Image = file as Image;
         const newId = artStore.getMaxArtId + 1;
 
         const newArt: ArtCreateUpdate = {
@@ -141,7 +143,7 @@ const DownloadBlock = () => {
                 fileList={fileList}
                 onPreview={onPreview}
                 uploadTo="image"
-                onSuccessUpload={onSuccessUpload}
+                onSuccessUpload={onSuccessUploadImage}
                 onRemove={(e) => handleRemove(e)}
                 className="with-multiple-delete"
                 itemRender={(element, file) => (

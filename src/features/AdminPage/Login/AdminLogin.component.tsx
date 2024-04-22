@@ -7,12 +7,13 @@ import { Button, Form, Input, message } from 'antd';
 
 import UserApi from '@/app/api/user/user.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useMobx from '@/app/stores/root-store';
+import useMobx, { useModalContext } from '@/app/stores/root-store';
 import UserLoginStore from '@/app/stores/user-login-store';
 import { UserLoginResponce } from '@/models/user/user.model';
 
 const AdminLogin:React.FC = () => {
-    const { modalStore, userLoginStore } = useMobx();
+    const { modalStore } = useModalContext();
+    const { userLoginStore } = useMobx();
     const navigate = useNavigate();
     const [form] = Form.useForm();
 

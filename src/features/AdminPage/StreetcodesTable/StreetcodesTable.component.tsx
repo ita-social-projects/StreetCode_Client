@@ -38,7 +38,7 @@ const StreetcodesTable = () => {
     const [totalItems, setTotalItems] = useState<number>(0);
     const [titleRequest, setTitleRequest] = useState<string | null>(null);
     const [statusRequest, setStatusRequest] = useState<string | null>(null);
-    const [pageRequest, setPageRequest] = useState<number | null>(1);
+    const [pageRequest, setPageRequest] = useState<number>(1);
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
@@ -266,7 +266,7 @@ const StreetcodesTable = () => {
         const getAllStreetcodesResponse = StreetcodesApi.getAll(requestGetAll);
         const mapedStreetCodesBuffer: MapedStreetCode[] = [];
         Promise.all([getAllStreetcodesResponse]).then((response) => {
-            response[0].streetcodes?.map((streetcode) => {
+            response[0].streetcodes.map((streetcode) => {
                 let currentStatus = '';
 
                 switch (streetcode.status) {
@@ -291,7 +291,7 @@ const StreetcodesTable = () => {
             });
 
             setMapedStreetCodes(mapedStreetCodesBuffer);
-            setTotalItems(response[0].pages * amountRequest);
+            setTotalItems(pageRequest * amountRequest);
         });
     }, [requestGetAll, pageRequest, deleteStreetcode]);
 

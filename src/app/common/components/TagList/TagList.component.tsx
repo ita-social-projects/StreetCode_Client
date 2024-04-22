@@ -10,8 +10,8 @@ import useWindowSize from '../../hooks/stateful/useWindowSize.hook';
 
 interface Props {
     tags: Tag[] | undefined;
-    setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
-    setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
+    setActiveTagId?: React.Dispatch<React.SetStateAction<number>>,
+    setShowAllTags?: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const TagList = ({ tags, setActiveTagId, setShowAllTags }: Props) => {
@@ -26,9 +26,14 @@ const TagList = ({ tags, setActiveTagId, setShowAllTags }: Props) => {
                     onClick={() => {
                         {
                             if (windowSize.width > 1024) {
-                                setActiveTagId(tag.id);
+                                if(setActiveTagId){
+                                    setActiveTagId(tag.id);
+                                }
                                 setModal('tagsList');
-                                setShowAllTags(false);
+                                if(setShowAllTags)
+                                {
+                                    setShowAllTags(false);
+                                }   
                             }
                         }
                     }}
