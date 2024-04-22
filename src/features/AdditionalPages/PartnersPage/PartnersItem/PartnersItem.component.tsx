@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import useMobx from '@stores/root-store';
 
 import { Popover } from 'antd';
-
+import type { ActionType } from '@rc-component/trigger/lib/interface';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerContent
@@ -19,7 +19,7 @@ const PartnersItem = ({ partner }: Props) => {
     const { imagesStore } = useMobx();
     const { fetchImage, getImage } = imagesStore;
 
-    const [trigger, setTrigger] = useState('hover');
+    const [trigger, setTrigger] = useState<ActionType>('hover');
 
     useAsync(
         () => fetchImage(partner.logoId),
