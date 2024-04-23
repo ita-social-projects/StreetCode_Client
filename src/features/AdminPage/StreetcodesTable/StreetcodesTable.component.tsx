@@ -260,40 +260,45 @@ const StreetcodesTable = () => {
         url: string
     }
 
-    useEffect(() => {
+    const fetchPaginatedData = async () => {
         requestGetAll.Page = pageRequest;
         requestGetAll.Amount = amountRequest;
-        const getAllStreetcodesResponse = StreetcodesApi.getAll(requestGetAll);
+        const getAllStreetcodesResponse = await StreetcodesApi.getAll(requestGetAll);
         const mapedStreetCodesBuffer: MapedStreetCode[] = [];
-        Promise.all([getAllStreetcodesResponse]).then((response) => {
-            response[0].streetcodes.map((streetcode) => {
-                let currentStatus = '';
+        const response = await Promise.all([getAllStreetcodesResponse]);
+        response[0].streetcodes.map((streetcode) => {
+            let currentStatus = '';
 
-                switch (streetcode.status) {
-                case 0: { currentStatus = 'Чернетка'; break; }
-                case 1: { currentStatus = 'Опублікований'; break; }
-                case 2: { currentStatus = 'Видалений'; break; }
-                default: { currentStatus = 'Чернетка'; break; }
-                }
-                const mapedStreetCode = {
-                    key: streetcode.id,
-                    index: streetcode.index,
-                    status: currentStatus,
-                    date: format(
-                        convertUTCDateToLocalDate(new Date(streetcode.updatedAt)),
-                        'dd.MM.yyyy HH:mm:SS ',
-                        { locale: uk },
-                    ),
-                    name: streetcode.title,
-                    url: streetcode.transliterationUrl,
-                };
-                mapedStreetCodesBuffer.push(mapedStreetCode);
-            });
-
-            setMapedStreetCodes(mapedStreetCodesBuffer);
-            setTotalItems(pageRequest * amountRequest);
+            switch (streetcode.status) {
+            case 0: { currentStatus = 'Чернетка'; break; }
+            case 1: { currentStatus = 'Опублікований'; break; }
+            case 2: { currentStatus = 'Видалений'; break; }
+            default: { currentStatus = 'Чернетка'; break; }
+            }
+            const mapedStreetCode = {
+                key: streetcode.id,
+                index: streetcode.index,
+                status: currentStatus,
+                date: format(
+                    convertUTCDateToLocalDate(new Date(streetcode.updatedAt)),
+                    'dd.MM.yyyy HH:mm:SS ',
+                    { locale: uk },
+                ),
+                name: streetcode.title,
+                url: streetcode.transliterationUrl,
+            };
+            mapedStreetCodesBuffer.push(mapedStreetCode);
         });
+
+        setMapedStreetCodes(mapedStreetCodesBuffer);
+        setTotalItems(response[0].pages * amountRequest);
+    };
+    
+
+    useEffect(() => {
+        fetchPaginatedData();
     }, [requestGetAll, pageRequest, deleteStreetcode]);
+    
 
     return (
         <div className="StreetcodeTableWrapper">
