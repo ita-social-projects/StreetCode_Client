@@ -31,7 +31,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     useAsync(() => tagsStore.fetchTags(), []);
 
@@ -69,7 +68,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleCancel = () => {
         closeModal();
         form.resetFields();
-        setFileList([]);
     };
 
     const handleOk = async () => {
