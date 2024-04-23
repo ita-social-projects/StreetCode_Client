@@ -43,7 +43,7 @@ const StreetcodesTable = () => {
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const [deleteStreetcode, deleteFormDB] = useState<number>(0);
-    const amountRequest = 3;
+    const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
         Page: pageRequest,
