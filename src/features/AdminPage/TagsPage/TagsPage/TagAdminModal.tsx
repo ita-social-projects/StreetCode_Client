@@ -109,7 +109,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" maxLength={23} showCount />
+                        <Input placeholder="Title" maxLength={50} showCount />
                     </Form.Item>
                     <div className="center">
                         <Button
