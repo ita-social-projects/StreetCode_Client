@@ -28,6 +28,7 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Image from '@/models/media/image.model';
+import Audio from '@/models/media/audio.model';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -318,7 +319,8 @@ const TeamModal: React.FC<{
                             }}
                             onRemove={removeImage}
                             uploadTo="image"
-                            onSuccessUpload={(image: Image) => {
+                            onSuccessUpload={(file: Image | Audio) => {
+                                let image: Image = file as Image;
                                 imageId.current = image.id;
                             }}
                             defaultFileList={getImageAsFileInArray()}

@@ -91,7 +91,6 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                         }]);
                     }
                 }
-                onChange={onChange}
             />
         </div>
     );

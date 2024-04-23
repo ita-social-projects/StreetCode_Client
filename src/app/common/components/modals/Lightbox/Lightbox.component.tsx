@@ -21,13 +21,19 @@ const LightboxComponent = () => {
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
     const slides = useMemo(() => arts.map(
-        ({ image: { base64, mimeType }, description, title }, index) => ({
-            src: base64ToUrl(base64, mimeType),
+        ({ image: { base64, mimeType }, description, title }, index) => {
+          let src = base64ToUrl(base64, mimeType);
+          if (!src) {
+            src = ''; //replace with default src
+          }
+          return {
+            src,
             title: `${index + 1}/${arts.length}`,
             description: `${title ?? ''}. \n\n${description ?? ''}`,
-        }),
-
-    ), [mutationObserved]);
+          };
+        }
+      ), [mutationObserved]);
+      
 
     const currentArtIndex = useMemo(() => arts.findIndex(
         (art) => art.id === fromCardId,

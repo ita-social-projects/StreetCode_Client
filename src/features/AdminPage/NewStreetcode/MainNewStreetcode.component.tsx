@@ -222,7 +222,9 @@ const NewStreetcode = () => {
                 });
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
                     .then((result) => {
-                        setSubTitle(result);
+                        if(result){
+                            setSubTitle(result[0]);
+                        } 
                     })
                     .catch((error) => { });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
@@ -339,7 +341,7 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                arts: artStore.arts.map((a) => ({ ...a, image: null })),
+                arts: artStore.arts.map((a) => ({ ...a})),
                 streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                 subtitles,
                 firstName: null,

@@ -14,7 +14,6 @@ import useEventListener from '@/app/common/hooks/external/useEventListener.hook'
 import useOnClickOutside from '@/app/common/hooks/stateful/useClickOutside.hook';
 
 const HeaderSkeleton = () => {
-    const [searchQuery, setSearchQuery] = useState<string>('');
     const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const { toggleState: isInputActive, handlers: { off, toggle } } = useToggle();
@@ -31,7 +30,6 @@ const HeaderSkeleton = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        setSearchQuery(value);
         if (value.length > 0 && isDesktop) {
             handlePopoverVisibleChange(true);
         } else {
@@ -80,8 +78,7 @@ const HeaderSkeleton = () => {
                 overlayClassName="searchPopoverSkeleton"
                 getPopupContainer={(trigger: HTMLElement) => trigger.parentNode as HTMLElement}
                 content={(
-                    <div ref={searchBlockRef}>
-                        <SearchBlock searchQuery={searchQuery} />
+                    <div ref={searchBlockRef}>  
                     </div>
                 )}
             >
