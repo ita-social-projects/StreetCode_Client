@@ -2,8 +2,10 @@ import './FounderCard.styles.scss';
 
 import Facebook from '@/assets/images/partners/facebook.svg';
 import Instagram from '@/assets/images/partners/instagram.svg';
+import { ReactFragment } from 'react';
+import { JSX } from 'react/jsx-runtime';
 
-const createLink = (url: string, iconComponent) => (
+const createLink = (url: string, iconComponent: any) => (
     <a href={url} target="_blank" rel="noreferrer">
         {iconComponent}
     </a>

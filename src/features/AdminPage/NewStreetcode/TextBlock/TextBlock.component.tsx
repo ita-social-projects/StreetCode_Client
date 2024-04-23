@@ -14,7 +14,7 @@ interface Props {
     video: Video | undefined;
     setVideo: React.Dispatch<Video | undefined>;
     onChange: (fieldName: string, value: any) => void;
-    parseId: number
+    parseId: number | null
 }
 
 const TextBlock = React.memo(({

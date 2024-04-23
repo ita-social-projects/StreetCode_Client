@@ -124,9 +124,9 @@ pipeline {
                       branches: [[name: 'main']],
                      userRemoteConfigs: [[credentialsId: 'StreetcodeGithubCreds', url: 'git@github.com:ita-social-projects/Streetcode-DevOps.git']])
                    
-                    preDeployBackStage = sh(script: 'docker inspect $(docker ps | awk \'{print $2}\' | grep -v ID) | jq \'.[].RepoTags\' | grep  -m 1 "streetcode:" | tail -n 1 | cut -d ":" -f2 | head -c -2', returnStdout: true).trim()
+                    preDeployBackStage = sh(script: 'docker inspect $(docker ps | awk \'{print $2}\' | grep -v ID) | jq \'.[].RepoTags\' | grep  -m 1 "streetcode:" | tail -n 1 | cut -d ":" -f2 | head -c -3', returnStdout: true).trim()
                     echo "Last Tag Stage backend: ${preDeployBackStage}"
-                    preDeployFrontStage = sh(script: 'docker inspect $(docker ps | awk \'{print $2}\' | grep -v ID) | jq \'.[].RepoTags\' | grep -m 1 "streetcode_client:" | tail -n 1 | cut -d ":" -f2 | head -c -2', returnStdout: true).trim()
+                    preDeployFrontStage = sh(script: 'docker inspect $(docker ps | awk \'{print $2}\' | grep -v ID) | jq \'.[].RepoTags\' | grep -m 1 "streetcode_client:" | tail -n 1 | cut -d ":" -f2 | head -c -3', returnStdout: true).trim()
                     echo "Last Tag Stage frontend: ${preDeployFrontStage}"
                 
                     
@@ -135,8 +135,8 @@ pipeline {
 
                     sh 'docker image prune --force --filter "until=72h"'
                     sh 'docker system prune --force --filter "until=72h"'
-                    sh """ export DOCKER_TAG_BACKEND=${env.CODE_VERSION}
-                    export DOCKER_TAG_FRONTEND=${preDeployBackStage}
+                    sh """ export DOCKER_TAG_BACKEND=${preDeployBackStage}
+                    export DOCKER_TAG_FRONTEND=${env.CODE_VERSION}
                     docker stop backend frontend nginx loki certbot
                     docker container prune -f                
                     docker volume prune -f
