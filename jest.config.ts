@@ -1,5 +1,4 @@
 import type { JestConfigWithTsJest } from 'ts-jest';
-
 const jestConfig: JestConfigWithTsJest = {
 
   preset: "ts-jest",
@@ -48,3 +47,4 @@ const jestConfig: JestConfigWithTsJest = {
 };
 
 export default jestConfig;
+

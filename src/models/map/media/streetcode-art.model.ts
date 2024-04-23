@@ -1,4 +1,4 @@
-import Streetcode from '../streetcode/streetcode-types.model';
+import Streetcode from '@models/streetcode/streetcode-types.model';
 
 import Art from './art.model';
 
