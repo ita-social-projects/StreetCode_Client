@@ -3,14 +3,13 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import React, {
-    Dispatch, SetStateAction, useEffect, useState,
+    Dispatch, SetStateAction, useEffect
 } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover,
-    UploadFile,
+    Button, Form, Input, message, Modal, Popover
 } from 'antd';
 
 import Tag from '@/models/additional-content/tag.model';
