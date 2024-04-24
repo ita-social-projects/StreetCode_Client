@@ -6,7 +6,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import NewTimelineContextModal from './NewTimelineContextModal.component';
+import ContextAdminModalComponent from './ContextModal/ContextAdminModal.component';
 import Context from '@/models/additional-content/context.model';
 
 import './ContextMainPage.style.scss';
@@ -97,8 +97,8 @@ const ContextMainPage: React.FC = observer(() => {
                     rowKey="id"
                 />
             </div>
-            <NewTimelineContextModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
-            <NewTimelineContextModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={contextToEdit} />
+            <ContextAdminModalComponent isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
+            <ContextAdminModalComponent isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={contextToEdit} />
         </div>
 
     );
