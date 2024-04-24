@@ -3,7 +3,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-imports */
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { ReCAPTCHAProps } from 'react-google-recaptcha';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
@@ -13,8 +14,6 @@ import { Input } from '../../../../__mocks__/antd/antd';
 import Form from '../../../../__mocks__/antd/es/form/Form';
 
 import AdminLogin from './AdminLogin.component';
-import React from 'react';
-import { ReCAPTCHAProps } from 'react-google-recaptcha';
 
 // Mock AuthService.
 jest.mock('@/app/common/services/auth-service/AuthService', () => ({
@@ -48,9 +47,6 @@ jest.mock('antd', () => {
 });
 
 // Mock reCaptcha.
-jest.mock('react-google-recaptcha', () => class MockCapthca extends React.Component {
-    
-});
 
 describe('AdminLogin', () => {
     it('should render component and its elements', () => {
@@ -72,7 +68,6 @@ describe('AdminLogin', () => {
 
     it('loginAsync is called if form is submitted', () => {
         window._env_.RECAPTCHA_SITE_KEY = 'fake_site_key';
-        const AdminLogin = shallow
         render(
             <MemoryRouter>
                 <AdminLogin />

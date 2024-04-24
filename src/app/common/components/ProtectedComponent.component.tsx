@@ -18,11 +18,9 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => 
             .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
     }
 
-    if (!Array.isArray(children)) return <>{children}</>;
-
     return (
         <>
-            {children.map((child) => child) }
+            {children}
         </>
     );
 };
