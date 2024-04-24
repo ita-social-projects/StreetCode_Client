@@ -67,7 +67,7 @@ const TextComponent = () => {
                                 <AdditionalText additionalText={htmpReactParser(text?.additionalText ?? '')} />
                             </div>
                         </div>
-                        {video.url.length > 1
+                        {video && video.url.length > 1
                             ? (
                                 <div className="videoComponent">
                                     <VideoPlayer

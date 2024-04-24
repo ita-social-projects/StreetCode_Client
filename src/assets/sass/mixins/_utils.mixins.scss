@@ -1,5 +1,6 @@
 @use '../variables/variables.fonts' as ft;
 @use '../variables/variables.colors' as c;
+@use '../variables/variables.sizes' as s;
 @use '../mixins/vendor.mixins' as vnd;
 @use '../utils.functions' as f;
 
@@ -80,6 +81,13 @@
 // --------------------------Centering----------------------------
 @mixin flex-centered($direction: row, $gap: 0) {
   @include flexed($direction, center, center, nowrap, $gap);
+}
+
+@mixin flex-center($direction: row) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
 }
 
 @mixin absolute-centered($axes: 'both') {
@@ -174,6 +182,12 @@
   background-color: $bg-color;
 }
 
+@mixin full-size{
+  max-height: 100%;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+}
 @mixin admin-page-base-layout(){
   margin-top: f.pxToRem(100px);
   display: flex;
@@ -275,6 +289,26 @@
     -webkit-text-fill-color: transparent;
     z-index: $z-index;
   }
+}
+
+// --------------------------Art gallery specific mixins---------------------------------
+@mixin images-grid-area($to: 6){
+  @for $i from 1 through $to {
+    .img#{$i}, .droppable#{$i} {
+      grid-area: img#{$i}
+    }
+  }
+}
+
+@mixin art-slide-grid($cols:1, $rows:1){
+  $gap: 30px;
+  $gap-sum: ($rows - 1) * $gap;
+
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  grid-template-columns: repeat($cols, 1fr);
+  grid-template-rows: repeat($rows, minmax(11rem, 253px));
 }
 
 @mixin list-styles($type) {

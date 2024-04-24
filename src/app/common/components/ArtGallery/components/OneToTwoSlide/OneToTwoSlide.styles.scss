@@ -1,0 +1,17 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as *;
+@use '@sass/variables/variables.sizes' as s;
+
+.oneToTwoSlide{
+    @include mut.flex-center();
+
+    .baseArtSlideImageWrapper{
+        width: pxToRem(s.$art-gallery-img-size);
+        @media screen and (max-width: 768px){
+            width: pxToRem(s.$art-gallery-img-size-mobile * 1.2);
+        }
+    }
+    @media screen and (max-width: 680px){
+        width: pxToRem(s.$art-gallery-img-size-mobile);
+    }
+}

@@ -4,13 +4,11 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@assets/sass/_utils.functions.scss" as f;
-
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
-
+    margin-top: 110px;
     .sourcesContainer {
         @include mut.sizedImportant(100%, 100%);
-
         @media screen and (max-width: 768px) {
             justify-content: stretch !important;
         }
@@ -18,53 +16,61 @@
             @include mut.flex-centered();
             .slick-slide {
                 .slider-item-container {
-                    .left, .right {
+                    .left,
+                    .right {
                         display: none;
                     }
                 }
             }
         }
-
-        > .blockHeadingWrapper {
+        >.blockHeadingWrapper {
             margin-top: pxToRem(0px);
         }
     }
-
-    .sourcesSliderContainer {
+    .sourcesSliderContainerBig {
+        position: relative;
+        @include mut.sized($width: 1065px);
+        margin: 0 auto;
+        .slick-arrow {
+            position: absolute;
+            transform: translateY(-1.8rem);
+        }
+    }
+    .sourcesSliderContainerSmall {
         @include mut.sizedImportant(1230px, 100%);
         .slick-arrow {
             display: none;
             visibility: hidden;
         }
     }
-
     .sliderClass {
         .slick-list {
             @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px;
+            margin-right: -60px;
         }
-
         .slick-track {
             @include mut.flex-centered($gap: 30px);
             width: unset !important;
             border: none;
-            border: 1px solid transparent;          
+            border: 1px solid transparent;
             .slick-slide {
                 @include vnd.vendored(transition, 'all .5s ease');
-                .left, .right{
+                .left,
+                .right {
                     width: 0;
                 }
-    
                 &:hover {
                     scale: 101%;
                     filter: contrast(135%);
                     cursor: pointer;
                     &:focus,
                     &:focus-visible {
-                    outline: none;
+                        outline: none;
                     }
                 }
             }
-            .slick-cloned{
+            .slick-cloned {
                 display: none;
             }
         }
@@ -78,7 +84,7 @@
     .sourcesWrapper .sliderClass .slick-track {
         gap: f.pxToRem(10px);
     }
-    .sourcesWrapper .slick-dots{
+    .sourcesWrapper .slick-dots {
         left: f.pxToRem(1px);
     }
 }

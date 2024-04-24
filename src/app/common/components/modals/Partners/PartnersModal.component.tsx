@@ -15,6 +15,7 @@ import {
 import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Email from '@/models/email/email.model';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -23,10 +24,11 @@ const PartnersModal = () => {
     const { setModal, modalsState: { partners } } = modalStore;
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({ email: '', message: '' });
-    const [messageApi, messageContextHolder] = message.useMessage();
+    const [messageApi, messageContextHolder] = message.useMessage({maxCount: 3});
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -42,13 +44,17 @@ const PartnersModal = () => {
                 .catch((error) => {
                     onCancel();
                     if (error === 429) {
-                        errorMessage('Ви перевищили ліміт повідомлень, повторіть через 5 хвилин!');
+                        errorMessage(MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage('Щось пішло не так...');
+                        errorMessage(SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
+            setIsVerified(false);
+        }
+        else {
+            errorMessage(RECAPTCHA_CHECK);
         }
     };
 
@@ -64,6 +70,10 @@ const PartnersModal = () => {
 
     const handleVerify = () => {
         setIsVerified(true);
+    };
+
+    const handleExpiration = () => {
+        setIsVerified(false);
     };
 
     const successMessage = () => {
@@ -168,6 +178,7 @@ const PartnersModal = () => {
                                 className="required-input"
                                 sitekey={siteKey ? siteKey : ""}
                                 onChange={handleVerify}
+                                onExpired={handleExpiration}
                                 ref={recaptchaRef}
                             />
                         </div>

@@ -5,7 +5,7 @@ import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import Audio, { AudioCreate } from '@/models/media/audio.model';
-import ImageCustom, { ImageCreate } from '@/models/media/image.model';
+import ImageNew,  { ImageCreate } from '@/models/media/image.model';
 
 type UploaderWithoutChildren = Omit<UploadProps, 'children'>;
 
@@ -14,7 +14,7 @@ interface Props extends UploaderWithoutChildren {
     edgeSwipe?: boolean;
     uploadTo:'image' | 'audio';
     greyFilterForImage?: boolean;
-    onSuccessUpload?:(value:ImageCustom | Audio)=>void;
+    onSuccessUpload?:(value: ImageNew | Audio, file?: UploadFile)=>void;
 }
 const FileUploader:React.FC<Props> = ({
     onSuccessUpload, uploadTo, greyFilterForImage = false, children, ...uploadProps
@@ -73,7 +73,7 @@ const FileUploader:React.FC<Props> = ({
         }
     };
     const onFileUpload = (uploadType:'image' | 'audio', uplFile:UploadFile)
-    :Promise< ImageCustom | Audio> => {
+    :Promise< ImageNew | Audio> => {
         if (uploadType === 'audio') {
             const audio :AudioCreate = {
                 baseFormat: imageDataAsURL.current
@@ -108,7 +108,7 @@ const FileUploader:React.FC<Props> = ({
                         .then((respones) => {
                             onSuccess(respones);
                             if (onSuccessUpload) {
-                                onSuccessUpload(respones);
+                                onSuccessUpload(respones, file);
                             }
                         })
                         .catch((err) => {
@@ -126,6 +126,7 @@ const FileUploader:React.FC<Props> = ({
             {...uploadProps}
             customRequest={customRequest}
             onChange={onUploadChange}
+            data-testid={"fileuploader"}
         >
             {children}
         </Upload>

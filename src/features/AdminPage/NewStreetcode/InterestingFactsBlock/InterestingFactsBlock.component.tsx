@@ -8,7 +8,7 @@ import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminM
 import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
 
 interface Props {
-    fact: Fact;
+    fact?: Fact;
     onChange: (field: string, value: any) => void;
 }
 

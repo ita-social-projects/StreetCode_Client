@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -19,17 +19,18 @@ import { clearWindowHistoryState } from '@utils/window.utility';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
-import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
+import { useInView } from 'react-intersection-observer';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -40,6 +41,11 @@ const StreetcodeContent = () => {
     const [activeTagId, setActiveTagId] = useState(0);
     const [showAllTags, setShowAllTags] = useState<boolean>(false);
     const [streetcode, setStreecode] = useState<Streetcode>();
+
+    const [ref, inView] = useInView({threshold: 1,});
+    const showModalOnScroll = useRef(true);
+    const [haveBeenDisplayed, setHaveBeenDisplayed] = useState(false);
+    const { modalStore: { setModal } } = useModalContext();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -60,6 +66,16 @@ const StreetcodeContent = () => {
     const addCount = async (qrId: number) => {
         await StatisticRecordApi.update(qrId);
     };
+
+    const handleSurveyModalOpen = () => {
+        if(inView && !haveBeenDisplayed)
+        {
+            setHaveBeenDisplayed(true);
+            setModal('survey', undefined, true);
+            showModalOnScroll.current = false;
+        }
+    }
+    setTimeout(handleSurveyModalOpen, 500);
 
     useAsync(() => {
         Promise.all([checkStreetcodeExist(streetcodeUrl.current)])
@@ -123,7 +139,7 @@ const StreetcodeContent = () => {
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 {pageLoadercontext.isPageLoaded ? (
-                    <ArtGalleryBlockComponent />
+                    <ArtGallery isFillArtsStore />
                 ) : (
                     <></>
                 )}
@@ -142,7 +158,9 @@ const StreetcodeContent = () => {
                     <DonateBtn />
                 </div>
             </div>
-            <TickerBlock type="subtitle" />
+            <div ref={ref}>
+                <TickerBlock type="subtitle" />
+            </div>
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}
