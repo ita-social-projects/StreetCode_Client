@@ -6,7 +6,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { Button } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import ContextAdminModalComponent from './ContextModal/ContextAdminModal.component';
+import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import Context from '@/models/additional-content/context.model';
 
 import './ContextMainPage.style.scss';
@@ -100,7 +100,6 @@ const ContextMainPage: React.FC = observer(() => {
             <ContextAdminModalComponent isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <ContextAdminModalComponent isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={contextToEdit} />
         </div>
-
     );
 });
 export default ContextMainPage;

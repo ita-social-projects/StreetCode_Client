@@ -29,21 +29,6 @@ jest.mock('@/app/api/additional-content/contexts.api', () => ({
     }),
 }));
 
-jest.mock('@stores/root-store', () => ({
-    __esModule: true,
-    default: () => ({
-        contextStore: {
-            fetchContexts: jest.fn().mockResolvedValue([]),
-            createContext: (context: ContextCreate) => {
-                ContextsApi.create(context);
-            },
-            updateContext: (context: Context) => {
-                ContextsApi.update(context);
-            },
-        },
-    }),
-}));
-
 // needed to render component without errors
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
