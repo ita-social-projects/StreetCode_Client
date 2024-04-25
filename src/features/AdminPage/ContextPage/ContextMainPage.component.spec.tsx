@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import ContextsApi from "@api/additional-content/contexts.api";
+
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
     const message = antd;
@@ -24,33 +24,22 @@ jest.mock('mobx-react-lite', () => ({
     observer: jest.fn((Component) => Component), // mock observer as a pass-through
 }));
 
-jest.mock('@/app/api/additional-content/contexts.api', () => ({
-    create: jest.fn(() => {
-    }),
-    update: jest.fn(() => {
-    }),
-    delete: jest.fn(() => {
-    }),
-}));
+export default function overrideMatchMedia() {
+    Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: () => ({
+            matches: false,
+            onchange: null,
+            addListener: () => {},
+            removeListener: () => {},
+            addEventListener: () => {},
+            removeEventListener: () => {},
+            dispatchEvent: () => {}
+        }),
+    });
+}
 
-// needed to render component without errors
-Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: () => ({
-        matches: false,
-        onchange: null,
-        addListener: () => {
-        },
-        removeListener: () => {
-        },
-        addEventListener: () => {
-        },
-        removeEventListener: () => {
-        },
-        dispatchEvent: () => {
-        },
-    }),
-});
+overrideMatchMedia();
 
 describe('ContextMainPage', () => {
 

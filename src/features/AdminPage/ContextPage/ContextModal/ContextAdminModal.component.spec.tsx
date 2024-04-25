@@ -2,10 +2,22 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
-import Context, { ContextCreate } from '@models/additional-content/context.model';
+import Context from '@models/additional-content/context.model';
 import ContextsApi from '@api/additional-content/contexts.api';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import { message } from 'antd';
+import overrideMatchMedia from '@features/AdminPage/ContextPage/ContextMainPage.component.spec';
+
+overrideMatchMedia();
+
+jest.mock('@/app/api/additional-content/contexts.api', () => ({
+    create: jest.fn(() => {
+    }),
+    update: jest.fn(() => {
+    }),
+    delete: jest.fn(() => {
+    }),
+}));
 
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
@@ -20,32 +32,6 @@ jest.mock('antd', () => {
             error: jest.fn(),
         },
     };
-});
-
-jest.mock('@/app/api/additional-content/contexts.api', () => ({
-    create: jest.fn(() => {
-    }),
-    update: jest.fn(() => {
-    }),
-}));
-
-// needed to render component without errors
-Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: () => ({
-        matches: false,
-        onchange: null,
-        addListener: () => {
-        },
-        removeListener: () => {
-        },
-        addEventListener: () => {
-        },
-        removeEventListener: () => {
-        },
-        dispatchEvent: () => {
-        },
-    }),
 });
 
 describe('ContextAdminModal', () => {
