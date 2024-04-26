@@ -8,6 +8,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import UserLoginStore from '@/app/stores/user-login-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -104,7 +105,13 @@ const StreetcodeContent = () => {
     });
 
     useEffect(() => {
-        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => setStreecode(val));
+        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
+            if ((val?.status === 0 && UserLoginStore.isLoggedIn)|| val?.status !== 0) {
+                setStreecode(val);
+            }else{
+                navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+            }
+        });    
 
         const fromPage = location.state?.fromPage;
 

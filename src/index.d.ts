@@ -6,3 +6,7 @@ declare module '*.svg' {
 }
 declare module '*.css';
 declare module '*.jpeg';
+declare module '*.webp' {
+    const value: any;
+    export = value;
+}

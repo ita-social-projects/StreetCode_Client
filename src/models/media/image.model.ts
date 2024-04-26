@@ -1,13 +1,12 @@
 import IModelState from '@models/interfaces/IModelState';
 
 export default interface Image {
-    alt?: string
     id: number;
     base64: string;
     blobName: string;
     mimeType: string;
     imageDetails?: ImageDetails;
-    alt?:string;
+    alt?: string;
 }
 
 export enum ImageAssigment {
@@ -21,6 +20,7 @@ export interface ImageCreate {
     baseFormat: string;
     mimeType: string;
     extension: string;
+    alt: string;
 }
 export interface ImageDetails {
     id: number;

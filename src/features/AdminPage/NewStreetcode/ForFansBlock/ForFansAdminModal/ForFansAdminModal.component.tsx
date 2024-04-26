@@ -64,7 +64,7 @@ const ForFansModal = ({
         maxCount: 3,
     });
 
-    const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
+    const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[] | undefined> => {
         try {
             const categories = await SourcesApi.getAllCategories();
             sourcesAdminStore.setInternalSourceCategories(categories);
@@ -103,7 +103,10 @@ const ForFansModal = ({
 
     async function fetchData() {
         const AvailableCats = await getAvailableCategories(false);
-        setAvailableCategories(AvailableCats);
+        if (AvailableCats)
+            {
+                setAvailableCategories(AvailableCats);
+            }
     }
 
     useEffect(() => {
@@ -142,10 +145,12 @@ const ForFansModal = ({
         indexOfPersistedCategory: number,
         isEditedCategoryPersisted: boolean,
     ) => {
+        let ids: (number | undefined)[] = sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id);
+        let filteredIds: number[] = ids.filter((id): id is number => id !== undefined);
         if (!isEditedCategoryPersisted) {
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({
-                    id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
+                    id: getNewMinNegativeId(filteredIds),
                     sourceLinkCategoryId: values.category,
                     text: editorContent ?? '',
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
@@ -236,7 +241,10 @@ const ForFansModal = ({
             const categories = await SourcesApi.getAllNames();
             setCategories(categories.sort((a, b) => a.title.localeCompare(b.title)));
             const AvailableCats = await getAvailableCategories(true);
-            setAvailableCategories(AvailableCats);
+            if (AvailableCats)
+                {
+                    setAvailableCategories(AvailableCats);
+                }
             alert('Категорію успішно додано до списку!');
         }
     };

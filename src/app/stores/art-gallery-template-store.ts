@@ -57,7 +57,8 @@ export default class ArtGalleryTemplateStore {
 
     public hasArtWithId(id: string): boolean {
         if (this.streetcodeArtSlides.length === 0) return false;
-        const isInSlides = this.streetcodeArtSlides.some((slide) => slide.streetcodeArts.some((sArt) => sArt.art.id == id));
+        let currId : number = Number(id); 
+        const isInSlides = this.streetcodeArtSlides.some((slide) => slide.streetcodeArts.some((sArt) => sArt.art.id == currId));
         return isInSlides;
     }
 }

@@ -1,9 +1,10 @@
-import React, { HTMLProps, ReactNode } from 'react';
+import React, { DragEventHandler, HTMLProps, ReactNode } from 'react';
 import {
-    DndContext, DragEndEvent, PointerSensor, useSensor, useSensors,
+    DndContext, PointerSensor, useSensor, useSensors,
 } from '@dnd-kit/core';
 import Art from '@models/media/art.model';
 import useMobx from '@stores/root-store';
+import type { DragEndEvent } from '@dnd-kit/core/dist/types/events';
 
 type Props = {
     children: ReactNode;
@@ -19,10 +20,11 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
             },
         }),
     );
+    const { onDragEnd: _, onDragStart: a, onDragOver: b,  ...rest } = props;
 
     return (
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        <DndContext onDragEnd={onDragEnd} sensors={sensors} {...props}>
+        <DndContext onDragEnd={onDragEnd} sensors={sensors} {...rest}>
             {children}
         </DndContext>
     );
