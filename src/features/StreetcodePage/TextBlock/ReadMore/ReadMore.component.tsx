@@ -25,7 +25,7 @@ const ReadMore = ({ text }: Props) => {
         query: '(min-width: 1025px)',
     });
     const isTablet = useMediaQuery({
-        query: '(min-width: 481px) and (max-width: 1023px)',
+        query: '(min-width: 481px) and (max-width: 1024px)',
     });
 
     const isTextLong = (isDesktop && text.length > MAX_LENGTH_DESKTOP)

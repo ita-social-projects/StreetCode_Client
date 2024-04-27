@@ -4,7 +4,6 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@assets/sass/_utils.functions.scss" as f;
-@use "@features/SlickSlider/SlickSlider.styles.scss" as ss;
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
     margin-top: 110px;

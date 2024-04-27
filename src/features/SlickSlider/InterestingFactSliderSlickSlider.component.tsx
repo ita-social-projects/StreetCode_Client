@@ -38,6 +38,11 @@ const GenericSlider: FC<SliderProps> = ({
                 return;
             }
 
+            if(sliderProps.speed === undefined)
+            {
+                sliderProps.speed = 0;
+            }
+
             if (Date.now() - lastClick >= sliderProps.speed + 100) {
                 if (direction === 'next') {
                     sliderRef.current?.slickNext();

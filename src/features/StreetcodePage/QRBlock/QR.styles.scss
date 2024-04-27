@@ -6,7 +6,7 @@
 $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
 
 .QRBlockContainer {
-    @include mut.sized(100%, 779px);
+    @include mut.sized(100%, 645px);
 
     @include mut.flexed(column, center, flex-start);
     @include mut.bg-image($QRBgImg);
@@ -23,7 +23,8 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
     }
 
     &.container{
-        margin-top: pxToRem(110px);
+        margin-top: pxToRem(167px);
+        margin-bottom: pxToRem(31.5px);
     }
 }
 
@@ -44,7 +45,7 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
         color: colors.$lighter-black-color;
 
         padding-left: pxToRem(14px);
-        margin-top: pxToRem(22px);
+        margin-top: pxToRem(20px);
     }
 
     .appealPrg {
@@ -52,7 +53,7 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
         color: colors.$lighter-black-color;
 
         padding-left: pxToRem(14px);
-        margin-top: pxToRem(33px) !important;
+        margin-top: pxToRem(36px) !important;
     }
 
     img {
@@ -79,7 +80,16 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
         @include mut.sized(100%, auto);
 
         &.container{
-            margin-top: pxToRem(86px);
+            margin-top: pxToRem(44px);
+            margin-bottom: pxToRem(50px);
+        }
+    }
+}
+
+@media (max-width: 715px){
+    .QRBlockContainer{
+        &.container{
+            margin-bottom: pxToRem(30px);
         }
     }
 }

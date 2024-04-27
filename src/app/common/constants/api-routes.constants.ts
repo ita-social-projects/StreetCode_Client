@@ -17,7 +17,6 @@ export const API_ROUTES = {
         GET: 'news/getById',
         GET_BY_URL: 'news/getByUrl',
         GET_NEWS_AND_LINKS_BY_URL: 'news/getNewsAndLinksByUrl',
-        GET_ALL_SORTED: 'news/sortedNewsByDateTime',
         CREATE: 'news/create',
         DELETE: 'news/delete',
         UPDATE: 'news/update',
@@ -138,6 +137,7 @@ export const API_ROUTES = {
     },
     ARTS: {
         GET_ALL: 'arts/getAll',
+        GET_ALL_BY_STREETCODE_ID: 'art/getAllByStreetcodeId',
         GET: 'arts/getById',
         CREATE: 'arts/create',
         UPDATE: 'arts/update',
@@ -146,7 +146,9 @@ export const API_ROUTES = {
     STREETCODE_ARTS: {
         GET_ALL: 'streetcodeArt/getAll',
         GET_BY_STREETCODE_ID: 'streetcodeArt/getByStreetcodeId',
-        GET_PAGE_BY_STREETCODE_ID: 'streetcodeArt/getPageByStreetcodeId',
+    },
+    STREETCODE_ART_SLIDES: {
+        GET_SLIDES_BY_STREETCODE_ID: 'streetcodeArtSlide/getPageByStreetcodeId',
     },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',
@@ -199,8 +201,9 @@ export const API_ROUTES = {
         DELETE: 'coordinate/delete',
     },
     USERS: {
-        LOGIN: 'user/login',
-        REFRESH_TOKEN: 'user/refreshToken',
+        LOGIN: 'auth/login',
+        REFRESH_TOKEN: 'auth/refreshToken',
+        REGISTER: 'auth/register',
     },
     EMAIL: {
         SEND: 'email/send',
