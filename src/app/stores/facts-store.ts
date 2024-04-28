@@ -120,4 +120,8 @@ export default class FactsStore {
             });
         } catch (error: unknown) { /* empty */ }
     };
+
+    public updateFactMapWithNewOrder = (facts: Fact[]) => {
+        this.setInternalMap(facts);
+      };
 }

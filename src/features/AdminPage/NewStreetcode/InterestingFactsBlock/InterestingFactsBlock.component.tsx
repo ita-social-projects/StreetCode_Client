@@ -1,47 +1,99 @@
-import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
-import useMobx from '@stores/root-store';
+import { observer } from "mobx-react-lite";
+import { useState, useMemo } from "react";
+import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd";
+import useMobx from "@stores/root-store";
 
-import { Fact } from '@/models/streetcode/text-contents.model';
+import { Fact } from "@/models/streetcode/text-contents.model";
 
-import InterestingFactsAdminModal from './FactsAdminModal/InterestingFactsAdminModal.component';
-import InterestingFactAdminItem from './InterestingFactsAdminItem/InterestingFactsAdminItem.component';
+import InterestingFactsAdminModal from "./FactsAdminModal/InterestingFactsAdminModal.component";
+import InterestingFactAdminItem from "./InterestingFactsAdminItem/InterestingFactsAdminItem.component";
+import StrictModeDroppable from "@/app/common/components/StrictModeDroppable";
 
 interface Props {
-    fact: Fact;
-    onChange: (field: string, value: any) => void;
+  fact: Fact;
+  onChange: (field: string, value: any) => void;
 }
 
 const InterestingFactsBlock = ({ fact, onChange }: Props) => {
-    const [openModal, setModalOpen] = useState<boolean>(false);
-    const { factsStore } = useMobx();
+  const [openModal, setModalOpen] = useState<boolean>(false);
+  const { factsStore } = useMobx();
 
-    return (
-        <div className="adminContainer-block">
-            <h2>Wow-факти</h2>
-            <div className="textBlockButton-container">
-                <button
-                    type="button"
-                    className="buttonWithPlus"
-                    onClick={() => {
-                        setModalOpen(true);
-                    }}
-                >
-                    +
-                </button>
-                {factsStore.getFactArray.map((f) => (
-                    <InterestingFactAdminItem
+  const items = useMemo(
+    () => factsStore.getFactArray,
+    [factsStore.getFactArray]
+  );
+
+  function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  }
+
+  const handleOnDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const reorderedItems = reorder(
+      items,
+      result.source.index,
+      result.destination!.index
+    );
+    factsStore.updateFactMapWithNewOrder(reorderedItems);
+  };
+
+  return (
+    <div className="adminContainer-block">
+      <h2>Wow-факти</h2>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <StrictModeDroppable droppableId="droppable" direction="horizontal">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="textBlockButton-container"
+            >
+              <button
+                type="button"
+                className="buttonWithPlus"
+                onClick={() => {
+                  setModalOpen(true);
+                }}
+              >
+                +
+              </button>
+              {items.map((f, index) => (
+                <Draggable key={f.id} draggableId={`d${f.id}`} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <InterestingFactAdminItem
                         key={f.id}
                         fact={f}
                         onChange={onChange}
-                    />
-                ))}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
             </div>
-            <div>
-                <InterestingFactsAdminModal fact={fact} setModalOpen={setModalOpen} open={openModal} onChange={onChange} />
-            </div>
-        </div>
-    );
+          )}
+        </StrictModeDroppable>
+      </DragDropContext>
+      <div>
+        <InterestingFactsAdminModal
+          fact={fact}
+          setModalOpen={setModalOpen}
+          open={openModal}
+          onChange={onChange}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default observer(InterestingFactsBlock);

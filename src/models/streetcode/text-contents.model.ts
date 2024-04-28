@@ -11,6 +11,7 @@ export interface Fact {
   factContent: string;
   image?: Image;
   imageId: number;
+  index?:number;
 }
 export interface FactCreate extends Fact {
   imageDescription?: string
