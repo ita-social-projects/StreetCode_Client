@@ -9,10 +9,10 @@ import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
 import Partner from "@/models/partners/partners.model";
 
 interface Props {
-  onlyKeyPartners: boolean;
+  onlyKeyPartners?: boolean;
 }
 
-const PartnersBlock = ({ onlyKeyPartners }: Props) => {
+const PartnersBlock = ({ onlyKeyPartners}: Props) => {
   const [keyPartners, setKeyPartners] = useState<Partner[]>([]);
   const [otherPartners, setOtherPartners] = useState<Partner[]>([]);
 

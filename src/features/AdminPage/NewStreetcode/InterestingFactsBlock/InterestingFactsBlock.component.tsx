@@ -10,8 +10,8 @@ import InterestingFactAdminItem from "./InterestingFactsAdminItem/InterestingFac
 import StrictModeDroppable from "@/app/common/components/StrictModeDroppable";
 
 interface Props {
-  fact: Fact;
-  onChange: (field: string, value: any) => void;
+    fact?: Fact;
+    onChange: (field: string, value: any) => void;
 }
 
 const InterestingFactsBlock = ({ fact, onChange }: Props) => {

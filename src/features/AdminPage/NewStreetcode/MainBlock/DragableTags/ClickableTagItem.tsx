@@ -11,7 +11,7 @@ const ClickableTagItem: React.FC<{
     tag: StreetcodeTag,
     setVisibility:(visible:boolean)=>void }> = ({ tag, setVisibility }) => {
         const [curTag, setTag] = useState<StreetcodeTag>({ ...tag });
-        const onClick = (e) => {
+        const onClick = () => {
             setVisibility(!curTag.isVisible);
             setTag({ ...curTag, isVisible: !curTag.isVisible });
         };

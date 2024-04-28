@@ -47,7 +47,7 @@ export interface Text {
 }
 
 export interface TextCreateUpdate extends IModelState {
-  id: number;
+  id?: number;
   title: string | undefined;
   textContent: string | undefined;
   additionalText?: string;
