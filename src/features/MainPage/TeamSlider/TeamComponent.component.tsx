@@ -39,6 +39,7 @@ const TeamComponent = () => {
     const windowsize = useWindowSize();
     if (windowsize.width <= 1024)
     {
+        props.arrows = false;
         props.dots = true;
         if (windowsize.width >= 768) props.centerMode = true;
     }

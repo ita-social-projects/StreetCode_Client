@@ -64,7 +64,11 @@ const NewsSlider = () => {
                                             <SlickSlider
                                                 beforeChange={handleBeforeChange}
                                                 afterChange={handleAfterChange}
+                                                dots={ windowSize.width < 1024}
+                                                arrows={ windowSize.width > 1024}
                                                 {...NEWS_SLIDER_PROPS}
+                                                
+
                                             >
                                                 {newsStore.getNewsArray.map((item, index) => (
                                                     <div
