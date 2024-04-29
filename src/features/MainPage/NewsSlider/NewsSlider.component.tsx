@@ -27,7 +27,7 @@ const NewsSlider = () => {
 
     const [dragging, setDragging] = useState(false);
 
-    NEWS_SLIDER_PROPS.dots = windowSize.width < 1024;
+    NEWS_SLIDER_PROPS.dots = windowSize.width < 1025;
 
     const handleBeforeChange = useCallback(() => {
         setDragging(true);
