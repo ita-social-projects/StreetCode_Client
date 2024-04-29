@@ -13,7 +13,7 @@
     @include mut.sized(40px, 58px);
     $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
     content: url($path);
-    opacity: 1 !important;
+    opacity: 1;
 }
 
 

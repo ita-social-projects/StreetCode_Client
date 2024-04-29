@@ -26,7 +26,7 @@ const TeamComponent = () => {
         touchAction: 'pan-y',
         touchThreshold: 25,
         transform: 'translateZ(0)',
-        arrows: false,
+        arrows: true,
         centerMode: false,
         centerPadding: '-5px',
         dots: false,

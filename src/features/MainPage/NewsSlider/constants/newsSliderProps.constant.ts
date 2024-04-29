@@ -2,7 +2,7 @@ const NEWS_SLIDER_PROPS = {
     touchAction: 'pan-y',
     touchThreshold: 25,
     transform: 'translateZ(0)',
-    arrows: false,
+    arrows: true,
     dots: true,
     infinite: true,
     variableWidth: true,
