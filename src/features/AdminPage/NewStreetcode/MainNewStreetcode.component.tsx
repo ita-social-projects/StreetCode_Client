@@ -52,7 +52,7 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 
-function reindex(list:Array<StreetcodeTag>):Array<StreetcodeTag> {
+function reindex<T extends { index?: number }>(list: T[]): T[] {
     const result = Array.from(list);
 
     for (let i = 0; i < result.length; i += 1) {
@@ -333,8 +333,8 @@ const NewStreetcode = () => {
                 relatedFigures: figures,
                 text: text.title && text.textContent ? text : null,
                 timelineItems: timelineItemStore.getTimelineItemArrayToCreate,
-                facts: JSON.parse(JSON.stringify(factsStore.getFactArray))
-                    .map((fact: Fact) => ({ ...fact, id: 0 })),
+                facts: reindex(JSON.parse(JSON.stringify(factsStore.getFactArray))
+                    .map((fact: Fact) => ({ ...fact, id: 0 }))),
                 coordinates: JSON.parse(JSON.stringify(streetcodeCoordinatesStore.getStreetcodeCoordinateArray))
                     .map((coordinate: StreetcodeCoordinate) => ({ ...coordinate, id: 0 })),
                 partners,
@@ -424,7 +424,7 @@ const NewStreetcode = () => {
                     videos: videosUpdate,
                     relatedFigures: relatedFiguresUpdate,
                     timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
-                    facts: factsStore.getFactArrayToUpdate.map((item) => ({ ...item, streetcodeId: parseId })),
+                    facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({ ...item, streetcodeId: parseId }))),
                     partners: partnersUpdate,
                     subtitles: subtitleUpdate,
                     text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
