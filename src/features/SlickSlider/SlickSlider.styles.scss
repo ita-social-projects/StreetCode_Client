@@ -13,7 +13,7 @@
     @include mut.sized(40px, 58px);
     $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
     content: url($path);
-    opacity: 1 !important;
+    opacity: 1;
 }
 
 
@@ -92,7 +92,49 @@ li.slick-active button:before {
     }
 }
 
-
+.secondPreset{
+    
+        .slick-arrow {
+            top: 43%;
+            @include mut.sized(68px, 101px);
+        }
+    
+        .slick-prev,
+        .slick-next {
+            filter: none !important;
+        }
+    
+        .slick-prev {
+            left: 20px !important;
+    
+            &::before {
+                content: url("@assets/images/utils/LeftSmallSliderArrow.svg");
+                opacity: 0.9;
+                filter: none;
+            }
+    
+            &:hover::before {
+                opacity: 1.0;
+                filter: none;
+            }
+        }
+    
+        .slick-next {
+            right: 20px !important;
+    
+            &::before {
+                content: url("@assets/images/utils/RightSmallSliderArrow.svg");
+                opacity: 0.9;
+                filter: none;
+            }
+    
+            &:hover::before {
+                opacity: 1.0;
+                filter: none;
+            }
+        }
+    
+}
 
 @media screen and (max-width:1024px) {
     .slick-next,

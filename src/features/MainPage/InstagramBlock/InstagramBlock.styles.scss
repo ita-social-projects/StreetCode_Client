@@ -9,46 +9,8 @@
 .InstagramBlock {
     .sliderContainer {
         .slick-slider {
-            .slick-arrow {
-                top: 43%;
-                @include mut.sized(68px, 101px);
-            }
-
-            .slick-prev,
-            .slick-next {
-                filter: none !important;
-            }
-
-            .slick-prev {
-                left: 20px !important;
-
-                &::before {
-                    content: url("@assets/images/utils/LeftSmallSliderArrow.svg");
-                    opacity: 0.9;
-                    filter: none;
-                }
-
-                &:hover::before {
-                    opacity: 1.0;
-                }
-            }
-
             .slick-dots {
                 bottom: f.pxToRem(3px) !important;
-            }
-
-            .slick-next {
-                right: 20px !important;
-
-                &::before {
-                    content: url("@assets/images/utils/RightSmallSliderArrow.svg");
-                    opacity: 0.8;
-                    filter: none;
-                }
-
-                &:hover::before {
-                    opacity: 1.0;
-                }
             }
         }
 

@@ -5,10 +5,12 @@ import Slider from 'react-slick';
 
 import SliderProps, { defaultSliderProps } from './index';
 
+import classNames from 'classnames'
 const GenericSlider: FC<SliderProps> = ({
     children,
     onClick,
     swipeOnClick,
+    secondPreset=false,
     ...sliderProps
 }) => {
     const sliderRef = useRef<Slider>(null);
@@ -26,12 +28,17 @@ const GenericSlider: FC<SliderProps> = ({
         }
     }, [onClick, swipeOnClick]);
 
+    const classProps = classNames(
+        {'nonInfiniteSlider' : !sliderProps.infinite},
+        {'secondPreset' : secondPreset}
+    )
+    
     return (
         <div className="sliderClass">
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
-                className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
+                className={classProps}
             >
                 {children?.map((slide, idx) => (
                     <div className="slider-item-container" key={idx}>
