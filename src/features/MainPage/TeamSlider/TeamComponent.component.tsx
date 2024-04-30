@@ -73,6 +73,7 @@ const TeamComponent = () => {
                         <div className="blockCenter">
                             <div className="mainContent">
                                 <SlickSlider
+                                    secondPreset={true}
                                     {...props}
                                 >
                                     {team.map((member, index) => (

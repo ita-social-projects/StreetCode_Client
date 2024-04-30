@@ -55,7 +55,7 @@ const InstagramBlock = () => {
                 <div className="InstagramBlock">
                     <Heading blockName="Ми в Інсті" buttonName="Зацінити інстаграм" setActionOnClick={handleClick} />
                     <div className="sliderContainer">
-                        <BlockSlider {...sliderProps}>
+                        <BlockSlider secondPreset={true} {...sliderProps}>
                             {sliderItems}
                         </BlockSlider>
                         {windowSize.width <= 480 && (
