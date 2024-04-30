@@ -2,6 +2,11 @@ import { makeAutoObservable } from 'mobx';
 import UserApi from '@api/user/user.api';
 
 import { RefreshTokenResponce, UserLoginResponce } from '@/models/user/user.model';
+import { jwtDecode ,JwtPayload } from "jwt-decode";
+
+interface CustomJwtPayload extends JwtPayload {
+    role: string;
+}
 
 export default class UserLoginStore {
     private timeoutHandler: NodeJS.Timeout | undefined;
@@ -91,4 +96,15 @@ export default class UserLoginStore {
                 UserLoginStore.setToken(refreshToken.token);
                 return refreshToken;
             }));
+
+        public static isAdmin(): boolean {
+                const token = UserLoginStore.getToken();
+                if (!token) {
+                    return false;
+                }
+                const decodedToken = jwtDecode<CustomJwtPayload>(token);
+                const userRole = decodedToken.role;
+        
+                return userRole === 'Admin';
+            }
 }
