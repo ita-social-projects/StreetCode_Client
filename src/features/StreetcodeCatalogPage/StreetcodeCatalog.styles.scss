@@ -118,3 +118,11 @@ $loadImg: '@assets/images/catalog/loading.webp';
         }
     }
 }
+
+@media screen and (max-width: 340px) {
+    .headingFlexItem{
+        .streetcodeCatalogCaption {
+            display: none;
+        }
+    }
+}

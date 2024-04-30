@@ -6,6 +6,7 @@ export default interface Image {
     blobName: string;
     mimeType: string;
     imageDetails?: ImageDetails;
+    alt?: string;
 }
 
 export enum ImageAssigment {
@@ -19,6 +20,7 @@ export interface ImageCreate {
     baseFormat: string;
     mimeType: string;
     extension: string;
+    alt: string;
 }
 export interface ImageDetails {
     id: number;

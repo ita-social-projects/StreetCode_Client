@@ -2,28 +2,30 @@
 @use '@assets/sass/mixins/_utils.mixins.scss' as mut;
 @use '@assets/sass/variables/_variables.colors.scss' as c;
 @use "@assets/sass/variables/_variables.layers.scss" as l;
-
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
+
+
 
 @mixin slick-arrow-pseudo($direction, $margin) {
     transition: .5s;
     margin-left: pxToRem($margin);
     @include mut.sized(40px, 58px);
-
     $path: "@assets/images/utils/#{$direction}DefaultSliderArrow.svg";
     content: url($path);
+    opacity: 1 !important;
 }
+
 
 .slick-next,
 .slick-prev {
+    transition: .5s;
     pointer-events: none;
-
     &:hover:before {
-        filter: brightness(25%);
+        filter: c.$selected-arrow-filter-color;
     }
-
     &:before {
+        filter: c.$active-arrow-filter-color;
         pointer-events: all;
     }
 }
@@ -36,6 +38,21 @@
     @include slick-arrow-pseudo(Right, -5px);
 }
 
+.slick-arrow {
+    z-index: l.$slickArrow;
+}
+
+.slick-disabled {
+    transition: .5s;
+    &:before {
+        filter: c.$base-arrow-filter-color;
+        pointer-events: none;
+    }
+    &:hover:before{
+        filter: c.$base-arrow-filter-color;
+    }
+}
+
 .slick-dots li button:before {
     content: '';
     @include mut.sized(12px, 12px);
@@ -43,13 +60,6 @@
     transition: .5s;
 }
 
-.slick-disabled {
-    filter: c.$base-arrow-filter-color;
-
-    &:before {
-        pointer-events: none;
-    }
-}
 
 li.slick-active button:before {
     background: c.$dark-red-color;
@@ -57,16 +67,14 @@ li.slick-active button:before {
 
 .sliderClass {
     width: 100%;
-
     .slider-item-container {
         display: flex !important;
         position: relative;
         flex-direction: column;
         &:focus,
         &:focus-visible {
-         outline: none;
+            outline: none;
         }
-        
         .left {
             position: absolute;
             width: 35%;
@@ -74,7 +82,6 @@ li.slick-active button:before {
             left: 0;
             opacity: 0;
         }
-
         .right {
             position: absolute;
             width: 35%;
@@ -85,22 +92,13 @@ li.slick-active button:before {
     }
 }
 
-.slick-arrow {
-    z-index: l.$slickArrow;
-    opacity: .4;
-    filter: c.$selected-arrow-filter-color;
 
-    &:hover {
-        opacity: .25;
-    }
-}
 
 @media screen and (max-width:1024px) {
     .slick-next,
     .slick-prev {
         visibility: hidden;
     }
-
     .sliderClass .slick-dots li,
     .sliderClass .slick-dots li button,
     .sliderClass .slick-dots li button::before,

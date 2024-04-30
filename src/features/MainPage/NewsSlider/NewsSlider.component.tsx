@@ -7,10 +7,10 @@ import NEWS_SLIDER_PROPS from '@features/MainPage/NewsSlider/constants/newsSlide
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import NewsSliderItem from './NewsSliderItem/NewsSliderItem.component';
+import { useQuery } from '@tanstack/react-query';
 
 const NewsSlider = () => {
     const windowSize = useWindowSize();
@@ -18,12 +18,16 @@ const NewsSlider = () => {
     const { modalStore } = useModalContext();
     const { imagesStore, newsStore } = useMobx();
 
-    newsStore.fetchSortedNews();
-    imagesStore.fetchImages(newsStore.getNewsArray || []);
+    useQuery({
+        queryKey: ['news', newsStore.CurrentPage],
+        queryFn: () => newsStore.getAll(10),
+    });
+
+    imagesStore.fetchImages(newsStore.NewsArray || []);
 
     const [dragging, setDragging] = useState(false);
 
-    NEWS_SLIDER_PROPS.dots = windowSize.width < 1024;
+    NEWS_SLIDER_PROPS.dots = windowSize.width < 1025;
 
     const handleBeforeChange = useCallback(() => {
         setDragging(true);
@@ -41,7 +45,7 @@ const NewsSlider = () => {
     );
 
     return (
-        (newsStore.getNewsArray && newsStore.getNewsArray.length > 0)
+        (newsStore.NewsArray && newsStore.NewsArray.length > 0)
             ? (
                 <div>
                     <div className="NewsWrapper">
@@ -50,15 +54,15 @@ const NewsSlider = () => {
                             <div className="newsSliderContainer">
                                 <div className="blockCentering">
                                     <div className="newsSliderContent">
-                                        {(newsStore.getNewsArray.length === 1) ? (
+                                        {(newsStore.NewsArray.length === 1) ? (
                                             <div
-                                                key={newsStore.getNewsArray[0].id}
+                                                key={newsStore.NewsArray[0].id}
                                                 className="slider-item"
                                                 onClickCapture={handleOnItemClick}
                                             >
                                                 <NewsSliderItem
-                                                    news={newsStore.getNewsArray[0]}
-                                                    image={imagesStore.getImage(newsStore.getNewsArray[0].imageId)}
+                                                    news={newsStore.NewsArray[0]}
+                                                    image={imagesStore.getImage(newsStore.NewsArray[0].imageId)}
                                                 />
                                             </div>
                                         ) : (
@@ -67,7 +71,7 @@ const NewsSlider = () => {
                                                 afterChange={handleAfterChange}
                                                 {...NEWS_SLIDER_PROPS}
                                             >
-                                                {newsStore.getNewsArray.map((item, index) => (
+                                                {newsStore.NewsArray.map((item, index) => (
                                                     <div
                                                         key={item.id}
                                                         className="slider-item"

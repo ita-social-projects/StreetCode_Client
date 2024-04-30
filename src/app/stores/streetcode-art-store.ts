@@ -47,7 +47,7 @@ export default class StreetcodeArtStore {
 
     public fetchNextPageOfArtsByStreetcodeId = async (streetcodeId: number) => {
         const arrayOfArts = await StreetcodeArtApi
-            .getPageOfArtsByStreetcodeId(streetcodeId, this.page, this.pageSize);
+            .getStreetcodeArtsByStreetcodeId(streetcodeId);
 
         if (arrayOfArts.length !== 0) {
             this.setNextPageToArtMap = arrayOfArts;

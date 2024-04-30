@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Form, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -14,28 +14,12 @@ import Image, { ImageCreate } from '@/models/media/image.model';
 import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsModal = () => {
-    const { modalStore, factsStore, imagesStore: { getImageArray } } = useMobx();
+    const { modalStore } = useModalContext();
+    const { factsStore, imagesStore: { getImageArray } } = useMobx();
     const { setModal, modalsState: { adminFacts } } = modalStore;
     const [factContent, setFactContent] = useState('');
 
     const characterCount = factContent.length | 0;
-
-    const onFinish = (values: any) => {
-        const uploadedFile = values.picture.file as UploadFile<any>;
-
-        const image: ImageCreate = {
-            blobName: uploadedFile.name ?? '',
-            mimeType: uploadedFile.type ?? '',
-        };
-
-        const fact: FactCreate = {
-            title: values.title,
-            factContent,
-            image,
-        };
-
-        factsStore.addFactToCreate(fact);
-    };
 
     return (
         <Modal
@@ -47,7 +31,7 @@ const InterestingFactsModal = () => {
             centered
             closeIcon={<CancelBtn />}
         >
-            <Form className="factForm" onFinish={onFinish}>
+            <Form className="factForm">
                 <h2>Wow-Факт</h2>
                 <p>Заголовок</p>
                 <div className="inputBlock">

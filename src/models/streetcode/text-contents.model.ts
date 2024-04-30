@@ -11,6 +11,7 @@ export interface Fact {
   factContent: string;
   image?: Image;
   imageId: number;
+  index?:number;
 }
 export interface FactCreate extends Fact {
   imageDescription?: string
@@ -46,7 +47,7 @@ export interface Text {
 }
 
 export interface TextCreateUpdate extends IModelState {
-  id: number;
+  id?: number;
   title: string | undefined;
   textContent: string | undefined;
   additionalText?: string;

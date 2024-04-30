@@ -57,7 +57,7 @@ const NewsModal: React.FC<{
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const image = useRef<Image | undefined>(undefined);
-    const editorRef = useRef<ReactQuill>(null);
+    const editorRef = useRef<ReactQuill | null>(null);
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
     const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля правильно";
@@ -85,9 +85,9 @@ const NewsModal: React.FC<{
     };
 
     const checkUniqueURL = async (url: string): Promise<boolean> => {
-        const newsList = newsStore.getNewsArray;
+        const newsList = newsStore.NewsArray;
         if (newsItem) {
-            const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem.id);
+            const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem?.id);
             return filteredNewsList.every((news: News) => news.url !== url);
         }
         return newsList.every((news: News) => news.url !== url);
@@ -191,7 +191,7 @@ const NewsModal: React.FC<{
             image: undefined,
             creationDate: dayjs(formValues.creationDate),
         };
-        newsStore.getNewsArray.map((t) => t).forEach((t) => {
+        newsStore.NewsArray.map((t) => t).forEach((t) => {
             if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
         // need to fix when url is static because from didn't see ti when u press save button on second time
