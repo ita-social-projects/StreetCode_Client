@@ -94,7 +94,7 @@ const BaseArtGallerySlide = ({
             key: '1',
         },
         {
-            label: <button onClick={onMoveSlideForward}>Пересунути вперід</button>,
+            label: <button onClick={onMoveSlideForward}>Пересунути вперед</button>,
             key: '2',
             disabled: slideIndex >= streetcodeArtSlides.length,
         },
