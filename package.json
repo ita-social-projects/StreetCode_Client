@@ -38,6 +38,7 @@
     "http-status-codes": "^2.2.0",
     "install": "^0.13.0",
     "jest-canvas-mock": "^2.5.2",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.3",
     "leaflet-boundary-canvas": "^1.0.0",
     "leaflet-gesture-handling": "^1.2.2",
