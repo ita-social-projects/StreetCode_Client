@@ -29,11 +29,6 @@ export const ContactUsModal = ({ text, toggleState }: Props) => {
         toggleState();
     };
 
-    const onClear = () => {
-        if (form.current !== undefined || form.current !== null) {
-            form.current?.clearModal();
-        }
-    };
     return (
         <>
             <Text onClick={() => handleClick()} className="text-white">{text}</Text>
@@ -43,7 +38,6 @@ export const ContactUsModal = ({ text, toggleState }: Props) => {
                 footer={null}
                 onCancel={() => {
                     setActive(false);
-                    onClear();
                 }}
                 width="max-content"
                 closable={isDesktop}

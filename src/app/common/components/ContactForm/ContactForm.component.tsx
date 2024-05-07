@@ -12,7 +12,7 @@ import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 const MAX_SYMBOLS = 500;
 
 interface Props {
-    customClass: string;
+    customClass?: string;
 }
 
 const ContactForm = forwardRef((customClass: Props, ref) => {

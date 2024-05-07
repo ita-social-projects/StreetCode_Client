@@ -1,10 +1,15 @@
+/* eslint-disable no-restricted-imports */
+/* eslint-disable no-param-reassign */
+/* eslint-disable import/extensions */
 /* eslint-disable no-underscore-dangle */
 import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import UserLoginStore from '@stores/user-login-store';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
+
+import AuthService from '../common/services/auth-service/AuthService';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;
@@ -26,18 +31,27 @@ const createAxiosInstance = (baseUrl: string) => {
 
     instance.interceptors.response.use(
         async (response) => response,
-        ({ response, message }: AxiosError) => {
+        async ({ response, message }: AxiosError) => {
             let errorMessage = '';
             if (message === 'Network Error') {
                 errorMessage = message;
             }
+
+            if (response?.status === StatusCodes.UNAUTHORIZED) {
+                return AuthService.refreshTokenAsync()
+                    .then(() => {
+                        response.config.headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+                        return instance.request(response.config);
+                    })
+                    .catch((error) => {
+                        redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                        return Promise.reject(error);
+                    });
+            }
+
             switch (response?.status) {
             case StatusCodes.INTERNAL_SERVER_ERROR:
                 errorMessage = ReasonPhrases.INTERNAL_SERVER_ERROR;
-                break;
-            case StatusCodes.UNAUTHORIZED:
-                errorMessage = ReasonPhrases.UNAUTHORIZED;
-                redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
                 break;
             case StatusCodes.NOT_FOUND:
                 errorMessage = ReasonPhrases.NOT_FOUND;
@@ -59,16 +73,16 @@ const createAxiosInstance = (baseUrl: string) => {
         },
     );
 
-    instance.interceptors.request.use((config) => {
+    instance.interceptors.request.use(async (config) => {
         // eslint-disable-next-line no-param-reassign
-        config.headers.Authorization = `Bearer ${UserLoginStore.getToken()}`;
+        config.headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
         return config;
     });
 
-    instance.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
+    instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
 
     return {
-        get: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })
+        get: async <T> (url: string, params?: URLSearchParams|GetAllToponymsRequest) => instance.get<T>(url, { params })
             .then(responseData),
 
         getPaginated: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })

@@ -22,6 +22,7 @@ jest.mock("@/app/api/media/images.api", () => ({
       base64: image.baseFormat,
       blobName: image.title,
       mimeType: image.mimeType,
+      alt: image.alt
     } as Image)
     ),
 }));

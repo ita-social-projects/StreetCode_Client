@@ -15,7 +15,7 @@ const Vacancy = (job: Job) => {
             <CardText
                 onBtnClick={() => setIsModalOpen(true)}
                 title={job.title}
-                text={htmlReactParser(job.description)}
+                text={job.description}
                 subTitle={job.salary}
                 moreBtnText="Трохи ще"
             />

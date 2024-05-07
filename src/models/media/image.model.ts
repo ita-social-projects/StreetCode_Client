@@ -6,7 +6,7 @@ export default interface Image {
     blobName: string;
     mimeType: string;
     imageDetails?: ImageDetails;
-    alt?:string;
+    alt?: string;
 }
 
 export enum ImageAssigment {
