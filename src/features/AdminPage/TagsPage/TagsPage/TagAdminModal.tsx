@@ -45,6 +45,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
         setIsModalOpen(false);
     };
 
+    const validateTag = async (rule: any, value: string) => {
+        return new Promise<void>((resolve, reject) => {
+            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value)) {
+                reject('Тег з такою назвою вже існує');
+            } else {
+                resolve();
+            }
+        });
+    };
+
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
@@ -104,7 +114,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву' }]}
+                        rules={[{ required: true, message: 'Введіть назву' },
+                            {validator: validateTag}
+                        ]}
                     >
                         <Input placeholder="Title" maxLength={50} showCount />
                     </Form.Item>

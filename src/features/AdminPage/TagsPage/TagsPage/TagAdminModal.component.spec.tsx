@@ -31,6 +31,7 @@ jest.mock("@stores/root-store", () => ({
     __esModule: true, // This property is needed when mocking modules that have a default export
     default: () => ({
         tagsStore: {
+            getTagArray: [{id: 999, title: "existing tag"}] as Tag[],
             fetchTags: jest.fn().mockResolvedValue([]),
             createTag: (tag: TagCreate) => { TagsApi.create(tag) },
             updateTag: (tag: Tag) => { TagsApi.update(tag) },
@@ -134,6 +135,24 @@ describe("PartnerModal", () => {
         nameInput.value = "";
 
         act(() => {
+            userEvent.click(button);
+        });
+
+        await waitFor(() => {
+            expect(message.error).toHaveBeenCalled();
+        })
+
+        cleanup();
+    })
+
+    test("throw error on same tag title", async () => {
+        render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }}/>);
+
+        const nameInput = screen.getByRole("textbox", { name: /назва:/i }) as HTMLInputElement;
+        const button = screen.getByRole("button", { name: /зберегти/i });
+
+        act(() => {
+            userEvent.type(nameInput, "existing tag");
             userEvent.click(button);
         });
 
