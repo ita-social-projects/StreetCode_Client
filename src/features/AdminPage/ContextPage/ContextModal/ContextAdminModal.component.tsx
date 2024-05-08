@@ -38,6 +38,16 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
         }
     }, [initialData, isModalVisible, form]);
 
+    const validateContext = async (rule: any, value: string) => {
+        return new Promise<void>((resolve, reject) => {
+            if (contextStore.getContextArray.map((context) => context.title).includes(value)) {
+                reject('Контекст з такою назвою вже існує');
+            } else {
+                resolve();
+            }
+        });
+    };
+
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
@@ -67,7 +77,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
         try {
             await form.validateFields();
             form.submit();
-            message.success('Тег успішно додано!');
+            message.success('Контекст успішно додано!');
         } catch (error) {
             message.config({
                 top: 100,
@@ -112,7 +122,9 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title}]}
+                        rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
+                            {validator: validateContext}
+                        ]}
                     >
                         <Input maxLength={MAX_LENGTH.title} showCount/>
                     </Form.Item>
