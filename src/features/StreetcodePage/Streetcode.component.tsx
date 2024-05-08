@@ -1,8 +1,10 @@
+/* eslint-disable import/extensions */
 /* eslint-disable global-require */
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
@@ -24,13 +26,13 @@ import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.co
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+import AuthService from '@/app/common/services/auth-service/AuthService';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import { useInView } from 'react-intersection-observer';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -42,7 +44,7 @@ const StreetcodeContent = () => {
     const [showAllTags, setShowAllTags] = useState<boolean>(false);
     const [streetcode, setStreecode] = useState<Streetcode>();
 
-    const [ref, inView] = useInView({threshold: 1,});
+    const [ref, inView] = useInView({ threshold: 1 });
     const showModalOnScroll = useRef(true);
     const [haveBeenDisplayed, setHaveBeenDisplayed] = useState(false);
     const { modalStore: { setModal } } = useModalContext();
@@ -68,13 +70,12 @@ const StreetcodeContent = () => {
     };
 
     const handleSurveyModalOpen = () => {
-        if(inView && !haveBeenDisplayed)
-        {
+        if (inView && !haveBeenDisplayed) {
             setHaveBeenDisplayed(true);
             setModal('survey', undefined, true);
             showModalOnScroll.current = false;
         }
-    }
+    };
     setTimeout(handleSurveyModalOpen, 500);
 
     useAsync(() => {
@@ -104,7 +105,13 @@ const StreetcodeContent = () => {
     });
 
     useEffect(() => {
-        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => setStreecode(val));
+        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
+            if ((val?.status === 0 && AuthService.isLoggedIn()) || val?.status !== 0) {
+                setStreecode(val);
+            } else {
+                navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+            }
+        });
 
         const fromPage = location.state?.fromPage;
 

@@ -27,7 +27,7 @@ const NewsSlider = () => {
 
     const [dragging, setDragging] = useState(false);
 
-    NEWS_SLIDER_PROPS.dots = windowSize.width < 1024;
+    NEWS_SLIDER_PROPS.dots = windowSize.width < 1025;
 
     const handleBeforeChange = useCallback(() => {
         setDragging(true);
@@ -67,8 +67,11 @@ const NewsSlider = () => {
                                             </div>
                                         ) : (
                                             <SlickSlider
+                                                secondPreset={true}
                                                 beforeChange={handleBeforeChange}
                                                 afterChange={handleAfterChange}
+                                                dots={ windowSize.width <= 1024}
+                                                arrows={ windowSize.width > 1024}
                                                 {...NEWS_SLIDER_PROPS}
                                             >
                                                 {newsStore.NewsArray.map((item, index) => (
