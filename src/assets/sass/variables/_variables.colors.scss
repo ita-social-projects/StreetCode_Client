@@ -40,6 +40,10 @@ $active-arrow-filter-color:  invert(88%) sepia(0%) saturate(0%)
      hue-rotate(219deg) brightness(91%) contrast(88%);
 $selected-arrow-filter-color: invert(38%) sepia(0%) saturate(0%)
      hue-rotate(143deg) brightness(140%) contrast(81%);
+$base-lightbox-arrow-filter-color: invert(32%) sepia(0%) saturate(8%) 
+     hue-rotate(220deg) brightness(90%) contrast(89%);
+$hovered-lightbox-arrow-filter-color: invert(63%) sepia(0%) saturate(242%)
+     hue-rotate(257deg) brightness(91%) contrast(95%);
 $hovered-btn-box-shadow: 0 2px 15px rgba(61, 0, 0, .25) !important;
 
 $card-scrollbar-track-color: #DEDCDC !important;
