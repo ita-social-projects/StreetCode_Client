@@ -26,7 +26,7 @@ const TeamComponent = () => {
         touchAction: 'pan-y',
         touchThreshold: 25,
         transform: 'translateZ(0)',
-        arrows: false,
+        arrows: true,
         centerMode: false,
         centerPadding: '-5px',
         dots: false,
@@ -39,6 +39,7 @@ const TeamComponent = () => {
     const windowsize = useWindowSize();
     if (windowsize.width <= 1024)
     {
+        props.arrows = false;
         props.dots = true;
         if (windowsize.width >= 768) props.centerMode = true;
     }
@@ -72,6 +73,7 @@ const TeamComponent = () => {
                         <div className="blockCenter">
                             <div className="mainContent">
                                 <SlickSlider
+                                    secondPreset={true}
                                     {...props}
                                 >
                                     {team.map((member, index) => (
