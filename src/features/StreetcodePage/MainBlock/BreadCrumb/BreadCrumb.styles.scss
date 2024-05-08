@@ -2,10 +2,6 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/variables/_variables.fonts.scss" as ft;
 @use "@sass/_utils.functions.scss" as f;
-.activeLink {
-    font-weight: 500;
-}
-
 .ant-breadcrumb {
     a:hover {
         background-color: transparent;
@@ -22,6 +18,9 @@
     >* {
         color: c.$dark-red-color;
         text-transform: uppercase;
+    }
+    .activeLink {
+        font-weight: 500;
     }
 }
 
@@ -54,3 +53,5 @@
         right: f.pxToRem(10px);
     }
 }
+  
+  

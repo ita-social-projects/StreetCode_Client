@@ -79,7 +79,7 @@ const router = createBrowserRouter(createRoutesFromElements(
                 </ProtectedComponent>
             )}
         />
-        <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element={<JobPage />} />
+        <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element={<ProtectedComponent><JobPage /></ProtectedComponent>} />
         <Route path="*" element={<NotFound />} />
         <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />

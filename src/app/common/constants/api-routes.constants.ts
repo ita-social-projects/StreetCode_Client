@@ -200,7 +200,7 @@ export const API_ROUTES = {
         UPDATE: 'coordinate/update',
         DELETE: 'coordinate/delete',
     },
-    USERS: {
+    AUTH: {
         LOGIN: 'auth/login',
         REFRESH_TOKEN: 'auth/refreshToken',
         REGISTER: 'auth/register',
