@@ -3,14 +3,13 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import React, {
-    Dispatch, SetStateAction, useEffect, useState,
+    Dispatch, SetStateAction, useEffect
 } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover,
-    UploadFile,
+    Button, Form, Input, message, Modal, Popover
 } from 'antd';
 
 import Tag from '@/models/additional-content/tag.model';
@@ -31,7 +30,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     useAsync(() => tagsStore.fetchTags(), []);
 
@@ -45,6 +43,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const validateTag = async (rule: any, value: string) => {
+        return new Promise<void>((resolve, reject) => {
+            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value)) {
+                reject('Тег з такою назвою вже існує');
+            } else {
+                resolve();
+            }
+        });
     };
 
     const onSubmit = async (formData: any) => {
@@ -69,7 +77,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleCancel = () => {
         closeModal();
         form.resetFields();
-        setFileList([]);
     };
 
     const handleOk = async () => {
@@ -107,9 +114,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву' }]}
+                        rules={[{ required: true, message: 'Введіть назву' },
+                            {validator: validateTag}
+                        ]}
                     >
-                        <Input placeholder="Title" maxLength={23} showCount />
+                        <Input placeholder="Title" maxLength={50} showCount />
                     </Form.Item>
                     <div className="center">
                         <Button
