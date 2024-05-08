@@ -1,8 +1,8 @@
+/* eslint-disable max-len */
 import './Sources.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
@@ -31,6 +31,7 @@ const SourcesComponent = () => {
         dots: windowsize.width <= 1024,
         variableWidth: true,
         swipeOnClick: false,
+        slidesToShow: windowsize.width > 1300 ? 3 : (windowsize.width > 829 || windowsize.width < 769 && windowsize.width > 559 ? 2 : 1),
         slidesToScroll: 1,
         rows: 1,
         initialSlide: 0,
@@ -59,5 +60,4 @@ const SourcesComponent = () => {
         <></>
     );
 };
-
 export default observer(SourcesComponent);
