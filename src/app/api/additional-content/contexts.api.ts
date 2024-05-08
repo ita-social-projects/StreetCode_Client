@@ -5,13 +5,7 @@ import Context, { ContextCreate } from '@models/additional-content/context.model
 const ContextsApi = {
     getById: (id: number) => Agent.get<Context>(`${API_ROUTES.CONTEXTS.GET_BY_ID}/${id}`),
 
-    // getByTitle
-
     getAll: () => Agent.get<Context[]>(`${API_ROUTES.CONTEXTS.GET_ALL}`),
-
-    // getTagsByStreetcodeId: (streetcodeId: number) => Agent.get<Context[]>(
-    //     `${API_ROUTES.CONTEXTS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
-    // ),
 
     create: (tag: ContextCreate) => Agent.post<Context>(`${API_ROUTES.CONTEXTS.CREATE}`, tag),
 

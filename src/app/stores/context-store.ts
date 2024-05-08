@@ -77,17 +77,6 @@ export default class ContextStore {
         } catch (error: unknown) { /* empty */ }
     };
 
-    // public fetchTagByStreetcodeId = async (streetcodeId: number) => {
-    //     try {
-    //         this.setInternalMap = await ContextsApi.getTagsByStreetcodeId(streetcodeId);
-    //     } catch (error: unknown) { /* empty */ }
-    // };
-    // public fetchTagCatalogByStreetcodeId = async (streetcodeId: number) => {
-    //     try {
-    //         this.setInternalCatalog = await ContextsApi.getTagsByStreetcodeId(streetcodeId);
-    //     } catch (error: unknown) { /* empty */ }
-    // };
-
     public createContext = async (context: ContextCreate) => {
         try {
             const newcontext: Context = await ContextsApi.create(context);
