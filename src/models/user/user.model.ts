@@ -1,34 +1,32 @@
 export default interface User {
-    id:number;
     name:string;
     surname:string;
     email:string;
     login:string;
-    password:string;
     userRole:UserRole;
 }
 
 export interface UserLoginRequest {
     login:string;
     password:string;
+    captchaToken: string | null | undefined;
 }
-export interface UserLoginResponce {
-    user:User;
-    token:string;
-    expireAt:Date;
+export interface UserLoginResponse {
+    user: User;
+    accessToken: string;
+    refreshToken: string;
 }
 
 export interface RefreshTokenRequest {
-    token:string;
+    accessToken:string;
+    refreshToken:string;
 }
 
 export interface RefreshTokenResponce {
-    token:string;
-    expireAt:Date;
+    accessToken:string;
 }
 
 export enum UserRole {
-    MainAdministrator,
-    Administrator,
-    Moderator,
+    Admin,
+    User,
 }
