@@ -24,9 +24,10 @@ type Props = {
     isConfigurationGallery?: boolean
     isAdmin?: boolean
     isFillArtsStore?: boolean
+    title?: string
 };
 
-const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props) => {
+const ArtGallery = ({ title="Арт-галерея", isAdmin, isConfigurationGallery, isFillArtsStore } : Props) => {
     const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } = useMobx();
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides } = streetcodeArtSlideStore;
@@ -136,7 +137,7 @@ const ArtGallery = ({ isAdmin, isConfigurationGallery, isFillArtsStore } : Props
                     className="artGalleryWrapper"
                 >
                     <div className="artGalleryContainer container">
-                        <BlockHeading headingText="Арт-галерея" />
+                        <BlockHeading headingText={title} />
                         <div className="artGalleryContentContainer">
                             <div className="artGallerySliderContainer">
                             {isMobile
