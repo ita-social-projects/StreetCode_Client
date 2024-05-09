@@ -39,6 +39,12 @@ const InterestingFactsBlock = ({ fact, onChange }: Props) => {
       result.source.index,
       result.destination!.index
     );
+   
+    const draggedItem = reorderedItems[result.destination.index];
+    if (draggedItem.id < 0) {
+      draggedItem.id = 0;
+    }
+    
     factsStore.updateFactMapWithNewOrder(reorderedItems);
   };
 
