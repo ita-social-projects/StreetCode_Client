@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import './QEditor.styles.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -18,11 +17,13 @@ interface EditorProps {
     initialVal?: string,
     selectionChange?: (selection: string) => void,
     onCharacterCountChange?: (count: number) => void,
+    readOnly?: boolean;
 }
 
 const Editor: React.FC<EditorProps> = ({
-    qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => {},
+    qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => {}, readOnly = false
 }) => {
+    const [isReadOnly, setIsReadOnly] = useState(readOnly);
     const indentedValue = refactorIndentsHtml(value || '');
     const [val, setVal] = useState(indentedValue);
     const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
@@ -54,17 +55,19 @@ const Editor: React.FC<EditorProps> = ({
             setValidateDescription(false);
         }
     }, [characterCount, maxChars]);
-
+    useEffect(() => {
+        setIsReadOnly(readOnly); 
+    }, [readOnly]);
     useEffect(() => {
         onCharacterCountChange(characterCount);
     }, [characterCount, onCharacterCountChange]);
-
     const handleOnChange = (html: string) => {
-        onChange(html);
-        setVal(html);
-        countCharacters(html);
+        if (!isReadOnly) { 
+            onChange(html);
+            setVal(html);
+            countCharacters(html);
+        }
     };
-
     const handleSelectionChange = (range: ReactQuill.Range | null, source: Sources, editor: UnprivilegedEditor) => {
         if (range && range.index != null && range.length != null) {
             const selectedText = editor.getText(range.index, range.length);
@@ -128,6 +131,7 @@ const Editor: React.FC<EditorProps> = ({
                     formats={formats}
                     theme="snow"
                     onChangeSelection={handleSelectionChange}
+                    readOnly={isReadOnly}
                 />
             </div>
             <div className="editorInfoContainer">
