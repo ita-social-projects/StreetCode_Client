@@ -6,6 +6,7 @@ export default interface SliderProps extends SliderWithoutChildren {
     onClick?: (index: number) => void;
     swipeOnClick?: boolean;
     children: JSX.Element[];
+    secondPreset?: boolean;
 }
 
 export const defaultSliderProps: SliderWithoutChildren = {
