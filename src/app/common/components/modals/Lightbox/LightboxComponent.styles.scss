@@ -8,13 +8,13 @@
     @include mut.sized(40px, 58px);
     @include mut.bg-image("@assets/images/utils/#{$direction}DefaultSliderArrow.svg");
     position: absolute;
-
+    filter: c.$base-lightbox-arrow-filter-color;
     .yarl__icon {
         @include mut.colored(c.$transparent-color, c.$transparent-color);
     }
 
     &:hover {
-        filter: brightness(60%);
+        filter: c.$hovered-lightbox-arrow-filter-color;
     }
 }
 
@@ -65,13 +65,11 @@
         .yarl__navigation_prev {
             @include slick-arrow-lightbox(Left);
             left: pxToRem(30px) !important;
-            filter: brightness(35%);
         }
 
         .yarl__navigation_next {
             @include slick-arrow-lightbox(Right);
             right: pxToRem(30px) !important;
-            filter: brightness(35%);
         }
     }
 
