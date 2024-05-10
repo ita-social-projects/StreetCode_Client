@@ -142,9 +142,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
                 return;
             }
-    
-            message.success('Категорію успішно додано!', 2);
             form.submit();
+            message.success('Категорію успішно додано!', 2);
         } catch (error) {
             message.config({
                 top: 100,
