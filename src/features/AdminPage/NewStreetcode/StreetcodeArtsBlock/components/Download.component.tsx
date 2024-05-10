@@ -52,6 +52,7 @@ const DownloadBlock = () => {
             }));
             setFileList(newFileList);
         }
+        console.log("test");
     }, [artStore.mutationObserved]);
 
     const isArtInSlides = (id: string) => (
@@ -85,6 +86,7 @@ const DownloadBlock = () => {
     };
 
     const onSuccessUploadImage = action((file: Image | Audio) => {
+        console.log('1');
         let image: Image = file as Image;
         const newId = artStore.getMaxArtId + 1;
 
@@ -141,6 +143,7 @@ const DownloadBlock = () => {
                 accept=".jpeg,.png,.jpg,.webp"
                 listType="picture-card"
                 fileList={fileList}
+                multiple={true}
                 onPreview={onPreview}
                 uploadTo="image"
                 onSuccessUpload={onSuccessUploadImage}
