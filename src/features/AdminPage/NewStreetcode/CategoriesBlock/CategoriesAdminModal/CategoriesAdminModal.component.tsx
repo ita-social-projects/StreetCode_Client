@@ -19,7 +19,7 @@ import {
     setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
-import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
+import SourceModal from '@/features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.component';
 import {
     SourceCategoryName,
     StreetcodeCategoryContent,
@@ -42,7 +42,7 @@ function isEditingCategoryTextOnly(
     return elementToUpdate && elementToUpdate?.sourceLinkCategoryId === Number(editedCategoryId);
 }
 
-const ForFansModal = ({
+const CategoriesModal = ({
     character_limit, open, setOpen, allCategories, onChange, allPersistedSourcesAreSet,
 }: Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
@@ -337,4 +337,4 @@ const ForFansModal = ({
     );
 };
 
-export default observer(ForFansModal);
+export default observer(CategoriesModal);

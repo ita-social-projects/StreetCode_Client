@@ -1,7 +1,8 @@
+import './CategoriesPage.style.scss'
+
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 
@@ -12,9 +13,9 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import { SourceCategoryAdmin } from '@/models/sources/sources.model';
 
-import CategoryAdminModal from './ForFansPage/CategoryAdminModal.component';
+import CategoryAdminModal from './CategoriesPage/CategoryAdminModal.component';
 
-const ForFansMainPage: React.FC = observer(() => {
+const CategoriesMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
     const { sourcesStore } = useMobx();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -65,7 +66,7 @@ const ForFansMainPage: React.FC = observer(() => {
             render: (image: Image, record) => (
                 <img
                     key={`${record.id}${record.image?.id}}`}
-                    className="partners-table-logo"
+                    className="categories-table-logo"
                     src={base64ToUrl(image?.base64, image?.mimeType ?? '')}
                     style={{ filter: 'grayscale(100%)' }}
                 />
@@ -77,7 +78,7 @@ const ForFansMainPage: React.FC = observer(() => {
             key: 'action',
             width: '10%',
             render: (value, srcCategory, index) => (
-                <div key={`${srcCategory.id}${index}1`} className="partner-page-actions">
+                <div key={`${srcCategory.id}${index}1`} className="category-page-actions">
                     <DeleteOutlined
                         key={`${srcCategory.id}${index}`}
                         className="actionButton"
@@ -114,12 +115,11 @@ const ForFansMainPage: React.FC = observer(() => {
         },
     ];
     return (
-        <div className="partners-page">
-            <PageBar />
-            <div className="partners-page-container">
+        <div className="categories-page">
+            <div className="categories-page-container">
                 <div className="container-justify-end">
                     <Button
-                        className="streetcode-custom-button partners-page-add-button"
+                        className="streetcode-custom-button categories-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
                         Додати нову категорію
@@ -127,7 +127,7 @@ const ForFansMainPage: React.FC = observer(() => {
                 </div>
                 <Table
                     pagination={{ pageSize: 10 }}
-                    className="partners-table"
+                    className="categories-table"
                     columns={columns}
                     dataSource={sourcesStore?.getSrcCategoriesArray}
                     rowKey="id"
@@ -139,4 +139,4 @@ const ForFansMainPage: React.FC = observer(() => {
 
     );
 });
-export default ForFansMainPage;
+export default CategoriesMainPage;
