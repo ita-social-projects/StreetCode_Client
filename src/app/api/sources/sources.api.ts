@@ -22,7 +22,7 @@ const SourcesApi = {
 
     create: (source: SourceCategoryAdmin) => Agent.post<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.CREATE}`, source),
 
-    update: (source: SourceCategoryAdmin) => Agent.put<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.UPDATE}/${source.id}`, source),
+    update: (source: SourceCategoryAdmin) => Agent.put<SourceCategoryAdmin>(`${API_ROUTES.SOURCES.UPDATE}`, source),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.SOURCES.DELETE}/${id}`),
 };

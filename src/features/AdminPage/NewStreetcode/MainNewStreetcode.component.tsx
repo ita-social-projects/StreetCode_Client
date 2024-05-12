@@ -518,8 +518,8 @@ const NewStreetcode = () => {
                             <TimelineBlockAdmin onChange={handleFieldChange} />
                             <ArtGalleryDndContext>
                                 <StreetcodeArtsBlock />
-                                <ArtGallery isConfigurationGallery />
-                                <ArtGallery isAdmin />
+                                <ArtGallery isConfigurationGallery title="Шаблони" />
+                                <ArtGallery isAdmin title='Попередній перегляд' />
                             </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
                             <CategoriesBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />

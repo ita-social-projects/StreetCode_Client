@@ -71,6 +71,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             element={<ProtectedComponent><News /></ProtectedComponent>}
         />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
+
         <Route
             path={FRONTEND_ROUTES.ADMIN.TEAM}
             element={(
