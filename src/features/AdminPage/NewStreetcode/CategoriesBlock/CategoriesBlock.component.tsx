@@ -6,15 +6,15 @@ import useMobx from '@stores/root-store';
 import SourcesApi from '@/app/api/sources/sources.api';
 import { SourceCategoryName, StreetcodeCategoryContentUpdate } from '@/models/sources/sources.model';
 
-import ForFansAdminItem from './ForFansAdminItem/ForFansAdminItem.component';
-import ForFansAdminModal from './ForFansAdminModal/ForFansAdminModal.component';
+import CategoriesAdminItem from './CategoriesAdminItem/CategoriesAdminItem.component';
+import CategoriesAdminModal from './CategoriesAdminModal/CategoriesAdminModal.component';
 
 interface Props {
     onChange: (field: string, value: any) => void,
     allPersistedSourcesAreSet: boolean,
 }
 
-const ForFansBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet }) => {
+const CategoriesBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet }) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoriesSelect, setCategoriesSelect] = useState<SourceCategoryName[]>([]);
@@ -42,7 +42,7 @@ const ForFansBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet }) 
                     .filter((categoryContent) => (categoryContent as StreetcodeCategoryContentUpdate)
                         .modelState !== ModelState.Deleted)
                     .map((category) => (
-                        <ForFansAdminItem
+                        <CategoriesAdminItem
                             key={category.id}
                             categoryName={categoriesSelect
                                 .find((c) => c.id === category.sourceLinkCategoryId)?.title ?? ''}
@@ -54,7 +54,7 @@ const ForFansBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet }) 
                         />
                     ))}
             </div>
-            <ForFansAdminModal
+            <CategoriesAdminModal
                 character_limit={10000}
                 allCategories={categoriesSelect}
                 open={isModalOpen}
@@ -66,4 +66,4 @@ const ForFansBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet }) 
     );
 };
 
-export default observer(ForFansBlock);
+export default observer(CategoriesBlock);
