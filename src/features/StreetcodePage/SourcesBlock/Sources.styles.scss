@@ -32,9 +32,11 @@
         position: relative;
         @include mut.sized($width: 1065px);
         margin: 0 auto;
-        .slick-arrow {
-            position: absolute;
-            transform: translateY(-1.8rem);
+        .slick-next:before {
+            @include ss.slick-arrow-pseudo(Right, -23px)
+        }
+        .slick-prev:before {
+            @include ss.slick-arrow-pseudo(Left, 0px)
         }
     }
     .sourcesSliderContainerSmall {
