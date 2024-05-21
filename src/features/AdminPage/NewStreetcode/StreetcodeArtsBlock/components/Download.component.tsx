@@ -42,7 +42,7 @@ const DownloadBlock = () => {
     });
 
     useEffect(() => {
-        if (artStore.arts.length > 0) {
+        if (artStore.arts.length >= 0) {
             const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
                 uid: `${art.id}`,
                 name: art.image?.imageDetails?.alt || '',
@@ -52,14 +52,14 @@ const DownloadBlock = () => {
             }));
             setFileList(newFileList);
         }
-    }, [artStore.mutationObserved]);
+    }, [artStore.arts, artStore.mutationObserved]);
 
     const isArtInSlides = (id: string) => (
         streetcodeArtSlideStore.hasArtWithId(id) || artGalleryTemplateStore.hasArtWithId(id));
 
     const handleRemove = useCallback((param: UploadFile) => {
         if (isArtInSlides(param.uid)) {
-            alert('Ви не можете виділити цей файл для видалення оскільки він є у існуючих слайдах');
+            alert('Ви не можете видалити цей файл для видалення оскільки він є у існуючих слайдах');
             return;
         }
         if (!artsToRemoveIdxs.current.has(param.uid)) {
@@ -106,7 +106,7 @@ const DownloadBlock = () => {
 
     function RemoveFile(id: string) {
         const artToRemoveIndex = artStore.arts.findIndex((art) => `${art.id}` === id);
-
+        
         if (artToRemoveIndex !== -1 && !isArtInSlides(id)) {
             const toRemove = artStore.arts[artToRemoveIndex];
 
