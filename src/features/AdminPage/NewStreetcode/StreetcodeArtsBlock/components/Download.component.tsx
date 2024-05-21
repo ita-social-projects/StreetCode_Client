@@ -59,7 +59,7 @@ const DownloadBlock = () => {
 
     const handleRemove = useCallback((param: UploadFile) => {
         if (isArtInSlides(param.uid)) {
-            alert('Ви не можете видалити цей файл для видалення оскільки він є у існуючих слайдах');
+            alert('Ви не можете виділити цей файл для видалення оскільки він є у існуючих слайдах');
             return;
         }
         if (!artsToRemoveIdxs.current.has(param.uid)) {
@@ -106,7 +106,7 @@ const DownloadBlock = () => {
 
     function RemoveFile(id: string) {
         const artToRemoveIndex = artStore.arts.findIndex((art) => `${art.id}` === id);
-        
+
         if (artToRemoveIndex !== -1 && !isArtInSlides(id)) {
             const toRemove = artStore.arts[artToRemoveIndex];
 
