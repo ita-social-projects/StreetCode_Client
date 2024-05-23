@@ -52,8 +52,7 @@ const DownloadBlock = () => {
             }));
             setFileList(newFileList);
         }
-        console.log("test");
-    }, [artStore.mutationObserved]);
+    }, [artStore.mutationObserved, artStore.arts.length]);
 
     const isArtInSlides = (id: string) => (
         streetcodeArtSlideStore.hasArtWithId(id) || artGalleryTemplateStore.hasArtWithId(id));
@@ -86,7 +85,6 @@ const DownloadBlock = () => {
     };
 
     const onSuccessUploadImage = action((file: Image | Audio) => {
-        console.log('1');
         let image: Image = file as Image;
         const newId = artStore.getMaxArtId + 1;
 
