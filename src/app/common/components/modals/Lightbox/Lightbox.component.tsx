@@ -29,7 +29,7 @@ const LightboxComponent = () => {
           return {
             src,
             title: `${index + 1}/${arts.length}`,
-            description: `${title ?? ''}. \n\n${description ?? ''}`,
+            description: `${title ?? ''} \n\n${description ?? ''}`,
           };
         }
       ), [mutationObserved]);
