@@ -6,7 +6,7 @@ import {
 import Slider from 'react-slick';
 
 import useMobx, { useModalContext } from '@/app/stores/root-store';
-
+import { debounce } from 'lodash';
 import SliderProps, { defaultSliderProps } from './index';
 
 const GenericSlider: FC<SliderProps> = ({
@@ -30,11 +30,14 @@ const GenericSlider: FC<SliderProps> = ({
         slideToIndex : number,
     ) => (currentIndx === 0 && slideToIndex === children.length - 1);
 
-    const move = useCallback(
-        (direction: 'next' | 'prev', slideToIndex: number) => {
+    const move = useCallback(debounce(
+        (event: { detail: number; }, direction: 'next' | 'prev', slideToIndex: number) => {
+            if(event.detail === 2){
+                return;
+            }
             if (slideToIndex === currentIndex) {
                 const factId = children[currentIndex].props.fact.id;
-                setModal('facts', factId, true);
+                setModal('facts', factId, true); 
                 return;
             }
 
@@ -52,7 +55,7 @@ const GenericSlider: FC<SliderProps> = ({
                 setCurrentIndex(slideToIndex);
                 setLastClick(Date.now());
             }
-        },
+        }, 250),
         [lastClick, setCurrentIndex, setLastClick, sliderProps.speed, currentIndex, children.length],
     );
 
@@ -72,7 +75,7 @@ const GenericSlider: FC<SliderProps> = ({
                             return (
                                 <div
                                     key={slideToIndex}
-                                    onClick={() => move('prev', slideToIndex)}
+                                    onClick={(event) => move(event, 'prev', slideToIndex)}
                                 >
                                     {slide}
                                 </div>
@@ -82,7 +85,7 @@ const GenericSlider: FC<SliderProps> = ({
                             return (
                                 <div
                                     key={slideToIndex}
-                                    onClick={() => move('next', slideToIndex)}
+                                    onClick={(event) => move(event, 'next', slideToIndex)}
                                 >
                                     {slide}
                                 </div>
