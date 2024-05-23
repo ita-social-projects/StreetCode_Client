@@ -235,4 +235,11 @@ export const API_ROUTES = {
     ABOUT_US: {
         GET_TICKER_STRING: 'tickerString/getNameTickerString',
     },
+    CONTEXTS: {
+        GET_ALL: 'historicalContext/getAll',
+        GET_BY_ID: 'historicalContext/getById',
+        UPDATE: 'historicalContext/update',
+        CREATE: 'historicalContext/create',
+        DELETE: 'historicalContext/delete',
+    },
 };

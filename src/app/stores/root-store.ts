@@ -20,6 +20,7 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
+import ContextStore from '@stores/context-store';
 
 import NewsStore from './news-store/news-store';
 import CreateUpdateMediaStore from './create-update-media-store';
@@ -63,6 +64,7 @@ interface Store {
     streetcodeMainPageStore: StreetcodesMainPageStore,
     relatedByTag: StreetcodesByTagStore,
     createUpdateMediaStore: CreateUpdateMediaStore,
+    contextStore: ContextStore,
     artGalleryTemplateStore: ArtGalleryTemplateStore,
 }
 
@@ -100,6 +102,7 @@ export const store: Store = {
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
     relatedByTag: new StreetcodesByTagStore(),
     createUpdateMediaStore: new CreateUpdateMediaStore(),
+    contextStore: new ContextStore(),
     artGalleryTemplateStore: new ArtGalleryTemplateStore(),
     streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
     artStore: new ArtStore(),

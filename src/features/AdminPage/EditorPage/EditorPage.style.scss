@@ -1,0 +1,42 @@
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/_utils.functions.scss" as f;
+
+.editor-page-container {
+    @include mut.admin-page-base-layout();
+
+    @include mut.with-font();
+
+    .dimmed {
+        @include mut.sized(100%);
+    }
+
+    .editor-tabs {
+        width: 100%;
+    }
+
+    .ant-tabs-tab:hover{
+        color: c.$accented-red-color;
+    }
+
+    .ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+            color: c.$accented-red-color;
+        }
+    }
+    .ant-tabs-ink-bar{
+        background-color: c.$accented-red-color;
+    }
+}
+
+.MainBlockContainer {
+
+    .ant-switch-checked {
+        background-color: c.$dark-red-color;
+    }
+
+    .person-event-switch {
+        margin: 0 5px;
+    }
+}

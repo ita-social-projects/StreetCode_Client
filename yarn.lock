@@ -2829,9 +2829,9 @@
   integrity sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==
 
 "@types/hoist-non-react-statics@^3.3.0":
-  version "3.3.1"
-  resolved "https://registry.npmjs.org/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz"
-  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  version "3.3.5"
+  resolved "https://registry.npmjs.org/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.5.tgz"
+  integrity sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==
   dependencies:
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
@@ -11137,10 +11137,10 @@ react-image-size@^2.0.0:
   resolved "https://registry.npmjs.org/react-image-size/-/react-image-size-2.0.2.tgz"
   integrity sha512-j2ZhFsY5n8HAU43ZrhvDOkGBhAY0IJX2DjajmwF+TdXuZ/lGHuhmqj5/88o1M+yL8Un5oNSLjBRH5XikWiiHlA==
 
-react-intersection-observer@^9.8.1:
-  version "9.8.1"
-  resolved "https://registry.npmjs.org/react-intersection-observer/-/react-intersection-observer-9.8.1.tgz"
-  integrity sha512-QzOFdROX8D8MH3wE3OVKH0f3mLjKTtEN1VX/rkNuECCff+aKky0pIjulDhr3Ewqj5el/L+MhBkM3ef0Tbt+qUQ==
+react-intersection-observer@^9.8.2:
+  version "9.8.2"
+  resolved "https://registry.npmjs.org/react-intersection-observer/-/react-intersection-observer-9.8.2.tgz"
+  integrity sha512-901naEiiZmse3p+AmtbQ3NL9xx+gQ8TXLiGDc+8GiE3JKJkNV3vP737aGuWTAXBA+1QqxPrDDE+fIEgYpGDlrQ==
 
 "react-is@^16.12.0 || ^17.0.0 || ^18.0.0", react-is@^18.0.0, react-is@^18.2.0, "react-is@>= 16.8.0":
   version "18.2.0"
