@@ -70,7 +70,7 @@ export default class AuthService {
             });
     };
 
-    private static isAccessTokenExpired(token: string): boolean {
+    public static isAccessTokenExpired(token: string): boolean {
         const decodedToken = this.getDecodedAccessToken(token);
         const expirationTime = ((decodedToken && decodedToken?.exp) || 0) * 1000;
         const actualTime = new Date().getTime();
