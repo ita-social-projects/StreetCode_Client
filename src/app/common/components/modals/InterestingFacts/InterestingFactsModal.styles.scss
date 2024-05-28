@@ -168,3 +168,26 @@
     }
   }
 }
+
+@media screen and (max-width: 375px){
+  .interestingFactsModal {
+    @include mut.sizedImportant(280px, 411px);
+    &.ant-modal {
+      max-width: unset;
+      .ant-modal-content {
+        width: 280px !important;
+      }
+    }
+    .factsModalContainer{
+      @include mut.sizedImportant(280px, 411px);
+      .factsContentContainer {
+        @include mut.sizedImportant(280px, 231px);
+      }
+      .factsImgContainer {   
+        @include mut.sizedImportant(100%, 180px);
+      }
+
+    }
+    
+  }
+}
