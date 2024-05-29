@@ -42,7 +42,7 @@ const DownloadBlock = () => {
     });
 
     useEffect(() => {
-        if (artStore.arts.length > 0) {
+        if (artStore.arts.length >= 0) {
             const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
                 uid: `${art.id}`,
                 name: art.image?.imageDetails?.alt || '',
@@ -52,7 +52,7 @@ const DownloadBlock = () => {
             }));
             setFileList(newFileList);
         }
-    }, [artStore.mutationObserved, artStore.arts.length]);
+    }, [artStore.arts, artStore.mutationObserved]);
 
     const isArtInSlides = (id: string) => (
         streetcodeArtSlideStore.hasArtWithId(id) || artGalleryTemplateStore.hasArtWithId(id));

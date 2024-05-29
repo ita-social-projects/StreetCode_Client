@@ -152,7 +152,7 @@ describe('AuthService', () => {
     describe('refreshTokenAsync()', () => {
         it('returns error if previuos access token has invalid signature', async () => {
             // Arrange.
-            const expectedErrorMessage = 'Invalid sigrature of access token';
+            const expectedErrorMessage = 'Invalid signature of access token';
 
             // Act.
             await AuthService.refreshTokenAsync()

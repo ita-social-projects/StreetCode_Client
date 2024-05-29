@@ -74,10 +74,22 @@ const createAxiosInstance = (baseUrl: string) => {
     );
 
     instance.interceptors.request.use(async (config) => {
-        // eslint-disable-next-line no-param-reassign
-        config.headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+        let token = AuthService.getAccessToken();
+    
+        if (token && AuthService.isAccessTokenExpired(token)) { 
+            try {
+                await AuthService.refreshTokenAsync();
+                token = AuthService.getAccessToken();
+            } catch (error) {
+                redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                return Promise.reject(error);
+            }
+        }
+    
+        config.headers.Authorization = `Bearer ${token}`;
         return config;
     });
+    
 
     instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
 
