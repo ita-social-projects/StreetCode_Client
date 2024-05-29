@@ -141,6 +141,7 @@ const DownloadBlock = () => {
                 accept=".jpeg,.png,.jpg,.webp"
                 listType="picture-card"
                 fileList={fileList}
+                multiple={true}
                 onPreview={onPreview}
                 uploadTo="image"
                 onSuccessUpload={onSuccessUploadImage}
