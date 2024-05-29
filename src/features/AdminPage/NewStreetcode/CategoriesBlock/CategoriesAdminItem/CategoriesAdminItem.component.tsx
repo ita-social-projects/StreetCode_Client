@@ -5,7 +5,7 @@ import useMobx from '@stores/root-store';
 
 import { Modal } from 'antd';
 
-const ForFansAdminItem: React.FC<{
+const CategoriesAdminItem: React.FC<{
     index:number,
     categoryName: string,
     onEditClick: () => void
@@ -46,4 +46,4 @@ const ForFansAdminItem: React.FC<{
     );
 };
 
-export default observer(ForFansAdminItem);
+export default observer(CategoriesAdminItem);

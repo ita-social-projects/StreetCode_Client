@@ -62,6 +62,7 @@ const InterestingFactItem = ({
                     title={title}
                     text={factContent}
                     isInterestingFact={true}
+                    isMiddleIndex={index === middleFactIndex}
                 /> 
             </div>
         </div>
