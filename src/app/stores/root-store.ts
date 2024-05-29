@@ -20,6 +20,7 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
+import ContextStore from '@stores/context-store';
 
 import NewsStore from './news-store/news-store';
 import CreateUpdateMediaStore from './create-update-media-store';
@@ -33,7 +34,6 @@ import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
-import UserLoginStore from './user-login-store';
 
 interface Store {
     factsStore: FactsStore,
@@ -58,13 +58,13 @@ interface Store {
     newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
     sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
-    userLoginStore: UserLoginStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
     newsStore: NewsStore,
     streetcodeMainPageStore: StreetcodesMainPageStore,
     relatedByTag: StreetcodesByTagStore,
     createUpdateMediaStore: CreateUpdateMediaStore,
+    contextStore: ContextStore,
     artGalleryTemplateStore: ArtGalleryTemplateStore,
 }
 
@@ -95,7 +95,6 @@ export const store: Store = {
     newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
-    userLoginStore: new UserLoginStore(),
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
@@ -103,6 +102,7 @@ export const store: Store = {
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
     relatedByTag: new StreetcodesByTagStore(),
     createUpdateMediaStore: new CreateUpdateMediaStore(),
+    contextStore: new ContextStore(),
     artGalleryTemplateStore: new ArtGalleryTemplateStore(),
     streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
     artStore: new ArtStore(),

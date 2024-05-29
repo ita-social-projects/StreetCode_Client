@@ -10,7 +10,7 @@ import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate 
 import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
 import Toponym, { ToponymCreateUpdate } from '@models/toponyms/toponym.model';
-import TransactionLink, { TransactionLinkUpdate } from '@models/transactions/transaction-link.model';
+import  { TransactionLink, TransactionLinkUpdate } from '@models/transactions/transaction-link.model';
 
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
 import StatisticRecord, { StatisticRecordUpdate } from '../analytics/statisticrecord.model';
@@ -110,7 +110,7 @@ export interface StreetcodeCreate {
     arBlockURL?: string,
     viewCount: number,
     eventStartOrPersonBirthDate: Date,
-    eventEndOrPersonDeathDate: Date,
+    eventEndOrPersonDeathDate: Date | null,
     dateString: string,
     tags: StreetcodeTag[],
     imagesIds: Array<number>,
@@ -123,7 +123,7 @@ export interface StreetcodeCreate {
     partners: PartnerShort[],
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
-    arts: ArtCreateUpdate[],
+    arts: ArtCreateUpdate[] | null,
     streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
     toponyms: ToponymCreateUpdate[],
     streetcodeCategoryContents: StreetcodeCategoryContent[],

@@ -90,7 +90,7 @@ const Partners:React.FC = observer(() => {
                     key={`${record.id}${record.logo?.id}}`}
                     className="partners-table-logo"
                     src={base64ToUrl(logo?.base64, logo?.mimeType ?? '')}
-                    alt={logo?.alt}
+                    alt={logo?.imageDetails?.alt ?? "default"}
                 />
             ),
 

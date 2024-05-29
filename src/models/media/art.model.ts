@@ -12,7 +12,7 @@ export default interface Art {
 }
 
 export interface ArtCreateUpdate extends IModelState, IPersisted, Omit<Art, 'image'> {
-    image: Image | null;
+    image: Image;
 }
 
 export interface IndexedArt {

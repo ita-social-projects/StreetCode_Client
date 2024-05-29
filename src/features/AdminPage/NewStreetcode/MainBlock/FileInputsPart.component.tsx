@@ -7,7 +7,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import CreateUpdateMediaStore from '@app/stores/create-update-media-store';
 import useMobx from '@app/stores/root-store';
 import { ModelState } from '@models/enums/model-state';
-import Image, { ImageAssigment, ImageUpdate } from '@models/media/image.model';
+import Image, { ImageAssigment, ImageCreateUpdate } from '@models/media/image.model';
 
 import { FormInstance, Modal, UploadFile } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -77,7 +77,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
 
     const handleFileRemove = <K extends keyof CreateUpdateMediaStore, V extends CreateUpdateMediaStore[K]>
         (propertyName: K, arrayName: keyof CreateUpdateMediaStore) => {
-        const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
+        const array = createUpdateMediaStore[arrayName] as (ImageCreateUpdate | AudioUpdate)[];
         const item = array.find((x) => x.id === createUpdateMediaStore[propertyName]);
         if (item) {
             item.modelState = ModelState.Deleted;
@@ -125,7 +125,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
         propertyName: K,
         arrayName: keyof CreateUpdateMediaStore,
     ) => {
-        const array = createUpdateMediaStore[arrayName] as (ImageUpdate | AudioUpdate)[];
+        const array = createUpdateMediaStore[arrayName] as (ImageCreateUpdate | AudioUpdate)[];
         if (createUpdateMediaStore[propertyName]) {
             const item = array.find((x) => x.id === createUpdateMediaStore[propertyName]);
             if (item) {

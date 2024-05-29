@@ -12,12 +12,12 @@ module.exports = {
     open: true,
     port: "3000",
     historyApiFallback: true,
-    https: {
+    // https: {
       // DEV.NOTE: uncomment and change names of files according to your generated ones
 
       // key: fs.readFileSync("cert\\localhost+1-key.pem"),
       // cert: fs.readFileSync("cert\\localhost+1.pem"),
-    },
+    // },
   },
   module: {
     rules: require("./webpack.rules"),
@@ -37,54 +37,54 @@ module.exports = {
     new Dotenv({
       path: `./.env`,
     }),
-    new GenerateSW({
-      skipWaiting: true,
-      clientsClaim: true,
-      maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
-      runtimeCaching: [
-        {
-          urlPattern: /\.(?:js|css)$/,
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'static-resources',
-            expiration: {
-              maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
-            },
+    // new GenerateSW({
+    //   skipWaiting: true,
+    //   clientsClaim: true,
+    //   maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+    //   runtimeCaching: [
+    //     {
+    //       urlPattern: /\.(?:js|css)$/,
+    //       handler: 'CacheFirst',
+    //       options: {
+    //         cacheName: 'static-resources',
+    //         expiration: {
+    //           maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+    //         },
 
-          },
-        },
-        {
-          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'image-resources',
-            expiration: {
-              maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
-            },
-          },
-        },
-        {
-          urlPattern: /\.(?:woff|woff2|ttf|otf)$/,
-          handler:'CacheFirst',
-          options: {
-            cacheName: 'font-resources',
-            expiration: {
-              maxAgeSeconds: 60 * 60 * 24 * 90, // 3 months
-            },
-          },
-        },
-        {
-          urlPattern: /^https?.*/,
-          handler: 'StaleWhileRevalidate',
-          options: {
-            cacheName: 'external-resources',
-            expiration: {
-              maxEntries: 260
-            },
-          },
-        },
-      ],
-    }),
+    //       },
+    //     },
+    //     {
+    //       urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+    //       handler: 'CacheFirst',
+    //       options: {
+    //         cacheName: 'image-resources',
+    //         expiration: {
+    //           maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+    //         },
+    //       },
+    //     },
+    //     {
+    //       urlPattern: /\.(?:woff|woff2|ttf|otf)$/,
+    //       handler:'CacheFirst',
+    //       options: {
+    //         cacheName: 'font-resources',
+    //         expiration: {
+    //           maxAgeSeconds: 60 * 60 * 24 * 90, // 3 months
+    //         },
+    //       },
+    //     },
+    //     {
+    //       urlPattern: /^https?.*/,
+    //       handler: 'StaleWhileRevalidate',
+    //       options: {
+    //         cacheName: 'external-resources',
+    //         expiration: {
+    //           maxEntries: 260
+    //         },
+    //       },
+    //     },
+    //   ],
+    // }),
   ],
   optimization: {
     splitChunks: {

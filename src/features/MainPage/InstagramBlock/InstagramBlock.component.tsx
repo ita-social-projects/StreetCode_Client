@@ -27,11 +27,14 @@ const InstagramBlock = () => {
     const windowSize = useWindowSize();
 
     const sliderProps = {
+        touchAction: 'pan-y',
+        touchThreshold: 25,
+        transform: 'translateZ(0)',
         infinite: true,
         variableWidth: true,
         swipeOnClick: false,
         slidesToShow: 4,
-        dots: windowSize.width < 1024,
+        dots: windowSize.width <= 1024,
         arrows: windowSize.width > 1024,
         slidesToScroll: 1,
     };
@@ -55,7 +58,7 @@ const InstagramBlock = () => {
                 <div className="InstagramBlock">
                     <Heading blockName="Ми в Інсті" buttonName="Зацінити інстаграм" setActionOnClick={handleClick} />
                     <div className="sliderContainer">
-                        <BlockSlider {...sliderProps}>
+                        <BlockSlider secondPreset={true} {...sliderProps}>
                             {sliderItems}
                         </BlockSlider>
                         {windowSize.width <= 480 && (

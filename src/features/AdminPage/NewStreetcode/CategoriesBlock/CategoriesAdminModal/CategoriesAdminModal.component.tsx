@@ -19,7 +19,7 @@ import {
     setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
-import SourceModal from '@/features/AdminPage/ForFansPage/ForFansPage/CategoryAdminModal.component';
+import SourceModal from '@/features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.component';
 import {
     SourceCategoryName,
     StreetcodeCategoryContent,
@@ -42,7 +42,7 @@ function isEditingCategoryTextOnly(
     return elementToUpdate && elementToUpdate?.sourceLinkCategoryId === Number(editedCategoryId);
 }
 
-const ForFansModal = ({
+const CategoriesModal = ({
     character_limit, open, setOpen, allCategories, onChange, allPersistedSourcesAreSet,
 }: Props) => {
     const { sourceCreateUpdateStreetcode, sourcesAdminStore } = useMobx();
@@ -64,7 +64,7 @@ const ForFansModal = ({
         maxCount: 3,
     });
 
-    const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[]> => {
+    const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[] | undefined> => {
         try {
             const categories = await SourcesApi.getAllCategories();
             sourcesAdminStore.setInternalSourceCategories(categories);
@@ -103,7 +103,10 @@ const ForFansModal = ({
 
     async function fetchData() {
         const AvailableCats = await getAvailableCategories(false);
-        setAvailableCategories(AvailableCats);
+        if (AvailableCats)
+            {
+                setAvailableCategories(AvailableCats);
+            }
     }
 
     useEffect(() => {
@@ -142,10 +145,12 @@ const ForFansModal = ({
         indexOfPersistedCategory: number,
         isEditedCategoryPersisted: boolean,
     ) => {
+        let ids: (number | undefined)[] = sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id);
+        let filteredIds: number[] = ids.filter((id): id is number => id !== undefined);
         if (!isEditedCategoryPersisted) {
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({
-                    id: getNewMinNegativeId(sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id)),
+                    id: getNewMinNegativeId(filteredIds),
                     sourceLinkCategoryId: values.category,
                     text: editorContent ?? '',
                     streetcodeId: categoryUpdate.current?.streetcodeId ?? 0,
@@ -236,7 +241,10 @@ const ForFansModal = ({
             const categories = await SourcesApi.getAllNames();
             setCategories(categories.sort((a, b) => a.title.localeCompare(b.title)));
             const AvailableCats = await getAvailableCategories(true);
-            setAvailableCategories(AvailableCats);
+            if (AvailableCats)
+                {
+                    setAvailableCategories(AvailableCats);
+                }
             alert('Категорію успішно додано до списку!');
         }
     };
@@ -329,4 +337,4 @@ const ForFansModal = ({
     );
 };
 
-export default observer(ForFansModal);
+export default observer(CategoriesModal);

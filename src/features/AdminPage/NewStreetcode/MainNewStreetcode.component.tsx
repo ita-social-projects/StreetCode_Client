@@ -43,7 +43,7 @@ import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.
 import { TransactionLink } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
-import ForFansBlock from './ForFansBlock/ForFansBlock.component';
+import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
@@ -222,7 +222,9 @@ const NewStreetcode = () => {
                 });
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
                     .then((result) => {
-                        setSubTitle(result);
+                        if(result){
+                            setSubTitle(result[0]);
+                        } 
                     })
                     .catch((error) => { });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
@@ -339,7 +341,7 @@ const NewStreetcode = () => {
                 teaser: form.getFieldValue('teaser'),
                 viewCount: 0,
                 dateString: form.getFieldValue('dateString'),
-                arts: artStore.arts.map((a) => ({ ...a, image: null })),
+                arts: artStore.arts.map((a) => ({ ...a})),
                 streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                 subtitles,
                 firstName: null,
@@ -516,11 +518,11 @@ const NewStreetcode = () => {
                             <TimelineBlockAdmin onChange={handleFieldChange} />
                             <ArtGalleryDndContext>
                                 <StreetcodeArtsBlock />
-                                <ArtGallery isConfigurationGallery />
-                                <ArtGallery isAdmin />
+                                <ArtGallery isConfigurationGallery title="Шаблони" />
+                                <ArtGallery isAdmin title='Попередній перегляд' />
                             </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
-                            <ForFansBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
+                            <CategoriesBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
                             <ARBlock onChange={handleFieldChange} />

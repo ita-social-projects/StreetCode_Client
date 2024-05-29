@@ -17,6 +17,7 @@ import type { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import Image from '@/models/media/image.model';
+import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 
@@ -41,7 +42,7 @@ const DownloadBlock = () => {
     });
 
     useEffect(() => {
-        if (artStore.arts.length > 0) {
+        if (artStore.arts.length >= 0) {
             const newFileList = artStore.arts.filter((art) => art.modelState !== ModelState.Deleted).map((art) => ({
                 uid: `${art.id}`,
                 name: art.image?.imageDetails?.alt || '',
@@ -51,7 +52,7 @@ const DownloadBlock = () => {
             }));
             setFileList(newFileList);
         }
-    }, [artStore.mutationObserved]);
+    }, [artStore.arts, artStore.mutationObserved]);
 
     const isArtInSlides = (id: string) => (
         streetcodeArtSlideStore.hasArtWithId(id) || artGalleryTemplateStore.hasArtWithId(id));
@@ -83,7 +84,8 @@ const DownloadBlock = () => {
         }
     };
 
-    const onSuccessUpload = action((image: Image) => {
+    const onSuccessUploadImage = action((file: Image | Audio) => {
+        let image: Image = file as Image;
         const newId = artStore.getMaxArtId + 1;
 
         const newArt: ArtCreateUpdate = {
@@ -141,7 +143,7 @@ const DownloadBlock = () => {
                 fileList={fileList}
                 onPreview={onPreview}
                 uploadTo="image"
-                onSuccessUpload={onSuccessUpload}
+                onSuccessUpload={onSuccessUploadImage}
                 onRemove={(e) => handleRemove(e)}
                 className="with-multiple-delete"
                 itemRender={(element, file) => (
