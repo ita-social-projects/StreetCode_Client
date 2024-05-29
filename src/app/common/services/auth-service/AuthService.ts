@@ -112,8 +112,7 @@ export default class AuthService {
 
         const decodedToken = this.getDecodedAccessToken(token);
         if (!decodedToken || !decodedToken.role) return false;
-        console
-        console.log(decodedToken.role)
+
         return decodedToken.role === 'Admin';
     }
 }
