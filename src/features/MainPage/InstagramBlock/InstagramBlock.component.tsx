@@ -27,6 +27,9 @@ const InstagramBlock = () => {
     const windowSize = useWindowSize();
 
     const sliderProps = {
+        touchAction: 'pan-y',
+        touchThreshold: 25,
+        transform: 'translateZ(0)',
         infinite: true,
         variableWidth: true,
         swipeOnClick: false,
