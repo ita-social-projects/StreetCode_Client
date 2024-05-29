@@ -1,7 +1,7 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 @use '@assets/sass/variables/_variables.fonts.scss' as ft;
-
+@use '@assets/sass/variables/_variables.colors.scss' as c;
 
 .textComponentContainer {
     @include mut.sized(100%, auto);
@@ -14,6 +14,12 @@
     justify-content: flex-end;
     display: flex;
     flex-wrap: wrap;
+
+    .text div p a {
+        color: c.$dark-red-color;
+        text-decoration: underline;
+    }
+
 }
 .textComponent {
     @include mut.flex-centered();
