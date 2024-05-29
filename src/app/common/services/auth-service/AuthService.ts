@@ -4,6 +4,10 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import AuthApi from '@/app/api/authentication/auth.api';
 import { RefreshTokenRequest } from '@/models/user/user.model';
 
+interface CustomJwtPayload extends JwtPayload {
+    role: string;
+}
+
 export default class AuthService {
     private static accessTokenStorageName = 'AccessToken';
 
@@ -45,7 +49,7 @@ export default class AuthService {
     public static refreshTokenAsync = () => {
         const oldAccesstoken = this.getAccessToken();
         if (!AuthService.isAccessTokenHasValidSignature(oldAccesstoken)) {
-            const error = new Error('Invalid sigrature of access token');
+            const error = new Error('Invalid signature of access token');
             return Promise.reject(error);
         }
 
@@ -82,10 +86,10 @@ export default class AuthService {
         return !!token && !!this.getDecodedAccessToken(token);
     }
 
-    private static getDecodedAccessToken(token: string): JwtPayload | null {
-        let decodedToken: JwtPayload | null = null;
+    private static getDecodedAccessToken(token: string): CustomJwtPayload | null {
+        let decodedToken: CustomJwtPayload | null = null;
         try {
-            decodedToken = jwtDecode(token);
+            decodedToken = jwtDecode<CustomJwtPayload>(token);
         } catch (error) {
             return null;
         }
@@ -100,5 +104,16 @@ export default class AuthService {
     private static clearTokenData() {
         localStorage.removeItem(this.accessTokenStorageName);
         localStorage.removeItem(this.refreshTokenStorageName);
+    }
+
+    public static isAdmin(): boolean {
+        const token = this.getAccessToken();
+        if (!token) return false;
+
+        const decodedToken = this.getDecodedAccessToken(token);
+        if (!decodedToken || !decodedToken.role) return false;
+        console
+        console.log(decodedToken.role)
+        return decodedToken.role === 'Admin';
     }
 }
