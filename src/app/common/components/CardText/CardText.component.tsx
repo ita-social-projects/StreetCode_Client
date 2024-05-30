@@ -3,6 +3,7 @@ import './CardText.styles.scss';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useModalContext } from '@stores/root-store';
 
 type Props = {
     moreBtnText?: string,
@@ -14,6 +15,7 @@ type Props = {
     text: string
     isStreetcodeSlider?: boolean
     isInterestingFact?: boolean
+    isMiddleIndex?: boolean
 };
 
 function HandleQueryAbort(queryClient: QueryClient) {
@@ -27,6 +29,7 @@ const handleOnClick = (queryClient: QueryClient, isStreetcodeSlider: boolean) =>
 };
 
 const CardText = ({
+    isMiddleIndex = true,
     isInterestingFact = false,
     isStreetcodeSlider = false, moreBtnText, title, text, subTitle, className, onBtnClick, moreBtnAsLink,
 }:Props) => {
@@ -34,18 +37,17 @@ const CardText = ({
     const [isCopied, setIsCopied] = useState(false);
 
     const ClickHandle = async () => {
-        if (text) {
+        if (text && isMiddleIndex) {
             await navigator.clipboard.writeText(text);
+            setIsCopied(true);
+            setTimeout(() => {
+                setIsCopied(false);}, 2000);
         }
-        setIsCopied(true);
-        setTimeout(() => {
-            setIsCopied(false);
-        }, 2000);
     };
 
     return (
         <div className={`cardTextContainer ${className}`}>
-            <div className="cardTextContainerTopPart" onClick={ClickHandle} role="presentation">
+            <div className="cardTextContainerTopPart" onDoubleClick={ClickHandle} role="presentation">
                 <p className="cardTextContainerTitle">{title}</p>
                 {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
                 <p className="cardTextContainerText">{text}</p>
