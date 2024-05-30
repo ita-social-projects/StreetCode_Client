@@ -3,7 +3,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
-
+@use '@sass/variables/variables.fonts' as ft;
 @mixin slick-arrow-lightbox($direction) {
     @include mut.sized(40px, 58px);
     @include mut.bg-image("@assets/images/utils/#{$direction}DefaultSliderArrow.svg");
@@ -12,7 +12,6 @@
     .yarl__icon {
         @include mut.colored(c.$transparent-color, c.$transparent-color);
     }
-
     &:hover {
         filter: c.$hovered-lightbox-arrow-filter-color;
     }
@@ -20,72 +19,81 @@
 
 .lightbox {
     &Disabled {
-        .yarl__slide_captions_container, .yarl__toolbar, .yarl__button {
+        .yarl__slide_captions_container,
+        .yarl__toolbar,
+        .yarl__button {
             @include vnd.vendored(transition, 'all .5s ease');
             visibility: hidden;
             opacity: 0;
         }
     }
-
     .yarl__slide_image {
         max-width: min(100%) !important;
         max-height: min(100%) !important;
         height: 100% !important;
     }
-
     .yarl__slide_title {
         @include mut.rem-margined($top: 8px, $left: 20px);
         @include mut.with-font($font-weight: 500);
         color: #4E4E4E !important;
     }
-
     .yarl__slide {
         padding: 0 !important;
     }
-
     @media screen and (min-width:1025px) {
-
-        .yarl__slide_description {
-            @include mut.rem-margined($top: 5px, $left: 50px);
+        .description {
+            @include mut.rem-margined($top: 15px, $left: 50px);
             @include mut.with-font($font-weight: 300);
             @include mut.with-font();
             -webkit-line-clamp: inherit !important;
         }
-
+        .title {
+            @include mut.rem-margined($top: 5px, $left: 50px);
+            $font-weight: 300;
+            font-size: 36px;
+            font-family: ft.$closer-text-font;
+            font-style: ft.$closer-text-font;
+            -webkit-line-clamp: inherit !important;
+        }
         .yarl__icon {
             @include mut.sized(30px, 30px);
             @include mut.rem-margined($top: 8px, $right: 25px);
             @include mut.colored(#4E4E4E !important, c.$transparent-color);
-
             &:hover {
                 color: #918f8f !important;
             }
         }
-
         .yarl__navigation_prev {
             @include slick-arrow-lightbox(Left);
             left: pxToRem(30px) !important;
         }
-
         .yarl__navigation_next {
             @include slick-arrow-lightbox(Right);
             right: pxToRem(30px) !important;
         }
     }
-
     @media screen and (max-width:1025px) {
         .yarl__slide_description_container {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(26.5px);
         }
-
-        .yarl__slide_description {
-            @include mut.rem-margined($top: 2px, $left: 10px);
+        .description {
+            @include mut.rem-margined($top: 15px, $left: 10px);
             @include mut.with-font();
             font-size: 14px;
             font-weight: 300;
             line-height: 16px;
             -webkit-line-clamp: inherit !important;
+        }
+        .title {
+            @include mut.rem-margined($top: 2px, $left: 10px);
+            font-family: ft.$closer-text-font;
+            font-style: ft.$closer-text-font;
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 16px;
+            -webkit-line-clamp: inherit !important;
+            margin-top: 500px;
         }
     }
 }
