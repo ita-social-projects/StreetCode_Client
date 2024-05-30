@@ -106,7 +106,7 @@ const StreetcodeContent = () => {
 
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
-            if ((val?.status === 0 && AuthService.isLoggedIn()) || val?.status !== 0) {
+            if ((val?.status === 0 && AuthService.isAdmin()) || val?.status !== 0) {
                 setStreecode(val);
             } else {
                 navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
