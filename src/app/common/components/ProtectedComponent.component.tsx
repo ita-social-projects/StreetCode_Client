@@ -1,28 +1,31 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable no-restricted-imports */
+/* eslint-disable import/extensions */
 import { observer } from 'mobx-react-lite';
 import { FC, ReactNode } from 'react';
-import { Navigate, redirect, useNavigate } from 'react-router-dom';
-
-import useMobx from '@/app/stores/root-store';
-import UserLoginStore from '@/app/stores/user-login-store';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
+import AuthService from '../services/auth-service/AuthService';
 
 type PropsWithChildren = { children: ReactNode };
-const ProtectedComponent:FC<PropsWithChildren> = ({ children }): JSX.Element => {
-    const { userLoginStore } = useMobx();
+const ProtectedComponent:FC<PropsWithChildren> = ({ children }): ReactNode => {
     const navigate = useNavigate();
-    if (!UserLoginStore.isLoggedIn) {
-        const token = UserLoginStore.getToken();
-        if (token && token !== '') {
-            userLoginStore.refreshToken().catch((er) => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
-        } else {
-            return <Navigate to={FRONTEND_ROUTES.ADMIN.LOGIN} />;
+    const isLoggedIn = AuthService.isLoggedIn();
+
+    if (!isLoggedIn) {
+        AuthService.refreshTokenAsync()
+            .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+        return null;
+    }else{
+        if (!AuthService.isAdmin()) {
+            return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} />;
         }
     }
-    if (!Array.isArray(children)) return <>{children}</>;
+
     return (
         <>
-            {children.map((child) => child) }
+            {children}
         </>
     );
 };

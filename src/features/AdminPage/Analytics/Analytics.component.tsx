@@ -11,7 +11,7 @@ import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
-import StatisticRecord from '@/models/analytics/analytics/statisticrecord.model';
+import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import Image, { ImageAssigment } from '@/models/media/image.model';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 

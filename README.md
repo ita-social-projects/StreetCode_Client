@@ -1,10 +1,3 @@
-
-<a href="https://softserve.academy/">
-  <img src="https://raw.githubusercontent.com/ita-social-projects/StreetCode/master/StreerCodeLogo.jpg" 
-  title="SoftServe IT Academy" 
-  alt="SoftServe IT Academy">
-</a>
-
 # Streetcode
 
 This is a front-end part of our Streetcode project.
@@ -16,22 +9,38 @@ Back-end part: https://github.com/ita-social-projects/StreetCode.git.
 
 ## Table of Contents
 
-- [Installation](#installation)
-  - [Required to install](#required-to-install)
-  - [Clone](#clone)
-  - [Setup](#setup)
-  - [How to run local](#how-to-run-local)
-- [Usage](#usage)
-  - [How to run tests](#how-to-run-tests)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-  - [GitHub flow](#github-flow)
-  - [Issue flow](#github-flow)
-- [Team](#team)
-- [FAQ](#faq)
-- [Support](#support)
-- [About Us](#about-us)
-- [License](#license)
+- [Streetcode](#streetcode)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Required to install](#required-to-install)
+    - [Clone](#clone)
+    - [Setup](#setup)
+      - [Prerequisites](#prerequisites)
+      - [Installation Steps](#installation-steps)
+    - [How to run local](#how-to-run-local)
+  - [Usage](#usage)
+    - [How to run tests](#how-to-run-tests)
+  - [Documentation](#documentation)
+  - [Contributing](#contributing)
+    - [Gitflow](#gitflow)
+      - [Step 1](#step-1)
+      - [Step 2](#step-2)
+      - [Step 3](#step-3)
+      - [Step 4](#step-4)
+      - [Step 5](#step-5)
+      - [Step 6](#step-6)
+      - [Step 7](#step-7)
+      - [Step 8](#step-8)
+      - [Step 9](#step-9)
+    - [Hotfixes](#hotfixes)
+      - [Step 1](#step-1-1)
+      - [Step 2](#step-2-1)
+    - [Issue flow](#issue-flow)
+  - [Team](#team)
+  - [FAQ](#faq)
+  - [Support](#support)
+  - [About Us](#about-us)
+  - [License](#license)
 
 ---
 
@@ -58,6 +67,29 @@ To setup this project use this command in project folder:
 npm install
 ```
 
+To facilitate the usage of Workbox in our project, we have a few setup steps. Follow these instructions carefully:
+
+#### Prerequisites
+
+Before proceeding, ensure you have [Chocolatey](https://chocolatey.org/install) installed on your system.
+
+#### Installation Steps
+
+1. Install `mkcert` by running the following command from PowerShell (administrative):
+   ```
+   choco install mkcert
+   ```
+2. Create a `cert` folder in the root directory of cloned project.
+3. Navigate to the `cert` folder in your console.
+4. Run the following commands to generate SSL certificates:
+```
+mkcert -install
+```
+```
+mkcert localhost 127.0.0.1
+```
+5. In `webpack.dev.js` file update DevServer section according to comment left there.
+   
 ### How to run local
 To start project locally, write following command:
 ```

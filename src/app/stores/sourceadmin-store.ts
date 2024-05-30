@@ -3,7 +3,7 @@ import sourcesApi from '@api/sources/sources.api';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 
 export default class SourcesAdminStore {
-    public srcSourcesMap = new Map<number, SourceCategoryAdmin>();
+    public srcSourcesMap = new Map< number, SourceCategoryAdmin>();
 
     public constructor() {
         makeAutoObservable(this, {
@@ -18,7 +18,10 @@ export default class SourcesAdminStore {
     }
 
     public setSource = (srcCategory: SourceCategoryAdmin) => {
-        this.srcSourcesMap.set(srcCategory.id, srcCategory);
+        if(srcCategory.id !== undefined){
+            this.srcSourcesMap.set(srcCategory.id, srcCategory);
+        }
+        
     };
 
     public setInternalSourceCategories(src: SourceCategoryAdmin[]) {
@@ -60,7 +63,9 @@ export default class SourcesAdminStore {
     };
 
     public updateSourceCategory = async (sourceItem: SourceCategoryAdmin) => {
-        this.srcSourcesMap.set(sourceItem.id, sourceItem);
+        if(sourceItem.id !== undefined){
+            this.srcSourcesMap.set(sourceItem.id, sourceItem);
+        }
         try {
             await sourcesApi.update(sourceItem);
         } catch (e: unknown) {

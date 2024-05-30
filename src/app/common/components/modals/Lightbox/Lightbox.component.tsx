@@ -14,20 +14,30 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
 
 const LightboxComponent = () => {
-    const { streetcodeArtStore: { getStreetcodeArtArray } } = useMobx();
+    const { artStore: { arts, mutationObserved } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
 
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
-    const slides = useMemo(() => getStreetcodeArtArray.map(
-        ({ art: { image: { base64, mimeType }, description, title }, index }) => ({
-            src: base64ToUrl(base64, mimeType),
-            title: `${index}/${getStreetcodeArtArray.length}`,
-            description: `${title ?? ''}. \n\n${description ?? ''}`,
-        }),
+    const slides = useMemo(() => arts.map(
+        ({ image: { base64, mimeType }, description, title }, index) => {
+          let src = base64ToUrl(base64, mimeType);
+          if (!src) {
+            src = ''; //replace with default src
+          }
+          return {
+            src,
+            title: `${index + 1}/${arts.length}`,
+            description: `${title ?? ''} \n\n${description ?? ''}`,
+          };
+        }
+      ), [mutationObserved]);
+      
 
-    ), [getStreetcodeArtArray]);
+    const currentArtIndex = useMemo(() => arts.findIndex(
+        (art) => art.id === fromCardId,
+    ), [mutationObserved, fromCardId]);
 
     const onIdleTimerHandlers = useMemo(() => ({
         onIdle: () => setIsCaptionEnabled(false),
@@ -43,8 +53,8 @@ const LightboxComponent = () => {
         <Lightbox
             open={isOpen}
             close={() => setModal('artGallery')}
-            index={fromCardId}
-            className={`lightbox ${!isCaptionEnabled ? 'disabled' : ''}`}
+            index={currentArtIndex}
+            className={`lightbox ${!isCaptionEnabled ? 'lightboxDisabled' : ''}`}
             slides={slides}
             plugins={[Captions]}
         />

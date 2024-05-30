@@ -1,10 +1,15 @@
+/* eslint-disable no-restricted-imports */
+/* eslint-disable no-param-reassign */
+/* eslint-disable import/extensions */
 /* eslint-disable no-underscore-dangle */
 import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import UserLoginStore from '@stores/user-login-store';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
+
+import AuthService from '../common/services/auth-service/AuthService';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;
@@ -12,7 +17,12 @@ const defaultBaseUrl = process.env.NODE_ENV === 'development'
 const frontendServerBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:4000' : window._env_.SERVER_API_URL;
 
-const responseBody = <T> (response: AxiosResponse<T>) => response.data;
+const responseData = <T> (response: AxiosResponse<T>) => response.data;
+
+const paginationResponseData = <T> (response: AxiosResponse<T>) => ({
+    data: response.data,
+    paginationInfo: JSON.parse(response.headers['x-pagination']),
+});
 
 const createAxiosInstance = (baseUrl: string) => {
     const instance = axios.create({
@@ -21,18 +31,27 @@ const createAxiosInstance = (baseUrl: string) => {
 
     instance.interceptors.response.use(
         async (response) => response,
-        ({ response, message }: AxiosError) => {
+        async ({ response, message }: AxiosError) => {
             let errorMessage = '';
             if (message === 'Network Error') {
                 errorMessage = message;
             }
+
+            if (response?.status === StatusCodes.UNAUTHORIZED) {
+                return AuthService.refreshTokenAsync()
+                    .then(() => {
+                        response.config.headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+                        return instance.request(response.config);
+                    })
+                    .catch((error) => {
+                        redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                        return Promise.reject(error);
+                    });
+            }
+
             switch (response?.status) {
             case StatusCodes.INTERNAL_SERVER_ERROR:
                 errorMessage = ReasonPhrases.INTERNAL_SERVER_ERROR;
-                break;
-            case StatusCodes.UNAUTHORIZED:
-                errorMessage = ReasonPhrases.UNAUTHORIZED;
-                redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
                 break;
             case StatusCodes.NOT_FOUND:
                 errorMessage = ReasonPhrases.NOT_FOUND;
@@ -50,30 +69,51 @@ const createAxiosInstance = (baseUrl: string) => {
                 toast.error(errorMessage);
             }
 
-            return Promise.reject(response?.status);
+            return Promise.reject(response);
         },
     );
 
-    instance.interceptors.request.use((config) => {
-        // eslint-disable-next-line no-param-reassign
-        config.headers.Authorization = `Bearer ${UserLoginStore.getToken()}`;
+    instance.interceptors.request.use(async (config) => {
+        const methodsToApply = ['post', 'delete', 'update'];
+        const method = (config.method || " ").toLowerCase() ?? "get";
+    
+        if (methodsToApply.includes(method)) {
+            let token = AuthService.getAccessToken();
+    
+            if (token && AuthService.isAccessTokenExpired(token)) { 
+                try {
+                    await AuthService.refreshTokenAsync();
+                    token = AuthService.getAccessToken();
+                } catch (error) {
+                    redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                    return Promise.reject(error);
+                }
+            }
+
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+    
         return config;
     });
+    
 
-    instance.defaults.headers.common.Authorization = `Bearer ${UserLoginStore.getToken()}`;
+    instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
 
     return {
-        get: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })
-            .then(responseBody),
+        get: async <T> (url: string, params?: URLSearchParams|GetAllToponymsRequest) => instance.get<T>(url, { params })
+            .then(responseData),
+
+        getPaginated: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })
+            .then(paginationResponseData),
 
         post: async <T> (url: string, body: object, headers?: object) => instance.post<T>(url, body, headers)
-            .then(responseBody),
+            .then(responseData),
 
         put: async <T> (url: string, body: object) => instance.put<T>(url, body)
-            .then(responseBody),
+            .then(responseData),
 
         delete: async <T>(url: string) => instance.delete<T>(url)
-            .then(responseBody),
+            .then(responseData),
     };
 };
 

@@ -1,49 +1,56 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable import/extensions */
+/* eslint-disable no-underscore-dangle */
 import './AdminLogin.style.scss';
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { Button, Form, Input, message } from 'antd';
 
-import UserApi from '@/app/api/user/user.api';
+import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@/app/common/constants/error-messages.constants';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useMobx from '@/app/stores/root-store';
-import UserLoginStore from '@/app/stores/user-login-store';
-import { UserLoginResponce } from '@/models/user/user.model';
+import AuthService from '@/app/common/services/auth-service/AuthService';
 
 const AdminLogin:React.FC = () => {
-    const { modalStore, userLoginStore } = useMobx();
     const navigate = useNavigate();
     const [form] = Form.useForm();
+    const [isVerified, setIsVerified] = useState(false);
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const siteKey = window._env_.RECAPTCHA_SITE_KEY;
+    const { SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
-    const setConfirmationModal = () => {
-        modalStore.setConfirmationModal('confirmation', () => {
-            userLoginStore.refreshToken()
-                .catch((e) => {});
-            modalStore.setConfirmationModal('confirmation');
-        }, 'Бажаєте продовжити сеанс?', undefined, () => {
-            userLoginStore.clearUserData();
-        });
+    const handleVerify = () => {
+        setIsVerified(true);
     };
 
-    const onSuccessfulLogin = (loginResponce: UserLoginResponce) => userLoginStore
-        .setUserLoginResponce(loginResponce, setConfirmationModal);
-
-    const login = (formValues:any) => {
-        UserApi.login({ login: formValues.login, password: formValues.password })
-            .then((logResp) => onSuccessfulLogin(logResp))
-            .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
-            .catch((er) => {
-                message
-                    .error('Неправильний логін чи пароль');
-            });
+    const handleExpiration = () => {
+        setIsVerified(false);
     };
-    if (UserLoginStore.isLoggedIn) {
+
+    const handleLogin = async ({ login, password }: any) => {
+        if (isVerified) {
+            try {
+                const token = recaptchaRef?.current?.getValue();
+                await AuthService.loginAsync(login, password, token)
+                    .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
+                    .catch(() => message.error(SOMETHING_IS_WRONG));
+                recaptchaRef.current?.reset();
+            } catch (error) {
+                message.error(INVALID_LOGIN_ATTEMPT);
+            }
+        } else {
+            message.error(RECAPTCHA_CHECK);
+        }
+    };
+
+    if (AuthService.isLoggedIn()) {
         return <Navigate to={FRONTEND_ROUTES.ADMIN.BASE} />;
     }
 
     return (
-        <Form form={form} className="admin-login-form" onFinish={login}>
+        <Form form={form} className="admin-login-form" onFinish={handleLogin}>
             <Form.Item name="login" label="Логін" rules={[{ required: true, message: 'Введіть логін' }]}>
                 <Input maxLength={20} />
             </Form.Item>
@@ -51,6 +58,15 @@ const AdminLogin:React.FC = () => {
             <Form.Item name="password" label="Пароль" rules={[{ required: true, message: 'Введіть пароль' }]}>
                 <Input.Password maxLength={20} />
             </Form.Item>
+            <div className="captchaBlock">
+                <ReCAPTCHA
+                    className="required-captcha"
+                    sitekey={siteKey}
+                    onChange={handleVerify}
+                    onExpired={handleExpiration}
+                    ref={recaptchaRef}
+                />
+            </div>
             <Form.Item>
                 <Button htmlType="submit" className="streetcode-custom-button">
                     Увійти

@@ -1,13 +1,15 @@
+/* eslint-disable import/extensions */
 /* eslint-disable global-require */
 import './Streetcode.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -19,13 +21,14 @@ import { clearWindowHistoryState } from '@utils/window.utility';
 
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
+import AuthService from '@/app/common/services/auth-service/AuthService';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
-import ArtGalleryBlockComponent from './ArtGalleryBlock/ArtGalleryBlock.component';
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
@@ -40,6 +43,11 @@ const StreetcodeContent = () => {
     const [activeTagId, setActiveTagId] = useState(0);
     const [showAllTags, setShowAllTags] = useState<boolean>(false);
     const [streetcode, setStreecode] = useState<Streetcode>();
+
+    const [ref, inView] = useInView({ threshold: 1 });
+    const showModalOnScroll = useRef(true);
+    const [haveBeenDisplayed, setHaveBeenDisplayed] = useState(false);
+    const { modalStore: { setModal } } = useModalContext();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -60,6 +68,15 @@ const StreetcodeContent = () => {
     const addCount = async (qrId: number) => {
         await StatisticRecordApi.update(qrId);
     };
+
+    const handleSurveyModalOpen = () => {
+        if (inView && !haveBeenDisplayed) {
+            setHaveBeenDisplayed(true);
+            setModal('survey', undefined, true);
+            showModalOnScroll.current = false;
+        }
+    };
+    setTimeout(handleSurveyModalOpen, 500);
 
     useAsync(() => {
         Promise.all([checkStreetcodeExist(streetcodeUrl.current)])
@@ -88,7 +105,13 @@ const StreetcodeContent = () => {
     });
 
     useEffect(() => {
-        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => setStreecode(val));
+        setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
+            if ((val?.status === 0 && AuthService.isAdmin()) || val?.status !== 0) {
+                setStreecode(val);
+            } else {
+                navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
+            }
+        });
 
         const fromPage = location.state?.fromPage;
 
@@ -123,7 +146,7 @@ const StreetcodeContent = () => {
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 {pageLoadercontext.isPageLoaded ? (
-                    <ArtGalleryBlockComponent />
+                    <ArtGallery isFillArtsStore />
                 ) : (
                     <></>
                 )}
@@ -142,7 +165,9 @@ const StreetcodeContent = () => {
                     <DonateBtn />
                 </div>
             </div>
-            <TickerBlock type="subtitle" />
+            <div ref={ref}>
+                <TickerBlock type="subtitle" />
+            </div>
             <TagsModalComponent
                 activeTagId={activeTagId}
                 setActiveTagId={setActiveTagId}

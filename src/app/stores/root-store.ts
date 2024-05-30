@@ -1,4 +1,6 @@
 import { createContext, useContext } from 'react';
+import ArtGalleryTemplateStore from '@stores/art-gallery-template-store';
+import ArtStore from '@stores/art-store';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
 import FactsStore from '@stores/facts-store';
@@ -10,7 +12,7 @@ import RelatedFiguresStore from '@stores/related-figures-store';
 import RelatedTermsStore from '@stores/related-terms-store';
 import SourcesAdminStore from '@stores/sourceadmin-store';
 import SourcesStore from '@stores/sources-store';
-import StreetcodeArtStore from '@stores/streetcode-art-store';
+import StreetcodeArtSlideStore from '@stores/streetcode-art-slide-store';
 import StreetcodeStore from '@stores/streetcode-current-store';
 import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
 import StreetcodeShortStore from '@stores/streetcodeshort-store';
@@ -18,9 +20,10 @@ import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
+import ContextStore from '@stores/context-store';
 
+import NewsStore from './news-store/news-store';
 import CreateUpdateMediaStore from './create-update-media-store';
-import NewsStore from './news-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
@@ -31,7 +34,6 @@ import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
-import UserLoginStore from './user-login-store';
 
 interface Store {
     factsStore: FactsStore,
@@ -45,7 +47,8 @@ interface Store {
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
     sourcesAdminStore: SourcesAdminStore
-    streetcodeArtStore: StreetcodeArtStore,
+    artStore: ArtStore,
+    streetcodeArtSlideStore: StreetcodeArtSlideStore,
     relatedFiguresStore: RelatedFiguresStore,
     checkboxStore: CheckBoxStore,
     relatedTermStore: RelatedTermsStore,
@@ -55,13 +58,14 @@ interface Store {
     newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
     sourceCreateUpdateStreetcode: SourceCreateUpdateStreetcode,
-    userLoginStore: UserLoginStore,
     positionsStore: PositionsStore,
     statisticRecordStore: StatisticRecordStore,
     newsStore: NewsStore,
     streetcodeMainPageStore: StreetcodesMainPageStore,
     relatedByTag: StreetcodesByTagStore,
     createUpdateMediaStore: CreateUpdateMediaStore,
+    contextStore: ContextStore,
+    artGalleryTemplateStore: ArtGalleryTemplateStore,
 }
 
 export interface StreetcodeDataStore {
@@ -76,7 +80,6 @@ export const store: Store = {
     subtitlesStore: new SubtitlesStore(),
     tagsStore: new TagsStore(),
     audiosStore: new AudioStore(),
-    streetcodeArtStore: new StreetcodeArtStore(),
     imagesStore: new ImageStore(),
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
@@ -92,7 +95,6 @@ export const store: Store = {
     newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
     sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
-    userLoginStore: new UserLoginStore(),
     positionsStore: new PositionsStore(),
     sourcesAdminStore: new SourcesAdminStore(),
     statisticRecordStore: new StatisticRecordStore(),
@@ -100,6 +102,10 @@ export const store: Store = {
     streetcodeMainPageStore: new StreetcodesMainPageStore(),
     relatedByTag: new StreetcodesByTagStore(),
     createUpdateMediaStore: new CreateUpdateMediaStore(),
+    contextStore: new ContextStore(),
+    artGalleryTemplateStore: new ArtGalleryTemplateStore(),
+    streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
+    artStore: new ArtStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),

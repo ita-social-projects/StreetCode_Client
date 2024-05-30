@@ -1,0 +1,40 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.categories-page{
+    @include mut.admin-page-base-layout();
+    margin-top: 0;
+
+    .container-justify-end{
+        display: flex;
+        justify-content: end;
+    }
+    .categories-page-container{
+        @include mut.sized(100%);
+
+        .categories-table-logo{
+            max-width: 90%;
+            height: f.pxToRem(40px);
+            margin: 0;
+            padding: 0
+        }
+        .category-page-actions{
+            display: flex;
+            gap: f.pxToRem(30px);
+        }
+        .category-links{
+            @include mut.flexed(row, start,space-between, wrap, 4px);
+        }
+        .categories-table{
+            margin-top: f.pxToRem(20px);
+        }
+        .category-table-item-name{
+            @include mut.flexed(row, start,flex-start, wrap, 4px);
+        }
+        .site-link{
+            word-break: break-all
+        }
+    }
+}

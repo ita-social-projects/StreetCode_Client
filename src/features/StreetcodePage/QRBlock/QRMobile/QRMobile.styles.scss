@@ -30,10 +30,10 @@ $loadImg: '@assets/images/qr-block/must_be_gif.webp';
 
     margin: 0 pxToRem(39px);
     p{
-        padding-bottom: pxToRem(20px);
+        padding-bottom: pxToRem(15px);
     }
     button{
-        margin-top: pxToRem(20px);
+        margin-top: pxToRem(15px);
         width: pxToRem(340px);
         height: pxToRem(46px);
         border-radius: 10px;
@@ -82,11 +82,6 @@ $loadImg: '@assets/images/qr-block/must_be_gif.webp';
         display: flex;
         justify-content: center;
         margin-top: pxToRem(50px);
-    }
-    .QRMobileContent{
-        button{
-            margin-top: pxToRem(40px);
-        }
     }
     .pressButtonText{
         width: pxToRem(300px);

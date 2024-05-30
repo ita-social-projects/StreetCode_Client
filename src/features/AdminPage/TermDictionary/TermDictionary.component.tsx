@@ -53,8 +53,9 @@ const TermDictionary = () => {
     };
 
     const handleEdit = (upd: Partial<Term>) => {
-        if (upd.id && upd) {
-            termsStore.updateTerm(upd.id, upd);
+        if (upd && upd.id !== undefined) {
+            let term: Term = upd as Term;
+            termsStore.updateTerm(upd.id, term);
             setData(data?.map(
                 (t) => (t.id === upd?.id
                     ? { ...t,

@@ -116,7 +116,7 @@ const DonationBlock = () => {
                 >
                     Я даю згоду на обробку моїх
                     {' '}
-                    <a href="/privacy-policy">персональних даних</a>
+                    <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
                 </Checkbox>
             </div>
             <button

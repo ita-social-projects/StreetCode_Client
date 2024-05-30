@@ -122,7 +122,7 @@ const TeamPage = () => {
                                 rel="noreferrer"
                                 target="_blanc"
                                 className="teamLink"
-                                href={link.targetUrl}
+                                href={link.targetUrl.toString()}
                             >
                                 <LogoComponent />
                             </a>

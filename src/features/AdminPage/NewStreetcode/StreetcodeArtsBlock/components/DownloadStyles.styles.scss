@@ -1,0 +1,32 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as *;
+
+.delete-border{
+    border: 0.25rem solid c.$accented-red-color;
+    border-radius: 11px;
+}
+
+.disabled{
+    opacity: 0.5;
+}
+
+.delete-arts-button{
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.art-gallery-download{
+    margin-bottom: pxToRem(10px);
+}
+
+.streetcode-art-preview{
+    width: 100%;
+    height: 100%;
+
+    & > *{
+        width: 100%;
+        height: 100%;
+    }
+}
+

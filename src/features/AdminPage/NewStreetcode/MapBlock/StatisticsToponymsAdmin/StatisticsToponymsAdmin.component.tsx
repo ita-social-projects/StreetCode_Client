@@ -71,7 +71,7 @@ const StatisticsToponymsComponentAdmin = () => {
             key: 'checkbox',
             width: 6,
 
-            render: (text, record, index) => (
+            render: (text: any, record : any) => (
                 <Checkbox
                     defaultChecked={mustChecked?.includes(text)}
                     onChange={(e: CheckboxChangeEvent) => {

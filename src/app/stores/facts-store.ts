@@ -19,7 +19,7 @@ export default class FactsStore {
         facts.forEach((item) => {
             const updatedItem: FactUpdate = {
                 ...item,
-                isPersisted: true,
+                isPersisted: item.id !== 0,
                 modelState: ModelState.Updated,
             };
 
@@ -120,4 +120,8 @@ export default class FactsStore {
             });
         } catch (error: unknown) { /* empty */ }
     };
+
+    public updateFactMapWithNewOrder = (facts: Fact[]) => {
+        this.setInternalMap(facts);
+      };
 }

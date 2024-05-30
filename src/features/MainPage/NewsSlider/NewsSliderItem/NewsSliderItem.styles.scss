@@ -144,6 +144,12 @@
                     @media (min-width: 360px) and (max-width: 767px) {
                         @include mut.truncated(8);
                     }
+
+                    p a{
+                        color: c.$dark-red-color;
+                        text-decoration: underline;
+                    }
+
                 }
 
                 &Button{

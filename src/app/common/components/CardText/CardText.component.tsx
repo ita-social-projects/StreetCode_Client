@@ -1,6 +1,9 @@
 import './CardText.styles.scss';
 
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useModalContext } from '@stores/root-store';
 
 type Props = {
     moreBtnText?: string,
@@ -10,37 +13,67 @@ type Props = {
     title: string
     subTitle?: string,
     text: string
+    isStreetcodeSlider?: boolean
+    isInterestingFact?: boolean
+    isMiddleIndex?: boolean
+};
+
+function HandleQueryAbort(queryClient: QueryClient) {
+    queryClient.cancelQueries({ queryKey: ['news', 'image', 'streetcodesMainPage'] });
+}
+
+const handleOnClick = (queryClient: QueryClient, isStreetcodeSlider: boolean) => {
+    if (isStreetcodeSlider) {
+        HandleQueryAbort(queryClient);
+    }
 };
 
 const CardText = ({
-    moreBtnText = 'Трохи ще...', title, text, subTitle, className, onBtnClick, moreBtnAsLink,
-}:Props) => (
-    <div className={`cardTextContainer ${className}`}>
-        <div className="cardTextContainerTopPart">
-            <p className="cardTextContainerTitle">{title}</p>
-            {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
-            <p className="cardTextContainerText">{text}</p>
-        </div>
-        {moreBtnAsLink
-            ? (
-                <Link
-                    to={moreBtnAsLink.link}
-                    state={moreBtnAsLink.state}
-                    className="cardTextContainerButton"
-                >
-                    {moreBtnText}
-                </Link>
-            )
-            : (
-                <p
-                    className="cardTextContainerButton"
-                    onClick={onBtnClick}
-                >
-                    {moreBtnText}
-                </p>
-            )}
+    isMiddleIndex = true,
+    isInterestingFact = false,
+    isStreetcodeSlider = false, moreBtnText, title, text, subTitle, className, onBtnClick, moreBtnAsLink,
+}:Props) => {
+    const queryClient = useQueryClient();
+    const [isCopied, setIsCopied] = useState(false);
 
-    </div>
-);
+    const ClickHandle = async () => {
+        if (text && isMiddleIndex) {
+            await navigator.clipboard.writeText(text);
+            setIsCopied(true);
+            setTimeout(() => {
+                setIsCopied(false);}, 2000);
+        }
+    };
+
+    return (
+        <div className={`cardTextContainer ${className}`}>
+            <div className="cardTextContainerTopPart" onDoubleClick={ClickHandle} role="presentation">
+                <p className="cardTextContainerTitle">{title}</p>
+                {subTitle ? <p className="cardTextContainerSubTitle">{subTitle}</p> : <></>}
+                <p className="cardTextContainerText">{text}</p>
+                {isCopied && <div className="CoppyMessage">Скопійовано </div>}
+            </div>
+            {isInterestingFact ? <></>
+                : moreBtnAsLink ? (
+                    <Link
+                        to={moreBtnAsLink.link}
+                        state={moreBtnAsLink.state}
+                        className="cardTextContainerButton"
+                        onClick={() => handleOnClick(queryClient, isStreetcodeSlider)}
+                    >
+                        {moreBtnText}
+
+                    </Link>
+                ) : (
+                    <p
+                        className="cardTextContainerButton"
+                        onClick={onBtnClick}
+                    >
+                        {moreBtnText}
+                    </p>
+                )}
+        </div>
+    );
+};
 
 export default CardText;

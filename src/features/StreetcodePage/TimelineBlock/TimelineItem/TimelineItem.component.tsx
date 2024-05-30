@@ -1,4 +1,5 @@
 import './TimelineItem.styles.scss';
+import { useState } from 'react';
 
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
@@ -30,11 +31,11 @@ interface Props {
 }
 function FromDateToString(date: Date, dataViewType: DateViewPattern) {
     switch (dataViewType) {
-    case DateViewPattern.Year: return format(new Date(date), 'yyyy');
-    case DateViewPattern.MonthYear: return format(date, 'yyyy, MMMM', { locale: uk });
-    case DateViewPattern.SeasonYear: return `${format(date, 'yyyy,')} ${getSeason(dayjs(date))}`;
-    case DateViewPattern.DateMonthYear: return format(new Date(date), 'yyyy, d MMMM', { locale: uk });
-    default: return '';
+        case DateViewPattern.Year: return format(new Date(date), 'yyyy');
+        case DateViewPattern.MonthYear: return format(date, 'yyyy, MMMM', { locale: uk });
+        case DateViewPattern.SeasonYear: return `${format(date, 'yyyy,')} ${getSeason(dayjs(date))}`;
+        case DateViewPattern.DateMonthYear: return format(new Date(date), 'yyyy, d MMMM', { locale: uk });
+        default: return '';
     }
 }
 const TimelineSlideCard = ({
@@ -51,9 +52,21 @@ const TimelineSlideCard = ({
         newDate = FromDateToString(new Date(date), dateViewPattern);
     }
 
+    const [isCopied, setIsCopied] = useState(false);
+
+    const clickHandle = async () => {
+        if (description) {
+            await navigator.clipboard.writeText(description);
+        }
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+    };
+
     return (
         <div className="timelineItem">
-            <div className="timelineItemContent">
+            <div className="timelineItemContent" onDoubleClick={clickHandle} role="presentation" >
                 <p className="timelineItemMetadata">
                     {newDate}
                     {historicalContexts.map(({ id, title: ctxTitle }) => (
@@ -68,6 +81,7 @@ const TimelineSlideCard = ({
                 <p className="timelineItemDescription">
                     {truncateCharString(description)}
                 </p>
+                {isCopied && <div className="copy-message-relative">Скопійовано  </div>}
             </div>
         </div>
     );
