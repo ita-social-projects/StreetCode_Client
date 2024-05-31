@@ -85,7 +85,7 @@ module.exports = {
               },
               {
                 urlPattern: /^https?.*/,
-                handler: 'StaleWhileRevalidate',
+                handler: 'NetworkFirst',
                 options: {
                   cacheName: 'external-resources',
                   expiration: {
