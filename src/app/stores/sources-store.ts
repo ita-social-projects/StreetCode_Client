@@ -1,9 +1,10 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import sourcesApi from '@api/sources/sources.api';
-import { SourceCategory } from '@models/sources/sources.model';
+import { SourceCategory, StreetcodeCategoryContent } from '@models/sources/sources.model';
 
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();
+    public srcCategoriesContentMap = new Map<number, StreetcodeCategoryContent>();
 
     public constructor() {
         makeAutoObservable(this);
@@ -25,6 +26,10 @@ export default class SourcesStore {
     public fetchSrcCategoriesByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalCategoriesMap(await sourcesApi.getCategoriesByStreetcodeId(streetcodeId));
+            this.srcCategoriesMap.forEach(async (value, key) => {
+                const content = await sourcesApi.getCategoryContentByStreetcodeId(streetcodeId,key);
+                this.srcCategoriesContentMap.set(key, content);
+            })
         } catch (error: unknown) { }
     };
 
