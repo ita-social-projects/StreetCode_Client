@@ -21,7 +21,7 @@ export default class StreetcodeArtSlideStore {
     public hasArtWithId(id: string): boolean {
         if (this.streetcodeArtSlides.length === 0) return false;
 
-        const isInSlides = this.getVisibleSortedSlides()?.some(
+        const isInSlides = this.getVisibleSortedSlides(+id)?.some(
             (slide) => slide.streetcodeArts.some(
                 (sArt) => sArt.art.id.toString() === id,
             ),
@@ -34,10 +34,23 @@ export default class StreetcodeArtSlideStore {
         return this.streetcodeArtSlides.find((s) => (s.index === index));
     }
 
-    public getVisibleSortedSlides() {
+    public getVisibleSortedSlides(streetcodeIdSlide: number) {
         return this.streetcodeArtSlides
-            .filter((slide) => slide.modelState !== ModelState.Deleted)
-            .sort((a, b) => (a.index > b.index ? 1 : -1));
+            .filter((slide) => {
+                return (
+                    slide.modelState !== ModelState.Deleted && (streetcodeIdSlide === undefined || slide.streetcodeId === streetcodeIdSlide)
+                );
+            })
+            .sort((a, b) => {
+                // Sort by streetcodeIdSlide first
+                if (a.streetcodeId !== b.streetcodeId) {
+                    // @ts-ignore
+                    return a.streetcodeId - b.streetcodeId;
+                }
+                // If streetcodeIdSlide is the same, sort by some other property if needed
+                // e.g., sort by slide index
+                return a.index - b.index;
+            });
     }
 
     public fetchNextArtSlidesByStreetcodeId = async (streetcodeId: number) => {

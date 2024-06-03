@@ -1,22 +1,22 @@
 /* eslint-disable react/jsx-no-bind,@typescript-eslint/no-use-before-define */
 import './ArtGalleryBlock.styles.scss';
 
-import { runInAction } from 'mobx';
-import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Settings as SliderSettings } from 'react-slick';
+import {runInAction} from 'mobx';
+import {observer} from 'mobx-react-lite';
+import {useEffect, useRef, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {Settings as SliderSettings} from 'react-slick';
 import SLIDER_PROPS from '@components/ArtGallery/constants/sliderProps';
 import convertSlidesToTemplates from '@components/ArtGallery/utils/convertSlidesToTemplates';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { ArtCreateUpdate } from '@models/media/art.model';
+import {useAsync} from '@hooks/stateful/useAsync.hook';
+import {ArtCreateUpdate} from '@models/media/art.model';
 import StreetcodeArtSlide from '@models/media/streetcode-art-slide.model';
-import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, {useStreetcodeDataContext} from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
-import { Button } from 'antd';
-import { useMediaQuery } from 'react-responsive';
+import {Button} from 'antd';
+import {useMediaQuery} from 'react-responsive';
 
 const MAX_SLIDES_AMOUNT = 30;
 
@@ -27,49 +27,68 @@ type Props = {
     title?: string
 };
 
-const ArtGallery = ({ title="Арт-галерея", isAdmin, isConfigurationGallery, isFillArtsStore } : Props) => {
-    const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } = useMobx();
-    const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
-    const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides } = streetcodeArtSlideStore;
-    const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
+const ArtGallery = ({title = "Арт-галерея", isAdmin, isConfigurationGallery, isFillArtsStore}: Props) => {
+    const {streetcodeArtSlideStore, artGalleryTemplateStore, artStore} = useMobx();
+    const {
+        streetcodeStore: {
+            itChangedIdChange,
+            itChangedId,
+            trackChange,
+            getStreetCodeId,
+            errorStreetCodeId
+        }
+    } = useStreetcodeDataContext();
+    const {fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides} = streetcodeArtSlideStore;
+    const {streetcodeArtSlides: templateArtSlides} = artGalleryTemplateStore;
     const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
     const secondRender = useRef(false);
     const isMobile = useMediaQuery({
         query: '(max-width: 680px)',
     });
+    const [fetchedData, setFetchedData] = useState<boolean>(false)
 
-    const { id } = useParams<any>();
+    const {id} = useParams<any>();
     const parseId = id ? +id : errorStreetCodeId;
 
-    useAsync(
-        async () => {
-            if (streetcodeIdValidAndFetchingRequired()) {
-                secondRender.current = true;
-                let currentSlide = 0;
+    useEffect(() => {
+        trackChange();
+        console.log(itChangedId);
+        if (itChangedId) {
+            fetchData().then(() => {
+                setFetchedData(true);
+            }).then(() => {
+                itChangedIdChange();
+            });
+        }
+    });
 
-                while (currentSlide < MAX_SLIDES_AMOUNT) {
-                    try {
-                        // eslint-disable-next-line no-await-in-loop
-                        await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+    async function fetchData() {
+        if (streetcodeIdValidAndFetchingRequired() && itChangedId) {
+            secondRender.current = true;
+            let currentSlide = 0;
 
-                        if (isFillArtsStore) {
-                            copyArtsFromSlidesToStore();
-                        }
+            while (currentSlide < MAX_SLIDES_AMOUNT) {
+                try {
+                    console.log(getStreetCodeId, 'fetch this data');
+                    // eslint-disable-next-line no-await-in-loop
+                    await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
 
-                        currentSlide += amountOfSlides;
-                    } catch (error: unknown) {
-                        currentSlide = MAX_SLIDES_AMOUNT;
+                    if (isFillArtsStore) {
+                        copyArtsFromSlidesToStore();
                     }
+
+                    currentSlide += amountOfSlides;
+                } catch (error: unknown) {
+                    currentSlide = MAX_SLIDES_AMOUNT;
                 }
             }
-        },
-        [getStreetCodeId, parseId],
-    );
+        }
+    }
 
     function streetcodeIdValidAndFetchingRequired() {
         return (getStreetCodeId !== errorStreetCodeId || parseId !== errorStreetCodeId)
-        && !secondRender.current
-        && !isConfigurationGallery;
+            && !secondRender.current
+            && !isConfigurationGallery;
     }
 
     function copyArtsFromSlidesToStore() {
@@ -131,33 +150,33 @@ const ArtGallery = ({ title="Арт-галерея", isAdmin, isConfigurationGal
 
     return (
         <div>
-            {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
+            {((streetcodeArtSlides.length > 0 || isConfigurationGallery) && fetchedData) && (
                 <div
                     id="art-gallery"
                     className="artGalleryWrapper"
                 >
                     <div className="artGalleryContainer container">
-                        <BlockHeading headingText={title} />
+                        <BlockHeading headingText={title}/>
                         <div className="artGalleryContentContainer">
                             <div className="artGallerySliderContainer">
-                            {isMobile
+                                {isMobile
                                     ? isConfigurationGallery
                                         ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
                                         : convertSlidesToTemplates(
-                                            streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
+                                            streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId) as StreetcodeArtSlide[],
                                             false,
                                             isAdmin,
                                         )
-                                        : <SlickSlider {...slickProps}>
-                                            {isConfigurationGallery
-                                                ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
-                                                : convertSlidesToTemplates(
-                                                    streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
-                                                    false,
-                                                    isAdmin,
-                                                )}
-                                        </SlickSlider>
-                                    }
+                                    : <SlickSlider {...slickProps}>
+                                    {isConfigurationGallery
+                                        ? convertSlidesToTemplates(templateArtSlides as StreetcodeArtSlide[], true)
+                                        : convertSlidesToTemplates(
+                                            streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId) as StreetcodeArtSlide[],
+                                            false,
+                                            isAdmin,
+                                        )}
+                                </SlickSlider>
+                                }
                             </div>
                         </div>
                     </div>
