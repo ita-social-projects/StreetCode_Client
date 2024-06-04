@@ -186,7 +186,6 @@ const NewStreetcode = () => {
                         streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs.utc(x.eventEndOrPersonDeathDate).local() : undefined,
                         dateString: x.dateString,
                         teaser: x.teaser,
-                        video,
                     });
 
                     const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
@@ -202,6 +201,11 @@ const NewStreetcode = () => {
 
                 VideosApi.getByStreetcodeId(parseId).then((result) => {
                     setVideo(result);
+                    setInputInfo(prevState => ({
+                        ...prevState,
+                        ["link"]: result.url
+                      }));
+  
                 });
                 RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
                     const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
@@ -312,7 +316,7 @@ const NewStreetcode = () => {
             const text: TextCreateUpdate = {
                 id: inputInfo?.id ?? 0,
                 title: inputInfo?.title,
-                textContent: inputInfo?.textContent,
+                textContent: inputInfo?.textContent ?? " ",
                 additionalText: inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>'
                     ? '' : inputInfo?.additionalText,
                 streetcodeId: parseId,
