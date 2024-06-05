@@ -38,8 +38,8 @@ const ArtGallery = ({title = "Арт-галерея", isAdmin, isConfigurationGa
             errorStreetCodeId
         }
     } = useStreetcodeDataContext();
-    const {fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides} = streetcodeArtSlideStore;
-    const {streetcodeArtSlides: templateArtSlides} = artGalleryTemplateStore;
+    const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides, setStartingSlideAndId } = streetcodeArtSlideStore;
+    const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
     const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
     const secondRender = useRef(false);
     const isMobile = useMediaQuery({
@@ -52,7 +52,6 @@ const ArtGallery = ({title = "Арт-галерея", isAdmin, isConfigurationGa
 
     useEffect(() => {
         trackChange();
-        console.log(itChangedId);
         if (itChangedId) {
             fetchData().then(() => {
                 setFetchedData(true);
@@ -69,7 +68,6 @@ const ArtGallery = ({title = "Арт-галерея", isAdmin, isConfigurationGa
 
             while (currentSlide < MAX_SLIDES_AMOUNT) {
                 try {
-                    console.log(getStreetCodeId, 'fetch this data');
                     // eslint-disable-next-line no-await-in-loop
                     await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
 
@@ -82,6 +80,7 @@ const ArtGallery = ({title = "Арт-галерея", isAdmin, isConfigurationGa
                     currentSlide = MAX_SLIDES_AMOUNT;
                 }
             }
+            setStartingSlideAndId(getStreetCodeId);
         }
     }
 
