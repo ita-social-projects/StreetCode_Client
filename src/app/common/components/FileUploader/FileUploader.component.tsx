@@ -102,8 +102,6 @@ const FileUploader:React.FC<Props> = ({
         reader.onloadend = async(obj) => {
             let baseString: any;
             baseString = obj.target?.result;
-            //console.log(baseString);
-            console.log('next');
             if (greyFilterForImage) {
                 await applyGrayscale(baseString).then((greyScaleUrl)=>{
                     baseString = greyScaleUrl;
