@@ -4,7 +4,7 @@ import './BaseArtGallerySlide.styles.scss';
 import { runInAction } from 'mobx';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { MoreOutlined } from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 import Droppable from '@components/Droppable/Droppable';
 import { ModelState } from '@models/enums/model-state';
@@ -95,6 +95,25 @@ const BaseArtGallerySlide = ({
         }
     }
 
+    function checkMoveSlideForward(slideIndex : number) : boolean {
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        if (sortedSlides.length > 0)
+            {
+                let lengthSlides = sortedSlides.length;
+                return slideIndex >= sortedSlides[lengthSlides-1].index
+            }
+        return false;
+    }
+
+    function checkMoveSlideBackward(slideIndex : number) : boolean {
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        if (sortedSlides.length > 0)
+            {
+                return slideIndex <= sortedSlides[0].index
+            }
+        return false;
+    }
+
     const editDropdownOptions: MenuProps['items'] = [
         {
             label: <button onClick={onEditSlideClick}>Редагувати</button>,
@@ -107,12 +126,12 @@ const BaseArtGallerySlide = ({
         {
             label: <button onClick={onMoveSlideForward}>Пересунути вперед</button>,
             key: '2',
-            disabled: slideIndex >= streetcodeArtSlides.length,
+            disabled: checkMoveSlideForward(slideIndex),
         },
         {
             label: <button onClick={onMoveSlideBackward}>Пересунути назад</button>,
             key: '3',
-            disabled: slideIndex <= 1,
+            disabled: checkMoveSlideBackward(slideIndex),
         },
     ];
 
@@ -166,7 +185,7 @@ const BaseArtGallerySlide = ({
                             placement="bottom"
                         >
                             <Space>
-                                <MoreOutlined />
+                                <SettingOutlined style={{ fontSize: '28px' }} />
                             </Space>
                         </Dropdown>
                         <Modal

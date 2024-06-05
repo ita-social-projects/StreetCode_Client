@@ -109,3 +109,4 @@ const ArtGalleryTemplatesModal: React.FC<ArtGalleryTemplatesModalProps> = ({
 };
 
 export default observer(ArtGalleryTemplatesModal);
+

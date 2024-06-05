@@ -19,7 +19,12 @@ import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
+
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'
+import tz from 'dayjs/plugin/timezone'
+dayjs.extend(utc)
+dayjs.extend(tz)
 
 import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -43,7 +48,7 @@ import { Fact, Text, TextCreateUpdate } from '@/models/streetcode/text-contents.
 import { TransactionLink } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
-import ForFansBlock from './ForFansBlock/ForFansBlock.component';
+import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
@@ -78,8 +83,6 @@ const NewStreetcode = () => {
         tagsStore,
         streetcodeArtSlideStore,
     } = useMobx();
-
-    const localOffset = new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
 
     const [partners, setPartners] = useState<PartnerCreateUpdateShort[]>([]);
     const [selectedTags, setSelectedTags] = useState<StreetcodeTag[]>([]);
@@ -179,11 +182,10 @@ const NewStreetcode = () => {
                         surname: x.lastName,
                         alias: x.alias,
                         streetcodeUrlName: x.transliterationUrl,
-                        streetcodeFirstDate: dayjs(x.eventStartOrPersonBirthDate),
-                        streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs(x.eventEndOrPersonDeathDate) : undefined,
+                        streetcodeFirstDate: dayjs.utc(x.eventStartOrPersonBirthDate).local(),
+                        streetcodeSecondDate: x.eventEndOrPersonDeathDate ? dayjs.utc(x.eventEndOrPersonDeathDate).local() : undefined,
                         dateString: x.dateString,
                         teaser: x.teaser,
-                        video,
                     });
 
                     const tagsToUpdate: StreetcodeTagUpdate[] = x.tags.map((tag) => ({
@@ -199,6 +201,11 @@ const NewStreetcode = () => {
 
                 VideosApi.getByStreetcodeId(parseId).then((result) => {
                     setVideo(result);
+                    setInputInfo(prevState => ({
+                        ...prevState,
+                        ["link"]: result.url
+                      }));
+  
                 });
                 RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
                     const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
@@ -302,14 +309,14 @@ const NewStreetcode = () => {
         form.validateFields().then(() => {
             data.stopPropagation();
 
-            const subtitles: SubtitleCreate[] = [{ subtitleText: subTitle?.subtitleText || '' }];
+            const subtitles: SubtitleCreate[] = [{ subtitleText: subTitle?.subtitleText ?? '' }];
 
-            const videos: VideoCreate[] = [{ url: inputInfo?.link || '' }];
+            const videos: VideoCreate[] = [{ url: inputInfo?.link ?? '' }];
 
             const text: TextCreateUpdate = {
-                id: inputInfo?.id || 0,
+                id: inputInfo?.id ?? 0,
                 title: inputInfo?.title,
-                textContent: inputInfo?.textContent,
+                textContent: inputInfo?.textContent ?? " ",
                 additionalText: inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>'
                     ? '' : inputInfo?.additionalText,
                 streetcodeId: parseId,
@@ -324,9 +331,9 @@ const NewStreetcode = () => {
                 transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                 arBlockURL: form.getFieldValue('arlink'),
                 streetcodeType: streetcodeType.current,
-                eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
+                eventStartOrPersonBirthDate: dayjs.utc(form.getFieldValue('streetcodeFirstDate')).toDate(),
                 eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
-                    ? new Date(form.getFieldValue('streetcodeSecondDate') - localOffset) : null,
+                    ? dayjs.utc(form.getFieldValue('streetcodeSecondDate')).toDate() : null,
                 imagesIds: createUpdateMediaStore.getImageIds(),
                 audioId: createUpdateMediaStore.audioId,
                 tags: reindex(selectedTags).map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
@@ -417,8 +424,9 @@ const NewStreetcode = () => {
                     status: tempStatus,
                     transliterationUrl: form.getFieldValue('streetcodeUrlName'),
                     streetcodeType: streetcodeType.current,
-                    eventStartOrPersonBirthDate: new Date(form.getFieldValue('streetcodeFirstDate') - localOffset),
-                    eventEndOrPersonDeathDate: new Date(form.getFieldValue('streetcodeSecondDate') - localOffset),
+                    eventStartOrPersonBirthDate: dayjs.utc(form.getFieldValue('streetcodeFirstDate')).toDate(),
+                    eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
+                        ? dayjs.utc(form.getFieldValue('streetcodeSecondDate')).toDate() : null,
                     teaser: form.getFieldValue('teaser'),
                     dateString: form.getFieldValue('dateString'),
                     videos: videosUpdate,
@@ -522,7 +530,7 @@ const NewStreetcode = () => {
                                 <ArtGallery isAdmin title='Попередній перегляд' />
                             </ArtGalleryDndContext>
                             <RelatedFiguresBlock currentStreetcodeId={parseId} figures={figures} setFigures={setFigures} onChange={handleFieldChange} />
-                            <ForFansBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
+                            <CategoriesBlock onChange={handleFieldChange} allPersistedSourcesAreSet={allPersistedSourcesAreSet} />
                             <PartnerBlockAdmin partners={partners} setPartners={setPartners} onChange={handleFieldChange} />
                             <SubtitleBlock subTitle={subTitle} setSubTitle={setSubTitle} onChange={handleFieldChange} />
                             <ARBlock onChange={handleFieldChange} />
