@@ -28,7 +28,6 @@ const AdditionalTextBlockAdminForm = ({
 
     useEffect(() => {
         setIsTextContentEmpty(!inputInfo?.textContent || inputInfo.textContent === "<p><br></p>");
-        console.log(inputInfo?.textContent)
       }, [inputInfo?.textContent]);
 
     useEffect(() => {
