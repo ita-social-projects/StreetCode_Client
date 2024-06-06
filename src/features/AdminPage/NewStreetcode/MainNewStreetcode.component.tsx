@@ -228,10 +228,10 @@ const NewStreetcode = () => {
                     setPartners(persistedPartners);
                 });
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
-                    .then((result) => {
-                        if(result){
-                            setSubTitle(result[0]);
-                        } 
+                    .then((resultSubtitle) => {
+                        if (resultSubtitle){
+                            setSubTitle(resultSubtitle);
+                        }
                     })
                     .catch((error) => { });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
@@ -317,8 +317,13 @@ const NewStreetcode = () => {
                 id: inputInfo?.id ?? 0,
                 title: inputInfo?.title,
                 textContent: inputInfo?.textContent ?? " ",
-                additionalText: inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>'
-                    ? '' : inputInfo?.additionalText,
+                additionalText:
+                    inputInfo?.textContent !== "<p><br></p>"
+                    ? inputInfo?.additionalText ===
+                        "<p>Текст підготовлений спільно з</p>"
+                        ? ""
+                        : inputInfo?.additionalText
+                    : "",
                 streetcodeId: parseId,
             };
             validateQuillTexts(text.textContent, text.additionalText);
@@ -432,7 +437,9 @@ const NewStreetcode = () => {
                     videos: videosUpdate,
                     relatedFigures: relatedFiguresUpdate,
                     timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
-                    facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({ ...item, streetcodeId: parseId }))),
+                    facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({  ...item,
+                        streetcodeId: parseId,
+                        id: item.id < 0 ? 0 : item.id }))),
                     partners: partnersUpdate,
                     subtitles: subtitleUpdate,
                     text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
