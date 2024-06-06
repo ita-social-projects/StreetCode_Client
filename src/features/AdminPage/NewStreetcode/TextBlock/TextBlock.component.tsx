@@ -20,9 +20,9 @@ interface Props {
 const TextBlock = React.memo(({
     inputInfo, setInputInfo, video, setVideo, onChange, parseId,
 }: Props) => {
-    const [inputInfoAsync, setInputInfoAsync] = useState<Partial<Text>>();
+    const [inputInfoAsync, setInputInfoAsync] = useState<Partial<Text>| undefined>();
     const [canLoad, setCanLoad] = useState<boolean>(parseId === null);
-
+    
     useAsync(async () => {
         if (parseId != null) {
             const result = await TextsApi.getByStreetcodeId(parseId);
@@ -32,14 +32,20 @@ const TextBlock = React.memo(({
     }, [parseId]);
 
     useEffect(() => {
-        setInputInfo(inputInfoAsync);
+        setInputInfo(prevState => ({
+            ...prevState,
+            ["title"]: inputInfoAsync?.title,
+            ["textContent"]: inputInfoAsync?.textContent,
+            ["additionalText"]: inputInfoAsync?.additionalText,
+          }));
+        
     }, [inputInfoAsync]);
 
     return (
         canLoad ? (
             <TextForm
-                inputInfo={inputInfoAsync}
-                setInputInfo={setInputInfoAsync}
+                inputInfo={inputInfo}
+                setInputInfo={setInputInfo}
                 video={video}
                 setVideo={setVideo}
                 onChange={onChange}
