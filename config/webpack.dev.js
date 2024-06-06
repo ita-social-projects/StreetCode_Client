@@ -2,6 +2,7 @@ const Dotenv = require("dotenv-webpack");
 const Webpack = require("webpack");
 const { GenerateSW } = require("workbox-webpack-plugin");
 const fs = require("fs");
+const path = require('path');
 
 module.exports = {
   entry: {
@@ -50,7 +51,6 @@ module.exports = {
     //         expiration: {
     //           maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
     //         },
-
     //       },
     //     },
     //     {
@@ -75,7 +75,7 @@ module.exports = {
     //     },
     //     {
     //       urlPattern: /^https?.*/,
-    //       handler: 'StaleWhileRevalidate',
+    //       handler: 'NetworkFirst',
     //       options: {
     //         cacheName: 'external-resources',
     //         expiration: {
