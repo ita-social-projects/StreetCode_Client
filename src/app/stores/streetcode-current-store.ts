@@ -8,6 +8,10 @@ export default class StreetcodeStore {
 
     public currentStreetcode = this.errorStreetCodeId;
 
+    public prevStreetcode = this.currentStreetcode;
+
+    public itChangedId = false;
+
     public streetcodeUrl = '';
 
     constructor() {
@@ -17,6 +21,19 @@ export default class StreetcodeStore {
     public set setStreetCode(streetcode: Streetcode) {
         this.currentStreetcode = streetcode.id;
     }
+
+    public itChangedIdChange = () => {
+        this.itChangedId = false;
+    };
+
+    public trackChange = () => {
+        if (this.prevStreetcode !== this.currentStreetcode) {
+            this.prevStreetcode = this.currentStreetcode;
+            this.itChangedId = true;
+            return this.itChangedId;
+        }
+        return false;
+    };
 
     public setCurrentStreetcodeId = async (url: string): Promise<Streetcode | undefined> => {
         try {
