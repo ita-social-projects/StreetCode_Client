@@ -228,10 +228,10 @@ const NewStreetcode = () => {
                     setPartners(persistedPartners);
                 });
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
-                    .then((result) => {
-                        if(result){
-                            setSubTitle(result[0]);
-                        } 
+                    .then((resultSubtitle) => {
+                        if (resultSubtitle){
+                            setSubTitle(resultSubtitle);
+                        }
                     })
                     .catch((error) => { });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then((result) => {
