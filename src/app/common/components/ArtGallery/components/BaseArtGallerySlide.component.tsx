@@ -2,7 +2,7 @@
 import './BaseArtGallerySlide.styles.scss';
 
 import { runInAction } from 'mobx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { SettingOutlined } from '@ant-design/icons';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
@@ -10,6 +10,7 @@ import Droppable from '@components/Droppable/Droppable';
 import { ModelState } from '@models/enums/model-state';
 import useMobx, { useModalContext } from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
+import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 
 import type { MenuProps } from 'antd';
 import { Dropdown, Modal, Space } from 'antd';
@@ -21,21 +22,32 @@ const BaseArtGallerySlide = ({
     const { streetcodeArtSlides } = streetcodeArtSlideStore;
     const { modalStore: { setModal } } = useModalContext();
     const [confirmationModalVisibility, setConfirmationModalVisibility] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState(false);
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
     });
+    const [slideIndexInArtsArray, setSlideIndexInArtsArray] = useState(-1);
 
-    function onEditSlideClick() {
-        const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
-        if (slide) {
-            const slideClone = JSON.parse(JSON.stringify(slide));
+  useEffect(() => {
+    const index = streetcodeArtSlides.findIndex((s) => s.index === slideIndex);
+    setSlideIndexInArtsArray(index);
+  }, [streetcodeArtSlides, slideIndex]);
 
-            runInAction(() => {
-                artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
-                artGalleryTemplateStore.isEdited = true;
-            });
-        }
+  function onEditSlideClick() {
+    const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
+    if (slide) {
+        const slideClone = JSON.parse(JSON.stringify(slide));
+
+        runInAction(() => {
+            console.log(slideClone);
+            artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
+            artGalleryTemplateStore.isRedact = true;
+        });
     }
+}
+
+
+    
 
     function onDeleteSlideClick() {
         const slideIndexInArtsArray = streetcodeArtSlides.findIndex((s) => s.index === slideIndex);

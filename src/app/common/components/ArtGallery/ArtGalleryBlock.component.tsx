@@ -49,8 +49,9 @@ const ArtGallery = ({
   const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
   const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
   const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
-  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState<number>(1);
+  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTemplateSelected, setIsTemplateSelected] = useState(title === "Шаблони");
   const secondRender = useRef(false);
   const isMobile = useMediaQuery({
     query: "(max-width: 680px)",
@@ -116,7 +117,7 @@ const ArtGallery = ({
     if (isConfigurationGallery) {
       toggleBlockingOfConfigurationSlider();
     }
-  }, [artGalleryTemplateStore.isEdited]);
+  }, [artGalleryTemplateStore.isEdited, artGalleryTemplateStore.isRedact]);
 
   function toggleBlockingOfConfigurationSlider() {
     setSlickProps((prev) => ({
@@ -128,34 +129,44 @@ const ArtGallery = ({
   }
 
   function handleAddNewSlide() {
-    const newSlide =
-      artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
+    const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
+    console.log(streetcodeArtSlideStore);
 
-    if (!newSlide) {
-      alert("Увага, заповніть усі зображення щоб зберегти слайд");
-      return;
-    }
-
-    if (newSlide.streetcodeId !== -1) {
-      runInAction(() => {
-        const oldSlideIdx = streetcodeArtSlides.findIndex(
-          (s) => s.index === newSlide.index
-        );
-        if (oldSlideIdx !== -1) {
-          streetcodeArtSlides[oldSlideIdx] = newSlide;
+        if (!newSlide) {
+            alert('Увага, заповніть усі зображення щоб зберегти слайд');
+            return;
         }
-      });
-    } else {
-      newSlide.index = streetcodeArtSlides.length + 1;
-      newSlide.streetcodeId = parseId ?? -1;
 
-      runInAction(() => {
-        streetcodeArtSlides.push(newSlide);
-      });
-    }
+        if (artGalleryTemplateStore.isRedact) {
+            runInAction(() => {
+                const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
+                if (oldSlideIdx !== -1) {
+                    streetcodeArtSlides[oldSlideIdx] = newSlide;
+                }
+            });
+            console.log(newSlide);
+            runInAction(() => {
+                artGalleryTemplateStore.isRedact = false;
+            })
+        } else {
+            newSlide.index = streetcodeArtSlides.length + 1;
+            newSlide.streetcodeId = parseId ?? -1;
+
+            runInAction(() => {
+                streetcodeArtSlides.push(newSlide);
+            });
+            
+            console.log(artGalleryTemplateStore);
+        }
+  
+  
+    setSelectedTemplateIndex(0);
   }
+  
+  
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    setIsTemplateSelected(true);
   };
   const handleTemplateSelect = (templateIndex: number) => {
     setSelectedTemplateIndex(templateIndex);
@@ -165,6 +176,13 @@ const ArtGallery = ({
   };
   function handleClearSlideTemplate() {
     artGalleryTemplateStore.clearTemplates();
+    if(artGalleryTemplateStore.isRedact){
+      runInAction(() => {
+        artGalleryTemplateStore.isRedact = false;
+      })
+    }
+    setIsTemplateSelected(title === "Шаблони");
+    setSelectedTemplateIndex(0);
   }
 
   return (
@@ -188,14 +206,14 @@ const ArtGallery = ({
               onClose={handleCloseModal}
               onTemplateSelect={handleTemplateSelect}
             />
-
+            
             <div className="artGalleryContentContainer">
               <div className="artGallerySliderContainer">
                 {isMobile ? (
-                  isConfigurationGallery ? (
+                  !isConfigurationGallery ? (
                     convertSlidesToTemplates(
                       [
-                        templateArtSlides[selectedTemplateIndex - 1],
+                        templateArtSlides[selectedTemplateIndex],
                       ] as StreetcodeArtSlide[],
                       true
                     )
@@ -208,17 +226,24 @@ const ArtGallery = ({
                   )
                 ) : (
                   <SlickSlider {...slickProps}>
-                    {isConfigurationGallery
-                      ? convertSlidesToTemplates(
-                          [
-                            templateArtSlides[selectedTemplateIndex - 1],
-                          ] as StreetcodeArtSlide[],
+                    { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
+                      convertSlidesToTemplates(
+                        [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
+                        true
+                      )
+                    ) : (
+                      isConfigurationGallery ? (
+                        convertSlidesToTemplates(
+                          templateArtSlides as StreetcodeArtSlide[],
                           true
                         )
-                      : convertSlidesToTemplates(
-                            streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId) as StreetcodeArtSlide[],
-                        false,
-                        isAdmin,
+                      ) : (
+                        convertSlidesToTemplates(
+                          streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
+                          false,
+                          isAdmin
+                        )
+                      )
                     )}
                   </SlickSlider>
                 )}
@@ -227,7 +252,7 @@ const ArtGallery = ({
           </div>
         </div>
       )}
-      {artGalleryTemplateStore.isEdited && isConfigurationGallery ? (
+      {(artGalleryTemplateStore.isEdited || artGalleryTemplateStore.isRedact) && isConfigurationGallery ? (
         <div className="configurationGalleryControls">
           <Button type="primary" onClick={handleAddNewSlide}>
             Додати
