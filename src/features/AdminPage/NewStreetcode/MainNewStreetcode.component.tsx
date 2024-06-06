@@ -317,8 +317,13 @@ const NewStreetcode = () => {
                 id: inputInfo?.id ?? 0,
                 title: inputInfo?.title,
                 textContent: inputInfo?.textContent ?? " ",
-                additionalText: inputInfo?.additionalText === '<p>Текст підготовлений спільно з</p>'
-                    ? '' : inputInfo?.additionalText,
+                additionalText:
+                    inputInfo?.textContent !== "<p><br></p>"
+                    ? inputInfo?.additionalText ===
+                        "<p>Текст підготовлений спільно з</p>"
+                        ? ""
+                        : inputInfo?.additionalText
+                    : "",
                 streetcodeId: parseId,
             };
             validateQuillTexts(text.textContent, text.additionalText);
