@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-multi-spaces */
 
 import { observer } from 'mobx-react-lite';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 
 import FormItem from 'antd/es/form/FormItem';
@@ -23,9 +23,21 @@ const AdditionalTextBlockAdminForm = ({
 }: Props) => {
     const maxLength = character_limit || 200;
     const editorRef = useRef<ReactQuill | null>(null);
+    const [isTextContentEmpty, setIsTextContentEmpty] = useState(true);
+    const [isTitleEmpty, setIsTitleEmpty] = useState(true);
+
+    useEffect(() => {
+        setIsTextContentEmpty(!inputInfo?.textContent || inputInfo.textContent === "<p><br></p>");
+        console.log(inputInfo?.textContent)
+      }, [inputInfo?.textContent]);
+
+    useEffect(() => {
+        setIsTitleEmpty(!inputInfo?.title || inputInfo.title === "");
+      }, [inputInfo?.title]);
 
     return (
         <FormItem label="Авторство">
+            <div className={isTextContentEmpty || isTitleEmpty ? "disabled" : ""}>
             <Editor
                 qRef={editorRef}
                 value={(text === undefined || text === '') ? 'Текст підготовлений спільно з' : text}
@@ -34,7 +46,9 @@ const AdditionalTextBlockAdminForm = ({
                     onChange('additionalText', editor);
                 }}
                 maxChars={maxLength}
+                readOnly={isTitleEmpty || isTextContentEmpty}
             />
+            </div>
         </FormItem>
     );
 };
