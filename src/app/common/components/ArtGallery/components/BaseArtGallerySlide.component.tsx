@@ -39,8 +39,9 @@ const BaseArtGallerySlide = ({
         const slideClone = JSON.parse(JSON.stringify(slide));
 
         runInAction(() => {
+            console.log(slideClone);
             artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
-            artGalleryTemplateStore.isEdited = true;
+            artGalleryTemplateStore.isRedact = true;
         });
     }
 }

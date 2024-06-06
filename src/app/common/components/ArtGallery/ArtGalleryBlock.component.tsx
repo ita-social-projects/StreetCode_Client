@@ -106,7 +106,7 @@ const ArtGallery = ({
     if (isConfigurationGallery) {
       toggleBlockingOfConfigurationSlider();
     }
-  }, [artGalleryTemplateStore.isEdited]);
+  }, [artGalleryTemplateStore.isEdited, artGalleryTemplateStore.isRedact]);
 
   function toggleBlockingOfConfigurationSlider() {
     setSlickProps((prev) => ({
@@ -126,7 +126,7 @@ const ArtGallery = ({
             return;
         }
 
-        if (newSlide.streetcodeId !== -1) {
+        if (artGalleryTemplateStore.isRedact) {
             runInAction(() => {
                 const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
                 if (oldSlideIdx !== -1) {
@@ -134,6 +134,9 @@ const ArtGallery = ({
                 }
             });
             console.log(newSlide);
+            runInAction(() => {
+                artGalleryTemplateStore.isRedact = false;
+            })
         } else {
             newSlide.index = streetcodeArtSlides.length + 1;
             newSlide.streetcodeId = parseId ?? -1;
@@ -159,10 +162,14 @@ const ArtGallery = ({
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setIsTemplateSelected(false);
   };
   function handleClearSlideTemplate() {
     artGalleryTemplateStore.clearTemplates();
+    if(artGalleryTemplateStore.isRedact){
+      runInAction(() => {
+        artGalleryTemplateStore.isRedact = false;
+      })
+    }
     setIsTemplateSelected(title === "Шаблони");
     setSelectedTemplateIndex(0);
   }
@@ -208,7 +215,7 @@ const ArtGallery = ({
                   )
                 ) : (
                   <SlickSlider {...slickProps}>
-                    { isTemplateSelected ? (
+                    { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
                       convertSlidesToTemplates(
                         [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
                         true
@@ -234,7 +241,7 @@ const ArtGallery = ({
           </div>
         </div>
       )}
-      {artGalleryTemplateStore.isEdited && isConfigurationGallery ? (
+      {(artGalleryTemplateStore.isEdited || artGalleryTemplateStore.isRedact) && isConfigurationGallery ? (
         <div className="configurationGalleryControls">
           <Button type="primary" onClick={handleAddNewSlide}>
             Додати
