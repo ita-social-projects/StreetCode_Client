@@ -21,34 +21,49 @@ const FileUploader:React.FC<Props> = ({
 }) => {
     const imageDataAsURL = useRef<any | null>(null);
 
-    const applyGrayscale = (url: string) => {
-        const img = new Image();
-        img.src = url;
-        if (img.height > 0 && img.width > 0) {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            if (context !== null) {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                context.drawImage(img, 0, 0);
-                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                const { data } = imageData;
-                for (let i = 0; i < data.length; i += 4) {
-                    const red = data[i];
-                    const green = data[i + 1];
-                    const blue = data[i + 2];
-                    const grayscale = (red + green + blue) / 3;
-
-                    data[i] = grayscale;
-                    data[i + 1] = grayscale;
-                    data[i + 2] = grayscale;
+    const applyGrayscale = (url:string) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            
+            img.onload = () => {
+                if (img.height > 0 && img.width > 0) {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    if (context !== null) {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        context.drawImage(img, 0, 0);
+                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                        const { data } = imageData;
+                        for (let i = 0; i < data.length; i += 4) {
+                            const red = data[i];
+                            const green = data[i + 1];
+                            const blue = data[i + 2];
+                            const grayscale = (red + green + blue) / 3;
+        
+                            data[i] = grayscale;
+                            data[i + 1] = grayscale;
+                            data[i + 2] = grayscale;
+                        }
+        
+                        context.putImageData(imageData, 0, 0);
+                        resolve(canvas.toDataURL('image/webp'));
+                    } else {
+                        reject(new Error('Failed to get canvas context'));
+                    }
+                } else {
+                    reject(new Error('Image has invalid dimensions'));
                 }
-
-                context.putImageData(imageData, 0, 0);
-                return canvas.toDataURL('image/webp');
-            }
-        }
-    }
+            };
+            
+            img.onerror = () => {
+                reject(new Error('Failed to load image'));
+            };
+            
+            img.src = url;
+        });
+    };
+    
 
     const onUploadChange = (uploadParams: UploadChangeParam<UploadFile<any>>) => {
         if (uploadProps.onChange) {
@@ -88,10 +103,11 @@ const FileUploader:React.FC<Props> = ({
             let baseString: any;
             baseString = obj.target?.result;
             if (greyFilterForImage) {
-                
-                baseString = applyGrayscale(baseString);
-                    
+                await applyGrayscale(baseString).then((greyScaleUrl)=>{
+                    baseString = greyScaleUrl;
+                })
             }
+            
             await onFileUpload(uploadTo, file, baseString)
                 .then((respones) => {
                     if(onSuccess){
