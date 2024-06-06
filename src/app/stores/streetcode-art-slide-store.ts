@@ -80,4 +80,6 @@ export default class StreetcodeArtSlideStore {
                 return convertedSlide as unknown as StreetcodeArtSlideCreateUpdate;
             });
     }
+
 }
+

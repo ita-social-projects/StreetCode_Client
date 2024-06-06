@@ -14,9 +14,12 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/styles.css';
 
 const LightboxComponent = () => {
-    const { artStore: { arts, mutationObserved } } = useMobx();
+    const { streetcodeArtSlideStore: {streetcodeArtSlides}} = useMobx();
+    const { artStore: { mutationObserved } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
+
+    const arts = streetcodeArtSlides.flatMap((artslide) => (artslide.streetcodeArts.flatMap((art) => (art.art))))
 
     const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
@@ -26,13 +29,16 @@ const LightboxComponent = () => {
           if (!src) {
             src = ''; //replace with default src
           }
+
+          console.log("new img");
+
           return {
             src,
             title: `${index + 1}/${arts.length}`,
             description: `${title ?? ''} \n\n${description ?? ''}`,
           };
         }
-      ), [mutationObserved]);
+      ), [arts]);
       
 
     const currentArtIndex = useMemo(() => arts.findIndex(
