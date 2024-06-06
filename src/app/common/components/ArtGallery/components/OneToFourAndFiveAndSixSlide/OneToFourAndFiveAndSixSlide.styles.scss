@@ -5,8 +5,8 @@
   @include mut.art-slide-grid($rows: 2, $cols: 2);
   @include mut.images-grid-area($to:3);
 
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: repeat(3,1fr);
   grid-template-areas:
-            "img1 img2"
-            "img1 img3";
+            "img1 img1 img2"
+            "img1 img1 img3";
 }

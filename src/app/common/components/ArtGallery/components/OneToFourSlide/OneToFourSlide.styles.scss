@@ -6,7 +6,7 @@
     @include mut.flex-center();
 
     .droppable, .baseArtSlideImageWrapper{
-        width: pxToRem(s.$art-gallery-img-size * 2.12);
+        width: pxToRem(s.$art-gallery-big-img-size);
         @media screen and (max-width: 768px){
             width: pxToRem(s.$art-gallery-img-size-mobile * 2.6);
         }
