@@ -135,6 +135,13 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
+            
+            const title = form.getFieldValue('title');
+    
+            if (!title.trim()) {
+                message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+                return;
+            }
             form.submit();
             message.success('Категорію успішно додано!', 2);
         } catch (error) {
@@ -148,6 +155,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
+    
 
     return (
         <>

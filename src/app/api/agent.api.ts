@@ -74,19 +74,25 @@ const createAxiosInstance = (baseUrl: string) => {
     );
 
     instance.interceptors.request.use(async (config) => {
-        let token = AuthService.getAccessToken();
+        const methodsToApply = ['post', 'delete', 'update'];
+        const method = (config.method || " ").toLowerCase() ?? "get";
     
-        if (token && AuthService.isAccessTokenExpired(token)) { 
-            try {
-                await AuthService.refreshTokenAsync();
-                token = AuthService.getAccessToken();
-            } catch (error) {
-                redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
-                return Promise.reject(error);
+        if (methodsToApply.includes(method)) {
+            let token = AuthService.getAccessToken();
+    
+            if (token && AuthService.isAccessTokenExpired(token)) { 
+                try {
+                    await AuthService.refreshTokenAsync();
+                    token = AuthService.getAccessToken();
+                } catch (error) {
+                    redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                    return Promise.reject(error);
+                }
             }
+
+            config.headers.Authorization = `Bearer ${token}`;
         }
     
-        config.headers.Authorization = `Bearer ${token}`;
         return config;
     });
     

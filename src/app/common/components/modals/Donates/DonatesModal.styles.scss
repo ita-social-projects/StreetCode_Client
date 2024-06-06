@@ -153,13 +153,11 @@
       border: none;
       display: flex;
       align-items: center;
+      
       .privacyPolicy{
         color: c.$dark-red-color;
-        &:hover{
-          text-decoration: underline;
-        }
+        text-decoration: underline;
       }
-
 
       .ant-checkbox-input {
         @include mut.sized(24px, 24px);
@@ -363,10 +361,15 @@
         >.checkbox-borderline {
           display: flex;
           overflow: visible !important;
-
+          
           > span{
             display: inline-block;
             vertical-align: middle;
+
+            .privacyPolicy{
+              color: c.$dark-red-color;
+              text-decoration: underline;
+            }
 
             &:last-child {
               @include mut.with-font(ft.$roboto-font, $font-size: 12px, $font-weight: 500);
