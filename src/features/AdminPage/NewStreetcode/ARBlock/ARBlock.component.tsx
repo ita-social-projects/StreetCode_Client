@@ -19,7 +19,7 @@ const ARBlock: React.FC<Props> = ({ onChange }) => {
             className="ar-link-form-item"
         >
             <Input
-                maxLength={500}
+                maxLength={255}
                 showCount
                 onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
             />
