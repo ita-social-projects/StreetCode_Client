@@ -178,7 +178,7 @@ const ArtGallery = ({
     <div>
       {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
         <div id="art-gallery" className="artGalleryWrapper">
-          <div style={{marginTop: '0px'}} className="artGalleryContainer container">
+          <div className="artGalleryContainer container">
             <BlockHeading headingText={title} />
             {title === "Шаблони" && (
               <div className="container-for-arts-block">
