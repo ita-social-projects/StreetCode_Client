@@ -20,20 +20,20 @@ import template13 from "@assets/images/ArtImages/template13.png";
 import template14 from "@assets/images/ArtImages/template14.png";
 
 const templates = [
-  { src: template1, LWidth: '280px', lWidth: '230px', BWidth: '210px', bWidth: '180px', MWidth: '150px', index: 1 },
-  { src: template3, LWidth: '132px', lWidth: '112px', BWidth: '102px', bWidth: '90px', MWidth: '70px', index: 3 },
-  { src: template4, LWidth: '280px', lWidth: '230px', BWidth: '210px', bWidth: '180px', MWidth: '150px', index: 4 },
-  { src: template2, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 2 },
-  { src: template5, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 5 },
-  { src: template6, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 6 },
-  { src: template8, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 8 },
-  { src: template7, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 7 },
-  { src: template9, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 9 },
-  { src: template10, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 10 },
-  { src: template11, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 11 },
-  { src: template12, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 12 },
-  { src: template13, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px',index: 13 },
-  { src: template14, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 14 }
+  { src: template1, LWidth: '280px', lWidth: '230px', BWidth: '210px', bWidth: '180px', MWidth: '150px', index: 0 },
+  { src: template3, LWidth: '132px', lWidth: '112px', BWidth: '102px', bWidth: '90px', MWidth: '70px', index: 2 },
+  { src: template4, LWidth: '280px', lWidth: '230px', BWidth: '210px', bWidth: '180px', MWidth: '150px', index: 3 },
+  { src: template2, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 1 },
+  { src: template5, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 4 },
+  { src: template6, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 5 },
+  { src: template8, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 7 },
+  { src: template7, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 6 },
+  { src: template9, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 8 },
+  { src: template10, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 9 },
+  { src: template11, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 10 },
+  { src: template12, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 11 },
+  { src: template13, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px',index: 12 },
+  { src: template14, LWidth: '400px', lWidth: '350px', BWidth: '320px', bWidth: '265px', MWidth: '225px', index: 13 }
 ];
 
 interface ArtGalleryTemplatesModalProps {
