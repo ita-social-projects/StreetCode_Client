@@ -37,15 +37,13 @@ const ArtGallery = ({
   const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } =
     useMobx();
   const {
-    streetcodeStore: {
-      itChangedIdChange,
-      itChangedId,
-      trackChange,
-      getStreetCodeId,
-      errorStreetCodeId
-    },
+    streetcodeStore: { getStreetCodeId, errorStreetCodeId },
   } = useStreetcodeDataContext();
-  const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides, setStartingSlideAndId } = streetcodeArtSlideStore;
+  const {
+    fetchNextArtSlidesByStreetcodeId,
+    streetcodeArtSlides,
+    amountOfSlides,
+  } = streetcodeArtSlideStore;
   const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
   const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
   const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -56,30 +54,22 @@ const ArtGallery = ({
   const isMobile = useMediaQuery({
     query: "(max-width: 680px)",
   });
-  const [fetchedData, setFetchedData] = useState<boolean>(false)
 
   const { id } = useParams<any>();
   const parseId = id ? +id : errorStreetCodeId;
 
-  useEffect(() => {
-    trackChange();
-    if (itChangedId) {
-      fetchData().then(() => {
-        setFetchedData(true);
-      }).then(() => {
-        itChangedIdChange();
-      });
-    }
-  });
-
-  async function fetchData() {
-    if (streetcodeIdValidAndFetchingRequired() && itChangedId) {
+  useAsync(async () => {
+    if (streetcodeIdValidAndFetchingRequired()) {
       secondRender.current = true;
       let currentSlide = 0;
+
       while (currentSlide < MAX_SLIDES_AMOUNT) {
         try {
           // eslint-disable-next-line no-await-in-loop
-          await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+          await fetchNextArtSlidesByStreetcodeId(
+            getStreetCodeId !== -1 ? getStreetCodeId : parseId
+          );
+
           if (isFillArtsStore) {
             copyArtsFromSlidesToStore();
           }
@@ -89,9 +79,8 @@ const ArtGallery = ({
           currentSlide = MAX_SLIDES_AMOUNT;
         }
       }
-      setStartingSlideAndId(getStreetCodeId);
     }
-  }
+  }, [getStreetCodeId, parseId]);
 
   function streetcodeIdValidAndFetchingRequired() {
     return (
@@ -187,7 +176,7 @@ const ArtGallery = ({
 
   return (
     <div>
-      {((streetcodeArtSlides.length > 0 || isConfigurationGallery) && fetchedData) && (
+      {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
         <div id="art-gallery" className="artGalleryWrapper">
           <div className="artGalleryContainer container">
             <BlockHeading headingText={title} />
@@ -219,7 +208,7 @@ const ArtGallery = ({
                     )
                   ) : (
                     convertSlidesToTemplates(
-                      streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId) as StreetcodeArtSlide[],
+                      streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
                       false,
                       isAdmin
                     )
