@@ -146,6 +146,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                 <div>
                     <FormItem
                         name="dateString"
+                        validateFirst
                         rules={[
                             {
                                 required: true,
