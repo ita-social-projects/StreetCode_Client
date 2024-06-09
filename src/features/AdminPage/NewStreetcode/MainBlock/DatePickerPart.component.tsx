@@ -39,6 +39,12 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
 
     const onChangeFirstDate = async (date: Dayjs | null | undefined) => {
         if (date) {
+            form.setFields([
+                {
+                    name: 'dateString',
+                    errors: [],
+                },
+            ]);
             setFirstDate(date);
             const dateString = form.getFieldValue('dateString') ?? '';
             const index = dateString.indexOf(' – ');
@@ -71,6 +77,12 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
 
     const onChangeSecondDate = (date: Dayjs | null | undefined) => {
         if (date) {
+            form.setFields([
+                {
+                    name: 'dateString',
+                    errors: [],
+                },
+            ]);
             setSecondDate(date);
             const firstDate = form.getFieldValue('streetcodeFirstDate');
             if (firstDate && date && date.isBefore(firstDate)) {
@@ -134,7 +146,6 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                 <div>
                     <FormItem
                         name="dateString"
-                        validateFirst
                         rules={[
                             {
                                 required: true,
