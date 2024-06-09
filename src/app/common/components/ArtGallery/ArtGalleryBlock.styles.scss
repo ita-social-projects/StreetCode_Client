@@ -10,6 +10,7 @@
 }
 
 .artGalleryContainer {
+    margin-top: 0px !important;
     .slick-next:before {
         @include ss.slick-arrow-pseudo(Right, -23px)
     }
