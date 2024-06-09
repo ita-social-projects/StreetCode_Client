@@ -37,13 +37,15 @@ const ArtGallery = ({
   const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } =
     useMobx();
   const {
-    streetcodeStore: { getStreetCodeId, errorStreetCodeId },
+    streetcodeStore: {
+      itChangedIdChange,
+      itChangedId,
+      trackChange,
+      getStreetCodeId,
+      errorStreetCodeId
+    },
   } = useStreetcodeDataContext();
-  const {
-    fetchNextArtSlidesByStreetcodeId,
-    streetcodeArtSlides,
-    amountOfSlides,
-  } = streetcodeArtSlideStore;
+  const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides, setStartingSlideAndId } = streetcodeArtSlideStore;
   const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
   const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
   const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
@@ -54,11 +56,23 @@ const ArtGallery = ({
   const isMobile = useMediaQuery({
     query: "(max-width: 680px)",
   });
+  const [fetchedData, setFetchedData] = useState<boolean>(false)
 
   const { id } = useParams<any>();
   const parseId = id ? +id : errorStreetCodeId;
 
-  useAsync(async () => {
+  useEffect(() => {
+    trackChange();
+    if (itChangedId || isAdmin) {
+      fetchData().then(() => {
+        setFetchedData(true);
+      }).then(() => {
+        itChangedIdChange();
+      });
+    }
+  });
+
+  async function fetchData() {
     if (streetcodeIdValidAndFetchingRequired()) {
       secondRender.current = true;
       let currentSlide = 0;
@@ -80,7 +94,7 @@ const ArtGallery = ({
         }
       }
     }
-  }, [getStreetCodeId, parseId]);
+  }
 
   function streetcodeIdValidAndFetchingRequired() {
     return (
@@ -176,7 +190,7 @@ const ArtGallery = ({
 
   return (
     <div>
-      {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
+      {((streetcodeArtSlides.length > 0 || isConfigurationGallery) && fetchedData) && (
         <div id="art-gallery" className="artGalleryWrapper">
           <div className="artGalleryContainer container">
             <BlockHeading headingText={title} />
@@ -208,7 +222,7 @@ const ArtGallery = ({
                     )
                   ) : (
                     convertSlidesToTemplates(
-                      streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
+                      streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
                       false,
                       isAdmin
                     )
@@ -228,7 +242,7 @@ const ArtGallery = ({
                         )
                       ) : (
                         convertSlidesToTemplates(
-                          streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
+                          streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
                           false,
                           isAdmin
                         )
