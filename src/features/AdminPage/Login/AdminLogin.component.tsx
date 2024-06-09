@@ -29,6 +29,11 @@ const AdminLogin:React.FC = () => {
         setIsVerified(false);
     };
 
+    message.config({
+        duration: 2,
+        maxCount: 1,
+    });
+
     const handleLogin = async ({ login, password }: any) => {
         if (isVerified) {
             try {
