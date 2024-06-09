@@ -12,6 +12,7 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
 import { Term } from '@/models/streetcode/text-contents.model';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 
 interface Props {
     handleAdd: (id: number, title: string, description: string | undefined) => void;
@@ -64,7 +65,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
             onCancel={onCancel}
             footer={[null]}
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                     <CancelBtn className="iconSize" onClick={onClear} />
                 </Popover>
             )}
