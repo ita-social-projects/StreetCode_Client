@@ -19,7 +19,7 @@ export default class FactsStore {
         facts.forEach((item) => {
             const updatedItem: FactUpdate = {
                 ...item,
-                isPersisted: item.id !== 0,
+                isPersisted: item.id > 0,
                 modelState: ModelState.Updated,
             };
 

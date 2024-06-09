@@ -21,25 +21,30 @@ const TitleDescriptionComponent = ({ title, description }: { title: string| unde
 
 
 const LightboxComponent = () => {
-  const { artStore: { arts, mutationObserved } } = useMobx();
-  const { modalStore } = useModalContext();
-  const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
+    const { streetcodeArtSlideStore: {streetcodeArtSlides}} = useMobx();
+    const { artStore: { mutationObserved } } = useMobx();
+    const { modalStore } = useModalContext();
+    const { setModal, modalsState: { artGallery: { isOpen, fromCardId } } } = modalStore;
+
+    const arts = streetcodeArtSlides.flatMap((artslide) => (artslide.streetcodeArts.flatMap((art) => (art.art))))
 
   const [isCaptionEnabled, setIsCaptionEnabled] = useState(true);
 
-  const slides = useMemo(() =>
-    arts.map(({ image: { base64, mimeType }, description, title }, index) => {
-      let src = base64ToUrl(base64, mimeType);
-      if (!src) {
-        src = ''; //replace with default src
-      }
+    const slides = useMemo(() => arts.map(
+        ({ image: { base64, mimeType }, description, title }, index) => {
+          let src = base64ToUrl(base64, mimeType);
+          if (!src) {
+            src = ''; //replace with default src
+          }
 
-      return {
-        src,
-        title: `${index + 1}/${arts.length}`,
-        description: <TitleDescriptionComponent title={title} description={description} />
-      };
-    }), [mutationObserved]);
+          return {
+            src,
+            title: `${index + 1}/${arts.length}`,
+            description: <TitleDescriptionComponent title={title} description={description} />
+          };
+        }
+      ), [arts]);
+      
 
   const currentArtIndex = useMemo(() => arts.findIndex(
     (art) => art.id === fromCardId,
