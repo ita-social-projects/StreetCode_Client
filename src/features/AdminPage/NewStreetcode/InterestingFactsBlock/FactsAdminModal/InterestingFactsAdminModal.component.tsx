@@ -23,6 +23,7 @@ import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model'
 
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
 import { UploadChangeParam } from 'antd/es/upload';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 
 interface Props {
     fact?: FactCreate,
@@ -167,7 +168,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 maskClosable
                 centered
                 closeIcon={(
-                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={clearModal} />
                     </Popover>
                 )}

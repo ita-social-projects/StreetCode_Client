@@ -4,7 +4,7 @@
 
 .blockHeadingWrapper {
     @include mut.sized(100%, 124px);
-    @include mut.rem-margined($top: 110px, $right: 0, $bottom: 26px, $left: 0);
+    @include mut.rem-margined($top: 26px, $right: 0, $bottom: 26px, $left: 0);
     @include mut.flexed($justify-content: center);
 }
 
