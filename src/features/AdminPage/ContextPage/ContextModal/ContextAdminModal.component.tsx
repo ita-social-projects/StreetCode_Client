@@ -6,6 +6,7 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Context from '@models/additional-content/context.model';
 import useMobx from '@stores/root-store';
 import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 interface ContextAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -103,7 +104,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                     <CancelBtn className="iconSize" onClick={handleCancel} />
                 </Popover>
             )}
