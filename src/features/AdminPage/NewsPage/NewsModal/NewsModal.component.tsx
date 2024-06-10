@@ -38,6 +38,7 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -231,7 +232,7 @@ const NewsModal: React.FC<{
                 className="modalContainer"
                 footer={null}
                 closeIcon={(
-                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                     </Popover>
                 )}

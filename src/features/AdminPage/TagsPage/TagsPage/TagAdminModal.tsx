@@ -13,6 +13,7 @@ import {
 } from 'antd';
 
 import Tag from '@/models/additional-content/tag.model';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -104,7 +105,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 onCancel={closeModal}
                 className="modalContainer"
                 closeIcon={(
-                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={handleCancel} />
                     </Popover>
                 )}
