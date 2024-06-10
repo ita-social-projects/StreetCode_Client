@@ -5,7 +5,7 @@ import PartnersStore from '@stores/partners-store';
 import { Button, Select } from 'antd';
 
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
-import { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partners.model';
+import Partner, { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partners.model';
 
 interface Props {
     partners: PartnerCreateUpdateShort[],
@@ -23,6 +23,22 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                 .then((parts) => setAllPartnerShort(parts)),
         ]);
     }, []);
+
+    const afterSubmit = (partner: Partner) => {
+        console.log(partner);
+        const existingPartner = partners.find((p) => p.id === partner.id);
+        const existingPartnerShort = allPartnersShort.find((p) => p.id === partner.id);
+        if (!existingPartner) {
+            setPartners([...partners, {
+                id: partner.id,
+                title: partner.title,
+                modelState: ModelState.Created,
+            }]);
+        }
+        if (!existingPartnerShort) {
+            setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }]);
+        }
+    }
 
     const onPartnerSelect = (value: number) => {
         const existingPartner = partners.find((p) => p.id === value);
@@ -81,16 +97,7 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                 open={modalAddOpened}
                 setIsModalOpen={setModalAddOpened}
                 isStreetcodeVisible={false}
-                afterSubmit={
-                    (partner) => {
-                        setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }]);
-                        setPartners([...partners, {
-                            id: partner.id,
-                            title: partner.title,
-                            modelState: ModelState.Created,
-                        }]);
-                    }
-                }
+                afterSubmit={afterSubmit}
             />
         </div>
     );

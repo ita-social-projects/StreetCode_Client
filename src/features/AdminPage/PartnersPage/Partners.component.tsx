@@ -7,7 +7,6 @@ import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
 import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
-import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button } from 'antd';
@@ -32,23 +31,6 @@ const Partners:React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [partnerToEdit, setPartnerToedit] = useState<Partner>();
 
-    const updatedPartners = () => {
-        Promise.all([
-            partnersStore?.fetchPartnersAll(),
-        ]).then(() => {
-            partnersStore?.PartnerMap.forEach((val, key) => {
-                ImageStore.getImageById(val.logoId).then((logo) => {
-                    partnersStore.PartnerMap.set(
-                        val.id,
-                        { ...val, logo },
-                    );
-                });
-            });
-        }).then(() => partnersStore.setInternalMap(partnersStore.getPartnerArray));
-    };
-    useEffect(() => {
-        updatedPartners();
-    }, []);
     const columns: ColumnsType<Partner> = [
         {
             title: 'Назва',

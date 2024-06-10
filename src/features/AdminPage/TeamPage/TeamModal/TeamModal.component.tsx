@@ -29,6 +29,7 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -41,6 +42,7 @@ const TeamModal: React.FC<{
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
+    const [existWarningVisible, setExistWarningVisible] = useState<boolean>(false);
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
@@ -136,6 +138,7 @@ const TeamModal: React.FC<{
             setIsModalOpen(false);
             setFileList([]);
             setCustomWarningVisible(false);
+            setExistWarningVisible(false);
         }
     };
 
@@ -148,18 +151,26 @@ const TeamModal: React.FC<{
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
         const logotype = teamLinksForm.getFieldValue('logotype');
+        setExistWarningVisible(false);
+        setCustomWarningVisible(false);
 
         if (!url.toLocaleLowerCase().includes(logotype)) {
             setCustomWarningVisible(true);
         } else {
-            setCustomWarningVisible(false);
-
             const newId = getNewId(teamSourceLinks);
-            setTeamSourceLinks([...teamSourceLinks, {
-                id: newId,
-                logoType: Number(LogoType[logotype]),
-                targetUrl: url,
-            }]);
+            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
+            
+            if(isLogoTypePresent){
+                setExistWarningVisible(true);
+            }
+            else {
+                setTeamSourceLinks([...teamSourceLinks, {
+                    id: newId,
+                    logoType: Number(LogoType[logotype]),
+                    targetUrl: url,
+                }]);
+            }
+            
         }
     };
 
@@ -233,7 +244,7 @@ const TeamModal: React.FC<{
             className="modalContainer"
             footer={null}
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                     <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                 </Popover>
             )}
@@ -380,7 +391,9 @@ const TeamModal: React.FC<{
                     </Form.Item>
 
                     {customWarningVisible
-                        ? <p className="error-message">Посилання не співпадає з вибраним текстом</p> : ''}
+                        ? <p className="error-message">Посилання не співпадає з обраною соціальною мережею</p> : ''}
+                    {existWarningVisible
+                        ? <p className="error-message">Таке посилання вже додано</p> : ''}
                 </div>
 
                 <div className="center">

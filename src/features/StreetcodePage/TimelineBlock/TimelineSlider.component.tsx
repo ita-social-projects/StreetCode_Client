@@ -53,9 +53,17 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
             setActiveYear(year);
         }
     };
+
     const onSwipe = () => {
         swiped.current = true;
     };
+
+    const onKeyDown = (event: React.KeyboardEvent) => {
+        const key = event.key;
+        if (key == "ArrowLeft" || key == "ArrowRight"){
+            swiped.current = true;
+        }
+    }
 
     return (
         <div>
@@ -68,7 +76,7 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
                 slidesToShow={slideToShow}
             >
                 {children.map((slide, idx) => (
-                    <div key={idx} onClick={() => handleClick(idx)}>
+                    <div key={idx} onKeyDown={onKeyDown} onClick={() => handleClick(idx)}>
                         {slide}
                     </div>
                 ))}
