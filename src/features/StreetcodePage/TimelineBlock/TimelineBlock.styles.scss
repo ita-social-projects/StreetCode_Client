@@ -43,6 +43,11 @@ $timelineSquareImg: "@assets/images/timeline/Square.webp";
       border-radius: 40px;
       place-items: center;
     }
+
+    .slick-slide > div > div{
+      outline: inherit;
+    }
+
     .slick-slide {
       border-radius: 40px;
       border-width:f.pxToRem(15px) f.pxToRem(15px);
