@@ -22,6 +22,7 @@ import TimelineItem, {
     DateViewPatternToDatePickerType,
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 
 interface NewTimelineModalProps {
     timelineItem?: TimelineItem;
@@ -212,7 +213,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                     <CancelBtn className="iconSize" onClick={clearModal} />
                 </Popover>
             )}

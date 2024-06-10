@@ -29,6 +29,7 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -243,7 +244,7 @@ const TeamModal: React.FC<{
             className="modalContainer"
             footer={null}
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                     <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                 </Popover>
             )}
