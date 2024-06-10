@@ -34,16 +34,19 @@ const AdditionalTextBlockAdminForm = ({
         setIsTitleEmpty(!inputInfo?.title || inputInfo.title === "");
       }, [inputInfo?.title]);
 
+
+    const handleEditorChange = (editor: string) => {
+        setInputInfo((prev) => ({ ...prev, additionalText: editor }));
+        onChange('additionalText', editor);
+    };
+    
     return (
         <FormItem label="Авторство">
             <div className={isTextContentEmpty || isTitleEmpty ? "disabled" : ""}>
             <Editor
                 qRef={editorRef}
                 value={(text === undefined || text === '') ? 'Текст підготовлений спільно з' : text}
-                onChange={(editor) => {
-                    setInputInfo({ ...inputInfo, additionalText: editor });
-                    onChange('additionalText', editor);
-                }}
+                onChange={handleEditorChange}
                 maxChars={maxLength}
                 readOnly={isTitleEmpty || isTextContentEmpty}
             />

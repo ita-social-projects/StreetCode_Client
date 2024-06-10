@@ -31,6 +31,7 @@ import Partner, {
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 import ImageStore from '@/app/stores/image-store';
 import { runInAction } from 'mobx';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const PartnerModal: React.FC< {
   partnerItem?: Partner;
@@ -310,7 +311,7 @@ const PartnerModal: React.FC< {
                 className="modalContainer"
                 footer={null}
                 closeIcon={(
-                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                     </Popover>
                 )}
