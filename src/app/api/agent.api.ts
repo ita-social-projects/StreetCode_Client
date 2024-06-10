@@ -10,6 +10,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
 
 import AuthService from '../common/services/auth-service/AuthService';
+import { API_ROUTES } from '../common/constants/api-routes.constants';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;
@@ -77,7 +78,7 @@ const createAxiosInstance = (baseUrl: string) => {
         const methodsToApply = ['post', 'delete', 'update'];
         const method = (config.method || " ").toLowerCase() ?? "get";
     
-        if (methodsToApply.includes(method)) {
+        if (methodsToApply.includes(method) && config.url !== `${API_ROUTES.EMAIL.SEND}`) {
             let token = AuthService.getAccessToken();
     
             if (token && AuthService.isAccessTokenExpired(token)) { 
