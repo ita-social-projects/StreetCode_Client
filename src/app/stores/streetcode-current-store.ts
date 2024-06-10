@@ -30,7 +30,6 @@ export default class StreetcodeStore {
         } catch (error) { }
     };
 
-    
     public get getStreetCodeId() {
         return this.currentStreetcode;
     }
