@@ -22,6 +22,7 @@ import Image from '@/models/media/image.model';
 import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model';
 
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
+import { UploadChangeParam } from 'antd/es/upload';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 
 interface Props {
@@ -38,6 +39,17 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
+
+    const checkFile = async (file: UploadFile) => {
+        return (file.type === 'image/jpeg') || (file.type === 'image/webp')
+            || (file.type === 'image/png') || (file.type === 'image/jpg');
+    }
+
+    const handleChange = async (param: UploadChangeParam<UploadFile<any>>) => {
+        if (await checkFile(param.file)) {
+            setFileList(param.fileList);
+        }
+    }
 
     message.config({
         top: 100,
@@ -194,24 +206,40 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         <FormItem
                             label="Зображення"
                             name="image"
-                            getValueFromEvent={(e: any) => {
-                                if (Array.isArray(e)) {
-                                    return e;
-                                }
-                                return e?.fileList;
-                            }}
-                            rules={[{ required: true, message: 'Завантажте фото, будь ласка' }]}
+                            rules={[
+                                { required: true, message: 'Завантажте фото, будь ласка' },
+                                {
+                                    validator: (_, file) => {
+                                        if (file) {
+                                            console.log(file);
+                                            let name = '';
+                                            if (file.file) {
+                                                name = file.file.name.toLowerCase();
+                                            } else if (file.name) {
+                                                name = file.name.toLowerCase();
+                                            }
+                                            if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
+                                                || name.endsWith('.jpg') || name === '') {
+                                                console.log(name)
+                                                return Promise.resolve();
+                                            }
+                                            // eslint-disable-next-line max-len
+                                            return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
+                                        }
+                                        return Promise.reject();
+                                    },
+                                },
+                            ]}
                         >
                             <FileUploader
-                                onChange={(param) => {
-                                    setFileList(param.fileList);
-                                }}
                                 uploadTo="image"
                                 multiple={false}
                                 accept=".jpeg,.png,.jpg,.webp"
                                 listType="picture-card"
                                 maxCount={1}
                                 fileList={fileList}
+                                beforeUpload={checkFile}
+                                onChange={handleChange}
                                 onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;
                                     setHasUploadedPhoto(true);
