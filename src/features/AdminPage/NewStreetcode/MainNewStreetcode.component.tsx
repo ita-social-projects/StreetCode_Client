@@ -311,12 +311,12 @@ const NewStreetcode = () => {
 
             const subtitles: SubtitleCreate[] = [{ subtitleText: subTitle?.subtitleText ?? '' }];
 
-            const videos: VideoCreate[] = [{ url: inputInfo?.link ?? '' }];
+            const videos: VideoCreate[] = [{  url: inputInfo?.title ? (inputInfo.link ?? '') : '' }];
 
             const text: TextCreateUpdate = {
                 id: inputInfo?.id ?? 0,
                 title: inputInfo?.title,
-                textContent: inputInfo?.textContent ?? " ",
+                textContent: inputInfo?.textContent ?? "",
                 additionalText:
                     inputInfo?.textContent !== "<p><br></p>"
                     ? inputInfo?.additionalText ===
@@ -398,7 +398,10 @@ const NewStreetcode = () => {
                     modelState: partner.modelState,
                 }));
 
-                const videosUpdate: Video[] = [{ ...video, url: inputInfo?.link ?? '' } as Video];
+                const videosUpdate: Video[] = [{
+                    ...video,
+                    url: inputInfo?.title ? (inputInfo.link ?? '') : ''
+                  } as Video];
 
                 const subtitleUpdate: Subtitle[] = [
                     { ...subTitle, subtitleText: subTitle?.subtitleText ?? '' } as Subtitle];
@@ -415,7 +418,7 @@ const NewStreetcode = () => {
                     urlTitle: arLink?.urlTitle ?? '',
                 };
 
-                if (text.id !== 0 && !(text.title && text.textContent)) {
+                if (text.id !== 0 && !text.title) {
                     text.modelState = ModelState.Deleted;
                 }
 
@@ -442,7 +445,7 @@ const NewStreetcode = () => {
                         id: item.id < 0 ? 0 : item.id }))),
                     partners: partnersUpdate,
                     subtitles: subtitleUpdate,
-                    text: text.modelState === ModelState.Deleted || (text.title && text.textContent) ? text : null,
+                    text: text.modelState === ModelState.Deleted || text.title ? text : null,
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
                     arts: artStore.arts,
