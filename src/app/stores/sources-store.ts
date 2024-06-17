@@ -16,6 +16,7 @@ export default class SourcesStore {
 
     public setInternalCategoriesMap(srcCategories: SourceCategory[]) {
         this.srcCategoriesMap.clear();
+        this.srcCategoriesContentMap.clear();
         srcCategories.forEach(this.setCategoryItem);
     }
 
