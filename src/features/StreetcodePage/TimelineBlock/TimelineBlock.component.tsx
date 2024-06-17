@@ -57,7 +57,7 @@ const TimelineBlock = () => {
                         <div className="timelineContentContainer">
                             <TimelineReelOutline />
                             <TimelineSlider
-                                dots={false}
+                                dots={true}
                                 arrows={false}
                                 centerMode
                                 swipeOnClick

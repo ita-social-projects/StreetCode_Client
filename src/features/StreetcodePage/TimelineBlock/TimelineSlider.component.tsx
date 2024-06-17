@@ -8,7 +8,6 @@ import useMobx from '@stores/root-store';
 const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sliderProps }) => {
     const sliderRef = useRef<Slider>(null);
     const [centerMode, setCenterMode] = useState<boolean>(false);
-    const [slideToShow, setSlideToShow] = useState<number>(1);
     const swiped = useRef<boolean>(false);
     const { timelineItemStore } = useMobx();
     const { getTimelineItemArray, activeYear, setActiveYear } = timelineItemStore;
@@ -23,10 +22,8 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
                 .findIndex(({ date }) => new Date(date).getFullYear() === activeYear);
             if (sectionIdx === 0) {
                 setCenterMode(false);
-                setSlideToShow(2);
             } else if (!centerMode) {
                 setCenterMode(true);
-                setSlideToShow(1);
             }
             if (sectionIdx !== -1) {
                 sliderRef.current.slickGoTo(sectionIdx);
@@ -65,6 +62,12 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
         }
     }
 
+    const customDot = (index: number) => {
+        return (
+            <button onPointerDown={() => handleClick(index)}>{index}</button>
+        )
+    }
+
     return (
         <div>
             <Slider
@@ -73,7 +76,8 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
                 centerMode
                 afterChange={onAfterChange}
                 onSwipe={onSwipe}
-                slidesToShow={slideToShow}
+                slidesToShow={1}
+                customPaging={(index) => customDot(index)}
             >
                 {children.map((slide, idx) => (
                     <div key={idx} onKeyDown={onKeyDown} onClick={() => handleClick(idx)}>

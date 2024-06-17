@@ -60,6 +60,7 @@
 
 @media screen and (max-width: 1024px) {
   .swiper-horizontal{
+    padding: 0px 10vw;
     .swiper-slide{
       .timelineYearTick{
         @include mut.sized(10px, 10px);
@@ -113,4 +114,11 @@
     width: f.pxToRem(28px) !important;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .swiper-horizontal{
+    padding: 0px 15vw;
+  }
+}
+
 }

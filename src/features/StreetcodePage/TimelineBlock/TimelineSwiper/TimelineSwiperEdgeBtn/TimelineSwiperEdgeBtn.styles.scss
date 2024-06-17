@@ -4,7 +4,10 @@
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
+$side_margin: -60px;
+
 .swiperEdgeBtn {
+
   @include mut.sized(42px, 42px);
   @include mut.flex-centered();
 
@@ -19,6 +22,14 @@
     cursor: pointer;
   }
 
+  &-left {
+    left: $side_margin;
+  }
+
+  &-right {
+    right: $side_margin;
+  }
+
   > * {
     @include mut.positioned-as(relative, $bottom: 60px);
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 30px);
@@ -26,7 +37,25 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .swiperEdgeBtn{
-    display: none;
+
+  $side_margin: 30px;
+
+  .swiperEdgeBtn {
+    @include mut.sized(20px, 20px);
+
+    >span {
+      bottom: 1.875rem !important;
+      font-size: 1.25rem !important;
+      line-height: 26px;
+    }
+
+    &-left {
+      left: $side_margin;
+    }
+  
+    &-right {
+      right: $side_margin;
+    }
+
   }
 }
