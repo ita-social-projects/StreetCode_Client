@@ -1,26 +1,22 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 @use '@sass/variables/variables.sizes' as s;
-
-.OneAndTwoAndThreeToFourSlide{
-  @include mut.art-slide-grid($rows: 2);
-  @include mut.images-grid-area($to:3);
-
-  grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size));
-  grid-template-areas:
-            "img1 img3"
-            "img2 img3";
-
-  @media screen and (max-width: 1024px) {
-    grid-template-columns: repeat(2, minmax(auto, pxToRem(s.$art-gallery-img-size) - 1rem));
-  }
-
-  @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile + 52px));
-  }
-  
-  @media screen and (max-width: 680px) {
-    grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile));
-    width: pxToRem(s.$art-gallery-img-size-mobile * 2 + s.$art-gallery-gap-mobile);
-  }
+.OneAndTwoAndThreeToFourSlide {
+    @include mut.art-slide-grid($rows: 2);
+    @include mut.images-grid-area($to: 3);
+    grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size));
+    grid-template-areas: "img1 img3" "img2 img3";
+    @media screen and (max-width: 1024px) {
+        grid-template-columns: repeat(2, minmax(auto, pxToRem(s.$art-gallery-img-size) - 1rem));
+    }
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile + 52px));
+    }
+    @media screen and (max-width: 540px) {
+        grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile));
+    }
+    @media screen and (max-width: 430px) {
+        grid-template-columns: repeat(2, pxToRem(s.$art-gallery-img-size-mobile - 35px));
+        width: pxToRem(s.$art-gallery-img-size-mobile * 2 + s.$art-gallery-gap-mobile);
+    }
 }
