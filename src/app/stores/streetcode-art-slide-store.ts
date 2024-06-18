@@ -44,18 +44,14 @@ export default class StreetcodeArtSlideStore {
                 );
             })
             .sort((a, b) => {
-                if (a.streetcodeId !== b.streetcodeId) {
-                    // @ts-ignore
-                    return a.streetcodeId - b.streetcodeId;
-                }
                 return a.index - b.index;
             });
     }
 
-    public setStartingSlideAndId = (streetcodeId: number) => {
-        this.startFromSlide = 1;
-        this.streetcodeWasFetched.push(streetcodeId);
-    };
+    // public setStartingSlideAndId = (streetcodeId: number) => {
+    //     this.startFromSlide = 1;
+    //     this.streetcodeWasFetched.push(streetcodeId);
+    // };
 
     public fetchNextArtSlidesByStreetcodeId = async (streetcodeid: number) => {
         if (!this.streetcodeWasFetched.includes(streetcodeid)) {
@@ -85,6 +81,7 @@ export default class StreetcodeArtSlideStore {
                     ...slide,
                     index: idx + 1,
                     isPersisted: null,
+                    streetcodeId: slide.streetcodeId,
                     streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
                         index: streetcodeArt.index,
                         artId: streetcodeArt.art.id,

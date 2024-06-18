@@ -62,14 +62,23 @@ const ArtGallery = ({
   const parseId = id ? +id : errorStreetCodeId;
 
   useEffect(() => {
-    trackChange();
-    if (itChangedId || isAdmin) {
-      fetchData().then(() => {
-        setFetchedData(true);
-      }).then(() => {
-        itChangedIdChange();
-      });
-    }
+      if(isAdmin){
+        fetchData().then(() => {
+          setFetchedData(true);
+        }).then(() => {
+          itChangedIdChange();
+        });
+      } else {
+        if (isConfigurationGallery){
+          trackChange()
+          fetchData().then(() => {
+            setFetchedData(true);
+          }).then(() => {
+            itChangedIdChange();
+          });
+        }
+            }
+
   });
 
   async function fetchData() {
@@ -152,21 +161,21 @@ const ArtGallery = ({
                 artGalleryTemplateStore.isRedact = false;
             })
         } else {
-            newSlide.index = streetcodeArtSlides.length + 1;
+            newSlide.index = streetcodeArtSlides.length;
             newSlide.streetcodeId = parseId ?? -1;
 
             runInAction(() => {
                 streetcodeArtSlides.push(newSlide);
             });
-            
+
             console.log(artGalleryTemplateStore);
         }
-  
-  
+
+
     setSelectedTemplateIndex(0);
   }
-  
-  
+
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
     setIsTemplateSelected(true);
@@ -209,7 +218,7 @@ const ArtGallery = ({
               onClose={handleCloseModal}
               onTemplateSelect={handleTemplateSelect}
             />
-            
+
             <div className="artGalleryContentContainer">
               <div className="artGallerySliderContainer">
                 {isMobile ? (
