@@ -60,6 +60,7 @@
         @include vnd.vendored(transition, 'all .5s ease');
         @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
         padding: pxToRem(11px) pxToRem(21px);
+        line-height: 1.6rem;
     }
 
     .imgTitle {
