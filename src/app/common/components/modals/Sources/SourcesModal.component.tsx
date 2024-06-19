@@ -15,23 +15,21 @@ import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { StreetcodeCategoryContent } from '@/models/sources/sources.model';
 
 const SourcesModal = () => {
-    const { sourcesStore: { srcCategoriesMap } } = useMobx();
+    const { sourcesStore: { srcCategoriesMap, srcCategoriesContentMap } } = useMobx();
     const { modalStore } = useModalContext();
     const { streetcodeStore } = useStreetcodeDataContext();
     const { setModal, modalsState: { sources } } = modalStore;
     const windowsize = useWindowSize();
-    const [content, setContent] = useState<StreetcodeCategoryContent>();
+    const [content, setContent] = useState<StreetcodeCategoryContent | null>(null);
     const categoryId = sources.fromCardId!;
     const category = srcCategoriesMap.get(categoryId);
-    const clickHandle = () => sources.isOpen = false;
+    const clickHandle = () => {
+        sources.isOpen = false;
+        setContent(null);
+    };
 
     useAsync(() => {
-        if (streetcodeStore.getStreetCodeId && categoryId) {
-            sourcesApi.getCategoryContentByStreetcodeId(streetcodeStore.getStreetCodeId, categoryId)
-                .then((cont) => {
-                    setContent(cont);
-                });
-        }
+        setContent(srcCategoriesContentMap.get(categoryId) || null);
     }, [categoryId]);
     return (
         <Modal
