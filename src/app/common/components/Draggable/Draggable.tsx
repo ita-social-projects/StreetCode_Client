@@ -11,7 +11,7 @@ type Props = {
 };
 
 const Draggable: React.FC<Props> = ({ children, id, className = '' }: Props) => {
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
+    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id });
     const style = transform ? {
         transform: CSS.Translate.toString(transform),
     } : undefined;
@@ -22,7 +22,7 @@ const Draggable: React.FC<Props> = ({ children, id, className = '' }: Props) => 
             style={style}
             {...listeners}
             {...attributes}
-            className={`draggable ${className}`}
+            className={`${isDragging ? 'is-dragging' : ''} draggable ${className}`}
         >
             {children}
         </div>

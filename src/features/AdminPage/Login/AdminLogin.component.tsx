@@ -29,6 +29,11 @@ const AdminLogin:React.FC = () => {
         setIsVerified(false);
     };
 
+    message.config({
+        duration: 2,
+        maxCount: 1,
+    });
+
     const handleLogin = async ({ login, password }: any) => {
         if (isVerified) {
             try {
@@ -56,7 +61,7 @@ const AdminLogin:React.FC = () => {
             </Form.Item>
 
             <Form.Item name="password" label="Пароль" rules={[{ required: true, message: 'Введіть пароль' }]}>
-                <Input.Password maxLength={20} />
+                <Input.Password maxLength={30} />
             </Form.Item>
             <div className="captchaBlock">
                 <ReCAPTCHA

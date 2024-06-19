@@ -18,8 +18,6 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
-import ImagesApi from '@/app/api/media/images.api';
-import partnersApi from '@/app/api/partners/partners.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
@@ -31,6 +29,9 @@ import Partner, {
     PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
+import ImageStore from '@/app/stores/image-store';
+import { runInAction } from 'mobx';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const PartnerModal: React.FC< {
   partnerItem?: Partner;
@@ -64,6 +65,26 @@ const PartnerModal: React.FC< {
         const imageId = useRef<number>(0);
         const [actionSuccess, setActionSuccess] = useState(false);
         const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
+
+        const updatedPartners = () => {
+            Promise.all([
+                partnersStore?.fetchPartnersAll(),
+            ]).then(() => {
+                partnersStore?.PartnerMap.forEach((val, key) => {
+                    ImageStore.getImageById(val.logoId).then((logo) => {
+                        runInAction(() => {
+                            partnersStore.PartnerMap.set(
+                                val.id,
+                                { ...val, logo },
+                            );
+                        })
+                    });
+                });
+            }).then(() => partnersStore.setInternalMap(partnersStore.getPartnerArray));
+        };
+        useEffect(() => {
+            updatedPartners();
+        }, []);
 
         message.config({
             top: 100,
@@ -269,7 +290,7 @@ const PartnerModal: React.FC< {
                     partner.id = partnerItem.id;
                     await partnersStore.updatePartner(partner);
                 } else {
-                    await partnersStore.createPartner(partner);
+                    partner.id = (await partnersStore.createPartner(partner)).id;
                 }
                 console.log('Success');
                 if (afterSubmit) {
@@ -290,7 +311,7 @@ const PartnerModal: React.FC< {
                 className="modalContainer"
                 footer={null}
                 closeIcon={(
-                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                     </Popover>
                 )}

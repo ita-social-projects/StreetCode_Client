@@ -5,21 +5,23 @@
 @use "@sass/mixins/_wrapper.mixins.scss" as wr;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@features/SlickSlider/SlickSlider.styles.scss" as ss;
-
-.artGalleryContainer .blockHeadingWrapper{
+.artGalleryContainer .blockHeadingWrapper {
     margin-bottom: pxToRem(10px);
 }
 
 .artGalleryContainer {
-    .slick-next:before  {
+    margin-top: 0px !important;
+    .slick-next:before {
         @include ss.slick-arrow-pseudo(Right, -23px)
     }
-
     .slick-prev:before {
         @include ss.slick-arrow-pseudo(Left, 0px)
     }
+    .container-for-arts-block {
+        margin-left: 300px;
+        margin-top: -110px;
+    }
 }
-
 
 .artGallerySliderContainer .sliderClass .slick-slider {
     width: 100%;
@@ -32,37 +34,73 @@
 .artGalleryWrapper {
     .artGalleryContainer {
         .artGalleryContentContainer {
+            margin-top: 100px;
             @include mut.flex-centered();
         }
     }
-
     .artGallerySliderContainer {
         width: pxToRem(1260px);
     }
 }
 
-.configurationGalleryControls{
+.configurationGalleryControls {
     @include mut.flex-center();
     gap: 2rem;
+}
+
+@media screen and (min-width:1600px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 350px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (min-width:1700px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 400px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (min-width:2000px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 450px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (min-width:2200px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 500px;
+            margin-top: -110px;
+        }
+    }
 }
 
 @media screen and (max-width:1450px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-            .artGalleryContentContainer{
-                .artGallerySliderContainer{
+            .artGalleryContentContainer {
+                .artGallerySliderContainer {
                     width: pxToRem(1045.5px);
                 }
             }
-
         }
     }
 }
+
 @media screen and (max-width:1200px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-            .artGalleryContentContainer{
-                .artGallerySliderContainer{
+            .artGalleryContentContainer {
+                .artGallerySliderContainer {
                     width: pxToRem(830px);
                 }
             }
@@ -73,12 +111,15 @@
 @media screen and (max-width:1024px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-            .artGalleryContentContainer{
-                .artGallerySliderContainer{
+            .artGalleryContentContainer {
+                .artGallerySliderContainer {
                     @include mut.sized(100%, 100%);
                 }
             }
-
+            .container-for-arts-block {
+                margin-left: 300px;
+                margin-top: -95px;
+            }
         }
     }
 }
@@ -86,12 +127,15 @@
 @media screen and (max-width:768px) {
     .artGalleryWrapper {
         .artGalleryContainer {
-            .artGalleryContentContainer{
-                .artGallerySliderContainer{
+            .artGalleryContentContainer {
+                .artGallerySliderContainer {
                     height: pxToRem(400px);
                 }
             }
-
+            .container-for-arts-block {
+                margin-left: 250px;
+                margin-top: -95px;
+            }
         }
     }
 }
@@ -104,15 +148,17 @@
                     @include mut.rem-padded(0, s.$art-gallery-gap-mobile, 0, 0);
                     gap: pxToRem(s.$art-gallery-gap-mobile);
                     height: pxToRem(362px);
-
                     overflow-y: hidden;
-                    overflow-x: scroll;
-
                     display: flex;
                     flex-direction: column;
                     flex-wrap: wrap;
                 }
             }
+            .container-for-arts-block {
+                margin-left: 160px;
+                margin-top: -95px;
+            }
         }
     }
 }
+
