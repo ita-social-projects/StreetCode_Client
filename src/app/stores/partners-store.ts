@@ -50,10 +50,11 @@ export default class PartnersStore {
     };
 
     public createPartner = async (partner: PartnerCreateUpdate) => {
-        await partnersApi.create(partner).then((created) => {
-            ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
-                .then((p) => this.setItem(p));
-        });
+        const createdPartner = await partnersApi.create(partner);
+        const logo = await ImagesApi.getById(createdPartner.logoId);
+        const createdPartnerWithLogo = { ...createdPartner, logo } as Partner;
+        this.setItem(createdPartnerWithLogo);
+        return createdPartnerWithLogo;
     };
 
     public updatePartner = async (partner: PartnerCreateUpdate) => {

@@ -56,6 +56,12 @@
                 strong {
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500);
                 }
+
+                a {
+                    color: c.$dark-red-color;
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
             }
         }
 

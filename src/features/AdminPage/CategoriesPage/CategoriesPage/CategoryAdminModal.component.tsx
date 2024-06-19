@@ -22,6 +22,7 @@ import { UploadFileStatus } from 'antd/es/upload/interface';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -135,6 +136,13 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
+            
+            const title = form.getFieldValue('title');
+    
+            if (!title.trim()) {
+                message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+                return;
+            }
             form.submit();
             message.success('Категорію успішно додано!', 2);
         } catch (error) {
@@ -148,6 +156,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
+    
 
     return (
         <>
@@ -157,7 +166,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 onCancel={closeModal}
                 className="modalContainer"
                 closeIcon={(
-                    <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={handleCancel} />
                     </Popover>
                 )}

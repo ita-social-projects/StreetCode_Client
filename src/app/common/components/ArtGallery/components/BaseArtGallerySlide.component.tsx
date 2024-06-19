@@ -2,14 +2,15 @@
 import './BaseArtGallerySlide.styles.scss';
 
 import { runInAction } from 'mobx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { MoreOutlined } from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
 import SlidePropsType from '@components/ArtGallery/types/SlidePropsType';
 import Droppable from '@components/Droppable/Droppable';
 import { ModelState } from '@models/enums/model-state';
 import useMobx, { useModalContext } from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
+import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 
 import type { MenuProps } from 'antd';
 import { Dropdown, Modal, Space } from 'antd';
@@ -21,21 +22,32 @@ const BaseArtGallerySlide = ({
     const { streetcodeArtSlides } = streetcodeArtSlideStore;
     const { modalStore: { setModal } } = useModalContext();
     const [confirmationModalVisibility, setConfirmationModalVisibility] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState(false);
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
     });
+    const [slideIndexInArtsArray, setSlideIndexInArtsArray] = useState(-1);
 
-    function onEditSlideClick() {
-        const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
-        if (slide) {
-            const slideClone = JSON.parse(JSON.stringify(slide));
+  useEffect(() => {
+    const index = streetcodeArtSlides.findIndex((s) => s.index === slideIndex);
+    setSlideIndexInArtsArray(index);
+  }, [streetcodeArtSlides, slideIndex]);
 
-            runInAction(() => {
-                artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
-                artGalleryTemplateStore.isEdited = true;
-            });
-        }
+  function onEditSlideClick() {
+    const slide = streetcodeArtSlides.find((s) => s.index === slideIndex);
+    if (slide) {
+        const slideClone = JSON.parse(JSON.stringify(slide));
+
+        runInAction(() => {
+            console.log(slideClone);
+            artGalleryTemplateStore.streetcodeArtSlides = [slideClone];
+            artGalleryTemplateStore.isRedact = true;
+        });
     }
+}
+
+
+    
 
     function onDeleteSlideClick() {
         const slideIndexInArtsArray = streetcodeArtSlides.findIndex((s) => s.index === slideIndex);
@@ -84,6 +96,25 @@ const BaseArtGallerySlide = ({
         }
     }
 
+    function checkMoveSlideForward(slideIndex : number) : boolean {
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        if (sortedSlides.length > 0)
+            {
+                let lengthSlides = sortedSlides.length;
+                return slideIndex >= sortedSlides[lengthSlides-1].index
+            }
+        return false;
+    }
+
+    function checkMoveSlideBackward(slideIndex : number) : boolean {
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        if (sortedSlides.length > 0)
+            {
+                return slideIndex <= sortedSlides[0].index
+            }
+        return false;
+    }
+
     const editDropdownOptions: MenuProps['items'] = [
         {
             label: <button onClick={onEditSlideClick}>Редагувати</button>,
@@ -96,12 +127,12 @@ const BaseArtGallerySlide = ({
         {
             label: <button onClick={onMoveSlideForward}>Пересунути вперед</button>,
             key: '2',
-            disabled: slideIndex >= streetcodeArtSlides.length,
+            disabled: checkMoveSlideForward(slideIndex),
         },
         {
             label: <button onClick={onMoveSlideBackward}>Пересунути назад</button>,
             key: '3',
-            disabled: slideIndex <= 1,
+            disabled: checkMoveSlideBackward(slideIndex),
         },
     ];
 
@@ -155,7 +186,7 @@ const BaseArtGallerySlide = ({
                             placement="bottom"
                         >
                             <Space>
-                                <MoreOutlined />
+                                <SettingOutlined style={{ fontSize: '28px' }} />
                             </Space>
                         </Dropdown>
                         <Modal

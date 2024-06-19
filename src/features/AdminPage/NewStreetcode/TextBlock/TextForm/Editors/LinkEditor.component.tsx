@@ -5,9 +5,10 @@ import Video from '@models/media/video.model';
 import { Button, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
+import { Text } from '@/models/streetcode/text-contents.model';
 
 interface Props {
-    inputInfo: Partial<TextInputInfo> | undefined;
+    inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<TextInputInfo> | undefined>>;
     video: Video | undefined;
     setVideo: React.Dispatch<Video | undefined>;
@@ -50,9 +51,9 @@ const LinkEditor = ({
         const isTitleEmptyOrSpaces = !inputInfo?.title || /^\s*$/.test(inputInfo.title);
         if (value && !isTitleEmptyOrSpaces) { 
             const id = getYouTubeId(value);
+            setInputInfo((info) => ({ ...info, link: value }));
             if (id) {
                 const url = insertYouTubeId(id);
-                setInputInfo((info) => ({ ...info, link: value }));
                 setVideo(video);
                 onChange('link', value);
             }
@@ -83,17 +84,16 @@ const LinkEditor = ({
             name="video"
             label="Відео"
             rules={[{ pattern: youtubeRegex, message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL' }]}
-        >
+        >   
             <div className="youtube-block">
                 <Input
                     title="video"
-                    value={inputInfo?.link}
                     className={isTitleEmpty ? "smallerInputDisabled" : "smallerInput"}
                     placeholder="Прик.: https://youtube.com/watch?=v3siIQi4nCQ або https://youtu.be/v3siIQi4nCQ"
                     name="link"
-                    required={!parseId}
                     onChange={handleLinkChange}
                     onInput={() => setInputInfo((info) => ({ ...info, link: '' }))}
+                    value={inputInfo?.link}
                     disabled={isTitleEmpty}
                     style={{ cursor: isTitleEmpty ? 'not-allowed' : 'auto' }}
                 />

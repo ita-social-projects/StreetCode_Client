@@ -3,7 +3,6 @@
 import './MainBlockAdmin.style.scss';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 
 import { DatePicker, FormInstance, Input, Select } from 'antd';
@@ -28,8 +27,6 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
         return text[0].toLocaleUpperCase() + text.substring(1, text.length);
     };
     const [disableInput, setDisableInput] = useState(true);
-    const { id } = useParams<any>();
-    const parseId = id ? +id : null;
 
     useEffect(() => {
         const dateEntered = form.getFieldValue('streetcodeFirstDate');
@@ -42,6 +39,12 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
 
     const onChangeFirstDate = async (date: Dayjs | null | undefined) => {
         if (date) {
+            form.setFields([
+                {
+                    name: 'dateString',
+                    errors: [],
+                },
+            ]);
             setFirstDate(date);
             const dateString = form.getFieldValue('dateString') ?? '';
             const index = dateString.indexOf(' – ');
@@ -74,6 +77,12 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
 
     const onChangeSecondDate = (date: Dayjs | null | undefined) => {
         if (date) {
+            form.setFields([
+                {
+                    name: 'dateString',
+                    errors: [],
+                },
+            ]);
             setSecondDate(date);
             const firstDate = form.getFieldValue('streetcodeFirstDate');
             if (firstDate && date && date.isBefore(firstDate)) {
@@ -170,7 +179,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                             }}
                         />
                         <FormItem
-                            rules={[{ required: !parseId, message: 'Введіть дату' }]}
+                            rules={[{ required: true, message: 'Введіть дату' }]}
                             name="streetcodeFirstDate"
                             className="streetcode-first-formitem-datepicker"
                             label=" "

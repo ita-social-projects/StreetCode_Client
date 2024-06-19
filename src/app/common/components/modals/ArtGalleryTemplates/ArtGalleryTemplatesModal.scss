@@ -1,0 +1,211 @@
+@use "@assets/sass/_utils.functions.scss" as *;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/_utils.functions.scss" as fnc;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use '@assets/sass/mixins/_utils.mixins.scss' as ut;
+@use "@sass/_utils.functions.scss" as f;
+$bookImg: "@assets/images/sources/Books_stretched.webp";
+$articlesImg: "@assets/images/sources/Articles.webp";
+.ArtGalleryImgContainer {
+    @include mut.sized(100%, 97px);
+    @include mut.flex-centered();
+    @include mut.rounded($top-left: 70px, $top-right: 70px);
+    h1 {
+        color: c.$pure-white-color;
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+    }
+}
+
+.ArtGalleryModal {
+    @include mut.sizedImportant(1000px, 698px);
+    &.ant-modal {
+        .ant-modal-content {
+            height: pxToRem(698px);
+            @include mut.full-rounded(70px, $overflow: visible);
+            padding: 0 !important;
+            box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+        }
+        .ant-modal-close {
+            @include mut.positioned-as(absolute, $left: 93%, $top: -15px);
+            @include mut.circular(80px, c.$pure-white-color);
+            display: inline;
+            &:hover {
+                background-color: c.$modal-hover-color;
+            }
+            span.ant-modal-close-x {
+                max-height: f.pxToRem(28px);
+            }
+        }
+    }
+}
+
+.ArtTemplatesReadMoreContentContainer {
+    height: pxToRem(598px);
+    @include mut.flexed($direction: row, $gap: 80px, $wrap: wrap);
+    overflow-y: scroll;
+    @include mut.rem-margined(0, 21px, 0, 50px);
+    @include mut.rem-padded(30px, 0, 30px, 3px);
+    &::-webkit-scrollbar {
+        width: .765rem;
+    }
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+        @include mut.full-rounded(15px);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: c.$card-scrollbar-track-color;
+    }
+    &::-webkit-scrollbar-track {
+        background: c.$accented-gray-color;
+        @include mut.rem-margined($top: 37px, $bottom: 90px);
+    }
+}
+
+.art-custom-button {
+    @include ut.rem-padded(20px, 10px, 20px, 10px);
+    @include ut.flex-centered();
+    @include ut.full-rounded(12px);
+    @include ut.with-font($font-weight: 400, $font-size: 16px);
+    background-color: c.$accented-red-color;
+    border-color: c.$accented-red-color;
+    color: c.$pure-white-color;
+    &:hover {
+        border-color: c.$dark-red-color;
+        background-color: c.$dark-red-color;
+    }
+    .ant-btn-default:hover {
+        color: #fff !important;
+    }
+    .ant-btn {
+        color: #fff;
+        &:hover {
+            color: c.$pure-white-color;
+        }
+    }
+    button {
+        color: #fff;
+        &:hover {
+            color: #fff;
+        }
+    }
+    &[disabled] {
+        pointer-events: none;
+    }
+    &:disabled {
+        background-color: c.$lighter-gray-color;
+        border-color: c.$lighter-gray-color;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .art-custom-button {
+        @include ut.rem-padded(10px, 5px, 10px, 5px);
+        @include ut.with-font($font-weight: 400, $font-size: 12px);
+        width: 100px;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+}
+
+@media screen and (max-width:541px) {
+    .ArtGalleryModal {
+        @include mut.sizedImportant(100%, 678px);
+        &.ant-modal {
+            left: -10px;
+            .ant-modal-content {
+                height: pxToRem(698px);
+                @include mut.full-rounded(70px, $overflow: visible);
+                padding: 0 !important;
+                box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+            }
+            .ant-modal-close {
+                @include mut.positioned-as(absolute, $left: 83%, $top: -20px);
+            }
+        }
+    }
+    .ArtTemplatesReadMoreContentContainer {
+        @include mut.flexed($direction: row, $gap: 70px, $wrap: wrap);
+        @include mut.rem-padded(30px, 0, 30px, 3px);
+    }
+}
+
+@media screen and (max-width:431px) {
+    .ArtGalleryModal {
+        @include mut.sizedImportant(80%, 698px);
+        &.ant-modal {
+            left: -30px;
+            .ant-modal-content {
+                height: pxToRem(698px);
+                @include mut.full-rounded(70px, $overflow: visible);
+                padding: 0 !important;
+                box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+            }
+            .ant-modal-close {
+                @include mut.positioned-as(absolute, $left: 83%, $top: -25px);
+            }
+        }
+    }
+    .ArtTemplatesReadMoreContentContainer {
+        @include mut.flexed($direction: row, $gap: 70px, $wrap: wrap);
+        @include mut.rem-padded(30px, 0, 30px, 3px);
+    }
+}
+
+@media screen and (max-width:376px) {
+    .ArtGalleryModal {
+        width: 90% !important;
+        height: 698px !important;
+        max-width: none !important;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        &.ant-modal {
+            left: -35px;
+            .ant-modal-content {
+                height: pxToRem(698px);
+                @include mut.full-rounded(70px, $overflow: visible);
+                padding: 0 !important;
+                box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+            }
+            .ant-modal-close {
+                @include mut.positioned-as(absolute, $left: 83%, $top: -25px);
+            }
+        }
+    }
+    .ArtTemplatesReadMoreContentContainer {
+        @include mut.flexed($direction: row, $gap: 70px, $wrap: wrap);
+        @include mut.rem-padded(30px, 0, 30px, 3px);
+    }
+}
+
+@media screen and (max-width: 345px) {
+    .ArtGalleryModal {
+        width: 90% !important;
+        height: 698px !important;
+        max-width: none !important;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        &.ant-modal {
+            .ant-modal-content {
+                width: 90% !important;
+                height: pxToRem(698px);
+                @include mut.full-rounded(70px, $overflow: visible);
+                padding: 0 !important;
+                box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+            }
+            .ant-modal-close {
+                @include mut.positioned-as(absolute, $left: 83%, $top: -25px);
+            }
+        }
+    }
+    .ArtTemplatesReadMoreContentContainer {
+        @include mut.flexed($direction: row, $gap: 70px, $wrap: wrap);
+        @include mut.rem-padded(30px, 0, 30px, 3px);
+    }
+}
+
