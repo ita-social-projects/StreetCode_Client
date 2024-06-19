@@ -44,7 +44,7 @@ const PartnersModal = () => {
                 })
                 .catch((error) => {
                     onCancel();
-                    if (error === 429) {
+                    if (error.status === 429) {
                         errorMessage(MESSAGE_LIMIT);
                     }
                     else {
