@@ -8,6 +8,7 @@
 
         @media (min-width: 768px) and (max-width: 1024px) {
             margin-bottom: f.pxToRem(30px);
+            margin-top: f.pxToRem(45px);
         }
 
         .itemTeam {
@@ -67,6 +68,7 @@
 
         .teamItemTitle {
             @include mut.with-font(ft.$closer-text-font, $font-weight: 510, $font-size: 24px);
+            @include mut.truncated($line-num: 2);
             color: c.$lighter-black-color;
             line-height: f.pxToRem(24px);
             margin-top: f.pxToRem(20px);
@@ -81,6 +83,7 @@
             overflow: auto;
             color: c.$lighter-black-color;
             @include mut.with-font($font-weight: 300, $font-size: 17px);
+            @include mut.truncated($line-num: 2);
 
             &::-webkit-scrollbar {
                 display: none;
@@ -128,6 +131,7 @@
 
         .teamImg {
             @include mut.sized(250px, 338px);
+            height: 100%;
             overflow: visible !important;
             object-fit: cover;
         }
@@ -141,6 +145,7 @@
                 margin-bottom: f.pxToRem(5px);
                 @include mut.with-font(ft.$roboto-font, $font-weight: 510, $font-size: 12px);
                 line-height: f.pxToRem(14px);
+                padding: 0 10px;
         }
 
         .headerTeamContainer {

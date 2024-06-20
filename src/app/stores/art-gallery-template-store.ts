@@ -8,6 +8,7 @@ export default class ArtGalleryTemplateStore {
     public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = [...allSlidesTemplates];
 
     public isEdited = false;
+    public isRedact = false;
 
     public constructor() {
         makeAutoObservable(this);

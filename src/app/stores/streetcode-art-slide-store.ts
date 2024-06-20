@@ -44,21 +44,14 @@ export default class StreetcodeArtSlideStore {
                 );
             })
             .sort((a, b) => {
-                // Sort by streetcodeIdSlide first
-                if (a.streetcodeId !== b.streetcodeId) {
-                    // @ts-ignore
-                    return a.streetcodeId - b.streetcodeId;
-                }
-                // If streetcodeIdSlide is the same, sort by some other property if needed
-                // e.g., sort by slide index
                 return a.index - b.index;
             });
     }
 
-    public setStartingSlideAndId = (streetcodeId: number) => {
-        this.startFromSlide = 1;
-        this.streetcodeWasFetched.push(streetcodeId);
-    };
+    // public setStartingSlideAndId = (streetcodeId: number) => {
+    //     this.startFromSlide = 1;
+    //     this.streetcodeWasFetched.push(streetcodeId);
+    // };
 
     public fetchNextArtSlidesByStreetcodeId = async (streetcodeid: number) => {
         if (!this.streetcodeWasFetched.includes(streetcodeid)) {
@@ -67,7 +60,7 @@ export default class StreetcodeArtSlideStore {
             if (arrayOfArtSlides.length !== 0) {
                 this.streetcodeArtSlides.push(...arrayOfArtSlides.map((slide:StreetcodeArtSlide) => ({
                     ...slide,
-                    modelState: ModelState.Created,
+                    modelState: ModelState.Updated,
                     isPersisted: true,
                     streetcodeId: streetcodeid,
                     streetcodeArts: slide.streetcodeArts.sort((a, b) => (a.index > b.index ? 1 : -1)),
@@ -88,6 +81,7 @@ export default class StreetcodeArtSlideStore {
                     ...slide,
                     index: idx + 1,
                     isPersisted: null,
+                    streetcodeId: slide.streetcodeId,
                     streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
                         index: streetcodeArt.index,
                         artId: streetcodeArt.art.id,

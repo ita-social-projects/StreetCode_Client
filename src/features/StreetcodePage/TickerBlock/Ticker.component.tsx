@@ -17,7 +17,9 @@ const TickerComponent = ({ type }: { type: 'teamMembers' | 'subtitle' }) => {
                 .then((res) => setTickerText(res));
         } else if (type === 'subtitle' && getStreetCodeId !== errorStreetCodeId) {
             SubtitlesApi.getSubtitlesByStreetcodeId(getStreetCodeId)
-                .then((res) => {if(res.length > 0) setTickerText(res[0].subtitleText)}) ;
+                .then((res) => {
+                    if (res) setTickerText(res.subtitleText);
+                });
         }
     }, [type, getStreetCodeId, errorStreetCodeId]);
 
