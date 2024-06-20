@@ -42,6 +42,30 @@
         @include mut.full-size();
     }
 
+    .deleteBaseArtImage{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @include mut.sized(30px, 30px);
+        top: pxToRem(15px);
+        right: pxToRem(15px);
+        border-radius: 100%;
+
+        background-color: c.$accented-red-color;
+        color: #ffffff;
+
+        transition-property: transform;
+        transition-duration: .3s;
+        > svg{
+            @include mut.sized(60%);
+        }
+        &:hover{
+            transform: scale(1.1);
+        }
+    }
+
     &:hover {
         cursor: pointer;
 

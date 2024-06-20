@@ -20,7 +20,7 @@ import OneToTwoAndThreeToFourAndFiveSlide from '../components/OneToTwoAndThreeTo
 import OneToTwoAndThreeToFourSlide from '../components/OneToTwoAndThreeToFourSlide/OneToTwoAndThreeToFourSlide.component';
 import OneToTwoSlide from '../components/OneToTwoSlide/OneToTwoSlide.component';
 
-function getSlideTemplate(artSlide: StreetcodeArtSlide, isDroppable?: boolean, isAdmin?: boolean) {
+function getSlideTemplate(artSlide: StreetcodeArtSlide, isDroppable?: boolean, isAdmin?: boolean, isConfigurationGallery?: boolean) {
     const props: SlidePropsType = {
         key: artSlide.index.toString(),
         slideIndex: artSlide.index,
@@ -28,6 +28,7 @@ function getSlideTemplate(artSlide: StreetcodeArtSlide, isDroppable?: boolean, i
         artSlideId: artSlide.template,
         isDroppable: isDroppable || false,
         isAdmin: isAdmin || false,
+        isConfigurationGallery: isConfigurationGallery || false,
     };
 
     switch (artSlide.template) {
@@ -78,6 +79,6 @@ function getSlideTemplate(artSlide: StreetcodeArtSlide, isDroppable?: boolean, i
     }
 }
 
-export default function convertSlidesToTemplates(artSlides: StreetcodeArtSlide[], isDroppable?: boolean, isAdmin?: boolean): JSX.Element[] {
-    return artSlides?.map((slide) => getSlideTemplate(slide, isDroppable, isAdmin));
+export default function convertSlidesToTemplates(artSlides: StreetcodeArtSlide[], isDroppable?: boolean, isAdmin?: boolean, isConfigurationGallery?: boolean): JSX.Element[] {
+    return artSlides?.map((slide) => getSlideTemplate(slide, isDroppable, isAdmin, isConfigurationGallery));
 }

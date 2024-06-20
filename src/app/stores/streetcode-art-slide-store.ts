@@ -18,14 +18,17 @@ export default class StreetcodeArtSlideStore {
         makeAutoObservable(this);
     }
 
-    public hasArtWithId(id: string): boolean {
+    public hasArtWithId(id: string, except?: number): boolean {
         if (this.streetcodeArtSlides.length === 0) return false;
 
+
         const isInSlides = this.getVisibleSortedSlides()?.some(
-            (slide) => slide.streetcodeArts.some(
+            (slide, index) => (slide.streetcodeArts.some(
                 (sArt) => sArt.art.id.toString() === id,
-            ),
+            ) && index!==except),
         );
+
+        console.log(isInSlides, except);
 
         return isInSlides;
     }

@@ -119,7 +119,6 @@ const ArtGallery = ({
 
   function handleAddNewSlide() {
     const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
-    console.log(streetcodeArtSlideStore);
 
         if (!newSlide) {
             alert('Увага, заповніть усі зображення щоб зберегти слайд');
@@ -133,9 +132,9 @@ const ArtGallery = ({
                     streetcodeArtSlides[oldSlideIdx] = newSlide;
                 }
             });
-            console.log(newSlide);
             runInAction(() => {
                 artGalleryTemplateStore.isRedact = false;
+                artGalleryTemplateStore.currentTemplateIndexRedact = -1;
             })
         } else {
             newSlide.index = streetcodeArtSlides.length + 1;
@@ -143,9 +142,10 @@ const ArtGallery = ({
 
             runInAction(() => {
                 streetcodeArtSlides.push(newSlide);
+                streetcodeArtSlides.forEach((artSlide, index) => {
+                  artSlide.index = index+1;
+                })
             });
-            
-            console.log(artGalleryTemplateStore);
         }
   
   
@@ -159,6 +159,13 @@ const ArtGallery = ({
   };
   const handleTemplateSelect = (templateIndex: number) => {
     setSelectedTemplateIndex(templateIndex);
+    runInAction(() => {
+      artGalleryTemplateStore.isRedact = false;
+      artGalleryTemplateStore.currentTemplateIndexRedact = -1;
+    })
+    if (templateIndex !== selectedTemplateIndex){
+      artGalleryTemplateStore.clearTemplates();
+    }
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -168,6 +175,7 @@ const ArtGallery = ({
     if(artGalleryTemplateStore.isRedact){
       runInAction(() => {
         artGalleryTemplateStore.isRedact = false;
+        artGalleryTemplateStore.currentTemplateIndexRedact = -1;
       })
     }
     setIsTemplateSelected(title === "Шаблони");
@@ -204,7 +212,9 @@ const ArtGallery = ({
                       [
                         templateArtSlides[selectedTemplateIndex],
                       ] as StreetcodeArtSlide[],
-                      true
+                      true,
+                      false,
+                      true,
                     )
                   ) : (
                     convertSlidesToTemplates(
@@ -218,13 +228,17 @@ const ArtGallery = ({
                     { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
                       convertSlidesToTemplates(
                         [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
-                        true
+                        true,
+                        false,
+                        true,
                       )
                     ) : (
                       isConfigurationGallery ? (
                         convertSlidesToTemplates(
                           templateArtSlides as StreetcodeArtSlide[],
-                          true
+                          true,
+                          false,
+                          true,
                         )
                       ) : (
                         convertSlidesToTemplates(
