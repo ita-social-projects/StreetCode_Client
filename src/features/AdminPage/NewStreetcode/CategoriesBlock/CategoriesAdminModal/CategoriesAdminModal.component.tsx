@@ -25,6 +25,7 @@ import {
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
 } from '@/models/sources/sources.model';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 
 interface Props {
     character_limit?: number;
@@ -245,7 +246,6 @@ const CategoriesModal = ({
                 {
                     setAvailableCategories(AvailableCats);
                 }
-            alert('Категорію успішно додано до списку!');
         }
     };
 
@@ -269,7 +269,7 @@ const CategoriesModal = ({
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                     <CancelBtn className="iconSize" onClick={clearModal} />
                 </Popover>
             )}
