@@ -35,18 +35,6 @@ export default class StreetcodeStore {
         this.currentStreetcode = streetcode.id;
     }
 
-    public itChangedIdChange = () => {
-        this.itChangedId = false;
-    };
-
-    public trackChange = () => {
-        if (this.prevStreetcode !== this.currentStreetcode) {
-            this.prevStreetcode = this.currentStreetcode;
-            this.itChangedId = true;
-            return this.itChangedId;
-        }
-        return false;
-    };
 
     public setCurrentStreetcodeId = async (url: string): Promise<Streetcode | undefined> => {
         try {

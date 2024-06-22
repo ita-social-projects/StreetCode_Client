@@ -64,6 +64,7 @@ const BaseArtGallerySlide = ({
         }
     }
 
+
     function onMoveSlideBackward() {
         const currentSlide = streetcodeArtSlides.find(
             (s) => s.index === slideIndex,
@@ -97,7 +98,7 @@ const BaseArtGallerySlide = ({
     }
 
     function checkMoveSlideForward(slideIndex : number) : boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
         if (sortedSlides.length > 0)
             {
                 let lengthSlides = sortedSlides.length;
@@ -107,14 +108,13 @@ const BaseArtGallerySlide = ({
     }
 
     function checkMoveSlideBackward(slideIndex : number) : boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
         if (sortedSlides.length > 0)
             {
                 return slideIndex <= sortedSlides[0].index
             }
         return false;
     }
-
     const editDropdownOptions: MenuProps['items'] = [
         {
             label: <button onClick={onEditSlideClick}>Редагувати</button>,

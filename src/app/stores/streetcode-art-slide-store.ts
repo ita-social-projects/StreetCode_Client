@@ -47,11 +47,20 @@ export default class StreetcodeArtSlideStore {
                 return a.index - b.index;
             });
     }
+    public getVisibleSortedSlidesWithoutParam() {
+        return this.streetcodeArtSlides
+            .filter((slide) => slide.modelState !== ModelState.Deleted)
+            .sort((a, b) => (a.index > b.index ? 1 : -1));
+    }
 
     // public setStartingSlideAndId = (streetcodeId: number) => {
     //     this.startFromSlide = 1;
     //     this.streetcodeWasFetched.push(streetcodeId);
     // };
+    public setStartingSlideAndId = (streetcodeId: number) => {
+        this.startFromSlide = 1;
+        this.streetcodeWasFetched.push(streetcodeId);
+    };
 
     public fetchNextArtSlidesByStreetcodeId = async (streetcodeid: number) => {
         if (!this.streetcodeWasFetched.includes(streetcodeid)) {

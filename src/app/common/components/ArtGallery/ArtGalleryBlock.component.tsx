@@ -18,7 +18,6 @@ import ArtGalleryTemplatesModal from "../modals/ArtGalleryTemplates/ArtGalleryTe
 
 import { Button } from "antd";
 import { useMediaQuery } from "react-responsive";
-import { tr } from "date-fns/locale";
 
 const MAX_SLIDES_AMOUNT = 30;
 
@@ -46,13 +45,13 @@ const ArtGallery = ({
       errorStreetCodeId
     },
   } = useStreetcodeDataContext();
-  const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides} = streetcodeArtSlideStore;
+  const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides, setStartingSlideAndId } = streetcodeArtSlideStore;
   const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
   const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
+  const [isTemplateSelected, setIsTemplateSelected] = useState(title === "Шаблони");
   const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
   const [selectedTemplateIndex, setSelectedTemplateIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTemplateSelected, setIsTemplateSelected] = useState(title === "Шаблони");
   const secondRender = useRef(false);
   const isMobile = useMediaQuery({
     query: "(max-width: 680px)",
@@ -61,57 +60,34 @@ const ArtGallery = ({
 
   const { id } = useParams<any>();
   const parseId = id ? +id : errorStreetCodeId;
-const fetchArtSlide = async() => {
-  if (isConfigurationGallery || isFillArtsStore) {
-    trackChange()
 
-  }
-  await fetchData();
-  setFetchedData(true);
-  itChangedIdChange();
-  /*fetchData().then(() => {
-    setFetchedData(true);
-  }).then(() => {
-    itChangedIdChange();
-  });*/
-}
   useEffect(() => {
-    (async () => fetchArtSlide())();
-    console.log("Привіт");
-      /*if(isAdmin){
-        fetchData().then(() => {
-          setFetchedData(true);
-        }).then(() => {
-          itChangedIdChange();
-        });
-      } else {
-        if (isConfigurationGallery){
-          trackChange()
-          fetchData().then(() => {
-            setFetchedData(true);
-          }).then(() => {
-            itChangedIdChange();
-          });
+    if(isAdmin || isConfigurationGallery){
+      fetchData().then(() => {
+        setFetchedData(true);
+      }).then(() => {
+        itChangedIdChange();
+      });
+    } else {
+      trackChange();
+  if (itChangedId) {
+    fetchData().then(() => {
+      setFetchedData(true);
+    }).then(() => {
+      itChangedIdChange();
+    });
+  }
         }
-            }*/
-
-  }, [id]);
+  });
 
   async function fetchData() {
-    if (streetcodeIdValidAndFetchingRequired() ) {
+    if (streetcodeIdValidAndFetchingRequired()) {
       secondRender.current = true;
       let currentSlide = 0;
-
       while (currentSlide < MAX_SLIDES_AMOUNT) {
         try {
-          console.log(getStreetCodeId);
           // eslint-disable-next-line no-await-in-loop
-          await fetchNextArtSlidesByStreetcodeId(
-            getStreetCodeId !== -1 ? getStreetCodeId : parseId
-            
-          );
-          console.log(getStreetCodeId)
-          console.log(parseId)
+          await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
           if (isFillArtsStore) {
             copyArtsFromSlidesToStore();
           }
@@ -121,6 +97,7 @@ const fetchArtSlide = async() => {
           currentSlide = MAX_SLIDES_AMOUNT;
         }
       }
+      setStartingSlideAndId(getStreetCodeId);
     }
   }
 
@@ -218,7 +195,7 @@ const fetchArtSlide = async() => {
 
   return (
     <div>
-      {((streetcodeArtSlides.length > 0 || isConfigurationGallery) && fetchedData) && (
+      {((streetcodeArtSlides.length > 0 || isConfigurationGallery)) && (
         <div id="art-gallery" className="artGalleryWrapper">
           <div className="artGalleryContainer container">
             <BlockHeading headingText={title} />
