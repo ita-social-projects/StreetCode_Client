@@ -15,6 +15,7 @@ import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 import useMobx, { useStreetcodeDataContext } from "@stores/root-store";
 import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
 import ArtGalleryTemplatesModal from "../modals/ArtGalleryTemplates/ArtGalleryTemplatesModal.component";
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import { Button } from "antd";
 import { useMediaQuery } from "react-responsive";
@@ -53,6 +54,7 @@ const ArtGallery = ({
   const [selectedTemplateIndex, setSelectedTemplateIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const secondRender = useRef(false);
+  const windowsize = useWindowSize();
   const isMobile = useMediaQuery({
     query: "(max-width: 680px)",
   });
@@ -192,6 +194,17 @@ const ArtGallery = ({
     setIsTemplateSelected(title === "Шаблони");
     setSelectedTemplateIndex(0);
   }
+  const sliderProps = {
+    className: 'artGallerySliderContainer',
+    infinite: false,
+    arrows: true,
+    dots: true,
+    draggable: true,
+    touchThreshold: 25,
+    slidesToScroll: 1,
+    slidesToShow: 1,
+    centerPadding: '0px',
+};
 
   return (
     <div>
@@ -218,21 +231,29 @@ const ArtGallery = ({
             <div className="artGalleryContentContainer">
               <div className="artGallerySliderContainer">
                 {isMobile ? (
-                  !isConfigurationGallery ? (
-                    convertSlidesToTemplates(
-                      [
-                        templateArtSlides[selectedTemplateIndex],
-                      ] as StreetcodeArtSlide[],
-                      true
-                    )
-                  ) : (
-                    convertSlidesToTemplates(
-                      streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
-                      false,
-                      isAdmin
-                    )
-                  )
-                ) : (
+ <SlickSlider {...sliderProps}>
+ { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
+   convertSlidesToTemplates(
+     [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
+     true
+   )
+ ) : (
+   isConfigurationGallery ? (
+     convertSlidesToTemplates(
+       templateArtSlides as StreetcodeArtSlide[],
+       true
+     )
+   ) : (
+     convertSlidesToTemplates(
+       streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
+       false,
+       isAdmin
+     )
+   )
+ )}
+</SlickSlider>
+)
+ : (
                   <SlickSlider {...slickProps}>
                     { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
                       convertSlidesToTemplates(
