@@ -578,7 +578,7 @@ const NewStreetcode = () => {
                     text: text.modelState === ModelState.Deleted || text.title ? text : null,
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
-                    arts: artStore.arts,
+                    arts: filteredArts,
                     streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
