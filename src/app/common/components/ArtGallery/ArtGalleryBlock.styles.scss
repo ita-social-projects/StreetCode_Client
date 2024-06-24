@@ -10,6 +10,7 @@
 }
 
 .artGalleryContainer {
+    margin-top: 0px !important;
     .slick-next:before {
         @include ss.slick-arrow-pseudo(Right, -23px)
     }
@@ -45,6 +46,42 @@
 .configurationGalleryControls {
     @include mut.flex-center();
     gap: 2rem;
+}
+
+@media screen and (min-width:1600px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 350px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (min-width:1700px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 400px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (min-width:2000px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 450px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (min-width:2200px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 500px;
+            margin-top: -110px;
+        }
+    }
 }
 
 @media screen and (max-width:1450px) {
