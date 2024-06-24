@@ -3,54 +3,36 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/variables/_variables.sizes.scss" as s;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
-
-.baseArtSlide{
+.baseArtSlide {
     position: relative;
     padding: pxToRem(s.$art-gallery-gap);
-
     height: pxToRem(596px);
     width: pxToRem(1260px);
-
     max-height: 100%;
     max-width: 100%;
-
     gap: pxToRem(s.$art-gallery-gap);
-
     @media screen and (max-width: 768px) {
         @include mut.rem-padded($bottom: s.$art-gallery-gap-mobile, $right: s.$art-gallery-gap-mobile, $left: s.$art-gallery-gap-mobile);
         gap: pxToRem(s.$art-gallery-gap-mobile);
         height: pxToRem(400px);
     }
-
-    @media screen and (max-width: 680px) {
-        @include mut.rem-padded($bottom: s.$art-gallery-gap-mobile);
-        padding: 0 0 0 0 !important;
-        height: pxToRem(362px);
-        width: pxToRem(680px);
-        max-width: fit-content;
-    }
 }
 
-.baseArtSlideImageWrapper{
+.baseArtSlideImageWrapper {
     position: relative;
     @include mut.full-size();
-
-    .baseArtImage{
+    .baseArtImage {
         border-radius: pxToRem(30px);
         object-fit: cover;
-
         @include mut.full-size();
     }
-
     &:hover {
         cursor: pointer;
-
         .imgDataFull {
             visibility: visible;
             opacity: 1;
         }
     }
-
     .imgData {
         @include mut.sized(100%);
         @include mut.positioned-as($position: absolute, $bottom: 0);
@@ -62,51 +44,45 @@
         padding: pxToRem(11px) pxToRem(21px);
         line-height: 1.6rem;
     }
-
     .imgTitle {
         @include mut.with-font();
         @include mut.rem-padded($bottom: 5px);
         @include mut.truncated(2);
         @include mut.with-font($font-size: 18px);
     }
-
     .imgDescription {
         @include mut.with-font($font-size: 15px);
         @include mut.truncated();
     }
-
     .imgImg {
         border-radius: pxToRem(30px);
         object-fit: cover;
     }
 }
 
-
 .adminOptionsBtn {
     position: absolute;
     top: 1rem;
     right: 1rem;
-
-    .anticon-more{
+    .anticon-more {
         font-size: 20px;
     }
 }
 
 .ant-dropdown-menu-item {
     padding: 0 !important;
-
-    button{
+    button {
         width: 100%;
         padding: pxToRem(10px) pxToRem(15px);
     }
 }
 
-.ant-dropdown-menu-item-disabled{
+.ant-dropdown-menu-item-disabled {
     button {
         color: red;
-
         &:hover {
             cursor: not-allowed;
         }
     }
 }
+
