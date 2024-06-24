@@ -16,6 +16,7 @@ import EmailApi from '@/app/api/email/email.api';
 import { partnersClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Email from '@/models/email/email.model';
 import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 
 const MAX_SYMBOLS = 500;
 
@@ -43,7 +44,7 @@ const PartnersModal = () => {
                 })
                 .catch((error) => {
                     onCancel();
-                    if (error === 429) {
+                    if (error.status === 429) {
                         errorMessage(MESSAGE_LIMIT);
                     }
                     else {
@@ -115,7 +116,7 @@ const PartnersModal = () => {
             footer={null}
             onCancel={onCancel}
             closeIcon={(
-                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                     <CancelBtn className="iconSize" onClick={onClear} />
                 </Popover>
             )}

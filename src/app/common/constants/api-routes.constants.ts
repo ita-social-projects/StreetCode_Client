@@ -242,4 +242,13 @@ export const API_ROUTES = {
         CREATE: 'historicalContext/create',
         DELETE: 'historicalContext/delete',
     },
+    POSITION: {
+        GET_ALL: 'Position/getAll',
+        GET_BY_ID: 'Position/getById',
+        UPDATE: 'Position/update',
+        CREATE: 'Position/create',
+        DELETE: 'Position/delete',
+        GET_BY_TITLE: 'Position/GetByTitle',
+        GET_ALL_WITH_TEAM_MEMBERS: 'Position/GetByTitle',
+    },
 };

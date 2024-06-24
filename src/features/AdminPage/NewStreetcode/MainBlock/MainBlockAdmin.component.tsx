@@ -179,7 +179,7 @@ const MainBlockAdmin = React.memo(({
                 ]}
                 name="streetcodeNumber"
             >
-                <InputNumber />
+                <InputNumber type='number'/>
             </Form.Item>
 
             <div className="display-flex-row p-margin">

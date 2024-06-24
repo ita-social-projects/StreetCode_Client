@@ -3,25 +3,26 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import Context from '@models/additional-content/context.model';
+import Position from '@models/additional-content/teampositions.model';
 import useMobx from '@stores/root-store';
 import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
+import position = parseJsonNumber.position;
 
-interface ContextAdminProps {
+interface TeamPositionsAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isModalVisible: boolean;
-    initialData?: Context;
-    isNewContext?: (data: boolean) => void;
+    initialData?: Position;
+    isNewPosition?: (data: boolean) => void;
 }
 
-const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
-                                                                                      isModalVisible,
-                                                                                      setIsModalOpen,
-                                                                                      initialData,
-                                                                                      isNewContext
-                                                                                  }) => {
-    const {contextStore} = useMobx();
+const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = observer(({
+                                                                              isModalVisible,
+                                                                              setIsModalOpen,
+                                                                              initialData,
+                                                                              isNewPosition
+                                                                          }) => {
+    const {teamPositionsStore} = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -29,20 +30,20 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
         setIsModalOpen(false);
     };
 
-    useAsync(() => contextStore.fetchContexts(), []);
+    useAsync(() => teamPositionsStore.fetchPositions(), []);
 
     useEffect(() => {
         if (initialData && isModalVisible) {
             form.setFieldsValue({
-                title: initialData.title,
+                position: initialData.position,
             });
         }
     }, [initialData, isModalVisible, form]);
 
-    const validateContext = async (rule: any, value: string) => {
+    const validatePosition = async (rule: any, value: string) => {
         return new Promise<void>((resolve, reject) => {
-            if (contextStore.getContextArray.map((context) => context.title).includes(value)) {
-                reject('Контекст з такою назвою вже існує');
+            if (teamPositionsStore.getPositionsArray.map((positiondata) => positiondata.position).includes(value)) {
+                reject('Позиція з такою назвою вже існує');
             } else {
                 resolve();
             }
@@ -52,19 +53,19 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
-        const currentContext = {
+        const currentPosition = {
             ...(initialData?.id && {id: initialData?.id}),
-            title: formData.title,
+            position: formData.position,
         };
 
-        if (currentContext.id) {
-            await contextStore.updateContext(currentContext as Context);
+        if (currentPosition.id) {
+            await teamPositionsStore.updatePosition(currentPosition as Position);
         } else {
-            await contextStore.createContext(currentContext);
+            await teamPositionsStore.createPosition(currentPosition);
         }
 
-        if (isNewContext !== undefined) {
-            isNewContext(true);
+        if (isNewPosition !== undefined) {
+            isNewPosition(true);
         }
     };
 
@@ -78,7 +79,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
         try {
             await form.validateFields();
             form.submit();
-            message.success('Контекст успішно додано!');
+            message.success('Позицію успішно додано!');
         } catch (error) {
             message.config({
                 top: 100,
@@ -104,7 +105,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
             maskClosable
             centered
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content="Внесені зміни не будуть збережені!" trigger="hover">
                     <CancelBtn className="iconSize" onClick={handleCancel} />
                 </Popover>
             )}
@@ -118,13 +119,13 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
                     <div className="center">
-                        <h2>{isEditing ? 'Редагувати контекст' : 'Додати новий контекст'}</h2>
+                        <h2>{isEditing ? 'Редагувати позицію' : 'Додати нову позицію'}</h2>
                     </div>
                     <Form.Item
-                        name="title"
+                        name="position"
                         label="Назва: "
                         rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
-                            {validator: validateContext}
+                            {validator: validatePosition}
                         ]}
                     >
                         <Input maxLength={MAX_LENGTH.title} showCount/>
@@ -144,4 +145,4 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     );
 });
 
-export default ContextAdminModalComponent;
+export default TeamPositionsAdminModalComponent;

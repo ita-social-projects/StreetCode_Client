@@ -33,16 +33,15 @@ jest.mock('antd', () => {
         <button type="button" onClick={onClick} className={className}>{children}</button>
     );
 
-    const message = () => ({
-        error: jest.fn(),
-    });
-
     return {
         ...antd,
         Button,
         Form,
         Input,
-        message,
+        message: {
+            config: jest.fn(),
+            error: jest.fn(),
+        },
     };
 });
 
