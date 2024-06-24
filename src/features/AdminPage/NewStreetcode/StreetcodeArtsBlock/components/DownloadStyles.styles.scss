@@ -12,11 +12,12 @@
 
 .delete-arts-button{
     width: 30%;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .art-gallery-download{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
     margin-bottom: pxToRem(10px);
 }
 
