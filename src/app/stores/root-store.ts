@@ -21,6 +21,7 @@ import TagsStore from '@stores/tags-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
 import ContextStore from '@stores/context-store';
+import TeamPositionsStore from '@stores/teampoistions-store';
 
 import NewsStore from './news-store/news-store';
 import CreateUpdateMediaStore from './create-update-media-store';
@@ -66,6 +67,7 @@ interface Store {
     createUpdateMediaStore: CreateUpdateMediaStore,
     contextStore: ContextStore,
     artGalleryTemplateStore: ArtGalleryTemplateStore,
+    teamPositionsStore: TeamPositionsStore
 }
 
 export interface StreetcodeDataStore {
@@ -106,6 +108,7 @@ export const store: Store = {
     artGalleryTemplateStore: new ArtGalleryTemplateStore(),
     streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
     artStore: new ArtStore(),
+    teamPositionsStore: new TeamPositionsStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),
