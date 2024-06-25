@@ -29,6 +29,11 @@ $articlesImg: "@assets/images/sources/Articles.webp";
             margin-bottom: f.pxToRem(7px);
         }
 
+        h4{
+            font-weight: 300;
+            color: c.$accented-red-color;
+        }
+
         .buttonWithPlus{
             @include mut.sized($width: 150px, $height: 50px);
             border: 1.5px solid c.$dark-red-color;

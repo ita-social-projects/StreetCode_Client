@@ -6,6 +6,7 @@ import TagsMainPage from '@features/AdminPage/TagsPage/TagsMainPage.component'
 import CategoriesMainPage from '../CategoriesPage/CategoriesPage.component';
 import PageBar from '../PageBar/PageBar.component';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
+import TeamPositionsMainPage from '@features/AdminPage/TeamPositionsPage/TeamPositionsMainPage.component';
 
 const items: TabsProps['items'] = [
     {
@@ -22,6 +23,11 @@ const items: TabsProps['items'] = [
         key: '3',
         label: 'Контексти',
         children: <ContextMainPage/>,
+    },
+    {
+        key: '4',
+        label: 'Позиції',
+        children: <TeamPositionsMainPage/>,
     },
 ];
 

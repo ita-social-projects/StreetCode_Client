@@ -1,18 +1,20 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as *;
 @use '@sass/variables/variables.sizes' as s;
-
-.oneToFourSlide{
+.oneToFourSlide {
     @include mut.flex-center();
-
-    .droppable, .baseArtSlideImageWrapper{
+    .droppable,
+    .baseArtSlideImageWrapper {
         width: pxToRem(s.$art-gallery-big-img-size);
-        @media screen and (max-width: 768px){
+        @media screen and (max-width: 768px) {
             width: pxToRem(s.$art-gallery-img-size-mobile * 2.6);
         }
     }
-
-    @media screen and (max-width: 680px){
+    @media screen and (max-width: 680px) {
         width: pxToRem(s.$art-gallery-img-size-mobile * 2.4);
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
+
