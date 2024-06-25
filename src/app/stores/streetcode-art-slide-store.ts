@@ -10,6 +10,8 @@ import StreetcodeArtSlide,
 export default class StreetcodeArtSlideStore {
     public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = new Array<StreetcodeArtSlideAdmin>();
 
+    public streetcodeWasFetched: Array<number> = new Array<number>();
+
     private startFromSlide = 1;
 
     public readonly amountOfSlides = 2;
@@ -22,7 +24,7 @@ export default class StreetcodeArtSlideStore {
         if (this.streetcodeArtSlides.length === 0) return false;
 
 
-        const isInSlides = this.getVisibleSortedSlides()?.some(
+        const isInSlides = this.getVisibleSortedSlides(+id)?.some(
             (slide, index) => (slide.streetcodeArts.some(
                 (sArt) => sArt.art.id.toString() === id,
             ) && index!==except),
@@ -37,27 +39,49 @@ export default class StreetcodeArtSlideStore {
         return this.streetcodeArtSlides.find((s) => (s.index === index));
     }
 
-    public getVisibleSortedSlides() {
+    public getVisibleSortedSlides(streetcodeIdSlide: number) {
+        return this.streetcodeArtSlides
+            .filter((slide) => {
+                return (
+                    slide.modelState !== ModelState.Deleted && (streetcodeIdSlide === undefined || slide.streetcodeId === streetcodeIdSlide)
+                );
+            })
+            .sort((a, b) => {
+                return a.index - b.index;
+            });
+    }
+    public getVisibleSortedSlidesWithoutParam() {
         return this.streetcodeArtSlides
             .filter((slide) => slide.modelState !== ModelState.Deleted)
             .sort((a, b) => (a.index > b.index ? 1 : -1));
     }
 
-    public fetchNextArtSlidesByStreetcodeId = async (streetcodeId: number) => {
-        const arrayOfArtSlides = await StreetcodeArtApi
-            .getArtSlidesByStreetcodeId(streetcodeId, this.startFromSlide, this.amountOfSlides);
+    // public setStartingSlideAndId = (streetcodeId: number) => {
+    //     this.startFromSlide = 1;
+    //     this.streetcodeWasFetched.push(streetcodeId);
+    // };
+    public setStartingSlideAndId = (streetcodeId: number) => {
+        this.startFromSlide = 1;
+        this.streetcodeWasFetched.push(streetcodeId);
+    };
 
-        if (arrayOfArtSlides.length !== 0) {
-            this.streetcodeArtSlides.push(...arrayOfArtSlides.map((slide:StreetcodeArtSlide) => ({
-                ...slide,
-                modelState: ModelState.Updated,
-                isPersisted: true,
-                streetcodeArts: slide.streetcodeArts.sort((a, b) => (a.index > b.index ? 1 : -1)),
-            })));
+    public fetchNextArtSlidesByStreetcodeId = async (streetcodeid: number) => {
+        if (!this.streetcodeWasFetched.includes(streetcodeid)) {
+            const arrayOfArtSlides = await StreetcodeArtApi
+                .getArtSlidesByStreetcodeId(streetcodeid, this.startFromSlide, this.amountOfSlides);
+            if (arrayOfArtSlides.length !== 0) {
+                this.streetcodeArtSlides.push(...arrayOfArtSlides.map((slide:StreetcodeArtSlide) => ({
+                    ...slide,
+                    modelState: ModelState.Updated,
+                    isPersisted: true,
+                    streetcodeId: streetcodeid,
+                    streetcodeArts: slide.streetcodeArts.sort((a, b) => (a.index > b.index ? 1 : -1)),
+                })));
 
-            this.startFromSlide += 1;
-        } else {
-            throw new Error('No more arts to load');
+                this.startFromSlide += 1;
+            } else {
+                throw new Error('No more arts to load');
+            }
         }
     };
 
@@ -69,6 +93,7 @@ export default class StreetcodeArtSlideStore {
                     ...slide,
                     index: idx + 1,
                     isPersisted: null,
+                    streetcodeId: slide.streetcodeId,
                     streetcodeArts: slide.streetcodeArts.map((streetcodeArt) => ({
                         index: streetcodeArt.index,
                         artId: streetcodeArt.art.id,

@@ -15,8 +15,12 @@ import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 import type { MenuProps } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Dropdown, Modal, Space } from 'antd';
+<<<<<<< HEAD
 import { TEMPLATE_IMAGE_BASE64 } from '../constants/allSlidesTemplates';
 import { ArtSlideTemplateEnum } from '@/models/enums/art-slide-template';
+=======
+import StreetcodeArt from '@/models/media/streetcode-art.model';
+>>>>>>> 8e6294c7654c74a539c846a5d0f13465b23a65b4
 
 const BaseArtGallerySlide = ({
     streetcodeArts, className, artSlideId, isDroppable, isAdmin, isConfigurationGallery, slideIndex,
@@ -26,6 +30,7 @@ const BaseArtGallerySlide = ({
     const { modalStore: { setModal } } = useModalContext();
     const [confirmationModalVisibility, setConfirmationModalVisibility] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
     });
@@ -73,6 +78,7 @@ const BaseArtGallerySlide = ({
         setConfirmationModalVisibility(true)
     }
 
+
     function onMoveSlideBackward() {
         if (artGalleryTemplateStore.isRedact){
             alert("Ви у режимі редагування! Закінчіть редагування")
@@ -113,6 +119,7 @@ const BaseArtGallerySlide = ({
         }
     }
 
+<<<<<<< HEAD
     function checkMoveSlideForward(slideIndex: number): boolean {
         let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
         if (sortedSlides.length > 0) {
@@ -127,9 +134,26 @@ const BaseArtGallerySlide = ({
         if (sortedSlides.length > 0) {
             return slideIndex <= sortedSlides[0].index
         }
+=======
+    function checkMoveSlideForward(slideIndex : number) : boolean {
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
+        if (sortedSlides.length > 0)
+            {
+                let lengthSlides = sortedSlides.length;
+                return slideIndex >= sortedSlides[lengthSlides-1].index
+            }
         return false;
     }
 
+    function checkMoveSlideBackward(slideIndex : number) : boolean {
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
+        if (sortedSlides.length > 0)
+            {
+                return slideIndex <= sortedSlides[0].index
+            }
+>>>>>>> 8e6294c7654c74a539c846a5d0f13465b23a65b4
+        return false;
+    }
     const editDropdownOptions: MenuProps['items'] = [
         {
             label: <button onClick={onEditSlideClick}>Редагувати</button>,
@@ -150,6 +174,18 @@ const BaseArtGallerySlide = ({
             disabled: checkMoveSlideBackward(slideIndex),
         },
     ];
+    const handleMouseDown = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = () => {
+        setIsDragging(true);
+    };
+    const handleImageClick = (streetcodeArt: StreetcodeArt) => {
+        if (!isDroppable && !isDragging) {
+            setModal('artGallery', streetcodeArt.art.id);
+        }
+    };
 
     const handleRemoveArt = (template: ArtSlideTemplateEnum, index: number) => {
         artGalleryTemplateStore.removeArtInSlide(template, index);
@@ -165,10 +201,10 @@ const BaseArtGallerySlide = ({
                             className={`baseArtImage img${streetcodeArt.index}`}
                             src={base64ToUrl(image.base64, image.mimeType)}
                             alt={image.imageDetails?.title}
-                            onClick={() => !isDroppable && setModal(
-                                'artGallery',
-                                streetcodeArt.art.id,
-                            )}
+                            onMouseDown={handleMouseDown}
+                           
+            onMouseMove={handleMouseMove}
+            onClick={() => handleImageClick(streetcodeArt)}
                         />
                         {
                             image.base64 !== TEMPLATE_IMAGE_BASE64 && isConfigurationGallery && 
