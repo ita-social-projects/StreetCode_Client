@@ -140,25 +140,3 @@
     }
 }
 
-@media screen and (max-width:680px) {
-    .artGalleryWrapper {
-        .artGalleryContainer {
-            .artGalleryContentContainer {
-                .artGallerySliderContainer {
-                    @include mut.rem-padded(0, s.$art-gallery-gap-mobile, 0, 0);
-                    gap: pxToRem(s.$art-gallery-gap-mobile);
-                    height: pxToRem(362px);
-                    overflow-y: hidden;
-                    display: flex;
-                    flex-direction: column;
-                    flex-wrap: wrap;
-                }
-            }
-            .container-for-arts-block {
-                margin-left: 160px;
-                margin-top: -95px;
-            }
-        }
-    }
-}
-

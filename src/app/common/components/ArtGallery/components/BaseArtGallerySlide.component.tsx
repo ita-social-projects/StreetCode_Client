@@ -14,6 +14,7 @@ import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 
 import type { MenuProps } from 'antd';
 import { Dropdown, Modal, Space } from 'antd';
+import StreetcodeArt from '@/models/media/streetcode-art.model';
 
 const BaseArtGallerySlide = ({
     streetcodeArts, className, artSlideId, isDroppable, isAdmin, slideIndex,
@@ -23,6 +24,7 @@ const BaseArtGallerySlide = ({
     const { modalStore: { setModal } } = useModalContext();
     const [confirmationModalVisibility, setConfirmationModalVisibility] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
     });
@@ -64,6 +66,7 @@ const BaseArtGallerySlide = ({
         }
     }
 
+
     function onMoveSlideBackward() {
         const currentSlide = streetcodeArtSlides.find(
             (s) => s.index === slideIndex,
@@ -97,7 +100,7 @@ const BaseArtGallerySlide = ({
     }
 
     function checkMoveSlideForward(slideIndex : number) : boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
         if (sortedSlides.length > 0)
             {
                 let lengthSlides = sortedSlides.length;
@@ -107,14 +110,13 @@ const BaseArtGallerySlide = ({
     }
 
     function checkMoveSlideBackward(slideIndex : number) : boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
         if (sortedSlides.length > 0)
             {
                 return slideIndex <= sortedSlides[0].index
             }
         return false;
     }
-
     const editDropdownOptions: MenuProps['items'] = [
         {
             label: <button onClick={onEditSlideClick}>Редагувати</button>,
@@ -135,6 +137,18 @@ const BaseArtGallerySlide = ({
             disabled: checkMoveSlideBackward(slideIndex),
         },
     ];
+    const handleMouseDown = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = () => {
+        setIsDragging(true);
+    };
+    const handleImageClick = (streetcodeArt: StreetcodeArt) => {
+        if (!isDroppable && !isDragging) {
+            setModal('artGallery', streetcodeArt.art.id);
+        }
+    };
 
     return (
         <div className={`${className} baseArtSlide`}>
@@ -146,10 +160,10 @@ const BaseArtGallerySlide = ({
                             className={`baseArtImage img${streetcodeArt.index}`}
                             src={base64ToUrl(image.base64, image.mimeType)}
                             alt={image.imageDetails?.title}
-                            onClick={() => !isDroppable && setModal(
-                                'artGallery',
-                                streetcodeArt.art.id,
-                            )}
+                            onMouseDown={handleMouseDown}
+                           
+            onMouseMove={handleMouseMove}
+            onClick={() => handleImageClick(streetcodeArt)}
                         />
                         {isDesktop && (
                             <div
