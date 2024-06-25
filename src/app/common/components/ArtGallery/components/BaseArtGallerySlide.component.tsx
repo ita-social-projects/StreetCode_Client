@@ -10,17 +10,13 @@ import Droppable from '@components/Droppable/Droppable';
 import { ModelState } from '@models/enums/model-state';
 import useMobx, { useModalContext } from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
-import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 
 import type { MenuProps } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Dropdown, Modal, Space } from 'antd';
-<<<<<<< HEAD
 import { TEMPLATE_IMAGE_BASE64 } from '../constants/allSlidesTemplates';
 import { ArtSlideTemplateEnum } from '@/models/enums/art-slide-template';
-=======
 import StreetcodeArt from '@/models/media/streetcode-art.model';
->>>>>>> 8e6294c7654c74a539c846a5d0f13465b23a65b4
 
 const BaseArtGallerySlide = ({
     streetcodeArts, className, artSlideId, isDroppable, isAdmin, isConfigurationGallery, slideIndex,
@@ -119,9 +115,8 @@ const BaseArtGallerySlide = ({
         }
     }
 
-<<<<<<< HEAD
     function checkMoveSlideForward(slideIndex: number): boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
         if (sortedSlides.length > 0) {
             let lengthSlides = sortedSlides.length;
             return slideIndex >= sortedSlides[lengthSlides - 1].index
@@ -130,28 +125,10 @@ const BaseArtGallerySlide = ({
     }
 
     function checkMoveSlideBackward(slideIndex: number): boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlides();
+        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
         if (sortedSlides.length > 0) {
             return slideIndex <= sortedSlides[0].index
         }
-=======
-    function checkMoveSlideForward(slideIndex : number) : boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
-        if (sortedSlides.length > 0)
-            {
-                let lengthSlides = sortedSlides.length;
-                return slideIndex >= sortedSlides[lengthSlides-1].index
-            }
-        return false;
-    }
-
-    function checkMoveSlideBackward(slideIndex : number) : boolean {
-        let sortedSlides = streetcodeArtSlideStore.getVisibleSortedSlidesWithoutParam();
-        if (sortedSlides.length > 0)
-            {
-                return slideIndex <= sortedSlides[0].index
-            }
->>>>>>> 8e6294c7654c74a539c846a5d0f13465b23a65b4
         return false;
     }
     const editDropdownOptions: MenuProps['items'] = [
