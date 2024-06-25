@@ -249,7 +249,9 @@ const ArtGallery = ({
    isConfigurationGallery ? (
      convertSlidesToTemplates(
        templateArtSlides as StreetcodeArtSlide[],
-       true
+       true,
+                      false,
+                      true,
      )
    ) : (
      convertSlidesToTemplates(

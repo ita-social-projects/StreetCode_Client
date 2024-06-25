@@ -14,9 +14,9 @@ import base64ToUrl from '@utils/base64ToUrl.utility';
 import type { MenuProps } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Dropdown, Modal, Space } from 'antd';
+import StreetcodeArt from '@/models/media/streetcode-art.model';
 import { TEMPLATE_IMAGE_BASE64 } from '../constants/allSlidesTemplates';
 import { ArtSlideTemplateEnum } from '@/models/enums/art-slide-template';
-import StreetcodeArt from '@/models/media/streetcode-art.model';
 
 const BaseArtGallerySlide = ({
     streetcodeArts, className, artSlideId, isDroppable, isAdmin, isConfigurationGallery, slideIndex,
@@ -68,7 +68,7 @@ const BaseArtGallerySlide = ({
 
     const onDeleteSlide = () => {
         if (artGalleryTemplateStore.isRedact){
-            alert("Ви у режимі редагування! Закінчіть редагування")
+            alert("Ви у режимі редагування! Завершіть редагування")
             return;
         }
         setConfirmationModalVisibility(true)
@@ -77,7 +77,7 @@ const BaseArtGallerySlide = ({
 
     function onMoveSlideBackward() {
         if (artGalleryTemplateStore.isRedact){
-            alert("Ви у режимі редагування! Закінчіть редагування")
+            alert("Ви у режимі редагування! Завершіть редагування")
             return;
         }
         const currentSlide = streetcodeArtSlides.find(
