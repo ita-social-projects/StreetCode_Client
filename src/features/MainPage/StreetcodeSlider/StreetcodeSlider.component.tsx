@@ -26,7 +26,7 @@ const StreetcodeSlider = () => {
     const windowsize = useWindowSize();
     if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.centerMode = true;
     if (windowsize.width <= 1024) STREETCODE_SLIDER_PROPS.dots = true;
-    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.initialSlide = 1;
+    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.initialSlide = 0;
     if (windowsize.width <= 768) STREETCODE_SLIDER_PROPS.variableWidth = false;
 
     streetcodeMainPageStore.fetchStreetcodesMainPage(1, DEFAULT_STREETCODE_CARDS_AMOUNT);

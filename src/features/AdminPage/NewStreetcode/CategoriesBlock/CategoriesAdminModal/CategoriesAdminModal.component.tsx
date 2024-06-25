@@ -246,7 +246,6 @@ const CategoriesModal = ({
                 {
                     setAvailableCategories(AvailableCats);
                 }
-            alert('Категорію успішно додано до списку!');
         }
     };
 
