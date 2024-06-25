@@ -69,7 +69,7 @@ const BaseArtGallerySlide = ({
 
     const onDeleteSlide = () => {
         if (artGalleryTemplateStore.isRedact){
-            alert("Ви у режимі редагування! Закінчіть редагування")
+            alert("Ви у режимі редагування! Завершіть редагування")
             return;
         }
         setConfirmationModalVisibility(true)
@@ -78,7 +78,7 @@ const BaseArtGallerySlide = ({
 
     function onMoveSlideBackward() {
         if (artGalleryTemplateStore.isRedact){
-            alert("Ви у режимі редагування! Закінчіть редагування")
+            alert("Ви у режимі редагування! Завершіть редагування")
             return;
         }
         const currentSlide = streetcodeArtSlides.find(
