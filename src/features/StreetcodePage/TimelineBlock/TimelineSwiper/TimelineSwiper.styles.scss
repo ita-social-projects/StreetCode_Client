@@ -52,9 +52,9 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (min-width: 1024px) {
   .swiper-pagination {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -107,11 +107,11 @@
     margin: 0 f.pxToRem(7.5px);
     background-color: #D9D9D9;;
     transition: all 0.4s ease-in;
+    border-radius: 0% !important;
   }
 
   .swiper-pagination-bullet-active {
     background-color: #891F16;
-    width: f.pxToRem(28px) !important;
   }
 }
 

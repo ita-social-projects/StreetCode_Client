@@ -74,10 +74,11 @@ const TimelineSlider: FC<SliderProps> = ({ children, swipeOnClick = false, ...sl
                 ref={sliderRef}
                 {...sliderProps}
                 centerMode
-                afterChange={onAfterChange}
                 onSwipe={onSwipe}
                 slidesToShow={1}
                 customPaging={(index) => customDot(index)}
+                afterChange={onAfterChange}
+                speed={100}
             >
                 {children.map((slide, idx) => (
                     <div key={idx} onKeyDown={onKeyDown} onClick={() => handleClick(idx)}>
