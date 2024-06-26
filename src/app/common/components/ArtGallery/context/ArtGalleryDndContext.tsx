@@ -46,7 +46,8 @@ const TodoDndContext: React.FC<Props> = ({ children, ...props }: Props) => {
                 alert('Цей арт уже є в цьому слайді');
                 return;
             }
-            const isInExistingSlides = streetcodeArtSlideStore.hasArtWithId(art.id.toString());
+            
+            const isInExistingSlides = streetcodeArtSlideStore.hasArtWithId(art.id.toString(), artGalleryTemplateStore.currentTemplateIndexRedact);
 
             if (!isInExistingSlides) {
                 artGalleryTemplateStore.setArtInSlide(slideTemplateNumber, artIndex, art as Art);

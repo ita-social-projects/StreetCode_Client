@@ -158,9 +158,9 @@ const ArtGallery = ({
           streetcodeArtSlides[oldSlideIdx] = newSlide;
         }
       });
-
       runInAction(() => {
         artGalleryTemplateStore.isRedact = false;
+        artGalleryTemplateStore.currentTemplateIndexRedact = -1;
       })
     } else {
       newSlide.index = streetcodeArtSlides.length;
@@ -168,6 +168,9 @@ const ArtGallery = ({
 
       runInAction(() => {
         streetcodeArtSlides.push(newSlide);
+        streetcodeArtSlides.forEach((artSlide, index) => {
+          artSlide.index = index + 1;
+        })
       });
     }
 
@@ -182,6 +185,13 @@ const ArtGallery = ({
   };
   const handleTemplateSelect = (templateIndex: number) => {
     setSelectedTemplateIndex(templateIndex);
+    runInAction(() => {
+      artGalleryTemplateStore.isRedact = false;
+      artGalleryTemplateStore.currentTemplateIndexRedact = -1;
+    })
+    if (templateIndex !== selectedTemplateIndex) {
+      artGalleryTemplateStore.clearTemplates();
+    }
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -191,6 +201,7 @@ const ArtGallery = ({
     if (artGalleryTemplateStore.isRedact) {
       runInAction(() => {
         artGalleryTemplateStore.isRedact = false;
+        artGalleryTemplateStore.currentTemplateIndexRedact = -1;
       })
     }
     setIsTemplateSelected(title === "Шаблони");
@@ -243,7 +254,9 @@ const ArtGallery = ({
                       isConfigurationGallery ? (
                         convertSlidesToTemplates(
                           templateArtSlides as StreetcodeArtSlide[],
-                          true
+                          true,
+                          false,
+                          true,
                         )
                       ) : (
                         convertSlidesToTemplates(
@@ -260,13 +273,17 @@ const ArtGallery = ({
                       {isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
                         convertSlidesToTemplates(
                           [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
-                          true
+                          true,
+                          false,
+                          true,
                         )
                       ) : (
                         isConfigurationGallery ? (
                           convertSlidesToTemplates(
                             templateArtSlides as StreetcodeArtSlide[],
-                            true
+                            true,
+                            false,
+                            true,
                           )
                         ) : (
                           convertSlidesToTemplates(
