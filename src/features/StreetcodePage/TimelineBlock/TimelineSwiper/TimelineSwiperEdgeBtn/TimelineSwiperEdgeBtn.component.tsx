@@ -14,7 +14,6 @@ interface Props {
 
 const TimelineSwiperEdgeBtn = ({
     swipeSpeed = 900,
-    sideMargin = 60,
     lastTickIdx,
     side, year,
 }: Props) => {
@@ -32,12 +31,9 @@ const TimelineSwiperEdgeBtn = ({
         setActiveYear(new Date(getTimelineItemArray[slideToCardIdx].date).getFullYear());
     };
 
-    const positionStyles = isLeftEdge ? { left: -sideMargin } : { right: -sideMargin };
-
     return (
         <div
-            className="swiperEdgeBtn"
-            style={positionStyles}
+            className={`swiperEdgeBtn swiperEdgeBtn-${side}`}
             onClick={handleClick}
         >
             <span>

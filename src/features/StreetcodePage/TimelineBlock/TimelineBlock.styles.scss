@@ -27,6 +27,9 @@ $timelineSquareImg: "@assets/images/timeline/Square.webp";
 
     .slick-slider {
       @include mut.parent-sized();
+      .slick-dots{
+        bottom: f.pxToRem(-100px) !important;
+      }
     }
 
     .slick-list {
