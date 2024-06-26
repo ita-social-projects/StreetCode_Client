@@ -1,5 +1,5 @@
 import { makeAutoObservable, observable } from 'mobx';
-import allSlidesTemplates, { TEMPLATE_IMAGE_BASE64 } from '@components/ArtGallery/constants/allSlidesTemplates';
+import allSlidesTemplates, { EMPTY_ART_TEMPLATE, TEMPLATE_IMAGE_BASE64 } from '@components/ArtGallery/constants/allSlidesTemplates';
 import { ArtSlideTemplateEnum } from '@models/enums/art-slide-template';
 import Art from '@models/media/art.model';
 import { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
@@ -9,6 +9,7 @@ export default class ArtGalleryTemplateStore {
 
     public isEdited = false;
     public isRedact = false;
+    public currentTemplateIndexRedact = -1;
 
     public constructor() {
         makeAutoObservable(this);
@@ -28,6 +29,28 @@ export default class ArtGalleryTemplateStore {
 
         const updatedArtSlide = { ...this.streetcodeArtSlides[existingSlideIndex] };
         updatedArtSlide.streetcodeArts[existingArtIndex].art = art;
+
+        this.streetcodeArtSlides[existingSlideIndex] = updatedArtSlide;
+
+        if (!this.isEdited) {
+            this.isEdited = true;
+        }
+    }
+
+    public removeArtInSlide(slideTemplate: ArtSlideTemplateEnum, artIndex: number) {
+        if ((slideTemplate == null || undefined) || !artIndex) return;
+
+        const existingSlideIndex = this.streetcodeArtSlides.findIndex((s) => s.template === slideTemplate);
+
+        if (existingSlideIndex === -1) return;
+
+        const existingArtIndex = this.streetcodeArtSlides[existingSlideIndex]
+            ?.streetcodeArts.findIndex((a) => a.index === artIndex);
+
+        if (existingArtIndex === -1) return;
+
+        const updatedArtSlide = { ...this.streetcodeArtSlides[existingSlideIndex] };
+        updatedArtSlide.streetcodeArts[existingArtIndex].art = EMPTY_ART_TEMPLATE;
 
         this.streetcodeArtSlides[existingSlideIndex] = updatedArtSlide;
 

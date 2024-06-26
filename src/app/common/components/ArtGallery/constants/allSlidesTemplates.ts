@@ -734,5 +734,16 @@ const ALL_SLIDES_TEMPLATES: StreetcodeArtSlideAdmin[] = [
     },
 ];
 
+const EMPTY_ART_TEMPLATE = {
+    id: -1,
+    imageId: -1,
+    image: {
+        id: -1,
+        base64: TEMPLATE_IMAGE_BASE64,
+        blobName: 'name',
+        mimeType: 'image/svg',
+    },
+}
+
 export default ALL_SLIDES_TEMPLATES;
-export { TEMPLATE_IMAGE_BASE64 };
+export { TEMPLATE_IMAGE_BASE64, EMPTY_ART_TEMPLATE };
