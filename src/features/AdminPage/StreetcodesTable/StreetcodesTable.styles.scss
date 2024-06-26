@@ -11,23 +11,32 @@
     .ant-btn-primary:disabled {
         background-color: c.$lighter-gray-color;
         color: c.$pure-white-color;
-      }
-      .ant-btn-default {
+    }
+
+    .ant-btn-default {
         border-color: c.$accented-red-color;
     }
-}   
+
+    .ant-dropdown-trigger{
+        &:hover{
+            color: c.$accented-red-color;
+        }
+    }
+}
 
 .actionButton {
     margin-right: 10px;
+    color: c.$dark-red-color;
+    transition-property: scale;
+    transition-duration: .2s;
 
     &:hover {
-        color: c.$dark-red-color;
         cursor: pointer;
         scale: 1.2;
     }
 }
 
-.paginationButton > li {
+.paginationButton>li {
     border-color: c.$accented-red-color;
 
     a {
@@ -35,11 +44,11 @@
     }
 }
 
-.ant-table table { 
+.ant-table table {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 18px);
 }
 
-.ant-table-tbody > tr > td {
+.ant-table-tbody>tr>td {
     &:hover {
         cursor: pointer;
     }
@@ -55,12 +64,14 @@
     margin-top: 10px;
     margin-right: 30px;
 
-    .pagenationElement, .pageAmountElement {
+    .pagenationElement,
+    .pageAmountElement {
         @include mut.with-font($font-size: 16px);
-        
+
         &:hover {
             border-color: c.$accented-red-color;
         }
+
         &:focus-within {
             border-color: c.$accented-red-color;
         }
@@ -70,7 +81,7 @@
         @include mut.sized(200px, 30px);
         float: right;
     }
-    
+
     .pageAmountElement {
         float: right;
     }

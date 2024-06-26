@@ -130,7 +130,6 @@ const Newss: React.FC = observer(() => {
                     columns={columns}
                     dataSource={newsStore.NewsArray}
                     rowKey="id"
-                    scroll={{ y: 440 }}
                 />
                 <div className="underTableZone">
                     <br />

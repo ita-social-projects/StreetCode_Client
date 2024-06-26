@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    BarChartOutlined, DeleteOutlined, DownOutlined, FormOutlined, RollbackOutlined,
+    BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, FormOutlined, RollbackOutlined,
 } from '@ant-design/icons';
 import { NumberLiteralTypeAnnotation } from '@babel/types';
 import { format } from 'date-fns';
@@ -207,7 +207,7 @@ const StreetcodesTable = () => {
                     {record.status !== 'Видалений' ? (
                         <>
                             <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/${record.key}`}>
-                                <FormOutlined
+                                <EditOutlined
                                     className="actionButton"
                                     onClick={(event) => {
                                         event.stopPropagation();
@@ -237,7 +237,9 @@ const StreetcodesTable = () => {
                                 }}
                             />
                             <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
-                                <BarChartOutlined />
+                                <BarChartOutlined 
+                                    className="actionButton"
+                                />
                             </Link>
                         </>
                     ) : (
@@ -307,7 +309,6 @@ const StreetcodesTable = () => {
                 <Table
                     columns={columnsNames}
                     dataSource={mapedStreetCodes}
-                    scroll={{ y: 440 }}
                     pagination={false}
                 />
             </div>

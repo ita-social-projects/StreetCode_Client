@@ -9,7 +9,6 @@ import { Settings as SliderSettings } from "react-slick";
 import SLIDER_PROPS from "@components/ArtGallery/constants/sliderProps";
 import convertSlidesToTemplates from "@components/ArtGallery/utils/convertSlidesToTemplates";
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
-import { useAsync } from "@hooks/stateful/useAsync.hook";
 import { ArtCreateUpdate } from "@models/media/art.model";
 import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 import useMobx, { useStreetcodeDataContext } from "@stores/root-store";
@@ -222,7 +221,7 @@ const ArtGallery = ({
   return (
     <div>
       {(((streetcodeArtSlides.length > 0 && (isAdmin || visibleSlidesCount > 0)) || isConfigurationGallery)) && (
-        <div id="art-gallery" className="artGalleryWrapper">
+        <div id={isConfigurationGallery?"config-art-gallery":"art-gallery"} className="artGalleryWrapper">
           <div className="artGalleryContainer container">
             <BlockHeading headingText={title} />
             {title === "Шаблони" && (
@@ -248,7 +247,9 @@ const ArtGallery = ({
                     {isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
                       convertSlidesToTemplates(
                         [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
-                        true
+                        true,
+                        false,
+                        true,
                       )
                     ) : (
                       isConfigurationGallery ? (

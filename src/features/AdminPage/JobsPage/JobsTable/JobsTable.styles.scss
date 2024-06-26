@@ -1,0 +1,16 @@
+@use "@sass/variables/_variables.colors.scss" as c;
+
+.job-table {
+    .ant-btn-primary:disabled {
+        background-color: c.$lighter-gray-color;
+        color: c.$pure-white-color;
+    }
+
+    .ant-btn-default {
+        border-color: c.$accented-red-color;
+
+        &:hover {
+            color: c.$accented-red-color;
+        }
+    }
+}

@@ -9,6 +9,7 @@ import JobApi from '@/app/api/job/Job.api';
 import { useModalContext } from '@/app/stores/root-store';
 
 import JobsModalComponent from '../JobsModal/JobsModal.component';
+import './JobsTable.styles.scss'
 
 const JobsTable = () => {
     const [mappedJobsShort, setMappedJobsShort] = useState<JobShort[]>([]);
@@ -114,11 +115,16 @@ const JobsTable = () => {
             key: 'actions',
             render: (id: number) => (
                 <div className="partner-page-actions">
-                    <DeleteOutlined onClick={() => DeleteJob(id)} />
-                    <EditOutlined onClick={() => {
-                        setOpen(true);
-                        setCurrentId(id);
-                    }}
+                    <DeleteOutlined 
+                        onClick={() => DeleteJob(id)} 
+                        className="actionButton"
+                    />
+                    <EditOutlined 
+                        onClick={() => {
+                            setOpen(true);
+                            setCurrentId(id);
+                        }}
+                        className="actionButton"
                     />
                 </div>
             ),
@@ -164,6 +170,7 @@ const JobsTable = () => {
             <Table
                 columns={columnsNames}
                 dataSource={mappedJobsShort}
+                className="job-table"
                 rowKey="id"
             />
         </div>
