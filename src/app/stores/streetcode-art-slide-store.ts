@@ -23,14 +23,11 @@ export default class StreetcodeArtSlideStore {
     public hasArtWithId(id: string, except?: number): boolean {
         if (this.streetcodeArtSlides.length === 0) return false;
 
-
-        const isInSlides = this.getVisibleSortedSlides(+id)?.some(
-            (slide, index) => (slide.streetcodeArts.some(
+        const isInSlides = this.getVisibleSortedSlidesWithoutParam()?.some(
+            (slide) => (slide.streetcodeArts.some(
                 (sArt) => sArt.art.id.toString() === id,
-            ) && index!==except),
+            ) && (slide.index-1)!==except),
         );
-
-        console.log(isInSlides, except);
 
         return isInSlides;
     }
@@ -56,10 +53,6 @@ export default class StreetcodeArtSlideStore {
             .sort((a, b) => (a.index > b.index ? 1 : -1));
     }
 
-    // public setStartingSlideAndId = (streetcodeId: number) => {
-    //     this.startFromSlide = 1;
-    //     this.streetcodeWasFetched.push(streetcodeId);
-    // };
     public setStartingSlideAndId = (streetcodeId: number) => {
         this.startFromSlide = 1;
         this.streetcodeWasFetched.push(streetcodeId);
