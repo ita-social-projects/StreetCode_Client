@@ -59,12 +59,13 @@ const ArtGallery = ({
     query: "(max-width: 680px)",
   });
   const [fetchedData, setFetchedData] = useState<boolean>(false)
+  const [visibleSlidesCount, setVisibleSlidesCount] = useState<number>(0)
 
   const { id } = useParams<any>();
   const parseId = id ? +id : errorStreetCodeId;
 
   useEffect(() => {
-    if(isAdmin || isConfigurationGallery){
+    if (isAdmin || isConfigurationGallery) {
       fetchData().then(() => {
         setFetchedData(true);
       }).then(() => {
@@ -72,15 +73,19 @@ const ArtGallery = ({
       });
     } else {
       trackChange();
-  if (itChangedId) {
-    fetchData().then(() => {
-      setFetchedData(true);
-    }).then(() => {
-      itChangedIdChange();
-    });
-  }
-        }
+      if (itChangedId) {
+        fetchData().then(() => {
+          setFetchedData(true);
+        }).then(() => {
+          itChangedIdChange();
+        });
+      }
+    }
   });
+
+  useEffect(() => {
+    setVisibleSlidesCount(streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId).length)
+  }, [fetchedData])
 
   async function fetchData() {
     if (streetcodeIdValidAndFetchingRequired()) {
@@ -140,34 +145,31 @@ const ArtGallery = ({
 
   function handleAddNewSlide() {
     const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
-    console.log(streetcodeArtSlideStore);
 
-        if (!newSlide) {
-            alert('Увага, заповніть усі зображення щоб зберегти слайд');
-            return;
+    if (!newSlide) {
+      alert('Увага, заповніть усі зображення щоб зберегти слайд');
+      return;
+    }
+
+    if (artGalleryTemplateStore.isRedact) {
+      runInAction(() => {
+        const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
+        if (oldSlideIdx !== -1) {
+          streetcodeArtSlides[oldSlideIdx] = newSlide;
         }
+      });
 
-        if (artGalleryTemplateStore.isRedact) {
-            runInAction(() => {
-                const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
-                if (oldSlideIdx !== -1) {
-                    streetcodeArtSlides[oldSlideIdx] = newSlide;
-                }
-            });
-            console.log(newSlide);
-            runInAction(() => {
-                artGalleryTemplateStore.isRedact = false;
-            })
-        } else {
-            newSlide.index = streetcodeArtSlides.length;
-            newSlide.streetcodeId = parseId ?? -1;
+      runInAction(() => {
+        artGalleryTemplateStore.isRedact = false;
+      })
+    } else {
+      newSlide.index = streetcodeArtSlides.length;
+      newSlide.streetcodeId = parseId ?? -1;
 
-            runInAction(() => {
-                streetcodeArtSlides.push(newSlide);
-            });
-
-            console.log(artGalleryTemplateStore);
-        }
+      runInAction(() => {
+        streetcodeArtSlides.push(newSlide);
+      });
+    }
 
 
     setSelectedTemplateIndex(0);
@@ -186,7 +188,7 @@ const ArtGallery = ({
   };
   function handleClearSlideTemplate() {
     artGalleryTemplateStore.clearTemplates();
-    if(artGalleryTemplateStore.isRedact){
+    if (artGalleryTemplateStore.isRedact) {
       runInAction(() => {
         artGalleryTemplateStore.isRedact = false;
       })
@@ -204,11 +206,11 @@ const ArtGallery = ({
     slidesToScroll: 1,
     slidesToShow: 1,
     centerPadding: '0px',
-};
+  };
 
   return (
     <div>
-      {((streetcodeArtSlides.length > 0 || isConfigurationGallery)) && (
+      {(((streetcodeArtSlides.length > 0 && (isAdmin || visibleSlidesCount > 0)) || isConfigurationGallery)) && (
         <div id="art-gallery" className="artGalleryWrapper">
           <div className="artGalleryContainer container">
             <BlockHeading headingText={title} />
@@ -231,31 +233,8 @@ const ArtGallery = ({
             <div className="artGalleryContentContainer">
               <div className="artGallerySliderContainer">
                 {isMobile ? (
- <SlickSlider {...sliderProps}>
- { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
-   convertSlidesToTemplates(
-     [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
-     true
-   )
- ) : (
-   isConfigurationGallery ? (
-     convertSlidesToTemplates(
-       templateArtSlides as StreetcodeArtSlide[],
-       true
-     )
-   ) : (
-     convertSlidesToTemplates(
-       streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
-       false,
-       isAdmin
-     )
-   )
- )}
-</SlickSlider>
-)
- : (
-                  <SlickSlider {...slickProps}>
-                    { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
+                  <SlickSlider {...sliderProps}>
+                    {isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
                       convertSlidesToTemplates(
                         [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
                         true
@@ -275,7 +254,30 @@ const ArtGallery = ({
                       )
                     )}
                   </SlickSlider>
-                )}
+                )
+                  : (
+                    <SlickSlider {...slickProps}>
+                      {isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
+                        convertSlidesToTemplates(
+                          [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
+                          true
+                        )
+                      ) : (
+                        isConfigurationGallery ? (
+                          convertSlidesToTemplates(
+                            templateArtSlides as StreetcodeArtSlide[],
+                            true
+                          )
+                        ) : (
+                          convertSlidesToTemplates(
+                            streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
+                            false,
+                            isAdmin
+                          )
+                        )
+                      )}
+                    </SlickSlider>
+                  )}
               </div>
             </div>
           </div>
