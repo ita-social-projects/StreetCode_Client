@@ -151,28 +151,28 @@ const ArtGallery = ({
       return;
     }
 
-        if (artGalleryTemplateStore.isRedact) {
-            runInAction(() => {
-                const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
-                if (oldSlideIdx !== -1) {
-                    streetcodeArtSlides[oldSlideIdx] = newSlide;
-                }
-            });
-            runInAction(() => {
-                artGalleryTemplateStore.isRedact = false;
-                artGalleryTemplateStore.currentTemplateIndexRedact = -1;
-            })
-        } else {
-            newSlide.index = streetcodeArtSlides.length;
-            newSlide.streetcodeId = parseId ?? -1;
-
-            runInAction(() => {
-                streetcodeArtSlides.push(newSlide);
-                streetcodeArtSlides.forEach((artSlide, index) => {
-                  artSlide.index = index+1;
-                })
-            });
+    if (artGalleryTemplateStore.isRedact) {
+      runInAction(() => {
+        const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
+        if (oldSlideIdx !== -1) {
+          streetcodeArtSlides[oldSlideIdx] = newSlide;
         }
+      });
+      runInAction(() => {
+        artGalleryTemplateStore.isRedact = false;
+        artGalleryTemplateStore.currentTemplateIndexRedact = -1;
+      })
+    } else {
+      newSlide.index = streetcodeArtSlides.length;
+      newSlide.streetcodeId = parseId ?? -1;
+
+      runInAction(() => {
+        streetcodeArtSlides.push(newSlide);
+        streetcodeArtSlides.forEach((artSlide, index) => {
+          artSlide.index = index + 1;
+        })
+      });
+    }
 
 
     setSelectedTemplateIndex(0);
@@ -189,7 +189,7 @@ const ArtGallery = ({
       artGalleryTemplateStore.isRedact = false;
       artGalleryTemplateStore.currentTemplateIndexRedact = -1;
     })
-    if (templateIndex !== selectedTemplateIndex){
+    if (templateIndex !== selectedTemplateIndex) {
       artGalleryTemplateStore.clearTemplates();
     }
   };
@@ -255,8 +255,8 @@ const ArtGallery = ({
                         convertSlidesToTemplates(
                           templateArtSlides as StreetcodeArtSlide[],
                           true,
-                      false,
-                      true,
+                          false,
+                          true,
                         )
                       ) : (
                         convertSlidesToTemplates(
@@ -274,16 +274,16 @@ const ArtGallery = ({
                         convertSlidesToTemplates(
                           [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
                           true,
-                        false,
-                        true,
+                          false,
+                          true,
                         )
                       ) : (
                         isConfigurationGallery ? (
                           convertSlidesToTemplates(
                             templateArtSlides as StreetcodeArtSlide[],
                             true,
-                          false,
-                          true,
+                            false,
+                            true,
                           )
                         ) : (
                           convertSlidesToTemplates(
