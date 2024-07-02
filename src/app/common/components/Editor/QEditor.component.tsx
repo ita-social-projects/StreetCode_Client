@@ -80,7 +80,7 @@ const Editor: React.FC<EditorProps> = ({
     const modules = {
         toolbar: {
             container: [
-                [{ header: [1, 2, 3, 4, 5, 6] }],
+                [{ header: [false, 1, 2, 3, 4, 5, 6] }],
                 ['bold', 'italic', 'strike', 'underline', 'link'],
                 [
                     { list: 'ordered' },
@@ -122,7 +122,7 @@ const Editor: React.FC<EditorProps> = ({
             <div className="quillEditor">
                 <ReactQuill
                     defaultValue={initialVal}
-                    value={val || ''}
+                    value={indentedValue}
                     onChange={handleOnChange}
                     modules={modules}
                     onKeyDown={handleKeyDown}
