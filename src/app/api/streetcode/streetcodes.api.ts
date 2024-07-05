@@ -34,7 +34,6 @@ const StreetcodesApi = {
                 {
                     page: page.toString(),
                     pageSize: pageSize.toString(),
-                    shuffleSeed: '1',
                 },
             )),
         ),

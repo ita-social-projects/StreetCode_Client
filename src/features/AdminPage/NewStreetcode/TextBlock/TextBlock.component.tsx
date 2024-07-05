@@ -31,16 +31,6 @@ const TextBlock = React.memo(({
         }
     }, [parseId]);
 
-    useEffect(() => {
-        setInputInfo(prevState => ({
-            ...prevState,
-            ["title"]: inputInfoAsync?.title,
-            ["textContent"]: inputInfoAsync?.textContent,
-            ["additionalText"]: inputInfoAsync?.additionalText,
-          }));
-        
-    }, [inputInfoAsync]);
-
     return (
         canLoad ? (
             <TextForm
