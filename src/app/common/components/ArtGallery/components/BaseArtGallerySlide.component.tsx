@@ -47,6 +47,8 @@ const BaseArtGallerySlide = ({
                 artGalleryTemplateStore.isRedact = true;
                 artGalleryTemplateStore.currentTemplateIndexRedact = slideIndex-1;
             });
+
+            document.getElementById("config-art-gallery")?.scrollIntoView({behavior: "smooth", block: "end"});
         }
     }
 
