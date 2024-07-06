@@ -45,7 +45,7 @@ const ArtGallery = ({
       errorStreetCodeId
     },
   } = useStreetcodeDataContext();
-  const { fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides, setStartingSlideAndId } = streetcodeArtSlideStore;
+  const { fetchAllToDefaultTemplate, fetchAllArtSlidesByStreetcodeId, fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides, setStartingSlideAndId } = streetcodeArtSlideStore;
   const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
   const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
   const [isTemplateSelected, setIsTemplateSelected] = useState(title === "Шаблони");
@@ -89,18 +89,33 @@ const ArtGallery = ({
   async function fetchData() {
     if (streetcodeIdValidAndFetchingRequired()) {
       secondRender.current = true;
-      let currentSlide = 0;
-      while (currentSlide < MAX_SLIDES_AMOUNT) {
-        try {
-          // eslint-disable-next-line no-await-in-loop
-          await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
-          if (isFillArtsStore) {
-            copyArtsFromSlidesToStore();
-          }
+      if (isFillArtsStore) {
+        await fetchAllToDefaultTemplate(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
 
-          currentSlide += amountOfSlides;
-        } catch (error: unknown) {
-          currentSlide = MAX_SLIDES_AMOUNT;
+        let currentSlide = 0;
+        while (currentSlide < MAX_SLIDES_AMOUNT) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await fetchAllArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId, currentSlide);
+            
+            currentSlide += amountOfSlides;
+          } catch (error: unknown) {
+            currentSlide = MAX_SLIDES_AMOUNT;
+          }
+        }
+        
+        copyArtsFromSlidesToStore();
+      } else {
+        let currentSlide = 0;
+        while (currentSlide < MAX_SLIDES_AMOUNT) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+            
+            currentSlide += amountOfSlides;
+          } catch (error: unknown) {
+            currentSlide = MAX_SLIDES_AMOUNT;
+          }
         }
       }
       setStartingSlideAndId(getStreetCodeId);
