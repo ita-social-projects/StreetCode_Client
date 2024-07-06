@@ -35,7 +35,6 @@ const TextEditor = ({
   const [term, setTerm] = useState<Partial<Term>>();
   const [selected, setSelected] = useState("");
   const editorRef = useRef<ReactQuill | null>(null);
-  const [editorContent, setEditorContent] = useState(text ?? "");
   const MAX_CHARS = character_limit || 25000;
   const [isTitleEmpty, setIsTitleEmpty] = useState(true);
 
@@ -108,10 +107,9 @@ const TextEditor = ({
         <div className={isTitleEmpty ? "disabled" : ""}>
         <Editor
         qRef={editorRef}
-        value={editorContent}
+        value={text ?? ""}
         onChange={(editor) => {
-          setEditorContent(editor);
-          setInputInfo({ ...inputInfo, textContent: editor });
+          setInputInfo((prevState) => ({ ...prevState, textContent: editor }));
           onChange("textContent", editor);
         }}
         maxChars={MAX_CHARS}
