@@ -241,7 +241,7 @@ const ArtGallery = ({
             />
 
             <div className="artGalleryContentContainer">
-              <div className="artGallerySliderContainer">
+              <div  className={isAdmin && (windowsize.width > 1025 && windowsize.width <1450)? "artGallerySliderContainer2" : "artGallerySliderContainer"}>
                 {isMobile ? (
                   <SlickSlider {...sliderProps}>
                     {isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
