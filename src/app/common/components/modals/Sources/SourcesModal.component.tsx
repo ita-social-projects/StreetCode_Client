@@ -23,12 +23,10 @@ const SourcesModal = () => {
     const [content, setContent] = useState<StreetcodeCategoryContent | null>(null);
     const categoryId = sources.fromCardId!;
     const category = srcCategoriesMap.get(categoryId);
-    const clickHandle = () => {
-        sources.isOpen = false;
-        setContent(null);
-    };
+    const clickHandle = () => sources.isOpen = false;
 
-    useAsync(() => {
+
+    useAsync(async () => {
         setContent(srcCategoriesContentMap.get(categoryId) || null);
     }, [categoryId]);
     return (
