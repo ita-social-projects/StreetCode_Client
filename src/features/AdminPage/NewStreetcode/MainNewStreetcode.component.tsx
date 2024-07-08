@@ -407,15 +407,6 @@ const NewStreetcode = () => {
                 };
                 validateQuillTexts(text.textContent, text.additionalText);
 
-                const usedArts = streetcodeArtSlideStore
-                    .getArtSlidesAsDTO()
-                    .filter((slide) => slide.modelState !== ModelState.Deleted)
-                    .flatMap((slide) => slide.streetcodeArts);
-
-                const filteredArts = artStore.arts.filter((art) =>
-                    usedArts.some((usedArt) => usedArt.artId === art.id)
-                );
-
                 const streetcode: StreetcodeCreate = {
                     id: parseId,
                     index: form.getFieldValue('streetcodeNumber'),
@@ -461,7 +452,7 @@ const NewStreetcode = () => {
                     teaser: form.getFieldValue('teaser'),
                     viewCount: 0,
                     dateString: form.getFieldValue('dateString'),
-                    arts: filteredArts,
+                    arts: artStore.arts,
                     streetcodeArtSlides:
                         streetcodeArtSlideStore.getArtSlidesAsDTO(),
                     subtitles,
@@ -578,7 +569,7 @@ const NewStreetcode = () => {
                     text: text.modelState === ModelState.Deleted || text.title ? text : null,
                     streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
                         .map((content) => ({ ...content, streetcodeId: parseId })),
-                    arts: filteredArts,
+                    arts: artStore.arts,
                     streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
                     tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
                     statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
