@@ -26,31 +26,26 @@
         object-fit: cover;
         @include mut.full-size();
     }
-
-    .deleteBaseArtImage{
+    .deleteBaseArtImage {
         position: absolute;
         display: flex;
         align-items: center;
         justify-content: center;
-
         @include mut.sized(30px, 30px);
         top: pxToRem(15px);
         right: pxToRem(15px);
         border-radius: 100%;
-
         background-color: c.$accented-red-color;
         color: #ffffff;
-
         transition-property: transform;
         transition-duration: .3s;
-        > svg{
+        >svg {
             @include mut.sized(60%);
         }
-        &:hover{
+        &:hover {
             transform: scale(1.1);
         }
     }
-
     &:hover {
         cursor: pointer;
         .imgDataFull {
@@ -67,7 +62,7 @@
         @include vnd.vendored(transition, 'all .5s ease');
         @include mut.rounded( $bottom-right: 30px, $bottom-left: 30px);
         padding: pxToRem(11px) pxToRem(21px);
-        line-height: 1.6rem;
+        line-height: 1.75rem;
     }
     .imgTitle {
         @include mut.with-font();
@@ -110,4 +105,3 @@
         }
     }
 }
-
