@@ -6,6 +6,32 @@ import { StreetcodeArtSlideAdmin } from '@/models/media/streetcode-art-slide.mod
 
 // eslint-disable-next-line max-len
 const TEMPLATE_IMAGE_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAUcAAADoCAYAAAB8dCbkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAMPSURBVHhe7cixDcAwAMOw/P90mr36wBTARed1AfjJCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADrcgKsywmwLifAupwA63ICrMsJsC4nwLqcAOtyAqzLCbAuJ8C6nADDzv0A9XdA8gKGinIAAAAASUVORK5CYII=';
+const TEMPLATE_WHITE_IMAGE_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAUcAAADoCAYAAAB8dCbkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAL2SURBVHhe7dSxEYAwEMCwh/13JhQU4eIRpMYb+HpeA8DP/RWAjTkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4BgjgDBHAGCOQIEcwQI5ggQzBEgmCNAMEeAYI4AwRwBgjkCBHMECOYIEMwRIJgjQDBHgGCOAMEcAYI5AgRzBAjmCBDMESCYI0AwR4DDzAKUswXMuvXEwwAAAABJRU5ErkJggg==';
+
+const SLIDE_TEMPLATE: StreetcodeArtSlideAdmin = {
+    index: 1,
+    template: ArtSlideTemplateEnum.OneToFour,
+    streetcodeArts: [
+        {
+            index: 1,
+            art: {
+                id: 0,
+                imageId: 0,
+                image: {
+                    id: 0,
+                    base64: TEMPLATE_WHITE_IMAGE_BASE64,
+                    blobName: 'name',
+                    mimeType: 'image/svg',
+                },
+            },
+        },
+    ],
+    modelState: ModelState.Created,
+}
+
+const bindStreetcodeIdToDefaultSlide = (streetcodeId: number) => {
+    return {...SLIDE_TEMPLATE, streetcodeId: streetcodeId} as StreetcodeArtSlideAdmin;
+}
 
 const ALL_SLIDES_TEMPLATES: StreetcodeArtSlideAdmin[] = [
     {
@@ -734,5 +760,16 @@ const ALL_SLIDES_TEMPLATES: StreetcodeArtSlideAdmin[] = [
     },
 ];
 
+const EMPTY_ART_TEMPLATE = {
+    id: -1,
+    imageId: -1,
+    image: {
+        id: -1,
+        base64: TEMPLATE_IMAGE_BASE64,
+        blobName: 'name',
+        mimeType: 'image/svg',
+    },
+}
+
 export default ALL_SLIDES_TEMPLATES;
-export { TEMPLATE_IMAGE_BASE64 };
+export { TEMPLATE_IMAGE_BASE64, EMPTY_ART_TEMPLATE, SLIDE_TEMPLATE, bindStreetcodeIdToDefaultSlide };

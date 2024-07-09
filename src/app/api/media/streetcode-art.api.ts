@@ -15,6 +15,10 @@ const StreetcodeArtApi = {
         `${API_ROUTES.STREETCODE_ART_SLIDES.GET_SLIDES_BY_STREETCODE_ID}/${streetcodeId}`,
         new URLSearchParams(Object.entries({ fromSlideN: startFromSlide.toString(), amountOfSlides: amountOfSlides.toString() })),
     ),
+
+    getAllCountByStreetcodeId: (streetcodeId: number) => Agent.get<number>(
+        `${API_ROUTES.STREETCODE_ART_SLIDES.GET_ALL_COUNT_BY_STREETCODE_ID}/${streetcodeId}`,
+    ),
 };
 
 export default StreetcodeArtApi;

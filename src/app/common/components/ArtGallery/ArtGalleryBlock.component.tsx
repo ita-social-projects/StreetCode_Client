@@ -9,12 +9,12 @@ import { Settings as SliderSettings } from "react-slick";
 import SLIDER_PROPS from "@components/ArtGallery/constants/sliderProps";
 import convertSlidesToTemplates from "@components/ArtGallery/utils/convertSlidesToTemplates";
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
-import { useAsync } from "@hooks/stateful/useAsync.hook";
 import { ArtCreateUpdate } from "@models/media/art.model";
 import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 import useMobx, { useStreetcodeDataContext } from "@stores/root-store";
 import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
 import ArtGalleryTemplatesModal from "../modals/ArtGalleryTemplates/ArtGalleryTemplatesModal.component";
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import { Button } from "antd";
 import { useMediaQuery } from "react-responsive";
@@ -37,50 +37,90 @@ const ArtGallery = ({
   const { streetcodeArtSlideStore, artGalleryTemplateStore, artStore } =
     useMobx();
   const {
-    streetcodeStore: { getStreetCodeId, errorStreetCodeId },
+    streetcodeStore: {
+      itChangedIdChange,
+      itChangedId,
+      trackChange,
+      getStreetCodeId,
+      errorStreetCodeId
+    },
   } = useStreetcodeDataContext();
-  const {
-    fetchNextArtSlidesByStreetcodeId,
-    streetcodeArtSlides,
-    amountOfSlides,
-  } = streetcodeArtSlideStore;
+  const { fetchAllToDefaultTemplate, fetchAllArtSlidesByStreetcodeId, fetchNextArtSlidesByStreetcodeId, streetcodeArtSlides, amountOfSlides, setStartingSlideAndId } = streetcodeArtSlideStore;
   const { streetcodeArtSlides: templateArtSlides } = artGalleryTemplateStore;
   const [slickProps, setSlickProps] = useState<SliderSettings>(SLIDER_PROPS);
+  const [isTemplateSelected, setIsTemplateSelected] = useState(title === "Шаблони");
   const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
   const [selectedTemplateIndex, setSelectedTemplateIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTemplateSelected, setIsTemplateSelected] = useState(title === "Шаблони");
   const secondRender = useRef(false);
+  const windowsize = useWindowSize();
   const isMobile = useMediaQuery({
     query: "(max-width: 680px)",
   });
+  const [fetchedData, setFetchedData] = useState<boolean>(false)
+  const [visibleSlidesCount, setVisibleSlidesCount] = useState<number>(0)
 
   const { id } = useParams<any>();
   const parseId = id ? +id : errorStreetCodeId;
 
-  useAsync(async () => {
-    if (streetcodeIdValidAndFetchingRequired()) {
-      secondRender.current = true;
-      let currentSlide = 0;
-
-      while (currentSlide < MAX_SLIDES_AMOUNT) {
-        try {
-          // eslint-disable-next-line no-await-in-loop
-          await fetchNextArtSlidesByStreetcodeId(
-            getStreetCodeId !== -1 ? getStreetCodeId : parseId
-          );
-
-          if (isFillArtsStore) {
-            copyArtsFromSlidesToStore();
-          }
-
-          currentSlide += amountOfSlides;
-        } catch (error: unknown) {
-          currentSlide = MAX_SLIDES_AMOUNT;
-        }
+  useEffect(() => {
+    if (isAdmin || isConfigurationGallery) {
+      fetchData().then(() => {
+        setFetchedData(true);
+      }).then(() => {
+        itChangedIdChange();
+      });
+    } else {
+      trackChange();
+      if (itChangedId) {
+        fetchData().then(() => {
+          setFetchedData(true);
+        }).then(() => {
+          itChangedIdChange();
+        });
       }
     }
-  }, [getStreetCodeId, parseId]);
+  });
+
+  useEffect(() => {
+    setVisibleSlidesCount(streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId).length)
+  }, [fetchedData])
+
+  async function fetchData() {
+    if (streetcodeIdValidAndFetchingRequired()) {
+      secondRender.current = true;
+      if (isFillArtsStore) {
+        await fetchAllToDefaultTemplate(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+
+        let currentSlide = 0;
+        while (currentSlide < MAX_SLIDES_AMOUNT) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await fetchAllArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId, currentSlide);
+            
+            currentSlide += amountOfSlides;
+          } catch (error: unknown) {
+            currentSlide = MAX_SLIDES_AMOUNT;
+          }
+        }
+        
+        copyArtsFromSlidesToStore();
+      } else {
+        let currentSlide = 0;
+        while (currentSlide < MAX_SLIDES_AMOUNT) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await fetchNextArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+            
+            currentSlide += amountOfSlides;
+          } catch (error: unknown) {
+            currentSlide = MAX_SLIDES_AMOUNT;
+          }
+        }
+      }
+      setStartingSlideAndId(getStreetCodeId);
+    }
+  }
 
   function streetcodeIdValidAndFetchingRequired() {
     return (
@@ -119,65 +159,84 @@ const ArtGallery = ({
 
   function handleAddNewSlide() {
     const newSlide = artGalleryTemplateStore.getEditedSlide() as StreetcodeArtSlide;
-    console.log(streetcodeArtSlideStore);
 
-        if (!newSlide) {
-            alert('Увага, заповніть усі зображення щоб зберегти слайд');
-            return;
+    if (!newSlide) {
+      alert('Увага, заповніть усі зображення щоб зберегти слайд');
+      return;
+    }
+
+    if (artGalleryTemplateStore.isRedact) {
+      runInAction(() => {
+        const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
+        if (oldSlideIdx !== -1) {
+          streetcodeArtSlides[oldSlideIdx] = newSlide;
         }
+      });
+      runInAction(() => {
+        artGalleryTemplateStore.isRedact = false;
+        artGalleryTemplateStore.currentTemplateIndexRedact = -1;
+      })
+    } else {
+      newSlide.index = streetcodeArtSlides.length;
+      newSlide.streetcodeId = parseId ?? -1;
 
-        if (artGalleryTemplateStore.isRedact) {
-            runInAction(() => {
-                const oldSlideIdx = streetcodeArtSlides.findIndex((s) => s.index === newSlide.index);
-                if (oldSlideIdx !== -1) {
-                    streetcodeArtSlides[oldSlideIdx] = newSlide;
-                }
-            });
-            console.log(newSlide);
-            runInAction(() => {
-                artGalleryTemplateStore.isRedact = false;
-            })
-        } else {
-            newSlide.index = streetcodeArtSlides.length + 1;
-            newSlide.streetcodeId = parseId ?? -1;
+      runInAction(() => {
+        streetcodeArtSlides.push(newSlide);
+        streetcodeArtSlides.forEach((artSlide, index) => {
+          artSlide.index = index + 1;
+        })
+      });
+    }
 
-            runInAction(() => {
-                streetcodeArtSlides.push(newSlide);
-            });
-            
-            console.log(artGalleryTemplateStore);
-        }
-  
-  
+
     setSelectedTemplateIndex(0);
   }
-  
-  
+
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
     setIsTemplateSelected(true);
   };
   const handleTemplateSelect = (templateIndex: number) => {
     setSelectedTemplateIndex(templateIndex);
+    runInAction(() => {
+      artGalleryTemplateStore.isRedact = false;
+      artGalleryTemplateStore.currentTemplateIndexRedact = -1;
+    })
+    if (templateIndex !== selectedTemplateIndex) {
+      artGalleryTemplateStore.clearTemplates();
+    }
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
   function handleClearSlideTemplate() {
     artGalleryTemplateStore.clearTemplates();
-    if(artGalleryTemplateStore.isRedact){
+    if (artGalleryTemplateStore.isRedact) {
       runInAction(() => {
         artGalleryTemplateStore.isRedact = false;
+        artGalleryTemplateStore.currentTemplateIndexRedact = -1;
       })
     }
     setIsTemplateSelected(title === "Шаблони");
     setSelectedTemplateIndex(0);
   }
+  const sliderProps = {
+    className: 'artGallerySliderContainer',
+    infinite: false,
+    arrows: true,
+    dots: true,
+    draggable: true,
+    touchThreshold: 25,
+    slidesToScroll: 1,
+    slidesToShow: 1,
+    centerPadding: '0px',
+  };
 
   return (
     <div>
-      {(streetcodeArtSlides.length > 0 || isConfigurationGallery) && (
-        <div id="art-gallery" className="artGalleryWrapper">
+      {(((streetcodeArtSlides.length > 0 && (isAdmin || visibleSlidesCount > 0)) || isConfigurationGallery)) && (
+        <div id={isConfigurationGallery?"config-art-gallery":"art-gallery"} className="artGalleryWrapper">
           <div className="artGalleryContainer container">
             <BlockHeading headingText={title} />
             {title === "Шаблони" && (
@@ -195,47 +254,63 @@ const ArtGallery = ({
               onClose={handleCloseModal}
               onTemplateSelect={handleTemplateSelect}
             />
-            
+
             <div className="artGalleryContentContainer">
-              <div className="artGallerySliderContainer">
+              <div  className={isAdmin && (windowsize.width > 1025 && windowsize.width <1450)? "artGallerySliderContainer2" : "artGallerySliderContainer"}>
                 {isMobile ? (
-                  !isConfigurationGallery ? (
-                    convertSlidesToTemplates(
-                      [
-                        templateArtSlides[selectedTemplateIndex],
-                      ] as StreetcodeArtSlide[],
-                      true
-                    )
-                  ) : (
-                    convertSlidesToTemplates(
-                      streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
-                      false,
-                      isAdmin
-                    )
-                  )
-                ) : (
-                  <SlickSlider {...slickProps}>
-                    { isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
+                  <SlickSlider {...sliderProps}>
+                    {isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
                       convertSlidesToTemplates(
                         [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
-                        true
+                        true,
+                        false,
+                        true,
                       )
                     ) : (
                       isConfigurationGallery ? (
                         convertSlidesToTemplates(
                           templateArtSlides as StreetcodeArtSlide[],
-                          true
+                          true,
+                          false,
+                          true,
                         )
                       ) : (
                         convertSlidesToTemplates(
-                          streetcodeArtSlideStore.getVisibleSortedSlides() as StreetcodeArtSlide[],
+                          streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
                           false,
                           isAdmin
                         )
                       )
                     )}
                   </SlickSlider>
-                )}
+                )
+                  : (
+                    <SlickSlider {...slickProps}>
+                      {isTemplateSelected && !artGalleryTemplateStore.isRedact ? (
+                        convertSlidesToTemplates(
+                          [templateArtSlides[selectedTemplateIndex]] as StreetcodeArtSlide[],
+                          true,
+                          false,
+                          true,
+                        )
+                      ) : (
+                        isConfigurationGallery ? (
+                          convertSlidesToTemplates(
+                            templateArtSlides as StreetcodeArtSlide[],
+                            true,
+                            false,
+                            true,
+                          )
+                        ) : (
+                          convertSlidesToTemplates(
+                            streetcodeArtSlideStore.getVisibleSortedSlides(getStreetCodeId !== -1 ? getStreetCodeId : parseId) as StreetcodeArtSlide[],
+                            false,
+                            isAdmin
+                          )
+                        )
+                      )}
+                    </SlickSlider>
+                  )}
               </div>
             </div>
           </div>

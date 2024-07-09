@@ -149,6 +149,7 @@ export const API_ROUTES = {
     },
     STREETCODE_ART_SLIDES: {
         GET_SLIDES_BY_STREETCODE_ID: 'streetcodeArtSlide/getPageByStreetcodeId',
+        GET_ALL_COUNT_BY_STREETCODE_ID: 'streetcodeArtSlide/getAllCountByStreetcodeId',
     },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',
@@ -241,5 +242,14 @@ export const API_ROUTES = {
         UPDATE: 'historicalContext/update',
         CREATE: 'historicalContext/create',
         DELETE: 'historicalContext/delete',
+    },
+    POSITION: {
+        GET_ALL: 'Position/getAll',
+        GET_BY_ID: 'Position/getById',
+        UPDATE: 'Position/update',
+        CREATE: 'Position/create',
+        DELETE: 'Position/delete',
+        GET_BY_TITLE: 'Position/GetByTitle',
+        GET_ALL_WITH_TEAM_MEMBERS: 'Position/GetByTitle',
     },
 };

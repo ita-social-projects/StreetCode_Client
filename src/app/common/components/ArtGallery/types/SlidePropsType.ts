@@ -7,6 +7,7 @@ type SlidePropsType = {
     artSlideId: ArtSlideTemplateEnum,
     isDroppable: boolean,
     isAdmin?: boolean,
+    isConfigurationGallery?: boolean,
     slideIndex: number,
 };
 

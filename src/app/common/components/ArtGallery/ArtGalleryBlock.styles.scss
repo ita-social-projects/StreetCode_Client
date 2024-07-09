@@ -84,11 +84,33 @@
     }
 }
 
-@media screen and (max-width:1450px) {
+@media screen and (min-width:2350px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 700px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (min-width:2800px) {
+    .artGalleryContainer {
+        .container-for-arts-block {
+            margin-left: 800px;
+            margin-top: -110px;
+        }
+    }
+}
+
+@media screen and (max-width:1550px) {
     .artGalleryWrapper {
         .artGalleryContainer {
             .artGalleryContentContainer {
                 .artGallerySliderContainer {
+                    width: pxToRem(1045.5px);
+                }
+                .artGallerySliderContainer2 {
+                    margin-left: -135px;
                     width: pxToRem(1045.5px);
                 }
             }
@@ -101,6 +123,10 @@
         .artGalleryContainer {
             .artGalleryContentContainer {
                 .artGallerySliderContainer {
+                    width: pxToRem(830px);
+                }
+                .artGallerySliderContainer2 {
+                    margin-left: -135px;
                     width: pxToRem(830px);
                 }
             }
@@ -139,26 +165,3 @@
         }
     }
 }
-
-@media screen and (max-width:680px) {
-    .artGalleryWrapper {
-        .artGalleryContainer {
-            .artGalleryContentContainer {
-                .artGallerySliderContainer {
-                    @include mut.rem-padded(0, s.$art-gallery-gap-mobile, 0, 0);
-                    gap: pxToRem(s.$art-gallery-gap-mobile);
-                    height: pxToRem(362px);
-                    overflow-y: hidden;
-                    display: flex;
-                    flex-direction: column;
-                    flex-wrap: wrap;
-                }
-            }
-            .container-for-arts-block {
-                margin-left: 160px;
-                margin-top: -95px;
-            }
-        }
-    }
-}
-
