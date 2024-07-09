@@ -1,7 +1,7 @@
 import './SourcesModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import sourcesApi from '@api/sources/sources.api';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import CancelBtnMobile from '@assets/images/utils/Cancel_btn_mobile.svg';
@@ -17,18 +17,15 @@ import { StreetcodeCategoryContent } from '@/models/sources/sources.model';
 const SourcesModal = () => {
     const { sourcesStore: { srcCategoriesMap, srcCategoriesContentMap } } = useMobx();
     const { modalStore } = useModalContext();
-    const { streetcodeStore } = useStreetcodeDataContext();
     const { setModal, modalsState: { sources } } = modalStore;
     const windowsize = useWindowSize();
     const [content, setContent] = useState<StreetcodeCategoryContent | null>(null);
     const categoryId = sources.fromCardId!;
     const category = srcCategoriesMap.get(categoryId);
-    const clickHandle = () => {
-        sources.isOpen = false;
-        setContent(null);
-    };
+    const clickHandle = () => sources.isOpen = false;
 
-    useAsync(() => {
+
+    useEffect(() => {
         setContent(srcCategoriesContentMap.get(categoryId) || null);
     }, [categoryId]);
     return (
