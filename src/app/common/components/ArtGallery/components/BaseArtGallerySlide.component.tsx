@@ -66,6 +66,8 @@ const BaseArtGallerySlide = ({
             });
         }
         setConfirmationModalVisibility(false)
+        streetcodeArtSlideStore.isArtInSlideByRedact = false;
+    streetcodeArtSlideStore.isArtInSlideByRedact = true;
     }
 
     const onDeleteSlide = () => {
@@ -163,11 +165,13 @@ const BaseArtGallerySlide = ({
     const handleImageClick = (streetcodeArt: StreetcodeArt) => {
         if (!isDroppable && !isDragging) {
             setModal('artGallery', streetcodeArt.art.id);
+            
         }
     };
 
     const handleRemoveArt = (template: ArtSlideTemplateEnum, index: number) => {
         artGalleryTemplateStore.removeArtInSlide(template, index);
+        artGalleryTemplateStore.ArtInSlide = index;
     };
 
     return (

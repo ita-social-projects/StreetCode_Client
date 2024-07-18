@@ -3,6 +3,7 @@ import allSlidesTemplates, { EMPTY_ART_TEMPLATE, TEMPLATE_IMAGE_BASE64 } from '@
 import { ArtSlideTemplateEnum } from '@models/enums/art-slide-template';
 import Art from '@models/media/art.model';
 import { StreetcodeArtSlideAdmin } from '@models/media/streetcode-art-slide.model';
+import streetcodeArtSlideStore from './streetcode-art-slide-store';
 
 export default class ArtGalleryTemplateStore {
     public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = [...allSlidesTemplates];
@@ -10,6 +11,7 @@ export default class ArtGalleryTemplateStore {
     public isEdited = false;
     public isRedact = false;
     public currentTemplateIndexRedact = -1;
+    public ArtInSlide = -1;
 
     public constructor() {
         makeAutoObservable(this);

@@ -7,6 +7,7 @@ import StreetcodeArtSlide,
     StreetcodeArtSlideCreateUpdate,
 } from '@models/media/streetcode-art-slide.model';
 import { bindStreetcodeIdToDefaultSlide } from '../common/components/ArtGallery/constants/allSlidesTemplates';
+import artGalleryTemplateStore from './art-gallery-template-store';
 
 export default class StreetcodeArtSlideStore {
     public streetcodeArtSlides: StreetcodeArtSlideAdmin[] = new Array<StreetcodeArtSlideAdmin>();
@@ -14,8 +15,10 @@ export default class StreetcodeArtSlideStore {
     public streetcodeWasFetched: Array<number> = new Array<number>();
 
     private startFromSlide = 1;
+    public isArtInSlideByRedact = false;
 
     public readonly amountOfSlides = 2;
+    static isArtInSlideByRedact: boolean;
 
     public constructor() {
         makeAutoObservable(this);
@@ -29,7 +32,6 @@ export default class StreetcodeArtSlideStore {
                 (sArt) => sArt.art.id.toString() === id,
             ) && (slide.index - 1) !== except),
         );
-
         return isInSlides;
     }
 

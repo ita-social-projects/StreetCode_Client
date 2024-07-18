@@ -145,8 +145,16 @@ const ArtGallery = ({
   useEffect(() => {
     if (isConfigurationGallery) {
       toggleBlockingOfConfigurationSlider();
+     
     }
   }, [artGalleryTemplateStore.isEdited, artGalleryTemplateStore.isRedact]);
+
+  useEffect(() => {
+    if (isConfigurationGallery || artGalleryTemplateStore.isRedact) {
+      streetcodeArtSlideStore.isArtInSlideByRedact = false;
+    streetcodeArtSlideStore.isArtInSlideByRedact = true;
+    }
+  });
 
   function toggleBlockingOfConfigurationSlider() {
     setSlickProps((prev) => ({
@@ -186,9 +194,9 @@ const ArtGallery = ({
           artSlide.index = index + 1;
         })
       });
+      streetcodeArtSlideStore.isArtInSlideByRedact = false;
+    streetcodeArtSlideStore.isArtInSlideByRedact = true;
     }
-
-
     setSelectedTemplateIndex(0);
   }
 
