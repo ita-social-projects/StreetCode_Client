@@ -58,7 +58,7 @@ const DownloadBlock = () => {
     }, [artStore.arts, artStore.mutationObserved]);
 
     const isArtInSlides = (id: string) => (
-        streetcodeArtSlideStore.hasArtWithId(id) || artGalleryTemplateStore.hasArtWithId(id)
+        streetcodeArtSlideStore.hasArtWithId(id, artGalleryTemplateStore.currentTemplateIndexRedact) || artGalleryTemplateStore.hasArtWithId(id)
     );
     
 
@@ -168,6 +168,7 @@ const DownloadBlock = () => {
                 onSuccessUpload={onSuccessUploadImage}
                 onPreview={onPreview}
                 onRemove={handleRemove}
+                // @ts-ignore
                 onList = {streetcodeArtSlideStore.isArtInSlideByRedact}
                 className="with-multiple-delete"
                 itemRender={(element, file) => (
