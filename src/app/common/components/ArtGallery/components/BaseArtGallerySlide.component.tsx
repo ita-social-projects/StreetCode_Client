@@ -171,7 +171,6 @@ const BaseArtGallerySlide = ({
 
     const handleRemoveArt = (template: ArtSlideTemplateEnum, index: number) => {
         artGalleryTemplateStore.removeArtInSlide(template, index);
-        artGalleryTemplateStore.ArtInSlide = index;
     };
 
     return (
