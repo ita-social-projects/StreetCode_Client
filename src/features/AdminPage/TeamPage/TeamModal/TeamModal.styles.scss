@@ -26,7 +26,7 @@
     .error-message{
         color: c.$accented-red-color;
         position: absolute;
-        bottom: f.pxToRem(5px);
+        bottom: f.pxToRem(-5px);
         left: f.pxToRem(5px);
     }
 }
