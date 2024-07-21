@@ -5,7 +5,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
-import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/TeamPage/TeamModal/constants/socialOptions';
 import TeamMember, {
@@ -43,6 +43,7 @@ const TeamModal: React.FC<{
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
     const [existWarningVisible, setExistWarningVisible] = useState<boolean>(false);
+    const [invalidWarningVisible, setInvalidWarningVisible] = useState<boolean>(false);
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
@@ -153,6 +154,16 @@ const TeamModal: React.FC<{
         const logotype = teamLinksForm.getFieldValue('logotype');
         setExistWarningVisible(false);
         setCustomWarningVisible(false);
+        setInvalidWarningVisible(false);
+
+        if(!url){
+            return;
+        }
+
+        if(!URL.canParse(url)){
+            setInvalidWarningVisible(true);
+            return;
+        }
 
         if (!url.toLocaleLowerCase().includes(logotype)) {
             setCustomWarningVisible(true);
@@ -369,15 +380,17 @@ const TeamModal: React.FC<{
                     <FormItem
                         name="logotype"
                         label="Соціальна мережа"
+                        rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
                     >
                         <Select
                             options={SOCIAL_OPTIONS}
                         />
                     </FormItem>
                     <Form.Item
-                        label=" "
+                        label="Посилання"
                         className="url-input"
                         name="url"
+                        rules={[{ required: true, message: 'Введіть посилання' }]}
                     >
                         <Input min={1} max={255} showCount />
                     </Form.Item>
@@ -385,15 +398,19 @@ const TeamModal: React.FC<{
                     <Form.Item
                         label=" "
                     >
-                        <Button htmlType="submit">
-                            <UserAddOutlined />
-                        </Button>
+                        <Popover content="Додати" trigger="hover">
+                            <Button htmlType="submit" className="plus-button">
+                                <PlusOutlined />
+                            </Button>
+                        </Popover>
                     </Form.Item>
 
                     {customWarningVisible
                         ? <p className="error-message">Посилання не співпадає з обраною соціальною мережею</p> : ''}
                     {existWarningVisible
-                        ? <p className="error-message">Таке посилання вже додано</p> : ''}
+                        ? <p className="error-message">Посилання на таку соціальну мережу вже додано</p> : ''}
+                    {invalidWarningVisible
+                        ? <p className="error-message">Недійсний формат посилання</p> : ''}
                 </div>
 
                 <div className="center">
