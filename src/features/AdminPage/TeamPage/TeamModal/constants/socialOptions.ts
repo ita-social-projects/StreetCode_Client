@@ -1,30 +1,30 @@
 const SOCIAL_OPTIONS = [
     {
-        value: 'twitter',
-        label: 'Twitter',
+        value: 'x.com',
+        label: 'X',
     },
     {
-        value: 'instagram',
+        value: 'instagram.com',
         label: 'Instagram',
     },
     {
-        value: 'facebook',
+        value: 'facebook.com',
         label: 'Facebook',
     },
     {
-        value: 'youtube',
+        value: 'youtube.com',
         label: 'Youtube',
     },
     {
-        value: 'linkedin',
+        value: 'linkedin.com',
         label: 'LinkedIn',
     },
     {
-        value: 'tiktok',
+        value: 'tiktok.com',
         label: 'TikTok',
     },
     {
-        value: 'behance',
+        value: 'behance.net',
         label: 'Behance',
     },
     {

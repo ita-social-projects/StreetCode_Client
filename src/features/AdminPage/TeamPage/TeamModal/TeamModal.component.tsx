@@ -43,6 +43,7 @@ const TeamModal: React.FC<{
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
     const [existWarningVisible, setExistWarningVisible] = useState<boolean>(false);
+    const [invalidWarningVisible, setInvalidWarningVisible] = useState<boolean>(false);
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
@@ -153,6 +154,16 @@ const TeamModal: React.FC<{
         const logotype = teamLinksForm.getFieldValue('logotype');
         setExistWarningVisible(false);
         setCustomWarningVisible(false);
+        setInvalidWarningVisible(false);
+
+        if(!url){
+            return;
+        }
+
+        if(!URL.canParse(url)){
+            setInvalidWarningVisible(true);
+            return;
+        }
 
         if (!url.toLocaleLowerCase().includes(logotype)) {
             setCustomWarningVisible(true);
@@ -397,7 +408,9 @@ const TeamModal: React.FC<{
                     {customWarningVisible
                         ? <p className="error-message">Посилання не співпадає з обраною соціальною мережею</p> : ''}
                     {existWarningVisible
-                        ? <p className="error-message">Таке посилання вже додано</p> : ''}
+                        ? <p className="error-message">Посилання на таку соціальну мережу вже додано</p> : ''}
+                    {invalidWarningVisible
+                        ? <p className="error-message">Недійсний формат посилання</p> : ''}
                 </div>
 
                 <div className="center">
