@@ -66,6 +66,8 @@ const BaseArtGallerySlide = ({
             });
         }
         setConfirmationModalVisibility(false)
+        streetcodeArtSlideStore.isArtInSlideByRedact = false;
+    streetcodeArtSlideStore.isArtInSlideByRedact = true;
     }
 
     const onDeleteSlide = () => {
@@ -163,6 +165,7 @@ const BaseArtGallerySlide = ({
     const handleImageClick = (streetcodeArt: StreetcodeArt) => {
         if (!isDroppable && !isDragging) {
             setModal('artGallery', streetcodeArt.art.id);
+            
         }
     };
 

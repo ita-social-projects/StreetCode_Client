@@ -21,6 +21,7 @@ import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
+import ArtGalleryTemplateStore from '@/app/stores/art-gallery-template-store';
 
 const DownloadBlock = () => {
     const { id } = useParams<any>();
@@ -57,7 +58,9 @@ const DownloadBlock = () => {
     }, [artStore.arts, artStore.mutationObserved]);
 
     const isArtInSlides = (id: string) => (
-        streetcodeArtSlideStore.hasArtWithId(id) || artGalleryTemplateStore.hasArtWithId(id));
+        streetcodeArtSlideStore.hasArtWithId(id, artGalleryTemplateStore.currentTemplateIndexRedact) || artGalleryTemplateStore.hasArtWithId(id)
+    );
+    
 
     const handleRemove = useCallback((param: UploadFile) => {
         setVisibleError(false)
@@ -153,7 +156,6 @@ const DownloadBlock = () => {
         
         return isImage || Upload.LIST_IGNORE;
     }
-
     return (
         <div className="art-gallery-download">
             <FileUploader
@@ -166,9 +168,11 @@ const DownloadBlock = () => {
                 onSuccessUpload={onSuccessUploadImage}
                 onPreview={onPreview}
                 onRemove={handleRemove}
+                // @ts-ignore
+                onList = {streetcodeArtSlideStore.isArtInSlideByRedact}
                 className="with-multiple-delete"
                 itemRender={(element, file) => (
-                    <Draggable id={file.uid} className="streetcode-art-preview">
+                    <Draggable id={file.uid} className={isArtInSlides(file.uid) ? "streetcode-art-preview-green": "streetcode-art-preview"}>
                         <div className={`${artsToRemoveIdxs.current.has(file.uid) ? 'delete-border ' : ' '
                         } `}
                         >
