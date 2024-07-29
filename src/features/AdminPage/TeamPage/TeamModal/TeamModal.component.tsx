@@ -151,7 +151,7 @@ const TeamModal: React.FC<{
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
-        const logotype = teamLinksForm.getFieldValue('logotype');
+        const logotype = teamLinksForm.getFieldValue('logotype').split('.')[0];
         setExistWarningVisible(false);
         setCustomWarningVisible(false);
         setInvalidWarningVisible(false);
@@ -170,7 +170,7 @@ const TeamModal: React.FC<{
         } else {
             const newId = getNewId(teamSourceLinks);
             const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
-            
+
             if(isLogoTypePresent){
                 setExistWarningVisible(true);
             }
@@ -181,7 +181,7 @@ const TeamModal: React.FC<{
                     targetUrl: url,
                 }]);
             }
-            
+
         }
     };
 
