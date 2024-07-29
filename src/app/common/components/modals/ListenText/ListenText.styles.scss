@@ -25,7 +25,7 @@
     animation: fadeIn .5s;
 }
 .fadeOutAnimation {
-    animation: fadeOut .5s;
+    animation: fadeOut .5s forwards;
 }
 
 @include mut.fadeKeyframes("fadeIn", "fadeIn") {
