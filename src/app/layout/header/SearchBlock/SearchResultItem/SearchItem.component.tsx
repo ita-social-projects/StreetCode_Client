@@ -1,5 +1,6 @@
 import './SearchItem.styles.scss';
 
+import { Link } from 'react-router-dom';
 import { htmlToText } from 'html-to-text';
 
 import { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
@@ -20,8 +21,8 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
     const contentToDisplay = searchResultItem.content ? htmlToText(searchResultItem.content) : '';
 
     return (
-        <a
-            href={url}
+        <Link
+            to={url}
             className="resultItemContainer"
         >
             <div className="resultItemContent">
@@ -30,7 +31,7 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
             <div className="resultSourceName">
                 {sourceName}
             </div>
-        </a>
+        </Link>
     );
 };
 

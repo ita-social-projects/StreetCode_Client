@@ -11,6 +11,7 @@ import {
     RefObject, useCallback, useEffect, useRef, useState,
 } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { Link } from 'react-router-dom';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
@@ -21,6 +22,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { Button, Input, Popover, PopoverProps } from 'antd';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 
@@ -131,10 +133,14 @@ const HeaderBlock = () => {
         <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div className="logoContainer" onClick={() => window.location.href = '/'}>
-                        {isDesktop
-                            ? <StreetcodeSvg />
-                            : <StreetcodeSvgMobile />}
+                    <div className="logoContainer">
+                        <Link to={FRONTEND_ROUTES.BASE}>
+                            {isDesktop ? (
+                                <StreetcodeSvg />
+                            ) : (
+                                <StreetcodeSvgMobile />
+                            )}
+                        </Link>
                     </div>
                     {isDesktop && isHeaderHidden && (
                         <Popover
@@ -232,7 +238,7 @@ const HeaderBlock = () => {
                                     search();
                                 }}
                             >
-                            Пошук
+                                Пошук
                             </Button>
                         </div>
                     </Popover>
