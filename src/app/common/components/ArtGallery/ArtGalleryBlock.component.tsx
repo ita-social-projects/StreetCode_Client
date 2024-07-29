@@ -90,9 +90,9 @@ const ArtGallery = ({
     if (streetcodeIdValidAndFetchingRequired()) {
       secondRender.current = true;
       if (isFillArtsStore) {
-        await fetchAllToDefaultTemplate(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+        const startingSlide = await fetchAllToDefaultTemplate(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
 
-        let currentSlide = 0;
+        let currentSlide = startingSlide ?? 0;
         while (currentSlide < MAX_SLIDES_AMOUNT) {
           try {
             // eslint-disable-next-line no-await-in-loop
