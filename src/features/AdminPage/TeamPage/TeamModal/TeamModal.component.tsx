@@ -51,6 +51,7 @@ const TeamModal: React.FC<{
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const imageId = useRef<number>(0);
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -146,6 +147,7 @@ const TeamModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
+			setIsSaveButtonDisabled(true);
         }
     };
 
@@ -170,7 +172,7 @@ const TeamModal: React.FC<{
         } else {
             const newId = getNewId(teamSourceLinks);
             const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
-            
+
             if(isLogoTypePresent){
                 setExistWarningVisible(true);
             }
@@ -181,7 +183,7 @@ const TeamModal: React.FC<{
                     targetUrl: url,
                 }]);
             }
-            
+
         }
     };
 
@@ -194,6 +196,7 @@ const TeamModal: React.FC<{
             await form.validateFields();
             setWaitingForApiResponse(true);
             await form.submit();
+			setIsSaveButtonDisabled(true);
         } catch (error) {
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
@@ -246,7 +249,12 @@ const TeamModal: React.FC<{
 
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
+		handleInputChange();
     };
+
+	const handleInputChange = () => {
+		setIsSaveButtonDisabled(false);
+	}
 
     return (
         <Modal
@@ -286,7 +294,7 @@ const TeamModal: React.FC<{
                         label="Прізвище та ім'я: "
                         rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
                     >
-                        <Input maxLength={41} showCount />
+                        <Input maxLength={41} showCount onChange={handleInputChange} />
                     </Form.Item>
 
                     <Form.Item label="Позиції">
@@ -298,6 +306,7 @@ const TeamModal: React.FC<{
                                 mode="tags"
                                 onDeselect={onPositionDeselect}
                                 value={selectedPositions.map((x) => x.position)}
+								onChange={handleInputChange}
                             >
                                 {positions.map((t) => <Option key={`${t.id}`} value={t.position} />)}
                             </Select>
@@ -307,7 +316,7 @@ const TeamModal: React.FC<{
                         name="description"
                         label="Опис: "
                     >
-                        <TextArea showCount maxLength={70} />
+                        <TextArea showCount maxLength={70} onChange={handleInputChange} />
                     </Form.Item>
 
                     <Form.Item
@@ -330,6 +339,7 @@ const TeamModal: React.FC<{
                         <FileUploader
                             onChange={(param) => {
                                 setFileList(param.fileList);
+								handleInputChange();
                             }}
                             fileList={fileList}
                             multiple={false}
@@ -370,8 +380,11 @@ const TeamModal: React.FC<{
                             <TeamLink link={link} />
                             <p>{link.targetUrl}</p>
                             <DeleteOutlined
-                                onClick={() => setTeamSourceLinks(teamSourceLinks
-                                    .filter((l) => l.id !== link.id))}
+                                onClick={() => { setTeamSourceLinks(teamSourceLinks
+                                    .filter((l) => l.id !== link.id))
+									handleInputChange();
+									}
+								}
                             />
                         </div>
                     ))}
@@ -400,7 +413,7 @@ const TeamModal: React.FC<{
                     >
                         <Popover content="Додати" trigger="hover">
                             <Button htmlType="submit" className="plus-button">
-                                <PlusOutlined />
+                                <PlusOutlined onClick={handleInputChange}/>
                             </Button>
                         </Popover>
                     </Form.Item>
@@ -415,7 +428,7 @@ const TeamModal: React.FC<{
 
                 <div className="center">
                     {/* disabled={fileList?.length === 0} */}
-                    <Button className="streetcode-custom-button" onClick={handleOk}>
+                    <Button disabled={isSaveButtonDisabled} className="streetcode-custom-button" onClick={handleOk}>
                         Зберегти
                     </Button>
                 </div>
