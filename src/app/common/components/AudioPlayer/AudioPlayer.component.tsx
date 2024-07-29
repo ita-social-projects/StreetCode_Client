@@ -45,11 +45,19 @@ const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay })
         setIsPlaying(!isPlaying);
         if (!isPlaying) {
             audioPlayer.current?.play();
-            animationRef.current = requestAnimationFrame(whilePlaying);
         } else {
             audioPlayer.current?.pause();
-            cancelAnimationFrame(Number(animationRef.current));
         }
+    };
+
+    const play = () => {
+        setIsPlaying(true);
+        audioPlayer.current?.play();
+    };
+
+    const pause = () => {
+        setIsPlaying(false);
+        audioPlayer.current?.pause();
     };
 
     const changeRange = () => {
@@ -59,17 +67,21 @@ const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay })
         }
         changePlayerCurrentTime();
     };
+
     useEffect(
-        () => {
-            setMaxDuration();
-            if (immediatelyPlay && !isPlaying) {
-                setTimeout(() => {
-                    togglePlayPause();
-                }, (1000));
-            }
+        () => () => {
+            cancelAnimationFrame(Number(animationRef.current));
         },
-        [audioPlayer.current?.readyState],
+        [],
     );
+
+    useEffect(() => {
+        if (!isPlaying) {
+            cancelAnimationFrame(Number(animationRef.current));
+        } else {
+            animationRef.current = requestAnimationFrame(whilePlaying);
+        }
+    }, [isPlaying]);
 
     return (
         <div className="audioPlayer">
