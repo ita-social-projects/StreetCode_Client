@@ -34,6 +34,7 @@ const HeaderBlock = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
     const inputRef = useRef(null);
+    const [inputValue, setInputValue] = useState('');
     const searchBlockRef = useRef(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const dimWrapperRef = useRef(null);
@@ -52,6 +53,8 @@ const HeaderBlock = () => {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.target.value);
+
         const { value } = e.target;
         setSearchQuery(value);
         if (value.length > 0 && isDesktop) {
@@ -110,13 +113,18 @@ const HeaderBlock = () => {
         }
     }, [searchQuery]);
 
+    const handleOnSearchResultItemClick = () => {
+        closeSearchBlock();
+        setInputValue('');
+    };
+
     const popoverProps: PopoverProps = {
         trigger: 'click',
         open: isPopoverVisible && !isLoading,
         getPopupContainer: (trigger: HTMLElement) => trigger.parentNode as HTMLElement,
         content: (
             <div ref={searchBlockRef}>
-                <SearchBlock searchResult={searchResult} />
+                <SearchBlock searchResult={searchResult} onSearchResultItemClick={handleOnSearchResultItemClick} />
             </div>
         ),
         afterOpenChange: handlePopoverVisibleChange,
@@ -150,6 +158,7 @@ const HeaderBlock = () => {
                         >
                             <input
                                 onChange={handleInputChange}
+                                value={inputValue}
                                 placeholder="Пошук..."
                                 ref={inputRef}
                                 className={`ant-input  
@@ -170,6 +179,7 @@ const HeaderBlock = () => {
                                         onChange={handleInputChange}
                                         placeholder="Пошук..."
                                         onClick={onInputClick}
+                                        value={inputValue}
                                         prefix={(
                                             <MagnifyingGlass
                                                 viewBox="0 -2 24 24"
@@ -227,6 +237,7 @@ const HeaderBlock = () => {
                         <div ref={inputRef} className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
                             <input
                                 onChange={handleInputChange}
+                                value={inputValue}
                                 className="ant-input css-dev-only-do-not-override-26rdvq"
                                 placeholder="Що ти шукаєш?"
                             />

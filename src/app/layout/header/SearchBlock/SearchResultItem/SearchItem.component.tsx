@@ -7,9 +7,10 @@ import { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.mo
 
 interface Props {
     searchResultItem: StreetcodeFilterResultDTO;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
-const SearchResultItem = ({ searchResultItem } : Props) => {
+const SearchResultItem = ({ searchResultItem, onClick } : Props) => {
     const url = `/${searchResultItem.streetcodeTransliterationUrl
     }${searchResultItem.factId !== 0 ? (`?factId=${searchResultItem.factId}`) : ('')
     }${searchResultItem.timelineItemId !== 0 ? (`?timelineItemId=${searchResultItem.timelineItemId}`) : ('')
@@ -24,6 +25,7 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
         <Link
             to={url}
             className="resultItemContainer"
+            onClick={onClick}
         >
             <div className="resultItemContent">
                 {contentToDisplay}
