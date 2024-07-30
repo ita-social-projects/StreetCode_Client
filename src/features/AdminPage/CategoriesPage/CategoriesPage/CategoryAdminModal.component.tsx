@@ -178,14 +178,13 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" maxLength={23} showCount />
+                        <Input maxLength={23} showCount />
                     </Form.Item>
                     <Form.Item
                         name="image"
                         label="Картинка: "
                         rules={[{ required: true, message: 'Додайте зображення' }]}
                         getValueFromEvent={getValueFromEvent}
-                        style={{ filter: 'grayscale(100%)' }}
                     >
                         <FileUploader
                             greyFilterForImage
