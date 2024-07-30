@@ -3,7 +3,7 @@ import './NewTimelineModal.style.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
@@ -40,12 +40,17 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
+    const [selectContextOpen, setSelectContextOpen] = useState(false);
+
+    const selectInputContainerRef = useRef<HTMLDivElement | null>(null);
 
     const MAX_LENGTH = {
         title: 26,
         description: 400,
         context: 50,
     };
+
+    const MAX_CONTEXTS_COUNT = 1;
 
     const getErrorMessage = (maxLength: number = MAX_LENGTH.context) => `Довжина не повинна перевищувати ${maxLength} символів`;
     const { onContextKeyDown, handleSearch } = createTagValidator(
@@ -142,7 +147,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         onChange('timeline', formValues);
     };
 
-    const onContextSelect = (value: string) => {
+    const onContextSelect = useCallback((value: string) => {
         const index = historicalContextStore.historicalContextArray.findIndex((c) => c.title === value);
         if (index < 0) {
             if (value.length > MAX_LENGTH.context) {
@@ -172,9 +177,9 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         setTagInput('');
         setErrorMessage('');
         onChange('historicalContexts', selectedContext.current);
-    };
+    }, [historicalContextStore, onChange, MAX_LENGTH.context, form, getErrorMessage]);
 
-    const onContextDeselect = (value: string) => {
+    const onContextDeselect = useCallback((value: string) => {
         const historicalContext = selectedContext.current.find((x) => x.title === value) as HistoricalContextUpdate;
         if (historicalContext?.isPersisted) {
             historicalContext.modelState = ModelState.Deleted;
@@ -182,7 +187,18 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             selectedContext.current = selectedContext.current.filter((s) => s.title !== value);
         }
         onChange('historicalContexts', selectedContext.current);
-    };
+    }, [selectedContext, onChange]);
+
+    useEffect(() => {
+        if (selectInputContainerRef.current) {
+            const notDeletedContextsCount = selectedContext.current.filter((c) => (c as HistoricalContextUpdate).modelState !== ModelState.Deleted).length;
+            const input = selectInputContainerRef.current.querySelector('input');
+            setSelectContextOpen(notDeletedContextsCount < MAX_CONTEXTS_COUNT);
+            if (input) {
+                input.disabled = notDeletedContextsCount >= MAX_CONTEXTS_COUNT;
+            }
+        }
+    }, [selectedContext.current.length, open, onContextDeselect, onContextSelect]);
 
     const handleOk = async () => {
         try {
@@ -271,7 +287,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         </div>
                     </Form.Item>
 
-                    <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'relative' }} ref={selectInputContainerRef}>
                         <Form.Item
                             name="historicalContexts"
                             label="Контекст: "
@@ -280,6 +296,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         >
                             <Select
                                 mode="tags"
+                                {...(!selectContextOpen ? { open: false } : {})}
                                 onSelect={onContextSelect}
                                 onDeselect={onContextDeselect}
                                 onInputKeyDown={onContextKeyDown}
