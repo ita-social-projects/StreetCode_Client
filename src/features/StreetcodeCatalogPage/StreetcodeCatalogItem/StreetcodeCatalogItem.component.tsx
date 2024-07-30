@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useMobx from '@stores/root-store';
-import ImageStore from '@stores/root-store';
 import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
