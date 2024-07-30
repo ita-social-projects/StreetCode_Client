@@ -12,6 +12,10 @@ import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
 
+const isQuillEmpty = (text: string | undefined) => {
+    return !text || text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+}
+
 interface Props {
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
