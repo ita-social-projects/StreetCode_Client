@@ -39,11 +39,21 @@ const TextForm = ({
         <Form.Item className="textForm">
             <Form.Item
                 label="Заголовок"
+                name="title"
+                rules={[{
+                    message: 'Введіть заголовок до тексту',
+                    validator(_, value) {
+                        if (!value && !isQuillEmpty(inputInfo?.textContent)) {
+                            return Promise.reject(new Error('Введіть заголовок до тексту'));
+                        }
+                        return Promise.resolve();
+                    },
+                },
+                ]}
+                initialValue={inputInfo?.title}
             >
                 <Input
                     showCount
-                    value={inputInfo?.title}
-                    name="title"
                     type="text"
                     maxLength={maxTitleLength}
                     onChange={handleChangeTitle}
