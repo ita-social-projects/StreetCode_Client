@@ -151,37 +151,40 @@ const TeamModal: React.FC<{
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
-        const logotype = teamLinksForm.getFieldValue('logotype').split('.')[0];
+        //  const logotype = teamLinksForm.getFieldValue('logotype').split('.')[0];
+        const socialName = teamLinksForm.getFieldValue('logotype');
+        const logotype = SOCIAL_OPTIONS.find( opt => opt.value === socialName)?.logo;
         setExistWarningVisible(false);
         setCustomWarningVisible(false);
         setInvalidWarningVisible(false);
 
-        if(!url){
+        if (!url) {
+            return;
+        }
+        if (logotype === undefined) {
             return;
         }
 
-        if(!URL.canParse(url)){
+        if (!URL.canParse(url)) {
             setInvalidWarningVisible(true);
             return;
         }
 
-        if (!url.toLocaleLowerCase().includes(logotype)) {
+        if (!url.toLocaleLowerCase().includes(socialName)) {
             setCustomWarningVisible(true);
         } else {
             const newId = getNewId(teamSourceLinks);
-            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
+            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === logotype);
 
-            if(isLogoTypePresent){
+            if (isLogoTypePresent) {
                 setExistWarningVisible(true);
-            }
-            else {
+            } else {
                 setTeamSourceLinks([...teamSourceLinks, {
                     id: newId,
-                    logoType: Number(LogoType[logotype]),
+                    logoType: logotype,
                     targetUrl: url,
                 }]);
             }
-
         }
     };
 
