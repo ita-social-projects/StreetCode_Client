@@ -1,7 +1,6 @@
 import './TextForm.styles.scss';
 
 import { Form, Input } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
 
 import QUILL_TEXTS_LENGTH from
     '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
@@ -33,7 +32,7 @@ const TextForm = ({
         onChange('title', value);
     };
     return (
-        <FormItem className="textForm">
+        <Form.Item className="textForm">
             <Form.Item
                 label="Заголовок"
             >
@@ -74,7 +73,7 @@ const TextForm = ({
                     onChange={onChange}
                 />
             </Form.Item>
-        </FormItem>
+        </Form.Item>
     );
 };
 
