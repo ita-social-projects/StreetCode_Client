@@ -279,7 +279,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             help={errorMessage}
                         >
                             <Select
-                                mode="tags"
                                 onSelect={onContextSelect}
                                 onDeselect={onContextDeselect}
                                 onInputKeyDown={onContextKeyDown}
