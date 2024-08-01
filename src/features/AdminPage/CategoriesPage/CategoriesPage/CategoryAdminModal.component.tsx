@@ -89,6 +89,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
         setIsModalOpen(false);
     };
 
+    const validateCategory = async (rule: any, value: string) => {
+        return new Promise<void>((resolve, reject) => {
+            if (sourcesAdminStore.getSourcesAdmin.map((category) => category.title).includes(value)) {
+                reject('Категорія з такою назвою вже існує');
+            } else {
+                resolve();
+            }
+        });
+    };
+
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
@@ -136,9 +146,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
-            
+
             const title = form.getFieldValue('title');
-    
+
             if (!title.trim()) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
                 return;
@@ -156,7 +166,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
-    
+
 
     return (
         <>
@@ -176,7 +186,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву' }]}
+                        rules={[{ required: true, message: 'Введіть назву' },
+                            {validator: validateCategory}]}
                     >
                         <Input placeholder="Title" maxLength={23} showCount />
                     </Form.Item>
