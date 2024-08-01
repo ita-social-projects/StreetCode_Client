@@ -118,7 +118,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         rules={[{ required: true, message: 'Введіть назву' },
                             {validator: validateTag}
                         ]}
-                        getValueProps={(value: string) => ({ value: (value && value.trim().replace(/\s+/g, ' ')) })}
+                        getValueProps={(value: string) => ({ value: (value && value.replace(/\s+/g, ' ')) })}
                     >
                         <Input placeholder="Title" maxLength={50} showCount />
                     </Form.Item>
