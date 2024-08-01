@@ -48,7 +48,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const validateTag = async (rule: any, value: string) => {
         return new Promise<void>((resolve, reject) => {
-            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value)) {
+            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value.trim())) {
                 reject('Тег з такою назвою вже існує');
             } else {
                 resolve();
@@ -61,7 +61,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
         const currentTag = {
             ...(initialData?.id && { id : initialData?.id }),
-            title: formData.title,
+            title: (formData.title as string).trim(),
         };
 
         if (currentTag.id) {
@@ -118,6 +118,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         rules={[{ required: true, message: 'Введіть назву' },
                             {validator: validateTag}
                         ]}
+                        getValueProps={(value: string) => ({ value: (value && value.trim().replace(/\s+/g, ' ')) })}
                     >
                         <Input placeholder="Title" maxLength={50} showCount />
                     </Form.Item>
