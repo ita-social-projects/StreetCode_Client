@@ -15,6 +15,8 @@ import {
 import Tag from '@/models/additional-content/tag.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
+import './TagAdminModal.style.scss';
+
 interface SourceModalProps {
     isModalVisible: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -93,7 +95,14 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 rtl: true,
                 prefixCls: 'my-message',
             });
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            const messageText = "Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних";
+            message.open({
+                content: (
+                    <div className="custom-message-no-icon">
+                        {messageText}
+                    </div>
+                ),
+            });
         }
     };
 
