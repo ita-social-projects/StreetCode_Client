@@ -23,6 +23,7 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -91,7 +92,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const validateCategory = async (rule: any, value: string) => {
         return new Promise<void>((resolve, reject) => {
-            if (sourcesAdminStore.getSourcesAdmin.map((category) => category.title).includes(value)) {
+            if (sourcesAdminStore.getSourcesAdmin.map((category) => category.title).includes(value.trim())) {
                 reject('Категорія з такою назвою вже існує');
             } else {
                 resolve();
@@ -104,7 +105,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
         const currentSource: SourceCategoryAdmin = {
             id: initialData ? initialData.id : 0,
-            title: formData.title,
+            title: (formData.title as string).trim(),
             imageId: imageId.current,
             image,
         };
@@ -188,6 +189,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' },
                             {validator: validateCategory}]}
+                        getValueProps={(value)=>({value: normaliseWhitespaces(value)})}
                     >
                         <Input placeholder="Title" maxLength={23} showCount />
                     </Form.Item>
