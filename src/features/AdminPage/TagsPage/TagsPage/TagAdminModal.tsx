@@ -14,6 +14,7 @@ import {
 
 import Tag from '@/models/additional-content/tag.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -118,7 +119,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         rules={[{ required: true, message: 'Введіть назву' },
                             {validator: validateTag}
                         ]}
-                        getValueProps={(value: string) => ({ value: (value && value.replace(/\s+/g, ' ')) })}
+                        getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
                     >
                         <Input placeholder="Title" maxLength={50} showCount />
                     </Form.Item>
