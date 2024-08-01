@@ -98,7 +98,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             const messageText = "Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних";
             message.open({
                 content: (
-                    <div className="custom-message-no-icon">
+                    <div className="custom-error-message-no-icon">
                         {messageText}
                     </div>
                 ),
