@@ -18,7 +18,6 @@ jest.mock("antd", () => {
             success: jest.fn(),
             config: jest.fn(),
             error: jest.fn(),
-            open: jest.fn(),
         }
     }
 })
@@ -140,13 +139,8 @@ describe("PartnerModal", () => {
         });
 
         await waitFor(() => {
-            expect(message.open).toHaveBeenCalled();
+            expect(message.error).toHaveBeenCalled();
         });
-
-        const [call] = (message.open as jest.Mock).mock.calls;
-        const { content } = call[0];
-        expect(content).toBeDefined();
-        expect((content as React.ReactElement).props.className).toMatch(/error/);
 
         cleanup();
     })
@@ -163,13 +157,8 @@ describe("PartnerModal", () => {
         });
 
         await waitFor(() => {
-            expect(message.open).toHaveBeenCalled();
+            expect(message.error).toHaveBeenCalled();
         });
-
-        const [call] = (message.open as jest.Mock).mock.calls;
-        const { content } = call[0];
-        expect(content).toBeDefined();
-        expect((content as React.ReactElement).props.className).toMatch(/error/);
 
         cleanup();
     })
