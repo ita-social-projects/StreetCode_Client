@@ -92,7 +92,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const validateCategory = async (rule: any, value: string) => {
         return new Promise<void>((resolve, reject) => {
-            if (sourcesAdminStore.getSourcesAdmin.map((category) => category.title).includes(value.trim())) {
+            if (sourcesAdminStore.getSourcesAdmin.map((category) => category.title).includes(value.trim()) && (initialData?.title !== value.trim())) {
                 reject('Категорія з такою назвою вже існує');
             } else {
                 resolve();
@@ -155,7 +155,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 return;
             }
             form.submit();
-            message.success('Категорію успішно додано!', 2);
+            message.success(`Категорію успішно ${!initialData?.id ? "додано" : "змінено"}!`, 2);
         } catch (error) {
             message.config({
                 top: 100,
@@ -188,8 +188,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         name="title"
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' },
-                            {validator: validateCategory}]}
-                        getValueProps={(value)=>({value: normaliseWhitespaces(value)})}
+                        { validator: validateCategory }]}
+                        getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
                         <Input placeholder="Title" maxLength={23} showCount />
                     </Form.Item>
