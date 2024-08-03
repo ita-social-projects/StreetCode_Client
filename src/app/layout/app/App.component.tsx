@@ -13,6 +13,7 @@ import ModalWrapper from '@layout/ModalWrapper.component';
 import { useModalContext } from '@stores/root-store';
 
 import CopyWithCopyright from '@/app/common/components/CopyWithCopyright.component';
+import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
 
 import Footer from '../footer/Footer.component';
 
@@ -25,6 +26,7 @@ const App = () => {
     const { modalStore: { isPageDimmed } } = useModalContext();
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>
+            <ListenTextModal />
             <ToastContainer position="bottom-right" limit={3} />
             <CopyWithCopyright copyrightText={CopyrightText}>
                 <ModalWrapper />

@@ -9,7 +9,7 @@ import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
 import AuthService from '../services/auth-service/AuthService';
 
 type PropsWithChildren = { children: ReactNode };
-const ProtectedComponent:FC<PropsWithChildren> = ({ children }): ReactNode => {
+const ProtectedComponent:FC<PropsWithChildren> = ({ children }) => {
     const navigate = useNavigate();
     const isLoggedIn = AuthService.isLoggedIn();
 
