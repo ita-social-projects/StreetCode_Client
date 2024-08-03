@@ -19,7 +19,7 @@ import {
     Checkbox,
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
+
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
@@ -151,7 +151,6 @@ const TeamModal: React.FC<{
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
-        //  const logotype = teamLinksForm.getFieldValue('logotype').split('.')[0];
         const socialName = teamLinksForm.getFieldValue('logotype');
         const logotype = SOCIAL_OPTIONS.find( opt => opt.value === socialName)?.logo;
         setExistWarningVisible(false);
@@ -165,7 +164,9 @@ const TeamModal: React.FC<{
             return;
         }
 
-        if (!URL.canParse(url)) {
+        try {
+            const urlObject = new URL(url);
+        } catch {
             setInvalidWarningVisible(true);
             return;
         }
@@ -362,12 +363,13 @@ const TeamModal: React.FC<{
                 layout="vertical"
                 form={teamLinksForm}
                 onFinish={onSuccesfulSubmitLinks}
+                data-testid="link-form"
             >
                 <div className="team-source-list">
-
-                    {teamSourceLinks.map((link) => (
+                    {teamSourceLinks.map((link, index) => (
                         <div
                             className="link-container"
+                            data-testid={`team-source-list-${index}`}
                             key={`${link.id}${link.logoType}`}
                         >
                             <TeamLink link={link} />
@@ -380,29 +382,30 @@ const TeamModal: React.FC<{
                     ))}
                 </div>
                 <div className="link-container">
-                    <FormItem
+                    <Form.Item
                         name="logotype"
                         label="Соціальна мережа"
                         rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
                     >
                         <Select
+                            data-testid="logotype-select"
                             options={SOCIAL_OPTIONS}
                         />
-                    </FormItem>
+                    </Form.Item>
                     <Form.Item
                         label="Посилання"
                         className="url-input"
                         name="url"
                         rules={[{ required: true, message: 'Введіть посилання' }]}
                     >
-                        <Input min={1} max={255} showCount />
+                        <Input min={1} max={255} showCount data-testid="link-input" />
                     </Form.Item>
 
                     <Form.Item
                         label=" "
                     >
                         <Popover content="Додати" trigger="hover">
-                            <Button htmlType="submit" className="plus-button">
+                            <Button htmlType="submit" className="plus-button" data-testid="add-button">
                                 <PlusOutlined />
                             </Button>
                         </Popover>
