@@ -17,10 +17,6 @@
     transform: translate(166%, 0);
 }
 
-.interestingFactsContainer:has(.slides-2) {
-    // width: 100% !important;
-}
-
 .interestingFactsContainer {
     @include mut.sized(100%);
     @include mut.flex-centered($direction: column);
@@ -190,13 +186,13 @@
             @include mut.sized(800px);
         }
 
-        .slides-2 .slick-slide {
-            transform: translate(174%, 0) !important;
-        }
-
         .slick-next, .slick-prev {
             visibility: visible;
         }
+    }
+
+    .slides-2 .slick-slide {
+        transform: translate(174%, 0);
     }
 }
 
@@ -228,29 +224,27 @@ and (min-width: 768px) and (max-width: 1024px){
         .interestingFactsSliderContainer {
             width: 100%;
         }
+    }
 
-        .slides-2 .slick-slide {
-            transform: translate(167%, 0) !important;
-        }
+    .slides-2 .slick-slide {
+        transform: translate(167%, 0);
     }
 }
 
 @media screen and (max-width: 968px){
     .interestingFactsContainer:has(.slides-2) {    
         width: 100% !important;
+    }
 
-        .slides-2 .slick-slide {
-            transform: translate(176%, 0) !important;
-        }
+    .slides-2 .slick-slide {
+        transform: translate(176%, 0);
     }
 }
 
 @media screen and (max-width: 868px){
-    .interestingFactsContainer:has(.slides-2) {    
         .slides-2 .slick-slide {
-            transform: translate(172%, 0) !important;
+            transform: translate(172%, 0);
         }
-    }
 }
 
 @media screen and (max-width: 768px){
@@ -278,10 +272,8 @@ and (min-width: 768px) and (max-width: 1024px){
         transform: translate(100%, 0);
     }
 
-    .interestingFactsContainer:has(.slides-2) {    
-        .slides-2 .slick-slide {
-            transform: translate(168%, 0) !important;
-        }
+    .slides-2 .slick-slide {
+        transform: translate(168%, 0);
     }
 }
 
@@ -356,12 +348,6 @@ and (min-width: 768px) and (max-width: 1024px){
     }
     
     .slides-2 .slick-slide {
-        transform: translate(166%, 0);
-    }
-
-    .interestingFactsContainer:has(.slides-2) {    
-        .slides-2 .slick-slide {
-            transform: translate(167%, 0) !important;
-        }
+        transform: translate(167%, 0);
     }
 }
