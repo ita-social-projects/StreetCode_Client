@@ -15,6 +15,7 @@ import {
 import Tag from '@/models/additional-content/tag.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -47,15 +48,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
         setIsModalOpen(false);
     };
 
-    const validateTag = async (rule: any, value: string) => {
-        return new Promise<void>((resolve, reject) => {
-            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value.trim()) && value.trim() !== initialData?.title) {
-                reject('Тег з такою назвою вже існує');
-            } else {
-                resolve();
-            }
-        });
-    };
+    const validateTag = uniquenessValidator(
+        ()=>(tagsStore.getTagArray.map((tag) => tag.title)), 
+        ()=>(initialData?.title), 
+        'Тег з такою назвою вже існує'
+    );
 
     const onSubmit = async (formData: any) => {
         await form.validateFields();

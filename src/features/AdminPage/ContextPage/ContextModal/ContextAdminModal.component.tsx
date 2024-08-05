@@ -8,6 +8,7 @@ import useMobx from '@stores/root-store';
 import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 interface ContextAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,15 +40,11 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
         }
     }, [initialData, isModalVisible, form]);
 
-    const validateContext = async (rule: any, value: string) => {
-        return new Promise<void>((resolve, reject) => {
-            if (contextStore.getContextArray.map((context) => context.title).includes(value.trim()) && value.trim() !== initialData?.title) {
-                reject('Контекст з такою назвою вже існує');
-            } else {
-                resolve();
-            }
-        });
-    };
+    const validateContext = uniquenessValidator(
+        ()=>(contextStore.getContextArray.map((context) => context.title)), 
+        ()=>(initialData?.title), 
+        'Контекст з такою назвою вже існує'
+    );
 
     const onSubmit = async (formData: any) => {
         await form.validateFields();
