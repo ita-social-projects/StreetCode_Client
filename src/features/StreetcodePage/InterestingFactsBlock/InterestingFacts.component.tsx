@@ -32,7 +32,9 @@ const InterestingFactsComponent = () => {
                     Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
                         res[index].image = img;
                     }))).then(() => {
-                        setSliderArray(res);
+                        setSliderArray(res.length === 2
+                            ? res.concat(res)
+                            : res);
                     });
                 });
             }
@@ -67,12 +69,12 @@ const InterestingFactsComponent = () => {
 
     const setings = {
         initialSlide: initialSlideIndex,
-        dots: sliderArray.length > 1,
+        dots: facts.current.length > 2,
         swipeOnClick: false,
         touchThreshold: 25,
         rtl: false,
         centerMode: true,
-        ...((sliderArray.length === 2 || sliderArray.length === 3) && { slidesToShow: sliderArray.length - 0.01 }),
+        ...(sliderArray.length === 3 && { slidesToShow: sliderArray.length - 0.01 }),
         infinite: sliderArray.length > 1,
         swipe: false,
         centerPadding: '-5px',
@@ -98,18 +100,11 @@ const InterestingFactsComponent = () => {
                 },
             },
             {
-                breakpoint: sliderArray.length === 2 ? 968 : 0,
-                settings: {
-                    swipe: true,
-                    arrows: false,
-                },
-            },
-            {
                 breakpoint: 1025,
                 settings: {
                     centerPadding: '-27.5px',
-                    arrows: sliderArray.length === 2,
-                    swipe: sliderArray.length !== 2,
+                    arrows: false,
+                    swipe: true,
                 },
             },
         ],
@@ -122,10 +117,10 @@ const InterestingFactsComponent = () => {
                     className={`container "interestingFactsWrapper"`}
                 >
                     <BlockHeading headingText="Wow-факти" />
-                    <div className={`interestingFactsContainer ${sliderArray.length === 1 ? "oneFactContainer" : ""}`} >
+                    <div className={`interestingFactsContainer ${facts.current.length === 1 ? "oneFactContainer" : ""}`} >
                         <div className="interestingFactsSliderContainer">
                             <div style={{ height: "100%" }}
-                                 className={`${sliderArray.length === 3? 'slides-3': ''} ${sliderArray.length === 2? 'slides-2': ''}`} 
+                                 className={`${facts.current.length === 3 ? 'slides-3' : ''}`}
                             >
                                 {facts.current.length === 1 ? (
                                     <div className="oneFactItem"

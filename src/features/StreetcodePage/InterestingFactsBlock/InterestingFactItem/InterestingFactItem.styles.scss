@@ -5,7 +5,6 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@app/common/components/CardText/CardText.styles" as textCard;
 
-.slides-2 .slick-track,
 .slides-3 .slick-track {
   gap: 0 !important;
 }

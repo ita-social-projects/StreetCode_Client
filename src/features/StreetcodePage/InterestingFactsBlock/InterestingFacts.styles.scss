@@ -13,10 +13,6 @@
     transform: translate(100%, 0);
 }
 
-.slides-2 .slick-slide {
-    transform: translate(166%, 0);
-}
-
 .interestingFactsContainer {
     @include mut.sized(100%);
     @include mut.flex-centered($direction: column);
@@ -42,7 +38,7 @@
     }
 
     .slick-center { 
-        z-index: 999; 
+        z-index: 1; 
         position: relative;
     }
 }
@@ -90,10 +86,6 @@
         }
     }
 
-    .slides-2 .slick-slide {
-        transform: translate(169%, 0);
-    }  
-    
     .slides-3 .slick-slide {
         transform: translate(104%, 0);
     }
@@ -118,16 +110,6 @@
                 @include mut.sized(250px, 170px);
             }
         }
-    }
-
-    .interestingFactsContainer:has(.slides-2) {    
-        .interestingFactsSliderContainer {
-            @include mut.sized(840px);
-        }
-    }
-
-    .slides-2 .slick-slide {
-        transform: translate(167%, 0);
     }
 
     .slides-3 .slick-slide {
@@ -180,20 +162,6 @@
             }
         }
     }
-
-    .interestingFactsContainer:has(.slides-2) {    
-        .interestingFactsSliderContainer {
-            @include mut.sized(800px);
-        }
-
-        .slick-next, .slick-prev {
-            visibility: visible;
-        }
-    }
-
-    .slides-2 .slick-slide {
-        transform: translate(174%, 0);
-    }
 }
 
 @media screen
@@ -219,32 +187,6 @@ and (min-width: 768px) and (max-width: 1024px){
             padding: f.pxToRem(83px) 0;
         }
     }
-
-    .interestingFactsContainer:has(.slides-2) {    
-        .interestingFactsSliderContainer {
-            width: 100%;
-        }
-    }
-
-    .slides-2 .slick-slide {
-        transform: translate(167%, 0);
-    }
-}
-
-@media screen and (max-width: 968px){
-    .interestingFactsContainer:has(.slides-2) {    
-        width: 100% !important;
-    }
-
-    .slides-2 .slick-slide {
-        transform: translate(176%, 0);
-    }
-}
-
-@media screen and (max-width: 868px){
-        .slides-2 .slick-slide {
-            transform: translate(172%, 0);
-        }
 }
 
 @media screen and (max-width: 768px){
@@ -270,10 +212,6 @@ and (min-width: 768px) and (max-width: 1024px){
 
     .slides-3 .slick-slide {
         transform: translate(100%, 0);
-    }
-
-    .slides-2 .slick-slide {
-        transform: translate(168%, 0);
     }
 }
 
@@ -345,9 +283,5 @@ and (min-width: 768px) and (max-width: 1024px){
 
     .slides-3 .slick-slide {
         transform: translate(99%, 0);
-    }
-    
-    .slides-2 .slick-slide {
-        transform: translate(167%, 0);
     }
 }
