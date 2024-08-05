@@ -25,7 +25,6 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     const {contextStore} = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -74,7 +73,6 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     const handleCancel = () => {
         closeModal();
         form.resetFields();
-        setFileList([]);
     };
 
     const handleOk = async () => {
