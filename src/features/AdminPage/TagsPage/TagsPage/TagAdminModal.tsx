@@ -49,7 +49,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const validateTag = async (rule: any, value: string) => {
         return new Promise<void>((resolve, reject) => {
-            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value.trim())) {
+            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value.trim()) && value.trim() !== initialData?.title) {
                 reject('Тег з такою назвою вже існує');
             } else {
                 resolve();
@@ -64,6 +64,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
             ...(initialData?.id && { id : initialData?.id }),
             title: (formData.title as string).trim(),
         };
+
+        if (currentTag.title === initialData?.title) return;
 
         if (currentTag.id) {
             await tagsStore.updateTag(currentTag as Tag);
@@ -85,7 +87,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         try {
             await form.validateFields();
             form.submit();
-            message.success('Тег успішно додано!', 2);
+            message.success(`Тег успішно ${isEditing ? 'змінено' : 'додано'}!`, 2);
         } catch (error) {
             message.config({
                 top: 100,
