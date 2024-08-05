@@ -25,7 +25,6 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     const {teamPositionsStore} = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -72,7 +71,6 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     const handleCancel = () => {
         closeModal();
         form.resetFields();
-        setFileList([]);
     };
 
     const handleOk = async () => {
