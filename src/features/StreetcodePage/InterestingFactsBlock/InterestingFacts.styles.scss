@@ -64,12 +64,6 @@
     }
 }
 
-.oneFactContainer .slick-slide {
-    display: flex;
-    justify-content: center;
-}
-
-
 @media screen and (max-width: 1450px){
     .interestingFactsSliderContainer {
         @include mut.sized(1120px);
