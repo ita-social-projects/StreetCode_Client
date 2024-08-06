@@ -40,6 +40,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
+		const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     const MAX_LENGTH = {
         title: 26,
@@ -189,6 +190,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             await form.validateFields();
             form.submit();
             message.success('Хронологію успішно додано!', 2);
+						setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -201,6 +203,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     };
 
+		const handleInputChange = () => {
+		setIsSaveButtonDisabled(false);
+	}
+
     return (
         <Modal
             className="modalContainer"
@@ -208,6 +214,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             onCancel={() => {
                 setIsModalOpen(false);
                 setDateTimePickerType('date');
+								setIsSaveButtonDisabled(true);
             }}
             footer={null}
             maskClosable
@@ -233,7 +240,11 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву', max: MAX_LENGTH.title }]}
                     >
-                        <Input maxLength={MAX_LENGTH.title} showCount onChange={(e) => onChange('title', e.target.value)} />
+                        <Input maxLength={MAX_LENGTH.title} showCount
+															onChange={(e) => {
+																onChange('title', e.target.value);
+																handleInputChange();
+															}} />
                     </Form.Item>
 
                     <Form.Item>
@@ -244,6 +255,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 onChange={(val) => {
                                     setDateTimePickerType(val);
                                     onChange('date', val);
+																		handleInputChange();
                                 }}
                             />
 
@@ -265,7 +277,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                         : dateTimePickerType === 'year'
                                             ? 'yyyy'
                                             : 'yyyy, mm')}
-                                    onChange={(value) => onChange('date', value?.toString())}
+                                    onChange={(value) => {
+																													onChange('date', value?.toString())
+																													handleInputChange();
+																													}}
                                 />
                             </Form.Item>
                         </div>
@@ -285,7 +300,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 onInputKeyDown={onContextKeyDown}
                                 value={tagInput}
                                 onSearch={handleSearch}
-                                onChange={(e) => onChange('historicalContexts', e)}
+                                onChange={(e) => {
+																						onChange('historicalContexts', e);
+																						handleInputChange();
+																					}}
                             >
                                 {historicalContextStore.historicalContextArray.map((cntx) => (
                                     <Select.Option key={cntx.id} value={cntx.title}>
@@ -310,10 +328,16 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Опис: "
                         rules={[{ required: true, message: 'Введіть опис' }]}
                     >
-                        <TextArea maxLength={MAX_LENGTH.description} showCount onChange={(e) => onChange('description', e.target.value)} />
+                        <TextArea maxLength={MAX_LENGTH.description} showCount
+														onChange={(e) => {
+														onChange('description', e.target.value);
+														handleInputChange();
+														}} />
+
                     </Form.Item>
                     <div className="center">
                         <Button
+														disabled={isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >

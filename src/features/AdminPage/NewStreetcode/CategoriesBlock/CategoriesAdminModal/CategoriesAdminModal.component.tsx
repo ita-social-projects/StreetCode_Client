@@ -58,6 +58,7 @@ const CategoriesModal = ({
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const maxLength = character_limit || 10000;
+		const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -127,6 +128,7 @@ const CategoriesModal = ({
         if (allPersistedSourcesAreSet) {
             fetchData();
         }
+				setIsSaveButtonDisabled(true);
     }, [open, sourceCreateUpdateStreetcode]);
 
     useEffect(() => {
@@ -229,6 +231,7 @@ const CategoriesModal = ({
             if (validateTextChange()) {
                 form.submit();
                 message.success('Категорію для фанатів успішно додано!');
+				        setIsSaveButtonDisabled(true);
             } else {
                 throw new Error();
             }
@@ -254,16 +257,21 @@ const CategoriesModal = ({
             setIsAddModalVisible(true);
             form.resetFields(['category']);
         }
+				handleInputChange();
     };
 
     const handleDisabled = (categoryId: number) => !availableCategories.some((c) => c.id === categoryId);
+
+	  const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <Modal
             className="modalContainer"
             open={open}
             onCancel={() => {
-                setOpen(false); sourceCreateUpdateStreetcode.indexUpdate = -1;
+				        setIsSaveButtonDisabled(true);
+                setOpen(false);
+				        sourceCreateUpdateStreetcode.indexUpdate = -1;
             }}
             footer={null}
             maskClosable
@@ -316,7 +324,10 @@ const CategoriesModal = ({
                     <Editor
                         qRef={editorRef}
                         value={editorContent}
-                        onChange={setEditorContent}
+                        onChange={(e) => {
+													setEditorContent(e);
+													handleInputChange();
+						            }}
                         maxChars={maxLength}
                         onCharacterCountChange={setEditorCharacterCount}
                     />
@@ -328,6 +339,7 @@ const CategoriesModal = ({
                     <Button
                         className="streetcode-custom-button"
                         onClick={() => handleOk()}
+						            disabled={isSaveButtonDisabled}
                     >
                         Зберегти
                     </Button>

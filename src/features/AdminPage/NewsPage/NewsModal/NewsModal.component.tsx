@@ -65,6 +65,7 @@ const NewsModal: React.FC<{
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
+		const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -144,6 +145,7 @@ const NewsModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
+				    setIsSaveButtonDisabled(true);
         }
     };
 
@@ -175,6 +177,7 @@ const NewsModal: React.FC<{
             } else {
                 throw new Error();
             }
+						setIsSaveButtonDisabled(true);
         } catch {
             message.error(fillInAllFieldsMessage);
         }
@@ -222,7 +225,10 @@ const NewsModal: React.FC<{
 
     const handleUpdate = (value: any) => {
         setData(value);
+			  handleInputChange();
     };
+
+		const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <ConfigProvider locale={ukUA}>
@@ -261,7 +267,7 @@ const NewsModal: React.FC<{
                             label="Заголовок: "
                             rules={[{ required: true, message: 'Введіть заголовок' }]}
                         >
-                            <Input maxLength={100} showCount />
+                            <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
@@ -287,7 +293,7 @@ const NewsModal: React.FC<{
                                 },
                             ]}
                         >
-                            <Input maxLength={200} showCount />
+                            <Input maxLength={200} showCount onChange={handleInputChange} />
                         </Form.Item>
 
                         <div className="required-text" title="Текст:">
@@ -371,6 +377,7 @@ const NewsModal: React.FC<{
                                         ]
                                         : []
                                 }
+								                onChange={handleInputChange}
 
                             >
                                 <p>Виберіть чи перетягніть файл</p>
@@ -382,7 +389,7 @@ const NewsModal: React.FC<{
                             label="Дата створення: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker showTime allowClear={false} />
+                            <DatePicker showTime allowClear={false} onChange={handleInputChange} />
                         </Form.Item>
                         <PreviewFileModal
                             opened={previewOpen}
@@ -394,6 +401,7 @@ const NewsModal: React.FC<{
                             <Button
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
+								                disabled={isSaveButtonDisabled}
                             >
                                 Зберегти
                             </Button>

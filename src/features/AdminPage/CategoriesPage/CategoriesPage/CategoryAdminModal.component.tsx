@@ -45,6 +45,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const isEditing = !!initialData;
     const [fileList, setFileList] = useState<UploadFile[]>([]);
+	  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -87,6 +88,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
+		    setIsSaveButtonDisabled(true);
     };
 
     const onSubmit = async (formData: any) => {
@@ -136,15 +138,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
-            
+
             const title = form.getFieldValue('title');
-    
+
             if (!title.trim()) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
                 return;
             }
             form.submit();
             message.success('Категорію успішно додано!', 2);
+			      setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -156,7 +159,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
-    
+
+	  const handleInputChange = () => setIsSaveButtonDisabled(false);
+
 
     return (
         <>
@@ -178,7 +183,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' }]}
                     >
-                        <Input placeholder="Title" maxLength={23} showCount />
+                        <Input placeholder="Title" maxLength={23} showCount onChange={handleInputChange} />
                     </Form.Item>
                     <Form.Item
                         name="image"
@@ -191,6 +196,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             greyFilterForImage
                             onChange={(param) => {
                                 setFileList(param.fileList);
+							                  handleInputChange();
                             }}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
@@ -214,7 +220,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </Form.Item>
                     <div className="center">
                         <Button
-                            disabled={fileList?.length === 0}
+                            disabled={fileList?.length === 0 || isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >

@@ -3,7 +3,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import React, {
-    Dispatch, SetStateAction, useEffect
+    Dispatch, SetStateAction, useEffect, useState
 } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
@@ -31,6 +31,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
+	  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     useAsync(() => tagsStore.fetchTags(), []);
 
@@ -44,6 +45,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
+		    setIsSaveButtonDisabled(true);
     };
 
     const validateTag = async (rule: any, value: string) => {
@@ -85,6 +87,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             await form.validateFields();
             form.submit();
             message.success('Тег успішно додано!', 2);
+			      setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -96,6 +99,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
+
+	  const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <>
@@ -119,10 +124,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             {validator: validateTag}
                         ]}
                     >
-                        <Input placeholder="Title" maxLength={50} showCount />
+                        <Input placeholder="Title" maxLength={50} showCount onChange={handleInputChange} />
                     </Form.Item>
                     <div className="center">
                         <Button
+						                disabled={isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
