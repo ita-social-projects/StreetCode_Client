@@ -29,16 +29,32 @@ const DatePickerPart = React.memo(
 
         useEffect(() => {
             const dateEntered = form.getFieldValue('streetcodeFirstDate');
-            if (
-                dateEntered !== null
-                && dateEntered !== undefined
-                && dateEntered !== ''
-            ) {
-                setDisableInput(false);
-            } else {
-                setDisableInput(true);
-            }
+            setDisableInput(!dateEntered);
         });
+
+        const updateСroppedDateString = (
+            fieldName: string,
+            setDateFunction: (date: any) => void,
+            extractBeforeIndex = true,
+        ) => {
+            const dateString = form.getFieldValue('dateString') ?? '';
+            const index = dateString.indexOf(' – ');
+
+            const newDateString = extractBeforeIndex
+                ? dateString.substring(0, index)
+                : dateString.substring(index);
+
+            if (index > 0) {
+                form.setFieldValue('dateString', newDateString);
+            }
+            setDateFunction(null);
+            form.setFields([
+                {
+                    name: fieldName,
+                    errors: [],
+                },
+            ]);
+        };
 
         const onChangeFirstDate = async (date: Dayjs | null | undefined) => {
             if (date) {
@@ -51,37 +67,46 @@ const DatePickerPart = React.memo(
                 setFirstDate(date);
                 const dateString = form.getFieldValue('dateString') ?? '';
                 const index = dateString.indexOf(' – ');
-                if (index < 0) {
-                    form.setFieldValue(
-                        'dateString',
-                        dateToString(firstDateTimePickerType, date),
-                    );
-                } else {
-                    const newString = dateToString(firstDateTimePickerType, date);
-                    form.setFieldValue(
-                        'dateString',
-                        newString.concat(dateString.substring(index, dateString.length)),
-                    );
+
+                let newDateString = dateToString(firstDateTimePickerType, date);
+
+                if (index >= 0) {
+                    newDateString = newDateString.concat(dateString.substring(index, dateString.length));
                 }
-                onChange('streetcodeFirstDate', date);
+
+                form.setFieldValue('dateString', newDateString);
             } else {
-                const dateString = form.getFieldValue('dateString') ?? '';
-                const index = dateString.indexOf(' – ');
-                if (index > 0) {
-                    form.setFieldValue('dateString', dateString.substring(index));
-                }
-                setFirstDate(null);
+                updateСroppedDateString(
+                    'streetcodeFirstDate',
+                    setFirstDate,
+                    false,
+                );
+            }
+
+            onChange('streetcodeFirstDate', date);
+        };
+
+        const validateDateOrder = (secondDate: Dayjs) => {
+            const firstDate = form.getFieldValue('streetcodeFirstDate');
+
+            if (firstDate && secondDate?.isBefore(firstDate)) {
+                form.setFields([
+                    {
+                        name: 'streetcodeSecondDate',
+                        errors: ['Ця дата має бути більшою ніж перша'],
+                    },
+                ]);
+            } else {
                 form.setFields([
                     {
                         name: 'streetcodeSecondDate',
                         errors: [],
                     },
                 ]);
-                onChange('streetcodeFirstDate', date);
             }
         };
 
-        const onChangeSecondDate = (date: Dayjs | null | undefined) => {
+        const onChangeSecondDate = async (date: Dayjs | null | undefined) => {
             if (date) {
                 form.setFields([
                     {
@@ -90,55 +115,27 @@ const DatePickerPart = React.memo(
                     },
                 ]);
                 setSecondDate(date);
-                const firstDate = form.getFieldValue('streetcodeFirstDate');
-                if (firstDate && date && date.isBefore(firstDate)) {
-                    form.setFields([
-                        {
-                            name: 'streetcodeSecondDate',
-                            errors: ['Ця дата має бути більшою ніж перша'],
-                        },
-                    ]);
-                } else {
-                    form.setFields([
-                        {
-                            name: 'streetcodeSecondDate',
-                            errors: [],
-                        },
-                    ]);
-                }
+                validateDateOrder(date);
 
                 const dateString = form.getFieldValue('dateString') ?? '';
                 const index = dateString.indexOf(' – ');
-                if (index < 0) {
-                    form.setFieldValue(
-                        'dateString',
-                        dateString.concat(
-                            ` – ${dateToString(secondDateTimePickerType, date)}`,
-                        ),
-                    );
-                } else if (date === null || date === undefined) {
-                    form.setFieldValue('dateString', dateString.substring(0, index));
-                } else {
-                    const newDateString = dateString
-                        .substring(0, index)
-                        .concat(` – ${dateToString(secondDateTimePickerType, date)}`);
-                    form.setFieldValue('dateString', newDateString);
+
+                let newDateString = '';
+
+                if (index >= 0) {
+                    newDateString = dateString.substring(0, index);
                 }
-                onChange('streetcodeSecondDate', date);
+
+                newDateString = newDateString.concat(` – ${dateToString(secondDateTimePickerType, date)}`);
+                form.setFieldValue('dateString', newDateString);
             } else {
-                form.setFieldValue(
-                    'dateString',
-                    form.getFieldValue('dateString')?.split(' – ')[0],
+                updateСroppedDateString(
+                    'streetcodeSecondDate',
+                    setSecondDate,
                 );
-                setSecondDate(null);
-                form.setFields([
-                    {
-                        name: 'streetcodeSecondDate',
-                        errors: [],
-                    },
-                ]);
-                onChange('streetcodeSecondDate', date);
             }
+
+            onChange('streetcodeSecondDate', date);
         };
 
         const [dateString, setDateString] = useState('');
@@ -152,19 +149,50 @@ const DatePickerPart = React.memo(
         }, [secondDateTimePickerType]);
 
         const customFormat: (
-      value: Dayjs,
-      dateTimePicker: DatePickerType
-    ) => string = (value, dateTimePicker) => {
-        const yearWithoutLeadingZeros = value.format('YYYY').replace(/^0+/, '');
+            value: Dayjs,
+            dateTimePicker: DatePickerType
+            ) => string = (value, dateTimePicker) => {
+                const yearWithoutLeadingZeros = value.format('YYYY').replace(/^0+/, '');
 
-        if (dateTimePicker === DatePickerType.Date) {
-            return value.format(`D-MMMM-${yearWithoutLeadingZeros}`);
-        } if (dateTimePicker === DatePickerType.Year) {
-            return yearWithoutLeadingZeros;
-        }
+                if (dateTimePicker === DatePickerType.Date) {
+                    return value.format(`D-MMMM-${yearWithoutLeadingZeros}`);
+                } if (dateTimePicker === DatePickerType.Year) {
+                    return yearWithoutLeadingZeros;
+                }
 
-        return value.format(`MMMM-${yearWithoutLeadingZeros}`);
-    };
+                return value.format(`MMMM-${yearWithoutLeadingZeros}`);
+            };
+
+        const changeDateStringHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setDateString(e.target.value);
+        };
+
+        const changeFirstDateTimePickerTypeHandle = (val: DatePickerType) => {
+            setFirstDateTimePickerType(val);
+        };
+
+        const changeSecondDateTimePickerTypeHandle = (val: DatePickerType) => {
+            setSecondDateTimePickerType(val);
+        };
+
+        const placeholderHandle = (dateTimePickerType: DatePickerType) => {
+            switch (dateTimePickerType) {
+            case DatePickerType.Date:
+                return 'dd-mm-yyyy';
+            case DatePickerType.Year:
+                return 'yyyy';
+            default:
+                return 'mm-yyyy';
+            }
+        };
+
+        const pickerHandle = (dateTimePickerType: DatePickerType) => {
+            if (dateTimePickerType !== DatePickerType.SeasonYear) {
+                return dateTimePickerType;
+            }
+
+            return 'month';
+        };
 
         return (
             <FormItem label="Роки">
@@ -189,7 +217,7 @@ const DatePickerPart = React.memo(
                                 disabled={disableInput}
                                 showCount
                                 maxLength={100}
-                                onChange={(e) => setDateString(e.target.value)}
+                                onChange={changeDateStringHandle}
                                 value={dateString}
                             />
                         </FormItem>
@@ -201,9 +229,7 @@ const DatePickerPart = React.memo(
                                 className="date-picker-type-input"
                                 options={selectDateOptions}
                                 defaultValue={firstDateTimePickerType}
-                                onChange={(val) => {
-                                    setFirstDateTimePickerType(val);
-                                }}
+                                onChange={changeFirstDateTimePickerTypeHandle}
                             />
                             <FormItem
                                 rules={[{ required: true, message: 'Введіть дату' }]}
@@ -214,19 +240,9 @@ const DatePickerPart = React.memo(
                                 <DatePicker
                                     className="streetcode-first-datepicker"
                                     onChange={onChangeFirstDate}
-                                    picker={
-                                        firstDateTimePickerType !== 'season-year'
-                                            ? firstDateTimePickerType
-                                            : 'month'
-                                    }
+                                    picker={pickerHandle(firstDateTimePickerType)}
                                     format={(date) => customFormat(date, firstDateTimePickerType)}
-                                    placeholder={
-                                        firstDateTimePickerType === 'date'
-                                            ? 'dd-mm-yyyy'
-                                            : firstDateTimePickerType === 'year'
-                                                ? 'yyyy'
-                                                : 'mm-yyyy'
-                                    }
+                                    placeholder={placeholderHandle(firstDateTimePickerType)}
                                 />
                             </FormItem>
                         </div>
@@ -236,27 +252,15 @@ const DatePickerPart = React.memo(
                                 className="date-picker-type-input"
                                 options={selectDateOptions}
                                 defaultValue={secondDateTimePickerType}
-                                onChange={(val) => {
-                                    setSecondDateTimePickerType(val);
-                                }}
+                                onChange={changeSecondDateTimePickerTypeHandle}
                             />
 
                             <FormItem name="streetcodeSecondDate" className="my-picker">
                                 <DatePicker
                                     onChange={onChangeSecondDate}
-                                    picker={
-                                        secondDateTimePickerType !== 'season-year'
-                                            ? secondDateTimePickerType
-                                            : 'month'
-                                    }
+                                    picker={pickerHandle(secondDateTimePickerType)}
                                     format={(date) => customFormat(date, secondDateTimePickerType)}
-                                    placeholder={
-                                        secondDateTimePickerType === 'date'
-                                            ? 'dd-mm-yyyy'
-                                            : secondDateTimePickerType === 'year'
-                                                ? 'yyyy'
-                                                : 'mm-yyyy'
-                                    }
+                                    placeholder={placeholderHandle(secondDateTimePickerType)}
                                 />
                             </FormItem>
                         </div>
