@@ -5,7 +5,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
-import useMobx from '@app/stores/root-store';
+import useMobx from '@stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
 import dayjs from 'dayjs';
@@ -14,7 +14,6 @@ import {
     Button,
     DatePicker, Form, Input, message, Modal, Popover, Select,
 } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 
 import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
@@ -249,7 +248,12 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву', max: MAX_LENGTH.title }]}
                     >
-                        <Input maxLength={MAX_LENGTH.title} showCount onChange={(e) => onChange('title', e.target.value)} />
+                        <Input
+                            maxLength={MAX_LENGTH.title}
+                            showCount
+                            onChange={(e) => onChange('title', e.target.value)}
+                            data-testid="input-title"
+                        />
                     </Form.Item>
 
                     <Form.Item>
@@ -261,6 +265,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                     setDateTimePickerType(val);
                                     onChange('date', val);
                                 }}
+                                data-testid="select-date"
                             />
 
                             <Form.Item
@@ -282,6 +287,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                             ? 'yyyy'
                                             : 'yyyy, mm')}
                                     onChange={(value) => onChange('date', value?.toString())}
+                                    data-testid="date-picker"
                                 />
                             </Form.Item>
                         </div>
@@ -293,6 +299,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             label="Контекст: "
                             validateStatus={errorMessage ? 'error' : ''}
                             help={errorMessage}
+                            data-testid="select-context"
                         >
                             <Select
                                 mode="tags"
@@ -327,12 +334,18 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Опис: "
                         rules={[{ required: true, message: 'Введіть опис' }]}
                     >
-                        <TextArea maxLength={MAX_LENGTH.description} showCount onChange={(e) => onChange('description', e.target.value)} />
+                        <Input.TextArea
+                            maxLength={MAX_LENGTH.description}
+                            showCount
+                            onChange={(e) => onChange('description', e.target.value)}
+                            data-testid="textarea-description"
+                        />
                     </Form.Item>
                     <div className="center">
                         <Button
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
+                            data-testid="button-save"
                         >
                             Зберегти
                         </Button>
