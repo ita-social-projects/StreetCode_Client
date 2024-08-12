@@ -18,7 +18,7 @@ interface Props {
 const ContactForm = forwardRef((customClass: Props, ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
-    const [messageApi, messageContextHolder] = message.useMessage({maxCount: 3});
+    const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm();
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
@@ -53,7 +53,9 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                         errorMessage(MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage(SOMETHING_IS_WRONG);
+                        for (const key in error.data) {
+                            errorMessage(`${error.data[key].message}`)
+                        } 
                     }
                 });
             recaptchaRef.current?.reset();
