@@ -454,7 +454,7 @@ const PartnerModal: React.FC< {
                             className="partner-source-list-item"
                         >
                             <PartnerLink link={link} />
-                            <p>{link.targetUrl}</p>
+                            <p style={{ overflow: 'hidden' }}>{link.targetUrl}</p>
                             <DeleteOutlined
                                 onClick={() => setPartnersSourceLinks(
                                     partnerSourceLinks.filter((l) => l.id !== link.id),
