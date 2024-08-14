@@ -118,7 +118,14 @@ describe('ContextAdminModal', () => {
         const nameInput = screen.getByRole('textbox', {name: /назва:/i}) as HTMLInputElement;
         const button = screen.getByRole('button', {name: /зберегти/i});
 
-        nameInput.value = '';
+        act(() => {
+            userEvent.type(nameInput, '   ');
+            userEvent.clear(nameInput);
+        });
+
+        await waitFor(() => {
+            expect(button).not.toBeDisabled();
+        });
 
         act(() => {
             userEvent.click(button);
