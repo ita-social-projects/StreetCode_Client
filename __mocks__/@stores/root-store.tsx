@@ -32,7 +32,7 @@ export const useMobx = () => ({
     newsStore: {
         updateNews: mockUpdateNews,
         createNews: mockCreateNews,
-        getNewsArray: [
+        NewsArray: [
             {
                 id: 1,
                 title: 'title',
