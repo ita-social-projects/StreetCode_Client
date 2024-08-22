@@ -109,6 +109,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                         name="message"
                         autoSize={{ minRows: 4, maxRows: 4 }}
                         placeholder="Наші серця, очі та вуха відкриті до твоїх креативних повідомлень!"
+                        showCount
                         maxLength={MAX_SYMBOLS}
                         onChange={handleChange}
                     />
