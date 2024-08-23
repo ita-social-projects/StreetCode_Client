@@ -4,7 +4,16 @@ import TeampositionsApi from '@api/additional-content/teampositions.api';
 import Position from '@models/additional-content/teampositions.model';
 import { SourceCategoryAdmin, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import sourcesApi from '@/app/api/sources/sources.api';
-import SourceCreateUpdateStreetcode from '@/app/stores/source-category-store-create';
+import TimelineItem, { HistoricalContext } from '@/models/timeline/chronology.model';
+
+export const timelineExample = {
+    id: 1,
+    date: '2021-01-01',
+    dateViewPattern: 0,
+    title: 'Test title',
+    description: 'Test description',
+    historicalContexts: [{ id: 1, title: 'Test context' }]
+} as TimelineItem;
 
 export const mockID = 1;
 export const mockIsOpen = true;
@@ -110,6 +119,25 @@ export const store = ({
         updateElement: jest.fn(),
         removeSourceCategoryContent: jest.fn(),
         getCategoryContentsArrayToUpdate: [],
+    },
+    timelineItemStore: {
+        timelineItemMap: new Map<number, TimelineItem>([[1, timelineExample]]),
+        addTimeline: jest.fn(),
+        deleteTimelineFromMap: jest.fn(),
+        setActiveYear: jest.fn(),
+        getTimelineItemArray: [timelineExample],
+        getTimelineItemArrayToCreate: [],
+        getTimelineItemArrayToUpdate: [],
+        getYearsArray: [],
+        fetchTimelineItemsByStreetcodeId: jest.fn(),
+        createTimelineItem: jest.fn(),
+        updateTimelineItem: jest.fn(),
+        deleteTimelineItem: jest.fn(),
+    },
+    historicalContextStore: {
+        historicalContextArray: [{ id: 1, title: "context1" }, { id: 2, title: "context2" }] as HistoricalContext[],
+        addItemToArray: jest.fn(),
+        fetchHistoricalContextAll: jest.fn(),
     },
 });
 export const useMobx = () => (store)

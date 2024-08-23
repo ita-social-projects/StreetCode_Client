@@ -5,7 +5,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
-import useMobx from '@app/stores/root-store';
+import useMobx from '@stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import { ModelState } from '@models/enums/model-state';
 import dayjs from 'dayjs';
@@ -14,7 +14,6 @@ import {
     Button,
     DatePicker, Form, Input, message, Modal, Popover, Select,
 } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 
 import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import TimelineItem, {
@@ -328,7 +327,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Опис: "
                         rules={[{ required: true, message: 'Введіть опис' }]}
                     >
-                        <TextArea maxLength={MAX_LENGTH.description} showCount
+                        <Input.TextArea maxLength={MAX_LENGTH.description} showCount
 														onChange={(e) => {
 														onChange('description', e.target.value);
 														handleInputChange();
