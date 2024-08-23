@@ -2,7 +2,7 @@ import Context, { ContextCreate } from '@models/additional-content/context.model
 import ContextsApi from '@api/additional-content/contexts.api';
 import TeampositionsApi from '@api/additional-content/teampositions.api';
 import Position from '@models/additional-content/teampositions.model';
-import { SourceCategoryAdmin } from '@/models/sources/sources.model';
+import { SourceCategoryAdmin, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import sourcesApi from '@/app/api/sources/sources.api';
 import SourceCreateUpdateStreetcode from '@/app/stores/source-category-store-create';
 
@@ -28,7 +28,7 @@ export const useModalContext = () => ({
     },
 });
 
-export const useMobx = () => ({
+export const store = ({
     newsStore: {
         updateNews: mockUpdateNews,
         createNews: mockCreateNews,
@@ -101,7 +101,16 @@ export const useMobx = () => ({
             await sourcesApi.update(sourceItem);
         }),
     },
-    sourceCreateUpdateStreetcode: new SourceCreateUpdateStreetcode(),
+    sourceCreateUpdateStreetcode: {
+        streetcodeCategoryContents: [],
+        indexUpdate: -1,
+        ElementToUpdate: {} as StreetcodeCategoryContent,
+        addSourceCategoryContent: jest.fn(),
+        setItem: jest.fn(),
+        updateElement: jest.fn(),
+        removeSourceCategoryContent: jest.fn(),
+        getCategoryContentsArrayToUpdate: [],
+    },
 });
-
+export const useMobx = () => (store)
 export default useMobx;
