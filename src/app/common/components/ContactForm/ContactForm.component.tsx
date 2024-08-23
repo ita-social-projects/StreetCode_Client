@@ -1,12 +1,13 @@
 import './ContactForm.styles.scss';
 
-import { LegacyRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
+
 import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
@@ -40,30 +41,6 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
         },
     }));
 
-    const onFinish = () => {
-        if (isVerified) {
-            const token = recaptchaRef?.current?.getValue();
-            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
-            EmailApi.send(newEmail)
-                .then(() => {
-                    successMessage();
-                })
-                .catch((error) => {
-                    if (error === 429) {
-                        errorMessage(MESSAGE_LIMIT);
-                    }
-                    else {
-                        errorMessage(SOMETHING_IS_WRONG);
-                    }
-                });
-            recaptchaRef.current?.reset();
-            setIsVerified(false);
-        }
-        else {
-            errorMessage(RECAPTCHA_CHECK);
-        }
-    };
-
     const successMessage = () => {
         messageApi.open({
             type: 'success',
@@ -71,11 +48,33 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
         });
     };
 
-    const errorMessage = (message: string) => {
+    const errorMessage = (error: string) => {
         messageApi.open({
             type: 'error',
-            content: message,
+            content: error,
         });
+    };
+
+    const onFinish = () => {
+        if (isVerified) {
+            const token = recaptchaRef?.current?.getValue();
+            const newEmail: Email = { from: formData.email, content: formData.message, token };
+            EmailApi.send(newEmail)
+                .then(() => {
+                    successMessage();
+                })
+                .catch((error) => {
+                    if (error === 429) {
+                        errorMessage(MESSAGE_LIMIT);
+                    } else {
+                        errorMessage(SOMETHING_IS_WRONG);
+                    }
+                });
+            recaptchaRef.current?.reset();
+            setIsVerified(false);
+        } else {
+            errorMessage(RECAPTCHA_CHECK);
+        }
     };
 
     return (
@@ -136,7 +135,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 <div className="captchaBlock">
                     <ReCAPTCHA
                         className="required-captcha"
-                        sitekey={siteKey ? siteKey : ""}
+                        sitekey={siteKey || ''}
                         onChange={handleVerify}
                         onExpired={handleExpiration}
                         ref={recaptchaRef}
