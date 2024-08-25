@@ -116,9 +116,7 @@ const PartnersModal = () => {
             footer={null}
             onCancel={onCancel}
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
-                    <CancelBtn className="iconSize" onClick={onClear} />
-                </Popover>
+                <CancelBtn className="iconSize" onClick={onClear} />
             )}
         >
             {messageContextHolder}
