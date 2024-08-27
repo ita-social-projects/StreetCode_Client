@@ -1,6 +1,7 @@
 import './AboutUsPage.styles.scss';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 
 import AboutUsHeaderText from './AboutUsHeaderText/AboutUsHeaderText.component';
@@ -31,6 +32,10 @@ const AboutUsPage = () => {
 
     return (
         <div className="aboutUsPageContainer">
+            <Helmet>
+                <title>Про нас | Streetcode</title>
+                <meta name="description" content="Дізнайтеся більше про «Стріткод», нашу місію, цінності та команду." />
+            </Helmet>
             <div className="contentContainer">
                 <AboutUsHeaderText />
                 <Founders />

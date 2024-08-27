@@ -2,7 +2,7 @@ import './StreetcodeCatalog.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import Footer from '@layout/footer/Footer.component';
+import { Helmet } from 'react-helmet';
 import useMobx from '@stores/root-store';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
@@ -40,6 +40,10 @@ const StreetcodeCatalog = () => {
 
     return (
         <div className="catalogPage">
+            <Helmet>
+                <title>Каталог стріткодів | Streetcode</title>
+                <meta name="description" content="Ознайомтеся з нашим повним каталогом стріткодів." />
+            </Helmet>
             <div className="streetcodeCatalogWrapper">
                 <div className="streetcodeHeadingContainer">
                     <div className="headingFlexItem"><h1 className="streetcodeCatalogHeading">Стріткоди</h1></div>

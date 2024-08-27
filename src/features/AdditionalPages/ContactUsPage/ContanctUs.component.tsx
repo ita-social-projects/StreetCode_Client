@@ -1,6 +1,6 @@
 import './ContactUs.styles.scss';
 
-import Footer from '@layout/footer/Footer.component';
+import { Helmet } from 'react-helmet';
 
 import { Button } from 'antd';
 
@@ -9,8 +9,11 @@ import Title from './Title/Title.component';
 
 const SURVEY_LINK = 'https://forms.gle/eWwX5RP84X7dymLR6';
 const ContactUs = () => (
-
     <div className="contactUsContainer">
+        <Helmet>
+            <title>Контакти | Streetcode</title>
+            <meta name="description" content="Зв’яжіться з нами для будь-яких запитань, відгуків або підтримки." />
+        </Helmet>
         <div className="contactUsCover">
             <div className="wrapper">
                 <Title />
