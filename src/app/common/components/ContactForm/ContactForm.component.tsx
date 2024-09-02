@@ -49,7 +49,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                     successMessage();
                 })
                 .catch((error) => {
-                    if (error === 429) {
+                    if (error.status === 429) {
                         errorMessage(MESSAGE_LIMIT);
                     }
                     else {
