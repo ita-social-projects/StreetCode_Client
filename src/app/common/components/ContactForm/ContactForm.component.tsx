@@ -43,7 +43,12 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
     const onFinish = () => {
         if (isVerified) {
             const token = recaptchaRef?.current?.getValue();
-            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
+            const newEmail: Email = {
+                from: formData.email,
+                source: 'сторінка Контакти',
+                content: formData.message,
+                token,
+            };
             EmailApi.send(newEmail)
                 .then(() => {
                     successMessage();
