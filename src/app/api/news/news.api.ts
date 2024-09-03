@@ -1,6 +1,6 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import News, { NewsWithUrl } from '@models/news/news.model';
+import News, { NewsWithUrl, NewsCreate, NewsUpdate } from '@models/news/news.model';
 
 const NewsApi = {
     getById: (id: number) => Agent.get<News>(`${API_ROUTES.NEWS.GET}/${id}`),
@@ -21,11 +21,11 @@ const NewsApi = {
         )),
     ),
 
-    create: (news: News) => Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news),
+    create: (news: NewsCreate) => Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.NEWS.DELETE}/${id}`),
 
-    update: (news: News) => Agent.put<News>(`${API_ROUTES.NEWS.UPDATE}`, news),
+    update: (news: NewsUpdate) => Agent.put<News>(`${API_ROUTES.NEWS.UPDATE}`, news),
 };
 
 export default NewsApi;
