@@ -386,11 +386,16 @@ const NewStreetcode = () => {
             .then(() => {
                 data.stopPropagation();
 
-                const subtitles: SubtitleCreate[] = [
-                    { subtitleText: subTitle?.subtitleText ?? '' },
-                ];
-
-            const videos: VideoCreate[] = [{  url: inputInfo?.title ? (inputInfo.link ?? '') : '' }];
+                let subtitles: SubtitleCreate[] = [];
+                if (subTitle != null && subTitle.subtitleText != null) {
+                    subtitles = [
+                        { subtitleText: subTitle!.subtitleText },
+                    ];
+                }
+                let videos: VideoCreate[] = [];
+                if (inputInfo != null && inputInfo.link != null) {
+                    videos = [{ url: inputInfo.link }];
+                }
 
                 const text: TextCreateUpdate = {
                     id: inputInfo?.id ?? 0,
