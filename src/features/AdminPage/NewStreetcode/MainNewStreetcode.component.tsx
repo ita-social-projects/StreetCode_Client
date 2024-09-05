@@ -387,13 +387,13 @@ const NewStreetcode = () => {
                 data.stopPropagation();
 
                 let subtitles: SubtitleCreate[] = [];
-                if (subTitle != null && subTitle.subtitleText != null) {
+                if (subTitle != null && subTitle.subtitleText) {
                     subtitles = [
                         { subtitleText: subTitle!.subtitleText },
                     ];
                 }
                 let videos: VideoCreate[] = [];
-                if (inputInfo != null && inputInfo.link != null) {
+                if (inputInfo != null && inputInfo.link) {
                     videos = [{ url: inputInfo.link }];
                 }
 
@@ -514,17 +514,14 @@ const NewStreetcode = () => {
                         })
                     );
 
-                const videosUpdate: Video[] = [{
-                    ...video,
-                    url: inputInfo?.title ? (inputInfo.link ?? '') : ''
-                  } as Video];
-
-                    const subtitleUpdate: Subtitle[] = [
-                        {
-                            ...subTitle,
-                            subtitleText: subTitle?.subtitleText ?? '',
-                        } as Subtitle,
-                    ];
+                    let videosUpdate: Video[] = [];
+                    if (inputInfo != null && inputInfo.link) {
+                        videosUpdate = [{ ...video, url: inputInfo.link } as Video];
+                    }
+                    let subtitleUpdate: Subtitle[] = [];
+                    if (subTitle != null && subTitle.subtitleText) {
+                        subtitleUpdate = [{ ...subTitle, subtitleText: subTitle!.subtitleText } as Subtitle];
+                    }
 
                     const tags = [
                         ...(reindex(selectedTags) as StreetcodeTagUpdate[]).map(
