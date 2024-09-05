@@ -238,8 +238,8 @@ pipeline {
                 sh 'echo ${BRANCH_NAME}'
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
-                sh "git merge release/${env.SEM_VERSION}" 
-                sh "npm version ${env.SEM_VERSION} -m 'Upgrade to %s as part of release'"
+                sh 'git merge ${BRANCH_NAME}'
+                sh "npm version 1.0.0 -m 'Upgrade to %s as part of release'"
 
                 sh "git push origin main" 
                   
