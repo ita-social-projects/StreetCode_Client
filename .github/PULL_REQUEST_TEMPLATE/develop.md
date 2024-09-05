@@ -1,15 +1,21 @@
-### JIRA
+dev
+## Ticket Info
+Link to the corresponding GitHub board ticket: [Insert link here](https://github.com/orgs/ita-social-projects/projects/21/views/1?filterQuery=)
 
-* [Main JIRA ticket](https://jira.softserve.academy/secure/RapidBoard.jspa?rapidView=id)
+## Description
+Provide a high-level overview of the task or feature. This section should describe the overall purpose and context of the changes being made in the pull request.
 
-### About this PR
+## Summary of Change
+Detail the specific changes or modifications introduced in this PR. Include which parts of the code were altered, any new features added, bugs fixed, or refactoring performed.
 
-This PR add PR for Street Code client repo along with test coverage collection for Sonar Cloud
+## Steps to Reproduce (Optional)
+If applicable, outline the steps to manually reproduce the issue or verify the changes introduced in this PR.
 
-### Related PR
+---
 
-### Check list
-- [ ]  PR is reviewed manually again (to make sure you have 100% ready code)
-- [ ]  PR meets all conventions
-
-### How does it looks
+## CHECK LIST
+- [ ] CI passed
+- [ ] Code coverage ≥ 95%
+- [ ] PR is reviewed manually again (self-review)
+- [ ] All reviewers have agreed to merge the PR
+- [ ] PR meets all conventions and best practices
