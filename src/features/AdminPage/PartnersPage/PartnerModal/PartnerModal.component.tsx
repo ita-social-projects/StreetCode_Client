@@ -4,6 +4,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
@@ -20,6 +21,8 @@ import TextArea from 'antd/es/input/TextArea';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import { doesUrlContainSiteName, isInvalidUrl } from '@/app/common/utils/checkUrl';
+import ImageStore from '@/app/stores/image-store';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
@@ -29,16 +32,15 @@ import Partner, {
     PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-import ImageStore from '@/app/stores/image-store';
-import { runInAction } from 'mobx';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const PartnerModal: React.FC< {
-  partnerItem?: Partner;
-  open: boolean;
-  isStreetcodeVisible?: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  afterSubmit?: (partner: Partner) => void;
+    partnerItem?: Partner;
+    open: boolean;
+    isStreetcodeVisible?: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    afterSubmit?: (partner: Partner) => void;
 }> = observer(
     ({
         partnerItem,
@@ -77,7 +79,7 @@ const PartnerModal: React.FC< {
                                 val.id,
                                 { ...val, logo },
                             );
-                        })
+                        });
                     });
                 });
             }).then(() => partnersStore.setInternalMap(partnersStore.getPartnerArray));
@@ -480,7 +482,7 @@ const PartnerModal: React.FC< {
                         <div>
                             <div className="button-container">
                                 <Button onClick={handleHideSecondForm} className="close-button">
-                  Закрити
+                                    Закрити
                                 </Button>
                             </div>
                             <div className="link-container">
@@ -490,7 +492,10 @@ const PartnerModal: React.FC< {
                                     rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
                                     className="social-media-form-item"
                                 >
-                                    <Select options={SOCIAL_OPTIONS} />
+                                    <Select
+                                        options={SOCIAL_OPTIONS}
+                                        onChange={() => partnerLinksForm.validateFields(['url'])}
+                                    />
                                 </FormItem>
                                 <Form.Item
                                     label="Посилання"
@@ -503,15 +508,29 @@ const PartnerModal: React.FC< {
                                         },
                                         {
                                             validator: (_, value) => {
-                                                const logotype = partnerLinksForm.getFieldValue('logotype');
-
-                                                if (!value || !logotype || value.toLowerCase().includes(logotype)) {
-                                                    return Promise.resolve();
+                                                if (!value || isInvalidUrl(value)) {
+                                                    return Promise.reject(new Error(
+                                                        'Недійсний формат посилання',
+                                                    ));
                                                 }
 
-                                                return Promise.reject(new Error(
-                                                    'Посилання не співпадає з вибраним текстом',
-                                                ));
+                                                const socialName = partnerLinksForm.getFieldValue('logotype');
+                                                const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
+                                                if (logotype === undefined // we need this explicit undefined check because it can pass when logotype is 0
+                                                    || (!doesUrlContainSiteName(value, LogoType[logotype]))) {
+                                                        return Promise.reject(new Error(
+                                                            'Посилання не співпадає з вибраним текстом',
+                                                        ));
+                                                }
+
+                                                const doesLinkWithLogoTypeAlreadyExist = partnerSourceLinks.some((obj) => obj.logoType === Number(logotype));
+                                                if (doesLinkWithLogoTypeAlreadyExist) {
+                                                    return Promise.reject(new Error(
+                                                        'Посилання на таку соціальну мережу вже додано',
+                                                    ));
+                                                }
+
+                                                return Promise.resolve();
                                             },
                                         },
                                     ]}
@@ -536,7 +555,7 @@ const PartnerModal: React.FC< {
                         <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
-                  Зберегти
+                                    Зберегти
                                 </Button>
                             </span>
                         </Popover>
@@ -546,7 +565,7 @@ const PartnerModal: React.FC< {
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
-              Зберегти
+                            Зберегти
                         </Button>
                     )}
                 </div>

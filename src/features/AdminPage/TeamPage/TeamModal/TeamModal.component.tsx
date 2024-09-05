@@ -26,10 +26,13 @@ import { Option } from 'antd/es/mentions';
 import PositionsApi from '@/app/api/team/positions.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import { doesUrlContainSiteName, isInvalidUrl } from '@/app/common/utils/checkUrl';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
-import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
+import Image from '@/models/media/image.model';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import { constant } from 'lodash';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -41,9 +44,6 @@ const TeamModal: React.FC<{
     const [teamLinksForm] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
-    const [existWarningVisible, setExistWarningVisible] = useState<boolean>(false);
-    const [invalidWarningVisible, setInvalidWarningVisible] = useState<boolean>(false);
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
@@ -138,8 +138,6 @@ const TeamModal: React.FC<{
             teamSourceLinks.splice(0);
             setIsModalOpen(false);
             setFileList([]);
-            setCustomWarningVisible(false);
-            setExistWarningVisible(false);
         }
     };
 
@@ -151,38 +149,15 @@ const TeamModal: React.FC<{
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
-        const logotype = teamLinksForm.getFieldValue('logotype');
-        setExistWarningVisible(false);
-        setCustomWarningVisible(false);
-        setInvalidWarningVisible(false);
+        const socialName = teamLinksForm.getFieldValue('logotype');
+        const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
+        const newId = getNewId(teamSourceLinks);
 
-        if(!url){
-            return;
-        }
-
-        if(!URL.canParse(url)){
-            setInvalidWarningVisible(true);
-            return;
-        }
-
-        if (!url.toLocaleLowerCase().includes(logotype)) {
-            setCustomWarningVisible(true);
-        } else {
-            const newId = getNewId(teamSourceLinks);
-            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
-            
-            if(isLogoTypePresent){
-                setExistWarningVisible(true);
-            }
-            else {
-                setTeamSourceLinks([...teamSourceLinks, {
-                    id: newId,
-                    logoType: Number(LogoType[logotype]),
-                    targetUrl: url,
-                }]);
-            }
-            
-        }
+        setTeamSourceLinks([...teamSourceLinks, {
+            id: newId,
+            logoType: Number(logotype),
+            targetUrl: url,
+        }]);
     };
 
     const removeImage = () => {
@@ -342,7 +317,7 @@ const TeamModal: React.FC<{
                             onRemove={removeImage}
                             uploadTo="image"
                             onSuccessUpload={(file: Image | Audio) => {
-                                let image: Image = file as Image;
+                                const image: Image = file as Image;
                                 imageId.current = image.id;
                             }}
                             defaultFileList={getImageAsFileInArray()}
@@ -381,16 +356,47 @@ const TeamModal: React.FC<{
                         name="logotype"
                         label="Соціальна мережа"
                         rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
+                        style={{ minWidth: '135px' }}
                     >
                         <Select
                             options={SOCIAL_OPTIONS}
+                            onChange={() => teamLinksForm.validateFields(['url'])}
                         />
                     </FormItem>
                     <Form.Item
                         label="Посилання"
                         className="url-input"
                         name="url"
-                        rules={[{ required: true, message: 'Введіть посилання' }]}
+                        rules={[
+                            { required: true, message: 'Введіть посилання' },
+                            {
+                                validator: (_, value) => {
+                                    if (!value || isInvalidUrl(value)) {
+                                        return Promise.reject(new Error(
+                                            'Недійсний формат посилання',
+                                        ));
+                                    }
+
+                                    const socialName = teamLinksForm.getFieldValue('logotype');
+                                    const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
+                                    if (logotype === undefined // we need this explicit undefined check because it can pass when logotype is 0
+                                        || (logotype !== LogoType.http && !doesUrlContainSiteName(value, LogoType[logotype]))) {
+                                            return Promise.reject(new Error(
+                                                'Посилання не співпадає з вибраним текстом',
+                                            ));
+                                    }
+
+                                    const doesLinkWithLogoTypeAlreadyExist = teamSourceLinks.some((obj) => obj.logoType === Number(logotype));
+                                    if (doesLinkWithLogoTypeAlreadyExist) {
+                                        return Promise.reject(new Error(
+                                            'Посилання на таку соціальну мережу вже додано',
+                                        ));
+                                    }
+
+                                    return Promise.resolve();
+                                },
+                            },
+                        ]}
                     >
                         <Input min={1} max={255} showCount />
                     </Form.Item>
@@ -404,13 +410,6 @@ const TeamModal: React.FC<{
                             </Button>
                         </Popover>
                     </Form.Item>
-
-                    {customWarningVisible
-                        ? <p className="error-message">Посилання не співпадає з обраною соціальною мережею</p> : ''}
-                    {existWarningVisible
-                        ? <p className="error-message">Посилання на таку соціальну мережу вже додано</p> : ''}
-                    {invalidWarningVisible
-                        ? <p className="error-message">Недійсний формат посилання</p> : ''}
                 </div>
 
                 <div className="center">
