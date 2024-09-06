@@ -11,5 +11,6 @@ export interface TransactionLinkUpdate extends IModelState {
     id: number;
     url: string;
     qrCodeUrl: string;
+    urlTitle: string;
     streetcodeId: number;
 }

@@ -71,7 +71,7 @@ import {
     Text,
     TextCreateUpdate,
 } from '@/models/streetcode/text-contents.model';
-import { TransactionLink } from '@/models/transactions/transaction-link.model';
+import { TransactionLink, TransactionLinkUpdate } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
@@ -534,12 +534,25 @@ const NewStreetcode = () => {
                     ];
 
                     const arUrl = form.getFieldValue('arlink');
-                    const arLinkUpdated: TransactionLink = {
+                    let arLinkUpdated: TransactionLinkUpdate = {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
                         url: arLink?.url ?? '',
                         urlTitle: arLink?.urlTitle ?? '',
+                        qrCodeUrl: arLink?.urlTitle ?? '',
                     };
+                    if (arLink && arUrl) {
+                        arLinkUpdated = {
+                            ...arLinkUpdated,
+                            url: arUrl,
+                            modelState: ModelState.Updated,
+                        };
+                    } else {
+                        arLinkUpdated = {
+                            ...arLinkUpdated,
+                            modelState: ModelState.Deleted,
+                        };
+                    }
 
                 if (text.id !== 0 && !text.title) {
                     text.modelState = ModelState.Deleted;
@@ -580,13 +593,7 @@ const NewStreetcode = () => {
                     images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
                     audioId: createUpdateMediaStore.audioId,
                     audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
-                    transactionLink: {
-                        id: arLink?.id ?? 0,
-                        streetcodeId: parseId,
-                        url: form.getFieldValue('arlink') ?? '',
-                        qrCodeUrl: arLink?.urlTitle ?? '',
-                        modelState: 0,
-                    },
+                    transactionLink: arLinkUpdated,
                     imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                 };
 
