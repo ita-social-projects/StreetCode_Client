@@ -54,7 +54,7 @@ module.exports = {
             runtimeCaching: [
               {
                 urlPattern: /\.(?:js|css)$/,
-                handler: 'CacheFirst',
+                handler: 'StaleWhileRevalidate',
                 options: {
                   cacheName: 'static-resources',
                   expiration: {
