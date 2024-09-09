@@ -83,6 +83,27 @@ pipeline {
                 '''
             }
          }
+         stage('Sonar scan') {
+            environment {
+                SONAR = credentials('sonar_token')
+            }
+            steps {
+                sh 'sudo apt install openjdk-17-jdk openjdk-17-jre -y'
+                sh '''    
+                    export NVM_DIR="$HOME/.nvm"
+                    if [ -s "$NVM_DIR/nvm.sh" ]; then
+                        . "$NVM_DIR/nvm.sh" 
+                    fi
+                    nvm use 16
+                    npm install
+                '''
+
+                sh '''
+                    sonar-scanner \
+                    -Dsonar.login=$SONAR
+                '''
+            }
+        }
         stage('Build image') {
             when {
                 branch pattern: "release/[0-9].[0-9].[0-9]", comparator: "REGEXP"
