@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Empty } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
@@ -17,10 +17,13 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [positionToEdit, setPositionToEdit] = useState<Position>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const updatedPositions = () => {
+        setIsLoading(true);
         const data = teamPositionsStore.fetchPositions();
         console.log(data);
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -94,8 +97,17 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     pagination={{ pageSize: 10 }}
                     className="positions-table"
                     columns={columns}
-                    dataSource={teamPositionsStore.getPositionsArray}
+                    dataSource={isLoading ? [] : teamPositionsStore.getPositionsArray}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
             </div>
             <TeamPositionsAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />

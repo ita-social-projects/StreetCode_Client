@@ -12,7 +12,7 @@ import tiktok from '@assets/images/partners/tiktok.svg';
 import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 
-import { Button, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import Image from '@/models/media/image.model';
@@ -32,15 +32,20 @@ const TeamPage = () => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const updatedTeam = () => {
+        setIsLoading(true);
         Promise.all([teamStore?.fetchTeamAll()]).then(() => {
             teamStore?.TeamMap.forEach((val, key) => {
                 ImageStore.getImageById(val.imageId).then((image) => {
                     teamStore.TeamMap.set(val.id, { ...val, image });
                 });
             });
-        }).then(() => teamStore.setInternalMap(teamStore.getTeamArray));
+        }).then(() => {
+            teamStore.setInternalMap(teamStore.getTeamArray);
+            setIsLoading(false);
+        });
     };
 
     useEffect(() => {
@@ -185,8 +190,17 @@ const TeamPage = () => {
                     pagination={{ pageSize: 10 }}
                     className="team-table"
                     columns={columns}
-                    dataSource={teamStore?.getTeamArray}
+                    dataSource={isLoading ? [] : teamStore?.getTeamArray}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
             </div>
             <TeamModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />

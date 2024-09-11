@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Empty } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import TagAdminModal from './TagsPage/TagAdminModal';
@@ -17,9 +17,12 @@ const TagsMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [tagToEdit, setTagToEdit] = useState<Tag>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const updatedTags = () => {
+        setIsLoading(true);
         tagsStore.fetchTags();
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -93,8 +96,17 @@ const TagsMainPage: React.FC = observer(() => {
                     pagination={{ pageSize: 10 }}
                     className="tags-table"
                     columns={columns}
-                    dataSource={tagsStore.getTagArray}
+                    dataSource={isLoading ? [] : tagsStore.getTagArray}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
             </div>
             <TagAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
