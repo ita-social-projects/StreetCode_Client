@@ -140,7 +140,7 @@ describe("PartnerModal", () => {
 
         await waitFor(() => {
             expect(message.error).toHaveBeenCalled();
-        })
+        });
 
         cleanup();
     })
@@ -158,7 +158,7 @@ describe("PartnerModal", () => {
 
         await waitFor(() => {
             expect(message.error).toHaveBeenCalled();
-        })
+        });
 
         cleanup();
     })
