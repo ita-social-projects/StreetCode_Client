@@ -4,6 +4,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import { observer } from 'mobx-react-lite';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import donateButtonRequest from '@app/common/requests/donateButtonRequest';
 import { PositiveNumber } from '@constants/custom-types.constants';
 import { useModalContext } from '@stores/root-store';
@@ -136,7 +137,7 @@ const DonatesModal = () => {
                     >
                         Я даю згоду на обробку моїх
                         {' '}
-                        <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
+                        <Link className="privacyPolicy" to="/privacy-policy">персональних даних</Link>
                     </Checkbox>
                 </div>
                 <button
