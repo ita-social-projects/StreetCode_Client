@@ -240,8 +240,9 @@ pipeline {
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
                 sh 'git merge ${BRANCH_NAME}'
-                sh "npm version ${env.vers} -m 'Upgrade to %s as part of release'"
-
+                sh "npm version ${env.vers} --allow-same-version --no-git-tag-version"
+                sh "git add ."
+                sh "git commit -m 'Upgrade to %s as part of release'"
                 sh "git push origin master" 
                   
             }
