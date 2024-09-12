@@ -8,7 +8,6 @@ import { RouterProvider } from 'react-router-dom';
 import router from '@app/router/Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import WithClearCache from './app/common/components/withClearCache';
 
 declare global {
     interface Window {
@@ -17,7 +16,6 @@ declare global {
             SERVER_API_URL: string;
             REACT_APP_GOOGLE_ANALYTICS: string;
             RECAPTCHA_SITE_KEY: string;
-            VERSION: string;
         };
     }
 }
@@ -41,12 +39,10 @@ const root = ReactDOM.createRoot(
 const queryClient = new QueryClient();
 
 root.render(
-    <WithClearCache>
-        <React.StrictMode>
-            <QueryClientProvider client={queryClient}>
-                <RouterProvider router={router} />
-                <ReactQueryDevtools initialIsOpen />
-            </QueryClientProvider>
-        </React.StrictMode>
-    </WithClearCache>,
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen />
+        </QueryClientProvider>
+    </React.StrictMode>,
 );
