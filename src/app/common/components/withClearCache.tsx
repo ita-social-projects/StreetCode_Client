@@ -11,6 +11,7 @@ const WithClearCache: React.FC<{ children: React.ReactNode }> = ({ children }) =
                     caches.delete(name);
                 }
             });
+            console.log("Cache is cleared")
         }
         window.location.reload();
     };
