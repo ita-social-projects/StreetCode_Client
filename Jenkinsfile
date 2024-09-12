@@ -240,7 +240,7 @@ pipeline {
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
                 sh 'git merge ${BRANCH_NAME}'
-                sh "npm version ${env.vers} -m 'Upgrade to %s as part of release'"
+                sh "npm version ${env.vers} -m 'Upgrade to %s as part of release'  --allow-same-version --no-git-tag-version"
 
                 sh "git push origin master" 
                   
@@ -249,7 +249,7 @@ pipeline {
         post {
             success {
                 sh 'gh auth status'
-                sh "gh release create v${vers}  --generate-notes --draft --no-git-tag-version"
+                sh "gh release create v${vers}  --generate-notes --draft"
             
             }
         }
