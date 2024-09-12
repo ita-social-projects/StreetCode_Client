@@ -249,7 +249,7 @@ pipeline {
         post {
             success {
                 sh 'gh auth status'
-                sh "gh release create v${vers}  --generate-notes --draft"
+                sh "gh release create v${vers}  --generate-notes --draft --no-git-tag-version"
             
             }
         }
