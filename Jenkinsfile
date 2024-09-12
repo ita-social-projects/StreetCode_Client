@@ -242,7 +242,7 @@ pipeline {
                 sh 'git merge ${BRANCH_NAME}'
                 sh "npm version ${env.vers} -m 'Upgrade to %s as part of release'"
 
-                sh "git push origin main" 
+                sh "git push origin master" 
                   
             }
         }
