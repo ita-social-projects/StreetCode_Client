@@ -234,12 +234,12 @@ pipeline {
         }   
         steps {
             script {
-               
+                git branch: 'master', credentialsId: 'test_git_user', url: 'git@github.com:ita-social-projects/StreetCode_Client.git'
                 sh 'echo ${BRANCH_NAME}'
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
                 sh 'git merge ${BRANCH_NAME}'
-                sh "npm version 1.0.0 -m 'Upgrade to %s as part of release'"
+                sh "npm version ${env.CODE_VERSION} -m 'Upgrade to %s as part of release'"
 
                 sh "git push origin main" 
                   
