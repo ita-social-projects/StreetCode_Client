@@ -57,6 +57,7 @@ pipeline {
                     sh "cat version"
                     vers = readFile(file: 'version').trim()
                     sh "echo ${vers}"
+                    env.vers="${vers}"
                     env.CODE_VERSION = readFile(file: 'version').trim()
                     echo "${env.CODE_VERSION}"
                     SEM_VERSION="${env.CODE_VERSION}"
@@ -239,7 +240,7 @@ pipeline {
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
                 sh 'git merge ${BRANCH_NAME}'
-                sh "npm version ${env.CODE_VERSION} -m 'Upgrade to %s as part of release'"
+                sh "npm version ${env.vers} -m 'Upgrade to %s as part of release'"
 
                 sh "git push origin main" 
                   
