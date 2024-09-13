@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const WithClearCache: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isLatestBuildDate, setIsLatestBuildDate] = useState<boolean>(false);
+    const [isLatestBuildDate, setIsLatestBuildDate] = useState<boolean>(true);
 
     const refreshCacheAndReload = () => {
         if (caches) {
@@ -11,20 +11,23 @@ const WithClearCache: React.FC<{ children: React.ReactNode }> = ({ children }) =
                     caches.delete(name);
                 }
             });
-            console.log("Cache is cleared")
+            console.log('Cache is cleared');
         }
         window.location.reload();
     };
 
     useEffect(() => {
         const localVersion = localStorage.getItem('VERSION');
-        const isVersionMatches = localVersion === window._env_.VERSION;
-        setIsLatestBuildDate(isVersionMatches);
-        if (!isVersionMatches) {
-            localStorage.setItem('VERSION', window._env_.VERSION);
-            refreshCacheAndReload();
+        const envVersion = window._env_.VERSION;
+        if (typeof envVersion !== 'undefined' && localVersion !== 'undefined') {
+            const isVersionMatches = localVersion === envVersion;
+            setIsLatestBuildDate(isVersionMatches);
+            if (!isVersionMatches) {
+                localStorage.setItem('VERSION', window._env_.VERSION);
+                refreshCacheAndReload();
+            }
         }
-    }, []);
+    });
 
     if (isLatestBuildDate) {
         return children;
