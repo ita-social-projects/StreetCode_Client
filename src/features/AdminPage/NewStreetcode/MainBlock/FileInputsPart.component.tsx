@@ -10,6 +10,7 @@ import { ModelState } from '@models/enums/model-state';
 import Image, { ImageAssigment, ImageCreateUpdate } from '@models/media/image.model';
 
 import { FormInstance, Modal, UploadFile } from 'antd';
+import { UploadChangeParam } from 'antd/es/upload';
 import FormItem from 'antd/es/form/FormItem';
 
 import AudiosApi from '@/app/api/media/audios.api';
@@ -20,6 +21,7 @@ import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 import imageValidator from '@/app/common/components/modals/validators/imageValidator';
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
 
 const convertFileToUploadFile = (file: Image | Audio) => {
     const newFileList: UploadFile = {
@@ -194,11 +196,25 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
         }
     }, []);
 
-    const checkFile = (file: UploadFile) =>
-        (file.type === 'image/jpeg')
-        || (file.type === 'image/webp')
-        || (file.type === 'image/png')
-        || (file.type === 'image/jpg');
+    const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
+
+    const handleAnimationChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setAnimation(param.fileList);
+        }
+    };
+
+    const handleBlackAndWhiteChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setAnimation(param.fileList);
+        }
+    };
+
+    const handleRelatedFigureChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setAnimation(param.fileList);
+        }
+    };
 
     return (
         <div>
@@ -215,11 +231,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         maxCount={1}
                         fileList={animation}
                         beforeUpload={checkFile}
-                        onChange={(param) => {
-                            if (checkFile(param.file)) {
-                                setAnimation(param.fileList);
-                            }
-                        }}
+                        onChange={handleAnimationChange}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image | Audio) => {
@@ -253,11 +265,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         maxCount={1}
                         fileList={blackAndWhite}
                         beforeUpload={checkFile}
-                        onChange={(param) => {
-                            if (checkFile(param.file)) {
-                                setBlackAndWhite(param.fileList);
-                            }
-                        }}
+                        onChange={handleBlackAndWhiteChange}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image | Audio) => {
@@ -287,11 +295,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         beforeUpload={checkFile}
-                        onChange={(param) => {
-                            if (checkFile(param.file)) {
-                                setRelatedFigure(param.fileList);
-                            }
-                        }}
+                        onChange={handleRelatedFigureChange}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure([convertFileToUploadFile(file as Image)]);

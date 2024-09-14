@@ -27,6 +27,8 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
+
 interface SourceModalProps {
     isModalVisible: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -130,9 +132,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
-            
+
             const title = form.getFieldValue('title');
-    
+
             if (!title.trim()) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
                 return;
@@ -151,11 +153,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
     };
 
-    const checkFile = (file: UploadFile) =>
-        (file.type === 'image/jpeg')
-        || (file.type === 'image/webp')
-        || (file.type === 'image/png')
-        || (file.type === 'image/jpg');
+    const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {

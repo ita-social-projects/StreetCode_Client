@@ -21,7 +21,7 @@ import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
-import ArtGalleryTemplateStore from '@/app/stores/art-gallery-template-store';
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
 
 const DownloadBlock = () => {
     const { id } = useParams<any>();
@@ -144,18 +144,14 @@ const DownloadBlock = () => {
     };
 
     const handleBeforeUpload = async (file: UploadFile) => {
-        const isImage = (
-            (file.type === 'image/jpeg') || 
-            (file.type === 'image/webp') || 
-            (file.type === 'image/png') || 
-            (file.type === 'image/jpg')
-        )
+        const isImage = file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
         if (!isImage) {
             setVisibleError(true);
         }
-        
+
         return isImage || Upload.LIST_IGNORE;
-    }
+    };
+
     return (
         <div className="art-gallery-download">
             <FileUploader

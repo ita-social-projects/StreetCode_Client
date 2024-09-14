@@ -34,6 +34,7 @@ import { runInAction } from 'mobx';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 import imageValidator from '@/app/common/components/modals/validators/imageValidator';
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -306,13 +307,9 @@ const PartnerModal: React.FC< {
             }
         };
 
-        const checkFile = (file: UploadFile) =>
-            (file.type === 'image/jpeg')
-            || (file.type === 'image/webp')
-            || (file.type === 'image/png')
-            || (file.type === 'image/jpg');
+        const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
 
-        const handleFileChange = (param: UploadChangeParam<UploadFile<any>>) => {
+        const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
             if (checkFile(param.file)) {
                 setFileList(param.fileList);
             }

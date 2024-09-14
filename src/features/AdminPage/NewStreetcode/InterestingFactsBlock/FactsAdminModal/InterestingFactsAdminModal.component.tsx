@@ -9,6 +9,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import imageValidator from '@/app/common/components/modals/validators/imageValidator';
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
 
 import {
     Button, Form, Input, message, Modal, Popover, UploadFile,
@@ -42,12 +43,9 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
-    const checkFile = (file: UploadFile) => {
-        return (file.type === 'image/jpeg') || (file.type === 'image/webp')
-            || (file.type === 'image/png') || (file.type === 'image/jpg');
-    }
+    const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
 
-    const handleChange = async (param: UploadChangeParam<UploadFile<any>>) => {
+    const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {
             setFileList(param.fileList);
         }
@@ -221,7 +219,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 maxCount={1}
                                 fileList={fileList}
                                 beforeUpload={checkFile}
-                                onChange={handleChange}
+                                onChange={handleFileChange}
                                 onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;
                                     setHasUploadedPhoto(true);

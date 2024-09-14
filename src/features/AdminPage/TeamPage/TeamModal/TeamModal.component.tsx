@@ -32,6 +32,7 @@ import Audio from '@/models/media/audio.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 import imageValidator from '@/app/common/components/modals/validators/imageValidator';
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -158,11 +159,11 @@ const TeamModal: React.FC<{
         setCustomWarningVisible(false);
         setInvalidWarningVisible(false);
 
-        if(!url){
+        if (!url) {
             return;
         }
 
-        if(!URL.canParse(url)){
+        if (!URL.canParse(url)) {
             setInvalidWarningVisible(true);
             return;
         }
@@ -172,18 +173,16 @@ const TeamModal: React.FC<{
         } else {
             const newId = getNewId(teamSourceLinks);
             const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
-            
-            if(isLogoTypePresent){
+
+            if (isLogoTypePresent) {
                 setExistWarningVisible(true);
-            }
-            else {
+            } else {
                 setTeamSourceLinks([...teamSourceLinks, {
                     id: newId,
                     logoType: Number(LogoType[logotype]),
                     targetUrl: url,
                 }]);
             }
-            
         }
     };
 
@@ -250,13 +249,9 @@ const TeamModal: React.FC<{
         setIsMain(e.target.checked);
     };
 
-    const checkFile = (file: UploadFile) =>
-        (file.type === 'image/jpeg')
-        || (file.type === 'image/webp')
-        || (file.type === 'image/png')
-        || (file.type === 'image/jpg');
+    const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
 
-    const handleFileChange = (param: UploadChangeParam<UploadFile<any>>) => {
+    const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {
             setFileList(param.fileList);
         }
