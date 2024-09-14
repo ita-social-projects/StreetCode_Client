@@ -205,13 +205,13 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
 
     const handleBlackAndWhiteChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {
-            setAnimation(param.fileList);
+            setBlackAndWhite(param.fileList);
         }
     };
 
     const handleRelatedFigureChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {
-            setAnimation(param.fileList);
+            setRelatedFigure(param.fileList);
         }
     };
 
