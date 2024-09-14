@@ -1,6 +1,6 @@
 import { RuleObject } from 'rc-field-form/lib/interface';
 
-const imageValidator = (_: RuleObject, file: any): Promise<any> => {
+const imageValidator = (_: RuleObject, file: any): Promise<void> => {
     if (file) {
         let name = '';
         if (file.file) {
@@ -9,10 +9,9 @@ const imageValidator = (_: RuleObject, file: any): Promise<any> => {
             name = file.name.toLowerCase();
         }
 
-        if (name.endsWith('.jpeg')
-            || name.endsWith('.png')
-            || name.endsWith('.webp')
-            || name.endsWith('.jpg')) {
+        const allowedExtensions = ['.jpeg', '.png', '.webp', '.jpg'];
+
+        if (allowedExtensions.some((ext) => name.endsWith(ext))) {
             return Promise.resolve();
         }
 
