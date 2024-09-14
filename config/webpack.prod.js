@@ -53,6 +53,10 @@ module.exports = {
             maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
             runtimeCaching: [
               {
+                urlPattern: /env-config\.js$/,
+                handler: 'NetworkOnly'
+              },
+              {
                 urlPattern: /\.(?:js|css)$/,
                 handler: 'NetworkFirst',
                 options: {
