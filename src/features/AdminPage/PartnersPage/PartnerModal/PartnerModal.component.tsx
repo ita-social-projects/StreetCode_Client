@@ -33,8 +33,7 @@ import ImageStore from '@/app/stores/image-store';
 import { runInAction } from 'mobx';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
-import imageValidator from '@/app/common/components/modals/validators/imageValidator';
-import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -307,7 +306,7 @@ const PartnerModal: React.FC< {
             }
         };
 
-        const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
+        const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
         const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
             if (checkFile(param.file)) {

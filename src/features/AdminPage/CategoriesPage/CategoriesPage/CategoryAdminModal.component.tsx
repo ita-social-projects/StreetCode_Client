@@ -14,7 +14,7 @@ import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
-import imageValidator from '@/app/common/components/modals/validators/imageValidator';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 import {
     Button, Form, Input, message, Modal, Popover,
@@ -26,8 +26,6 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-
-import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -153,7 +151,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
     };
 
-    const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {

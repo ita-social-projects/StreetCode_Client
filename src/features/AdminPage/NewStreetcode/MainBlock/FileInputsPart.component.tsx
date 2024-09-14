@@ -20,8 +20,7 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
-import imageValidator from '@/app/common/components/modals/validators/imageValidator';
-import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const convertFileToUploadFile = (file: Image | Audio) => {
     const newFileList: UploadFile = {
@@ -196,7 +195,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
         }
     }, []);
 
-    const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
     const handleAnimationChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {

@@ -31,8 +31,7 @@ import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
-import imageValidator from '@/app/common/components/modals/validators/imageValidator';
-import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -249,7 +248,7 @@ const TeamModal: React.FC<{
         setIsMain(e.target.checked);
     };
 
-    const checkFile = (file: UploadFile) => file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
     const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {

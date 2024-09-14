@@ -21,7 +21,7 @@ import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
-import { SUPPORTED_IMAGE_FILE_TYPES } from '@constants/file-types.constants';
+import { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const DownloadBlock = () => {
     const { id } = useParams<any>();
@@ -143,8 +143,8 @@ const DownloadBlock = () => {
         setVisibleDeleteButton(false);
     };
 
-    const handleBeforeUpload = async (file: UploadFile) => {
-        const isImage = file.type && SUPPORTED_IMAGE_FILE_TYPES.includes(file.type);
+    const handleBeforeUpload = (file: UploadFile) => {
+        const isImage = checkImageFileType(file.type);
         if (!isImage) {
             setVisibleError(true);
         }

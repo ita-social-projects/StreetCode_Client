@@ -1,3 +1,4 @@
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
 import { RuleObject } from 'rc-field-form/lib/interface';
 
 const imageValidator = (_: RuleObject, file: any): Promise<void> => {
@@ -20,5 +21,7 @@ const imageValidator = (_: RuleObject, file: any): Promise<void> => {
 
     return Promise.reject();
 };
+
+export const checkImageFileType = (type: string | undefined) => type && SUPPORTED_IMAGE_FILE_TYPES.includes(type);
 
 export default imageValidator;
