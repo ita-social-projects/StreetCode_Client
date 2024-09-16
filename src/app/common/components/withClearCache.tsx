@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
@@ -20,13 +21,15 @@ const WithClearCache: React.FC<{ children: React.ReactNode }> = ({ children }) =
     useEffect(() => {
         const localVersion = localStorage.getItem('VERSION');
         const envVersion = window._env_.VERSION;
-        if (typeof envVersion !== 'undefined') {
+        if (!!envVersion) {
             const isVersionMatches = localVersion === envVersion;
             setIsLatestBuildDate(isVersionMatches);
             if (!isVersionMatches) {
                 localStorage.setItem('VERSION', envVersion);
                 refreshCacheAndReload();
             }
+        } else {
+            refreshCacheAndReload();
         }
     }, [isLatestBuildDate]);
 
