@@ -21,7 +21,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
         { value: 'Deleted', label: 'видалений' },
     ];
 
-    const handleChangeStatus = (value: string) => {
+    const handleChangeStatus = (value: string[]) => {
         setStatus(value);
     };
 

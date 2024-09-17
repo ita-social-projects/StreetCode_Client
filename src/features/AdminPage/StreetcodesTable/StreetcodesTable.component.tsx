@@ -37,7 +37,7 @@ const StreetcodesTable = () => {
     const [currentPages, setCurrentPages] = useState<number>(1);
     const [totalItems, setTotalItems] = useState<number>(0);
     const [titleRequest, setTitleRequest] = useState<string | null>(null);
-    const [statusRequest, setStatusRequest] = useState<string | null>(null);
+    const [statusRequest, setStatusRequest] = useState<string[]>([]);
     const [pageRequest, setPageRequest] = useState<number>(1);
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
@@ -61,7 +61,7 @@ const StreetcodesTable = () => {
             Amount: amountRequest,
             Title: titleRequest === '' ? null : titleRequest,
             Sort: null,
-            Filter: statusRequest == null ? null : `Status:${statusRequest}`,
+            Filter: statusRequest.length === 0 ? null : `Status:${statusRequest}`,
         });
     };
 
