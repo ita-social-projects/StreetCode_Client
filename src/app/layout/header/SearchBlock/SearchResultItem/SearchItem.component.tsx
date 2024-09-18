@@ -1,14 +1,16 @@
 import './SearchItem.styles.scss';
 
+import { Link } from 'react-router-dom';
 import { htmlToText } from 'html-to-text';
 
 import { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 
 interface Props {
     searchResultItem: StreetcodeFilterResultDTO;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
-const SearchResultItem = ({ searchResultItem } : Props) => {
+const SearchResultItem = ({ searchResultItem, onClick } : Props) => {
     const url = `/${searchResultItem.streetcodeTransliterationUrl
     }${searchResultItem.factId !== 0 ? (`?factId=${searchResultItem.factId}`) : ('')
     }${searchResultItem.timelineItemId !== 0 ? (`?timelineItemId=${searchResultItem.timelineItemId}`) : ('')
@@ -20,9 +22,10 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
     const contentToDisplay = searchResultItem.content ? htmlToText(searchResultItem.content) : '';
 
     return (
-        <a
-            href={url}
+        <Link
+            to={url}
             className="resultItemContainer"
+            onClick={onClick}
         >
             <div className="resultItemContent">
                 {contentToDisplay}
@@ -30,7 +33,7 @@ const SearchResultItem = ({ searchResultItem } : Props) => {
             <div className="resultSourceName">
                 {sourceName}
             </div>
-        </a>
+        </Link>
     );
 };
 

@@ -1,6 +1,7 @@
 import './RelatedFigureItemModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
+import { Link } from 'react-router-dom';
 import CancelBtn from '@assets/images/utils/Cancel_btn_mobile.svg';
 import useMobx, { useModalContext } from '@stores/root-store';
 
@@ -55,13 +56,13 @@ const RelatedFiguresItemModal = () => {
                     </div>
                 </div>
             </div>
-            <a
+            <Link
                 className="redirectionButton"
-                href={`../${relation?.url}`}
+                to={`../${relation?.url}`}
                 onClick={handleClick}
             >
                 <p>Перейти на сторінку постаті</p>
-            </a>
+            </Link>
         </Modal>
     );
 };
