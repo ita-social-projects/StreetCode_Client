@@ -24,11 +24,10 @@ ReactGA.initialize('G-2RHY04JKG0');
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js').then(registration => {
-        console.log('SW registered: ', registration);
-      }).catch((error) => {
-        console.error('SW registration failed:', error);
-      });
+      navigator.serviceWorker.register('/service-worker.js')
+          .catch((error) => {
+              console.error('SW registration failed:', error);
+          });
     });
   }
 

@@ -151,9 +151,6 @@ const NewStreetcode = () => {
             ? { when: false, message: '' }
             : { when: true, message: navigationString }
     );
-    const handleTabClosing = () => {
-        console.log('Close tab');
-    };
 
     const alertUser = (event: BeforeUnloadEvent) => {
         event.preventDefault();
@@ -187,10 +184,8 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (!savedChanges) {
             window.addEventListener('beforeunload', alertUser);
-            window.addEventListener('unload', handleTabClosing);
             return () => {
                 window.removeEventListener('beforeunload', alertUser);
-                window.removeEventListener('unload', handleTabClosing);
             };
         }
     });
@@ -607,7 +602,6 @@ const NewStreetcode = () => {
                             console.error(error);
                         });
                 } else {
-                    console.log(streetcode);
                     StreetcodesApi.create(streetcode)
                         .then(() => {
                             streetcodeArtSlideStore.streetcodeArtSlides = [];

@@ -20,7 +20,6 @@ const TeamPositionsMainPage: React.FC = observer(() => {
 
     const updatedPositions = () => {
         const data = teamPositionsStore.fetchPositions();
-        console.log(data);
     };
 
     useEffect(() => {
