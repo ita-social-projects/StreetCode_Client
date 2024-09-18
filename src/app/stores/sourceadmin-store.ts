@@ -37,7 +37,7 @@ export default class SourcesAdminStore {
         try {
             this.setInternalSourceCategories(await sourcesApi.getAllCategories());
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -48,7 +48,7 @@ export default class SourcesAdminStore {
                 this.srcSourcesMap.delete(srcId);
             });
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -58,7 +58,7 @@ export default class SourcesAdminStore {
                 this.setSource(created);
             });
         } catch (e: unknown) {
-            console.log(e);
+            console.error(e);
         }
     };
 
@@ -69,7 +69,7 @@ export default class SourcesAdminStore {
         try {
             await sourcesApi.update(sourceItem);
         } catch (e: unknown) {
-            console.log(e);
+            console.error(e);
         }
     };
 }

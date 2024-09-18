@@ -284,7 +284,9 @@ const NewStreetcode = () => {
                             setSubTitle(resultSubtitle);
                         }
                     })
-                    .catch((error) => {});
+                    .catch((error) => {
+                        console.error(error);
+                    });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then(
                     (result) => {
                         const id = result.map((x) => x.id);
@@ -600,8 +602,9 @@ const NewStreetcode = () => {
                         .then(() => {
                             alert('Cтріткод успішно оновлений');
                         })
-                        .catch((error2) => {
+                        .catch((error) => {
                             alert('Виникла помилка при оновленні стріткоду');
+                            console.error(error);
                         });
                 } else {
                     console.log(streetcode);
@@ -629,10 +632,11 @@ const NewStreetcode = () => {
                         })
                         .catch((error) => {
                             alert('Виникла помилка при створенні стріткоду');
+                            console.error(error);
                         });
                 }
             })
-            .catch(() => {
+            .catch((error) => {
                 const name = form
                     .getFieldsError()
                     .find((e) => e.errors.length > 0)?.name;
@@ -640,6 +644,7 @@ const NewStreetcode = () => {
                     scrollToErrors();
                 } else {
                     alert('Будь ласка, заповніть всі поля валідними даними');
+                    console.error(error);
                 }
             });
     };
