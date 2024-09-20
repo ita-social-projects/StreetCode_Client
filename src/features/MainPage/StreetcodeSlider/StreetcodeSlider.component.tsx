@@ -22,12 +22,16 @@ const DEFAULT_STREETCODE_CARDS_AMOUNT = 10;
 
 const StreetcodeSlider = () => {
     const { imagesStore, streetcodeMainPageStore } = useMobx();
-
     const windowsize = useWindowSize();
-    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.centerMode = true;
-    if (windowsize.width <= 1024) STREETCODE_SLIDER_PROPS.dots = true;
-    if (windowsize.width <= 1024 && windowsize.width >= 768) STREETCODE_SLIDER_PROPS.initialSlide = 0;
-    if (windowsize.width <= 768) STREETCODE_SLIDER_PROPS.variableWidth = false;
+
+    if (windowsize.width <= 1024) {
+        STREETCODE_SLIDER_PROPS.dots = true;
+
+        if (windowsize.width >= 768) {
+            STREETCODE_SLIDER_PROPS.centerMode = true;
+            STREETCODE_SLIDER_PROPS.initialSlide = 0;
+        }
+    }
 
     streetcodeMainPageStore.fetchStreetcodesMainPage(1, DEFAULT_STREETCODE_CARDS_AMOUNT);
     imagesStore.fetchImages(streetcodeMainPageStore.getStreetcodesArray || []);
