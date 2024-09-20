@@ -21,7 +21,7 @@ import TextArea from 'antd/es/input/TextArea';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { doesUrlContainSiteName, isInvalidUrl } from '@/app/common/utils/checkUrl';
+import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import ImageStore from '@/app/stores/image-store';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
@@ -51,6 +51,7 @@ const PartnerModal: React.FC< {
     }) => {
         // eslint-disable-next-line max-len,no-useless-escape
         const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,256}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+        const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
         const [form] = Form.useForm();
         const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
         const [urlTitleValue, setUrlTitleValue] = useState<string>('');
@@ -508,29 +509,14 @@ const PartnerModal: React.FC< {
                                         },
                                         {
                                             validator: (_, value) => {
-                                                if (!value || isInvalidUrl(value)) {
-                                                    return Promise.reject(new Error(
-                                                        'Недійсний формат посилання',
-                                                    ));
-                                                }
-
                                                 const socialName = partnerLinksForm.getFieldValue('logotype');
-                                                const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
-                                                if (logotype === undefined // we need this explicit undefined check because it can pass when logotype is 0
-                                                    || (!doesUrlContainSiteName(value, LogoType[logotype]))) {
-                                                        return Promise.reject(new Error(
-                                                            'Посилання не співпадає з вибраним текстом',
-                                                        ));
-                                                }
-
-                                                const doesLinkWithLogoTypeAlreadyExist = partnerSourceLinks.some((obj) => obj.logoType === Number(logotype));
-                                                if (doesLinkWithLogoTypeAlreadyExist) {
-                                                    return Promise.reject(new Error(
-                                                        'Посилання на таку соціальну мережу вже додано',
-                                                    ));
-                                                }
-
-                                                return Promise.resolve();
+                                                return validateSocialLink<LogoType>(
+                                                    value,
+                                                    SOCIAL_OPTIONS,
+                                                    LOGO_TYPES,
+                                                    partnerSourceLinks,
+                                                    socialName,
+                                                );
                                             },
                                         },
                                     ]}

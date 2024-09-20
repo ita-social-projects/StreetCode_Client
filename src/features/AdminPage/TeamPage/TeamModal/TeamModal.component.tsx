@@ -26,18 +26,18 @@ import { Option } from 'antd/es/mentions';
 import PositionsApi from '@/app/api/team/positions.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import { doesUrlContainSiteName, isInvalidUrl } from '@/app/common/utils/checkUrl';
+import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import { constant } from 'lodash';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?: (team: TeamCreateUpdate) => void
 }> = observer(({ teamMember, open, setIsModalOpen, afterSubmit }) => {
+    const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
     const [form] = Form.useForm();
     const { teamStore } = useMobx();
     const [positions, setPositions] = useState<Positions[]>([]);
@@ -371,29 +371,14 @@ const TeamModal: React.FC<{
                             { required: true, message: 'Введіть посилання' },
                             {
                                 validator: (_, value) => {
-                                    if (!value || isInvalidUrl(value)) {
-                                        return Promise.reject(new Error(
-                                            'Недійсний формат посилання',
-                                        ));
-                                    }
-
                                     const socialName = teamLinksForm.getFieldValue('logotype');
-                                    const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
-                                    if (logotype === undefined // we need this explicit undefined check because it can pass when logotype is 0
-                                        || (logotype !== LogoType.http && !doesUrlContainSiteName(value, LogoType[logotype]))) {
-                                            return Promise.reject(new Error(
-                                                'Посилання не співпадає з вибраним текстом',
-                                            ));
-                                    }
-
-                                    const doesLinkWithLogoTypeAlreadyExist = teamSourceLinks.some((obj) => obj.logoType === Number(logotype));
-                                    if (doesLinkWithLogoTypeAlreadyExist) {
-                                        return Promise.reject(new Error(
-                                            'Посилання на таку соціальну мережу вже додано',
-                                        ));
-                                    }
-
-                                    return Promise.resolve();
+                                    return validateSocialLink<LogoType>(
+                                        value,
+                                        SOCIAL_OPTIONS,
+                                        LOGO_TYPES,
+                                        teamSourceLinks,
+                                        socialName,
+                                    );
                                 },
                             },
                         ]}

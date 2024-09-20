@@ -1,11 +1,9 @@
+/* eslint-disable import/extensions */
+
+import SocialItem from '@/models/social-link/socialItem';
 import { LogoType } from '@/models/team/team.model';
 
-interface SocialItem {
-    label: string
-    value: string
-    logo: LogoType
-}
-const SOCIAL_OPTIONS: SocialItem[] = [
+const SOCIAL_OPTIONS: SocialItem<LogoType>[] = [
     {
         value: 'x.com',
         label: 'X',
