@@ -282,9 +282,9 @@ const NewsModal: React.FC<{
                             rules={[
                                 { required: true, message: 'Введіть Посилання' },
                                 {
-                                    pattern: /^[a-z-]+$/,
+                                    pattern: /^[0-9a-z-]+$/,
                                     message:
-                                        'Посилання має містити лише малі латинські літери та дефіс',
+                                        'Посилання має містити лише малі латинські літери, цифри та дефіс',
                                 },
                                 {
                                     validator: async (_, value) => {
