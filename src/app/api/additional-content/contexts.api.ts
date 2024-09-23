@@ -5,7 +5,18 @@ import Context, { ContextCreate } from '@models/additional-content/context.model
 const ContextsApi = {
     getById: (id: number) => Agent.get<Context>(`${API_ROUTES.CONTEXTS.GET_BY_ID}/${id}`),
 
-    getAll: () => Agent.get<Context[]>(`${API_ROUTES.CONTEXTS.GET_ALL}`),
+    getAll: (page?: number, pageSize?: number) => {
+        const params = Object.entries({
+            page: page?.toString() ?? '',
+            pageSize: pageSize?.toString() ?? '',
+        });
+
+        const queryParams = params.filter(p => !!p[1]);
+
+        const searchParams = new URLSearchParams(queryParams);
+
+        return Agent.get<{totalAmount: number, historicalContexts: Context[]}>(`${API_ROUTES.CONTEXTS.GET_ALL}`, searchParams);
+    },
 
     create: (tag: ContextCreate) => Agent.post<Context>(`${API_ROUTES.CONTEXTS.CREATE}`, tag),
 
