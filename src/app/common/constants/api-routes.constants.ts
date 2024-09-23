@@ -225,6 +225,7 @@ export const API_ROUTES = {
         DELETE: 'statisticRecord/delete',
     },
     JOB: {
+        GET_ALL: 'job/getAll',
         GET_ALL_SHORT: 'job/getAllShort',
         DELETE: 'job/delete',
         CHANGE_STATUS: 'job/changeJobStatus',
