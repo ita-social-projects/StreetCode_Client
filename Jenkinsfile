@@ -88,35 +88,15 @@ pipeline {
                 SONAR = credentials('sonar_token')
             }
             steps {
-                sh 'sudo apt install openjdk-17-jdk openjdk-17-jre -y'
-                sh '''    
-                    export NVM_DIR="$HOME/.nvm"
-                    if [ -s "$NVM_DIR/nvm.sh" ]; then
-                        . "$NVM_DIR/nvm.sh" 
-                    fi
-                    nvm use 16
-                    npm install
-                    npm run build
-                    npm run test -- --coverage
-                '''
+                def scannerHome = tool 'SonarQubeScanner';
+                echo "SonarQube Scanner installation directory: ${scannerHome}"
 
-                sh '''
-                    echo "Sonar scan"
-                    dotnet sonarscanner begin \
-                    /k:"ita-social-projects_StreetCode_Client" \
-                    /o:"ita-social-projects" \
-                    /n:"StreetCode_Client" \
-                    /d:sonar.projectDescription="Frontend app of Street Code project" \
-                    /d:sonar.host.url="https://sonarcloud.io" \
-                    /d:sonar.login=$SONAR \
-                    /d:sonar.sources="src/" \
-                    /d:sonar.exclusions="src/**/*test*,src/**/*spec*" \
-                    /d:sonar.javascript.lcov.reportPaths="coverage/lcov.info"
-                    
-                    dotnet build || true
-                    
-                    dotnet sonarscanner end /d:sonar.token=$SONAR
-                '''
+                withSonarQubeEnv('SonarQubeScanner') {
+                    sh '''
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.login=$SONAR
+                    '''
+                }
             }
         }
         stage('Build image') {
