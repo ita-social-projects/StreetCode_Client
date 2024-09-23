@@ -98,6 +98,8 @@ pipeline {
                             -Dsonar.login=$SONAR
                         '''
                     }
+
+                    echo "test"
                 }
             }
         }
