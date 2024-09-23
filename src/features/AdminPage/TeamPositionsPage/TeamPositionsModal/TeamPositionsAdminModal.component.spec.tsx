@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 import { message } from 'antd';
 import overrideMatchMedia from '@features/AdminPage/TeamPositionsPage/TeamPositionsMainPage.component.spec';
 import TeamPositionsAdminModalComponent from '@features/AdminPage/TeamPositionsPage/TeamPositionsModal/TeamPositionsAdminModal.component';
-import TeampositionsApi from '@api/additional-content/teampositions.api';
+import TeampositionsApi from '@api/team/teampositions.api';
 import Position from '@models/additional-content/teampositions.model';
 
 overrideMatchMedia();

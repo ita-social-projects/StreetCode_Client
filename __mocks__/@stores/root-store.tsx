@@ -1,6 +1,6 @@
 import Context, {ContextCreate} from '@models/additional-content/context.model';
 import ContextsApi from '@api/additional-content/contexts.api';
-import TeampositionsApi from '@api/additional-content/teampositions.api';
+import TeampositionsApi from '@api/team/teampositions.api';
 import Position from '@models/additional-content/teampositions.model';
 
 export const mockID = 1;
