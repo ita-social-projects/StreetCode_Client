@@ -88,18 +88,17 @@ pipeline {
                 SONAR = credentials('sonar_token')
             }
             steps {
-                script{
+                script {
                     def scannerHome = tool 'SonarQubeScanner';
                     echo "SonarQube Scanner installation directory: ${scannerHome}"
 
                     withSonarQubeEnv('SonarQubeScanner') {
+                        echo "test"
                         sh '''
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.login=$SONAR
                         '''
                     }
-
-                    echo "test"
                 }
             }
         }
