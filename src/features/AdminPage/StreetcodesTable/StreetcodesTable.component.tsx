@@ -293,7 +293,7 @@ const StreetcodesTable = () => {
         });
 
         setMapedStreetCodes(mapedStreetCodesBuffer);
-        setTotalItems(response[0].pages * amountRequest);
+        setTotalItems(response[0].totalAmount);
     };
     
 
@@ -317,8 +317,8 @@ const StreetcodesTable = () => {
                     <br />
                     <div className="underTableElement">
                         <Pagination
-                            className="pagenationElement"
-                            simple
+                            className="paginationElement"
+                            showSizeChanger={false}
                             defaultCurrent={1}
                             current={currentPages}
                             total={totalItems}
