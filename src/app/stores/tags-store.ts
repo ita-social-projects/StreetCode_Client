@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import tagsApi from '@api/additional-content/tags.api';
 import Tag, { StreetcodeTagUpdate, TagCreate } from '@models/additional-content/tag.model';
+import { PaginationInfo } from '@/models/pagination/pagination.model';
 
 export default class TagsStore {
     public AllTagsMap = new Map<number, Tag>();
@@ -10,6 +11,15 @@ export default class TagsStore {
     public TagCatalogMap = new Map<number, Tag>();
 
     public TagToDeleteArray: StreetcodeTagUpdate[] = [];
+
+    private defaultPageSize = 10;
+
+    private paginationInfo: PaginationInfo = {
+        PageSize: this.defaultPageSize,
+        TotalPages: 1,
+        TotalItems: 1,
+        CurrentPage: 1,
+    };
 
     public constructor() {
         makeAutoObservable(this);
@@ -64,17 +74,26 @@ export default class TagsStore {
     get getTagCatalogArray() {
         return Array.from(this.TagCatalogMap.values());
     }
+    
+    public setCurrentPage(currPage: number) {
+        this.paginationInfo.CurrentPage = currPage;
+    }
+    
+    public set PaginationInfo(paginationInfo: PaginationInfo) {
+        this.paginationInfo = paginationInfo;
+    }
 
-    public fetchAllTags = async () => {
-        try {
-            this.setInternalAllTags = await tagsApi.getAll();
-        } catch (error: unknown) { /* empty */ }
-    };
+    public get PaginationInfo(): PaginationInfo {
+        return this.paginationInfo;
+    }
 
-    public fetchTags = async () => {
-        try {
-            this.setInternalMap = await tagsApi.getAll();
-        } catch (error: unknown) { /* empty */ }
+    public fetchAllTags = async (pageSize?: number) => {
+        await tagsApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
+            .then((resp) => {
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setInternalAllTags = resp.tags;
+            })
+            .catch((error) => console.error(error));
     };
 
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {

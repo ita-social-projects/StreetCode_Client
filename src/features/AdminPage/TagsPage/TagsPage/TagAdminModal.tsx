@@ -32,7 +32,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [form] = Form.useForm();
     const isEditing = !!initialData;
 
-    useAsync(() => tagsStore.fetchTags(), []);
+    useAsync(() => tagsStore.fetchAllTags(), []);
 
     useEffect(() => {
         if (initialData && isModalVisible) {
