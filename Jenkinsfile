@@ -96,11 +96,26 @@ pipeline {
                     fi
                     nvm use 16
                     npm install
+                    npm run build
+                    npm run test -- --coverage
                 '''
 
                 sh '''
-                    sonar-scanner \
-                    -Dsonar.login=$SONAR
+                    echo "Sonar scan"
+                    dotnet sonarscanner begin \
+                    /k:"ita-social-projects_StreetCode_Client" \
+                    /o:"ita-social-projects" \
+                    /n:"StreetCode_Client" \
+                    /d:sonar.projectDescription="Frontend app of Street Code project" \
+                    /d:sonar.host.url="https://sonarcloud.io" \
+                    /d:sonar.login=$SONAR \
+                    /d:sonar.sources="src/" \
+                    /d:sonar.exclusions="src/**/*test*,src/**/*spec*" \
+                    /d:sonar.javascript.lcov.reportPaths="coverage/lcov.info"
+                    
+                    dotnet build
+                    
+                    dotnet sonarscanner end /d:sonar.token=$SONAR
                 '''
             }
         }
