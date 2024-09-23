@@ -12,7 +12,7 @@ import tiktok from '@assets/images/partners/tiktok.svg';
 import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 
-import { Button, Table } from 'antd';
+import { Button, Pagination, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import Image from '@/models/media/image.model';
@@ -24,6 +24,7 @@ import TeamMember, { TeamMemberLink } from '../../../models/team/team.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import TeamModal from './TeamModal/TeamModal.component';
+import { useQuery } from '@tanstack/react-query';
 
 const TeamPage = () => {
     const { teamStore } = useMobx();
@@ -33,8 +34,13 @@ const TeamPage = () => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
 
+    useQuery({
+        queryKey: ['team', teamStore.PaginationInfo.CurrentPage],
+        queryFn: () => { teamStore.getAll() },
+    });
+
     const updatedTeam = () => {
-        Promise.all([teamStore?.fetchTeamAll()]).then(() => {
+        Promise.all([teamStore?.getAll()]).then(() => {
             teamStore?.TeamMap.forEach((val, key) => {
                 ImageStore.getImageById(val.imageId).then((image) => {
                     teamStore.TeamMap.set(val.id, { ...val, image });
@@ -182,12 +188,28 @@ const TeamPage = () => {
                     </Button>
                 </div>
                 <Table
-                    pagination={{ pageSize: 10 }}
+                    pagination={false}
                     className="team-table"
                     columns={columns}
                     dataSource={teamStore?.getTeamArray}
                     rowKey="id"
                 />
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={teamStore.PaginationInfo.CurrentPage}
+                            total={teamStore.PaginationInfo.TotalItems}
+                            pageSize={teamStore.PaginationInfo.PageSize}
+                            onChange={(value: any) => {
+                                teamStore.setCurrentPage(value);
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
             <TeamModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <TeamModal
