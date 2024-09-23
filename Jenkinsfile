@@ -90,14 +90,11 @@ pipeline {
             }
             steps {
                 echo "SonarQube Scanner installation directory: ${scannerHome}"
-
-                withSonarQubeEnv('SonarQubeScanner') {
-                    echo "test"
-                    sh '''
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.login=$SONAR
-                    '''
-                }
+                
+                sh '''
+                    ${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.login=$SONAR
+                '''
             }
         }
         stage('Build image') {
