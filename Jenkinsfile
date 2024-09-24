@@ -111,6 +111,8 @@ pipeline {
                                 -Dsonar.login=$SONAR
                             '''
                         }
+                    }
+                }
             }
         }
         stage('Build image') {
