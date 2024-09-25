@@ -84,17 +84,20 @@ export default class NewsStore {
             .then((news) => {
                 this.CurrentNewsId = news.id;
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     public getAll = async (pageSize?: number) => {
         await NewsApi.getAll(this.CurrentPage, pageSize ?? 1)
             .then((resp) => {
-                console.log(resp);
                 this.PaginationInfo = resp.paginationInfo;
                 this.setNewsMap(resp.data);
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     public createNews = async (news: News) => {

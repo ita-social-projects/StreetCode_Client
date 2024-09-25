@@ -34,7 +34,7 @@ export default class TeamStore {
         try {
             this.setInternalMap(await teamApi.getAll());
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -42,7 +42,7 @@ export default class TeamStore {
         try {
             this.setItem(await teamApi.getById(teamId));
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -50,7 +50,7 @@ export default class TeamStore {
         try {
             this.setInternalMap(await teamApi.getAll());
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -76,7 +76,7 @@ export default class TeamStore {
                 this.TeamMap.delete(teamId);
             });
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 }

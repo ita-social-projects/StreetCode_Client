@@ -211,7 +211,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 {
                                     validator: (_, file) => {
                                         if (file) {
-                                            console.log(file);
                                             let name = '';
                                             if (file.file) {
                                                 name = file.file.name.toLowerCase();
@@ -220,7 +219,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                             }
                                             if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
                                                 || name.endsWith('.jpg') || name === '') {
-                                                console.log(name)
                                                 return Promise.resolve();
                                             }
                                             // eslint-disable-next-line max-len

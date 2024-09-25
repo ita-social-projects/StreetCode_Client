@@ -19,7 +19,7 @@ const Vacancies = ({ setHasVacancies } : { setHasVacancies: (hasVacancies: boole
             )
             .catch(
                 (e) => {
-                    console.log(e);
+                    console.error(e);
                 },
             );
     }, []);

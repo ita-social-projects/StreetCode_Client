@@ -81,7 +81,7 @@ const Analytics = () => {
         await ImagesApi.getByStreetcodeId(streetcodeId ?? 1).then((imgs) => {
             setImage(imgs.find((image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()));
         }).catch((e) => {
-            console.log(e);
+            console.error(e);
         });
     };
 

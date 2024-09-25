@@ -25,7 +25,6 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
     }, []);
 
     const afterSubmit = (partner: Partner) => {
-        console.log(partner);
         const existingPartner = partners.find((p) => p.id === partner.id);
         const existingPartnerShort = allPartnersShort.find((p) => p.id === partner.id);
         if (!existingPartner) {

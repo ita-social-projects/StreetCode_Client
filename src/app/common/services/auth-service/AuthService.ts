@@ -41,7 +41,7 @@ export default class AuthService {
                 localStorage.setItem(this.refreshTokenStorageName, response.refreshToken);
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 return Promise.reject(error);
             });
     }
@@ -69,7 +69,7 @@ export default class AuthService {
                 localStorage.setItem(this.accessTokenStorageName, response.accessToken);
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 return Promise.reject(error);
             });
     };

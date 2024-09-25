@@ -56,7 +56,7 @@ const ContextMainPage: React.FC = observer(() => {
                                     if (context.id !== undefined) {
                                         contextStore.deleteContext(context.id)
                                             .catch((e) => {
-                                                console.log(e);
+                                                console.error(e);
                                             });
                                         modalStore.setConfirmationModal('confirmation');
                                     }

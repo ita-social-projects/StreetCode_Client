@@ -9,7 +9,7 @@ export function paginateRequest(
     const fetchNextPage = async () => {
         const currentPage = page;
         const response = await request(currentPage, pageSize, args).catch((error) => {
-            console.error('Error in request:', error);
+            console.error(error);
         });
 
         if (response.length === 0) {
