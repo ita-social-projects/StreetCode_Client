@@ -134,6 +134,7 @@
 
         &Text{
             font-weight: 300;
+            @include mut.truncated(8);
             @media screen and (max-width: 1024px) {
                 display: none;
             }
