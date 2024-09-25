@@ -77,7 +77,7 @@ const PartnersComponent = () => {
                     </SlickSlider>
                 </div>
             </div>
-        ) : <></>
+        ) : <div className="height-52" />
     );
 };
 
