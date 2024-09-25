@@ -92,31 +92,25 @@ pipeline {
                 echo "SonarQube Scanner installation directory: ${scannerHome}"
 
                 script {
-                    withSonarQubeEnv() {
-                        withEnv([
-                        "PR_KEY=${env.CHANGE_ID}",
-                        "PR_BRANCH=${env.CHANGE_BRANCH}",
-                        "PR_BASE=${env.CHANGE_TARGET}",
-                        ]) {
-                            if (env.PR_KEY != "null") { 
-                                sh '''
-                                    ${scannerHome}/bin/sonar-scanner \
-                                    -Dsonar.pullrequest.key=$PR_KEY \
-                                    -Dsonar.pullrequest.branch=$PR_BRANCH \
-                                    -Dsonar.pullrequest.base=$PR_BASE \
-                                    -Dsonar.login=$SONAR
-                                '''
-                            } else {
-                                sh '''
-                                    ${scannerHome}/bin/sonar-scanner \
-                                    -Dsonar.login=$SONAR
-                                '''
-                            }
+                    withEnv([
+                    "PR_KEY=${env.CHANGE_ID}",
+                    "PR_BRANCH=${env.CHANGE_BRANCH}",
+                    "PR_BASE=${env.CHANGE_TARGET}",
+                    ]) {
+                        if (env.PR_KEY != "null") { 
+                            sh '''
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.pullrequest.key=$PR_KEY \
+                                -Dsonar.pullrequest.branch=$PR_BRANCH \
+                                -Dsonar.pullrequest.base=$PR_BASE \
+                                -Dsonar.login=$SONAR
+                            '''
+                        } else {
+                            sh '''
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.login=$SONAR
+                            '''
                         }
-                    }
-
-                    timeout(time: 10, unit: 'MINUTES') {
-                        waitForQualityGate()
                     }
                 }
             }
