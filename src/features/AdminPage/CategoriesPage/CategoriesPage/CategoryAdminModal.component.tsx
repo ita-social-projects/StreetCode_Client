@@ -1,4 +1,5 @@
 import '@features/AdminPage/AdminModal.styles.scss';
+import '@features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
@@ -13,11 +14,13 @@ import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+
 import {
     Button, Form, Input, message, Modal, Popover,
     UploadFile,
 } from 'antd';
-import { UploadFileStatus } from 'antd/es/upload/interface';
+import { UploadChangeParam, UploadFileStatus } from 'antd/es/upload/interface';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
@@ -124,21 +127,12 @@ const SourceModal: React.FC<SourceModalProps> = ({
         setFileList([]);
     };
 
-    const getValueFromEvent = (e: any) => {
-        if (e && e.fileList) {
-            return e.fileList;
-        } if (e && e.file && e.fileList === undefined) {
-            return [e.file];
-        }
-        return [];
-    };
-
     const handleOk = async () => {
         try {
             await form.validateFields();
-            
+
             const title = form.getFieldValue('title');
-    
+
             if (!title.trim()) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
                 return;
@@ -156,7 +150,14 @@ const SourceModal: React.FC<SourceModalProps> = ({
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
-    
+
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+    const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setFileList(param.fileList);
+        }
+    };
 
     return (
         <>
@@ -164,7 +165,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
                 onCancel={closeModal}
-                className="modalContainer"
+                className="modalContainer categoryModal"
                 closeIcon={(
                     <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={handleCancel} />
@@ -183,19 +184,20 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <Form.Item
                         name="image"
                         label="Картинка: "
-                        rules={[{ required: true, message: 'Додайте зображення' }]}
-                        getValueFromEvent={getValueFromEvent}
+                        rules={[
+                            { required: true, message: 'Додайте зображення' },
+                            { validator: imageValidator },
+                        ]}
                     >
                         <FileUploader
                             greyFilterForImage
-                            onChange={(param) => {
-                                setFileList(param.fileList);
-                            }}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
                             uploadTo="image"
+                            beforeUpload={checkFile}
+                            onChange={handleFileChange}
                             fileList={fileList}
                             onSuccessUpload={handleImageChange}
                             onPreview={handlePreview}
