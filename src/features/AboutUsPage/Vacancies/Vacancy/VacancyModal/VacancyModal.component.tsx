@@ -54,7 +54,7 @@ const VacancyModal = ({ isOpen, setOpen, job }: Props) => {
                 <div className="textContainer">
                     <h2>{job.title}</h2>
                     <h3>{job.salary}</h3>
-                    <p>{descriptionLines}</p>
+                    <p className="descriptionContainer">{descriptionLines}</p>
                 </div>
                 <div className="buttonContainer">
                     <Button
