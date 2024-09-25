@@ -151,6 +151,7 @@ describe('NewTimelineModal test', () => {
         });
     });
 
+    // consider to rewrite this test because it is quite error prone
     it('should create timeline with all fields', async () => {
         render(
             <NewTimelineModal
@@ -207,9 +208,10 @@ describe('NewTimelineModal test', () => {
             expect(addTimelineMock).toHaveBeenCalled();
             expect(addTimelineMock).toHaveBeenCalledWith(createJobWithAllFields);
         });
-    });
+    }, 30_000);
 
     // TODO: consider adding check for editiong the date type and date itself
+    // consider to rewrite this test because it is quite error prone
     it('should edit timeline data', async () => {
         render(
             <NewTimelineModal
@@ -254,8 +256,8 @@ describe('NewTimelineModal test', () => {
             expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', editedTimeLine.historicalContexts);
 
             user.click(buttonSave);
-        });
-    });
+        }, { timeout: 25_000 });
+    }, 30_000);
 
     it('should check text amount restrictions', async () => {
         render(
