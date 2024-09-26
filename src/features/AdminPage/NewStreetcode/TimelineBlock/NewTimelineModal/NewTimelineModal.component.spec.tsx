@@ -152,6 +152,8 @@ describe('NewTimelineModal test', () => {
     });
 
     // consider to rewrite this test because it is quite error prone
+    // if you uncomment the next test more likely this test will fail by timeout
+    // I'm not sure what this is related to but it seems like there are some problems with screen cleanup
     it('should create timeline with all fields', async () => {
         render(
             <NewTimelineModal
@@ -212,6 +214,8 @@ describe('NewTimelineModal test', () => {
 
     // TODO: consider adding check for editiong the date type and date itself
     // consider to rewrite this test because it is quite error prone
+    // if you uncomment this test more likely the previous or this one will fail by timeout
+    // I'm not sure what this is related to but it seems like there are some problems with screen cleanup
     // it('should edit timeline data', async () => {
     //     render(
     //         <NewTimelineModal
