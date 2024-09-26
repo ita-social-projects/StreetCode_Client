@@ -97,7 +97,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                                         modalStore.setConfirmationModal('confirmation');
                                     }
                                 },
-                                'Ви впевнені, що хочете видалити цю новину?',
+                                'Ви впевнені, що хочете видалити цю категорію?',
                             );
                         }}
                     />
