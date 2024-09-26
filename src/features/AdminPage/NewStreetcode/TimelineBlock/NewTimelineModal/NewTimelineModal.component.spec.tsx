@@ -25,11 +25,11 @@ Object.defineProperty(window, 'matchMedia', {
         matches: false,
         media: query,
         onchange: null,
-        addListener: () => {},
-        removeListener: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        dispatchEvent: () => {},
+        addListener: () => { },
+        removeListener: () => { },
+        addEventListener: () => { },
+        removeEventListener: () => { },
+        dispatchEvent: () => { },
     }),
 });
 
@@ -74,7 +74,7 @@ jest.mock('@stores/root-store', () => ({
 }));
 
 const open = true;
-const setOpen = () => {};
+const setOpen = () => { };
 const onChangeMock = jest.fn();
 
 describe('NewTimelineModal test', () => {
@@ -233,28 +233,24 @@ describe('NewTimelineModal test', () => {
             historicalContexts: [{ id: 2, modelState: 0, title: 'context 2' }],
         };
 
+        user.clear(inputTitle);
+        user.clear(textareaDescription);
+
+        user.type(inputTitle, editedTimeLine.title);
         await waitFor(() => {
-            user.clear(inputTitle);
-            user.clear(textareaDescription);
+            expect(onChangeMock).toHaveBeenLastCalledWith('title', editedTimeLine.title);
         });
 
-        await waitFor(async () => {
-            user.type(inputTitle, editedTimeLine.title);
-            await waitFor(() => {
-                expect(onChangeMock).toHaveBeenLastCalledWith('title', editedTimeLine.title);
-            });
-
-            user.type(textareaDescription, editedTimeLine.description);
-            await waitFor(() => {
-                expect(onChangeMock).toHaveBeenLastCalledWith('description', editedTimeLine.description);
-            });
-
-            user.click(selectContext);
-            user.click(screen.getByTitle('context 2'));
-            expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', editedTimeLine.historicalContexts);
-
-            user.click(buttonSave);
+        user.type(textareaDescription, editedTimeLine.description);
+        await waitFor(() => {
+            expect(onChangeMock).toHaveBeenLastCalledWith('description', editedTimeLine.description);
         });
+
+        user.click(selectContext);
+        user.click(screen.getByTitle('context 2'));
+        expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', editedTimeLine.historicalContexts);
+
+        user.click(buttonSave);
     });
 
     it('should check text amount restrictions', async () => {
