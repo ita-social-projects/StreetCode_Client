@@ -11,6 +11,7 @@ import {
     RefObject, useCallback, useEffect, useRef, useState,
 } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { Link } from 'react-router-dom';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
@@ -21,6 +22,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { Button, Input, Popover, PopoverProps } from 'antd';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { joinToStreetcodeClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 
@@ -32,6 +34,7 @@ const HeaderBlock = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isPopoverVisible, setIsPopoverVisible] = useState<boolean>(false);
     const inputRef = useRef(null);
+    const [inputValue, setInputValue] = useState('');
     const searchBlockRef = useRef(null);
     const { modalStore: { setModal, setIsPageDimmed, isPageDimmed } } = useModalContext();
     const dimWrapperRef = useRef(null);
@@ -50,6 +53,8 @@ const HeaderBlock = () => {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.target.value);
+
         const { value } = e.target;
         setSearchQuery(value);
         if (value.length > 0 && isDesktop) {
@@ -108,13 +113,18 @@ const HeaderBlock = () => {
         }
     }, [searchQuery]);
 
+    const handleOnSearchResultItemClick = () => {
+        closeSearchBlock();
+        setInputValue('');
+    };
+
     const popoverProps: PopoverProps = {
         trigger: 'click',
         open: isPopoverVisible && !isLoading,
         getPopupContainer: (trigger: HTMLElement) => trigger.parentNode as HTMLElement,
         content: (
             <div ref={searchBlockRef}>
-                <SearchBlock searchResult={searchResult} />
+                <SearchBlock searchResult={searchResult} onSearchResultItemClick={handleOnSearchResultItemClick} />
             </div>
         ),
         afterOpenChange: handlePopoverVisibleChange,
@@ -131,10 +141,14 @@ const HeaderBlock = () => {
         <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
                 <div className="leftPartContainer">
-                    <div className="logoContainer" onClick={() => window.location.href = '/'}>
-                        {isDesktop
-                            ? <StreetcodeSvg />
-                            : <StreetcodeSvgMobile />}
+                    <div className="logoContainer">
+                        <Link to={FRONTEND_ROUTES.BASE}>
+                            {isDesktop ? (
+                                <StreetcodeSvg />
+                            ) : (
+                                <StreetcodeSvgMobile />
+                            )}
+                        </Link>
                     </div>
                     {isDesktop && isHeaderHidden && (
                         <Popover
@@ -144,6 +158,7 @@ const HeaderBlock = () => {
                         >
                             <input
                                 onChange={handleInputChange}
+                                value={inputValue}
                                 placeholder="Пошук..."
                                 ref={inputRef}
                                 className={`ant-input  
@@ -164,6 +179,7 @@ const HeaderBlock = () => {
                                         onChange={handleInputChange}
                                         placeholder="Пошук..."
                                         onClick={onInputClick}
+                                        value={inputValue}
                                         prefix={(
                                             <MagnifyingGlass
                                                 viewBox="0 -2 24 24"
@@ -221,6 +237,7 @@ const HeaderBlock = () => {
                         <div ref={inputRef} className={`searchContainerMobile ${(isInputActive ? 'active' : '')}`}>
                             <input
                                 onChange={handleInputChange}
+                                value={inputValue}
                                 className="ant-input css-dev-only-do-not-override-26rdvq"
                                 placeholder="Що ти шукаєш?"
                             />
@@ -232,7 +249,7 @@ const HeaderBlock = () => {
                                     search();
                                 }}
                             >
-                            Пошук
+                                Пошук
                             </Button>
                         </div>
                     </Popover>
