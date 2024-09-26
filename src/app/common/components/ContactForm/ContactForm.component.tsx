@@ -1,12 +1,13 @@
 import './ContactForm.styles.scss';
 
-import { LegacyRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
+
 import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
@@ -40,6 +41,20 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
         },
     }));
 
+    const successMessage = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Лист успішно надісланий',
+        });
+    };
+
+    const errorMessage = (error: string) => {
+        messageApi.open({
+            type: 'error',
+            content: error,
+        });
+    };
+
     const onFinish = () => {
         if (isVerified) {
             const token = recaptchaRef?.current?.getValue();
@@ -56,31 +71,15 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 .catch((error) => {
                     if (error === 429) {
                         errorMessage(MESSAGE_LIMIT);
-                    }
-                    else {
+                    } else {
                         errorMessage(SOMETHING_IS_WRONG);
                     }
                 });
             recaptchaRef.current?.reset();
             setIsVerified(false);
-        }
-        else {
+        } else {
             errorMessage(RECAPTCHA_CHECK);
         }
-    };
-
-    const successMessage = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Лист успішно надісланий',
-        });
-    };
-
-    const errorMessage = (message: string) => {
-        messageApi.open({
-            type: 'error',
-            content: message,
-        });
     };
 
     return (
@@ -114,6 +113,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                         name="message"
                         autoSize={{ minRows: 4, maxRows: 4 }}
                         placeholder="Наші серця, очі та вуха відкриті до твоїх креативних повідомлень!"
+                        showCount
                         maxLength={MAX_SYMBOLS}
                         onChange={handleChange}
                     />
@@ -140,7 +140,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 <div className="captchaBlock">
                     <ReCAPTCHA
                         className="required-captcha"
-                        sitekey={siteKey ? siteKey : ""}
+                        sitekey={siteKey || ''}
                         onChange={handleVerify}
                         onExpired={handleExpiration}
                         ref={recaptchaRef}
