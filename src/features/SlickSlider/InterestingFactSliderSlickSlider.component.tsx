@@ -13,11 +13,12 @@ const GenericSlider: FC<SliderProps> = ({
     children,
     onClick,
     swipeOnClick = true,
+    initialSlide = 0,
     ...sliderProps
 }) => {
     const { modalStore: { setModal } } = useModalContext();
     const sliderRef = useRef<Slider>(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(initialSlide);
     const [lastClick, setLastClick] = useState(Date.now());
 
     const isOnRightEdge = (
@@ -64,7 +65,7 @@ const GenericSlider: FC<SliderProps> = ({
             <Slider
                 ref={sliderRef}
                 {...sliderProps}
-                initialSlide={sliderProps.initialSlide}
+                initialSlide={initialSlide}
                 beforeChange={(currentSlide, nextSlide) => setCurrentIndex(nextSlide)} // for handle dots click
                 className={!sliderProps.infinite ? 'nonInfiniteSlider' : ''}
             >
