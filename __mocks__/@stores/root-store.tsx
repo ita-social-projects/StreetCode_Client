@@ -41,6 +41,12 @@ export const useMobx = () => ({
     },
     contextStore: {
         fetchContexts: jest.fn(),
+        PaginationInfo: {
+            PageSize: 10,
+            TotalPages: 1,
+            TotalItems: 1,
+            CurrentPage: 1,
+        },
         createContext: (context: ContextCreate) => {
             ContextsApi.create(context);
         },
@@ -63,6 +69,12 @@ export const useMobx = () => ({
     },
     teamPositionsStore: {
         fetchPositions: jest.fn(),
+        PaginationInfo: {
+            PageSize: 10,
+            TotalPages: 1,
+            TotalItems: 1,
+            CurrentPage: 1,
+        },
         createPosition: (position: Position) => {
             TeampositionsApi.create(position);
         },
