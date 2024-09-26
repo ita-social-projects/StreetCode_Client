@@ -19,7 +19,7 @@ import {
     Checkbox,
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
+
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
@@ -30,6 +30,8 @@ import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import { UploadChangeParam } from 'antd/es/upload';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -151,37 +153,41 @@ const TeamModal: React.FC<{
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
-        const logotype = teamLinksForm.getFieldValue('logotype');
+        const socialName = teamLinksForm.getFieldValue('logotype');
+        const logotype = SOCIAL_OPTIONS.find( opt => opt.value === socialName)?.logo;
         setExistWarningVisible(false);
         setCustomWarningVisible(false);
         setInvalidWarningVisible(false);
 
-        if(!url){
+        if  (!url) {
+            return;
+        }
+        if (logotype === undefined)  {
             return;
         }
 
-        if(!URL.canParse(url)){
+        try {
+            const urlObject = new URL(url);
+        } catch {
             setInvalidWarningVisible(true);
             return;
         }
 
-        if (!url.toLocaleLowerCase().includes(logotype)) {
+        if (!url.toLocaleLowerCase().includes(socialName)) {
             setCustomWarningVisible(true);
         } else {
             const newId = getNewId(teamSourceLinks);
-            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
-            
-            if(isLogoTypePresent){
+            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === logotype);
+
+            if (isLogoTypePresent) {
                 setExistWarningVisible(true);
-            }
-            else {
+            } else {
                 setTeamSourceLinks([...teamSourceLinks, {
                     id: newId,
-                    logoType: Number(LogoType[logotype]),
+                    logoType: logotype,
                     targetUrl: url,
                 }]);
             }
-            
         }
     };
 
@@ -246,6 +252,14 @@ const TeamModal: React.FC<{
 
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
+    };
+
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+    const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setFileList(param.fileList);
+        }
     };
 
     return (
@@ -313,36 +327,29 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="image"
                         label="Фото"
-                        valuePropName="fileList"
-                        getValueFromEvent={(e: any) => {
-                            if (Array.isArray(e)) {
-                                return e;
-                            }
-                            return e?.fileList;
-                        }}
                         rules={[
                             {
                                 required: true,
                                 message: 'Будь ласка, завантажте фото',
                             },
+                            { validator: imageValidator },
                         ]}
                     >
                         <FileUploader
-                            onChange={(param) => {
-                                setFileList(param.fileList);
-                            }}
                             fileList={fileList}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
+                            beforeUpload={checkFile}
+                            onChange={handleFileChange}
                             onPreview={(e) => {
                                 setFilePreview(e); setPreviewOpen(true);
                             }}
                             onRemove={removeImage}
                             uploadTo="image"
                             onSuccessUpload={(file: Image | Audio) => {
-                                let image: Image = file as Image;
+                                const image: Image = file as Image;
                                 imageId.current = image.id;
                             }}
                             defaultFileList={getImageAsFileInArray()}
@@ -359,12 +366,13 @@ const TeamModal: React.FC<{
                 layout="vertical"
                 form={teamLinksForm}
                 onFinish={onSuccesfulSubmitLinks}
+                data-testid="link-form"
             >
                 <div className="team-source-list">
-
-                    {teamSourceLinks.map((link) => (
+                    {teamSourceLinks.map((link, index) => (
                         <div
                             className="link-container"
+                            data-testid={`team-source-list-${index}`}
                             key={`${link.id}${link.logoType}`}
                         >
                             <TeamLink link={link} />
@@ -377,29 +385,30 @@ const TeamModal: React.FC<{
                     ))}
                 </div>
                 <div className="link-container">
-                    <FormItem
+                    <Form.Item
                         name="logotype"
                         label="Соціальна мережа"
                         rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
                     >
                         <Select
+                            data-testid="logotype-select"
                             options={SOCIAL_OPTIONS}
                         />
-                    </FormItem>
+                    </Form.Item>
                     <Form.Item
                         label="Посилання"
                         className="url-input"
                         name="url"
                         rules={[{ required: true, message: 'Введіть посилання' }]}
                     >
-                        <Input min={1} max={255} showCount />
+                        <Input min={1} max={255} showCount data-testid="link-input" />
                     </Form.Item>
 
                     <Form.Item
                         label=" "
                     >
                         <Popover content="Додати" trigger="hover">
-                            <Button htmlType="submit" className="plus-button">
+                            <Button htmlType="submit" className="plus-button" data-testid="add-button">
                                 <PlusOutlined />
                             </Button>
                         </Popover>
