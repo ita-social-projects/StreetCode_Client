@@ -32,8 +32,10 @@ $loadImg: '@assets/images/qr-block/must_be_gif.webp';
     p{
         padding-bottom: pxToRem(15px);
     }
-    button{
+    a{
         margin-top: pxToRem(15px);
+    }
+    button{
         width: pxToRem(340px);
         height: pxToRem(46px);
         border-radius: 10px;
