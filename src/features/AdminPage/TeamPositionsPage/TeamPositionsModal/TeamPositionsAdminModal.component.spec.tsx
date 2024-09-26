@@ -11,7 +11,7 @@ import Position from '@models/additional-content/teampositions.model';
 
 overrideMatchMedia();
 
-jest.mock('@/app/api/additional-content/teampositions.api', () => ({
+jest.mock('@/app/api/team/teampositions.api', () => ({
     create: jest.fn(() => {
     }),
     update: jest.fn(() => {
