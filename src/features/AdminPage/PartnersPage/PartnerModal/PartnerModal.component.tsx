@@ -32,13 +32,15 @@ import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 import ImageStore from '@/app/stores/image-store';
 import { runInAction } from 'mobx';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import { UploadChangeParam } from 'antd/es/upload';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const PartnerModal: React.FC< {
-  partnerItem?: Partner;
-  open: boolean;
-  isStreetcodeVisible?: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  afterSubmit?: (partner: Partner) => void;
+    partnerItem?: Partner;
+    open: boolean;
+    isStreetcodeVisible?: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    afterSubmit?: (partner: Partner) => void;
 }> = observer(
     ({
         partnerItem,
@@ -304,6 +306,14 @@ const PartnerModal: React.FC< {
             }
         };
 
+        const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+        const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+            if (checkFile(param.file)) {
+                setFileList(param.fileList);
+            }
+        };
+
         return (
             <Modal
                 open={open}
@@ -380,7 +390,7 @@ const PartnerModal: React.FC< {
                         </Form.Item>
                         {urlTitleEnabled === '' && urlTitleValue && (
                             <p className="error-text">
-                Введіть правильне посилання для збереження назви посилання.
+                                Введіть правильне посилання для збереження назви посилання.
                             </p>
                         )}
 
@@ -391,19 +401,15 @@ const PartnerModal: React.FC< {
                         <Form.Item
                             name="logo"
                             label="Лого"
-                            valuePropName="fileList"
-                            getValueFromEvent={(e: any) => {
-                                if (Array.isArray(e)) {
-                                    return e;
-                                }
-                                return e?.fileList;
-                            }}
-                            rules={[{ required: true, message: 'Завантажте лого' }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Завантажте лого',
+                                },
+                                { validator: imageValidator },
+                            ]}
                         >
                             <FileUploader
-                                onChange={(param) => {
-                                    setFileList(param.fileList);
-                                }}
                                 fileList={fileList}
                                 className="logo-uploader"
                                 multiple={false}
@@ -411,6 +417,8 @@ const PartnerModal: React.FC< {
                                 listType="picture-card"
                                 maxCount={1}
                                 onPreview={handlePreview}
+                                beforeUpload={checkFile}
+                                onChange={handleFileChange}
                                 onRemove={() => {
                                     imageId.current = 0;
                                 }}
@@ -468,7 +476,7 @@ const PartnerModal: React.FC< {
                         onClick={handleShowSecondForm}
                         className="add-social-media-button"
                     >
-            Додати соціальну мережу
+                        Додати соціальну мережу
                     </Button>
                 )}
                 <Form
@@ -480,7 +488,7 @@ const PartnerModal: React.FC< {
                         <div>
                             <div className="button-container">
                                 <Button onClick={handleHideSecondForm} className="close-button">
-                  Закрити
+                                    Закрити
                                 </Button>
                             </div>
                             <div className="link-container">
@@ -536,7 +544,7 @@ const PartnerModal: React.FC< {
                         <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
-                  Зберегти
+                                    Зберегти
                                 </Button>
                             </span>
                         </Popover>
@@ -546,7 +554,7 @@ const PartnerModal: React.FC< {
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
-              Зберегти
+                            Зберегти
                         </Button>
                     )}
                 </div>
