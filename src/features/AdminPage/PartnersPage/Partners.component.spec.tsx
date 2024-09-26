@@ -14,6 +14,12 @@ jest.mock('@stores/root-store', () => ({
         partnersStore: {
             fetchPartnersAll: jest.fn().mockResolvedValue([]),
             PartnerMap: new Map(),
+            paginationInfo: {
+                PageSize: 10,
+                TotalPages: 1,
+                TotalItems: 1,
+                CurrentPage: 1,
+            },
             getPartnerArray: jest.fn(),
             setInternalMap: jest.fn(),
         },
