@@ -34,6 +34,8 @@ import Partner, {
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import { UploadChangeParam } from 'antd/es/upload';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -307,6 +309,14 @@ const PartnerModal: React.FC< {
             }
         };
 
+        const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+        const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+            if (checkFile(param.file)) {
+                setFileList(param.fileList);
+            }
+        };
+
         return (
             <Modal
                 open={open}
@@ -383,7 +393,7 @@ const PartnerModal: React.FC< {
                         </Form.Item>
                         {urlTitleEnabled === '' && urlTitleValue && (
                             <p className="error-text">
-                Введіть правильне посилання для збереження назви посилання.
+                                Введіть правильне посилання для збереження назви посилання.
                             </p>
                         )}
 
@@ -394,19 +404,15 @@ const PartnerModal: React.FC< {
                         <Form.Item
                             name="logo"
                             label="Лого"
-                            valuePropName="fileList"
-                            getValueFromEvent={(e: any) => {
-                                if (Array.isArray(e)) {
-                                    return e;
-                                }
-                                return e?.fileList;
-                            }}
-                            rules={[{ required: true, message: 'Завантажте лого' }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Завантажте лого',
+                                },
+                                { validator: imageValidator },
+                            ]}
                         >
                             <FileUploader
-                                onChange={(param) => {
-                                    setFileList(param.fileList);
-                                }}
                                 fileList={fileList}
                                 className="logo-uploader"
                                 multiple={false}
@@ -414,6 +420,8 @@ const PartnerModal: React.FC< {
                                 listType="picture-card"
                                 maxCount={1}
                                 onPreview={handlePreview}
+                                beforeUpload={checkFile}
+                                onChange={handleFileChange}
                                 onRemove={() => {
                                     imageId.current = 0;
                                 }}
@@ -471,7 +479,7 @@ const PartnerModal: React.FC< {
                         onClick={handleShowSecondForm}
                         className="add-social-media-button"
                     >
-            Додати соціальну мережу
+                        Додати соціальну мережу
                     </Button>
                 )}
                 <Form

@@ -32,6 +32,8 @@ import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import { UploadChangeParam } from 'antd/es/upload';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -223,6 +225,14 @@ const TeamModal: React.FC<{
         setIsMain(e.target.checked);
     };
 
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+    const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setFileList(param.fileList);
+        }
+    };
+
     return (
         <Modal
             open={open}
@@ -288,29 +298,22 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="image"
                         label="Фото"
-                        valuePropName="fileList"
-                        getValueFromEvent={(e: any) => {
-                            if (Array.isArray(e)) {
-                                return e;
-                            }
-                            return e?.fileList;
-                        }}
                         rules={[
                             {
                                 required: true,
                                 message: 'Будь ласка, завантажте фото',
                             },
+                            { validator: imageValidator },
                         ]}
                     >
                         <FileUploader
-                            onChange={(param) => {
-                                setFileList(param.fileList);
-                            }}
                             fileList={fileList}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
+                            beforeUpload={checkFile}
+                            onChange={handleFileChange}
                             onPreview={(e) => {
                                 setFilePreview(e); setPreviewOpen(true);
                             }}
