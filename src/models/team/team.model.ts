@@ -28,7 +28,7 @@ export interface TeamMemberLinkCreateUpdate {
 export interface TeamMemberLink {
     id: number;
     targetUrl: Url;
-    logoType: number;
+    logoType: LogoType;
 }
 export interface Positions {
     id: number;
