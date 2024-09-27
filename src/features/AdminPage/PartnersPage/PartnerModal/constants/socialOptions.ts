@@ -1,7 +1,7 @@
 const SOCIAL_OPTIONS = [
     {
-        value: 'twitter',
-        label: 'Twitter',
+        value: 'x',
+        label: 'X',
     },
     {
         value: 'instagram',

@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
+
 const SectionFirst = () => (
     <section>
         <div className="title">1. Загальні положення</div>
         <div className="content">
             Управління платформою
             &nbsp;
-            <a className="link" href="https://streetcode.com.ua">https://www.streetcode.com.ua</a>
+            <Link className="link" to="/">www.streetcode.com.ua</Link>
             &nbsp;
             (далі — платформа)
             здійснюється Громадською організацією «Історична платформа» (ЄДРПОУ 44801186) — юридичною особою,
