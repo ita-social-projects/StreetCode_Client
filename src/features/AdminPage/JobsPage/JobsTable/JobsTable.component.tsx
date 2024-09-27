@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 
 import {
-    Button, Dropdown, MenuProps, Space, Table,
+    Button, Dropdown, Empty, MenuProps, Space, Table,
 } from 'antd';
 
 import JobApi from '@/app/api/job/Job.api';
@@ -16,6 +16,7 @@ const JobsTable = () => {
     const [currentId, setCurrentId] = useState<number>(0);
     const { modalStore } = useModalContext();
     const [open, setOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const DeleteJob = (id: number) => {
         modalStore.setConfirmationModal(
@@ -132,13 +133,11 @@ const JobsTable = () => {
     ];
 
     const fetchJobsData = () => {
-        JobApi.getAllShort()
-            .then((response) => {
-                setMappedJobsShort(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        setIsLoading(true);
+        JobApi.getAllShort().then((response) => {
+            setMappedJobsShort(response);
+            setIsLoading(false);
+        });
     };
 
     useEffect(() => {
@@ -169,9 +168,18 @@ const JobsTable = () => {
             />
             <Table
                 columns={columnsNames}
-                dataSource={mappedJobsShort}
+                dataSource={isLoading ? [] : mappedJobsShort}
                 className="job-table"
                 rowKey="id"
+                locale={{
+                    emptyText: isLoading ? (
+                        <div className="loadingWrapper">
+                            <div id="loadingGif" />
+                        </div>
+                    ) : (
+                        <Empty description="Дані відсутні" />
+                    ),
+                }}
             />
         </div>
     );

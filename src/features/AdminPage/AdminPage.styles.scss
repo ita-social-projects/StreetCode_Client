@@ -3,6 +3,8 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 
+$loadImg: '@assets/images/catalog/loading.webp';
+
 .adminPageContainer {
     @include mut.admin-page-base-layout();
 
@@ -27,4 +29,17 @@
     @include mut.sized(100%);
     min-height: 78vh;
     overflow: hidden;
+}
+
+.loadingWrapper {
+    background-color: c.$pure-white-color;
+    width: 100%;
+    height: 100%;
+    @include mut.flex-centered();
+
+    #loadingGif {
+        @include mut.bg-image($loadImg, contain, no-repeat);
+        @include mut.sized(60px, 60px);
+        margin: pxToRem(84px) 0;
+    }
 }
