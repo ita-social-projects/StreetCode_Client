@@ -14,7 +14,7 @@ const GenericSlider: FC<SliderProps> = ({
     ...sliderProps
 }) => {
     const sliderRef = useRef<Slider>(null);
-
+    sliderRef.current?.slickGoTo(0); //Does anybody see issue with this?
     const handleClick = useCallback((index: number, direction: 'right' | 'left') => {
         if (sliderRef && sliderRef.current && swipeOnClick) {
             if (direction === 'right') {
