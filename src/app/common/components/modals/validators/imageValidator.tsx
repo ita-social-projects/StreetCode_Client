@@ -12,14 +12,14 @@ const imageValidator = (_: RuleObject, file: any): Promise<void> => {
 
         const allowedExtensions = ['.jpeg', '.png', '.webp', '.jpg'];
 
-        if (allowedExtensions.some((ext) => name.endsWith(ext))) {
+        if (name === '' || allowedExtensions.some((ext) => name.endsWith(ext))) {
             return Promise.resolve();
         }
 
         return Promise.reject(new Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
     }
 
-    return Promise.reject();
+    return Promise.resolve();
 };
 
 export const checkImageFileType = (type: string | undefined) => type && SUPPORTED_IMAGE_FILE_TYPES.includes(type);
