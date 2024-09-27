@@ -35,7 +35,7 @@ export interface Positions {
     position: string;
 }
 export enum LogoType {
-    twitter = 0,
+    x = 0,
     instagram = 1,
     facebook = 2,
     youtube = 3,
