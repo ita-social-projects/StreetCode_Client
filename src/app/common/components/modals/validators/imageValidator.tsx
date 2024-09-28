@@ -1,5 +1,6 @@
-import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
 import { RuleObject } from 'rc-field-form/lib/interface';
+
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
 
 const imageValidator = (_: RuleObject, file: any): Promise<void> => {
     if (file) {
@@ -19,7 +20,7 @@ const imageValidator = (_: RuleObject, file: any): Promise<void> => {
         return Promise.reject(new Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
     }
 
-    return Promise.resolve();
+    return Promise.reject();
 };
 
 export const checkImageFileType = (type: string | undefined) => type && SUPPORTED_IMAGE_FILE_TYPES.includes(type);
