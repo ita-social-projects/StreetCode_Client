@@ -20,24 +20,31 @@
 .link-container {
     gap: 5px;
     display: flex;
-    align-items: center;
+    align-items: start;
 }
 
 .partner-modal-container {
     .line-form-item div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: nowrap;
-      gap: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 0;
     }
 }
-.partner-source-list .partner-source-list-item {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    margin-bottom: 5px;
-    gap: 8px;
+
+.partner-source-list{
+    .partner-source-list-item {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-bottom: 5px;
+        gap: 8px;
+
+        .partner-source-text {
+            @include mut.truncated($line-num: 2);
+        }
+    }
 }
 
 .save{
