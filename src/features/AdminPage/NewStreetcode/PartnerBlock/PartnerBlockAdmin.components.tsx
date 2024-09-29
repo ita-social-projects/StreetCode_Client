@@ -10,7 +10,7 @@ import Partner, { PartnerCreateUpdateShort, PartnerShort } from '@/models/partne
 interface Props {
     partners: PartnerCreateUpdateShort[],
     setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>>,
-    onChange: (field: string, value: any) => void,
+    onChange: (field: string, value: unknown) => void,
 }
 
 const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
