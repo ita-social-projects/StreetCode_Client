@@ -113,7 +113,7 @@ describe('NewsModal', () => {
         await waitFor(() => {
             expect(afterSubmitMock).toHaveBeenCalledWith(newsToCreate);
         });
-    }, 10000);
+    });
 
     it('should not submit when required fields are empty', async () => {
         const setIsModalOpen = jest.fn();
@@ -287,19 +287,19 @@ describe('NewsModal', () => {
         };
 
         const newFields: {
-      title: string;
-      url: string;
-      date: string;
-      text: string;
-      image: string;
-      [key: string]: string;
-    } = {
-        title: titleInput.value,
-        url: urlInput.value,
-        date: dateInput.value,
-        text: textInput.value,
-        image: fileUpload.value,
-    };
+            title: string;
+            url: string;
+            date: string;
+            text: string;
+            image: string;
+            [key: string]: string;
+        } = {
+            title: titleInput.value,
+            url: urlInput.value,
+            date: dateInput.value,
+            text: textInput.value,
+            image: fileUpload.value,
+        };
 
         let newFieldsWithoutId: any;
 

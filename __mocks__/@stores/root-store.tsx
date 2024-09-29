@@ -25,6 +25,13 @@ export const useModalContext = () => ({
     },
 });
 
+export const useAudioContext = () => ({
+    audio: {
+        base64: 'base64Mock',
+        mimeType: 'audio/mpeg',
+    },
+});
+
 export const useMobx = () => ({
     newsStore: {
         updateNews: mockUpdateNews,
