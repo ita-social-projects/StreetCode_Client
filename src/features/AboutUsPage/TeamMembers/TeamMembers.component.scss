@@ -44,7 +44,7 @@
     transition: .5s;
     filter: c.$active-arrow-filter-color;
     &:hover {
-      filter: c.$selected-arrow-filter-color;
+        filter: c.$selected-arrow-filter-color;
     }
 }
 
@@ -61,11 +61,25 @@
 }
 .teamMembersSlider {
     .swiper {
+        overflow: visible;
         padding: f.pxToRem(30px) 0;
         .swiper-slide{
             width: fit-content;
             height: auto;
         }
+
+        .swiper-pagination {
+            bottom: 0;
+            .swiper-pagination-bullet {
+                @include mut.sized(8px, 8px);
+                background: c.$slider-base-dot-color;
+                border-radius: 0%;
+                transition: .5s;
+            }
+
+            .swiper-pagination-bullet-active {
+                background: c.$dark-red-color;
+            }
+        }
     }
 }
-
