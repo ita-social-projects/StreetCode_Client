@@ -5,6 +5,10 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@app/common/components/CardText/CardText.styles" as textCard;
 
+.slides-3 .slick-track {
+  gap: 0 !important;
+}
+
 .interestingFactSlide {
   @include mut.sized(387px);
   @include mut.full-rounded(33px);

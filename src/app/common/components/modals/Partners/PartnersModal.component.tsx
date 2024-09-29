@@ -25,7 +25,7 @@ const PartnersModal = () => {
     const { setModal, modalsState: { partners } } = modalStore;
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({ email: '', message: '' });
-    const [messageApi, messageContextHolder] = message.useMessage({maxCount: 3});
+    const [messageApi, messageContextHolder] = message.useMessage({ maxCount: 3 });
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
@@ -36,7 +36,12 @@ const PartnersModal = () => {
     const onFinish = () => {
         if (isVerified) {
             const token = recaptchaRef?.current?.getValue();
-            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
+            const newEmail: Email = {
+                from: formData.email,
+                source: 'сторінка Партнери',
+                content: formData.message,
+                token,
+            };
             EmailApi.send(newEmail)
                 .then(() => {
                     onCancel();
@@ -179,6 +184,7 @@ const PartnersModal = () => {
                                 onChange={handleVerify}
                                 onExpired={handleExpiration}
                                 ref={recaptchaRef}
+                                hl='uk'
                             />
                         </div>
                         <Form.Item>
