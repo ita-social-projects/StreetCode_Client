@@ -1,4 +1,5 @@
 import '@features/AdminPage/AdminModal.styles.scss';
+import '@features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
@@ -13,11 +14,13 @@ import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+
 import {
     Button, Form, Input, message, Modal, Popover,
     UploadFile,
 } from 'antd';
-import { UploadFileStatus } from 'antd/es/upload/interface';
+import { UploadChangeParam, UploadFileStatus } from 'antd/es/upload/interface';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
@@ -45,7 +48,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const isEditing = !!initialData;
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-	  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -88,7 +91,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
-		    setIsSaveButtonDisabled(true);
+        setIsSaveButtonDisabled(true);
     };
 
     const onSubmit = async (formData: any) => {
@@ -126,20 +129,13 @@ const SourceModal: React.FC<SourceModalProps> = ({
         setFileList([]);
     };
 
-    const getValueFromEvent = (e: any) => {
-        if (e && e.fileList) {
-            return e.fileList;
-        } if (e && e.file && e.fileList === undefined) {
-            return [e.file];
-        }
-        return [];
-    };
-
     const handleOk = async () => {
         try {
             await form.validateFields();
 
+
             const title = form.getFieldValue('title');
+
 
             if (!title.trim()) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -147,7 +143,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             }
             form.submit();
             message.success('Категорію успішно додано!', 2);
-			      setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -160,8 +156,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
     };
 
-	  const handleInputChange = () => setIsSaveButtonDisabled(false);
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+    const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setFileList(param.fileList);
+        }
+        handleInputChange();
+    };
 
     return (
         <>
@@ -169,7 +173,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
                 onCancel={closeModal}
-                className="modalContainer"
+                className="modalContainer categoryModal"
                 closeIcon={(
                     <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
                         <CancelBtn className="iconSize" onClick={handleCancel} />
@@ -188,21 +192,20 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <Form.Item
                         name="image"
                         label="Картинка: "
-                        rules={[{ required: true, message: 'Додайте зображення' }]}
-                        getValueFromEvent={getValueFromEvent}
-                        style={{ filter: 'grayscale(100%)' }}
+                        rules={[
+                            { required: true, message: 'Додайте зображення' },
+                            { validator: imageValidator },
+                        ]}
                     >
                         <FileUploader
                             greyFilterForImage
-                            onChange={(param) => {
-                                setFileList(param.fileList);
-							                  handleInputChange();
-                            }}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
                             uploadTo="image"
+                            beforeUpload={checkFile}
+                            onChange={handleFileChange}
                             fileList={fileList}
                             onSuccessUpload={handleImageChange}
                             onPreview={handlePreview}

@@ -65,7 +65,8 @@ const NewsModal: React.FC<{
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
-		const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [removedImage, setRemovedImage] = useState<Image | undefined>(undefined);
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -125,6 +126,7 @@ const NewsModal: React.FC<{
     }, [newsItem, open, form]);
 
     const removeImage = () => {
+        setRemovedImage(image.current);
         imageId.current = undefined;
         image.current = undefined;
         if (newsItem) {
@@ -138,6 +140,7 @@ const NewsModal: React.FC<{
             setIsModalOpen(false);
             setTextIsPresent(false);
             setTextIsChanged(false);
+            setRemovedImage(undefined);
             editorRef.current?.editor?.setText('');
         }
     };
@@ -145,7 +148,15 @@ const NewsModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
-				    setIsSaveButtonDisabled(true);
+			setIsSaveButtonDisabled(true);
+            if (removedImage) {
+                imageId.current = removedImage.id;
+                image.current = removedImage;
+                if (newsItem) {
+                    newsItem.image = removedImage;
+                }
+                setRemovedImage(undefined);
+            }
         }
     };
 
@@ -217,6 +228,7 @@ const NewsModal: React.FC<{
                 afterSubmit(news);
             }
             setActionSuccess(true);
+            setRemovedImage(undefined);
         } catch (e: unknown) {
             message.error('Не вдалось оновити/створити новину. Спробуйте ще раз.');
             setWaitingForApiResponse(false);
@@ -276,9 +288,9 @@ const NewsModal: React.FC<{
                             rules={[
                                 { required: true, message: 'Введіть Посилання' },
                                 {
-                                    pattern: /^[a-z-]+$/,
+                                    pattern: /^[0-9a-z-]+$/,
                                     message:
-                                        'Посилання має містити лише малі латинські літери та дефіс',
+                                        'Посилання має містити лише малі латинські літери, цифри та дефіс',
                                 },
                                 {
                                     validator: async (_, value) => {

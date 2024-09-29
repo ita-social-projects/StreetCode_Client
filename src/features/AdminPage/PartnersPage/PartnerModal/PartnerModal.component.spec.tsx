@@ -336,7 +336,7 @@ describe("PartnerModal", () => {
       expect(PartnersApi.update).toHaveBeenCalled();
       expect(PartnersApi.create).not.toHaveBeenCalled();
     });
-  }, 10000);
+  });
 
   test("submiting social link", async () => {
     const dom = render(<PartnerModal open={true} setIsModalOpen={() => { }} />);

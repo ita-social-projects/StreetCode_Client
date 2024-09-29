@@ -4,13 +4,17 @@ import PauseBtn from '@images/audio-player/PauseBtn.webp';
 import PlayBtn from '@images/audio-player/PlayBtn.webp';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useAudioContext } from '@stores/root-store';
+import { useAudioContext, useModalContext } from '@stores/root-store';
 
 import base64ToUrl from '../../utils/base64ToUrl.utility';
 
-const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay }) => {
+const AudioPlayer: React.FC<{ immediatelyPlay?: boolean }> = ({ immediatelyPlay }) => {
     const { audio } = useAudioContext();
+    const [audioState, setAudioState] = useState(audio);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+    const { modalStore: { modalsState } } = useModalContext();
+    const audioModalState = modalsState.audio;
 
     const audioPlayer = useRef<HTMLMediaElement>(null);
     const progressBar = useRef<HTMLInputElement | null>(null);
@@ -45,11 +49,19 @@ const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay })
         setIsPlaying(!isPlaying);
         if (!isPlaying) {
             audioPlayer.current?.play();
-            animationRef.current = requestAnimationFrame(whilePlaying);
         } else {
             audioPlayer.current?.pause();
-            cancelAnimationFrame(Number(animationRef.current));
         }
+    };
+
+    const play = () => {
+        setIsPlaying(true);
+        audioPlayer.current?.play();
+    };
+
+    const pause = () => {
+        setIsPlaying(false);
+        audioPlayer.current?.pause();
     };
 
     const changeRange = () => {
@@ -59,24 +71,57 @@ const AudioPlayer:React.FC<{ immediatelyPlay?:boolean }> = ({ immediatelyPlay })
         }
         changePlayerCurrentTime();
     };
+
     useEffect(
-        () => {
-            setMaxDuration();
-            if (immediatelyPlay && !isPlaying) {
-                setTimeout(() => {
-                    togglePlayPause();
-                }, (1000));
-            }
+        () => () => {
+            cancelAnimationFrame(Number(animationRef.current));
         },
-        [audioPlayer.current?.readyState],
+        [],
     );
+
+    useEffect(() => {
+        if (!isPlaying) {
+            cancelAnimationFrame(Number(animationRef.current));
+        } else {
+            animationRef.current = requestAnimationFrame(whilePlaying);
+        }
+    }, [isPlaying]);
+
+    const resetAudio = () => {
+        if (audioPlayer.current && progressBar.current) {
+            setMaxDuration();
+            audioPlayer.current.currentTime = 0;
+            progressBar.current.value = '0';
+            changePlayerCurrentTime();
+        }
+    };
+
+    useEffect(() => {
+        resetAudio();
+        if (!isPlaying && immediatelyPlay) {
+            play();
+        }
+    }, [audioState]);
+
+    useEffect(() => {
+        if (!audioModalState) return;
+        setAudioState(audio ? { ...audio } : audio);
+    }, [audioModalState]);
+
+    const handleOnLoadedData = () => {
+        resetAudio();
+        if (immediatelyPlay) {
+            play();
+        }
+    };
 
     return (
         <div className="audioPlayer">
             <audio
                 ref={audioPlayer}
-                src={base64ToUrl(audio?.base64, audio?.mimeType)}
+                src={base64ToUrl(audioState?.base64, audioState?.mimeType)}
                 preload="metadata"
+                onLoadedData={handleOnLoadedData}
             />
             {isPlaying
                 ? (

@@ -33,7 +33,14 @@ export const useModalContext = () => ({
             },
         },
         useModalContext: mockUseModalContext,
-        setConfirmationModal: jest.fn((modalName: any, onSubmit: () => void) => { }),
+        setConfirmationModal: jest.fn((modalName : any, onSubmit: () => void) => {}),
+    },
+});
+
+export const useAudioContext = () => ({
+    audio: {
+        base64: 'base64Mock',
+        mimeType: 'audio/mpeg',
     },
 });
 

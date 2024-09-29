@@ -1,3 +1,4 @@
+import { MemoryRouter } from 'react-router-dom';
 import PartnerLink from './PartnerLink.component';
 import { render } from '@testing-library/react';
 
@@ -15,7 +16,11 @@ const svgNameCollection = ['SvgTwitterNew', 'SvgInstagram', 'SvgFacebook', 'SvgY
 
 describe('PartnerLink', () => {
     it('should render component and its elements', () => {
-        const { container } = render(<PartnerLink link={mockLinkProp} />);
+        const { container } = render(
+            <MemoryRouter>
+                <PartnerLink link={mockLinkProp} />
+            </MemoryRouter>,
+        );
 
         const { logoType } = mockLinkProp;
 
@@ -35,7 +40,11 @@ describe('PartnerLink', () => {
             logoType: 1,
         }
 
-        const { container } = render(<PartnerLink link={newMockLinkProp} />);
+        const { container } = render(
+            <MemoryRouter>
+                <PartnerLink link={newMockLinkProp} />
+            </MemoryRouter>,
+        );
 
         const { logoType } = newMockLinkProp;
 
@@ -51,7 +60,11 @@ describe('PartnerLink', () => {
             logoType: 2,
         }
 
-        const { container } = render(<PartnerLink link={newMockLinkProp} />);
+        const { container } = render(
+            <MemoryRouter>
+                <PartnerLink link={newMockLinkProp} />
+            </MemoryRouter>,
+        );
 
         const { logoType } = newMockLinkProp;
 
@@ -67,7 +80,11 @@ describe('PartnerLink', () => {
             logoType: 3,
         }
 
-        const { container } = render(<PartnerLink link={newMockLinkProp} />);
+        const { container } = render(
+            <MemoryRouter>
+                <PartnerLink link={newMockLinkProp} />
+            </MemoryRouter>,
+        );
 
         const { logoType } = newMockLinkProp;
 
