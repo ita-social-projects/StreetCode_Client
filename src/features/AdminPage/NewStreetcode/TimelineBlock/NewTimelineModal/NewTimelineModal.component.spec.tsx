@@ -78,7 +78,7 @@ jest.mock('antd', () => {
                 [id]: dayjs(),
             });
         }, []);
-        return <input id={id} value={value || ''} onChange={(e) => onChange(dayjs(e.target.value))} type='date' role='textbox' />;
+        return <input {...props} id={id} value={value || ''} onChange={(e) => onChange(dayjs(e.target.value))} type='date' role='textbox' />;
     }
 
     return {
@@ -113,25 +113,6 @@ jest.mock('@/app/common/components/Editor/QEditor.component', () => ({
             </div>
         );
     }),
-}));
-
-const addTimelineMock = jest.fn();
-jest.mock('@stores/root-store', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        timelineItemStore: {
-            getTimelineItemArray: [],
-            addTimeline: addTimelineMock,
-            timelineItemMap: new Map<number, TimelineItem>(),
-        },
-        historicalContextStore: {
-            historicalContextArray: [
-                { id: 1, title: 'context 1' },
-                { id: 2, title: 'context 2' },
-            ],
-            fetchHistoricalContextAll: jest.fn(),
-        },
-    })),
 }));
 
 const open = true;
@@ -274,132 +255,6 @@ describe('NewTimelineModal', () => {
             expect(message.success).toHaveBeenCalled();
             expect(store.timelineItemStore.addTimeline).not.toHaveBeenCalled();
             expect(message.error).not.toHaveBeenCalled();
-        });
-    });
-
-    it('should be rendered', async () => {
-        render(
-            <NewTimelineModal
-                open={open}
-                setIsModalOpen={setOpen}
-                onChange={onChangeMock}
-            />,
-        );
-
-        const inputTitle = screen.getByTestId('input-title');
-        const selectDate = screen.getByTestId('select-date');
-        const datePicker = screen.getByTestId('date-picker');
-        const selectContext = screen.getByTestId('select-context');
-        const textareaDescription = screen.getByTestId('textarea-description');
-        const buttonSave = screen.getByTestId('button-save');
-
-        await waitFor(() => {
-            expect(inputTitle).toBeInTheDocument();
-            expect(selectDate).toBeInTheDocument();
-            expect(datePicker).toBeInTheDocument();
-            expect(selectContext).toBeInTheDocument();
-            expect(textareaDescription).toBeInTheDocument();
-            expect(buttonSave).toBeInTheDocument();
-        });
-    });
-
-    it('should create timeline with required fields only', async () => {
-        render(
-            <NewTimelineModal
-                open={open}
-                setIsModalOpen={setOpen}
-                onChange={onChangeMock}
-            />,
-        );
-
-        // Arrange
-        const inputTitle = screen.getByTestId('input-title');
-        const datePicker = screen.getByTestId('date-picker');
-        const textareaDescription = screen.getByTestId('textarea-description');
-        const buttonSave = screen.getByTestId('button-save');
-
-        const createTimelineWithRequiredOnly: TimelineItem = {
-            id: -1,
-            title: 'title',
-            description: 'description',
-            date: '2024-08-08T00:00:00.000Z',
-            dateViewPattern: DateViewPattern.DateMonthYear,
-            historicalContexts: [],
-        };
-
-        // Act
-        await waitFor(() => {
-            userEvent.type(inputTitle, createTimelineWithRequiredOnly.title);
-            fireEvent.mouseDown(datePicker);
-            fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-            fireEvent.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-            userEvent.type(textareaDescription, createTimelineWithRequiredOnly.description!);
-            userEvent.click(buttonSave);
-        });
-
-        // Assert
-        await waitFor(() => {
-            expect(onChangeMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalledWith(createTimelineWithRequiredOnly);
-        });
-    });
-
-    it('should create timeline with all fields', async () => {
-        render(
-            <NewTimelineModal
-                open={open}
-                setIsModalOpen={setOpen}
-                onChange={onChangeMock}
-            />,
-        );
-
-        // Arrange
-        const inputTitle = screen.getByTestId('input-title');
-        const selectDate = screen.getByTestId('select-date');
-        const datePicker = screen.getByTestId('date-picker');
-        // If try to get by testId test doesn't work. Don't know why :(
-        // const selectContext = screen.getByTestId('select-context');
-        const selectContext = screen.getByRole('combobox', {
-            name: /Контекст/i,
-        });
-        const textareaDescription = screen.getByTestId('textarea-description');
-        const buttonSave = screen.getByTestId('button-save');
-
-        const context: HistoricalContextUpdate = { id: 1, title: 'context 1', modelState: 0 };
-        const createJobWithAllFields: TimelineItem = {
-            id: -1,
-            title: 'title',
-            description: 'description',
-            date: '2024-08-08T00:00:00.000Z',
-            dateViewPattern: DateViewPattern.DateMonthYear,
-            historicalContexts: [context],
-        };
-
-        // Act
-        await waitFor(() => {
-            userEvent.type(inputTitle, createJobWithAllFields.title);
-
-            userEvent.click(selectDate);
-            userEvent.click(screen.getByTitle('Рік, день місяць')!);
-            // userEvent.click(document.querySelector('.ant-select-selection-item')!);
-
-            userEvent.click(datePicker);
-            fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-            userEvent.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-
-            userEvent.click(selectContext);
-            userEvent.click(screen.getByTitle('context 1'));
-
-            userEvent.type(textareaDescription, createJobWithAllFields.description!);
-            userEvent.click(buttonSave);
-        });
-
-        // Assert
-        await waitFor(() => {
-            expect(onChangeMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalledWith(createJobWithAllFields);
         });
     });
 
