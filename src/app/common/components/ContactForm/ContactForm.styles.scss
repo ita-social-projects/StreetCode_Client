@@ -10,6 +10,10 @@
         border: none;
         box-shadow: none !important;
     }
+
+    .ant-input-affix-wrapper > textarea.ant-input {
+        border: 1px solid #D3CDCA;
+    }
 }
 
 .formWrapper {
@@ -49,14 +53,6 @@
     .contactForm {
         @include mut.flexed($direction: column, $gap: 24px);
 
-        .custom-character-counter {
-            margin-bottom: -12px;
-            text-align: right;
-            font-family: "Roboto", "Helvetica Neue", sans-serif !important;
-            font-size: 16px;
-            color: #00000073;
-        }
-
         textarea {
             resize: none;
             outline: none;
@@ -80,15 +76,12 @@
             overflow: auto !important;
         }
 
+        .ant-input-affix-wrapper > textarea.ant-input {
+            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
+        }
+
         .textareaBlock {
             position: relative;
-
-            .amountSymbols {
-                position: absolute;
-                bottom: f.pxToRem(10px);
-                right: f.pxToRem(10px);
-                color: #C4C4C4;
-            }
         }
 
         .ant-input:hover,
@@ -115,9 +108,6 @@
             background-color: #E04031;
         }
 
-        .ant-form-item .ant-form-item-explain-error {
-            }
-
         button {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
             line-height: 23px;
@@ -134,6 +124,10 @@
             &:hover {
                 background-color: c.$dark-red-color;
             }
+        }
+
+        .ant-input-show-count {
+            z-index: 0 !important;
         }
 
         .required-input {
@@ -197,8 +191,6 @@
         }
 
         .contactForm {
-            @include mut.flexed($direction: column, $gap: 16px);
-
             button {
                 width: 100%;
                 padding: f.pxToRem(15px) 0;
@@ -210,12 +202,8 @@
                 line-height: 21px;
             }
 
-            .ant-input-textarea-show-count::after {
-                top: f.pxToRem(110px);
-            }
-
-            .ant-input-textarea-show-count .ant-input-data-count {
-                margin-bottom: f.pxToRem(-18px);
+            .ant-input-affix-wrapper > textarea.ant-input {
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
             }
         }
     }
@@ -224,5 +212,9 @@
 @media screen and (max-width: 480px) {
     .formWrapper .formTitleContainer .formTitle {
         text-align: center;
+    }
+
+    .ant-form-item-explain-error {
+        padding: 0 45px;
     }
 }

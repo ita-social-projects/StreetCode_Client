@@ -13,7 +13,7 @@ import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@/app/common/constants/er
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import AuthService from '@/app/common/services/auth-service/AuthService';
 
-const AdminLogin:React.FC = () => {
+const AdminLogin: React.FC = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const [isVerified, setIsVerified] = useState(false);
@@ -70,6 +70,7 @@ const AdminLogin:React.FC = () => {
                     onChange={handleVerify}
                     onExpired={handleExpiration}
                     ref={recaptchaRef}
+                    hl='uk'
                 />
             </div>
             <Form.Item>
