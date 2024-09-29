@@ -54,12 +54,14 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
         </div>
     ));
 
-    const initialSlide = showAllTags ? getAllTagsArray.findIndex((tag) => tag.id === activeTagId) : getTagArray.findIndex((tag) => tag.id === activeTagId);
+    const initialSlide = showAllTags
+        ? getAllTagsArray.findIndex((tag) => tag.id === activeTagId)
+        : getTagArray.findIndex((tag) => tag.id === activeTagId);
 
     const sliderProps = {
         className: 'tagSliderClass',
         infinite: false,
-        slidesToSho: 1,
+        slidesToShow: 1,
         arrows: false,
         swipe: false,
         dots: false,
