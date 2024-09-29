@@ -11,8 +11,7 @@
     font-size: f.pxToRem(20px);
     line-height: f.pxToRem(26px);
     font-style: italic;
-    display: flex;
-    justify-content:flex-end;
+    word-break: break-all;
 
     p {
         font-family: 'Closer Text' !important;
@@ -22,6 +21,18 @@
             color: #891F16;
             text-decoration: underline;
         }
+    }
+    
+    ul {
+        @include mut.list-styles($type: disc);
+    }
+
+    ol {
+        @include mut.list-styles($type: decimal);
+    }
+
+    li {
+        list-style-position: inside;
     }
 }
 

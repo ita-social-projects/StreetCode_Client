@@ -39,7 +39,7 @@ const ContactBlock = () => (
                         <Instagram />
                     </div>
                 </a>
-                <a href={SOCIAL_MEDIA.TWITTER} target="_blank" rel="noreferrer">
+                <a href={SOCIAL_MEDIA.X} target="_blank" rel="noreferrer">
                     <div className="icon">
                         <Twitter />
                     </div>
