@@ -90,6 +90,7 @@ const TeamModal: React.FC<{
     useEffect(() => {
         if (teamMember && open) {
             imageId.current = teamMember.imageId;
+            setFileList(getImageAsFileInArray());
             form.setFieldsValue({
                 ...teamMember,
                 positions: teamMember.positions.map((s) => s.position),
@@ -403,8 +404,11 @@ const TeamModal: React.FC<{
                 </div>
 
                 <div className="center">
-                    {/* disabled={fileList?.length === 0} */}
-                    <Button className="streetcode-custom-button" onClick={handleOk}>
+                    <Button
+                        className="streetcode-custom-button"
+                        onClick={handleOk}
+                        disabled={fileList.length === 0}
+                    >
                         Зберегти
                     </Button>
                 </div>
