@@ -64,25 +64,30 @@ const HeaderDrawer = () => {
         query: '(max-width: 1024px)',
     });
 
-    const setCatalogForStreetcodePage = (currentPath: string) => {
-        let optionId = menuOptions.indexOf(currentPath);
+    const getMenuOptionIdByCurrentPath = (currentPath: string) => {
+        const optionId = menuOptions.indexOf(currentPath);
 
-        const isExcluded = currentPath !== FRONTEND_ROUTES.BASE
-            && menuOptions
-                .filter((option, index) => index !== 0)
-                .some((option) => currentPath.startsWith(option));
+        // on the desktop there is no Privacy Policy menu item
+        const isDesktopAndPrivacyPath = !isSmall && currentPath === FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY;
 
-        if (currentPath && !isExcluded) {
-            if (currentPath !== FRONTEND_ROUTES.BASE) {
-                optionId = 1;
-            }
+        if (optionId >= 0 && !isDesktopAndPrivacyPath) {
+            return optionId;
         }
-        return optionId;
+
+        // if the current path does not match any menu item
+        // and is not streetcode page, stay at the beginning
+        if (currentPath.startsWith('/news')
+            || isDesktopAndPrivacyPath) {
+            return 0;
+        }
+
+        // otherwise return Streetcodes menu option ID
+        return 1;
     };
 
     useEffect(() => {
         const currentPath = location.pathname;
-        const optionId = setCatalogForStreetcodePage(currentPath);
+        const optionId = getMenuOptionIdByCurrentPath(currentPath);
 
         if (isSmall) {
             setScalingCooficient(scaleMobile);
