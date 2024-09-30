@@ -90,13 +90,14 @@ const ArtGallery = ({
     if (streetcodeIdValidAndFetchingRequired()) {
       secondRender.current = true;
       if (isFillArtsStore) {
-        await fetchAllToDefaultTemplate(getStreetCodeId !== -1 ? getStreetCodeId : parseId);
+        let currStreetcodeId = getStreetCodeId !== -1 ? getStreetCodeId : parseId;
+        const startingSlide = await fetchAllToDefaultTemplate(currStreetcodeId);
 
-        let currentSlide = 0;
+        let currentSlide = startingSlide ?? 0;
         while (currentSlide < MAX_SLIDES_AMOUNT) {
           try {
             // eslint-disable-next-line no-await-in-loop
-            await fetchAllArtSlidesByStreetcodeId(getStreetCodeId !== -1 ? getStreetCodeId : parseId, currentSlide);
+            await fetchAllArtSlidesByStreetcodeId(currStreetcodeId, currentSlide);
             
             currentSlide += amountOfSlides;
           } catch (error: unknown) {

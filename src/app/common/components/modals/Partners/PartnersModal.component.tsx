@@ -36,7 +36,12 @@ const PartnersModal = () => {
     const onFinish = () => {
         if (isVerified) {
             const token = recaptchaRef?.current?.getValue();
-            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
+            const newEmail: Email = {
+                from: formData.email,
+                source: 'сторінка Партнери',
+                content: formData.message,
+                token,
+            };
             EmailApi.send(newEmail)
                 .then(() => {
                     onCancel();
@@ -118,9 +123,7 @@ const PartnersModal = () => {
             footer={null}
             onCancel={onCancel}
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
-                    <CancelBtn className="iconSize" onClick={onClear} />
-                </Popover>
+                <CancelBtn className="iconSize" onClick={onClear} />
             )}
         >
             {messageContextHolder}
@@ -183,6 +186,7 @@ const PartnersModal = () => {
                                 onChange={handleVerify}
                                 onExpired={handleExpiration}
                                 ref={recaptchaRef}
+                                hl='uk'
                             />
                         </div>
                         <Form.Item>
