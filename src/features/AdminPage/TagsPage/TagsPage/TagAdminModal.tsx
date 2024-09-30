@@ -3,7 +3,8 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import React, {
-    Dispatch, SetStateAction, useEffect
+    Dispatch, SetStateAction, useEffect,
+    useState
 } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
@@ -34,6 +35,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [form] = Form.useForm();
     const isEditing = !!initialData;
 
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+
     useAsync(() => tagsStore.fetchTags(), []);
 
     useEffect(() => {
@@ -42,7 +45,17 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 title: initialData.title,
             });
         }
+        updateSaveButtonState();
     }, [initialData, isModalVisible, form]);
+
+    const updateSaveButtonState = () => {
+        const title = form.getFieldValue("title")?.trim();
+        const isChanged = initialData ? initialData.title !== title : true;
+        const isEmpty = !title;
+        const isExisting = isEmpty ? false : tagsStore.getTagArray.some(tag => tag.title === title);
+
+        setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
+    }
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -58,7 +71,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         await form.validateFields();
 
         const currentTag = {
-            ...(initialData?.id && { id : initialData?.id }),
+            ...(initialData?.id && { id: initialData?.id }),
             title: (formData.title as string).trim(),
         };
 
@@ -90,7 +103,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 top: 100,
                 duration: 3,
                 maxCount: 3,
-                rtl: true,
                 prefixCls: 'my-message',
             });
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -111,12 +123,18 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 )}
                 footer={null}
             >
-                <Form form={form} layout="vertical" onFinish={onSubmit} initialValues={initialData} onKeyDown={(e)=> e.key == "Enter" ? e.preventDefault(): ''}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={onSubmit}
+                    initialValues={initialData}
+                    onKeyDown={(e) => e.key == "Enter" ? e.preventDefault() : ''}
+                    onValuesChange={updateSaveButtonState}>
                     <Form.Item
                         name="title"
                         label="Назва: "
                         rules={[{ required: true, message: 'Введіть назву' },
-                            {validator: validateTag}
+                        { validator: validateTag }
                         ]}
                         getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
                     >
@@ -125,6 +143,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <div className="center">
                         <Button
                             className="streetcode-custom-button"
+                            disabled={isSaveButtonDisabled}
                             onClick={() => handleOk()}
                         >
                             Зберегти

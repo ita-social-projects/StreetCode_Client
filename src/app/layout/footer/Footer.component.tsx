@@ -41,13 +41,13 @@ const Footer = () => {
                     </div>
                     <div className="usefulLinksColumnContainer">
                         <ul className="usefulLinksColumn">
-                            <li><a href={FRONTEND_ROUTES.BASE}>Головна</a></li>
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>Стріткоди</a></li>
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}>Про нас</a></li>
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Контакти</a></li>
+                            <li><Link to={FRONTEND_ROUTES.BASE}>Головна</Link></li>
+                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>Стріткоди</Link></li>
+                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}>Про нас</Link></li>
+                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Контакти</Link></li>
                         </ul>
                         <ul className="usefulLinksColumn">
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS}>Партнери</a></li>
+                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS}>Партнери</Link></li>
                             {hasVacancies ? (
                                 <li>
                                     <Link
@@ -58,10 +58,10 @@ const Footer = () => {
                                     </Link>
                                 </li>
                             ) : null}
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US}>Донати</a></li>
+                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US}>Донати</Link></li>
                         </ul>
                         <ul className="usefulLinksColumn supportLinks">
-                            <li><a href={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}>Політика конфіденційності</a></li>
+                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}>Політика конфіденційності</Link></li>
                             <li><ContactUsModal toggleState={() => { }} text="Зворотний зв&apos;язок" /></li>
                             <li>
                                 <a href={REPORTS} target="_blank" rel="noreferrer">
@@ -81,7 +81,7 @@ const Footer = () => {
                                 </a>
                             </li>
                             <li>
-                                <a href={SOCIAL_MEDIA.TWITTER} target="_blank" rel="noreferrer">
+                                <a href={SOCIAL_MEDIA.X} target="_blank" rel="noreferrer">
                                     <Twitter />
                                 </a>
                             </li>

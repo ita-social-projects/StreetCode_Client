@@ -2,6 +2,7 @@
 import './StreetcodeCatalogItem.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import useMobx from '@stores/root-store';
 import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
@@ -30,6 +31,8 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
     const elementRef = useRef<HTMLDivElement>(null);
     const classSelector = 'catalogItem';
     const [linkStyle, setLinkStyle] = useState({}); 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -63,14 +66,14 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
         style: {
             backgroundImage: `url(${base64ToUrl(imagesForSlider?.base64, imagesForSlider?.mimeType)})`
         },
-        href: `../${streetcode.url}`,
+        to: `../${streetcode.url}`,
     };
 
 const windowsize = useWindowSize();
 
 const handleClickRedirect = () => {
     toStreetcodeRedirectClickEvent(streetcode.url.toString(), 'catalog');
-    window.location.href = `/${streetcode.url}`;
+        navigate(`/${streetcode.url}`);
 };
 const handleTextClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -111,7 +114,7 @@ useEffect(() => {
 return (
     <>
         {windowsize.width > 1024 && (
-            <a {...LinkProps} href={`/${streetcode.url}`} onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}>
+                <Link {...LinkProps} to={`/${streetcode.url}`} onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}>
                 <div ref={elementRef} className="catalogItemText">
                     <div className="heading">
                         <p>{streetcode.title}</p>
@@ -126,11 +129,11 @@ return (
                         }
                     </div>
                 </div>
-            </a>
+                </Link>
         )}
         {windowsize.width <= 1024 && (
             <div>
-                <a {...LinkProps} href={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')} />
+                    <Link {...LinkProps} to={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')} />
                 <div ref={elementRef} className="catalogItemText mobile">
                     <div className="heading" onClick={handleTextClick}>
                         <p>{streetcode.title}</p>

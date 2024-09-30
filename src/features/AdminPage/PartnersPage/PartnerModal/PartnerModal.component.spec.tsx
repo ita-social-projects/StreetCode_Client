@@ -237,6 +237,6 @@ describe("PartnerModal", () => {
       expect(PartnersApi.update).toHaveBeenCalled();
       expect(PartnersApi.create).not.toHaveBeenCalled();
     });
-  }, 10000);
+  });
 
 });
