@@ -4,6 +4,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
@@ -20,6 +21,8 @@ import TextArea from 'antd/es/input/TextArea';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
+import ImageStore from '@/app/stores/image-store';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
@@ -29,16 +32,17 @@ import Partner, {
     PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-import ImageStore from '@/app/stores/image-store';
-import { runInAction } from 'mobx';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import { UploadChangeParam } from 'antd/es/upload';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const PartnerModal: React.FC< {
-  partnerItem?: Partner;
-  open: boolean;
-  isStreetcodeVisible?: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  afterSubmit?: (partner: Partner) => void;
+    partnerItem?: Partner;
+    open: boolean;
+    isStreetcodeVisible?: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    afterSubmit?: (partner: Partner) => void;
 }> = observer(
     ({
         partnerItem,
@@ -49,6 +53,7 @@ const PartnerModal: React.FC< {
     }) => {
         // eslint-disable-next-line max-len,no-useless-escape
         const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,256}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+        const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
         const [form] = Form.useForm();
         const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
         const [urlTitleValue, setUrlTitleValue] = useState<string>('');
@@ -77,7 +82,7 @@ const PartnerModal: React.FC< {
                                 val.id,
                                 { ...val, logo },
                             );
-                        })
+                        });
                     });
                 });
             }).then(() => partnersStore.setInternalMap(partnersStore.getPartnerArray));
@@ -304,6 +309,14 @@ const PartnerModal: React.FC< {
             }
         };
 
+        const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+        const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+            if (checkFile(param.file)) {
+                setFileList(param.fileList);
+            }
+        };
+
         return (
             <Modal
                 open={open}
@@ -380,7 +393,7 @@ const PartnerModal: React.FC< {
                         </Form.Item>
                         {urlTitleEnabled === '' && urlTitleValue && (
                             <p className="error-text">
-                Введіть правильне посилання для збереження назви посилання.
+                                Введіть правильне посилання для збереження назви посилання.
                             </p>
                         )}
 
@@ -391,19 +404,15 @@ const PartnerModal: React.FC< {
                         <Form.Item
                             name="logo"
                             label="Лого"
-                            valuePropName="fileList"
-                            getValueFromEvent={(e: any) => {
-                                if (Array.isArray(e)) {
-                                    return e;
-                                }
-                                return e?.fileList;
-                            }}
-                            rules={[{ required: true, message: 'Завантажте лого' }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Завантажте лого',
+                                },
+                                { validator: imageValidator },
+                            ]}
                         >
                             <FileUploader
-                                onChange={(param) => {
-                                    setFileList(param.fileList);
-                                }}
                                 fileList={fileList}
                                 className="logo-uploader"
                                 multiple={false}
@@ -411,6 +420,8 @@ const PartnerModal: React.FC< {
                                 listType="picture-card"
                                 maxCount={1}
                                 onPreview={handlePreview}
+                                beforeUpload={checkFile}
+                                onChange={handleFileChange}
                                 onRemove={() => {
                                     imageId.current = 0;
                                 }}
@@ -454,7 +465,7 @@ const PartnerModal: React.FC< {
                             className="partner-source-list-item"
                         >
                             <PartnerLink link={link} />
-                            <p>{link.targetUrl}</p>
+                            <p className="partner-source-text">{link.targetUrl}</p>
                             <DeleteOutlined
                                 onClick={() => setPartnersSourceLinks(
                                     partnerSourceLinks.filter((l) => l.id !== link.id),
@@ -468,7 +479,7 @@ const PartnerModal: React.FC< {
                         onClick={handleShowSecondForm}
                         className="add-social-media-button"
                     >
-            Додати соціальну мережу
+                        Додати соціальну мережу
                     </Button>
                 )}
                 <Form
@@ -480,7 +491,7 @@ const PartnerModal: React.FC< {
                         <div>
                             <div className="button-container">
                                 <Button onClick={handleHideSecondForm} className="close-button">
-                  Закрити
+                                    Закрити
                                 </Button>
                             </div>
                             <div className="link-container">
@@ -490,7 +501,10 @@ const PartnerModal: React.FC< {
                                     rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
                                     className="social-media-form-item"
                                 >
-                                    <Select options={SOCIAL_OPTIONS} />
+                                    <Select
+                                        options={SOCIAL_OPTIONS}
+                                        onChange={() => partnerLinksForm.validateFields(['url'])}
+                                    />
                                 </FormItem>
                                 <Form.Item
                                     label="Посилання"
@@ -503,15 +517,14 @@ const PartnerModal: React.FC< {
                                         },
                                         {
                                             validator: (_, value) => {
-                                                const logotype = partnerLinksForm.getFieldValue('logotype');
-
-                                                if (!value || !logotype || value.toLowerCase().includes(logotype)) {
-                                                    return Promise.resolve();
-                                                }
-
-                                                return Promise.reject(new Error(
-                                                    'Посилання не співпадає з вибраним текстом',
-                                                ));
+                                                const socialName = partnerLinksForm.getFieldValue('logotype');
+                                                return validateSocialLink<LogoType>(
+                                                    value,
+                                                    SOCIAL_OPTIONS,
+                                                    LOGO_TYPES,
+                                                    partnerSourceLinks,
+                                                    socialName,
+                                                );
                                             },
                                         },
                                     ]}
@@ -536,7 +549,7 @@ const PartnerModal: React.FC< {
                         <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
-                  Зберегти
+                                    Зберегти
                                 </Button>
                             </span>
                         </Popover>
@@ -546,7 +559,7 @@ const PartnerModal: React.FC< {
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
-              Зберегти
+                            Зберегти
                         </Button>
                     )}
                 </div>

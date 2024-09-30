@@ -38,53 +38,57 @@ module.exports = {
     new Dotenv({
       path: `./.env`,
     }),
-    // new GenerateSW({
-    //   skipWaiting: true,
-    //   clientsClaim: true,
-    //   maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
-    //   runtimeCaching: [
-    //     {
-    //       urlPattern: /\.(?:js|css)$/,
-    //       handler: 'CacheFirst',
-    //       options: {
-    //         cacheName: 'static-resources',
-    //         expiration: {
-    //           maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
-    //         },
-    //       },
-    //     },
-    //     {
-    //       urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
-    //       handler: 'CacheFirst',
-    //       options: {
-    //         cacheName: 'image-resources',
-    //         expiration: {
-    //           maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
-    //         },
-    //       },
-    //     },
-    //     {
-    //       urlPattern: /\.(?:woff|woff2|ttf|otf)$/,
-    //       handler:'CacheFirst',
-    //       options: {
-    //         cacheName: 'font-resources',
-    //         expiration: {
-    //           maxAgeSeconds: 60 * 60 * 24 * 90, // 3 months
-    //         },
-    //       },
-    //     },
-    //     {
-    //       urlPattern: /^https?.*/,
-    //       handler: 'NetworkFirst',
-    //       options: {
-    //         cacheName: 'external-resources',
-    //         expiration: {
-    //           maxEntries: 260
-    //         },
-    //       },
-    //     },
-    //   ],
-    // }),
+    new GenerateSW({
+      skipWaiting: true,
+      clientsClaim: true,
+      maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+      runtimeCaching: [
+        {
+          urlPattern: /env-config\.js$/,
+          handler: 'NetworkOnly'
+        },
+        {
+          urlPattern: /\.(?:js|css)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'static-resources',
+            expiration: {
+              maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+            },
+          },
+        },
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'image-resources',
+            expiration: {
+              maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+            },
+          },
+        },
+        {
+          urlPattern: /\.(?:woff|woff2|ttf|otf)$/,
+          handler:'CacheFirst',
+          options: {
+            cacheName: 'font-resources',
+            expiration: {
+              maxAgeSeconds: 60 * 60 * 24 * 90, // 3 months
+            },
+          },
+        },
+        {
+          urlPattern: /^https?.*/,
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'external-resources',
+            expiration: {
+              maxEntries: 260
+            },
+          },
+        },
+      ],
+    }),
   ],
   optimization: {
     splitChunks: {
