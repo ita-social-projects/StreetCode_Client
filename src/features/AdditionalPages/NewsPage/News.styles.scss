@@ -151,6 +151,13 @@
     }
 }
 
+@media (hover: none) {
+    .newsContainer .randomNewsBlock .randomNewsLink .randomNewsTitleAndButtn .newsButtonContainer button:hover {
+        background: #E04031;
+    }
+}
+
+
 @media screen and (max-width: 1024px) {
     .newsContainer {
         @include mut.rem-padded($bottom: 20px, $top: 94px, $left: 10px, $right: 10px);

@@ -55,8 +55,14 @@ const StreetcodesTable = () => {
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
 
     const setRequest = () => {
+        let page = pageRequest;
+        if(requestGetAll.Title !== titleRequest || requestGetAll.Filter !== statusRequest) {
+            setPageRequest(1);
+            setCurrentPages(1);
+            page = 1;
+        }
         setRequestGetAll({
-            Page: pageRequest,
+            Page: page,
             Amount: amountRequest,
             Title: titleRequest === '' ? null : titleRequest,
             Sort: null,
