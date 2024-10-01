@@ -43,7 +43,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { sourcesAdminStore } = useMobx();
     const [form] = Form.useForm();
     const imageId = useRef<number>(0);
-    const [image, setImage] = useState<Image>();
+    const [image, setImage] = useState<Image>(null!);
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const isEditing = !!initialData;
@@ -166,6 +166,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
         handleInputChange();
     };
 
+    const handleRemove = (file: UploadFile) => {
+        setFileList([]);
+        setImage(null!);
+    };
+
     return (
         <>
             <Modal
@@ -208,6 +213,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             fileList={fileList}
                             onSuccessUpload={handleImageChange}
                             onPreview={handlePreview}
+                            onRemove={handleRemove}
                             defaultFileList={initialData
                                 ? [{
                                     name: '',
@@ -222,7 +228,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </Form.Item>
                     <div className="center">
                         <Button
-                            disabled={fileList?.length === 0 || isSaveButtonDisabled}
+                            disabled={fileList?.length === 0 || isSaveButtonDisabled || !image}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >

@@ -109,8 +109,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
     };
 
-	  const handleInputChange = () => setIsSaveButtonDisabled(false);
-
     return (
         <>
             <Modal
@@ -139,7 +137,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         { validator: validateTag }
                         ]}
                     >
-                        <Input placeholder="Title" maxLength={50} showCount onChange={handleInputChange} />
+                        <Input placeholder="Title" maxLength={50} showCount/>
                     </Form.Item>
                     <div className="center">
                         <Button

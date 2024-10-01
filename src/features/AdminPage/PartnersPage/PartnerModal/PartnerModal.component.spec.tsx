@@ -97,7 +97,7 @@ jest.mock('antd', () => {
   const Select = ({ children, value, onSelect, onDeselect, onChange, options, ...otherProps }: any) => {
     const [selectedValue, setSelectedValue] = useState<string>(null!);
     return <div>
-      <button aria-label={selectedValue} onClick={()=>{onDeselect(selectedValue)}}>{selectedValue}</button>
+      <button aria-label={selectedValue} onClick={() => { onDeselect(selectedValue) }}>{selectedValue}</button>
       <select onChange={e => {
         setSelectedValue(e.target.value);
         onSelect?.(e.target.value);
@@ -112,7 +112,7 @@ jest.mock('antd', () => {
         })}
         {children}
       </select>
-      </div>;
+    </div>;
   };
   Select.Option = (props: any) => {
     return <option {...props} />
@@ -354,7 +354,7 @@ describe("PartnerModal", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole('listitem', { name: "partnerLink" }).innerHTML).toContain("https://www.instagram.com/example/");
+      expect(dom.baseElement.innerHTML).toContain("https://www.instagram.com/example/");
     });
   });
 

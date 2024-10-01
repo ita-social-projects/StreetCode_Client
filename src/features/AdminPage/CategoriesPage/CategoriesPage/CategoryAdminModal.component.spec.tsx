@@ -7,6 +7,7 @@ import SourcesApi from '@/app/api/sources/sources.api';
 import 'jest-canvas-mock';
 import { message } from 'antd';
 import Image from '@/models/media/image.model';
+import Uploader from '../../../../app/common/components/FileUploader/FileUploader.component';
 
 export default function overrideMatchMedia() {
     Object.defineProperty(window, 'matchMedia', {
@@ -35,15 +36,25 @@ jest.mock('@app/api/sources/sources.api', () => ({
     },
 }));
 
+const mockImage = {
+    id: 1,
+    base64: "base64",
+    blobName: "blobName",
+    mimeType: "image/jpeg"
+} as Image;
+
 jest.mock('@api/media/images.api', () => ({
     __esModule: true,
     default: {
-        getById: async () => ({
-            id: 1,
-            base64: "base64",
-            blobName: "blobName",
-            mimeType: "image/jpeg"
-        } as Image),
+        create: async () => (mockImage),
+        getById: async () => (mockImage),
+    },
+}));
+jest.mock('@/app/api/media/images.api', () => ({
+    __esModule: true,
+    default: {
+        create: async () => (mockImage),
+        getById: async () => (mockImage),
     },
 }));
 
@@ -63,11 +74,9 @@ jest.mock('antd', () => {
 });
 
 describe('CategoryAdminModal', () => {
-    beforeEach(() => {
-        jest.resetAllMocks();
-    });
     afterEach(() => {
         cleanup();
+        jest.clearAllMocks();
     });
     const defaultProps = {
         isModalVisible: true,
