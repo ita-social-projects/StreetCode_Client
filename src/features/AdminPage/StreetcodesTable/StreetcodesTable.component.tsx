@@ -56,7 +56,8 @@ const StreetcodesTable = () => {
 
     const setRequest = () => {
         let page = pageRequest;
-        if(requestGetAll.Title !== titleRequest || requestGetAll.Filter !== statusRequest) {
+        const filter = statusRequest.length === 0 ? null : `Status:${statusRequest}`;
+        if (requestGetAll.Title !== titleRequest || requestGetAll.Filter !== filter) {
             setPageRequest(1);
             setCurrentPages(1);
             page = 1;
@@ -66,7 +67,7 @@ const StreetcodesTable = () => {
             Amount: amountRequest,
             Title: titleRequest === '' ? null : titleRequest,
             Sort: null,
-            Filter: statusRequest.length === 0 ? null : `Status:${statusRequest}`,
+            Filter: filter,
         });
     };
 

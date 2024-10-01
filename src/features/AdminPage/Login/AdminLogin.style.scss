@@ -7,6 +7,7 @@
     padding-top: 100px;
     @include mut.sized(400px,200px);
     margin: auto;
+    margin-top: 0;
 
     .ant-form-item-label {
         flex: 0 0 80px;
