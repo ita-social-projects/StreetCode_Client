@@ -21,6 +21,7 @@ import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import { RuleObject } from 'antd/es/form';
 
 const convertFileToUploadFile = (file: Image | Audio) => {
     const newFileList: UploadFile = {
@@ -197,22 +198,11 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
 
     const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
-    const handleAnimationChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
-            setAnimation(param.fileList);
+    const notRequiredImageValidator = (_: RuleObject, file: any): Promise<void> => {
+        if (!file) {
+            return Promise.resolve();
         }
-    };
-
-    const handleBlackAndWhiteChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
-            setBlackAndWhite(param.fileList);
-        }
-    };
-
-    const handleRelatedFigureChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
-            setRelatedFigure(param.fileList);
-        }
+        return imageValidator(_, file);
     };
 
     return (
@@ -221,7 +211,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="animations"
                     label="Кольорове"
-                    rules={[{ validator: imageValidator }]}
+                    rules={[{ validator: notRequiredImageValidator }]}
                 >
                     <FileUploader
                         accept=".jpeg,.png,.jpg,.webp"
@@ -230,7 +220,6 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         maxCount={1}
                         fileList={animation}
                         beforeUpload={checkFile}
-                        onChange={handleAnimationChange}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image | Audio) => {
@@ -264,7 +253,6 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         maxCount={1}
                         fileList={blackAndWhite}
                         beforeUpload={checkFile}
-                        onChange={handleBlackAndWhiteChange}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image | Audio) => {
@@ -283,7 +271,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="pictureRelations"
                     label="Для зв'язків"
-                    rules={[{ validator: imageValidator }]}
+                    rules={[{ validator: notRequiredImageValidator }]}
                 >
                     <FileUploader
                         multiple={false}
@@ -294,7 +282,6 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         beforeUpload={checkFile}
-                        onChange={handleRelatedFigureChange}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure([convertFileToUploadFile(file as Image)]);
