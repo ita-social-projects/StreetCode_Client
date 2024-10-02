@@ -1,5 +1,6 @@
-import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
 import { RuleObject } from 'rc-field-form/lib/interface';
+
+import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
 
 const imageValidator = (_: RuleObject, file: any): Promise<void> => {
     if (file) {
@@ -12,7 +13,7 @@ const imageValidator = (_: RuleObject, file: any): Promise<void> => {
 
         const allowedExtensions = ['.jpeg', '.png', '.webp', '.jpg'];
 
-        if (allowedExtensions.some((ext) => name.endsWith(ext))) {
+        if (name === '' || allowedExtensions.some((ext) => name.endsWith(ext))) {
             return Promise.resolve();
         }
 
