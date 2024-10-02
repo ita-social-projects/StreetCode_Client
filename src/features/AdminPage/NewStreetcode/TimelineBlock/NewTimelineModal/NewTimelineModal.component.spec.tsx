@@ -1,13 +1,31 @@
-import {
-    cleanup, fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
-import user from '@testing-library/user-event';
-
+import { render, screen, waitFor, cleanup, fireEvent } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
+import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
+import 'jest-canvas-mock';
+import { Form, message } from 'antd';
+import NewTimelineModal from './NewTimelineModal.component';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { store, timelineExample } from '../../../../../../__mocks__/@stores/root-store';
 import TimelineItem, { DateViewPattern, HistoricalContextUpdate } from '@/models/timeline/chronology.model';
 
-import '@testing-library/jest-dom';
+export default function overrideMatchMedia() {
+    Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: () => ({
+            matches: false,
+            onchange: null,
+            addListener: () => { },
+            removeListener: () => { },
+            addEventListener: () => { },
+            removeEventListener: () => { },
+            dispatchEvent: () => { }
+        }),
+    });
+}
 
-import NewTimelineModal from './NewTimelineModal.component';
+overrideMatchMedia();
 
 const mockTimeLine: TimelineItem = {
     id: 1,
@@ -18,19 +36,62 @@ const mockTimeLine: TimelineItem = {
     historicalContexts: [],
 };
 
-// needed to render component without errors
-Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: (query: any) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: () => { },
-        removeListener: () => { },
-        addEventListener: () => { },
-        removeEventListener: () => { },
-        dispatchEvent: () => { },
-    }),
+jest.mock('antd', () => {
+    const antd = jest.requireActual('antd');
+    const message = antd;
+
+    const Select = ({ id, children, value, onSelect, onDeselect, onChange, options, onInputKeyDown, onSearch, ...otherProps }: any) => {
+        const [selectedValue, setSelectedValue] = useState<string>(value || '');
+        const form = Form.useFormInstance();
+        const handleChange = async (e: any) => {
+            await onSelect?.(e.target.value);
+            await onChange?.(e.target.value);
+            setSelectedValue(e.target.value);
+        }
+        return <div >
+            <button aria-label={`${id}-deselect`} onClick={() => { onDeselect(selectedValue) }}>{selectedValue}</button>
+            <input aria-label={`${id}-search`} type="search" onChange={async (e) => {
+                await onInputKeyDown(e);
+                await onSearch(e.target.value);
+                await handleChange(e);
+            }} />
+            <select id={id} value={selectedValue} onChange={handleChange} {...otherProps}>
+                {options?.map((option: { value: string, label: string }) => {
+                    return (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    )
+                })}
+                {children}
+            </select>
+        </div>;
+    };
+    Select.Option = (props: any) => {
+        return <option {...props} />
+    }
+
+    const DatePicker = ({ id, value, onChange, ...props }: any) => {
+        const form = Form.useFormInstance();
+        useEffect(() => {
+            form.setFieldsValue({
+                [id]: dayjs(),
+            });
+        }, []);
+        return <input {...props} id={id} value={value || ''} onChange={(e) => onChange(dayjs(e.target.value))} type='date' role='textbox' />;
+    }
+
+    return {
+        ...antd,
+        Select,
+        DatePicker,
+        message: {
+            ...message,
+            success: jest.fn(),
+            config: jest.fn(),
+            error: jest.fn(),
+        },
+    };
 });
 
 jest.mock('@/app/common/components/Editor/QEditor.component', () => ({
@@ -54,158 +115,146 @@ jest.mock('@/app/common/components/Editor/QEditor.component', () => ({
     }),
 }));
 
-const addTimelineMock = jest.fn();
-jest.mock('@stores/root-store', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        timelineItemStore: {
-            getTimelineItemArray: [],
-            addTimeline: addTimelineMock,
-            timelineItemMap: new Map<number, TimelineItem>(),
-        },
-        historicalContextStore: {
-            historicalContextArray: [
-                { id: 1, title: 'context 1' },
-                { id: 2, title: 'context 2' },
-            ],
-            fetchHistoricalContextAll: jest.fn(),
-        },
-    })),
-}));
-
 const open = true;
 const setOpen = () => { };
 const onChangeMock = jest.fn();
 
-describe('NewTimelineModal test', () => {
+describe('NewTimelineModal', () => {
     afterEach(() => {
         jest.clearAllMocks();
         cleanup();
     });
+    const defaultProps = {
+        timelineItem: undefined,
+        open: true,
+        setIsModalOpen: jest.fn(),
+        onChange: jest.fn(),
+    };
 
-    it('should be rendered', async () => {
-        render(
-            <NewTimelineModal
-                open={open}
-                setIsModalOpen={setOpen}
-                onChange={onChangeMock}
-            />,
-        );
-
-        const inputTitle = screen.getByTestId('input-title');
-        const selectDate = screen.getByTestId('select-date');
-        const datePicker = screen.getByTestId('date-picker');
-        const selectContext = screen.getByTestId('select-context');
-        const textareaDescription = screen.getByTestId('textarea-description');
-        const buttonSave = screen.getByTestId('button-save');
-
-        await waitFor(() => {
-            expect(inputTitle).toBeInTheDocument();
-            expect(selectDate).toBeInTheDocument();
-            expect(datePicker).toBeInTheDocument();
-            expect(selectContext).toBeInTheDocument();
-            expect(textareaDescription).toBeInTheDocument();
-            expect(buttonSave).toBeInTheDocument();
+    it('renders without errors', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} />);
         });
     });
 
-    it('should create timeline with required fields only', async () => {
-        render(
-            <NewTimelineModal
-                open={open}
-                setIsModalOpen={setOpen}
-                onChange={onChangeMock}
-            />,
-        );
-
-        // Arrange
-        const inputTitle = screen.getByTestId('input-title');
-        const datePicker = screen.getByTestId('date-picker');
-        const textareaDescription = screen.getByTestId('textarea-description');
-        const buttonSave = screen.getByTestId('button-save');
-
-        const createTimelineWithRequiredOnly: TimelineItem = {
-            id: -1,
-            title: 'title',
-            description: 'description',
-            date: '2024-08-08T00:00:00.000Z',
-            dateViewPattern: DateViewPattern.DateMonthYear,
-            historicalContexts: [],
-        };
-
-        // Act
-        await waitFor(() => {
-            user.type(inputTitle, createTimelineWithRequiredOnly.title);
-            fireEvent.mouseDown(datePicker);
-            fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-            fireEvent.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-            user.type(textareaDescription, createTimelineWithRequiredOnly.description!);
-            user.click(buttonSave);
+    it('disables save button on start', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} />);
         });
 
-        // Assert
         await waitFor(() => {
-            expect(onChangeMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalledWith(createTimelineWithRequiredOnly);
+            expect(screen.getByRole('button', { name: /Зберегти/i })).toBeDisabled();
         });
     });
 
-    it('should create timeline with all fields', async () => {
-        render(
-            <NewTimelineModal
-                open={open}
-                setIsModalOpen={setOpen}
-                onChange={onChangeMock}
-            />,
-        );
-
-        // Arrange
-        const inputTitle = screen.getByTestId('input-title');
-        const selectDate = screen.getByTestId('select-date');
-        const datePicker = screen.getByTestId('date-picker');
-        // If try to get by testId test doesn't work. Don't know why :(
-        // const selectContext = screen.getByTestId('select-context');
-        const selectContext = screen.getByRole('combobox', {
-            name: /Контекст/i,
-        });
-        const textareaDescription = screen.getByTestId('textarea-description');
-        const buttonSave = screen.getByTestId('button-save');
-
-        const context: HistoricalContextUpdate = { id: 1, title: 'context 1', modelState: 0 };
-        const createJobWithAllFields: TimelineItem = {
-            id: -1,
-            title: 'title',
-            description: 'description',
-            date: '2024-08-08T00:00:00.000Z',
-            dateViewPattern: DateViewPattern.DateMonthYear,
-            historicalContexts: [context],
-        };
-
-        // Act
-        await waitFor(() => {
-            user.type(inputTitle, createJobWithAllFields.title);
-
-            user.click(selectDate);
-            user.click(screen.getByTitle('Рік, день місяць')!);
-            // user.click(document.querySelector('.ant-select-selection-item')!);
-
-            user.click(datePicker);
-            fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-            user.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-
-            user.click(selectContext);
-            user.click(screen.getByTitle('context 1'));
-
-            user.type(textareaDescription, createJobWithAllFields.description!);
-            user.click(buttonSave);
+    it('should call setIsModalOpen on close', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} />);
         });
 
-        // Assert
+        const closeButton = screen.getByRole('button', { name: /Close/i });
+
+        act(() => {
+            userEvent.click(closeButton);
+        });
+
         await waitFor(() => {
-            expect(onChangeMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalledWith(createJobWithAllFields);
+            expect(defaultProps.setIsModalOpen).toHaveBeenCalled();
+        });
+    });
+
+    it('should not create new timeline if title is empty', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} />);
+        });
+
+        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+
+        act(() => {
+            userEvent.type(screen.getByRole('textbox', { name: /Опис:/i }), 'Test description');
+        });
+
+        await waitFor(() => {
+            expect(saveButton).not.toBeDisabled();
+        });
+
+        act(() => {
+            userEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+            expect(message.error).toHaveBeenCalled();
+            expect(message.success).not.toHaveBeenCalled();
+        });
+    });
+
+    it('should add new historical context', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} />);
+        });
+
+        act(() => {
+            fireEvent.change(screen.getByRole('searchbox',{name:"historicalContexts-search"}), { target: { value: 'newcontext' } });
+        });
+
+        await waitFor(() => {
+            expect(store.historicalContextStore.addItemToArray).toHaveBeenCalled();
+        });
+    });
+
+    it('should create new timeline', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} />);
+        });
+        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+
+        act(() => {
+            fireEvent.change(screen.getByRole('combobox', { name: /Контекст:/i }), { target: { value: 'context1' } });
+            fireEvent.change(screen.getByRole('combobox', { name: "" }), { target: { value: 'Рік, місяць' } });
+            userEvent.type(screen.getByRole('textbox', { name: /Дата:/i }), '2021-01-01');
+            userEvent.type(screen.getByRole('textbox', { name: /Назва:/i }), 'Test title 2');
+            userEvent.type(screen.getByRole('textbox', { name: /Опис:/i }), 'Test description 2');
+        });
+
+        await waitFor(() => {
+            expect(saveButton).not.toBeDisabled();
+        });
+
+        act(() => {
+            userEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+            expect(store.timelineItemStore.addTimeline).toHaveBeenCalled();
+            expect(message.success).toHaveBeenCalled();
+            expect(message.error).not.toHaveBeenCalled();
+        });
+    });
+
+    it('should edit timeline', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} timelineItem={timelineExample} />);
+        });
+        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+
+        act(() => {
+            userEvent.type(screen.getByRole('combobox', { name: /Контекст:/i }), 'Test context 2');
+            userEvent.type(screen.getByRole('textbox', { name: /Дата:/i }), '2021-01-01');
+            userEvent.type(screen.getByRole('textbox', { name: /Опис:/i }), 'Test description 2');
+        });
+
+        await waitFor(() => {
+            expect(saveButton).not.toBeDisabled();
+        });
+
+        act(() => {
+            userEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+            expect(message.success).toHaveBeenCalled();
+            expect(store.timelineItemStore.addTimeline).not.toHaveBeenCalled();
+            expect(message.error).not.toHaveBeenCalled();
         });
     });
 
@@ -237,26 +286,26 @@ describe('NewTimelineModal test', () => {
     //     };
 
     //     await waitFor(() => {
-    //         user.clear(inputTitle);
-    //         user.clear(textareaDescription);
+    //         userEvent.clear(inputTitle);
+    //         userEvent.clear(textareaDescription);
     //     });
 
     //     await waitFor(async () => {
-    //         user.type(inputTitle, editedTimeLine.title);
+    //         userEvent.type(inputTitle, editedTimeLine.title);
     //         await waitFor(() => {
     //             expect(onChangeMock).toHaveBeenLastCalledWith('title', editedTimeLine.title);
     //         });
 
-    //         user.type(textareaDescription, editedTimeLine.description);
+    //         userEvent.type(textareaDescription, editedTimeLine.description);
     //         await waitFor(() => {
     //             expect(onChangeMock).toHaveBeenLastCalledWith('description', editedTimeLine.description);
     //         });
 
-    //         user.click(selectContext);
-    //         user.click(screen.getByTitle('context 2'));
+    //         userEvent.click(selectContext);
+    //         userEvent.click(screen.getByTitle('context 2'));
     //         expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', editedTimeLine.historicalContexts);
 
-    //         user.click(buttonSave);
+    //         userEvent.click(buttonSave);
     //     }, { timeout: 25_000 });
     // }, 30_000);
 
@@ -281,12 +330,12 @@ describe('NewTimelineModal test', () => {
 
         // Act
         await waitFor(() => {
-            user.type(inputTitle, longText);
+            userEvent.type(inputTitle, longText);
 
-            // user.type() takes too much time to input all the text, so fireEvent.change() partially
-            // fills description and user.type() tries to exceed text amount restrictions
+            // userEvent.type() takes too much time to input all the text, so fireEvent.change() partially
+            // fills description and userEvent.type() tries to exceed text amount restrictions
             fireEvent.change(textareaDescription, { target: { value: veryLongText } });
-            user.type(textareaDescription, longText);
+            userEvent.type(textareaDescription, longText);
         });
 
         // Assert

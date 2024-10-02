@@ -11,7 +11,6 @@ import useMobx from '@stores/root-store';
 import {
     Button, Form, message, Modal, Popover, Select,
 } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
 
 import SourcesApi from '@/app/api/sources/sources.api';
 import {
@@ -58,6 +57,7 @@ const CategoriesModal = ({
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const maxLength = character_limit || 10000;
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -104,10 +104,9 @@ const CategoriesModal = ({
 
     async function fetchData() {
         const AvailableCats = await getAvailableCategories(false);
-        if (AvailableCats)
-            {
-                setAvailableCategories(AvailableCats);
-            }
+        if (AvailableCats) {
+            setAvailableCategories(AvailableCats);
+        }
     }
 
     useEffect(() => {
@@ -127,6 +126,7 @@ const CategoriesModal = ({
         if (allPersistedSourcesAreSet) {
             fetchData();
         }
+        setIsSaveButtonDisabled(true);
     }, [open, sourceCreateUpdateStreetcode]);
 
     useEffect(() => {
@@ -229,6 +229,7 @@ const CategoriesModal = ({
             if (validateTextChange()) {
                 form.submit();
                 message.success('Категорію для фанатів успішно додано!');
+                setIsSaveButtonDisabled(true);
             } else {
                 throw new Error();
             }
@@ -242,10 +243,9 @@ const CategoriesModal = ({
             const categories = await SourcesApi.getAllNames();
             setCategories(categories.sort((a, b) => a.title.localeCompare(b.title)));
             const AvailableCats = await getAvailableCategories(true);
-            if (AvailableCats)
-                {
-                    setAvailableCategories(AvailableCats);
-                }
+            if (AvailableCats) {
+                setAvailableCategories(AvailableCats);
+            }
         }
     };
 
@@ -254,16 +254,21 @@ const CategoriesModal = ({
             setIsAddModalVisible(true);
             form.resetFields(['category']);
         }
+        handleInputChange();
     };
 
     const handleDisabled = (categoryId: number) => !availableCategories.some((c) => c.id === categoryId);
+
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <Modal
             className="modalContainer"
             open={open}
             onCancel={() => {
-                setOpen(false); sourceCreateUpdateStreetcode.indexUpdate = -1;
+                setIsSaveButtonDisabled(true);
+                setOpen(false);
+                sourceCreateUpdateStreetcode.indexUpdate = -1;
             }}
             footer={null}
             maskClosable
@@ -282,7 +287,7 @@ const CategoriesModal = ({
                 <div className="center">
                     <h2>Для фанатів</h2>
                 </div>
-                <FormItem
+                <Form.Item
                     label="Категорія:"
                     name="category"
                     rules={[{ required: true, message: 'Введіть Категорію' }]}
@@ -306,28 +311,32 @@ const CategoriesModal = ({
                                 </Select.Option>
                             ))}
                     </Select>
-                </FormItem>
+                </Form.Item>
                 <SourceModal
                     isModalVisible={isAddModalVisible}
                     isNewCategory={onUpdateStates}
                     setIsModalOpen={setIsAddModalVisible}
                 />
-                <FormItem label="Текст:">
+                <Form.Item label="Текст:">
                     <Editor
                         qRef={editorRef}
                         value={editorContent}
-                        onChange={setEditorContent}
+                        onChange={(e) => {
+                            setEditorContent(e);
+                            handleInputChange();
+                        }}
                         maxChars={maxLength}
                         onCharacterCountChange={setEditorCharacterCount}
                     />
                     {!textIsPresent && textIsChanged && (
                         <p className="form-text">Введіть текст</p>
                     )}
-                </FormItem>
+                </Form.Item>
                 <div className="center">
                     <Button
                         className="streetcode-custom-button"
                         onClick={() => handleOk()}
+                        disabled={isSaveButtonDisabled}
                     >
                         Зберегти
                     </Button>
