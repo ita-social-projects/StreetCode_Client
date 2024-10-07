@@ -9,6 +9,10 @@
     width: 100% !important;
 }
 
+.slides-3 .slick-slide {
+    transform: translate(100%, 0);
+}
+
 .interestingFactsContainer {
     @include mut.sized(100%);
     @include mut.flex-centered($direction: column);
@@ -31,6 +35,11 @@
     .slick-dots{
         bottom: f.pxToRem(-57px);
         margin-top: f.pxToRem(30px);
+    }
+
+    .slick-center { 
+        z-index: 1; 
+        position: relative;
     }
 }
 
@@ -55,7 +64,6 @@
     }
 }
 
-
 @media screen and (max-width: 1450px){
     .interestingFactsSliderContainer {
         @include mut.sized(1120px);
@@ -70,6 +78,10 @@
         .oneFactItem{
             padding: f.pxToRem(63px) 0;
         }
+    }
+
+    .slides-3 .slick-slide {
+        transform: translate(104%, 0);
     }
 }
 
@@ -92,6 +104,10 @@
                 @include mut.sized(250px, 170px);
             }
         }
+    }
+
+    .slides-3 .slick-slide {
+        transform: translate(102%, 0);
     }
 }
 
@@ -140,7 +156,6 @@
             }
         }
     }
-    
 }
 
 @media screen
@@ -152,7 +167,6 @@ and (min-width: 768px) and (max-width: 1024px){
         @include mut.rem-margined(0);
         bottom: 15%;
     }
-  
 }
     .interestingFactsContainer {
         @include mut.sized(765px, 100%); 
@@ -188,6 +202,10 @@ and (min-width: 768px) and (max-width: 1024px){
     }
     .interestingFactsSliderContainer {
         @include mut.sized(100%, 100%); 
+    }
+
+    .slides-3 .slick-slide {
+        transform: translate(100%, 0);
     }
 }
 
@@ -255,5 +273,9 @@ and (min-width: 768px) and (max-width: 1024px){
             }
             
         }
+    }
+
+    .slides-3 .slick-slide {
+        transform: translate(99%, 0);
     }
 }

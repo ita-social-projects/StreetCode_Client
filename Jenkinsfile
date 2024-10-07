@@ -57,6 +57,7 @@ pipeline {
                     sh "cat version"
                     vers = readFile(file: 'version').trim()
                     sh "echo ${vers}"
+                    env.vers="${vers}"
                     env.CODE_VERSION = readFile(file: 'version').trim()
                     echo "${env.CODE_VERSION}"
                     SEM_VERSION="${env.CODE_VERSION}"
@@ -266,14 +267,15 @@ pipeline {
         }   
         steps {
             script {
-               
+                git branch: 'master', credentialsId: 'test_git_user', url: 'git@github.com:ita-social-projects/StreetCode_Client.git'
                 sh 'echo ${BRANCH_NAME}'
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
-                sh "git merge release/${env.SEM_VERSION}" 
-                sh "npm version ${env.SEM_VERSION} -m 'Upgrade to %s as part of release'"
-
-                sh "git push origin main" 
+                sh 'git merge ${BRANCH_NAME}'
+                sh "npm version ${env.vers} --allow-same-version --no-git-tag-version"
+                sh "git add ."
+                sh "git commit -m 'Upgrade to %s as part of release'"
+                sh "git push origin master" 
                   
             }
         }
