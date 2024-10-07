@@ -51,7 +51,7 @@ const NewsSliderItem = ({ news, image }: Props) => {
                             className="newsPageImg"
                             alt={image?.imageDetails?.alt ?? 'news'}
                         />
-                    ) : <></>}
+                    ) : <> </>}
                 </div>
                 <div className="newsSlideText">
                     <div className="newsContainer">
