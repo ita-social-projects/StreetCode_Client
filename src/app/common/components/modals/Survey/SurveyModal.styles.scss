@@ -105,7 +105,22 @@ $StbgImg: '@assets/images/donates/bgStrLogo.webp';
 
 @media screen and (max-width: 767px) {
   .surveyModal {
-    height: auto;
+    @include mut.sizedImportant(470px, auto);
+
+    &.ant-modal {
+      .ant-modal-content {
+        background-position: center;
+      }
+
+      .ant-modal-close {
+        @include mut.sizedImportant(50px, 50px);
+        @include mut.positioned-as(absolute, $left: 92%, $top: -20px);
+
+        .ant-modal-close-x svg {
+          transform: scale(0.8);
+        }
+      }
+    }
 
     .surveyModalContent {
       >h3 {
@@ -127,13 +142,11 @@ $StbgImg: '@assets/images/donates/bgStrLogo.webp';
     &.ant-modal {
       .ant-modal-content {
         @include mut.bg-image($StbgImg, 35%, no-repeat);
-        background-position: left f.pxToRem(102px) top f.pxToRem(171px);
       }
 
       .ant-modal-close {
-        @include mut.positioned-as($position: absolute, $left: 309px, $top: -15px);
         @include mut.sizedImportant(40px, 40px);
-        @include mut.circular(65px, c.$pure-white-color);
+        @include mut.positioned-as($position: absolute, $left: 309px, $top: -15px);
 
         .ant-modal-close-x svg {
           transform: scale(0.6);
@@ -157,6 +170,29 @@ $StbgImg: '@assets/images/donates/bgStrLogo.webp';
       .surveyModalParagraph3 {
         height: f.pxToRem(57px);
         width: 97%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .surveyModal {
+    width: auto !important;
+    height: auto !important;
+    max-width: max(calc(100vw - 32px), 230px);
+    max-height: f.pxToRem(640px);
+
+    &.ant-modal {
+      .ant-modal-close {
+        @include mut.positioned-as($position: absolute, $left: max(calc(100vw - 60px), 202px), $top: -15px);
+      }
+    }
+
+    .surveyModalContent {
+      .surveyModalParagraph1,
+      .surveyModalParagraph2,
+      .surveyModalParagraph3 {
+        height: auto;
       }
     }
   }

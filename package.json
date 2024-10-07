@@ -2,7 +2,7 @@
   "name": "streetcode",
   "author": "SoftServe IT Academy (https://career.softserveinc.com/uk-ua/)",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.8.0",

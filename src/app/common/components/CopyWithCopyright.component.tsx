@@ -3,13 +3,14 @@ import React, { useRef } from 'react';
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
 
 interface Props {
-  children: React.ReactNode;
-  copyrightText: string;
+    children: React.ReactNode;
+    copyrightText: string;
+    className?: string;
 }
 
 const MIN_LENGTH = 20;
 
-const CopyWithCopyright = ({ children, copyrightText }: Props) => {
+const CopyWithCopyright = ({ children, copyrightText, className }: Props) => {
     const textRef = useRef<HTMLDivElement>(null);
 
     const handleCopy = (event: React.ClipboardEvent<HTMLDivElement>) => {
@@ -28,7 +29,7 @@ const CopyWithCopyright = ({ children, copyrightText }: Props) => {
     };
 
     return (
-        <div ref={textRef} onCopy={handleCopy}>
+        <div ref={textRef} onCopy={handleCopy} className={className}>
             {children}
         </div>
     );

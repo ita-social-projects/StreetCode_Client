@@ -81,7 +81,7 @@ const Footer = () => {
                                 </a>
                             </li>
                             <li>
-                                <a href={SOCIAL_MEDIA.TWITTER} target="_blank" rel="noreferrer">
+                                <a href={SOCIAL_MEDIA.X} target="_blank" rel="noreferrer">
                                     <Twitter />
                                 </a>
                             </li>

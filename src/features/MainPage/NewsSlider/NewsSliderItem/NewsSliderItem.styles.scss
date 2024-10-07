@@ -116,6 +116,11 @@
                 padding: 0;
                 font-size: f.pxToRem(15px);
 
+                .cardTextContainerText * {
+                    font-size: f.pxToRem(15px);
+                    font-weight: 300;
+                }
+
                 &TopPart{
                     gap: f.pxToRem(10px);
                 }
