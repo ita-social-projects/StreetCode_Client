@@ -57,6 +57,7 @@ pipeline {
                     sh "cat version"
                     vers = readFile(file: 'version').trim()
                     sh "echo ${vers}"
+                    env.vers="${vers}"
                     env.CODE_VERSION = readFile(file: 'version').trim()
                     echo "${env.CODE_VERSION}"
                     SEM_VERSION="${env.CODE_VERSION}"
@@ -83,6 +84,38 @@ pipeline {
                 '''
             }
          }
+         stage('Sonar scan') {
+            environment {
+                SONAR = credentials('sonar_token')
+                scannerHome = tool 'SonarQubeScanner'
+            }
+            steps {
+                echo "SonarQube Scanner installation directory: ${scannerHome}"
+
+                script {
+                    withEnv([
+                    "PR_KEY=${env.CHANGE_ID}",
+                    "PR_BRANCH=${env.CHANGE_BRANCH}",
+                    "PR_BASE=${env.CHANGE_TARGET}",
+                    ]) {
+                        if (env.PR_KEY != "null") { 
+                            sh '''
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.pullrequest.key=$PR_KEY \
+                                -Dsonar.pullrequest.branch=$PR_BRANCH \
+                                -Dsonar.pullrequest.base=$PR_BASE \
+                                -Dsonar.login=$SONAR
+                            '''
+                        } else {
+                            sh '''
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.login=$SONAR
+                            '''
+                        }
+                    }
+                }
+            }
+        }
         stage('Build image') {
             when {
                 branch pattern: "release/[0-9].[0-9].[0-9]", comparator: "REGEXP"
@@ -234,14 +267,15 @@ pipeline {
         }   
         steps {
             script {
-               
+                git branch: 'master', credentialsId: 'test_git_user', url: 'git@github.com:ita-social-projects/StreetCode_Client.git'
                 sh 'echo ${BRANCH_NAME}'
                 sh "git checkout master" 
                 sh 'echo ${BRANCH_NAME}'
-                sh "git merge release/${env.SEM_VERSION}" 
-                sh "npm version ${env.SEM_VERSION} -m 'Upgrade to %s as part of release'"
-
-                sh "git push origin main" 
+                sh 'git merge ${BRANCH_NAME}'
+                sh "npm version ${env.vers} --allow-same-version --no-git-tag-version"
+                sh "git add ."
+                sh "git commit -m 'Upgrade to %s as part of release'"
+                sh "git push origin master" 
                   
             }
         }

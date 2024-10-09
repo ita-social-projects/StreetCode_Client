@@ -13,13 +13,13 @@ import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@/app/common/constants/er
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import AuthService from '@/app/common/services/auth-service/AuthService';
 
-const AdminLogin:React.FC = () => {
+const AdminLogin: React.FC = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
-    const { SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
+    const { RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -31,7 +31,6 @@ const AdminLogin:React.FC = () => {
 
     message.config({
         duration: 2,
-        maxCount: 1,
     });
 
     const handleLogin = async ({ login, password }: any) => {
@@ -40,7 +39,11 @@ const AdminLogin:React.FC = () => {
                 const token = recaptchaRef?.current?.getValue();
                 await AuthService.loginAsync(login, password, token)
                     .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
-                    .catch(() => message.error(SOMETHING_IS_WRONG));
+                    .catch((ex) => {
+                        for (const key in ex.response.data.errors) {
+                            message.error(`${ex.response.data.errors[key]}`)
+                        }                        
+                    });
                 recaptchaRef.current?.reset();
             } catch (error) {
                 message.error(INVALID_LOGIN_ATTEMPT);
@@ -70,6 +73,7 @@ const AdminLogin:React.FC = () => {
                     onChange={handleVerify}
                     onExpired={handleExpiration}
                     ref={recaptchaRef}
+                    hl='uk'
                 />
             </div>
             <Form.Item>
