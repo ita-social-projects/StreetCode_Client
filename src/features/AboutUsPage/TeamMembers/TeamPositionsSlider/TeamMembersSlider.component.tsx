@@ -23,6 +23,7 @@ const TeamMemberSlider: React.FC<TeamMemberSliderProps> = ({ team }) => {
                             spaceBetween={20}
                             slideToClickedSlide
                             loop
+                            pagination={{ clickable: true,  }}
                         >
                             {
                                 team.map((member) => (
