@@ -98,7 +98,7 @@ const AudioPlayer: React.FC<{ immediatelyPlay?: boolean }> = ({ immediatelyPlay 
 
     useEffect(() => {
         resetAudio();
-        if (!isPlaying) {
+        if (!isPlaying && immediatelyPlay) {
             play();
         }
     }, [audioState]);

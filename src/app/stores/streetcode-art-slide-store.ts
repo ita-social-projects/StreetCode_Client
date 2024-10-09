@@ -81,9 +81,13 @@ export default class StreetcodeArtSlideStore {
         }
     };
 
-    public fetchAllToDefaultTemplate = async (streetcodeid: number) => {
-        const slidesCount = await StreetcodeArtApi.getAllCountByStreetcodeId(streetcodeid)
-        this.streetcodeArtSlides = new Array<StreetcodeArtSlideAdmin>(slidesCount).fill(bindStreetcodeIdToDefaultSlide(streetcodeid), 0, slidesCount)
+    public fetchAllToDefaultTemplate = async (streetcodeId: number): Promise<number | void> => {
+        if (this.streetcodeWasFetched.includes(streetcodeId)) {return;}
+        const startingPosition = this.streetcodeArtSlides.length;
+        const slidesCount = await StreetcodeArtApi.getAllCountByStreetcodeId(streetcodeId)
+        const placeholders = new Array<StreetcodeArtSlideAdmin>(slidesCount).fill(bindStreetcodeIdToDefaultSlide(streetcodeId), 0, slidesCount);
+        this.streetcodeArtSlides.push(...placeholders); 
+        return startingPosition;
     }
 
     public fetchAllArtSlidesByStreetcodeId = async (streetcodeid: number, startIndex: number) => {
