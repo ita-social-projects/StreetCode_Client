@@ -31,8 +31,8 @@ jest.mock("@stores/root-store", () => ({
     __esModule: true, // This property is needed when mocking modules that have a default export
     default: () => ({
         tagsStore: {
-            getTagArray: [{ id: 999, title: "existing tag" }] as Tag[],
-            fetchTags: jest.fn().mockResolvedValue([]),
+            getTagArray: [{id: 999, title: "existing tag"}] as Tag[],
+            fetchAllTags: jest.fn().mockResolvedValue([]),
             createTag: (tag: TagCreate) => { TagsApi.create(tag) },
             updateTag: (tag: Tag) => { TagsApi.update(tag) },
         },

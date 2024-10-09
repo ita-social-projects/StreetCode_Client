@@ -73,7 +73,7 @@ const PartnerModal: React.FC< {
 
         const updatedPartners = () => {
             Promise.all([
-                partnersStore?.fetchPartnersAll(),
+                partnersStore?.getAll(),
             ]).then(() => {
                 partnersStore?.PartnerMap.forEach((val, key) => {
                     ImageStore.getImageById(val.logoId).then((logo) => {
@@ -297,7 +297,6 @@ const PartnerModal: React.FC< {
                 } else {
                     partner.id = (await partnersStore.createPartner(partner)).id;
                 }
-                console.log('Success');
                 if (afterSubmit) {
                     const partnerWithLogo = partnersStore.PartnerMap.get(partner.id) as Partner;
                     afterSubmit(partnerWithLogo);

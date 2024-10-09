@@ -31,7 +31,7 @@ jest.mock("@stores/root-store", () => ({
   __esModule: true, // This property is needed when mocking modules that have a default export
   default: () => ({
     partnersStore: {
-      fetchPartnersAll: jest.fn().mockResolvedValue([]),
+      getAll: jest.fn().mockResolvedValue([]),
       PartnerMap: new Map(),
       getPartnerArray: [{
           id: 0,

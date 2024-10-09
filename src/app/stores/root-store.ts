@@ -35,6 +35,7 @@ import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
+import JobsStore from './jobs-store';
 
 interface Store {
     factsStore: FactsStore,
@@ -67,7 +68,8 @@ interface Store {
     createUpdateMediaStore: CreateUpdateMediaStore,
     contextStore: ContextStore,
     artGalleryTemplateStore: ArtGalleryTemplateStore,
-    teamPositionsStore: TeamPositionsStore
+    teamPositionsStore: TeamPositionsStore,
+    jobsStore: JobsStore
 }
 
 export interface StreetcodeDataStore {
@@ -109,6 +111,7 @@ export const store: Store = {
     streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
     artStore: new ArtStore(),
     teamPositionsStore: new TeamPositionsStore(),
+    jobsStore: new JobsStore(),
 };
 export const streetcodeDataStore:StreetcodeDataStore = {
     streetcodeStore: new StreetcodeStore(),

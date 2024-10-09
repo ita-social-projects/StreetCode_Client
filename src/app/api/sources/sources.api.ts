@@ -5,7 +5,17 @@ import {
 } from '@models/sources/sources.model';
 
 const SourcesApi = {
-    getAllCategories: () => Agent.get<SourceCategory[]>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES}`),
+    getAllCategories: (page?: number, pageSize?: number) => {
+        const params = Object.entries({
+            page: page?.toString() ?? '',
+            pageSize: pageSize?.toString() ?? '',
+        });
+
+        const queryParams = params.filter(p => !!p[1]);
+
+        const searchParams = new URLSearchParams(queryParams);
+        return Agent.get<{totalAmount: number, categories: SourceCategory[]}>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES}`, searchParams);
+    },
 
     getAllNames: () => Agent.get<SourceCategoryName[]>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES_NAMES}`),
 

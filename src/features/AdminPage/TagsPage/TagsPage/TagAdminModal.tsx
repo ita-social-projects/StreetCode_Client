@@ -37,7 +37,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
-    useAsync(() => tagsStore.fetchTags(), []);
+    useAsync(() => tagsStore.fetchAllTags(), []);
 
     useEffect(() => {
         if (initialData && isModalVisible) {

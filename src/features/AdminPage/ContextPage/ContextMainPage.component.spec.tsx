@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
@@ -46,9 +47,15 @@ describe('ContextMainPage', () => {
     beforeEach(() => {
         jest.resetAllMocks();
     });
+    
+    const queryClient = new QueryClient();
 
     it('should render component without crashes', () => {
-        render(<ContextMainPage/>);
+        render(
+            <QueryClientProvider client={queryClient}>
+                <ContextMainPage/>
+            </QueryClientProvider>,
+        );
         const column1 = screen.getByRole('columnheader', {name: /назва/i});
         const column2 = screen.getByRole('columnheader', {name: /дії/i});
         const context1 = screen.getByText(/революція гідності/i);
@@ -62,7 +69,11 @@ describe('ContextMainPage', () => {
     });
 
     it('opens the add modal on button click', () => {
-        render(<ContextMainPage/>);
+        render(
+            <QueryClientProvider client={queryClient}>
+                <ContextMainPage/>
+            </QueryClientProvider>,
+        );
         const addButton = screen.getByText(/додати новий контекст/i);
         userEvent.click(addButton);
         const button = screen.getByText(/зберегти/i);
@@ -74,7 +85,11 @@ describe('ContextMainPage', () => {
     });
 
     it('open edits context', () => {
-        render(<ContextMainPage />);
+        render(
+            <QueryClientProvider client={queryClient}>
+                <ContextMainPage/>
+            </QueryClientProvider>,
+        );
         const addButton = screen.getByText(/додати новий контекст/i);
         userEvent.click(addButton);
         const row = screen.getByRole('row', { name: /революція гідності/i });

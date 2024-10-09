@@ -3,27 +3,6 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.StreetcodeTableWrapper {
-    @include mut.sized(80%);
-    overflow: hidden;
-    float: right;
-
-    .ant-btn-primary:disabled {
-        background-color: c.$lighter-gray-color;
-        color: c.$pure-white-color;
-    }
-
-    .ant-btn-default {
-        border-color: c.$accented-red-color;
-    }
-
-    .ant-dropdown-trigger{
-        &:hover{
-            color: c.$accented-red-color;
-        }
-    }
-}
-
 .actionButton {
     margin-right: 10px;
     color: c.$dark-red-color;

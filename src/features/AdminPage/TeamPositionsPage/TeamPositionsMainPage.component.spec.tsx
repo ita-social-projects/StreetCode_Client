@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import TeamPositionsMainPage from '@features/AdminPage/TeamPositionsPage/TeamPositionsMainPage.component';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
@@ -47,8 +48,14 @@ describe('TeamPositionsMainPage', () => {
         jest.resetAllMocks();
     });
 
+    const queryClient = new QueryClient();
+
     it('should render component without crashes', () => {
-        render(<TeamPositionsMainPage/>);
+        render(
+            <QueryClientProvider client={queryClient}>
+                <TeamPositionsMainPage/>
+            </QueryClientProvider>,
+        );
         const column1 = screen.getByRole('columnheader', {name: /назва/i});
         const column2 = screen.getByRole('columnheader', {name: /дії/i});
         const button = screen.getByText(/додати нову позицію/i);
@@ -58,7 +65,11 @@ describe('TeamPositionsMainPage', () => {
     });
 
     it('opens the add modal on button click', () => {
-        render(<TeamPositionsMainPage />);
+        render(
+            <QueryClientProvider client={queryClient}>
+                <TeamPositionsMainPage/>
+            </QueryClientProvider>,
+        );
         const addButton = screen.getByText(/додати нову позицію/i);
         userEvent.click(addButton);
         const button = screen.getByText(/зберегти/i);
@@ -70,7 +81,11 @@ describe('TeamPositionsMainPage', () => {
     });
 
     it('open edits position', () => {
-        render(<TeamPositionsMainPage />);
+        render(
+            <QueryClientProvider client={queryClient}>
+                <TeamPositionsMainPage/>
+            </QueryClientProvider>,
+        );
         const addButton = screen.getByText(/додати нову позицію/i);
         userEvent.click(addButton);
         const row = screen.getByRole('row', { name: /pos1/i });

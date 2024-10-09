@@ -21,7 +21,7 @@ const StreetcodesApi = {
     getByUrl: (url: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_URL}/${url}`),
 
     getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => Agent
-        .get<{pages: number, streetcodes: Streetcode[]}>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
+        .get<{totalAmount: number, streetcodes: Streetcode[]}>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
 
     getAllPublished: () => Agent.get<StreetcodeShort[]>(`${API_ROUTES.STREETCODES.GET_ALL_PUBLISHED}`),
 

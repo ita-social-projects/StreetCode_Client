@@ -6,7 +6,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -14,6 +14,7 @@ import Image from '@/models/media/image.model';
 import { SourceCategoryAdmin } from '@/models/sources/sources.model';
 
 import CategoryAdminModal from './CategoriesPage/CategoryAdminModal.component';
+import { useQuery } from '@tanstack/react-query';
 
 const CategoriesMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -21,6 +22,11 @@ const CategoriesMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [categoryToEdit, setSourcesToEdit] = useState<SourceCategoryAdmin>();
+
+    useQuery({
+        queryKey: ['categories', sourcesStore.PaginationInfo.CurrentPage],
+        queryFn: () => { sourcesStore.fetchSrcCategoriesAll() },
+    });
 
     const updatedCategories = () => {
         Promise.all([
@@ -126,12 +132,28 @@ const CategoriesMainPage: React.FC = observer(() => {
                     </Button>
                 </div>
                 <Table
-                    pagination={{ pageSize: 10 }}
+                    pagination={false}
                     className="categories-table"
                     columns={columns}
                     dataSource={sourcesStore?.getSrcCategoriesArray}
                     rowKey="id"
                 />
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={sourcesStore.PaginationInfo.CurrentPage}
+                            total={sourcesStore.PaginationInfo.TotalItems}
+                            pageSize={sourcesStore.PaginationInfo.PageSize}
+                            onChange={(value: any) => {
+                                sourcesStore.setCurrentPage(value);
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
             <CategoryAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <CategoryAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={categoryToEdit} />
