@@ -66,17 +66,17 @@ const AdminLogin: React.FC = () => {
             <Form.Item name="password" label="Пароль" rules={[{ required: true, message: 'Введіть пароль' }]}>
                 <Input.Password maxLength={30} />
             </Form.Item>
-            <div className="captchaBlock">
+            <div className="captchaBlock center">
                 <ReCAPTCHA
                     className="required-captcha"
                     sitekey={siteKey}
                     onChange={handleVerify}
                     onExpired={handleExpiration}
                     ref={recaptchaRef}
-                    hl='uk'
+                    hl="uk"
                 />
             </div>
-            <Form.Item>
+            <Form.Item className="center">
                 <Button htmlType="submit" className="streetcode-custom-button">
                     Увійти
                 </Button>
