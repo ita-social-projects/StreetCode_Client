@@ -61,7 +61,7 @@ const ContextMainPage: React.FC = observer(() => {
                                         modalStore.setConfirmationModal('confirmation');
                                     }
                                 },
-                                'Ви впевнені, що хочете видалити цей тег?',
+                                'Ви впевнені, що хочете видалити цей контекст?',
                             );
                         }}
                     />
