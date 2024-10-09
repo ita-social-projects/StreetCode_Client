@@ -1,12 +1,13 @@
 import './ContactForm.styles.scss';
 
-import { LegacyRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
+
 import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
@@ -18,7 +19,7 @@ interface Props {
 const ContactForm = forwardRef((customClass: Props, ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
     const [isVerified, setIsVerified] = useState(false);
-    const [messageApi, messageContextHolder] = message.useMessage({ maxCount: 3 });
+    const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm();
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
@@ -40,6 +41,20 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
         },
     }));
 
+    const successMessage = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Лист успішно надісланий',
+        });
+    };
+
+    const errorMessage = (error: string) => {
+        messageApi.open({
+            type: 'error',
+            content: error,
+        });
+    };
+
     const onFinish = () => {
         if (isVerified) {
             const token = recaptchaRef?.current?.getValue();
@@ -54,33 +69,19 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                     successMessage();
                 })
                 .catch((error) => {
-                    if (error === 429) {
+                    if (error.status === 429) {
                         errorMessage(MESSAGE_LIMIT);
-                    }
-                    else {
-                        errorMessage(SOMETHING_IS_WRONG);
+                    } else {
+                        for (const key in error.data) {
+                            errorMessage(`${error.data[key].message}`)
+                        }
                     }
                 });
             recaptchaRef.current?.reset();
             setIsVerified(false);
-        }
-        else {
+        } else {
             errorMessage(RECAPTCHA_CHECK);
         }
-    };
-
-    const successMessage = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Лист успішно надісланий',
-        });
-    };
-
-    const errorMessage = (message: string) => {
-        messageApi.open({
-            type: 'error',
-            content: message,
-        });
     };
 
     return (
@@ -114,6 +115,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                         name="message"
                         autoSize={{ minRows: 4, maxRows: 4 }}
                         placeholder="Наші серця, очі та вуха відкриті до твоїх креативних повідомлень!"
+                        showCount
                         maxLength={MAX_SYMBOLS}
                         onChange={handleChange}
                     />
@@ -140,7 +142,7 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                 <div className="captchaBlock">
                     <ReCAPTCHA
                         className="required-captcha"
-                        sitekey={siteKey ? siteKey : ""}
+                        sitekey={siteKey || ''}
                         onChange={handleVerify}
                         onExpired={handleExpiration}
                         ref={recaptchaRef}

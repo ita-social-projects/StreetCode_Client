@@ -20,7 +20,7 @@
 .link-container {
     gap: f.pxToRem(5px);
     display: flex;
-    align-items: center;
+    align-items: start;
     position: relative;
 
     .error-message{
