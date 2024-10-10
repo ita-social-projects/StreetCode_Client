@@ -204,7 +204,6 @@ const NewsModal: React.FC<{
             if (newsItem) {
                 news.id = newsItem.id;
                 news.imageId = imageId.current as number;
-                news.image = image.current;
 
                 await newsStore.updateNews(news);
             } else {
