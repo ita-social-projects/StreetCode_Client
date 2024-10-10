@@ -19,16 +19,18 @@ import {
     Checkbox,
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
+
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 
 import PositionsApi from '@/app/api/team/positions.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
-import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
+import Image from '@/models/media/image.model';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
@@ -37,15 +39,13 @@ const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?: (team: TeamCreateUpdate) => void
 }> = observer(({ teamMember, open, setIsModalOpen, afterSubmit }) => {
+    const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
     const [form] = Form.useForm();
     const { teamStore } = useMobx();
     const [positions, setPositions] = useState<Positions[]>([]);
     const [teamLinksForm] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
-    const [existWarningVisible, setExistWarningVisible] = useState<boolean>(false);
-    const [invalidWarningVisible, setInvalidWarningVisible] = useState<boolean>(false);
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
@@ -90,6 +90,7 @@ const TeamModal: React.FC<{
     useEffect(() => {
         if (teamMember && open) {
             imageId.current = teamMember.imageId;
+            setFileList(getImageAsFileInArray());
             form.setFieldsValue({
                 ...teamMember,
                 positions: teamMember.positions.map((s) => s.position),
@@ -140,8 +141,6 @@ const TeamModal: React.FC<{
             teamSourceLinks.splice(0);
             setIsModalOpen(false);
             setFileList([]);
-            setCustomWarningVisible(false);
-            setExistWarningVisible(false);
         }
     };
 
@@ -153,36 +152,15 @@ const TeamModal: React.FC<{
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
-        const logotype = teamLinksForm.getFieldValue('logotype');
-        setExistWarningVisible(false);
-        setCustomWarningVisible(false);
-        setInvalidWarningVisible(false);
+        const socialName = teamLinksForm.getFieldValue('logotype');
+        const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
+        const newId = getNewId(teamSourceLinks);
 
-        if (!url) {
-            return;
-        }
-
-        if (!URL.canParse(url)) {
-            setInvalidWarningVisible(true);
-            return;
-        }
-
-        if (!url.toLocaleLowerCase().includes(logotype)) {
-            setCustomWarningVisible(true);
-        } else {
-            const newId = getNewId(teamSourceLinks);
-            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === Number(LogoType[logotype]));
-
-            if (isLogoTypePresent) {
-                setExistWarningVisible(true);
-            } else {
-                setTeamSourceLinks([...teamSourceLinks, {
-                    id: newId,
-                    logoType: Number(LogoType[logotype]),
-                    targetUrl: url,
-                }]);
-            }
-        }
+        setTeamSourceLinks([...teamSourceLinks, {
+            id: newId,
+            logoType: Number(logotype),
+            targetUrl: url,
+        }]);
     };
 
     const removeImage = () => {
@@ -360,12 +338,13 @@ const TeamModal: React.FC<{
                 layout="vertical"
                 form={teamLinksForm}
                 onFinish={onSuccesfulSubmitLinks}
+                data-testid="link-form"
             >
                 <div className="team-source-list">
-
-                    {teamSourceLinks.map((link) => (
+                    {teamSourceLinks.map((link, index) => (
                         <div
                             className="link-container"
+                            data-testid={`team-source-list-${index}`}
                             key={`${link.id}${link.logoType}`}
                         >
                             <TeamLink link={link} />
@@ -378,45 +357,58 @@ const TeamModal: React.FC<{
                     ))}
                 </div>
                 <div className="link-container">
-                    <FormItem
+                    <Form.Item
                         name="logotype"
                         label="Соціальна мережа"
                         rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
+                        style={{ minWidth: '135px' }}
                     >
                         <Select
+                            data-testid="logotype-select"
                             options={SOCIAL_OPTIONS}
+                            onChange={() => teamLinksForm.validateFields(['url'])}
                         />
-                    </FormItem>
+                    </Form.Item>
                     <Form.Item
                         label="Посилання"
                         className="url-input"
                         name="url"
-                        rules={[{ required: true, message: 'Введіть посилання' }]}
+                        rules={[
+                            { required: true, message: 'Введіть посилання' },
+                            {
+                                validator: (_, value) => {
+                                    const socialName = teamLinksForm.getFieldValue('logotype');
+                                    return validateSocialLink<LogoType>(
+                                        value,
+                                        SOCIAL_OPTIONS,
+                                        LOGO_TYPES,
+                                        teamSourceLinks,
+                                        socialName,
+                                    );
+                                },
+                            },
+                        ]}
                     >
-                        <Input min={1} max={255} showCount />
+                        <Input min={1} max={255} showCount data-testid="link-input" />
                     </Form.Item>
 
                     <Form.Item
                         label=" "
                     >
                         <Popover content="Додати" trigger="hover">
-                            <Button htmlType="submit" className="plus-button">
+                            <Button htmlType="submit" className="plus-button" data-testid="add-button">
                                 <PlusOutlined />
                             </Button>
                         </Popover>
                     </Form.Item>
-
-                    {customWarningVisible
-                        ? <p className="error-message">Посилання не співпадає з обраною соціальною мережею</p> : ''}
-                    {existWarningVisible
-                        ? <p className="error-message">Посилання на таку соціальну мережу вже додано</p> : ''}
-                    {invalidWarningVisible
-                        ? <p className="error-message">Недійсний формат посилання</p> : ''}
                 </div>
 
                 <div className="center">
-                    {/* disabled={fileList?.length === 0} */}
-                    <Button className="streetcode-custom-button" onClick={handleOk}>
+                    <Button
+                        className="streetcode-custom-button"
+                        onClick={handleOk}
+                        disabled={fileList.length === 0}
+                    >
                         Зберегти
                     </Button>
                 </div>

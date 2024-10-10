@@ -33,7 +33,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
   const emptyJob: Job = {
     title: form.getFieldValue("title"),
     description: "",
-    status: form.getFieldValue("status"),
+    status: form.getFieldValue("status") as string === "setActive",
     id: 0,
     salary: form.getFieldValue("salary"),
   };
@@ -62,10 +62,10 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
     } else if (currentId === 0) {
       setStoredJob(emptyJob);
       form.setFieldsValue({
-        title: storedJob.title,
-        status: storedJob.status ? "setActive" : "setInactive",
-        description: storedJob.description,
-        salary: storedJob.salary,
+        title: emptyJob.title,
+        status: emptyJob.status ? "setActive" : "setInactive",
+        description: emptyJob.description,
+        salary: emptyJob.salary,
       });
     }
   };
@@ -146,7 +146,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       </div>
       <Form layout="vertical" 
         form={form} 
-        initialValues={{status: 'setActive' }} 
+        initialValues={{status: 'setInactive' }} 
         onFinish={handleSave} 
         onFinishFailed={handleFail}
       >
