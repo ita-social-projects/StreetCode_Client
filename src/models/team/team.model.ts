@@ -28,14 +28,14 @@ export interface TeamMemberLinkCreateUpdate {
 export interface TeamMemberLink {
     id: number;
     targetUrl: Url;
-    logoType: number;
+    logoType: LogoType;
 }
 export interface Positions {
     id: number;
     position: string;
 }
 export enum LogoType {
-    twitter = 0,
+    x = 0,
     instagram = 1,
     facebook = 2,
     youtube = 3,

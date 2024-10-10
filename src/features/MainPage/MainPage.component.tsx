@@ -11,6 +11,7 @@ import StaticBanner from './StaticBanners/StaticBanner.component';
 import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
 import TeamComponent from './TeamSlider/TeamComponent.component';
 import TopCarouselComponent from './TopCarousel/TopCarousel.component';
+import ErrorBoundary from '@/app/common/components/ErrorBoundary/ErrorBoundary';
 
 const mainPageContent = () => {
     const navigate = useNavigate();
@@ -33,8 +34,10 @@ const mainPageContent = () => {
                 <NewsSliderComponent />
                 <TeamComponent />
                 <PartnersBlockComponent />
+                <ErrorBoundary fallback={<></>}>                
                 <InstagramBlock />
-                <StaticBanner
+                </ErrorBoundary>
+            <StaticBanner
                     id="support"
                     blockName="Слід в історії у кожного різний. У тебе може бути свій"
                     blockContent="Підтримай проєкт про історію в назвах вулиць.

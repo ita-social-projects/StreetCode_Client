@@ -10,6 +10,7 @@ import { ModelState } from '@models/enums/model-state';
 import Image, { ImageAssigment, ImageCreateUpdate } from '@models/media/image.model';
 
 import { FormInstance, Modal, UploadFile } from 'antd';
+import { UploadChangeParam } from 'antd/es/upload';
 import FormItem from 'antd/es/form/FormItem';
 
 import AudiosApi from '@/app/api/media/audios.api';
@@ -19,6 +20,8 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import { RuleObject } from 'antd/es/form';
 
 const convertFileToUploadFile = (file: Image | Audio) => {
     const newFileList: UploadFile = {
@@ -193,34 +196,22 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
         }
     }, []);
 
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+    const notRequiredImageValidator = (_: RuleObject, file: any): Promise<void> => {
+        if (!file) {
+            return Promise.resolve();
+        }
+        return imageValidator(_, file);
+    };
+
     return (
         <div>
             <div className="photo-uploader-container scrollable-container">
                 <FormItem
                     name="animations"
                     label="Кольорове"
-                    rules={[
-                        {
-                            validator: (_, file) => {
-                                if (file) {
-                                    let name = '';
-                                    if (file.file) {
-                                        name = file.file.name.toLowerCase();
-                                    } else if (file.name) {
-                                        name = file.name.toLowerCase();
-                                    }
-                                    if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
-                                        || name.endsWith('.jpg') || name === '') {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(
-                                        Error('Дозволені тільки файли з розширенням .jpeg, .jpg, .png та .webp'),
-                                    );
-                                }
-                                return Promise.resolve();
-                            },
-                        },
-                    ]}
+                    rules={[{ validator: notRequiredImageValidator }]}
                 >
                     <FileUploader
                         accept=".jpeg,.png,.jpg,.webp"
@@ -228,14 +219,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         multiple={false}
                         maxCount={1}
                         fileList={animation}
-                        beforeUpload={(file) => {
-                            const isValid = (file.type === 'image/jpeg') || (file.type === 'image/webp')
-                                || (file.type === 'image/png') || (file.type === 'image/jpg');
-                            if (!isValid) {
-                                return Promise.reject();
-                            }
-                            return Promise.resolve();
-                        }}
+                        beforeUpload={checkFile}
                         onPreview={handlePreview}
                         uploadTo="image"
                         onSuccessUpload={(file: Image | Audio) => {
@@ -254,29 +238,12 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="pictureBlackWhite"
                     label="Чорнобіле"
-                    rules={[{
-                        required: true,
-                        message: 'Додайте зображення',
-                    },
-                    {
-                        validator: (_, file) => {
-                            if (file) {
-                                let name = '';
-                                if (file.file) {
-                                    name = file.file.name.toLowerCase();
-                                } else if (file.name) {
-                                    name = file.name.toLowerCase();
-                                }
-                                if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
-                                    || name.endsWith('.jpg') || name === '') {
-                                    return Promise.resolve();
-                                }
-                                // eslint-disable-next-line max-len
-                                return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
-                            }
-                            return Promise.reject();
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Додайте зображення',
                         },
-                    },
+                        { validator: imageValidator },
                     ]}
                 >
                     <FileUploader
@@ -285,16 +252,9 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         listType="picture-card"
                         maxCount={1}
                         fileList={blackAndWhite}
+                        beforeUpload={checkFile}
                         onPreview={handlePreview}
                         uploadTo="image"
-                        beforeUpload={(file) => {
-                            const isValid = (file.type === 'image/jpeg') || (file.type === 'image/webp')
-                                || (file.type === 'image/png') || (file.type === 'image/jpg');
-                            if (!isValid) {
-                                return Promise.reject();
-                            }
-                            return Promise.resolve();
-                        }}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'blackAndWhiteId', 'imagesUpdate');
                             setBlackAndWhite([convertFileToUploadFile(file as Image)]);
@@ -311,28 +271,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="pictureRelations"
                     label="Для зв'язків"
-                    rules={[
-                        {
-                            validator: (_, file) => {
-                                if (file) {
-                                    let name = '';
-                                    if (file.file) {
-                                        name = file.file.name.toLowerCase();
-                                    } else if (file.name) {
-                                        name = file.name.toLowerCase();
-                                    }
-                                    if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
-                                        || name.endsWith('.jpg') || name === '') {
-                                        setVisibleErrorRelatedFigure(false);
-                                        return Promise.resolve();
-                                    }
-                                    setVisibleErrorRelatedFigure(true);
-                                    return Promise.resolve();
-                                }
-                                return Promise.resolve();
-                            },
-                        },
-                    ]}
+                    rules={[{ validator: notRequiredImageValidator }]}
                 >
                     <FileUploader
                         multiple={false}
@@ -342,15 +281,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         fileList={relatedFigure}
                         onPreview={handlePreview}
                         uploadTo="image"
-                        beforeUpload={(file) => {
-                            const isValid = (file.type === 'image/jpeg')
-                                || (file.type === 'image/png')
-                                || (file.type === 'image/jpg' || (file.type === 'image/webp'));
-                            if (!isValid) {
-                                return Promise.reject();
-                            }
-                            return Promise.resolve();
-                        }}
+                        beforeUpload={checkFile}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure([convertFileToUploadFile(file as Image)]);
