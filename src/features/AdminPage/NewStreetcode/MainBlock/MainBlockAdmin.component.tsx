@@ -253,14 +253,14 @@ const MainBlockAdmin = React.memo(({
                 />
             </Form.Item>
             <Form.Item
-                label="URL"
+                label="Транслітерація для URL: "
                 name="streetcodeUrlName"
                 className="maincard-item"
                 rules={[
-                    { required: true, message: 'Введіть Посилання', max: 100 },
+                    { required: true, message: 'Введіть транслітерацію', max: 100 },
                     {
                         pattern: /^[a-z0-9-]+$/,
-                        message: 'Посилання має містити лише малі латинські літери, цифри та дефіс',
+                        message: 'Транслітерація має містити лише малі латинські літери, цифри та дефіс',
                     },
                     {
                         validator: async (_, value) => {
