@@ -4,6 +4,8 @@
 
 .text {
     white-space: pre-line;
+    word-break: break-all;
+    width: 100%;
 
     ul {
         @include mut.list-styles($type: disc);

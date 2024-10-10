@@ -39,6 +39,9 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     </div>
                 );
             },
+            sorter: (a, b) => a.position.localeCompare(b.position),
+            sortDirections: ['ascend', 'descend', 'ascend'],
+            defaultSortOrder: 'ascend',
         },
         {
             title: 'Дії',

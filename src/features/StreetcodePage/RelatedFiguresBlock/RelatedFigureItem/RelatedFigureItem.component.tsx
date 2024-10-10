@@ -1,6 +1,7 @@
 /* eslint-disable complexity */
 import './RelatedFigureItem.styles.scss';
 
+import { Link } from 'react-router-dom';
 import RelatedFigure from '@models/streetcode/related-figure.model';
 import useMobx, { useModalContext } from '@stores/root-store';
 
@@ -41,20 +42,19 @@ const RelatedFigureItem = ({
     return (
         <>
             {windowsize.width > 1024 && (
-                <a
+                <Link
                     className={`relatedFigureSlide 
                     ${hoverable && commonTags.length > 1 ? 'hoverable' : undefined} 
                     ${hoverable && commonTags.length > 1 && totalLength < 27 ? 'single_row' : undefined}`}
-
                     style={{ backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})` }}
-                    href={`/${url}`}
+                    to={`/${url}`}
                     onClick={() => {
                         if (!tagsList) {
                             relatedFiguresLeaveEvent();
                             setModal('tagsList');
-                            if(setShowAllTags){
+                            if (setShowAllTags) {
                                 setShowAllTags(true);
-                            }   
+                            }
                         }
                     }}
                 >
@@ -82,9 +82,9 @@ const RelatedFigureItem = ({
                                         relatedFiguresTagsEvent(tag.title);
                                         setModal('tagsList');
                                         setActiveTagId(tag.id);
-                                        if(setShowAllTags){
+                                        if (setShowAllTags) {
                                             setShowAllTags(true);
-                                        } 
+                                        }
                                     }}
                                 >
                                     <p>{tag.title}</p>
@@ -92,7 +92,7 @@ const RelatedFigureItem = ({
                             ))}
                         </div>
                     </div>
-                </a>
+                </Link>
             )}
             {windowsize.width <= 1024 && (
                 <>

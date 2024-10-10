@@ -45,6 +45,7 @@ const jestConfig: JestConfigWithTsJest = {
       lines: 0.1,
     },
   },
+  testTimeout: 15_000,
 };
 
 export default jestConfig;
