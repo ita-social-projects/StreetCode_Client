@@ -1,5 +1,7 @@
 import './Title.styles.scss';
 
+import { Link } from 'react-router-dom';
+
 const Title = () => (
     <div className="titleContainer">
         <div className="title">
@@ -7,7 +9,7 @@ const Title = () => (
             <div className="titleBig">Політика конфіденційності</div>
             <div className="subTitle">
                 та захисту персональних даних платформи&nbsp;
-                <a className="link" href="https://streetcode.com.ua">www.streetcode.com.ua</a>
+                <Link className="link" to="/">www.streetcode.com.ua</Link>
             </div>
         </div>
         <div className="disclaimer">
