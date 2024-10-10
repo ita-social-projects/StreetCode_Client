@@ -54,8 +54,6 @@ const NewsModal: React.FC<{
     const { newsStore } = useMobx();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
-    const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const image = useRef<Image | undefined>(undefined);
     const editorRef = useRef<ReactQuill | null>(null);
@@ -124,6 +122,17 @@ const NewsModal: React.FC<{
         }
     }, [newsItem, open, form]);
 
+    useEffect(() => {
+        if (open) {
+            const isEditorEmpty = editorRef.current?.editor?.getText().trim() === '';
+            if (isEditorEmpty) {
+                form.setFields([{ name: 'editor', errors: [] }]);
+            } else {
+                form.setFields([{ name: 'editor', errors: ['Введіть текст'] }]);
+            }
+        }
+    }, [open]);
+
     const removeImage = () => {
         setRemovedImage(image.current);
         imageId.current = undefined;
@@ -137,8 +146,6 @@ const NewsModal: React.FC<{
         if (!waitingForApiResponse) {
             form.resetFields();
             setIsModalOpen(false);
-            setTextIsPresent(false);
-            setTextIsChanged(false);
             setRemovedImage(undefined);
             editorRef.current?.editor?.setText('');
         }
@@ -163,36 +170,19 @@ const NewsModal: React.FC<{
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
-    const handleTextChange = () => {
-        setTextIsChanged(true);
-        const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
-
-        if (emptyTextField) {
-            setTextIsPresent(false);
-            return false;
-        }
-
-        setTextIsPresent(true);
-        return true;
-    };
-
     const handleOk = async () => {
         try {
             await form.validateFields();
             checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
-            if (handleTextChange()) {
-                setWaitingForApiResponse(true);
-                await form.submit();
-            } else {
-                throw new Error();
-            }
+            setWaitingForApiResponse(true);
+            form.submit();
         } catch {
             message.error(fillInAllFieldsMessage);
         }
     };
 
     const onSuccessfulSubmitNews = async (formValues: any) => {
-        message.loading('Зберігання...');
+        const hideLoadingMessage = message.loading('Зберігання...', 0);
 
         const news: News = {
             id: 0,
@@ -229,6 +219,8 @@ const NewsModal: React.FC<{
         } catch (e: unknown) {
             message.error('Не вдалось оновити/створити новину. Спробуйте ще раз.');
             setWaitingForApiResponse(false);
+        } finally {
+            hideLoadingMessage();
         }
     };
 
@@ -282,9 +274,9 @@ const NewsModal: React.FC<{
                             rules={[
                                 { required: true, message: 'Введіть Посилання' },
                                 {
-                                    pattern: /^[a-z-]+$/,
+                                    pattern: /^[0-9a-z-]+$/,
                                     message:
-                                        'Посилання має містити лише малі латинські літери та дефіс',
+                                        'Посилання має містити лише малі латинські літери, цифри та дефіс',
                                 },
                                 {
                                     validator: async (_, value) => {
@@ -302,20 +294,31 @@ const NewsModal: React.FC<{
                             <Input maxLength={200} showCount />
                         </Form.Item>
 
-                        <div className="required-text" title="Текст:">
-                            <span className="star">&#x204E;</span>
-                            <span>Текст:</span>
-                        </div>
-                        <Editor
-                            qRef={editorRef}
-                            value={data}
-                            onChange={handleUpdate}
-                            maxChars={sizeLimit}
-                            onCharacterCountChange={setEditorCharacterCount}
-                        />
-                        {!textIsPresent && textIsChanged && (
-                            <p className="form-text">Введіть текст</p>
-                        )}
+                        <Form.Item
+                            name="editor"
+                            label="Текст:"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Введіть текст',
+                                    validator: () => {
+                                        const editorText = editorRef.current?.editor?.getText().trim();
+                                        if (!editorText || editorText === '') {
+                                            return Promise.reject(new Error('Введіть текст'));
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                },
+                            ]}
+                        >
+                            <Editor
+                                qRef={editorRef}
+                                value={data}
+                                onChange={handleUpdate}
+                                maxChars={sizeLimit}
+                                onCharacterCountChange={setEditorCharacterCount}
+                            />
+                        </Form.Item>
 
                         <Form.Item
                             name="image"

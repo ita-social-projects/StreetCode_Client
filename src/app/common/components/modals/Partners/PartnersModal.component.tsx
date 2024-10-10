@@ -25,18 +25,23 @@ const PartnersModal = () => {
     const { setModal, modalsState: { partners } } = modalStore;
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({ email: '', message: '' });
-    const [messageApi, messageContextHolder] = message.useMessage({ maxCount: 3 });
+    const [messageApi, messageContextHolder] = message.useMessage();
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
-    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
+    const { MESSAGE_LIMIT, RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onFinish = () => {
         if (isVerified) {
             const token = recaptchaRef?.current?.getValue();
-            const newEmail: Email = { from: formData.email, content: formData.message, token: token };
+            const newEmail: Email = {
+                from: formData.email,
+                source: 'сторінка Партнери',
+                content: formData.message,
+                token,
+            };
             EmailApi.send(newEmail)
                 .then(() => {
                     onCancel();
@@ -48,7 +53,9 @@ const PartnersModal = () => {
                         errorMessage(MESSAGE_LIMIT);
                     }
                     else {
-                        errorMessage(SOMETHING_IS_WRONG);
+                        for (const key in error.data) {
+                            errorMessage(`${error.data[key].message}`)
+                        } 
                     }
                 });
             recaptchaRef.current?.reset();
@@ -116,9 +123,7 @@ const PartnersModal = () => {
             footer={null}
             onCancel={onCancel}
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
-                    <CancelBtn className="iconSize" onClick={onClear} />
-                </Popover>
+                <CancelBtn className="iconSize" onClick={onClear} />
             )}
         >
             {messageContextHolder}
