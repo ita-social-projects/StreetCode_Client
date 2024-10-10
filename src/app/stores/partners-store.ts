@@ -20,22 +20,23 @@ export default class PartnersStore {
         this.PartnerMap.set(partner.id, partner);
     };
 
+    get getPartnerArray() {
+        return Array.from(this.PartnerMap.values());
+    }
+
+    public static getAllPartners = async () => {
+        try {
+            return await partnersApi.getAll();
+        } catch (error: unknown) {}
+        return [];
+    };
+
     public static async getAllPartnerShort():Promise<PartnerShort[]> {
         try {
             return await partnersApi.getAllShort();
         } catch (error: unknown) {}
         return [];
     }
-
-    get getPartnerArray() {
-        return Array.from(this.PartnerMap.values());
-    }
-
-    public getAll = async () => {
-        try {
-            this.setInternalMap(await partnersApi.getAll());
-        } catch (error: unknown) {}
-    };
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {

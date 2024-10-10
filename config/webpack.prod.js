@@ -53,8 +53,12 @@ module.exports = {
             maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
             runtimeCaching: [
               {
+                urlPattern: /env-config\.js$/,
+                handler: 'NetworkOnly'
+              },
+              {
                 urlPattern: /\.(?:js|css)$/,
-                handler: 'CacheFirst',
+                handler: 'NetworkFirst',
                 options: {
                   cacheName: 'static-resources',
                   expiration: {
@@ -65,7 +69,7 @@ module.exports = {
               },
               {
                 urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
-                handler: 'CacheFirst',
+                handler: 'StaleWhileRevalidate',
                 options: {
                   cacheName: 'image-resources',
                   expiration: {
@@ -75,7 +79,7 @@ module.exports = {
               },
               {
                 urlPattern: /\.(?:woff|woff2|ttf|otf)$/,
-                handler:'CacheFirst',
+                handler:'StaleWhileRevalidate',
                 options: {
                   cacheName: 'font-resources',
                   expiration: {
