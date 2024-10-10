@@ -6,13 +6,13 @@ import { donateEvent } from '@utils/googleAnalytics.unility';
 export default function donateButtonRequest(donateAmount: PositiveNumber) {
     const donation: Donation = {
         amount: donateAmount,
-        pageUrl: window.location.href,
+        redirectUrl: window.location.href,
     };
 
     const windowReference = window.open() as Window;
-    DonationApi.create(donation).then(({ pageUrl }) => {
+    DonationApi.create(donation).then(({ redirectUrl }) => {
         donateEvent('support_us_page_donation_block');
-        windowReference.location = pageUrl;
+        windowReference.location = redirectUrl;
     }).catch(() => {
         windowReference.close();
     });
