@@ -93,7 +93,7 @@ $loadImg: '@assets/images/catalog/loading.webp';
                 padding-top: pxToRem(20px);
                 row-gap: pxToRem(39px);
                 grid-auto-rows: minmax(165px, 236px);
-                grid-template-columns: repeat(auto-fit, 165px);
+                grid-template-columns: repeat(auto-fit, 164px);
                 justify-content: center;
             }
         }

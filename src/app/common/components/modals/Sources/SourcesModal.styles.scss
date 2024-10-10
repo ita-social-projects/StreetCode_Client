@@ -61,7 +61,7 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
     height: pxToRem(570px);
     @include mut.rem-margined(30px, 10px, 30px, 30px);
     padding-right: pxToRem(10px);
-    overflow-y: scroll;
+    overflow-y: auto;
     font-weight: 300;
     font-size: 15px;
 
