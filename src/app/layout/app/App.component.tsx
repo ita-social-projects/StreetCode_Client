@@ -34,7 +34,7 @@ const App = () => {
             <HeaderBlock />
             <div className="mainWrapper">
                 <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
-                <CopyWithCopyright copyrightText={CopyrightText}>
+                <CopyWithCopyright copyrightText={CopyrightText} className='mainBlockWrapper'>
                     {(pathname !== FRONTEND_ROUTES.BASE) && (
                         <Outlet />
                     )}
