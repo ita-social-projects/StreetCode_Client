@@ -2,15 +2,15 @@ import './StreetcodesTable.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 
-import {
-    Button, Input, InputNumber, Select, SelectProps,
-} from 'antd';
+import { ChangeEvent, Dispatch } from 'react';
+
+import { Button, Input, Select, SelectProps } from 'antd';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
 interface IProps {
-    setStatus: any
-    setTitle: any
+    setStatus: Dispatch<React.SetStateAction<string[]>>
+    setTitle: Dispatch<React.SetStateAction<string | null>>
     setRequest: () => void
 }
 
@@ -21,11 +21,11 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
         { value: 'Deleted', label: 'видалений' },
     ];
 
-    const handleChangeStatus = (value: string) => {
+    const handleChangeStatus = (value: string[]) => {
         setStatus(value);
     };
 
-    const handleChangeTitle = (event: any) => {
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
     };
 
