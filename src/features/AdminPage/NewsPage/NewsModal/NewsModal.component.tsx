@@ -182,7 +182,7 @@ const NewsModal: React.FC<{
     };
 
     const onSuccessfulSubmitNews = async (formValues: any) => {
-        message.loading('Зберігання...');
+        const hideLoadingMessage = message.loading('Зберігання...', 0);
 
         const news: News = {
             id: 0,
@@ -219,6 +219,8 @@ const NewsModal: React.FC<{
         } catch (e: unknown) {
             message.error('Не вдалось оновити/створити новину. Спробуйте ще раз.');
             setWaitingForApiResponse(false);
+        } finally {
+            hideLoadingMessage();
         }
     };
 
