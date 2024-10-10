@@ -27,7 +27,7 @@ const CategoriesMainPage: React.FC = observer(() => {
             sourcesStore.fetchSrcCategoriesAll(),
         ]).then(() => {
             sourcesStore?.srcCategoriesMap.forEach((val, key) => {
-                if (val.imageId !== null && val.imageId !== undefined) {
+                if (!!val.imageId && !val.image) {
                     ImageStore.getImageById(val.imageId!).then((image) => {
                         sourcesStore.srcCategoriesMap.set(
                             key,
@@ -97,7 +97,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                                         modalStore.setConfirmationModal('confirmation');
                                     }
                                 },
-                                'Ви впевнені, що хочете видалити цю новину?',
+                                'Ви впевнені, що хочете видалити цю категорію?',
                             );
                         }}
                     />

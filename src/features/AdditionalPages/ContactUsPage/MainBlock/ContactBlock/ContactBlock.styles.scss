@@ -5,7 +5,7 @@
 
 @mixin hoverStyles {
     transform: translate3d(0, 0, 0); //required to make safari use gpu for render filter:drop-shadow
-    @include vnd.vendored(filter, 'drop-shadow(0 0 10px rgba(255, 0, 0, 0.612))');
+    @include vnd.vendored(filter, 'drop-shadow(0 0 10px rgba(61, 0, 0, 0.25))');
     cursor: pointer;
     transform: scale(1.7);
 }
