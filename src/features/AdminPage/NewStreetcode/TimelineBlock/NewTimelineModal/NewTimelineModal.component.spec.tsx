@@ -1,5 +1,5 @@
 import {
-    cleanup, fireEvent, render, screen, waitFor,
+    act, cleanup, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import user from '@testing-library/user-event';
 
@@ -25,11 +25,11 @@ Object.defineProperty(window, 'matchMedia', {
         matches: false,
         media: query,
         onchange: null,
-        addListener: () => {},
-        removeListener: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        dispatchEvent: () => {},
+        addListener: () => { },
+        removeListener: () => { },
+        addEventListener: () => { },
+        removeEventListener: () => { },
+        dispatchEvent: () => { },
     }),
 });
 
@@ -74,7 +74,7 @@ jest.mock('@stores/root-store', () => ({
 }));
 
 const open = true;
-const setOpen = () => {};
+const setOpen = () => { };
 const onChangeMock = jest.fn();
 
 describe('NewTimelineModal test', () => {
@@ -133,20 +133,23 @@ describe('NewTimelineModal test', () => {
             historicalContexts: [],
         };
 
-        // Act
+        // Act & Assert
+        user.type(inputTitle, createTimelineWithRequiredOnly.title);
         await waitFor(() => {
-            user.type(inputTitle, createTimelineWithRequiredOnly.title);
-            fireEvent.mouseDown(datePicker);
-            fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-            fireEvent.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-            user.type(textareaDescription, createTimelineWithRequiredOnly.description!);
-            user.click(buttonSave);
+            expect(onChangeMock).toHaveBeenLastCalledWith('title', createTimelineWithRequiredOnly.title);
         });
 
-        // Assert
+        fireEvent.mouseDown(datePicker);
+        fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
+        fireEvent.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
+
+        user.type(textareaDescription, createTimelineWithRequiredOnly.description!);
         await waitFor(() => {
-            expect(onChangeMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalled();
+            expect(onChangeMock).toHaveBeenLastCalledWith('description', createTimelineWithRequiredOnly.description);
+        });
+
+        user.click(buttonSave);
+        await waitFor(() => {
             expect(addTimelineMock).toHaveBeenCalledWith(createTimelineWithRequiredOnly);
         });
     });
@@ -182,29 +185,30 @@ describe('NewTimelineModal test', () => {
             historicalContexts: [context],
         };
 
-        // Act
+        // Act & Assert
+        user.type(inputTitle, createJobWithAllFields.title);
         await waitFor(() => {
-            user.type(inputTitle, createJobWithAllFields.title);
-
-            user.click(selectDate);
-            user.click(screen.getByTitle('Рік, день місяць')!);
-            // user.click(document.querySelector('.ant-select-selection-item')!);
-
-            user.click(datePicker);
-            fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-            user.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-
-            user.click(selectContext);
-            user.click(screen.getByTitle('context 1'));
-
-            user.type(textareaDescription, createJobWithAllFields.description!);
-            user.click(buttonSave);
+            expect(onChangeMock).toHaveBeenLastCalledWith('title', createJobWithAllFields.title);
         });
 
-        // Assert
+        user.click(selectDate);
+        user.click(screen.getByTitle('Рік, день місяць')!);
+
+        user.click(datePicker);
+        fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
+        user.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
+
+        user.click(selectContext);
+        user.click(screen.getByTitle('context 1'));
+        expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', createJobWithAllFields.historicalContexts);
+
+        user.type(textareaDescription, createJobWithAllFields.description!);
         await waitFor(() => {
-            expect(onChangeMock).toHaveBeenCalled();
-            expect(addTimelineMock).toHaveBeenCalled();
+            expect(onChangeMock).toHaveBeenLastCalledWith('description', createJobWithAllFields.description);
+        });
+
+        user.click(buttonSave);
+        await waitFor(() => {
             expect(addTimelineMock).toHaveBeenCalledWith(createJobWithAllFields);
         });
     });
@@ -233,26 +237,24 @@ describe('NewTimelineModal test', () => {
             historicalContexts: [{ id: 2, modelState: 0, title: 'context 2' }],
         };
 
+        user.clear(inputTitle);
+        user.clear(textareaDescription);
+
+        user.type(inputTitle, editedTimeLine.title);
         await waitFor(() => {
-            user.clear(inputTitle);
-            user.clear(textareaDescription);
+            expect(onChangeMock).toHaveBeenLastCalledWith('title', editedTimeLine.title);
         });
 
-        await waitFor(async () => {
-            user.type(inputTitle, editedTimeLine.title);
-            await waitFor(() => {
-                expect(onChangeMock).toHaveBeenLastCalledWith('title', editedTimeLine.title);
-            });
+        user.type(textareaDescription, editedTimeLine.description);
+        await waitFor(() => {
+            expect(onChangeMock).toHaveBeenLastCalledWith('description', editedTimeLine.description);
+        });
 
-            user.type(textareaDescription, editedTimeLine.description);
-            await waitFor(() => {
-                expect(onChangeMock).toHaveBeenLastCalledWith('description', editedTimeLine.description);
-            });
+        user.click(selectContext);
+        user.click(screen.getByTitle('context 2'));
+        expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', editedTimeLine.historicalContexts);
 
-            user.click(selectContext);
-            user.click(screen.getByTitle('context 2'));
-            expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', editedTimeLine.historicalContexts);
-
+        await act(async () => {
             user.click(buttonSave);
         });
     });

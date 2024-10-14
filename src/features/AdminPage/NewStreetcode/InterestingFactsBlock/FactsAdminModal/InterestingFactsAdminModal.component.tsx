@@ -8,6 +8,8 @@ import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+
 import {
     Button, Form, Input, message, Modal, Popover, UploadFile,
 } from 'antd';
@@ -40,13 +42,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
-    const checkFile = async (file: UploadFile) => {
-        return (file.type === 'image/jpeg') || (file.type === 'image/webp')
-            || (file.type === 'image/png') || (file.type === 'image/jpg');
-    }
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
-    const handleChange = async (param: UploadChangeParam<UploadFile<any>>) => {
-        if (await checkFile(param.file)) {
+    const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
             setFileList(param.fileList);
         }
     }
@@ -208,25 +207,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             name="image"
                             rules={[
                                 { required: true, message: 'Завантажте фото, будь ласка' },
-                                {
-                                    validator: (_, file) => {
-                                        if (file) {
-                                            let name = '';
-                                            if (file.file) {
-                                                name = file.file.name.toLowerCase();
-                                            } else if (file.name) {
-                                                name = file.name.toLowerCase();
-                                            }
-                                            if (name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')
-                                                || name.endsWith('.jpg') || name === '') {
-                                                return Promise.resolve();
-                                            }
-                                            // eslint-disable-next-line max-len
-                                            return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
-                                        }
-                                        return Promise.reject();
-                                    },
-                                },
+                                { validator: imageValidator },
                             ]}
                         >
                             <FileUploader
@@ -237,7 +218,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 maxCount={1}
                                 fileList={fileList}
                                 beforeUpload={checkFile}
-                                onChange={handleChange}
+                                onChange={handleFileChange}
                                 onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;
                                     setHasUploadedPhoto(true);

@@ -1,7 +1,6 @@
 import './PrivatePolicy.styles.scss';
 
-import { useEffect } from 'react';
-import Footer from '@layout/footer/Footer.component';
+import { Helmet } from 'react-helmet';
 
 import SectionFifth from './SubSections/SubSectionFifth/SectionFifth.component';
 import SectionFirst from './SubSections/SubSectionFirst/SectionFirst.component';
@@ -14,6 +13,10 @@ import Title from './Title/Title.component';
 
 const PrivatePolicy = () => (
     <div className="privatePolicyContainer">
+        <Helmet>
+            <title>Політика конфіденційності | Streetcode</title>
+            <meta name="description" content="Прочитайте нашу Політику конфіденційності, щоб зрозуміти, як ми збираємо, використовуємо та захищаємо вашу особисту інформацію. Дізнайтеся про свої права та те, як ми обробляємо ваші дані." />
+        </Helmet>
         <div className="wrapper">
             <Title />
             <main>

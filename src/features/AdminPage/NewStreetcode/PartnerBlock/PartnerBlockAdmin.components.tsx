@@ -10,34 +10,34 @@ import Partner, { PartnerCreateUpdateShort, PartnerShort } from '@/models/partne
 interface Props {
     partners: PartnerCreateUpdateShort[],
     setPartners: React.Dispatch<React.SetStateAction<PartnerCreateUpdateShort[]>>,
-    onChange: (field: string, value: any) => void,
+    onChange: (field: string, value: unknown) => void,
 }
 
 const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
-    const [allPartnersShort, setAllPartnerShort] = useState<PartnerShort[]>([]);
+    const [allPartners, setAllPartners] = useState<Partner[]>([]);
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
 
     useEffect(() => {
         Promise.all([
-            PartnersStore.getAllPartnerShort()
-                .then((parts) => setAllPartnerShort(parts)),
+            PartnersStore.getAllPartners()
+                .then((parts) => setAllPartners(parts)),
         ]);
     }, []);
 
     const afterSubmit = (partner: Partner) => {
-        const existingPartner = partners.find((p) => p.id === partner.id);
-        const existingPartnerShort = allPartnersShort.find((p) => p.id === partner.id);
-        if (!existingPartner) {
+        const existingPartnerCreateUpdate = partners.find((p) => p.id === partner.id);
+        const existingPartner = allPartners.find((p) => p.id === partner.id);
+        if (!existingPartnerCreateUpdate) {
             setPartners([...partners, {
                 id: partner.id,
                 title: partner.title,
                 modelState: ModelState.Created,
             }]);
         }
-        if (!existingPartnerShort) {
-            setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }]);
+        if (!existingPartner) {
+            setAllPartners([...allPartners, partner]);
         }
-    }
+    };
 
     const onPartnerSelect = (value: number) => {
         const existingPartner = partners.find((p) => p.id === value);
@@ -47,7 +47,7 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
             existingPartner.modelState = ModelState.Updated;
             setPartners([...updatedPartners, existingPartner]);
         } else {
-            const partner = allPartnersShort.find((c) => c.id === value) as PartnerCreateUpdateShort;
+            const partner = allPartners.find((c) => c.id === value) as PartnerCreateUpdateShort;
             partner.modelState = ModelState.Created;
             setPartners([...updatedPartners, partner]);
         }
@@ -69,7 +69,7 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
     const alphabeticalSorting = (partnersItems: PartnerShort[]) => partnersItems.slice()
         .sort((a, b) => a.title.localeCompare(b.title));
 
-    const sortedPartners = alphabeticalSorting(allPartnersShort);
+    const sortedPartners = alphabeticalSorting(allPartners);
 
     return (
         <div className="adminContainer-block">
@@ -82,7 +82,15 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                         .map((x) => x.id)}
                     onDeselect={onPartnerDeselect}
                 >
-                    {sortedPartners.map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
+                    {sortedPartners.map((s) => (
+                        <Select.Option
+                            key={`${s.id}`}
+                            value={s.id}
+                            disabled={allPartners.find((p) => p.id === s.id)?.isVisibleEverywhere}
+                        >
+                            {s.title}
+                        </Select.Option>
+                    ))}
                 </Select>
 
                 <Button

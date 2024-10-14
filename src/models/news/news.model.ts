@@ -1,14 +1,20 @@
 import Image from '@models/media/image.model';
 import dayjs from 'dayjs';
 
-export default interface News {
-    id: number;
+export interface NewsCreate {
     title: string;
     text: string;
     url: string;
     imageId: number;
-    image?: Image;
     creationDate: dayjs.Dayjs;
+}
+
+export interface NewsUpdate extends NewsCreate {
+    id: number;
+}
+
+export default interface News extends NewsUpdate {
+    image?: Image;
 }
 
 export interface RandomNews {

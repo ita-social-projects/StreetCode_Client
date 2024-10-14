@@ -2,10 +2,10 @@ import './SupportUs.styles.scss';
 import '../ContactUsPage/Title/Title.styles.scss';
 
 import { useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import { copyBankNumberEvent, donateEvent } from '@/app/common/utils/googleAnalytics.unility';
-import Footer from '@/app/layout/footer/Footer.component';
 import { useModalContext } from '@/app/stores/root-store';
 import Camera from '@/assets/images/donates/donatesPage/camera.svg';
 import Copy from '@/assets/images/donates/donatesPage/copy-icon.svg';
@@ -49,6 +49,10 @@ const SupportUs = () => {
 
     return (
         <div className="supportUsPage">
+            <Helmet>
+                <title>Підтримати нас | Streetcode</title>
+                <meta name="description" content="Дізнайтеся, як ви можете підтримати нашу місію." />
+            </Helmet>
             <div className="supportUsPageWrapper">
                 <div className="heading">
                     <div className="donateLogoSmall">

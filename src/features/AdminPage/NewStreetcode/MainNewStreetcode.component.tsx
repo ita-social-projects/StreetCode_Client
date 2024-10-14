@@ -271,7 +271,7 @@ const NewStreetcode = () => {
                             }));
 
                         setPartners(persistedPartners);
-                    }
+                    },
                 );
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
                     .then((resultSubtitle) => {
