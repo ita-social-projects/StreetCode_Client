@@ -1,5 +1,7 @@
 import './Partners.styles.scss';
 
+import { Helmet } from 'react-helmet';
+
 import DonateBtnRectangle from './ModalButtons/DonateBtn/DonateBtnRectangle.component';
 import PartnersBtn from './ModalButtons/PartnersBtn/PartnersBtn.component';
 import PartnersBtnCircle from './ModalButtons/PartnersBtnCircle/PartnersBtnCircle.component';
@@ -9,6 +11,10 @@ import Title from './Title/Title.component';
 const PartnersPage = () => (
 
     <>
+        <Helmet>
+            <title>Наші партнери | Streetcode</title>
+            <meta name="description" content="Дізнайтеся про наших цінних партнерів, що вклали внесок у нашу місію." />
+        </Helmet>
         <div className="partnersContainer">
             <div className="wrapper">
                 <Title />

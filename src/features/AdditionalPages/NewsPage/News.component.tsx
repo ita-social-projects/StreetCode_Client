@@ -3,7 +3,8 @@
 /* eslint-disable max-len */
 import './News.styles.scss';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { NewsWithUrl } from '@models/news/news.model';
 import { clearWindowHistoryState } from '@utils/window.utility';
@@ -95,60 +96,66 @@ const NewsPage = () => {
     );
 
     return (
-        newsValue
+        <>
+            <Helmet>
+                <title>Новини | Streetcode</title>
+                <meta name="description" content="Будьте в курсі останніх новин від «Стріткод»." />
+            </Helmet>
+
+            newsValue
             ? (
-                <div className="newsContainer">
-                    <div className="wrapper" ref={wrapperRef}>
-                        <BreadCrumbForNews separator={<div className="separator" />} news={newsValue?.news} />
-                        <div className="NewsHeader">
-                            <h1 className="">{newsValue?.news.title}</h1>
-                            <h3 className="news-date">{dayjs(newsValue?.news.creationDate).format('DD.MM.YYYY')}</h3>
-                        </div>
-                        <div className="newsWithImageWrapper">
-                            {newsImg != null && (windowSize.width > 1024) ? (
-                                <img
-                                    className="newsImage"
-                                    key={newsValue?.news.id}
-                                    src={base64ToUrl(getImage(newsValue?.news.imageId!)?.base64, getImage(newsValue?.news.imageId!)?.mimeType)}
-                                    alt={newsValue?.news.title}
-                                />
-                            ) : ''}
-                            <div className="newsTextArea">
-                                {paragraphsCount >= 2 ? parsedNewsText.slice(0, 3) : parsedNewsText}
-                            </div>
-                            {newsImg != null && (windowSize.width <= 1024) && (width >= wrapperWidth * 0.6) ? (
-                                <img
-                                    className="newsGoodImageClass Full"
-                                    key={newsValue?.news.id}
-                                    src={base64ToUrl(getImage(newsValue?.news.imageId!)?.base64, getImage(newsValue?.news.imageId!)?.mimeType)}
-                                    alt={newsValue?.news.title}
-                                />
-                            ) : ''}
-                            <div className="newsTextArea">
-                                {paragraphsCount >= 2 ? parsedNewsText.slice(3) : ''}
-                            </div>
-                        </div>
-                        <div className="newsLinks">
-                            <Link
-                                className={`Link ${newsValue?.prevNewsUrl === null ? 'toHide' : ''}`}
-                                to={`/news/${newsValue?.prevNewsUrl}`}
-                                onClick={prevArticleClickEvent}
-                            >
-                                    Попередня новина
-                            </Link>
-                            <Link
-                                className={`Link ${newsValue?.nextNewsUrl === null ? 'toHide' : ''}`}
-                                to={`/news/${newsValue?.nextNewsUrl}`}
-                                onClick={nextArticleClickEvent}
-                            >
-                                    Наступна новина
-                            </Link>
-                        </div>
-                        <RandomNewsBlock newsValue={newsValue} />
+            <div className="newsContainer">
+                <div className="wrapper" ref={wrapperRef}>
+                    <BreadCrumbForNews separator={<div className="separator" />} news={newsValue?.news} />
+                    <div className="NewsHeader">
+                        <h1 className="">{newsValue?.news.title}</h1>
+                        <h3 className="news-date">{dayjs(newsValue?.news.creationDate).format('DD.MM.YYYY')}</h3>
                     </div>
+                    <div className="newsWithImageWrapper">
+                        {newsImg != null && (windowSize.width > 1024) ? (
+                            <img
+                                className="newsImage"
+                                key={newsValue?.news.id}
+                                src={base64ToUrl(getImage(newsValue?.news.imageId!)?.base64, getImage(newsValue?.news.imageId!)?.mimeType)}
+                                alt={newsValue?.news.title}
+                            />
+                        ) : ''}
+                        <div className="newsTextArea">
+                            {paragraphsCount >= 2 ? parsedNewsText.slice(0, 3) : parsedNewsText}
+                        </div>
+                        {newsImg != null && (windowSize.width <= 1024) && (width >= wrapperWidth * 0.6) ? (
+                            <img
+                                className="newsGoodImageClass Full"
+                                key={newsValue?.news.id}
+                                src={base64ToUrl(getImage(newsValue?.news.imageId!)?.base64, getImage(newsValue?.news.imageId!)?.mimeType)}
+                                alt={newsValue?.news.title}
+                            />
+                        ) : ''}
+                        <div className="newsTextArea">
+                            {paragraphsCount >= 2 ? parsedNewsText.slice(3) : ''}
+                        </div>
+                    </div>
+                    <div className="newsLinks">
+                        <Link
+                            className={`Link ${newsValue?.prevNewsUrl === null ? 'toHide' : ''}`}
+                            to={`/news/${newsValue?.prevNewsUrl}`}
+                            onClick={prevArticleClickEvent}
+                        >
+                                    Попередня новина
+                        </Link>
+                        <Link
+                            className={`Link ${newsValue?.nextNewsUrl === null ? 'toHide' : ''}`}
+                            to={`/news/${newsValue?.nextNewsUrl}`}
+                            onClick={nextArticleClickEvent}
+                        >
+                                    Наступна новина
+                        </Link>
+                    </div>
+                    <RandomNewsBlock newsValue={newsValue} />
                 </div>
+            </div>
             )
-            : <></>
+        </>
     );
 };
 

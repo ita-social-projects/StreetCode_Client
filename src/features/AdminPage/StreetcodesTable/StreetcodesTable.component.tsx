@@ -4,20 +4,19 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, FormOutlined, RollbackOutlined,
+    BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
-import { NumberLiteralTypeAnnotation } from '@babel/types';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
 import {
-    Button, Dropdown, InputNumber, MenuProps, Modal, Pagination, Space,
+    Button, Dropdown, MenuProps, Pagination, Space,
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useMobx, { useModalContext } from '@/app/stores/root-store';
+import { useModalContext } from '@/app/stores/root-store';
 import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
 
 import { formatDate } from './FormatDateAlgorithm';
@@ -37,7 +36,7 @@ const StreetcodesTable = () => {
     const [currentPages, setCurrentPages] = useState<number>(1);
     const [totalItems, setTotalItems] = useState<number>(0);
     const [titleRequest, setTitleRequest] = useState<string | null>(null);
-    const [statusRequest, setStatusRequest] = useState<string | null>(null);
+    const [statusRequest, setStatusRequest] = useState<string[]>([]);
     const [pageRequest, setPageRequest] = useState<number>(1);
     const [mapedStreetCodes, setMapedStreetCodes] = useState<MapedStreetCode[]>([]);
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
@@ -57,7 +56,8 @@ const StreetcodesTable = () => {
 
     const setRequest = () => {
         let page = pageRequest;
-        if(requestGetAll.Title !== titleRequest || requestGetAll.Filter !== statusRequest) {
+        const filter = statusRequest.length === 0 ? null : `Status:${statusRequest}`;
+        if (requestGetAll.Title !== titleRequest || requestGetAll.Filter !== filter) {
             setPageRequest(1);
             setCurrentPages(1);
             page = 1;
@@ -67,7 +67,7 @@ const StreetcodesTable = () => {
             Amount: amountRequest,
             Title: titleRequest === '' ? null : titleRequest,
             Sort: null,
-            Filter: statusRequest == null ? null : `Status:${statusRequest}`,
+            Filter: filter,
         });
     };
 
@@ -102,6 +102,16 @@ const StreetcodesTable = () => {
         setMapedStreetCodes(updatedMapedStreetCodes);
     };
 
+    const handleChangeStatusConfirmation = async (status: string, e: number) => {
+        await StreetcodesApi.updateState(currentStreetcodeOption, e);
+        updateState(currentStreetcodeOption, status);
+        modalStore.setConfirmationModal('confirmation', undefined, '', false, undefined);
+    };
+
+    const handleCancelConfirmation = () => {
+        setIsConfirmationModalVisible(false);
+    };
+
     const handleMenuClick: MenuProps['onClick'] = async (e) => {
         try {
             const selectedKey = +e.key;
@@ -133,15 +143,6 @@ const StreetcodesTable = () => {
         }
     };
 
-    const handleChangeStatusConfirmation = async (status: string, e: number) => {
-        await StreetcodesApi.updateState(currentStreetcodeOption, e);
-        updateState(currentStreetcodeOption, status);
-        modalStore.setConfirmationModal('confirmation', undefined, '', false, undefined);
-    };
-
-    const handleCancelConfirmation = () => {
-        setIsConfirmationModalVisible(false);
-    };
     const handleUndoDelete = async (id: number) => {
         await StreetcodesApi.updateState(id, 0);
         updateState(id, 'Видалений');
@@ -182,8 +183,7 @@ const StreetcodesTable = () => {
                     setIsConfirmationModalVisible(true);
                 },
             }),
-
-            render: (text: string, record: MapedStreetCode) => (
+            render: (text: string) => (
                 <Dropdown menu={menuProps} trigger={['click']}>
                     <Button>
                         <Space>
@@ -208,7 +208,7 @@ const StreetcodesTable = () => {
             dataIndex: 'action',
             width: 100,
             key: 'action',
-            render: (value: any, record: MapedStreetCode) => (
+            render: (_: unknown, record: MapedStreetCode) => (
                 <>
                     {record.status !== 'Видалений' ? (
                         <>
@@ -274,7 +274,7 @@ const StreetcodesTable = () => {
         const getAllStreetcodesResponse = await StreetcodesApi.getAll(requestGetAll);
         const mapedStreetCodesBuffer: MapedStreetCode[] = [];
         const response = await Promise.all([getAllStreetcodesResponse]);
-        response[0].streetcodes.map((streetcode) => {
+        response[0].streetcodes.forEach((streetcode) => {
             let currentStatus = '';
 
             switch (streetcode.status) {
@@ -301,12 +301,10 @@ const StreetcodesTable = () => {
         setMapedStreetCodes(mapedStreetCodesBuffer);
         setTotalItems(response[0].totalAmount);
     };
-    
 
     useEffect(() => {
         fetchPaginatedData();
     }, [requestGetAll, pageRequest, deleteStreetcode]);
-    
 
     return (
         <div className="StreetcodeTableWrapper">
@@ -329,9 +327,9 @@ const StreetcodesTable = () => {
                             current={currentPages}
                             total={totalItems}
                             pageSize={amountRequest}
-                            onChange={(value: any) => {
-                                setCurrentPages(value);
-                                setPageRequest(value);
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                setPageRequest(page);
                                 setRequest();
                             }}
                         />

@@ -146,7 +146,7 @@ describe("JobsModal test", () => {
     // Assert
     expect(JobApi.create).toHaveBeenCalled();
     expect(JobApi.create).toHaveBeenCalledWith(createJobWithRequiredOnly);
-  }, 10000);
+  });
 
   it("should create job with all fields", async () => {
     // Arrange
@@ -200,7 +200,7 @@ describe("JobsModal test", () => {
     // Assert
     expect(JobApi.create).toHaveBeenCalled();
     expect(JobApi.create).toHaveBeenCalledWith(createJobWithAllFields);
-  }, 10000);
+  });
 
   it("should edit vacancy data", async () => {
     // Arrange

@@ -40,7 +40,7 @@ const LOGO_ICONS: LogoIcon[] = [
         icon: tiktok,
     },
     {
-        type: LogoType.twitter,
+        type: LogoType.x,
         icon: twitter,
     },
     {

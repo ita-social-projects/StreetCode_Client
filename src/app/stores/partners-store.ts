@@ -42,6 +42,13 @@ export default class PartnersStore {
         return this.paginationInfo;
     }
 
+    public static getAllPartners = async () => {
+        try {
+            return await partnersApi.getAll();
+        } catch (error: unknown) {}
+        return [];
+    };
+
     public static async getAllPartnerShort():Promise<PartnerShort[]> {
         try {
             return await partnersApi.getAllShort();
