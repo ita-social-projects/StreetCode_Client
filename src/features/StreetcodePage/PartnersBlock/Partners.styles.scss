@@ -1,6 +1,10 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 
+.height-52 {
+    @include mut.sized(100%, 52px);
+}
+
 .partnersWrapper {
     @include mut.flex-centered();
     

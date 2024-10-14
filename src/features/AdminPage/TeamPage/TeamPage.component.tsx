@@ -3,14 +3,7 @@ import './TeamPage.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
-import behance from '@assets/images/partners/behance.svg';
-import facebook from '@assets/images/partners/facebook.svg';
-import http from '@assets/images/partners/http.svg';
-import instagram from '@assets/images/partners/instagram.svg';
-import linkedin from '@assets/images/partners/linkedin.svg';
-import tiktok from '@assets/images/partners/tiktok.svg';
-import twitter from '@assets/images/partners/twitterNew.svg';
-import youtube from '@assets/images/partners/youtube.svg';
+
 
 import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
@@ -24,11 +17,11 @@ import TeamMember, { TeamMemberLink } from '../../../models/team/team.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import TeamModal from './TeamModal/TeamModal.component';
+import LOGO_ICONS from './TeamModal/constants/logoIcons';
 
 const TeamPage = () => {
     const { teamStore } = useMobx();
     const { modalStore } = useModalContext();
-    const LogoType = [twitter, instagram, facebook, youtube, linkedin, tiktok, behance, http];
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
@@ -120,7 +113,7 @@ const TeamPage = () => {
             render: (links: TeamMemberLink[], team) => (
                 <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
                     {links.map((link) => {
-                        const LogoComponent = LogoType[link.logoType];
+                        const LogoComponent = LOGO_ICONS.find( logo => logo.type === link.logoType)!.icon;
                         return (
                             <a
                                 key={`${link.id}${link.targetUrl}`}

@@ -43,17 +43,17 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
                                     src={base64ToUrl(image?.base64, image?.mimeType)}
                                     className={`streetcodeMainPageImg ${image?.id ? 'imgVisible' : ''}`}
                                 />
-                            ) : <></>}
+                            ) : <> </>}
                     </div>
                 </div>
                 <div className="rightSlider">
                     <CardText
                         title={streetcode.title}
                         text={streetcode.teaser}
-                        subTitle={streetcode.text}
+                        subTitle={streetcode.alias}
                         moreBtnText="До стріткоду"
                         moreBtnAsLink={{ link: streetcode.transliterationUrl, state: historyState }}
-                        isStreetcodeSlider={true}
+                        isStreetcodeSlider
                     />
                 </div>
             </div>

@@ -22,22 +22,34 @@
 
 
 @mixin set-positioning($top, $right, $bottom, $left) {
-  @if ($top == 'auto' or unit($top) == '%') {
+  @if (str-index('#{$top}', 'calc')
+    or str-index('#{$top}', 'max')) {
+    top: #{$top};
+  } @else if ($top == 'auto' or unit($top) == '%') {
     top: $top;
   } @else {
     top: f.pxToRem($top);
   }
-  @if ($right == 'auto' or unit($right) == '%') {
+  @if (str-index('#{$right}', 'calc')
+    or str-index('#{$right}', 'max')) {
+    right: #{$right};
+  } @else if ($right == 'auto' or unit($right) == '%') {
     right: $right;
   } @else {
     right: f.pxToRem($right);
   }
-  @if ($bottom == 'auto' or unit($bottom) == '%') {
+  @if (str-index('#{$bottom}', 'calc')
+    or str-index('#{$bottom}', 'max')) {
+    bottom: #{$bottom};
+  } @else if ($bottom == 'auto' or unit($bottom) == '%') {
     bottom: $bottom;
   } @else {
     bottom: f.pxToRem($bottom);
   }
-  @if ($left == 'auto' or unit($left) == '%') {
+  @if (str-index('#{$left}', 'calc')
+    or str-index('#{$left}', 'max')) {
+    left: #{$left};
+  } @else if ($left == 'auto' or unit($left) == '%') {
     left: $left;
   } @else {
     left: f.pxToRem($left);

@@ -31,7 +31,7 @@ jest.mock("@stores/root-store", () => ({
     __esModule: true, // This property is needed when mocking modules that have a default export
     default: () => ({
         tagsStore: {
-            getTagArray: [{id: 999, title: "existing tag"}] as Tag[],
+            getTagArray: [{ id: 999, title: "existing tag" }] as Tag[],
             fetchTags: jest.fn().mockResolvedValue([]),
             createTag: (tag: TagCreate) => { TagsApi.create(tag) },
             updateTag: (tag: Tag) => { TagsApi.update(tag) },
@@ -103,7 +103,7 @@ describe("PartnerModal", () => {
     })
 
     test("update tag", async () => {
-        render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} initialData={{id: 1, title: "Old Tag"} as Tag}/>);
+        render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} initialData={{ id: 1, title: "Old Tag" } as Tag} />);
 
         const nameInput = screen.getByRole("textbox", { name: /назва:/i });
         const button = screen.getByRole("button", { name: /зберегти/i });
@@ -127,38 +127,38 @@ describe("PartnerModal", () => {
     })
 
     test("throw error on validation", async () => {
-        render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }}/>);
+        render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} />);
 
         const nameInput = screen.getByRole("textbox", { name: /назва:/i }) as HTMLInputElement;
         const button = screen.getByRole("button", { name: /зберегти/i });
 
-        nameInput.value = "";
-
         act(() => {
+            userEvent.clear(nameInput);
             userEvent.click(button);
         });
 
         await waitFor(() => {
-            expect(message.error).toHaveBeenCalled();
-        })
+            expect(button).toBeDisabled();
+        });
 
         cleanup();
     })
 
-    test("throw error on same tag title", async () => {
-        render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }}/>);
+    test("disable button on same tag title", async () => {
+        render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} />);
 
         const nameInput = screen.getByRole("textbox", { name: /назва:/i }) as HTMLInputElement;
         const button = screen.getByRole("button", { name: /зберегти/i });
 
         act(() => {
+            userEvent.clear(nameInput);
             userEvent.type(nameInput, "existing tag");
             userEvent.click(button);
         });
 
         await waitFor(() => {
-            expect(message.error).toHaveBeenCalled();
-        })
+            expect(button).toBeDisabled();
+        });
 
         cleanup();
     })

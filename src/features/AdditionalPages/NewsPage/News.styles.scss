@@ -151,6 +151,13 @@
     }
 }
 
+@media (hover: none) {
+    .newsContainer .randomNewsBlock .randomNewsLink .randomNewsTitleAndButtn .newsButtonContainer button:hover {
+        background: #E04031;
+    }
+}
+
+
 @media screen and (max-width: 1024px) {
     .newsContainer {
         @include mut.rem-padded($bottom: 20px, $top: 94px, $left: 10px, $right: 10px);
@@ -163,11 +170,6 @@
                     @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 32px);
                 }
             }
-        }
-
-        .newsTextArea {
-            white-space: pre-line;
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
         }
 
         .newsMainTextArea {
@@ -210,19 +212,25 @@
             }
         }
 
-        .newsTextArea {
-            white-space: pre-line;
-            @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 16px);
+        .newsWithImageWrapper {
+            flex-wrap: wrap;
+
+            .newsTextArea {
+                white-space: pre-line;
+                @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 18px);
+                
+                p {
+                    strong {
+                        @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 16px);
+                    }
+                }
+            }
         }
 
         .newsMainTextArea {
             p {
-                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 14px);
+                @include mut.with-font($font-family: ft.$closer-text-font, $font-weight: 500, $font-size: 16px);
             }
-        }
-
-        .newsWithImageWrapper {
-            flex-wrap: wrap;
         }
 
         .newsImage {
@@ -262,7 +270,7 @@
         .wrapper {
             .NewsHeader {
                 h1 {
-                    @include mut.with-font($font-size: 20px, $font-family: ft.$closer-text-font, $font-weight: 500);
+                    @include mut.with-font($font-size: 24px, $font-family: ft.$closer-text-font, $font-weight: 500);
                 }
             }
 
