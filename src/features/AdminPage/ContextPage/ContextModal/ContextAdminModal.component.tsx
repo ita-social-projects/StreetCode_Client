@@ -7,6 +7,8 @@ import Context from '@models/additional-content/context.model';
 import useMobx from '@stores/root-store';
 import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 interface ContextAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,16 +18,15 @@ interface ContextAdminProps {
 }
 
 const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
-                                                                                      isModalVisible,
-                                                                                      setIsModalOpen,
-                                                                                      initialData,
-                                                                                      isNewContext
-                                                                                  }) => {
+    isModalVisible,
+    setIsModalOpen,
+    initialData,
+    isNewContext
+}) => {
     const {contextStore} = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-		const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -42,23 +43,21 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
         }
     }, [initialData, isModalVisible, form]);
 
-    const validateContext = async (rule: any, value: string) => {
-        return new Promise<void>((resolve, reject) => {
-            if (contextStore.getContextArray.map((context) => context.title).includes(value)) {
-                reject('Контекст з такою назвою вже існує');
-            } else {
-                resolve();
-            }
-        });
-    };
+    const validateContext = uniquenessValidator(
+        ()=>(contextStore.getContextArray.map((context) => context.title)), 
+        ()=>(initialData?.title), 
+        'Контекст з такою назвою вже існує'
+    );
 
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
         const currentContext = {
-            ...(initialData?.id && {id: initialData?.id}),
-            title: formData.title,
+            ...(initialData?.id && { id: initialData?.id }),
+            title: (formData.title as string).trim(),
         };
+
+        if (currentContext.title === initialData?.title) return;
 
         if (currentContext.id) {
             await contextStore.updateContext(currentContext as Context);
@@ -74,15 +73,14 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     const handleCancel = () => {
         closeModal();
         form.resetFields();
-        setFileList([]);
     };
 
     const handleOk = async () => {
         try {
             await form.validateFields();
             form.submit();
-            message.success('Контекст успішно додано!');
-				    setIsSaveButtonDisabled(true);
+            message.success(`Контекст успішно ${isEditing ? 'змінено' : 'додано'}!`);
+			setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -131,6 +129,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                         rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
                             {validator: validateContext}
                         ]}
+                        getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
                         <Input maxLength={MAX_LENGTH.title} showCount onChange={handleInputChange} />
                     </Form.Item>

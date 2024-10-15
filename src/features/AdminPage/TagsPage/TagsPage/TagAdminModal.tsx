@@ -14,6 +14,8 @@ import {
 
 import Tag from '@/models/additional-content/tag.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -58,23 +60,21 @@ const SourceModal: React.FC<SourceModalProps> = ({
 		setIsSaveButtonDisabled(true);
     };
 
-    const validateTag = async (rule: any, value: string) => {
-        return new Promise<void>((resolve, reject) => {
-            if (tagsStore.getTagArray.map((tag) => tag.title).includes(value)) {
-                reject('Тег з такою назвою вже існує');
-            } else {
-                resolve();
-            }
-        });
-    };
+    const validateTag = uniquenessValidator(
+        ()=>(tagsStore.getTagArray.map((tag) => tag.title)), 
+        ()=>(initialData?.title), 
+        'Тег з такою назвою вже існує'
+    );
 
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
         const currentTag = {
             ...(initialData?.id && { id: initialData?.id }),
-            title: formData.title,
+            title: (formData.title as string).trim(),
         };
+
+        if (currentTag.title === initialData?.title) return;
 
         if (currentTag.id) {
             await tagsStore.updateTag(currentTag as Tag);
@@ -96,7 +96,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         try {
             await form.validateFields();
             form.submit();
-            message.success('Тег успішно додано!', 2);
+            message.success(`Тег успішно ${isEditing ? 'змінено' : 'додано'}!`, 2);
 			setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
@@ -136,6 +136,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         rules={[{ required: true, message: 'Введіть назву' },
                         { validator: validateTag }
                         ]}
+                        getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
                     >
                         <Input placeholder="Title" maxLength={50} showCount/>
                     </Form.Item>

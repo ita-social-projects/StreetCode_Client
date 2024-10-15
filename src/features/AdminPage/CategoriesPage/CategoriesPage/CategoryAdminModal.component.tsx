@@ -26,6 +26,8 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -94,12 +96,18 @@ const SourceModal: React.FC<SourceModalProps> = ({
         setIsSaveButtonDisabled(true);
     };
 
+    const validateCategory = uniquenessValidator(
+        () => (sourcesAdminStore.getSourcesAdmin.map((source) => source.title)),
+        () => (initialData?.title),
+        'Категорія з такою назвою вже існує',
+    );
+
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
         const currentSource: SourceCategoryAdmin = {
             id: initialData ? initialData.id : 0,
-            title: formData.title,
+            title: (formData.title as string).trim(),
             imageId: imageId.current,
             image,
         };
@@ -142,7 +150,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 return;
             }
             form.submit();
-            message.success('Категорію успішно додано!', 2);
+            message.success(`Категорію успішно ${isEditing ? "змінено" : "додано"}!`, 2);
             setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
@@ -189,7 +197,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву' }]}
+                        rules={[{ required: true, message: 'Введіть назву' },
+                        { validator: validateCategory }
+                        ]}
+                        getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
                         <Input placeholder="Title" maxLength={23} showCount onChange={handleInputChange} />
                     </Form.Item>

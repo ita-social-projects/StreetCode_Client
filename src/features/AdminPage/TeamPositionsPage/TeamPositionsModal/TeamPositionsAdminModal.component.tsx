@@ -8,6 +8,8 @@ import useMobx from '@stores/root-store';
 import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
 import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
 import position = parseJsonNumber.position;
+import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 interface TeamPositionsAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,15 +19,14 @@ interface TeamPositionsAdminProps {
 }
 
 const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = observer(({
-                                                                              isModalVisible,
-                                                                              setIsModalOpen,
-                                                                              initialData,
-                                                                              isNewPosition
-                                                                          }) => {
+    isModalVisible,
+    setIsModalOpen,
+    initialData,
+    isNewPosition
+}) => {
     const {teamPositionsStore} = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -40,23 +41,21 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
         }
     }, [initialData, isModalVisible, form]);
 
-    const validatePosition = async (rule: any, value: string) => {
-        return new Promise<void>((resolve, reject) => {
-            if (teamPositionsStore.getPositionsArray.map((positiondata) => positiondata.position).includes(value)) {
-                reject('Позиція з такою назвою вже існує');
-            } else {
-                resolve();
-            }
-        });
-    };
+    const validatePosition = uniquenessValidator(
+        ()=>(teamPositionsStore.getPositionsArray.map((position) => position.position)), 
+        ()=>(initialData?.position), 
+        'Позиція з такою назвою вже існує'
+    );
 
     const onSubmit = async (formData: any) => {
         await form.validateFields();
 
         const currentPosition = {
-            ...(initialData?.id && {id: initialData?.id}),
-            position: formData.position,
+            ...(initialData?.id && { id: initialData?.id }),
+            position: (formData.position as string).trim(),
         };
+
+        if (currentPosition.position === initialData?.position) return;
 
         if (currentPosition.id) {
             await teamPositionsStore.updatePosition(currentPosition as Position);
@@ -72,14 +71,13 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     const handleCancel = () => {
         closeModal();
         form.resetFields();
-        setFileList([]);
     };
 
     const handleOk = async () => {
         try {
             await form.validateFields();
             form.submit();
-            message.success('Позицію успішно додано!');
+            message.success(`Позицію успішно ${isEditing ? 'змінено' : 'додано'}!`);
         } catch (error) {
             message.config({
                 top: 100,
@@ -126,6 +124,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                         rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
                             {validator: validatePosition}
                         ]}
+                        getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
                         <Input maxLength={MAX_LENGTH.title} showCount/>
                     </Form.Item>

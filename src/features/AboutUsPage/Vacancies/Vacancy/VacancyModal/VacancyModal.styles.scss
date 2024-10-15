@@ -56,6 +56,14 @@
                         @include mut.with-font(ft.$closer-text-font, $font-size: 20px, $font-weight: 500);
                     }
 
+                    .descriptionContainer {
+                        height: f.pxToRem(500px) !important;
+                        @media screen and (max-width: s.$tablet) {
+                            height: f.pxToRem(400px) !important;
+                        }
+                        overflow-y: scroll;
+                    }
+
                     @media screen and (max-width: s.$tablet) {
                         h2 {
                             font-size: 24px !important;
