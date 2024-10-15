@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { Form } from 'antd';
 import { mockCreateNews, mockUpdateNews } from '../../../../../__mocks__/@stores/root-store';
 import News from '@/models/news/news.model';
+import React from 'react';
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -58,7 +59,7 @@ jest.mock('antd', () => {
         },
         message: {
             ...message,
-            loading: jest.fn(),
+            loading: () => jest.fn(),
             success: jest.fn(),
             config: jest.fn(),
             error: jest.fn(),
@@ -139,7 +140,7 @@ describe('NewsModal', () => {
             userEvent.upload(fileUpload, file);
         });
         await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
-
+        screen.debug();
         // There is no need to repeat this part of code for edit test (logic is the same).
         // Once here is enough to check that we don`t submit empty strings.
         expect(titleInput).toHaveValue('Test Title');
@@ -147,8 +148,8 @@ describe('NewsModal', () => {
         expect(textInput).toHaveValue('This is a test text');
         if (fileUpload.files) expect(fileUpload.files[0]).toStrictEqual(file);
 
+        screen.debug();
         userEvent.click(button);
-
         await waitFor(() => {
             expect(mockCreateNews).toHaveBeenCalled();
             expect(mockUpdateNews).not.toHaveBeenCalled();

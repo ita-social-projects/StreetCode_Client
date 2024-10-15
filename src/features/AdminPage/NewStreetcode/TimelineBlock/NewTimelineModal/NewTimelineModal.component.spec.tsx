@@ -116,6 +116,27 @@ jest.mock('@/app/common/components/Editor/QEditor.component', () => ({
     }),
 }));
 
+const addTimelineMock = jest.fn();
+const addContextItemMock = jest.fn();
+jest.mock('@stores/root-store', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        timelineItemStore: {
+            getTimelineItemArray: [],
+            addTimeline: addTimelineMock,
+            timelineItemMap: new Map<number, TimelineItem>(),
+        },
+        historicalContextStore: {
+            addItemToArray: addContextItemMock,
+            historicalContextArray: [
+                { id: 1, title: 'context 1' },
+                { id: 2, title: 'context 2' },
+            ],
+            fetchHistoricalContextAll: jest.fn(),
+        },
+    })),
+}));
+
 const open = true;
 const setOpen = () => { };
 const onChangeMock = jest.fn();
@@ -164,12 +185,15 @@ describe('NewTimelineModal', () => {
         });
     });
 
-    it('should not create new timeline if title is empty', async () => {
+    it('should create timeline with required fields only', async () => {
         act(() => {
-            render(<NewTimelineModal {...defaultProps} />);
+            render(<NewTimelineModal
+                open={open}
+                setIsModalOpen={setOpen}
+                onChange={onChangeMock}
+            />);
         });
         const inputTitle = screen.getByTestId('input-title');
-        const datePicker = screen.getByTestId('date-picker');
         const textareaDescription = screen.getByTestId('textarea-description');
         const buttonSave = screen.getByTestId('button-save');
 
@@ -184,36 +208,36 @@ describe('NewTimelineModal', () => {
 
         const saveButton = screen.getByRole('button', { name: /Зберегти/i });
 
-        act(() => {
-            userEvent.type(screen.getByRole('textbox', { name: /Опис:/i }), 'Test description');
-        });
-
+        // Act
         await waitFor(() => {
-            expect(saveButton).not.toBeDisabled();
+            user.type(inputTitle, createTimelineWithRequiredOnly.title);
+            fireEvent.change(screen.getByRole('combobox', { name: "" }), { target: { value: 'Рік, місяць' } });
+            userEvent.type(screen.getByRole('textbox', { name: /Дата:/i }), '2024-08-08');
+            user.type(textareaDescription, createTimelineWithRequiredOnly.description!);
+            user.click(buttonSave);
         });
 
-        act(() => {
-            userEvent.click(saveButton);
-        });
-
-        // Act & Assert
-        user.type(inputTitle, createTimelineWithRequiredOnly.title);
+        // Assert
         await waitFor(() => {
-            expect(onChangeMock).toHaveBeenLastCalledWith('title', createTimelineWithRequiredOnly.title);
-            expect(message.error).toHaveBeenCalled();
-            expect(message.success).not.toHaveBeenCalled();
-        });
-        user.type(inputTitle, createTimelineWithRequiredOnly.title);
-        fireEvent.mouseDown(datePicker);
-        fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-        fireEvent.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-        user.type(textareaDescription, createTimelineWithRequiredOnly.description!);
-        user.click(buttonSave);
-        
-
-        user.click(buttonSave);
-        await waitFor(() => {
+            expect(message.error).not.toHaveBeenCalled();
+            expect(message.success).toHaveBeenCalled();
+            expect(saveButton).toBeDisabled();
+            expect(onChangeMock).toHaveBeenCalled();
             expect(addTimelineMock).toHaveBeenCalledWith(createTimelineWithRequiredOnly);
+        });
+    });
+
+    it('should add new historical context', async () => {
+        act(() => {
+            render(<NewTimelineModal {...defaultProps} />);
+        });
+
+        act(() => {
+            fireEvent.change(screen.getByRole('searchbox',{name:"historicalContexts-search"}), { target: { value: 'newcontext' } });
+        });
+
+        await waitFor(() => {
+            expect(addContextItemMock).toHaveBeenCalled();
         });
     });
 
@@ -254,15 +278,10 @@ describe('NewTimelineModal', () => {
             expect(onChangeMock).toHaveBeenLastCalledWith('title', createJobWithAllFields.title);
         });
 
-        user.click(selectDate);
-        user.click(screen.getByTitle('Рік, день місяць')!);
+        fireEvent.change(screen.getByRole('combobox', { name: "" }), { target: { value: 'Рік, день місяць' } });
+        userEvent.type(screen.getByRole('textbox', { name: /Дата:/i }), '2024-08-08');
 
-        user.click(datePicker);
-        fireEvent.change(datePicker, { target: { value: '2024, 8 August' } });
-        user.click(document.querySelectorAll('.ant-picker-cell-selected')[0]);
-
-        user.click(selectContext);
-        user.click(screen.getByTitle('context 1'));
+        fireEvent.change(screen.getByRole('combobox', { name: /Контекст:/i }), { target: { value: 'context 1' } });
         expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', createJobWithAllFields.historicalContexts);
 
         user.type(textareaDescription, createJobWithAllFields.description!);
@@ -313,8 +332,7 @@ describe('NewTimelineModal', () => {
             expect(onChangeMock).toHaveBeenLastCalledWith('description', editedTimeLine.description);
         });
 
-        user.click(selectContext);
-        user.click(screen.getByTitle('context 2'));
+        fireEvent.change(screen.getByRole('combobox', { name: /Контекст:/i }), { target: { value: 'context 2' } });
         expect(onChangeMock).toHaveBeenLastCalledWith('historicalContexts', editedTimeLine.historicalContexts);
 
         await act(async () => {

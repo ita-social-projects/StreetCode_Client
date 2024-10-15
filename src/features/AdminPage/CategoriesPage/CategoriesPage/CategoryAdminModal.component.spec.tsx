@@ -1,11 +1,13 @@
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
+import React, { useState } from 'react';
 import CategoryAdminModal from './CategoryAdminModal.component';
 import { act } from 'react-dom/test-utils';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import SourcesApi from '@/app/api/sources/sources.api';
 import 'jest-canvas-mock';
 import { message } from 'antd';
+import { UploadFile } from 'antd/es/upload';
 import Image from '@/models/media/image.model';
 import Uploader from '../../../../app/common/components/FileUploader/FileUploader.component';
 
@@ -27,12 +29,12 @@ export default function overrideMatchMedia() {
 overrideMatchMedia();
 
 global.URL.createObjectURL = jest.fn();
-
 jest.mock('@app/api/sources/sources.api', () => ({
     __esModule: true,
     default: {
         create: jest.fn(),
         update: jest.fn(),
+        getAllCategories: () => [],
     },
 }));
 
@@ -43,19 +45,20 @@ const mockImage = {
     mimeType: "image/jpeg"
 } as Image;
 
-jest.mock('@api/media/images.api', () => ({
-    __esModule: true,
-    default: {
-        create: async () => (mockImage),
-        getById: async () => (mockImage),
-    },
-}));
-jest.mock('@/app/api/media/images.api', () => ({
-    __esModule: true,
-    default: {
-        create: async () => (mockImage),
-        getById: async () => (mockImage),
-    },
+jest.mock("@/app/common/components/FileUploader/FileUploader.component");
+
+jest.mock("@/app/api/media/images.api", () => ({
+    create: () => (
+        Promise.resolve(mockImage)
+    ),
+    getById: (id: number) => (
+        Promise.resolve({
+            id: 1,
+            base64: "base64",
+            blobName: "blobName",
+            mimeType: "image/jpeg"
+        } as Image)
+    ),
 }));
 
 jest.mock('antd', () => {
@@ -123,11 +126,13 @@ describe('CategoryAdminModal', () => {
         });
 
         const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const uploader = screen.getByTestId('fileuploader');
 
         act(() => {
             userEvent.type(screen.getByRole('textbox', { name: /Назва/i }), 'New category');
-            userEvent.upload(screen.getByTestId('fileuploader'), new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
+            userEvent.upload(uploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
         });
+
         await waitFor(() => {
             expect(saveButton).not.toBeDisabled();
         });
@@ -155,11 +160,14 @@ describe('CategoryAdminModal', () => {
             render(<CategoryAdminModal {...defaultProps} initialData={initialData} />);
         });
 
+        const nameInput = screen.getByRole('textbox', { name: /Назва/i });
         const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const fileuploader = screen.getByTestId('fileuploader');
 
         act(() => {
-            userEvent.type(screen.getByRole('textbox', { name: /Назва/i }), 'New category');
-            userEvent.upload(screen.getByTestId('fileuploader'), new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
+            userEvent.clear(nameInput);
+            userEvent.type(nameInput, 'New category');
+            userEvent.upload(fileuploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
         });
         await waitFor(() => {
             expect(saveButton).not.toBeDisabled();
@@ -185,7 +193,7 @@ describe('CategoryAdminModal', () => {
         const saveButton = screen.getByRole('button', { name: /Зберегти/i });
 
         act(() => {
-            userEvent.type(screen.getByRole('textbox', { name: /Назва/i }), '   ');
+            userEvent.type(screen.getByRole('textbox', { name: /Назва/i }), '  ');
             userEvent.upload(screen.getByTestId('fileuploader'), new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
         });
 

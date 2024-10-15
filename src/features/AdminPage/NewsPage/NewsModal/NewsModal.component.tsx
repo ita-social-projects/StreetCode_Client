@@ -225,13 +225,12 @@ const NewsModal: React.FC<{
             hideLoadingMessage();
         }
     };
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     const handleUpdate = (value: any) => {
         setData(value);
-			  handleInputChange();
+        handleInputChange();
     };
-
-		const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <ConfigProvider locale={ukUA}>
@@ -307,8 +306,7 @@ const NewsModal: React.FC<{
                                     required: true,
                                     message: 'Введіть текст',
                                     validator: () => {
-                                        const editorText = editorRef.current?.editor?.getText().trim();
-                                        if (!editorText || editorText === '') {
+                                        if (!data) {
                                             return Promise.reject(new Error('Введіть текст'));
                                         }
                                         return Promise.resolve();
