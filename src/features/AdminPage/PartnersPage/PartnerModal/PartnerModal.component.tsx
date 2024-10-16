@@ -32,7 +32,6 @@ import Partner, {
     PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
@@ -71,26 +70,6 @@ const PartnerModal: React.FC< {
         const [actionSuccess, setActionSuccess] = useState(false);
         const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
 		    const [isSaved, setIsSaved] = useState(true);
-
-        const updatedPartners = () => {
-            Promise.all([
-                partnersStore?.fetchPartnersAll(),
-            ]).then(() => {
-                partnersStore?.PartnerMap.forEach((val, key) => {
-                    ImageStore.getImageById(val.logoId).then((logo) => {
-                        runInAction(() => {
-                            partnersStore.PartnerMap.set(
-                                val.id,
-                                { ...val, logo },
-                            );
-                        });
-                    });
-                });
-            }).then(() => partnersStore.setInternalMap(partnersStore.getPartnerArray));
-        };
-        useEffect(() => {
-            updatedPartners();
-        }, []);
 
         message.config({
             top: 100,

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Empty } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
@@ -17,9 +17,12 @@ const ContextMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [contextToEdit, setContextToEdit] = useState<Context>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const updatedContexts = () => {
+        setIsLoading(true);
         contextStore.fetchContexts();
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -93,8 +96,17 @@ const ContextMainPage: React.FC = observer(() => {
                     pagination={{ pageSize: 10 }}
                     className="partners-table"
                     columns={columns}
-                    dataSource={contextStore.getContextArray}
+                    dataSource={isLoading ? [] : contextStore.getContextArray}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
             </div>
             <ContextAdminModalComponent isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
