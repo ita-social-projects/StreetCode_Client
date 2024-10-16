@@ -22,7 +22,7 @@ const PartnersBlock = ({ onlyKeyPartners}: Props) => {
         setKeyPartners(res);
       })
       .catch((error) => {
-        console.error("Error fetching key partners:", error);
+        console.error('Error fetching key partners:', error);
       });
 
     if (!onlyKeyPartners) {
@@ -31,7 +31,7 @@ const PartnersBlock = ({ onlyKeyPartners}: Props) => {
           setOtherPartners(result);
         })
         .catch((error) => {
-          console.error("Error fetching other partners:", error);
+          console.error('Error fetching other partners:', error);
         });
     }
   });

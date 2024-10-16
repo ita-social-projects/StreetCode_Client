@@ -26,8 +26,11 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     const {contextStore} = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+
     const closeModal = () => {
         setIsModalOpen(false);
+			  setIsSaveButtonDisabled(true);
     };
 
     useAsync(() => contextStore.fetchContexts(), []);
@@ -77,6 +80,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
             await form.validateFields();
             form.submit();
             message.success(`Контекст успішно ${isEditing ? 'змінено' : 'додано'}!`);
+			setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -91,6 +95,8 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     const MAX_LENGTH = {
         title: 50,
     };
+
+		const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <Modal
@@ -125,11 +131,12 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input maxLength={MAX_LENGTH.title} showCount/>
+                        <Input maxLength={MAX_LENGTH.title} showCount onChange={handleInputChange} />
                     </Form.Item>
 
                     <div className="center">
                         <Button
+								            disabled={isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, cleanup, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PartnerModal from "./PartnerModal.component";
 import PartnersApi from "@/app/api/partners/partners.api";
@@ -7,6 +7,8 @@ import 'jest-canvas-mock';
 import Image, { ImageCreate } from "@/models/media/image.model";
 import Partner, { PartnerCreateUpdate } from "@/models/partners/partners.model";
 import { act } from "react-dom/test-utils";
+import ImageStore from "@/app/stores/image-store";
+import { useState } from "react";
 
 global.URL.createObjectURL = jest.fn();
 
@@ -24,27 +26,39 @@ jest.mock("@/app/api/media/images.api", () => ({
       mimeType: image.mimeType,
       alt: image.alt
     } as Image)
-    ),
+  ),
 }));
+
+ImageStore.getImageById = async (id: number) => {
+  return {
+    id: id,
+    base64: "base64",
+    blobName: "blobName",
+    mimeType: "mimeType",
+    alt: "alt"
+  } as Image;
+}
+
+const partner = {
+  id: 0,
+  isKeyPartner: false,
+  isVisibleEverywhere: false,
+  title: 'something',
+  logoId: 1,
+  partnerSourceLinks: [],
+  streetcodes: [],
+} as Partner;
 
 jest.mock("@stores/root-store", () => ({
   __esModule: true, // This property is needed when mocking modules that have a default export
   default: () => ({
     partnersStore: {
       fetchPartnersAll: jest.fn().mockResolvedValue([]),
-      PartnerMap: new Map(),
-      getPartnerArray: [{
-          id: 0,
-          isKeyPartner: false,
-          isVisibleEverywhere: false,
-          title: 'something',
-          logoId: 999,
-          partnerSourceLinks: [],
-          streetcodes: [],
-        } as Partner] as Partner[],
+      PartnerMap: new Map([[partner.id, partner]]),
+      getPartnerArray: [partner] as Partner[],
       setInternalMap: jest.fn(),
-      createPartner: (partner: PartnerCreateUpdate) => { PartnersApi.create(partner) },
-      updatePartner: (partner: PartnerCreateUpdate) => { PartnersApi.update(partner) },
+      createPartner: (partner: PartnerCreateUpdate) => PartnersApi.create(partner),
+      updatePartner: (partner: PartnerCreateUpdate) => PartnersApi.update(partner),
     },
     streetcodeShortStore: {
       fetchStreetcodesAll: jest.fn().mockResolvedValue([]), // Mock the fetch function
@@ -76,19 +90,89 @@ Object.defineProperty(window, "matchMedia", {
   }),
 });
 
+jest.mock('antd', () => {
+  const antd = jest.requireActual('antd');
+  const message = antd;
+
+  const Select = ({ children, value, onSelect, onDeselect, onChange, options, ...otherProps }: any) => {
+    const [selectedValue, setSelectedValue] = useState<string>(null!);
+    return <div>
+      <button aria-label={selectedValue} onClick={() => { onDeselect(selectedValue) }}>{selectedValue}</button>
+      <select onChange={e => {
+        setSelectedValue(e.target.value);
+        onSelect?.(e.target.value);
+        onChange?.();
+      }} {...otherProps}>
+        {options?.map((option: { value: string, label: string }) => {
+          return (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          )
+        })}
+        {children}
+      </select>
+    </div>;
+  };
+  Select.Option = (props: any) => {
+    return <option {...props} />
+  }
+
+  return {
+    ...antd,
+    Select,
+    message: {
+      ...message,
+      loading: jest.fn(),
+      success: jest.fn(),
+      config: jest.fn(),
+      error: jest.fn(),
+    },
+  };
+});
+
+jest.mock("@/features/AdminPage/PartnersPage/PartnerLink.component", () => {
+  return {
+    __esModule: true,
+    default: (a: any) => {
+      return <div role="listitem" aria-label="partnerLink">{JSON.stringify(a)}</div>;
+    }
+  };
+});
+
 describe("PartnerModal", () => {
   let file: File;
 
   beforeEach(() => {
+    jest.resetAllMocks();
     file = new File(["(⌐□_□)"], "chucknorris.png", { type: "image/png" });
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   test("rendering component", () => {
     render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
+
+    expect(screen.getByRole("button", { name: /зберегти/i })).toBeDisabled();
+  });
+
+  test("closing modal", () => {
+    const setIsModalOpen = jest.fn();
+    render(<PartnerModal open={true} setIsModalOpen={setIsModalOpen} />);
+
+    const closeButton = screen.getByRole("button", { name: /Close/i });
+
+    userEvent.click(closeButton);
+
+    expect(setIsModalOpen).toHaveBeenCalled();
   });
 
   test("creating partner only with required fields", async () => {
-    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
+    (PartnersApi.create as jest.Mock).mockResolvedValueOnce({ id: 1 } as Partner);
+    const afterSubmit = jest.fn();
+    render(<PartnerModal open={true} setIsModalOpen={() => { }} afterSubmit={afterSubmit} />);
 
     const button = screen.getByRole("button", { name: /зберегти/i });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
@@ -97,22 +181,32 @@ describe("PartnerModal", () => {
     const inputElement = fileInput as HTMLInputElement;
 
     await waitFor(() => {
-      userEvent.type(nameInput, "something");
+      userEvent.type(nameInput, "something name");
       userEvent.upload(fileInput, file);
     });
 
-    expect(nameInput).toHaveValue("something");
+    expect(nameInput).toHaveValue("something name");
     if (inputElement.files) {
       expect(inputElement.files[0]).toStrictEqual(file);
     } else {
       throw new Error("File input does not contain any files");
     }
-    
+    await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
+
     expect(button).toBeEnabled();
-  });
+
+    userEvent.click(button);
+
+    await waitFor(() => {
+      expect(PartnersApi.create).toHaveBeenCalled();
+      expect(PartnersApi.update).not.toHaveBeenCalled();
+      expect(afterSubmit).toHaveBeenCalled();
+      expect(button).toBeDisabled();
+    });
+  }, 10000);
 
   test("creating partner with all possible fields", async () => {
-    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
+    render(<PartnerModal open={true} setIsModalOpen={() => { }} isStreetcodeVisible={true} />);
 
     const button = screen.getByRole("button", { name: /зберегти/i });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
@@ -123,6 +217,7 @@ describe("PartnerModal", () => {
       name: /Назва посилання:/,
     });
     const htmlLinkNameInput = linkNameInput as HTMLInputElement;
+    const streetcodeSelect = screen.getByRole("combobox", { name: /Стріткоди:/ });
 
     const fileInput = screen.getByTestId("fileuploader");
     const inputElement = fileInput as HTMLInputElement;
@@ -139,6 +234,9 @@ describe("PartnerModal", () => {
       }
       userEvent.type(linkNameInput, "something linkname");
       userEvent.upload(fileInput, file);
+      userEvent.selectOptions(streetcodeSelect, "Streetcode 1");
+      userEvent.click(screen.getByRole("button", { name: /Streetcode 1/i }));
+      userEvent.selectOptions(streetcodeSelect, "Streetcode 2");
     });
 
     expect(nameInput).toHaveValue("something name");
@@ -152,7 +250,7 @@ describe("PartnerModal", () => {
     } else {
       throw new Error("File input does not contain any files");
     }
-    
+
     expect(button).toBeEnabled();
     //it triggers an error "Введіть правильне посилання для збереження назви посилання."
   });
@@ -198,7 +296,7 @@ describe("PartnerModal", () => {
   });
 
   test("check when required fields are the same then existing partner should be updated instead of created", async () => {
-    render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
+    render(<PartnerModal partnerItem={partner} open={true} setIsModalOpen={() => { }} />);
 
     const button = screen.getByRole("button", { name: /зберегти/i });
     const buttonElement = button as HTMLButtonElement;
@@ -210,6 +308,7 @@ describe("PartnerModal", () => {
 
     await act(async () => {
       userEvent.upload(fileInput, file);
+      userEvent.clear(nameInput);
       userEvent.type(nameInput, "something");
     });
 
@@ -227,7 +326,7 @@ describe("PartnerModal", () => {
     //and causes async changing of state of previous multiple components
     //outside of act() framestack (which causes warnings, unexpected behaviour etc.)
     await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
-    
+
 
     await act(async () => {
       userEvent.click(button);
@@ -239,4 +338,41 @@ describe("PartnerModal", () => {
     });
   });
 
+  test("submiting social link", async () => {
+    const dom = render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
+
+    userEvent.click(screen.getByRole("button", { name: /Додати соціальну мережу/ }));
+    const form = dom.baseElement.getElementsByTagName("form").item(1) as HTMLElement;
+    const linkInput = within(form).getByRole("textbox");
+    const socialSelect = within(form).getByRole("combobox");
+    const button = within(form).getByRole("button", { name: /plus/i });
+
+    act(() => {
+      userEvent.type(linkInput, "https://www.instagram.com/example/");
+      userEvent.selectOptions(socialSelect, "Instagram");
+      userEvent.click(button);
+    });
+
+    await waitFor(() => {
+      expect(dom.baseElement.innerHTML).toContain("https://www.instagram.com/example/");
+    });
+  });
+
+  test("hiding social link form", async () => {
+    const dom = render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
+
+    userEvent.click(screen.getByRole("button", { name: /Додати соціальну мережу/ }));
+    const form = dom.baseElement.getElementsByTagName("form").item(1) as HTMLElement;
+    const linkInput = within(form).getByRole("textbox");
+    const socialSelect = within(form).getByRole("combobox");
+    const button = within(form).getByRole("button", { name: /plus/i });
+
+    within(form).getByRole("button", { name: /закрити/i }).click();
+
+    await waitFor(() => {
+      expect(socialSelect).not.toBeInTheDocument();
+      expect(linkInput).not.toBeInTheDocument();
+      expect(button).not.toBeInTheDocument();
+    });
+  });
 });

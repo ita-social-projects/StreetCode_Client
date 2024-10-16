@@ -139,7 +139,7 @@ const StreetcodesTable = () => {
                 handleCancelConfirmation,
             );
         } catch (error) {
-            console.error('Error occurred:', error);
+            console.error(error);
         }
     };
 
@@ -232,7 +232,7 @@ const StreetcodesTable = () => {
                                                         .filter((s) => s.key !== record.key));
                                                 })
                                                 .catch((e) => {
-                                                    console.log(e);
+                                                    console.error(e);
                                                 });
                                             modalStore.setConfirmationModal('confirmation');
                                         },
