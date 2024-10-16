@@ -63,7 +63,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                                     if (positions.id != undefined) {
                                         teamPositionsStore.deletePosition(positions.id)
                                             .catch((e) => {
-                                                console.log(e);
+                                                console.error(e);
                                             });
                                         modalStore.setConfirmationModal('confirmation');
                                     }

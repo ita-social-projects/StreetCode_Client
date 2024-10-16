@@ -64,6 +64,7 @@ const NewsModal: React.FC<{
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const [removedImage, setRemovedImage] = useState<Image | undefined>(undefined);
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -154,6 +155,7 @@ const NewsModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
+			setIsSaveButtonDisabled(true);
             if (removedImage) {
                 imageId.current = removedImage.id;
                 image.current = removedImage;
@@ -176,6 +178,7 @@ const NewsModal: React.FC<{
             checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
             setWaitingForApiResponse(true);
             form.submit();
+			setIsSaveButtonDisabled(true);
         } catch {
             message.error(fillInAllFieldsMessage);
         }
@@ -222,9 +225,11 @@ const NewsModal: React.FC<{
             hideLoadingMessage();
         }
     };
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     const handleUpdate = (value: any) => {
         setData(value);
+        handleInputChange();
     };
 
     return (
@@ -264,7 +269,7 @@ const NewsModal: React.FC<{
                             label="Заголовок: "
                             rules={[{ required: true, message: 'Введіть заголовок' }]}
                         >
-                            <Input maxLength={100} showCount />
+                            <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
@@ -290,7 +295,7 @@ const NewsModal: React.FC<{
                                 },
                             ]}
                         >
-                            <Input maxLength={200} showCount />
+                            <Input maxLength={200} showCount onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
@@ -301,8 +306,7 @@ const NewsModal: React.FC<{
                                     required: true,
                                     message: 'Введіть текст',
                                     validator: () => {
-                                        const editorText = editorRef.current?.editor?.getText().trim();
-                                        if (!editorText || editorText === '') {
+                                        if (!data) {
                                             return Promise.reject(new Error('Введіть текст'));
                                         }
                                         return Promise.resolve();
@@ -385,6 +389,7 @@ const NewsModal: React.FC<{
                                         ]
                                         : []
                                 }
+								                onChange={handleInputChange}
 
                             >
                                 <p>Виберіть чи перетягніть файл</p>
@@ -396,7 +401,7 @@ const NewsModal: React.FC<{
                             label="Дата створення: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker showTime allowClear={false} />
+                            <DatePicker showTime allowClear={false} onChange={handleInputChange} />
                         </Form.Item>
                         <PreviewFileModal
                             opened={previewOpen}
@@ -408,6 +413,7 @@ const NewsModal: React.FC<{
                             <Button
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
+								                disabled={isSaveButtonDisabled}
                             >
                                 Зберегти
                             </Button>

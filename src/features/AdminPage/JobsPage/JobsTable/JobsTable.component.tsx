@@ -34,7 +34,7 @@ const JobsTable = () => {
                     )
                     .catch(
                         (e) => {
-                            console.log(e);
+                            console.error(e);
                         },
                     );
                 modalStore.setConfirmationModal('confirmation');
@@ -68,13 +68,13 @@ const JobsTable = () => {
 
                         modalStore.setConfirmationModal('confirmation');
                     } catch (e) {
-                        console.log(e);
+                        console.error(e);
                     }
                 },
                 'Ви впевнені, що хочете змінити статус вакансії?',
             );
         } catch (error) {
-            console.error('Error occurred:', error);
+            console.error(error);
         }
     };
 

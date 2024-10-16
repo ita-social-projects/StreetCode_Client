@@ -69,6 +69,7 @@ const PartnerModal: React.FC< {
         const imageId = useRef<number>(0);
         const [actionSuccess, setActionSuccess] = useState(false);
         const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
+		    const [isSaved, setIsSaved] = useState(true);
 
         message.config({
             top: 100,
@@ -158,6 +159,7 @@ const PartnerModal: React.FC< {
                 await form.validateFields();
                 form.submit();
                 message.success('Партнера успішно додано!');
+				        setIsSaved(true);
             } catch (error) {
                 setWaitingForApiResponse(false);
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -182,6 +184,7 @@ const PartnerModal: React.FC< {
         const closeModal = () => {
             if (!waitingForApiResponse) {
                 setIsModalOpen(false);
+								setIsSaved(true);
             }
         };
 
@@ -206,6 +209,7 @@ const PartnerModal: React.FC< {
             partnerLinksForm.resetFields();
             setShowSecondForm(false);
             setShowSecondFormButton(true);
+			      handleInputChange();
         };
 
         const handleUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -213,6 +217,7 @@ const PartnerModal: React.FC< {
             try {
                 await form.validateFields(['url']);
                 setUrlTitleEnabled(value);
+				        handleInputChange();
             } catch (error) {
                 setUrlTitleEnabled('');
             }
@@ -223,6 +228,7 @@ const PartnerModal: React.FC< {
         ) => {
             const { value } = e.target;
             setUrlTitleValue(value);
+			      handleInputChange();
         };
 
         const handleShowSecondForm = () => {
@@ -276,7 +282,6 @@ const PartnerModal: React.FC< {
                 } else {
                     partner.id = (await partnersStore.createPartner(partner)).id;
                 }
-                console.log('Success');
                 if (afterSubmit) {
                     const partnerWithLogo = partnersStore.PartnerMap.get(partner.id) as Partner;
                     afterSubmit(partnerWithLogo);
@@ -288,10 +293,13 @@ const PartnerModal: React.FC< {
             }
         };
 
+		const handleInputChange = () => setIsSaved(false);
+
         const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
         const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
             if (checkFile(param.file)) {
+                handleInputChange();
                 setFileList(param.fileList);
             }
         };
@@ -328,7 +336,7 @@ const PartnerModal: React.FC< {
                                 valuePropName="checked"
                                 label="Ключовий партнер: "
                             >
-                                <Checkbox />
+                                <Checkbox onChange={handleInputChange} />
                             </Form.Item>
 
                             <Form.Item
@@ -337,7 +345,7 @@ const PartnerModal: React.FC< {
                                 valuePropName="checked"
                                 label="Видимий для всіх: "
                             >
-                                <Checkbox />
+                                <Checkbox onChange={handleInputChange} />
                             </Form.Item>
                         </div>
 
@@ -346,7 +354,7 @@ const PartnerModal: React.FC< {
                             label="Назва: "
                             rules={[{ required: true, message: 'Введіть назву' }]}
                         >
-                            <Input maxLength={100} showCount />
+                            <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
@@ -377,7 +385,7 @@ const PartnerModal: React.FC< {
                         )}
 
                         <Form.Item name="description" label="Опис: ">
-                            <TextArea showCount maxLength={450} />
+                            <TextArea showCount maxLength={450} onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
@@ -422,6 +430,7 @@ const PartnerModal: React.FC< {
                             <Form.Item name="partnersStreetcodes" label="Стріткоди: ">
                                 <Select
                                     mode="multiple"
+									                  onChange={handleInputChange}
                                     onSelect={onStreetcodeSelect}
                                     onDeselect={onStreetcodeDeselect}
                                 >
@@ -534,7 +543,7 @@ const PartnerModal: React.FC< {
                         </Popover>
                     ) : (
                         <Button
-                            disabled={showSecondForm || fileList.length === 0}
+                            disabled={showSecondForm || fileList.length === 0 || isSaved}
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
