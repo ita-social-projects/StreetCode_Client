@@ -3,8 +3,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import React, {
-    Dispatch, SetStateAction, useEffect,
-    useState
+    Dispatch, SetStateAction, useEffect, useState
 } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
@@ -34,8 +33,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-
-    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     useAsync(() => tagsStore.fetchTags(), []);
 
@@ -59,6 +57,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
+		setIsSaveButtonDisabled(true);
     };
 
     const validateTag = uniquenessValidator(
@@ -98,6 +97,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             await form.validateFields();
             form.submit();
             message.success(`Тег успішно ${isEditing ? 'змінено' : 'додано'}!`, 2);
+			setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -138,7 +138,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         ]}
                         getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input placeholder="Title" maxLength={50} showCount />
+                        <Input placeholder="Title" maxLength={50} showCount/>
                     </Form.Item>
                     <div className="center">
                         <Button

@@ -1,14 +1,19 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-restricted-imports */
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
 import '@testing-library/jest-dom/extend-expect';
-
-import UploadMock from '../../../../../__mocks__/antd/es/upload/upload';
+import 'jest-canvas-mock';
 
 import NewsModal from './NewsModal.component';
+import Image, { ImageCreate } from '@/models/media/image.model';
+import { useEffect } from 'react';
+import { Form } from 'antd';
+import { mockCreateNews, mockUpdateNews } from '../../../../../__mocks__/@stores/root-store';
+import News from '@/models/news/news.model';
+import React from 'react';
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -16,18 +21,51 @@ Object.defineProperty(window, 'matchMedia', {
         matches: false,
         media: query,
         onchange: null,
-        addListener: () => {},
-        removeListener: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        dispatchEvent: () => {},
+        addListener: () => { },
+        removeListener: () => { },
+        addEventListener: () => { },
+        removeEventListener: () => { },
+        dispatchEvent: () => { },
     }),
 });
+window.URL.createObjectURL = jest.fn();
 
-jest.mock('antd/es/upload', () => ({
-    __esModule: true,
-    default: UploadMock,
+jest.mock("@/app/api/media/images.api", () => ({
+    create: (image: ImageCreate) => (
+        Promise.resolve({
+            id: 999,
+            base64: image.baseFormat,
+            blobName: image.title,
+            mimeType: image.mimeType,
+            alt: image.alt
+        } as Image)
+    ),
 }));
+
+jest.mock('antd', () => {
+    const antd = jest.requireActual('antd');
+    const message = antd;
+
+    return {
+        ...antd,
+        DatePicker: (props: any) => {
+            const form = Form.useFormInstance();
+            useEffect(() => {
+                form.setFieldsValue({
+                    creationDate: "2000-01-01",
+                });
+            }, []);
+            return <input onChange={props.onChange} type='date' role='textbox' aria-label='date' />;
+        },
+        message: {
+            ...message,
+            loading: () => jest.fn(),
+            success: jest.fn(),
+            config: jest.fn(),
+            error: jest.fn(),
+        },
+    };
+});
 
 jest.mock('@/app/common/components/Editor/QEditor.component', () => ({
     __esModule: true,
@@ -50,9 +88,29 @@ jest.mock('@/app/common/components/Editor/QEditor.component', () => ({
 }));
 
 describe('NewsModal', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    afterEach(() => {
+        cleanup();
+    });
+
     it('should render component', () => {
         const setIsModalOpen = jest.fn();
         render(<NewsModal open setIsModalOpen={setIsModalOpen} />);
+
+        expect(screen.getByRole('button', { name: /Зберегти/i })).toBeDisabled();
+    });
+
+    it('should close when clicked on close button', () => {
+        const setIsModalOpen = jest.fn();
+        render(<NewsModal open setIsModalOpen={setIsModalOpen} />);
+
+        const closeButton = screen.getByRole('button', { name: /Close/i });
+        userEvent.click(closeButton);
+
+        expect(setIsModalOpen).toHaveBeenCalled();
     });
 
     it('should be filled with required values and submited', async () => {
@@ -70,50 +128,34 @@ describe('NewsModal', () => {
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
         const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
         const textInput = screen.getByTestId('mockEditor') as HTMLTextAreaElement;
-        const dateInput = screen.getByLabelText(
-            'Дата створення:',
-        ) as HTMLInputElement;
-        const fileUpload = screen.getByTestId('file-input') as HTMLInputElement;
+        const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
+        const button = screen.getByRole('button', { name: 'Зберегти' });
 
         const file = new File(['test'], 'test.png', { type: 'image/png' });
-        const dateValue = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss');
 
         await waitFor(() => {
             userEvent.type(titleInput, 'Test Title');
-            userEvent.type(urlInput, 'Test Url');
+            userEvent.type(urlInput, 'testurl');
             userEvent.type(textInput, 'This is a test text');
             userEvent.upload(fileUpload, file);
-            fireEvent.mouseDown(dateInput);
-            fireEvent.change(dateInput, {
-                target: { value: dateValue },
-            });
         });
-
+        await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
+        screen.debug();
         // There is no need to repeat this part of code for edit test (logic is the same).
         // Once here is enough to check that we don`t submit empty strings.
         expect(titleInput).toHaveValue('Test Title');
-        expect(urlInput).toHaveValue('Test Url');
+        expect(urlInput).toHaveValue('testurl');
         expect(textInput).toHaveValue('This is a test text');
-        expect(dateInput).toHaveValue(dateValue);
         if (fileUpload.files) expect(fileUpload.files[0]).toStrictEqual(file);
 
-        const newsToCreate = {
-            title: titleInput.value,
-            url: urlInput.value,
-            text: textInput.value,
-            creationDate: dateInput.value,
-        };
-
-        afterSubmitMock(newsToCreate);
-
+        screen.debug();
+        userEvent.click(button);
         await waitFor(() => {
+            expect(mockCreateNews).toHaveBeenCalled();
+            expect(mockUpdateNews).not.toHaveBeenCalled();
             expect(afterSubmitMock).toHaveBeenCalled();
         });
-
-        await waitFor(() => {
-            expect(afterSubmitMock).toHaveBeenCalledWith(newsToCreate);
-        });
-    });
+    }, 10000);
 
     it('should not submit when required fields are empty', async () => {
         const setIsModalOpen = jest.fn();
@@ -147,12 +189,12 @@ describe('NewsModal', () => {
     });
 
     it('should truncate inputs when exceeding maximum characters/files', async () => {
-        render(<NewsModal open setIsModalOpen={() => {}} />);
+        render(<NewsModal open setIsModalOpen={() => { }} />);
 
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
         const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
         const textInput = screen.getByTestId('mockEditor') as HTMLTextAreaElement;
-        const fileUpload = screen.getByTestId('file-input') as HTMLInputElement;
+        const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
 
         const a = 'uxlprrbyrugcjgplxivhpsducilsafcnheueosipnqutahqdgss';
         const tooLongTitle = a.repeat(2);
@@ -201,12 +243,11 @@ describe('NewsModal', () => {
 
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
         const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
-        const dateInput = screen.getByLabelText(
-            'Дата створення:',
-        ) as HTMLInputElement;
+        const dateInput = screen.getByRole('textbox', { name: "date" }) as HTMLInputElement;
+        const button = screen.getByRole('button', { name: 'Зберегти' });
 
         userEvent.clear(titleInput);
-        userEvent.type(titleInput, 'Updated Title');
+        userEvent.type(titleInput, 'Test Title');
 
         userEvent.clear(urlInput);
         userEvent.type(urlInput, 'updated-url');
@@ -216,24 +257,19 @@ describe('NewsModal', () => {
         fireEvent.change(dateInput, {
             target: { value: dateValue },
         });
+        const file = new File(['test'], 'test.png', { type: 'image/png' });
+        const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
+        userEvent.upload(fileUpload, file);
+        await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
 
-        const updatedNewsItem = {
-            ...newsToEdit,
-            title: titleInput.value,
-            url: urlInput.value,
-            creationDate: dateInput.value,
-        };
-
-        afterSubmitMock(updatedNewsItem);
+        userEvent.click(button);
 
         await waitFor(() => {
+            expect(mockUpdateNews).toHaveBeenCalled();
+            expect(mockCreateNews).not.toHaveBeenCalled();
             expect(afterSubmitMock).toHaveBeenCalled();
         });
-
-        await waitFor(() => {
-            expect(afterSubmitMock).toHaveBeenCalledWith(updatedNewsItem);
-        });
-    });
+    }, 10000);
 
     it('should update existing news when required fields match', async () => {
         const existingNews = [
@@ -265,10 +301,8 @@ describe('NewsModal', () => {
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
         const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
         const textInput = screen.getByTestId('mockEditor') as HTMLTextAreaElement;
-        const dateInput = screen.getByLabelText(
-            'Дата створення:',
-        ) as HTMLInputElement;
-        const fileUpload = screen.getByTestId('file-input') as HTMLInputElement;
+        const dateInput = screen.getByRole('textbox', { name: "date" }) as HTMLInputElement;
+        const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
 
         await waitFor(() => {
             userEvent.clear(titleInput);

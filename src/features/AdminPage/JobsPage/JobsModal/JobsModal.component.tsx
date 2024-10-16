@@ -43,6 +43,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
   const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
 
   const [storedJob, setStoredJob] = useState<Job>(emptyJob);
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
   const fetchJobData = async () => {
     if (open && currentId !== 0) {
@@ -104,6 +105,8 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           await JobApi.update(newJob);
         }
         message.success(POPOVER_CONTENT.SUCCESS, 2);
+
+				setIsSaveButtonDisabled(true);
     } catch {
       message.error(POPOVER_CONTENT.FAIL, 2);
     }
@@ -123,7 +126,12 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       ...current,
       description: content,
     });
+		handleInputChange();
   };
+
+	const handleInputChange = () => {
+		setIsSaveButtonDisabled(false);
+	}
 
   return (
     <Modal
@@ -131,6 +139,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
       open={open}
       onCancel={() => {
         setOpen(false);
+				setIsSaveButtonDisabled(true);
       }}
       footer={null}
       maskClosable
@@ -155,12 +164,13 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           name="title"
           rules={[{ required: true, message: "Введіть назву вакансії" }]}
         >
-          <Input showCount maxLength={maxLengths.maxLenghtVacancyName} />
+          <Input showCount maxLength={maxLengths.maxLenghtVacancyName} onChange={handleInputChange} />
         </Form.Item>
         <Form.Item label="Статус вакансії" name="status">
           <Select
             key="statusSelectInput"
             className="status-select-input"
+						onChange={handleInputChange}
           >
             <Select.Option key="active" value="setActive">
               Активна
@@ -189,12 +199,15 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           name="salary"
           rules={[{ required: true, message: "Введіть заробітню плату" }]}
         >
-          <Input showCount maxLength={maxLengths.maxLenghtVacancySalary} />
+          <Input showCount maxLength={maxLengths.maxLenghtVacancySalary} onChange={handleInputChange} />
         </Form.Item>
         <div className="center">
           <Button
             className="streetcode-custom-button"
-            onClick={form.submit}
+            onClick={() => {
+							form.submit();
+						}}
+						disabled={isSaveButtonDisabled}
           >
             Зберегти
           </Button>
