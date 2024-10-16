@@ -188,6 +188,7 @@
     }
     .card {
       @include mut.sized(100%, 495px);
+      @include mut.full-rounded(0);
       background-color: rgba(0, 0, 0, 0) !important;
       box-shadow: none;
       .rightSider{

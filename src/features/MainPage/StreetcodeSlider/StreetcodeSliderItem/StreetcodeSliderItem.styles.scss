@@ -27,7 +27,7 @@
             margin-bottom: f.pxToRem(20px);
         }
 
-        @media screen and (max-width: 767px) {
+        @media screen and (max-width: 767.5px) {
             @include mut.sized(310px, 462px);
             margin-left: f.pxToRem(0px);
         }
@@ -45,7 +45,7 @@
             padding: f.pxToRem(5px) f.pxToRem(10px);
         }
 
-        @media screen and (max-width: 767px) {
+        @media screen and (max-width: 767.5px) {
             @include mut.sized(100%, 398px);
         }
     }
@@ -61,7 +61,7 @@
             @include mut.sized(100%, 355px);
         }
 
-        @media screen and (max-width: 767px) {
+        @media screen and (max-width: 767.5px) {
             @include mut.sized(100%, 414px);
         }
     }
@@ -94,7 +94,7 @@
             object-fit: contain;
         }
 
-        @media screen and (max-width: 767px) {
+        @media screen and (max-width: 767.5px) {
             @include mut.sized(240px, 312px);
             object-fit: contain;
         }
@@ -134,6 +134,7 @@
 
         &Text{
             font-weight: 300;
+            @include mut.truncated(8);
             @media screen and (max-width: 1024px) {
                 display: none;
             }
