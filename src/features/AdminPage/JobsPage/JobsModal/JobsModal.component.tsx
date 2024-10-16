@@ -58,7 +58,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
           salary: currentJob.salary,
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } else if (currentId === 0) {
       setStoredJob(emptyJob);

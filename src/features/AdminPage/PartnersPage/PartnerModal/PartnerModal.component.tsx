@@ -303,7 +303,6 @@ const PartnerModal: React.FC< {
                 } else {
                     partner.id = (await partnersStore.createPartner(partner)).id;
                 }
-                console.log('Success');
                 if (afterSubmit) {
                     const partnerWithLogo = partnersStore.PartnerMap.get(partner.id) as Partner;
                     afterSubmit(partnerWithLogo);

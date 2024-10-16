@@ -28,17 +28,19 @@ export default class SourcesStore {
         try {
             this.setInternalCategoriesMap(await sourcesApi.getCategoriesByStreetcodeId(streetcodeId));
             this.srcCategoriesMap.forEach(async (value, key) => {
-                const content = await sourcesApi.getCategoryContentByStreetcodeId(streetcodeId,key);
+                const content = await sourcesApi.getCategoryContentByStreetcodeId(streetcodeId, key);
                 this.srcCategoriesContentMap.set(key, content);
-            })
-        } catch (error: unknown) { }
+            });
+        } catch (error: unknown) {
+            console.error(error);
+        }
     };
 
     public fetchSrcCategoriesAll = async () => {
         try {
             this.setInternalCategoriesMap(await sourcesApi.getAllCategories());
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -46,7 +48,9 @@ export default class SourcesStore {
         try {
             await sourcesApi.create(srcCategory);
             this.setCategoryItem(srcCategory);
-        } catch (error: unknown) { }
+        } catch (error: unknown) {
+            console.error(error);
+        }
     };
 
     public updateSourceCategory = async (srcCategory: SourceCategory) => {
@@ -58,7 +62,9 @@ export default class SourcesStore {
                 };
                 this.setCategoryItem(updatedSourceCategory as SourceCategory);
             });
-        } catch (error: unknown) { }
+        } catch (error: unknown) {
+            console.error(error);
+        }
     };
 
     public deleteSourceCategory = async (SourceCategoryId: number) => {
@@ -67,6 +73,8 @@ export default class SourcesStore {
             runInAction(() => {
                 this.srcCategoriesMap.delete(SourceCategoryId);
             });
-        } catch (error: unknown) { }
+        } catch (error: unknown) {
+            console.error(error);
+        }
     };
 }
