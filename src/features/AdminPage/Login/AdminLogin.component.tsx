@@ -19,7 +19,7 @@ const AdminLogin: React.FC = () => {
     const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
-    const { SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
+    const { RECAPTCHA_CHECK } = ERROR_MESSAGES;
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -31,7 +31,6 @@ const AdminLogin: React.FC = () => {
 
     message.config({
         duration: 2,
-        maxCount: 1,
     });
 
     const handleLogin = async ({ login, password }: any) => {
@@ -40,7 +39,11 @@ const AdminLogin: React.FC = () => {
                 const token = recaptchaRef?.current?.getValue();
                 await AuthService.loginAsync(login, password, token)
                     .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
-                    .catch(() => message.error(SOMETHING_IS_WRONG));
+                    .catch((ex) => {
+                        for (const key in ex.response.data.errors) {
+                            message.error(`${ex.response.data.errors[key]}`)
+                        }                        
+                    });
                 recaptchaRef.current?.reset();
             } catch (error) {
                 message.error(INVALID_LOGIN_ATTEMPT);
@@ -63,17 +66,17 @@ const AdminLogin: React.FC = () => {
             <Form.Item name="password" label="Пароль" rules={[{ required: true, message: 'Введіть пароль' }]}>
                 <Input.Password maxLength={30} />
             </Form.Item>
-            <div className="captchaBlock">
+            <div className="captchaBlock center">
                 <ReCAPTCHA
                     className="required-captcha"
                     sitekey={siteKey}
                     onChange={handleVerify}
                     onExpired={handleExpiration}
                     ref={recaptchaRef}
-                    hl='uk'
+                    hl="uk"
                 />
             </div>
-            <Form.Item>
+            <Form.Item className="center">
                 <Button htmlType="submit" className="streetcode-custom-button">
                     Увійти
                 </Button>
