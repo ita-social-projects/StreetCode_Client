@@ -2,6 +2,10 @@
 @use "@assets/sass/_utils.functions.scss" as f;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
+.partnersItem{
+    -webkit-tap-highlight-color: transparent;
+}
+
 .keyPartnersBlock{
     display: flex;
     column-gap: f.pxToRem(30px);
