@@ -52,25 +52,4 @@ export default class JobsStore {
             })
             .catch((error) => console.error(error));
     };
-
-    // public createPartner = async (partner: PartnerCreateUpdate) => {
-    //     const createdPartner = await partnersApi.create(partner);
-    //     const logo = await ImagesApi.getById(createdPartner.logoId);
-    //     const createdPartnerWithLogo = { ...createdPartner, logo } as Partner;
-    //     this.setItem(createdPartnerWithLogo);
-    //     return createdPartnerWithLogo;
-    // };
-
-    // public updatePartner = async (partner: PartnerCreateUpdate) => {
-    //     await partnersApi.update(partner).then((created) => {
-    //         ImagesApi.getById(created.logoId).then((logo):Partner => ({ ...created, logo }))
-    //             .then((p) => this.setItem(p));
-    //     });
-    // };
-
-    // public static deleteJob = async (partnerId: number) => {
-    //     try {
-    //         await partnersApi.delete(partnerId);
-    //     } catch (error: unknown) {}
-    // };
 }
