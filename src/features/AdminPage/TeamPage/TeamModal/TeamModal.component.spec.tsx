@@ -26,7 +26,6 @@ export default function overrideMatchMedia() {
 overrideMatchMedia();
 
 global.URL.createObjectURL = jest.fn(() => 'test.jpg');
-global.URL.canParse = jest.fn(() => true);
 
 const store = {
     fetchTeamAll: jest.fn(),
@@ -242,7 +241,7 @@ describe('TeamModal', () => {
         });
     }, 20000);
 
-    it('fails if image is not uploaded yet', async () => {
+    it('save button is diabled when all fields aren`t filled', async () => {
         act(() => {
             render(<TeamModal open={true} setIsModalOpen={() => { }} />);
         });
@@ -257,19 +256,10 @@ describe('TeamModal', () => {
             userEvent.click(checkbox);
             userEvent.type(nameInput, 'Test Name');
             userEvent.type(descriptionInput, 'Test Description');
-            userEvent.upload(photoInput, new File(['(⌐□_□)'], 'test.jpg', { type: 'image/jpeg' }));
         });
 
         await waitFor(() => {
-            expect(createButton).not.toBeDisabled();
-        });
-
-        act(() => {
-            userEvent.click(createButton);
-        });
-
-        await waitFor(() => {
-            expect(message.error).toHaveBeenCalled();
+            expect(createButton).toBeDisabled();
         });
     }, 20000);
 
