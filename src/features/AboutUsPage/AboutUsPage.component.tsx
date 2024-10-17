@@ -13,7 +13,6 @@ const AboutUsPage = () => {
     const [hasVacancies, setHasVacancies] = useState(false);
     const location = useLocation();
     const section = location.hash.substring(1);
-    console.log('section:', section);
 
     useEffect(() => {
         const scrollToSection = (sectionName: string) => {
