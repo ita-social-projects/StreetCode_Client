@@ -38,14 +38,14 @@ const store = {
             isMain: true,
             name: 'name',
             description: 'description',
-            imageId: 1,
+            imageId: -999,
             teamMemberLinks: [],
             positions: [],
         }
     ],
 };
 jest.mock('@stores/root-store', () => (() => ({ teamStore: store })));
-
+jest.mock("@/app/common/components/FileUploader/FileUploader.component");
 jest.mock('@/app/api/team/positions.api', () => ({
     getAll: async () => ([
         {
@@ -179,8 +179,6 @@ describe('TeamModal', () => {
             expect(createButton).not.toBeDisabled();
         });
 
-        await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
-
         act(() => {
             userEvent.click(createButton);
         });
@@ -191,7 +189,7 @@ describe('TeamModal', () => {
             expect(afterSubmit).toHaveBeenCalled();
             expect(store.updateTeam).not.toHaveBeenCalled();
         });
-    }, 20000);
+    });
 
     it('edits team member', async () => {
         act(() => {
@@ -228,8 +226,6 @@ describe('TeamModal', () => {
             expect(createButton).not.toBeDisabled();
         });
 
-        await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
-
         act(() => {
             userEvent.click(createButton);
         });
@@ -239,7 +235,7 @@ describe('TeamModal', () => {
             expect(message.success).toHaveBeenCalled();
             expect(store.createTeam).not.toHaveBeenCalled();
         });
-    }, 20000);
+    });
 
     it('save button is diabled when all fields aren`t filled', async () => {
         act(() => {
@@ -249,7 +245,6 @@ describe('TeamModal', () => {
         const checkbox = screen.getByRole('checkbox', { name: /Ключовий член команди/i });
         const nameInput = screen.getByRole('textbox', { name: /Прізвище та ім'я:/i });
         const descriptionInput = screen.getByRole('textbox', { name: /Опис:/i });
-        const photoInput = screen.getByTestId('fileuploader');
         const createButton = screen.getByRole('button', { name: /Зберегти/i });
 
         act(() => {
@@ -261,7 +256,7 @@ describe('TeamModal', () => {
         await waitFor(() => {
             expect(createButton).toBeDisabled();
         });
-    }, 20000);
+    });
 
     it('creates new team member with all fields', async () => {
         const afterSubmit = jest.fn((a: any) => (console.log(JSON.stringify(a))));
@@ -300,8 +295,6 @@ describe('TeamModal', () => {
             expect(createButton).not.toBeDisabled();
         });
 
-        await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
-
         act(() => {
             userEvent.click(createButton);
         });
@@ -312,5 +305,5 @@ describe('TeamModal', () => {
             expect(afterSubmit).toHaveBeenCalled();
             expect(store.updateTeam).not.toHaveBeenCalled();
         });
-    }, 20000);
+    });
 });
